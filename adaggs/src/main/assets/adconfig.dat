@@ -1,0 +1,60 @@
+{
+  "adv_inner": {
+    "policy": {},
+    "adplaces": [
+      {
+        "name": "open_splash",
+        "mode": "con",
+        "pids": [
+          {
+            "sdk": "fb",
+            "pid": "541656102860623_541708392855394",
+            "ctr": 0
+          }
+        ],
+        "maxcount": 100,
+        "percent": 100
+      },
+      {
+        "name": "open_splash",
+        "mode": "con",
+        "pids": [
+          {
+            "sdk": "fb",
+            "pid": "541656102860623_541708392855394",
+            "ctr": 0
+          }
+        ],
+        "maxcount": 100,
+        "percent": 100
+      }
+    ]
+  },
+  "adv_outer": {
+    "policy": {},
+    "adouter": {
+      "policy": {},
+      "mode": "ran",
+      "pids": [
+        {
+          "sdk": "fb",
+          "pid": "541656102860623_541708392855394",
+          "adType": "native",
+          "ctr": 0
+        }
+      ]
+    },
+    "adfilm": {
+      "policy": {},
+      "mode": "ran",
+      "pids": [
+        {
+          "sdk": "fb",
+          "pid": "541656102860623_541708392855394",
+          "adType": "native",
+          "ctr": 0
+        }
+      ]
+    }
+  }
+}
