@@ -21,4 +21,9 @@ public interface IStat {
     public void reportFBInterstitialLoaded(Context context, String pidName, Object extra);
     public void reportFBInterstitialShow(Context context, String pidName, Object extra);
     public void reportFBInterstitialClick(Context context, String pidName, Object extra);
+
+    public void reportFBNativeRequest(Context context, String pidName, Object extra);
+    public void reportFBNativeLoaded(Context context, String pidName, Object extra);
+    public void reportFBNativeShow(Context context, String pidName, Object extra);
+    public void reportFBNativeClick(Context context, String pidName, Object extra);
 }

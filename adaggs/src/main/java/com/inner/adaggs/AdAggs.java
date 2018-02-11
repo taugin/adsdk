@@ -3,10 +3,10 @@ package com.inner.adaggs;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import com.inner.adaggs.listener.OnInterstitialListener;
 import com.inner.adaggs.config.AdInners;
 import com.inner.adaggs.config.AdPlaceConfig;
 import com.inner.adaggs.framework.AdLoader;
+import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.log.Log;
 import com.inner.adaggs.parse.IParser;
 import com.inner.adaggs.parse.JsonParser;
@@ -65,9 +65,18 @@ public class AdAggs {
         return loader;
     }
 
-    public void loadInterstitial(String pidName, OnInterstitialListener l) {
+    public boolean isInterstitialLoaded(String pidName) {
         AdLoader loader = getAdLoader(pidName);
-        loader.setOnInterstitialListener(l);
+        return loader.isInterstitialLoaded();
+    }
+
+    public void loadInterstitial(String pidName) {
+        loadInterstitial(pidName, null);
+    }
+
+    public void loadInterstitial(String pidName, OnAdAggsListener l) {
+        AdLoader loader = getAdLoader(pidName);
+        loader.setOnAdAggsListener(l);
         loader.loadInterstitial();
     }
 
@@ -76,13 +85,31 @@ public class AdAggs {
         loader.showInterstitial();
     }
 
-    public void loadAdView(String pidName) {
-        loadAdView(pidName, null);
+    public boolean isAdViewLoaded(String pidName) {
+        AdLoader loader = getAdLoader(pidName);
+        return loader.isAdViewLoaded();
+    }
+
+    public void loadAdView(String pidName, OnAdAggsListener l) {
+        loadAdView(pidName, l, null);
     }
 
     public void loadAdView(String pidName, Map<String, Object> extra) {
+        loadAdView(pidName, null, extra);
+    }
+
+    public void loadAdView(String pidName, OnAdAggsListener l, Map<String, Object> extra) {
+        AdLoader loader = getAdLoader(pidName);
+        loader.setOnAdAggsListener(l);
+        loader.loadAdView(extra);
     }
 
     public void showAdView(String pidName, ViewGroup adContainer) {
+        AdLoader loader = getAdLoader(pidName);
+        loader.showAdView(adContainer);
+    }
+
+    public void destroy() {
+
     }
 }

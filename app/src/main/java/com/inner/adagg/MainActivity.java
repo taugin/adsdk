@@ -3,43 +3,39 @@ package com.inner.adagg;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.inner.adaggs.AdAggs;
-import com.inner.adaggs.listener.OnInterstitialListener;
-import com.inner.adaggs.log.Log;
+import com.inner.adaggs.AdExtra;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+
+    private RelativeLayout mAdContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAdContainer = findViewById(R.id.ad_container);
         AdAggs.get(this).init();
-        // MobileAds.initialize(this, "ca-app-pub-5425240585918224~3121229856");
+
+        AdAggs.get(this).loadInterstitial("open_splash");
+
+        View view = getLayoutInflater().inflate(R.layout.fb_native, null);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(AdExtra.KEY_FB_ROOTVIEW, view);
+        AdAggs.get(this).loadAdView("main_top", map);
     }
 
     public void onClick(View v) {
-        AdAggs.get(this).loadInterstitial("open_splash", new OnInterstitialListener() {
-            @Override
-            public void onInterstitialLoaded() {
-                Log.d(Log.TAG, "");
-                AdAggs.get(MainActivity.this).showInterstitial("open_splash");
-            }
-
-            @Override
-            public void onInterstitialShow() {
-                Log.d(Log.TAG, "");
-            }
-
-            @Override
-            public void onInterstitialDismiss() {
-                Log.d(Log.TAG, "");
-            }
-
-            @Override
-            public void onInterstitialError() {
-                Log.d(Log.TAG, "");
-            }
-        });
+        if (AdAggs.get(this).isInterstitialLoaded("open_splash")) {
+            AdAggs.get(MainActivity.this).showInterstitial("open_splash");
+        }
+        if (AdAggs.get(this).isAdViewLoaded("main_top")) {
+            AdAggs.get(this).showAdView("main_top", mAdContainer);
+        }
     }
 }

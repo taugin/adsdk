@@ -1,4 +1,4 @@
-package com.inner.adaggs.listener;
+package com.inner.adaggs.adloader.listener;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -34,6 +34,13 @@ public class AbstractAdLoader implements IAdLoader {
 
     @Override
     public String getSdkName() {
+        return null;
+    }
+
+    public String getAdType() {
+        if (mPidConfig != null) {
+            return mPidConfig.getAdType();
+        }
         return null;
     }
 

@@ -7,14 +7,13 @@ import android.view.ViewGroup;
 import com.inner.adaggs.AdExtra;
 import com.inner.adaggs.adloader.adfb.FBLoader;
 import com.inner.adaggs.adloader.admob.AdmobLoader;
+import com.inner.adaggs.adloader.listener.IAdLoader;
+import com.inner.adaggs.adloader.listener.SimpleAdListener;
+import com.inner.adaggs.adloader.listener.SimpleInterstitialListener;
 import com.inner.adaggs.config.AdPlaceConfig;
 import com.inner.adaggs.config.PidConfig;
 import com.inner.adaggs.constant.Constant;
-import com.inner.adaggs.listener.IAdLoader;
-import com.inner.adaggs.listener.OnAdListener;
-import com.inner.adaggs.listener.OnInterstitialListener;
-import com.inner.adaggs.listener.SimpleAdListener;
-import com.inner.adaggs.listener.SimpleInterstitialListener;
+import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.log.Log;
 
 import java.util.ArrayList;
@@ -31,8 +30,7 @@ public class AdLoader {
     private List<IAdLoader> mAdLoaders = new ArrayList<IAdLoader>();
     private AdPlaceConfig mAdPlaceConfig;
     private Context mContext;
-    private OnInterstitialListener mOnInterstitialListener;
-    private OnAdListener mOnAdListener;
+    private OnAdAggsListener mOnAdAggsListener;
     private Map<String, Object> mAdExtra;
 
     public AdLoader(Context context) {
@@ -114,12 +112,17 @@ public class AdLoader {
      *
      * @param l
      */
-    public void setOnInterstitialListener(OnInterstitialListener l) {
-        mOnInterstitialListener = l;
+    public void setOnAdAggsListener(OnAdAggsListener l) {
+        mOnAdAggsListener = l;
     }
 
-    public void setOnAdListener(OnAdListener l) {
-        mOnAdListener = l;
+    public boolean isInterstitialLoaded() {
+        for (IAdLoader loader : mAdLoaders) {
+            if (loader != null && loader.isInterstitialLoaded()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -135,13 +138,15 @@ public class AdLoader {
             loadInterstitialSequence();
         } else if (mAdPlaceConfig.isRandom()) {
             loadInterstitialRandom();
+        } else {
+            loadInterstitialConcurrent();
         }
     }
 
     private void loadInterstitialConcurrent() {
         for (IAdLoader loader : mAdLoaders) {
             if (loader != null) {
-                loader.setOnInterstitialListener(new SimpleInterstitialListener(mOnInterstitialListener));
+                loader.setOnInterstitialListener(new SimpleInterstitialListener(loader.getSdkName(), mOnAdAggsListener));
                 loader.loadInterstitial();
             }
         }
@@ -156,7 +161,7 @@ public class AdLoader {
     private void loadInterstitialRandom() {
         int pos = new Random().nextInt(mAdLoaders.size());
         IAdLoader loader = mAdLoaders.get(pos);
-        loader.setOnInterstitialListener(new SimpleInterstitialListener(mOnInterstitialListener));
+        loader.setOnInterstitialListener(new SimpleInterstitialListener(loader.getSdkName(), mOnAdAggsListener));
         loader.loadInterstitial();
     }
 
@@ -165,11 +170,15 @@ public class AdLoader {
             return;
         }
         IAdLoader loader = iterator.next();
-        loader.setOnInterstitialListener(new SimpleInterstitialListener(mOnInterstitialListener) {
+        loader.setOnInterstitialListener(new SimpleInterstitialListener(loader.getSdkName(), mOnAdAggsListener) {
             @Override
             public void onInterstitialError() {
-                Log.e(Log.TAG, "load next interstitial");
-                loadInterstitialSequenceInternal(iterator);
+                if (iterator.hasNext()) {
+                    Log.e(Log.TAG, "load next interstitial");
+                    loadInterstitialSequenceInternal(iterator);
+                } else {
+                    super.onInterstitialError();
+                }
             }
         });
         loader.loadInterstitial();
@@ -192,6 +201,15 @@ public class AdLoader {
 
     ///////////////////////////////////////////////////////////////////
 
+    public boolean isAdViewLoaded() {
+        for (IAdLoader loader : mAdLoaders) {
+            if (loader != null) {
+                return loader.isBannerLoaded() || loader.isNativeLoaded();
+            }
+        }
+        return false;
+    }
+
     public void loadAdView(Map<String, Object> extra) {
         if (mAdPlaceConfig == null) {
             return;
@@ -203,12 +221,16 @@ public class AdLoader {
             loadAdViewSequence();
         } else if (mAdPlaceConfig.isRandom()) {
             loadAdViewRandom();
+        } else {
+            loadAdViewConcurrent();
         }
     }
 
     private void loadAdViewConcurrent() {
         for (IAdLoader loader : mAdLoaders) {
             if (loader != null) {
+                loader.setOnAdListener(new SimpleAdListener(loader.getSdkName(), loader.getAdType(),
+                        mOnAdAggsListener));
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
                 } else if (loader.isNativeType()) {
@@ -220,13 +242,15 @@ public class AdLoader {
 
     private void loadAdViewSequence() {
         final Iterator<IAdLoader> iterator = mAdLoaders.iterator();
-        loadBannerSequenceInternal(iterator);
+        loadAdViewSequenceInternal(iterator);
     }
 
     private void loadAdViewRandom() {
         int pos = new Random().nextInt(mAdLoaders.size());
         IAdLoader loader = mAdLoaders.get(pos);
         if (loader != null) {
+            loader.setOnAdListener(new SimpleAdListener(loader.getSdkName(),  loader.getAdType(),
+                    mOnAdAggsListener));
             if (loader.isBannerType()) {
                 loader.loadBanner(getBannerSize(loader));
             } else if (loader.isNativeType()) {
@@ -235,27 +259,33 @@ public class AdLoader {
         }
     }
 
-    private void loadBannerSequenceInternal(final Iterator<IAdLoader> iterator) {
+    private void loadAdViewSequenceInternal(final Iterator<IAdLoader> iterator) {
         if (iterator == null || !iterator.hasNext()) {
             return;
         }
         IAdLoader loader = iterator.next();
         if (loader != null) {
             if (loader.isBannerType()) {
-                loader.setOnAdListener(new SimpleAdListener() {
+                loader.setOnAdListener(new SimpleAdListener(loader.getSdkName(), loader.getAdType(),
+                        mOnAdAggsListener) {
                     @Override
                     public void onAdFailed() {
                         Log.e(Log.TAG, "load next banner");
-                        loadBannerSequenceInternal(iterator);
+                        loadAdViewSequenceInternal(iterator);
                     }
                 });
                 loader.loadBanner(getBannerSize(loader));
             } else if (loader.isNativeType()) {
-                loader.setOnAdListener(new SimpleAdListener() {
+                loader.setOnAdListener(new SimpleAdListener(loader.getSdkName(), loader.getAdType(),
+                        mOnAdAggsListener) {
                     @Override
                     public void onAdFailed() {
-                        Log.e(Log.TAG, "load next native");
-                        loadBannerSequenceInternal(iterator);
+                        if (iterator.hasNext()) {
+                            Log.e(Log.TAG, "load next native");
+                            loadAdViewSequenceInternal(iterator);
+                        } else {
+                            super.onAdFailed();
+                        }
                     }
                 });
                 loader.loadNative(getRootView(loader), getTemplateId(loader));
@@ -266,7 +296,6 @@ public class AdLoader {
     public void showAdView(ViewGroup adContainer) {
         for (IAdLoader loader : mAdLoaders) {
             if (loader != null) {
-                loader.setOnAdListener(mOnAdListener);
                 if (loader.isBannerLoaded()) {
                     loader.showBanner(adContainer);
                     return;

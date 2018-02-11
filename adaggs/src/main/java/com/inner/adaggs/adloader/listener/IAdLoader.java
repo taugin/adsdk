@@ -1,4 +1,4 @@
-package com.inner.adaggs.listener;
+package com.inner.adaggs.adloader.listener;
 
 import android.content.Context;
 import android.view.View;
@@ -18,6 +18,8 @@ public interface IAdLoader {
 
     // 获取loader名称
     public String getSdkName();
+
+    public String getAdType();
 
     public void setPidConfig(PidConfig config);
 

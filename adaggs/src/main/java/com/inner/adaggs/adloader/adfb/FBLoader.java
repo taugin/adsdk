@@ -1,12 +1,21 @@
 package com.inner.adaggs.adloader.adfb;
 
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
+import com.facebook.ads.AdListener;
 import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdListener;
-import com.inner.adaggs.listener.AbstractAdLoader;
+import com.facebook.ads.NativeAd;
+import com.inner.adaggs.R;
 import com.inner.adaggs.constant.Constant;
+import com.inner.adaggs.adloader.listener.AbstractAdLoader;
 import com.inner.adaggs.log.Log;
+
+import java.util.EnumSet;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -15,10 +24,21 @@ import com.inner.adaggs.log.Log;
 public class FBLoader extends AbstractAdLoader {
 
     private InterstitialAd fbInterstitial;
+    private NativeAd nativeAd;
+    private View nativeRootView;
+    private int mNativeTemplate;
 
     @Override
     public String getSdkName() {
         return Constant.AD_SDK_FACEBOOK;
+    }
+
+    @Override
+    public boolean isNativeType() {
+        if (mPidConfig != null) {
+            return mPidConfig.isNativeType();
+        }
+        return super.isNativeType();
     }
 
     @Override
@@ -106,5 +126,96 @@ public class FBLoader extends AbstractAdLoader {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isNativeLoaded() {
+        if (nativeAd != null) {
+            return nativeAd.isAdLoaded();
+        }
+        return super.isNativeLoaded();
+    }
+
+    @Override
+    public void loadNative(View rootView, int templateId) {
+        nativeRootView = rootView;
+        mNativeTemplate = templateId;
+
+        if (!checkPidConfig()) {
+            return;
+        }
+        if (isInterstitialLoaded()) {
+            Log.e(Log.TAG, "native already loaded");
+            if (mOnAdListener != null) {
+                mOnAdListener.onAdLoaded();
+            }
+            return;
+        }
+        nativeAd = new NativeAd(mContext, mPidConfig.getPid());
+        nativeAd.setAdListener(new AdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                if (adError != null) {
+                    Log.e(Log.TAG, "errorcode : " + adError.getErrorCode() + " , errormsg : " + adError.getErrorMessage());
+                }
+                if (mOnAdListener != null) {
+                    mOnAdListener.onAdFailed();
+                }
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                Log.d(Log.TAG, "");
+                fillNativeRootView();
+                if (mOnAdListener != null) {
+                    mOnAdListener.onAdLoaded();
+                }
+                if (mStat != null) {
+                    mStat.reportFBNativeLoaded(mContext, getPidName(), null);
+                }
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                Log.d(Log.TAG, "");
+                if (mOnAdListener != null) {
+                    mOnAdListener.onAdClick();
+                }
+                if (mStat != null) {
+                    mStat.reportFBNativeClick(mContext, getPidName(), null);
+                }
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                Log.d(Log.TAG, "");
+                if (mOnAdListener != null) {
+                    mOnAdListener.onAdImpression();
+                }
+                if (mStat != null) {
+                    mStat.reportFBNativeShow(mContext, getPidName(), null);
+                }
+            }
+        });
+        nativeAd.loadAd(EnumSet.of(NativeAd.MediaCacheFlag.IMAGE));
+        if (mStat != null) {
+            mStat.reportFBNativeRequest(mContext, getPidName(), null);
+        }
+        Log.d(Log.TAG, "");
+    }
+
+    private void fillNativeRootView() {
+        Log.d(Log.TAG, "nativeRootView : " + nativeRootView);
+        if (nativeRootView != null) {
+            TextView titleView = nativeRootView.findViewById(R.id.title);
+            Log.d(Log.TAG, "titleView : " + titleView);
+            if (titleView != null) {
+                titleView.setText("fillNativeRootView");
+            }
+        }
+    }
+
+    @Override
+    public void showNative(ViewGroup viewGroup) {
     }
 }

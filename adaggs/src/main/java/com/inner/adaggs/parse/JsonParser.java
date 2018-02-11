@@ -36,6 +36,21 @@ public class JsonParser implements IParser {
         config.setPidsList(list);
         List<AdPlaceConfig> adList = new ArrayList<AdPlaceConfig>();
         adList.add(config);
+        ///////////////////////////////////////////////////////
+        list = new ArrayList<PidConfig>();
+
+        pidConfig = new PidConfig();
+        pidConfig.setSdk("fb");
+        pidConfig.setAdType("native");
+        pidConfig.setPid("193044738103187_194098751331119");
+        list.add(pidConfig);
+
+        config = new AdPlaceConfig();
+        config.setName("main_top");
+        config.setMode("seq");
+        config.setPidsList(list);
+        adList.add(config);
+
         inners.setAdPlaceList(adList);
         return inners;
     }

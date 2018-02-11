@@ -7,7 +7,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
-import com.inner.adaggs.listener.AbstractAdLoader;
+import com.inner.adaggs.adloader.listener.AbstractAdLoader;
 import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.log.Log;
 
