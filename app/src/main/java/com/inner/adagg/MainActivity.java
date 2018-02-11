@@ -25,8 +25,11 @@ public class MainActivity extends AppCompatActivity {
         AdAggs.get(this).loadInterstitial("open_splash");
 
         View view = getLayoutInflater().inflate(R.layout.fb_native, null);
+        mAdContainer.addView(view);
+
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put(AdExtra.KEY_FB_ROOTVIEW, view);
+        // map.put(AdExtra.KEY_FB_ROOTVIEW, view);
+        map.put(AdExtra.KEY_FB_TEMPLATE, 1);
         AdAggs.get(this).loadAdView("main_top", map);
     }
 

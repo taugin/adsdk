@@ -1,0 +1,11 @@
+<resources>
+    <attr name="border_color" format="color"/>
+    <attr name="border_width" format="dimension"/>
+    <attr name="typeface" format="string"/>
+
+    <attr name="cardCornerRadius" format="dimension"/>
+    <attr name="cardElevation" format="dimension"/>
+    <attr name="contentPadding" format="dimension"/>
+    <attr name="cardPreventCornerOverlap" format="boolean"/>
+    <attr name="cardUseCompatPadding" format="boolean"/>
+</resources>

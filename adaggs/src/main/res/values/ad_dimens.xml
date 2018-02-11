@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="nav_item_inner_spacing">12.0dip</dimen>
+    <dimen name="cfcp_textsize_preview_number">30sp</dimen>
+    <dimen name="cfcp_textsize_preview_name">30sp</dimen>
+    <dimen name="cfcp_preview_item_corner">7dp</dimen>
+    <dimen name="cfcp_title_view_height">56dp</dimen>
+    <dimen name="card_corner_radius">2dp</dimen>
+</resources>

@@ -110,6 +110,5 @@ public class AdAggs {
     }
 
     public void destroy() {
-
     }
 }

@@ -2,7 +2,6 @@ package com.inner.adaggs.adloader.adfb;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
@@ -10,9 +9,8 @@ import com.facebook.ads.AdListener;
 import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdListener;
 import com.facebook.ads.NativeAd;
-import com.inner.adaggs.R;
-import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.adloader.listener.AbstractAdLoader;
+import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.log.Log;
 
 import java.util.EnumSet;
@@ -156,7 +154,7 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onError(Ad ad, AdError adError) {
                 if (adError != null) {
-                    Log.e(Log.TAG, "errorcode : " + adError.getErrorCode() + " , errormsg : " + adError.getErrorMessage());
+                    Log.e(Log.TAG, "error : " + adError.getErrorCode() + " , errormsg : " + adError.getErrorMessage());
                 }
                 if (mOnAdListener != null) {
                     mOnAdListener.onAdFailed();
@@ -166,7 +164,6 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.d(Log.TAG, "");
-                fillNativeRootView();
                 if (mOnAdListener != null) {
                     mOnAdListener.onAdLoaded();
                 }
@@ -204,18 +201,13 @@ public class FBLoader extends AbstractAdLoader {
         Log.d(Log.TAG, "");
     }
 
-    private void fillNativeRootView() {
-        Log.d(Log.TAG, "nativeRootView : " + nativeRootView);
-        if (nativeRootView != null) {
-            TextView titleView = nativeRootView.findViewById(R.id.title);
-            Log.d(Log.TAG, "titleView : " + titleView);
-            if (titleView != null) {
-                titleView.setText("fillNativeRootView");
-            }
-        }
-    }
-
     @Override
     public void showNative(ViewGroup viewGroup) {
+        FBBindNativeView fbBindNativeView = new FBBindNativeView();
+        if (nativeRootView != null) {
+            fbBindNativeView.bindNative(nativeRootView, nativeAd, mPidConfig);
+        } else {
+            fbBindNativeView.bindNativeWithConatiner(viewGroup, mNativeTemplate, nativeAd, mPidConfig);
+        }
     }
 }

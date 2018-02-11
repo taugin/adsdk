@@ -23,7 +23,7 @@ public class JsonParser implements IParser {
         pidConfig.setSdk("fb");
         pidConfig.setAdType("interstitial");
         pidConfig.setPid("193044738103187_194677471273247");
-        // list.add(pidConfig);
+        list.add(pidConfig);
 
         pidConfig = new PidConfig();
         pidConfig.setSdk("admob");
