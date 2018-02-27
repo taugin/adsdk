@@ -35,6 +35,13 @@ public class SimpleInterstitialListener implements OnInterstitialListener {
     }
 
     @Override
+    public void onInterstitialClick() {
+        if (mOnAdAggsListener != null) {
+            mOnAdAggsListener.onClick(source, Constant.TYPE_INTERSTITIAL);
+        }
+    }
+
+    @Override
     public void onInterstitialDismiss() {
         if (mOnAdAggsListener != null) {
             mOnAdAggsListener.onDismiss(source, Constant.TYPE_INTERSTITIAL);

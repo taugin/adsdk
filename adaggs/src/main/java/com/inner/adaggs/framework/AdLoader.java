@@ -19,11 +19,11 @@ import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.log.Log;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -35,7 +35,7 @@ public class AdLoader implements IManagerListener {
     private Context mContext;
     private OnAdAggsListener mOnAdAggsListener;
     private Map<String, Object> mAdExtra;
-    private Map<IAdLoader, OnAdListener> mAdViewListener = new HashMap<IAdLoader, OnAdListener>();
+    private Map<IAdLoader, OnAdListener> mAdViewListener = new ConcurrentHashMap<IAdLoader, OnAdListener>();
 
     public AdLoader(Context context) {
         mContext = context;
@@ -333,9 +333,13 @@ public class AdLoader implements IManagerListener {
     }
 
     @Override
-    public synchronized void clearAdListener() {
+    public synchronized void clearAdListener(IAdLoader loader) {
         if (mAdViewListener != null) {
-            mAdViewListener.clear();
+            for (Map.Entry<IAdLoader, OnAdListener> entry : mAdViewListener.entrySet()) {
+                if (entry != null && entry.getKey() != loader) {
+                    mAdViewListener.remove(entry.getKey());
+                }
+            }
         }
     }
 }

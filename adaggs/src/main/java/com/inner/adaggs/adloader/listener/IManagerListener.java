@@ -7,5 +7,5 @@ package com.inner.adaggs.adloader.listener;
 public interface IManagerListener {
     OnAdListener getAdListener(IAdLoader loader);
     void registerAdListener(IAdLoader loader, OnAdListener l);
-    void clearAdListener();
+    void clearAdListener(IAdLoader loader);
 }

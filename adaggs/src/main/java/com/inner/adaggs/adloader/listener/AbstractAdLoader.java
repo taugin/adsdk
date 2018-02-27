@@ -162,7 +162,7 @@ public class AbstractAdLoader implements IAdLoader {
 
     protected void clearAdListener() {
         if (mManagerListener != null) {
-            mManagerListener.clearAdListener();
+            mManagerListener.clearAdListener(this);
         }
     }
 }

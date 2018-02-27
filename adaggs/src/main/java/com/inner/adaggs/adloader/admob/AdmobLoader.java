@@ -85,8 +85,8 @@ public class AdmobLoader extends AbstractAdLoader {
             @Override
             public void onAdOpened() {
                 Log.d(Log.TAG, "");
-                if (mStat != null) {
-                    mStat.reportAdmobBannerShow(mContext, getPidName(), null);
+                if (getAdListener() != null) {
+                    getAdListener().onAdClick();
                 }
             }
 
@@ -99,8 +99,8 @@ public class AdmobLoader extends AbstractAdLoader {
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdLoaded();
+                    clearAdListener();
                 }
-                clearAdListener();
             }
 
             @Override
@@ -144,6 +144,9 @@ public class AdmobLoader extends AbstractAdLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             bannerView = null;
+            if (mStat != null) {
+                mStat.reportAdmobBannerShow(mContext, getPidName(), null);
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
@@ -196,6 +199,9 @@ public class AdmobLoader extends AbstractAdLoader {
             @Override
             public void onAdLeftApplication() {
                 Log.d(Log.TAG, "");
+                if (mOnInterstitialListener != null) {
+                    mOnInterstitialListener.onInterstitialClick();
+                }
                 if (mStat != null) {
                     mStat.reportAdmobInterstitialClick(mContext, getPidName(), null);
                 }

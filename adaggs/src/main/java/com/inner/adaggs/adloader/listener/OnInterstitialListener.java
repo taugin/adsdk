@@ -9,6 +9,8 @@ public interface OnInterstitialListener {
 
     public void onInterstitialShow();
 
+    public void onInterstitialClick();
+
     public void onInterstitialDismiss();
 
     public void onInterstitialError();

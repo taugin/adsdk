@@ -103,6 +103,9 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onAdClicked(Ad ad) {
                 Log.d(Log.TAG, "");
+                if (mOnInterstitialListener != null) {
+                    mOnInterstitialListener.onInterstitialClick();
+                }
                 if (mStat != null) {
                     mStat.reportFBInterstitialClick(mContext, getPidName(), null);
                 }
