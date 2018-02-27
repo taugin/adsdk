@@ -18,9 +18,14 @@ public class AbstractAdLoader implements IAdLoader {
     protected PidConfig mPidConfig;
     protected Context mContext;
     protected IStat mStat;
+    protected IManagerListener mManagerListener;
 
-    protected OnAdListener mOnAdListener;
     protected OnInterstitialListener mOnInterstitialListener;
+
+    @Override
+    public void setListenerManager(IManagerListener l) {
+        mManagerListener = l;
+    }
 
     @Override
     public void setContext(Context context) {
@@ -75,11 +80,6 @@ public class AbstractAdLoader implements IAdLoader {
     @Override
     public void showNative(ViewGroup viewGroup) {
 
-    }
-
-    @Override
-    public void setOnAdListener(OnAdListener l) {
-        mOnAdListener = l;
     }
 
     @Override
@@ -151,5 +151,18 @@ public class AbstractAdLoader implements IAdLoader {
             return false;
         }
         return true;
+    }
+
+    protected OnAdListener getAdListener() {
+        if (mManagerListener != null) {
+            return mManagerListener.getAdListener(this);
+        }
+        return null;
+    }
+
+    protected void clearAdListener() {
+        if (mManagerListener != null) {
+            mManagerListener.clearAdListener();
+        }
     }
 }

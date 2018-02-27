@@ -46,6 +46,13 @@ public class AdmobLoader extends AbstractAdLoader {
         if (!checkPidConfig()) {
             return;
         }
+        if (bannerView != null) {
+            if (getAdListener() != null) {
+                getAdListener().onAdLoaded();
+                clearAdListener();
+            }
+            return;
+        }
         AdSize size = ADSIZE.get(adSize);
         if (size == null) {
             size = AdSize.BANNER;
@@ -57,16 +64,16 @@ public class AdmobLoader extends AbstractAdLoader {
             @Override
             public void onAdClosed() {
                 Log.d(Log.TAG, "");
-                if (mOnAdListener != null) {
-                    mOnAdListener.onAdDismiss();
+                if (getAdListener() != null) {
+                    getAdListener().onAdDismiss();
                 }
             }
 
             @Override
             public void onAdFailedToLoad(int i) {
                 Log.d(Log.TAG, "reason : " + i);
-                if (mOnAdListener != null) {
-                    mOnAdListener.onAdFailed();
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed();
                 }
             }
 
@@ -90,9 +97,10 @@ public class AdmobLoader extends AbstractAdLoader {
                 if (mStat != null) {
                     mStat.reportAdmobBannerLoaded(mContext, getPidName(), null);
                 }
-                if (mOnAdListener != null) {
-                    mOnAdListener.onAdLoaded();
+                if (getAdListener() != null) {
+                    getAdListener().onAdLoaded();
                 }
+                clearAdListener();
             }
 
             @Override
@@ -101,16 +109,16 @@ public class AdmobLoader extends AbstractAdLoader {
                 if (mStat != null) {
                     mStat.reportAdmobBannerClick(mContext, getPidName(), null);
                 }
-                if (mOnAdListener != null) {
-                    mOnAdListener.onAdClick();
+                if (getAdListener() != null) {
+                    getAdListener().onAdClick();
                 }
             }
 
             @Override
             public void onAdImpression() {
                 Log.d(Log.TAG, "");
-                if (mOnAdListener != null) {
-                    mOnAdListener.onAdShow();
+                if (getAdListener() != null) {
+                    getAdListener().onAdShow();
                 }
             }
         });

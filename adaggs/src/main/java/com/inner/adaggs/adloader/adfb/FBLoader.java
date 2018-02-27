@@ -145,10 +145,11 @@ public class FBLoader extends AbstractAdLoader {
         if (!checkPidConfig()) {
             return;
         }
-        if (isInterstitialLoaded()) {
+        if (isNativeLoaded()) {
             Log.e(Log.TAG, "native already loaded");
-            if (mOnAdListener != null) {
-                mOnAdListener.onAdLoaded();
+            if (getAdListener() != null) {
+                getAdListener().onAdLoaded();
+                clearAdListener();
             }
             return;
         }
@@ -159,16 +160,17 @@ public class FBLoader extends AbstractAdLoader {
                 if (adError != null) {
                     Log.e(Log.TAG, "error : " + adError.getErrorCode() + " , errormsg : " + adError.getErrorMessage());
                 }
-                if (mOnAdListener != null) {
-                    mOnAdListener.onAdFailed();
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed();
                 }
             }
 
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.d(Log.TAG, "");
-                if (mOnAdListener != null) {
-                    mOnAdListener.onAdLoaded();
+                if (getAdListener() != null) {
+                    getAdListener().onAdLoaded();
+                    clearAdListener();
                 }
                 if (mStat != null) {
                     mStat.reportFBNativeLoaded(mContext, getPidName(), null);
@@ -178,8 +180,8 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onAdClicked(Ad ad) {
                 Log.d(Log.TAG, "");
-                if (mOnAdListener != null) {
-                    mOnAdListener.onAdClick();
+                if (getAdListener() != null) {
+                    getAdListener().onAdClick();
                 }
                 if (mStat != null) {
                     mStat.reportFBNativeClick(mContext, getPidName(), null);
@@ -189,8 +191,8 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onLoggingImpression(Ad ad) {
                 Log.d(Log.TAG, "");
-                if (mOnAdListener != null) {
-                    mOnAdListener.onAdImpression();
+                if (getAdListener() != null) {
+                    getAdListener().onAdImpression();
                 }
                 if (mStat != null) {
                     mStat.reportFBNativeShow(mContext, getPidName(), null);
@@ -212,5 +214,6 @@ public class FBLoader extends AbstractAdLoader {
         } else {
             fbBindNativeView.bindNativeWithConatiner(viewGroup, mNativeTemplate, nativeAd, mPidConfig);
         }
+        nativeAd = null;
     }
 }

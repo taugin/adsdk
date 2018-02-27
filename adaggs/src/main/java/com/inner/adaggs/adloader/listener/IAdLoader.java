@@ -12,6 +12,8 @@ import com.inner.adaggs.config.PidConfig;
 
 public interface IAdLoader {
 
+    public void setListenerManager(IManagerListener l);
+
     public void setContext(Context context);
 
     public Context getContext();
@@ -31,8 +33,6 @@ public interface IAdLoader {
 
     // 展示插屏
     public boolean showInterstitial();
-
-    public void setOnAdListener(OnAdListener l);
 
     // 加载原生，包括banner
     public void loadNative(View rootView, int templateId);

@@ -8,6 +8,8 @@ import com.inner.adaggs.AdExtra;
 import com.inner.adaggs.adloader.adfb.FBLoader;
 import com.inner.adaggs.adloader.admob.AdmobLoader;
 import com.inner.adaggs.adloader.listener.IAdLoader;
+import com.inner.adaggs.adloader.listener.IManagerListener;
+import com.inner.adaggs.adloader.listener.OnAdListener;
 import com.inner.adaggs.adloader.listener.SimpleAdListener;
 import com.inner.adaggs.adloader.listener.SimpleInterstitialListener;
 import com.inner.adaggs.config.AdPlace;
@@ -17,6 +19,7 @@ import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.log.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +29,13 @@ import java.util.Random;
  * Created by Administrator on 2018/2/9.
  */
 
-public class AdLoader {
+public class AdLoader implements IManagerListener {
     private List<IAdLoader> mAdLoaders = new ArrayList<IAdLoader>();
     private AdPlace mAdPlace;
     private Context mContext;
     private OnAdAggsListener mOnAdAggsListener;
     private Map<String, Object> mAdExtra;
+    private Map<IAdLoader, OnAdListener> mAdViewListener = new HashMap<IAdLoader, OnAdListener>();
 
     public AdLoader(Context context) {
         mContext = context;
@@ -56,12 +60,14 @@ public class AdLoader {
                             loader = new AdmobLoader();
                             loader.setContext(mContext);
                             loader.setPidConfig(config);
+                            loader.setListenerManager(this);
                             mAdLoaders.remove(loader);
                             mAdLoaders.add(loader);
                         } else if (config.isFB()) {
                             loader = new FBLoader();
                             loader.setContext(mContext);
                             loader.setPidConfig(config);
+                            loader.setListenerManager(this);
                             mAdLoaders.remove(loader);
                             mAdLoaders.add(loader);
                         }
@@ -229,8 +235,12 @@ public class AdLoader {
     private void loadAdViewConcurrent() {
         for (IAdLoader loader : mAdLoaders) {
             if (loader != null) {
-                loader.setOnAdListener(new SimpleAdListener(loader.getSdkName(), loader.getAdType(),
+                registerAdListener(loader, new SimpleAdListener(loader.getSdkName(), loader.getAdType(),
                         mOnAdAggsListener));
+            }
+        }
+        for (IAdLoader loader : mAdLoaders) {
+            if (loader != null) {
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
                 } else if (loader.isNativeType()) {
@@ -249,7 +259,7 @@ public class AdLoader {
         int pos = new Random().nextInt(mAdLoaders.size());
         IAdLoader loader = mAdLoaders.get(pos);
         if (loader != null) {
-            loader.setOnAdListener(new SimpleAdListener(loader.getSdkName(),  loader.getAdType(),
+            registerAdListener(loader, new SimpleAdListener(loader.getSdkName(),  loader.getAdType(),
                     mOnAdAggsListener));
             if (loader.isBannerType()) {
                 loader.loadBanner(getBannerSize(loader));
@@ -265,35 +275,28 @@ public class AdLoader {
         }
         IAdLoader loader = iterator.next();
         if (loader != null) {
-            if (loader.isBannerType()) {
-                loader.setOnAdListener(new SimpleAdListener(loader.getSdkName(), loader.getAdType(),
-                        mOnAdAggsListener) {
-                    @Override
-                    public void onAdFailed() {
-                        Log.e(Log.TAG, "load next banner");
+            registerAdListener(loader, new SimpleAdListener(loader.getSdkName(), loader.getAdType(),
+                    mOnAdAggsListener) {
+                @Override
+                public void onAdFailed() {
+                    if (iterator.hasNext()) {
+                        Log.e(Log.TAG, "load next adview");
                         loadAdViewSequenceInternal(iterator);
+                    } else {
+                        super.onAdFailed();
                     }
-                });
+                }
+            });
+            if (loader.isBannerType()) {
                 loader.loadBanner(getBannerSize(loader));
             } else if (loader.isNativeType()) {
-                loader.setOnAdListener(new SimpleAdListener(loader.getSdkName(), loader.getAdType(),
-                        mOnAdAggsListener) {
-                    @Override
-                    public void onAdFailed() {
-                        if (iterator.hasNext()) {
-                            Log.e(Log.TAG, "load next native");
-                            loadAdViewSequenceInternal(iterator);
-                        } else {
-                            super.onAdFailed();
-                        }
-                    }
-                });
                 loader.loadNative(getRootView(loader), getTemplateId(loader));
             }
         }
     }
 
     public void showAdView(ViewGroup adContainer) {
+        Log.d(Log.TAG, "");
         for (IAdLoader loader : mAdLoaders) {
             if (loader != null) {
                 if (loader.isBannerLoaded()) {
@@ -302,13 +305,37 @@ public class AdLoader {
                 } else if (loader.isNativeLoaded()) {
                     loader.showNative(adContainer);
                     return;
-                } else {
-                    loader.setOnAdListener(null);
                 }
             }
         }
     }
 
     public void destroy() {
+        for (IAdLoader loader : mAdLoaders) {
+            loader.destroy();
+        }
+    }
+
+    @Override
+    public synchronized void registerAdListener(IAdLoader loader, OnAdListener l) {
+        if (mAdViewListener != null) {
+            mAdViewListener.put(loader, l);
+        }
+    }
+
+    @Override
+    public synchronized OnAdListener getAdListener(IAdLoader loader) {
+        if (mAdViewListener != null) {
+            OnAdListener l = mAdViewListener.get(loader);
+            return l;
+        }
+        return null;
+    }
+
+    @Override
+    public synchronized void clearAdListener() {
+        if (mAdViewListener != null) {
+            mAdViewListener.clear();
+        }
     }
 }
