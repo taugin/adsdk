@@ -8,12 +8,12 @@ import java.util.List;
  * Created by Administrator on 2018/2/9.
  */
 
-public class AdInners {
+public class AdvInner {
     // 广告内策略
     private InnerPolicy innerPolicy;
 
     // 广告配置
-    private List<AdPlaceConfig> adPlaceList;
+    private List<AdPlace> adPlaceList;
 
 
     public InnerPolicy getInnerPolicy() {
@@ -24,11 +24,11 @@ public class AdInners {
         this.innerPolicy = innerPolicy;
     }
 
-    public List<AdPlaceConfig> getAdPlaceList() {
+    public List<AdPlace> getAdPlaceList() {
         return adPlaceList;
     }
 
-    public void setAdPlaceList(List<AdPlaceConfig> adPlaceList) {
+    public void setAdPlaceList(List<AdPlace> adPlaceList) {
         this.adPlaceList = adPlaceList;
     }
 
@@ -38,11 +38,11 @@ public class AdInners {
      * @param name
      * @return
      */
-    public AdPlaceConfig get(String name) {
+    public AdPlace get(String name) {
         if (adPlaceList == null || adPlaceList.isEmpty() || TextUtils.isEmpty(name)) {
             return null;
         }
-        for (AdPlaceConfig config : adPlaceList) {
+        for (AdPlace config : adPlaceList) {
             if (config != null && name.equals(config.getName())) {
                 return config;
             }
@@ -52,7 +52,7 @@ public class AdInners {
 
     @Override
     public String toString() {
-        return "AdInners{" +
+        return "AdvInner{" +
                 "innerPolicy=" + innerPolicy +
                 ", adPlaceList=" + adPlaceList +
                 '}';

@@ -10,7 +10,7 @@ import com.inner.adaggs.adloader.admob.AdmobLoader;
 import com.inner.adaggs.adloader.listener.IAdLoader;
 import com.inner.adaggs.adloader.listener.SimpleAdListener;
 import com.inner.adaggs.adloader.listener.SimpleInterstitialListener;
-import com.inner.adaggs.config.AdPlaceConfig;
+import com.inner.adaggs.config.AdPlace;
 import com.inner.adaggs.config.PidConfig;
 import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.listener.OnAdAggsListener;
@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class AdLoader {
     private List<IAdLoader> mAdLoaders = new ArrayList<IAdLoader>();
-    private AdPlaceConfig mAdPlaceConfig;
+    private AdPlace mAdPlace;
     private Context mContext;
     private OnAdAggsListener mOnAdAggsListener;
     private Map<String, Object> mAdExtra;
@@ -41,13 +41,13 @@ public class AdLoader {
         generateLoaders();
     }
 
-    public void setAdPlaceConfig(AdPlaceConfig config) {
-        mAdPlaceConfig = config;
+    public void setAdPlaceConfig(AdPlace config) {
+        mAdPlace = config;
     }
 
     private void generateLoaders() {
-        if (mAdPlaceConfig != null) {
-            List<PidConfig> pidList = mAdPlaceConfig.getPidsList();
+        if (mAdPlace != null) {
+            List<PidConfig> pidList = mAdPlace.getPidsList();
             if (pidList != null && !pidList.isEmpty()) {
                 IAdLoader loader = null;
                 for (PidConfig config : pidList) {
@@ -129,14 +129,14 @@ public class AdLoader {
      * 加载插屏
      */
     public void loadInterstitial() {
-        if (mAdPlaceConfig == null) {
+        if (mAdPlace == null) {
             return;
         }
-        if (mAdPlaceConfig.isConcurrent()) {
+        if (mAdPlace.isConcurrent()) {
             loadInterstitialConcurrent();
-        } else if (mAdPlaceConfig.isSequence()) {
+        } else if (mAdPlace.isSequence()) {
             loadInterstitialSequence();
-        } else if (mAdPlaceConfig.isRandom()) {
+        } else if (mAdPlace.isRandom()) {
             loadInterstitialRandom();
         } else {
             loadInterstitialConcurrent();
@@ -211,15 +211,15 @@ public class AdLoader {
     }
 
     public void loadAdView(Map<String, Object> extra) {
-        if (mAdPlaceConfig == null) {
+        if (mAdPlace == null) {
             return;
         }
         mAdExtra = extra;
-        if (mAdPlaceConfig.isConcurrent()) {
+        if (mAdPlace.isConcurrent()) {
             loadAdViewConcurrent();
-        } else if (mAdPlaceConfig.isSequence()) {
+        } else if (mAdPlace.isSequence()) {
             loadAdViewSequence();
-        } else if (mAdPlaceConfig.isRandom()) {
+        } else if (mAdPlace.isRandom()) {
             loadAdViewRandom();
         } else {
             loadAdViewConcurrent();
@@ -307,5 +307,8 @@ public class AdLoader {
                 }
             }
         }
+    }
+
+    public void destroy() {
     }
 }

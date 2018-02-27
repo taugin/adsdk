@@ -10,13 +10,17 @@ import java.util.List;
  * Created by Administrator on 2018/2/9.
  */
 
-public class AdPlaceConfig {
+public class AdPlace {
 
     private String name;
 
     private String mode;
 
     private List<PidConfig> pidsList;
+
+    private int maxCount;
+
+    private int percent;
 
     public String getName() {
         return name;
@@ -53,6 +57,22 @@ public class AdPlaceConfig {
         }
     }
 
+    public int getMaxCount() {
+        return maxCount;
+    }
+
+    public void setMaxCount(int maxCount) {
+        this.maxCount = maxCount;
+    }
+
+    public int getPercent() {
+        return percent;
+    }
+
+    public void setPercent(int percent) {
+        this.percent = percent;
+    }
+
     public boolean isSequence() {
         return TextUtils.equals(Constant.MODE_SEQ, mode);
     }
@@ -67,10 +87,12 @@ public class AdPlaceConfig {
 
     @Override
     public String toString() {
-        return "AdPlaceConfig{" +
+        return "AdPlace{" +
                 "name='" + name + '\'' +
                 ", mode='" + mode + '\'' +
                 ", pidsList=" + pidsList +
+                ", maxCount=" + maxCount +
+                ", percent=" + percent +
                 '}';
     }
 }

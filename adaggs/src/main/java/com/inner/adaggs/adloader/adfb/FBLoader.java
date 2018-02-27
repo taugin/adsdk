@@ -68,7 +68,7 @@ public class FBLoader extends AbstractAdLoader {
                     mOnInterstitialListener.onInterstitialShow();
                 }
                 if (mStat != null) {
-                    mStat.reportAdmobInterstitialShow(mContext, getPidName(), null);
+                    mStat.reportFBInterstitialShow(mContext, getPidName(), null);
                 }
             }
 
@@ -96,7 +96,7 @@ public class FBLoader extends AbstractAdLoader {
                     mOnInterstitialListener.onInterstitialLoaded();
                 }
                 if (mStat != null) {
-                    mStat.reportAdmobInterstitialLoaded(mContext, getPidName(), null);
+                    mStat.reportFBInterstitialLoaded(mContext, getPidName(), null);
                 }
             }
 
@@ -104,7 +104,7 @@ public class FBLoader extends AbstractAdLoader {
             public void onAdClicked(Ad ad) {
                 Log.d(Log.TAG, "");
                 if (mStat != null) {
-                    mStat.reportAdmobInterstitialClick(mContext, getPidName(), null);
+                    mStat.reportFBInterstitialClick(mContext, getPidName(), null);
                 }
             }
 
@@ -114,6 +114,9 @@ public class FBLoader extends AbstractAdLoader {
             }
         });
         fbInterstitial.loadAd();
+        if (mStat != null) {
+            mStat.reportFBInterstitialRequest(mContext, getPidName(), null);
+        }
         Log.d(Log.TAG, "");
     }
 

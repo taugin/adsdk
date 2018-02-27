@@ -1,6 +1,7 @@
 package com.inner.adaggs.adloader.admob;
 
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -32,7 +33,7 @@ public class AdmobLoader extends AbstractAdLoader {
         ADSIZE.put(Constant.SMART_BANNER, AdSize.SMART_BANNER);
     }
 
-    private AdView adView;
+    private AdView bannerView;
     private InterstitialAd interstitialAd;
 
     @Override
@@ -45,12 +46,17 @@ public class AdmobLoader extends AbstractAdLoader {
         if (!checkPidConfig()) {
             return;
         }
-        adView = new AdView(mContext);
+        AdSize size = ADSIZE.get(adSize);
+        if (size == null) {
+            size = AdSize.BANNER;
+        }
+        final AdView adView = new AdView(mContext);
         adView.setAdUnitId(mPidConfig.getPid());
-        adView.setAdSize(ADSIZE.get(adSize));
+        adView.setAdSize(size);
         adView.setAdListener(new AdListener(){
             @Override
             public void onAdClosed() {
+                Log.d(Log.TAG, "");
                 if (mOnAdListener != null) {
                     mOnAdListener.onAdDismiss();
                 }
@@ -58,6 +64,7 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
+                Log.d(Log.TAG, "reason : " + i);
                 if (mOnAdListener != null) {
                     mOnAdListener.onAdFailed();
                 }
@@ -65,10 +72,12 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdLeftApplication() {
+                Log.d(Log.TAG, "");
             }
 
             @Override
             public void onAdOpened() {
+                Log.d(Log.TAG, "");
                 if (mStat != null) {
                     mStat.reportAdmobBannerShow(mContext, getPidName(), null);
                 }
@@ -76,6 +85,8 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdLoaded() {
+                Log.d(Log.TAG, "");
+                bannerView = adView;
                 if (mStat != null) {
                     mStat.reportAdmobBannerLoaded(mContext, getPidName(), null);
                 }
@@ -86,6 +97,7 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdClicked() {
+                Log.d(Log.TAG, "");
                 if (mStat != null) {
                     mStat.reportAdmobBannerClick(mContext, getPidName(), null);
                 }
@@ -96,6 +108,7 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdImpression() {
+                Log.d(Log.TAG, "");
                 if (mOnAdListener != null) {
                     mOnAdListener.onAdShow();
                 }
@@ -105,11 +118,32 @@ public class AdmobLoader extends AbstractAdLoader {
         if (mStat != null) {
             mStat.reportAdmobBannerRequest(mContext, getPidName(), null);
         }
+        Log.d(Log.TAG, "");
+    }
+
+    @Override
+    public boolean isBannerLoaded() {
+        return bannerView != null;
+    }
+
+    @Override
+    public void showBanner(ViewGroup viewGroup) {
+        Log.d(Log.TAG, "");
+        try {
+            viewGroup.removeAllViews();
+            viewGroup.addView(bannerView);
+            if (viewGroup.getVisibility() != View.VISIBLE) {
+                viewGroup.setVisibility(View.VISIBLE);
+            }
+            bannerView = null;
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
     }
 
     @Override
     public View getAdView() {
-        return adView;
+        return bannerView;
     }
 
     @Override
@@ -172,7 +206,7 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdLoaded() {
-                Log.d(Log.TAG, "mOnInterstitialListener : " + mOnInterstitialListener);
+                Log.d(Log.TAG, "");
                 if (mStat != null) {
                     mStat.reportAdmobInterstitialLoaded(mContext, getPidName(), null);
                 }
@@ -210,7 +244,7 @@ public class AdmobLoader extends AbstractAdLoader {
     @Override
     public boolean isBannerType() {
         if (mPidConfig != null) {
-            mPidConfig.isBannerType();
+            return mPidConfig.isBannerType();
         }
         return super.isBannerType();
     }
@@ -218,7 +252,7 @@ public class AdmobLoader extends AbstractAdLoader {
     @Override
     public boolean isNativeType() {
         if (mPidConfig != null) {
-            mPidConfig.isNativeType();
+            return mPidConfig.isNativeType();
         }
         return super.isNativeType();
     }
@@ -226,7 +260,7 @@ public class AdmobLoader extends AbstractAdLoader {
     @Override
     public boolean isInterstitialType() {
         if (mPidConfig != null) {
-            mPidConfig.isInterstitialType();
+            return mPidConfig.isInterstitialType();
         }
         return super.isInterstitialType();
     }

@@ -1,60 +1,90 @@
 {
-  "adv_inner": {
-    "policy": {},
-    "adplaces": [
-      {
-        "name": "open_splash",
-        "mode": "con",
-        "pids": [
-          {
-            "sdk": "fb",
-            "pid": "541656102860623_541708392855394",
-            "ctr": 0
-          }
-        ],
-        "maxcount": 100,
-        "percent": 100
-      },
-      {
-        "name": "open_splash",
-        "mode": "con",
-        "pids": [
-          {
-            "sdk": "fb",
-            "pid": "541656102860623_541708392855394",
-            "ctr": 0
-          }
-        ],
-        "maxcount": 100,
-        "percent": 100
-      }
-    ]
-  },
-  "adv_outer": {
-    "policy": {},
-    "adouter": {
+  "s": 0,
+  "wdevs": [],
+  "data": {
+    "advinner": {
       "policy": {},
-      "mode": "ran",
-      "pids": [
+      "adplaces": [
         {
-          "sdk": "fb",
-          "pid": "541656102860623_541708392855394",
-          "adType": "native",
-          "ctr": 0
+          "name": "open_splash",
+          "mode": "con",
+          "pids": [
+            {
+              "sdk": "admob",
+              "pid": "ca-app-pub-5425240585918224/5023540288",
+              "type": "interstitial",
+              "ctr": 0
+            }
+          ],
+          "maxcount": 100,
+          "percent": 100
+        },
+        {
+          "name": "open_social",
+          "mode": "con",
+          "pids": [
+            {
+              "sdk": "fb",
+              "pid": "541656102860623_541710262855207",
+              "type": "interstitial",
+              "ctr": 0
+            },
+            {
+              "sdk": "admob",
+              "pid": "ca-mb-app-pub-7850146945256374/5850313518/8256806509",
+              "type": "interstitial",
+              "ctr": 0
+            }
+          ],
+          "maxcount": 100,
+          "percent": 100
+        },
+        {
+          "name": "main_top",
+          "mode": "seq",
+          "pids": [
+            {
+              "sdk": "fb",
+              "pid": "541656102860623_541710012855232",
+              "type": "native",
+              "ctr": 0
+            },
+            {
+              "sdk": "admob",
+              "pid": "ca-mb-app-pub-7850146945256374/5850313518/3359823945",
+              "type": "banner",
+              "ctr": 0
+            }
+          ],
+          "maxcount": 100,
+          "percent": 100
         }
       ]
     },
-    "adfilm": {
+    "advouter": {
       "policy": {},
-      "mode": "ran",
-      "pids": [
-        {
-          "sdk": "fb",
-          "pid": "541656102860623_541708392855394",
-          "adType": "native",
-          "ctr": 0
-        }
-      ]
+      "adpop": {
+        "mode": "ran",
+        "pids": [
+          {
+            "sdk": "fb",
+            "pid": "541656102860623_541708392855394",
+            "type": "native",
+            "ctr": 0
+          }
+        ]
+      },
+      "adfilm": {
+        "mode": "ran",
+        "pids": [
+          {
+            "sdk": "fb",
+            "pid": "541656102860623_541708392855394",
+            "type": "native",
+            "ctr": 0
+          }
+        ]
+      }
     }
   }
 }

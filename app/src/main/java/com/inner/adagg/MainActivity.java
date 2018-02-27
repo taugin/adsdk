@@ -7,6 +7,8 @@ import android.widget.RelativeLayout;
 
 import com.inner.adaggs.AdAggs;
 import com.inner.adaggs.AdExtra;
+import com.inner.adaggs.listener.SimpleAdAggsListener;
+import com.inner.adaggs.log.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,23 +24,28 @@ public class MainActivity extends AppCompatActivity {
         mAdContainer = findViewById(R.id.ad_container);
         AdAggs.get(this).init();
 
-        AdAggs.get(this).loadInterstitial("open_splash");
+        AdAggs.get(this).loadInterstitial("open_social");
 
-        View view = getLayoutInflater().inflate(R.layout.fb_native, null);
-        mAdContainer.addView(view);
+        // View view = getLayoutInflater().inflate(R.layout.fb_native, null);
+        // mAdContainer.addView(view);
 
         Map<String, Object> map = new HashMap<String, Object>();
         // map.put(AdExtra.KEY_FB_ROOTVIEW, view);
         map.put(AdExtra.KEY_FB_TEMPLATE, 1);
-        AdAggs.get(this).loadAdView("main_top", map);
+        AdAggs.get(this).loadAdView("main_top", map, new SimpleAdAggsListener() {
+            @Override
+            public void onLoaded(String source, String adType) {
+                Log.d(Log.TAG, "source : " + source + " , adType : " + adType);
+                AdAggs.get(MainActivity.this).showAdView("main_top", mAdContainer);
+            }
+        });
     }
 
     public void onClick(View v) {
-        if (AdAggs.get(this).isInterstitialLoaded("open_splash")) {
-            AdAggs.get(MainActivity.this).showInterstitial("open_splash");
-        }
-        if (AdAggs.get(this).isAdViewLoaded("main_top")) {
-            AdAggs.get(this).showAdView("main_top", mAdContainer);
+        if (AdAggs.get(this).isInterstitialLoaded("open_social")) {
+            AdAggs.get(MainActivity.this).showInterstitial("open_social");
+        } else {
+            AdAggs.get(this).loadInterstitial("open_social");
         }
     }
 }
