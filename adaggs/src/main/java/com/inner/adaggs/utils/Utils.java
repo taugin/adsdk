@@ -47,21 +47,13 @@ public class Utils {
         return (int) (pxValue / scale + 0.5f);
     }
 
-    public static String string2MD5(String str) {
+    public static String byte2MD5(byte[] byteArray) {
         MessageDigest md5 = null;
-        if (TextUtils.isEmpty(str)) {
-            return null;
-        }
         try {
             md5 = MessageDigest.getInstance("MD5");
         } catch (Exception e) {
             Log.d(Log.TAG, "error : " + e);
             return "";
-        }
-        char[] charArray = str.toCharArray();
-        byte[] byteArray = new byte[charArray.length];
-        for (int i = 0; i < charArray.length; i++) {
-            byteArray[i] = (byte) charArray[i];
         }
         byte[] md5Bytes = md5.digest(byteArray);
         StringBuffer hexValue = new StringBuffer();
@@ -73,6 +65,19 @@ public class Utils {
             hexValue.append(Integer.toHexString(val));
         }
         return hexValue.toString();
+    }
+
+    public static String string2MD5(String source) {
+        return string2MD5(source, "utf-8");
+    }
+
+    public static String string2MD5(String source, String encode) {
+        try {
+            return byte2MD5(source.getBytes(encode));
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return "";
     }
 
     public static boolean isMainProcess(Context context) {
@@ -299,7 +304,7 @@ public class Utils {
             Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
             context.startActivity(intent);
             return true;
-        } catch(Exception e){
+        } catch (Exception e) {
         }
         return false;
     }
