@@ -83,7 +83,7 @@ public class FBLoader extends AbstractAdLoader {
 
             @Override
             public void onError(Ad ad, AdError adError) {
-                Log.d(Log.TAG, "error : " + adError.getErrorCode() + " , errorMsg : " + adError.getErrorMessage());
+                Log.d(Log.TAG, "error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage());
                 if (mOnInterstitialListener != null) {
                     mOnInterstitialListener.onInterstitialError();
                 }
@@ -161,7 +161,7 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onError(Ad ad, AdError adError) {
                 if (adError != null) {
-                    Log.e(Log.TAG, "error : " + adError.getErrorCode() + " , errormsg : " + adError.getErrorMessage());
+                    Log.e(Log.TAG, "error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed();
@@ -213,9 +213,11 @@ public class FBLoader extends AbstractAdLoader {
     public void showNative(ViewGroup viewGroup) {
         FBBindNativeView fbBindNativeView = new FBBindNativeView();
         if (nativeRootView != null) {
+            // 使用用户传递的view
             fbBindNativeView.bindNative(nativeRootView, nativeAd, mPidConfig);
         } else {
-            fbBindNativeView.bindNativeWithConatiner(viewGroup, mNativeTemplate, nativeAd, mPidConfig);
+            // 使用模板
+            fbBindNativeView.bindNativeWithTemplate(viewGroup, mNativeTemplate, nativeAd, mPidConfig);
         }
         nativeAd = null;
     }
