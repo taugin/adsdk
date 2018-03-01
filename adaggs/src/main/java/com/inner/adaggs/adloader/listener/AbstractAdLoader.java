@@ -20,8 +20,6 @@ public class AbstractAdLoader implements IAdLoader {
     protected IStat mStat;
     protected IManagerListener mManagerListener;
 
-    protected OnInterstitialListener mOnInterstitialListener;
-
     @Override
     public void setListenerManager(IManagerListener l) {
         mManagerListener = l;
@@ -60,11 +58,6 @@ public class AbstractAdLoader implements IAdLoader {
     }
 
     @Override
-    public void setOnInterstitialListener(OnInterstitialListener l) {
-        mOnInterstitialListener = l;
-    }
-
-    @Override
     public void loadInterstitial() {
     }
 
@@ -88,11 +81,6 @@ public class AbstractAdLoader implements IAdLoader {
 
     @Override
     public void showBanner(ViewGroup viewGroup) {
-    }
-
-    @Override
-    public View getAdView() {
-        return null;
     }
 
     @Override
@@ -163,6 +151,19 @@ public class AbstractAdLoader implements IAdLoader {
     protected void clearAdListener() {
         if (mManagerListener != null) {
             mManagerListener.clearAdListener(this);
+        }
+    }
+
+    protected OnInterstitialListener getIntListener() {
+        if (mManagerListener != null) {
+            return mManagerListener.getIntListener(this);
+        }
+        return null;
+    }
+
+    protected void clearIntListener() {
+        if (mManagerListener != null) {
+            mManagerListener.clearIntListener(this);
         }
     }
 }

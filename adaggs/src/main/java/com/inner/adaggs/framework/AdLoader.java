@@ -10,6 +10,7 @@ import com.inner.adaggs.adloader.admob.AdmobLoader;
 import com.inner.adaggs.adloader.listener.IAdLoader;
 import com.inner.adaggs.adloader.listener.IManagerListener;
 import com.inner.adaggs.adloader.listener.OnAdListener;
+import com.inner.adaggs.adloader.listener.OnInterstitialListener;
 import com.inner.adaggs.adloader.listener.SimpleAdListener;
 import com.inner.adaggs.adloader.listener.SimpleInterstitialListener;
 import com.inner.adaggs.config.AdPlace;
@@ -36,6 +37,7 @@ public class AdLoader implements IManagerListener {
     private OnAdAggsListener mOnAdAggsListener;
     private Map<String, Object> mAdExtra;
     private Map<IAdLoader, OnAdListener> mAdViewListener = new ConcurrentHashMap<IAdLoader, OnAdListener>();
+    private Map<IAdLoader, OnInterstitialListener> mIntListener = new ConcurrentHashMap<IAdLoader, OnInterstitialListener>();
 
     public AdLoader(Context context) {
         mContext = context;
@@ -155,7 +157,11 @@ public class AdLoader implements IManagerListener {
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    loader.setOnInterstitialListener(new SimpleInterstitialListener(loader.getSdkName(), mOnAdAggsListener));
+                    registerIntListener(loader, new SimpleInterstitialListener(loader.getSdkName(), mOnAdAggsListener));
+                }
+            }
+            for (IAdLoader loader : mAdLoaders) {
+                if (loader != null) {
                     loader.loadInterstitial();
                 }
             }
@@ -174,7 +180,7 @@ public class AdLoader implements IManagerListener {
         if (mAdLoaders != null) {
             int pos = new Random().nextInt(mAdLoaders.size());
             IAdLoader loader = mAdLoaders.get(pos);
-            loader.setOnInterstitialListener(new SimpleInterstitialListener(loader.getSdkName(), mOnAdAggsListener));
+            registerIntListener(loader, new SimpleInterstitialListener(loader.getSdkName(), mOnAdAggsListener));
             loader.loadInterstitial();
         }
     }
@@ -184,7 +190,7 @@ public class AdLoader implements IManagerListener {
             return;
         }
         IAdLoader loader = iterator.next();
-        loader.setOnInterstitialListener(new SimpleInterstitialListener(loader.getSdkName(), mOnAdAggsListener) {
+        registerIntListener(loader, new SimpleInterstitialListener(loader.getSdkName(), mOnAdAggsListener) {
             @Override
             public void onInterstitialError() {
                 if (iterator.hasNext()) {
@@ -207,8 +213,6 @@ public class AdLoader implements IManagerListener {
                 if (loader != null) {
                     if (loader.isInterstitialLoaded() && loader.showInterstitial()) {
                         return;
-                    } else {
-                        loader.setOnInterstitialListener(null);
                     }
                 }
             }
@@ -363,6 +367,37 @@ public class AdLoader implements IManagerListener {
                     IAdLoader iAdLoader = iterator.next();
                     if (iAdLoader != loader) {
                         mAdViewListener.remove(iAdLoader);
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    @Override
+    public OnInterstitialListener getIntListener(IAdLoader loader) {
+        if (mIntListener != null) {
+            return mIntListener.get(loader);
+        }
+        return null;
+    }
+
+    @Override
+    public void registerIntListener(IAdLoader loader, OnInterstitialListener l) {
+        if (mIntListener != null) {
+            mIntListener.put(loader, l);
+        }
+    }
+
+    @Override
+    public void clearIntListener(IAdLoader loader) {
+        try {
+            if (mIntListener != null) {
+                Iterator<IAdLoader> iterator = mIntListener.keySet().iterator();
+                while (iterator.hasNext()) {
+                    IAdLoader iAdLoader = iterator.next();
+                    if (iAdLoader != loader) {
+                        mIntListener.remove(iAdLoader);
                     }
                 }
             }

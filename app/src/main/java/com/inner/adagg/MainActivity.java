@@ -26,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
 
         AdAggs.get(this).loadInterstitial("open_social", new SimpleAdAggsListener(){
             @Override
+            public void onLoaded(String source, String adType) {
+                Log.d(Log.TAG, "source : " + source + " , adType : " + adType);
+            }
+
+            @Override
             public void onShow(String source, String adType) {
                 Log.d(Log.TAG, "source : " + source + " , adType : " + adType);
             }

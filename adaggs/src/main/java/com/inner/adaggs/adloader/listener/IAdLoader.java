@@ -27,7 +27,6 @@ public interface IAdLoader {
 
     public PidConfig getPidConfig();
 
-    public void setOnInterstitialListener(OnInterstitialListener l);
     // 加载插屏
     public void loadInterstitial();
 
@@ -43,8 +42,6 @@ public interface IAdLoader {
     public void loadBanner(int adSize);
 
     public void showBanner(ViewGroup viewGroup);
-
-    public View getAdView();
 
     public boolean isInterstitialLoaded();
 
