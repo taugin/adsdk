@@ -19,6 +19,7 @@ public class AbstractAdLoader implements IAdLoader {
     protected Context mContext;
     protected IStat mStat;
     protected IManagerListener mManagerListener;
+    protected String mAdId;
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -26,8 +27,9 @@ public class AbstractAdLoader implements IAdLoader {
     }
 
     @Override
-    public void setContext(Context context) {
+    public void init(Context context, String adId) {
         mContext = context;
+        mAdId = adId;
     }
 
     @Override

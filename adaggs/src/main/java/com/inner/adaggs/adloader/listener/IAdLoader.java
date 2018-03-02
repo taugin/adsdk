@@ -14,7 +14,7 @@ public interface IAdLoader {
 
     public void setListenerManager(IManagerListener l);
 
-    public void setContext(Context context);
+    public void init(Context context, String adId);
 
     public Context getContext();
 

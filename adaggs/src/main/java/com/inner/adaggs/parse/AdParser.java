@@ -18,7 +18,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/2/27.
@@ -113,16 +116,21 @@ public class AdParser implements IParser {
         AdConfig adConfig = null;
         try {
             JSONObject jobj = new JSONObject(data);
+            Map<String, String> adIds = null;
             AdvInner advInner = null;
             AdvOuter advOuter = null;
+            if (jobj.has("adids")) {
+                adIds = parseAdIds(jobj.getString("adids"));
+            }
             if (jobj.has("advinner")) {
                 advInner = parseAdvInner(jobj.getString("advinner"));
             }
             if (jobj.has("advouter")) {
                 advOuter = parseAdvOuter(jobj.getString("advouter"));
             }
-            if (advInner != null || advOuter != null) {
+            if (advInner != null || advOuter != null || adIds != null) {
                 adConfig = new AdConfig();
+                adConfig.setAdIds(adIds);
                 adConfig.setAdvInner(advInner);
                 adConfig.setAdvOuter(advOuter);
             }
@@ -130,6 +138,24 @@ public class AdParser implements IParser {
             Log.e(Log.TAG, "error : " + e);
         }
         return adConfig;
+    }
+
+    private Map<String, String> parseAdIds(String content) {
+        Map<String, String> adIds = null;
+        try {
+            JSONObject jobj = new JSONObject(content);
+            adIds = new HashMap<String, String>();
+            Iterator<String> iterator = jobj.keys();
+            String key = null;
+            String value = null;
+            while(iterator.hasNext()) {
+                key = iterator.next();
+                value = jobj.getString(key);
+                adIds.put(key, value);
+            }
+        } catch(Exception e) {
+        }
+        return adIds;
     }
 
     private AdvInner parseAdvInner(String content) {

@@ -1,5 +1,7 @@
 package com.inner.adaggs.config;
 
+import java.util.Map;
+
 /**
  * Created by Administrator on 2018/2/27.
  */
@@ -7,6 +9,7 @@ package com.inner.adaggs.config;
 public class AdConfig {
     private AdvInner advInner;
     private AdvOuter advOuter;
+    private Map<String, String> adIds;
 
     public AdvInner getAdvInner() {
         return advInner;
@@ -22,6 +25,14 @@ public class AdConfig {
 
     public void setAdvOuter(AdvOuter advOuter) {
         this.advOuter = advOuter;
+    }
+
+    public Map<String, String> getAdIds() {
+        return adIds;
+    }
+
+    public void setAdIds(Map<String, String> adIds) {
+        this.adIds = adIds;
     }
 
     @Override

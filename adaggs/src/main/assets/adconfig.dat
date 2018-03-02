@@ -2,6 +2,7 @@
   "s": 0,
   "wdevs": [],
   "data": {
+    "adids":{"admob": "", "fb": ""},
     "advinner": {
       "policy": {},
       "adplaces": [

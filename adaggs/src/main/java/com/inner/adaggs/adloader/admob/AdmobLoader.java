@@ -1,5 +1,7 @@
 package com.inner.adaggs.adloader.admob;
 
+import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -8,6 +10,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.inner.adaggs.adloader.listener.AbstractAdLoader;
 import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.log.Log;
@@ -35,6 +38,14 @@ public class AdmobLoader extends AbstractAdLoader {
 
     private AdView bannerView;
     private InterstitialAd interstitialAd;
+
+    @Override
+    public void init(Context context, String adId) {
+        super.init(context, adId);
+        if (!TextUtils.isEmpty(adId)) {
+            MobileAds.initialize(context, adId);
+        }
+    }
 
     @Override
     public String getSdkName() {

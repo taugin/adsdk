@@ -27,7 +27,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by Administrator on 2018/2/9.
+ * 每个广告位对应一个AdLoader对象
  */
 
 public class AdLoader implements IManagerListener {
@@ -43,31 +43,35 @@ public class AdLoader implements IManagerListener {
         mContext = context;
     }
 
-    public void init() {
-        generateLoaders();
+    public void init(Map<String, String> adids) {
+        generateLoaders(adids);
     }
 
     public void setAdPlaceConfig(AdPlace config) {
         mAdPlace = config;
     }
 
-    private void generateLoaders() {
+    private void generateLoaders(Map<String, String> adids) {
         if (mAdPlace != null) {
             List<PidConfig> pidList = mAdPlace.getPidsList();
             if (pidList != null && !pidList.isEmpty()) {
                 IAdLoader loader = null;
+                String adId = null;
                 for (PidConfig config : pidList) {
                     if (config != null) {
+                        if (adids != null && !adids.isEmpty()) {
+                            adId = adids.get(config.getSdk());
+                        }
                         if (config.isAdmob()) {
                             loader = new AdmobLoader();
-                            loader.setContext(mContext);
+                            loader.init(mContext, adId);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
                             mAdLoaders.remove(loader);
                             mAdLoaders.add(loader);
                         } else if (config.isFB()) {
                             loader = new FBLoader();
-                            loader.setContext(mContext);
+                            loader.init(mContext, adId);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
                             mAdLoaders.remove(loader);
