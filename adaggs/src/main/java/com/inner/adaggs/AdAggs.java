@@ -68,7 +68,11 @@ public class AdAggs {
             AdPlace config = mAdvInner.get(pidName);
             Log.d(Log.TAG, "config : " + config);
             loader.setAdPlaceConfig(config);
-            loader.init();
+            Map<String, String> adIds = null;
+            if (mAdConfig != null) {
+                adIds = mAdConfig.getAdIds();
+            }
+            loader.init(adIds);
             mAdLoaders.put(pidName, loader);
         }
         return loader;

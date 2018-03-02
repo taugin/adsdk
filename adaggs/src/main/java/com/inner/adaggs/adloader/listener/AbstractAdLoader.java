@@ -143,29 +143,16 @@ public class AbstractAdLoader implements IAdLoader {
         return true;
     }
 
-    protected OnAdListener getAdListener() {
+    protected OnAdBaseListener getAdListener() {
         if (mManagerListener != null) {
-            return mManagerListener.getAdListener(this);
+            return mManagerListener.getAdBaseListener(this);
         }
         return null;
     }
 
     protected void clearAdListener() {
         if (mManagerListener != null) {
-            mManagerListener.clearAdListener(this);
-        }
-    }
-
-    protected OnInterstitialListener getIntListener() {
-        if (mManagerListener != null) {
-            return mManagerListener.getIntListener(this);
-        }
-        return null;
-    }
-
-    protected void clearIntListener() {
-        if (mManagerListener != null) {
-            mManagerListener.clearIntListener(this);
+            mManagerListener.clearAdBaseListener(this);
         }
     }
 }

@@ -54,9 +54,9 @@ public class FBLoader extends AbstractAdLoader {
         }
         if (isInterstitialLoaded()) {
             Log.e(Log.TAG, "already loaded : " + getAdType());
-            if (getIntListener() != null) {
-                getIntListener().onInterstitialLoaded();
-                clearIntListener();
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialLoaded();
+                clearAdListener();
             }
             return;
         }
@@ -65,8 +65,8 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onInterstitialDisplayed(Ad ad) {
                 Log.d(Log.TAG, "");
-                if (getIntListener() != null) {
-                    getIntListener().onInterstitialShow();
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialShow();
                 }
                 if (mStat != null) {
                     mStat.reportFBInterstitialShow(mContext, getPidName(), null);
@@ -77,25 +77,25 @@ public class FBLoader extends AbstractAdLoader {
             public void onInterstitialDismissed(Ad ad) {
                 Log.d(Log.TAG, "");
                 fbInterstitial = null;
-                if (getIntListener() != null) {
-                    getIntListener().onInterstitialDismiss();
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialDismiss();
                 }
             }
 
             @Override
             public void onError(Ad ad, AdError adError) {
                 Log.d(Log.TAG, "error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage());
-                if (getIntListener() != null) {
-                    getIntListener().onInterstitialError();
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialError();
                 }
             }
 
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.d(Log.TAG, "type : " + getAdType());
-                if (getIntListener() != null) {
-                    getIntListener().onInterstitialLoaded();
-                    clearIntListener();
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialLoaded();
+                    clearAdListener();
                 }
                 if (mStat != null) {
                     mStat.reportFBInterstitialLoaded(mContext, getPidName(), null);
@@ -105,8 +105,8 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onAdClicked(Ad ad) {
                 Log.d(Log.TAG, "");
-                if (getIntListener() != null) {
-                    getIntListener().onInterstitialClick();
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialClick();
                 }
                 if (mStat != null) {
                     mStat.reportFBInterstitialClick(mContext, getPidName(), null);

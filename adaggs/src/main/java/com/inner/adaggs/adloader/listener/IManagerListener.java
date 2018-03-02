@@ -10,16 +10,7 @@ public interface IManagerListener {
      * @param loader
      * @return
      */
-    OnAdListener getAdListener(IAdLoader loader);
-    void registerAdListener(IAdLoader loader, OnAdListener l);
-    void clearAdListener(IAdLoader loader);
-
-    /**
-     * 获取interstital的listener
-     * @param loader
-     * @return
-     */
-    OnInterstitialListener getIntListener(IAdLoader loader);
-    void registerIntListener(IAdLoader loader, OnInterstitialListener l);
-    void clearIntListener(IAdLoader loader);
+    OnAdBaseListener getAdBaseListener(IAdLoader loader);
+    void registerAdBaseListener(IAdLoader loader, OnAdBaseListener l);
+    void clearAdBaseListener(IAdLoader loader);
 }

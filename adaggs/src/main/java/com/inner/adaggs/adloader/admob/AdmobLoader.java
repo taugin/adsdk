@@ -179,9 +179,9 @@ public class AdmobLoader extends AbstractAdLoader {
         }
         if (isInterstitialLoaded()) {
             Log.e(Log.TAG, "already loaded : " + getAdType());
-            if (getIntListener() != null) {
-                getIntListener().onInterstitialLoaded();
-                clearIntListener();
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialLoaded();
+                clearAdListener();
             }
             return;
         }
@@ -191,24 +191,24 @@ public class AdmobLoader extends AbstractAdLoader {
             @Override
             public void onAdClosed() {
                 Log.d(Log.TAG, "");
-                if (getIntListener() != null) {
-                    getIntListener().onInterstitialDismiss();
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialDismiss();
                 }
             }
 
             @Override
             public void onAdFailedToLoad(int i) {
                 Log.e(Log.TAG, "error : " + i);
-                if (getIntListener() != null) {
-                    getIntListener().onInterstitialError();
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialError();
                 }
             }
 
             @Override
             public void onAdLeftApplication() {
                 Log.d(Log.TAG, "");
-                if (getIntListener() != null) {
-                    getIntListener().onInterstitialClick();
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialClick();
                 }
                 if (mStat != null) {
                     mStat.reportAdmobInterstitialClick(mContext, getPidName(), null);
@@ -221,8 +221,8 @@ public class AdmobLoader extends AbstractAdLoader {
                 if (mStat != null) {
                     mStat.reportAdmobInterstitialShow(mContext, getPidName(), null);
                 }
-                if (getIntListener() != null) {
-                    getIntListener().onInterstitialShow();
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialShow();
                 }
             }
 
@@ -232,9 +232,9 @@ public class AdmobLoader extends AbstractAdLoader {
                 if (mStat != null) {
                     mStat.reportAdmobInterstitialLoaded(mContext, getPidName(), null);
                 }
-                if (getIntListener() != null) {
-                    getIntListener().onInterstitialLoaded();
-                    clearIntListener();
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialLoaded();
+                    clearAdListener();
                 }
             }
 

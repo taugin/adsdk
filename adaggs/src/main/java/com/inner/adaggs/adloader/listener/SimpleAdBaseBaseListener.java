@@ -6,16 +6,16 @@ import com.inner.adaggs.listener.OnAdAggsListener;
  * Created by Administrator on 2018/2/9.
  */
 
-public class SimpleAdListener implements OnAdListener {
+public class SimpleAdBaseBaseListener implements OnAdBaseListener {
 
     private OnAdAggsListener mOnAdAggsListener;
     private String source;
     private String adType;
 
-    public SimpleAdListener() {
+    public SimpleAdBaseBaseListener() {
     }
 
-    public SimpleAdListener(String source, String adType, OnAdAggsListener l) {
+    public SimpleAdBaseBaseListener(String source, String adType, OnAdAggsListener l) {
         this.source = source;
         this.adType = adType;
         mOnAdAggsListener = l;
@@ -65,5 +65,40 @@ public class SimpleAdListener implements OnAdListener {
 
     @Override
     public void onAdOpened() {
+    }
+
+    @Override
+    public void onInterstitialLoaded() {
+        if (mOnAdAggsListener != null) {
+            mOnAdAggsListener.onLoaded(source, adType);
+        }
+    }
+
+    @Override
+    public void onInterstitialShow() {
+        if (mOnAdAggsListener != null) {
+            mOnAdAggsListener.onShow(source, adType);
+        }
+    }
+
+    @Override
+    public void onInterstitialClick() {
+        if (mOnAdAggsListener != null) {
+            mOnAdAggsListener.onClick(source, adType);
+        }
+    }
+
+    @Override
+    public void onInterstitialDismiss() {
+        if (mOnAdAggsListener != null) {
+            mOnAdAggsListener.onDismiss(source, adType);
+        }
+    }
+
+    @Override
+    public void onInterstitialError() {
+        if (mOnAdAggsListener != null) {
+            mOnAdAggsListener.onError(source, adType);
+        }
     }
 }
