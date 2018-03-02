@@ -231,8 +231,9 @@ public class AdLoader implements IManagerListener {
     public boolean isAdViewLoaded() {
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
-                if (loader != null) {
-                    return loader.isBannerLoaded() || loader.isNativeLoaded();
+                if (loader != null &&
+                        (loader.isBannerLoaded() || loader.isNativeLoaded())) {
+                    return true;
                 }
             }
         }
@@ -336,6 +337,155 @@ public class AdLoader implements IManagerListener {
                         return;
                     } else if (loader.isNativeLoaded()) {
                         loader.showNative(adContainer);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // 加载应用外
+    public boolean isMixedAdsLoaded() {
+        if (mAdLoaders != null) {
+            for (IAdLoader loader : mAdLoaders) {
+                if (loader != null
+                        && (loader.isBannerLoaded()
+                        || loader.isNativeLoaded()
+                        || loader.isInterstitialLoaded())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public String getLoadedType() {
+        if (mAdLoaders != null) {
+            for (IAdLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    boolean loaded = loader.isBannerLoaded() || loader.isNativeLoaded() || loader.isInterstitialLoaded();
+                    if (loaded) {
+                        return loader.getAdType();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public void loadMixedAds(Map<String, Object> extra) {
+        if (mAdPlace == null) {
+            return;
+        }
+        mAdExtra = extra;
+        if (mAdPlace.isConcurrent()) {
+            loadMixedAdsConcurrent();
+        } else if (mAdPlace.isSequence()) {
+            loadMixedAdsSequence();
+        } else if (mAdPlace.isRandom()) {
+            loadMixedAdsRandom();
+        } else {
+            loadMixedAdsConcurrent();
+        }
+    }
+
+    private void loadMixedAdsConcurrent() {
+        if (mAdLoaders != null) {
+            for (IAdLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getSdkName(), loader.getAdType(),
+                            mOnAdAggsListener));
+                }
+            }
+            for (IAdLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    if (loader.isBannerType()) {
+                        loader.loadBanner(getBannerSize(loader));
+                    } else if (loader.isNativeType()) {
+                        loader.loadNative(getRootView(loader), getTemplateId(loader));
+                    } else if (loader.isInterstitialType()) {
+                        loader.loadInterstitial();
+                    }
+                }
+            }
+        }
+    }
+
+    private void loadMixedAdsSequence() {
+        final Iterator<IAdLoader> iterator = mAdLoaders.iterator();
+        loadMixedAdsSequenceInternal(iterator);
+    }
+
+    private void loadMixedAdsSequenceInternal(final Iterator<IAdLoader> iterator) {
+        if (iterator == null || !iterator.hasNext()) {
+            return;
+        }
+        IAdLoader loader = iterator.next();
+        if (loader != null) {
+            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getSdkName(), loader.getAdType(),
+                    mOnAdAggsListener) {
+                @Override
+                public void onAdFailed() {
+                    if (iterator.hasNext()) {
+                        Log.e(Log.TAG, "load next mixed");
+                        loadMixedAdsSequenceInternal(iterator);
+                    } else {
+                        super.onAdFailed();
+                    }
+                }
+
+                @Override
+                public void onInterstitialError() {
+                    if (iterator.hasNext()) {
+                        Log.e(Log.TAG, "load next mixed");
+                        loadMixedAdsSequenceInternal(iterator);
+                    } else {
+                        super.onInterstitialError();
+                    }
+                }
+            });
+            if (loader.isBannerType()) {
+                loader.loadBanner(getBannerSize(loader));
+            } else if (loader.isNativeType()) {
+                loader.loadNative(getRootView(loader), getTemplateId(loader));
+            } else if (loader.isInterstitialType()) {
+                loader.loadInterstitial();
+            }
+        }
+    }
+
+    private void loadMixedAdsRandom() {
+        if (mAdLoaders != null) {
+            int pos = new Random().nextInt(mAdLoaders.size());
+            IAdLoader loader = mAdLoaders.get(pos);
+            if (loader != null) {
+                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getSdkName(), loader.getAdType(),
+                        mOnAdAggsListener));
+                if (loader.isBannerType()) {
+                    loader.loadBanner(getBannerSize(loader));
+                } else if (loader.isNativeType()) {
+                    loader.loadNative(getRootView(loader), getTemplateId(loader));
+                } else if (loader.isInterstitialType()) {
+                    loader.loadInterstitial();
+                }
+            }
+        }
+    }
+
+    public void showMixedAds(ViewGroup adContainer) {
+        Log.d(Log.TAG, "");
+        if (mAdLoaders != null) {
+            for (IAdLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    if (loader.isBannerLoaded()) {
+                        loader.showBanner(adContainer);
+                        return;
+                    } else if (loader.isNativeLoaded()) {
+                        loader.showNative(adContainer);
+                        return;
+                    } else if (loader.isInterstitialLoaded()) {
+                        loader.showInterstitial();
                         return;
                     }
                 }

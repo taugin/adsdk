@@ -136,6 +136,37 @@ public class AdAggs {
         }
     }
 
+    public boolean isMixedAdsLoaded(String pidName) {
+        AdLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            return loader.isMixedAdsLoaded();
+        }
+        return false;
+    }
+
+    public void loadMixedAds(String pidName) {
+        loadMixedAds(pidName, null, null);
+    }
+
+    public void loadMixedAds(String pidName, OnAdAggsListener l) {
+        loadMixedAds(pidName, null, l);
+    }
+
+    public void loadMixedAds(String pidName, Map<String, Object> extra, OnAdAggsListener l) {
+        AdLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            loader.setOnAdAggsListener(l);
+            loader.loadMixedAds(extra);
+        }
+    }
+
+    public void showMixedAds(String pidName, ViewGroup adContainer) {
+        AdLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            loader.showMixedAds(adContainer);
+        }
+    }
+
     public void destroy(String pidName) {
         AdLoader loader = getAdLoader(pidName);
         if (loader != null) {
