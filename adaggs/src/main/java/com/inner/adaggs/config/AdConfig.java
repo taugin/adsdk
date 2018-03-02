@@ -1,31 +1,23 @@
 package com.inner.adaggs.config;
 
+import android.text.TextUtils;
+
+import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Administrator on 2018/2/27.
+ * Created by Administrator on 2018/2/9.
  */
 
 public class AdConfig {
-    private AdvInner advInner;
-    private AdvOuter advOuter;
+
     private Map<String, String> adIds;
 
-    public AdvInner getAdvInner() {
-        return advInner;
-    }
+    // 广告内策略
+    private AdPolicy adPolicy;
 
-    public void setAdvInner(AdvInner advInner) {
-        this.advInner = advInner;
-    }
-
-    public AdvOuter getAdvOuter() {
-        return advOuter;
-    }
-
-    public void setAdvOuter(AdvOuter advOuter) {
-        this.advOuter = advOuter;
-    }
+    // 广告配置
+    private List<AdPlace> adPlaceList;
 
     public Map<String, String> getAdIds() {
         return adIds;
@@ -35,11 +27,45 @@ public class AdConfig {
         this.adIds = adIds;
     }
 
+    public AdPolicy getAdPolicy() {
+        return adPolicy;
+    }
+
+    public void setAdPolicy(AdPolicy adPolicy) {
+        this.adPolicy = adPolicy;
+    }
+
+    public List<AdPlace> getAdPlaceList() {
+        return adPlaceList;
+    }
+
+    public void setAdPlaceList(List<AdPlace> adPlaceList) {
+        this.adPlaceList = adPlaceList;
+    }
+
+    /**
+     * 通过名字获取广告配置
+     *
+     * @param name
+     * @return
+     */
+    public AdPlace get(String name) {
+        if (adPlaceList == null || adPlaceList.isEmpty() || TextUtils.isEmpty(name)) {
+            return null;
+        }
+        for (AdPlace config : adPlaceList) {
+            if (config != null && name.equals(config.getName())) {
+                return config;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return "AdConfig{" +
-                "advInner=" + advInner +
-                ", advOuter=" + advOuter +
+                "adPolicy=" + adPolicy +
+                ", adPlaceList=" + adPlaceList +
                 '}';
     }
 }

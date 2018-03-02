@@ -3,9 +3,8 @@ package com.inner.adaggs;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import com.inner.adaggs.config.AdConfig;
 import com.inner.adaggs.config.AdPlace;
-import com.inner.adaggs.config.AdvInner;
+import com.inner.adaggs.config.AdConfig;
 import com.inner.adaggs.framework.AdLoader;
 import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.log.Log;
@@ -27,7 +26,6 @@ public class AdAggs {
     private Context mContext;
     private IParser mParser;
     private Map<String, AdLoader> mAdLoaders = new HashMap<String, AdLoader>();
-    private AdvInner mAdvInner;
     private AdConfig mAdConfig;
 
     private AdAggs(Context context) {
@@ -53,19 +51,16 @@ public class AdAggs {
     public void init() {
         mParser = new AdParser();
         mAdConfig = mParser.parse(Utils.readAssets(mContext, "adconfig.dat"));
-        if (mAdConfig != null) {
-            mAdvInner = mAdConfig.getAdvInner();
-        }
-        if (mAdvInner == null) {
-            mAdvInner = new AdvInner();
+        if (mAdConfig == null) {
+            mAdConfig = new AdConfig();
         }
     }
 
     private AdLoader getAdLoader(String pidName) {
         AdLoader loader = mAdLoaders.get(pidName);
-        if (loader == null && mAdvInner != null) {
+        if (loader == null && mAdConfig != null) {
             loader = new AdLoader(mContext);
-            AdPlace config = mAdvInner.get(pidName);
+            AdPlace config = mAdConfig.get(pidName);
             Log.d(Log.TAG, "config : " + config);
             loader.setAdPlaceConfig(config);
             Map<String, String> adIds = null;

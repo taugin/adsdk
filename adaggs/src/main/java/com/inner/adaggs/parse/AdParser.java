@@ -2,13 +2,10 @@ package com.inner.adaggs.parse;
 
 import android.content.Context;
 
-import com.inner.adaggs.config.AdConfig;
 import com.inner.adaggs.config.AdPlace;
-import com.inner.adaggs.config.AdvInner;
-import com.inner.adaggs.config.AdvOuter;
+import com.inner.adaggs.config.AdPolicy;
+import com.inner.adaggs.config.AdConfig;
 import com.inner.adaggs.config.DevInfo;
-import com.inner.adaggs.config.InnerPolicy;
-import com.inner.adaggs.config.OuterPolicy;
 import com.inner.adaggs.config.PidConfig;
 import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.framework.Aes;
@@ -37,8 +34,8 @@ public class AdParser implements IParser {
             return null;
         }
         String data = getData(content);
-        AdConfig adConfig = parseAdConfig(data);
-        return adConfig;
+        AdConfig adConfigDelete = parseAdConfig(data);
+        return adConfigDelete;
     }
 
     private boolean checkWhiteList(String content) {
@@ -117,22 +114,21 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(data);
             Map<String, String> adIds = null;
-            AdvInner advInner = null;
-            AdvOuter advOuter = null;
+            AdPolicy adPolicy = null;
+            List<AdPlace> adPlaces = null;
             if (jobj.has("adids")) {
                 adIds = parseAdIds(jobj.getString("adids"));
             }
-            if (jobj.has("advinner")) {
-                advInner = parseAdvInner(jobj.getString("advinner"));
+            if (jobj.has("policy")) {
+                adPolicy = parseInnerPolicy(jobj.getString("policy"));
             }
-            if (jobj.has("advouter")) {
-                advOuter = parseAdvOuter(jobj.getString("advouter"));
+            if (jobj.has("adplaces")) {
+                adPlaces = parseAdPlaces(jobj.getString("adplaces"));
             }
-            if (advInner != null || advOuter != null || adIds != null) {
+            if (adConfig != null || adPolicy != null || adIds != null) {
                 adConfig = new AdConfig();
-                adConfig.setAdIds(adIds);
-                adConfig.setAdvInner(advInner);
-                adConfig.setAdvOuter(advOuter);
+                adConfig.setAdPlaceList(adPlaces);
+                adConfig.setAdPolicy(adPolicy);
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
@@ -158,30 +154,30 @@ public class AdParser implements IParser {
         return adIds;
     }
 
-    private AdvInner parseAdvInner(String content) {
-        AdvInner advInner = null;
+    private AdConfig parseAdvInner(String content) {
+        AdConfig adConfig = null;
         try {
             JSONObject jobj = new JSONObject(content);
-            InnerPolicy innerPolicy = null;
+            AdPolicy adPolicy = null;
             List<AdPlace> adPlaces = null;
             if (jobj.has("policy")) {
-                innerPolicy = parseInnerPolicy(jobj.getString("policy"));
+                adPolicy = parseInnerPolicy(jobj.getString("policy"));
             }
             if (jobj.has("adplaces")) {
                 adPlaces = parseAdPlaces(jobj.getString("adplaces"));
             }
-            if (innerPolicy != null || adPlaces != null) {
-                advInner = new AdvInner();
-                advInner.setInnerPolicy(innerPolicy);
-                advInner.setAdPlaceList(adPlaces);
+            if (adPolicy != null || adPlaces != null) {
+                adConfig = new AdConfig();
+                adConfig.setAdPolicy(adPolicy);
+                adConfig.setAdPlaceList(adPlaces);
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
-        return advInner;
+        return adConfig;
     }
 
-    private InnerPolicy parseInnerPolicy(String content) throws Exception {
+    private AdPolicy parseInnerPolicy(String content) throws Exception {
         return null;
     }
 
@@ -265,37 +261,5 @@ public class AdParser implements IParser {
             Log.e(Log.TAG, "error : " + e);
         }
         return pidConfig;
-    }
-
-    private AdvOuter parseAdvOuter(String content) throws Exception {
-        AdvOuter advOuter = null;
-        try {
-            JSONObject jobj = new JSONObject(content);
-            OuterPolicy outerPolicy = null;
-            AdPlace adPop = null;
-            AdPlace adFilm = null;
-            if (jobj.has("policy")) {
-                outerPolicy = parseOuterPolicy(jobj.getString("policy"));
-            }
-            if (jobj.has("adpop")) {
-                adPop = parseAdPlace(jobj.getString("adpop"));
-            }
-            if (jobj.has("adfilm")) {
-                adFilm = parseAdPlace(jobj.getString("adfilm"));
-            }
-            if (outerPolicy != null || adPop != null || adFilm != null) {
-                advOuter = new AdvOuter();
-                advOuter.setOuterPolicy(outerPolicy);
-                advOuter.setAdPop(adPop);
-                advOuter.setAdFilm(adFilm);
-            }
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-        return advOuter;
-    }
-
-    private OuterPolicy parseOuterPolicy(String content) throws Exception {
-        return null;
     }
 }
