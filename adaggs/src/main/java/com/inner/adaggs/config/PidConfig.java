@@ -20,6 +20,10 @@ public class PidConfig {
 
     private String adType;
 
+    private int outer;
+
+    private int film;
+
     public String getName() {
         return name;
     }
@@ -58,6 +62,22 @@ public class PidConfig {
 
     public void setAdType(String adType) {
         this.adType = adType;
+    }
+
+    public int getOuter() {
+        return outer;
+    }
+
+    public void setOuter(int outer) {
+        this.outer = outer;
+    }
+
+    public int getFilm() {
+        return film;
+    }
+
+    public void setFilm(int film) {
+        this.film = film;
     }
 
     public boolean isAdmob() {

@@ -78,32 +78,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        AdAggs.get(this).loadMixedAds("app_out", new OnAdAggsListener() {
-            @Override
-            public void onLoaded(String source, String adType) {
-                Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
-            }
-
-            @Override
-            public void onShow(String source, String adType) {
-                Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
-            }
-
-            @Override
-            public void onClick(String source, String adType) {
-                Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
-            }
-
-            @Override
-            public void onDismiss(String source, String adType) {
-                Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
-            }
-
-            @Override
-            public void onError(String source, String adType) {
-                Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
-            }
-        });
+        AdAggs.get(this).loadMixedAds("app_out", mOnAdAggsListener);
     }
 
     public void onClick(View v) {
@@ -117,7 +92,34 @@ public class MainActivity extends AppCompatActivity {
         if (AdAggs.get(this).isMixedAdsLoaded("app_out")) {
             AdAggs.get(this).showMixedAds("app_out", mAdContainer);
         } else {
-            AdAggs.get(this).loadMixedAds("app_out");
+            AdAggs.get(this).loadMixedAds("app_out", mOnAdAggsListener);
         }
     }
+
+    private OnAdAggsListener mOnAdAggsListener = new OnAdAggsListener() {
+        @Override
+        public void onLoaded(String source, String adType) {
+            Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+        }
+
+        @Override
+        public void onShow(String source, String adType) {
+            Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+        }
+
+        @Override
+        public void onClick(String source, String adType) {
+            Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+        }
+
+        @Override
+        public void onDismiss(String source, String adType) {
+            Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+        }
+
+        @Override
+        public void onError(String source, String adType) {
+            Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+        }
+    };
 }

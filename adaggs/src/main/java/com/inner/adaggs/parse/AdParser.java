@@ -57,8 +57,8 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(content);
             JSONArray jarray = null;
-            if (jobj.has("wdevs")) {
-                jarray = jobj.getJSONArray("wdevs");
+            if (jobj.has(WHITE_LIST)) {
+                jarray = jobj.getJSONArray(WHITE_LIST);
             }
             DevInfo info = null;
             if (jarray != null) {
@@ -69,11 +69,11 @@ public class AdParser implements IParser {
                     for (int index = 0; index < len; index++) {
                         info = new DevInfo();
                         j = jarray.getJSONObject(index);
-                        if (j.has("imei")) {
-                            info.setImei(j.getString("imei"));
+                        if (j.has(IMEI)) {
+                            info.setImei(j.getString(IMEI));
                         }
-                        if (j.has("aid")) {
-                            info.setAndroidId(j.getString("aid"));
+                        if (j.has(AID)) {
+                            info.setAndroidId(j.getString(AID));
                         }
                         list.add(info);
                     }
@@ -90,11 +90,11 @@ public class AdParser implements IParser {
             JSONObject jobj = new JSONObject(content);
             int status = -1;
             String data = null;
-            if (jobj.has("s")) {
-                status = jobj.getInt("s");
+            if (jobj.has(STATUS)) {
+                status = jobj.getInt(STATUS);
             }
-            if (jobj.has("data")) {
-                data = jobj.getString("data");
+            if (jobj.has(DATA)) {
+                data = jobj.getString(DATA);
             }
             if (status == 0) {
                 return data;
@@ -116,14 +116,14 @@ public class AdParser implements IParser {
             Map<String, String> adIds = null;
             AdPolicy adPolicy = null;
             List<AdPlace> adPlaces = null;
-            if (jobj.has("adids")) {
-                adIds = parseAdIds(jobj.getString("adids"));
+            if (jobj.has(ADIDS)) {
+                adIds = parseAdIds(jobj.getString(ADIDS));
             }
-            if (jobj.has("policy")) {
-                adPolicy = parseInnerPolicy(jobj.getString("policy"));
+            if (jobj.has(POLICY)) {
+                adPolicy = parsePolicy(jobj.getString(POLICY));
             }
-            if (jobj.has("adplaces")) {
-                adPlaces = parseAdPlaces(jobj.getString("adplaces"));
+            if (jobj.has(ADPLACES)) {
+                adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
             }
             if (adConfig != null || adPolicy != null || adIds != null) {
                 adConfig = new AdConfig();
@@ -154,30 +154,7 @@ public class AdParser implements IParser {
         return adIds;
     }
 
-    private AdConfig parseAdvInner(String content) {
-        AdConfig adConfig = null;
-        try {
-            JSONObject jobj = new JSONObject(content);
-            AdPolicy adPolicy = null;
-            List<AdPlace> adPlaces = null;
-            if (jobj.has("policy")) {
-                adPolicy = parseInnerPolicy(jobj.getString("policy"));
-            }
-            if (jobj.has("adplaces")) {
-                adPlaces = parseAdPlaces(jobj.getString("adplaces"));
-            }
-            if (adPolicy != null || adPlaces != null) {
-                adConfig = new AdConfig();
-                adConfig.setAdPolicy(adPolicy);
-                adConfig.setAdPlaceList(adPlaces);
-            }
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-        return adConfig;
-    }
-
-    private AdPolicy parseInnerPolicy(String content) throws Exception {
+    private AdPolicy parsePolicy(String content) throws Exception {
         return null;
     }
 
@@ -203,20 +180,20 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(content);
             adPlace = new AdPlace();
-            if (jobj.has("name")) {
-                adPlace.setName(jobj.getString("name"));
+            if (jobj.has(NAME)) {
+                adPlace.setName(jobj.getString(NAME));
             }
-            if (jobj.has("mode")) {
-                adPlace.setMode(jobj.getString("mode"));
+            if (jobj.has(MODE)) {
+                adPlace.setMode(jobj.getString(MODE));
             }
-            if (jobj.has("maxcount")) {
-                adPlace.setMaxCount(jobj.getInt("maxcount"));
+            if (jobj.has(MAXCOUNT)) {
+                adPlace.setMaxCount(jobj.getInt(MAXCOUNT));
             }
-            if (jobj.has("percent")) {
-                adPlace.setPercent(jobj.getInt("percent"));
+            if (jobj.has(PERCENT)) {
+                adPlace.setPercent(jobj.getInt(PERCENT));
             }
-            if (jobj.has("pids")) {
-                adPlace.setPidsList(parsePidList(jobj.getString("pids")));
+            if (jobj.has(PIDS)) {
+                adPlace.setPidsList(parsePidList(jobj.getString(PIDS)));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
@@ -245,17 +222,23 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(content);
             pidConfig = new PidConfig();
-            if (jobj.has("sdk")) {
-                pidConfig.setSdk(jobj.getString("sdk"));
+            if (jobj.has(SDK)) {
+                pidConfig.setSdk(jobj.getString(SDK));
             }
-            if (jobj.has("pid")) {
-                pidConfig.setPid(jobj.getString("pid"));
+            if (jobj.has(PID)) {
+                pidConfig.setPid(jobj.getString(PID));
             }
-            if (jobj.has("ctr")) {
-                pidConfig.setCtr(jobj.getInt("ctr"));
+            if (jobj.has(CTR)) {
+                pidConfig.setCtr(jobj.getInt(CTR));
             }
-            if (jobj.has("type")) {
-                pidConfig.setAdType(jobj.getString("type"));
+            if (jobj.has(TYPE)) {
+                pidConfig.setAdType(jobj.getString(TYPE));
+            }
+            if (jobj.has(OUTER)) {
+                pidConfig.setOuter(jobj.getInt(OUTER));
+            }
+            if (jobj.has(FILM)) {
+                pidConfig.setFilm(jobj.getInt(FILM));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

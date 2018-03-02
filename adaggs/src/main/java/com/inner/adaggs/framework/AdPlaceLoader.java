@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 每个广告位对应一个AdLoader对象
  */
 
-public class AdLoader implements IManagerListener {
+public class AdPlaceLoader implements IManagerListener {
     private List<IAdLoader> mAdLoaders = new ArrayList<IAdLoader>();
     private AdPlace mAdPlace;
     private Context mContext;
@@ -36,8 +36,9 @@ public class AdLoader implements IManagerListener {
     private Map<String, Object> mAdExtra;
     // banner和native的listener集合
     private Map<IAdLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<IAdLoader, OnAdBaseListener>();
+    private boolean mAdjustLoaderOrder = false;
 
-    public AdLoader(Context context) {
+    public AdPlaceLoader(Context context) {
         mContext = context;
     }
 
@@ -378,6 +379,7 @@ public class AdLoader implements IManagerListener {
         if (mAdPlace == null) {
             return;
         }
+        mAdjustLoaderOrder = true;
         mAdExtra = extra;
         if (mAdPlace.isConcurrent()) {
             loadMixedAdsConcurrent();
@@ -531,7 +533,21 @@ public class AdLoader implements IManagerListener {
                     }
                 }
             }
+            if (mAdjustLoaderOrder) {
+                adjustLoaderOrder(loader);
+            }
         } catch (Exception e) {
+        }
+    }
+
+    /**
+     * 调整loader顺序
+     * @param loader
+     */
+    private void adjustLoaderOrder(IAdLoader loader) {
+        if (mAdLoaders != null) {
+            mAdLoaders.remove(loader);
+            mAdLoaders.add(0, loader);
         }
     }
 }

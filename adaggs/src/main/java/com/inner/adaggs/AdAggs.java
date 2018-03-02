@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import com.inner.adaggs.config.AdPlace;
 import com.inner.adaggs.config.AdConfig;
-import com.inner.adaggs.framework.AdLoader;
+import com.inner.adaggs.framework.AdPlaceLoader;
 import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.log.Log;
 import com.inner.adaggs.parse.AdParser;
@@ -25,7 +25,7 @@ public class AdAggs {
 
     private Context mContext;
     private IParser mParser;
-    private Map<String, AdLoader> mAdLoaders = new HashMap<String, AdLoader>();
+    private Map<String, AdPlaceLoader> mAdLoaders = new HashMap<String, AdPlaceLoader>();
     private AdConfig mAdConfig;
 
     private AdAggs(Context context) {
@@ -56,10 +56,10 @@ public class AdAggs {
         }
     }
 
-    private AdLoader getAdLoader(String pidName) {
-        AdLoader loader = mAdLoaders.get(pidName);
+    private AdPlaceLoader getAdLoader(String pidName) {
+        AdPlaceLoader loader = mAdLoaders.get(pidName);
         if (loader == null && mAdConfig != null) {
-            loader = new AdLoader(mContext);
+            loader = new AdPlaceLoader(mContext);
             AdPlace config = mAdConfig.get(pidName);
             Log.d(Log.TAG, "config : " + config);
             loader.setAdPlaceConfig(config);
@@ -74,7 +74,7 @@ public class AdAggs {
     }
 
     public boolean isInterstitialLoaded(String pidName) {
-        AdLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             return loader.isInterstitialLoaded();
         }
@@ -86,7 +86,7 @@ public class AdAggs {
     }
 
     public void loadInterstitial(String pidName, OnAdAggsListener l) {
-        AdLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             loader.setOnAdAggsListener(l);
             loader.loadInterstitial();
@@ -94,14 +94,14 @@ public class AdAggs {
     }
 
     public void showInterstitial(String pidName) {
-        AdLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             loader.showInterstitial();
         }
     }
 
     public boolean isAdViewLoaded(String pidName) {
-        AdLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             return loader.isAdViewLoaded();
         }
@@ -117,7 +117,7 @@ public class AdAggs {
     }
 
     public void loadAdView(String pidName, Map<String, Object> extra, OnAdAggsListener l) {
-        AdLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             loader.setOnAdAggsListener(l);
             loader.loadAdView(extra);
@@ -125,14 +125,14 @@ public class AdAggs {
     }
 
     public void showAdView(String pidName, ViewGroup adContainer) {
-        AdLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             loader.showAdView(adContainer);
         }
     }
 
     public boolean isMixedAdsLoaded(String pidName) {
-        AdLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             return loader.isMixedAdsLoaded();
         }
@@ -148,7 +148,7 @@ public class AdAggs {
     }
 
     public void loadMixedAds(String pidName, Map<String, Object> extra, OnAdAggsListener l) {
-        AdLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             loader.setOnAdAggsListener(l);
             loader.loadMixedAds(extra);
@@ -156,14 +156,14 @@ public class AdAggs {
     }
 
     public void showMixedAds(String pidName, ViewGroup adContainer) {
-        AdLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             loader.showMixedAds(adContainer);
         }
     }
 
     public void destroy(String pidName) {
-        AdLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             loader.destroy();
         }
