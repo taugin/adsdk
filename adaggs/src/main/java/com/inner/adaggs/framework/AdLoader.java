@@ -36,7 +36,9 @@ public class AdLoader implements IManagerListener {
     private Context mContext;
     private OnAdAggsListener mOnAdAggsListener;
     private Map<String, Object> mAdExtra;
+    // banner和native的listener集合
     private Map<IAdLoader, OnAdListener> mAdViewListener = new ConcurrentHashMap<IAdLoader, OnAdListener>();
+    // interstitial的listener集合
     private Map<IAdLoader, OnInterstitialListener> mIntListener = new ConcurrentHashMap<IAdLoader, OnInterstitialListener>();
 
     public AdLoader(Context context) {
@@ -111,6 +113,11 @@ public class AdLoader implements IManagerListener {
         return null;
     }
 
+    /**
+     * 获取模板ID
+     * @param loader
+     * @return
+     */
     private int getTemplateId(IAdLoader loader) {
         try {
             return (int) mAdExtra.get(loader.getSdkName() + AdExtra.TEMPLATE_SUFFIX);
@@ -236,6 +243,10 @@ public class AdLoader implements IManagerListener {
         return false;
     }
 
+    /**
+     * 加载banner和native广告
+     * @param extra
+     */
     public void loadAdView(Map<String, Object> extra) {
         if (mAdPlace == null) {
             return;
