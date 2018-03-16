@@ -1,14 +1,10 @@
 package com.inner.adaggs.parse;
 
-import android.content.Context;
-
+import com.inner.adaggs.config.AdConfig;
 import com.inner.adaggs.config.AdPlace;
 import com.inner.adaggs.config.AdPolicy;
-import com.inner.adaggs.config.AdConfig;
 import com.inner.adaggs.config.DevInfo;
 import com.inner.adaggs.config.PidConfig;
-import com.inner.adaggs.constant.Constant;
-import com.inner.adaggs.framework.Aes;
 import com.inner.adaggs.log.Log;
 
 import org.json.JSONArray;
@@ -26,36 +22,37 @@ import java.util.Map;
 
 public class AdParser implements IParser {
 
-    private Context mContext;
-
     @Override
-    public AdConfig parse(String content) {
-        if (!checkWhiteList(content)) {
-            return null;
+    public int parseStatus(String data) {
+        try {
+            JSONObject jobj = new JSONObject(data);
+            int status = -1;
+            if (jobj.has(STATUS)) {
+                status = jobj.getInt(STATUS);
+            }
+            return status;
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
-        String data = getData(content);
-        AdConfig adConfigDelete = parseAdConfig(data);
-        return adConfigDelete;
+        return 0;
     }
 
-    private boolean checkWhiteList(String content) {
-        List<DevInfo> list = parseWhiteList(content);
-        if (list == null || list.isEmpty()) {
-            return true;
-        }
-        return false;
+    @Override
+    public List<DevInfo> parseDevList(String data) {
+        List<DevInfo> list = parseWhiteList(data);
+        return list;
     }
 
     /**
      * 解析白名单
      *
-     * @param content
+     * @param data
      * @return
      */
-    private List<DevInfo> parseWhiteList(String content) {
+    private List<DevInfo> parseWhiteList(String data) {
         List<DevInfo> list = null;
         try {
-            JSONObject jobj = new JSONObject(content);
+            JSONObject jobj = new JSONObject(data);
             JSONArray jarray = null;
             if (jobj.has(WHITE_LIST)) {
                 jarray = jobj.getJSONArray(WHITE_LIST);
@@ -85,28 +82,25 @@ public class AdParser implements IParser {
         return list;
     }
 
-    private String getData(String content) {
+    @Override
+    public String parseContent(String data) {
         try {
-            JSONObject jobj = new JSONObject(content);
-            int status = -1;
-            String data = null;
-            if (jobj.has(STATUS)) {
-                status = jobj.getInt(STATUS);
-            }
+            JSONObject jobj = new JSONObject(data);
+            String s = null;
             if (jobj.has(DATA)) {
-                data = jobj.getString(DATA);
+                s = jobj.getString(DATA);
             }
-            if (status == 0) {
-                return data;
-            }
-            if (status == 1) {
-                return Aes.decrypt(data, Constant.KEY_PASSWORD);
-            }
-            Log.e(Log.TAG, "error format");
+            return s;
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
         return null;
+    }
+
+    @Override
+    public AdConfig parse(String data) {
+        AdConfig adconfig = parseAdConfig(data);
+        return adconfig;
     }
 
     private AdConfig parseAdConfig(String data) {

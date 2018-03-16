@@ -1,6 +1,9 @@
 package com.inner.adaggs.parse;
 
 import com.inner.adaggs.config.AdConfig;
+import com.inner.adaggs.config.DevInfo;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -33,5 +36,9 @@ public interface IParser {
     String OUTER = "outer";
     String FILM = "film";
 
-    AdConfig parse(String content);
+    int parseStatus(String data);
+    List<DevInfo> parseDevList(String data);
+    String parseContent(String data);
+    AdConfig parse(String data);
+
 }

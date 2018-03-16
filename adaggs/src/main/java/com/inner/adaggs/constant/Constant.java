@@ -27,4 +27,6 @@ public class Constant {
     public static final String TYPE_INTERSTITIAL = "interstitial";
 
     public static final String KEY_PASSWORD = "123456789";
+
+    public static final String GTAG_APP_CONFIG = "gtag_ads_config";
 }

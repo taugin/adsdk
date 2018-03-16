@@ -3,14 +3,12 @@ package com.inner.adaggs;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import com.inner.adaggs.config.AdPlace;
 import com.inner.adaggs.config.AdConfig;
+import com.inner.adaggs.config.AdPlace;
 import com.inner.adaggs.framework.AdPlaceLoader;
 import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.log.Log;
-import com.inner.adaggs.parse.AdParser;
-import com.inner.adaggs.parse.IParser;
-import com.inner.adaggs.utils.Utils;
+import com.inner.adaggs.manager.DataManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +22,6 @@ public class AdAggs {
     private static AdAggs sAdAggs;
 
     private Context mContext;
-    private IParser mParser;
     private Map<String, AdPlaceLoader> mAdLoaders = new HashMap<String, AdPlaceLoader>();
     private AdConfig mAdConfig;
 
@@ -49,8 +46,8 @@ public class AdAggs {
 
 
     public void init() {
-        mParser = new AdParser();
-        mAdConfig = mParser.parse(Utils.readAssets(mContext, "adconfig.dat"));
+        DataManager.get(mContext).init();
+        mAdConfig = DataManager.get(mContext).getAdConfig();
         if (mAdConfig == null) {
             mAdConfig = new AdConfig();
         }

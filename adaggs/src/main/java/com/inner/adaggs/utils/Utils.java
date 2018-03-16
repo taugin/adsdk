@@ -331,4 +331,23 @@ public class Utils {
         }
         return false;
     }
+
+    public static String getImei(Context context) {
+        if (context.checkCallingOrSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            if (telephonyManager != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    return telephonyManager.getImei();
+                } else {
+                    return telephonyManager.getDeviceId();
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String getAId(Context context) {
+        String ANDROID_ID = Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        return ANDROID_ID;
+    }
 }

@@ -1,7 +1,7 @@
 package com.inner.adagg;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -14,7 +14,7 @@ import com.inner.adaggs.log.Log;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private RelativeLayout mAdContainer;
 
