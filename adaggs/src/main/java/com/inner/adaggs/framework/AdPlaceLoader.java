@@ -164,7 +164,7 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getSdkName(), Constant.TYPE_INTERSTITIAL, mOnAdAggsListener));
+                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getPidName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, mOnAdAggsListener));
                 }
             }
             for (IAdLoader loader : mAdLoaders) {
@@ -187,7 +187,7 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdLoaders != null) {
             int pos = new Random().nextInt(mAdLoaders.size());
             IAdLoader loader = mAdLoaders.get(pos);
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getSdkName(), Constant.TYPE_INTERSTITIAL, mOnAdAggsListener));
+            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getPidName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, mOnAdAggsListener));
             loader.loadInterstitial();
         }
     }
@@ -197,7 +197,7 @@ public class AdPlaceLoader implements IManagerListener {
             return;
         }
         IAdLoader loader = iterator.next();
-        registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getSdkName(), Constant.TYPE_INTERSTITIAL, mOnAdAggsListener) {
+        registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getPidName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, mOnAdAggsListener) {
             @Override
             public void onInterstitialError() {
                 if (iterator.hasNext()) {
@@ -264,7 +264,7 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getSdkName(), loader.getAdType(),
+                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getPidName(), loader.getSdkName(), loader.getAdType(),
                             mOnAdAggsListener));
                 }
             }
@@ -290,7 +290,7 @@ public class AdPlaceLoader implements IManagerListener {
             int pos = new Random().nextInt(mAdLoaders.size());
             IAdLoader loader = mAdLoaders.get(pos);
             if (loader != null) {
-                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getSdkName(), loader.getAdType(),
+                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getPidName(), loader.getSdkName(), loader.getAdType(),
                         mOnAdAggsListener));
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
@@ -307,7 +307,7 @@ public class AdPlaceLoader implements IManagerListener {
         }
         IAdLoader loader = iterator.next();
         if (loader != null) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getSdkName(), loader.getAdType(),
+            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getPidName(), loader.getSdkName(), loader.getAdType(),
                     mOnAdAggsListener) {
                 @Override
                 public void onAdFailed() {
@@ -411,7 +411,7 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getSdkName(), loader.getAdType(),
+                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getPidName(), loader.getSdkName(), loader.getAdType(),
                             mOnAdAggsListener));
                 }
             }
@@ -440,7 +440,7 @@ public class AdPlaceLoader implements IManagerListener {
         }
         IAdLoader loader = iterator.next();
         if (loader != null) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getSdkName(), loader.getAdType(),
+            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getPidName(), loader.getSdkName(), loader.getAdType(),
                     mOnAdAggsListener) {
                 @Override
                 public void onAdFailed() {
@@ -477,7 +477,7 @@ public class AdPlaceLoader implements IManagerListener {
             int pos = new Random().nextInt(mAdLoaders.size());
             IAdLoader loader = mAdLoaders.get(pos);
             if (loader != null) {
-                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getSdkName(), loader.getAdType(),
+                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getPidName(), loader.getSdkName(), loader.getAdType(),
                         mOnAdAggsListener));
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
@@ -510,6 +510,28 @@ public class AdPlaceLoader implements IManagerListener {
                         loader.showInterstitial();
                         return;
                     }
+                }
+            }
+        }
+    }
+
+    public void resume() {
+        Log.d(Log.TAG, "");
+        if (mAdLoaders != null) {
+            for (IAdLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    loader.resume();
+                }
+            }
+        }
+    }
+
+    public void pause() {
+        Log.d(Log.TAG, "");
+        if (mAdLoaders != null) {
+            for (IAdLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    loader.pause();
                 }
             }
         }

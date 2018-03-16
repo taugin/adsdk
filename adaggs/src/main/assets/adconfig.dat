@@ -24,11 +24,11 @@
       },
       {
         "name": "open_social",
-        "mode": "seq",
+        "mode": "con",
         "pids": [
           {
             "sdk": "fb",
-            "pid": "541656102860623_541710262855207",
+            "pid": "193044738103187_194677471273247",
             "type": "interstitial",
             "ctr": 0
           },
@@ -65,7 +65,7 @@
       {
         "name": "app_out",
         "mode": "con",
-        "outer": true,
+        "ptype": "outer",
         "pids": [
           {
             "sdk": "fb",
@@ -90,7 +90,7 @@
       {
         "name": "app_out",
         "mode": "con",
-        "outer": true,
+        "ptype": "outer",
         "pids": [
           {
             "sdk": "fb",

@@ -14,13 +14,15 @@ public class AdPlace {
 
     private String name;
 
-    private String mode;
+    private String mode; // seq : 顺序请求, con : 并发请求, ran : 随机请求
 
     private List<PidConfig> pidsList;
 
     private int maxCount;
 
     private int percent;
+
+    private String ptype; // inner : 应用内(默认), outer : 应用外, film : 贴片
 
     public String getName() {
         return name;
@@ -74,15 +76,23 @@ public class AdPlace {
     }
 
     public boolean isSequence() {
-        return TextUtils.equals(Constant.MODE_SEQ, mode);
+        return TextUtils.equals(Constant.MODE_SEQ, getMode());
     }
 
     public boolean isConcurrent() {
-        return TextUtils.equals(Constant.MODE_CON, mode);
+        return TextUtils.equals(Constant.MODE_CON, getMode());
     }
 
     public boolean isRandom() {
-        return TextUtils.equals(Constant.MODE_RAN, mode);
+        return TextUtils.equals(Constant.MODE_RAN, getMode());
+    }
+
+    public String getPtype() {
+        return ptype;
+    }
+
+    public void setPtype(String ptype) {
+        this.ptype = ptype;
     }
 
     @Override

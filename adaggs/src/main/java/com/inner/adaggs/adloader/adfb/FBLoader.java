@@ -223,4 +223,11 @@ public class FBLoader extends AbstractAdLoader {
         }
         nativeAd = null;
     }
+
+    @Override
+    public void destroy() {
+        if (fbInterstitial != null) {
+            fbInterstitial.destroy();
+        }
+    }
 }

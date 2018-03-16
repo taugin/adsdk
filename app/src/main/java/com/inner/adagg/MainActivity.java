@@ -28,26 +28,26 @@ public class MainActivity extends AppCompatActivity {
         if (true) {
             AdAggs.get(this).loadInterstitial("open_social", new SimpleAdAggsListener() {
                 @Override
-                public void onLoaded(String source, String adType) {
-                    Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+                public void onLoaded(String pidName, String source, String adType) {
+                    Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 }
 
                 @Override
-                public void onShow(String source, String adType) {
-                    Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+                public void onShow(String pidName, String source, String adType) {
+                    Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 }
 
                 @Override
-                public void onClick(String source, String adType) {
-                    Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+                public void onClick(String pidName, String source, String adType) {
+                    Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 }
 
                 @Override
-                public void onDismiss(String source, String adType) {
-                    Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+                public void onDismiss(String pidName, String source, String adType) {
+                    Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 }
             });
-
+        } else {
             // View view = getLayoutInflater().inflate(R.layout.fb_native, null);
             // mAdContainer.addView(view);
 
@@ -56,29 +56,29 @@ public class MainActivity extends AppCompatActivity {
             map.put(AdExtra.KEY_FB_TEMPLATE, 1);
             AdAggs.get(this).loadAdView("main_top", map, new SimpleAdAggsListener() {
                 @Override
-                public void onLoaded(String source, String adType) {
-                    Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+                public void onLoaded(String pidName, String source, String adType) {
+                    Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     AdAggs.get(MainActivity.this).showAdView("main_top", mAdContainer);
                 }
 
                 @Override
-                public void onShow(String source, String adType) {
-                    Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+                public void onShow(String pidName, String source, String adType) {
+                    Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 }
 
                 @Override
-                public void onClick(String source, String adType) {
-                    Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+                public void onClick(String pidName, String source, String adType) {
+                    Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 }
 
                 @Override
-                public void onDismiss(String source, String adType) {
-                    Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+                public void onDismiss(String pidName, String source, String adType) {
+                    Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 }
             });
         }
 
-        AdAggs.get(this).loadMixedAds("app_out", mOnAdAggsListener);
+        //AdAggs.get(this).loadMixedAds("app_out", mOnAdAggsListener);
     }
 
     public void onClick(View v) {
@@ -99,28 +99,28 @@ public class MainActivity extends AppCompatActivity {
 
     private OnAdAggsListener mOnAdAggsListener = new OnAdAggsListener() {
         @Override
-        public void onLoaded(String source, String adType) {
-            Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+        public void onLoaded(String pidName, String source, String adType) {
+            Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
 
         @Override
-        public void onShow(String source, String adType) {
-            Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+        public void onShow(String pidName, String source, String adType) {
+            Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
 
         @Override
-        public void onClick(String source, String adType) {
-            Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+        public void onClick(String pidName, String source, String adType) {
+            Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
 
         @Override
-        public void onDismiss(String source, String adType) {
-            Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+        public void onDismiss(String pidName, String source, String adType) {
+            Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
 
         @Override
-        public void onError(String source, String adType) {
-            Log.d(Log.TAG, "========source : " + source + " , adType : " + adType);
+        public void onError(String pidName, String source, String adType) {
+            Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
     };
 }

@@ -6,27 +6,22 @@ package com.inner.adaggs.listener;
 
 public class SimpleAdAggsListener implements OnAdAggsListener {
     @Override
-    public void onLoaded(String source, String adType) {
-
+    public void onLoaded(String pidName, String source, String adType) {
     }
 
     @Override
-    public void onShow(String source, String adType) {
-
+    public void onShow(String pidName, String source, String adType) {
     }
 
     @Override
-    public void onClick(String source, String adType) {
-
+    public void onClick(String pidName, String source, String adType) {
     }
 
     @Override
-    public void onDismiss(String source, String adType) {
-
+    public void onDismiss(String pidName, String source, String adType) {
     }
 
     @Override
-    public void onError(String source, String adType) {
-
+    public void onError(String pidName, String source, String adType) {
     }
 }

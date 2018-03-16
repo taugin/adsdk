@@ -186,6 +186,9 @@ public class AdParser implements IParser {
             if (jobj.has(MODE)) {
                 adPlace.setMode(jobj.getString(MODE));
             }
+            if (jobj.has(PTYPE)) {
+                adPlace.setPtype(jobj.getString(PTYPE));
+            }
             if (jobj.has(MAXCOUNT)) {
                 adPlace.setMaxCount(jobj.getInt(MAXCOUNT));
             }

@@ -162,6 +162,20 @@ public class AdAggs {
         }
     }
 
+    public void resume(String pidName) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            loader.resume();
+        }
+    }
+
+    public void pause(String pidName) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            loader.pause();
+        }
+    }
+
     public void destroy(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {

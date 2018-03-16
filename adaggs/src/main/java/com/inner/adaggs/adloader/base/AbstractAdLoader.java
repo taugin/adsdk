@@ -105,6 +105,14 @@ public class AbstractAdLoader implements IAdLoader {
     }
 
     @Override
+    public void resume() {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
     public void destroy() {
     }
 

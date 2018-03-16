@@ -19,6 +19,7 @@ public interface IParser {
     String ADPLACES = "adplaces";
     String NAME = "name";
     String MODE = "mode";
+    String PTYPE = "ptype";
 
     String MAXCOUNT = "maxcount";
     String PERCENT = "percent";

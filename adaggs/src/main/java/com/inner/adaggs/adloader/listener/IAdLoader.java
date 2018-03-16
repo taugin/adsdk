@@ -49,6 +49,10 @@ public interface IAdLoader {
 
     public boolean isNativeLoaded();
 
+    public void resume();
+
+    public void pause();
+
     public void destroy();
 
     public String getPidName();

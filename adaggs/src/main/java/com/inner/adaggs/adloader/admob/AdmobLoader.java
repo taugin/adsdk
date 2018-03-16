@@ -287,4 +287,18 @@ public class AdmobLoader extends AbstractAdLoader {
         }
         return super.isInterstitialType();
     }
+
+    @Override
+    public void resume() {
+        if (bannerView != null) {
+            bannerView.resume();
+        }
+    }
+
+    @Override
+    public void pause() {
+        if (bannerView != null) {
+            bannerView.pause();
+        }
+    }
 }
