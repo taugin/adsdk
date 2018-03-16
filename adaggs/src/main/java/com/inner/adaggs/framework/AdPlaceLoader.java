@@ -25,7 +25,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 每个广告位对应一个AdLoader对象
+ * 每个广告位对应一个AdPlaceLoader对象
  */
 
 public class AdPlaceLoader implements IManagerListener {
@@ -328,6 +328,10 @@ public class AdPlaceLoader implements IManagerListener {
         }
     }
 
+    /**
+     * 展示广告(banner or native)
+     * @param adContainer
+     */
     public void showAdView(ViewGroup adContainer) {
         Log.d(Log.TAG, "");
         if (mAdLoaders != null) {
@@ -347,6 +351,11 @@ public class AdPlaceLoader implements IManagerListener {
 
     ////////////////////////////////////////////////////////////////
     // 加载应用外
+
+    /**
+     * 混合广告是否加载成功
+     * @return
+     */
     public boolean isMixedAdsLoaded() {
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
@@ -361,6 +370,10 @@ public class AdPlaceLoader implements IManagerListener {
         return false;
     }
 
+    /**
+     * 获取已加载的广告类型(banner, native, interstitial)
+     * @return
+     */
     public String getLoadedType() {
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
@@ -375,6 +388,10 @@ public class AdPlaceLoader implements IManagerListener {
         return null;
     }
 
+    /**
+     * 加载混合广告
+     * @param extra
+     */
     public void loadMixedAds(Map<String, Object> extra) {
         if (mAdPlace == null) {
             return;
@@ -475,6 +492,10 @@ public class AdPlaceLoader implements IManagerListener {
         }
     }
 
+    /**
+     * 展示混合广告
+     * @param adContainer
+     */
     public void showMixedAds(ViewGroup adContainer) {
         Log.d(Log.TAG, "");
         if (mAdLoaders != null) {
@@ -534,6 +555,7 @@ public class AdPlaceLoader implements IManagerListener {
                 }
             }
             if (mAdjustLoaderOrder) {
+                mAdjustLoaderOrder = false;
                 adjustLoaderOrder(loader);
             }
         } catch (Exception e) {
