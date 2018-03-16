@@ -1,10 +1,13 @@
-package com.inner.adaggs.adloader.listener;
+package com.inner.adaggs.adloader.base;
 
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.inner.adaggs.adloader.listener.IAdLoader;
+import com.inner.adaggs.adloader.listener.IManagerListener;
+import com.inner.adaggs.adloader.listener.OnAdBaseListener;
 import com.inner.adaggs.config.PidConfig;
 import com.inner.adaggs.log.Log;
 import com.inner.adaggs.stat.IStat;
@@ -20,6 +23,7 @@ public class AbstractAdLoader implements IAdLoader {
     protected IStat mStat;
     protected IManagerListener mManagerListener;
     protected String mAdId;
+    private   boolean mPriority = false;
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -127,6 +131,16 @@ public class AbstractAdLoader implements IAdLoader {
         return false;
     }
 
+    @Override
+    public void setPriority(boolean isPro) {
+        mPriority = isPro;
+    }
+
+    @Override
+    public boolean isPriority() {
+        return mPriority;
+    }
+
     protected boolean checkPidConfig() {
         if (mPidConfig == null) {
             Log.e(Log.TAG, "pidconfig is null");
@@ -150,7 +164,9 @@ public class AbstractAdLoader implements IAdLoader {
         return null;
     }
 
-    protected void clearAdListener() {
+    protected void clearOtherListener() {
+        // 设置优先
+        setPriority(true);
         if (mManagerListener != null) {
             mManagerListener.clearAdBaseListener(this);
         }

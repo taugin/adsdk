@@ -24,7 +24,7 @@
       },
       {
         "name": "open_social",
-        "mode": "con",
+        "mode": "seq",
         "pids": [
           {
             "sdk": "fb",

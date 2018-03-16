@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         mAdContainer = findViewById(R.id.ad_container);
         AdAggs.get(this).init();
 
-        if (false) {
+        if (true) {
             AdAggs.get(this).loadInterstitial("open_social", new SimpleAdAggsListener() {
                 @Override
                 public void onLoaded(String source, String adType) {
@@ -82,17 +82,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View v) {
-        if (false) {
+        if (true) {
             if (AdAggs.get(this).isInterstitialLoaded("open_social")) {
                 AdAggs.get(MainActivity.this).showInterstitial("open_social");
             } else {
                 AdAggs.get(this).loadInterstitial("open_social");
             }
-        }
-        if (AdAggs.get(this).isMixedAdsLoaded("app_out")) {
-            AdAggs.get(this).showMixedAds("app_out", mAdContainer);
         } else {
-            AdAggs.get(this).loadMixedAds("app_out", mOnAdAggsListener);
+            if (AdAggs.get(this).isMixedAdsLoaded("app_out")) {
+                AdAggs.get(this).showMixedAds("app_out", mAdContainer);
+            } else {
+                AdAggs.get(this).loadMixedAds("app_out", mOnAdAggsListener);
+            }
         }
     }
 

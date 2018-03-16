@@ -11,7 +11,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-import com.inner.adaggs.adloader.listener.AbstractAdLoader;
+import com.inner.adaggs.adloader.base.AbstractAdLoader;
 import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.log.Log;
 
@@ -61,7 +61,7 @@ public class AdmobLoader extends AbstractAdLoader {
             Log.e(Log.TAG, "already loaded : " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onAdLoaded();
-                clearAdListener();
+                clearOtherListener();
             }
             return;
         }
@@ -83,7 +83,7 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
-                Log.d(Log.TAG, "reason : " + i);
+                Log.d(Log.TAG, "reason : " + i + " , type : " + getAdType());
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed();
                 }
@@ -111,7 +111,7 @@ public class AdmobLoader extends AbstractAdLoader {
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdLoaded();
-                    clearAdListener();
+                    clearOtherListener();
                 }
             }
 
@@ -181,7 +181,7 @@ public class AdmobLoader extends AbstractAdLoader {
             Log.e(Log.TAG, "already loaded : " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onInterstitialLoaded();
-                clearAdListener();
+                clearOtherListener();
             }
             return;
         }
@@ -198,7 +198,7 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
-                Log.e(Log.TAG, "error : " + i);
+                Log.e(Log.TAG, "error : " + i + " , type : " + getAdType());
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError();
                 }
@@ -234,7 +234,7 @@ public class AdmobLoader extends AbstractAdLoader {
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialLoaded();
-                    clearAdListener();
+                    clearOtherListener();
                 }
             }
 

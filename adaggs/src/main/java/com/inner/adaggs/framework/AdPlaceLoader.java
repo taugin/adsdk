@@ -36,7 +36,6 @@ public class AdPlaceLoader implements IManagerListener {
     private Map<String, Object> mAdExtra;
     // banner和native的listener集合
     private Map<IAdLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<IAdLoader, OnAdBaseListener>();
-    private boolean mAdjustLoaderOrder = false;
 
     public AdPlaceLoader(Context context) {
         mContext = context;
@@ -396,7 +395,6 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdPlace == null) {
             return;
         }
-        mAdjustLoaderOrder = true;
         mAdExtra = extra;
         if (mAdPlace.isConcurrent()) {
             loadMixedAdsConcurrent();
@@ -500,7 +498,8 @@ public class AdPlaceLoader implements IManagerListener {
         Log.d(Log.TAG, "");
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
-                if (loader != null) {
+                if (loader != null && loader.isPriority()) {
+                    loader.setPriority(false);
                     if (loader.isBannerLoaded()) {
                         loader.showBanner(adContainer);
                         return;
@@ -554,22 +553,7 @@ public class AdPlaceLoader implements IManagerListener {
                     }
                 }
             }
-            if (mAdjustLoaderOrder) {
-                mAdjustLoaderOrder = false;
-                adjustLoaderOrder(loader);
-            }
         } catch (Exception e) {
-        }
-    }
-
-    /**
-     * 调整loader顺序
-     * @param loader
-     */
-    private void adjustLoaderOrder(IAdLoader loader) {
-        if (mAdLoaders != null) {
-            mAdLoaders.remove(loader);
-            mAdLoaders.add(0, loader);
         }
     }
 }

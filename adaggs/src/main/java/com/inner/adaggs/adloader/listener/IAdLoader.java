@@ -58,4 +58,8 @@ public interface IAdLoader {
     public boolean isNativeType();
 
     public boolean isInterstitialType();
+
+    public void setPriority(boolean isPro);
+
+    public boolean isPriority();
 }
