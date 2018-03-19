@@ -119,10 +119,11 @@ public class AdParser implements IParser {
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
             }
-            if (adConfig != null || adPolicy != null || adIds != null) {
+            if (adPlaces != null || adPolicy != null || adIds != null) {
                 adConfig = new AdConfig();
                 adConfig.setAdPlaceList(adPlaces);
                 adConfig.setAdPolicy(adPolicy);
+                adConfig.setAdIds(adIds);
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
@@ -149,7 +150,7 @@ public class AdParser implements IParser {
     }
 
     private AdPolicy parsePolicy(String content) throws Exception {
-        return null;
+        return new AdPolicy();
     }
 
     private List<AdPlace> parseAdPlaces(String content) {

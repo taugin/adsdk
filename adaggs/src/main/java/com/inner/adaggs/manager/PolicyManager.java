@@ -3,6 +3,7 @@ package com.inner.adaggs.manager;
 import android.content.Context;
 
 import com.inner.adaggs.config.AdPolicy;
+import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.log.Log;
 import com.inner.adaggs.utils.Utils;
 
@@ -38,16 +39,55 @@ public class PolicyManager {
     private AdPolicy mAdPolicy;
     private boolean mOuterShowing = false;
 
+    public void init() {
+        updateFirstStartUpTime();
+    }
+
     public void setPolicy(AdPolicy adPolicy) {
         mAdPolicy = adPolicy;
     }
 
     public void setOuterShowing(boolean showing) {
         mOuterShowing = showing;
+        if (mOuterShowing) {
+            updateLastShowTime();
+            updateTotalShowTimes();
+        }
     }
 
     public boolean isOuterShowing() {
         return mOuterShowing;
+    }
+
+    private void updateLastShowTime() {
+        Utils.putLong(mContext, Constant.PREF_LAST_OUTER_SHOWTIME, System.currentTimeMillis());
+    }
+
+    private long getLastShowTime() {
+        return Utils.getLong(mContext, Constant.PREF_LAST_OUTER_SHOWTIME, 0);
+    }
+
+    private void updateFirstStartUpTime() {
+        if (Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0) <= 0) {
+            Utils.putLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, System.currentTimeMillis());
+        }
+    }
+
+    private long getFirstStartUpTime() {
+        return Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0);
+    }
+
+    private void updateTotalShowTimes() {
+        long times = getTotalShowTimes();
+        times += 1;
+        if (times < 0) {
+            times = 0;
+        }
+        Utils.putLong(mContext, Constant.PREF_OUTER_SHOW_TIMES, times);
+    }
+
+    private long getTotalShowTimes() {
+        return Utils.getLong(mContext, Constant.PREF_OUTER_SHOW_TIMES, 0);
     }
 
     /**
@@ -55,7 +95,10 @@ public class PolicyManager {
      * @return
      */
     private boolean isConfigAllow() {
-        return true;
+        if (mAdPolicy != null) {
+            return mAdPolicy.isEnable();
+        }
+        return false;
     }
 
     /**
@@ -63,7 +106,12 @@ public class PolicyManager {
      * @return
      */
     private boolean isDelayAllow() {
-        return true;
+        if (mAdPolicy != null) {
+            long now = System.currentTimeMillis();
+            long firstStartTime = getFirstStartUpTime();
+            return now - firstStartTime > mAdPolicy.getUpDelay();
+        }
+        return false;
     }
 
     /**
@@ -71,7 +119,12 @@ public class PolicyManager {
      * @return
      */
     private boolean isIntervalAllow() {
-        return true;
+        if (mAdPolicy != null) {
+            long now = System.currentTimeMillis();
+            long last = getLastShowTime();
+            return now - last > mAdPolicy.getInterval();
+        }
+        return false;
     }
 
     /**
@@ -79,6 +132,10 @@ public class PolicyManager {
      * @return
      */
     private boolean isMaxShowAllow() {
+        if (mAdPolicy != null) {
+            long times = getTotalShowTimes();
+            return times <= mAdPolicy.getMaxShow();
+        }
         return true;
     }
 
@@ -121,7 +178,6 @@ public class PolicyManager {
 
     public boolean shouldShowingOuter() {
         if (!outerEnabled()) {
-            Log.d(Log.TAG, "outer not enabled");
             return false;
         }
 

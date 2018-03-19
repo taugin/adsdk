@@ -36,4 +36,7 @@ public class Constant {
 
     public static final String ACTION_ALARM = "com.inner.adaggs.intent.action.ALARM";
     public static final long ALARM_INTERVAL_TIME = 1 * 60 * 1000;
+    public static final String PREF_LAST_OUTER_SHOWTIME = "pref_last_outer_showtime";
+    public static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
+    public static final String PREF_OUTER_SHOW_TIMES = "pref_outer_show_times";
 }

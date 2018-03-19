@@ -52,6 +52,7 @@ public class OuterAdLoader {
     }
 
     public void init(AdAggs adAggs) {
+        PolicyManager.get(mContext).init();
         mAdAggs = adAggs;
         if (mAdAggs == null) {
             return;
