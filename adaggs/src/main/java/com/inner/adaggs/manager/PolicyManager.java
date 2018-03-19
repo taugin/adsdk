@@ -3,6 +3,8 @@ package com.inner.adaggs.manager;
 import android.content.Context;
 
 import com.inner.adaggs.config.AdPolicy;
+import com.inner.adaggs.log.Log;
+import com.inner.adaggs.utils.Utils;
 
 /**
  * Created by Administrator on 2018/3/19.
@@ -46,5 +48,102 @@ public class PolicyManager {
 
     public boolean isOuterShowing() {
         return mOuterShowing;
+    }
+
+    /**
+     * 配置是否允许
+     * @return
+     */
+    private boolean isConfigAllow() {
+        return true;
+    }
+
+    /**
+     * 延迟间隔是否允许
+     * @return
+     */
+    private boolean isDelayAllow() {
+        return true;
+    }
+
+    /**
+     * 展示间隔是否允许
+     * @return
+     */
+    private boolean isIntervalAllow() {
+        return true;
+    }
+
+    /**
+     * 最大展示数是否允许
+     * @return
+     */
+    private boolean isMaxShowAllow() {
+        return true;
+    }
+
+    /**
+     * 归因是否允许, 基本包含 来源、国家、属性(自然/非自然)
+     * @return
+     */
+    private boolean isAttributionAllow() {
+        return true;
+    }
+
+    private boolean outerEnabled() {
+        if (!isConfigAllow()) {
+            Log.d(Log.TAG, "config not allowed");
+            return false;
+        }
+
+        if (!isAttributionAllow()) {
+            Log.d(Log.TAG, "attribution not allowed");
+            return false;
+        }
+
+        if (!isDelayAllow()) {
+            Log.d(Log.TAG, "delay not allowed");
+            return false;
+        }
+
+        if (!isIntervalAllow()) {
+            Log.d(Log.TAG, "interval not allowed");
+            return false;
+        }
+
+        if (!isMaxShowAllow()) {
+            Log.d(Log.TAG, "maxshow not allowed");
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean shouldShowingOuter() {
+        if (!outerEnabled()) {
+            Log.d(Log.TAG, "outer not enabled");
+            return false;
+        }
+
+        if (isOuterShowing()) {
+            Log.d(Log.TAG, "outer is showing");
+            return false;
+        }
+
+        if (Utils.isTopActivy(mContext)) {
+            Log.d(Log.TAG, "app is on the top");
+            return false;
+        }
+
+        if (Utils.isScreenLocked(mContext)) {
+            Log.d(Log.TAG, "screen is locked");
+            return false;
+        }
+
+        if (!Utils.isScreenOn(mContext)) {
+            Log.d(Log.TAG, "screen is not on");
+            return false;
+        }
+        return true;
     }
 }
