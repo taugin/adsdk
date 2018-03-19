@@ -88,6 +88,10 @@ public class PidConfig {
         return TextUtils.equals(Constant.AD_SDK_FACEBOOK, sdk);
     }
 
+    public boolean isAdx() {
+        return TextUtils.equals(Constant.AD_SDK_ADX, sdk);
+    }
+
     public boolean isBannerType() {
         return TextUtils.equals(Constant.TYPE_BANNER, adType);
     }

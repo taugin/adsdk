@@ -7,6 +7,7 @@ package com.inner.adaggs.constant;
 public class Constant {
     public static final String AD_SDK_ADMOB = "admob";
     public static final String AD_SDK_FACEBOOK = "fb";
+    public static final String AD_SDK_ADX = "adx";
 
 
     public static final int NOSET = -1;

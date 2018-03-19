@@ -20,6 +20,7 @@ public class AdExtra {
     public static final String TEMPLATE_SUFFIX = "_template";
 
     public static final String KEY_ADMOB_BANNER_SIZE = Constant.AD_SDK_ADMOB + BANNER_SIZE_SUFFIX;
+    public static final String KEY_ADX_BANNER_SIZE = Constant.AD_SDK_ADX + BANNER_SIZE_SUFFIX;
     public static final String KEY_FB_ROOTVIEW = Constant.AD_SDK_FACEBOOK + ROOT_VIEW_SUFFIX;
     public static final String KEY_FB_TEMPLATE = Constant.AD_SDK_FACEBOOK + TEMPLATE_SUFFIX;
 }

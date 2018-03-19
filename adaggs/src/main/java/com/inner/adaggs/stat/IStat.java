@@ -17,6 +17,16 @@ public interface IStat {
     public void reportAdmobInterstitialShow(Context context, String pidName, Object extra);
     public void reportAdmobInterstitialClick(Context context, String pidName, Object extra);
 
+    public void reportAdxBannerRequest(Context context, String pidName, Object extra);
+    public void reportAdxBannerLoaded(Context context, String pidName, Object extra);
+    public void reportAdxBannerShow(Context context, String pidName, Object extra);
+    public void reportAdxBannerClick(Context context, String pidName, Object extra);
+
+    public void reportAdxInterstitialRequest(Context context, String pidName, Object extra);
+    public void reportAdxInterstitialLoaded(Context context, String pidName, Object extra);
+    public void reportAdxInterstitialShow(Context context, String pidName, Object extra);
+    public void reportAdxInterstitialClick(Context context, String pidName, Object extra);
+
     public void reportFBInterstitialRequest(Context context, String pidName, Object extra);
     public void reportFBInterstitialLoaded(Context context, String pidName, Object extra);
     public void reportFBInterstitialShow(Context context, String pidName, Object extra);

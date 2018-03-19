@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.inner.adaggs.AdExtra;
 import com.inner.adaggs.adloader.adfb.FBLoader;
 import com.inner.adaggs.adloader.admob.AdmobLoader;
+import com.inner.adaggs.adloader.adx.AdxLoader;
 import com.inner.adaggs.adloader.listener.IAdLoader;
 import com.inner.adaggs.adloader.listener.IManagerListener;
 import com.inner.adaggs.adloader.listener.OnAdBaseListener;
@@ -69,6 +70,13 @@ public class AdPlaceLoader implements IManagerListener {
                             mAdLoaders.add(loader);
                         } else if (config.isFB()) {
                             loader = new FBLoader();
+                            loader.init(mContext, adId);
+                            loader.setPidConfig(config);
+                            loader.setListenerManager(this);
+                            mAdLoaders.remove(loader);
+                            mAdLoaders.add(loader);
+                        } else if (config.isAdx()) {
+                            loader = new AdxLoader();
                             loader.init(mContext, adId);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
