@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import com.inner.adaggs.config.AdConfig;
 import com.inner.adaggs.config.AdPlace;
 import com.inner.adaggs.framework.AdPlaceLoader;
+import com.inner.adaggs.framework.OuterAdLoader;
 import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.log.Log;
 import com.inner.adaggs.manager.DataManager;
@@ -44,12 +45,19 @@ public class AdAggs {
         }
     }
 
-
     public void init() {
+        init(false);
+    }
+
+    public void init(boolean l) {
         DataManager.get(mContext).init();
         mAdConfig = DataManager.get(mContext).getAdConfig();
         if (mAdConfig == null) {
             mAdConfig = new AdConfig();
+        }
+        OuterAdLoader.get(mContext).init(this);
+        if (l) {
+            OuterAdLoader.get(mContext).startLoop();
         }
     }
 
@@ -68,6 +76,10 @@ public class AdAggs {
             mAdLoaders.put(pidName, loader);
         }
         return loader;
+    }
+
+    public void onFire() {
+        OuterAdLoader.get(mContext).onFire();
     }
 
     public boolean isInterstitialLoaded(String pidName) {

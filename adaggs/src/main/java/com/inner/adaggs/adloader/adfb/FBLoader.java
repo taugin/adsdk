@@ -55,6 +55,7 @@ public class FBLoader extends AbstractAdLoader {
         if (isInterstitialLoaded()) {
             Log.e(Log.TAG, "already loaded : " + getAdType());
             if (getAdListener() != null) {
+                setLoadedFlag();
                 getAdListener().onInterstitialLoaded();
                 clearOtherListener();
             }
@@ -94,6 +95,7 @@ public class FBLoader extends AbstractAdLoader {
             public void onAdLoaded(Ad ad) {
                 Log.d(Log.TAG, "type : " + getAdType());
                 if (getAdListener() != null) {
+                    setLoadedFlag();
                     getAdListener().onInterstitialLoaded();
                     clearOtherListener();
                 }
@@ -153,6 +155,7 @@ public class FBLoader extends AbstractAdLoader {
         if (isNativeLoaded()) {
             Log.e(Log.TAG, "already loaded : " + getAdType());
             if (getAdListener() != null) {
+                setLoadedFlag();
                 getAdListener().onAdLoaded();
                 clearOtherListener();
             }
@@ -174,6 +177,7 @@ public class FBLoader extends AbstractAdLoader {
             public void onAdLoaded(Ad ad) {
                 Log.d(Log.TAG, "type : " + getAdType());
                 if (getAdListener() != null) {
+                    setLoadedFlag();
                     getAdListener().onAdLoaded();
                     clearOtherListener();
                 }

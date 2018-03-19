@@ -498,8 +498,7 @@ public class AdPlaceLoader implements IManagerListener {
         Log.d(Log.TAG, "");
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
-                if (loader != null && loader.isPriority()) {
-                    loader.setPriority(false);
+                if (loader != null && loader.useAndClearFlag()) {
                     if (loader.isBannerLoaded()) {
                         loader.showBanner(adContainer);
                         return;

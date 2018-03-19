@@ -78,12 +78,6 @@
             "pid": "ca-mb-app-pub-7850146945256374/5850313518/8256806509",
             "type": "interstitial",
             "ctr": 0
-          },
-          {
-            "sdk": "admob",
-            "pid": "ca-mb-app-pub-7850146945256374/5850313518/3359823945",
-            "type": "banner",
-            "ctr": 0
           }
         ]
       },

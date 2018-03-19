@@ -23,7 +23,7 @@ public class AbstractAdLoader implements IAdLoader {
     protected IStat mStat;
     protected IManagerListener mManagerListener;
     protected String mAdId;
-    private   boolean mPriority = false;
+    private   boolean mLoadedFlag = false;
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -140,13 +140,15 @@ public class AbstractAdLoader implements IAdLoader {
     }
 
     @Override
-    public void setPriority(boolean isPro) {
-        mPriority = isPro;
+    public void setLoadedFlag() {
+        mLoadedFlag = true;
     }
 
     @Override
-    public boolean isPriority() {
-        return mPriority;
+    public boolean useAndClearFlag() {
+        boolean flag = mLoadedFlag;
+        mLoadedFlag = false;
+        return flag;
     }
 
     protected boolean checkPidConfig() {
@@ -173,8 +175,6 @@ public class AbstractAdLoader implements IAdLoader {
     }
 
     protected void clearOtherListener() {
-        // 设置优先
-        setPriority(true);
         if (mManagerListener != null) {
             mManagerListener.clearAdBaseListener(this);
         }

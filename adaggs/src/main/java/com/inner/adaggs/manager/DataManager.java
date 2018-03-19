@@ -119,6 +119,7 @@ public class DataManager implements OnDataListener {
         List<DevInfo> list = mIParser.parseDevList(data);
         String content = mIParser.parseContent(data);
         saveContent(status, list, content);
+        parseAdConfig(status, content);
     }
 
     private void parseAdConfig(long status, String content) {

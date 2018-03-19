@@ -63,7 +63,7 @@ public interface IAdLoader {
 
     public boolean isInterstitialType();
 
-    public void setPriority(boolean isPro);
+    public void setLoadedFlag();
 
-    public boolean isPriority();
+    public boolean useAndClearFlag();
 }

@@ -26,7 +26,14 @@ public class Constant {
     public static final String TYPE_NATIVE = "native";
     public static final String TYPE_INTERSTITIAL = "interstitial";
 
+    public static final String P_TYPE_OUTER = "outer";
+
+    public static final String P_TYPE_FILM = "film";
+
     public static final String KEY_PASSWORD = "123456789";
 
     public static final String GTAG_APP_CONFIG = "gtag_ads_config";
+
+    public static final String ACTION_ALARM = "com.inner.adaggs.intent.action.ALARM";
+    public static final long ALARM_INTERVAL_TIME = 1 * 60 * 1000;
 }

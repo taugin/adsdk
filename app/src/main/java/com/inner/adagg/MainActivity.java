@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAdContainer = findViewById(R.id.ad_container);
-        AdAggs.get(this).init();
+        AdAggs.get(this).init(true);
 
         if (true) {
             AdAggs.get(this).loadInterstitial("open_social", new SimpleAdAggsListener() {
