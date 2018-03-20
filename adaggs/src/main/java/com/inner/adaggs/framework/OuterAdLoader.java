@@ -16,6 +16,7 @@ import com.inner.adaggs.listener.SimpleAdAggsListener;
 import com.inner.adaggs.log.Log;
 import com.inner.adaggs.manager.DataManager;
 import com.inner.adaggs.manager.PolicyManager;
+import com.inner.adaggs.stat.StatImpl;
 
 import java.util.List;
 
@@ -94,11 +95,13 @@ public class OuterAdLoader {
                 return;
             }
             Log.d(Log.TAG, "");
+            StatImpl.get().reportAdOuterRequest(mContext);
             mAdAggs.loadMixedAds(mOuterPlace.getName(), new SimpleAdAggsListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     mAdAggs.showMixedAds(pidName, null);
+                    StatImpl.get().reportAdOuterShow(mContext);
                 }
 
                 @Override

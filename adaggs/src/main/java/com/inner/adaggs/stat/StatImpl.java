@@ -46,7 +46,8 @@ public class StatImpl implements IStat {
 
     public void init(Context context) {
         String trackId = Utils.getMetaData(context, "ga_tracker_id");
-        String channelId = Utils.getMetaData(context, "ga_channel_id");;
+        String channelId = Utils.getMetaData(context, "ga_channel_id");
+        ;
         GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
         tracker = analytics.newTracker(trackId);
         tracker.enableExceptionReporting(true);
@@ -73,20 +74,28 @@ public class StatImpl implements IStat {
         return builder.toString();
     }
 
-    private void sendGoogleAnalytics(String pidName, String eventId, String category) {
-        Map<String, String> event = new HitBuilders.EventBuilder()
-                .setCategory(category)
-                .setAction(eventId)
-                .setLabel(pidName)
-                .build();
+    private void sendGoogleAnalytics(String label, String action, String category) {
+        HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder();
+        if (!TextUtils.isEmpty(category)) {
+            builder.setCategory(category);
+        }
+        if (!TextUtils.isEmpty(action)) {
+            builder.setAction(action);
+        }
+        if (!TextUtils.isEmpty(label)) {
+            builder.setLabel(label);
+        }
+        Map<String, String> event = builder.build();
         if (tracker != null) {
             tracker.send(event);
         }
     }
 
-    private void sendUmeng(Context context, String pidName, String eventId, Map<String, String> extra) {
+    private void sendUmeng(Context context, String value, String eventId, Map<String, String> extra) {
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("entry_point", pidName);
+        if (!TextUtils.isEmpty(value)) {
+            map.put("entry_point", value);
+        }
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, String> entry : extra.entrySet()) {
                 if (entry != null) {
@@ -101,9 +110,23 @@ public class StatImpl implements IStat {
             Method method = clazz.getDeclaredMethod("onEvent", Context.class, String.class, Map.class);
             method.invoke(null, context, eventId, map);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e);
+        }
+    }
+
+    private void sendAppsflyer(Context context, String value, String eventId, Map<String, String> extra) {
+        Map<String, Object> eventValue = new HashMap<>();
+        if (!TextUtils.isEmpty(value)) {
+            eventValue.put("entry_point", value);
+        }
+        try {
+            Class<?> clazz = Class.forName("com.appsflyer.AppsFlyerLib");
+            Method method = clazz.getMethod("getInstance");
+            Object instance = method.invoke(null);
+            method = clazz.getMethod("trackEvent", Context.class, String.class, Map.class);
+            method.invoke(instance, context, eventId, eventValue);
+        } catch (Exception e) {
+        } catch (Error e) {
         }
     }
 
@@ -116,7 +139,8 @@ public class StatImpl implements IStat {
         String category = "user_action";
         sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
-        Log.d(Log.TAG, "key : " + eventId + " , value : " + pidName + " , category : " + category);
+        sendAppsflyer(context, pidName, eventId, extra);
+        Log.v(Log.TAG, "key : " + eventId + " , value : " + pidName + " , category : " + category);
     }
 
     @Override
@@ -128,7 +152,8 @@ public class StatImpl implements IStat {
         String category = "user_action";
         sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
-        Log.d(Log.TAG, "key : " + eventId + " , value : " + pidName + " , category : " + category);
+        sendAppsflyer(context, pidName, eventId, extra);
+        Log.v(Log.TAG, "key : " + eventId + " , value : " + pidName + " , category : " + category);
     }
 
     @Override
@@ -140,7 +165,8 @@ public class StatImpl implements IStat {
         String category = "user_action";
         sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
-        Log.d(Log.TAG, "key : " + eventId + " , value : " + pidName + " , category : " + category);
+        sendAppsflyer(context, pidName, eventId, extra);
+        Log.v(Log.TAG, "key : " + eventId + " , value : " + pidName + " , category : " + category);
     }
 
     @Override
@@ -152,6 +178,31 @@ public class StatImpl implements IStat {
         String category = "user_action";
         sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
-        Log.d(Log.TAG, "key : " + eventId + " , value : " + pidName + " , category : " + category);
+        sendAppsflyer(context, pidName, eventId, extra);
+        Log.v(Log.TAG, "key : " + eventId + " , value : " + pidName + " , category : " + category);
+    }
+
+    @Override
+    public void reportAdOuterRequest(Context context) {
+        if (context == null) {
+            return;
+        }
+        String eventId = "outer_gt_request";
+        String category = "user_action";
+        sendGoogleAnalytics(null, eventId, category);
+        sendUmeng(context, null, eventId, null);
+        Log.v(Log.TAG, "");
+    }
+
+    @Override
+    public void reportAdOuterShow(Context context) {
+        if (context == null) {
+            return;
+        }
+        String eventId = "outer_gt_show";
+        String category = "user_action";
+        sendGoogleAnalytics(null, eventId, category);
+        sendUmeng(context, null, eventId, null);
+        Log.v(Log.TAG, "");
     }
 }
