@@ -10,6 +10,7 @@ import com.inner.adaggs.framework.OuterAdLoader;
 import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.log.Log;
 import com.inner.adaggs.manager.DataManager;
+import com.inner.adaggs.stat.StatImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +51,7 @@ public class AdAggs {
     }
 
     public void init(boolean l) {
+        StatImpl.get().init(mContext);
         DataManager.get(mContext).init();
         mAdConfig = DataManager.get(mContext).getAdConfig();
         if (mAdConfig == null) {

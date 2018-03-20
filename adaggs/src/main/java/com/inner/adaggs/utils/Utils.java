@@ -6,6 +6,7 @@ import android.app.KeyguardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -424,5 +425,20 @@ public class Utils {
             Log.e(Log.TAG, "error : " + e);
         }
         return pi;
+    }
+
+    public static String getMetaData(Context context, String name) {
+        String value = null;
+        try {
+            ApplicationInfo appInfo = context.getPackageManager()
+                    .getApplicationInfo(context.getPackageName(),
+                            PackageManager.GET_META_DATA);
+            if (appInfo != null) {
+                value = appInfo.metaData.get(name).toString();
+            }
+        } catch (Exception e) {
+            Log.d(Log.TAG, "error : " + e);
+        }
+        return value;
     }
 }

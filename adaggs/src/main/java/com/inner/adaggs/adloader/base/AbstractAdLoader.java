@@ -11,6 +11,7 @@ import com.inner.adaggs.adloader.listener.OnAdBaseListener;
 import com.inner.adaggs.config.PidConfig;
 import com.inner.adaggs.log.Log;
 import com.inner.adaggs.stat.IStat;
+import com.inner.adaggs.stat.StatImpl;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -34,6 +35,7 @@ public class AbstractAdLoader implements IAdLoader {
     public void init(Context context, String adId) {
         mContext = context;
         mAdId = adId;
+        mStat = StatImpl.get();
     }
 
     @Override

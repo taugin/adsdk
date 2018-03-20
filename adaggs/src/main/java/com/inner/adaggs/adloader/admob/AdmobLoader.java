@@ -76,7 +76,7 @@ public class AdmobLoader extends AbstractAdLoader {
         adView.setAdListener(new AdListener(){
             @Override
             public void onAdClosed() {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
@@ -84,7 +84,7 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
-                Log.d(Log.TAG, "reason : " + i + " , type : " + getAdType());
+                Log.v(Log.TAG, "reason : " + i + " , type : " + getAdType());
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed();
                 }
@@ -92,12 +92,12 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdLeftApplication() {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
             }
 
             @Override
             public void onAdOpened() {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -105,10 +105,10 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdLoaded() {
-                Log.d(Log.TAG, "type : " + getAdType());
+                Log.v(Log.TAG, "type : " + getAdType());
                 bannerView = adView;
                 if (mStat != null) {
-                    mStat.reportAdmobBannerLoaded(mContext, getPidName(), null);
+                    mStat.reportAdLoaded(mContext, getPidName(), getSdkName(), getAdType(), null);
                 }
                 if (getAdListener() != null) {
                     setLoadedFlag();
@@ -119,9 +119,9 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdClicked() {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
                 if (mStat != null) {
-                    mStat.reportAdmobBannerClick(mContext, getPidName(), null);
+                    mStat.reportAdClick(mContext, getPidName(), getSdkName(), getAdType(), null);
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
@@ -130,7 +130,7 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdImpression() {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onAdShow();
                 }
@@ -138,9 +138,9 @@ public class AdmobLoader extends AbstractAdLoader {
         });
         adView.loadAd(new AdRequest.Builder().build());
         if (mStat != null) {
-            mStat.reportAdmobBannerRequest(mContext, getPidName(), null);
+            mStat.reportAdRequest(mContext, getPidName(), getSdkName(), getAdType(), null);
         }
-        Log.d(Log.TAG, "");
+        Log.v(Log.TAG, "");
     }
 
     @Override
@@ -150,7 +150,7 @@ public class AdmobLoader extends AbstractAdLoader {
 
     @Override
     public void showBanner(ViewGroup viewGroup) {
-        Log.d(Log.TAG, "");
+        Log.v(Log.TAG, "");
         try {
             viewGroup.removeAllViews();
             viewGroup.addView(bannerView);
@@ -159,7 +159,7 @@ public class AdmobLoader extends AbstractAdLoader {
             }
             bannerView = null;
             if (mStat != null) {
-                mStat.reportAdmobBannerShow(mContext, getPidName(), null);
+                mStat.reportAdShow(mContext, getPidName(), getSdkName(), getAdType(), null);
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
@@ -193,7 +193,7 @@ public class AdmobLoader extends AbstractAdLoader {
         interstitialAd.setAdListener(new AdListener(){
             @Override
             public void onAdClosed() {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
@@ -209,20 +209,20 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdLeftApplication() {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialClick();
                 }
                 if (mStat != null) {
-                    mStat.reportAdmobInterstitialClick(mContext, getPidName(), null);
+                    mStat.reportAdClick(mContext, getPidName(), getSdkName(), getAdType(), null);
                 }
             }
 
             @Override
             public void onAdOpened() {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
                 if (mStat != null) {
-                    mStat.reportAdmobInterstitialShow(mContext, getPidName(), null);
+                    mStat.reportAdShow(mContext, getPidName(), getSdkName(), getAdType(), null);
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -231,9 +231,9 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdLoaded() {
-                Log.d(Log.TAG, "type : " + getAdType());
+                Log.v(Log.TAG, "type : " + getAdType());
                 if (mStat != null) {
-                    mStat.reportAdmobInterstitialLoaded(mContext, getPidName(), null);
+                    mStat.reportAdLoaded(mContext, getPidName(), getSdkName(), getAdType(), null);
                 }
                 if (getAdListener() != null) {
                     setLoadedFlag();
@@ -244,19 +244,19 @@ public class AdmobLoader extends AbstractAdLoader {
 
             @Override
             public void onAdClicked() {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
             }
 
             @Override
             public void onAdImpression() {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
             }
         });
         interstitialAd.loadAd(new AdRequest.Builder().build());
         if (mStat != null) {
-            mStat.reportAdmobInterstitialRequest(mContext, getPidName(), null);
+            mStat.reportAdRequest(mContext, getPidName(), getSdkName(), getAdType(), null);
         }
-        Log.d(Log.TAG, "");
+        Log.v(Log.TAG, "");
     }
 
     @Override

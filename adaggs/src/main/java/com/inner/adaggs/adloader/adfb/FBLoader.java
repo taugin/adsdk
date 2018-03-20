@@ -65,18 +65,18 @@ public class FBLoader extends AbstractAdLoader {
         fbInterstitial.setAdListener(new InterstitialAdListener() {
             @Override
             public void onInterstitialDisplayed(Ad ad) {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
                 if (mStat != null) {
-                    mStat.reportFBInterstitialShow(mContext, getPidName(), null);
+                    mStat.reportAdShow(mContext, getPidName(), getSdkName(), getAdType(), null);
                 }
             }
 
             @Override
             public void onInterstitialDismissed(Ad ad) {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
                 fbInterstitial = null;
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
@@ -85,7 +85,7 @@ public class FBLoader extends AbstractAdLoader {
 
             @Override
             public void onError(Ad ad, AdError adError) {
-                Log.d(Log.TAG, "error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , type : " + getAdType());
+                Log.v(Log.TAG, "error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , type : " + getAdType());
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError();
                 }
@@ -93,38 +93,38 @@ public class FBLoader extends AbstractAdLoader {
 
             @Override
             public void onAdLoaded(Ad ad) {
-                Log.d(Log.TAG, "type : " + getAdType());
+                Log.v(Log.TAG, "type : " + getAdType());
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onInterstitialLoaded();
                     clearOtherListener();
                 }
                 if (mStat != null) {
-                    mStat.reportFBInterstitialLoaded(mContext, getPidName(), null);
+                    mStat.reportAdLoaded(mContext, getPidName(), getSdkName(), getAdType(), null);
                 }
             }
 
             @Override
             public void onAdClicked(Ad ad) {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialClick();
                 }
                 if (mStat != null) {
-                    mStat.reportFBInterstitialClick(mContext, getPidName(), null);
+                    mStat.reportAdClick(mContext, getPidName(), getSdkName(), getAdType(), null);
                 }
             }
 
             @Override
             public void onLoggingImpression(Ad ad) {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
             }
         });
         fbInterstitial.loadAd();
         if (mStat != null) {
-            mStat.reportFBInterstitialRequest(mContext, getPidName(), null);
+            mStat.reportAdRequest(mContext, getPidName(), getSdkName(), getAdType(), null);
         }
-        Log.d(Log.TAG, "");
+        Log.v(Log.TAG, "");
     }
 
     @Override
@@ -175,44 +175,44 @@ public class FBLoader extends AbstractAdLoader {
 
             @Override
             public void onAdLoaded(Ad ad) {
-                Log.d(Log.TAG, "type : " + getAdType());
+                Log.v(Log.TAG, "type : " + getAdType());
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onAdLoaded();
                     clearOtherListener();
                 }
                 if (mStat != null) {
-                    mStat.reportFBNativeLoaded(mContext, getPidName(), null);
+                    mStat.reportAdLoaded(mContext, getPidName(), getSdkName(), getAdType(), null);
                 }
             }
 
             @Override
             public void onAdClicked(Ad ad) {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
                 if (mStat != null) {
-                    mStat.reportFBNativeClick(mContext, getPidName(), null);
+                    mStat.reportAdClick(mContext, getPidName(), getSdkName(), getAdType(), null);
                 }
             }
 
             @Override
             public void onLoggingImpression(Ad ad) {
-                Log.d(Log.TAG, "");
+                Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onAdImpression();
                 }
                 if (mStat != null) {
-                    mStat.reportFBNativeShow(mContext, getPidName(), null);
+                    mStat.reportAdShow(mContext, getPidName(), getSdkName(), getAdType(), null);
                 }
             }
         });
         nativeAd.loadAd(EnumSet.of(NativeAd.MediaCacheFlag.IMAGE));
         if (mStat != null) {
-            mStat.reportFBNativeRequest(mContext, getPidName(), null);
+            mStat.reportAdRequest(mContext, getPidName(), getSdkName(), getAdType(), null);
         }
-        Log.d(Log.TAG, "");
+        Log.v(Log.TAG, "");
     }
 
     @Override
