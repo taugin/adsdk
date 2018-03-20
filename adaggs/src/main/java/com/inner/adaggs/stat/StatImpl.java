@@ -41,7 +41,6 @@ public class StatImpl implements IStat {
     private StatImpl() {
     }
 
-
     private Tracker tracker;
 
     public void init(Context context) {

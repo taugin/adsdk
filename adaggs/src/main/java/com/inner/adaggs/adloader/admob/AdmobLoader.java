@@ -58,7 +58,7 @@ public class AdmobLoader extends AbstractAdLoader {
             return;
         }
         if (bannerView != null) {
-            Log.e(Log.TAG, "already loaded : " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded();
@@ -180,7 +180,7 @@ public class AdmobLoader extends AbstractAdLoader {
             return;
         }
         if (isInterstitialLoaded()) {
-            Log.e(Log.TAG, "already loaded : " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded();

@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class AdxLoader extends AbstractAdLoader {
 
-    protected static final Map<Integer, AdSize> ADSIZE = new HashMap<>();
+    private static final Map<Integer, AdSize> ADSIZE = new HashMap<Integer, AdSize>();
 
     static {
         ADSIZE.put(Constant.BANNER, AdSize.BANNER);
@@ -58,7 +58,7 @@ public class AdxLoader extends AbstractAdLoader {
             return;
         }
         if (bannerView != null) {
-            Log.e(Log.TAG, "already loaded : " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded();
@@ -180,7 +180,7 @@ public class AdxLoader extends AbstractAdLoader {
             return;
         }
         if (isInterstitialLoaded()) {
-            Log.e(Log.TAG, "already loaded : " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded();
