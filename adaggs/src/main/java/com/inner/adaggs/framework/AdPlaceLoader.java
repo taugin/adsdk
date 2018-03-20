@@ -11,7 +11,7 @@ import com.inner.adaggs.adloader.adx.AdxLoader;
 import com.inner.adaggs.adloader.listener.IAdLoader;
 import com.inner.adaggs.adloader.listener.IManagerListener;
 import com.inner.adaggs.adloader.listener.OnAdBaseListener;
-import com.inner.adaggs.adloader.listener.SimpleAdBaseBaseListener;
+import com.inner.adaggs.adloader.base.SimpleAdBaseBaseListener;
 import com.inner.adaggs.config.AdPlace;
 import com.inner.adaggs.config.PidConfig;
 import com.inner.adaggs.constant.Constant;

@@ -1,5 +1,6 @@
-package com.inner.adaggs.adloader.listener;
+package com.inner.adaggs.adloader.base;
 
+import com.inner.adaggs.adloader.listener.OnAdBaseListener;
 import com.inner.adaggs.listener.OnAdAggsListener;
 
 /**
