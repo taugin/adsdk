@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdListener;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
 import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdListener;
 import com.facebook.ads.NativeAd;
@@ -14,6 +16,7 @@ import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.log.Log;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -21,14 +24,110 @@ import java.util.EnumSet;
 
 public class FBLoader extends AbstractAdLoader {
 
+    private static final HashMap<Integer, AdSize> ADSIZE = new HashMap<Integer, AdSize>();
+
+    static {
+        ADSIZE.put(Constant.BANNER, AdSize.BANNER_HEIGHT_50);
+        ADSIZE.put(Constant.LARGE_BANNER, AdSize.BANNER_HEIGHT_90);
+        ADSIZE.put(Constant.MEDIUM_RECTANGLE, AdSize.RECTANGLE_HEIGHT_250);
+    }
+
     private InterstitialAd fbInterstitial;
     private NativeAd nativeAd;
     private View nativeRootView;
     private int mNativeTemplate;
+    private AdView bannerView;
 
     @Override
     public String getSdkName() {
         return Constant.AD_SDK_FACEBOOK;
+    }
+
+    @Override
+    public void loadBanner(int adSize) {
+        if (!checkPidConfig()) {
+            return;
+        }
+        if (bannerView != null) {
+            Log.d(Log.TAG, "already loaded : " + getAdType());
+            if (getAdListener() != null) {
+                setLoadedFlag();
+                getAdListener().onAdLoaded();
+                clearOtherListener();
+            }
+            return;
+        }
+        AdSize size = ADSIZE.get(adSize);
+        if (size == null) {
+            size = AdSize.BANNER_HEIGHT_50;
+        }
+        final AdView adView = new AdView(mContext, mPidConfig.getPid(), size);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                Log.v(Log.TAG, "error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , type : " + getAdType());
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed();
+                }
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                Log.v(Log.TAG, "type : " + getAdType());
+                bannerView = adView;
+                if (mStat != null) {
+                    mStat.reportAdLoaded(mContext, getPidName(), getSdkName(), getAdType(), null);
+                }
+                if (getAdListener() != null) {
+                    setLoadedFlag();
+                    getAdListener().onAdLoaded();
+                    clearOtherListener();
+                }
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                Log.v(Log.TAG, "");
+                if (mStat != null) {
+                    mStat.reportAdClick(mContext, getPidName(), getSdkName(), getAdType(), null);
+                }
+                if (getAdListener() != null) {
+                    getAdListener().onAdClick();
+                }
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onAdShow();
+                }
+            }
+        });
+        adView.loadAd();
+    }
+
+    @Override
+    public boolean isBannerLoaded() {
+        return bannerView != null;
+    }
+
+    @Override
+    public void showBanner(ViewGroup viewGroup) {
+        Log.v(Log.TAG, "");
+        try {
+            viewGroup.removeAllViews();
+            viewGroup.addView(bannerView);
+            if (viewGroup.getVisibility() != View.VISIBLE) {
+                viewGroup.setVisibility(View.VISIBLE);
+            }
+            bannerView = null;
+            if (mStat != null) {
+                mStat.reportAdShow(mContext, getPidName(), getSdkName(), getAdType(), null);
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
     }
 
     @Override
@@ -53,7 +152,7 @@ public class FBLoader extends AbstractAdLoader {
             return;
         }
         if (isInterstitialLoaded()) {
-            Log.e(Log.TAG, "already loaded : " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded();
@@ -153,7 +252,7 @@ public class FBLoader extends AbstractAdLoader {
             return;
         }
         if (isNativeLoaded()) {
-            Log.e(Log.TAG, "already loaded : " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded();
@@ -232,6 +331,9 @@ public class FBLoader extends AbstractAdLoader {
     public void destroy() {
         if (fbInterstitial != null) {
             fbInterstitial.destroy();
+        }
+        if (bannerView != null) {
+            bannerView.destroy();
         }
     }
 }
