@@ -40,44 +40,69 @@ public class PolicyManager {
     private boolean mOuterShowing = false;
 
     public void init() {
-        updateFirstStartUpTime();
+        reportFirstStartUpTime();
     }
 
     public void setPolicy(AdPolicy adPolicy) {
         mAdPolicy = adPolicy;
     }
 
-    public void setOuterShowing(boolean showing) {
+    /**
+     * 记录ad展示标记
+     * @param showing
+     */
+    public void reportOuterShowing(boolean showing) {
         mOuterShowing = showing;
         if (mOuterShowing) {
             updateLastShowTime();
-            updateTotalShowTimes();
+            reportTotalShowTimes();
         }
     }
 
+    /**
+     * 返回ad是否展示
+     * @return
+     */
     public boolean isOuterShowing() {
         return mOuterShowing;
     }
 
+    /**
+     * 更新ad最后展示时间
+     */
     private void updateLastShowTime() {
         Utils.putLong(mContext, Constant.PREF_LAST_OUTER_SHOWTIME, System.currentTimeMillis());
     }
 
+    /**
+     * 获取ad最后展示时间
+     * @return
+     */
     private long getLastShowTime() {
         return Utils.getLong(mContext, Constant.PREF_LAST_OUTER_SHOWTIME, 0);
     }
 
-    private void updateFirstStartUpTime() {
+    /**
+     * 记录应用首次启动时间
+     */
+    private void reportFirstStartUpTime() {
         if (Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0) <= 0) {
             Utils.putLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, System.currentTimeMillis());
         }
     }
 
+    /**
+     * 获取应用首次展示时间
+     * @return
+     */
     private long getFirstStartUpTime() {
         return Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0);
     }
 
-    private void updateTotalShowTimes() {
+    /**
+     * 记录ad展示次数
+     */
+    private void reportTotalShowTimes() {
         long times = getTotalShowTimes();
         times += 1;
         if (times < 0) {
@@ -86,6 +111,10 @@ public class PolicyManager {
         Utils.putLong(mContext, Constant.PREF_OUTER_SHOW_TIMES, times);
     }
 
+    /**
+     * 获取ad展示次数
+     * @return
+     */
     private long getTotalShowTimes() {
         return Utils.getLong(mContext, Constant.PREF_OUTER_SHOW_TIMES, 0);
     }
@@ -106,12 +135,12 @@ public class PolicyManager {
      * @return
      */
     private boolean isDelayAllow() {
-        if (mAdPolicy != null) {
+        if (mAdPolicy != null && mAdPolicy.getUpDelay() > 0) {
             long now = System.currentTimeMillis();
             long firstStartTime = getFirstStartUpTime();
             return now - firstStartTime > mAdPolicy.getUpDelay();
         }
-        return false;
+        return true;
     }
 
     /**
@@ -119,12 +148,12 @@ public class PolicyManager {
      * @return
      */
     private boolean isIntervalAllow() {
-        if (mAdPolicy != null) {
+        if (mAdPolicy != null && mAdPolicy.getInterval() > 0) {
             long now = System.currentTimeMillis();
             long last = getLastShowTime();
             return now - last > mAdPolicy.getInterval();
         }
-        return false;
+        return true;
     }
 
     /**
@@ -132,9 +161,21 @@ public class PolicyManager {
      * @return
      */
     private boolean isMaxShowAllow() {
-        if (mAdPolicy != null) {
+        if (mAdPolicy != null && mAdPolicy.getMaxShow() > 0) {
             long times = getTotalShowTimes();
             return times <= mAdPolicy.getMaxShow();
+        }
+        return true;
+    }
+
+    /**
+     * 判断版本号是否允许
+     * @return
+     */
+    private boolean isAppVerAllow() {
+        if (mAdPolicy != null && mAdPolicy.getMaxVersion() > 0) {
+            int verCode = Utils.getVersionCode(mContext);
+            return verCode <= mAdPolicy.getMaxVersion();
         }
         return true;
     }
@@ -147,7 +188,7 @@ public class PolicyManager {
         return true;
     }
 
-    private boolean outerEnabled() {
+    private boolean checkAdOuterConfig() {
         if (!isConfigAllow()) {
             Log.d(Log.TAG, "config not allowed");
             return false;
@@ -173,11 +214,15 @@ public class PolicyManager {
             return false;
         }
 
+        if (!isAppVerAllow()) {
+            Log.d(Log.TAG, "maxver not allowed");
+            return false;
+        }
         return true;
     }
 
-    public boolean shouldShowingOuter() {
-        if (!outerEnabled()) {
+    public boolean shouldShowAdOuter() {
+        if (!checkAdOuterConfig()) {
             return false;
         }
 

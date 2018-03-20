@@ -90,7 +90,7 @@ public class OuterAdLoader {
 
     private void fireOuterAd() {
         if (mOuterPlace != null && mAdAggs != null) {
-            if (!PolicyManager.get(mContext).shouldShowingOuter()) {
+            if (!PolicyManager.get(mContext).shouldShowAdOuter()) {
                 return;
             }
             Log.d(Log.TAG, "");
@@ -104,13 +104,13 @@ public class OuterAdLoader {
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    PolicyManager.get(mContext).setOuterShowing(false);
+                    PolicyManager.get(mContext).reportOuterShowing(false);
                 }
 
                 @Override
                 public void onShow(String pidName, String source, String adType) {
                     Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    PolicyManager.get(mContext).setOuterShowing(true);
+                    PolicyManager.get(mContext).reportOuterShowing(true);
                 }
             });
         }

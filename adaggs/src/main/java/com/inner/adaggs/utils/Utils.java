@@ -385,4 +385,44 @@ public class Utils {
         boolean isScreenLocked = mKeyguardManager.inKeyguardRestrictedInputMode();
         return isScreenLocked;
     }
+
+    /**
+     * 获取版本名称
+     * @param context
+     * @return
+     */
+    public static String getVersionName(Context context) {
+        try {
+            return getPackageInfo(context).versionName;
+        } catch(Exception e) {
+        }
+        return null;
+    }
+
+    /**
+     * 获取版本号
+     * @param context
+     * @return
+     */
+    public static int getVersionCode(Context context) {
+        try {
+            return getPackageInfo(context).versionCode;
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return -1;
+    }
+
+    private static PackageInfo getPackageInfo(Context context) {
+        PackageInfo pi = null;
+        try {
+            PackageManager pm = context.getPackageManager();
+            pi = pm.getPackageInfo(context.getPackageName(),
+                    PackageManager.GET_CONFIGURATIONS);
+            return pi;
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return pi;
+    }
 }

@@ -35,7 +35,7 @@ public class Log {
         if (isLoggable(tag, DEBUG)) {
             String extraString = getMethodNameAndLineNumber();
             tag = privateTag() ? tag : getTag();
-            android.util.Log.e(tag, extraString + message);
+            android.util.Log.d(tag, extraString + message);
         }
     }
 
