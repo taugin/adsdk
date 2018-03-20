@@ -47,13 +47,14 @@ public class StatImpl implements IStat {
     public void init(Context context) {
         String trackId = Utils.getMetaData(context, "ga_tracker_id");
         String channelId = Utils.getMetaData(context, "ga_channel_id");
-        ;
-        GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
-        tracker = analytics.newTracker(trackId);
-        tracker.enableExceptionReporting(true);
-        tracker.enableAdvertisingIdCollection(true);
-        tracker.enableAutoActivityTracking(true);
-        tracker.set("&cd1", channelId);
+        if (!TextUtils.isEmpty(trackId)) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
+            tracker = analytics.newTracker(trackId);
+            tracker.enableExceptionReporting(true);
+            tracker.enableAdvertisingIdCollection(true);
+            tracker.enableAutoActivityTracking(true);
+            tracker.set("&cd1", channelId);
+        }
     }
 
     private boolean checkArgument(Context context, String pidName, String sdk, String type) {
