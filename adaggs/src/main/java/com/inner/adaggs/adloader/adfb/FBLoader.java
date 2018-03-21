@@ -131,6 +131,14 @@ public class FBLoader extends AbstractAdLoader {
     }
 
     @Override
+    public boolean isBannerType() {
+        if (mPidConfig != null) {
+            return mPidConfig.isBannerType();
+        }
+        return super.isBannerType();
+    }
+
+    @Override
     public boolean isNativeType() {
         if (mPidConfig != null) {
             return mPidConfig.isNativeType();
