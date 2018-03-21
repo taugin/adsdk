@@ -1,11 +1,17 @@
 package com.inner.adaggs.manager;
 
 import android.content.Context;
+import android.os.Build;
+import android.text.TextUtils;
 
 import com.inner.adaggs.config.AdPolicy;
 import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.log.Log;
 import com.inner.adaggs.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2018/3/19.
@@ -49,6 +55,7 @@ public class PolicyManager {
 
     /**
      * 记录ad展示标记
+     *
      * @param showing
      */
     public void reportOuterShowing(boolean showing) {
@@ -61,6 +68,7 @@ public class PolicyManager {
 
     /**
      * 返回ad是否展示
+     *
      * @return
      */
     public boolean isOuterShowing() {
@@ -76,6 +84,7 @@ public class PolicyManager {
 
     /**
      * 获取ad最后展示时间
+     *
      * @return
      */
     private long getLastShowTime() {
@@ -93,6 +102,7 @@ public class PolicyManager {
 
     /**
      * 获取应用首次展示时间
+     *
      * @return
      */
     private long getFirstStartUpTime() {
@@ -113,14 +123,38 @@ public class PolicyManager {
 
     /**
      * 获取ad展示次数
+     *
      * @return
      */
     private long getTotalShowTimes() {
         return Utils.getLong(mContext, Constant.PREF_OUTER_SHOW_TIMES, 0);
     }
 
+    private String getAFStatus() {
+        return Utils.getString(mContext, "af_status");
+    }
+
+    private String getCountry() {
+        String country = null;
+        try {
+            Locale locale = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                locale = mContext.getResources().getConfiguration().getLocales().get(0);
+            } else {
+                locale = mContext.getResources().getConfiguration().locale;
+            }
+            country = locale.getCountry();
+        } catch(Exception e) {
+        }
+        if (!TextUtils.isEmpty(country)) {
+            country = country.toLowerCase(Locale.getDefault());
+        }
+        return country;
+    }
+
     /**
      * 配置是否允许
+     *
      * @return
      */
     private boolean isConfigAllow() {
@@ -132,6 +166,7 @@ public class PolicyManager {
 
     /**
      * 延迟间隔是否允许
+     *
      * @return
      */
     private boolean isDelayAllow() {
@@ -145,6 +180,7 @@ public class PolicyManager {
 
     /**
      * 展示间隔是否允许
+     *
      * @return
      */
     private boolean isIntervalAllow() {
@@ -158,6 +194,7 @@ public class PolicyManager {
 
     /**
      * 最大展示数是否允许
+     *
      * @return
      */
     private boolean isMaxShowAllow() {
@@ -170,6 +207,7 @@ public class PolicyManager {
 
     /**
      * 判断版本号是否允许
+     *
      * @return
      */
     private boolean isAppVerAllow() {
@@ -181,10 +219,55 @@ public class PolicyManager {
     }
 
     /**
-     * 归因是否允许, 基本包含 来源、国家、属性(自然/非自然)
+     * 归因是否允许(自然/非自然)
+     *
      * @return
      */
     private boolean isAttributionAllow() {
+        String afStatus = getAFStatus();
+        if (mAdPolicy != null) {
+            List<String> attr = mAdPolicy.getAttrList();
+            if (attr != null && !attr.contains(afStatus)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isCountryAllow() {
+        String country = getCountry();
+        Log.d(Log.TAG, "country : " + country);
+        if (mAdPolicy != null) {
+            List<String> countryList = mAdPolicy.getCountryList();
+            if (countryList != null && !countryList.isEmpty()) {
+                List<String> includeCountries = new ArrayList<String>();
+                List<String> excludeCountries = new ArrayList<String>();
+                for (String s : countryList) {
+                    if (s != null) {
+                        if (s.startsWith("!")) {
+                            excludeCountries.add(s);
+                        } else {
+                            includeCountries.add(s);
+                        }
+                    }
+                }
+                if (includeCountries.size() > 0) {
+                    // 包含列表如果不包含当前国家，则返回false
+                    if (!includeCountries.contains(country)) {
+                        return false;
+                    }
+                } else if (excludeCountries.size() > 0) {
+                    // 排斥列表如果包含当前国家，则返回
+                    if (excludeCountries.contains("!" + country)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean isMediaSourceAllow() {
         return true;
     }
 
@@ -196,6 +279,16 @@ public class PolicyManager {
 
         if (!isAttributionAllow()) {
             Log.d(Log.TAG, "attribution not allowed");
+            return false;
+        }
+
+        if (!isCountryAllow()) {
+            Log.d(Log.TAG, "country not allowed");
+            return false;
+        }
+
+        if (!isMediaSourceAllow()) {
+            Log.d(Log.TAG, "mediasource not allowed");
             return false;
         }
 

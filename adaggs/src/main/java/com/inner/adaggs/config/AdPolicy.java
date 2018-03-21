@@ -10,7 +10,7 @@ public class AdPolicy {
     private boolean enable = true;
     private long upDelay;
     private long interval;
-    private int maxShow = 20;
+    private int maxShow;
     private int maxVersion;
 
     private List<String> countryList;
