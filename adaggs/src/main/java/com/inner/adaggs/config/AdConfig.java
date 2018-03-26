@@ -2,6 +2,7 @@ package com.inner.adaggs.config;
 
 import android.text.TextUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +60,31 @@ public class AdConfig {
             }
         }
         return null;
+    }
+
+    public void set(AdPlace adPlace) {
+        if (adPlace == null) {
+            return;
+        }
+        if (adPlaceList == null) {
+            adPlaceList = new ArrayList<AdPlace>();
+        }
+        int len = adPlaceList.size();
+        AdPlace p = null;
+        boolean replaced = false;
+        for (int index = 0; index < len; index++) {
+            p = adPlaceList.get(index);
+            if (p != null) {
+                if (TextUtils.equals(p.getName(), adPlace.getName())) {
+                    adPlaceList.set(index, adPlace);
+                    replaced = true;
+                    break;
+                }
+            }
+        }
+        if (!replaced) {
+            adPlaceList.add(adPlace);
+        }
     }
 
     @Override

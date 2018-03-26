@@ -181,9 +181,6 @@ public class AdParser implements IParser {
             if (jobj.has(MODE)) {
                 adPlace.setMode(jobj.getString(MODE));
             }
-            if (jobj.has(PTYPE)) {
-                adPlace.setPtype(jobj.getString(PTYPE));
-            }
             if (jobj.has(MAXCOUNT)) {
                 adPlace.setMaxCount(jobj.getInt(MAXCOUNT));
             }
@@ -231,12 +228,6 @@ public class AdParser implements IParser {
             }
             if (jobj.has(TYPE)) {
                 pidConfig.setAdType(jobj.getString(TYPE));
-            }
-            if (jobj.has(OUTER)) {
-                pidConfig.setOuter(jobj.getInt(OUTER));
-            }
-            if (jobj.has(FILM)) {
-                pidConfig.setFilm(jobj.getInt(FILM));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

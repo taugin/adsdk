@@ -4,6 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.inner.adaggs.config.AdConfig;
+import com.inner.adaggs.config.AdPlace;
+import com.inner.adaggs.config.AdPolicy;
 import com.inner.adaggs.config.DevInfo;
 import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.framework.Aes;
@@ -19,6 +21,7 @@ import com.inner.adaggs.utils.Utils;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/2/12.
@@ -159,5 +162,17 @@ public class DataManager implements OnDataListener {
             }
         }
         return false;
+    }
+
+    public AdPlace getAdPlace(String key) {
+        return null;
+    }
+
+    public AdPolicy getAdPolicy(String key) {
+        return null;
+    }
+
+    public Map<String, String> getAdIds(String key) {
+        return null;
     }
 }

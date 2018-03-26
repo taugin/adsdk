@@ -40,4 +40,8 @@ public class Constant {
     public static final String PREF_LAST_OUTER_SHOWTIME = "pref_last_outer_showtime";
     public static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
     public static final String PREF_OUTER_SHOW_TIMES = "pref_outer_show_times";
+    public static final String ADPLACE_OUTER_NAME = "ad_outer_place";
+    public static final String ADPLACE_FILM_NAME = "ad_film_place";
+    public static final String ADIDS_NAME = "adids";
+    public static final String ADPOLICY_NAME = "ad_policy";
 }

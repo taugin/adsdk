@@ -22,8 +22,6 @@ public class AdPlace {
 
     private int percent;
 
-    private String ptype; // inner : 应用内(默认), outer : 应用外, film : 贴片
-
     public String getName() {
         return name;
     }
@@ -85,14 +83,6 @@ public class AdPlace {
 
     public boolean isRandom() {
         return TextUtils.equals(Constant.MODE_RAN, getMode());
-    }
-
-    public String getPtype() {
-        return ptype;
-    }
-
-    public void setPtype(String ptype) {
-        this.ptype = ptype;
     }
 
     @Override

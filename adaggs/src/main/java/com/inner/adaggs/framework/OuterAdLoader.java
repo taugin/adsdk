@@ -18,8 +18,6 @@ import com.inner.adaggs.manager.DataManager;
 import com.inner.adaggs.manager.PolicyManager;
 import com.inner.adaggs.stat.StatImpl;
 
-import java.util.List;
-
 /**
  * Created by Administrator on 2018/3/19.
  */
@@ -62,18 +60,32 @@ public class OuterAdLoader {
         if (adConfig == null) {
             return;
         }
-        AdPolicy adPolicy = adConfig.getAdPolicy();
-        List<AdPlace> adList = adConfig.getAdPlaceList();
-        PolicyManager.get(mContext).setPolicy(adPolicy);
-        if (adList != null && !adList.isEmpty()) {
-            for (AdPlace ad : adList) {
-                if (ad != null && Constant.P_TYPE_OUTER.equals(ad.getPtype())) {
-                    mOuterPlace = ad;
-                } else if (ad != null && Constant.P_TYPE_FILM.equals(ad.getPtype())) {
-                    mFilmPlace = ad;
-                }
-            }
+
+        AdPolicy adPolicy = DataManager.get(mContext).getAdPolicy(Constant.ADPOLICY_NAME);
+        if (adPolicy == null && adConfig != null) {
+            adPolicy = adConfig.getAdPolicy();
+        } else {
+            adConfig.setAdPolicy(adPolicy);
         }
+        PolicyManager.get(mContext).setPolicy(adPolicy);
+
+        // 加载应用外广告
+        AdPlace adPlace = DataManager.get(mContext).getAdPlace(Constant.ADPLACE_OUTER_NAME);
+        if (adPlace == null) {
+            adPlace = adConfig.get(Constant.ADPLACE_OUTER_NAME);
+        } else {
+            adConfig.set(adPlace);
+        }
+        mOuterPlace = adPlace;
+
+        // 加载贴片广告
+        adPlace = DataManager.get(mContext).getAdPlace(Constant.ADPLACE_FILM_NAME);
+        if (adPlace == null) {
+            adPlace = adConfig.get(Constant.ADPLACE_FILM_NAME);
+        } else {
+            adConfig.set(adPlace);
+        }
+        mFilmPlace = adPlace;
     }
 
     public void startLoop() {

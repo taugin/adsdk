@@ -33,9 +33,6 @@ public interface IParser {
     String CTR = "ctr";
     String TYPE = "type";
 
-    String OUTER = "outer";
-    String FILM = "film";
-
     int parseStatus(String data);
     List<DevInfo> parseDevList(String data);
     String parseContent(String data);

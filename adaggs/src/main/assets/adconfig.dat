@@ -64,9 +64,8 @@
         "percent": 100
       },
       {
-        "name": "app_out",
+        "name": "ad_outer_place",
         "mode": "con",
-        "ptype": "outer",
         "pids": [
           {
             "sdk": "fb",
@@ -89,9 +88,8 @@
         ]
       },
       {
-        "name": "app_out",
+        "name": "ad_film_place",
         "mode": "con",
-        "ptype": "outer",
         "pids": [
           {
             "sdk": "fb",
