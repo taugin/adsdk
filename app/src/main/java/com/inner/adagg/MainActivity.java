@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    AdAggs.get(MainActivity.this).showAdView("main_top", mAdContainer);
+                    AdAggs.get(MainActivity.this).showAdView(pidName, mAdContainer);
                 }
 
                 @Override

@@ -42,7 +42,7 @@ public class GTagDataRequest implements IDataRequest {
                 }
                 String data = null;
                 if (container != null) {
-                    data = container.getString(Constant.GTAG_APP_CONFIG);
+                    data = container.getString(Constant.GTAG_ADS_CONFIG);
                 }
                 if (TextUtils.isEmpty(data)) {
                     Log.e(Log.TAG, "empty gtag app config");
