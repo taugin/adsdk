@@ -103,7 +103,7 @@ public class DataManager implements OnDataListener {
                 parseAdConfig(status, data);
             } else {
                 data = Utils.readAssets(mContext, "adconfig.dat");
-                processData(data);
+                processData(data, false);
             }
         }
         return mAdConfig;
@@ -114,14 +114,16 @@ public class DataManager implements OnDataListener {
         if (TextUtils.isEmpty(data)) {
             return;
         }
-        processData(data);
+        processData(data, true);
     }
 
-    private void processData(String data) {
+    private void processData(String data, boolean remote) {
         int status = mParser.parseStatus(data);
         List<DevInfo> list = mParser.parseDevList(data);
         String content = mParser.parseContent(data);
-        saveContent(status, list, content);
+        if (remote) {
+            saveContent(status, list, content);
+        }
         parseAdConfig(status, content);
     }
 
