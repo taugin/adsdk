@@ -11,7 +11,7 @@ import com.inner.adaggs.adloader.listener.IManagerListener;
 import com.inner.adaggs.adloader.listener.OnAdBaseListener;
 import com.inner.adaggs.config.PidConfig;
 import com.inner.adaggs.log.Log;
-import com.inner.adaggs.manager.PidPolicy;
+import com.inner.adaggs.policy.PidPolicy;
 import com.inner.adaggs.stat.IStat;
 import com.inner.adaggs.stat.StatImpl;
 

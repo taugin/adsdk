@@ -14,7 +14,7 @@ import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.listener.SimpleAdAggsListener;
 import com.inner.adaggs.log.Log;
 import com.inner.adaggs.manager.DataManager;
-import com.inner.adaggs.manager.OuterPolicy;
+import com.inner.adaggs.policy.OuterPolicy;
 import com.inner.adaggs.stat.StatImpl;
 
 /**

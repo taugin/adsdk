@@ -1,4 +1,4 @@
-package com.inner.adaggs.manager;
+package com.inner.adaggs.policy;
 
 import android.content.Context;
 
