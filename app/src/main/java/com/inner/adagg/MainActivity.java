@@ -81,7 +81,7 @@ public class MainActivity extends Activity {
             });
         }
 
-        //AdAggs.get(this).loadMixedAds("app_out", mOnAdAggsListener);
+        //AdAggs.get(this).loadComplexAds("app_out", mOnAdAggsListener);
     }
 
     public void onClick(View v) {
@@ -92,10 +92,10 @@ public class MainActivity extends Activity {
                 AdAggs.get(this).loadInterstitial("open_social");
             }
         } else {
-            if (AdAggs.get(this).isMixedAdsLoaded("app_out")) {
-                AdAggs.get(this).showMixedAds("app_out", mAdContainer);
+            if (AdAggs.get(this).isComplexAdsLoaded("app_out")) {
+                AdAggs.get(this).showComplexAds("app_out", mAdContainer);
             } else {
-                AdAggs.get(this).loadMixedAds("app_out", mOnAdAggsListener);
+                AdAggs.get(this).loadComplexAds("app_out", mOnAdAggsListener);
             }
         }
     }

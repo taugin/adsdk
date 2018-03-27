@@ -162,34 +162,34 @@ public class AdAggs {
         }
     }
 
-    public boolean isMixedAdsLoaded(String pidName) {
+    public boolean isComplexAdsLoaded(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            return loader.isMixedAdsLoaded();
+            return loader.isComplexAdsLoaded();
         }
         return false;
     }
 
-    public void loadMixedAds(String pidName) {
-        loadMixedAds(pidName, null, null);
+    public void loadComplexAds(String pidName) {
+        loadComplexAds(pidName, null, null);
     }
 
-    public void loadMixedAds(String pidName, OnAdAggsListener l) {
-        loadMixedAds(pidName, null, l);
+    public void loadComplexAds(String pidName, OnAdAggsListener l) {
+        loadComplexAds(pidName, null, l);
     }
 
-    public void loadMixedAds(String pidName, Map<String, Object> extra, OnAdAggsListener l) {
+    public void loadComplexAds(String pidName, Map<String, Object> extra, OnAdAggsListener l) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             loader.setOnAdAggsListener(l);
-            loader.loadMixedAds(extra);
+            loader.loadComplexAds(extra);
         }
     }
 
-    public void showMixedAds(String pidName, ViewGroup adContainer) {
+    public void showComplexAds(String pidName, ViewGroup adContainer) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            loader.showMixedAds(adContainer);
+            loader.showComplexAds(adContainer);
         }
     }
 

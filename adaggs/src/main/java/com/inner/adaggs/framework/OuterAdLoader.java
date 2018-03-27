@@ -89,11 +89,11 @@ public class OuterAdLoader {
             }
             Log.d(Log.TAG, "");
             StatImpl.get().reportAdOuterRequest(mContext);
-            mAdAggs.loadMixedAds(Constant.ADPLACE_OUTER_NAME, new SimpleAdAggsListener() {
+            mAdAggs.loadComplexAds(Constant.ADPLACE_OUTER_NAME, new SimpleAdAggsListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    mAdAggs.showMixedAds(pidName, null);
+                    mAdAggs.showComplexAds(pidName, null);
                     StatImpl.get().reportAdOuterShow(mContext);
                 }
 

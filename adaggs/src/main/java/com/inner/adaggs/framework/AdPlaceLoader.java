@@ -381,7 +381,7 @@ public class AdPlaceLoader implements IManagerListener {
      * 混合广告是否加载成功
      * @return
      */
-    public boolean isMixedAdsLoaded() {
+    public boolean isComplexAdsLoaded() {
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null
@@ -417,23 +417,23 @@ public class AdPlaceLoader implements IManagerListener {
      * 加载混合广告
      * @param extra
      */
-    public void loadMixedAds(Map<String, Object> extra) {
+    public void loadComplexAds(Map<String, Object> extra) {
         if (mAdPlace == null) {
             return;
         }
         mAdExtra = extra;
         if (mAdPlace.isConcurrent()) {
-            loadMixedAdsConcurrent();
+            loadComplexAdsConcurrent();
         } else if (mAdPlace.isSequence()) {
-            loadMixedAdsSequence();
+            loadComplexAdsSequence();
         } else if (mAdPlace.isRandom()) {
-            loadMixedAdsRandom();
+            loadComplexAdsRandom();
         } else {
-            loadMixedAdsConcurrent();
+            loadComplexAdsConcurrent();
         }
     }
 
-    private void loadMixedAdsConcurrent() {
+    private void loadComplexAdsConcurrent() {
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null) {
@@ -457,12 +457,12 @@ public class AdPlaceLoader implements IManagerListener {
         }
     }
 
-    private void loadMixedAdsSequence() {
+    private void loadComplexAdsSequence() {
         final Iterator<IAdLoader> iterator = mAdLoaders.iterator();
-        loadMixedAdsSequenceInternal(iterator);
+        loadComplexAdsSequenceInternal(iterator);
     }
 
-    private void loadMixedAdsSequenceInternal(final Iterator<IAdLoader> iterator) {
+    private void loadComplexAdsSequenceInternal(final Iterator<IAdLoader> iterator) {
         if (iterator == null || !iterator.hasNext()) {
             return;
         }
@@ -473,8 +473,8 @@ public class AdPlaceLoader implements IManagerListener {
                 @Override
                 public void onAdFailed() {
                     if (iterator.hasNext()) {
-                        Log.e(Log.TAG, "load next mixed");
-                        loadMixedAdsSequenceInternal(iterator);
+                        Log.e(Log.TAG, "load next complex");
+                        loadComplexAdsSequenceInternal(iterator);
                     } else {
                         super.onAdFailed();
                     }
@@ -483,8 +483,8 @@ public class AdPlaceLoader implements IManagerListener {
                 @Override
                 public void onInterstitialError() {
                     if (iterator.hasNext()) {
-                        Log.e(Log.TAG, "load next mixed");
-                        loadMixedAdsSequenceInternal(iterator);
+                        Log.e(Log.TAG, "load next complex");
+                        loadComplexAdsSequenceInternal(iterator);
                     } else {
                         super.onInterstitialError();
                     }
@@ -502,7 +502,7 @@ public class AdPlaceLoader implements IManagerListener {
         }
     }
 
-    private void loadMixedAdsRandom() {
+    private void loadComplexAdsRandom() {
         if (mAdLoaders != null) {
             int pos = new Random().nextInt(mAdLoaders.size());
             IAdLoader loader = mAdLoaders.get(pos);
@@ -526,7 +526,7 @@ public class AdPlaceLoader implements IManagerListener {
      * 展示混合广告
      * @param adContainer
      */
-    public void showMixedAds(ViewGroup adContainer) {
+    public void showComplexAds(ViewGroup adContainer) {
         Log.d(Log.TAG, "");
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
