@@ -1,6 +1,7 @@
 package com.inner.adaggs.adloader.base;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,17 @@ import com.inner.adaggs.log.Log;
 import com.inner.adaggs.stat.IStat;
 import com.inner.adaggs.stat.StatImpl;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Created by Administrator on 2018/2/9.
  */
 
 public class AbstractAdLoader implements IAdLoader {
 
+    protected static final long MAX_CACHED_TIME = 30 * 60 * 1000;
+    private   static Map<Object, Long> mCachedTime = new ConcurrentHashMap<Object, Long>();
     protected PidConfig mPidConfig;
     protected Context mContext;
     protected IStat mStat;
@@ -193,5 +199,22 @@ public class AbstractAdLoader implements IAdLoader {
 
     protected synchronized void setLoading(boolean loading) {
         mLoading = loading;
+    }
+
+    protected void putCachedAdTime(Object object) {
+        mCachedTime.put(object, SystemClock.elapsedRealtime());
+    }
+
+    protected boolean isCachedAdExpired(Object object) {
+        long cachedTime = mCachedTime.get(object);
+//        Log.d(Log.TAG, "cachedTime : " + cachedTime);
+        if (cachedTime <= 0) {
+            return true;
+        }
+        return SystemClock.elapsedRealtime() - cachedTime > MAX_CACHED_TIME;
+    }
+
+    protected void clearCachedAdTime(Object object) {
+        mCachedTime.remove(object);
     }
 }

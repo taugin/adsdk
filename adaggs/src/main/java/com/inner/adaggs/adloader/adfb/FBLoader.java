@@ -48,7 +48,7 @@ public class FBLoader extends AbstractAdLoader {
         if (!checkPidConfig()) {
             return;
         }
-        if (bannerView != null) {
+        if (isBannerLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
             if (getAdListener() != null) {
                 setLoadedFlag();
@@ -82,6 +82,7 @@ public class FBLoader extends AbstractAdLoader {
                 Log.v(Log.TAG, "type : " + getAdType());
                 setLoading(false);
                 bannerView = adView;
+                putCachedAdTime(adView);
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
@@ -116,13 +117,14 @@ public class FBLoader extends AbstractAdLoader {
 
     @Override
     public boolean isBannerLoaded() {
-        return bannerView != null;
+        return bannerView != null && !isCachedAdExpired(bannerView);
     }
 
     @Override
     public void showBanner(ViewGroup viewGroup) {
         Log.v(Log.TAG, "");
         try {
+            clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
             viewGroup.addView(bannerView);
             if (viewGroup.getVisibility() != View.VISIBLE) {
@@ -156,7 +158,7 @@ public class FBLoader extends AbstractAdLoader {
     @Override
     public boolean isInterstitialLoaded() {
         if (fbInterstitial != null) {
-            return fbInterstitial.isAdLoaded();
+            return fbInterstitial.isAdLoaded() && !isCachedAdExpired(fbInterstitial);
         }
         return super.isInterstitialLoaded();
     }
@@ -215,6 +217,7 @@ public class FBLoader extends AbstractAdLoader {
             public void onAdLoaded(Ad ad) {
                 Log.v(Log.TAG, "type : " + getAdType());
                 setLoading(false);
+                putCachedAdTime(fbInterstitial);
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onInterstitialLoaded();
@@ -252,6 +255,7 @@ public class FBLoader extends AbstractAdLoader {
     public boolean showInterstitial() {
         if (fbInterstitial != null && fbInterstitial.isAdLoaded()) {
             fbInterstitial.show();
+            clearCachedAdTime(fbInterstitial);
             return true;
         }
         return false;
@@ -260,7 +264,7 @@ public class FBLoader extends AbstractAdLoader {
     @Override
     public boolean isNativeLoaded() {
         if (nativeAd != null) {
-            return nativeAd.isAdLoaded();
+            return nativeAd.isAdLoaded() && !isCachedAdExpired(nativeAd);
         }
         return super.isNativeLoaded();
     }
@@ -304,6 +308,7 @@ public class FBLoader extends AbstractAdLoader {
             public void onAdLoaded(Ad ad) {
                 Log.v(Log.TAG, "type : " + getAdType());
                 setLoading(false);
+                putCachedAdTime(nativeAd);
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onAdLoaded();
@@ -346,6 +351,7 @@ public class FBLoader extends AbstractAdLoader {
     @Override
     public void showNative(ViewGroup viewGroup) {
         FBBindNativeView fbBindNativeView = new FBBindNativeView();
+        clearCachedAdTime(nativeAd);
         if (nativeRootView != null) {
             // 使用用户传递的view
             fbBindNativeView.bindNative(nativeRootView, nativeAd, mPidConfig);

@@ -168,16 +168,25 @@ public class DataManager implements OnDataListener {
 
     public AdPlace getAdPlace(String key) {
         String data = mDataRequest.getString(key);
-        return mParser.parseAdPlace(data);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseAdPlace(data);
+        }
+        return null;
     }
 
     public AdPolicy getAdPolicy(String key) {
         String data = mDataRequest.getString(key);
-        return mParser.parseAdPolicy(data);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseAdPolicy(data);
+        }
+        return null;
     }
 
     public Map<String, String> getAdIds(String key) {
         String data = mDataRequest.getString(key);
-        return mParser.parseAdIds(data);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseAdIds(data);
+        }
+        return null;
     }
 }

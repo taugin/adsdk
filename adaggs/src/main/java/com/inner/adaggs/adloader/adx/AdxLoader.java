@@ -55,7 +55,7 @@ public class AdxLoader extends AbstractAdLoader {
         if (!checkPidConfig()) {
             return;
         }
-        if (bannerView != null) {
+        if (isBannerLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
             if (getAdListener() != null) {
                 setLoadedFlag();
@@ -76,7 +76,7 @@ public class AdxLoader extends AbstractAdLoader {
         final AdView adView = new AdView(mContext);
         adView.setAdUnitId(mPidConfig.getPid());
         adView.setAdSize(size);
-        adView.setAdListener(new AdListener(){
+        adView.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
                 Log.v(Log.TAG, "");
@@ -111,6 +111,7 @@ public class AdxLoader extends AbstractAdLoader {
             public void onAdLoaded() {
                 Log.v(Log.TAG, "type : " + getAdType());
                 setLoading(false);
+                putCachedAdTime(adView);
                 bannerView = adView;
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -150,13 +151,14 @@ public class AdxLoader extends AbstractAdLoader {
 
     @Override
     public boolean isBannerLoaded() {
-        return bannerView != null;
+        return bannerView != null && !isCachedAdExpired(bannerView);
     }
 
     @Override
     public void showBanner(ViewGroup viewGroup) {
         Log.v(Log.TAG, "");
         try {
+            clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
             viewGroup.addView(bannerView);
             if (viewGroup.getVisibility() != View.VISIBLE) {
@@ -174,7 +176,7 @@ public class AdxLoader extends AbstractAdLoader {
     @Override
     public boolean isInterstitialLoaded() {
         if (interstitialAd != null) {
-            return interstitialAd.isLoaded();
+            return interstitialAd.isLoaded() && !isCachedAdExpired(interstitialAd);
         }
         return super.isInterstitialLoaded();
     }
@@ -200,7 +202,7 @@ public class AdxLoader extends AbstractAdLoader {
         setLoading(true);
         interstitialAd = new InterstitialAd(mContext);
         interstitialAd.setAdUnitId(mPidConfig.getPid());
-        interstitialAd.setAdListener(new AdListener(){
+        interstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
                 Log.v(Log.TAG, "");
@@ -244,6 +246,7 @@ public class AdxLoader extends AbstractAdLoader {
             public void onAdLoaded() {
                 Log.v(Log.TAG, "type : " + getAdType());
                 setLoading(false);
+                putCachedAdTime(interstitialAd);
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
@@ -275,6 +278,7 @@ public class AdxLoader extends AbstractAdLoader {
     public boolean showInterstitial() {
         if (interstitialAd != null && interstitialAd.isLoaded()) {
             interstitialAd.show();
+            clearCachedAdTime(interstitialAd);
             return true;
         }
         return false;
