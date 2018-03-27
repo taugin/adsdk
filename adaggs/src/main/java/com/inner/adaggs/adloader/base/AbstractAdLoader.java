@@ -32,10 +32,14 @@ public class AbstractAdLoader implements IAdLoader {
     }
 
     @Override
-    public void init(Context context, String adId) {
+    public void init(Context context) {
         mContext = context;
-        mAdId = adId;
         mStat = StatImpl.get();
+    }
+
+    @Override
+    public void setAdId(String adId) {
+        mAdId = adId;
     }
 
     @Override
@@ -119,9 +123,9 @@ public class AbstractAdLoader implements IAdLoader {
     }
 
     @Override
-    public String getPidName() {
+    public String getAdPlaceName() {
         if (mPidConfig != null) {
-            return mPidConfig.getName();
+            return mPidConfig.getAdPlaceName();
         }
         return null;
     }

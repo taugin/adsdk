@@ -8,4 +8,5 @@ package com.inner.adaggs.request;
 public interface IDataRequest {
     public void request();
     public void setOnDataListener(OnDataListener l);
+    public String getString(String key);
 }

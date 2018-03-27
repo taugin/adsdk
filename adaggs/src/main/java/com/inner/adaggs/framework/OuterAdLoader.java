@@ -9,7 +9,6 @@ import android.os.SystemClock;
 
 import com.inner.adaggs.AdAggs;
 import com.inner.adaggs.config.AdConfig;
-import com.inner.adaggs.config.AdPlace;
 import com.inner.adaggs.config.AdPolicy;
 import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.listener.SimpleAdAggsListener;
@@ -28,8 +27,6 @@ public class OuterAdLoader {
 
     private Context mContext;
     private AdAggs mAdAggs;
-    private AdPlace mOuterPlace;
-    private AdPlace mFilmPlace;
 
     private OuterAdLoader(Context context) {
         mContext = context.getApplicationContext();
@@ -56,36 +53,19 @@ public class OuterAdLoader {
         if (mAdAggs == null) {
             return;
         }
+        updateAdPolicy();
+    }
+
+    private void updateAdPolicy() {
         AdConfig adConfig = DataManager.get(mContext).getAdConfig();
         if (adConfig == null) {
             return;
         }
-
         AdPolicy adPolicy = DataManager.get(mContext).getAdPolicy(Constant.ADPOLICY_NAME);
         if (adPolicy == null && adConfig != null) {
             adPolicy = adConfig.getAdPolicy();
-        } else {
-            adConfig.setAdPolicy(adPolicy);
         }
         PolicyManager.get(mContext).setPolicy(adPolicy);
-
-        // 加载应用外广告
-        AdPlace adPlace = DataManager.get(mContext).getAdPlace(Constant.ADPLACE_OUTER_NAME);
-        if (adPlace == null) {
-            adPlace = adConfig.get(Constant.ADPLACE_OUTER_NAME);
-        } else {
-            adConfig.set(adPlace);
-        }
-        mOuterPlace = adPlace;
-
-        // 加载贴片广告
-        adPlace = DataManager.get(mContext).getAdPlace(Constant.ADPLACE_FILM_NAME);
-        if (adPlace == null) {
-            adPlace = adConfig.get(Constant.ADPLACE_FILM_NAME);
-        } else {
-            adConfig.set(adPlace);
-        }
-        mFilmPlace = adPlace;
     }
 
     public void startLoop() {
@@ -102,13 +82,14 @@ public class OuterAdLoader {
     }
 
     private void fireOuterAd() {
-        if (mOuterPlace != null && mAdAggs != null) {
+        if (mAdAggs != null) {
+            updateAdPolicy();
             if (!PolicyManager.get(mContext).shouldShowAdOuter()) {
                 return;
             }
             Log.d(Log.TAG, "");
             StatImpl.get().reportAdOuterRequest(mContext);
-            mAdAggs.loadMixedAds(mOuterPlace.getName(), new SimpleAdAggsListener() {
+            mAdAggs.loadMixedAds(Constant.ADPLACE_OUTER_NAME, new SimpleAdAggsListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);

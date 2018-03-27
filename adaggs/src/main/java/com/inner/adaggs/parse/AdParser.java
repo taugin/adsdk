@@ -131,7 +131,8 @@ public class AdParser implements IParser {
         return adConfig;
     }
 
-    private Map<String, String> parseAdIds(String content) {
+    @Override
+    public Map<String, String> parseAdIds(String content) {
         Map<String, String> adIds = null;
         try {
             JSONObject jobj = new JSONObject(content);
@@ -149,7 +150,12 @@ public class AdParser implements IParser {
         return adIds;
     }
 
-    private AdPolicy parsePolicy(String content) throws Exception {
+    @Override
+    public AdPolicy parseAdPolicy(String data) {
+        return parsePolicy(data);
+    }
+
+    private AdPolicy parsePolicy(String content) {
         return new AdPolicy();
     }
 
@@ -170,7 +176,8 @@ public class AdParser implements IParser {
         return list;
     }
 
-    private AdPlace parseAdPlace(String content) {
+    @Override
+    public AdPlace parseAdPlace(String content) {
         AdPlace adPlace = null;
         try {
             JSONObject jobj = new JSONObject(content);

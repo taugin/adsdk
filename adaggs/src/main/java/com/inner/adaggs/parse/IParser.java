@@ -1,9 +1,12 @@
 package com.inner.adaggs.parse;
 
 import com.inner.adaggs.config.AdConfig;
+import com.inner.adaggs.config.AdPlace;
+import com.inner.adaggs.config.AdPolicy;
 import com.inner.adaggs.config.DevInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -37,5 +40,7 @@ public interface IParser {
     List<DevInfo> parseDevList(String data);
     String parseContent(String data);
     AdConfig parse(String data);
-
+    AdPlace parseAdPlace(String data);
+    AdPolicy parseAdPolicy(String data);
+    Map<String, String> parseAdIds(String data);
 }

@@ -54,4 +54,9 @@ public class HttpDataRequest implements IDataRequest {
     public void setOnDataListener(OnDataListener l) {
         mOnDataListener = l;
     }
+
+    @Override
+    public String getString(String key) {
+        return null;
+    }
 }

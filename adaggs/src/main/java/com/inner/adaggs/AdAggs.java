@@ -66,24 +66,36 @@ public class AdAggs {
 
     private AdPlaceLoader getAdLoader(String pidName) {
         AdPlaceLoader loader = mAdLoaders.get(pidName);
-        if (loader == null && mAdConfig != null) {
+        AdPlace adPlace = DataManager.get(mContext).getAdPlace(pidName);
+        Map<String, String> adids = DataManager.get(mContext).getAdIds(Constant.ADIDS_NAME);
+        if (loader == null || (!loader.isFromRemote() && adPlace != null)) {
+            loader = createAdPlaceLoader(pidName, adPlace, adids);
+            if (loader != null) {
+                mAdLoaders.remove(pidName);
+                mAdLoaders.put(pidName, loader);
+            }
+        }
+        return loader;
+    }
+
+    private AdPlaceLoader createAdPlaceLoader(String pidName, AdPlace adPlace, Map<String, String> adIds) {
+        AdPlaceLoader loader = null;
+        boolean useRemote = false;
+        if (adPlace == null) {
+            adPlace = mAdConfig.get(pidName);
+        } else {
+            useRemote = true;
+        }
+        if (adIds == null) {
+            adIds = mAdConfig.getAdIds();
+        }
+        Log.d(Log.TAG, "adPlace : " + adPlace);
+        if (adPlace != null) {
             loader = new AdPlaceLoader(mContext);
-            AdPlace adPlace = DataManager.get(mContext).getAdPlace(pidName);
-            if (adPlace == null) {
-                adPlace = mAdConfig.get(pidName);
-            } else {
-                mAdConfig.set(adPlace);
-            }
-            Log.d(Log.TAG, "adPlace : " + adPlace);
             loader.setAdPlaceConfig(adPlace);
-            Map<String, String> adIds = DataManager.get(mContext).getAdIds(Constant.ADIDS_NAME);
-            if (adIds == null) {
-                adIds = mAdConfig.getAdIds();
-            } else {
-                mAdConfig.setAdIds(adIds);
-            }
-            loader.init(adIds);
-            mAdLoaders.put(pidName, loader);
+            loader.setAdIds(adIds);
+            loader.init();
+            loader.setFromRemote(useRemote);
         }
         return loader;
     }

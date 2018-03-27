@@ -26,10 +26,11 @@ public class MainActivity extends Activity {
         AdAggs.get(this).init(true);
 
         if (true) {
-            AdAggs.get(this).loadInterstitial("open_social", new SimpleAdAggsListener() {
+            AdAggs.get(this).loadAdView("open_splash", new SimpleAdAggsListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    AdAggs.get(MainActivity.this).showAdView(pidName, mAdContainer);
                 }
 
                 @Override

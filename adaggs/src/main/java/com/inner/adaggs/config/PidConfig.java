@@ -10,7 +10,7 @@ import com.inner.adaggs.constant.Constant;
 
 public class PidConfig {
 
-    private String name;
+    private String adPlaceName;
 
     private String sdk;
 
@@ -20,12 +20,12 @@ public class PidConfig {
 
     private String adType;
 
-    public String getName() {
-        return name;
+    public String getAdPlaceName() {
+        return adPlaceName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAdPlaceName(String adPlaceName) {
+        this.adPlaceName = adPlaceName;
     }
 
     public String getSdk() {
@@ -87,7 +87,7 @@ public class PidConfig {
     @Override
     public String toString() {
         return "PidConfig{" +
-                "name='" + name + '\'' +
+                "adPlaceName='" + adPlaceName + '\'' +
                 ", sdk='" + sdk + '\'' +
                 ", pid='" + pid + '\'' +
                 ", ctr=" + ctr +

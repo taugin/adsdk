@@ -21,6 +21,7 @@ public class GTagDataRequest implements IDataRequest {
     private Context mContext;
     private String mContainerId;
     private OnDataListener mOnDataListener;
+    private Container mContainer;
 
     public GTagDataRequest(Context context, String containerId) {
         mContext = context;
@@ -45,7 +46,8 @@ public class GTagDataRequest implements IDataRequest {
                     data = container.getString(Constant.GTAG_ADS_CONFIG);
                 }
                 if (TextUtils.isEmpty(data)) {
-                    Log.e(Log.TAG, "empty gtag app config");
+                    Log.e(Log.TAG, "empty gtag ads config");
+                    mContainer = container;
                 } else {
                     Log.d(Log.TAG, "data : " + data);
                 }
@@ -59,5 +61,13 @@ public class GTagDataRequest implements IDataRequest {
     @Override
     public void setOnDataListener(OnDataListener l) {
         mOnDataListener = l;
+    }
+
+    @Override
+    public String getString(String key) {
+        if (mContainer != null) {
+            return mContainer.getString(key);
+        }
+        return null;
     }
 }

@@ -44,14 +44,14 @@ public class AdPlace {
 
     public void setPidsList(List<PidConfig> pidsList) {
         this.pidsList = pidsList;
-        setPidNames();
+        setAdPlaceNames();
     }
 
-    private void setPidNames() {
+    private void setAdPlaceNames() {
         if (pidsList != null && !pidsList.isEmpty()) {
             for (PidConfig config : pidsList) {
                 if (config != null) {
-                    config.setName(name);
+                    config.setAdPlaceName(name);
                 }
             }
         }

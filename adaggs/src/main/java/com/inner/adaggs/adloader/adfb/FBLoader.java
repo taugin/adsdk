@@ -76,7 +76,7 @@ public class FBLoader extends AbstractAdLoader {
                 Log.v(Log.TAG, "type : " + getAdType());
                 bannerView = adView;
                 if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getPidName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (getAdListener() != null) {
                     setLoadedFlag();
@@ -89,7 +89,7 @@ public class FBLoader extends AbstractAdLoader {
             public void onAdClicked(Ad ad) {
                 Log.v(Log.TAG, "");
                 if (mStat != null) {
-                    mStat.reportAdClick(mContext, getPidName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
@@ -123,7 +123,7 @@ public class FBLoader extends AbstractAdLoader {
             }
             bannerView = null;
             if (mStat != null) {
-                mStat.reportAdShow(mContext, getPidName(), getSdkName(), getAdType(), null);
+                mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
@@ -177,7 +177,7 @@ public class FBLoader extends AbstractAdLoader {
                     getAdListener().onInterstitialShow();
                 }
                 if (mStat != null) {
-                    mStat.reportAdShow(mContext, getPidName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
             }
 
@@ -207,7 +207,7 @@ public class FBLoader extends AbstractAdLoader {
                     clearOtherListener();
                 }
                 if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getPidName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
             }
 
@@ -218,7 +218,7 @@ public class FBLoader extends AbstractAdLoader {
                     getAdListener().onInterstitialClick();
                 }
                 if (mStat != null) {
-                    mStat.reportAdClick(mContext, getPidName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
             }
 
@@ -229,7 +229,7 @@ public class FBLoader extends AbstractAdLoader {
         });
         fbInterstitial.loadAd();
         if (mStat != null) {
-            mStat.reportAdRequest(mContext, getPidName(), getSdkName(), getAdType(), null);
+            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         Log.v(Log.TAG, "");
     }
@@ -289,7 +289,7 @@ public class FBLoader extends AbstractAdLoader {
                     clearOtherListener();
                 }
                 if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getPidName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
             }
 
@@ -300,7 +300,7 @@ public class FBLoader extends AbstractAdLoader {
                     getAdListener().onAdClick();
                 }
                 if (mStat != null) {
-                    mStat.reportAdClick(mContext, getPidName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
             }
 
@@ -311,13 +311,13 @@ public class FBLoader extends AbstractAdLoader {
                     getAdListener().onAdImpression();
                 }
                 if (mStat != null) {
-                    mStat.reportAdShow(mContext, getPidName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
             }
         });
         nativeAd.loadAd(EnumSet.of(NativeAd.MediaCacheFlag.IMAGE));
         if (mStat != null) {
-            mStat.reportAdRequest(mContext, getPidName(), getSdkName(), getAdType(), null);
+            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         Log.v(Log.TAG, "");
     }

@@ -14,7 +14,9 @@ public interface IAdLoader {
 
     public void setListenerManager(IManagerListener l);
 
-    public void init(Context context, String adId);
+    public void init(Context context);
+
+    public void setAdId(String adId);
 
     public Context getContext();
 
@@ -55,7 +57,7 @@ public interface IAdLoader {
 
     public void destroy();
 
-    public String getPidName();
+    public String getAdPlaceName();
 
     public boolean isBannerType();
 

@@ -49,17 +49,7 @@ public class DataManager implements OnDataListener {
 
     private DataManager(Context context) {
         mContext = context;
-    }
-
-    private IDataRequest mDataRequest;
-    private Context mContext;
-    private String mUrl;
-    private String mContainerId;
-    private AdConfig mAdConfig;
-    private IParser mIParser;
-
-    public void init() {
-        mIParser = new AdParser();
+        mParser = new AdParser();
         parseConfig();
         if (!TextUtils.isEmpty(mContainerId)) {
             mDataRequest = new GTagDataRequest(mContext, mContainerId);
@@ -68,6 +58,16 @@ public class DataManager implements OnDataListener {
         } else {
             Log.d(Log.TAG, "no container or url configed");
         }
+    }
+
+    private IDataRequest mDataRequest;
+    private Context mContext;
+    private String mUrl;
+    private String mContainerId;
+    private AdConfig mAdConfig;
+    private IParser mParser;
+
+    public void init() {
         if (mDataRequest != null) {
             mDataRequest.setOnDataListener(this);
             mDataRequest.request();
@@ -118,9 +118,9 @@ public class DataManager implements OnDataListener {
     }
 
     private void processData(String data) {
-        int status = mIParser.parseStatus(data);
-        List<DevInfo> list = mIParser.parseDevList(data);
-        String content = mIParser.parseContent(data);
+        int status = mParser.parseStatus(data);
+        List<DevInfo> list = mParser.parseDevList(data);
+        String content = mParser.parseContent(data);
         saveContent(status, list, content);
         parseAdConfig(status, content);
     }
@@ -132,7 +132,7 @@ public class DataManager implements OnDataListener {
         } else {
             adContent = content;
         }
-        mAdConfig = mIParser.parse(adContent);
+        mAdConfig = mParser.parse(adContent);
     }
 
     private void saveContent(int status, List<DevInfo> list, String content) {
@@ -165,14 +165,17 @@ public class DataManager implements OnDataListener {
     }
 
     public AdPlace getAdPlace(String key) {
-        return null;
+        String data = mDataRequest.getString(key);
+        return mParser.parseAdPlace(data);
     }
 
     public AdPolicy getAdPolicy(String key) {
-        return null;
+        String data = mDataRequest.getString(key);
+        return mParser.parseAdPolicy(data);
     }
 
     public Map<String, String> getAdIds(String key) {
-        return null;
+        String data = mDataRequest.getString(key);
+        return mParser.parseAdIds(data);
     }
 }
