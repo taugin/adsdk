@@ -68,4 +68,6 @@ public interface IAdLoader {
     public void setLoadedFlag();
 
     public boolean useAndClearFlag();
+
+    public boolean allowLoad();
 }
