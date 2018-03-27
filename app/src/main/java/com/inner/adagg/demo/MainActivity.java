@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.inner.adagg.R;
 import com.inner.adaggs.AdAggs;
 import com.inner.adaggs.AdExtra;
 import com.inner.adaggs.listener.OnAdAggsListener;
@@ -126,4 +125,14 @@ public class MainActivity extends Activity {
             Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }

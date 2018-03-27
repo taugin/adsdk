@@ -3,8 +3,6 @@ package com.inner.adagg.demo;
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
-import com.inner.adagg.BuildConfig;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;

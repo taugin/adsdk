@@ -89,7 +89,7 @@ public class AdAggs {
         if (adIds == null) {
             adIds = mAdConfig.getAdIds();
         }
-        Log.d(Log.TAG, "pidName : " + pidName + " , adPlace : " + adPlace);
+        Log.v(Log.TAG, "pidName : " + pidName + " , adPlace : " + adPlace);
         if (adPlace != null) {
             loader = new AdPlaceLoader(mContext);
             loader.setAdPlaceConfig(adPlace);

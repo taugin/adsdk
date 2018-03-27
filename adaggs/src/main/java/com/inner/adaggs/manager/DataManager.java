@@ -51,6 +51,7 @@ public class DataManager implements OnDataListener {
         mContext = context;
         mParser = new AdParser();
         parseConfig();
+        Log.d(Log.TAG, "mContainerId : " + mContainerId + " , mUrl : " + mUrl);
         if (!TextUtils.isEmpty(mContainerId)) {
             mDataRequest = new GTagDataRequest(mContext, mContainerId);
         } else if (!TextUtils.isEmpty(mUrl)) {
@@ -76,14 +77,21 @@ public class DataManager implements OnDataListener {
 
     private void parseConfig() {
         String configContent = Utils.readAssets(mContext, "data_config.dat");
-        String decryptContent = null;
         if (!TextUtils.isEmpty(configContent)) {
-            decryptContent = Aes.decrypt(configContent, Constant.KEY_PASSWORD);
-        }
-        decryptContent = configContent;
-        if (!TextUtils.isEmpty(decryptContent)) {
             try {
-                JSONObject jobj = new JSONObject(decryptContent);
+                JSONObject jobj = new JSONObject(configContent);
+                int status = 0;
+                String data = null;
+                if (jobj.has("s")) {
+                    status = jobj.getInt("s");
+                }
+                if (jobj.has("data")) {
+                    data = jobj.getString("data");
+                }
+                if (status == 1 && !TextUtils.isEmpty(data)) {
+                    data = Aes.decrypt(data, Constant.KEY_PASSWORD);
+                }
+                jobj = new JSONObject(data);
                 if (jobj.has("container_id")) {
                     mContainerId = jobj.getString("container_id");
                 }
