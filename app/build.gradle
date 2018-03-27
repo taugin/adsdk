@@ -1,15 +1,18 @@
 apply plugin: 'com.android.application'
 
+def useProject = false;
+
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.inner.adagg"
+        applicationId "com.inner.adagg.demo"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
     }
+
     signingConfigs {
         config {
             keyAlias 'taugin'
@@ -18,6 +21,7 @@ android {
             storePassword 'taugin0426'
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -29,9 +33,17 @@ android {
         }
     }
 }
-
+repositories {
+    maven {
+        url 'F:\\workdir\\products\\privaterepo'
+    }
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:multidex:1.0.0'
-    compile project(":adaggs")
+    if (useProject) {
+        compile project(":adaggs")
+    } else {
+        implementation 'com.inner.adaggs:adaggs:1.0.0'
+    }
 }

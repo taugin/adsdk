@@ -1,16 +1,15 @@
-package com.inner.adagg;
+package com.inner.adagg.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.inner.adagg.R;
 import com.inner.adaggs.AdAggs;
 import com.inner.adaggs.AdExtra;
-import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.listener.SimpleAdAggsListener;
-import com.inner.adaggs.log.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -82,7 +81,7 @@ public class MainActivity extends Activity {
             });
         }
 
-        //AdAggs.get(this).loadComplexAds(Constant.ADPLACE_OUTER_NAME, mOnAdAggsListener);
+        //AdAggs.get(this).loadComplexAds("ad_outer_place", mOnAdAggsListener);
     }
 
     public void onClick(View v) {
@@ -93,10 +92,10 @@ public class MainActivity extends Activity {
                 AdAggs.get(this).loadInterstitial("open_social");
             }
         } else {
-            if (AdAggs.get(this).isComplexAdsLoaded(Constant.ADPLACE_OUTER_NAME)) {
-                AdAggs.get(this).showComplexAds(Constant.ADPLACE_OUTER_NAME, mAdContainer);
+            if (AdAggs.get(this).isComplexAdsLoaded("ad_outer_place")) {
+                AdAggs.get(this).showComplexAds("ad_outer_place", mAdContainer);
             } else {
-                AdAggs.get(this).loadComplexAds(Constant.ADPLACE_OUTER_NAME, mOnAdAggsListener);
+                AdAggs.get(this).loadComplexAds("ad_outer_place", mOnAdAggsListener);
             }
         }
     }

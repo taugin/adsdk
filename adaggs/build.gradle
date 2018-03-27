@@ -11,11 +11,16 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
+    libraryVariants.all { variant ->
+        variant.outputs.each { output ->
+            println("output : " + output.toString())
+        }
+    }
 }
 
 dependencies {
@@ -28,4 +33,19 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:11.8.0'
     implementation 'com.google.android.gms:play-services-tagmanager:11.8.0'
     implementation 'com.google.android.gms:play-services-analytics:11.8.0'
+}
+
+// 发布aar
+apply plugin: 'maven'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('F:\\workdir\\products\\privaterepo'))
+            pom.version  = "1.0.0"
+            pom.artifactId = "adaggs"
+            pom.groupId = "com.inner.adaggs"
+            pom.name = "inner-adaggs"
+            pom.packaging = "aar"
+        }
+    }
 }

@@ -303,7 +303,7 @@ public class AdPlaceLoader implements IManagerListener {
                     } else if (loader.isNativeType()) {
                         loader.loadNative(getRootView(loader), getTemplateId(loader));
                     } else {
-                        Log.w(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                        Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                     }
                 }
             }
@@ -327,7 +327,7 @@ public class AdPlaceLoader implements IManagerListener {
                 } else if (loader.isNativeType()) {
                     loader.loadNative(getRootView(loader), getTemplateId(loader));
                 } else {
-                    Log.w(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                    Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                 }
             }
         }
@@ -356,7 +356,7 @@ public class AdPlaceLoader implements IManagerListener {
             } else if (loader.isNativeType()) {
                 loader.loadNative(getRootView(loader), getTemplateId(loader));
             } else {
-                Log.w(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType());
+                Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType());
             }
         }
     }
@@ -377,7 +377,7 @@ public class AdPlaceLoader implements IManagerListener {
                         loader.showNative(adContainer);
                         return;
                     } else {
-                        Log.w(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                        Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                     }
                 }
             }
@@ -460,7 +460,7 @@ public class AdPlaceLoader implements IManagerListener {
                     } else if (loader.isInterstitialType()) {
                         loader.loadInterstitial();
                     } else {
-                        Log.w(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                        Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                     }
                 }
             }
@@ -507,7 +507,7 @@ public class AdPlaceLoader implements IManagerListener {
             } else if (loader.isInterstitialType()) {
                 loader.loadInterstitial();
             } else {
-                Log.w(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
             }
         }
     }
@@ -526,7 +526,7 @@ public class AdPlaceLoader implements IManagerListener {
                 } else if (loader.isInterstitialType()) {
                     loader.loadInterstitial();
                 } else {
-                    Log.w(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                    Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                 }
             }
         }
@@ -551,7 +551,7 @@ public class AdPlaceLoader implements IManagerListener {
                         loader.showInterstitial();
                         return;
                     } else {
-                        Log.w(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                        Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                     }
                 }
             }
