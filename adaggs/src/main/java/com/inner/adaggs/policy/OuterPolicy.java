@@ -236,7 +236,7 @@ public class OuterPolicy {
 
     private boolean isCountryAllow() {
         String country = getCountry();
-        Log.d(Log.TAG, "country : " + country);
+        Log.v(Log.TAG, "country : " + country);
         if (mAdPolicy != null) {
             List<String> countryList = mAdPolicy.getCountryList();
             if (countryList != null && !countryList.isEmpty()) {
@@ -273,42 +273,42 @@ public class OuterPolicy {
 
     private boolean checkAdOuterConfig() {
         if (!isConfigAllow()) {
-            Log.d(Log.TAG, "config not allowed");
+            Log.v(Log.TAG, "config not allowed");
             return false;
         }
 
         if (!isAttributionAllow()) {
-            Log.d(Log.TAG, "attribution not allowed");
+            Log.v(Log.TAG, "attribution not allowed");
             return false;
         }
 
         if (!isCountryAllow()) {
-            Log.d(Log.TAG, "country not allowed");
+            Log.v(Log.TAG, "country not allowed");
             return false;
         }
 
         if (!isMediaSourceAllow()) {
-            Log.d(Log.TAG, "mediasource not allowed");
+            Log.v(Log.TAG, "mediasource not allowed");
             return false;
         }
 
         if (!isDelayAllow()) {
-            Log.d(Log.TAG, "delay not allowed");
+            Log.v(Log.TAG, "delay not allowed");
             return false;
         }
 
         if (!isIntervalAllow()) {
-            Log.d(Log.TAG, "interval not allowed");
+            Log.v(Log.TAG, "interval not allowed");
             return false;
         }
 
         if (!isMaxShowAllow()) {
-            Log.d(Log.TAG, "maxshow not allowed");
+            Log.v(Log.TAG, "maxshow not allowed");
             return false;
         }
 
         if (!isAppVerAllow()) {
-            Log.d(Log.TAG, "maxver not allowed");
+            Log.v(Log.TAG, "maxver not allowed");
             return false;
         }
         return true;
@@ -320,22 +320,22 @@ public class OuterPolicy {
         }
 
         if (isOuterShowing()) {
-            Log.d(Log.TAG, "outer is showing");
+            Log.v(Log.TAG, "outer is showing");
             return false;
         }
 
         if (Utils.isTopActivy(mContext)) {
-            Log.d(Log.TAG, "app is on the top");
+            Log.v(Log.TAG, "app is on the top");
             return false;
         }
 
         if (Utils.isScreenLocked(mContext)) {
-            Log.d(Log.TAG, "screen is locked");
+            Log.v(Log.TAG, "screen is locked");
             return false;
         }
 
         if (!Utils.isScreenOn(mContext)) {
-            Log.d(Log.TAG, "screen is not on");
+            Log.v(Log.TAG, "screen is not on");
             return false;
         }
         return true;

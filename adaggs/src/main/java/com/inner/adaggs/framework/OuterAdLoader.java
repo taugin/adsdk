@@ -87,25 +87,25 @@ public class OuterAdLoader {
             if (!OuterPolicy.get(mContext).shouldShowAdOuter()) {
                 return;
             }
-            Log.d(Log.TAG, "");
+            Log.v(Log.TAG, "");
             StatImpl.get().reportAdOuterRequest(mContext);
             mAdAggs.loadComplexAds(Constant.ADPLACE_OUTER_NAME, new SimpleAdAggsListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
-                    Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.v(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     mAdAggs.showComplexAds(pidName, null);
                     StatImpl.get().reportAdOuterShow(mContext);
                 }
 
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
-                    Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.v(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     OuterPolicy.get(mContext).reportOuterShowing(false);
                 }
 
                 @Override
                 public void onShow(String pidName, String source, String adType) {
-                    Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.v(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     OuterPolicy.get(mContext).reportOuterShowing(true);
                 }
             });
