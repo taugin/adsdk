@@ -17,27 +17,27 @@ import java.util.Locale;
  * Created by Administrator on 2018/3/19.
  */
 
-public class PolicyManager {
-    private static PolicyManager sPolicyManager;
+public class OuterPolicy {
+    private static OuterPolicy sOuterPolicy;
 
-    public static PolicyManager get(Context context) {
-        synchronized (PolicyManager.class) {
-            if (sPolicyManager == null) {
+    public static OuterPolicy get(Context context) {
+        synchronized (OuterPolicy.class) {
+            if (sOuterPolicy == null) {
                 createInstance(context);
             }
         }
-        return sPolicyManager;
+        return sOuterPolicy;
     }
 
     private static void createInstance(Context context) {
-        synchronized (PolicyManager.class) {
-            if (sPolicyManager == null) {
-                sPolicyManager = new PolicyManager(context);
+        synchronized (OuterPolicy.class) {
+            if (sOuterPolicy == null) {
+                sOuterPolicy = new OuterPolicy(context);
             }
         }
     }
 
-    private PolicyManager(Context context) {
+    private OuterPolicy(Context context) {
         mContext = context;
     }
 

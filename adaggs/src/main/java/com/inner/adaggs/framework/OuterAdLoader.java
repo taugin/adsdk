@@ -14,7 +14,7 @@ import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.listener.SimpleAdAggsListener;
 import com.inner.adaggs.log.Log;
 import com.inner.adaggs.manager.DataManager;
-import com.inner.adaggs.manager.PolicyManager;
+import com.inner.adaggs.manager.OuterPolicy;
 import com.inner.adaggs.stat.StatImpl;
 
 /**
@@ -48,7 +48,7 @@ public class OuterAdLoader {
     }
 
     public void init(AdAggs adAggs) {
-        PolicyManager.get(mContext).init();
+        OuterPolicy.get(mContext).init();
         mAdAggs = adAggs;
         if (mAdAggs == null) {
             return;
@@ -65,7 +65,7 @@ public class OuterAdLoader {
         if (adPolicy == null && adConfig != null) {
             adPolicy = adConfig.getAdPolicy();
         }
-        PolicyManager.get(mContext).setPolicy(adPolicy);
+        OuterPolicy.get(mContext).setPolicy(adPolicy);
     }
 
     public void startLoop() {
@@ -84,7 +84,7 @@ public class OuterAdLoader {
     private void fireOuterAd() {
         if (mAdAggs != null) {
             updateAdPolicy();
-            if (!PolicyManager.get(mContext).shouldShowAdOuter()) {
+            if (!OuterPolicy.get(mContext).shouldShowAdOuter()) {
                 return;
             }
             Log.d(Log.TAG, "");
@@ -100,13 +100,13 @@ public class OuterAdLoader {
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    PolicyManager.get(mContext).reportOuterShowing(false);
+                    OuterPolicy.get(mContext).reportOuterShowing(false);
                 }
 
                 @Override
                 public void onShow(String pidName, String source, String adType) {
                     Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    PolicyManager.get(mContext).reportOuterShowing(true);
+                    OuterPolicy.get(mContext).reportOuterShowing(true);
                 }
             });
         }
