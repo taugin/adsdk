@@ -1,6 +1,5 @@
 package com.inner.adaggs.adloader.admob;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,11 +39,6 @@ public class AdmobLoader extends AbstractAdLoader {
     private InterstitialAd interstitialAd;
 
     @Override
-    public void init(Context context) {
-        super.init(context);
-    }
-
-    @Override
     public void setAdId(String adId) {
         if (!TextUtils.isEmpty(adId)) {
             MobileAds.initialize(mContext, adId);
@@ -62,7 +56,7 @@ public class AdmobLoader extends AbstractAdLoader {
             return;
         }
         if (bannerView != null) {
-            Log.d(Log.TAG, "already loaded : " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded();
@@ -70,6 +64,11 @@ public class AdmobLoader extends AbstractAdLoader {
             }
             return;
         }
+        if (isLoading()) {
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
+            return;
+        }
+        setLoading(true);
         AdSize size = ADSIZE.get(adSize);
         if (size == null) {
             size = AdSize.BANNER;
@@ -89,6 +88,7 @@ public class AdmobLoader extends AbstractAdLoader {
             @Override
             public void onAdFailedToLoad(int i) {
                 Log.v(Log.TAG, "reason : " + i + " , type : " + getAdType());
+                setLoading(false);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed();
                 }
@@ -110,6 +110,7 @@ public class AdmobLoader extends AbstractAdLoader {
             @Override
             public void onAdLoaded() {
                 Log.v(Log.TAG, "type : " + getAdType());
+                setLoading(false);
                 bannerView = adView;
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -184,7 +185,7 @@ public class AdmobLoader extends AbstractAdLoader {
             return;
         }
         if (isInterstitialLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded();
@@ -192,6 +193,11 @@ public class AdmobLoader extends AbstractAdLoader {
             }
             return;
         }
+        if (isLoading()) {
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
+            return;
+        }
+        setLoading(true);
         interstitialAd = new InterstitialAd(mContext);
         interstitialAd.setAdUnitId(mPidConfig.getPid());
         interstitialAd.setAdListener(new AdListener(){
@@ -206,6 +212,7 @@ public class AdmobLoader extends AbstractAdLoader {
             @Override
             public void onAdFailedToLoad(int i) {
                 Log.e(Log.TAG, "error : " + i + " , type : " + getAdType());
+                setLoading(false);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError();
                 }
@@ -236,6 +243,7 @@ public class AdmobLoader extends AbstractAdLoader {
             @Override
             public void onAdLoaded() {
                 Log.v(Log.TAG, "type : " + getAdType());
+                setLoading(false);
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }

@@ -49,7 +49,7 @@ public class FBLoader extends AbstractAdLoader {
             return;
         }
         if (bannerView != null) {
-            Log.d(Log.TAG, "already loaded : " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded();
@@ -57,6 +57,11 @@ public class FBLoader extends AbstractAdLoader {
             }
             return;
         }
+        if (isLoading()) {
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
+            return;
+        }
+        setLoading(true);
         AdSize size = ADSIZE.get(adSize);
         if (size == null) {
             size = AdSize.BANNER_HEIGHT_50;
@@ -66,6 +71,7 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onError(Ad ad, AdError adError) {
                 Log.v(Log.TAG, "error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , type : " + getAdType());
+                setLoading(false);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed();
                 }
@@ -74,6 +80,7 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.v(Log.TAG, "type : " + getAdType());
+                setLoading(false);
                 bannerView = adView;
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -160,7 +167,7 @@ public class FBLoader extends AbstractAdLoader {
             return;
         }
         if (isInterstitialLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded();
@@ -168,6 +175,11 @@ public class FBLoader extends AbstractAdLoader {
             }
             return;
         }
+        if (isLoading()) {
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
+            return;
+        }
+        setLoading(true);
         fbInterstitial = new InterstitialAd(mContext, mPidConfig.getPid());
         fbInterstitial.setAdListener(new InterstitialAdListener() {
             @Override
@@ -193,6 +205,7 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onError(Ad ad, AdError adError) {
                 Log.v(Log.TAG, "error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , type : " + getAdType());
+                setLoading(false);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError();
                 }
@@ -201,6 +214,7 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.v(Log.TAG, "type : " + getAdType());
+                setLoading(false);
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onInterstitialLoaded();
@@ -260,7 +274,7 @@ public class FBLoader extends AbstractAdLoader {
             return;
         }
         if (isNativeLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded();
@@ -268,6 +282,11 @@ public class FBLoader extends AbstractAdLoader {
             }
             return;
         }
+        if (isLoading()) {
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
+            return;
+        }
+        setLoading(true);
         nativeAd = new NativeAd(mContext, mPidConfig.getPid());
         nativeAd.setAdListener(new AdListener() {
             @Override
@@ -275,6 +294,7 @@ public class FBLoader extends AbstractAdLoader {
                 if (adError != null) {
                     Log.e(Log.TAG, "error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , type : " + getAdType());
                 }
+                setLoading(false);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed();
                 }
@@ -283,6 +303,7 @@ public class FBLoader extends AbstractAdLoader {
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.v(Log.TAG, "type : " + getAdType());
+                setLoading(false);
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onAdLoaded();

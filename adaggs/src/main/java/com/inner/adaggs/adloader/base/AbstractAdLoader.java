@@ -24,6 +24,7 @@ public class AbstractAdLoader implements IAdLoader {
     protected IStat mStat;
     protected IManagerListener mManagerListener;
     protected String mAdId;
+    private   boolean mLoading = false;
     private   boolean mLoadedFlag = false;
 
     @Override
@@ -184,5 +185,13 @@ public class AbstractAdLoader implements IAdLoader {
         if (mManagerListener != null) {
             mManagerListener.clearAdBaseListener(this);
         }
+    }
+
+    protected synchronized boolean isLoading() {
+        return mLoading;
+    }
+
+    protected synchronized void setLoading(boolean loading) {
+        mLoading = loading;
     }
 }
