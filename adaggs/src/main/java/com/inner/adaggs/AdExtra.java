@@ -7,6 +7,11 @@ import com.inner.adaggs.constant.Constant;
  */
 
 public class AdExtra {
+
+    public static final String AD_SDK_ADMOB = Constant.AD_SDK_ADMOB;
+    public static final String AD_SDK_FACEBOOK = Constant.AD_SDK_FACEBOOK;
+    public static final String AD_SDK_ADX = Constant.AD_SDK_ADX;
+
     /**
      * 尺寸 320 x 50
      */
@@ -58,57 +63,17 @@ public class AdExtra {
     public static final int FB_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
 
     /**
-     * banner 尺寸后缀
+     * 原生广告模板值
      */
-    public static final String BANNER_SIZE_SUFFIX = "_banner_size";
+    public static final int NATIVE_TEMPLATE_SMALL = Constant.NATIVE_TEMPLATE_SMALL;
 
     /**
-     * 原生视图后缀
+     * 原生广告模板值
      */
-    public static final String ROOT_VIEW_SUFFIX = "_rootview";
+    public static final int NATIVE_TEMPLATE_MEDIUM = Constant.NATIVE_TEMPLATE_MEDIUM;
 
     /**
-     * 原生视图模板后缀
+     * 原生广告模板值
      */
-    public static final String TEMPLATE_SUFFIX = "_template";
-
-    /**
-     * 定义Admob的Banner大小
-     */
-    public static final String KEY_ADMOB_BANNER_SIZE = Constant.AD_SDK_ADMOB + BANNER_SIZE_SUFFIX;
-
-    /**
-     * 定义Adx的Banner大小
-     */
-    public static final String KEY_ADX_BANNER_SIZE = Constant.AD_SDK_ADX + BANNER_SIZE_SUFFIX;
-
-    /**
-     * 定义Facebook的Banner大小
-     */
-    public static final String KEY_FB_BANNER_SIZE = Constant.AD_SDK_FACEBOOK + BANNER_SIZE_SUFFIX;
-
-    /**
-     * 传递facebook的rootview
-     */
-    public static final String KEY_FB_NATIVE_ROOTVIEW = Constant.AD_SDK_FACEBOOK + ROOT_VIEW_SUFFIX;
-
-    /**
-     * 传递facebook的原生广告模板
-     */
-    public static final String KEY_FB_NATIVE_TEMPLATE = Constant.AD_SDK_FACEBOOK + TEMPLATE_SUFFIX;
-
-    /**
-     * facebook原生广告模板值
-     */
-    public static final int FB_NATIVE_TEMPLATE_SMALL = Constant.FB_NATIVE_SMALL;
-
-    /**
-     * facebook原生广告模板值
-     */
-    public static final int FB_NATIVE_TEMPLATE_MEDIUM = Constant.FB_NATIVE_MEDIUM;
-
-    /**
-     * facebook原生广告模板值
-     */
-    public static final int FB_NATIVE_TEMPLATE_LARGE = Constant.FB_NATIVE_LARGE;
+    public static final int NATIVE_TEMPLATE_LARGE = Constant.NATIVE_TEMPLATE_LARGE;
 }

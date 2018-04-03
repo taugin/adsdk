@@ -42,7 +42,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:multidex:1.0.0'
     if (useProject) {
-        compile project(":adaggs")
+        implementation project(":adaggs")
     } else {
         implementation 'com.inner.adaggs:adaggs:1.0.0'
     }

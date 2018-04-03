@@ -155,15 +155,15 @@ public class AdAggs {
         loadAdView(pidName, null, l);
     }
 
-    public void loadAdView(String pidName, Map<String, Object> extra) {
-        loadAdView(pidName, extra, null);
+    public void loadAdView(String pidName, AdParams adParams) {
+        loadAdView(pidName, adParams, null);
     }
 
-    public void loadAdView(String pidName, Map<String, Object> extra, OnAdAggsListener l) {
+    public void loadAdView(String pidName, AdParams adParams, OnAdAggsListener l) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             loader.setOnAdAggsListener(l);
-            loader.loadAdView(extra);
+            loader.loadAdView(adParams);
         }
     }
 
@@ -190,7 +190,7 @@ public class AdAggs {
         loadComplexAds(pidName, null, l);
     }
 
-    public void loadComplexAds(String pidName, Map<String, Object> extra, OnAdAggsListener l) {
+    public void loadComplexAds(String pidName, AdParams extra, OnAdAggsListener l) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             loader.setOnAdAggsListener(l);

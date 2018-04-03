@@ -1,10 +1,10 @@
 package com.inner.adaggs.adloader.listener;
 
 import android.content.Context;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.inner.adaggs.config.PidConfig;
+import com.inner.adaggs.framework.Params;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -35,10 +35,10 @@ public interface IAdLoader {
     // 展示插屏
     public boolean showInterstitial();
 
-    // 加载原生，包括banner
-    public void loadNative(View rootView, int templateId);
+    // 加载原生
+    public void loadNative(Params params);
 
-    // 展示原生，包括banner
+    // 展示原生
     public void showNative(ViewGroup viewGroup);
 
     public void loadBanner(int adSize);

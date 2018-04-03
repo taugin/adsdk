@@ -2,10 +2,9 @@ package com.inner.adaggs.framework;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.View;
 import android.view.ViewGroup;
 
-import com.inner.adaggs.AdExtra;
+import com.inner.adaggs.AdParams;
 import com.inner.adaggs.adloader.adfb.FBLoader;
 import com.inner.adaggs.adloader.admob.AdmobLoader;
 import com.inner.adaggs.adloader.adx.AdxLoader;
@@ -37,7 +36,7 @@ public class AdPlaceLoader implements IManagerListener {
     private Map<String, String> mAdIds;
     private Context mContext;
     private OnAdAggsListener mOnAdAggsListener;
-    private Map<String, Object> mAdExtra;
+    private Params mParams;
     private boolean mFromRemote = false;
     // banner和native的listener集合
     private Map<IAdLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<IAdLoader, OnAdBaseListener>();
@@ -115,34 +114,8 @@ public class AdPlaceLoader implements IManagerListener {
      */
     private int getBannerSize(IAdLoader loader) {
         try {
-            return (int) mAdExtra.get(loader.getSdkName() + AdExtra.BANNER_SIZE_SUFFIX);
-        } catch (Exception e) {
-        }
-        return Constant.NOSET;
-    }
-
-    /**
-     * 根据SDK获取rootview
-     *
-     * @param loader
-     * @return
-     */
-    private View getRootView(IAdLoader loader) {
-        try {
-            return (View) mAdExtra.get(loader.getSdkName() + AdExtra.ROOT_VIEW_SUFFIX);
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
-    /**
-     * 获取模板ID
-     * @param loader
-     * @return
-     */
-    private int getTemplateId(IAdLoader loader) {
-        try {
-            return (int) mAdExtra.get(loader.getSdkName() + AdExtra.TEMPLATE_SUFFIX);
+            Map<String, Integer> map = mParams.getBannerSize();
+            return (int) map.get(loader.getSdkName());
         } catch (Exception e) {
         }
         return Constant.NOSET;
@@ -275,13 +248,15 @@ public class AdPlaceLoader implements IManagerListener {
 
     /**
      * 加载banner和native广告
-     * @param extra
+     * @param adParams
      */
-    public void loadAdView(Map<String, Object> extra) {
+    public void loadAdView(AdParams adParams) {
         if (mAdPlace == null) {
             return;
         }
-        mAdExtra = extra;
+        if (adParams != null) {
+            mParams = adParams.getParams();
+        }
         if (mAdPlace.isConcurrent()) {
             loadAdViewConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -306,7 +281,7 @@ public class AdPlaceLoader implements IManagerListener {
                     if (loader.isBannerType()) {
                         loader.loadBanner(getBannerSize(loader));
                     } else if (loader.isNativeType()) {
-                        loader.loadNative(getRootView(loader), getTemplateId(loader));
+                        loader.loadNative(mParams);
                     } else {
                         Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                     }
@@ -330,7 +305,7 @@ public class AdPlaceLoader implements IManagerListener {
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
                 } else if (loader.isNativeType()) {
-                    loader.loadNative(getRootView(loader), getTemplateId(loader));
+                    loader.loadNative(mParams);
                 } else {
                     Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                 }
@@ -359,7 +334,7 @@ public class AdPlaceLoader implements IManagerListener {
             if (loader.isBannerType()) {
                 loader.loadBanner(getBannerSize(loader));
             } else if (loader.isNativeType()) {
-                loader.loadNative(getRootView(loader), getTemplateId(loader));
+                loader.loadNative(mParams);
             } else {
                 Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType());
             }
@@ -430,13 +405,15 @@ public class AdPlaceLoader implements IManagerListener {
 
     /**
      * 加载混合广告
-     * @param extra
+     * @param adParams
      */
-    public void loadComplexAds(Map<String, Object> extra) {
+    public void loadComplexAds(AdParams adParams) {
         if (mAdPlace == null) {
             return;
         }
-        mAdExtra = extra;
+        if (adParams != null) {
+            mParams = adParams.getParams();
+        }
         if (mAdPlace.isConcurrent()) {
             loadComplexAdsConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -461,7 +438,7 @@ public class AdPlaceLoader implements IManagerListener {
                     if (loader.isBannerType()) {
                         loader.loadBanner(getBannerSize(loader));
                     } else if (loader.isNativeType()) {
-                        loader.loadNative(getRootView(loader), getTemplateId(loader));
+                        loader.loadNative(mParams);
                     } else if (loader.isInterstitialType()) {
                         loader.loadInterstitial();
                     } else {
@@ -508,7 +485,7 @@ public class AdPlaceLoader implements IManagerListener {
             if (loader.isBannerType()) {
                 loader.loadBanner(getBannerSize(loader));
             } else if (loader.isNativeType()) {
-                loader.loadNative(getRootView(loader), getTemplateId(loader));
+                loader.loadNative(mParams);
             } else if (loader.isInterstitialType()) {
                 loader.loadInterstitial();
             } else {
@@ -527,7 +504,7 @@ public class AdPlaceLoader implements IManagerListener {
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
                 } else if (loader.isNativeType()) {
-                    loader.loadNative(getRootView(loader), getTemplateId(loader));
+                    loader.loadNative(mParams);
                 } else if (loader.isInterstitialType()) {
                     loader.loadInterstitial();
                 } else {

@@ -7,11 +7,9 @@ import android.widget.RelativeLayout;
 
 import com.inner.adaggs.AdAggs;
 import com.inner.adaggs.AdExtra;
+import com.inner.adaggs.AdParams;
 import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.listener.SimpleAdAggsListener;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends Activity {
 
@@ -51,12 +49,11 @@ public class MainActivity extends Activity {
             // View view = getLayoutInflater().inflate(R.layout.fb_native, null);
             // mAdContainer.addView(view);
 
-            Map<String, Object> map = new HashMap<String, Object>();
-            // map.put(AdExtra.KEY_FB_ROOTVIEW, view);
-            map.put(AdExtra.KEY_FB_NATIVE_TEMPLATE, AdExtra.FB_NATIVE_TEMPLATE_MEDIUM);
-            map.put(AdExtra.KEY_FB_BANNER_SIZE, AdExtra.FB_BANNER);
-            map.put(AdExtra.KEY_ADX_BANNER_SIZE, AdExtra.ADMOB_MEDIUM_RECTANGLE);
-            AdAggs.get(this).loadAdView("main_top", map, new SimpleAdAggsListener() {
+            AdParams adParams = new AdParams.Builder()
+                    .setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADMOB_MEDIUM_RECTANGLE)
+                    .setNativeTemplateId(AdExtra.NATIVE_TEMPLATE_SMALL)
+                    .build();
+            AdAggs.get(this).loadAdView("main_top", adParams, new SimpleAdAggsListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);

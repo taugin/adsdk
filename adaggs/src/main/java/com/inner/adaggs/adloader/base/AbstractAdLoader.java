@@ -3,13 +3,13 @@ package com.inner.adaggs.adloader.base;
 import android.content.Context;
 import android.os.SystemClock;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.inner.adaggs.adloader.listener.IAdLoader;
 import com.inner.adaggs.adloader.listener.IManagerListener;
 import com.inner.adaggs.adloader.listener.OnAdBaseListener;
 import com.inner.adaggs.config.PidConfig;
+import com.inner.adaggs.framework.Params;
 import com.inner.adaggs.log.Log;
 import com.inner.adaggs.policy.PlacePolicy;
 import com.inner.adaggs.stat.IStat;
@@ -87,7 +87,7 @@ public class AbstractAdLoader implements IAdLoader {
     }
 
     @Override
-    public void loadNative(View rootView, int templateId) {
+    public void loadNative(Params params) {
     }
 
     @Override

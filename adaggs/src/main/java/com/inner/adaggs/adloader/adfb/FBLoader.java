@@ -13,6 +13,7 @@ import com.facebook.ads.InterstitialAdListener;
 import com.facebook.ads.NativeAd;
 import com.inner.adaggs.adloader.base.AbstractAdLoader;
 import com.inner.adaggs.constant.Constant;
+import com.inner.adaggs.framework.Params;
 import com.inner.adaggs.log.Log;
 
 import java.util.EnumSet;
@@ -270,9 +271,11 @@ public class FBLoader extends AbstractAdLoader {
     }
 
     @Override
-    public void loadNative(View rootView, int templateId) {
-        nativeRootView = rootView;
-        mNativeTemplate = templateId;
+    public void loadNative(Params params) {
+        if (params != null) {
+            nativeRootView = params.getNativeRootView();
+            mNativeTemplate = params.getNativeTemplateId();
+        }
 
         if (!checkPidConfig()) {
             return;

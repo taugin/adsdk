@@ -35,12 +35,12 @@ public class FBBindNativeView {
         if (adContainer == null) {
             return;
         }
-        int layoutId = R.layout.fb_native_template_medium;
-        if (template == Constant.FB_NATIVE_SMALL) {
+        int layoutId = R.layout.fb_native_template_large;
+        if (template == Constant.NATIVE_TEMPLATE_SMALL) {
             layoutId = R.layout.fb_native_template_small;
-        } else if (template == Constant.FB_NATIVE_MEDIUM) {
+        } else if (template == Constant.NATIVE_TEMPLATE_MEDIUM) {
             layoutId = R.layout.fb_native_template_medium;
-        } else if (template == Constant.FB_NATIVE_LARGE) {
+        } else if (template == Constant.NATIVE_TEMPLATE_LARGE) {
             layoutId = R.layout.fb_native_template_large;
         }
         Context context = adContainer.getContext();
