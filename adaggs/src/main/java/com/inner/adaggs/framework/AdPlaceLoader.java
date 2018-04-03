@@ -1,5 +1,6 @@
 package com.inner.adaggs.framework;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.log.Log;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -39,7 +41,7 @@ public class AdPlaceLoader implements IManagerListener {
     private boolean mFromRemote = false;
     // banner和native的listener集合
     private Map<IAdLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<IAdLoader, OnAdBaseListener>();
-    private boolean mReInit = false;
+    private WeakReference<Activity> mActivity;
 
     public AdPlaceLoader(Context context) {
         mContext = context;
@@ -169,9 +171,12 @@ public class AdPlaceLoader implements IManagerListener {
     /**
      * 加载插屏
      */
-    public void loadInterstitial() {
+    public void loadInterstitial(Activity activity) {
         if (mAdPlace == null) {
             return;
+        }
+        if (activity != null) {
+            mActivity = new WeakReference<Activity>(activity);
         }
         if (mAdPlace.isConcurrent()) {
             loadInterstitialConcurrent();

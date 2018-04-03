@@ -45,7 +45,7 @@
       },
       {
         "name": "main_top",
-        "mode": "con",
+        "mode": "seq",
         "pids": [
           {
             "sdk": "fb",

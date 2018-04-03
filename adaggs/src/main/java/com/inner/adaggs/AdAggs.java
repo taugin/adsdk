@@ -1,5 +1,6 @@
 package com.inner.adaggs;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.ViewGroup;
 
@@ -78,6 +79,13 @@ public class AdAggs {
         return loader;
     }
 
+    /**
+     * 如果adPlace和adIds为空，则使用本地的adPlace和adIds
+     * @param pidName
+     * @param adPlace
+     * @param adIds
+     * @return
+     */
     private AdPlaceLoader createAdPlaceLoader(String pidName, AdPlace adPlace, Map<String, String> adIds) {
         AdPlaceLoader loader = null;
         boolean useRemote = false;
@@ -113,14 +121,18 @@ public class AdAggs {
     }
 
     public void loadInterstitial(String pidName) {
-        loadInterstitial(pidName, null);
+        loadInterstitial(null, pidName);
     }
 
-    public void loadInterstitial(String pidName, OnAdAggsListener l) {
+    public void loadInterstitial(Activity activity, String pidName) {
+        loadInterstitial(activity, pidName, null);
+    }
+
+    public void loadInterstitial(Activity activity, String pidName, OnAdAggsListener l) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             loader.setOnAdAggsListener(l);
-            loader.loadInterstitial();
+            loader.loadInterstitial(activity);
         }
     }
 

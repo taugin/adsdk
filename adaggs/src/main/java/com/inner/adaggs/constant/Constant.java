@@ -19,6 +19,10 @@ public class Constant {
     public static final int    WIDE_SKYSCRAPER = 1005;
     public static final int    SMART_BANNER = 1006;
 
+    public static final int    FB_NATIVE_SMALL = 1;
+    public static final int    FB_NATIVE_MEDIUM = 2;
+    public static final int    FB_NATIVE_LARGE = 3;
+
     public static final String MODE_SEQ = "seq";
     public static final String MODE_CON = "con";
     public static final String MODE_RAN = "ran";
@@ -26,10 +30,6 @@ public class Constant {
     public static final String TYPE_BANNER = "banner";
     public static final String TYPE_NATIVE = "native";
     public static final String TYPE_INTERSTITIAL = "interstitial";
-
-    public static final String P_TYPE_OUTER = "outer";
-
-    public static final String P_TYPE_FILM = "film";
 
     public static final String KEY_PASSWORD = "123456789";
 

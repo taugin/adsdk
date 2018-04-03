@@ -90,10 +90,25 @@ public class AdExtra {
     /**
      * 传递facebook的rootview
      */
-    public static final String KEY_FB_ROOTVIEW = Constant.AD_SDK_FACEBOOK + ROOT_VIEW_SUFFIX;
+    public static final String KEY_FB_NATIVE_ROOTVIEW = Constant.AD_SDK_FACEBOOK + ROOT_VIEW_SUFFIX;
 
     /**
      * 传递facebook的原生广告模板
      */
-    public static final String KEY_FB_TEMPLATE = Constant.AD_SDK_FACEBOOK + TEMPLATE_SUFFIX;
+    public static final String KEY_FB_NATIVE_TEMPLATE = Constant.AD_SDK_FACEBOOK + TEMPLATE_SUFFIX;
+
+    /**
+     * facebook原生广告模板值
+     */
+    public static final int FB_NATIVE_TEMPLATE_SMALL = Constant.FB_NATIVE_SMALL;
+
+    /**
+     * facebook原生广告模板值
+     */
+    public static final int FB_NATIVE_TEMPLATE_MEDIUM = Constant.FB_NATIVE_MEDIUM;
+
+    /**
+     * facebook原生广告模板值
+     */
+    public static final int FB_NATIVE_TEMPLATE_LARGE = Constant.FB_NATIVE_LARGE;
 }

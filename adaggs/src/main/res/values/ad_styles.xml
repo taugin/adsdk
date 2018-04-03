@@ -24,4 +24,13 @@
         <item name="android:background">@drawable/ad_button_bg</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+    <style name="AdButtonStyle_Large" parent="Base.Widget.AppCompat.Button.Colored">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/ad_button_bg</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

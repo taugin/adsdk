@@ -2,6 +2,7 @@ package com.inner.adaggs.adloader.adfb;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.facebook.ads.MediaView;
 import com.facebook.ads.NativeAd;
 import com.inner.adaggs.R;
 import com.inner.adaggs.config.PidConfig;
+import com.inner.adaggs.constant.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +35,21 @@ public class FBBindNativeView {
         if (adContainer == null) {
             return;
         }
+        int layoutId = R.layout.fb_native_template_medium;
+        if (template == Constant.FB_NATIVE_SMALL) {
+            layoutId = R.layout.fb_native_template_small;
+        } else if (template == Constant.FB_NATIVE_MEDIUM) {
+            layoutId = R.layout.fb_native_template_medium;
+        } else if (template == Constant.FB_NATIVE_LARGE) {
+            layoutId = R.layout.fb_native_template_large;
+        }
         Context context = adContainer.getContext();
-        View rootView = LayoutInflater.from(context).inflate(R.layout.fb_native_template_1, null);
+        View rootView = LayoutInflater.from(context).inflate(layoutId, null);
         bindNativeViewWithTemplate(rootView, nativeAd, pidConfig);
         try {
             adContainer.removeAllViews();
-            adContainer.addView(rootView);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -2);
+            adContainer.addView(rootView, params);
             if (adContainer.getVisibility() != View.VISIBLE) {
                 adContainer.setVisibility(View.VISIBLE);
             }
@@ -46,6 +57,12 @@ public class FBBindNativeView {
         }
     }
 
+    /**
+     * 外部传入ViewRoot
+     * @param rootView
+     * @param nativeAd
+     * @param pidConfig
+     */
     private void bindNativeViewWithRootView(View rootView, NativeAd nativeAd, PidConfig pidConfig) {
         if (rootView == null) {
             return;
@@ -56,16 +73,19 @@ public class FBBindNativeView {
         if (pidConfig == null) {
             return;
         }
-        ImageView imageCover = rootView.findViewById(R.id.fb_image_cover);
-        ImageView icon = rootView.findViewById(R.id.fb_icon);
-        TextView titleView = rootView.findViewById(R.id.fb_title);
-        TextView subTitleView = rootView.findViewById(R.id.fb_sub_title);
-        TextView socialView = rootView.findViewById(R.id.fb_social);
-        TextView detail = rootView.findViewById(R.id.fb_detail);
-        AppCompatButton btnAction = rootView.findViewById(R.id.fb_action_btn);
-        RelativeLayout adChoiceContainer = rootView.findViewById(R.id.fb_ad_choices_container);
+
+        Context context = rootView.getContext();
+
+        ImageView imageCover = rootView.findViewById(getId(context, "fb_image_cover"));
+        ImageView icon = rootView.findViewById(getId(context, "fb_icon"));
+        TextView titleView = rootView.findViewById(getId(context, "fb_title"));
+        TextView subTitleView = rootView.findViewById(getId(context, "fb_sub_title"));
+        TextView socialView = rootView.findViewById(getId(context, "fb_social"));
+        TextView detail = rootView.findViewById(getId(context, "fb_detail"));
+        AppCompatButton btnAction = rootView.findViewById(getId(context, "fb_action_btn"));
+        RelativeLayout adChoiceContainer = rootView.findViewById(getId(context, "fb_ad_choices_container"));
         MediaView mediaCover = new MediaView(rootView.getContext());
-        ViewGroup coverLayout = rootView.findViewById(R.id.fb_media_cover);
+        ViewGroup coverLayout = rootView.findViewById(getId(context, "fb_media_cover"));
 
         if (coverLayout != null) {
             coverLayout.addView(mediaCover);
@@ -127,6 +147,12 @@ public class FBBindNativeView {
         }
     }
 
+    /**
+     * 使用模板显示原生广告
+     * @param rootView
+     * @param nativeAd
+     * @param pidConfig
+     */
     private void bindNativeViewWithTemplate(View rootView, NativeAd nativeAd, PidConfig pidConfig) {
         if (rootView == null) {
             return;
@@ -207,5 +233,12 @@ public class FBBindNativeView {
         if (percent <= 0 || percent > 100) return false;
         int randomVal = new Random().nextInt(100);
         return randomVal <= percent;
+    }
+
+    private static int getId(Context context, String name) {
+        if (context == null || TextUtils.isEmpty(name)) {
+            return -1;
+        }
+        return context.getResources().getIdentifier(name, "id", context.getPackageName());
     }
 }

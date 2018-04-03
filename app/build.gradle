@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-def useProject = false;
+def useProject = true;
 
 android {
     compileSdkVersion 26

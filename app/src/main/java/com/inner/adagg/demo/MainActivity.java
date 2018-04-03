@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
         mAdContainer = findViewById(R.id.ad_container);
         AdAggs.get(this).init(true);
 
-        if (true) {
+        if (false) {
             AdAggs.get(this).loadAdView("open_splash", new SimpleAdAggsListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
 
             Map<String, Object> map = new HashMap<String, Object>();
             // map.put(AdExtra.KEY_FB_ROOTVIEW, view);
-            map.put(AdExtra.KEY_FB_TEMPLATE, 1);
+            map.put(AdExtra.KEY_FB_NATIVE_TEMPLATE, AdExtra.FB_NATIVE_TEMPLATE_MEDIUM);
             map.put(AdExtra.KEY_FB_BANNER_SIZE, AdExtra.FB_BANNER);
             map.put(AdExtra.KEY_ADX_BANNER_SIZE, AdExtra.ADMOB_MEDIUM_RECTANGLE);
             AdAggs.get(this).loadAdView("main_top", map, new SimpleAdAggsListener() {
