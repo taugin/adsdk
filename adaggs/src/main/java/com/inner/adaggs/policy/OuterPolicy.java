@@ -198,9 +198,9 @@ public class OuterPolicy {
      * @return
      */
     private boolean isMaxShowAllow() {
-        if (mAdPolicy != null && mAdPolicy.getMaxShow() > 0) {
+        if (mAdPolicy != null && mAdPolicy.getMaxCount() > 0) {
             long times = getTotalShowTimes();
-            return times <= mAdPolicy.getMaxShow();
+            return times <= mAdPolicy.getMaxCount();
         }
         return true;
     }

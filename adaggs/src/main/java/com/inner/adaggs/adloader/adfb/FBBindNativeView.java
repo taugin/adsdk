@@ -36,11 +36,11 @@ public class FBBindNativeView {
             return;
         }
         int layoutId = R.layout.fb_native_template_large;
-        if (template == Constant.NATIVE_TEMPLATE_SMALL) {
+        if (template == Constant.NATIVE_CARD_SMALL) {
             layoutId = R.layout.fb_native_template_small;
-        } else if (template == Constant.NATIVE_TEMPLATE_MEDIUM) {
+        } else if (template == Constant.NATIVE_CARD_MEDIUM) {
             layoutId = R.layout.fb_native_template_medium;
-        } else if (template == Constant.NATIVE_TEMPLATE_LARGE) {
+        } else if (template == Constant.NATIVE_CARD_LARGE) {
             layoutId = R.layout.fb_native_template_large;
         }
         Context context = adContainer.getContext();

@@ -1,6 +1,6 @@
 {
   "s": 0,
-  "wdevs": [],
+  "wlist": [],
   "data": {
     "adids": {
       "admob": "",
@@ -67,6 +67,12 @@
         "name": "ad_outer_place",
         "mode": "con",
         "pids": [
+          {
+            "sdk": "adx",
+            "pid": "ca-mb-app-pub-7850146945256374/5850313518/3359823945",
+            "type": "banner",
+            "ctr": 0
+          },
           {
             "sdk": "fb",
             "pid": "541656102860623_541708392855394",

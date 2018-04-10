@@ -7,10 +7,10 @@ import java.util.List;
  */
 
 public class AdPolicy {
-    private boolean enable = true;
+    private boolean enable = false;
     private long upDelay;
     private long interval;
-    private int maxShow;
+    private int maxCount;
     private int maxVersion;
 
     private List<String> countryList;
@@ -41,12 +41,12 @@ public class AdPolicy {
         this.interval = interval;
     }
 
-    public int getMaxShow() {
-        return maxShow;
+    public int getMaxCount() {
+        return maxCount;
     }
 
-    public void setMaxShow(int maxShow) {
-        this.maxShow = maxShow;
+    public void setMaxCount(int maxCount) {
+        this.maxCount = maxCount;
     }
 
     public int getMaxVersion() {

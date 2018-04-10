@@ -65,15 +65,15 @@ public class AdExtra {
     /**
      * 原生广告模板值
      */
-    public static final int NATIVE_TEMPLATE_SMALL = Constant.NATIVE_TEMPLATE_SMALL;
+    public static final int NATIVE_CARD_SMALL = Constant.NATIVE_CARD_SMALL;
 
     /**
      * 原生广告模板值
      */
-    public static final int NATIVE_TEMPLATE_MEDIUM = Constant.NATIVE_TEMPLATE_MEDIUM;
+    public static final int NATIVE_CARD_MEDIUM = Constant.NATIVE_CARD_MEDIUM;
 
     /**
      * 原生广告模板值
      */
-    public static final int NATIVE_TEMPLATE_LARGE = Constant.NATIVE_TEMPLATE_LARGE;
+    public static final int NATIVE_CARD_LARGE = Constant.NATIVE_CARD_LARGE;
 }

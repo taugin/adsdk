@@ -14,7 +14,7 @@ import java.util.Map;
 
 public interface IParser {
 
-    String WHITE_LIST = "wdevs";
+    String WHITE_LIST = "wlist";
     String IMEI = "imei";
     String AID = "aid";
     String STATUS = "s";
@@ -35,6 +35,15 @@ public interface IParser {
     String PID = "pid";
     String CTR = "ctr";
     String TYPE = "type";
+
+    String ENABLE = "e";
+    String UPDELAY = "d";
+    String INTERVAL = "interval";
+    String MAX_COUNT = "mc";
+    String MAX_VERSION = "mv";
+    String COUNTRY_LIST = "cl";
+    String ATTRS = "attrs";
+    String MEDIA_SOURCE = "ms";
 
     int parseStatus(String data);
     List<DevInfo> parseDevList(String data);

@@ -124,6 +124,10 @@ public class AdAggs {
         loadInterstitial(null, pidName);
     }
 
+    public void loadInterstitial(String pidName, OnAdAggsListener l) {
+        loadInterstitial(null, pidName, l);
+    }
+
     public void loadInterstitial(Activity activity, String pidName) {
         loadInterstitial(activity, pidName, null);
     }

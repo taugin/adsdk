@@ -159,6 +159,11 @@ public class AbstractAdLoader implements IAdLoader {
     }
 
     @Override
+    public boolean hasLoadedFlag() {
+        return mLoadedFlag;
+    }
+
+    @Override
     public boolean useAndClearFlag() {
         boolean flag = mLoadedFlag;
         mLoadedFlag = false;
@@ -207,12 +212,15 @@ public class AbstractAdLoader implements IAdLoader {
     }
 
     protected boolean isCachedAdExpired(Object object) {
-        long cachedTime = mCachedTime.get(object);
-//        Log.d(Log.TAG, "cachedTime : " + cachedTime);
-        if (cachedTime <= 0) {
-            return true;
+        try {
+            long cachedTime = mCachedTime.get(object);
+            if (cachedTime <= 0) {
+                return true;
+            }
+            return SystemClock.elapsedRealtime() - cachedTime > MAX_CACHED_TIME;
+        } catch(Exception e) {
         }
-        return SystemClock.elapsedRealtime() - cachedTime > MAX_CACHED_TIME;
+        return false;
     }
 
     protected void clearCachedAdTime(Object object) {

@@ -1,5 +1,7 @@
 package com.inner.adaggs.parse;
 
+import android.text.TextUtils;
+
 import com.inner.adaggs.config.AdConfig;
 import com.inner.adaggs.config.AdPlace;
 import com.inner.adaggs.config.AdPolicy;
@@ -156,7 +158,67 @@ public class AdParser implements IParser {
     }
 
     private AdPolicy parsePolicy(String content) {
-        return new AdPolicy();
+        AdPolicy adPolicy = null;
+        try {
+            JSONObject jobj = new JSONObject(content);
+            adPolicy = new AdPolicy();
+            if (jobj.has(ENABLE)) {
+                adPolicy.setEnable(jobj.getInt(ENABLE) == 1);
+            }
+            if (jobj.has(UPDELAY)) {
+                adPolicy.setUpDelay(jobj.getLong(UPDELAY));
+            }
+            if (jobj.has(INTERVAL)) {
+                adPolicy.setInterval(jobj.getLong(INTERVAL));
+            }
+            if (jobj.has(MAX_COUNT)) {
+                adPolicy.setMaxCount(jobj.getInt(MAX_COUNT));
+            }
+            if (jobj.has(MAX_VERSION)) {
+                adPolicy.setMaxVersion(jobj.getInt(MAX_VERSION));
+            }
+            if (jobj.has(COUNTRY_LIST)) {
+                JSONArray jarray = jobj.getJSONArray(COUNTRY_LIST);
+                if (jarray != null && jarray.length() > 0) {
+                    List<String> list = new ArrayList<String>(jarray.length());
+                    for (int index = 0; index < jarray.length(); index++) {
+                        String s = jarray.getString(index);
+                        if (!TextUtils.isEmpty(s)) {
+                            list.add(s);
+                        }
+                    }
+                    adPolicy.setCountryList(list);
+                }
+            }
+            if (jobj.has(ATTRS)) {
+                JSONArray jarray = jobj.getJSONArray(ATTRS);
+                if (jarray != null && jarray.length() > 0) {
+                    List<String> list = new ArrayList<String>(jarray.length());
+                    for (int index = 0; index < jarray.length(); index++) {
+                        String s = jarray.getString(index);
+                        if (!TextUtils.isEmpty(s)) {
+                            list.add(s);
+                        }
+                    }
+                    adPolicy.setAttrList(list);
+                }
+            }
+            if (jobj.has(MEDIA_SOURCE)) {
+                JSONArray jarray = jobj.getJSONArray(MEDIA_SOURCE);
+                if (jarray != null && jarray.length() > 0) {
+                    List<String> list = new ArrayList<String>(jarray.length());
+                    for (int index = 0; index < jarray.length(); index++) {
+                        String s = jarray.getString(index);
+                        if (!TextUtils.isEmpty(s)) {
+                            list.add(s);
+                        }
+                    }
+                    adPolicy.setMediaList(list);
+                }
+            }
+        } catch (Exception e) {
+        }
+        return adPolicy;
     }
 
     private List<AdPlace> parseAdPlaces(String content) {

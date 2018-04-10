@@ -134,6 +134,7 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null && loader.isInterstitialLoaded()) {
+                    Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                     return true;
                 }
             }
@@ -239,6 +240,7 @@ public class AdPlaceLoader implements IManagerListener {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null &&
                         (loader.isBannerLoaded() || loader.isNativeLoaded())) {
+                    Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                     return true;
                 }
             }
@@ -374,10 +376,11 @@ public class AdPlaceLoader implements IManagerListener {
     public boolean isComplexAdsLoaded() {
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
-                if (loader != null
+                if (loader != null && loader.hasLoadedFlag()
                         && (loader.isBannerLoaded()
                         || loader.isNativeLoaded()
                         || loader.isInterstitialLoaded())) {
+                    Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                     return true;
                 }
             }
@@ -525,13 +528,13 @@ public class AdPlaceLoader implements IManagerListener {
                 if (loader != null && loader.useAndClearFlag()) {
                     if (loader.isBannerLoaded()) {
                         loader.showBanner(adContainer);
-                        return;
+                        break;
                     } else if (loader.isNativeLoaded()) {
                         loader.showNative(adContainer);
-                        return;
+                        break;
                     } else if (loader.isInterstitialLoaded()) {
                         loader.showInterstitial();
-                        return;
+                        break;
                     } else {
                         Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                     }
