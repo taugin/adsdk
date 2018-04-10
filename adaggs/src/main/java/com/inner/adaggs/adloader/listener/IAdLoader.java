@@ -71,5 +71,5 @@ public interface IAdLoader {
 
     public boolean useAndClearFlag();
 
-    public boolean allowLoad();
+    public boolean allowUseLoader();
 }

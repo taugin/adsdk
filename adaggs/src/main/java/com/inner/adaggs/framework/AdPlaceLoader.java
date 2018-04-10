@@ -17,6 +17,7 @@ import com.inner.adaggs.config.PidConfig;
 import com.inner.adaggs.constant.Constant;
 import com.inner.adaggs.listener.OnAdAggsListener;
 import com.inner.adaggs.log.Log;
+import com.inner.adaggs.policy.PlacePolicy;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class AdPlaceLoader implements IManagerListener {
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
                             loader.setAdId(adId);
-                            if (loader.allowLoad()) {
+                            if (loader.allowUseLoader()) {
                                 mAdLoaders.remove(loader);
                                 mAdLoaders.add(loader);
                             }
@@ -85,7 +86,7 @@ public class AdPlaceLoader implements IManagerListener {
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
                             loader.setAdId(adId);
-                            if (loader.allowLoad()) {
+                            if (loader.allowUseLoader()) {
                                 mAdLoaders.remove(loader);
                                 mAdLoaders.add(loader);
                             }
@@ -95,7 +96,7 @@ public class AdPlaceLoader implements IManagerListener {
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
                             loader.setAdId(adId);
-                            if (loader.allowLoad()) {
+                            if (loader.allowUseLoader()) {
                                 mAdLoaders.remove(loader);
                                 mAdLoaders.add(loader);
                             }
@@ -149,6 +150,9 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdPlace == null) {
             return;
         }
+        if (!PlacePolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
+            return;
+        }
         if (activity != null) {
             mActivity = new WeakReference<Activity>(activity);
         }
@@ -161,6 +165,7 @@ public class AdPlaceLoader implements IManagerListener {
         } else {
             loadInterstitialConcurrent();
         }
+        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
     }
 
     private void loadInterstitialConcurrent() {
@@ -171,7 +176,7 @@ public class AdPlaceLoader implements IManagerListener {
                 }
             }
             for (IAdLoader loader : mAdLoaders) {
-                if (loader != null && loader.allowLoad()) {
+                if (loader != null && loader.allowUseLoader()) {
                     loader.loadInterstitial();
                 }
             }
@@ -190,7 +195,7 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdLoaders != null) {
             int pos = new Random().nextInt(mAdLoaders.size());
             IAdLoader loader = mAdLoaders.get(pos);
-            if (loader != null && loader.allowLoad()) {
+            if (loader != null && loader.allowUseLoader()) {
                 registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, mOnAdAggsListener));
                 loader.loadInterstitial();
             }
@@ -202,7 +207,7 @@ public class AdPlaceLoader implements IManagerListener {
             return;
         }
         IAdLoader loader = iterator.next();
-        if (loader != null && loader.allowLoad()) {
+        if (loader != null && loader.allowUseLoader()) {
             registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, mOnAdAggsListener) {
                 @Override
                 public void onInterstitialError() {
@@ -226,7 +231,8 @@ public class AdPlaceLoader implements IManagerListener {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null) {
                     if (loader.isInterstitialLoaded() && loader.showInterstitial()) {
-                        return;
+                        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
+                        break;
                     }
                 }
             }
@@ -256,6 +262,9 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdPlace == null) {
             return;
         }
+        if (!PlacePolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
+            return;
+        }
         if (adParams != null) {
             mParams = adParams.getParams();
         }
@@ -279,7 +288,7 @@ public class AdPlaceLoader implements IManagerListener {
                 }
             }
             for (IAdLoader loader : mAdLoaders) {
-                if (loader != null && loader.allowLoad()) {
+                if (loader != null && loader.allowUseLoader()) {
                     if (loader.isBannerType()) {
                         loader.loadBanner(getBannerSize(loader));
                     } else if (loader.isNativeType()) {
@@ -301,7 +310,7 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdLoaders != null) {
             int pos = new Random().nextInt(mAdLoaders.size());
             IAdLoader loader = mAdLoaders.get(pos);
-            if (loader != null && loader.allowLoad()) {
+            if (loader != null && loader.allowUseLoader()) {
                 registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
                         mOnAdAggsListener));
                 if (loader.isBannerType()) {
@@ -320,7 +329,7 @@ public class AdPlaceLoader implements IManagerListener {
             return;
         }
         IAdLoader loader = iterator.next();
-        if (loader != null && loader.allowLoad()) {
+        if (loader != null && loader.allowUseLoader()) {
             registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
                     mOnAdAggsListener) {
                 @Override
@@ -354,10 +363,12 @@ public class AdPlaceLoader implements IManagerListener {
                 if (loader != null) {
                     if (loader.isBannerLoaded()) {
                         loader.showBanner(adContainer);
-                        return;
+                        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
+                        break;
                     } else if (loader.isNativeLoaded()) {
                         loader.showNative(adContainer);
-                        return;
+                        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
+                        break;
                     } else {
                         Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                     }
@@ -414,6 +425,9 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdPlace == null) {
             return;
         }
+        if (!PlacePolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
+            return;
+        }
         if (adParams != null) {
             mParams = adParams.getParams();
         }
@@ -437,7 +451,7 @@ public class AdPlaceLoader implements IManagerListener {
                 }
             }
             for (IAdLoader loader : mAdLoaders) {
-                if (loader != null && loader.allowLoad()) {
+                if (loader != null && loader.allowUseLoader()) {
                     if (loader.isBannerType()) {
                         loader.loadBanner(getBannerSize(loader));
                     } else if (loader.isNativeType()) {
@@ -462,7 +476,7 @@ public class AdPlaceLoader implements IManagerListener {
             return;
         }
         IAdLoader loader = iterator.next();
-        if (loader != null && loader.allowLoad()) {
+        if (loader != null && loader.allowUseLoader()) {
             registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
                     mOnAdAggsListener) {
                 @Override
@@ -501,7 +515,7 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdLoaders != null) {
             int pos = new Random().nextInt(mAdLoaders.size());
             IAdLoader loader = mAdLoaders.get(pos);
-            if (loader != null && loader.allowLoad()) {
+            if (loader != null && loader.allowUseLoader()) {
                 registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
                         mOnAdAggsListener));
                 if (loader.isBannerType()) {
@@ -528,12 +542,15 @@ public class AdPlaceLoader implements IManagerListener {
                 if (loader != null && loader.useAndClearFlag()) {
                     if (loader.isBannerLoaded()) {
                         loader.showBanner(adContainer);
+                        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
                         break;
                     } else if (loader.isNativeLoaded()) {
                         loader.showNative(adContainer);
+                        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
                         break;
                     } else if (loader.isInterstitialLoaded()) {
                         loader.showInterstitial();
+                        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
                         break;
                     } else {
                         Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());

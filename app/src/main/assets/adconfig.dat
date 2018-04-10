@@ -91,7 +91,9 @@
             "type": "interstitial",
             "ctr": 0
           }
-        ]
+        ],
+        "maxcount": 100,
+        "percent": 100
       },
       {
         "name": "ad_film_place",
@@ -115,7 +117,9 @@
             "type": "banner",
             "ctr": 0
           }
-        ]
+        ],
+        "maxcount": 100,
+        "percent": 100
       }
     ]
   }

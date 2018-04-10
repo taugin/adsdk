@@ -228,7 +228,7 @@ public class AbstractAdLoader implements IAdLoader {
     }
 
     @Override
-    public boolean allowLoad() {
-        return PlacePolicy.get(mContext).allowLoad();
+    public boolean allowUseLoader() {
+        return PlacePolicy.get(mContext).allowUseLoader();
     }
 }
