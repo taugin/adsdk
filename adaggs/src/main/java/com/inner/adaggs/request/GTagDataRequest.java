@@ -60,6 +60,7 @@ public class GTagDataRequest implements IDataRequest {
     @Override
     public String getString(String key) {
         if (USE_LOCAL_CONFIG) {
+            Log.d(Log.TAG, "use local config");
             return readConfigFromAsset(key);
         } else {
             if (mContainerHolder != null) {
