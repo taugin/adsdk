@@ -42,6 +42,46 @@ public class AdParams {
             return this;
         }
 
+        public void setAdTitle(int adTitle) {
+            params.setAdTitle(adTitle);
+        }
+
+        public void setAdSubTitle(int adSubTitle) {
+            params.setAdSubTitle(adSubTitle);
+        }
+
+        public void setAdIcon(int adIcon) {
+            params.setAdIcon(adIcon);
+        }
+
+        public void setAdCover(int adCover) {
+            params.setAdCover(adCover);
+        }
+
+        public void setAdView(int adView) {
+            params.setAdView(adView);
+        }
+
+        public void setAdDetail(int adDetail) {
+            params.setAdDetail(adDetail);
+        }
+
+        public void setAdAction(int adAction) {
+            params.setAdAction(adAction);
+        }
+
+        public void setAdChoices(int adChoices) {
+            params.setAdChoices(adChoices);
+        }
+
+        public void setAdSponsored(int adSponsored) {
+            params.setAdSponsored(adSponsored);
+        }
+
+        public void setAdSocial(int adSocial) {
+            params.setAdSocial(adSocial);
+        }
+
         public AdParams build() {
             return new AdParams(params);
         }

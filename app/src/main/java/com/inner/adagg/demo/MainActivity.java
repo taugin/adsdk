@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAdContainer = findViewById(R.id.ad_container);
-        BasicLib.init(this, "GTM-TMKR64Z", 0);
+        BasicLib.init(this, "GTM-TMKR64Z");
         AdAggs.get(this).init("GTM-TMKR64Z");
         loadInterstitial();
         loadAdView();

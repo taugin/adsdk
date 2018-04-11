@@ -35,9 +35,8 @@ public class FBLoader extends AbstractAdLoader {
 
     private InterstitialAd fbInterstitial;
     private NativeAd nativeAd;
-    private View nativeRootView;
-    private int mNativeTemplate;
     private AdView bannerView;
+    private Params mParams;
 
     @Override
     public String getSdkName() {
@@ -272,10 +271,7 @@ public class FBLoader extends AbstractAdLoader {
 
     @Override
     public void loadNative(Params params) {
-        if (params != null) {
-            nativeRootView = params.getNativeRootView();
-            mNativeTemplate = params.getNativeTemplateId();
-        }
+        mParams = params;
 
         if (!checkPidConfig()) {
             return;
@@ -355,13 +351,7 @@ public class FBLoader extends AbstractAdLoader {
     public void showNative(ViewGroup viewGroup) {
         FBBindNativeView fbBindNativeView = new FBBindNativeView();
         clearCachedAdTime(nativeAd);
-        if (nativeRootView != null) {
-            // 使用用户传递的view
-            fbBindNativeView.bindNative(nativeRootView, nativeAd, mPidConfig);
-        } else {
-            // 使用模板
-            fbBindNativeView.bindNativeWithTemplate(viewGroup, mNativeTemplate, nativeAd, mPidConfig);
-        }
+        fbBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
         nativeAd = null;
     }
 

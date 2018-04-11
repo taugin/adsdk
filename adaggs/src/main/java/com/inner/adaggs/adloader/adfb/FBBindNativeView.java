@@ -16,6 +16,7 @@ import com.facebook.ads.NativeAd;
 import com.inner.adaggs.R;
 import com.inner.adaggs.config.PidConfig;
 import com.inner.adaggs.constant.Constant;
+import com.inner.adaggs.framework.Params;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,21 +28,34 @@ import java.util.Random;
 
 public class FBBindNativeView {
 
-    public void bindNative(View rootView, NativeAd nativeAd, PidConfig pidConfig) {
-        bindNativeViewWithRootView(rootView, nativeAd, pidConfig);
+    private Params mParams;
+
+    public void bindNative(Params params, ViewGroup adContainer, NativeAd nativeAd, PidConfig pidConfig) {
+        mParams = params;
+        if (mParams == null) {
+            return;
+        }
+        View rootView = mParams.getNativeRootView();
+        int cardId = mParams.getNativeCardId();
+        if (rootView != null) {
+            bindNativeViewWithRootView(rootView, nativeAd, pidConfig);
+        } else if (cardId > 0) {
+            bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
+        }
     }
 
-    public void bindNativeWithTemplate(ViewGroup adContainer, int template, NativeAd nativeAd, PidConfig pidConfig) {
+
+    private void bindNativeWithCard(ViewGroup adContainer, int template, NativeAd nativeAd, PidConfig pidConfig) {
         if (adContainer == null) {
             return;
         }
-        int layoutId = R.layout.fb_native_template_large;
+        int layoutId = R.layout.fb_native_card_large;
         if (template == Constant.NATIVE_CARD_SMALL) {
-            layoutId = R.layout.fb_native_template_small;
+            layoutId = R.layout.fb_native_card_small;
         } else if (template == Constant.NATIVE_CARD_MEDIUM) {
-            layoutId = R.layout.fb_native_template_medium;
+            layoutId = R.layout.fb_native_card_medium;
         } else if (template == Constant.NATIVE_CARD_LARGE) {
-            layoutId = R.layout.fb_native_template_large;
+            layoutId = R.layout.fb_native_card_large;
         }
         Context context = adContainer.getContext();
         View rootView = LayoutInflater.from(context).inflate(layoutId, null);
@@ -74,18 +88,22 @@ public class FBBindNativeView {
             return;
         }
 
+        if (mParams == null) {
+            return;
+        }
+
         Context context = rootView.getContext();
 
-        ImageView imageCover = rootView.findViewById(getId(context, "fb_image_cover"));
-        ImageView icon = rootView.findViewById(getId(context, "fb_icon"));
-        TextView titleView = rootView.findViewById(getId(context, "fb_title"));
-        TextView subTitleView = rootView.findViewById(getId(context, "fb_sub_title"));
-        TextView socialView = rootView.findViewById(getId(context, "fb_social"));
-        TextView detail = rootView.findViewById(getId(context, "fb_detail"));
-        AppCompatButton btnAction = rootView.findViewById(getId(context, "fb_action_btn"));
-        RelativeLayout adChoiceContainer = rootView.findViewById(getId(context, "fb_ad_choices_container"));
+        TextView titleView = rootView.findViewById(mParams.getAdTitle());
+        TextView subTitleView = rootView.findViewById(mParams.getAdSubTitle());
+        ImageView icon = rootView.findViewById(mParams.getAdIcon());
+        ImageView imageCover = rootView.findViewById(mParams.getAdCover());
+        TextView socialView = rootView.findViewById(mParams.getAdSocial());
+        TextView detail = rootView.findViewById(mParams.getAdDetail());
+        AppCompatButton btnAction = rootView.findViewById(mParams.getAdAction());
+        RelativeLayout adChoiceContainer = rootView.findViewById(mParams.getAdChoices());
         MediaView mediaCover = new MediaView(rootView.getContext());
-        ViewGroup coverLayout = rootView.findViewById(getId(context, "fb_media_cover"));
+        ViewGroup coverLayout = rootView.findViewById(mParams.getAdView());
 
         if (coverLayout != null) {
             coverLayout.addView(mediaCover);
