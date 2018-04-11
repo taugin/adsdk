@@ -37,11 +37,11 @@ public interface IParser {
 
     String ENABLE = "e";
     String UPDELAY = "d";
-    String INTERVAL = "interval";
+    String INTERVAL = "i";
     String MAX_COUNT = "mc";
     String MAX_VERSION = "mv";
-    String COUNTRY_LIST = "cl";
-    String ATTRS = "attrs";
+    String COUNTRY_LIST = "ec";
+    String ATTRS = "attr";
     String MEDIA_SOURCE = "ms";
 
     int parseStatus(String data);

@@ -49,12 +49,8 @@ public class AdAggs {
     }
 
     public void init(String containerId) {
-        init(containerId, null);
-    }
-
-    public void init(String containerId, String url) {
         StatImpl.get().init(mContext);
-        DataManager.get(mContext).init(containerId, url);
+        DataManager.get(mContext).init(containerId);
         mLocalAdConfig = DataManager.get(mContext).getLocalAdConfig();
         OuterAdLoader.get(mContext).init(this);
     }

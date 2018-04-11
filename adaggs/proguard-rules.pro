@@ -22,6 +22,7 @@
 -keepattributes SourceFile,LineNumberTable
 -keep class com.inner.adaggs.AdAggs {*;}
 -keep class com.inner.adaggs.AdExtra {*;}
+-keep class com.inner.adaggs.AdParams {*;}
 -keep class com.inner.adaggs.listener.**{*;}
 
 #如接入 Facebook 广告，须将下类可以添加到 proguard 配置：

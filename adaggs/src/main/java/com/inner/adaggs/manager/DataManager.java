@@ -12,7 +12,6 @@ import com.inner.adaggs.log.Log;
 import com.inner.adaggs.parse.AdParser;
 import com.inner.adaggs.parse.IParser;
 import com.inner.adaggs.request.GTagDataRequest;
-import com.inner.adaggs.request.HttpDataRequest;
 import com.inner.adaggs.request.IDataRequest;
 import com.inner.adaggs.utils.Utils;
 
@@ -52,16 +51,11 @@ public class DataManager {
     private AdConfig mLocalAdConfig;
     private IParser mParser;
 
-    public void init(String containerId, String url) {
-        Log.d(Log.TAG, "containerId : " + containerId + " , url : " + url);
-        if (mDataRequest == null) {
-            if (!TextUtils.isEmpty(containerId)) {
-                mDataRequest = new GTagDataRequest(mContext);
-                mDataRequest.setAddress(containerId);
-            } else if (!TextUtils.isEmpty(url)) {
-                mDataRequest = new HttpDataRequest(mContext);
-                mDataRequest.setAddress(url);
-            }
+    public void init(String containerId) {
+        Log.d(Log.TAG, "containerId : " + containerId);
+        if (mDataRequest == null && !TextUtils.isEmpty(containerId)) {
+            mDataRequest = new GTagDataRequest(mContext);
+            mDataRequest.setAddress(containerId);
         }
         if (mDataRequest != null) {
             mDataRequest.request();
