@@ -9,6 +9,7 @@ import com.inner.adaggs.AdAggs;
 import com.inner.adaggs.AdExtra;
 import com.inner.adaggs.AdParams;
 import com.inner.adaggs.listener.SimpleAdAggsListener;
+import com.inner.basic.BasicLib;
 
 public class MainActivity extends Activity {
 
@@ -19,7 +20,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAdContainer = findViewById(R.id.ad_container);
-        AdAggs.get(this).init(true);
+        BasicLib.init(this, "GTM-TMKR64Z", 0);
+        AdAggs.get(this).init("GTM-TMKR64Z");
         loadInterstitial();
         loadAdView();
         loadComplexAd();
@@ -36,7 +38,7 @@ public class MainActivity extends Activity {
     }
 
     private void loadInterstitial() {
-        AdAggs.get(this).loadInterstitial("open_social", new SimpleAdAggsListener() {
+        AdAggs.get(this).loadInterstitial("open_splash", new SimpleAdAggsListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
@@ -45,8 +47,8 @@ public class MainActivity extends Activity {
     }
 
     private void showInterstitial() {
-        if (AdAggs.get(this).isInterstitialLoaded("open_social")) {
-            AdAggs.get(MainActivity.this).showInterstitial("open_social");
+        if (AdAggs.get(this).isInterstitialLoaded("open_splash")) {
+            AdAggs.get(MainActivity.this).showInterstitial("open_splash");
         } else {
             loadInterstitial();
         }

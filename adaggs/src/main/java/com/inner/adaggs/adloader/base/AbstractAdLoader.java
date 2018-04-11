@@ -11,7 +11,6 @@ import com.inner.adaggs.adloader.listener.OnAdBaseListener;
 import com.inner.adaggs.config.PidConfig;
 import com.inner.adaggs.framework.Params;
 import com.inner.adaggs.log.Log;
-import com.inner.adaggs.policy.PlacePolicy;
 import com.inner.adaggs.stat.IStat;
 import com.inner.adaggs.stat.StatImpl;
 
@@ -229,6 +228,9 @@ public class AbstractAdLoader implements IAdLoader {
 
     @Override
     public boolean allowUseLoader() {
-        return PlacePolicy.get(mContext).allowUseLoader();
+        if (mPidConfig != null) {
+            return !mPidConfig.isDisable();
+        }
+        return true;
     }
 }

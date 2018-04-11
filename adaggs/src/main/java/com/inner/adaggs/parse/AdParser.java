@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.inner.adaggs.config.AdConfig;
 import com.inner.adaggs.config.AdPlace;
 import com.inner.adaggs.config.AdPolicy;
-import com.inner.adaggs.config.DevInfo;
 import com.inner.adaggs.config.PidConfig;
 import com.inner.adaggs.log.Log;
 
@@ -37,51 +36,6 @@ public class AdParser implements IParser {
             Log.e(Log.TAG, "error : " + e);
         }
         return 0;
-    }
-
-    @Override
-    public List<DevInfo> parseDevList(String data) {
-        List<DevInfo> list = parseWhiteList(data);
-        return list;
-    }
-
-    /**
-     * 解析白名单
-     *
-     * @param data
-     * @return
-     */
-    private List<DevInfo> parseWhiteList(String data) {
-        List<DevInfo> list = null;
-        try {
-            JSONObject jobj = new JSONObject(data);
-            JSONArray jarray = null;
-            if (jobj.has(WHITE_LIST)) {
-                jarray = jobj.getJSONArray(WHITE_LIST);
-            }
-            DevInfo info = null;
-            if (jarray != null) {
-                int len = jarray.length();
-                if (len > 0) {
-                    list = new ArrayList<DevInfo>(len);
-                    JSONObject j = null;
-                    for (int index = 0; index < len; index++) {
-                        info = new DevInfo();
-                        j = jarray.getJSONObject(index);
-                        if (j.has(IMEI)) {
-                            info.setImei(j.getString(IMEI));
-                        }
-                        if (j.has(AID)) {
-                            info.setAndroidId(j.getString(AID));
-                        }
-                        list.add(info);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-        return list;
     }
 
     @Override
@@ -297,6 +251,9 @@ public class AdParser implements IParser {
             }
             if (jobj.has(TYPE)) {
                 pidConfig.setAdType(jobj.getString(TYPE));
+            }
+            if (jobj.has(DISABLE)) {
+                pidConfig.setDisable(jobj.getInt(DISABLE) == 1);
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

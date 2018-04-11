@@ -3,9 +3,7 @@ package com.inner.adaggs.parse;
 import com.inner.adaggs.config.AdConfig;
 import com.inner.adaggs.config.AdPlace;
 import com.inner.adaggs.config.AdPolicy;
-import com.inner.adaggs.config.DevInfo;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,6 +33,7 @@ public interface IParser {
     String PID = "pid";
     String CTR = "ctr";
     String TYPE = "type";
+    String DISABLE = "disable";
 
     String ENABLE = "e";
     String UPDELAY = "d";
@@ -46,7 +45,6 @@ public interface IParser {
     String MEDIA_SOURCE = "ms";
 
     int parseStatus(String data);
-    List<DevInfo> parseDevList(String data);
     String parseContent(String data);
     AdConfig parse(String data);
     AdPlace parseAdPlace(String data);

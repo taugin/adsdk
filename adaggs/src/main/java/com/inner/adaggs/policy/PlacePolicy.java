@@ -44,10 +44,6 @@ public class PlacePolicy {
     private Context mContext;
     private Random mRandom;
 
-    public boolean allowUseLoader() {
-        return true;
-    }
-
     public void reportAdPlaceLoad(AdPlace adPlace) {
         if (adPlace == null) {
             return;

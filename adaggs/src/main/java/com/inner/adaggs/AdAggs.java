@@ -27,7 +27,7 @@ public class AdAggs {
 
     private Context mContext;
     private Map<String, AdPlaceLoader> mAdLoaders = new HashMap<String, AdPlaceLoader>();
-    private AdConfig mAdConfig;
+    private AdConfig mLocalAdConfig;
 
     private AdAggs(Context context) {
         mContext = context.getApplicationContext();
@@ -48,31 +48,24 @@ public class AdAggs {
         }
     }
 
-    public void init() {
-        init(false);
+    public void init(String containerId) {
+        init(containerId, null);
     }
 
-    public void init(boolean l) {
+    public void init(String containerId, String url) {
         StatImpl.get().init(mContext);
-        DataManager.get(mContext).init();
-        mAdConfig = DataManager.get(mContext).getAdConfig();
-        if (mAdConfig == null) {
-            mAdConfig = new AdConfig();
-        }
+        DataManager.get(mContext).init(containerId, url);
+        mLocalAdConfig = DataManager.get(mContext).getLocalAdConfig();
         OuterAdLoader.get(mContext).init(this);
-        if (l) {
-            OuterAdLoader.get(mContext).startLoop();
-        }
     }
 
     private AdPlaceLoader getAdLoader(String pidName) {
         AdPlaceLoader loader = mAdLoaders.get(pidName);
-        AdPlace adPlace = DataManager.get(mContext).getAdPlace(pidName);
-        Map<String, String> adids = DataManager.get(mContext).getAdIds(Constant.ADIDS_NAME);
+        AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(pidName);
+        Map<String, String> adids = DataManager.get(mContext).getRemoteAdIds(Constant.ADIDS_NAME);
         if (loader == null || (!loader.isFromRemote() && adPlace != null)) {
             loader = createAdPlaceLoader(pidName, adPlace, adids);
             if (loader != null) {
-                mAdLoaders.remove(pidName);
                 mAdLoaders.put(pidName, loader);
             }
         }
@@ -90,12 +83,12 @@ public class AdAggs {
         AdPlaceLoader loader = null;
         boolean useRemote = false;
         if (adPlace == null) {
-            adPlace = mAdConfig.get(pidName);
+            adPlace = mLocalAdConfig.get(pidName);
         } else {
             useRemote = true;
         }
         if (adIds == null) {
-            adIds = mAdConfig.getAdIds();
+            adIds = mLocalAdConfig.getAdIds();
         }
         Log.v(Log.TAG, "pidName : " + pidName + " , adPlace : " + adPlace);
         if (adPlace != null) {
@@ -105,11 +98,8 @@ public class AdAggs {
             loader.init();
             loader.setFromRemote(useRemote);
         }
+        Log.d(Log.TAG, "pidName [" + pidName + "] use remote config : " + useRemote);
         return loader;
-    }
-
-    public void onFire() {
-        OuterAdLoader.get(mContext).onFire();
     }
 
     public boolean isInterstitialLoaded(String pidName) {
@@ -226,6 +216,7 @@ public class AdAggs {
     public void destroy(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
+            mAdLoaders.remove(pidName);
             loader.destroy();
         }
     }

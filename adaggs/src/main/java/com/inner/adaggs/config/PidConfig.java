@@ -20,6 +20,8 @@ public class PidConfig {
 
     private String adType;
 
+    private boolean disable;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -58,6 +60,14 @@ public class PidConfig {
 
     public void setAdType(String adType) {
         this.adType = adType;
+    }
+
+    public boolean isDisable() {
+        return disable;
+    }
+
+    public void setDisable(boolean disable) {
+        this.disable = disable;
     }
 
     public boolean isAdmob() {

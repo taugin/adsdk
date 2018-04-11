@@ -16,11 +16,15 @@ public class HttpDataRequest implements IDataRequest {
 
     private Context mContext;
     private String mUrl;
-    private OnDataListener mOnDataListener;
+    private String mContent;
 
-    public HttpDataRequest(Context context, String url) {
+    public HttpDataRequest(Context context) {
         mContext = context;
-        mUrl = url;
+    }
+
+    @Override
+    public void setAddress(String address) {
+        mUrl = address;
     }
 
     @Override
@@ -34,25 +38,15 @@ public class HttpDataRequest implements IDataRequest {
         Http.get().request(url, null, new OnCallback() {
             @Override
             public void onSuccess(String content) {
-                Log.d(Log.TAG, "content : " + content);
-                if (mOnDataListener != null) {
-                    mOnDataListener.onData(content);
-                }
+                mContent = content;
             }
 
             @Override
             public void onFailure(int code, String error) {
                 Log.e(Log.TAG, "error : " + error + "(" + code + ")");
-                if (mOnDataListener != null) {
-                    mOnDataListener.onData(null);
-                }
+                mContent = null;
             }
         });
-    }
-
-    @Override
-    public void setOnDataListener(OnDataListener l) {
-        mOnDataListener = l;
     }
 
     @Override

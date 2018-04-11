@@ -7,7 +7,7 @@ import java.util.List;
  */
 
 public class AdPolicy {
-    private boolean enable = false;
+    private boolean enable = true;
     private long upDelay;
     private long interval;
     private int maxCount;

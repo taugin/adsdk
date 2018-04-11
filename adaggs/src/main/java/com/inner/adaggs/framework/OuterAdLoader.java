@@ -3,8 +3,10 @@ package com.inner.adaggs.framework;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.SystemClock;
 
 import com.inner.adaggs.AdAggs;
@@ -48,20 +50,36 @@ public class OuterAdLoader {
     }
 
     public void init(AdAggs adAggs) {
-        OuterPolicy.get(mContext).init();
         mAdAggs = adAggs;
         if (mAdAggs == null) {
             return;
         }
+        OuterPolicy.get(mContext).init();
         updateAdPolicy();
+        if (!hasAlarmService()) {
+            Log.d(Log.TAG, "no alarm service, so start loop");
+            startLoop();
+        } else {
+            IntentFilter filter = new IntentFilter(Constant.ACTION_BASIC_ALARM);
+            mContext.registerReceiver(mBroadcastReceiver, filter);
+        }
+    }
+
+    private boolean hasAlarmService() {
+        try {
+            Class.forName(Constant.ALARM_SERVICE);
+            return true;
+        } catch(Exception e) {
+        }
+        return false;
     }
 
     private void updateAdPolicy() {
-        AdConfig adConfig = DataManager.get(mContext).getAdConfig();
+        AdConfig adConfig = DataManager.get(mContext).getLocalAdConfig();
         if (adConfig == null) {
             return;
         }
-        AdPolicy adPolicy = DataManager.get(mContext).getAdPolicy(Constant.ADPOLICY_NAME);
+        AdPolicy adPolicy = DataManager.get(mContext).getRemoteAdPolicy(Constant.ADPOLICY_NAME);
         if (adPolicy == null && adConfig != null) {
             adPolicy = adConfig.getAdPolicy();
         }
@@ -71,6 +89,7 @@ public class OuterAdLoader {
     public void startLoop() {
         Intent alarmIntent = new Intent(mContext, IService.class);
         alarmIntent.setAction(Constant.ACTION_ALARM);
+        alarmIntent.setPackage(mContext.getPackageName());
         PendingIntent pIntent = PendingIntent.getService(mContext, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Service.ALARM_SERVICE);
         long pendingTime = SystemClock.elapsedRealtime() + Constant.ALARM_INTERVAL_TIME;
@@ -78,6 +97,7 @@ public class OuterAdLoader {
     }
 
     public void onFire() {
+        Log.d(Log.TAG, "onFire");
         fireOuterAd();
     }
 
@@ -111,4 +131,12 @@ public class OuterAdLoader {
             });
         }
     }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(Log.TAG, "intent : " + intent);
+            fireOuterAd();
+        }
+    };
 }
