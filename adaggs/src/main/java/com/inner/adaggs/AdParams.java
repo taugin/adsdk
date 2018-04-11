@@ -32,8 +32,8 @@ public class AdParams {
             return this;
         }
 
-        public Builder setNativeTemplateId(int templateId) {
-            params.setNativeTemplateId(templateId);
+        public Builder setNativeCardStyle(int cardStyle) {
+            params.setNativeCardStyle(cardStyle);
             return this;
         }
 

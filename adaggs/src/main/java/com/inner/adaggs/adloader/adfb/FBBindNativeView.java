@@ -36,14 +36,13 @@ public class FBBindNativeView {
             return;
         }
         View rootView = mParams.getNativeRootView();
-        int cardId = mParams.getNativeCardId();
+        int cardId = mParams.getNativeCardStyle();
         if (rootView != null) {
             bindNativeViewWithRootView(rootView, nativeAd, pidConfig);
         } else if (cardId > 0) {
             bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
         }
     }
-
 
     private void bindNativeWithCard(ViewGroup adContainer, int template, NativeAd nativeAd, PidConfig pidConfig) {
         if (adContainer == null) {

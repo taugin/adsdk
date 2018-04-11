@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
     private void loadAdView() {
         AdParams adParams = new AdParams.Builder()
                 .setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADMOB_MEDIUM_RECTANGLE)
-                .setNativeTemplateId(AdExtra.NATIVE_CARD_SMALL)
+                .setNativeCardStyle(AdExtra.NATIVE_CARD_SMALL)
                 .build();
         AdAggs.get(this).loadAdView("main_top", adParams, new SimpleAdAggsListener() {
             @Override

@@ -12,7 +12,7 @@ import java.util.Map;
 public class Params {
 
     private View mNativeRootView;
-    private int mNativeTemplateId;
+    private int mNativeCardStyle;
     private Map<String, Integer> mBannerSize = new HashMap<String, Integer>();
     private int adTitle;
     private int adSubTitle;
@@ -36,12 +36,12 @@ public class Params {
         return mNativeRootView;
     }
 
-    public void setNativeTemplateId(int tid) {
-        mNativeTemplateId = tid;
+    public void setNativeCardStyle(int tid) {
+        mNativeCardStyle = tid;
     }
 
-    public int getNativeCardId() {
-        return mNativeTemplateId;
+    public int getNativeCardStyle() {
+        return mNativeCardStyle;
     }
 
     public void setBannerSize(String sdk, int size) {
