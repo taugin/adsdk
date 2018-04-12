@@ -20,8 +20,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAdContainer = findViewById(R.id.ad_container);
-        BasicLib.init(this, "GTM-TMKR64Z");
-        AdAggs.get(this).init("GTM-TMKR64Z");
+        BasicLib.init(this, "GTM-TMKR64Z1");
+        AdAggs.get(this).init("GTM-TMKR64Z1");
         loadInterstitial();
         loadAdView();
         loadComplexAd();
@@ -57,12 +57,14 @@ public class MainActivity extends Activity {
     private void loadAdView() {
         AdParams adParams = new AdParams.Builder()
                 .setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADMOB_MEDIUM_RECTANGLE)
+                .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
                 .setNativeCardStyle(AdExtra.NATIVE_CARD_SMALL)
                 .build();
         AdAggs.get(this).loadAdView("main_top", adParams, new SimpleAdAggsListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                AdAggs.get(MainActivity.this).showAdView("main_top", mAdContainer);
             }
         });
     }

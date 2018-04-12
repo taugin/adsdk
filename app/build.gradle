@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
-def useProject = true;
+def useProject = false;
 
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.inner.adagg.demo"
+        applicationId "com.onechat.social.messager"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
@@ -24,7 +24,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
