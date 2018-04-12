@@ -294,7 +294,7 @@ public class AdPlaceLoader implements IManagerListener {
                     } else if (loader.isNativeType()) {
                         loader.loadNative(mParams);
                     } else {
-                        Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                        Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                     }
                 }
             }
@@ -318,7 +318,7 @@ public class AdPlaceLoader implements IManagerListener {
                 } else if (loader.isNativeType()) {
                     loader.loadNative(mParams);
                 } else {
-                    Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                    Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 }
             }
         }
@@ -347,7 +347,7 @@ public class AdPlaceLoader implements IManagerListener {
             } else if (loader.isNativeType()) {
                 loader.loadNative(mParams);
             } else {
-                Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType());
+                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getAdType());
             }
         }
     }
@@ -357,7 +357,7 @@ public class AdPlaceLoader implements IManagerListener {
      * @param adContainer
      */
     public void showAdView(ViewGroup adContainer) {
-        Log.d(Log.TAG, "");
+        Log.d(Log.TAG, "showAdView");
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null) {
@@ -369,8 +369,6 @@ public class AdPlaceLoader implements IManagerListener {
                         loader.showNative(adContainer);
                         PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
                         break;
-                    } else {
-                        Log.d(Log.TAG, "showadview none loaded : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                     }
                 }
             }
@@ -459,7 +457,7 @@ public class AdPlaceLoader implements IManagerListener {
                     } else if (loader.isInterstitialType()) {
                         loader.loadInterstitial();
                     } else {
-                        Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                        Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                     }
                 }
             }
@@ -506,7 +504,7 @@ public class AdPlaceLoader implements IManagerListener {
             } else if (loader.isInterstitialType()) {
                 loader.loadInterstitial();
             } else {
-                Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
             }
         }
     }
@@ -525,7 +523,7 @@ public class AdPlaceLoader implements IManagerListener {
                 } else if (loader.isInterstitialType()) {
                     loader.loadInterstitial();
                 } else {
-                    Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                    Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 }
             }
         }
@@ -552,8 +550,6 @@ public class AdPlaceLoader implements IManagerListener {
                         loader.showInterstitial();
                         PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
                         break;
-                    } else {
-                        Log.d(Log.TAG, "showcomplexad none loaded : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                     }
                 }
             }

@@ -156,7 +156,7 @@ public class AdmobLoader extends AbstractAdLoader {
 
     @Override
     public void showBanner(ViewGroup viewGroup) {
-        Log.v(Log.TAG, "");
+        Log.v(Log.TAG, "admobloader");
         try {
             clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
@@ -169,7 +169,7 @@ public class AdmobLoader extends AbstractAdLoader {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.e(Log.TAG, "admobloader error : " + e);
         }
     }
 
@@ -319,6 +319,13 @@ public class AdmobLoader extends AbstractAdLoader {
     public void pause() {
         if (bannerView != null) {
             bannerView.pause();
+        }
+    }
+
+    @Override
+    public void destroy() {
+        if (bannerView != null) {
+            bannerView.destroy();
         }
     }
 }
