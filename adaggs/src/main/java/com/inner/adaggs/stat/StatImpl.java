@@ -140,7 +140,7 @@ public class StatImpl implements IStat {
         sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "stat key : " + eventId + " , value : " + pidName + " , category : " + category);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class StatImpl implements IStat {
         sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "stat key : " + eventId + " , value : " + pidName + " , category : " + category);
     }
 
     @Override
@@ -166,7 +166,7 @@ public class StatImpl implements IStat {
         sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "stat key : " + eventId + " , value : " + pidName + " , category : " + category);
     }
 
     @Override
@@ -179,7 +179,7 @@ public class StatImpl implements IStat {
         sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "stat key : " + eventId + " , value : " + pidName + " , category : " + category);
     }
 
     @Override

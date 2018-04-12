@@ -370,7 +370,7 @@ public class AdPlaceLoader implements IManagerListener {
                         PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
                         break;
                     } else {
-                        Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                        Log.d(Log.TAG, "showadview none loaded : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                     }
                 }
             }
@@ -553,7 +553,7 @@ public class AdPlaceLoader implements IManagerListener {
                         PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
                         break;
                     } else {
-                        Log.d(Log.TAG, "incorrect type : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
+                        Log.d(Log.TAG, "showcomplexad none loaded : " + loader.getAdPlaceName() + " - " + loader.getAdType() + " - " + loader.getSdkName());
                     }
                 }
             }

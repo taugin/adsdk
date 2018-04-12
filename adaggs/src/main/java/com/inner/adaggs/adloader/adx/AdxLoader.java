@@ -56,7 +56,7 @@ public class AdxLoader extends AbstractAdLoader {
             return;
         }
         if (isBannerLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
+            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded();
@@ -65,7 +65,7 @@ public class AdxLoader extends AbstractAdLoader {
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             return;
         }
         setLoading(true);
@@ -87,7 +87,7 @@ public class AdxLoader extends AbstractAdLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
-                Log.v(Log.TAG, "reason : " + i + " , type : " + getAdType());
+                Log.v(Log.TAG, "reason : " + i + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed();
@@ -109,7 +109,7 @@ public class AdxLoader extends AbstractAdLoader {
 
             @Override
             public void onAdLoaded() {
-                Log.v(Log.TAG, "type : " + getAdType());
+                Log.v(Log.TAG, "adloaded sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false);
                 putCachedAdTime(adView);
                 bannerView = adView;
@@ -187,7 +187,7 @@ public class AdxLoader extends AbstractAdLoader {
             return;
         }
         if (isInterstitialLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
+            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded();
@@ -196,7 +196,7 @@ public class AdxLoader extends AbstractAdLoader {
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getAdType() + " - " + getSdkName());
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             return;
         }
         setLoading(true);
