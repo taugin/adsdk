@@ -195,11 +195,35 @@ public class StatImpl implements IStat {
     }
 
     @Override
+    public void reportAdOuterLoaded(Context context) {
+        if (context == null) {
+            return;
+        }
+        String eventId = "outer_gt_loaded";
+        String category = "user_action";
+        sendGoogleAnalytics(null, eventId, category);
+        sendUmeng(context, null, eventId, null);
+        Log.v(Log.TAG, "");
+    }
+
+    @Override
     public void reportAdOuterShow(Context context) {
         if (context == null) {
             return;
         }
         String eventId = "outer_gt_show";
+        String category = "user_action";
+        sendGoogleAnalytics(null, eventId, category);
+        sendUmeng(context, null, eventId, null);
+        Log.v(Log.TAG, "");
+    }
+
+    @Override
+    public void reportAdOuterShowing(Context context) {
+        if (context == null) {
+            return;
+        }
+        String eventId = "outer_gt_showing";
         String category = "user_action";
         sendGoogleAnalytics(null, eventId, category);
         sendUmeng(context, null, eventId, null);

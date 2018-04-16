@@ -113,8 +113,11 @@ public class OuterAdLoader {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    mAdAggs.showComplexAds(pidName, null);
-                    StatImpl.get().reportAdOuterShow(mContext);
+                    StatImpl.get().reportAdOuterLoaded(mContext);
+                    if (OuterPolicy.get(mContext).shouldShowAdOuter()) {
+                        mAdAggs.showComplexAds(pidName, null);
+                        StatImpl.get().reportAdOuterShow(mContext);
+                    }
                 }
 
                 @Override
@@ -127,6 +130,7 @@ public class OuterAdLoader {
                 public void onShow(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     OuterPolicy.get(mContext).reportOuterShowing(true);
+                    StatImpl.get().reportAdOuterShowing(mContext);
                 }
             });
         }

@@ -14,5 +14,7 @@ public interface IStat {
     public void reportAdShow(Context context, String pidName, String sdk, String type, Map<String, String> extra);
     public void reportAdClick(Context context, String pidName, String sdk, String type, Map<String, String> extra);
     public void reportAdOuterRequest(Context context);
+    public void reportAdOuterLoaded(Context context);
     public void reportAdOuterShow(Context context);
+    public void reportAdOuterShowing(Context context);
 }
