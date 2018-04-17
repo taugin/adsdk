@@ -8,7 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/adaggs" />
+            <option value="$PROJECT_DIR$/adsdk" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>

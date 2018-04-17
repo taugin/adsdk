@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.inner.adaggs.AdAggs;
-import com.inner.adaggs.AdExtra;
-import com.inner.adaggs.AdParams;
-import com.inner.adaggs.listener.SimpleAdAggsListener;
+import com.inner.adsdk.AdExtra;
+import com.inner.adsdk.AdParams;
+import com.inner.adsdk.AdSdk;
+import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.basic.BasicLib;
 
 public class MainActivity extends Activity {
@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         mAdContainer = findViewById(R.id.ad_container);
         BasicLib.init(this, "GTM-TMKR64Z1");
-        AdAggs.get(this).init("GTM-TMKR64Z1");
+        AdSdk.get(this).init("GTM-TMKR64Z1");
         loadInterstitial();
         loadAdView();
         loadComplexAd();
@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
     }
 
     private void loadInterstitial() {
-        AdAggs.get(this).loadInterstitial("open_splash", new SimpleAdAggsListener() {
+        AdSdk.get(this).loadInterstitial("open_social", new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
@@ -47,8 +47,8 @@ public class MainActivity extends Activity {
     }
 
     private void showInterstitial() {
-        if (AdAggs.get(this).isInterstitialLoaded("open_splash")) {
-            AdAggs.get(MainActivity.this).showInterstitial("open_splash");
+        if (AdSdk.get(this).isInterstitialLoaded("open_social")) {
+            AdSdk.get(MainActivity.this).showInterstitial("open_social");
         } else {
             loadInterstitial();
         }
@@ -60,25 +60,25 @@ public class MainActivity extends Activity {
                 .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
                 .setNativeCardStyle(AdExtra.NATIVE_CARD_SMALL)
                 .build();
-        AdAggs.get(this).loadAdView("main_top", adParams, new SimpleAdAggsListener() {
+        AdSdk.get(this).loadAdView("main_top", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                AdAggs.get(MainActivity.this).showAdView("main_top", mAdContainer);
+                AdSdk.get(MainActivity.this).showAdView("main_top", mAdContainer);
             }
         });
     }
 
     private void showAdView() {
-        if (AdAggs.get(this).isAdViewLoaded("main_top")) {
-            AdAggs.get(this).showAdView("main_top", mAdContainer);
+        if (AdSdk.get(this).isAdViewLoaded("main_top")) {
+            AdSdk.get(this).showAdView("main_top", mAdContainer);
         } else {
             loadAdView();
         }
     }
 
     private void loadComplexAd() {
-        AdAggs.get(this).loadComplexAds("ad_outer_place", new SimpleAdAggsListener() {
+        AdSdk.get(this).loadComplexAds("ad_outer_place", new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
@@ -87,8 +87,8 @@ public class MainActivity extends Activity {
     }
 
     private void showComplexAd() {
-        if (AdAggs.get(this).isComplexAdsLoaded("ad_outer_place")) {
-            AdAggs.get(this).showComplexAds("ad_outer_place", mAdContainer);
+        if (AdSdk.get(this).isComplexAdsLoaded("ad_outer_place")) {
+            AdSdk.get(this).showComplexAds("ad_outer_place", mAdContainer);
         } else {
             loadComplexAd();
         }

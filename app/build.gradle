@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-def useProject = false;
+def useProject = true;
 
 android {
     compileSdkVersion 26
@@ -42,9 +42,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:multidex:1.0.0'
     if (useProject) {
-        implementation project(":adaggs")
+        implementation project(":adsdk")
     } else {
-        implementation 'com.inner.adaggs:adaggs:1.0.0'
+        implementation 'com.inner.adsdk:adsdk:1.0.0'
     }
     implementation 'com.inner.basic:basic:+'
 }
