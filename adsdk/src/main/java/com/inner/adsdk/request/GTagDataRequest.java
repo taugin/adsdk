@@ -1,6 +1,7 @@
 package com.inner.adsdk.request;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -18,7 +19,7 @@ import com.inner.adsdk.utils.Utils;
 public class GTagDataRequest implements IDataRequest {
 
     private static final boolean DEBUG = true;
-    private static final boolean USE_LOCAL_CONFIG = BuildConfig.DEBUG && DEBUG;
+    private static final boolean LOCAL_CONFIG_FIRST = BuildConfig.DEBUG && DEBUG;
 
     private static final int DEFAULT_CONTAINER = 0;
     private Context mContext;
@@ -40,7 +41,7 @@ public class GTagDataRequest implements IDataRequest {
             try {
                 mContainerHolder.refresh();
                 Log.v(Log.TAG, "container holder refresh");
-            } catch(Exception e) {
+            } catch (Exception e) {
             }
         }
         TagManager tagManager = TagManager.getInstance(mContext);
@@ -59,18 +60,20 @@ public class GTagDataRequest implements IDataRequest {
 
     @Override
     public String getString(String key) {
-        if (USE_LOCAL_CONFIG) {
-            Log.d(Log.TAG, "use local config");
-            return readConfigFromAsset(key);
-        } else {
+        String value = null;
+        if (LOCAL_CONFIG_FIRST) {
+            Log.d(Log.TAG, "local config first : " + key);
+            value = readConfigFromAsset(key);
+        }
+        if (TextUtils.isEmpty(value)) {
             if (mContainerHolder != null) {
                 Container container = mContainerHolder.getContainer();
                 if (container != null) {
-                    return container.getString(key);
+                    value = container.getString(key);
                 }
             }
         }
-        return null;
+        return value;
     }
 
     private String readConfigFromAsset(String key) {
