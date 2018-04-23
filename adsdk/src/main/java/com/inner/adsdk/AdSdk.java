@@ -49,6 +49,14 @@ public class AdSdk {
     }
 
     /**
+     * 获取版本号
+     * @return
+     */
+    public String getSdkVersion() {
+        return BuildConfig.VERSION_NAME;
+    }
+
+    /**
      * 初始化
      * @param containerId Google Tag ContainerId
      */
