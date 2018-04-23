@@ -27,11 +27,6 @@ public class AdParams {
             params = new Params();
         }
 
-        public Builder setNativeRootView(View view) {
-            params.setNativeRootView(view);
-            return this;
-        }
-
         public Builder setNativeCardStyle(int cardStyle) {
             params.setNativeCardStyle(cardStyle);
             return this;
@@ -42,44 +37,60 @@ public class AdParams {
             return this;
         }
 
-        public void setAdTitle(int adTitle) {
+
+        public Builder setNativeRootView(View view) {
+            params.setNativeRootView(view);
+            return this;
+        }
+
+        public Builder setAdTitle(int adTitle) {
             params.setAdTitle(adTitle);
+            return this;
         }
 
-        public void setAdSubTitle(int adSubTitle) {
+        public Builder setAdSubTitle(int adSubTitle) {
             params.setAdSubTitle(adSubTitle);
+            return this;
         }
 
-        public void setAdIcon(int adIcon) {
+        public Builder setAdIcon(int adIcon) {
             params.setAdIcon(adIcon);
+            return this;
         }
 
-        public void setAdCover(int adCover) {
+        public Builder setAdCover(int adCover) {
             params.setAdCover(adCover);
+            return this;
         }
 
-        public void setAdView(int adView) {
+        public Builder setAdView(int adView) {
             params.setAdView(adView);
+            return this;
         }
 
-        public void setAdDetail(int adDetail) {
+        public Builder setAdDetail(int adDetail) {
             params.setAdDetail(adDetail);
+            return this;
         }
 
-        public void setAdAction(int adAction) {
+        public Builder setAdAction(int adAction) {
             params.setAdAction(adAction);
+            return this;
         }
 
-        public void setAdChoices(int adChoices) {
+        public Builder setAdChoices(int adChoices) {
             params.setAdChoices(adChoices);
+            return this;
         }
 
-        public void setAdSponsored(int adSponsored) {
+        public Builder setAdSponsored(int adSponsored) {
             params.setAdSponsored(adSponsored);
+            return this;
         }
 
-        public void setAdSocial(int adSocial) {
+        public Builder setAdSocial(int adSocial) {
             params.setAdSocial(adSocial);
+            return this;
         }
 
         public AdParams build() {

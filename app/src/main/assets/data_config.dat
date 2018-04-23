@@ -1,11 +1,7 @@
 {
   "s": 0,
   "data": {
-    "adids": {
-      "admob": "",
-      "adx": "",
-      "fb": ""
-    },
+    "adids": {"admob": "","adx": "","fb": ""},
     "policy": {"e":1,"d":3600000,"i":1800000,"mc":10,"mv": -1, "attr":[],"ec":[],"ms":[]},
     "adplaces": [
       {"name":"open_splash","mode":"con","pids":[{"sdk":"fb","type":"native","pid":"541656102860623_541708392855394"}],"maxcount":100,"percent":100},

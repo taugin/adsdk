@@ -131,7 +131,11 @@ public class OuterPolicy {
     }
 
     private String getAFStatus() {
-        return Utils.getString(mContext, "af_status");
+        return Utils.getString(mContext, Constant.AF_STATUS);
+    }
+
+    private String getMediaSource() {
+        return Utils.getString(mContext, Constant.AF_MEDIA_SOURCE);
     }
 
     private String getCountry() {
@@ -267,7 +271,39 @@ public class OuterPolicy {
         return true;
     }
 
+    /**
+     * 判断媒体源是否允许
+     * @return
+     */
     private boolean isMediaSourceAllow() {
+        String mediaSource = getMediaSource();
+        if (mAdPolicy != null) {
+            List<String> mediaList = mAdPolicy.getMediaList();
+            if (mediaList != null && !mediaList.isEmpty()) {
+                List<String> includeMs = new ArrayList<String>();
+                List<String> excludeMs = new ArrayList<String>();
+                for (String s : mediaList) {
+                    if (s != null) {
+                        if (s.startsWith("!")) {
+                            excludeMs.add(s);
+                        } else {
+                            includeMs.add(s);
+                        }
+                    }
+                }
+                if (includeMs.size() > 0) {
+                    // 包含列表如果不包含当前媒体源，则返回false
+                    if (!includeMs.contains(mediaSource)) {
+                        return false;
+                    }
+                } else if (excludeMs.size() > 0) {
+                    // 排斥列表如果包含当前媒体源，则返回false
+                    if (excludeMs.contains("!" + mediaSource)) {
+                        return false;
+                    }
+                }
+            }
+        }
         return true;
     }
 

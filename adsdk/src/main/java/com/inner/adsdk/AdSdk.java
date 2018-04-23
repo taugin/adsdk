@@ -48,10 +48,19 @@ public class AdSdk {
         }
     }
 
+    /**
+     * 初始化
+     * @param containerId Google Tag ContainerId
+     */
     public void init(String containerId) {
         init(containerId, null);
     }
 
+    /**
+     * 初始化
+     * @param containerId Google Tag ContainerId
+     * @param gaTrackerId Google Analytic TrackerId
+     */
     public void init(String containerId, String gaTrackerId) {
         StatImpl.get().init(mContext, gaTrackerId);
         DataManager.get(mContext).init(containerId);
