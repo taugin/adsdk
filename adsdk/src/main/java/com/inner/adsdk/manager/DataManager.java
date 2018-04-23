@@ -69,7 +69,7 @@ public class DataManager {
             String content = mParser.parseContent(data);
             String adContent = null;
             if (status == 1) {
-                adContent = Aes.decrypt(content, Constant.KEY_PASSWORD);
+                adContent = Aes.decrypt(Constant.KEY_PASSWORD, content);
             } else {
                 adContent = content;
             }

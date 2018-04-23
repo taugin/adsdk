@@ -15,10 +15,10 @@ public class Aes {
                 "0123456789ABCDEF".charAt(paramByte & 0xF));
     }
 
-    public static String decrypt(String source, String seed) {
+    public static String decrypt(String key, String content) {
         try {
-            String str = new String(decrypt(getRawKey(source.getBytes()),
-                    toByte(seed)));
+            String str = new String(decrypt(getRawKey(key.getBytes()),
+                    toByte(content)));
             return str;
         } catch (Exception localException) {
             System.out.println("decrypt error: " + localException);
@@ -26,20 +26,20 @@ public class Aes {
         return null;
     }
 
-    public static byte[] decrypt(byte[] paramArrayOfByte1,
-            byte[] paramArrayOfByte2) throws Exception {
-        SecretKeySpec localSecretKeySpec = new SecretKeySpec(paramArrayOfByte1,
+    public static byte[] decrypt(byte[] key,
+                                 byte[] content) throws Exception {
+        SecretKeySpec localSecretKeySpec = new SecretKeySpec(key,
                 "AES");
         Cipher localCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         localCipher.init(2, localSecretKeySpec, new IvParameterSpec(
                 new byte[localCipher.getBlockSize()]));
-        return localCipher.doFinal(paramArrayOfByte2);
+        return localCipher.doFinal(content);
     }
 
-    public static String decryptRaw(String seed, byte[] encrypt) {
+    public static String decryptRaw(String seed, byte[] content) {
         try {
             String str = new String(
-                    decrypt(getRawKey(seed.getBytes()), encrypt));
+                    decrypt(getRawKey(seed.getBytes()), content));
             return str;
         } catch (Exception localException) {
             System.out.println("decrypt raw error: " + localException);
@@ -49,30 +49,28 @@ public class Aes {
 
     public static String encrypt(String key, String content) {
         try {
-            byte[] arrayOfByte1 = null;
-            byte[] arrayOfByte2 = encrypt(getRawKey(key.getBytes()),
+            byte[] result = encrypt(getRawKey(key.getBytes()),
                     content.getBytes());
-            arrayOfByte1 = arrayOfByte2;
-            return toHex(arrayOfByte1);
+            return toHex(result);
         } catch (Exception localException) {
         }
         return null;
     }
 
-    private static byte[] encrypt(byte[] paramArrayOfByte1,
-            byte[] paramArrayOfByte2) throws Exception {
-        SecretKeySpec localSecretKeySpec = new SecretKeySpec(paramArrayOfByte1,
+    private static byte[] encrypt(byte[] key,
+                                  byte[] content)throws Exception {
+        SecretKeySpec localSecretKeySpec = new SecretKeySpec(key,
                 "AES");
         Cipher localCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         localCipher.init(1, localSecretKeySpec, new IvParameterSpec(
                 new byte[localCipher.getBlockSize()]));
-        return localCipher.doFinal(paramArrayOfByte2);
+        return localCipher.doFinal(content);
     }
 
-    public static byte[] encryptRaw(String paramString1, String paramString2) {
+    public static byte[] encryptRaw(String key, String content) {
         try {
-            byte[] arrayOfByte = encrypt(getRawKey(paramString1.getBytes()),
-                    paramString2.getBytes());
+            byte[] arrayOfByte = encrypt(getRawKey(key.getBytes()),
+                    content.getBytes());
             return arrayOfByte;
         } catch (Exception localException) {
             System.out.println("encrypt raw error: " + localException);
@@ -80,21 +78,21 @@ public class Aes {
         return null;
     }
 
-    public static String fromHex(String paramString) {
-        return new String(toByte(paramString));
+    public static String fromHex(String content) {
+        return new String(toByte(content));
     }
 
-    private static byte[] getRawKey(byte[] paramArrayOfByte) throws Exception {
+    private static byte[] getRawKey(byte[] key) throws Exception {
         byte[] arrayOfByte = new byte[16];
-        if (paramArrayOfByte == null)
+        if (key == null)
             throw new IllegalArgumentException("seed == null");
-        if (paramArrayOfByte.length == 0)
+        if (key.length == 0)
             throw new IllegalArgumentException("seed.length == 0");
-        if (paramArrayOfByte.length < 16) {
+        if (key.length < 16) {
             int i = 0;
             while (i < arrayOfByte.length) {
-                if (i < paramArrayOfByte.length) {
-                    arrayOfByte[i] = paramArrayOfByte[i];
+                if (i < key.length) {
+                    arrayOfByte[i] = key[i];
                 } else {
                     arrayOfByte[i] = 0;
                 }
@@ -104,26 +102,26 @@ public class Aes {
         return arrayOfByte;
     }
 
-    public static byte[] toByte(String paramString) {
-        int i = paramString.length() / 2;
+    public static byte[] toByte(String content) {
+        int i = content.length() / 2;
         byte[] arrayOfByte = new byte[i];
         for (int j = 0; j < i; j++)
             arrayOfByte[j] = Integer.valueOf(
-                    paramString.substring(j * 2, 2 + j * 2), 16).byteValue();
+                    content.substring(j * 2, 2 + j * 2), 16).byteValue();
         return arrayOfByte;
     }
 
-    public static String toHex(String paramString) {
-        return toHex(paramString.getBytes());
+    public static String toHex(String content) {
+        return toHex(content.getBytes());
     }
 
-    public static String toHex(byte[] paramArrayOfByte) {
-        if (paramArrayOfByte == null)
+    public static String toHex(byte[] content) {
+        if (content == null)
             return "";
         StringBuffer localStringBuffer = new StringBuffer(
-                2 * paramArrayOfByte.length);
-        for (int i = 0; i < paramArrayOfByte.length; i++)
-            appendHex(localStringBuffer, paramArrayOfByte[i]);
+                2 * content.length);
+        for (int i = 0; i < content.length; i++)
+            appendHex(localStringBuffer, content[i]);
         return localStringBuffer.toString();
     }
 
