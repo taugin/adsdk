@@ -6,6 +6,8 @@ import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdPolicy;
 import com.inner.adsdk.config.PidConfig;
+import com.inner.adsdk.constant.Constant;
+import com.inner.adsdk.framework.Aes;
 import com.inner.adsdk.log.Log;
 
 import org.json.JSONArray;
@@ -23,43 +25,27 @@ import java.util.Map;
 
 public class AdParser implements IParser {
 
-    @Override
-    public int parseStatus(String data) {
+    private String getContent(String content) {
+        JSONObject jobj = null;
         try {
-            JSONObject jobj = new JSONObject(data);
-            int status = -1;
-            if (jobj.has(STATUS)) {
-                status = jobj.getInt(STATUS);
-            }
-            return status;
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            jobj = new JSONObject(content);
+        } catch(Exception e) {
+            Log.v(Log.TAG, "encrypt content");
         }
-        return 0;
+        if (jobj != null) {
+            return jobj.toString();
+        }
+        return Aes.decrypt(Constant.KEY_PASSWORD, content);
     }
 
     @Override
-    public String parseContent(String data) {
-        try {
-            JSONObject jobj = new JSONObject(data);
-            String s = null;
-            if (jobj.has(DATA)) {
-                s = jobj.getString(DATA);
-            }
-            return s;
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-        return null;
-    }
-
-    @Override
-    public AdConfig parse(String data) {
-        AdConfig adconfig = parseAdConfig(data);
+    public AdConfig parseAdConfig(String data) {
+        data = getContent(data);
+        AdConfig adconfig = parseAdConfigInternal(data);
         return adconfig;
     }
 
-    private AdConfig parseAdConfig(String data) {
+    private AdConfig parseAdConfigInternal(String data) {
         AdConfig adConfig = null;
         try {
             JSONObject jobj = new JSONObject(data);
@@ -70,7 +56,7 @@ public class AdParser implements IParser {
                 adIds = parseAdIds(jobj.getString(ADIDS));
             }
             if (jobj.has(POLICY)) {
-                adPolicy = parsePolicy(jobj.getString(POLICY));
+                adPolicy = parseAdPolicyInternal(jobj.getString(POLICY));
             }
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
@@ -91,6 +77,7 @@ public class AdParser implements IParser {
     public Map<String, String> parseAdIds(String content) {
         Map<String, String> adIds = null;
         try {
+            content = getContent(content);
             JSONObject jobj = new JSONObject(content);
             adIds = new HashMap<String, String>();
             Iterator<String> iterator = jobj.keys();
@@ -108,10 +95,11 @@ public class AdParser implements IParser {
 
     @Override
     public AdPolicy parseAdPolicy(String data) {
-        return parsePolicy(data);
+        data = getContent(data);
+        return parseAdPolicyInternal(data);
     }
 
-    private AdPolicy parsePolicy(String content) {
+    private AdPolicy parseAdPolicyInternal(String content) {
         AdPolicy adPolicy = null;
         try {
             JSONObject jobj = new JSONObject(content);
@@ -196,6 +184,7 @@ public class AdParser implements IParser {
     public AdPlace parseAdPlace(String content) {
         AdPlace adPlace = null;
         try {
+            content = getContent(content);
             JSONObject jobj = new JSONObject(content);
             adPlace = new AdPlace();
             if (jobj.has(NAME)) {

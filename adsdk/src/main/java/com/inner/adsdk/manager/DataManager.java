@@ -6,8 +6,6 @@ import android.text.TextUtils;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdPolicy;
-import com.inner.adsdk.constant.Constant;
-import com.inner.adsdk.framework.Aes;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.parse.AdParser;
 import com.inner.adsdk.parse.IParser;
@@ -65,15 +63,7 @@ public class DataManager {
     public AdConfig getLocalAdConfig() {
         if (mLocalAdConfig == null) {
             String data = Utils.readAssets(mContext, "data_config.dat");
-            int status = mParser.parseStatus(data);
-            String content = mParser.parseContent(data);
-            String adContent = null;
-            if (status == 1) {
-                adContent = Aes.decrypt(Constant.KEY_PASSWORD, content);
-            } else {
-                adContent = content;
-            }
-            mLocalAdConfig = mParser.parse(adContent);
+            mLocalAdConfig = mParser.parseAdConfig(data);
         }
         return mLocalAdConfig;
     }

@@ -44,9 +44,7 @@ public interface IParser {
     String ATTRS = "attr";
     String MEDIA_SOURCE = "ms";
 
-    int parseStatus(String data);
-    String parseContent(String data);
-    AdConfig parse(String data);
+    AdConfig parseAdConfig(String data);
     AdPlace parseAdPlace(String data);
     AdPolicy parseAdPolicy(String data);
     Map<String, String> parseAdIds(String data);
