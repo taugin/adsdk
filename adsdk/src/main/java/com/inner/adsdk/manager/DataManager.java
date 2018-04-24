@@ -62,7 +62,7 @@ public class DataManager {
 
     public AdConfig getLocalAdConfig() {
         if (mLocalAdConfig == null) {
-            String data = Utils.readAssets(mContext, "data_config.dat");
+            String data = Utils.readAssets(mContext, "data_config_encrypt.dat");
             mLocalAdConfig = mParser.parseAdConfig(data);
         }
         return mLocalAdConfig;

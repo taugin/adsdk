@@ -22,6 +22,8 @@ public class PidConfig {
 
     private boolean disable;
 
+    private long interval;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -68,6 +70,14 @@ public class PidConfig {
 
     public void setDisable(boolean disable) {
         this.disable = disable;
+    }
+
+    public long getInterval() {
+        return interval;
+    }
+
+    public void setInterval(long interval) {
+        this.interval = interval;
     }
 
     public boolean isAdmob() {

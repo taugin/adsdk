@@ -246,6 +246,9 @@ public class AdParser implements IParser {
             if (jobj.has(DISABLE)) {
                 pidConfig.setDisable(jobj.getInt(DISABLE) == 1);
             }
+            if (jobj.has(ADINTEVAL)) {
+                pidConfig.setInterval(jobj.getLong(ADINTEVAL));
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

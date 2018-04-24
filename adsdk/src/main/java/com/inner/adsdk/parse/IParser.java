@@ -34,6 +34,7 @@ public interface IParser {
     String CTR = "ctr";
     String TYPE = "type";
     String DISABLE = "disable";
+    String ADINTEVAL = "interval";
 
     String ENABLE = "e";
     String UPDELAY = "d";
