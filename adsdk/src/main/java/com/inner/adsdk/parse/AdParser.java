@@ -68,7 +68,7 @@ public class AdParser implements IParser {
                 adConfig.setAdIds(adIds);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.v(Log.TAG, "parseAdConfigInternal error : " + e);
         }
         return adConfig;
     }
@@ -89,6 +89,7 @@ public class AdParser implements IParser {
                 adIds.put(key, value);
             }
         } catch(Exception e) {
+            Log.v(Log.TAG, "parseAdIds error : " + e);
         }
         return adIds;
     }
@@ -159,6 +160,7 @@ public class AdParser implements IParser {
                 }
             }
         } catch (Exception e) {
+            Log.v(Log.TAG, "parseAdPolicyInternal error : " + e);
         }
         return adPolicy;
     }
@@ -203,7 +205,7 @@ public class AdParser implements IParser {
                 adPlace.setPidsList(parsePidList(jobj.getString(PIDS)));
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.v(Log.TAG, "parseAdPlace error : " + e);
         }
         return adPlace;
     }

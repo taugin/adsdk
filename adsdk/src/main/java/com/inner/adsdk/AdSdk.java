@@ -97,6 +97,9 @@ public class AdSdk {
      * @return
      */
     private AdPlaceLoader createAdPlaceLoader(String pidName, AdPlace adPlace, Map<String, String> adIds) {
+        if (mLocalAdConfig == null) {
+            return null;
+        }
         AdPlaceLoader loader = null;
         boolean useRemote = false;
         if (adPlace == null) {
