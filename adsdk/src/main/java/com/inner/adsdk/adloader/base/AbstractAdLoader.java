@@ -13,6 +13,7 @@ import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.stat.IStat;
 import com.inner.adsdk.stat.StatImpl;
+import com.inner.adsdk.utils.Utils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -232,5 +233,32 @@ public class AbstractAdLoader implements IAdLoader {
             return !mPidConfig.isDisable();
         }
         return true;
+    }
+
+
+    /**
+     * 防止多次加载NoFill的广告导致惩罚时间
+     * @return
+     */
+    protected boolean matchNoFillTime() {
+        return System.currentTimeMillis() - getLastNoFillTime() >= mPidConfig.getInterval();
+    }
+
+    protected void updateLastNoFillTime() {
+        try {
+            String pref = getSdkName() + "_" + mPidConfig.getPid();
+            Utils.putLong(mContext, pref, System.currentTimeMillis());
+            Log.d(Log.TAG, pref + " : " + System.currentTimeMillis());
+        } catch (Exception e) {
+        }
+    }
+
+    protected long getLastNoFillTime() {
+        try {
+            String pref = getSdkName() + "_" + mPidConfig.getPid();
+            return Utils.getLong(mContext, pref, 0);
+        } catch (Exception e) {
+        }
+        return 0;
     }
 }

@@ -18,7 +18,7 @@ public class Params {
     private int adSubTitle;
     private int adIcon;
     private int adCover;
-    private int adView;
+    private int adMediaView;
     private int adDetail;
     private int adAction;
     private int adChoices;
@@ -28,7 +28,7 @@ public class Params {
     public Params() {
     }
 
-    public void setNativeRootView(View view) {
+    public void setAdRootView(View view) {
         mNativeRootView = view;
     }
 
@@ -36,7 +36,7 @@ public class Params {
         return mNativeRootView;
     }
 
-    public void setNativeCardStyle(int tid) {
+    public void setAdCardStyle(int tid) {
         mNativeCardStyle = tid;
     }
 
@@ -84,12 +84,12 @@ public class Params {
         this.adCover = adCover;
     }
 
-    public int getAdView() {
-        return adView;
+    public int getAdMediaView() {
+        return adMediaView;
     }
 
-    public void setAdView(int adView) {
-        this.adView = adView;
+    public void setAdMediaView(int adMediaView) {
+        this.adMediaView = adMediaView;
     }
 
     public int getAdDetail() {

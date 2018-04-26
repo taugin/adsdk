@@ -146,7 +146,7 @@ public class AdmobLoader extends AbstractAdLoader {
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
-        Log.v(Log.TAG, "");
+        Log.v(Log.TAG, "======================================");
     }
 
     @Override
@@ -242,6 +242,9 @@ public class AdmobLoader extends AbstractAdLoader {
                 }
             }
 
+            /**
+             * banner每隔一段时间会自动切换新的banner展示，因此会导致多次调用onAdLoaded
+             */
             @Override
             public void onAdLoaded() {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());

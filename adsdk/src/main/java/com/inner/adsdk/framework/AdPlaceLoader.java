@@ -37,7 +37,7 @@ public class AdPlaceLoader implements IManagerListener {
     private Map<String, String> mAdIds;
     private Context mContext;
     private OnAdSdkListener mOnAdSdkListener;
-    private Params mParams;
+    private AdParams mAdParams;
     private boolean mFromRemote = false;
     // banner和native的listener集合
     private Map<IAdLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<IAdLoader, OnAdBaseListener>();
@@ -107,6 +107,14 @@ public class AdPlaceLoader implements IManagerListener {
         }
     }
 
+    private Params getParams(IAdLoader loader) {
+        try {
+            return mAdParams.getParams(loader.getSdkName());
+        } catch(Exception e) {
+        }
+        return null;
+    }
+
     /**
      * 根据SDK名字获取banner大小
      *
@@ -115,7 +123,7 @@ public class AdPlaceLoader implements IManagerListener {
      */
     private int getBannerSize(IAdLoader loader) {
         try {
-            Map<String, Integer> map = mParams.getBannerSize();
+            Map<String, Integer> map = getParams(loader).getBannerSize();
             return (int) map.get(loader.getSdkName());
         } catch (Exception e) {
         }
@@ -265,9 +273,8 @@ public class AdPlaceLoader implements IManagerListener {
         if (!PlacePolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
             return;
         }
-        if (adParams != null) {
-            mParams = adParams.getParams();
-        }
+        mAdParams = adParams;
+
         if (mAdPlace.isConcurrent()) {
             loadAdViewConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -292,7 +299,7 @@ public class AdPlaceLoader implements IManagerListener {
                     if (loader.isBannerType()) {
                         loader.loadBanner(getBannerSize(loader));
                     } else if (loader.isNativeType()) {
-                        loader.loadNative(mParams);
+                        loader.loadNative(getParams(loader));
                     } else {
                         Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                     }
@@ -316,7 +323,7 @@ public class AdPlaceLoader implements IManagerListener {
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
                 } else if (loader.isNativeType()) {
-                    loader.loadNative(mParams);
+                    loader.loadNative(getParams(loader));
                 } else {
                     Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 }
@@ -345,7 +352,7 @@ public class AdPlaceLoader implements IManagerListener {
             if (loader.isBannerType()) {
                 loader.loadBanner(getBannerSize(loader));
             } else if (loader.isNativeType()) {
-                loader.loadNative(mParams);
+                loader.loadNative(getParams(loader));
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getAdType());
             }
@@ -426,9 +433,7 @@ public class AdPlaceLoader implements IManagerListener {
         if (!PlacePolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
             return;
         }
-        if (adParams != null) {
-            mParams = adParams.getParams();
-        }
+        mAdParams = adParams;
         if (mAdPlace.isConcurrent()) {
             loadComplexAdsConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -453,7 +458,7 @@ public class AdPlaceLoader implements IManagerListener {
                     if (loader.isBannerType()) {
                         loader.loadBanner(getBannerSize(loader));
                     } else if (loader.isNativeType()) {
-                        loader.loadNative(mParams);
+                        loader.loadNative(getParams(loader));
                     } else if (loader.isInterstitialType()) {
                         loader.loadInterstitial();
                     } else {
@@ -500,7 +505,7 @@ public class AdPlaceLoader implements IManagerListener {
             if (loader.isBannerType()) {
                 loader.loadBanner(getBannerSize(loader));
             } else if (loader.isNativeType()) {
-                loader.loadNative(mParams);
+                loader.loadNative(getParams(loader));
             } else if (loader.isInterstitialType()) {
                 loader.loadInterstitial();
             } else {
@@ -519,7 +524,7 @@ public class AdPlaceLoader implements IManagerListener {
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
                 } else if (loader.isNativeType()) {
-                    loader.loadNative(mParams);
+                    loader.loadNative(getParams(loader));
                 } else if (loader.isInterstitialType()) {
                     loader.loadInterstitial();
                 } else {

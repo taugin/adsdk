@@ -5,8 +5,8 @@ def useProject = true;
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.onechat.social.messager"
-        minSdkVersion 14
+        applicationId "homeworkout.loseweight.fitness.butt.abs"
+        minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"

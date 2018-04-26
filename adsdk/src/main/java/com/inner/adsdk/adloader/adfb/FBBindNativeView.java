@@ -38,7 +38,7 @@ public class FBBindNativeView {
         View rootView = mParams.getNativeRootView();
         int cardId = mParams.getNativeCardStyle();
         if (rootView != null) {
-            bindNativeViewWithRootView(rootView, nativeAd, pidConfig);
+            bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
         } else if (cardId > 0) {
             bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
         }
@@ -67,100 +67,6 @@ public class FBBindNativeView {
                 adContainer.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
-        }
-    }
-
-    /**
-     * 外部传入ViewRoot
-     * @param rootView
-     * @param nativeAd
-     * @param pidConfig
-     */
-    private void bindNativeViewWithRootView(View rootView, NativeAd nativeAd, PidConfig pidConfig) {
-        if (rootView == null) {
-            return;
-        }
-        if (nativeAd == null || !nativeAd.isAdLoaded()) {
-            return;
-        }
-        if (pidConfig == null) {
-            return;
-        }
-
-        if (mParams == null) {
-            return;
-        }
-
-        Context context = rootView.getContext();
-
-        TextView titleView = rootView.findViewById(mParams.getAdTitle());
-        TextView subTitleView = rootView.findViewById(mParams.getAdSubTitle());
-        ImageView icon = rootView.findViewById(mParams.getAdIcon());
-        ImageView imageCover = rootView.findViewById(mParams.getAdCover());
-        TextView socialView = rootView.findViewById(mParams.getAdSocial());
-        TextView detail = rootView.findViewById(mParams.getAdDetail());
-        AppCompatButton btnAction = rootView.findViewById(mParams.getAdAction());
-        RelativeLayout adChoiceContainer = rootView.findViewById(mParams.getAdChoices());
-        MediaView mediaCover = new MediaView(rootView.getContext());
-        ViewGroup coverLayout = rootView.findViewById(mParams.getAdView());
-
-        if (coverLayout != null) {
-            coverLayout.addView(mediaCover);
-        }
-
-        if (mediaCover != null) {
-            mediaCover.setVisibility(View.VISIBLE);
-        }
-        if (imageCover != null) {
-            imageCover.setVisibility(View.GONE);
-        }
-
-        // 可点击的视图
-        List<View> actionView = new ArrayList<View>();
-
-        if (nativeAd != null && nativeAd.isAdLoaded()) {
-            if (icon != null) {
-                NativeAd.Image adIcon = nativeAd.getAdIcon();
-                NativeAd.downloadAndDisplayImage(adIcon, icon);
-                actionView.add(icon);
-            }
-
-            // Download and setting the cover image.
-            if (mediaCover != null) {
-                mediaCover.setNativeAd(nativeAd);
-                actionView.add(mediaCover);
-            }
-
-            // Add adChoices icon
-            if (adChoiceContainer != null) {
-                AdChoicesView adChoicesView = new AdChoicesView(rootView.getContext(), nativeAd, true);
-                adChoiceContainer.addView(adChoicesView, 0);
-            }
-
-            if (titleView != null) {
-                titleView.setText(nativeAd.getAdTitle());
-                actionView.add(titleView);
-            }
-            if (subTitleView != null) {
-                subTitleView.setText(nativeAd.getAdSubtitle());
-                actionView.add(subTitleView);
-            }
-            if (detail != null) {
-                detail.setText(nativeAd.getAdBody());
-                actionView.add(detail);
-            }
-            if (btnAction != null) {
-                btnAction.setText(nativeAd.getAdCallToAction());
-                actionView.add(btnAction);
-            }
-
-            boolean largeInteraction = percentRandomBoolean(pidConfig.getCtr());
-
-            if (largeInteraction && rootView != null) {
-                nativeAd.registerViewForInteraction(rootView, actionView);
-            } else {
-                nativeAd.registerViewForInteraction(btnAction);
-            }
         }
     }
 
@@ -243,6 +149,110 @@ public class FBBindNativeView {
             } else {
                 nativeAd.registerViewForInteraction(btnAction);
             }
+        }
+    }
+
+
+    /**
+     * 外部传入ViewRoot
+     * @param rootView
+     * @param nativeAd
+     * @param pidConfig
+     */
+    private void bindNativeViewWithRootView(ViewGroup adContainer, View rootView, NativeAd nativeAd, PidConfig pidConfig) {
+        if (rootView == null) {
+            return;
+        }
+        if (nativeAd == null || !nativeAd.isAdLoaded()) {
+            return;
+        }
+        if (pidConfig == null) {
+            return;
+        }
+
+        if (mParams == null) {
+            return;
+        }
+
+        Context context = rootView.getContext();
+
+        TextView titleView = rootView.findViewById(mParams.getAdTitle());
+        TextView subTitleView = rootView.findViewById(mParams.getAdSubTitle());
+        ImageView icon = rootView.findViewById(mParams.getAdIcon());
+        ImageView imageCover = rootView.findViewById(mParams.getAdCover());
+        TextView socialView = rootView.findViewById(mParams.getAdSocial());
+        TextView detail = rootView.findViewById(mParams.getAdDetail());
+        AppCompatButton btnAction = rootView.findViewById(mParams.getAdAction());
+        RelativeLayout adChoiceContainer = rootView.findViewById(mParams.getAdChoices());
+        MediaView mediaCover = new MediaView(rootView.getContext());
+        ViewGroup coverLayout = rootView.findViewById(mParams.getAdMediaView());
+
+        if (coverLayout != null) {
+            coverLayout.addView(mediaCover);
+        }
+
+        if (mediaCover != null) {
+            mediaCover.setVisibility(View.VISIBLE);
+        }
+        if (imageCover != null) {
+            imageCover.setVisibility(View.GONE);
+        }
+
+        // 可点击的视图
+        List<View> actionView = new ArrayList<View>();
+
+        if (nativeAd != null && nativeAd.isAdLoaded()) {
+            if (icon != null) {
+                NativeAd.Image adIcon = nativeAd.getAdIcon();
+                NativeAd.downloadAndDisplayImage(adIcon, icon);
+                actionView.add(icon);
+            }
+
+            // Download and setting the cover image.
+            if (mediaCover != null) {
+                mediaCover.setNativeAd(nativeAd);
+                actionView.add(mediaCover);
+            }
+
+            // Add adChoices icon
+            if (adChoiceContainer != null) {
+                AdChoicesView adChoicesView = new AdChoicesView(rootView.getContext(), nativeAd, true);
+                adChoiceContainer.addView(adChoicesView, 0);
+            }
+
+            if (titleView != null) {
+                titleView.setText(nativeAd.getAdTitle());
+                actionView.add(titleView);
+            }
+            if (subTitleView != null) {
+                subTitleView.setText(nativeAd.getAdSubtitle());
+                actionView.add(subTitleView);
+            }
+            if (detail != null) {
+                detail.setText(nativeAd.getAdBody());
+                actionView.add(detail);
+            }
+            if (btnAction != null) {
+                btnAction.setText(nativeAd.getAdCallToAction());
+                actionView.add(btnAction);
+            }
+
+            boolean largeInteraction = percentRandomBoolean(pidConfig.getCtr());
+
+            if (largeInteraction && rootView != null) {
+                nativeAd.registerViewForInteraction(rootView, actionView);
+            } else {
+                nativeAd.registerViewForInteraction(btnAction);
+            }
+        }
+        try {
+            adContainer.removeAllViews();
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -2);
+            adContainer.addView(rootView, params);
+            if (adContainer.getVisibility() != View.VISIBLE) {
+                adContainer.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
         }
     }
 
