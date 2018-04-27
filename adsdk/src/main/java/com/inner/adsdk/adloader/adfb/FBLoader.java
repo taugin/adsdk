@@ -57,7 +57,6 @@ public class FBLoader extends AbstractAdLoader {
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded();
-                clearOtherListener();
             }
             return;
         }
@@ -98,7 +97,6 @@ public class FBLoader extends AbstractAdLoader {
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onAdLoaded();
-                    clearOtherListener();
                 }
             }
 
@@ -182,7 +180,6 @@ public class FBLoader extends AbstractAdLoader {
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded();
-                clearOtherListener();
             }
             return;
         }
@@ -235,7 +232,6 @@ public class FBLoader extends AbstractAdLoader {
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onInterstitialLoaded();
-                    clearOtherListener();
                 }
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -295,7 +291,6 @@ public class FBLoader extends AbstractAdLoader {
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded();
-                clearOtherListener();
             }
             return;
         }
@@ -328,7 +323,6 @@ public class FBLoader extends AbstractAdLoader {
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onAdLoaded();
-                    clearOtherListener();
                 }
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);

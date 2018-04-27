@@ -2,6 +2,7 @@ package com.inner.adsdk.framework;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.inner.adsdk.AdParams;
@@ -16,6 +17,7 @@ import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.listener.OnAdSdkListener;
+import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.policy.PlacePolicy;
 
@@ -37,11 +39,14 @@ public class AdPlaceLoader implements IManagerListener {
     private Map<String, String> mAdIds;
     private Context mContext;
     private OnAdSdkListener mOnAdSdkListener;
+    private OnAdSdkListener mOnAdPlaceLoaderListener = new AdPlaceLoaderListener();
     private AdParams mAdParams;
     private boolean mFromRemote = false;
     // banner和native的listener集合
     private Map<IAdLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<IAdLoader, OnAdBaseListener>();
     private WeakReference<Activity> mActivity;
+    private ViewGroup mAdContainer;
+    private IAdLoader mCurrentAdLoader;
 
     public AdPlaceLoader(Context context) {
         mContext = context;
@@ -110,7 +115,7 @@ public class AdPlaceLoader implements IManagerListener {
     private Params getParams(IAdLoader loader) {
         try {
             return mAdParams.getParams(loader.getSdkName());
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
         return null;
     }
@@ -164,6 +169,7 @@ public class AdPlaceLoader implements IManagerListener {
         if (activity != null) {
             mActivity = new WeakReference<Activity>(activity);
         }
+        mCurrentAdLoader = null;
         if (mAdPlace.isConcurrent()) {
             loadInterstitialConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -180,7 +186,7 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdLoaders != null) {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, mOnAdSdkListener));
+                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, this));
                 }
             }
             for (IAdLoader loader : mAdLoaders) {
@@ -204,7 +210,7 @@ public class AdPlaceLoader implements IManagerListener {
             int pos = new Random().nextInt(mAdLoaders.size());
             IAdLoader loader = mAdLoaders.get(pos);
             if (loader != null && loader.allowUseLoader()) {
-                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, mOnAdSdkListener));
+                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, this));
                 loader.loadInterstitial();
             }
         }
@@ -216,7 +222,7 @@ public class AdPlaceLoader implements IManagerListener {
         }
         IAdLoader loader = iterator.next();
         if (loader != null && loader.allowUseLoader()) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, mOnAdSdkListener) {
+            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, this) {
                 @Override
                 public void onInterstitialError() {
                     if (iterator.hasNext()) {
@@ -264,6 +270,7 @@ public class AdPlaceLoader implements IManagerListener {
 
     /**
      * 加载banner和native广告
+     *
      * @param adParams
      */
     public void loadAdView(AdParams adParams) {
@@ -274,7 +281,7 @@ public class AdPlaceLoader implements IManagerListener {
             return;
         }
         mAdParams = adParams;
-
+        mCurrentAdLoader = null;
         if (mAdPlace.isConcurrent()) {
             loadAdViewConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -291,7 +298,7 @@ public class AdPlaceLoader implements IManagerListener {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null) {
                     registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
-                            mOnAdSdkListener));
+                            this));
                 }
             }
             for (IAdLoader loader : mAdLoaders) {
@@ -319,7 +326,7 @@ public class AdPlaceLoader implements IManagerListener {
             IAdLoader loader = mAdLoaders.get(pos);
             if (loader != null && loader.allowUseLoader()) {
                 registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
-                        mOnAdSdkListener));
+                        this));
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
                 } else if (loader.isNativeType()) {
@@ -338,7 +345,7 @@ public class AdPlaceLoader implements IManagerListener {
         IAdLoader loader = iterator.next();
         if (loader != null && loader.allowUseLoader()) {
             registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
-                    mOnAdSdkListener) {
+                    this) {
                 @Override
                 public void onAdFailed() {
                     if (iterator.hasNext()) {
@@ -361,19 +368,28 @@ public class AdPlaceLoader implements IManagerListener {
 
     /**
      * 展示广告(banner or native)
+     *
      * @param adContainer
      */
     public void showAdView(ViewGroup adContainer) {
         Log.d(Log.TAG, "showAdView");
-        if (mAdLoaders != null) {
+        mAdContainer = adContainer;
+        showAdViewInternal();
+    }
+
+    private void showAdViewInternal() {
+        Log.d(Log.TAG, "showAdViewInternal");
+        if (mAdLoaders != null && mAdContainer != null) {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null) {
                     if (loader.isBannerLoaded()) {
-                        loader.showBanner(adContainer);
+                        mCurrentAdLoader = loader;
+                        loader.showBanner(mAdContainer);
                         PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
                         break;
                     } else if (loader.isNativeLoaded()) {
-                        loader.showNative(adContainer);
+                        mCurrentAdLoader = loader;
+                        loader.showNative(mAdContainer);
                         PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
                         break;
                     }
@@ -387,6 +403,7 @@ public class AdPlaceLoader implements IManagerListener {
 
     /**
      * 混合广告是否加载成功
+     *
      * @return
      */
     public boolean isComplexAdsLoaded() {
@@ -406,6 +423,7 @@ public class AdPlaceLoader implements IManagerListener {
 
     /**
      * 获取已加载的广告类型(banner, native, interstitial)
+     *
      * @return
      */
     public String getLoadedType() {
@@ -424,6 +442,7 @@ public class AdPlaceLoader implements IManagerListener {
 
     /**
      * 加载混合广告
+     *
      * @param adParams
      */
     public void loadComplexAds(AdParams adParams) {
@@ -434,6 +453,7 @@ public class AdPlaceLoader implements IManagerListener {
             return;
         }
         mAdParams = adParams;
+        mCurrentAdLoader = null;
         if (mAdPlace.isConcurrent()) {
             loadComplexAdsConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -450,7 +470,7 @@ public class AdPlaceLoader implements IManagerListener {
             for (IAdLoader loader : mAdLoaders) {
                 if (loader != null) {
                     registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
-                            mOnAdSdkListener));
+                            this));
                 }
             }
             for (IAdLoader loader : mAdLoaders) {
@@ -481,7 +501,7 @@ public class AdPlaceLoader implements IManagerListener {
         IAdLoader loader = iterator.next();
         if (loader != null && loader.allowUseLoader()) {
             registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
-                    mOnAdSdkListener) {
+                    this) {
                 @Override
                 public void onAdFailed() {
                     if (iterator.hasNext()) {
@@ -520,7 +540,7 @@ public class AdPlaceLoader implements IManagerListener {
             IAdLoader loader = mAdLoaders.get(pos);
             if (loader != null && loader.allowUseLoader()) {
                 registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
-                        mOnAdSdkListener));
+                        this));
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
                 } else if (loader.isNativeType()) {
@@ -536,6 +556,7 @@ public class AdPlaceLoader implements IManagerListener {
 
     /**
      * 展示混合广告
+     *
      * @param adContainer
      */
     public void showComplexAds(ViewGroup adContainer) {
@@ -591,6 +612,7 @@ public class AdPlaceLoader implements IManagerListener {
                 }
             }
         }
+        clearAdBaseListener();
     }
 
     @Override
@@ -602,24 +624,42 @@ public class AdPlaceLoader implements IManagerListener {
 
     @Override
     public synchronized OnAdBaseListener getAdBaseListener(IAdLoader loader) {
+        OnAdBaseListener listener = null;
         if (mAdViewListener != null) {
-            OnAdBaseListener l = mAdViewListener.get(loader);
-            return l;
+            listener = mAdViewListener.get(loader);
         }
-        return null;
+        return listener;
     }
 
     @Override
-    public synchronized void clearAdBaseListener(IAdLoader loader) {
+    public OnAdSdkListener getOnAdSdkListener() {
+        return mOnAdSdkListener;
+    }
+
+    @Override
+    public OnAdSdkListener getOnAdPlaceLoaderListener() {
+        return mOnAdPlaceLoaderListener;
+    }
+
+    @Override
+    public void setLoader(IAdLoader adLoader) {
+        if (mCurrentAdLoader == null) {
+            mCurrentAdLoader = adLoader;
+        }
+    }
+
+    @Override
+    public boolean isCurrent(String source, String type) {
+        if (mCurrentAdLoader != null) {
+            return TextUtils.equals(mCurrentAdLoader.getSdkName(), source) && TextUtils.equals(mCurrentAdLoader.getAdType(), type);
+        }
+        return false;
+    }
+
+    private void clearAdBaseListener() {
         try {
             if (mAdViewListener != null) {
-                Iterator<IAdLoader> iterator = mAdViewListener.keySet().iterator();
-                while (iterator.hasNext()) {
-                    IAdLoader iAdLoader = iterator.next();
-                    if (iAdLoader != loader) {
-                        mAdViewListener.remove(iAdLoader);
-                    }
-                }
+                mAdViewListener.clear();
             }
         } catch (Exception e) {
         }
@@ -631,5 +671,27 @@ public class AdPlaceLoader implements IManagerListener {
 
     public void setFromRemote(boolean remote) {
         mFromRemote = remote;
+    }
+
+    /**
+     * AdPlaceLoader类使用的监听器
+     */
+    private class AdPlaceLoaderListener extends SimpleAdSdkListener {
+        @Override
+        public void onClick(String pidName, String source, String adType) {
+            Log.d(Log.TAG, "adplaceloader pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            if (TextUtils.equals(adType, Constant.TYPE_NATIVE) || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
+                showNextAdView();
+            }
+        }
+    }
+
+    /**
+     * 展示下一个已经加载的AdView
+     */
+    private void showNextAdView() {
+        if (isAdViewLoaded()) {
+            showAdViewInternal();
+        }
     }
 }

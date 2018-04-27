@@ -1,7 +1,7 @@
 package com.inner.adsdk.listener;
 
 /**
- * Created by Administrator on 2018/2/11.
+ * Listener for AdPlaceLoader
  */
 
 public interface OnAdSdkListener {

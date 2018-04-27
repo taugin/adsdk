@@ -69,7 +69,6 @@ public class AdxLoader extends AbstractAdLoader {
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded();
-                clearOtherListener();
             }
             return;
         }
@@ -111,6 +110,9 @@ public class AdxLoader extends AbstractAdLoader {
             @Override
             public void onAdOpened() {
                 Log.v(Log.TAG, "");
+                if (mStat != null) {
+                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -128,7 +130,6 @@ public class AdxLoader extends AbstractAdLoader {
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onAdLoaded();
-                    clearOtherListener();
                 }
             }
 
@@ -200,7 +201,6 @@ public class AdxLoader extends AbstractAdLoader {
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded();
-                clearOtherListener();
             }
             return;
         }
@@ -262,7 +262,6 @@ public class AdxLoader extends AbstractAdLoader {
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onInterstitialLoaded();
-                    clearOtherListener();
                 }
             }
 
@@ -313,7 +312,6 @@ public class AdxLoader extends AbstractAdLoader {
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded();
-                clearOtherListener();
             }
             return;
         }
@@ -338,7 +336,6 @@ public class AdxLoader extends AbstractAdLoader {
                         if (getAdListener() != null) {
                             setLoadedFlag();
                             getAdListener().onAdLoaded();
-                            clearOtherListener();
                         }
                         if (mStat != null) {
                             mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -354,7 +351,6 @@ public class AdxLoader extends AbstractAdLoader {
                         if (getAdListener() != null) {
                             setLoadedFlag();
                             getAdListener().onAdLoaded();
-                            clearOtherListener();
                         }
                         if (mStat != null) {
                             mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);

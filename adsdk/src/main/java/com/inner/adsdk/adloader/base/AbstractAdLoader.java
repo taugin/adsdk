@@ -156,6 +156,9 @@ public class AbstractAdLoader implements IAdLoader {
     @Override
     public void setLoadedFlag() {
         mLoadedFlag = true;
+        if (mManagerListener != null) {
+            mManagerListener.setLoader(this);
+        }
     }
 
     @Override
@@ -191,12 +194,6 @@ public class AbstractAdLoader implements IAdLoader {
             return mManagerListener.getAdBaseListener(this);
         }
         return null;
-    }
-
-    protected void clearOtherListener() {
-        if (mManagerListener != null) {
-            mManagerListener.clearAdBaseListener(this);
-        }
     }
 
     protected synchronized boolean isLoading() {

@@ -1,5 +1,6 @@
 package com.inner.adsdk.adloader.base;
 
+import com.inner.adsdk.adloader.listener.IManagerListener;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
 import com.inner.adsdk.listener.OnAdSdkListener;
 
@@ -10,59 +11,87 @@ import com.inner.adsdk.listener.OnAdSdkListener;
 public class SimpleAdBaseBaseListener implements OnAdBaseListener {
 
     private OnAdSdkListener mOnAdSdkListener;
+    private OnAdSdkListener mAdPlaceLoaderListener;
+    private IManagerListener listener;
     private String source;
     private String adType;
     private String pidName;
 
-    public SimpleAdBaseBaseListener() {
-    }
-
-    public SimpleAdBaseBaseListener(String pidName, String source, String adType, OnAdSdkListener l) {
+    public SimpleAdBaseBaseListener(String pidName, String source, String adType, IManagerListener l) {
         this.source = source;
         this.adType = adType;
         this.pidName = pidName;
-        mOnAdSdkListener = l;
+        this.listener = l;
+        if (l != null) {
+            mOnAdSdkListener = l.getOnAdSdkListener();
+            mAdPlaceLoaderListener = l.getOnAdPlaceLoaderListener();
+        }
+    }
+
+    private boolean isCurrent() {
+        if (listener != null) {
+            return listener.isCurrent(source, adType);
+        }
+        return false;
     }
 
     @Override
     public void onAdLoaded() {
-        if (mOnAdSdkListener != null) {
+        if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onLoaded(pidName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onLoaded(pidName, source, adType);
         }
     }
 
     @Override
     public void onAdShow() {
-        if (mOnAdSdkListener != null) {
+        if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onShow(pidName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onShow(pidName, source, adType);
         }
     }
 
     @Override
     public void onAdClick() {
-        if (mOnAdSdkListener != null) {
+        if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onClick(pidName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onClick(pidName, source, adType);
         }
     }
 
     @Override
     public void onAdDismiss() {
-        if (mOnAdSdkListener != null) {
+        if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onDismiss(pidName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onDismiss(pidName, source, adType);
         }
     }
 
     @Override
     public void onAdFailed() {
-        if (mOnAdSdkListener != null) {
+        if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onError(pidName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onError(pidName, source, adType);
         }
     }
 
     @Override
     public void onAdImpression() {
-        if (mOnAdSdkListener != null) {
+        if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onShow(pidName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onShow(pidName, source, adType);
         }
     }
 
@@ -72,36 +101,51 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
 
     @Override
     public void onInterstitialLoaded() {
-        if (mOnAdSdkListener != null) {
+        if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onLoaded(pidName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onLoaded(pidName, source, adType);
         }
     }
 
     @Override
     public void onInterstitialShow() {
-        if (mOnAdSdkListener != null) {
+        if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onShow(pidName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onShow(pidName, source, adType);
         }
     }
 
     @Override
     public void onInterstitialClick() {
-        if (mOnAdSdkListener != null) {
+        if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onClick(pidName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onClick(pidName, source, adType);
         }
     }
 
     @Override
     public void onInterstitialDismiss() {
-        if (mOnAdSdkListener != null) {
+        if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onDismiss(pidName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onDismiss(pidName, source, adType);
         }
     }
 
     @Override
     public void onInterstitialError() {
-        if (mOnAdSdkListener != null) {
+        if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onError(pidName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onError(pidName, source, adType);
         }
     }
 }

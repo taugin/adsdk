@@ -60,7 +60,6 @@ public class AdmobLoader extends AbstractAdLoader {
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded();
-                clearOtherListener();
             }
             return;
         }
@@ -102,6 +101,9 @@ public class AdmobLoader extends AbstractAdLoader {
             @Override
             public void onAdOpened() {
                 Log.v(Log.TAG, "");
+                if (mStat != null) {
+                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -119,7 +121,6 @@ public class AdmobLoader extends AbstractAdLoader {
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onAdLoaded();
-                    clearOtherListener();
                 }
             }
 
@@ -146,7 +147,7 @@ public class AdmobLoader extends AbstractAdLoader {
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
-        Log.v(Log.TAG, "======================================");
+        Log.v(Log.TAG, "");
     }
 
     @Override
@@ -191,7 +192,6 @@ public class AdmobLoader extends AbstractAdLoader {
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded();
-                clearOtherListener();
             }
             return;
         }
@@ -256,7 +256,6 @@ public class AdmobLoader extends AbstractAdLoader {
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onInterstitialLoaded();
-                    clearOtherListener();
                 }
             }
 

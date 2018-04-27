@@ -14,6 +14,7 @@ import com.inner.basic.BasicLib;
 
 public class MainActivity extends Activity {
 
+    private static final String TAG = "MA";
     private RelativeLayout mAdContainer;
 
     @Override
@@ -23,7 +24,7 @@ public class MainActivity extends Activity {
         mAdContainer = findViewById(R.id.ad_container);
         BasicLib.init(this, "GTM-TMKR64Z1");
         AdSdk.get(this).init("GTM-TMKR64Z1");
-        // loadInterstitial();
+        loadInterstitial();
         loadAdView();
         // loadComplexAd();
     }
@@ -42,7 +43,7 @@ public class MainActivity extends Activity {
         AdSdk.get(this).loadInterstitial("Open_app", new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
-                Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
             }
         });
     }
@@ -76,8 +77,23 @@ public class MainActivity extends Activity {
         AdSdk.get(this).loadAdView("Rest_top", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
-                Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 AdSdk.get(MainActivity.this).showAdView(pidName, mAdContainer);
+            }
+
+            @Override
+            public void onClick(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            }
+
+            @Override
+            public void onShow(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            }
+
+            @Override
+            public void onDismiss(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
             }
         });
     }
@@ -94,7 +110,7 @@ public class MainActivity extends Activity {
         AdSdk.get(this).loadComplexAds("ad_outer_place", new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
-                Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
             }
         });
     }

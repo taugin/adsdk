@@ -1,5 +1,7 @@
 package com.inner.adsdk.adloader.listener;
 
+import com.inner.adsdk.listener.OnAdSdkListener;
+
 /**
  * Created by Administrator on 2018/2/27.
  */
@@ -12,5 +14,9 @@ public interface IManagerListener {
      */
     OnAdBaseListener getAdBaseListener(IAdLoader loader);
     void registerAdBaseListener(IAdLoader loader, OnAdBaseListener l);
-    void clearAdBaseListener(IAdLoader loader);
+
+    OnAdSdkListener getOnAdSdkListener();
+    OnAdSdkListener getOnAdPlaceLoaderListener();
+    void setLoader(IAdLoader adLoader);
+    boolean isCurrent(String source, String type);
 }
