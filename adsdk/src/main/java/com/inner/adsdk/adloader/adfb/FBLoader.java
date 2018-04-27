@@ -124,7 +124,11 @@ public class FBLoader extends AbstractAdLoader {
 
     @Override
     public boolean isBannerLoaded() {
-        return bannerView != null && !isCachedAdExpired(bannerView);
+        boolean loaded = bannerView != null && !isCachedAdExpired(bannerView);
+        if (loaded) {
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+        }
+        return loaded;
     }
 
     @Override
@@ -164,10 +168,14 @@ public class FBLoader extends AbstractAdLoader {
 
     @Override
     public boolean isInterstitialLoaded() {
+        boolean loaded = super.isInterstitialLoaded();
         if (fbInterstitial != null) {
-            return fbInterstitial.isAdLoaded() && !isCachedAdExpired(fbInterstitial);
+            loaded = fbInterstitial.isAdLoaded() && !isCachedAdExpired(fbInterstitial);
         }
-        return super.isInterstitialLoaded();
+        if (loaded) {
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+        }
+        return loaded;
     }
 
     @Override
@@ -273,10 +281,14 @@ public class FBLoader extends AbstractAdLoader {
 
     @Override
     public boolean isNativeLoaded() {
+        boolean loaded = false;
         if (nativeAd != null) {
-            return nativeAd.isAdLoaded() && !isCachedAdExpired(nativeAd);
+            loaded = nativeAd.isAdLoaded() && !isCachedAdExpired(nativeAd);
         }
-        return super.isNativeLoaded();
+        if (loaded) {
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+        }
+        return loaded;
     }
 
     @Override

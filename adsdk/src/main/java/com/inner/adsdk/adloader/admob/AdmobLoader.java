@@ -152,7 +152,11 @@ public class AdmobLoader extends AbstractAdLoader {
 
     @Override
     public boolean isBannerLoaded() {
-        return bannerView != null && !isCachedAdExpired(bannerView);
+        boolean loaded = bannerView != null && !isCachedAdExpired(bannerView);
+        if (loaded) {
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+        }
+        return loaded;
     }
 
     @Override
@@ -176,10 +180,14 @@ public class AdmobLoader extends AbstractAdLoader {
 
     @Override
     public boolean isInterstitialLoaded() {
+        boolean loaded = super.isInterstitialLoaded();
         if (interstitialAd != null) {
-            return interstitialAd.isLoaded() && !isCachedAdExpired(interstitialAd);
+            loaded = interstitialAd.isLoaded() && !isCachedAdExpired(interstitialAd);
         }
-        return super.isInterstitialLoaded();
+        if (loaded) {
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+        }
+        return loaded;
     }
 
     @Override
