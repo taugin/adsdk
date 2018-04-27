@@ -204,6 +204,9 @@ public class AdParser implements IParser {
             if (jobj.has(PIDS)) {
                 adPlace.setPidsList(parsePidList(jobj.getString(PIDS)));
             }
+            if (jobj.has(AUTO_SWITCH)) {
+                adPlace.setAutoSwitch(jobj.getInt(AUTO_SWITCH) == 1);
+            }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdPlace error : " + e);
         }
@@ -246,8 +249,8 @@ public class AdParser implements IParser {
             if (jobj.has(DISABLE)) {
                 pidConfig.setDisable(jobj.getInt(DISABLE) == 1);
             }
-            if (jobj.has(ADINTEVAL)) {
-                pidConfig.setInterval(jobj.getLong(ADINTEVAL));
+            if (jobj.has(NOFILL)) {
+                pidConfig.setInterval(jobj.getLong(NOFILL));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

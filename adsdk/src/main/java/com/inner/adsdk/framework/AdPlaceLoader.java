@@ -679,9 +679,11 @@ public class AdPlaceLoader implements IManagerListener {
     private class AdPlaceLoaderListener extends SimpleAdSdkListener {
         @Override
         public void onClick(String pidName, String source, String adType) {
-            Log.d(Log.TAG, "adplaceloader pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-            if (TextUtils.equals(adType, Constant.TYPE_NATIVE) || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
-                showNextAdView();
+            if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
+                Log.d(Log.TAG, "adplaceloader pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                if (TextUtils.equals(adType, Constant.TYPE_NATIVE) || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
+                    showNextAdView();
+                }
             }
         }
     }

@@ -23,7 +23,7 @@ public interface IParser {
     String ADPLACES = "adplaces";
     String NAME = "name";
     String MODE = "mode";
-    String PTYPE = "ptype";
+    String AUTO_SWITCH = "as";
 
     String MAXCOUNT = "maxcount";
     String PERCENT = "percent";
@@ -34,7 +34,7 @@ public interface IParser {
     String CTR = "ctr";
     String TYPE = "type";
     String DISABLE = "disable";
-    String ADINTEVAL = "interval";
+    String NOFILL = "nofill";
 
     String ENABLE = "e";
     String UPDELAY = "d";

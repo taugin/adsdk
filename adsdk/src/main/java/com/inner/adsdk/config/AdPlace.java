@@ -22,6 +22,8 @@ public class AdPlace {
 
     private int percent;
 
+    private boolean autoSwitch;
+
     public String getName() {
         return name;
     }
@@ -71,6 +73,14 @@ public class AdPlace {
 
     public void setPercent(int percent) {
         this.percent = percent;
+    }
+
+    public boolean isAutoSwitch() {
+        return autoSwitch;
+    }
+
+    public void setAutoSwitch(boolean autoSwitch) {
+        this.autoSwitch = autoSwitch;
     }
 
     public boolean isSequence() {
