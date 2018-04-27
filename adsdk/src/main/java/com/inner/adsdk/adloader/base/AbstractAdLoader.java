@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AbstractAdLoader implements IAdLoader {
 
-    protected static final long MAX_CACHED_TIME = 30 * 60 * 1000;
+    protected static final long MAX_CACHED_TIME = 15 * 60 * 1000;
     private   static Map<Object, Long> mCachedTime = new ConcurrentHashMap<Object, Long>();
     protected PidConfig mPidConfig;
     protected Context mContext;
@@ -214,7 +214,7 @@ public class AbstractAdLoader implements IAdLoader {
             if (cachedTime <= 0) {
                 return true;
             }
-            return SystemClock.elapsedRealtime() - cachedTime > MAX_CACHED_TIME;
+            return SystemClock.elapsedRealtime() - cachedTime > getMaxCachedTime();
         } catch(Exception e) {
         }
         return false;
@@ -238,7 +238,7 @@ public class AbstractAdLoader implements IAdLoader {
      * @return
      */
     protected boolean matchNoFillTime() {
-        return System.currentTimeMillis() - getLastNoFillTime() >= mPidConfig.getInterval();
+        return System.currentTimeMillis() - getLastNoFillTime() >= mPidConfig.getNoFill();
     }
 
     protected void updateLastNoFillTime() {
@@ -257,5 +257,16 @@ public class AbstractAdLoader implements IAdLoader {
         } catch (Exception e) {
         }
         return 0;
+    }
+
+    private long getMaxCachedTime() {
+        long cacheTime = 0;
+        if (mPidConfig != null) {
+            cacheTime = mPidConfig.getCacheTime();
+        }
+        if (cacheTime <= 0) {
+            cacheTime = MAX_CACHED_TIME;
+        }
+        return cacheTime;
     }
 }

@@ -22,7 +22,9 @@ public class PidConfig {
 
     private boolean disable;
 
-    private long interval;
+    private long noFill;
+
+    private long cacheTime;
 
     public String getAdPlaceName() {
         return adPlaceName;
@@ -72,12 +74,20 @@ public class PidConfig {
         this.disable = disable;
     }
 
-    public long getInterval() {
-        return interval;
+    public long getNoFill() {
+        return noFill;
     }
 
-    public void setInterval(long interval) {
-        this.interval = interval;
+    public void setNoFill(long noFill) {
+        this.noFill = noFill;
+    }
+
+    public long getCacheTime() {
+        return cacheTime;
+    }
+
+    public void setCacheTime(long cacheTime) {
+        this.cacheTime = cacheTime;
     }
 
     public boolean isAdmob() {

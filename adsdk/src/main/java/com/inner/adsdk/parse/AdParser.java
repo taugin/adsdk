@@ -250,7 +250,10 @@ public class AdParser implements IParser {
                 pidConfig.setDisable(jobj.getInt(DISABLE) == 1);
             }
             if (jobj.has(NOFILL)) {
-                pidConfig.setInterval(jobj.getLong(NOFILL));
+                pidConfig.setNoFill(jobj.getLong(NOFILL));
+            }
+            if (jobj.has(CACHE_TIME)) {
+                pidConfig.setCacheTime(jobj.getLong(CACHE_TIME));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

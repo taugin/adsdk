@@ -35,6 +35,7 @@ public interface IParser {
     String TYPE = "type";
     String DISABLE = "disable";
     String NOFILL = "nofill";
+    String CACHE_TIME = "ctime";
 
     String ENABLE = "e";
     String UPDELAY = "d";
