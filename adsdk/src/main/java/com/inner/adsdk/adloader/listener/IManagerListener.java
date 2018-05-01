@@ -12,11 +12,11 @@ public interface IManagerListener {
      * @param loader
      * @return
      */
-    OnAdBaseListener getAdBaseListener(IAdLoader loader);
-    void registerAdBaseListener(IAdLoader loader, OnAdBaseListener l);
+    OnAdBaseListener getAdBaseListener(ISdkLoader loader);
+    void registerAdBaseListener(ISdkLoader loader, OnAdBaseListener l);
 
     OnAdSdkListener getOnAdSdkListener();
     OnAdSdkListener getOnAdPlaceLoaderListener();
-    void setLoader(IAdLoader adLoader);
+    void setLoader(ISdkLoader adLoader);
     boolean isCurrent(String source, String type);
 }

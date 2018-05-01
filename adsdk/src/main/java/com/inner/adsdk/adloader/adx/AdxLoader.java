@@ -16,7 +16,7 @@ import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.gms.ads.formats.NativeAppInstallAd;
 import com.google.android.gms.ads.formats.NativeContentAd;
-import com.inner.adsdk.adloader.base.AbstractAdLoader;
+import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
@@ -28,7 +28,7 @@ import java.util.Map;
  * Created by Administrator on 2018/2/9.
  */
 
-public class AdxLoader extends AbstractAdLoader {
+public class AdxLoader extends AbstractSdkLoader {
 
     private static final Map<Integer, AdSize> ADSIZE = new HashMap<Integer, AdSize>();
 
@@ -62,6 +62,9 @@ public class AdxLoader extends AbstractAdLoader {
     @Override
     public void loadBanner(int adSize) {
         if (!checkPidConfig()) {
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
+            }
             return;
         }
         if (isBannerLoaded()) {
@@ -74,6 +77,9 @@ public class AdxLoader extends AbstractAdLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+            }
             return;
         }
         setLoading(true);
@@ -98,7 +104,7 @@ public class AdxLoader extends AbstractAdLoader {
                 Log.v(Log.TAG, "reason : " + i + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed();
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
             }
 
@@ -202,6 +208,9 @@ public class AdxLoader extends AbstractAdLoader {
     @Override
     public void loadInterstitial() {
         if (!checkPidConfig()) {
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
+            }
             return;
         }
         if (isInterstitialLoaded()) {
@@ -214,6 +223,9 @@ public class AdxLoader extends AbstractAdLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
+            }
             return;
         }
         setLoading(true);
@@ -233,7 +245,7 @@ public class AdxLoader extends AbstractAdLoader {
                 Log.v(Log.TAG, "reason : " + i + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false);
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError();
+                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
             }
 
@@ -317,6 +329,9 @@ public class AdxLoader extends AbstractAdLoader {
         mParams = params;
 
         if (!checkPidConfig()) {
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
+            }
             return;
         }
         if (isNativeLoaded()) {
@@ -329,6 +344,9 @@ public class AdxLoader extends AbstractAdLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+            }
             return;
         }
         setLoading(true);
@@ -409,7 +427,7 @@ public class AdxLoader extends AbstractAdLoader {
                         }
                         setLoading(false);
                         if (getAdListener() != null) {
-                            getAdListener().onAdFailed();
+                            getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                         }
                     }
                 }).withNativeAdOptions(nativeAdOptions).build();

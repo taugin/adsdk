@@ -10,7 +10,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-import com.inner.adsdk.adloader.base.AbstractAdLoader;
+import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 
@@ -21,7 +21,7 @@ import java.util.Map;
  * Created by Administrator on 2018/2/9.
  */
 
-public class AdmobLoader extends AbstractAdLoader {
+public class AdmobLoader extends AbstractSdkLoader {
 
     protected static final Map<Integer, AdSize> ADSIZE = new HashMap<>();
 
@@ -53,6 +53,9 @@ public class AdmobLoader extends AbstractAdLoader {
     @Override
     public void loadBanner(int adSize) {
         if (!checkPidConfig()) {
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
+            }
             return;
         }
         if (isBannerLoaded()) {
@@ -65,6 +68,9 @@ public class AdmobLoader extends AbstractAdLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+            }
             return;
         }
         setLoading(true);
@@ -89,7 +95,7 @@ public class AdmobLoader extends AbstractAdLoader {
                 Log.v(Log.TAG, "reason : " + i + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed();
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
             }
 
@@ -193,6 +199,9 @@ public class AdmobLoader extends AbstractAdLoader {
     @Override
     public void loadInterstitial() {
         if (!checkPidConfig()) {
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
+            }
             return;
         }
         if (isInterstitialLoaded()) {
@@ -205,6 +214,9 @@ public class AdmobLoader extends AbstractAdLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
+            }
             return;
         }
         setLoading(true);
@@ -224,7 +236,7 @@ public class AdmobLoader extends AbstractAdLoader {
                 Log.v(Log.TAG, "reason : " + i + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false);
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError();
+                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
             }
 

@@ -13,7 +13,7 @@ public interface OnAdBaseListener {
 
     public void onAdDismiss();
 
-    public void onAdFailed();
+    public void onAdFailed(int error);
 
     public void onAdImpression();
 
@@ -27,5 +27,5 @@ public interface OnAdBaseListener {
 
     public void onInterstitialDismiss();
 
-    public void onInterstitialError();
+    public void onInterstitialError(int error);
 }

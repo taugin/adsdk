@@ -10,7 +10,7 @@ import com.inner.adsdk.adloader.adfb.FBLoader;
 import com.inner.adsdk.adloader.admob.AdmobLoader;
 import com.inner.adsdk.adloader.adx.AdxLoader;
 import com.inner.adsdk.adloader.base.SimpleAdBaseBaseListener;
-import com.inner.adsdk.adloader.listener.IAdLoader;
+import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.IManagerListener;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
 import com.inner.adsdk.config.AdPlace;
@@ -33,8 +33,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * 每个广告位对应一个AdPlaceLoader对象
  */
 
-public class AdPlaceLoader implements IManagerListener {
-    private List<IAdLoader> mAdLoaders = new ArrayList<IAdLoader>();
+public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
+    private List<ISdkLoader> mAdLoaders = new ArrayList<ISdkLoader>();
     private AdPlace mAdPlace;
     private Map<String, String> mAdIds;
     private Context mContext;
@@ -43,23 +43,26 @@ public class AdPlaceLoader implements IManagerListener {
     private AdParams mAdParams;
     private boolean mFromRemote = false;
     // banner和native的listener集合
-    private Map<IAdLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<IAdLoader, OnAdBaseListener>();
+    private Map<ISdkLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<ISdkLoader, OnAdBaseListener>();
     private WeakReference<Activity> mActivity;
     private ViewGroup mAdContainer;
-    private IAdLoader mCurrentAdLoader;
+    private ISdkLoader mCurrentAdLoader;
 
     public AdPlaceLoader(Context context) {
         mContext = context;
     }
 
+    @Override
     public void init() {
         generateLoaders();
     }
 
+    @Override
     public void setAdPlaceConfig(AdPlace adPlace) {
         mAdPlace = adPlace;
     }
 
+    @Override
     public void setAdIds(Map<String, String> adids) {
         mAdIds = adids;
     }
@@ -68,7 +71,7 @@ public class AdPlaceLoader implements IManagerListener {
         if (mAdPlace != null) {
             List<PidConfig> pidList = mAdPlace.getPidsList();
             if (pidList != null && !pidList.isEmpty()) {
-                IAdLoader loader = null;
+                ISdkLoader loader = null;
                 String adId = null;
                 for (PidConfig config : pidList) {
                     if (config != null) {
@@ -112,7 +115,7 @@ public class AdPlaceLoader implements IManagerListener {
         }
     }
 
-    private Params getParams(IAdLoader loader) {
+    private Params getParams(ISdkLoader loader) {
         try {
             return mAdParams.getParams(loader.getSdkName());
         } catch (Exception e) {
@@ -126,7 +129,7 @@ public class AdPlaceLoader implements IManagerListener {
      * @param loader
      * @return
      */
-    private int getBannerSize(IAdLoader loader) {
+    private int getBannerSize(ISdkLoader loader) {
         try {
             Map<String, Integer> map = getParams(loader).getBannerSize();
             return (int) map.get(loader.getSdkName());
@@ -140,13 +143,15 @@ public class AdPlaceLoader implements IManagerListener {
      *
      * @param l
      */
+    @Override
     public void setOnAdSdkListener(OnAdSdkListener l) {
         mOnAdSdkListener = l;
     }
 
+    @Override
     public boolean isInterstitialLoaded() {
         if (mAdLoaders != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null && loader.isInterstitialLoaded()) {
                     Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                     return true;
@@ -159,6 +164,7 @@ public class AdPlaceLoader implements IManagerListener {
     /**
      * 加载插屏
      */
+    @Override
     public void loadInterstitial(Activity activity) {
         if (mAdPlace == null) {
             return;
@@ -184,12 +190,12 @@ public class AdPlaceLoader implements IManagerListener {
 
     private void loadInterstitialConcurrent() {
         if (mAdLoaders != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, this));
                 }
             }
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null && loader.allowUseLoader()) {
                     loader.loadInterstitial();
                 }
@@ -200,7 +206,7 @@ public class AdPlaceLoader implements IManagerListener {
     private void loadInterstitialSequence() {
         if (mAdLoaders != null) {
             // 使用迭代器处理
-            final Iterator<IAdLoader> iterator = mAdLoaders.iterator();
+            final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
             loadInterstitialSequenceInternal(iterator);
         }
     }
@@ -208,7 +214,7 @@ public class AdPlaceLoader implements IManagerListener {
     private void loadInterstitialRandom() {
         if (mAdLoaders != null) {
             int pos = new Random().nextInt(mAdLoaders.size());
-            IAdLoader loader = mAdLoaders.get(pos);
+            ISdkLoader loader = mAdLoaders.get(pos);
             if (loader != null && loader.allowUseLoader()) {
                 registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, this));
                 loader.loadInterstitial();
@@ -216,20 +222,20 @@ public class AdPlaceLoader implements IManagerListener {
         }
     }
 
-    private void loadInterstitialSequenceInternal(final Iterator<IAdLoader> iterator) {
+    private void loadInterstitialSequenceInternal(final Iterator<ISdkLoader> iterator) {
         if (iterator == null || !iterator.hasNext()) {
             return;
         }
-        IAdLoader loader = iterator.next();
+        ISdkLoader loader = iterator.next();
         if (loader != null && loader.allowUseLoader()) {
             registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, this) {
                 @Override
-                public void onInterstitialError() {
+                public void onInterstitialError(int error) {
                     if (iterator.hasNext()) {
                         Log.e(Log.TAG, "load next interstitial");
                         loadInterstitialSequenceInternal(iterator);
                     } else {
-                        super.onInterstitialError();
+                        super.onInterstitialError(error);
                     }
                 }
             });
@@ -240,9 +246,10 @@ public class AdPlaceLoader implements IManagerListener {
     /**
      * 展示插屏
      */
+    @Override
     public void showInterstitial() {
         if (mAdLoaders != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     if (loader.isInterstitialLoaded() && loader.showInterstitial()) {
                         PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
@@ -254,10 +261,10 @@ public class AdPlaceLoader implements IManagerListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-
+    @Override
     public boolean isAdViewLoaded() {
         if (mAdLoaders != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null &&
                         (loader.isBannerLoaded() || loader.isNativeLoaded())) {
                     Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
@@ -273,6 +280,7 @@ public class AdPlaceLoader implements IManagerListener {
      *
      * @param adParams
      */
+    @Override
     public void loadAdView(AdParams adParams) {
         if (mAdPlace == null) {
             return;
@@ -295,13 +303,13 @@ public class AdPlaceLoader implements IManagerListener {
 
     private void loadAdViewConcurrent() {
         if (mAdLoaders != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
                             this));
                 }
             }
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null && loader.allowUseLoader()) {
                     if (loader.isBannerType()) {
                         loader.loadBanner(getBannerSize(loader));
@@ -316,14 +324,14 @@ public class AdPlaceLoader implements IManagerListener {
     }
 
     private void loadAdViewSequence() {
-        final Iterator<IAdLoader> iterator = mAdLoaders.iterator();
+        final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
         loadAdViewSequenceInternal(iterator);
     }
 
     private void loadAdViewRandom() {
         if (mAdLoaders != null) {
             int pos = new Random().nextInt(mAdLoaders.size());
-            IAdLoader loader = mAdLoaders.get(pos);
+            ISdkLoader loader = mAdLoaders.get(pos);
             if (loader != null && loader.allowUseLoader()) {
                 registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
                         this));
@@ -338,21 +346,21 @@ public class AdPlaceLoader implements IManagerListener {
         }
     }
 
-    private void loadAdViewSequenceInternal(final Iterator<IAdLoader> iterator) {
+    private void loadAdViewSequenceInternal(final Iterator<ISdkLoader> iterator) {
         if (iterator == null || !iterator.hasNext()) {
             return;
         }
-        IAdLoader loader = iterator.next();
+        ISdkLoader loader = iterator.next();
         if (loader != null && loader.allowUseLoader()) {
             registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
                     this) {
                 @Override
-                public void onAdFailed() {
+                public void onAdFailed(int error) {
                     if (iterator.hasNext()) {
                         Log.e(Log.TAG, "load next adview");
                         loadAdViewSequenceInternal(iterator);
                     } else {
-                        super.onAdFailed();
+                        super.onAdFailed(error);
                     }
                 }
             });
@@ -371,6 +379,7 @@ public class AdPlaceLoader implements IManagerListener {
      *
      * @param adContainer
      */
+    @Override
     public void showAdView(ViewGroup adContainer) {
         Log.d(Log.TAG, "showAdView");
         mAdContainer = adContainer;
@@ -380,7 +389,7 @@ public class AdPlaceLoader implements IManagerListener {
     private void showAdViewInternal() {
         Log.d(Log.TAG, "showAdViewInternal");
         if (mAdLoaders != null && mAdContainer != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     if (loader.isBannerLoaded()) {
                         mCurrentAdLoader = loader;
@@ -406,9 +415,10 @@ public class AdPlaceLoader implements IManagerListener {
      *
      * @return
      */
+    @Override
     public boolean isComplexAdsLoaded() {
         if (mAdLoaders != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null && loader.hasLoadedFlag()
                         && (loader.isBannerLoaded()
                         || loader.isNativeLoaded()
@@ -426,9 +436,10 @@ public class AdPlaceLoader implements IManagerListener {
      *
      * @return
      */
+    @Override
     public String getLoadedType() {
         if (mAdLoaders != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     boolean loaded = loader.isBannerLoaded() || loader.isNativeLoaded() || loader.isInterstitialLoaded();
                     if (loaded) {
@@ -445,6 +456,7 @@ public class AdPlaceLoader implements IManagerListener {
      *
      * @param adParams
      */
+    @Override
     public void loadComplexAds(AdParams adParams) {
         if (mAdPlace == null) {
             return;
@@ -467,13 +479,13 @@ public class AdPlaceLoader implements IManagerListener {
 
     private void loadComplexAdsConcurrent() {
         if (mAdLoaders != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
                             this));
                 }
             }
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null && loader.allowUseLoader()) {
                     if (loader.isBannerType()) {
                         loader.loadBanner(getBannerSize(loader));
@@ -490,35 +502,35 @@ public class AdPlaceLoader implements IManagerListener {
     }
 
     private void loadComplexAdsSequence() {
-        final Iterator<IAdLoader> iterator = mAdLoaders.iterator();
+        final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
         loadComplexAdsSequenceInternal(iterator);
     }
 
-    private void loadComplexAdsSequenceInternal(final Iterator<IAdLoader> iterator) {
+    private void loadComplexAdsSequenceInternal(final Iterator<ISdkLoader> iterator) {
         if (iterator == null || !iterator.hasNext()) {
             return;
         }
-        IAdLoader loader = iterator.next();
+        ISdkLoader loader = iterator.next();
         if (loader != null && loader.allowUseLoader()) {
             registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
                     this) {
                 @Override
-                public void onAdFailed() {
+                public void onAdFailed(int error) {
                     if (iterator.hasNext()) {
                         Log.e(Log.TAG, "load next complex");
                         loadComplexAdsSequenceInternal(iterator);
                     } else {
-                        super.onAdFailed();
+                        super.onAdFailed(error);
                     }
                 }
 
                 @Override
-                public void onInterstitialError() {
+                public void onInterstitialError(int error) {
                     if (iterator.hasNext()) {
                         Log.e(Log.TAG, "load next complex");
                         loadComplexAdsSequenceInternal(iterator);
                     } else {
-                        super.onInterstitialError();
+                        super.onInterstitialError(error);
                     }
                 }
             });
@@ -537,7 +549,7 @@ public class AdPlaceLoader implements IManagerListener {
     private void loadComplexAdsRandom() {
         if (mAdLoaders != null) {
             int pos = new Random().nextInt(mAdLoaders.size());
-            IAdLoader loader = mAdLoaders.get(pos);
+            ISdkLoader loader = mAdLoaders.get(pos);
             if (loader != null && loader.allowUseLoader()) {
                 registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
                         this));
@@ -559,10 +571,11 @@ public class AdPlaceLoader implements IManagerListener {
      *
      * @param adContainer
      */
+    @Override
     public void showComplexAds(ViewGroup adContainer) {
         Log.d(Log.TAG, "");
         if (mAdLoaders != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null && loader.useAndClearFlag()) {
                     if (loader.isBannerLoaded()) {
                         loader.showBanner(adContainer);
@@ -582,10 +595,11 @@ public class AdPlaceLoader implements IManagerListener {
         }
     }
 
+    @Override
     public void resume() {
         Log.d(Log.TAG, "");
         if (mAdLoaders != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     loader.resume();
                 }
@@ -593,10 +607,11 @@ public class AdPlaceLoader implements IManagerListener {
         }
     }
 
+    @Override
     public void pause() {
         Log.d(Log.TAG, "");
         if (mAdLoaders != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     loader.pause();
                 }
@@ -604,9 +619,10 @@ public class AdPlaceLoader implements IManagerListener {
         }
     }
 
+    @Override
     public void destroy() {
         if (mAdLoaders != null) {
-            for (IAdLoader loader : mAdLoaders) {
+            for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     loader.destroy();
                 }
@@ -616,14 +632,14 @@ public class AdPlaceLoader implements IManagerListener {
     }
 
     @Override
-    public synchronized void registerAdBaseListener(IAdLoader loader, OnAdBaseListener l) {
+    public synchronized void registerAdBaseListener(ISdkLoader loader, OnAdBaseListener l) {
         if (mAdViewListener != null) {
             mAdViewListener.put(loader, l);
         }
     }
 
     @Override
-    public synchronized OnAdBaseListener getAdBaseListener(IAdLoader loader) {
+    public synchronized OnAdBaseListener getAdBaseListener(ISdkLoader loader) {
         OnAdBaseListener listener = null;
         if (mAdViewListener != null) {
             listener = mAdViewListener.get(loader);
@@ -642,7 +658,7 @@ public class AdPlaceLoader implements IManagerListener {
     }
 
     @Override
-    public void setLoader(IAdLoader adLoader) {
+    public void setLoader(ISdkLoader adLoader) {
         if (mCurrentAdLoader == null) {
             mCurrentAdLoader = adLoader;
         }
@@ -665,10 +681,12 @@ public class AdPlaceLoader implements IManagerListener {
         }
     }
 
+    @Override
     public boolean isFromRemote() {
         return mFromRemote;
     }
 
+    @Override
     public void setFromRemote(boolean remote) {
         mFromRemote = remote;
     }

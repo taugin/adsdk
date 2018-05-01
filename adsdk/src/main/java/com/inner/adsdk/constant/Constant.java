@@ -49,4 +49,9 @@ public class Constant {
 
     public static final String AF_STATUS = "af_status";
     public static final String AF_MEDIA_SOURCE = "af_media_source";
+
+    public static final int AD_ERROR_CONFIG = 1;
+    public static final int AD_ERROR_FILLTIME = 2;
+    public static final int AD_ERROR_LOADING = 3;
+    public static final int AD_ERROR_LOAD = 4;
 }

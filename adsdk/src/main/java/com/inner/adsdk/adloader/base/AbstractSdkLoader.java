@@ -5,7 +5,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.inner.adsdk.adloader.listener.IAdLoader;
+import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.IManagerListener;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
 import com.inner.adsdk.config.PidConfig;
@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Administrator on 2018/2/9.
  */
 
-public class AbstractAdLoader implements IAdLoader {
+public class AbstractSdkLoader implements ISdkLoader {
 
     protected static final long MAX_CACHED_TIME = 15 * 60 * 1000;
     private   static Map<Object, Long> mCachedTime = new ConcurrentHashMap<Object, Long>();

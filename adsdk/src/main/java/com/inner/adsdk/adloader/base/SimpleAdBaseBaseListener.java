@@ -76,7 +76,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onAdFailed() {
+    public void onAdFailed(int error) {
         if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onError(pidName, source, adType);
         }
@@ -140,7 +140,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onInterstitialError() {
+    public void onInterstitialError(int error) {
         if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onError(pidName, source, adType);
         }

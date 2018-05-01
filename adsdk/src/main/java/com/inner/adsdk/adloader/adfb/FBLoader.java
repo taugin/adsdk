@@ -11,7 +11,7 @@ import com.facebook.ads.AdView;
 import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdListener;
 import com.facebook.ads.NativeAd;
-import com.inner.adsdk.adloader.base.AbstractAdLoader;
+import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
@@ -23,7 +23,7 @@ import java.util.HashMap;
  * Created by Administrator on 2018/2/9.
  */
 
-public class FBLoader extends AbstractAdLoader {
+public class FBLoader extends AbstractSdkLoader {
 
     private static final HashMap<Integer, AdSize> ADSIZE = new HashMap<Integer, AdSize>();
 
@@ -46,10 +46,16 @@ public class FBLoader extends AbstractAdLoader {
     @Override
     public void loadBanner(int adSize) {
         if (!checkPidConfig()) {
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
+            }
             return;
         }
         if (!matchNoFillTime()) {
             Log.v(Log.TAG, "no fill interval not match");
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_FILLTIME);
+            }
             return;
         }
         if (isBannerLoaded()) {
@@ -62,6 +68,9 @@ public class FBLoader extends AbstractAdLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+            }
             return;
         }
         setLoading(true);
@@ -81,7 +90,7 @@ public class FBLoader extends AbstractAdLoader {
                 }
                 setLoading(false);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed();
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
             }
 
@@ -181,6 +190,9 @@ public class FBLoader extends AbstractAdLoader {
     @Override
     public void loadInterstitial() {
         if (!checkPidConfig()) {
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
+            }
             return;
         }
         if (isInterstitialLoaded()) {
@@ -193,6 +205,9 @@ public class FBLoader extends AbstractAdLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
+            }
             return;
         }
         setLoading(true);
@@ -228,7 +243,7 @@ public class FBLoader extends AbstractAdLoader {
                 }
                 setLoading(false);
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError();
+                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
             }
 
@@ -294,8 +309,10 @@ public class FBLoader extends AbstractAdLoader {
     @Override
     public void loadNative(Params params) {
         mParams = params;
-
         if (!checkPidConfig()) {
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
+            }
             return;
         }
         if (isNativeLoaded()) {
@@ -308,6 +325,9 @@ public class FBLoader extends AbstractAdLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+            }
             return;
         }
         setLoading(true);
@@ -323,7 +343,7 @@ public class FBLoader extends AbstractAdLoader {
                 }
                 setLoading(false);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed();
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
             }
 
