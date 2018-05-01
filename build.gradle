@@ -17,12 +17,11 @@ buildscript {
 
 allprojects {
     repositories {
-        maven {
-            url 'F:\\workdir\\products\\privaterepo'
-        }
-        mavenLocal()
+        maven {url 'F:\\workdir\\products\\privaterepo'}
+        maven {url 'https://gitee.com/taugin/werepo/raw/release'}
         google()
         jcenter()
+        mavenLocal()
     }
 }
 

@@ -46,5 +46,5 @@ dependencies {
     } else {
         implementation 'com.inner.adsdk:adsdk:1.0.0'
     }
-    implementation 'com.inner.basic:basic:+'
+    implementation 'com.inner.basic:basic:1.0.3'
 }
