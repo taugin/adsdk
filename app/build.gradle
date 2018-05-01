@@ -16,9 +16,9 @@ android {
     signingConfigs {
         config {
             keyAlias 'taugin'
-            keyPassword 'taugin0426'
-            storeFile file('D:/github/tools/extra/keystore/taugin_pwd_taugin0426.keystore')
-            storePassword 'taugin0426'
+            keyPassword '123456'
+            storeFile file('../keystore/taugin_pwd_123456.jks')
+            storePassword '123456'
         }
     }
 
@@ -39,7 +39,7 @@ repositories {
     }
 }
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:multidex:1.0.0'
     if (useProject) {
         implementation project(":adsdk")
