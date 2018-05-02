@@ -102,12 +102,18 @@ public class StatImpl implements IStat {
                 }
             }
         }
+        String error = null;
         try {
             Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
             Method method = clazz.getDeclaredMethod("onEvent", Context.class, String.class, Map.class);
             method.invoke(null, context, eventId, map);
         } catch (Exception e) {
+            error = String.valueOf(e);
         } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.v(Log.TAG, "sendUmeng error : " + error);
         }
     }
 
@@ -116,6 +122,7 @@ public class StatImpl implements IStat {
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
         }
+        String error = null;
         try {
             Class<?> clazz = Class.forName("com.appsflyer.AppsFlyerLib");
             Method method = clazz.getMethod("getInstance");
@@ -123,7 +130,12 @@ public class StatImpl implements IStat {
             method = clazz.getMethod("trackEvent", Context.class, String.class, Map.class);
             method.invoke(instance, context, eventId, eventValue);
         } catch (Exception e) {
+            error = String.valueOf(e);
         } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.v(Log.TAG, "sendAppsflyer error : " + error);
         }
     }
 

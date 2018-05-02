@@ -20,6 +20,7 @@ import com.google.android.gms.ads.formats.NativeContentAd;
 import com.google.android.gms.ads.formats.NativeContentAdView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.framework.Params;
+import com.inner.adsdk.log.Log;
 
 import java.util.List;
 
@@ -170,6 +171,7 @@ public class AdxBindNativeView {
             MediaView mediaView = new MediaView(context);
             return mediaView;
         } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
         return null;
     }
