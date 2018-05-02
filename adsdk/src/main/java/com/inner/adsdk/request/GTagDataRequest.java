@@ -8,7 +8,6 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.tagmanager.Container;
 import com.google.android.gms.tagmanager.ContainerHolder;
 import com.google.android.gms.tagmanager.TagManager;
-import com.inner.adsdk.BuildConfig;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
 
@@ -17,9 +16,6 @@ import com.inner.adsdk.utils.Utils;
  */
 
 public class GTagDataRequest implements IDataRequest {
-
-    private static final boolean DEBUG = true;
-    private static final boolean LOCAL_CONFIG_FIRST = BuildConfig.DEBUG && DEBUG;
 
     private static final int DEFAULT_CONTAINER = 0;
     private Context mContext;
@@ -60,11 +56,8 @@ public class GTagDataRequest implements IDataRequest {
 
     @Override
     public String getString(String key) {
-        String value = null;
-        if (LOCAL_CONFIG_FIRST) {
-            Log.d(Log.TAG, "local config first : " + key);
-            value = readConfigFromAsset(key);
-        }
+        String value = readConfigFromAsset(key);
+        Log.v(Log.TAG, "local config : " + key + " , value : " + value);
         if (TextUtils.isEmpty(value)) {
             if (mContainerHolder != null) {
                 Container container = mContainerHolder.getContainer();
