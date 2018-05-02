@@ -72,6 +72,7 @@ public class StatImpl implements IStat {
     }
 
     private void sendGoogleAnalytics(String label, String action, String category) {
+        Log.d(Log.TAG, "sendGoogle Analytics");
         HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder();
         if (!TextUtils.isEmpty(category)) {
             builder.setCategory(category);
@@ -89,6 +90,7 @@ public class StatImpl implements IStat {
     }
 
     private void sendUmeng(Context context, String value, String eventId, Map<String, String> extra) {
+        Log.d(Log.TAG, "sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
@@ -118,7 +120,8 @@ public class StatImpl implements IStat {
     }
 
     private void sendAppsflyer(Context context, String value, String eventId, Map<String, String> extra) {
-        Map<String, Object> eventValue = new HashMap<>();
+        Log.d(Log.TAG, "sendAppsflyer Analytics");
+        Map<String, Object> eventValue = new HashMap<String, Object>();
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
         }
