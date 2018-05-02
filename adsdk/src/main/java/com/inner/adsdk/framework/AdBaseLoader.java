@@ -27,6 +27,11 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public boolean needReload(AdPlace adPlace) {
+        return false;
+    }
+
+    @Override
     public void setOnAdSdkListener(OnAdSdkListener l) {
     }
 
@@ -84,14 +89,5 @@ public class AdBaseLoader implements IAdLoader {
 
     @Override
     public void destroy() {
-    }
-
-    @Override
-    public boolean isFromRemote() {
-        return false;
-    }
-
-    @Override
-    public void setFromRemote(boolean remote) {
     }
 }

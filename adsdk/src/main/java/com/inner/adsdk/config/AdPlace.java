@@ -24,6 +24,8 @@ public class AdPlace {
 
     private boolean autoSwitch;
 
+    private String uniqueValue;
+
     public String getName() {
         return name;
     }
@@ -81,6 +83,14 @@ public class AdPlace {
 
     public void setAutoSwitch(boolean autoSwitch) {
         this.autoSwitch = autoSwitch;
+    }
+
+    public String getUniqueValue() {
+        return uniqueValue;
+    }
+
+    public void setUniqueValue(String uniqueValue) {
+        this.uniqueValue = uniqueValue;
     }
 
     public boolean isSequence() {

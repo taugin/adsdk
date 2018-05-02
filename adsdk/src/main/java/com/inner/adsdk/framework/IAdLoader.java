@@ -19,6 +19,8 @@ public interface IAdLoader {
 
     public void setAdPlaceConfig(AdPlace adPlace);
 
+    public boolean needReload(AdPlace adPlace);
+
     public void setAdIds(Map<String, String> adids);
     public void setOnAdSdkListener(OnAdSdkListener l);
 
@@ -39,7 +41,4 @@ public interface IAdLoader {
     public void pause();
 
     public void destroy();
-
-    public boolean isFromRemote();
-    public void setFromRemote(boolean remote);
 }

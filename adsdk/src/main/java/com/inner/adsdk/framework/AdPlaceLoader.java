@@ -67,6 +67,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         mAdIds = adids;
     }
 
+    @Override
+    public boolean needReload(AdPlace adPlace) {
+        if (mAdPlace != null && adPlace != null) {
+            Log.d(Log.TAG, "pidName : " + mAdPlace.getName() + " , usingUnique : " + mAdPlace.getUniqueValue() + " , remoteUnique : " + adPlace.getUniqueValue());
+            return !TextUtils.equals(mAdPlace.getUniqueValue(), adPlace.getUniqueValue());
+        }
+        return false;
+    }
+
     private void generateLoaders() {
         if (mAdPlace != null) {
             List<PidConfig> pidList = mAdPlace.getPidsList();
@@ -679,16 +688,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
             }
         } catch (Exception e) {
         }
-    }
-
-    @Override
-    public boolean isFromRemote() {
-        return mFromRemote;
-    }
-
-    @Override
-    public void setFromRemote(boolean remote) {
-        mFromRemote = remote;
     }
 
     /**

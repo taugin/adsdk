@@ -80,7 +80,7 @@ public class AdSdk {
         AdPlaceLoader loader = mAdLoaders.get(pidName);
         AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(pidName);
         Map<String, String> adids = DataManager.get(mContext).getRemoteAdIds(Constant.ADIDS_NAME);
-        if (loader == null || (!loader.isFromRemote() && adPlace != null)) {
+        if (loader == null || loader.needReload(adPlace)) {
             loader = createAdPlaceLoader(pidName, adPlace, adids);
             if (loader != null) {
                 mAdLoaders.put(pidName, loader);
@@ -116,7 +116,6 @@ public class AdSdk {
             loader.setAdPlaceConfig(adPlace);
             loader.setAdIds(adIds);
             loader.init();
-            loader.setFromRemote(useRemote);
         }
         Log.d(Log.TAG, "pidName [" + pidName + "] use remote config : " + useRemote);
         return loader;

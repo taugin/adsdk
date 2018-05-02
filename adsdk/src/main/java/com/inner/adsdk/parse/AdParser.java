@@ -9,6 +9,7 @@ import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Aes;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -207,6 +208,7 @@ public class AdParser implements IParser {
             if (jobj.has(AUTO_SWITCH)) {
                 adPlace.setAutoSwitch(jobj.getInt(AUTO_SWITCH) == 1);
             }
+            adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdPlace error : " + e);
         }
