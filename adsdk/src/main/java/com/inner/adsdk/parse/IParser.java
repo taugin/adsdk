@@ -19,7 +19,7 @@ public interface IParser {
     String DATA = "data";
 
     String ADIDS = "adids";
-    String POLICY = "policy";
+    String ADPOLICY = "adpolicy";
     String ADPLACES = "adplaces";
     String NAME = "name";
     String MODE = "mode";

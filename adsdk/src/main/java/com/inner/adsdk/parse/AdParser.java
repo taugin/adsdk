@@ -56,8 +56,8 @@ public class AdParser implements IParser {
             if (jobj.has(ADIDS)) {
                 adIds = parseAdIds(jobj.getString(ADIDS));
             }
-            if (jobj.has(POLICY)) {
-                adPolicy = parseAdPolicyInternal(jobj.getString(POLICY));
+            if (jobj.has(ADPOLICY)) {
+                adPolicy = parseAdPolicyInternal(jobj.getString(ADPOLICY));
             }
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
