@@ -13,6 +13,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.stat.StatImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,6 +73,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             return;
         }
         setLoading(true);
@@ -219,6 +221,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
             }
+            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             return;
         }
         setLoading(true);

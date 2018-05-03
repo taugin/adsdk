@@ -243,4 +243,17 @@ public class StatImpl implements IStat {
         sendUmeng(context, null, eventId, null);
         Log.v(Log.TAG, "");
     }
+
+    @Override
+    public void reportAdLoading(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
+        if (context == null) {
+            return;
+        }
+        String eventId = generateEventId("loading", sdk, type);
+        String category = "user_action";
+        sendGoogleAnalytics(pidName, eventId, category);
+        sendUmeng(context, pidName, eventId, extra);
+        sendAppsflyer(context, pidName, eventId, extra);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+    }
 }

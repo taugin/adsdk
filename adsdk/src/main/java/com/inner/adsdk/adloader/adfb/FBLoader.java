@@ -15,6 +15,7 @@ import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.stat.StatImpl;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -72,6 +73,7 @@ public class FBLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             return;
         }
         setLoading(true);
@@ -207,10 +209,18 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
+            if (false) {
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
+                }
+                return;
+            } else {
+                if (fbInterstitial != null) {
+                    fbInterstitial.setAdListener(null);
+                    fbInterstitial.destroy();
+                }
             }
-            return;
+            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         setLoading(true);
         fbInterstitial = new InterstitialAd(mContext, mPidConfig.getPid());
@@ -331,6 +341,7 @@ public class FBLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             return;
         }
         setLoading(true);

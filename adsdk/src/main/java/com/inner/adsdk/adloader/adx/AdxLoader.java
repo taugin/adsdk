@@ -20,6 +20,7 @@ import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.stat.StatImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -228,6 +229,7 @@ public class AdxLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
             }
+            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             return;
         }
         setLoading(true);
@@ -316,7 +318,7 @@ public class AdxLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isNativeLoaded() {
-        boolean loaded = super.isNativeLoaded();;
+        boolean loaded = super.isNativeLoaded();
         if (nativeAd != null) {
             loaded = !isCachedAdExpired(nativeAd);
         }
@@ -350,6 +352,7 @@ public class AdxLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             return;
         }
         setLoading(true);
