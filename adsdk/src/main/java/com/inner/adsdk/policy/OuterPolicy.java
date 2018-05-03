@@ -10,6 +10,7 @@ import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -115,10 +116,16 @@ public class OuterPolicy {
     private void reportTotalShowTimes() {
         long times = getTotalShowTimes();
         times += 1;
-        if (times < 0) {
-            times = 0;
+        if (times <= 0) {
+            times = 1;
         }
         Utils.putLong(mContext, Constant.PREF_OUTER_SHOW_TIMES, times);
+        recordFirstShowTime();
+    }
+
+    private void resetTotalShowTimes() {
+        Log.d(Log.TAG, "reset total show times");
+        Utils.putLong(mContext, Constant.PREF_OUTER_SHOW_TIMES, 0);
     }
 
     /**
@@ -196,14 +203,35 @@ public class OuterPolicy {
         return true;
     }
 
+    private void recordFirstShowTime() {
+        long times = getTotalShowTimes();
+        if (times == 1) {
+            Utils.putLong(mContext, Constant.PREF_FIRST_SHOW_TIME_ONEDAY, System.currentTimeMillis());
+        }
+    }
+
+    /**
+     * 24小时清除计数
+     */
+    private void resetTotalShowIfNeed() {
+        long now = System.currentTimeMillis();
+        long lastDay = Utils.getLong(mContext, Constant.PREF_FIRST_SHOW_TIME_ONEDAY, now);
+        Log.v(Log.TAG, "now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
+        if (now - lastDay > Constant.ONE_DAY_TIME) {
+            resetTotalShowTimes();
+        }
+    }
+
     /**
      * 最大展示数是否允许
      *
      * @return
      */
     private boolean isMaxShowAllow() {
+        resetTotalShowIfNeed();
         if (mAdPolicy != null && mAdPolicy.getMaxCount() > 0) {
             long times = getTotalShowTimes();
+            Log.d(Log.TAG, "total show times : " + times + " , mc : " + mAdPolicy.getMaxCount());
             return times <= mAdPolicy.getMaxCount();
         }
         return true;

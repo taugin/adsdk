@@ -3,6 +3,7 @@
     "policy": {"e":1,"d":3600000,"i":1800000,"mc":10,"mv": -1, "attr":[],"ec":[],"ms":[]},
     "adplaces": [
         {"name":"Open_app","mode":"con","pids":[{"sdk":"adx","type":"interstitial","pid":"ca-mb-app-pub-7850146945256374/1575239737/8804414910"},{"sdk":"admob","type":"interstitial","pid":"ca-app-pub-2384367312222404/7111991156"}],"maxcount":100,"percent":100},
-        {"name":"Rest_top","mode":"con","pids":[{"sdk":"adx","type":"native","pid":"ca-mb-app-pub-7850146945256374/1575239737/4502557223"}, {"sdk":"admob","type":"banner","pid":"ca-app-pub-2384367312222404/5352897361"}],"maxcount":100,"percent":100}
+        {"name":"Rest_top","mode":"con","pids":[{"sdk":"adx","type":"native","pid":"ca-mb-app-pub-7850146945256374/1575239737/4502557223"}, {"sdk":"admob","type":"banner","pid":"ca-app-pub-2384367312222404/5352897361"}],"maxcount":100,"percent":100},
+        {"name":"ad_outer_place","mode":"ran","pids":[{"sdk":"adx","type":"interstitial","pid":"ca-mb-app-pub-7850146945256374/1575239737/3734400469"},{"sdk":"adx","type":"interstitial","pid":"ca-mb-app-pub-7850146945256374/1575239737/6007215647"}],"maxcount":100,"percent":100}
     ]
 }

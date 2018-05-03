@@ -94,6 +94,8 @@ public class StatImpl implements IStat {
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
+        } else {
+            map.put("entry_point", eventId);
         }
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, String> entry : extra.entrySet()) {

@@ -140,7 +140,7 @@ public class OuterAdLoader {
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            fireOuterAd();
+            onFire();
         }
     };
 }

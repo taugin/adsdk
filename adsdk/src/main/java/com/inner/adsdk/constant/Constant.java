@@ -1,5 +1,7 @@
 package com.inner.adsdk.constant;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by Administrator on 2018/2/9.
  */
@@ -39,9 +41,11 @@ public class Constant {
     public static final String ACTION_BASIC_ALARM = "com.inner.basic.intent.action.ALARM";
 
     public static final long   ALARM_INTERVAL_TIME = 1 * 60 * 1000;
+    public static final long   ONE_DAY_TIME = 24 * 60 * 60 * 1000;
     public static final String PREF_LAST_OUTER_SHOWTIME = "pref_last_outer_showtime";
     public static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
     public static final String PREF_OUTER_SHOW_TIMES = "pref_outer_show_times";
+    public static final String PREF_FIRST_SHOW_TIME_ONEDAY = "pref_first_show_time_oneday";
     public static final String ADPLACE_OUTER_NAME = "ad_outer_place";
     public static final String ADPLACE_FILM_NAME = "ad_film_place";
     public static final String ADIDS_NAME = "adids";
@@ -54,4 +58,6 @@ public class Constant {
     public static final int AD_ERROR_FILLTIME = 2;
     public static final int AD_ERROR_LOADING = 3;
     public static final int AD_ERROR_LOAD = 4;
+
+    public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 }

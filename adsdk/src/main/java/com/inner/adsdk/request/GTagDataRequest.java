@@ -8,8 +8,11 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.tagmanager.Container;
 import com.google.android.gms.tagmanager.ContainerHolder;
 import com.google.android.gms.tagmanager.TagManager;
+import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
+
+import java.util.Date;
 
 /**
  * Created by Administrator on 2018/2/12.
@@ -53,7 +56,7 @@ public class GTagDataRequest implements IDataRequest {
         if (mContainerHolder != null && mContainerHolder.getContainer() != null) {
             long lastRefreshTime = mContainerHolder.getContainer().getLastRefreshTime();
             long now = System.currentTimeMillis();
-            Log.d(Log.TAG, "now : " + now + " , last : " + lastRefreshTime);
+            Log.v(Log.TAG, "now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastRefreshTime)));
             if (now - lastRefreshTime > REFRESH_INTERVAL) {
                 try {
                     mContainerHolder.refresh();
