@@ -39,12 +39,12 @@ public class PlacePolicy {
     }
 
     private static final long ONE_DAY = 24 * 60 * 60 * 1000l;
-    private static final String LOAD_COUNT_SUFFIX = "_loadcount";
+    private static final String SHOW_COUNT_SUFFIX = "_showcount";
     private static final String LAST_RESET_TIME_SUFFIEX = "_last_reset_time";
     private Context mContext;
     private Random mRandom;
 
-    public void reportAdPlaceLoad(AdPlace adPlace) {
+    public void reportAdPlaceShow(AdPlace adPlace) {
         if (adPlace == null) {
             return;
         }
@@ -52,13 +52,13 @@ public class PlacePolicy {
         if (TextUtils.isEmpty(pidName)) {
             return;
         }
-        long loadCount = Utils.getLong(mContext, getLoadCountKey(pidName), 0);
-        Utils.putLong(mContext, getLoadCountKey(pidName), loadCount + 1);
-        Log.d(Log.TAG, "[" + pidName + "]" + " load count : " + (loadCount + 1));
+        long loadCount = Utils.getLong(mContext, getShowCountKey(pidName), 0);
+        Utils.putLong(mContext, getShowCountKey(pidName), loadCount + 1);
+        Log.d(Log.TAG, "[" + pidName + "]" + " show count : " + (loadCount + 1));
     }
 
-    public boolean reachMaxCount(String pidName, int maxCount) {
-        long loadCount = Utils.getLong(mContext, getLoadCountKey(pidName), 0);
+    public boolean reachMaxShowCount(String pidName, int maxCount) {
+        long loadCount = Utils.getLong(mContext, getShowCountKey(pidName), 0);
         return loadCount > maxCount;
     }
 
@@ -72,8 +72,8 @@ public class PlacePolicy {
             Log.v(Log.TAG, "pidName is null");
             return false;
         }
-        resetLoadCount(pidName);
-        boolean exceedMaxCount = reachMaxCount(pidName, adPlace.getMaxCount());
+        resetShowCountEveryDay(pidName);
+        boolean exceedMaxCount = reachMaxShowCount(pidName, adPlace.getMaxCount());
         if (exceedMaxCount) {
             long maxCount = adPlace.getMaxCount();
             Log.v(Log.TAG, "[" + pidName + "]" + " exceed max count " + maxCount);
@@ -92,20 +92,20 @@ public class PlacePolicy {
         return mRandom.nextInt(100)  < percent;
     }
 
-    private String getLoadCountKey(String pidName) {
-        return pidName + LOAD_COUNT_SUFFIX;
+    private String getShowCountKey(String pidName) {
+        return pidName + SHOW_COUNT_SUFFIX;
     }
 
     private String getResetTimeKey(String pidName) {
         return pidName + LAST_RESET_TIME_SUFFIEX;
     }
 
-    private void resetLoadCount(String pidName) {
+    private void resetShowCountEveryDay(String pidName) {
         long resetTime = Utils.getLong(mContext, getResetTimeKey(pidName), 0);
         long curTime = System.currentTimeMillis();
         if (curTime - resetTime > ONE_DAY) {
             Log.v(Log.TAG, "reset load count : " + pidName);
-            Utils.putLong(mContext, getLoadCountKey(pidName), 0);
+            Utils.putLong(mContext, getShowCountKey(pidName), 0);
             Utils.putLong(mContext, getResetTimeKey(pidName), curTime);
         }
     }

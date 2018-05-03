@@ -72,7 +72,7 @@ public class StatImpl implements IStat {
     }
 
     private void sendGoogleAnalytics(String label, String action, String category) {
-        Log.d(Log.TAG, "sendGoogle Analytics");
+        Log.d(Log.TAG, "StatImpl sendGoogle Analytics");
         HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder();
         if (!TextUtils.isEmpty(category)) {
             builder.setCategory(category);
@@ -90,7 +90,7 @@ public class StatImpl implements IStat {
     }
 
     private void sendUmeng(Context context, String value, String eventId, Map<String, String> extra) {
-        Log.d(Log.TAG, "sendUmeng Analytics");
+        Log.d(Log.TAG, "StatImpl sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
@@ -117,12 +117,12 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "sendUmeng error : " + error);
+            Log.v(Log.TAG, "StatImpl sendUmeng error : " + error);
         }
     }
 
     private void sendAppsflyer(Context context, String value, String eventId, Map<String, String> extra) {
-        Log.d(Log.TAG, "sendAppsflyer Analytics");
+        Log.d(Log.TAG, "StatImpl sendAppsflyer Analytics");
         Map<String, Object> eventValue = new HashMap<String, Object>();
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
@@ -140,7 +140,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "sendAppsflyer error : " + error);
+            Log.v(Log.TAG, "StatImpl sendAppsflyer error : " + error);
         }
     }
 
@@ -154,7 +154,7 @@ public class StatImpl implements IStat {
         sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
     }
 
     @Override
@@ -167,7 +167,7 @@ public class StatImpl implements IStat {
         sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
     }
 
     @Override
@@ -180,7 +180,7 @@ public class StatImpl implements IStat {
         sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
     }
 
     @Override
@@ -193,7 +193,7 @@ public class StatImpl implements IStat {
         sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
     }
 
     @Override

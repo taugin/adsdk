@@ -194,7 +194,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         } else {
             loadInterstitialConcurrent();
         }
-        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
     }
 
     private void loadInterstitialConcurrent() {
@@ -257,11 +256,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      */
     @Override
     public void showInterstitial() {
+        Log.d(Log.TAG, "showInterstitial");
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     if (loader.isInterstitialLoaded() && loader.showInterstitial()) {
-                        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
+                        PlacePolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     }
                 }
@@ -403,12 +403,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                     if (loader.isBannerLoaded()) {
                         mCurrentAdLoader = loader;
                         loader.showBanner(mAdContainer);
-                        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
+                        PlacePolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     } else if (loader.isNativeLoaded()) {
                         mCurrentAdLoader = loader;
                         loader.showNative(mAdContainer);
-                        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
+                        PlacePolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     }
                 }
@@ -588,15 +588,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                 if (loader != null && loader.useAndClearFlag()) {
                     if (loader.isBannerLoaded()) {
                         loader.showBanner(adContainer);
-                        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
+                        PlacePolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     } else if (loader.isNativeLoaded()) {
                         loader.showNative(adContainer);
-                        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
+                        PlacePolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     } else if (loader.isInterstitialLoaded()) {
                         loader.showInterstitial();
-                        PlacePolicy.get(mContext).reportAdPlaceLoad(mAdPlace);
+                        PlacePolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     }
                 }

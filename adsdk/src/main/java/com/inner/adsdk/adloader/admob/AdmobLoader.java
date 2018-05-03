@@ -53,6 +53,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     @Override
     public void loadBanner(int adSize) {
         if (!checkPidConfig()) {
+            Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
             }
@@ -199,6 +200,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     @Override
     public void loadInterstitial() {
         if (!checkPidConfig()) {
+            Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
             }
