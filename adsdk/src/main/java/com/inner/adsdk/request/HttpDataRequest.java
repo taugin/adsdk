@@ -50,6 +50,10 @@ public class HttpDataRequest implements IDataRequest {
     }
 
     @Override
+    public void refresh() {
+    }
+
+    @Override
     public String getString(String key) {
         return null;
     }

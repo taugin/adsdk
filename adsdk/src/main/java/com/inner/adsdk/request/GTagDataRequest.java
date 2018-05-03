@@ -18,6 +18,7 @@ import com.inner.adsdk.utils.Utils;
 public class GTagDataRequest implements IDataRequest {
 
     private static final int DEFAULT_CONTAINER = 0;
+    private static final int REFRESH_INTERVAL = 15 * 60 * 1000;
     private Context mContext;
     private String mContainerId;
     private ContainerHolder mContainerHolder;
@@ -33,13 +34,6 @@ public class GTagDataRequest implements IDataRequest {
 
     @Override
     public void request() {
-        if (mContainerHolder != null && mContainerHolder.getContainer() != null) {
-            try {
-                mContainerHolder.refresh();
-                Log.v(Log.TAG, "container holder refresh");
-            } catch (Exception e) {
-            }
-        }
         TagManager tagManager = TagManager.getInstance(mContext);
         PendingResult<ContainerHolder> pending =
                 tagManager.loadContainerPreferNonDefault(mContainerId, DEFAULT_CONTAINER);
@@ -52,6 +46,24 @@ public class GTagDataRequest implements IDataRequest {
                 }
             }
         });
+    }
+
+    @Override
+    public void refresh() {
+        if (mContainerHolder != null && mContainerHolder.getContainer() != null) {
+            long lastRefreshTime = mContainerHolder.getContainer().getLastRefreshTime();
+            long now = System.currentTimeMillis();
+            Log.d(Log.TAG, "now : " + now + " , last : " + lastRefreshTime);
+            if (now - lastRefreshTime > REFRESH_INTERVAL) {
+                try {
+                    mContainerHolder.refresh();
+                    Log.v(Log.TAG, "container holder refresh");
+                } catch (Exception e) {
+                }
+            }
+        } else {
+            request();
+        }
     }
 
     @Override

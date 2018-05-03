@@ -60,6 +60,12 @@ public class DataManager {
         }
     }
 
+    public void refresh() {
+        if (mDataRequest != null) {
+            mDataRequest.refresh();
+        }
+    }
+
     public AdConfig getLocalAdConfig() {
         if (mLocalAdConfig == null) {
             String data = Utils.readAssets(mContext, "data_config.dat");

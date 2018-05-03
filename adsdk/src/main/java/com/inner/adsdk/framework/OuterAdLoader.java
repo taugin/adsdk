@@ -98,6 +98,7 @@ public class OuterAdLoader {
 
     public void onFire() {
         Log.d(Log.TAG, "onFire");
+        DataManager.get(mContext).refresh();
         fireOuterAd();
     }
 

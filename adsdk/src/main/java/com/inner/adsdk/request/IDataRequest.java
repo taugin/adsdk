@@ -7,6 +7,7 @@ package com.inner.adsdk.request;
 
 public interface IDataRequest {
     public void request();
+    public void refresh();
     public void setAddress(String address);
     public String getString(String key);
 }
