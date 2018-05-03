@@ -22,7 +22,7 @@ public class PidConfig {
 
     private boolean disable;
 
-    private long noFill;
+    private long noFill = 30 * 1000;
 
     private long cacheTime;
 
