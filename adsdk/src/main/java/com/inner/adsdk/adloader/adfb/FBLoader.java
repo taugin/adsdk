@@ -54,7 +54,7 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
         if (!matchNoFillTime()) {
-            Log.v(Log.TAG, "noFill time not match");
+            Log.v(Log.TAG, "nofill error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_FILLTIME);
             }
@@ -211,7 +211,7 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
         if (!matchNoFillTime()) {
-            Log.v(Log.TAG, "noFill time not match");
+            Log.v(Log.TAG, "nofill error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_FILLTIME);
             }
@@ -348,7 +348,7 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
         if (!matchNoFillTime()) {
-            Log.v(Log.TAG, "noFill time not match");
+            Log.v(Log.TAG, "nofill error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_FILLTIME);
             }
