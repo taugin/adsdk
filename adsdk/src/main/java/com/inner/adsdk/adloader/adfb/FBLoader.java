@@ -55,7 +55,7 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
         if (!matchNoFillTime()) {
-            Log.v(Log.TAG, "no fill interval not match");
+            Log.v(Log.TAG, "noFill time not match");
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_FILLTIME);
             }
@@ -212,6 +212,13 @@ public class FBLoader extends AbstractSdkLoader {
             }
             return;
         }
+        if (!matchNoFillTime()) {
+            Log.v(Log.TAG, "noFill time not match");
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_FILLTIME);
+            }
+            return;
+        }
         if (isInterstitialLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
@@ -340,6 +347,13 @@ public class FBLoader extends AbstractSdkLoader {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
+            }
+            return;
+        }
+        if (!matchNoFillTime()) {
+            Log.v(Log.TAG, "noFill time not match");
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_FILLTIME);
             }
             return;
         }
