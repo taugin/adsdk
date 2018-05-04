@@ -38,6 +38,7 @@ public class FBLoader extends AbstractSdkLoader {
     private NativeAd nativeAd;
     private AdView bannerView;
     private Params mParams;
+    private AdView loadingView;
 
     @Override
     public String getSdkName() {
@@ -70,19 +71,26 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+            if (false) {
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+                }
+                return;
+            } else {
+                if (loadingView != null) {
+                    loadingView.setAdListener(null);
+                    loadingView.destroy();
+                }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            return;
         }
         setLoading(true);
         AdSize size = ADSIZE.get(adSize);
         if (size == null) {
             size = AdSize.BANNER_HEIGHT_50;
         }
-        final AdView adView = new AdView(mContext, mPidConfig.getPid(), size);
-        adView.setAdListener(new AdListener() {
+        loadingView = new AdView(mContext, mPidConfig.getPid(), size);
+        loadingView.setAdListener(new AdListener() {
             @Override
             public void onError(Ad ad, AdError adError) {
                 if (adError != null) {
@@ -101,8 +109,8 @@ public class FBLoader extends AbstractSdkLoader {
             public void onAdLoaded(Ad ad) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false);
-                bannerView = adView;
-                putCachedAdTime(adView);
+                bannerView = loadingView;
+                putCachedAdTime(loadingView);
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
@@ -131,7 +139,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
             }
         });
-        adView.loadAd();
+        loadingView.loadAd();
     }
 
     @Override
@@ -338,11 +346,18 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+            if (false) {
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+                }
+                return;
+            } else {
+                if (nativeAd != null) {
+                    nativeAd.setAdListener(null);
+                    nativeAd.destroy();
+                }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            return;
         }
         setLoading(true);
         nativeAd = new NativeAd(mContext, mPidConfig.getPid());

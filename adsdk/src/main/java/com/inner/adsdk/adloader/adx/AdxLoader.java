@@ -47,6 +47,8 @@ public class AdxLoader extends AbstractSdkLoader {
     private InterstitialAd interstitialAd;
     private NativeAd nativeAd;
     private Params mParams;
+    private AdView loadingView;
+    private AdLoader.Builder loadingBuilder;
 
     @Override
     public void setAdId(String adId) {
@@ -79,20 +81,28 @@ public class AdxLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+            if (false) {
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+                }
+                return;
+            } else {
+                if (loadingView != null) {
+                    loadingView.setAdListener(null);
+                    loadingView.destroy();
+                }
             }
-            return;
+            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         setLoading(true);
         AdSize size = ADSIZE.get(adSize);
         if (size == null) {
             size = AdSize.BANNER;
         }
-        final AdView adView = new AdView(mContext);
-        adView.setAdUnitId(mPidConfig.getPid());
-        adView.setAdSize(size);
-        adView.setAdListener(new AdListener() {
+        loadingView = new AdView(mContext);
+        loadingView.setAdUnitId(mPidConfig.getPid());
+        loadingView.setAdSize(size);
+        loadingView.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
                 Log.v(Log.TAG, "");
@@ -130,8 +140,8 @@ public class AdxLoader extends AbstractSdkLoader {
             public void onAdLoaded() {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false);
-                putCachedAdTime(adView);
-                bannerView = adView;
+                putCachedAdTime(loadingView);
+                bannerView = loadingView;
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
@@ -160,7 +170,7 @@ public class AdxLoader extends AbstractSdkLoader {
                 }
             }
         });
-        adView.loadAd(new AdRequest.Builder().build());
+        loadingView.loadAd(new AdRequest.Builder().build());
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
@@ -226,11 +236,17 @@ public class AdxLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
+            if (false) {
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
+                }
+                return;
+            } else {
+                if (interstitialAd != null) {
+                    interstitialAd.setAdListener(null);
+                }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            return;
         }
         setLoading(true);
         interstitialAd = new InterstitialAd(mContext);
@@ -349,11 +365,17 @@ public class AdxLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+            if (false) {
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+                }
+                return;
+            } else {
+                if (loadingBuilder != null) {
+                    loadingBuilder.forAppInstallAd(null).forContentAd(null).withAdListener(null);
+                }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            return;
         }
         setLoading(true);
         VideoOptions videoOptions = new VideoOptions.Builder()
@@ -361,83 +383,86 @@ public class AdxLoader extends AbstractSdkLoader {
         NativeAdOptions nativeAdOptions = new NativeAdOptions.Builder()
                 .setVideoOptions(videoOptions)
                 .build();
-        AdLoader adLoader = new AdLoader.Builder(mContext, mPidConfig.getPid())
-                .forAppInstallAd(new NativeAppInstallAd.OnAppInstallAdLoadedListener() {
-                    @Override
-                    public void onAppInstallAdLoaded(NativeAppInstallAd ad) {
-                        Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                        nativeAd = ad;
-                        setLoading(false);
-                        putCachedAdTime(nativeAd);
-                        if (getAdListener() != null) {
-                            setLoadedFlag();
-                            getAdListener().onAdLoaded();
-                        }
-                        if (mStat != null) {
-                            mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                        }
-                    }
-                }).forContentAd(new NativeContentAd.OnContentAdLoadedListener() {
-                    @Override
-                    public void onContentAdLoaded(NativeContentAd ad) {
-                        Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                        nativeAd = ad;
-                        setLoading(false);
-                        putCachedAdTime(nativeAd);
-                        if (getAdListener() != null) {
-                            setLoadedFlag();
-                            getAdListener().onAdLoaded();
-                        }
-                        if (mStat != null) {
-                            mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                        }
-                    }
-                }).withAdListener(new AdListener() {
-                    @Override
-                    public void onAdLeftApplication() {
-                        super.onAdLeftApplication();
-                    }
+        loadingBuilder = new AdLoader.Builder(mContext, mPidConfig.getPid());
+        loadingBuilder.forAppInstallAd(new NativeAppInstallAd.OnAppInstallAdLoadedListener() {
+            @Override
+            public void onAppInstallAdLoaded(NativeAppInstallAd ad) {
+                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                nativeAd = ad;
+                setLoading(false);
+                putCachedAdTime(nativeAd);
+                if (getAdListener() != null) {
+                    setLoadedFlag();
+                    getAdListener().onAdLoaded();
+                }
+                if (mStat != null) {
+                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+            }
+        }).forContentAd(new NativeContentAd.OnContentAdLoadedListener() {
+            @Override
+            public void onContentAdLoaded(NativeContentAd ad) {
+                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                nativeAd = ad;
+                setLoading(false);
+                putCachedAdTime(nativeAd);
+                if (getAdListener() != null) {
+                    setLoadedFlag();
+                    getAdListener().onAdLoaded();
+                }
+                if (mStat != null) {
+                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+            }
+        }).withAdListener(new AdListener() {
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+            }
 
-                    @Override
-                    public void onAdClicked() {
-                        Log.v(Log.TAG, "");
-                        if (getAdListener() != null) {
-                            getAdListener().onAdClick();
-                        }
-                        if (mStat != null) {
-                            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                        }
-                    }
+            @Override
+            public void onAdClicked() {
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onAdClick();
+                }
+                if (mStat != null) {
+                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+            }
 
-                    @Override
-                    public void onAdOpened() {
-                        super.onAdOpened();
-                    }
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
 
-                    @Override
-                    public void onAdImpression() {
-                        Log.v(Log.TAG, "");
-                        if (getAdListener() != null) {
-                            getAdListener().onAdImpression();
-                        }
-                        if (mStat != null) {
-                            mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                        }
-                    }
+            @Override
+            public void onAdImpression() {
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onAdImpression();
+                }
+                if (mStat != null) {
+                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+            }
 
-                    @Override
-                    public void onAdFailedToLoad(int errorCode) {
-                        Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + errorCode);
-                        if (errorCode == AdRequest.ERROR_CODE_NO_FILL) {
-                            updateLastNoFillTime();
-                        }
-                        setLoading(false);
-                        if (getAdListener() != null) {
-                            getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
-                        }
-                    }
-                }).withNativeAdOptions(nativeAdOptions).build();
-        adLoader.loadAd(new AdRequest.Builder().build());
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + errorCode);
+                if (errorCode == AdRequest.ERROR_CODE_NO_FILL) {
+                    updateLastNoFillTime();
+                }
+                setLoading(false);
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+                }
+            }
+        }).withNativeAdOptions(nativeAdOptions);
+        AdLoader adLoader = loadingBuilder.build();
+        if (adLoader != null) {
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }

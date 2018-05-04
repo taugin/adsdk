@@ -37,6 +37,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     private AdView bannerView;
+    private AdView loadingView;
     private InterstitialAd interstitialAd;
 
     @Override
@@ -70,21 +71,28 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+            if (false) {
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+                }
+                return;
+            } else {
+                if (loadingView != null) {
+                    loadingView.setAdListener(null);
+                    loadingView.destroy();
+                }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            return;
         }
         setLoading(true);
         AdSize size = ADSIZE.get(adSize);
         if (size == null) {
             size = AdSize.BANNER;
         }
-        final AdView adView = new AdView(mContext);
-        adView.setAdUnitId(mPidConfig.getPid());
-        adView.setAdSize(size);
-        adView.setAdListener(new AdListener() {
+        loadingView = new AdView(mContext);
+        loadingView.setAdUnitId(mPidConfig.getPid());
+        loadingView.setAdSize(size);
+        loadingView.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
                 Log.v(Log.TAG, "");
@@ -122,8 +130,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             public void onAdLoaded() {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false);
-                putCachedAdTime(adView);
-                bannerView = adView;
+                putCachedAdTime(loadingView);
+                bannerView = loadingView;
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
@@ -152,7 +160,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
             }
         });
-        adView.loadAd(new AdRequest.Builder().build());
+        loadingView.loadAd(new AdRequest.Builder().build());
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
@@ -218,11 +226,17 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
+            if (false) {
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
+                }
+                return;
+            } else {
+                if (interstitialAd != null) {
+                    interstitialAd.setAdListener(null);
+                }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            return;
         }
         setLoading(true);
         interstitialAd = new InterstitialAd(mContext);
