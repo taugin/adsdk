@@ -90,6 +90,7 @@ public class AdxLoader extends AbstractSdkLoader {
                 if (loadingView != null) {
                     loadingView.setAdListener(null);
                     loadingView.destroy();
+                    clearCachedAdTime(loadingView);
                 }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -244,6 +245,7 @@ public class AdxLoader extends AbstractSdkLoader {
             } else {
                 if (interstitialAd != null) {
                     interstitialAd.setAdListener(null);
+                    clearCachedAdTime(interstitialAd);
                 }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -327,6 +329,7 @@ public class AdxLoader extends AbstractSdkLoader {
         if (interstitialAd != null && interstitialAd.isLoaded()) {
             interstitialAd.show();
             clearCachedAdTime(interstitialAd);
+            interstitialAd = null;
             return true;
         }
         return false;
@@ -373,6 +376,9 @@ public class AdxLoader extends AbstractSdkLoader {
             } else {
                 if (loadingBuilder != null) {
                     loadingBuilder.forAppInstallAd(null).forContentAd(null).withAdListener(null);
+                    if (nativeAd != null) {
+                        clearCachedAdTime(nativeAd);
+                    }
                 }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);

@@ -80,6 +80,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 if (loadingView != null) {
                     loadingView.setAdListener(null);
                     loadingView.destroy();
+                    clearCachedAdTime(loadingView);
                 }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -234,6 +235,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             } else {
                 if (interstitialAd != null) {
                     interstitialAd.setAdListener(null);
+                    clearCachedAdTime(interstitialAd);
                 }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -320,6 +322,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (interstitialAd != null && interstitialAd.isLoaded()) {
             interstitialAd.show();
             clearCachedAdTime(interstitialAd);
+            interstitialAd = null;
             return true;
         }
         return false;

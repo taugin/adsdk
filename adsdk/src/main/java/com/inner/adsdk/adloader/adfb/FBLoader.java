@@ -80,6 +80,7 @@ public class FBLoader extends AbstractSdkLoader {
                 if (loadingView != null) {
                     loadingView.setAdListener(null);
                     loadingView.destroy();
+                    clearCachedAdTime(loadingView);
                 }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -140,6 +141,10 @@ public class FBLoader extends AbstractSdkLoader {
             }
         });
         loadingView.loadAd();
+        if (mStat != null) {
+            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        }
+        Log.d(Log.TAG, "");
     }
 
     @Override
@@ -226,6 +231,7 @@ public class FBLoader extends AbstractSdkLoader {
                 if (fbInterstitial != null) {
                     fbInterstitial.setAdListener(null);
                     fbInterstitial.destroy();
+                    clearCachedAdTime(fbInterstitial);
                 }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -309,6 +315,7 @@ public class FBLoader extends AbstractSdkLoader {
         if (fbInterstitial != null && fbInterstitial.isAdLoaded()) {
             fbInterstitial.show();
             clearCachedAdTime(fbInterstitial);
+            fbInterstitial = null;
             return true;
         }
         return false;
@@ -355,6 +362,7 @@ public class FBLoader extends AbstractSdkLoader {
                 if (nativeAd != null) {
                     nativeAd.setAdListener(null);
                     nativeAd.destroy();
+                    clearCachedAdTime(nativeAd);
                 }
             }
             StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
