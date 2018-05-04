@@ -15,7 +15,6 @@ import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
-import com.inner.adsdk.stat.StatImpl;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -83,7 +82,6 @@ public class FBLoader extends AbstractSdkLoader {
                     clearCachedAdTime(loadingView);
                 }
             }
-            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         setLoading(true);
         AdSize size = ADSIZE.get(adSize);
@@ -241,7 +239,6 @@ public class FBLoader extends AbstractSdkLoader {
                     clearCachedAdTime(fbInterstitial);
                 }
             }
-            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         setLoading(true);
         fbInterstitial = new InterstitialAd(mContext, mPidConfig.getPid());
@@ -379,7 +376,6 @@ public class FBLoader extends AbstractSdkLoader {
                     clearCachedAdTime(nativeAd);
                 }
             }
-            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         setLoading(true);
         nativeAd = new NativeAd(mContext, mPidConfig.getPid());

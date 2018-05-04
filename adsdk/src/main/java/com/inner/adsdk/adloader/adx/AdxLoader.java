@@ -20,7 +20,6 @@ import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
-import com.inner.adsdk.stat.StatImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -93,7 +92,6 @@ public class AdxLoader extends AbstractSdkLoader {
                     clearCachedAdTime(loadingView);
                 }
             }
-            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         setLoading(true);
         AdSize size = ADSIZE.get(adSize);
@@ -248,7 +246,6 @@ public class AdxLoader extends AbstractSdkLoader {
                     clearCachedAdTime(interstitialAd);
                 }
             }
-            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         setLoading(true);
         interstitialAd = new InterstitialAd(mContext);
@@ -381,7 +378,6 @@ public class AdxLoader extends AbstractSdkLoader {
                     }
                 }
             }
-            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         setLoading(true);
         VideoOptions videoOptions = new VideoOptions.Builder()

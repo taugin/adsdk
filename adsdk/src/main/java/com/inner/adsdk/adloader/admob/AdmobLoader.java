@@ -13,7 +13,6 @@ import com.google.android.gms.ads.MobileAds;
 import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
-import com.inner.adsdk.stat.StatImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,7 +82,6 @@ public class AdmobLoader extends AbstractSdkLoader {
                     clearCachedAdTime(loadingView);
                 }
             }
-            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         setLoading(true);
         AdSize size = ADSIZE.get(adSize);
@@ -238,7 +236,6 @@ public class AdmobLoader extends AbstractSdkLoader {
                     clearCachedAdTime(interstitialAd);
                 }
             }
-            StatImpl.get().reportAdLoading(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         setLoading(true);
         interstitialAd = new InterstitialAd(mContext);
