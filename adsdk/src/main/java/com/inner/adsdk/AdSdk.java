@@ -79,9 +79,9 @@ public class AdSdk {
     private AdPlaceLoader getAdLoader(String pidName) {
         AdPlaceLoader loader = mAdLoaders.get(pidName);
         AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(pidName);
-        Map<String, String> adids = DataManager.get(mContext).getRemoteAdIds(Constant.ADIDS_NAME);
+        // loader为null，或者AdPlace内容有变化，则重新加载loader
         if (loader == null || loader.needReload(adPlace)) {
-            loader = createAdPlaceLoader(pidName, adPlace, adids);
+            loader = createAdPlaceLoader(pidName, adPlace);
             if (loader != null) {
                 mAdLoaders.put(pidName, loader);
             }
@@ -93,10 +93,9 @@ public class AdSdk {
      * 如果adPlace和adIds为空，则使用本地的adPlace和adIds
      * @param pidName
      * @param adPlace
-     * @param adIds
      * @return
      */
-    private AdPlaceLoader createAdPlaceLoader(String pidName, AdPlace adPlace, Map<String, String> adIds) {
+    private AdPlaceLoader createAdPlaceLoader(String pidName, AdPlace adPlace) {
         if (mLocalAdConfig == null) {
             return null;
         }
@@ -107,6 +106,7 @@ public class AdSdk {
         } else {
             useRemote = true;
         }
+        Map<String, String> adIds = DataManager.get(mContext).getRemoteAdIds(Constant.ADIDS_NAME);
         if (adIds == null) {
             adIds = mLocalAdConfig.getAdIds();
         }
@@ -117,7 +117,9 @@ public class AdSdk {
             loader.setAdIds(adIds);
             loader.init();
         }
-        Log.d(Log.TAG, "pidName [" + pidName + "] use remote config : " + useRemote);
+        if (useRemote || true) {
+            Log.v(Log.TAG, "pidName [" + pidName + "] use remote config : " + adPlace);
+        }
         return loader;
     }
 

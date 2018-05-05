@@ -102,6 +102,9 @@ public class FBLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
+                if (mStat != null) {
+                    mStat.reportAdError(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
             }
 
             @Override
@@ -275,6 +278,9 @@ public class FBLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
+                if (mStat != null) {
+                    mStat.reportAdError(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
             }
 
             @Override
@@ -391,6 +397,9 @@ public class FBLoader extends AbstractSdkLoader {
                 setLoading(false);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+                }
+                if (mStat != null) {
+                    mStat.reportAdError(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
             }
 

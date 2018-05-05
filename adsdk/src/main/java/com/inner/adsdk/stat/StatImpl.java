@@ -256,4 +256,17 @@ public class StatImpl implements IStat {
         sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
     }
+
+    @Override
+    public void reportAdError(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
+        if (context == null) {
+            return;
+        }
+        String eventId = generateEventId("error", sdk, type);
+        String category = "user_action";
+        sendGoogleAnalytics(pidName, eventId, category);
+        sendUmeng(context, pidName, eventId, extra);
+        sendAppsflyer(context, pidName, eventId, extra);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+    }
 }
