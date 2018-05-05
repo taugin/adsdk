@@ -269,4 +269,12 @@ public class AbstractSdkLoader implements ISdkLoader {
         }
         return cacheTime;
     }
+
+    /**
+     * 阻塞正在加载的loader
+     * @return
+     */
+    protected boolean blockLoading() {
+        return false;
+    }
 }
