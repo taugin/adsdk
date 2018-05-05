@@ -207,7 +207,10 @@ public class AbstractSdkLoader implements ISdkLoader {
     }
 
     protected void putCachedAdTime(Object object) {
-        mCachedTime.put(object, SystemClock.elapsedRealtime());
+        try {
+            mCachedTime.put(object, SystemClock.elapsedRealtime());
+        } catch (Exception e) {
+        }
     }
 
     protected boolean isCachedAdExpired(Object object) {
