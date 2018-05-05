@@ -198,6 +198,7 @@ public class OuterPolicy {
         if (mAdPolicy != null && mAdPolicy.getInterval() > 0) {
             long now = System.currentTimeMillis();
             long last = getLastShowTime();
+            Log.v(Log.TAG, "OuterPolicy.isIntervalAllow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)));
             return now - last > mAdPolicy.getInterval();
         }
         return true;
@@ -216,7 +217,7 @@ public class OuterPolicy {
     private void resetTotalShowIfNeed() {
         long now = System.currentTimeMillis();
         long lastDay = Utils.getLong(mContext, Constant.PREF_FIRST_SHOW_TIME_ONEDAY, now);
-        Log.v(Log.TAG, "OuterPolicy resetTotalShowIfNeed now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
+        Log.v(Log.TAG, "OuterPolicy.resetTotalShowIfNeed now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
         if (now - lastDay > Constant.ONE_DAY_TIME) {
             resetTotalShowTimes();
         }

@@ -46,10 +46,12 @@ public class PlacePolicy {
 
     public void reportAdPlaceShow(AdPlace adPlace) {
         if (adPlace == null) {
+            Log.v(Log.TAG, "adPlace == null");
             return;
         }
         String pidName = adPlace.getName();
         if (TextUtils.isEmpty(pidName)) {
+            Log.v(Log.TAG, "pidName == null");
             return;
         }
         long loadCount = Utils.getLong(mContext, getShowCountKey(pidName), 0);

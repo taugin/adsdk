@@ -56,7 +56,7 @@ public class GTagDataRequest implements IDataRequest {
         if (mContainerHolder != null && mContainerHolder.getContainer() != null) {
             long lastRefreshTime = mContainerHolder.getContainer().getLastRefreshTime();
             long now = System.currentTimeMillis();
-            Log.v(Log.TAG, "GTagDataRequest refresh now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastRefreshTime)));
+            Log.v(Log.TAG, "GTagDataRequestrefresh now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastRefreshTime)));
             if (now - lastRefreshTime > REFRESH_INTERVAL) {
                 try {
                     mContainerHolder.refresh();
@@ -65,7 +65,12 @@ public class GTagDataRequest implements IDataRequest {
                 }
             }
         } else {
-            request();
+            long now = System.currentTimeMillis();
+            long last = Utils.getLong(mContext, Constant.PREF_GTAG_REQUEST_TIME);
+            if (now - last > REFRESH_INTERVAL) {
+                request();
+                Utils.putLong(mContext, Constant.PREF_GTAG_REQUEST_TIME, System.currentTimeMillis());
+            }
         }
     }
 

@@ -77,6 +77,7 @@ public class FBLoader extends AbstractSdkLoader {
                 return;
             } else {
                 if (loadingView != null) {
+                    loadingView.disableAutoRefresh();
                     loadingView.setAdListener(null);
                     loadingView.destroy();
                     clearCachedAdTime(loadingView);
