@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.IManagerListener;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
+import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.manager.DataManager;
 import com.inner.adsdk.stat.IStat;
 import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
@@ -275,6 +277,10 @@ public class AbstractSdkLoader implements ISdkLoader {
      * @return
      */
     protected boolean blockLoading() {
+        AdSwitch adSwitch = DataManager.get(mContext).getAdSwitch();
+        if (adSwitch != null) {
+            return adSwitch.isBlockLoading();
+        }
         return false;
     }
 }

@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdPolicy;
+import com.inner.adsdk.config.AdSwitch;
+import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.parse.AdParser;
 import com.inner.adsdk.parse.IParser;
@@ -96,5 +98,17 @@ public class DataManager {
             return mParser.parseAdIds(data);
         }
         return null;
+    }
+
+    public AdSwitch getAdSwitch() {
+        AdSwitch adSwitch = null;
+        String data = mDataRequest.getString(Constant.ADSWITCH_NAME);
+        if (!TextUtils.isEmpty(data)) {
+            adSwitch = mParser.parseAdSwitch(data);
+        }
+        if (adSwitch == null && mLocalAdConfig != null) {
+            adSwitch = mLocalAdConfig.getAdSwitch();
+        }
+        return adSwitch;
     }
 }

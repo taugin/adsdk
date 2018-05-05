@@ -6,7 +6,9 @@ import android.text.TextUtils;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.manager.DataManager;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -259,6 +261,10 @@ public class StatImpl implements IStat {
 
     @Override
     public void reportAdError(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
+        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
+        if (adSwitch == null || !adSwitch.isReportError()) {
+            return;
+        }
         if (context == null) {
             return;
         }

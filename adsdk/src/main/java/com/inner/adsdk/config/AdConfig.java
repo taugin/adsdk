@@ -20,6 +20,8 @@ public class AdConfig {
     // 广告配置
     private List<AdPlace> adPlaceList;
 
+    private AdSwitch adSwitch;
+
     public Map<String, String> getAdIds() {
         return adIds;
     }
@@ -42,6 +44,14 @@ public class AdConfig {
 
     public void setAdPlaceList(List<AdPlace> adPlaceList) {
         this.adPlaceList = adPlaceList;
+    }
+
+    public AdSwitch getAdSwitch() {
+        return adSwitch;
+    }
+
+    public void setAdSwitch(AdSwitch adSwitch) {
+        this.adSwitch = adSwitch;
     }
 
     /**

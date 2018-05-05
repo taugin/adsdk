@@ -51,6 +51,7 @@ public class Constant {
     public static final String ADPLACE_FILM_NAME = "ad_film_place";
     public static final String ADIDS_NAME = "adids";
     public static final String ADPOLICY_NAME = "adpolicy";
+    public static final String ADSWITCH_NAME = "adswitch";
 
     public static final String AF_STATUS = "af_status";
     public static final String AF_MEDIA_SOURCE = "af_media_source";

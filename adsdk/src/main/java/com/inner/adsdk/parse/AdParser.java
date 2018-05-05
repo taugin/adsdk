@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdPolicy;
+import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Aes;
@@ -53,6 +54,7 @@ public class AdParser implements IParser {
             Map<String, String> adIds = null;
             AdPolicy adPolicy = null;
             List<AdPlace> adPlaces = null;
+            AdSwitch adSwitch = null;
             if (jobj.has(ADIDS)) {
                 adIds = parseAdIds(jobj.getString(ADIDS));
             }
@@ -62,11 +64,15 @@ public class AdParser implements IParser {
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
             }
-            if (adPlaces != null || adPolicy != null || adIds != null) {
+            if (jobj.has(ADSWITCH)) {
+                adSwitch = parseAdSwitch(jobj.getString(ADSWITCH));
+            }
+            if (adPlaces != null || adPolicy != null || adIds != null || adSwitch != null) {
                 adConfig = new AdConfig();
                 adConfig.setAdPlaceList(adPlaces);
                 adConfig.setAdPolicy(adPolicy);
                 adConfig.setAdIds(adIds);
+                adConfig.setAdSwitch(adSwitch);
             }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdConfigInternal error : " + e);
@@ -261,5 +267,24 @@ public class AdParser implements IParser {
             Log.e(Log.TAG, "error : " + e);
         }
         return pidConfig;
+    }
+
+    @Override
+    public AdSwitch parseAdSwitch(String content) {
+        AdSwitch adSwitch = null;
+        try {
+            content = getContent(content);
+            JSONObject jobj = new JSONObject(content);
+            adSwitch = new AdSwitch();
+            if (jobj.has(BLOCK_LOADING)) {
+                adSwitch.setBlockLoading(jobj.getInt(BLOCK_LOADING) == 1);
+            }
+            if (jobj.has(REPORT_ERROR)) {
+                adSwitch.setReportError(jobj.getInt(REPORT_ERROR) == 1);
+            }
+        } catch (Exception e) {
+            Log.v(Log.TAG, "parseAdSwitch error : " + e);
+        }
+        return adSwitch;
     }
 }

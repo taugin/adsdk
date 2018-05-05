@@ -3,6 +3,7 @@ package com.inner.adsdk.parse;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdPolicy;
+import com.inner.adsdk.config.AdSwitch;
 
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public interface IParser {
     String ADIDS = "adids";
     String ADPOLICY = "adpolicy";
     String ADPLACES = "adplaces";
+    String ADSWITCH = "adswitch";
     String NAME = "name";
     String MODE = "mode";
     String AUTO_SWITCH = "as";
@@ -46,8 +48,12 @@ public interface IParser {
     String ATTRS = "attr";
     String MEDIA_SOURCE = "ms";
 
+    String BLOCK_LOADING = "bl";
+    String REPORT_ERROR = "re";
+
     AdConfig parseAdConfig(String data);
     AdPlace parseAdPlace(String data);
     AdPolicy parseAdPolicy(String data);
     Map<String, String> parseAdIds(String data);
+    AdSwitch parseAdSwitch(String data);
 }
