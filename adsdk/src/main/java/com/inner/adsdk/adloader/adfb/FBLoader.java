@@ -69,13 +69,14 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (blockLoading()) {
+                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
                 }
                 return;
             } else {
+                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
                 if (loadingView != null) {
                     loadingView.disableAutoRefresh();
                     loadingView.setAdListener(null);
@@ -230,13 +231,14 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (blockLoading()) {
+                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
                 }
                 return;
             } else {
+                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
                 if (fbInterstitial != null) {
                     fbInterstitial.setAdListener(null);
                     fbInterstitial.destroy();
@@ -370,13 +372,14 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (blockLoading()) {
+                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
                 }
                 return;
             } else {
+                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
                 if (nativeAd != null) {
                     nativeAd.setAdListener(null);
                     nativeAd.destroy();

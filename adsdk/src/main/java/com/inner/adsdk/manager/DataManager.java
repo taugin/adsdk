@@ -109,6 +109,7 @@ public class DataManager {
         if (adSwitch == null && mLocalAdConfig != null) {
             adSwitch = mLocalAdConfig.getAdSwitch();
         }
+        Log.v(Log.TAG,"adSwitch : " + adSwitch);
         return adSwitch;
     }
 }

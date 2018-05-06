@@ -23,4 +23,12 @@ public class AdSwitch {
     public void setReportError(boolean reportError) {
         this.reportError = reportError;
     }
+
+    @Override
+    public String toString() {
+        return "AdSwitch{" +
+                "blockLoading=" + blockLoading +
+                ", reportError=" + reportError +
+                '}';
+    }
 }

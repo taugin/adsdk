@@ -69,13 +69,14 @@ public class AdmobLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (blockLoading()) {
+                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
                 }
                 return;
             } else {
+                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
                 if (loadingView != null) {
                     loadingView.setAdListener(null);
                     loadingView.destroy();
@@ -227,13 +228,14 @@ public class AdmobLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (blockLoading()) {
+                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
                 }
                 return;
             } else {
+                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
                 if (interstitialAd != null) {
                     interstitialAd.setAdListener(null);
                     clearCachedAdTime(interstitialAd);
@@ -250,6 +252,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
+                interstitialAd = null;
             }
 
             @Override
