@@ -69,7 +69,7 @@ public class OuterAdLoader {
         try {
             Class.forName(Constant.ALARM_SERVICE);
             return true;
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
         return false;
     }

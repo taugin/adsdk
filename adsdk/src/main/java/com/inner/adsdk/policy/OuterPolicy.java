@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.inner.adsdk.config.AdPolicy;
 import com.inner.adsdk.constant.Constant;
+import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
 
@@ -336,6 +337,13 @@ public class OuterPolicy {
         return true;
     }
 
+    private boolean isTopApp() {
+        boolean appOnTop = ActivityMonitor.get(mContext).appOnTop();
+        boolean isTopApp = Utils.isTopActivy(mContext);
+        Log.v(Log.TAG, "appOnTop : " + appOnTop + " , isTopApp : " + isTopApp);
+        return appOnTop;
+    }
+
     private boolean checkAdOuterConfig() {
         if (!isConfigAllow()) {
             Log.v(Log.TAG, "config not allowed");
@@ -389,7 +397,7 @@ public class OuterPolicy {
             return false;
         }
 
-        if (Utils.isTopActivy(mContext)) {
+        if (isTopApp()) {
             Log.v(Log.TAG, "app is on the top");
             return false;
         }

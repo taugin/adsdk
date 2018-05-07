@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.constant.Constant;
+import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.framework.AdPlaceLoader;
 import com.inner.adsdk.framework.OuterAdLoader;
 import com.inner.adsdk.listener.OnAdSdkListener;
@@ -70,9 +71,10 @@ public class AdSdk {
      * @param gaTrackerId Google Analytic TrackerId
      */
     public void init(String containerId, String gaTrackerId) {
+        mLocalAdConfig = DataManager.get(mContext).getLocalAdConfig();
+        ActivityMonitor.get(mContext).init();
         StatImpl.get().init(mContext, gaTrackerId);
         DataManager.get(mContext).init(containerId);
-        mLocalAdConfig = DataManager.get(mContext).getLocalAdConfig();
         OuterAdLoader.get(mContext).init(this);
     }
 
