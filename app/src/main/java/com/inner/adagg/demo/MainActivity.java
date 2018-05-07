@@ -16,16 +16,19 @@ public class MainActivity extends Activity {
 
     private static final String TAG = "MA";
     private RelativeLayout mAdContainer;
+    private RelativeLayout mAdContainer1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAdContainer = findViewById(R.id.ad_container);
+        mAdContainer1 = findViewById(R.id.ad_container1);
         BasicLib.init(this, "GTM-TMKR64Z1");
         AdSdk.get(this).init("GTM-TMKR64Z1");
         loadInterstitial();
         loadAdView();
+        loadAdView1();
         // loadComplexAd();
     }
 
@@ -79,6 +82,37 @@ public class MainActivity extends Activity {
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 AdSdk.get(MainActivity.this).showAdView(pidName, mAdContainer);
+            }
+
+            @Override
+            public void onClick(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            }
+
+            @Override
+            public void onShow(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            }
+
+            @Override
+            public void onDismiss(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            }
+        });
+    }
+
+    private void loadAdView1() {
+        AdParams adParams = new AdParams.Builder()
+                // 设置banner 参数
+                .setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_LARGE_BANNER)
+                .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
+                .build();
+
+        AdSdk.get(this).loadAdView("Action_bottom", adParams, new SimpleAdSdkListener() {
+            @Override
+            public void onLoaded(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                AdSdk.get(MainActivity.this).showAdView(pidName, mAdContainer1);
             }
 
             @Override
