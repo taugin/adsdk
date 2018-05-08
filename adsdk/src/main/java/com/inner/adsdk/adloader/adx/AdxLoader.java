@@ -94,7 +94,7 @@ public class AdxLoader extends AbstractSdkLoader {
                 }
             }
         }
-        setLoading(true);
+        setLoading(true, STATE_REQUEST);
         AdSize size = ADSIZE.get(adSize);
         if (size == null) {
             size = AdSize.BANNER;
@@ -114,7 +114,7 @@ public class AdxLoader extends AbstractSdkLoader {
             @Override
             public void onAdFailedToLoad(int i) {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                setLoading(false);
+                setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
@@ -142,7 +142,7 @@ public class AdxLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded() {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                setLoading(false);
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(loadingView);
                 bannerView = loadingView;
                 if (mStat != null) {
@@ -252,7 +252,7 @@ public class AdxLoader extends AbstractSdkLoader {
                 }
             }
         }
-        setLoading(true);
+        setLoading(true, STATE_REQUEST);
         interstitialAd = new InterstitialAd(mContext);
         interstitialAd.setAdUnitId(mPidConfig.getPid());
         interstitialAd.setAdListener(new AdListener() {
@@ -268,7 +268,7 @@ public class AdxLoader extends AbstractSdkLoader {
             @Override
             public void onAdFailedToLoad(int i) {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                setLoading(false);
+                setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
@@ -302,7 +302,7 @@ public class AdxLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded() {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                setLoading(false);
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -389,7 +389,7 @@ public class AdxLoader extends AbstractSdkLoader {
                 }
             }
         }
-        setLoading(true);
+        setLoading(true, STATE_REQUEST);
         VideoOptions videoOptions = new VideoOptions.Builder()
                 .build();
         NativeAdOptions nativeAdOptions = new NativeAdOptions.Builder()
@@ -401,7 +401,7 @@ public class AdxLoader extends AbstractSdkLoader {
             public void onAppInstallAdLoaded(NativeAppInstallAd ad) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 nativeAd = ad;
-                setLoading(false);
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
                 if (getAdListener() != null) {
                     setLoadedFlag();
@@ -416,7 +416,7 @@ public class AdxLoader extends AbstractSdkLoader {
             public void onContentAdLoaded(NativeContentAd ad) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 nativeAd = ad;
-                setLoading(false);
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
                 if (getAdListener() != null) {
                     setLoadedFlag();
@@ -465,7 +465,7 @@ public class AdxLoader extends AbstractSdkLoader {
                 if (errorCode == AdRequest.ERROR_CODE_NO_FILL) {
                     updateLastNoFillTime();
                 }
-                setLoading(false);
+                setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }

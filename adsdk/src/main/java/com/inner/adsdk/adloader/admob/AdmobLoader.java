@@ -84,7 +84,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
             }
         }
-        setLoading(true);
+        setLoading(true, STATE_REQUEST);
         AdSize size = ADSIZE.get(adSize);
         if (size == null) {
             size = AdSize.BANNER;
@@ -104,7 +104,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdFailedToLoad(int i) {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                setLoading(false);
+                setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
@@ -132,7 +132,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded() {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                setLoading(false);
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(loadingView);
                 bannerView = loadingView;
                 if (mStat != null) {
@@ -242,7 +242,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
             }
         }
-        setLoading(true);
+        setLoading(true, STATE_REQUEST);
         interstitialAd = new InterstitialAd(mContext);
         interstitialAd.setAdUnitId(mPidConfig.getPid());
         interstitialAd.setAdListener(new AdListener() {
@@ -258,7 +258,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdFailedToLoad(int i) {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                setLoading(false);
+                setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
@@ -295,7 +295,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded() {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                setLoading(false);
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);

@@ -36,6 +36,11 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
     // 加载未返回的超时时间5分钟
     protected static final int LOADING_TIMEOUT = 5 * 60 * 1000;
 
+    protected static final int STATE_REQUEST = 1;
+    protected static final int STATE_SUCCESS = 2;
+    protected static final int STATE_FAILURE = 3;
+    protected static final int STATE_TIMTOUT = 4;
+
     private static Map<Object, Long> mCachedTime = new ConcurrentHashMap<Object, Long>();
     protected PidConfig mPidConfig;
     protected Context mContext;
@@ -45,6 +50,7 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
     private boolean mLoading = false;
     private boolean mLoadedFlag = false;
     private Handler mHandler = null;
+    private long mRequestTime = 0;
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -213,8 +219,9 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
         return mLoading;
     }
 
-    protected synchronized void setLoading(boolean loading) {
+    protected synchronized void setLoading(boolean loading, int state) {
         mLoading = loading;
+        reportLoadAdTime(state);
         if (mLoading) {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
@@ -314,7 +321,7 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
 
     protected void onLoadTimeout() {
         Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - load time out");
-        setLoading(false);
+        setLoading(false, STATE_TIMTOUT);
         if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)) {
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_TIMEOUT);
@@ -334,5 +341,33 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
             return true;
         }
         return false;
+    }
+
+    private void reportLoadAdTime(int state) {
+        if (state == STATE_REQUEST) {
+            mRequestTime = System.currentTimeMillis();
+        } else if (state == STATE_SUCCESS) {
+            if (mRequestTime > 0) {
+                try {
+                    int time = Long.valueOf(System.currentTimeMillis() - mRequestTime).intValue();
+                    mStat.reportAdLoadSuccessTime(mContext, getSdkName(), getAdType(), time);
+                } catch(Exception e) {
+                }
+                mRequestTime = 0;
+            }
+        } else {
+            if (mRequestTime > 0) {
+                try {
+                    String error = "STATE_FAILURE";
+                    if (state == STATE_TIMTOUT) {
+                        error = "STATE_TIMTOUT";
+                    }
+                    int time = Long.valueOf(System.currentTimeMillis() - mRequestTime).intValue();
+                    mStat.reportAdLoadFailureTime(mContext, getSdkName(), getAdType(), error, time);
+                } catch(Exception e) {
+                }
+                mRequestTime = 0;
+            }
+        }
     }
 }

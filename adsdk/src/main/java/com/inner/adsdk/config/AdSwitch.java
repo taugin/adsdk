@@ -7,6 +7,7 @@ package com.inner.adsdk.config;
 public class AdSwitch {
     private boolean blockLoading;
     private boolean reportError;
+    private boolean reportTime;
 
     public boolean isBlockLoading() {
         return blockLoading;
@@ -22,6 +23,14 @@ public class AdSwitch {
 
     public void setReportError(boolean reportError) {
         this.reportError = reportError;
+    }
+
+    public boolean isReportTime() {
+        return reportTime;
+    }
+
+    public void setReportTime(boolean reportTime) {
+        this.reportTime = reportTime;
     }
 
     @Override

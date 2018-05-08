@@ -85,7 +85,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
             }
         }
-        setLoading(true);
+        setLoading(true, STATE_REQUEST);
         AdSize size = ADSIZE.get(adSize);
         if (size == null) {
             size = AdSize.BANNER_HEIGHT_50;
@@ -100,7 +100,7 @@ public class FBLoader extends AbstractSdkLoader {
                         updateLastNoFillTime();
                     }
                 }
-                setLoading(false);
+                setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
@@ -112,7 +112,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                setLoading(false);
+                setLoading(false, STATE_SUCCESS);
                 bannerView = loadingView;
                 putCachedAdTime(loadingView);
                 if (mStat != null) {
@@ -246,7 +246,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
             }
         }
-        setLoading(true);
+        setLoading(true, STATE_REQUEST);
         fbInterstitial = new InterstitialAd(mContext, mPidConfig.getPid());
         fbInterstitial.setAdListener(new InterstitialAdListener() {
             @Override
@@ -277,7 +277,7 @@ public class FBLoader extends AbstractSdkLoader {
                         updateLastNoFillTime();
                     }
                 }
-                setLoading(false);
+                setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
@@ -289,7 +289,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                setLoading(false);
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(fbInterstitial);
                 if (getAdListener() != null) {
                     setLoadedFlag();
@@ -387,7 +387,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
             }
         }
-        setLoading(true);
+        setLoading(true, STATE_REQUEST);
         nativeAd = new NativeAd(mContext, mPidConfig.getPid());
         nativeAd.setAdListener(new AdListener() {
             @Override
@@ -398,7 +398,7 @@ public class FBLoader extends AbstractSdkLoader {
                         updateLastNoFillTime();
                     }
                 }
-                setLoading(false);
+                setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
@@ -410,7 +410,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                setLoading(false);
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
                 if (getAdListener() != null) {
                     setLoadedFlag();

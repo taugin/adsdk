@@ -102,7 +102,7 @@ public class StatImpl implements IStat {
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, String> entry : extra.entrySet()) {
                 if (entry != null) {
-                    if (!TextUtils.isEmpty(entry.getKey()) && TextUtils.isEmpty(entry.getValue())) {
+                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
                         map.put(entry.getKey(), entry.getValue());
                     }
                 }
@@ -120,6 +120,33 @@ public class StatImpl implements IStat {
         }
         if (!TextUtils.isEmpty(error)) {
             Log.v(Log.TAG, "StatImpl sendUmeng error : " + error);
+        }
+    }
+
+    private void sendUmengEventValue(Context context, String eventId, Map<String, String> extra, int value) {
+        Log.d(Log.TAG, "StatImpl sendUmeng Analytics");
+        HashMap<String, String> map = new HashMap<String, String>();
+        if (extra != null && !extra.isEmpty()) {
+            for (Map.Entry<String, String> entry : extra.entrySet()) {
+                if (entry != null) {
+                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
+                        map.put(entry.getKey(), entry.getValue());
+                    }
+                }
+            }
+        }
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
+            Method method = clazz.getDeclaredMethod("onEventValue", Context.class, String.class, Map.class, int.class);
+            method.invoke(null, context, eventId, map, value);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.v(Log.TAG, "StatImpl sendUmengEventValue error : " + error);
         }
     }
 
@@ -262,14 +289,6 @@ public class StatImpl implements IStat {
         Log.v(Log.TAG, "");
     }
 
-    private boolean isReportError(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportError();
-        }
-        return true;
-    }
-
     @Override
     public void reportAdOuterShowTimes(Context context, int times) {
         if (context == null) {
@@ -279,5 +298,54 @@ public class StatImpl implements IStat {
         String value = String.valueOf(times);
         sendUmeng(context, value, eventId, null);
         Log.v(Log.TAG, "StatImpl stat key : outer_gt_showtimes , times : " + times);
+    }
+
+    @Override
+    public void reportAdLoadSuccessTime(Context context, String sdk, String type, int value) {
+        if (!isReportTime(context)) {
+            return;
+        }
+        String eventId = "load_ad_success_time";
+        if (!checkArgument(context, eventId, sdk, type)) {
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("sdk", sdk);
+        map.put("type", type);
+        sendUmengEventValue(context, eventId, map, value);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
+    }
+
+    @Override
+    public void reportAdLoadFailureTime(Context context, String sdk, String type, String error, int value) {
+        if (!isReportTime(context)) {
+            return;
+        }
+        if (!checkArgument(context, error, sdk, type)) {
+            return;
+        }
+        String eventId = "load_ad_failure_time";
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("sdk", sdk);
+        map.put("type", type);
+        map.put("error", error);
+        sendUmengEventValue(context, eventId, map, value);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
+    }
+
+    private boolean isReportError(Context context) {
+        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
+        if (adSwitch != null) {
+            return adSwitch.isReportError();
+        }
+        return true;
+    }
+
+    private boolean isReportTime(Context context) {
+        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
+        if (adSwitch != null) {
+            return adSwitch.isReportTime();
+        }
+        return true;
     }
 }
