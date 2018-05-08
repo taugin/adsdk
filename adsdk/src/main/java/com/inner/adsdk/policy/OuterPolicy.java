@@ -8,6 +8,7 @@ import com.inner.adsdk.config.AdPolicy;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
 
 import java.util.ArrayList;
@@ -220,6 +221,8 @@ public class OuterPolicy {
         long lastDay = Utils.getLong(mContext, Constant.PREF_FIRST_SHOW_TIME_ONEDAY, now);
         Log.v(Log.TAG, "OuterPolicy.resetTotalShowIfNeed now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
         if (now - lastDay > Constant.ONE_DAY_TIME) {
+            int times = (int) getTotalShowTimes();
+            StatImpl.get().reportAdOuterShowTimes(mContext, times);
             resetTotalShowTimes();
         }
     }

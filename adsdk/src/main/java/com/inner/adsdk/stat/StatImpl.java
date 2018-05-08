@@ -247,19 +247,6 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdLoading(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
-        if (context == null) {
-            return;
-        }
-        String eventId = generateEventId("loading", sdk, type);
-        String category = "user_action";
-        sendGoogleAnalytics(pidName, eventId, category);
-        sendUmeng(context, pidName, eventId, extra);
-        sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
-    }
-
-    @Override
     public void reportAdError(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
         if (!isReportError(context)) {
             return;
@@ -281,5 +268,16 @@ public class StatImpl implements IStat {
             return adSwitch.isReportError();
         }
         return true;
+    }
+
+    @Override
+    public void reportAdOuterShowTimes(Context context, int times) {
+        if (context == null) {
+            return;
+        }
+        String eventId = "outer_gt_showtimes";
+        String value = String.valueOf(times);
+        sendUmeng(context, value, eventId, null);
+        Log.v(Log.TAG, "");
     }
 }
