@@ -60,7 +60,9 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityStarted(Activity activity) {
-        mAtomicInteger.incrementAndGet();
+        if (mAtomicInteger != null) {
+            mAtomicInteger.incrementAndGet();
+        }
     }
 
     @Override
@@ -73,7 +75,9 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityStopped(Activity activity) {
-        mAtomicInteger.decrementAndGet();
+        if (mAtomicInteger != null) {
+            mAtomicInteger.decrementAndGet();
+        }
     }
 
     @Override
@@ -85,7 +89,10 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     }
 
     public boolean appOnTop() {
-        return mAtomicInteger.get() > 0;
+        if (mAtomicInteger != null) {
+            return mAtomicInteger.get() > 0;
+        }
+        return false;
     }
 
     private boolean isLauncherActivity(Activity activity) {

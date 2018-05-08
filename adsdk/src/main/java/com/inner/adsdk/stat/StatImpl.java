@@ -261,8 +261,7 @@ public class StatImpl implements IStat {
 
     @Override
     public void reportAdError(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch == null || !adSwitch.isReportError()) {
+        if (!isReportError(context)) {
             return;
         }
         if (context == null) {
@@ -274,5 +273,13 @@ public class StatImpl implements IStat {
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+    }
+
+    private boolean isReportError(Context context) {
+        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
+        if (adSwitch != null) {
+            return adSwitch.isReportError();
+        }
+        return true;
     }
 }

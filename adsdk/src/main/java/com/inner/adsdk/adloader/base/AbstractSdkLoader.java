@@ -284,6 +284,6 @@ public class AbstractSdkLoader implements ISdkLoader {
         if (adSwitch != null) {
             return adSwitch.isBlockLoading();
         }
-        return false;
+        return true;
     }
 }
