@@ -79,7 +79,15 @@ public class AdSdk {
     }
 
     private AdPlaceLoader getAdLoader(String pidName) {
+        return getAdLoader(pidName, false);
+    }
+
+    private AdPlaceLoader getAdLoader(String pidName, boolean forLoad) {
+        Log.d(Log.TAG, "getAdLoader forLoad : " + forLoad);
         AdPlaceLoader loader = mAdLoaders.get(pidName);
+        if (!forLoad) {
+            return loader;
+        }
         AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(pidName);
         // loader为null，或者AdPlace内容有变化，则重新加载loader
         if (loader == null || loader.needReload(adPlace)) {
@@ -146,7 +154,7 @@ public class AdSdk {
     }
 
     public void loadInterstitial(Activity activity, String pidName, OnAdSdkListener l) {
-        AdPlaceLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             loader.loadInterstitial(activity);
@@ -177,7 +185,7 @@ public class AdSdk {
     }
 
     public void loadAdView(String pidName, AdParams adParams, OnAdSdkListener l) {
-        AdPlaceLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             loader.loadAdView(adParams);
@@ -208,7 +216,7 @@ public class AdSdk {
     }
 
     public void loadComplexAds(String pidName, AdParams extra, OnAdSdkListener l) {
-        AdPlaceLoader loader = getAdLoader(pidName);
+        AdPlaceLoader loader = getAdLoader(pidName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             loader.loadComplexAds(extra);
