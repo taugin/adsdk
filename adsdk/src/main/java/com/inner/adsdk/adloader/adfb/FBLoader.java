@@ -218,7 +218,7 @@ public class FBLoader extends AbstractSdkLoader {
         if (!matchNoFillTime()) {
             Log.v(Log.TAG, "nofill error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_FILLTIME);
+                getAdListener().onInterstitialError(Constant.AD_ERROR_FILLTIME);
             }
             return;
         }

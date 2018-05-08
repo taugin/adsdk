@@ -104,8 +104,7 @@ public class MainActivity extends Activity {
     private void loadAdView1() {
         AdParams adParams = new AdParams.Builder()
                 // 设置banner 参数
-                .setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_LARGE_BANNER)
-                .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
+                .setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_BANNER)
                 .build();
 
         AdSdk.get(this).loadAdView("Action_bottom", adParams, new SimpleAdSdkListener() {

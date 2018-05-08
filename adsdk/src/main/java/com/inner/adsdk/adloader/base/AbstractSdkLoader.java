@@ -1,15 +1,18 @@
 package com.inner.adsdk.adloader.base;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.IManagerListener;
+import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.PidConfig;
+import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
@@ -24,17 +27,24 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Administrator on 2018/2/9.
  */
 
-public class AbstractSdkLoader implements ISdkLoader {
+public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
 
+    // 广告的最大默认缓存时间
     protected static final long MAX_CACHED_TIME = 15 * 60 * 1000;
-    private   static Map<Object, Long> mCachedTime = new ConcurrentHashMap<Object, Long>();
+    // 加载未返回的超时消息
+    protected static final int MSG_LOADING_TIMEOUT = 1000;
+    // 加载未返回的超时时间5分钟
+    protected static final int LOADING_TIMEOUT = 5 * 60 * 1000;
+
+    private static Map<Object, Long> mCachedTime = new ConcurrentHashMap<Object, Long>();
     protected PidConfig mPidConfig;
     protected Context mContext;
     protected IStat mStat;
     protected IManagerListener mManagerListener;
     protected String mAdId;
-    private   boolean mLoading = false;
-    private   boolean mLoadedFlag = false;
+    private boolean mLoading = false;
+    private boolean mLoadedFlag = false;
+    private Handler mHandler = null;
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -45,6 +55,7 @@ public class AbstractSdkLoader implements ISdkLoader {
     public void init(Context context) {
         mContext = context;
         mStat = StatImpl.get();
+        mHandler = new Handler(this);
     }
 
     @Override
@@ -204,6 +215,18 @@ public class AbstractSdkLoader implements ISdkLoader {
 
     protected synchronized void setLoading(boolean loading) {
         mLoading = loading;
+        if (mLoading) {
+            if (mHandler != null) {
+                mHandler.removeMessages(MSG_LOADING_TIMEOUT);
+                mHandler.sendEmptyMessageDelayed(MSG_LOADING_TIMEOUT, LOADING_TIMEOUT);
+                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - send time out message : " + LOADING_TIMEOUT);
+            }
+        } else {
+            if (mHandler != null) {
+                mHandler.removeMessages(MSG_LOADING_TIMEOUT);
+                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - remove time out message");
+            }
+        }
     }
 
     protected void putCachedAdTime(Object object) {
@@ -220,7 +243,7 @@ public class AbstractSdkLoader implements ISdkLoader {
                 return true;
             }
             return SystemClock.elapsedRealtime() - cachedTime > getMaxCachedTime();
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
         return false;
     }
@@ -240,6 +263,7 @@ public class AbstractSdkLoader implements ISdkLoader {
 
     /**
      * 防止多次加载NoFill的广告导致惩罚时间
+     *
      * @return
      */
     protected boolean matchNoFillTime() {
@@ -277,6 +301,7 @@ public class AbstractSdkLoader implements ISdkLoader {
 
     /**
      * 阻塞正在加载的loader
+     *
      * @return
      */
     protected boolean blockLoading() {
@@ -285,5 +310,29 @@ public class AbstractSdkLoader implements ISdkLoader {
             return adSwitch.isBlockLoading();
         }
         return true;
+    }
+
+    protected void onLoadTimeout() {
+        Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - load time out");
+        setLoading(false);
+        if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)) {
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_TIMEOUT);
+            }
+        } else if (TextUtils.equals(getAdType(), Constant.TYPE_BANNER)
+                || TextUtils.equals(getAdType(), Constant.TYPE_NATIVE)) {
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_TIMEOUT);
+            }
+        }
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (msg != null && msg.what == MSG_LOADING_TIMEOUT) {
+            onLoadTimeout();
+            return true;
+        }
+        return false;
     }
 }
