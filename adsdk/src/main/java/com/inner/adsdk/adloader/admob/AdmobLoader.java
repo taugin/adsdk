@@ -103,7 +103,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
-                Log.v(Log.TAG, "reason : " + i + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
@@ -257,7 +257,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
-                Log.v(Log.TAG, "reason : " + i + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
@@ -377,5 +377,21 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (bannerView != null) {
             bannerView.destroy();
         }
+    }
+
+    private String codeToError(int code) {
+        if (code == AdRequest.ERROR_CODE_INTERNAL_ERROR) {
+            return "ERROR_CODE_INTERNAL_ERROR";
+        }
+        if (code == AdRequest.ERROR_CODE_INVALID_REQUEST) {
+            return "ERROR_CODE_INVALID_REQUEST";
+        }
+        if (code == AdRequest.ERROR_CODE_NETWORK_ERROR) {
+            return "ERROR_CODE_NETWORK_ERROR";
+        }
+        if (code == AdRequest.ERROR_CODE_NO_FILL) {
+            return "ERROR_CODE_NO_FILL";
+        }
+        return "UNKNOWN";
     }
 }
