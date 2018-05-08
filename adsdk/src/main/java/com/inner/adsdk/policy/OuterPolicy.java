@@ -222,7 +222,9 @@ public class OuterPolicy {
         Log.v(Log.TAG, "OuterPolicy.resetTotalShowIfNeed now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
         if (now - lastDay > Constant.ONE_DAY_TIME) {
             int times = (int) getTotalShowTimes();
-            StatImpl.get().reportAdOuterShowTimes(mContext, times);
+            if (times > 0) {
+                StatImpl.get().reportAdOuterShowTimes(mContext, times);
+            }
             resetTotalShowTimes();
         }
     }

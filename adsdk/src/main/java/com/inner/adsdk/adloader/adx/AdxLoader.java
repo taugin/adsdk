@@ -259,10 +259,10 @@ public class AdxLoader extends AbstractSdkLoader {
             @Override
             public void onAdClosed() {
                 Log.v(Log.TAG, "");
+                interstitialAd = null;
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
-                interstitialAd = null;
             }
 
             @Override

@@ -199,6 +199,22 @@ public class StatImpl implements IStat {
     }
 
     @Override
+    public void reportAdError(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
+        if (!isReportError(context)) {
+            return;
+        }
+        if (context == null) {
+            return;
+        }
+        String eventId = generateEventId("error", sdk, type);
+        String category = "user_action";
+        sendGoogleAnalytics(pidName, eventId, category);
+        sendUmeng(context, pidName, eventId, extra);
+        sendAppsflyer(context, pidName, eventId, extra);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+    }
+
+    @Override
     public void reportAdOuterRequest(Context context) {
         if (context == null) {
             return;
@@ -246,22 +262,6 @@ public class StatImpl implements IStat {
         Log.v(Log.TAG, "");
     }
 
-    @Override
-    public void reportAdError(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
-        if (!isReportError(context)) {
-            return;
-        }
-        if (context == null) {
-            return;
-        }
-        String eventId = generateEventId("error", sdk, type);
-        String category = "user_action";
-        sendGoogleAnalytics(pidName, eventId, category);
-        sendUmeng(context, pidName, eventId, extra);
-        sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
-    }
-
     private boolean isReportError(Context context) {
         AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
         if (adSwitch != null) {
@@ -278,6 +278,6 @@ public class StatImpl implements IStat {
         String eventId = "outer_gt_showtimes";
         String value = String.valueOf(times);
         sendUmeng(context, value, eventId, null);
-        Log.v(Log.TAG, "");
+        Log.v(Log.TAG, "StatImpl stat key : outer_gt_showtimes , times : " + times);
     }
 }
