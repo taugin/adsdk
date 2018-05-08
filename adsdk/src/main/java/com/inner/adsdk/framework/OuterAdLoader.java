@@ -113,7 +113,7 @@ public class OuterAdLoader {
             mAdSdk.loadComplexAds(Constant.ADPLACE_OUTER_NAME, new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
-                    Log.v(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.v(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     StatImpl.get().reportAdOuterLoaded(mContext);
                     if (OuterPolicy.get(mContext).shouldShowAdOuter()) {
                         mAdSdk.showComplexAds(pidName, null);
@@ -123,15 +123,20 @@ public class OuterAdLoader {
 
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
-                    Log.v(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.v(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     OuterPolicy.get(mContext).reportOuterShowing(false);
                 }
 
                 @Override
                 public void onShow(String pidName, String source, String adType) {
-                    Log.v(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.v(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     OuterPolicy.get(mContext).reportOuterShowing(true);
                     StatImpl.get().reportAdOuterShowing(mContext);
+                }
+
+                @Override
+                public void onError(String pidName, String source, String adType) {
+                    Log.v(Log.TAG, "error pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 }
             });
         }
