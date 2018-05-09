@@ -225,8 +225,8 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
         if (mLoading) {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
-                mHandler.sendEmptyMessageDelayed(MSG_LOADING_TIMEOUT, LOADING_TIMEOUT);
-                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - send time out message : " + LOADING_TIMEOUT);
+                mHandler.sendEmptyMessageDelayed(MSG_LOADING_TIMEOUT, getTimeout());
+                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - send time out message : " + getTimeout());
             }
         } else {
             if (mHandler != null) {
@@ -277,6 +277,9 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
         return System.currentTimeMillis() - getLastNoFillTime() >= mPidConfig.getNoFill();
     }
 
+    /**
+     * 更新最后填充
+     */
     protected void updateLastNoFillTime() {
         try {
             String pref = getSdkName() + "_" + mPidConfig.getPid();
@@ -286,6 +289,10 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
         }
     }
 
+    /**
+     * 获取最后填充时间
+     * @return
+     */
     protected long getLastNoFillTime() {
         try {
             String pref = getSdkName() + "_" + mPidConfig.getPid();
@@ -295,6 +302,10 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
         return 0;
     }
 
+    /**
+     * 获取广告最大缓存时间
+     * @return
+     */
     private long getMaxCachedTime() {
         long cacheTime = 0;
         if (mPidConfig != null) {
@@ -304,6 +315,21 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
             cacheTime = MAX_CACHED_TIME;
         }
         return cacheTime;
+    }
+
+    /**
+     * 获取广告加载超时时间
+     * @return
+     */
+    private long getTimeout() {
+        long timeOut = 0;
+        if (mPidConfig != null) {
+            timeOut = mPidConfig.getTimeOut();
+        }
+        if (timeOut <= 0) {
+            timeOut = LOADING_TIMEOUT;
+        }
+        return timeOut;
     }
 
     /**
@@ -349,7 +375,7 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
         } else if (state == STATE_SUCCESS) {
             if (mRequestTime > 0) {
                 try {
-                    int time = Long.valueOf(System.currentTimeMillis() - mRequestTime).intValue();
+                    int time = Math.round((System.currentTimeMillis() - mRequestTime) / (float)100);
                     mStat.reportAdLoadSuccessTime(mContext, getSdkName(), getAdType(), time);
                 } catch(Exception e) {
                 }

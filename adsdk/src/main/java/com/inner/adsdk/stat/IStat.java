@@ -52,12 +52,12 @@ public interface IStat {
     /**
      * 广告加载错误
      * @param context
-     * @param pidName
+     * @param error
      * @param sdk
      * @param type
      * @param extra
      */
-    public void reportAdError(Context context, String pidName, String sdk, String type, Map<String, String> extra);
+    public void reportAdError(Context context, String error, String sdk, String type, Map<String, String> extra);
 
     /**
      * GT广告请求

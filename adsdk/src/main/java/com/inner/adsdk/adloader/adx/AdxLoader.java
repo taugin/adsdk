@@ -119,7 +119,7 @@ public class AdxLoader extends AbstractSdkLoader {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
                 if (mStat != null) {
-                    mStat.reportAdError(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdError(mContext, codeToError(i), getSdkName(), getAdType(), null);
                 }
             }
 
@@ -273,7 +273,7 @@ public class AdxLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
                 if (mStat != null) {
-                    mStat.reportAdError(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdError(mContext, codeToError(i), getSdkName(), getAdType(), null);
                 }
             }
 
@@ -470,7 +470,7 @@ public class AdxLoader extends AbstractSdkLoader {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
                 if (mStat != null) {
-                    mStat.reportAdError(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdError(mContext, codeToError(errorCode), getSdkName(), getAdType(), null);
                 }
             }
         }).withNativeAdOptions(nativeAdOptions);

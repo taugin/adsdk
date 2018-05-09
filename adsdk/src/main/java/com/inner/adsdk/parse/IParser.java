@@ -38,6 +38,7 @@ public interface IParser {
     String DISABLE = "disable";
     String NOFILL = "nofill";
     String CACHE_TIME = "ctime";
+    String TIMEOUT = "to";
 
     String ENABLE = "e";
     String UPDELAY = "d";

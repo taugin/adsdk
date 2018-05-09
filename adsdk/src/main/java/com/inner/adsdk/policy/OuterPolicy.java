@@ -239,6 +239,7 @@ public class OuterPolicy {
         if (mAdPolicy != null && mAdPolicy.getMaxCount() > 0) {
             long times = getTotalShowTimes();
             Log.d(Log.TAG, "total show times : " + times + " , mc : " + mAdPolicy.getMaxCount());
+            // 此处<=的逻辑会导致最大展示次数多1次
             return times <= mAdPolicy.getMaxCount();
         }
         return true;

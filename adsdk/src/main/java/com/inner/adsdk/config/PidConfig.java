@@ -26,6 +26,8 @@ public class PidConfig {
 
     private long cacheTime;
 
+    private long timeOut;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -88,6 +90,14 @@ public class PidConfig {
 
     public void setCacheTime(long cacheTime) {
         this.cacheTime = cacheTime;
+    }
+
+    public long getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(long timeOut) {
+        this.timeOut = timeOut;
     }
 
     public boolean isAdmob() {
