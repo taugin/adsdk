@@ -265,6 +265,7 @@ public class OuterPolicy {
      */
     private boolean isAttributionAllow() {
         String afStatus = getAFStatus();
+        Log.d(Log.TAG, "af_status : " + afStatus);
         if (mAdPolicy != null) {
             List<String> attr = mAdPolicy.getAttrList();
             if (attr != null && !attr.contains(afStatus)) {
@@ -313,6 +314,7 @@ public class OuterPolicy {
      */
     private boolean isMediaSourceAllow() {
         String mediaSource = getMediaSource();
+        Log.d(Log.TAG, "media_source : " + mediaSource);
         if (mAdPolicy != null) {
             List<String> mediaList = mAdPolicy.getMediaList();
             if (mediaList != null && !mediaList.isEmpty()) {
