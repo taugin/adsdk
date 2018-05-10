@@ -77,39 +77,47 @@ public class DataManager {
     }
 
     public AdPlace getRemoteAdPlace(String key) {
-        String data = mDataRequest.getString(key);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseAdPlace(data);
+        if (mDataRequest != null) {
+            String data = mDataRequest.getString(key);
+            if (!TextUtils.isEmpty(data)) {
+                return mParser.parseAdPlace(data);
+            }
         }
         return null;
     }
 
     public AdPolicy getRemoteAdPolicy(String key) {
-        String data = mDataRequest.getString(key);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseAdPolicy(data);
+        if (mDataRequest != null) {
+            String data = mDataRequest.getString(key);
+            if (!TextUtils.isEmpty(data)) {
+                return mParser.parseAdPolicy(data);
+            }
         }
         return null;
     }
 
     public Map<String, String> getRemoteAdIds(String key) {
-        String data = mDataRequest.getString(key);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseAdIds(data);
+        if (mDataRequest != null) {
+            String data = mDataRequest.getString(key);
+            if (!TextUtils.isEmpty(data)) {
+                return mParser.parseAdIds(data);
+            }
         }
         return null;
     }
 
     public AdSwitch getAdSwitch() {
         AdSwitch adSwitch = null;
-        String data = mDataRequest.getString(Constant.ADSWITCH_NAME);
-        if (!TextUtils.isEmpty(data)) {
-            adSwitch = mParser.parseAdSwitch(data);
+        if (mDataRequest != null) {
+            String data = mDataRequest.getString(Constant.ADSWITCH_NAME);
+            if (!TextUtils.isEmpty(data)) {
+                adSwitch = mParser.parseAdSwitch(data);
+            }
+            if (adSwitch == null && mLocalAdConfig != null) {
+                adSwitch = mLocalAdConfig.getAdSwitch();
+            }
+            Log.v(Log.TAG, "adSwitch : " + adSwitch);
         }
-        if (adSwitch == null && mLocalAdConfig != null) {
-            adSwitch = mLocalAdConfig.getAdSwitch();
-        }
-        Log.v(Log.TAG,"adSwitch : " + adSwitch);
         return adSwitch;
     }
 }
