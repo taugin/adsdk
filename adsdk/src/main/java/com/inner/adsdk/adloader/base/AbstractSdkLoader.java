@@ -388,7 +388,7 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
                     if (state == STATE_TIMTOUT) {
                         error = "STATE_TIMTOUT";
                     }
-                    int time = Long.valueOf(System.currentTimeMillis() - mRequestTime).intValue();
+                    int time = Math.round((System.currentTimeMillis() - mRequestTime) / (float)100);
                     mStat.reportAdLoadFailureTime(mContext, getSdkName(), getAdType(), error, time);
                 } catch(Exception e) {
                 }

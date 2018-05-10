@@ -2,6 +2,7 @@ package com.inner.adsdk.adloader.adx;
 
 import android.content.Context;
 import android.util.AndroidRuntimeException;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,7 +19,9 @@ import com.google.android.gms.ads.formats.NativeAppInstallAd;
 import com.google.android.gms.ads.formats.NativeAppInstallAdView;
 import com.google.android.gms.ads.formats.NativeContentAd;
 import com.google.android.gms.ads.formats.NativeContentAdView;
+import com.inner.adsdk.R;
 import com.inner.adsdk.config.PidConfig;
+import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
 
@@ -46,6 +49,9 @@ public class AdxBindNativeView {
     }
 
     private void bindNativeViewWithRootView(ViewGroup adContainer, View rootView, NativeAd nativeAd, PidConfig pidConfig) {
+        if (adContainer == null) {
+            throw new AndroidRuntimeException("adContainer is null");
+        }
         if (rootView == null) {
             throw new AndroidRuntimeException("rootView is null");
         }
@@ -69,7 +75,41 @@ public class AdxBindNativeView {
     }
 
     private void bindNativeWithCard(ViewGroup adContainer, int cardId, NativeAd nativeAd, PidConfig pidConfig) {
-
+        if (adContainer == null) {
+            throw new AndroidRuntimeException("adContainer is null");
+        }
+        int layoutId = R.layout.adx_native_card_medium;
+        if (cardId == Constant.NATIVE_CARD_SMALL) {
+        } else if (cardId == Constant.NATIVE_CARD_MEDIUM) {
+        } else if (cardId == Constant.NATIVE_CARD_LARGE) {
+        }
+        View rootView = LayoutInflater.from(adContainer.getContext()).inflate(layoutId, null);
+        if (rootView == null) {
+            throw new AndroidRuntimeException("rootView is null");
+        }
+        if (!(rootView instanceof FrameLayout)) {
+            throw new AndroidRuntimeException("Root View must be a FrameLayout");
+        }
+        mParams.setAdTitle(R.id.adx_title);
+        mParams.setAdDetail(R.id.adx_detail);
+        mParams.setAdIcon(R.id.adx_icon);
+        mParams.setAdAction(R.id.adx_action);
+        mParams.setAdCover(R.id.adx_cover);
+        mParams.setAdMediaView(R.id.adx_mediaview);
+        if (nativeAd instanceof NativeContentAd) {
+            showContentAdView(rootView, (NativeContentAd) nativeAd, pidConfig);
+        } else if (nativeAd instanceof NativeAppInstallAd) {
+            showInstallAdView(rootView, (NativeAppInstallAd) nativeAd, pidConfig);
+        }
+        try {
+            adContainer.removeAllViews();
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -2);
+            adContainer.addView(rootView, params);
+            if (adContainer.getVisibility() != View.VISIBLE) {
+                adContainer.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+        }
     }
 
     private void showContentAdView(View rootView, NativeContentAd nativeAd, PidConfig pidConfig) {

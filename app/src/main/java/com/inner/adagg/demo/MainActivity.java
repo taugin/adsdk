@@ -66,7 +66,9 @@ public class MainActivity extends Activity {
                 .setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADMOB_LARGE_BANNER)
                 .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
                 // 设置adx native参数
-                .setAdRootView(AdExtra.AD_SDK_ADX, view)
+                .setAdCardStyle(AdExtra.AD_SDK_ADX, AdExtra.NATIVE_CARD_SMALL)
+                //  rootview 决定优先级
+                // .setAdRootView(AdExtra.AD_SDK_ADX, view)
                 .setAdTitle(AdExtra.AD_SDK_ADX, R.id.adx_title)
                 .setAdDetail(AdExtra.AD_SDK_ADX, R.id.adx_detail)
                 .setAdIcon(AdExtra.AD_SDK_ADX, R.id.adx_icon)
