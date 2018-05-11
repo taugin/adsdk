@@ -1,11 +1,9 @@
 package com.inner.adsdk.stat;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
@@ -42,17 +40,7 @@ public class StatImpl implements IStat {
     private StatImpl() {
     }
 
-    private Tracker tracker;
-
-    public void init(Context context, String gaTrackerId) {
-        if (!TextUtils.isEmpty(gaTrackerId)) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
-            tracker = analytics.newTracker(gaTrackerId);
-            tracker.enableExceptionReporting(true);
-            tracker.enableAdvertisingIdCollection(true);
-            tracker.enableAutoActivityTracking(true);
-            tracker.set("&cd1", null);
-        }
+    public void init() {
     }
 
     private boolean checkArgument(Context context, String pidName, String sdk, String type) {
@@ -73,24 +61,54 @@ public class StatImpl implements IStat {
         return builder.toString();
     }
 
-    private void sendGoogleAnalytics(String label, String action, String category) {
-        Log.d(Log.TAG, "StatImpl sendGoogle Analytics");
-        HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder();
-        if (!TextUtils.isEmpty(category)) {
-            builder.setCategory(category);
+    /**
+     * 发送Firebase统计事件
+     * @param context
+     * @param value
+     * @param eventId
+     * @param extra
+     */
+    private void sendFirebaseAnalytics(Context context, String value, String eventId, Map<String, String> extra) {
+        Bundle bundle = new Bundle();
+        if (!TextUtils.isEmpty(value)) {
+            bundle.putString("entry_point", value);
+        } else {
+            bundle.putString("entry_point", eventId);
         }
-        if (!TextUtils.isEmpty(action)) {
-            builder.setAction(action);
+        if (extra != null && !extra.isEmpty()) {
+            for (Map.Entry<String, String> entry : extra.entrySet()) {
+                if (entry != null) {
+                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
+                        bundle.putString(entry.getKey(), entry.getValue());
+                    }
+                }
+            }
         }
-        if (!TextUtils.isEmpty(label)) {
-            builder.setLabel(label);
+
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.google.firebase.analytics.FirebaseAnalytics");
+            Method method = clazz.getMethod("getInstance", Context.class);
+            Object instance = method.invoke(null, context);
+            method = clazz.getMethod("logEvent", String.class, Bundle.class);
+            method.invoke(instance, eventId, bundle);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
         }
-        Map<String, String> event = builder.build();
-        if (tracker != null) {
-            tracker.send(event);
+        if (!TextUtils.isEmpty(error)) {
+            Log.v(Log.TAG, "StatImpl sendAppsflyer error : " + error);
         }
     }
 
+    /**
+     * 发送友盟计数事件
+     * @param context
+     * @param value
+     * @param eventId
+     * @param extra
+     */
     private void sendUmeng(Context context, String value, String eventId, Map<String, String> extra) {
         Log.d(Log.TAG, "StatImpl sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
@@ -123,6 +141,13 @@ public class StatImpl implements IStat {
         }
     }
 
+    /**
+     * 发送友盟计算事件
+     * @param context
+     * @param eventId
+     * @param extra
+     * @param value
+     */
     private void sendUmengEventValue(Context context, String eventId, Map<String, String> extra, int value) {
         Log.d(Log.TAG, "StatImpl sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
@@ -150,6 +175,13 @@ public class StatImpl implements IStat {
         }
     }
 
+    /**
+     * 发送appsflyer统计事件
+     * @param context
+     * @param value
+     * @param eventId
+     * @param extra
+     */
     private void sendAppsflyer(Context context, String value, String eventId, Map<String, String> extra) {
         Log.d(Log.TAG, "StatImpl sendAppsflyer Analytics");
         Map<String, Object> eventValue = new HashMap<String, Object>();
@@ -180,7 +212,6 @@ public class StatImpl implements IStat {
         }
         String eventId = generateEventId("request", sdk, type);
         String category = "user_action";
-        sendGoogleAnalytics(pidName, eventId, category);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
@@ -193,7 +224,7 @@ public class StatImpl implements IStat {
         }
         String eventId = generateEventId("loaded", sdk, type);
         String category = "user_action";
-        sendGoogleAnalytics(pidName, eventId, category);
+        sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
@@ -206,7 +237,7 @@ public class StatImpl implements IStat {
         }
         String eventId = generateEventId("show", sdk, type);
         String category = "user_action";
-        sendGoogleAnalytics(pidName, eventId, category);
+        sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
@@ -219,7 +250,7 @@ public class StatImpl implements IStat {
         }
         String eventId = generateEventId("click", sdk, type);
         String category = "user_action";
-        sendGoogleAnalytics(pidName, eventId, category);
+        sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
@@ -235,7 +266,7 @@ public class StatImpl implements IStat {
         }
         String eventId = generateEventId("error", sdk, type);
         String category = "user_action";
-        sendGoogleAnalytics(pidName, eventId, category);
+        sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
@@ -248,7 +279,7 @@ public class StatImpl implements IStat {
         }
         String eventId = "outer_gt_request";
         String category = "user_action";
-        sendGoogleAnalytics(null, eventId, category);
+        sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
         Log.v(Log.TAG, "");
     }
@@ -260,7 +291,7 @@ public class StatImpl implements IStat {
         }
         String eventId = "outer_gt_loaded";
         String category = "user_action";
-        sendGoogleAnalytics(null, eventId, category);
+        sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
         Log.v(Log.TAG, "");
     }
@@ -272,7 +303,7 @@ public class StatImpl implements IStat {
         }
         String eventId = "outer_gt_show";
         String category = "user_action";
-        sendGoogleAnalytics(null, eventId, category);
+        sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
         Log.v(Log.TAG, "");
     }
@@ -284,7 +315,7 @@ public class StatImpl implements IStat {
         }
         String eventId = "outer_gt_showing";
         String category = "user_action";
-        sendGoogleAnalytics(null, eventId, category);
+        sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
         Log.v(Log.TAG, "");
     }
@@ -296,6 +327,7 @@ public class StatImpl implements IStat {
         }
         String eventId = "outer_gt_showtimes";
         String value = String.valueOf(times);
+        sendFirebaseAnalytics(context, value, eventId, null);
         sendUmeng(context, value, eventId, null);
         Log.v(Log.TAG, "StatImpl stat key : outer_gt_showtimes , times : " + times);
     }

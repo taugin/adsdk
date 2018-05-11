@@ -46,5 +46,10 @@ dependencies {
     } else {
         implementation 'com.inner.adsdk:adsdk:1.0.0'
     }
-    implementation 'com.inner.basic:basic:1.0.3'
+}
+
+configurations.all {
+    resolutionStrategy.force 'com.google.android.gms:play-services-base:11.8.0'
+    resolutionStrategy.force 'com.google.firebase:firebase-analytics:11.8.0'
+    resolutionStrategy.force 'com.android.support:support-v4:25.3.1'
 }

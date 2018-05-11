@@ -14,6 +14,7 @@ import com.inner.adsdk.listener.OnAdSdkListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
 import com.inner.adsdk.stat.StatImpl;
+import com.inner.adsdk.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,23 +60,23 @@ public class AdSdk {
 
     /**
      * 初始化
-     * @param containerId Google Tag ContainerId
      */
-    public void init(String containerId) {
-        init(containerId, null);
+    public void init() {
+        mLocalAdConfig = DataManager.get(mContext).getLocalAdConfig();
+        ActivityMonitor.get(mContext).init();
+        StatImpl.get().init();
+        DataManager.get(mContext).init();
+        OuterAdLoader.get(mContext).init(this);
     }
 
     /**
-     * 初始化
-     * @param containerId Google Tag ContainerId
-     * @param gaTrackerId Google Analytic TrackerId
+     * 设置appsflyer归因
+     * @param afStatus
+     * @param mediaSource
      */
-    public void init(String containerId, String gaTrackerId) {
-        mLocalAdConfig = DataManager.get(mContext).getLocalAdConfig();
-        ActivityMonitor.get(mContext).init();
-        StatImpl.get().init(mContext, gaTrackerId);
-        DataManager.get(mContext).init(containerId);
-        OuterAdLoader.get(mContext).init(this);
+    public void setAttribution(String afStatus, String mediaSource) {
+        Utils.putString(mContext, Constant.AF_STATUS, afStatus);
+        Utils.putString(mContext, Constant.AF_MEDIA_SOURCE, mediaSource);
     }
 
     private AdPlaceLoader getAdLoader(String pidName) {
@@ -127,7 +128,7 @@ public class AdSdk {
             loader.setAdIds(adIds);
             loader.init();
         }
-        if (useRemote || true) {
+        if (useRemote) {
             Log.v(Log.TAG, "pidName [" + pidName + "] use remote config : " + adPlace);
         }
         return loader;

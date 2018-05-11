@@ -10,7 +10,6 @@ import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
-import com.inner.basic.BasicLib;
 
 public class MainActivity extends Activity {
 
@@ -24,8 +23,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         mAdContainer = findViewById(R.id.ad_container);
         mAdContainer1 = findViewById(R.id.ad_container1);
-        BasicLib.init(this, "GTM-TMKR64Z1");
-        AdSdk.get(this).init("GTM-TMKR64Z1");
+        AdSdk.get(this).init();
         loadInterstitial();
         loadAdView();
         loadAdView1();

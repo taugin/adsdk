@@ -11,7 +11,7 @@ import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.parse.AdParser;
 import com.inner.adsdk.parse.IParser;
-import com.inner.adsdk.request.GTagDataRequest;
+import com.inner.adsdk.request.RemoteConfigRequest;
 import com.inner.adsdk.request.IDataRequest;
 import com.inner.adsdk.utils.Utils;
 
@@ -51,11 +51,9 @@ public class DataManager {
     private AdConfig mLocalAdConfig;
     private IParser mParser;
 
-    public void init(String containerId) {
-        Log.d(Log.TAG, "containerId : " + containerId);
-        if (mDataRequest == null && !TextUtils.isEmpty(containerId)) {
-            mDataRequest = new GTagDataRequest(mContext);
-            mDataRequest.setAddress(containerId);
+    public void init() {
+        if (mDataRequest == null) {
+            mDataRequest = new RemoteConfigRequest(mContext);
         }
         if (mDataRequest != null) {
             mDataRequest.request();
