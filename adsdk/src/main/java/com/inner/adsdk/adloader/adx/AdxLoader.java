@@ -12,10 +12,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.VideoOptions;
-import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.ads.formats.NativeAdOptions;
-import com.google.android.gms.ads.formats.NativeAppInstallAd;
-import com.google.android.gms.ads.formats.NativeContentAd;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
@@ -44,7 +42,7 @@ public class AdxLoader extends AbstractSdkLoader {
 
     private AdView bannerView;
     private InterstitialAd interstitialAd;
-    private NativeAd nativeAd;
+    private UnifiedNativeAd nativeAd;
     private Params mParams;
     private AdView loadingView;
     private AdLoader.Builder loadingBuilder;
@@ -390,32 +388,12 @@ public class AdxLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        VideoOptions videoOptions = new VideoOptions.Builder()
-                .build();
-        NativeAdOptions nativeAdOptions = new NativeAdOptions.Builder()
-                .setVideoOptions(videoOptions)
-                .build();
         loadingBuilder = new AdLoader.Builder(mContext, mPidConfig.getPid());
-        loadingBuilder.forAppInstallAd(new NativeAppInstallAd.OnAppInstallAdLoadedListener() {
+        loadingBuilder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
             @Override
-            public void onAppInstallAdLoaded(NativeAppInstallAd ad) {
+            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                nativeAd = ad;
-                setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(nativeAd);
-                if (getAdListener() != null) {
-                    setLoadedFlag();
-                    getAdListener().onAdLoaded();
-                }
-                if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-            }
-        }).forContentAd(new NativeContentAd.OnContentAdLoadedListener() {
-            @Override
-            public void onContentAdLoaded(NativeContentAd ad) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                nativeAd = ad;
+                nativeAd = unifiedNativeAd;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
                 if (getAdListener() != null) {
@@ -473,7 +451,14 @@ public class AdxLoader extends AbstractSdkLoader {
                     mStat.reportAdError(mContext, codeToError(errorCode), getSdkName(), getAdType(), null);
                 }
             }
-        }).withNativeAdOptions(nativeAdOptions);
+        });
+
+        VideoOptions videoOptions = new VideoOptions.Builder()
+                .build();
+        NativeAdOptions nativeAdOptions = new NativeAdOptions.Builder()
+                .setVideoOptions(videoOptions)
+                .build();
+        loadingBuilder.withNativeAdOptions(nativeAdOptions);
         AdLoader adLoader = loadingBuilder.build();
         if (adLoader != null) {
             adLoader.loadAd(new AdRequest.Builder().build());

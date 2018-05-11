@@ -69,6 +69,7 @@ public class StatImpl implements IStat {
      * @param extra
      */
     private void sendFirebaseAnalytics(Context context, String value, String eventId, Map<String, String> extra) {
+        Log.d(Log.TAG, "StatImpl Firebase Analytics");
         Bundle bundle = new Bundle();
         if (!TextUtils.isEmpty(value)) {
             bundle.putString("entry_point", value);
@@ -98,7 +99,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl sendAppsflyer error : " + error);
+            Log.v(Log.TAG, "StatImpl Firebase error : " + error);
         }
     }
 
