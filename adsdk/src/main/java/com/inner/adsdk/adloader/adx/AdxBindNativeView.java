@@ -168,23 +168,21 @@ public class AdxBindNativeView {
         ((ImageView) adView.getIconView()).setImageDrawable(
                 nativeAd.getIcon().getDrawable());
 
-        VideoController vc = nativeAd.getVideoController();
-
-        vc.setVideoLifecycleCallbacks(new VideoController.VideoLifecycleCallbacks() {
-            public void onVideoEnd() {
-                super.onVideoEnd();
-            }
-        });
-
         FrameLayout mediaViewLayout = rootView.findViewById(mParams.getAdMediaView());
         MediaView mediaView = createMediaView(rootView.getContext());
         mediaViewLayout.addView(mediaView);
 
         ImageView coverView = (ImageView) adView.getImageView();
 
+        VideoController vc = nativeAd.getVideoController();
         if (vc.hasVideoContent()) {
             adView.setMediaView(mediaView);
             coverView.setVisibility(View.GONE);
+            vc.setVideoLifecycleCallbacks(new VideoController.VideoLifecycleCallbacks() {
+                public void onVideoEnd() {
+                    super.onVideoEnd();
+                }
+            });
         } else {
             adView.setImageView(coverView);
             mediaViewLayout.setVisibility(View.GONE);
