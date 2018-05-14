@@ -18,5 +18,5 @@ public interface IManagerListener {
     OnAdSdkListener getOnAdSdkListener();
     OnAdSdkListener getOnAdPlaceLoaderListener();
     void setLoader(ISdkLoader adLoader);
-    boolean isCurrent(String source, String type);
+    boolean isCurrent(String source, String type, String pidName);
 }

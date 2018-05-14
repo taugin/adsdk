@@ -10,8 +10,8 @@ import com.inner.adsdk.adloader.adfb.FBLoader;
 import com.inner.adsdk.adloader.admob.AdmobLoader;
 import com.inner.adsdk.adloader.adx.AdxLoader;
 import com.inner.adsdk.adloader.base.SimpleAdBaseBaseListener;
-import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.IManagerListener;
+import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.PidConfig;
@@ -144,6 +144,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         return Constant.NOSET;
     }
 
+    private String getPidByLoader(ISdkLoader loader) {
+        try {
+            return loader.getPidConfig().getPid();
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     /**
      * 设置外部监听器
      *
@@ -197,7 +205,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, this));
+                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                            loader.getSdkName(), Constant.TYPE_INTERSTITIAL, getPidByLoader(loader), this));
                 }
             }
             for (ISdkLoader loader : mAdLoaders) {
@@ -221,7 +230,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
             int pos = new Random().nextInt(mAdLoaders.size());
             ISdkLoader loader = mAdLoaders.get(pos);
             if (loader != null && loader.allowUseLoader()) {
-                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, this));
+                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                        loader.getSdkName(), Constant.TYPE_INTERSTITIAL, getPidByLoader(loader), this));
                 loader.loadInterstitial();
             }
         }
@@ -233,7 +243,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         }
         ISdkLoader loader = iterator.next();
         if (loader != null && loader.allowUseLoader()) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), Constant.TYPE_INTERSTITIAL, this) {
+            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                    loader.getSdkName(), Constant.TYPE_INTERSTITIAL, getPidByLoader(loader), this) {
                 @Override
                 public void onInterstitialError(int error) {
                     if (iterator.hasNext()) {
@@ -311,8 +322,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
-                            this));
+                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                            loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this));
                 }
             }
             for (ISdkLoader loader : mAdLoaders) {
@@ -339,8 +350,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
             int pos = new Random().nextInt(mAdLoaders.size());
             ISdkLoader loader = mAdLoaders.get(pos);
             if (loader != null && loader.allowUseLoader()) {
-                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
-                        this));
+                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                        loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this));
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
                 } else if (loader.isNativeType()) {
@@ -358,8 +369,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         }
         ISdkLoader loader = iterator.next();
         if (loader != null && loader.allowUseLoader()) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
-                    this) {
+            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                    loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
                 public void onAdFailed(int error) {
                     if (iterator.hasNext()) {
@@ -487,8 +498,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
-                            this));
+                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                            loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this));
                 }
             }
             for (ISdkLoader loader : mAdLoaders) {
@@ -518,8 +529,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         }
         ISdkLoader loader = iterator.next();
         if (loader != null && loader.allowUseLoader()) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
-                    this) {
+            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                    loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
                 public void onAdFailed(int error) {
                     if (iterator.hasNext()) {
@@ -557,8 +568,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
             int pos = new Random().nextInt(mAdLoaders.size());
             ISdkLoader loader = mAdLoaders.get(pos);
             if (loader != null && loader.allowUseLoader()) {
-                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(),
-                        this));
+                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                        loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this));
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
                 } else if (loader.isNativeType()) {
@@ -664,16 +675,18 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     }
 
     @Override
-    public void setLoader(ISdkLoader adLoader) {
+    public synchronized void setLoader(ISdkLoader adLoader) {
         if (mCurrentAdLoader == null) {
             mCurrentAdLoader = adLoader;
         }
     }
 
     @Override
-    public boolean isCurrent(String source, String type) {
+    public boolean isCurrent(String source, String type, String pidName) {
         if (mCurrentAdLoader != null) {
-            return TextUtils.equals(mCurrentAdLoader.getSdkName(), source) && TextUtils.equals(mCurrentAdLoader.getAdType(), type);
+            return TextUtils.equals(mCurrentAdLoader.getSdkName(), source)
+                    && TextUtils.equals(mCurrentAdLoader.getAdType(), type)
+                    && TextUtils.equals(getPidByLoader(mCurrentAdLoader), pidName);
         }
         return false;
     }
