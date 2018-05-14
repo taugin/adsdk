@@ -15,11 +15,13 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     private IManagerListener listener;
     private String source;
     private String adType;
+    private String placeName;
     private String pidName;
 
-    public SimpleAdBaseBaseListener(String pidName, String source, String adType, IManagerListener l) {
+    public SimpleAdBaseBaseListener(String placeName, String source, String adType, String pidName, IManagerListener l) {
         this.source = source;
         this.adType = adType;
+        this.placeName = placeName;
         this.pidName = pidName;
         this.listener = l;
         if (l != null) {
@@ -30,7 +32,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
 
     private boolean isCurrent() {
         if (listener != null) {
-            return listener.isCurrent(source, adType);
+            return listener.isCurrent(source, adType, pidName);
         }
         return false;
     }
@@ -38,60 +40,60 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     @Override
     public void onAdLoaded() {
         if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onLoaded(pidName, source, adType);
+            mOnAdSdkListener.onLoaded(placeName, source, adType);
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onLoaded(pidName, source, adType);
+            mAdPlaceLoaderListener.onLoaded(placeName, source, adType);
         }
     }
 
     @Override
     public void onAdShow() {
         if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onShow(pidName, source, adType);
+            mOnAdSdkListener.onShow(placeName, source, adType);
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onShow(pidName, source, adType);
+            mAdPlaceLoaderListener.onShow(placeName, source, adType);
         }
     }
 
     @Override
     public void onAdClick() {
         if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onClick(pidName, source, adType);
+            mOnAdSdkListener.onClick(placeName, source, adType);
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onClick(pidName, source, adType);
+            mAdPlaceLoaderListener.onClick(placeName, source, adType);
         }
     }
 
     @Override
     public void onAdDismiss() {
         if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onDismiss(pidName, source, adType);
+            mOnAdSdkListener.onDismiss(placeName, source, adType);
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onDismiss(pidName, source, adType);
+            mAdPlaceLoaderListener.onDismiss(placeName, source, adType);
         }
     }
 
     @Override
     public void onAdFailed(int error) {
         if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onError(pidName, source, adType);
+            mOnAdSdkListener.onError(placeName, source, adType);
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onError(pidName, source, adType);
+            mAdPlaceLoaderListener.onError(placeName, source, adType);
         }
     }
 
     @Override
     public void onAdImpression() {
         if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onShow(pidName, source, adType);
+            mOnAdSdkListener.onShow(placeName, source, adType);
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onShow(pidName, source, adType);
+            mAdPlaceLoaderListener.onShow(placeName, source, adType);
         }
     }
 
@@ -102,50 +104,50 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     @Override
     public void onInterstitialLoaded() {
         if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onLoaded(pidName, source, adType);
+            mOnAdSdkListener.onLoaded(placeName, source, adType);
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onLoaded(pidName, source, adType);
+            mAdPlaceLoaderListener.onLoaded(placeName, source, adType);
         }
     }
 
     @Override
     public void onInterstitialShow() {
         if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onShow(pidName, source, adType);
+            mOnAdSdkListener.onShow(placeName, source, adType);
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onShow(pidName, source, adType);
+            mAdPlaceLoaderListener.onShow(placeName, source, adType);
         }
     }
 
     @Override
     public void onInterstitialClick() {
         if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onClick(pidName, source, adType);
+            mOnAdSdkListener.onClick(placeName, source, adType);
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onClick(pidName, source, adType);
+            mAdPlaceLoaderListener.onClick(placeName, source, adType);
         }
     }
 
     @Override
     public void onInterstitialDismiss() {
         if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onDismiss(pidName, source, adType);
+            mOnAdSdkListener.onDismiss(placeName, source, adType);
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onDismiss(pidName, source, adType);
+            mAdPlaceLoaderListener.onDismiss(placeName, source, adType);
         }
     }
 
     @Override
     public void onInterstitialError(int error) {
         if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onError(pidName, source, adType);
+            mOnAdSdkListener.onError(placeName, source, adType);
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onError(pidName, source, adType);
+            mAdPlaceLoaderListener.onError(placeName, source, adType);
         }
     }
 }
