@@ -15,7 +15,7 @@ public class AdConfig {
     private Map<String, String> adIds;
 
     // 广告内策略
-    private AdPolicy adPolicy;
+    private GtPolicy gtPolicy;
 
     // 广告配置
     private List<AdPlace> adPlaceList;
@@ -30,12 +30,12 @@ public class AdConfig {
         this.adIds = adIds;
     }
 
-    public AdPolicy getAdPolicy() {
-        return adPolicy;
+    public GtPolicy getGtPolicy() {
+        return gtPolicy;
     }
 
-    public void setAdPolicy(AdPolicy adPolicy) {
-        this.adPolicy = adPolicy;
+    public void setGtPolicy(GtPolicy gtPolicy) {
+        this.gtPolicy = gtPolicy;
     }
 
     public List<AdPlace> getAdPlaceList() {
@@ -100,7 +100,7 @@ public class AdConfig {
     @Override
     public String toString() {
         return "AdConfig{" +
-                "adPolicy=" + adPolicy +
+                "gtPolicy=" + gtPolicy +
                 ", adPlaceList=" + adPlaceList +
                 '}';
     }

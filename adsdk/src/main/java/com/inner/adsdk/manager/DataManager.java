@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
-import com.inner.adsdk.config.AdPolicy;
+import com.inner.adsdk.config.GtPolicy;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
@@ -84,11 +84,11 @@ public class DataManager {
         return null;
     }
 
-    public AdPolicy getRemoteAdPolicy(String key) {
+    public GtPolicy getRemoteAdPolicy(String key) {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(key);
             if (!TextUtils.isEmpty(data)) {
-                return mParser.parseAdPolicy(data);
+                return mParser.parseGtPolicy(data);
             }
         }
         return null;

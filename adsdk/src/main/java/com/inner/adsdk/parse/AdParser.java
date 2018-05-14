@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
-import com.inner.adsdk.config.AdPolicy;
+import com.inner.adsdk.config.GtPolicy;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
@@ -52,14 +52,14 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(data);
             Map<String, String> adIds = null;
-            AdPolicy adPolicy = null;
+            GtPolicy gtPolicy = null;
             List<AdPlace> adPlaces = null;
             AdSwitch adSwitch = null;
             if (jobj.has(ADIDS)) {
                 adIds = parseAdIds(jobj.getString(ADIDS));
             }
-            if (jobj.has(ADPOLICY)) {
-                adPolicy = parseAdPolicyInternal(jobj.getString(ADPOLICY));
+            if (jobj.has(GTPOLICY)) {
+                gtPolicy = parseGtPolicyInternal(jobj.getString(GTPOLICY));
             }
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
@@ -67,10 +67,10 @@ public class AdParser implements IParser {
             if (jobj.has(ADSWITCH)) {
                 adSwitch = parseAdSwitch(jobj.getString(ADSWITCH));
             }
-            if (adPlaces != null || adPolicy != null || adIds != null || adSwitch != null) {
+            if (adPlaces != null || gtPolicy != null || adIds != null || adSwitch != null) {
                 adConfig = new AdConfig();
                 adConfig.setAdPlaceList(adPlaces);
-                adConfig.setAdPolicy(adPolicy);
+                adConfig.setGtPolicy(gtPolicy);
                 adConfig.setAdIds(adIds);
                 adConfig.setAdSwitch(adSwitch);
             }
@@ -102,30 +102,30 @@ public class AdParser implements IParser {
     }
 
     @Override
-    public AdPolicy parseAdPolicy(String data) {
+    public GtPolicy parseGtPolicy(String data) {
         data = getContent(data);
-        return parseAdPolicyInternal(data);
+        return parseGtPolicyInternal(data);
     }
 
-    private AdPolicy parseAdPolicyInternal(String content) {
-        AdPolicy adPolicy = null;
+    private GtPolicy parseGtPolicyInternal(String content) {
+        GtPolicy gtPolicy = null;
         try {
             JSONObject jobj = new JSONObject(content);
-            adPolicy = new AdPolicy();
+            gtPolicy = new GtPolicy();
             if (jobj.has(ENABLE)) {
-                adPolicy.setEnable(jobj.getInt(ENABLE) == 1);
+                gtPolicy.setEnable(jobj.getInt(ENABLE) == 1);
             }
             if (jobj.has(UPDELAY)) {
-                adPolicy.setUpDelay(jobj.getLong(UPDELAY));
+                gtPolicy.setUpDelay(jobj.getLong(UPDELAY));
             }
             if (jobj.has(INTERVAL)) {
-                adPolicy.setInterval(jobj.getLong(INTERVAL));
+                gtPolicy.setInterval(jobj.getLong(INTERVAL));
             }
             if (jobj.has(MAX_COUNT)) {
-                adPolicy.setMaxCount(jobj.getInt(MAX_COUNT));
+                gtPolicy.setMaxCount(jobj.getInt(MAX_COUNT));
             }
             if (jobj.has(MAX_VERSION)) {
-                adPolicy.setMaxVersion(jobj.getInt(MAX_VERSION));
+                gtPolicy.setMaxVersion(jobj.getInt(MAX_VERSION));
             }
             if (jobj.has(COUNTRY_LIST)) {
                 JSONArray jarray = jobj.getJSONArray(COUNTRY_LIST);
@@ -137,7 +137,7 @@ public class AdParser implements IParser {
                             list.add(s);
                         }
                     }
-                    adPolicy.setCountryList(list);
+                    gtPolicy.setCountryList(list);
                 }
             }
             if (jobj.has(ATTRS)) {
@@ -150,7 +150,7 @@ public class AdParser implements IParser {
                             list.add(s);
                         }
                     }
-                    adPolicy.setAttrList(list);
+                    gtPolicy.setAttrList(list);
                 }
             }
             if (jobj.has(MEDIA_SOURCE)) {
@@ -163,13 +163,13 @@ public class AdParser implements IParser {
                             list.add(s);
                         }
                     }
-                    adPolicy.setMediaList(list);
+                    gtPolicy.setMediaList(list);
                 }
             }
         } catch (Exception e) {
-            Log.v(Log.TAG, "parseAdPolicyInternal error : " + e);
+            Log.v(Log.TAG, "parseGtPolicyInternal error : " + e);
         }
-        return adPolicy;
+        return gtPolicy;
     }
 
     private List<AdPlace> parseAdPlaces(String content) {
