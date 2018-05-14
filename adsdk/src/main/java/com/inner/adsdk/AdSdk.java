@@ -52,6 +52,7 @@ public class AdSdk {
 
     /**
      * 获取版本号
+     *
      * @return
      */
     public String getSdkVersion() {
@@ -71,6 +72,7 @@ public class AdSdk {
 
     /**
      * 设置appsflyer归因
+     *
      * @param afStatus
      * @param mediaSource
      */
@@ -102,6 +104,7 @@ public class AdSdk {
 
     /**
      * 如果adPlace和adIds为空，则使用本地的adPlace和adIds
+     *
      * @param pidName
      * @param adPlace
      * @return
@@ -111,11 +114,10 @@ public class AdSdk {
             return null;
         }
         AdPlaceLoader loader = null;
-        boolean useRemote = false;
+        boolean useRemote = true;
         if (adPlace == null) {
             adPlace = mLocalAdConfig.get(pidName);
-        } else {
-            useRemote = true;
+            useRemote = false;
         }
         Map<String, String> adIds = DataManager.get(mContext).getRemoteAdIds(Constant.ADIDS_NAME);
         if (adIds == null) {
@@ -128,9 +130,7 @@ public class AdSdk {
             loader.setAdIds(adIds);
             loader.init();
         }
-        if (useRemote) {
-            Log.v(Log.TAG, "pidName [" + pidName + "] use remote config : " + adPlace);
-        }
+        Log.v(Log.TAG, "pidName [" + pidName + "] use remote adplace : " + useRemote);
         return loader;
     }
 
