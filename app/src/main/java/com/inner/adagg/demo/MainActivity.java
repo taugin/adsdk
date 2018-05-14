@@ -142,7 +142,7 @@ public class MainActivity extends Activity {
     }
 
     private void loadComplexAd() {
-        AdSdk.get(this).loadComplexAds("ad_outer_place", new SimpleAdSdkListener() {
+        AdSdk.get(this).loadComplexAds("gt_outer_place", new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
@@ -151,8 +151,8 @@ public class MainActivity extends Activity {
     }
 
     private void showComplexAd() {
-        if (AdSdk.get(this).isComplexAdsLoaded("ad_outer_place")) {
-            AdSdk.get(this).showComplexAds("ad_outer_place", mAdContainer);
+        if (AdSdk.get(this).isComplexAdsLoaded("gt_outer_place")) {
+            AdSdk.get(this).showComplexAds("gt_outer_place", mAdContainer);
         } else {
             loadComplexAd();
         }
