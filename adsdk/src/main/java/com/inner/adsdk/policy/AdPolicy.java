@@ -13,27 +13,27 @@ import java.util.Random;
  * Created by Administrator on 2018/3/27.
  */
 
-public class PlacePolicy {
-    private static PlacePolicy sPlacePolicy;
+public class AdPolicy {
+    private static AdPolicy sAdPolicy;
 
-    public static PlacePolicy get(Context context) {
-        synchronized (PlacePolicy.class) {
-            if (sPlacePolicy == null) {
+    public static AdPolicy get(Context context) {
+        synchronized (AdPolicy.class) {
+            if (sAdPolicy == null) {
                 createInstance(context);
             }
         }
-        return sPlacePolicy;
+        return sAdPolicy;
     }
 
     private static void createInstance(Context context) {
-        synchronized (PlacePolicy.class) {
-            if (sPlacePolicy == null) {
-                sPlacePolicy = new PlacePolicy(context);
+        synchronized (AdPolicy.class) {
+            if (sAdPolicy == null) {
+                sAdPolicy = new AdPolicy(context);
             }
         }
     }
 
-    private PlacePolicy(Context context) {
+    private AdPolicy(Context context) {
         mContext = context;
         mRandom = new Random(System.currentTimeMillis());
     }

@@ -2,7 +2,7 @@ package com.inner.adsdk.parse;
 
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
-import com.inner.adsdk.config.AdPolicy;
+import com.inner.adsdk.config.GtPolicy;
 import com.inner.adsdk.config.AdSwitch;
 
 import java.util.Map;
@@ -20,7 +20,7 @@ public interface IParser {
     String DATA = "data";
 
     String ADIDS = "adids";
-    String ADPOLICY = "adpolicy";
+    String GTPOLICY = "gtpolicy";
     String ADPLACES = "adplaces";
     String ADSWITCH = "adswitch";
     String NAME = "name";
@@ -54,7 +54,7 @@ public interface IParser {
 
     AdConfig parseAdConfig(String data);
     AdPlace parseAdPlace(String data);
-    AdPolicy parseAdPolicy(String data);
+    GtPolicy parseGtPolicy(String data);
     Map<String, String> parseAdIds(String data);
     AdSwitch parseAdSwitch(String data);
 }

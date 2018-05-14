@@ -11,12 +11,11 @@ import android.os.SystemClock;
 
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.config.AdConfig;
-import com.inner.adsdk.config.AdPolicy;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
-import com.inner.adsdk.policy.OuterPolicy;
+import com.inner.adsdk.policy.GtPolicy;
 import com.inner.adsdk.stat.StatImpl;
 
 /**
@@ -54,7 +53,7 @@ public class OuterAdLoader {
         if (mAdSdk == null) {
             return;
         }
-        OuterPolicy.get(mContext).init();
+        GtPolicy.get(mContext).init();
         updateAdPolicy();
         if (!hasAlarmService()) {
             Log.d(Log.TAG, "no alarm service, so start loop");
@@ -79,11 +78,11 @@ public class OuterAdLoader {
         if (adConfig == null) {
             return;
         }
-        AdPolicy adPolicy = DataManager.get(mContext).getRemoteAdPolicy(Constant.ADPOLICY_NAME);
-        if (adPolicy == null && adConfig != null) {
-            adPolicy = adConfig.getAdPolicy();
+        com.inner.adsdk.config.GtPolicy gtPolicy = DataManager.get(mContext).getRemoteAdPolicy(Constant.ADPOLICY_NAME);
+        if (gtPolicy == null && adConfig != null) {
+            gtPolicy = adConfig.getGtPolicy();
         }
-        OuterPolicy.get(mContext).setPolicy(adPolicy);
+        GtPolicy.get(mContext).setPolicy(gtPolicy);
     }
 
     public void startLoop() {
@@ -105,7 +104,7 @@ public class OuterAdLoader {
     private void fireOuterAd() {
         if (mAdSdk != null) {
             updateAdPolicy();
-            if (!OuterPolicy.get(mContext).shouldShowAdOuter()) {
+            if (!GtPolicy.get(mContext).shouldShowAdOuter()) {
                 return;
             }
             Log.v(Log.TAG, "");
@@ -115,7 +114,7 @@ public class OuterAdLoader {
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     StatImpl.get().reportAdOuterLoaded(mContext);
-                    if (OuterPolicy.get(mContext).shouldShowAdOuter()) {
+                    if (GtPolicy.get(mContext).shouldShowAdOuter()) {
                         mAdSdk.showComplexAds(pidName, null);
                         StatImpl.get().reportAdOuterShow(mContext);
                     }
@@ -124,13 +123,13 @@ public class OuterAdLoader {
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    OuterPolicy.get(mContext).reportOuterShowing(false);
+                    GtPolicy.get(mContext).reportOuterShowing(false);
                 }
 
                 @Override
                 public void onShow(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    OuterPolicy.get(mContext).reportOuterShowing(true);
+                    GtPolicy.get(mContext).reportOuterShowing(true);
                     StatImpl.get().reportAdOuterShowing(mContext);
                 }
 
