@@ -94,7 +94,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                             loader.setListenerManager(this);
                             loader.setAdId(adId);
                             if (loader.allowUseLoader()) {
-                                mAdLoaders.remove(loader);
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isFB()) {
@@ -104,7 +103,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                             loader.setListenerManager(this);
                             loader.setAdId(adId);
                             if (loader.allowUseLoader()) {
-                                mAdLoaders.remove(loader);
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isAdx()) {
@@ -114,7 +112,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                             loader.setListenerManager(this);
                             loader.setAdId(adId);
                             if (loader.allowUseLoader()) {
-                                mAdLoaders.remove(loader);
                                 mAdLoaders.add(loader);
                             }
                         }
