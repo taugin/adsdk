@@ -14,7 +14,7 @@
     "ec": [],
     "ms": []
   },
-  "adplaces": [
+  "gtplaces": [
     {
       "name": "Open_app",
       "mode": "con",
@@ -72,7 +72,7 @@
       "percent": 100
     },
     {
-      "name": "ad_outer_place",
+      "name": "gt_outer_place",
       "mode": "ran",
       "pids": [
         {

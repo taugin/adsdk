@@ -47,10 +47,10 @@ public class Constant {
     public static final String PREF_OUTER_SHOW_TIMES = "pref_outer_show_times";
     public static final String PREF_FIRST_SHOW_TIME_ONEDAY = "pref_first_show_time_oneday";
     public static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_remote_config_request_time";
-    public static final String ADPLACE_OUTER_NAME = "ad_outer_place";
-    public static final String ADPLACE_FILM_NAME = "ad_film_place";
+    public static final String ADPLACE_OUTER_NAME = "gt_outer_place";
+    public static final String ADPLACE_FILM_NAME = "gt_film_place";
     public static final String ADIDS_NAME = "adids";
-    public static final String ADPOLICY_NAME = "adpolicy";
+    public static final String ADPOLICY_NAME = "gtpolicy";
     public static final String ADSWITCH_NAME = "adswitch";
 
     public static final String AF_STATUS = "af_status";
