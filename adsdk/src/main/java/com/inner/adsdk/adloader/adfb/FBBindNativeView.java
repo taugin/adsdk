@@ -2,7 +2,6 @@ package com.inner.adsdk.adloader.adfb;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import com.inner.adsdk.R;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
+import com.inner.adsdk.log.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +30,14 @@ public class FBBindNativeView {
 
     private Params mParams;
 
-    public void bindNative(Params params, ViewGroup adContainer, NativeAd nativeAd, PidConfig pidConfig) {
+    public void bindFBNative(Params params, ViewGroup adContainer, NativeAd nativeAd, PidConfig pidConfig) {
         mParams = params;
         if (mParams == null) {
+            Log.v(Log.TAG, "bindFBNative mParams == null");
+            return;
+        }
+        if (adContainer == null) {
+            Log.v(Log.TAG, "bindFBNative adContainer == null");
             return;
         }
         View rootView = mParams.getNativeRootView();
@@ -45,9 +50,6 @@ public class FBBindNativeView {
     }
 
     private void bindNativeWithCard(ViewGroup adContainer, int template, NativeAd nativeAd, PidConfig pidConfig) {
-        if (adContainer == null) {
-            return;
-        }
         int layoutId = R.layout.fb_native_card_large;
         if (template == Constant.NATIVE_CARD_SMALL) {
             layoutId = R.layout.fb_native_card_small;
@@ -58,7 +60,7 @@ public class FBBindNativeView {
         }
         Context context = adContainer.getContext();
         View rootView = LayoutInflater.from(context).inflate(layoutId, null);
-        bindNativeViewWithTemplate(rootView, nativeAd, pidConfig);
+        bindNativeViewWithTemplate(adContainer, rootView, nativeAd, pidConfig);
         try {
             adContainer.removeAllViews();
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -2);
@@ -76,80 +78,17 @@ public class FBBindNativeView {
      * @param nativeAd
      * @param pidConfig
      */
-    private void bindNativeViewWithTemplate(View rootView, NativeAd nativeAd, PidConfig pidConfig) {
-        if (rootView == null) {
-            return;
-        }
-        if (nativeAd == null || !nativeAd.isAdLoaded()) {
-            return;
-        }
-        if (pidConfig == null) {
-            return;
-        }
-        ImageView imageCover = rootView.findViewById(R.id.fb_image_cover);
-        ImageView icon = rootView.findViewById(R.id.fb_icon);
-        TextView titleView = rootView.findViewById(R.id.fb_title);
-        TextView subTitleView = rootView.findViewById(R.id.fb_sub_title);
-        TextView socialView = rootView.findViewById(R.id.fb_social);
-        TextView detail = rootView.findViewById(R.id.fb_detail);
-        AppCompatButton btnAction = rootView.findViewById(R.id.fb_action_btn);
-        RelativeLayout adChoiceContainer = rootView.findViewById(R.id.fb_ad_choices_container);
-        MediaView mediaCover = rootView.findViewById(R.id.fb_media_cover);
-
-        if (mediaCover != null) {
-            mediaCover.setVisibility(View.VISIBLE);
-        }
-        if (imageCover != null) {
-            imageCover.setVisibility(View.GONE);
-        }
-
-        // 可点击的视图
-        List<View> actionView = new ArrayList<View>();
-
-        if (nativeAd != null && nativeAd.isAdLoaded()) {
-            if (icon != null) {
-                NativeAd.Image adIcon = nativeAd.getAdIcon();
-                NativeAd.downloadAndDisplayImage(adIcon, icon);
-                actionView.add(icon);
-            }
-
-            // Download and setting the cover image.
-            if (mediaCover != null) {
-                mediaCover.setNativeAd(nativeAd);
-                actionView.add(mediaCover);
-            }
-
-            // Add adChoices icon
-            if (adChoiceContainer != null) {
-                AdChoicesView adChoicesView = new AdChoicesView(rootView.getContext(), nativeAd, true);
-                adChoiceContainer.addView(adChoicesView, 0);
-            }
-
-            if (titleView != null) {
-                titleView.setText(nativeAd.getAdTitle());
-                actionView.add(titleView);
-            }
-            if (subTitleView != null) {
-                subTitleView.setText(nativeAd.getAdSubtitle());
-                actionView.add(subTitleView);
-            }
-            if (detail != null) {
-                detail.setText(nativeAd.getAdBody());
-                actionView.add(detail);
-            }
-            if (btnAction != null) {
-                btnAction.setText(nativeAd.getAdCallToAction());
-                actionView.add(btnAction);
-            }
-
-            boolean largeInteraction = percentRandomBoolean(pidConfig.getCtr());
-
-            if (largeInteraction && rootView != null) {
-                nativeAd.registerViewForInteraction(rootView, actionView);
-            } else {
-                nativeAd.registerViewForInteraction(btnAction);
-            }
-        }
+    private void bindNativeViewWithTemplate(ViewGroup adContainer, View rootView, NativeAd nativeAd, PidConfig pidConfig) {
+        mParams.setAdTitle(R.id.fb_title);
+        mParams.setAdSubTitle(R.id.fb_sub_title);
+        mParams.setAdSocial(R.id.fb_social);
+        mParams.setAdDetail(R.id.fb_detail);
+        mParams.setAdIcon(R.id.fb_icon);
+        mParams.setAdAction(R.id.fb_action_btn);
+        mParams.setAdCover(R.id.fb_image_cover);
+        mParams.setAdChoices(R.id.fb_ad_choices_container);
+        mParams.setAdMediaView(R.id.fb_media_cover);
+        bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
     }
 
 
@@ -161,20 +100,22 @@ public class FBBindNativeView {
      */
     private void bindNativeViewWithRootView(ViewGroup adContainer, View rootView, NativeAd nativeAd, PidConfig pidConfig) {
         if (rootView == null) {
+            Log.v(Log.TAG, "bindNativeViewWithRootView rootView == null");
             return;
         }
         if (nativeAd == null || !nativeAd.isAdLoaded()) {
+            Log.v(Log.TAG, "bindNativeViewWithRootView nativeAd == null or nativeAd.isAdLoaded() == false");
             return;
         }
         if (pidConfig == null) {
+            Log.v(Log.TAG, "bindNativeViewWithRootView pidConfig == null");
             return;
         }
 
         if (mParams == null) {
+            Log.v(Log.TAG, "bindNativeViewWithRootView mParams == null");
             return;
         }
-
-        Context context = rootView.getContext();
 
         TextView titleView = rootView.findViewById(mParams.getAdTitle());
         TextView subTitleView = rootView.findViewById(mParams.getAdSubTitle());
@@ -184,11 +125,13 @@ public class FBBindNativeView {
         TextView detail = rootView.findViewById(mParams.getAdDetail());
         AppCompatButton btnAction = rootView.findViewById(mParams.getAdAction());
         RelativeLayout adChoiceContainer = rootView.findViewById(mParams.getAdChoices());
-        MediaView mediaCover = new MediaView(rootView.getContext());
-        ViewGroup coverLayout = rootView.findViewById(mParams.getAdMediaView());
+        MediaView mediaCover = createMediaView(rootView.getContext());
+        ViewGroup mediaLayout = rootView.findViewById(mParams.getAdMediaView());
 
-        if (coverLayout != null) {
-            coverLayout.addView(mediaCover);
+        if (mediaLayout != null) {
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);
+            mediaLayout.addView(mediaCover, params);
+            mediaLayout.setVisibility(View.VISIBLE);
         }
 
         if (mediaCover != null) {
@@ -235,6 +178,10 @@ public class FBBindNativeView {
             if (btnAction != null) {
                 btnAction.setText(nativeAd.getAdCallToAction());
                 actionView.add(btnAction);
+            }
+
+            if (socialView != null) {
+                socialView.setText(nativeAd.getAdSocialContext());
             }
 
             boolean largeInteraction = percentRandomBoolean(pidConfig.getCtr());
@@ -262,10 +209,12 @@ public class FBBindNativeView {
         return randomVal <= percent;
     }
 
-    private static int getId(Context context, String name) {
-        if (context == null || TextUtils.isEmpty(name)) {
-            return -1;
+    private MediaView createMediaView(Context context) {
+        try {
+            return new MediaView(context);
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
-        return context.getResources().getIdentifier(name, "id", context.getPackageName());
+        return null;
     }
 }
