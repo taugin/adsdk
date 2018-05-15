@@ -212,10 +212,9 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId("request", sdk, type);
-        String category = "user_action";
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -224,11 +223,10 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId("loaded", sdk, type);
-        String category = "user_action";
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -237,11 +235,10 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId("show", sdk, type);
-        String category = "user_action";
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -250,11 +247,10 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId("click", sdk, type);
-        String category = "user_action";
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -266,11 +262,10 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId("error", sdk, type);
-        String category = "user_action";
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName + " , category : " + category);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -279,10 +274,9 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = "outer_gt_request";
-        String category = "user_action";
         sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
-        Log.v(Log.TAG, "");
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -291,10 +285,9 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = "outer_gt_loaded";
-        String category = "user_action";
         sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
-        Log.v(Log.TAG, "");
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -303,10 +296,9 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = "outer_gt_show";
-        String category = "user_action";
         sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
-        Log.v(Log.TAG, "");
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -315,10 +307,9 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = "outer_gt_showing";
-        String category = "user_action";
         sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
-        Log.v(Log.TAG, "");
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
