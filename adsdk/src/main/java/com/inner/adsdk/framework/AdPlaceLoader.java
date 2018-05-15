@@ -269,6 +269,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     if (loader.isInterstitialLoaded() && loader.showInterstitial()) {
+                        mCurrentAdLoader = loader;
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     }
