@@ -8,39 +8,79 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/interstitial"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:onClick="onClick"
-            android:text="插屏测试" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/banner_and_native"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:onClick="onClick"
-            android:text="Banner和Native测试" />
+            <Button
+                android:id="@+id/interstitial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="插屏测试" />
 
-        <Button
-            android:id="@+id/complex"
+            <Button
+                android:id="@+id/complex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="复合测试" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:onClick="onClick"
-            android:text="复合广告测试" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/fb_native_custom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="FB自定义NATIVE" />
+
+            <Button
+                android:id="@+id/fb_native_preload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="FB预制NATIVE" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/adx_native_custom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="ADX自定义NATIVE" />
+
+            <Button
+                android:id="@+id/adx_native_preload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="ADX预制NATIVE" />
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/ad_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:gravity="center" />
-
-        <RelativeLayout
-            android:id="@+id/ad_container1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
