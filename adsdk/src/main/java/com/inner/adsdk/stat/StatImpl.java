@@ -250,7 +250,7 @@ public class StatImpl implements IStat {
         String category = "user_action";
         sendGoogleAnalytics(null, eventId, category);
         sendUmeng(context, null, eventId, null);
-        Log.v(Log.TAG, "");
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -262,7 +262,7 @@ public class StatImpl implements IStat {
         String category = "user_action";
         sendGoogleAnalytics(null, eventId, category);
         sendUmeng(context, null, eventId, null);
-        Log.v(Log.TAG, "");
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -274,7 +274,7 @@ public class StatImpl implements IStat {
         String category = "user_action";
         sendGoogleAnalytics(null, eventId, category);
         sendUmeng(context, null, eventId, null);
-        Log.v(Log.TAG, "");
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -286,7 +286,7 @@ public class StatImpl implements IStat {
         String category = "user_action";
         sendGoogleAnalytics(null, eventId, category);
         sendUmeng(context, null, eventId, null);
-        Log.v(Log.TAG, "");
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
