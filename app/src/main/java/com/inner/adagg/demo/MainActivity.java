@@ -1,6 +1,7 @@
 package com.inner.adagg.demo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,146 +17,114 @@ public class MainActivity extends Activity {
 
     private static final String TAG = "MA";
     private RelativeLayout mAdContainer;
-    private RelativeLayout mAdContainer1;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mContext = this;
         mAdContainer = findViewById(R.id.ad_container);
-        mAdContainer1 = findViewById(R.id.ad_container1);
-        BasicLib.init(this, "GTM-TMKR64Z1");
-        AdSdk.get(this).init("GTM-TMKR64Z1");
-        loadInterstitial();
-        loadAdView();
-        loadAdView1();
-        // loadComplexAd();
+        BasicLib.init(mContext, "GTM-TMKR64Z1");
+        AdSdk.get(mContext).init("GTM-TMKR64Z1");
     }
 
     public void onClick(View v) {
         if (v.getId() == R.id.interstitial) {
-            showInterstitial();
-        } else if (v.getId() == R.id.banner_and_native) {
-            showAdView();
+            loadInterstitial();
         } else if (v.getId() == R.id.complex) {
-            // showComplexAd();
+            loadComplexAd();
+        } else if (v.getId() == R.id.fb_native_custom) {
+            loadAdViewFB(false);
+        } else if (v.getId() == R.id.fb_native_preload) {
+            loadAdViewFB(true);
+        } else if (v.getId() == R.id.adx_native_custom) {
+            loadAdViewAdx(false);
+        } else if (v.getId() == R.id.adx_native_preload) {
+            loadAdViewAdx(true);
         }
     }
 
     private void loadInterstitial() {
-        AdSdk.get(this).loadInterstitial("Open_app", new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadInterstitial("Open_app", new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                AdSdk.get(mContext).showInterstitial(pidName);
             }
         });
     }
 
-    private void showInterstitial() {
-        if (AdSdk.get(this).isInterstitialLoaded("Open_app")) {
-            AdSdk.get(MainActivity.this).showInterstitial("Open_app");
+    private void loadAdViewAdx(boolean useAdCard) {
+        View view = LayoutInflater.from(this).inflate(R.layout.adx_native, null);
+        AdParams.Builder builder = new AdParams.Builder();
+
+        // 设置banner 参数
+        builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADMOB_LARGE_BANNER);
+        builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
+        if (useAdCard) {
+            // 设置adx native 预制的布局
+            builder.setAdCardStyle(AdExtra.AD_SDK_ADX, AdExtra.NATIVE_CARD_SMALL);
         } else {
-            loadInterstitial();
+            //  设置外部布局参数
+            builder.setAdRootView(AdExtra.AD_SDK_ADX, view);
+            builder.setAdTitle(AdExtra.AD_SDK_ADX, R.id.adx_title);
+            builder.setAdDetail(AdExtra.AD_SDK_ADX, R.id.adx_detail);
+            builder.setAdIcon(AdExtra.AD_SDK_ADX, R.id.adx_icon);
+            builder.setAdAction(AdExtra.AD_SDK_ADX, R.id.adx_action);
+            builder.setAdCover(AdExtra.AD_SDK_ADX, R.id.adx_cover);
+            builder.setAdMediaView(AdExtra.AD_SDK_ADX, R.id.adx_mediaview);
         }
-    }
+        AdParams adParams = builder.build();
 
-    private void loadAdView() {
-        View view = LayoutInflater.from(this).inflate(R.layout.adx_native_small, null);
-        AdParams adParams = new AdParams.Builder()
-                // 设置banner 参数
-                .setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADMOB_LARGE_BANNER)
-                .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
-                // 设置adx native参数
-                .setAdCardStyle(AdExtra.AD_SDK_ADX, AdExtra.NATIVE_CARD_SMALL)
-                //  rootview 决定优先级
-                // .setAdRootView(AdExtra.AD_SDK_ADX, view)
-                .setAdTitle(AdExtra.AD_SDK_ADX, R.id.adx_title)
-                .setAdDetail(AdExtra.AD_SDK_ADX, R.id.adx_detail)
-                .setAdIcon(AdExtra.AD_SDK_ADX, R.id.adx_icon)
-                .setAdAction(AdExtra.AD_SDK_ADX, R.id.adx_action)
-                .setAdCover(AdExtra.AD_SDK_ADX, R.id.adx_cover)
-                .setAdMediaView(AdExtra.AD_SDK_ADX, R.id.adx_mediaview)
-                // 设置fb native参数
-                .setAdCardStyle(AdExtra.AD_SDK_FACEBOOK, AdExtra.NATIVE_CARD_SMALL)
-                .build();
-
-        AdSdk.get(this).loadAdView("Rest_top", adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadAdView("main_bottom_ex", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                AdSdk.get(MainActivity.this).showAdView(pidName, mAdContainer);
-            }
-
-            @Override
-            public void onClick(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-            }
-
-            @Override
-            public void onShow(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-            }
-
-            @Override
-            public void onDismiss(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                AdSdk.get(mContext).showAdView(pidName, mAdContainer);
             }
         });
     }
 
-    private void loadAdView1() {
-        AdParams adParams = new AdParams.Builder()
-                // 设置banner 参数
-                .setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_BANNER)
-                .build();
+    private void loadAdViewFB(boolean useAdCard) {
+        View view = LayoutInflater.from(this).inflate(R.layout.fb_native, null);
+        AdParams.Builder builder = new AdParams.Builder();
 
-        AdSdk.get(this).loadAdView("Action_bottom", adParams, new SimpleAdSdkListener() {
-            @Override
-            public void onLoaded(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                AdSdk.get(MainActivity.this).showAdView(pidName, mAdContainer1);
-            }
-
-            @Override
-            public void onClick(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-            }
-
-            @Override
-            public void onShow(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-            }
-
-            @Override
-            public void onDismiss(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-            }
-        });
-    }
-
-    private void showAdView() {
-        if (AdSdk.get(this).isAdViewLoaded("Rest_top")) {
-            AdSdk.get(this).showAdView("Rest_top", mAdContainer);
+        // 设置banner 参数
+        builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.ADMOB_LARGE_BANNER);
+        if (useAdCard) {
+            // 设置adx native 预制的布局
+            builder.setAdCardStyle(AdExtra.AD_SDK_FACEBOOK, AdExtra.NATIVE_CARD_MEDIUM);
         } else {
-            loadAdView();
+            //  设置外部布局参数
+            builder.setAdRootView(AdExtra.AD_SDK_FACEBOOK, view);
+            builder.setAdTitle(AdExtra.AD_SDK_FACEBOOK, R.id.fb_title);
+            builder.setAdDetail(AdExtra.AD_SDK_FACEBOOK, R.id.fb_detail);
+            builder.setAdIcon(AdExtra.AD_SDK_FACEBOOK, R.id.fb_icon);
+            builder.setAdAction(AdExtra.AD_SDK_FACEBOOK, R.id.fb_action_btn);
+            builder.setAdCover(AdExtra.AD_SDK_FACEBOOK, R.id.fb_image_cover);
+            builder.setAdChoices(AdExtra.AD_SDK_FACEBOOK, R.id.fb_ad_choices_container);
+            builder.setAdMediaView(AdExtra.AD_SDK_FACEBOOK, R.id.fb_media_cover);
         }
+        AdParams adParams = builder.build();
+
+        AdSdk.get(mContext).loadAdView("open_splash_ex", adParams, new SimpleAdSdkListener() {
+            @Override
+            public void onLoaded(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                AdSdk.get(mContext).showAdView(pidName, mAdContainer);
+            }
+        });
     }
 
     private void loadComplexAd() {
-        AdSdk.get(this).loadComplexAds("gt_outer_place", new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadComplexAds("gt_outer_place", new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                AdSdk.get(mContext).showComplexAds("gt_outer_place", null);
             }
         });
-    }
-
-    private void showComplexAd() {
-        if (AdSdk.get(this).isComplexAdsLoaded("gt_outer_place")) {
-            AdSdk.get(this).showComplexAds("gt_outer_place", mAdContainer);
-        } else {
-            loadComplexAd();
-        }
     }
 
     @Override
