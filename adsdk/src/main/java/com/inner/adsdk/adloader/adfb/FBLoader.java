@@ -473,24 +473,25 @@ public class FBLoader extends AbstractSdkLoader {
     }
 
     private String getError(AdError adError) {
+        int errorCode = 0;
         if (adError != null) {
-            int errorCode = adError.getErrorCode();
+            errorCode = adError.getErrorCode();
             if (errorCode == AdError.NO_FILL_ERROR_CODE) {
-                return "NO_FILL_ERROR_CODE";
+                return "NO_FILL_ERROR_CODE[" + errorCode + "]";
             }
             if (errorCode == AdError.SERVER_ERROR_CODE) {
-                return "SERVER_ERROR_CODE";
+                return "SERVER_ERROR_CODE[" + errorCode + "]";
             }
             if (errorCode == AdError.INTERNAL_ERROR_CODE) {
-                return "INTERNAL_ERROR_CODE";
+                return "INTERNAL_ERROR_CODE[" + errorCode + "]";
             }
             if (errorCode == AdError.MEDIATION_ERROR_CODE) {
-                return "MEDIATION_ERROR_CODE";
+                return "MEDIATION_ERROR_CODE[" + errorCode + "]";
             }
             if (errorCode == AdError.NETWORK_ERROR_CODE) {
-                return "NETWORK_ERROR_CODE";
+                return "NETWORK_ERROR_CODE[" + errorCode + "]";
             }
         }
-        return "UNKNOWN";
+        return "UNKNOWN[" + errorCode + "]";
     }
 }
