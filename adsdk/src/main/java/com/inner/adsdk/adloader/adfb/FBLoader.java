@@ -467,6 +467,9 @@ public class FBLoader extends AbstractSdkLoader {
         if (bannerView != null) {
             bannerView.destroy();
         }
+        if (nativeAd != null) {
+            nativeAd.destroy();
+        }
     }
 
     private String getError(AdError adError) {
