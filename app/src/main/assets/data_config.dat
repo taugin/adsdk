@@ -1,4 +1,6 @@
 {
+    "adids": {"admob": "","adx": "","fb": ""},
+    "gtpolicy": {"e":1,"d":3600,"i":1800,"mc":20,"mv":-1,"attr":[],"ec":[],"ms":[]},
     "adplaces": [
       {"name":"open_splash_ex","mode":"con","pids":[{"sdk":"fb","type":"native","pid":"541656102860623_541708392855394"}],"maxcount":100,"percent":100},
       {"name":"main_top_ex","mode":"con","as":1,"pids":[{"sdk":"fb","type":"native","pid":"541656102860623_541710012855232"}, {"sdk":"admob","type":"banner","pid":"ca-mb-app-pub-7850146945256374/5850313518/2074692186"}],"maxcount":100,"percent":100},
