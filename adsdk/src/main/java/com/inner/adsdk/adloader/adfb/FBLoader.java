@@ -452,9 +452,10 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup) {
+        Log.v(Log.TAG, "showNative - fb");
         FBBindNativeView fbBindNativeView = new FBBindNativeView();
         clearCachedAdTime(nativeAd);
-        fbBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
+        fbBindNativeView.bindFBNative(mParams, viewGroup, nativeAd, mPidConfig);
         nativeAd = null;
     }
 

@@ -26,7 +26,7 @@
                 app:layout_aspectRatio="178%"
                 app:layout_widthPercent="100%" />
 
-            <com.facebook.ads.MediaView
+            <RelativeLayout
                 android:id="@+id/fb_media_cover"
                 android:contentDescription="@null"
                 android:visibility="gone"
