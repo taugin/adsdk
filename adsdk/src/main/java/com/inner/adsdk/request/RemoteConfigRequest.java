@@ -19,7 +19,7 @@ import java.util.Date;
 
 public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
 
-    private static final int REFRESH_INTERVAL = 15 * 60 * 1000;
+    private static final int REFRESH_INTERVAL = 15 * 60;
     private Context mContext;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
