@@ -542,17 +542,17 @@ public class AdxLoader extends AbstractSdkLoader {
 
     private String codeToError(int code) {
         if (code == AdRequest.ERROR_CODE_INTERNAL_ERROR) {
-            return "ERROR_CODE_INTERNAL_ERROR";
+            return "ERROR_CODE_INTERNAL_ERROR[" + code + "]";
         }
         if (code == AdRequest.ERROR_CODE_INVALID_REQUEST) {
-            return "ERROR_CODE_INVALID_REQUEST";
+            return "ERROR_CODE_INVALID_REQUEST[" + code + "]";
         }
         if (code == AdRequest.ERROR_CODE_NETWORK_ERROR) {
-            return "ERROR_CODE_NETWORK_ERROR";
+            return "ERROR_CODE_NETWORK_ERROR[" + code + "]";
         }
         if (code == AdRequest.ERROR_CODE_NO_FILL) {
-            return "ERROR_CODE_NO_FILL";
+            return "ERROR_CODE_NO_FILL[" + code + "]";
         }
-        return "UNKNOWN";
+        return "UNKNOWN[" + code + "]";
     }
 }
