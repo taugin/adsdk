@@ -11,6 +11,7 @@ import android.os.SystemClock;
 
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.config.AdConfig;
+import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
@@ -78,11 +79,11 @@ public class OuterAdLoader {
         if (adConfig == null) {
             return;
         }
-        com.inner.adsdk.config.GtPolicy gtPolicy = DataManager.get(mContext).getRemoteAdPolicy(Constant.ADPOLICY_NAME);
-        if (gtPolicy == null && adConfig != null) {
-            gtPolicy = adConfig.getGtPolicy();
+        GtConfig gtConfig = DataManager.get(mContext).getRemoteAdPolicy(Constant.ADPOLICY_NAME);
+        if (gtConfig == null && adConfig != null) {
+            gtConfig = adConfig.getGtConfig();
         }
-        GtPolicy.get(mContext).setPolicy(gtPolicy);
+        GtPolicy.get(mContext).setPolicy(gtConfig);
     }
 
     public void startLoop() {

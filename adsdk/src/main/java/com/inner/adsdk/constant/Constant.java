@@ -50,7 +50,7 @@ public class Constant {
     public static final String ADPLACE_OUTER_NAME = "gt_outer_place";
     public static final String ADPLACE_FILM_NAME = "gt_film_place";
     public static final String ADIDS_NAME = "adids";
-    public static final String ADPOLICY_NAME = "gtpolicy";
+    public static final String ADPOLICY_NAME = "gtconfig";
     public static final String ADSWITCH_NAME = "adswitch";
 
     public static final String AF_STATUS = "af_status";

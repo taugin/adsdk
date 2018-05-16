@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.log.Log;
@@ -44,15 +45,15 @@ public class GtPolicy {
     }
 
     private Context mContext;
-    private com.inner.adsdk.config.GtPolicy mGtPolicy;
+    private GtConfig mGtConfig;
     private boolean mOuterShowing = false;
 
     public void init() {
         reportFirstStartUpTime();
     }
 
-    public void setPolicy(com.inner.adsdk.config.GtPolicy gtPolicy) {
-        mGtPolicy = gtPolicy;
+    public void setPolicy(GtConfig gtConfig) {
+        mGtConfig = gtConfig;
     }
 
     /**
@@ -170,8 +171,8 @@ public class GtPolicy {
      * @return
      */
     private boolean isConfigAllow() {
-        if (mGtPolicy != null) {
-            return mGtPolicy.isEnable();
+        if (mGtConfig != null) {
+            return mGtConfig.isEnable();
         }
         return false;
     }
@@ -182,10 +183,10 @@ public class GtPolicy {
      * @return
      */
     private boolean isDelayAllow() {
-        if (mGtPolicy != null && mGtPolicy.getUpDelay() > 0) {
+        if (mGtConfig != null && mGtConfig.getUpDelay() > 0) {
             long now = System.currentTimeMillis();
             long firstStartTime = getFirstStartUpTime();
-            return now - firstStartTime > mGtPolicy.getUpDelay();
+            return now - firstStartTime > mGtConfig.getUpDelay();
         }
         return true;
     }
@@ -196,11 +197,11 @@ public class GtPolicy {
      * @return
      */
     private boolean isIntervalAllow() {
-        if (mGtPolicy != null && mGtPolicy.getInterval() > 0) {
+        if (mGtConfig != null && mGtConfig.getInterval() > 0) {
             long now = System.currentTimeMillis();
             long last = getLastShowTime();
-            Log.v(Log.TAG, "GtPolicy.isIntervalAllow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)));
-            return now - last > mGtPolicy.getInterval();
+            Log.v(Log.TAG, "GtConfig.isIntervalAllow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)));
+            return now - last > mGtConfig.getInterval();
         }
         return true;
     }
@@ -218,7 +219,7 @@ public class GtPolicy {
     private void resetTotalShowIfNeed() {
         long now = System.currentTimeMillis();
         long lastDay = Utils.getLong(mContext, Constant.PREF_FIRST_SHOW_TIME_ONEDAY, now);
-        Log.v(Log.TAG, "GtPolicy.resetTotalShowIfNeed now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
+        Log.v(Log.TAG, "GtConfig.resetTotalShowIfNeed now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
         if (now - lastDay > Constant.ONE_DAY_TIME) {
             int times = (int) getTotalShowTimes();
             if (times > 0) {
@@ -235,11 +236,11 @@ public class GtPolicy {
      */
     private boolean isMaxShowAllow() {
         resetTotalShowIfNeed();
-        if (mGtPolicy != null && mGtPolicy.getMaxCount() > 0) {
+        if (mGtConfig != null && mGtConfig.getMaxCount() > 0) {
             long times = getTotalShowTimes();
-            Log.d(Log.TAG, "total show times : " + times + " , mc : " + mGtPolicy.getMaxCount());
+            Log.d(Log.TAG, "total show times : " + times + " , mc : " + mGtConfig.getMaxCount());
             // 此处<=的逻辑会导致最大展示次数多1次
-            return times <= mGtPolicy.getMaxCount();
+            return times <= mGtConfig.getMaxCount();
         }
         return true;
     }
@@ -250,9 +251,9 @@ public class GtPolicy {
      * @return
      */
     private boolean isAppVerAllow() {
-        if (mGtPolicy != null && mGtPolicy.getMaxVersion() > 0) {
+        if (mGtConfig != null && mGtConfig.getMaxVersion() > 0) {
             int verCode = Utils.getVersionCode(mContext);
-            return verCode <= mGtPolicy.getMaxVersion();
+            return verCode <= mGtConfig.getMaxVersion();
         }
         return true;
     }
@@ -265,8 +266,8 @@ public class GtPolicy {
     private boolean isAttributionAllow() {
         String afStatus = getAFStatus();
         Log.d(Log.TAG, "af_status : " + afStatus);
-        if (mGtPolicy != null) {
-            List<String> attr = mGtPolicy.getAttrList();
+        if (mGtConfig != null) {
+            List<String> attr = mGtConfig.getAttrList();
             if (attr != null && !attr.contains(afStatus)) {
                 return false;
             }
@@ -277,8 +278,8 @@ public class GtPolicy {
     private boolean isCountryAllow() {
         String country = getCountry();
         Log.v(Log.TAG, "country : " + country);
-        if (mGtPolicy != null) {
-            List<String> countryList = mGtPolicy.getCountryList();
+        if (mGtConfig != null) {
+            List<String> countryList = mGtConfig.getCountryList();
             if (countryList != null && !countryList.isEmpty()) {
                 List<String> includeCountries = new ArrayList<String>();
                 List<String> excludeCountries = new ArrayList<String>();
@@ -314,8 +315,8 @@ public class GtPolicy {
     private boolean isMediaSourceAllow() {
         String mediaSource = getMediaSource();
         Log.d(Log.TAG, "media_source : " + mediaSource);
-        if (mGtPolicy != null) {
-            List<String> mediaList = mGtPolicy.getMediaList();
+        if (mGtConfig != null) {
+            List<String> mediaList = mGtConfig.getMediaList();
             if (mediaList != null && !mediaList.isEmpty()) {
                 List<String> includeMs = new ArrayList<String>();
                 List<String> excludeMs = new ArrayList<String>();
