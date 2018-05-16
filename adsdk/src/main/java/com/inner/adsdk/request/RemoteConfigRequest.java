@@ -46,6 +46,7 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
     @Override
     public void onComplete(@NonNull Task task) {
         if (task != null && task.isSuccessful()) {
+            Log.v(Log.TAG, "fetch successfully");
             mFirebaseRemoteConfig.activateFetched();
         }
     }
@@ -55,13 +56,14 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
         if (mFirebaseRemoteConfig != null) {
             long now = System.currentTimeMillis();
             long last = Utils.getLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME);
-            Log.v(Log.TAG, "GTagDataRequestrefresh now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)));
+            Log.v(Log.TAG, "refresh now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)));
             if (now - last > REFRESH_INTERVAL) {
                 try {
                     mFirebaseRemoteConfig.fetch(REFRESH_INTERVAL).addOnCompleteListener(this);
                     Utils.putLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
-                    Log.v(Log.TAG, "container holder refresh");
+                    Log.e(Log.TAG, "refresh fetch called");
                 } catch (Exception e) {
+                    Log.e(Log.TAG, "error : " + e);
                 }
             }
         } else {
