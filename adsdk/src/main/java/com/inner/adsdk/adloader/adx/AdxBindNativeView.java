@@ -58,10 +58,14 @@ public class AdxBindNativeView {
         if (!(rootView instanceof FrameLayout)) {
             throw new AndroidRuntimeException("Root View must be a FrameLayout");
         }
-        if (nativeAd instanceof NativeContentAd) {
-            showContentAdView(rootView, (NativeContentAd) nativeAd, pidConfig);
-        } else if (nativeAd instanceof NativeAppInstallAd) {
-            showInstallAdView(rootView, (NativeAppInstallAd) nativeAd, pidConfig);
+        try {
+            if (nativeAd instanceof NativeContentAd) {
+                showContentAdView(rootView, (NativeContentAd) nativeAd, pidConfig);
+            } else if (nativeAd instanceof NativeAppInstallAd) {
+                showInstallAdView(rootView, (NativeAppInstallAd) nativeAd, pidConfig);
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, new Throwable());
         }
         try {
             adContainer.removeAllViews();
@@ -71,6 +75,7 @@ public class AdxBindNativeView {
                 adContainer.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, new Throwable());
         }
     }
 
@@ -96,10 +101,14 @@ public class AdxBindNativeView {
         mParams.setAdAction(R.id.adx_action);
         mParams.setAdCover(R.id.adx_cover);
         mParams.setAdMediaView(R.id.adx_mediaview);
-        if (nativeAd instanceof NativeContentAd) {
-            showContentAdView(rootView, (NativeContentAd) nativeAd, pidConfig);
-        } else if (nativeAd instanceof NativeAppInstallAd) {
-            showInstallAdView(rootView, (NativeAppInstallAd) nativeAd, pidConfig);
+        try {
+            if (nativeAd instanceof NativeContentAd) {
+                showContentAdView(rootView, (NativeContentAd) nativeAd, pidConfig);
+            } else if (nativeAd instanceof NativeAppInstallAd) {
+                showInstallAdView(rootView, (NativeAppInstallAd) nativeAd, pidConfig);
+            }
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e, new Throwable());
         }
         try {
             adContainer.removeAllViews();
@@ -109,10 +118,11 @@ public class AdxBindNativeView {
                 adContainer.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, new Throwable());
         }
     }
 
-    private void showContentAdView(View rootView, NativeContentAd nativeAd, PidConfig pidConfig) {
+    private void showContentAdView(View rootView, NativeContentAd nativeAd, PidConfig pidConfig) throws Exception {
         NativeContentAdView adView = new NativeContentAdView(rootView.getContext());
         FrameLayout rootLayout = (FrameLayout) rootView;
         View childView = rootLayout.getChildAt(0);
@@ -131,7 +141,7 @@ public class AdxBindNativeView {
         ((TextView) adView.getCallToActionView()).setText(nativeAd.getCallToAction());
 
         List<NativeAd.Image> images = nativeAd.getImages();
-        if (images.size() > 0) {
+        if (images.size() > 0 && images.get(0) != null) {
             ((ImageView) adView.getImageView()).setImageDrawable(images.get(0).getDrawable());
         }
         NativeAd.Image logoImage = nativeAd.getLogo();
@@ -148,7 +158,7 @@ public class AdxBindNativeView {
         adView.setNativeAd(nativeAd);
     }
 
-    private void showInstallAdView(View rootView, NativeAppInstallAd nativeAd, PidConfig pidConfig) {
+    private void showInstallAdView(View rootView, NativeAppInstallAd nativeAd, PidConfig pidConfig) throws Exception {
         NativeAppInstallAdView adView = new NativeAppInstallAdView(rootView.getContext());
         FrameLayout rootLayout = (FrameLayout) rootView;
         View childView = rootLayout.getChildAt(0);
@@ -165,8 +175,11 @@ public class AdxBindNativeView {
         ((TextView) adView.getHeadlineView()).setText(nativeAd.getHeadline());
         ((TextView) adView.getBodyView()).setText(nativeAd.getBody());
         ((Button) adView.getCallToActionView()).setText(nativeAd.getCallToAction());
-        ((ImageView) adView.getIconView()).setImageDrawable(
-                nativeAd.getIcon().getDrawable());
+        NativeAd.Image image = nativeAd.getIcon();
+        if (image != null) {
+            ((ImageView) adView.getIconView()).setImageDrawable(
+                    image.getDrawable());
+        }
 
         FrameLayout mediaViewLayout = rootView.findViewById(mParams.getAdMediaView());
         MediaView mediaView = createMediaView(rootView.getContext());
@@ -187,7 +200,7 @@ public class AdxBindNativeView {
             adView.setImageView(coverView);
             mediaViewLayout.setVisibility(View.GONE);
             List<com.google.android.gms.ads.formats.NativeAd.Image> images = nativeAd.getImages();
-            if (images.size() > 0) {
+            if (images.size() > 0 && images.get(0) != null) {
                 coverView.setImageDrawable(images.get(0).getDrawable());
             }
         }
