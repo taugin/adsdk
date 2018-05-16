@@ -396,6 +396,7 @@ public class GtPolicy {
     }
 
     public boolean shouldShowAdOuter() {
+        Log.v(Log.TAG, "gtconfig : " + mGtConfig);
         if (!checkAdOuterConfig()) {
             return false;
         }

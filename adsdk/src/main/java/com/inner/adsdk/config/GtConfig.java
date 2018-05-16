@@ -80,4 +80,18 @@ public class GtConfig {
     public void setMediaList(List<String> mediaList) {
         this.mediaList = mediaList;
     }
+
+    @Override
+    public String toString() {
+        return "GtConfig{" +
+                "e=" + enable +
+                ", d=" + upDelay +
+                ", i=" + interval +
+                ", mc=" + maxCount +
+                ", mv=" + maxVersion +
+                ", cl=" + countryList +
+                ", al=" + attrList +
+                ", ml=" + mediaList +
+                '}';
+    }
 }
