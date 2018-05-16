@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Administrator on 2018/2/9.
  */
 
-public class GtPolicy {
+public class GtConfig {
     private boolean enable = false;
     private long upDelay;
     private long interval;
