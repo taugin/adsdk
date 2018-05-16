@@ -19,7 +19,8 @@ import java.util.Date;
 
 public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
 
-    private static final int REFRESH_INTERVAL = 15 * 60;
+    private static final int CACHE_EXPIRETIME = 15 * 60;
+    private static final int REFRESH_INTERVAL = CACHE_EXPIRETIME * 1000;
     private Context mContext;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
@@ -39,7 +40,7 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
     @Override
     public void request() {
         if (mFirebaseRemoteConfig != null) {
-            mFirebaseRemoteConfig.fetch(REFRESH_INTERVAL).addOnCompleteListener(this);
+            mFirebaseRemoteConfig.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
         }
     }
 
@@ -59,7 +60,7 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
             Log.v(Log.TAG, "refresh now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)));
             if (now - last > REFRESH_INTERVAL) {
                 try {
-                    mFirebaseRemoteConfig.fetch(REFRESH_INTERVAL).addOnCompleteListener(this);
+                    mFirebaseRemoteConfig.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
                     Utils.putLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
                     Log.e(Log.TAG, "refresh fetch called");
                 } catch (Exception e) {
