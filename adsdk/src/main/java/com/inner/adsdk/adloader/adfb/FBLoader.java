@@ -62,10 +62,15 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isBannerLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                setLoadedFlag();
-                getAdListener().onAdLoaded();
-            }
+            delayRun(new Runnable() {
+                @Override
+                public void run() {
+                    if (getAdListener() != null) {
+                        setLoadedFlag();
+                        getAdListener().onAdLoaded();
+                    }
+                }
+            });
             return;
         }
         if (isLoading()) {

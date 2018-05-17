@@ -266,6 +266,9 @@ public class AdParser implements IParser {
             if (jobj.has(TIMEOUT)) {
                 pidConfig.setTimeOut(jobj.getLong(TIMEOUT));
             }
+            if (jobj.has(DELAY_LOAD_TIME)) {
+                pidConfig.setDelayLoadTime(jobj.getLong(DELAY_LOAD_TIME));
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

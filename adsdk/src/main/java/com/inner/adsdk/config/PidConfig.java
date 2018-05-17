@@ -28,6 +28,8 @@ public class PidConfig {
 
     private long timeOut;
 
+    private long delayLoadTime = 500;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -98,6 +100,14 @@ public class PidConfig {
 
     public void setTimeOut(long timeOut) {
         this.timeOut = timeOut;
+    }
+
+    public long getDelayLoadTime() {
+        return delayLoadTime;
+    }
+
+    public void setDelayLoadTime(long delayLoadTime) {
+        this.delayLoadTime = delayLoadTime;
     }
 
     public boolean isAdmob() {

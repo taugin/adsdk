@@ -396,4 +396,18 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
             }
         }
     }
+
+    /**
+     * 对于已经加载成功的banner，延迟一段时间再进行通知
+     * @param runnable
+     */
+    protected void delayRun(Runnable runnable) {
+        if (mHandler != null) {
+            long delay = 500;
+            if (mPidConfig != null) {
+                delay = mPidConfig.getDelayLoadTime();
+            }
+            mHandler.postDelayed(runnable, delay);
+        }
+    }
 }
