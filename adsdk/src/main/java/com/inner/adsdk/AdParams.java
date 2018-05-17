@@ -63,6 +63,11 @@ public class AdParams {
             return this;
         }
 
+        public Builder setAdRootLayout(String sdk, int layout) {
+            getParams(sdk).setAdRootLayout(layout);
+            return this;
+        }
+
         public Builder setAdTitle(String sdk, int adTitle) {
             getParams(sdk).setAdTitle(adTitle);
             return this;

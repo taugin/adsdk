@@ -39,10 +39,16 @@ public class AdxBindNativeView {
         if (mParams == null) {
             return;
         }
+        int rootLayout = mParams.getNativeRootLayout();
         View rootView = mParams.getNativeRootView();
         int cardId = mParams.getNativeCardStyle();
         if (rootView != null) {
             bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
+        } else if (rootLayout > 0) {
+            if (adContainer != null && adContainer.getContext() != null) {
+                rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
+                bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
+            }
         } else if (cardId > 0) {
             bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
         }
@@ -181,7 +187,7 @@ public class AdxBindNativeView {
                     image.getDrawable());
         }
 
-        FrameLayout mediaViewLayout = rootView.findViewById(mParams.getAdMediaView());
+        ViewGroup mediaViewLayout = rootView.findViewById(mParams.getAdMediaView());
         MediaView mediaView = createMediaView(rootView.getContext());
         mediaViewLayout.addView(mediaView);
 

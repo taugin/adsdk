@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
  */
 
 public class Constant {
+    public static final String AD_SDK_COMMON = "common";
     public static final String AD_SDK_ADMOB = "admob";
     public static final String AD_SDK_FACEBOOK = "fb";
     public static final String AD_SDK_ADX = "adx";

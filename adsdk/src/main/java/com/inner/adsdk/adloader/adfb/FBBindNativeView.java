@@ -40,10 +40,16 @@ public class FBBindNativeView {
             Log.v(Log.TAG, "bindFBNative adContainer == null");
             return;
         }
+        int rootLayout = mParams.getNativeRootLayout();
         View rootView = mParams.getNativeRootView();
         int cardId = mParams.getNativeCardStyle();
         if (rootView != null) {
             bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
+        } else if (rootLayout > 0) {
+            if (adContainer != null && adContainer.getContext() != null) {
+                rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
+                bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
+            }
         } else if (cardId > 0) {
             bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
         }
@@ -63,7 +69,7 @@ public class FBBindNativeView {
         bindNativeViewWithTemplate(adContainer, rootView, nativeAd, pidConfig);
         try {
             adContainer.removeAllViews();
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -2);
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -2);
             adContainer.addView(rootView, params);
             if (adContainer.getVisibility() != View.VISIBLE) {
                 adContainer.setVisibility(View.VISIBLE);
@@ -75,6 +81,7 @@ public class FBBindNativeView {
 
     /**
      * 使用模板显示原生广告
+     *
      * @param rootView
      * @param nativeAd
      * @param pidConfig
@@ -95,6 +102,7 @@ public class FBBindNativeView {
 
     /**
      * 外部传入ViewRoot
+     *
      * @param rootView
      * @param nativeAd
      * @param pidConfig
@@ -125,7 +133,7 @@ public class FBBindNativeView {
         TextView socialView = rootView.findViewById(mParams.getAdSocial());
         TextView detail = rootView.findViewById(mParams.getAdDetail());
         AppCompatButton btnAction = rootView.findViewById(mParams.getAdAction());
-        RelativeLayout adChoiceContainer = rootView.findViewById(mParams.getAdChoices());
+        ViewGroup adChoiceContainer = rootView.findViewById(mParams.getAdChoices());
         MediaView mediaCover = createMediaView(rootView.getContext());
         ViewGroup mediaLayout = rootView.findViewById(mParams.getAdMediaView());
 
@@ -214,7 +222,7 @@ public class FBBindNativeView {
     private MediaView createMediaView(Context context) {
         try {
             return new MediaView(context);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
         return null;
