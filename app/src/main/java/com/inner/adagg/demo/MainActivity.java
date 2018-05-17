@@ -1,10 +1,13 @@
 package com.inner.adagg.demo;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.inner.adsdk.AdExtra;
@@ -16,7 +19,6 @@ import com.inner.basic.BasicLib;
 public class MainActivity extends Activity {
 
     private static final String TAG = "MA";
-    private RelativeLayout mAdContainer;
     private Context mContext;
 
     @Override
@@ -24,7 +26,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
-        mAdContainer = findViewById(R.id.ad_container);
         BasicLib.init(mContext, "GTM-TMKR64Z1");
         AdSdk.get(mContext).init("GTM-TMKR64Z1");
     }
@@ -42,6 +43,12 @@ public class MainActivity extends Activity {
             loadAdViewAdx(false);
         } else if (v.getId() == R.id.adx_native_preload) {
             loadAdViewAdx(true);
+        } else if (v.getId() == R.id.adx_fb_native_common1) {
+            loadAdViewCommon(R.layout.ad_common_native_card_medium);
+        } else if (v.getId() == R.id.adx_fb_native_common2) {
+            loadAdViewCommon(R.layout.ad_common_native_card_medium_upbtn);
+        } else if (v.getId() == R.id.adx_fb_native_common3) {
+            loadAdViewCommon(R.layout.ad_common_native_card_small);
         }
     }
 
@@ -81,7 +88,7 @@ public class MainActivity extends Activity {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                AdSdk.get(mContext).showAdView(pidName, mAdContainer);
+                showAdView(pidName);
             }
         });
     }
@@ -112,7 +119,7 @@ public class MainActivity extends Activity {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                AdSdk.get(mContext).showAdView(pidName, mAdContainer);
+                showAdView(pidName);
             }
         });
     }
@@ -125,6 +132,46 @@ public class MainActivity extends Activity {
                 AdSdk.get(mContext).showComplexAds("gt_outer_place", null);
             }
         });
+    }
+
+    private void loadAdViewCommon(int layoutId) {
+        AdParams.Builder builder = new AdParams.Builder();
+        //  设置外部布局参数
+        if (layoutId == R.layout.ad_common_native_card_small) {
+            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
+        } else {
+            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
+        }
+        builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
+        builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
+        builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
+        builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
+        builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
+        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
+        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+        AdParams adParams = builder.build();
+
+        AdSdk.get(mContext).loadAdView("main_top_ex", adParams, new SimpleAdSdkListener() {
+            @Override
+            public void onLoaded(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                showAdView(pidName);
+            }
+        });
+    }
+
+    private void showAdView(String pidName) {
+        RelativeLayout layout = new RelativeLayout(this);
+        layout.setGravity(Gravity.CENTER);
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(layout);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = getResources().getDisplayMetrics().widthPixels;
+        dialog.getWindow().setAttributes(params);
+        AdSdk.get(this).showAdView(pidName, layout);
+        dialog.show();
     }
 
     @Override

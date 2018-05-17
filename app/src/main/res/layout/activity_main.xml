@@ -78,12 +78,23 @@
                 android:onClick="onClick"
                 android:text="ADX预制NATIVE" />
         </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/ad_container"
+        <Button
+            android:id="@+id/adx_fb_native_common1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:gravity="center" />
+            android:onClick="onClick"
+            android:text="ADX_FB共用布局1" />
+        <Button
+            android:id="@+id/adx_fb_native_common2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:text="ADX_FB共用布局2" />
+        <Button
+            android:id="@+id/adx_fb_native_common3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:text="ADX_FB共用布局3" />
     </LinearLayout>
 </ScrollView>
