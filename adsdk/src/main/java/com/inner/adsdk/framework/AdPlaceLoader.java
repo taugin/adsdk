@@ -715,6 +715,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
             if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
                 Log.d(Log.TAG, "adplaceloader pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 if (TextUtils.equals(adType, Constant.TYPE_NATIVE) || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
+                    resume();
                     showNextAdView();
                 }
             }
