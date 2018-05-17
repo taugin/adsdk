@@ -122,11 +122,16 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     }
 
     private Params getParams(ISdkLoader loader) {
+        Params params = null;
         try {
-            return mAdParams.getParams(loader.getSdkName());
+            params = mAdParams.getParams(loader.getSdkName());
+            if (params == null) {
+                params = mAdParams.getParams(Constant.AD_SDK_COMMON);
+            }
         } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, new Throwable());
         }
-        return null;
+        return params;
     }
 
     /**

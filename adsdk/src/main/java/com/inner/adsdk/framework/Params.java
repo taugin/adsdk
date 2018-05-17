@@ -12,6 +12,7 @@ import java.util.Map;
 public class Params {
 
     private View mNativeRootView;
+    private int  mNativeRootLayout;
     private int mNativeCardStyle;
     private Map<String, Integer> mBannerSize = new HashMap<String, Integer>();
     private int adTitle;
@@ -34,6 +35,14 @@ public class Params {
 
     public View getNativeRootView() {
         return mNativeRootView;
+    }
+
+    public void setAdRootLayout(int layout) {
+        mNativeRootLayout = layout;
+    }
+
+    public int getNativeRootLayout() {
+        return mNativeRootLayout;
     }
 
     public void setAdCardStyle(int tid) {

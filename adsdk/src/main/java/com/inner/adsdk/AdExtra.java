@@ -9,6 +9,11 @@ import com.inner.adsdk.constant.Constant;
 public class AdExtra {
 
     /**
+     * COMMON SDK 名字
+     */
+    public static final String AD_SDK_COMMON = Constant.AD_SDK_COMMON;
+
+    /**
      * ADMOB SDK 名字
      */
     public static final String AD_SDK_ADMOB = Constant.AD_SDK_ADMOB;
