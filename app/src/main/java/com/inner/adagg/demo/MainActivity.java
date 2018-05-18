@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
     }
 
     private void loadInterstitial() {
-        AdSdk.get(mContext).loadInterstitial("Open_app", new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadInterstitial("gt_outer_place", new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
