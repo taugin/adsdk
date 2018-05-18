@@ -720,6 +720,16 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                 }
             }
         }
+
+        @Override
+        public void onDismiss(String pidName, String source, String adType) {
+            if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
+                Log.d(Log.TAG, "adplaceloader pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
+                    showInterstitial();
+                }
+            }
+        }
     }
 
     /**
