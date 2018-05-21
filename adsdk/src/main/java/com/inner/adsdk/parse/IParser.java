@@ -19,41 +19,67 @@ public interface IParser {
     String STATUS = "s";
     String DATA = "data";
 
+    // 各个广告平台的appid
     String ADIDS = "adids";
-    String GTPOLICY = "gtconfig";
+    // 应用外的配置信息
+    String GTCONFIG = "gtconfig";
+    // 广告位汇总
     String ADPLACES = "adplaces";
+    // 开光控制配置信息
     String ADSWITCH = "adswitch";
+    // 自定义广告位名称
     String NAME = "name";
+    // 广告的加载模式 seq, ran, con
     String MODE = "mode";
     // 对于插屏，关闭广告自动切换下一个，对于banner和native，点击自动切换
     String AUTO_SWITCH = "as";
     // 开启或关闭单次加载通知
     String LOAD_ONLY_ONCE = "loo";
-
+    // 24小时最大展示次数
     String MAXCOUNT = "maxcount";
+    // 展示的百分比
     String PERCENT = "percent";
+    // 具体广告位配置
     String PIDS = "pids";
 
+    // 广告平台 fb, admob, adx
     String SDK = "sdk";
+    // 具体广告平台的广告位ID
     String PID = "pid";
+    // 控制原生广告的点击区域百分比
     String CTR = "ctr";
+    // 广告类型 interstitial, banner, native
     String TYPE = "type";
+    // 禁用某个广告
     String DISABLE = "disable";
+    // 广告未填充的间隔时间
     String NOFILL = "nofill";
     String CACHE_TIME = "ctime";
+    // 广告缓存超时值
     String TIMEOUT = "to";
+    // 延迟通知加载成功的时间
     String DELAY_LOAD_TIME = "dlt";
 
+    // 启用或禁用GT
     String ENABLE = "e";
+    // 首次启动后多久允许GT
     String UPDELAY = "d";
+    // GT的展示间隔
     String INTERVAL = "i";
+    // 24小时GT的最大展示次数
     String MAX_COUNT = "mc";
+    // 此配置设置生效的最大应用版本
     String MAX_VERSION = "mv";
+    // 国家列表 !en表示排除的国家，en表示包含的国家
     String COUNTRY_LIST = "ec";
+    // 归因配置 Organic 或者 Non-organic
     String ATTRS = "attr";
+    // 媒体列表 !adwords表示排除的媒体，adwords表示包含的媒体
     String MEDIA_SOURCE = "ms";
 
+    // 阻止重复加载(如果当前loader正在处于加载中，则不再重新加载)
     String BLOCK_LOADING = "bl";
+    // 是否上报错误日志
     String REPORT_ERROR = "re";
 
     AdConfig parseAdConfig(String data);
