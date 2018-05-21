@@ -92,6 +92,7 @@
                             android:layout_toLeftOf="@+id/common_sponsored_label"
                             android:ellipsize="marquee"
                             android:gravity="left|top"
+                            android:layout_weight="1"
                             android:singleLine="true"
                             android:text="Charge Master"
                             android:textColor="@color/black"
@@ -104,7 +105,7 @@
                             android:ellipsize="marquee"
                             android:gravity="left|top"
                             android:singleLine="true"
-                            android:text="One Clean is a light, fast and smart phone cleaner for your Android phones or tablet."
+                            android:layout_weight="0"
                             android:textColor="@color/ad_text_sub"
                             android:textSize="@dimen/sp_12" />
 
