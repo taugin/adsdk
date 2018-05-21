@@ -62,15 +62,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isBannerLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            delayRun(new Runnable() {
-                @Override
-                public void run() {
-                    if (getAdListener() != null) {
-                        setLoadedFlag();
-                        getAdListener().onAdLoaded();
-                    }
-                }
-            });
+            notifyAdLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -143,10 +135,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
-                if (getAdListener() != null) {
-                    setLoadedFlag();
-                    getAdListener().onAdLoaded();
-                }
+                notifyAdLoaded(false);
             }
 
             @Override

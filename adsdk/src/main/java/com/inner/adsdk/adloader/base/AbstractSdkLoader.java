@@ -291,6 +291,7 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
 
     /**
      * 获取最后填充时间
+     *
      * @return
      */
     protected long getLastNoFillTime() {
@@ -304,6 +305,7 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
 
     /**
      * 获取广告最大缓存时间
+     *
      * @return
      */
     private long getMaxCachedTime() {
@@ -319,6 +321,7 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
 
     /**
      * 获取广告加载超时时间
+     *
      * @return
      */
     private long getTimeout() {
@@ -371,13 +374,13 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
 
     private void reportLoadAdTime(int state) {
         if (state == STATE_REQUEST) {
-            mRequestTime = System.currentTimeMillis();
+            mRequestTime = SystemClock.elapsedRealtime();
         } else if (state == STATE_SUCCESS) {
             if (mRequestTime > 0) {
                 try {
-                    int time = Math.round((System.currentTimeMillis() - mRequestTime) / (float)100);
+                    int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
                     mStat.reportAdLoadSuccessTime(mContext, getSdkName(), getAdType(), time);
-                } catch(Exception e) {
+                } catch (Exception e) {
                 }
                 mRequestTime = 0;
             }
@@ -388,9 +391,9 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
                     if (state == STATE_TIMTOUT) {
                         error = "STATE_TIMTOUT";
                     }
-                    int time = Math.round((System.currentTimeMillis() - mRequestTime) / (float)100);
+                    int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
                     mStat.reportAdLoadFailureTime(mContext, getSdkName(), getAdType(), error, time);
-                } catch(Exception e) {
+                } catch (Exception e) {
                 }
                 mRequestTime = 0;
             }
@@ -399,15 +402,53 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
 
     /**
      * 对于已经加载成功的banner，延迟一段时间再进行通知
+     *
      * @param runnable
      */
-    protected void delayRun(Runnable runnable) {
-        if (mHandler != null) {
-            long delay = 500;
-            if (mPidConfig != null) {
-                delay = mPidConfig.getDelayLoadTime();
+    private void delayNotifyAdLoaded(Runnable runnable, boolean cached) {
+        long delay = getDelayNotifyLoadTime(cached);
+        Log.v(Log.TAG, "delay notify loaded time : " + delay);
+        if (delay <= 0) {
+            if (runnable != null) {
+                runnable.run();
             }
-            mHandler.postDelayed(runnable, delay);
+        } else {
+            if (mHandler != null) {
+                mHandler.postDelayed(runnable, delay);
+            }
         }
+    }
+
+    private long getDelayNotifyLoadTime(boolean cached) {
+        long delay = 0;
+        if (mPidConfig != null) {
+            delay = mPidConfig.getDelayLoadTime();
+        }
+
+        // 缓存的banner最小延迟为500ms
+        if (cached && TextUtils.equals(getAdType(), Constant.TYPE_BANNER)) {
+            if (delay <= 0) {
+                delay = 500;
+            }
+        }
+        return delay;
+    }
+
+    /**
+     * 通知ad加载成功
+     * 增加延迟通知功能，便于优先级高但是加载时间长的ad能够优先展示
+     *
+     * @param cached
+     */
+    protected void notifyAdLoaded(final boolean cached) {
+        delayNotifyAdLoaded(new Runnable() {
+            @Override
+            public void run() {
+                if (getAdListener() != null) {
+                    setLoadedFlag();
+                    getAdListener().onAdLoaded();
+                }
+            }
+        }, cached);
     }
 }

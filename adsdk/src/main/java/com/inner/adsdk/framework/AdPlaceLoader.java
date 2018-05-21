@@ -689,12 +689,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
 
     @Override
     public boolean isCurrent(String source, String type, String pidName) {
+        boolean isCurrentLoader = false;
         if (mCurrentAdLoader != null) {
-            return TextUtils.equals(mCurrentAdLoader.getSdkName(), source)
+            isCurrentLoader = TextUtils.equals(mCurrentAdLoader.getSdkName(), source)
                     && TextUtils.equals(mCurrentAdLoader.getAdType(), type)
                     && TextUtils.equals(getPidByLoader(mCurrentAdLoader), pidName);
         }
-        return false;
+        return isCurrentLoader;
     }
 
     private void clearAdBaseListener() {

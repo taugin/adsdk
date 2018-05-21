@@ -62,15 +62,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isBannerLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            delayRun(new Runnable() {
-                @Override
-                public void run() {
-                    if (getAdListener() != null) {
-                        setLoadedFlag();
-                        getAdListener().onAdLoaded();
-                    }
-                }
-            });
+            notifyAdLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -123,10 +115,7 @@ public class FBLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
-                if (getAdListener() != null) {
-                    setLoadedFlag();
-                    getAdListener().onAdLoaded();
-                }
+                notifyAdLoaded(false);
             }
 
             @Override
@@ -370,10 +359,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isNativeLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                setLoadedFlag();
-                getAdListener().onAdLoaded();
-            }
+            notifyAdLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -417,10 +403,7 @@ public class FBLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
-                if (getAdListener() != null) {
-                    setLoadedFlag();
-                    getAdListener().onAdLoaded();
-                }
+                notifyAdLoaded(false);
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
