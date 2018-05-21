@@ -26,11 +26,7 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
 
     public RemoteConfigRequest(Context context) {
         mContext = context;
-        try {
-            mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        } catch(Exception e) {
-            Log.e(Log.TAG, "error : " + e + "(should add google-services.json file to root)");
-        }
+        ensureFirebase();
     }
 
     @Override
@@ -39,6 +35,7 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
 
     @Override
     public void request() {
+        ensureFirebase();
         if (mFirebaseRemoteConfig != null) {
             mFirebaseRemoteConfig.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
         }
@@ -46,14 +43,21 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
 
     @Override
     public void onComplete(@NonNull Task task) {
-        if (task != null && task.isSuccessful()) {
-            Log.v(Log.TAG, "fetch successfully");
+        if (task == null) {
+            Log.e(Log.TAG, "onComplete task == null");
+            return;
+        }
+        if (task.isSuccessful()) {
+            Log.v(Log.TAG, "onComplete fetch successfully");
             mFirebaseRemoteConfig.activateFetched();
+        } else {
+            Log.e(Log.TAG, "error : " + task.getException());
         }
     }
 
     @Override
     public void refresh() {
+        ensureFirebase();
         if (mFirebaseRemoteConfig != null) {
             long now = System.currentTimeMillis();
             long last = Utils.getLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME);
@@ -62,17 +66,10 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
                 try {
                     mFirebaseRemoteConfig.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
                     Utils.putLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
-                    Log.e(Log.TAG, "refresh fetch called");
+                    Log.v(Log.TAG, "refresh fetch called");
                 } catch (Exception e) {
                     Log.e(Log.TAG, "error : " + e);
                 }
-            }
-        } else {
-            long now = System.currentTimeMillis();
-            long last = Utils.getLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME);
-            if (now - last > REFRESH_INTERVAL) {
-                request();
-                Utils.putLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
             }
         }
     }
@@ -87,6 +84,16 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
             }
         }
         return value;
+    }
+
+    private void ensureFirebase() {
+        if (mFirebaseRemoteConfig == null) {
+            try {
+                mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+            } catch(Exception e) {
+                Log.e(Log.TAG, "error : " + e + "[Should add google-services.json file to root]");
+            }
+        }
     }
 
     private String readConfigFromAsset(String key) {

@@ -128,7 +128,14 @@ public class AdxBindNativeView {
 
         adView.setHeadlineView(rootView.findViewById(mParams.getAdTitle()));
         adView.setImageView(adView.findViewById(mParams.getAdCover()));
-        adView.setBodyView(adView.findViewById(mParams.getAdDetail()));
+
+        // 由于adx没有subTitle的接口，因此将使用subTitle或者detailView
+        View detailView = adView.findViewById(mParams.getAdDetail());
+        View subTitleView = adView.findViewById(mParams.getAdSubTitle());
+        View bodyView = detailView != null ? detailView : subTitleView;
+
+        adView.setBodyView(bodyView);
+
         adView.setCallToActionView(adView.findViewById(mParams.getAdAction()));
         adView.setIconView(adView.findViewById(mParams.getAdIcon()));
 
