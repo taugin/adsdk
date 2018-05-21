@@ -23,28 +23,28 @@ import com.inner.adsdk.stat.StatImpl;
  * Created by Administrator on 2018/3/19.
  */
 
-public class OuterAdLoader {
+public class GtAdLoader {
 
-    private static OuterAdLoader sOuterAdLoader;
+    private static GtAdLoader sGtAdLoader;
 
     private Context mContext;
     private AdSdk mAdSdk;
 
-    private OuterAdLoader(Context context) {
+    private GtAdLoader(Context context) {
         mContext = context.getApplicationContext();
     }
 
-    public static OuterAdLoader get(Context context) {
-        if (sOuterAdLoader == null) {
+    public static GtAdLoader get(Context context) {
+        if (sGtAdLoader == null) {
             create(context);
         }
-        return sOuterAdLoader;
+        return sGtAdLoader;
     }
 
     private static void create(Context context) {
-        synchronized (OuterAdLoader.class) {
-            if (sOuterAdLoader == null) {
-                sOuterAdLoader = new OuterAdLoader(context);
+        synchronized (GtAdLoader.class) {
+            if (sGtAdLoader == null) {
+                sGtAdLoader = new GtAdLoader(context);
             }
         }
     }

@@ -9,7 +9,7 @@ import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.framework.AdPlaceLoader;
-import com.inner.adsdk.framework.OuterAdLoader;
+import com.inner.adsdk.framework.GtAdLoader;
 import com.inner.adsdk.listener.OnAdSdkListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
@@ -67,7 +67,7 @@ public class AdSdk {
         ActivityMonitor.get(mContext).init();
         StatImpl.get().init();
         DataManager.get(mContext).init();
-        OuterAdLoader.get(mContext).init(this);
+        GtAdLoader.get(mContext).init(this);
     }
 
     /**

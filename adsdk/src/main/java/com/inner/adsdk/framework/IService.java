@@ -22,8 +22,8 @@ public class IService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             if (Constant.ACTION_ALARM.equals(intent.getAction())) {
-                OuterAdLoader.get(this).onFire();
-                OuterAdLoader.get(this).startLoop();
+                GtAdLoader.get(this).onFire();
+                GtAdLoader.get(this).startLoop();
             }
         }
         return START_REDELIVER_INTENT;
