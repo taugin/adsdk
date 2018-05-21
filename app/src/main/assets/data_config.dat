@@ -4,13 +4,13 @@
     "adx": "",
     "fb": ""
   },
-  "gtpolicy": {
+  "gtconfig": {
     "e": 1,
     "d": 3600,
     "i": 1800,
     "mc": 20,
     "mv": -1,
-    "attr": [],
+    "attr": ["non-organic"],
     "ec": [],
     "ms": []
   },

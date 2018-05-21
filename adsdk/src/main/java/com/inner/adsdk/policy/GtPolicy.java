@@ -46,7 +46,7 @@ public class GtPolicy {
 
     private Context mContext;
     private GtConfig mGtConfig;
-    private boolean mOuterShowing = false;
+    private boolean mGtShowing = false;
 
     public void init() {
         reportFirstStartUpTime();
@@ -61,9 +61,9 @@ public class GtPolicy {
      *
      * @param showing
      */
-    public void reportOuterShowing(boolean showing) {
-        mOuterShowing = showing;
-        if (mOuterShowing) {
+    public void reportGtShowing(boolean showing) {
+        mGtShowing = showing;
+        if (mGtShowing) {
             updateLastShowTime();
             reportTotalShowTimes();
         }
@@ -74,15 +74,15 @@ public class GtPolicy {
      *
      * @return
      */
-    public boolean isOuterShowing() {
-        return mOuterShowing;
+    public boolean isGtShowing() {
+        return mGtShowing;
     }
 
     /**
      * 更新ad最后展示时间
      */
     private void updateLastShowTime() {
-        Utils.putLong(mContext, Constant.PREF_LAST_OUTER_SHOWTIME, System.currentTimeMillis());
+        Utils.putLong(mContext, Constant.PREF_LAST_GT_SHOWTIME, System.currentTimeMillis());
     }
 
     /**
@@ -91,7 +91,7 @@ public class GtPolicy {
      * @return
      */
     private long getLastShowTime() {
-        return Utils.getLong(mContext, Constant.PREF_LAST_OUTER_SHOWTIME, 0);
+        return Utils.getLong(mContext, Constant.PREF_LAST_GT_SHOWTIME, 0);
     }
 
     /**
@@ -121,13 +121,13 @@ public class GtPolicy {
         if (times <= 0) {
             times = 1;
         }
-        Utils.putLong(mContext, Constant.PREF_OUTER_SHOW_TIMES, times);
+        Utils.putLong(mContext, Constant.PREF_GT_SHOW_TIMES, times);
         recordFirstShowTime();
     }
 
     private void resetTotalShowTimes() {
         Log.d(Log.TAG, "reset total show times");
-        Utils.putLong(mContext, Constant.PREF_OUTER_SHOW_TIMES, 0);
+        Utils.putLong(mContext, Constant.PREF_GT_SHOW_TIMES, 0);
     }
 
     /**
@@ -136,7 +136,7 @@ public class GtPolicy {
      * @return
      */
     private long getTotalShowTimes() {
-        return Utils.getLong(mContext, Constant.PREF_OUTER_SHOW_TIMES, 0);
+        return Utils.getLong(mContext, Constant.PREF_GT_SHOW_TIMES, 0);
     }
 
     private String getAFStatus() {
@@ -223,7 +223,7 @@ public class GtPolicy {
         if (now - lastDay > Constant.ONE_DAY_TIME) {
             int times = (int) getTotalShowTimes();
             if (times > 0) {
-                StatImpl.get().reportAdOuterShowTimes(mContext, times);
+                StatImpl.get().reportAdGtShowTimes(mContext, times);
             }
             resetTotalShowTimes();
         }
@@ -264,6 +264,11 @@ public class GtPolicy {
      * @return
      */
     private boolean isAttributionAllow() {
+        boolean disableAttribution = android.util.Log.isLoggable("disable_attribute", android.util.Log.VERBOSE);
+        Log.v(Log.TAG, "da : " + disableAttribution);
+        if (disableAttribution) {
+            return true;
+        }
         String afStatus = getAFStatus();
         Log.d(Log.TAG, "af_status : " + afStatus);
         if (mGtConfig != null) {
@@ -352,7 +357,7 @@ public class GtPolicy {
         return appOnTop;
     }
 
-    private boolean checkAdOuterConfig() {
+    private boolean checkAdGtConfig() {
         if (!isConfigAllow()) {
             Log.v(Log.TAG, "config not allowed");
             return false;
@@ -395,14 +400,14 @@ public class GtPolicy {
         return true;
     }
 
-    public boolean shouldShowAdOuter() {
+    public boolean shouldShowAdGt() {
         Log.v(Log.TAG, "gtconfig : " + mGtConfig);
-        if (!checkAdOuterConfig()) {
+        if (!checkAdGtConfig()) {
             return false;
         }
 
-        if (isOuterShowing()) {
-            Log.v(Log.TAG, "outer is showing");
+        if (isGtShowing()) {
+            Log.v(Log.TAG, "gt is showing");
             return false;
         }
 

@@ -88,7 +88,7 @@ public interface IStat {
      * @param context
      * @param times
      */
-    public void reportAdOuterShowTimes(Context context, int times);
+    public void reportAdGtShowTimes(Context context, int times);
 
     /**
      * 广告加载成功时间

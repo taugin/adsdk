@@ -84,7 +84,7 @@ public class DataManager {
         return null;
     }
 
-    public GtConfig getRemoteAdPolicy(String key) {
+    public GtConfig getRemoteGtPolicy(String key) {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(key);
             if (!TextUtils.isEmpty(data)) {
