@@ -1,13 +1,137 @@
 {
-    "adids": {"admob": "","adx": "","fb": ""},
-    "gtpolicy": {"e":1,"d":3600,"i":1800,"mc":20,"mv":-1,"attr":[],"ec":[],"ms":[]},
-    "adplaces": [
-      {"name":"open_splash_ex","mode":"con","pids":[{"sdk":"fb","type":"native","pid":"541656102860623_541708392855394"}],"maxcount":100,"percent":100},
-      {"name":"main_top_ex","mode":"con","as":1,"pids":[{"sdk":"fb","type":"native","pid":"541656102860623_541710012855232"}, {"sdk":"adx","type":"native","pid":"ca-mb-app-pub-7850146945256374/5850313518/2074692186"},{"sdk":"admob","type":"banner","pid":"ca-mb-app-pub-7850146945256374/5850313518/3359823945"}],"maxcount":100,"percent":100},
-      {"name":"main_bottom_ex","mode":"con","pids":[{"sdk":"admob","type":"banner","pid":"ca-mb-app-pub-7850146945256374/5850313518/3359823945"}],"maxcount":100,"percent":100},
-      {"name":"open_social_ex","mode":"con","pids":[{"sdk":"fb","type":"interstitial","pid":"541656102860623_541710262855207"}, {"sdk":"admob","type":"interstitial","pid":"ca-mb-app-pub-7850146945256374/5850313518/8256806509"}],"maxcount":100,"percent":100},
-      {"name":"browser_bottom_ex","mode":"con","pids":[{"sdk":"admob","type":"banner","pid":"ca-mb-app-pub-7850146945256374/5850313518/3770781781"}],"maxcount":100,"percent":100},
-      {"name":"exit_bottom_ex","mode":"con","pids":[{"sdk":"fb","type":"native","pid":"541656102860623_541712366188330"}, {"sdk":"admob","type":"banner","pid":"ca-mb-app-pub-7850146945256374/5850313518/4750903091"}],"maxcount":100,"percent":100},
-      {"name":"gt_outer_place","mode":"ran","pids":[{"sdk":"admob","type":"interstitial","pid":"ca-mb-app-pub-7850146945256374/5850313518/5359619203"}, {"sdk":"admob","type":"interstitial","pid":"ca-mb-app-pub-7850146945256374/5850313518/6481125385"}],"maxcount":100,"percent":100}
-    ]
+  "adids": {
+    "admob": "",
+    "adx": "",
+    "fb": ""
+  },
+  "gtconfig": {
+    "e": 1,
+    "d": 3600,
+    "i": 1800,
+    "mc": 20,
+    "mv": -1,
+    "attr": ["non-organic"],
+    "ec": [],
+    "ms": []
+  },
+  "adplaces": [
+    {
+      "name": "open_splash_ex",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "fb",
+          "type": "native",
+          "pid": "541656102860623_541708392855394"
+        }
+      ],
+      "maxcount": 100,
+      "percent": 100
+    },
+    {
+      "name": "main_top_ex",
+      "mode": "con",
+      "as": 1,
+      "pids": [
+        {
+          "sdk": "fb",
+          "type": "native",
+          "pid": "541656102860623_541710012855232"
+        },
+        {
+          "sdk": "adx",
+          "type": "native",
+          "pid": "ca-mb-app-pub-7850146945256374/5850313518/2074692186"
+        },
+        {
+          "sdk": "admob",
+          "type": "banner",
+          "pid": "ca-mb-app-pub-7850146945256374/5850313518/3359823945"
+        }
+      ],
+      "maxcount": 100,
+      "percent": 100
+    },
+    {
+      "name": "main_bottom_ex",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "admob",
+          "type": "banner",
+          "pid": "ca-mb-app-pub-7850146945256374/5850313518/3359823945"
+        }
+      ],
+      "maxcount": 100,
+      "percent": 100
+    },
+    {
+      "name": "open_social_ex",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "fb",
+          "type": "interstitial",
+          "pid": "541656102860623_541710262855207"
+        },
+        {
+          "sdk": "admob",
+          "type": "interstitial",
+          "pid": "ca-mb-app-pub-7850146945256374/5850313518/8256806509"
+        }
+      ],
+      "maxcount": 100,
+      "percent": 100
+    },
+    {
+      "name": "browser_bottom_ex",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "admob",
+          "type": "banner",
+          "pid": "ca-mb-app-pub-7850146945256374/5850313518/3770781781"
+        }
+      ],
+      "maxcount": 100,
+      "percent": 100
+    },
+    {
+      "name": "exit_bottom_ex",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "fb",
+          "type": "native",
+          "pid": "541656102860623_541712366188330"
+        },
+        {
+          "sdk": "admob",
+          "type": "banner",
+          "pid": "ca-mb-app-pub-7850146945256374/5850313518/4750903091"
+        }
+      ],
+      "maxcount": 100,
+      "percent": 100
+    },
+    {
+      "name": "gt_outer_place",
+      "mode": "con",
+      "as": 1,
+      "pids": [
+        {
+          "sdk": "adx",
+          "type": "interstitial",
+          "pid": "ca-mb-app-pub-7850146945256374/5850313518/5359619203"
+        },
+        {
+          "sdk": "adx",
+          "type": "interstitial",
+          "pid": "ca-mb-app-pub-7850146945256374/5850313518/6481125385"
+        }
+      ],
+      "maxcount": 100,
+      "percent": 100
+    }
+  ]
 }

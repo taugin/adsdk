@@ -290,7 +290,7 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdOuterShowTimes(Context context, int times) {
+    public void reportAdGtShowTimes(Context context, int times) {
         if (context == null) {
             return;
         }

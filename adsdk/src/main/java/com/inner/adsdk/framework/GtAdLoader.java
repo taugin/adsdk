@@ -79,7 +79,7 @@ public class GtAdLoader {
         if (adConfig == null) {
             return;
         }
-        GtConfig gtConfig = DataManager.get(mContext).getRemoteAdPolicy(Constant.ADPOLICY_NAME);
+        GtConfig gtConfig = DataManager.get(mContext).getRemoteGtPolicy(Constant.ADPOLICY_NAME);
         if (gtConfig == null && adConfig != null) {
             gtConfig = adConfig.getGtConfig();
         }
@@ -105,7 +105,7 @@ public class GtAdLoader {
     private void fireOuterAd() {
         if (mAdSdk != null) {
             updateAdPolicy();
-            if (!GtPolicy.get(mContext).shouldShowAdOuter()) {
+            if (!GtPolicy.get(mContext).shouldShowAdGt()) {
                 return;
             }
             Log.v(Log.TAG, "");
@@ -115,7 +115,7 @@ public class GtAdLoader {
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     StatImpl.get().reportAdOuterLoaded(mContext);
-                    if (GtPolicy.get(mContext).shouldShowAdOuter()) {
+                    if (GtPolicy.get(mContext).shouldShowAdGt()) {
                         mAdSdk.showComplexAds(pidName, null);
                         StatImpl.get().reportAdOuterShow(mContext);
                     }
@@ -124,13 +124,13 @@ public class GtAdLoader {
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    GtPolicy.get(mContext).reportOuterShowing(false);
+                    GtPolicy.get(mContext).reportGtShowing(false);
                 }
 
                 @Override
                 public void onShow(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    GtPolicy.get(mContext).reportOuterShowing(true);
+                    GtPolicy.get(mContext).reportGtShowing(true);
                     StatImpl.get().reportAdOuterShowing(mContext);
                 }
 
