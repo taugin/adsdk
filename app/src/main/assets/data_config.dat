@@ -117,7 +117,7 @@
     {
       "name": "gt_outer_place",
       "mode": "con",
-      "as": 1,
+      "as": 0,
       "pids": [
         {
           "sdk": "adx",

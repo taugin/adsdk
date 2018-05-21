@@ -51,13 +51,11 @@ public class MainActivity extends Activity {
     }
 
     private void loadInterstitial() {
-        AdSdk.get(mContext).loadInterstitial("gt_outer_place", new SimpleAdSdkListener() {
-            @Override
-            public void onLoaded(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                AdSdk.get(mContext).showInterstitial(pidName);
-            }
-        });
+        if (AdSdk.get(mContext).isInterstitialLoaded("gt_outer_place")) {
+            AdSdk.get(mContext).showInterstitial("gt_outer_place");
+        } else {
+            AdSdk.get(mContext).loadInterstitial("gt_outer_place", null);
+        }
     }
 
     private void loadAdViewAdx(boolean useAdCard) {
