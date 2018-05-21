@@ -28,7 +28,7 @@ public class PidConfig {
 
     private long timeOut;
 
-    private long delayLoadTime = 500;
+    private long delayLoadTime = 0;
 
     public String getAdPlaceName() {
         return adPlaceName;

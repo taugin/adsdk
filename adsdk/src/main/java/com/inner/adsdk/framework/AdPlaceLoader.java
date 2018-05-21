@@ -41,7 +41,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     private OnAdSdkListener mOnAdSdkListener;
     private OnAdSdkListener mOnAdPlaceLoaderListener = new AdPlaceLoaderListener();
     private AdParams mAdParams;
-    private boolean mFromRemote = false;
+    private boolean mHasNotifyLoaded = false;
     // banner和native的listener集合
     private Map<ISdkLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<ISdkLoader, OnAdBaseListener>();
     private WeakReference<Activity> mActivity;
@@ -195,6 +195,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
             mActivity = new WeakReference<Activity>(activity);
         }
         mCurrentAdLoader = null;
+        mHasNotifyLoaded = false;
         if (mAdPlace.isConcurrent()) {
             loadInterstitialConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -313,6 +314,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         }
         mAdParams = adParams;
         mCurrentAdLoader = null;
+        mHasNotifyLoaded = false;
         if (mAdPlace.isConcurrent()) {
             loadAdViewConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -489,6 +491,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         }
         mAdParams = adParams;
         mCurrentAdLoader = null;
+        mHasNotifyLoaded = false;
         if (mAdPlace.isConcurrent()) {
             loadComplexAdsConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -685,6 +688,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         if (mCurrentAdLoader == null) {
             mCurrentAdLoader = adLoader;
         }
+    }
+
+    @Override
+    public boolean hasNotifyLoaded() {
+        if (mAdPlace != null && mAdPlace.isLoadOnlyOnce()) {
+            return mHasNotifyLoaded;
+        }
+        return false;
+    }
+
+    @Override
+    public void notifyAdLoaded() {
+        mHasNotifyLoaded = true;
     }
 
     @Override

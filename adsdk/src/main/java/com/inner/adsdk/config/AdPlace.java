@@ -26,6 +26,8 @@ public class AdPlace {
 
     private String uniqueValue;
 
+    private boolean loadOnlyOnce = true;
+
     public String getName() {
         return name;
     }
@@ -93,6 +95,14 @@ public class AdPlace {
         this.uniqueValue = uniqueValue;
     }
 
+    public boolean isLoadOnlyOnce() {
+        return loadOnlyOnce;
+    }
+
+    public void setLoadOnlyOnce(boolean loadOnlyOnce) {
+        this.loadOnlyOnce = loadOnlyOnce;
+    }
+
     public boolean isSequence() {
         return TextUtils.equals(Constant.MODE_SEQ, getMode());
     }
@@ -113,6 +123,9 @@ public class AdPlace {
                 ", pidsList=" + pidsList +
                 ", maxCount=" + maxCount +
                 ", percent=" + percent +
+                ", autoSwitch=" + autoSwitch +
+                ", uniqueValue='" + uniqueValue + '\'' +
+                ", loadOnlyOnce=" + loadOnlyOnce +
                 '}';
     }
 }

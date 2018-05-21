@@ -214,6 +214,9 @@ public class AdParser implements IParser {
             if (jobj.has(AUTO_SWITCH)) {
                 adPlace.setAutoSwitch(jobj.getInt(AUTO_SWITCH) == 1);
             }
+            if (jobj.has(LOAD_ONLY_ONCE)) {
+                adPlace.setLoadOnlyOnce(jobj.getBoolean(LOAD_ONLY_ONCE));
+            }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdPlace error : " + e);

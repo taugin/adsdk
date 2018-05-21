@@ -3,6 +3,7 @@ package com.inner.adsdk.adloader.base;
 import com.inner.adsdk.adloader.listener.IManagerListener;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
 import com.inner.adsdk.listener.OnAdSdkListener;
+import com.inner.adsdk.log.Log;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -37,8 +38,26 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         return false;
     }
 
+    private boolean hasNotifyLoaded() {
+        if (listener != null) {
+            return listener.hasNotifyLoaded();
+        }
+        return false;
+    }
+
+    private void notifyAdLoaded() {
+        if (listener != null) {
+            listener.notifyAdLoaded();
+        }
+    }
+
     @Override
     public void onAdLoaded() {
+        if (hasNotifyLoaded()) {
+            Log.v(Log.TAG, "has notify loaded ******************");
+            return;
+        }
+        notifyAdLoaded();
         if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onLoaded(placeName, source, adType);
         }
@@ -103,6 +122,10 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
 
     @Override
     public void onInterstitialLoaded() {
+        if (hasNotifyLoaded()) {
+            Log.v(Log.TAG, "has notify loaded");
+            return;
+        }
         if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onLoaded(placeName, source, adType);
         }

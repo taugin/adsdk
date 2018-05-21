@@ -414,6 +414,7 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
             }
         } else {
             if (mHandler != null) {
+                mHandler.removeCallbacks(runnable);
                 mHandler.postDelayed(runnable, delay);
             }
         }
@@ -440,15 +441,21 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
      *
      * @param cached
      */
-    protected void notifyAdLoaded(final boolean cached) {
-        delayNotifyAdLoaded(new Runnable() {
-            @Override
-            public void run() {
-                if (getAdListener() != null) {
-                    setLoadedFlag();
-                    getAdListener().onAdLoaded();
-                }
-            }
-        }, cached);
+    protected void notifyAdLoaded(boolean cached) {
+        delayNotifyAdLoaded(mNotifyLoadRunnable, cached);
+    }
+
+    private Runnable mNotifyLoadRunnable = new Runnable() {
+        @Override
+        public void run() {
+            notifyAdLoadedByListener();
+        }
+    };
+
+    private void notifyAdLoadedByListener() {
+        if (getAdListener() != null) {
+            setLoadedFlag();
+            getAdListener().onAdLoaded();
+        }
     }
 }

@@ -25,7 +25,10 @@ public interface IParser {
     String ADSWITCH = "adswitch";
     String NAME = "name";
     String MODE = "mode";
+    // 对于插屏，关闭广告自动切换下一个，对于banner和native，点击自动切换
     String AUTO_SWITCH = "as";
+    // 开启或关闭单次加载通知
+    String LOAD_ONLY_ONCE = "loo";
 
     String MAXCOUNT = "maxcount";
     String PERCENT = "percent";
