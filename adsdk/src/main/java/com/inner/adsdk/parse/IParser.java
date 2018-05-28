@@ -27,6 +27,8 @@ public interface IParser {
     String ADPLACES = "adplaces";
     // 开光控制配置信息
     String ADSWITCH = "adswitch";
+    // 广告位引用影射表
+    String ADREFS = "adrefs";
     // 自定义广告位名称
     String NAME = "name";
     // 广告的加载模式 seq, ran, con
@@ -87,4 +89,5 @@ public interface IParser {
     GtConfig parseGtPolicy(String data);
     Map<String, String> parseAdIds(String data);
     AdSwitch parseAdSwitch(String data);
+    Map<String, String> parseAdRefs(String data);
 }

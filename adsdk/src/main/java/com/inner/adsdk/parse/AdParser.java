@@ -55,6 +55,7 @@ public class AdParser implements IParser {
             GtConfig gtConfig = null;
             List<AdPlace> adPlaces = null;
             AdSwitch adSwitch = null;
+            Map<String, String> adrefs = null;
             if (jobj.has(ADIDS)) {
                 adIds = parseAdIds(jobj.getString(ADIDS));
             }
@@ -67,12 +68,16 @@ public class AdParser implements IParser {
             if (jobj.has(ADSWITCH)) {
                 adSwitch = parseAdSwitch(jobj.getString(ADSWITCH));
             }
-            if (adPlaces != null || gtConfig != null || adIds != null || adSwitch != null) {
+            if (jobj.has(ADREFS)) {
+                adrefs = parseAdRefs(jobj.getString(ADREFS));
+            }
+            if (adPlaces != null || gtConfig != null || adIds != null || adSwitch != null || adrefs != null) {
                 adConfig = new AdConfig();
                 adConfig.setAdPlaceList(adPlaces);
                 adConfig.setGtConfig(gtConfig);
                 adConfig.setAdIds(adIds);
                 adConfig.setAdSwitch(adSwitch);
+                adConfig.setAdRefs(adrefs);
             }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdConfigInternal error : " + e);
@@ -93,7 +98,9 @@ public class AdParser implements IParser {
             while(iterator.hasNext()) {
                 key = iterator.next();
                 value = jobj.getString(key);
-                adIds.put(key, value);
+                if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
+                    adIds.put(key, value);
+                }
             }
         } catch(Exception e) {
             Log.v(Log.TAG, "parseAdIds error : " + e);
@@ -295,5 +302,28 @@ public class AdParser implements IParser {
             Log.v(Log.TAG, "parseAdSwitch error : " + e);
         }
         return adSwitch;
+    }
+
+    @Override
+    public Map<String, String> parseAdRefs(String data) {
+        Map<String, String> adRefs = null;
+        try {
+            data = getContent(data);
+            JSONObject jobj = new JSONObject(data);
+            adRefs = new HashMap<String, String>();
+            Iterator<String> iterator = jobj.keys();
+            String key = null;
+            String value = null;
+            while(iterator.hasNext()) {
+                key = iterator.next();
+                value = jobj.getString(key);
+                if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
+                    adRefs.put(key, value);
+                }
+            }
+        } catch(Exception e) {
+            Log.v(Log.TAG, "parseAdRefs error : " + e);
+        }
+        return adRefs;
     }
 }

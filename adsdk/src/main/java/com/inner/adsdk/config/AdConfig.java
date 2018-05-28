@@ -22,6 +22,8 @@ public class AdConfig {
 
     private AdSwitch adSwitch;
 
+    private Map<String, String> adRefs; // 广告场景相互引用
+
     public Map<String, String> getAdIds() {
         return adIds;
     }
@@ -52,6 +54,14 @@ public class AdConfig {
 
     public void setAdSwitch(AdSwitch adSwitch) {
         this.adSwitch = adSwitch;
+    }
+
+    public Map<String, String> getAdRefs() {
+        return adRefs;
+    }
+
+    public void setAdRefs(Map<String, String> adRefs) {
+        this.adRefs = adRefs;
     }
 
     /**

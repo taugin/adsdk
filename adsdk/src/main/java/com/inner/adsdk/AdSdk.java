@@ -2,6 +2,7 @@ package com.inner.adsdk;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.inner.adsdk.config.AdConfig;
@@ -87,6 +88,9 @@ public class AdSdk {
 
     private AdPlaceLoader getAdLoader(String pidName, boolean forLoad) {
         Log.d(Log.TAG, "getAdLoader forLoad : " + forLoad);
+        String oldPidName = pidName;
+        pidName = getAdRefPidName(pidName);
+        Log.v(Log.TAG, "pidName : " + oldPidName + " , adrefPidName : " + pidName);
         AdPlaceLoader loader = mAdLoaders.get(pidName);
         if (!forLoad) {
             return loader;
@@ -100,6 +104,26 @@ public class AdSdk {
             }
         }
         return loader;
+    }
+
+    /**
+     * 获取引用pid名字
+     * @param pidName
+     * @return 引用pid名字
+     */
+    private String getAdRefPidName(String pidName) {
+        String adrefPidName = pidName;
+        Map<String, String> adRefs = DataManager.get(mContext).getRemoteAdRefs();
+        if (adRefs == null && mLocalAdConfig != null) {
+            adRefs = mLocalAdConfig.getAdRefs();
+        }
+        if (adRefs != null && adRefs.containsKey(pidName)) {
+            adrefPidName = adRefs.get(pidName);
+        }
+        if (!TextUtils.isEmpty(adrefPidName)) {
+            return adrefPidName;
+        }
+        return pidName;
     }
 
     /**
@@ -119,7 +143,7 @@ public class AdSdk {
             adPlace = mLocalAdConfig.get(pidName);
             useRemote = false;
         }
-        Map<String, String> adIds = DataManager.get(mContext).getRemoteAdIds(Constant.ADIDS_NAME);
+        Map<String, String> adIds = DataManager.get(mContext).getRemoteAdIds();
         if (adIds == null) {
             adIds = mLocalAdConfig.getAdIds();
         }

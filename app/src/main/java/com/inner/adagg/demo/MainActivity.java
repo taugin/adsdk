@@ -121,11 +121,11 @@ public class MainActivity extends Activity {
     }
 
     private void loadComplexAd() {
-        AdSdk.get(mContext).loadComplexAds("gt_outer_place", new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadComplexAds("open_social_ex", new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                AdSdk.get(mContext).showComplexAds("gt_outer_place", null);
+                AdSdk.get(mContext).showComplexAds(pidName, null);
             }
         });
     }

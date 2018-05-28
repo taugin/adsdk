@@ -94,9 +94,9 @@ public class DataManager {
         return null;
     }
 
-    public Map<String, String> getRemoteAdIds(String key) {
+    public Map<String, String> getRemoteAdIds() {
         if (mDataRequest != null) {
-            String data = mDataRequest.getString(key);
+            String data = mDataRequest.getString(Constant.ADIDS_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseAdIds(data);
             }
@@ -117,5 +117,15 @@ public class DataManager {
             Log.v(Log.TAG, "adSwitch : " + adSwitch);
         }
         return adSwitch;
+    }
+
+    public Map<String, String> getRemoteAdRefs() {
+        if (mDataRequest != null) {
+            String data = mDataRequest.getString(Constant.ADREFS_NAME);
+            if (!TextUtils.isEmpty(data)) {
+                return mParser.parseAdRefs(data);
+            }
+        }
+        return null;
     }
 }
