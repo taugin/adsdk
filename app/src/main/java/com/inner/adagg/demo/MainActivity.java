@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
         }
         AdParams adParams = builder.build();
 
-        AdSdk.get(mContext).loadAdView("main_bottom_ex", adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadAdView("banner_and_native", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
@@ -111,7 +111,7 @@ public class MainActivity extends Activity {
         }
         AdParams adParams = builder.build();
 
-        AdSdk.get(mContext).loadAdView("open_splash_ex", adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadAdView("banner_and_native", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
@@ -121,7 +121,7 @@ public class MainActivity extends Activity {
     }
 
     private void loadComplexAd() {
-        AdSdk.get(mContext).loadComplexAds("open_social_ex", new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadComplexAds("interstitial", new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
@@ -148,7 +148,7 @@ public class MainActivity extends Activity {
         builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
         AdParams adParams = builder.build();
 
-        AdSdk.get(mContext).loadAdView("main_top_ex", adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadAdView("banner_and_native", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
