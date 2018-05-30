@@ -70,14 +70,13 @@ public class DataManager {
     }
 
     public AdConfig getLocalAdConfig() {
+        String cfgName = getConfigName();
+        String defName = getDefaultName();
+        Log.v(Log.TAG, "cfg : " + cfgName + " , def : " + defName);
         if (mLocalAdConfig == null) {
-            String cfgName = getConfigName();
-            Log.v(Log.TAG, "cfg : " + cfgName);
             String data = Utils.readAssets(mContext, cfgName);
             if (TextUtils.isEmpty(data)) {
-                cfgName = getDefaultName();
-                Log.v(Log.TAG, "cfg : " + cfgName);
-                data = Utils.readAssets(mContext, cfgName);
+                data = Utils.readAssets(mContext, defName);
             }
             mLocalAdConfig = mParser.parseAdConfig(data);
         }
@@ -92,9 +91,7 @@ public class DataManager {
             String filename = pkgmd5.substring(0, 8);
             cfgName = "cfg" + filename + ".dat";
         } catch(Exception e) {
-        }
-        if (TextUtils.isEmpty(cfgName) || cfgName.length() < 8) {
-            cfgName = getDefaultName();
+            Log.v(Log.TAG, "error : " + e);
         }
         return cfgName;
     }
