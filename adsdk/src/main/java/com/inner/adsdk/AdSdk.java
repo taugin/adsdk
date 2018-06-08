@@ -202,7 +202,7 @@ public class AdSdk {
     }
 
     public void loadAdView(String pidName, OnAdSdkListener l) {
-        loadAdView(pidName, null, l);
+        loadAdView(pidName, new AdParams.Builder().build(), l);
     }
 
     public void loadAdView(String pidName, AdParams adParams) {

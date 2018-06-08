@@ -13,6 +13,7 @@ import com.inner.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.inner.adsdk.adloader.listener.IManagerListener;
 import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
+import com.inner.adsdk.adloader.wemob.WemobLoader;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
@@ -107,6 +108,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                             }
                         } else if (config.isAdx()) {
                             loader = new AdxLoader();
+                            loader.init(mContext);
+                            loader.setPidConfig(config);
+                            loader.setListenerManager(this);
+                            loader.setAdId(adId);
+                            if (loader.allowUseLoader()) {
+                                mAdLoaders.add(loader);
+                            }
+                        } else if (config.isWemob()) {
+                            loader = new WemobLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);

@@ -11,7 +11,7 @@ public class Constant {
     public static final String AD_SDK_ADMOB = "admob";
     public static final String AD_SDK_FACEBOOK = "fb";
     public static final String AD_SDK_ADX = "adx";
-
+    public static final String AD_SDK_WEMOB = "wemob";
 
     public static final int    NOSET = -1;
     public static final int    BANNER = 1000;
@@ -33,6 +33,10 @@ public class Constant {
     public static final String TYPE_BANNER = "banner";
     public static final String TYPE_NATIVE = "native";
     public static final String TYPE_INTERSTITIAL = "interstitial";
+
+    public static final String APPKEY = "appkey";
+
+    public static final String CHANNEL = "channel";
 
     public static final String KEY_PASSWORD = "123456789";
 
