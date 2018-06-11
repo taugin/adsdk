@@ -24,6 +24,11 @@ public class MainActivity extends Activity {
             R.layout.ad_common_native_card_medium,
             R.layout.ad_common_native_card_medium_upbtn
     };
+    private static final int CARDID[] = new int[] {
+            AdExtra.NATIVE_CARD_SMALL,
+            AdExtra.NATIVE_CARD_MEDIUM,
+            AdExtra.NATIVE_CARD_LARGE
+    };
     private static final String TAG = "MA";
     private Context mContext;
 
@@ -83,7 +88,8 @@ public class MainActivity extends Activity {
         builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
         if (useAdCard) {
             // 设置adx native 预制的布局
-            builder.setAdCardStyle(AdExtra.AD_SDK_ADX, AdExtra.NATIVE_CARD_SMALL);
+            int card = CARDID[new Random(System.currentTimeMillis()).nextInt(CARDID.length)];
+            builder.setAdCardStyle(AdExtra.AD_SDK_ADX, card);
         } else {
             //  设置外部布局参数
             builder.setAdRootView(AdExtra.AD_SDK_ADX, view);
@@ -113,7 +119,8 @@ public class MainActivity extends Activity {
         builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.ADMOB_LARGE_BANNER);
         if (useAdCard) {
             // 设置adx native 预制的布局
-            builder.setAdCardStyle(AdExtra.AD_SDK_FACEBOOK, AdExtra.NATIVE_CARD_MEDIUM);
+            int card = CARDID[new Random(System.currentTimeMillis()).nextInt(CARDID.length)];
+            builder.setAdCardStyle(AdExtra.AD_SDK_FACEBOOK, card);
         } else {
             //  设置外部布局参数
             builder.setAdRootView(AdExtra.AD_SDK_FACEBOOK, view);

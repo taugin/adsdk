@@ -83,10 +83,13 @@ public class AdxBindNativeView {
         if (adContainer == null) {
             throw new AndroidRuntimeException("adContainer is null");
         }
-        int layoutId = R.layout.adx_native_card_medium;
+        int layoutId = R.layout.fb_native_card_small;
         if (cardId == Constant.NATIVE_CARD_SMALL) {
+            layoutId = R.layout.fb_native_card_small;
         } else if (cardId == Constant.NATIVE_CARD_MEDIUM) {
+            layoutId = R.layout.fb_native_card_medium;
         } else if (cardId == Constant.NATIVE_CARD_LARGE) {
+            layoutId = R.layout.fb_native_card_large;
         }
         View rootView = LayoutInflater.from(adContainer.getContext()).inflate(layoutId, null);
         if (rootView == null) {
@@ -95,12 +98,15 @@ public class AdxBindNativeView {
         if (!(rootView instanceof FrameLayout)) {
             throw new AndroidRuntimeException("Root View must be a FrameLayout");
         }
-        mParams.setAdTitle(R.id.adx_title);
-        mParams.setAdDetail(R.id.adx_detail);
-        mParams.setAdIcon(R.id.adx_icon);
-        mParams.setAdAction(R.id.adx_action);
-        mParams.setAdCover(R.id.adx_cover);
-        mParams.setAdMediaView(R.id.adx_mediaview);
+        mParams.setAdTitle(R.id.fb_title);
+        mParams.setAdSubTitle(R.id.fb_sub_title);
+        mParams.setAdSocial(R.id.fb_social);
+        mParams.setAdDetail(R.id.fb_detail);
+        mParams.setAdIcon(R.id.fb_icon);
+        mParams.setAdAction(R.id.fb_action_btn);
+        mParams.setAdCover(R.id.fb_image_cover);
+        mParams.setAdChoices(R.id.fb_ad_choices_container);
+        mParams.setAdMediaView(R.id.fb_media_cover);
         try {
             showUnifiedAdView(rootView, nativeAd, pidConfig);
         } catch(Exception e) {
