@@ -15,8 +15,15 @@ import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 
+import java.util.Random;
+
 public class MainActivity extends Activity {
 
+    private static final int LAYOUT[] = new int[] {
+            R.layout.ad_common_native_card_small,
+            R.layout.ad_common_native_card_medium,
+            R.layout.ad_common_native_card_medium_upbtn
+    };
     private static final String TAG = "MA";
     private Context mContext;
 
@@ -47,6 +54,15 @@ public class MainActivity extends Activity {
             loadAdViewCommon(R.layout.ad_common_native_card_medium_upbtn);
         } else if (v.getId() == R.id.adx_fb_native_common3) {
             loadAdViewCommon(R.layout.ad_common_native_card_small);
+        } else if (v.getId() == R.id.webmob_interstitial) {
+            AdSdk.get(mContext).loadInterstitial("interstitial", new SimpleAdSdkListener(){
+                @Override
+                public void onLoaded(String pidName, String source, String adType) {
+                    AdSdk.get(mContext).showInterstitial(pidName);
+                }
+            });
+        } else if (v.getId() == R.id.webmob_native) {
+            loadAdViewCommon(LAYOUT[new Random(System.currentTimeMillis()).nextInt(LAYOUT.length)]);
         }
     }
 
@@ -141,6 +157,7 @@ public class MainActivity extends Activity {
         builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
         builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
+        builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
         builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
         builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
         builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);

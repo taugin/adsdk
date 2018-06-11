@@ -399,6 +399,18 @@ public class WemobLoader extends AbstractSdkLoader {
     }
 
     @Override
+    public boolean isNativeLoaded() {
+        boolean loaded = false;
+        if (nativeAd != null) {
+            loaded = !isCachedAdExpired(nativeAd);
+        }
+        if (loaded) {
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+        }
+        return loaded;
+    }
+
+    @Override
     public void showNative(ViewGroup viewGroup) {
         Log.v(Log.TAG, "showNative - wemob");
         WemobBindNativeView wemobBindNativeView = new WemobBindNativeView();
