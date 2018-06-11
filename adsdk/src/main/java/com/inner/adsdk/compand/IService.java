@@ -1,4 +1,4 @@
-package com.inner.adsdk.framework;
+package com.inner.adsdk.compand;
 
 import android.app.Service;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.inner.adsdk.constant.Constant;
+import com.inner.adsdk.framework.GtAdLoader;
 
 /**
  * Created by Administrator on 2018/3/19.

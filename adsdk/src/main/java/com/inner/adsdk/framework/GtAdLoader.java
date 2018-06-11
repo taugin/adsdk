@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.os.SystemClock;
 
 import com.inner.adsdk.AdSdk;
+import com.inner.adsdk.compand.IService;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.constant.Constant;
