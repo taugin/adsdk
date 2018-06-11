@@ -5,7 +5,7 @@ def useProject = true;
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.onechat.social.messager"
+        applicationId "com.inner.adsdk.demo"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
