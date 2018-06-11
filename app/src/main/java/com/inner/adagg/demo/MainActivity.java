@@ -124,13 +124,13 @@ public class MainActivity extends Activity {
         } else {
             //  设置外部布局参数
             builder.setAdRootView(AdExtra.AD_SDK_FACEBOOK, view);
-            builder.setAdTitle(AdExtra.AD_SDK_FACEBOOK, R.id.fb_title);
-            builder.setAdDetail(AdExtra.AD_SDK_FACEBOOK, R.id.fb_detail);
-            builder.setAdIcon(AdExtra.AD_SDK_FACEBOOK, R.id.fb_icon);
-            builder.setAdAction(AdExtra.AD_SDK_FACEBOOK, R.id.fb_action_btn);
-            builder.setAdCover(AdExtra.AD_SDK_FACEBOOK, R.id.fb_image_cover);
-            builder.setAdChoices(AdExtra.AD_SDK_FACEBOOK, R.id.fb_ad_choices_container);
-            builder.setAdMediaView(AdExtra.AD_SDK_FACEBOOK, R.id.fb_media_cover);
+            builder.setAdTitle(AdExtra.AD_SDK_FACEBOOK, R.id.native_title);
+            builder.setAdDetail(AdExtra.AD_SDK_FACEBOOK, R.id.native_detail);
+            builder.setAdIcon(AdExtra.AD_SDK_FACEBOOK, R.id.native_icon);
+            builder.setAdAction(AdExtra.AD_SDK_FACEBOOK, R.id.native_action_btn);
+            builder.setAdCover(AdExtra.AD_SDK_FACEBOOK, R.id.native_image_cover);
+            builder.setAdChoices(AdExtra.AD_SDK_FACEBOOK, R.id.native_ad_choices_container);
+            builder.setAdMediaView(AdExtra.AD_SDK_FACEBOOK, R.id.native_media_cover);
         }
         AdParams adParams = builder.build();
 

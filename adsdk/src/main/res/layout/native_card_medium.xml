@@ -3,38 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/CardStyle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#FFFFFFFF">
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/fb_native_ad_unit"
+        android:id="@+id/native_native_ad_unit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:orientation="vertical">
 
         <android.support.percent.PercentRelativeLayout
-            android:id="@+id/fb_cover_info"
+            android:id="@+id/native_cover_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#33000000">
 
             <ImageView
-                android:id="@+id/fb_image_cover"
+                android:id="@+id/native_image_cover"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
                 app:layout_aspectRatio="178%"
                 app:layout_widthPercent="100%" />
 
             <RelativeLayout
-                android:id="@+id/fb_media_cover"
+                android:id="@+id/native_media_cover"
                 android:contentDescription="@null"
                 android:visibility="gone"
                 app:layout_aspectRatio="178%"
                 app:layout_widthPercent="100%" />
 
             <RelativeLayout
-                android:id="@+id/fb_ad_choices_container"
+                android:id="@+id/native_ad_choices_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -44,7 +43,7 @@
         </android.support.percent.PercentRelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/fb_header_info"
+            android:id="@+id/native_header_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
@@ -54,30 +53,35 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/fb_icon"
+                android:id="@+id/native_icon"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:contentDescription="@null" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fb_icon"
-                android:layout_marginTop="10dp"
-                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="24dp"
+                android:layout_toRightOf="@+id/native_icon"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="left">
 
                     <TextView
-                        android:id="@+id/fb_sponsored_label"
+                        android:id="@+id/native_sponsored_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
                         android:background="@drawable/ad_badge_bg_dark"
                         android:gravity="center"
                         android:paddingBottom="2dp"
@@ -85,15 +89,14 @@
                         android:paddingRight="4dp"
                         android:paddingTop="2dp"
                         android:text="AD"
-                        android:layout_toRightOf="@+id/fb_title"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="8sp" />
 
                     <TextView
-                        android:id="@+id/fb_title"
+                        android:id="@+id/native_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
+                        android:layout_toLeftOf="@+id/native_sponsored_label"
                         android:ellipsize="marquee"
                         android:gravity="left|top"
                         android:maxLines="1"
@@ -104,7 +107,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/fb_sub_title"
+                    android:id="@+id/native_sub_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
@@ -112,11 +115,10 @@
                     android:maxLines="1"
                     android:text="One Clean is a light, fast and smart phone cleaner for your Android phones or tablet."
                     android:textColor="@color/secondaryTextColor"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/fb_social"
+                    android:id="@+id/native_social"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
@@ -131,30 +133,25 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/fb_detail"
+            android:id="@+id/native_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="5dp"
             android:ellipsize="marquee"
-            android:gravity="center"
+            android:gravity="left|center_vertical"
             android:maxLines="3"
             android:text="One Clean is a light, fast and smart phone cleaner for your Android phones or tablet."
             android:textColor="@color/secondaryTextColor"
             android:textSize="15sp" />
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/fb_action_btn"
-            style="@style/AdButtonStyle_Large"
-            android:layout_width="wrap_content"
+            android:id="@+id/native_action_btn"
+            style="@style/AdButtonStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:layout_gravity="center"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:layout_marginTop="15dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:text="Learn More" />
