@@ -214,7 +214,7 @@ public class StatImpl implements IStat {
         String eventId = generateEventId("request", sdk, type);
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
-        sendAppsflyer(context, pidName, eventId, extra);
+        // sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
@@ -226,7 +226,7 @@ public class StatImpl implements IStat {
         String eventId = generateEventId("loaded", sdk, type);
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
-        sendAppsflyer(context, pidName, eventId, extra);
+        // sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
@@ -265,7 +265,7 @@ public class StatImpl implements IStat {
         String eventId = generateEventId("error", sdk, type);
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
-        sendAppsflyer(context, pidName, eventId, extra);
+        // sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
