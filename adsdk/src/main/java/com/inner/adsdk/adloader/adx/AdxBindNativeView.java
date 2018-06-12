@@ -35,6 +35,11 @@ public class AdxBindNativeView {
     public void bindNative(Params params, ViewGroup adContainer, UnifiedNativeAd nativeAd, PidConfig pidConfig) {
         mParams = params;
         if (mParams == null) {
+            Log.e(Log.TAG, "bindNative mParams == null###");
+            return;
+        }
+        if (adContainer == null) {
+            Log.e(Log.TAG, "bindNative adContainer == null###");
             return;
         }
         int rootLayout = mParams.getNativeRootLayout();
@@ -49,6 +54,8 @@ public class AdxBindNativeView {
             }
         } else if (cardId > 0) {
             bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
+        } else {
+            Log.e(Log.TAG, "Can not find adx native layout###");
         }
     }
 

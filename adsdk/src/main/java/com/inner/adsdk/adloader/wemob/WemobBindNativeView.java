@@ -30,11 +30,11 @@ public class WemobBindNativeView {
     public void bindWemobNative(Params params, ViewGroup adContainer, NativeAd nativeAd, PidConfig pidConfig) {
         mParams = params;
         if (mParams == null) {
-            Log.v(Log.TAG, "bindFBNative mParams == null");
+            Log.e(Log.TAG, "bindWemobNative mParams == null###");
             return;
         }
         if (adContainer == null) {
-            Log.v(Log.TAG, "bindFBNative adContainer == null");
+            Log.e(Log.TAG, "bindWemobNative adContainer == null###");
             return;
         }
         int rootLayout = mParams.getNativeRootLayout();
@@ -49,6 +49,8 @@ public class WemobBindNativeView {
             }
         } else if (cardId > 0) {
             bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
+        } else {
+            Log.e(Log.TAG, "Can not find wemob native layout###");
         }
     }
 

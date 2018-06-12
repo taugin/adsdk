@@ -27,17 +27,16 @@ import java.util.Random;
  */
 
 public class FBBindNativeView {
-
     private Params mParams;
 
     public void bindFBNative(Params params, ViewGroup adContainer, NativeAd nativeAd, PidConfig pidConfig) {
         mParams = params;
         if (mParams == null) {
-            Log.v(Log.TAG, "bindFBNative mParams == null");
+            Log.e(Log.TAG, "bindFBNative mParams == null###");
             return;
         }
         if (adContainer == null) {
-            Log.v(Log.TAG, "bindFBNative adContainer == null");
+            Log.e(Log.TAG, "bindFBNative adContainer == null###");
             return;
         }
         int rootLayout = mParams.getNativeRootLayout();
@@ -52,6 +51,8 @@ public class FBBindNativeView {
             }
         } else if (cardId > 0) {
             bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
+        } else {
+            Log.e(Log.TAG, "Can not find fb native layout###");
         }
     }
 
