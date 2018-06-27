@@ -1,14 +1,7 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
     <style name="CardStyle">
-        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardCornerRadius">2dp</item>
         <item name="cardElevation">1dp</item>
         <item name="contentPadding">0dp</item>
         <item name="cardPreventCornerOverlap">false</item>
@@ -24,7 +17,8 @@
         <item name="android:background">@drawable/ad_button_bg</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-    <style name="AdButtonStyle_Large" parent="Base.Widget.AppCompat.Button.Colored">
+
+    <style name="AdButtonLargeStyle" parent="Base.Widget.AppCompat.Button.Colored">
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_height">36dp</item>
