@@ -24,13 +24,13 @@
         {
           "sdk": "adx",
           "type": "native",
-          "pid": "ca-app-pub-3940256099942544/2247696110"
+          "pid": "ca-mb-app-pub-7694108583341291/2159435159/4916606539",
+           "disable":1
         },
         {
           "sdk": "admob",
           "type": "banner",
-          "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable":1
+          "pid": "ca-app-pub-3940256099942544/6300978111"
         },
          {
            "sdk": "wemob",
@@ -48,8 +48,7 @@
         {
           "sdk": "admob",
           "type": "interstitial",
-          "pid": "ca-app-pub-3940256099942544/1033173712",
-          "disable":1
+          "pid": "ca-app-pub-3940256099942544/1033173712"
         },
         {
            "sdk":"wemob",

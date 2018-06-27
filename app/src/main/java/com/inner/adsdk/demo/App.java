@@ -1,4 +1,4 @@
-package com.inner.adagg.demo;
+package com.inner.adsdk.demo;
 
 import android.app.Application;
 import android.content.Context;
