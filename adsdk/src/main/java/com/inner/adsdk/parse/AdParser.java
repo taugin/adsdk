@@ -29,13 +29,22 @@ public class AdParser implements IParser {
 
     private String getContent(String content) {
         JSONObject jobj = null;
+        JSONArray jarray = null;
         try {
             jobj = new JSONObject(content);
         } catch(Exception e) {
-            Log.v(Log.TAG, "encrypt content");
+            Log.v(Log.TAG, "error : not a json object");
         }
         if (jobj != null) {
             return jobj.toString();
+        }
+        try {
+            jarray = new JSONArray(content);
+        } catch(Exception e) {
+            Log.v(Log.TAG, "error : not a json array");
+        }
+        if (jarray != null) {
+            return jarray.toString();
         }
         return Aes.decrypt(Constant.KEY_PASSWORD, content);
     }

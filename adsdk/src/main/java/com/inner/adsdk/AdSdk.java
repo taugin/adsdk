@@ -78,8 +78,12 @@ public class AdSdk {
      * @param mediaSource
      */
     public void setAttribution(String afStatus, String mediaSource) {
-        Utils.putString(mContext, Constant.AF_STATUS, afStatus);
-        Utils.putString(mContext, Constant.AF_MEDIA_SOURCE, mediaSource);
+        if (!TextUtils.isEmpty(afStatus)) {
+            Utils.putString(mContext, Constant.AF_STATUS, afStatus);
+        }
+        if (!TextUtils.isEmpty(mediaSource)) {
+            Utils.putString(mContext, Constant.AF_MEDIA_SOURCE, mediaSource);
+        }
     }
 
     private AdPlaceLoader getAdLoader(String pidName) {
