@@ -11,6 +11,7 @@ import com.inner.adsdk.manager.DataManager;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by Administrator on 2018/3/20.
@@ -18,7 +19,11 @@ import java.util.Map;
 
 public class StatImpl implements IStat {
 
+    private static final String ALIAS_PROPERTIES_FILE = "e_alias_pro";
+
     private static StatImpl sStatImpl;
+
+    private Properties mEventIdAlias;
 
     public static StatImpl get() {
         synchronized (StatImpl.class) {
@@ -43,6 +48,32 @@ public class StatImpl implements IStat {
     public void init() {
     }
 
+    private String generateEventIdAlias(Context context, String eventId) {
+        if (TextUtils.isEmpty(eventId)) {
+            return eventId;
+        }
+        if (mEventIdAlias == null) {
+            synchronized (this) {
+                if (mEventIdAlias == null) {
+                    try {
+                        mEventIdAlias = new Properties();
+                        mEventIdAlias.load(context.getAssets().open(ALIAS_PROPERTIES_FILE));
+                    } catch (Exception e) {
+                        Log.e(Log.TAG, "error : " + e);
+                    }
+                }
+            }
+        }
+        String aliasEventId = eventId;
+        if (mEventIdAlias != null) {
+            aliasEventId = mEventIdAlias.getProperty(eventId);
+            if (TextUtils.isEmpty(aliasEventId)) {
+                aliasEventId = eventId;
+            }
+        }
+        return aliasEventId;
+    }
+
     private boolean checkArgument(Context context, String pidName, String sdk, String type) {
         if (context == null || TextUtils.isEmpty(pidName) || TextUtils.isEmpty(sdk) || TextUtils.isEmpty(type)) {
             Log.e(Log.TAG, "context or pidname or sdk or type all must not be empty or null");
@@ -51,18 +82,19 @@ public class StatImpl implements IStat {
         return true;
     }
 
-    private String generateEventId(String action, String sdk, String type) {
+    private String generateEventId(Context context, String action, String sdk, String type) {
         StringBuilder builder = new StringBuilder();
         builder.append(action);
         builder.append("_");
         builder.append(type);
         builder.append("_");
         builder.append(sdk);
-        return builder.toString();
+        return generateEventIdAlias(context, builder.toString());
     }
 
     /**
      * 发送Firebase统计事件
+     *
      * @param context
      * @param value
      * @param eventId
@@ -105,6 +137,7 @@ public class StatImpl implements IStat {
 
     /**
      * 发送友盟计数事件
+     *
      * @param context
      * @param value
      * @param eventId
@@ -144,6 +177,7 @@ public class StatImpl implements IStat {
 
     /**
      * 发送友盟计算事件
+     *
      * @param context
      * @param eventId
      * @param extra
@@ -178,6 +212,7 @@ public class StatImpl implements IStat {
 
     /**
      * 发送appsflyer统计事件
+     *
      * @param context
      * @param value
      * @param eventId
@@ -211,7 +246,7 @@ public class StatImpl implements IStat {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
-        String eventId = generateEventId("request", sdk, type);
+        String eventId = generateEventId(context, "request", sdk, type);
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         // sendAppsflyer(context, pidName, eventId, extra);
@@ -223,7 +258,7 @@ public class StatImpl implements IStat {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
-        String eventId = generateEventId("loaded", sdk, type);
+        String eventId = generateEventId(context, "loaded", sdk, type);
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         // sendAppsflyer(context, pidName, eventId, extra);
@@ -235,7 +270,7 @@ public class StatImpl implements IStat {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
-        String eventId = generateEventId("show", sdk, type);
+        String eventId = generateEventId(context, "show", sdk, type);
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
@@ -247,7 +282,7 @@ public class StatImpl implements IStat {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
-        String eventId = generateEventId("click", sdk, type);
+        String eventId = generateEventId(context, "click", sdk, type);
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
@@ -262,7 +297,7 @@ public class StatImpl implements IStat {
         if (context == null) {
             return;
         }
-        String eventId = generateEventId("error", sdk, type);
+        String eventId = generateEventId(context, "error", sdk, type);
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         // sendAppsflyer(context, pidName, eventId, extra);
@@ -275,6 +310,7 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = "outer_gt_request";
+        eventId = generateEventIdAlias(context, eventId);
         sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
@@ -286,6 +322,7 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = "outer_gt_loaded";
+        eventId = generateEventIdAlias(context, eventId);
         sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
@@ -297,6 +334,7 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = "outer_gt_show";
+        eventId = generateEventIdAlias(context, eventId);
         sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
@@ -308,6 +346,7 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = "outer_gt_showing";
+        eventId = generateEventIdAlias(context, eventId);
         sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
@@ -319,6 +358,7 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = "outer_gt_showtimes";
+        eventId = generateEventIdAlias(context, eventId);
         String value = String.valueOf(times);
         sendFirebaseAnalytics(context, value, eventId, null);
         sendUmeng(context, value, eventId, null);
@@ -331,6 +371,7 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = "load_ad_success_time";
+        eventId = generateEventIdAlias(context, eventId);
         if (!checkArgument(context, eventId, sdk, type)) {
             return;
         }
@@ -350,6 +391,7 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = "load_ad_failure_time";
+        eventId = generateEventIdAlias(context, eventId);
         Map<String, String> map = new HashMap<String, String>();
         map.put("sdk", sdk);
         map.put("type", type);
