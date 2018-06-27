@@ -2,6 +2,7 @@ package com.inner.adsdk.adloader.adfb;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
@@ -155,10 +156,14 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     public void showBanner(ViewGroup viewGroup) {
-        Log.v(Log.TAG, "");
+        Log.v(Log.TAG, "fbloader");
         try {
             clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
+            ViewParent viewParent = bannerView.getParent();
+            if (viewParent instanceof ViewGroup) {
+                ((ViewGroup)viewParent).removeView(bannerView);
+            }
             viewGroup.addView(bannerView);
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);

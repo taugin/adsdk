@@ -3,6 +3,7 @@ package com.inner.adsdk.adloader.wemob;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
@@ -157,6 +158,10 @@ public class WemobLoader extends AbstractSdkLoader {
         try {
             clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
+            ViewParent viewParent = bannerView.getParent();
+            if (viewParent instanceof ViewGroup) {
+                ((ViewGroup)viewParent).removeView(bannerView);
+            }
             viewGroup.addView(bannerView);
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);

@@ -3,6 +3,7 @@ package com.inner.adsdk.adloader.admob;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -179,6 +180,10 @@ public class AdmobLoader extends AbstractSdkLoader {
         try {
             clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
+            ViewParent viewParent = bannerView.getParent();
+            if (viewParent instanceof ViewGroup) {
+                ((ViewGroup)viewParent).removeView(bannerView);
+            }
             viewGroup.addView(bannerView);
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
