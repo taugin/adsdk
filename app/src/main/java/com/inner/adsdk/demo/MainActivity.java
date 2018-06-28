@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
+import com.inner.adsdk.AdReward;
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 
@@ -45,19 +46,11 @@ public class MainActivity extends Activity {
             loadInterstitial();
         } else if (v.getId() == R.id.complex) {
             loadComplexAd();
-        } else if (v.getId() == R.id.fb_native_custom) {
-            loadAdViewFB(false);
-        } else if (v.getId() == R.id.fb_native_preload) {
-            loadAdViewFB(true);
-        } else if (v.getId() == R.id.adx_native_custom) {
-            loadAdViewAdx(false);
-        } else if (v.getId() == R.id.adx_native_preload) {
-            loadAdViewAdx(true);
-        } else if (v.getId() == R.id.adx_fb_native_common1) {
+        } else if (v.getId() == R.id.native_common1) {
             loadAdViewCommon(R.layout.ad_common_native_card_medium);
-        } else if (v.getId() == R.id.adx_fb_native_common2) {
+        } else if (v.getId() == R.id.native_common2) {
             loadAdViewCommon(R.layout.ad_common_native_card_medium_upbtn);
-        } else if (v.getId() == R.id.adx_fb_native_common3) {
+        } else if (v.getId() == R.id.native_common3) {
             loadAdViewCommon(R.layout.ad_common_native_card_small);
         } else if (v.getId() == R.id.webmob_interstitial) {
             AdSdk.get(mContext).loadInterstitial("interstitial", new SimpleAdSdkListener(){
@@ -68,6 +61,55 @@ public class MainActivity extends Activity {
             });
         } else if (v.getId() == R.id.webmob_native) {
             loadAdViewCommon(LAYOUT[new Random(System.currentTimeMillis()).nextInt(LAYOUT.length)]);
+        } else if (v.getId() == R.id.reward_video) {
+            AdSdk.get(this).loadInterstitial("reward_video", new SimpleAdSdkListener(){
+
+                @Override
+                public void onLoaded(String pidName, String source, String adType) {
+                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    AdSdk.get(getBaseContext()).showInterstitial(pidName);
+                }
+
+                @Override
+                public void onShow(String pidName, String source, String adType) {
+                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                }
+
+                @Override
+                public void onClick(String pidName, String source, String adType) {
+                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                }
+
+                @Override
+                public void onDismiss(String pidName, String source, String adType) {
+                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                }
+
+                @Override
+                public void onError(String pidName, String source, String adType) {
+                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                }
+
+                @Override
+                public void onRewarded(String pidName, String source, String adType, AdReward item) {
+                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , item : " + item);
+                }
+
+                @Override
+                public void onCompleted(String pidName, String source, String adType) {
+                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                }
+
+                @Override
+                public void onStarted(String pidName, String source, String adType) {
+                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                }
+
+                @Override
+                public void onOpened(String pidName, String source, String adType) {
+                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                }
+            });
         }
     }
 
@@ -99,38 +141,6 @@ public class MainActivity extends Activity {
             builder.setAdAction(AdExtra.AD_SDK_ADX, R.id.adx_action);
             builder.setAdCover(AdExtra.AD_SDK_ADX, R.id.adx_cover);
             builder.setAdMediaView(AdExtra.AD_SDK_ADX, R.id.adx_mediaview);
-        }
-        AdParams adParams = builder.build();
-
-        AdSdk.get(mContext).loadAdView("banner_and_native", adParams, new SimpleAdSdkListener() {
-            @Override
-            public void onLoaded(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                showAdView(pidName);
-            }
-        });
-    }
-
-    private void loadAdViewFB(boolean useAdCard) {
-        View view = LayoutInflater.from(this).inflate(R.layout.fb_native, null);
-        AdParams.Builder builder = new AdParams.Builder();
-
-        // 设置banner 参数
-        builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.ADMOB_LARGE_BANNER);
-        if (useAdCard) {
-            // 设置adx native 预制的布局
-            int card = CARDID[new Random(System.currentTimeMillis()).nextInt(CARDID.length)];
-            builder.setAdCardStyle(AdExtra.AD_SDK_FACEBOOK, card);
-        } else {
-            //  设置外部布局参数
-            builder.setAdRootView(AdExtra.AD_SDK_FACEBOOK, view);
-            builder.setAdTitle(AdExtra.AD_SDK_FACEBOOK, R.id.native_title);
-            builder.setAdDetail(AdExtra.AD_SDK_FACEBOOK, R.id.native_detail);
-            builder.setAdIcon(AdExtra.AD_SDK_FACEBOOK, R.id.native_icon);
-            builder.setAdAction(AdExtra.AD_SDK_FACEBOOK, R.id.native_action_btn);
-            builder.setAdCover(AdExtra.AD_SDK_FACEBOOK, R.id.native_image_cover);
-            builder.setAdChoices(AdExtra.AD_SDK_FACEBOOK, R.id.native_ad_choices_container);
-            builder.setAdMediaView(AdExtra.AD_SDK_FACEBOOK, R.id.native_media_cover);
         }
         AdParams adParams = builder.build();
 

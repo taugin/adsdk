@@ -1,5 +1,7 @@
 package com.inner.adsdk.listener;
 
+import com.inner.adsdk.AdReward;
+
 /**
  * Created by Administrator on 2018/2/11.
  */
@@ -23,5 +25,21 @@ public class SimpleAdSdkListener implements OnAdSdkListener {
 
     @Override
     public void onError(String pidName, String source, String adType) {
+    }
+
+    @Override
+    public void onRewarded(String pidName, String source, String adType, AdReward item) {
+    }
+
+    @Override
+    public void onCompleted(String pidName, String source, String adType) {
+    }
+
+    @Override
+    public void onStarted(String pidName, String source, String adType) {
+    }
+
+    @Override
+    public void onOpened(String pidName, String source, String adType) {
     }
 }

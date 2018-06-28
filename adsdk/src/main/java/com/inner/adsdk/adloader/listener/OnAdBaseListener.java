@@ -1,5 +1,7 @@
 package com.inner.adsdk.adloader.listener;
 
+import com.inner.adsdk.AdReward;
+
 /**
  * Listener for ad sdk
  */
@@ -28,4 +30,20 @@ public interface OnAdBaseListener {
     public void onInterstitialDismiss();
 
     public void onInterstitialError(int error);
+
+    public void onRewarded(AdReward reward);
+
+    public void onRewardedVideoAdClosed();
+
+    public void onRewardedVideoAdFailedToLoad();
+
+    public void onRewardedVideoAdLeftApplication();
+
+    public void onRewardedVideoAdLoaded();
+
+    public void onRewardedVideoAdOpened();
+
+    public void onRewardedVideoCompleted();
+
+    public void onRewardedVideoStarted();
 }

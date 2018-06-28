@@ -123,6 +123,15 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
     }
 
     @Override
+    public void loadRewardedVideo() {
+    }
+
+    @Override
+    public boolean showRewardedVideo() {
+        return false;
+    }
+
+    @Override
     public boolean isInterstitialLoaded() {
         return false;
     }
@@ -134,6 +143,11 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
 
     @Override
     public boolean isNativeLoaded() {
+        return false;
+    }
+
+    @Override
+    public boolean isRewaredVideoLoaded() {
         return false;
     }
 
@@ -177,6 +191,14 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
     public boolean isInterstitialType() {
         if (mPidConfig != null) {
             return mPidConfig.isInterstitialType();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isRewardedVideoType() {
+        if (mPidConfig != null) {
+            return mPidConfig.isRewardedVideoType();
         }
         return false;
     }

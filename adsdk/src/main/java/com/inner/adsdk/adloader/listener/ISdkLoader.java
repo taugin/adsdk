@@ -45,11 +45,17 @@ public interface ISdkLoader {
 
     public void showBanner(ViewGroup viewGroup);
 
+    public void loadRewardedVideo();
+
+    public boolean showRewardedVideo();
+
     public boolean isInterstitialLoaded();
 
     public boolean isBannerLoaded();
 
     public boolean isNativeLoaded();
+
+    public boolean isRewaredVideoLoaded();
 
     public void resume();
 
@@ -64,6 +70,8 @@ public interface ISdkLoader {
     public boolean isNativeType();
 
     public boolean isInterstitialType();
+
+    public boolean isRewardedVideoType();
 
     public void setLoadedFlag();
 

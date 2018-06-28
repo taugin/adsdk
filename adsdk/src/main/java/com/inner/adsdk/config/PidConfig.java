@@ -138,6 +138,10 @@ public class PidConfig {
         return TextUtils.equals(Constant.TYPE_INTERSTITIAL, adType);
     }
 
+    public boolean isRewardedVideoType() {
+        return TextUtils.equals(Constant.TYPE_REWARD, adType);
+    }
+
     @Override
     public String toString() {
         return "PidConfig{" +

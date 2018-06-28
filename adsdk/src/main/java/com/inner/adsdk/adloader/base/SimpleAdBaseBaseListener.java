@@ -1,5 +1,6 @@
 package com.inner.adsdk.adloader.base;
 
+import com.inner.adsdk.AdReward;
 import com.inner.adsdk.adloader.listener.IManagerListener;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
 import com.inner.adsdk.listener.OnAdSdkListener;
@@ -171,6 +172,86 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
             mAdPlaceLoaderListener.onError(placeName, source, adType);
+        }
+    }
+
+    @Override
+    public void onRewarded(AdReward reward) {
+        if (mOnAdSdkListener != null && isCurrent()) {
+            mOnAdSdkListener.onRewarded(placeName, source, adType, reward);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onRewarded(placeName, source, adType, reward);
+        }
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        if (mOnAdSdkListener != null && isCurrent()) {
+            mOnAdSdkListener.onDismiss(placeName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onDismiss(placeName, source, adType);
+        }
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad() {
+        if (mOnAdSdkListener != null && isCurrent()) {
+            mOnAdSdkListener.onError(placeName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onError(placeName, source, adType);
+        }
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+        if (mOnAdSdkListener != null && isCurrent()) {
+            mOnAdSdkListener.onClick(placeName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onClick(placeName, source, adType);
+        }
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+        if (mOnAdSdkListener != null && isCurrent()) {
+            mOnAdSdkListener.onLoaded(placeName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onLoaded(placeName, source, adType);
+        }
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+        if (mOnAdSdkListener != null && isCurrent()) {
+            mOnAdSdkListener.onOpened(placeName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onOpened(placeName, source, adType);
+        }
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+        if (mOnAdSdkListener != null && isCurrent()) {
+            mOnAdSdkListener.onCompleted(placeName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onCompleted(placeName, source, adType);
+        }
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+        if (mOnAdSdkListener != null && isCurrent()) {
+            mOnAdSdkListener.onStarted(placeName, source, adType);
+        }
+        if (mAdPlaceLoaderListener != null && isCurrent()) {
+            mAdPlaceLoaderListener.onStarted(placeName, source, adType);
         }
     }
 }

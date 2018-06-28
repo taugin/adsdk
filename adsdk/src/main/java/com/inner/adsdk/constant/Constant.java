@@ -33,6 +33,7 @@ public class Constant {
     public static final String TYPE_BANNER = "banner";
     public static final String TYPE_NATIVE = "native";
     public static final String TYPE_INTERSTITIAL = "interstitial";
+    public static final String TYPE_REWARD = "reward";
 
     public static final String APPKEY = "appkey";
 
