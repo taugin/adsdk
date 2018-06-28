@@ -17,6 +17,7 @@ import com.inner.adsdk.manager.DataManager;
 import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ public class AdSdk {
     private Context mContext;
     private Map<String, AdPlaceLoader> mAdLoaders = new HashMap<String, AdPlaceLoader>();
     private AdConfig mLocalAdConfig;
+    private WeakReference<Activity> mActivity;
 
     private AdSdk(Context context) {
         mContext = context.getApplicationContext();
@@ -40,6 +42,13 @@ public class AdSdk {
         if (sAdSdk == null) {
             create(context);
         }
+        if (sAdSdk != null) {
+            if (context instanceof Activity) {
+                sAdSdk.setActivity((Activity) context);
+            } else {
+                sAdSdk.setActivity(null);
+            }
+        }
         return sAdSdk;
     }
 
@@ -48,6 +57,14 @@ public class AdSdk {
             if (sAdSdk == null) {
                 sAdSdk = new AdSdk(context);
             }
+        }
+    }
+
+    private void setActivity(Activity activity) {
+        if (activity != null) {
+            mActivity = new WeakReference<Activity>(activity);
+        } else {
+            mActivity = null;
         }
     }
 
@@ -112,6 +129,7 @@ public class AdSdk {
 
     /**
      * 获取引用pid名字
+     *
      * @param pidName
      * @return 引用pid名字
      */
@@ -186,6 +204,11 @@ public class AdSdk {
         AdPlaceLoader loader = getAdLoader(pidName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
+            if (activity == null) {
+                if (mActivity != null && mActivity.get() != null) {
+                    activity = mActivity.get();
+                }
+            }
             loader.loadInterstitial(activity);
         }
     }
