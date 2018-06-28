@@ -178,22 +178,6 @@ public class FBLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean isBannerType() {
-        if (mPidConfig != null) {
-            return mPidConfig.isBannerType();
-        }
-        return super.isBannerType();
-    }
-
-    @Override
-    public boolean isNativeType() {
-        if (mPidConfig != null) {
-            return mPidConfig.isNativeType();
-        }
-        return super.isNativeType();
-    }
-
-    @Override
     public boolean isInterstitialLoaded() {
         boolean loaded = super.isInterstitialLoaded();
         if (fbInterstitial != null) {

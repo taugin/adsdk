@@ -425,30 +425,6 @@ public class WemobLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean isBannerType() {
-        if (mPidConfig != null) {
-            return mPidConfig.isBannerType();
-        }
-        return super.isBannerType();
-    }
-
-    @Override
-    public boolean isNativeType() {
-        if (mPidConfig != null) {
-            return mPidConfig.isNativeType();
-        }
-        return super.isNativeType();
-    }
-
-    @Override
-    public boolean isInterstitialType() {
-        if (mPidConfig != null) {
-            return mPidConfig.isInterstitialType();
-        }
-        return super.isInterstitialType();
-    }
-
-    @Override
     public void destroy() {
         if (interstitialAd != null) {
             interstitialAd.destroy();

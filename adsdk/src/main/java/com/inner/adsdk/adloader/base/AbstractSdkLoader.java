@@ -159,16 +159,25 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
 
     @Override
     public boolean isBannerType() {
+        if (mPidConfig != null) {
+            return mPidConfig.isBannerType();
+        }
         return false;
     }
 
     @Override
     public boolean isNativeType() {
+        if (mPidConfig != null) {
+            return mPidConfig.isNativeType();
+        }
         return false;
     }
 
     @Override
     public boolean isInterstitialType() {
+        if (mPidConfig != null) {
+            return mPidConfig.isInterstitialType();
+        }
         return false;
     }
 
