@@ -38,8 +38,4 @@ public class SimpleAdSdkListener implements OnAdSdkListener {
     @Override
     public void onStarted(String pidName, String source, String adType) {
     }
-
-    @Override
-    public void onOpened(String pidName, String source, String adType) {
-    }
 }

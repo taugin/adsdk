@@ -403,7 +403,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             public void onRewardedVideoAdOpened() {
                 Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdOpened();
+                    getAdListener().onRewardedVideoAdShowed();
                 }
                 if (mStat != null) {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -443,7 +443,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             public void onRewardedVideoAdLeftApplication() {
                 Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdLeftApplication();
+                    getAdListener().onRewardedVideoAdClicked();
                 }
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);

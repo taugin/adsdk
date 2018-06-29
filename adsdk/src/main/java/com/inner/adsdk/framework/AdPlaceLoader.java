@@ -786,7 +786,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         public void onDismiss(String pidName, String source, String adType) {
             if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
                 Log.d(Log.TAG, "adplaceloader pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
+                if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)
+                        || TextUtils.equals(adType, Constant.TYPE_REWARD)) {
                     showInterstitial();
                 }
             }

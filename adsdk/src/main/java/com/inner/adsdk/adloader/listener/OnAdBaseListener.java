@@ -37,11 +37,11 @@ public interface OnAdBaseListener {
 
     public void onRewardedVideoAdFailedToLoad();
 
-    public void onRewardedVideoAdLeftApplication();
+    public void onRewardedVideoAdClicked();
 
     public void onRewardedVideoAdLoaded();
 
-    public void onRewardedVideoAdOpened();
+    public void onRewardedVideoAdShowed();
 
     public void onRewardedVideoCompleted();
 

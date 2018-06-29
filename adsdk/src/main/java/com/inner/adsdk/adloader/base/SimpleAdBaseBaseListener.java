@@ -206,7 +206,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onRewardedVideoAdLeftApplication() {
+    public void onRewardedVideoAdClicked() {
         if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onClick(placeName, source, adType);
         }
@@ -226,12 +226,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onRewardedVideoAdOpened() {
+    public void onRewardedVideoAdShowed() {
         if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onOpened(placeName, source, adType);
+            mOnAdSdkListener.onShow(placeName, source, adType);
         }
         if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onOpened(placeName, source, adType);
+            mAdPlaceLoaderListener.onShow(placeName, source, adType);
         }
     }
 

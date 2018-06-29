@@ -15,5 +15,4 @@ public interface OnAdSdkListener {
     public void onRewarded(String pidName, String source, String adType, AdReward item);
     public void onCompleted(String pidName, String source, String adType);
     public void onStarted(String pidName, String source, String adType);
-    public void onOpened(String pidName, String source, String adType);
 }
