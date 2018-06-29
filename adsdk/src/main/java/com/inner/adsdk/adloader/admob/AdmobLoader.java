@@ -347,7 +347,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
             return;
         }
-        if (isInterstitialLoaded()) {
+        if (isRewaredVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
@@ -493,12 +493,18 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (bannerView != null) {
             bannerView.resume();
         }
+        if (rewardedVideoAd != null) {
+            rewardedVideoAd.resume(mContext);
+        }
     }
 
     @Override
     public void pause() {
         if (bannerView != null) {
             bannerView.pause();
+        }
+        if (rewardedVideoAd != null) {
+            rewardedVideoAd.pause(mContext);
         }
     }
 

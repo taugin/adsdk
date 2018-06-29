@@ -456,7 +456,7 @@ public class FBLoader extends AbstractSdkLoader {
             }
             return;
         }
-        if (isInterstitialLoaded()) {
+        if (isRewaredVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
