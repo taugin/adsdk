@@ -16,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -233,11 +235,47 @@ public class AdParser implements IParser {
             if (jobj.has(LOAD_ONLY_ONCE)) {
                 adPlace.setLoadOnlyOnce(jobj.getBoolean(LOAD_ONLY_ONCE));
             }
+            if (jobj.has(ECPMSORT)) {
+                adPlace.setEcpmSort(jobj.getInt(ECPMSORT));
+            }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
+            sortPidList(adPlace);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdPlace error : " + e);
         }
         return adPlace;
+    }
+
+    private void sortPidList(AdPlace adPlace) {
+        if (adPlace == null) {
+            return;
+        }
+        int ecpmSort = adPlace.getEcpmSort();
+        List<PidConfig> list = adPlace.getPidsList();
+        if (ecpmSort == 0 || list == null || list.isEmpty()) {
+            return;
+        }
+        if (ecpmSort > 0) {
+            Collections.sort(list, new Comparator<PidConfig>() {
+                @Override
+                public int compare(PidConfig o1, PidConfig o2) {
+                    if (o1 != null && o2 != null) {
+                        return o2.getEcpm() - o1.getEcpm();
+                    }
+                    return 0;
+                }
+            });
+        } else {
+            Collections.sort(list, new Comparator<PidConfig>() {
+                @Override
+                public int compare(PidConfig o1, PidConfig o2) {
+                    if (o1 != null && o2 != null) {
+                        return o1.getEcpm() - o2.getEcpm();
+                    }
+                    return 0;
+                }
+            });
+        }
     }
 
     private List<PidConfig> parsePidList(String content) {
@@ -247,8 +285,10 @@ public class AdParser implements IParser {
             int len = jarray.length();
             if (len > 0) {
                 list = new ArrayList<PidConfig>();
+                PidConfig pidConfig = null;
                 for (int index = 0; index < len; index++) {
-                    list.add(parsePidConfig(jarray.getString(index)));
+                    pidConfig = parsePidConfig(jarray.getString(index));
+                    list.add(pidConfig);
                 }
             }
         } catch (Exception e) {
@@ -287,6 +327,9 @@ public class AdParser implements IParser {
             }
             if (jobj.has(DELAY_LOAD_TIME)) {
                 pidConfig.setDelayLoadTime(jobj.getLong(DELAY_LOAD_TIME));
+            }
+            if (jobj.has(ECPM)) {
+                pidConfig.setEcpm(jobj.getInt(ECPM));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

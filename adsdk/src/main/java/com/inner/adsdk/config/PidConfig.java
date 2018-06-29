@@ -30,6 +30,8 @@ public class PidConfig {
 
     private long delayLoadTime = 0;
 
+    private int ecpm;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -110,6 +112,14 @@ public class PidConfig {
         this.delayLoadTime = delayLoadTime;
     }
 
+    public int getEcpm() {
+        return ecpm;
+    }
+
+    public void setEcpm(int ecpm) {
+        this.ecpm = ecpm;
+    }
+
     public boolean isAdmob() {
         return TextUtils.equals(Constant.AD_SDK_ADMOB, sdk);
     }
@@ -150,6 +160,7 @@ public class PidConfig {
                 ", pid='" + pid + '\'' +
                 ", ctr=" + ctr +
                 ", adType='" + adType + '\'' +
+                ", ecpm='" + ecpm + '\'' +
                 '}';
     }
 }

@@ -492,8 +492,12 @@ public class FBLoader extends AbstractSdkLoader {
 
                 if (getAdListener() != null) {
                     AdReward adReward = new AdReward();
-                    adReward.setType("coins");
-                    adReward.setAmount(10);
+                    adReward.setType(Constant.ECPM);
+                    int ecpm = 0;
+                    if (mPidConfig != null) {
+                        ecpm = mPidConfig.getEcpm();
+                    }
+                    adReward.setAmount(ecpm);
                     getAdListener().onRewarded(adReward);
                 }
             }

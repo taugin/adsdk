@@ -41,6 +41,8 @@ public interface IParser {
     String MAXCOUNT = "maxcount";
     // 展示的百分比
     String PERCENT = "percent";
+    // ECPM排序, 1 desc, 0, none, -1, asc
+    String ECPMSORT = "es";
     // 具体广告位配置
     String PIDS = "pids";
 
@@ -61,6 +63,8 @@ public interface IParser {
     String TIMEOUT = "to";
     // 延迟通知加载成功的时间
     String DELAY_LOAD_TIME = "dlt";
+    // ECPM
+    String ECPM = "ecpm";
 
     // 启用或禁用GT
     String ENABLE = "e";

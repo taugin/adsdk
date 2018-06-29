@@ -35,6 +35,8 @@ public class Constant {
     public static final String TYPE_INTERSTITIAL = "interstitial";
     public static final String TYPE_REWARD = "reward";
 
+    public static final String ECPM = "ecpm";
+
     public static final String APPKEY = "appkey";
 
     public static final String CHANNEL = "channel";
