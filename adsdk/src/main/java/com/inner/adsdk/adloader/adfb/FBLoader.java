@@ -460,7 +460,7 @@ public class FBLoader extends AbstractSdkLoader {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded();
+                getAdListener().onRewardedVideoAdLoaded();
             }
             return;
         }
@@ -526,7 +526,7 @@ public class FBLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + getError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdFailedToLoad();
+                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, getError(adError), getSdkName(), getAdType(), null);

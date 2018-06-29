@@ -196,16 +196,6 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onRewardedVideoAdFailedToLoad() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onError(placeName, source, adType);
-        }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onError(placeName, source, adType);
-        }
-    }
-
-    @Override
     public void onRewardedVideoAdClicked() {
         if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onClick(placeName, source, adType);

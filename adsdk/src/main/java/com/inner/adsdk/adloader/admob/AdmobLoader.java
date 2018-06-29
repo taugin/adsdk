@@ -392,7 +392,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdFailedToLoad();
+                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, codeToError(i), getSdkName(), getAdType(), null);
