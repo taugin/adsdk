@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
@@ -93,6 +94,7 @@ public class MainActivity extends Activity {
                 @Override
                 public void onRewarded(String pidName, String source, String adType, AdReward item) {
                     Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , item : " + item);
+                    runToast(item.toString());
                 }
 
                 @Override
@@ -102,11 +104,6 @@ public class MainActivity extends Activity {
 
                 @Override
                 public void onStarted(String pidName, String source, String adType) {
-                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                }
-
-                @Override
-                public void onOpened(String pidName, String source, String adType) {
                     Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 }
             });
@@ -212,5 +209,14 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    private void runToast(final String toast) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
