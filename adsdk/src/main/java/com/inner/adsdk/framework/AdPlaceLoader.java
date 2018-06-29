@@ -293,6 +293,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     @Override
     public void showInterstitial() {
         Log.d(Log.TAG, "showInterstitial");
+        showInterstitialInternal();
+    }
+
+    private void showInterstitialInternal() {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
@@ -788,7 +792,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                 Log.d(Log.TAG, "adplaceloader pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)
                         || TextUtils.equals(adType, Constant.TYPE_REWARD)) {
-                    showInterstitial();
+                    showInterstitialInternal();
                 }
             }
         }
