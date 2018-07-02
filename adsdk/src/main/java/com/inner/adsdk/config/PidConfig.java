@@ -137,7 +137,7 @@ public class PidConfig {
     }
 
     public boolean isDfp() {
-        return TextUtils.equals(Constant.AD_SDK_DBP, sdk);
+        return TextUtils.equals(Constant.AD_SDK_DFP, sdk);
     }
 
     public boolean isBannerType() {

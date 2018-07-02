@@ -34,6 +34,11 @@ public class AdExtra {
     public static final String AD_SDK_WEMOB = Constant.AD_SDK_WEMOB;
 
     /**
+     * DFP SDK 名字
+     */
+    public static final String AD_SDK_DFP = Constant.AD_SDK_DFP;
+
+    /**
      * ADMOB banner尺寸 320 x 50
      */
     public static final int ADMOB_BANNER = Constant.BANNER;

@@ -57,7 +57,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
     @Override
     public String getSdkName() {
-        return Constant.AD_SDK_DBP;
+        return Constant.AD_SDK_DFP;
     }
 
     @Override
