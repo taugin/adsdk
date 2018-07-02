@@ -57,7 +57,6 @@ public class AdParams {
             return this;
         }
 
-
         public Builder setAdRootView(String sdk, View view) {
             getParams(sdk).setAdRootView(view);
             return this;

@@ -136,6 +136,10 @@ public class PidConfig {
         return TextUtils.equals(Constant.AD_SDK_WEMOB, sdk);
     }
 
+    public boolean isDfp() {
+        return TextUtils.equals(Constant.AD_SDK_DBP, sdk);
+    }
+
     public boolean isBannerType() {
         return TextUtils.equals(Constant.TYPE_BANNER, adType);
     }

@@ -12,6 +12,7 @@ public class Constant {
     public static final String AD_SDK_FACEBOOK = "fb";
     public static final String AD_SDK_ADX = "adx";
     public static final String AD_SDK_WEMOB = "wemob";
+    public static final String AD_SDK_DBP = "dfp";
 
     public static final int    NOSET = -1;
     public static final int    BANNER = 1000;
