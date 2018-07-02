@@ -33,12 +33,26 @@
         {
           "sdk": "admob",
           "type": "banner",
-          "pid": "ca-app-pub-3940256099942544/6300978111"
+          "pid": "ca-app-pub-3940256099942544/6300978111",
+          "disable": 1
         },
         {
           "sdk": "wemob",
           "type": "native",
-          "pid": "native1"
+          "pid": "native1",
+          "disable": 1
+        },
+        {
+          "sdk": "dfp",
+          "type": "native",
+          "pid": "/6499/example/native",
+          "disable": 0
+        },
+        {
+          "sdk": "dfp",
+          "type": "banner",
+          "pid": "/6253334/dfp_example_ad",
+          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -51,12 +65,20 @@
         {
           "sdk": "admob",
           "type": "interstitial",
-          "pid": "ca-app-pub-3940256099942544/1033173712"
+          "pid": "ca-app-pub-3940256099942544/1033173712",
+          "disable": 1
         },
         {
           "sdk": "wemob",
           "type": "interstitial",
-          "pid": "interstitial1"
+          "pid": "interstitial1",
+          "disable": 1
+        },
+        {
+          "sdk": "dfp",
+          "type": "interstitial",
+          "pid": "/6499/example/interstitial",
+          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -70,6 +92,38 @@
           "sdk": "admob",
           "type": "reward",
           "pid": "ca-app-pub-3940256099942544/5224354917"
+        }
+      ],
+      "maxcount": 100,
+      "percent": 100
+    },
+    {
+      "name": "ad_complex",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "dfp",
+          "type": "banner",
+          "pid": "/6253334/dfp_example_ad",
+          "disable": 0
+        },
+        {
+          "sdk": "dfp",
+          "type": "native",
+          "pid": "/6499/example/native",
+          "disable": 0
+        },
+        {
+          "sdk": "admob",
+          "type": "interstitial",
+          "pid": "ca-app-pub-3940256099942544/1033173712",
+          "disable": 0
+        },
+        {
+          "sdk": "admob",
+          "type": "reward",
+          "pid": "ca-app-pub-3940256099942544/5224354917",
+          "disable": 0
         }
       ],
       "maxcount": 100,

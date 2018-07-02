@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -43,10 +42,12 @@ public class MainActivity extends Activity {
     }
 
     public void onClick(View v) {
-        if (v.getId() == R.id.interstitial) {
+        if (v.getId() == R.id.gt_outer) {
+            loadGtOuter();
+        } else if (v.getId() == R.id.interstitial) {
             loadInterstitial();
         } else if (v.getId() == R.id.complex) {
-            loadComplexAd();
+            loadAdComplex();
         } else if (v.getId() == R.id.native_common1) {
             loadAdViewCommon(R.layout.ad_common_native_card_medium);
         } else if (v.getId() == R.id.native_common2) {
@@ -110,7 +111,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void loadInterstitial() {
+    private void loadGtOuter() {
         if (AdSdk.get(mContext).isInterstitialLoaded("gt_outer_place")) {
             AdSdk.get(mContext).showInterstitial("gt_outer_place");
         } else {
@@ -118,44 +119,44 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void loadAdViewAdx(boolean useAdCard) {
-        View view = LayoutInflater.from(this).inflate(R.layout.adx_native, null);
-        AdParams.Builder builder = new AdParams.Builder();
-
-        // 设置banner 参数
-        builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADMOB_LARGE_BANNER);
-        builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
-        if (useAdCard) {
-            // 设置adx native 预制的布局
-            int card = CARDID[new Random(System.currentTimeMillis()).nextInt(CARDID.length)];
-            builder.setAdCardStyle(AdExtra.AD_SDK_ADX, card);
-        } else {
-            //  设置外部布局参数
-            builder.setAdRootView(AdExtra.AD_SDK_ADX, view);
-            builder.setAdTitle(AdExtra.AD_SDK_ADX, R.id.adx_title);
-            builder.setAdDetail(AdExtra.AD_SDK_ADX, R.id.adx_detail);
-            builder.setAdIcon(AdExtra.AD_SDK_ADX, R.id.adx_icon);
-            builder.setAdAction(AdExtra.AD_SDK_ADX, R.id.adx_action);
-            builder.setAdCover(AdExtra.AD_SDK_ADX, R.id.adx_cover);
-            builder.setAdMediaView(AdExtra.AD_SDK_ADX, R.id.adx_mediaview);
-        }
-        AdParams adParams = builder.build();
-
-        AdSdk.get(mContext).loadAdView("banner_and_native", adParams, new SimpleAdSdkListener() {
+    private void loadInterstitial() {
+        AdSdk.get(mContext).loadInterstitial("interstitial", new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                showAdView(pidName);
+                AdSdk.get(mContext).showInterstitial(pidName);
             }
         });
     }
 
-    private void loadComplexAd() {
-        AdSdk.get(mContext).loadComplexAds("interstitial", new SimpleAdSdkListener() {
+    private void loadAdComplex() {
+        AdParams.Builder builder = new AdParams.Builder();
+        //  设置外部布局参数
+        int layoutId = LAYOUT[new Random(System.currentTimeMillis()).nextInt(LAYOUT.length)];
+        if (layoutId == R.layout.ad_common_native_card_small) {
+            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
+        } else {
+            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
+        }
+        builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
+        builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
+        builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
+        builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
+        builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
+        builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
+        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
+        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+        AdParams adParams = builder.build();
+        AdSdk.get(mContext).loadComplexAds("ad_complex", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                AdSdk.get(mContext).showComplexAds(pidName, null);
+                if ("interstitial".equals(adType) || "reward".equals(adType)) {
+                    AdSdk.get(mContext).showComplexAds(pidName, null);
+                } else {
+                    showAdView(pidName);
+                }
             }
         });
     }
