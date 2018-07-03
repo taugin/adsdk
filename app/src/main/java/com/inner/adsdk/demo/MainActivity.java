@@ -1,9 +1,9 @@
 package com.inner.adsdk.demo;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,7 +18,7 @@ import com.inner.adsdk.listener.SimpleAdSdkListener;
 
 import java.util.Random;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private static final int LAYOUT[] = new int[] {
             R.layout.ad_common_native_card_small,
