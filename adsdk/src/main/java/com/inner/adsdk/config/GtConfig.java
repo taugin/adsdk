@@ -12,6 +12,7 @@ public class GtConfig {
     private long interval;
     private int maxCount;
     private int maxVersion;
+    private long minInterval;
 
     private List<String> countryList;
     private List<String> attrList;
@@ -57,6 +58,14 @@ public class GtConfig {
         this.maxVersion = maxVersion;
     }
 
+    public long getMinInterval() {
+        return minInterval;
+    }
+
+    public void setMinInterval(long minInterval) {
+        this.minInterval = minInterval;
+    }
+
     public List<String> getCountryList() {
         return countryList;
     }
@@ -84,14 +93,15 @@ public class GtConfig {
     @Override
     public String toString() {
         return "GtConfig{" +
-                "e=" + enable +
-                ", d=" + upDelay +
-                ", i=" + interval +
-                ", mc=" + maxCount +
-                ", mv=" + maxVersion +
-                ", cl=" + countryList +
-                ", al=" + attrList +
-                ", ml=" + mediaList +
+                "enable=" + enable +
+                ", upDelay=" + upDelay +
+                ", interval=" + interval +
+                ", maxCount=" + maxCount +
+                ", maxVersion=" + maxVersion +
+                ", minInterval=" + minInterval +
+                ", countryList=" + countryList +
+                ", attrList=" + attrList +
+                ", mediaList=" + mediaList +
                 '}';
     }
 }

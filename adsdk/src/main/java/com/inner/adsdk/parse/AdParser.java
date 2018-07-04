@@ -145,6 +145,9 @@ public class AdParser implements IParser {
             if (jobj.has(MAX_VERSION)) {
                 gtConfig.setMaxVersion(jobj.getInt(MAX_VERSION));
             }
+            if (jobj.has(MIN_INTERVAL)) {
+                gtConfig.setMinInterval(jobj.getLong(MIN_INTERVAL));
+            }
             if (jobj.has(COUNTRY_LIST)) {
                 JSONArray jarray = jobj.getJSONArray(COUNTRY_LIST);
                 if (jarray != null && jarray.length() > 0) {

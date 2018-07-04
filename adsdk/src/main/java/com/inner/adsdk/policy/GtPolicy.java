@@ -79,6 +79,13 @@ public class GtPolicy {
     }
 
     /**
+     * 记录GT开始请求
+     */
+    public void startGtRequest() {
+        Utils.putLong(mContext, Constant.PREF_GT_REQUEST_TIME, System.currentTimeMillis());
+    }
+
+    /**
      * 更新ad最后展示时间
      */
     private void updateLastShowTime() {
@@ -139,7 +146,7 @@ public class GtPolicy {
         return Utils.getLong(mContext, Constant.PREF_GT_SHOW_TIMES, 0);
     }
 
-    private String getAFStatus() {
+    private String getAfStatus() {
         return Utils.getString(mContext, Constant.AF_STATUS);
     }
 
@@ -269,7 +276,7 @@ public class GtPolicy {
         if (disableAttribution) {
             return true;
         }
-        String afStatus = getAFStatus();
+        String afStatus = getAfStatus();
         Log.d(Log.TAG, "af_status : " + afStatus);
         if (mGtConfig != null) {
             List<String> attr = mGtConfig.getAttrList();
@@ -357,6 +364,20 @@ public class GtPolicy {
         return appOnTop;
     }
 
+    /**
+     * 判断是否符合最小时间间隔
+     * @return
+     */
+    public boolean isMatchMinInterval() {
+        if (mGtConfig != null) {
+            long now = System.currentTimeMillis();
+            long lastReqTime = Utils.getLong(mContext, Constant.PREF_GT_REQUEST_TIME, 0);
+            Log.v(Log.TAG, "now : " + now + " , last : " + lastReqTime + " , exp : " + (now - lastReqTime) + " , mi : " + mGtConfig.getMinInterval());
+            return now - lastReqTime >= mGtConfig.getMinInterval();
+        }
+        return true;
+    }
+
     private boolean checkAdGtConfig() {
         if (!isConfigAllow()) {
             Log.v(Log.TAG, "config not allowed");
@@ -400,7 +421,7 @@ public class GtPolicy {
         return true;
     }
 
-    public boolean shouldShowAdGt() {
+    public boolean isGtAllowed() {
         Log.v(Log.TAG, "gtconfig : " + mGtConfig);
         if (!checkAdGtConfig()) {
             return false;

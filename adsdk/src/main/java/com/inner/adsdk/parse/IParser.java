@@ -76,6 +76,8 @@ public interface IParser {
     String MAX_COUNT = "mc";
     // 此配置设置生效的最大应用版本
     String MAX_VERSION = "mv";
+    // 最小请求间隔，如果为0，则默认1分钟
+    String MIN_INTERVAL = "mi";
     // 国家列表 !en表示排除的国家，en表示包含的国家
     String COUNTRY_LIST = "ec";
     // 归因配置 Organic 或者 Non-organic

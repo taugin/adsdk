@@ -106,17 +106,18 @@ public class GtAdLoader {
     private void fireOuterAd() {
         if (mAdSdk != null) {
             updateAdPolicy();
-            if (!GtPolicy.get(mContext).shouldShowAdGt()) {
+            if (!GtPolicy.get(mContext).isGtAllowed() || !GtPolicy.get(mContext).isMatchMinInterval()) {
                 return;
             }
             Log.v(Log.TAG, "");
             StatImpl.get().reportAdOuterRequest(mContext);
+            GtPolicy.get(mContext).startGtRequest();
             mAdSdk.loadComplexAds(Constant.ADPLACE_OUTER_NAME, new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     StatImpl.get().reportAdOuterLoaded(mContext);
-                    if (GtPolicy.get(mContext).shouldShowAdGt()) {
+                    if (GtPolicy.get(mContext).isGtAllowed()) {
                         mAdSdk.showComplexAds(pidName, null);
                         StatImpl.get().reportAdOuterShow(mContext);
                     }

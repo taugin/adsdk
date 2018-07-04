@@ -56,6 +56,7 @@ public class Constant {
     public static final String PREF_GT_SHOW_TIMES = "pref_outer_show_times";
     public static final String PREF_FIRST_SHOW_TIME_ONEDAY = "pref_first_show_time_oneday";
     public static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_remote_config_request_time";
+    public static final String PREF_GT_REQUEST_TIME = "pref_gt_request_time";
     public static final String ADPLACE_OUTER_NAME = "gt_outer_place";
     public static final String ADPLACE_FILM_NAME = "gt_film_place";
     public static final String ADIDS_NAME = "adids";
