@@ -80,6 +80,11 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public int getAdCount() {
+        return 0;
+    }
+
+    @Override
     public void resume() {
     }
 

@@ -37,6 +37,7 @@ public interface IAdLoader {
     public void loadComplexAds(AdParams adParams);
     public void showComplexAds(ViewGroup adContainer);
 
+    public int getAdCount();
     public void resume();
     public void pause();
 

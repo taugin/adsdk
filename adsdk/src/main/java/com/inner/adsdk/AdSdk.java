@@ -156,17 +156,14 @@ public class AdSdk {
      * @return
      */
     private AdPlaceLoader createAdPlaceLoader(String pidName, AdPlace adPlace) {
-        if (mLocalAdConfig == null) {
-            return null;
-        }
         AdPlaceLoader loader = null;
         boolean useRemote = true;
-        if (adPlace == null) {
+        if (mLocalAdConfig != null && adPlace == null) {
             adPlace = mLocalAdConfig.get(pidName);
             useRemote = false;
         }
         Map<String, String> adIds = DataManager.get(mContext).getRemoteAdIds();
-        if (adIds == null) {
+        if (mLocalAdConfig != null && adIds == null) {
             adIds = mLocalAdConfig.getAdIds();
         }
         Log.v(Log.TAG, "pidName : " + pidName + " , adPlace : " + adPlace);
@@ -280,6 +277,14 @@ public class AdSdk {
         if (loader != null) {
             loader.showComplexAds(adContainer);
         }
+    }
+
+    public int getAdCount(String pidName) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            return loader.getAdCount();
+        }
+        return 0;
     }
 
     public void resume(String pidName) {

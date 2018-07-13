@@ -680,6 +680,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     }
 
     @Override
+    public int getAdCount() {
+        if (mAdLoaders != null) {
+            return mAdLoaders.size();
+        }
+        return super.getAdCount();
+    }
+
+    @Override
     public void resume() {
         Log.d(Log.TAG, "");
         if (mAdLoaders != null) {

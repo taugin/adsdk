@@ -99,10 +99,13 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
 
     @Override
     public void onAdFailed(int error) {
-        if (mOnAdSdkListener != null && isCurrent()) {
+        /**
+         * 错误回调不需要判断是否是当前loader
+         */
+        if (mOnAdSdkListener != null) {
             mOnAdSdkListener.onError(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
+        if (mAdPlaceLoaderListener != null) {
             mAdPlaceLoaderListener.onError(placeName, source, adType);
         }
     }
@@ -167,10 +170,13 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
 
     @Override
     public void onInterstitialError(int error) {
-        if (mOnAdSdkListener != null && isCurrent()) {
+        /**
+         * 错误回调不需要判断是否是当前loader
+         */
+        if (mOnAdSdkListener != null) {
             mOnAdSdkListener.onError(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
+        if (mAdPlaceLoaderListener != null) {
             mAdPlaceLoaderListener.onError(placeName, source, adType);
         }
     }
