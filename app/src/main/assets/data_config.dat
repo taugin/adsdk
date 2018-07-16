@@ -35,31 +35,31 @@
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "wemob",
           "type": "native",
           "pid": "native1",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
           "type": "native",
           "pid": "/6499/example/native",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
           "type": "banner",
           "pid": "/6253334/dfp_example_ad",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "applovin",
           "type": "banner",
-          "pid": "4a885e75685fed5c",
-          "disable": 1
+          "pid": "1bb8d0234f0f8c3d",
+          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -79,19 +79,19 @@
           "sdk": "wemob",
           "type": "interstitial",
           "pid": "interstitial1",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
           "type": "interstitial",
           "pid": "/6499/example/interstitial",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "applovin",
           "type": "interstitial",
           "pid": "4a885e75685fed5c",
-          "disable": 1
+          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -105,13 +105,13 @@
           "sdk": "admob",
           "type": "reward",
           "pid": "ca-app-pub-3940256099942544/5224354917",
-          "disable":0
+          "disable":1
         },
          {
            "sdk": "applovin",
            "type": "reward",
-           "pid": "4a885e75685fed5c",
-           "disable": 1
+           "pid": "8a60714b81a59889",
+           "disable": 0
          }
       ],
       "maxcount": 100,
