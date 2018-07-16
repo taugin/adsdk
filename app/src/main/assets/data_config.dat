@@ -59,7 +59,7 @@
           "sdk": "dfp",
           "type": "native",
           "pid": "/6499/example/native",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
@@ -72,6 +72,12 @@
           "type": "banner",
           "pid": "1bb8d0234f0f8c3d",
           "disable": 1
+        },
+        {
+            "sdk":"mopub",
+            "type":"banner",
+            "pid":"b195f8dd8ded45fe847ad89ed1d016da",
+            "disable":0
         }
       ],
       "maxcount": 100,
@@ -86,14 +92,14 @@
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "fb",
           "type": "interstitial",
           "pid": "509068866191430_511572092607774",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "wemob",
@@ -101,20 +107,26 @@
           "pid": "interstitial1",
           "ctr": 5,
           "ffc": 1,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
           "type": "interstitial",
           "pid": "/6499/example/interstitial",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "applovin",
           "type": "interstitial",
           "pid": "4a885e75685fed5c",
           "disable": 1
-        }
+        },
+         {
+             "sdk":"mopub",
+             "type":"interstitial",
+             "pid":"24534e1901884e398f1253216226017e",
+             "disable":0
+         }
       ],
       "maxcount": 100,
       "percent": 100
@@ -134,6 +146,12 @@
           "type": "reward",
           "pid": "8a60714b81a59889",
           "disable": 1
+        },
+        {
+          "sdk": "mopub",
+          "type": "reward",
+          "pid": "920b6145fb1546cf8b5cf2ac34638bb7",
+          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -159,13 +177,12 @@
           "sdk": "admob",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
           "type": "reward",
-          "pid": "ca-app-pub-3940256099942544/5224354917",
-          "disable": 0
+          "pid": "ca-app-pub-3940256099942544/5224354917"
         }
       ],
       "maxcount": 100,

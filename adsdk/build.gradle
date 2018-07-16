@@ -36,6 +36,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:15.0.0'
     implementation 'com.wemob:wemob:2.3.8'
     implementation 'com.applovin:applovin-sdk:+'
+    implementation 'com.wemob:wemob:2.3.7'
+
+    implementation('com.mopub:mopub-sdk:5.0.0@aar') {
+        transitive = true
+        exclude module: 'libAvid-mopub' // To exclude AVID
+        exclude module: 'moat-mobile-app-kit'
+    }
 }
 
 // 发布aar

@@ -28,12 +28,12 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int LAYOUT[] = new int[] {
+    private static final int LAYOUT[] = new int[]{
             R.layout.ad_common_native_card_small,
             R.layout.ad_common_native_card_medium,
             R.layout.ad_common_native_card_medium_upbtn
     };
-    private static final int CARDID[] = new int[] {
+    private static final int CARDID[] = new int[]{
             AdExtra.NATIVE_CARD_SMALL,
             AdExtra.NATIVE_CARD_MEDIUM,
             AdExtra.NATIVE_CARD_LARGE
@@ -82,55 +82,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (v.getId() == R.id.native_common3) {
             loadAdViewCommon(R.layout.ad_common_native_card_small);
         } else if (v.getId() == R.id.reward_video) {
-            AdSdk.get(this).loadInterstitial("reward_video", new SimpleAdSdkListener(){
-
-                @Override
-                public void onLoaded(String pidName, String source, String adType) {
-                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    AdSdk.get(getBaseContext()).showInterstitial(pidName);
-                }
-
-                @Override
-                public void onLoading(String pidName, String source, String adType) {
-                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                }
-
-                @Override
-                public void onShow(String pidName, String source, String adType) {
-                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                }
-
-                @Override
-                public void onClick(String pidName, String source, String adType) {
-                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                }
-
-                @Override
-                public void onDismiss(String pidName, String source, String adType) {
-                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                }
-
-                @Override
-                public void onError(String pidName, String source, String adType) {
-                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                }
-
-                @Override
-                public void onRewarded(String pidName, String source, String adType, AdReward item) {
-                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , item : " + item);
-                    runToast(item.toString());
-                }
-
-                @Override
-                public void onCompleted(String pidName, String source, String adType) {
-                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                }
-
-                @Override
-                public void onStarted(String pidName, String source, String adType) {
-                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                }
-            });
+            AdSdk.get(this).loadInterstitial("reward_video", mSimpleAdsdkListener);
         }
     }
 
@@ -143,13 +95,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadInterstitial() {
-        AdSdk.get(mContext).loadInterstitial("interstitial", new SimpleAdSdkListener() {
-            @Override
-            public void onLoaded(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                AdSdk.get(mContext).showInterstitial(pidName);
-            }
-        });
+        AdSdk.get(mContext).loadInterstitial("interstitial", mSimpleAdsdkListener);
     }
 
     private void loadAdComplex() {
@@ -203,13 +149,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
         AdParams adParams = builder.build();
 
-        AdSdk.get(mContext).loadAdView("banner_and_native", adParams, new SimpleAdSdkListener() {
-            @Override
-            public void onLoaded(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                showAdView(pidName);
-            }
-        });
+        AdSdk.get(mContext).loadAdView("banner_and_native", adParams, mSimpleAdsdkListener);
     }
 
     private void showAdView(String pidName) {
@@ -243,4 +183,54 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private SimpleAdSdkListener mSimpleAdsdkListener = new SimpleAdSdkListener() {
+
+        @Override
+        public void onLoaded(String pidName, String source, String adType) {
+            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            AdSdk.get(getBaseContext()).showInterstitial(pidName);
+        }
+
+        @Override
+        public void onLoading(String pidName, String source, String adType) {
+            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+        }
+
+        @Override
+        public void onShow(String pidName, String source, String adType) {
+            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+        }
+
+        @Override
+        public void onClick(String pidName, String source, String adType) {
+            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+        }
+
+        @Override
+        public void onDismiss(String pidName, String source, String adType) {
+            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+        }
+
+        @Override
+        public void onError(String pidName, String source, String adType) {
+            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+        }
+
+        @Override
+        public void onRewarded(String pidName, String source, String adType, AdReward item) {
+            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , item : " + item);
+            runToast(item.toString());
+        }
+
+        @Override
+        public void onCompleted(String pidName, String source, String adType) {
+            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+        }
+
+        @Override
+        public void onStarted(String pidName, String source, String adType) {
+            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+        }
+    };
 }

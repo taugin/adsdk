@@ -14,6 +14,7 @@ public class Constant {
     public static final String AD_SDK_WEMOB = "wemob";
     public static final String AD_SDK_DFP = "dfp";
     public static final String AD_SDK_APPLOVIN = "applovin";
+    public static final String AD_SDK_MOPUB = "mopub";
 
     public static final int    NOSET = -1;
     public static final int    BANNER = 1000;
