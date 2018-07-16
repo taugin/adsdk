@@ -1,5 +1,7 @@
 package com.inner.adsdk.adloader.listener;
 
+import android.app.Activity;
+
 import com.inner.adsdk.listener.OnAdSdkListener;
 
 /**
@@ -21,4 +23,5 @@ public interface IManagerListener {
     boolean isCurrent(String source, String type, String pidName);
     boolean hasNotifyLoaded();
     void notifyAdLoaded();
+    Activity getActivity();
 }

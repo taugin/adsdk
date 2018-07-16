@@ -177,6 +177,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         return null;
     }
 
+    @Override
+    public Activity getActivity() {
+        if (mActivity != null) {
+            return mActivity.get();
+        }
+        return null;
+    }
+
     /**
      * 设置外部监听器
      *
