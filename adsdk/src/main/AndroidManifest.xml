@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <application>
         <meta-data
@@ -21,5 +24,16 @@
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent" />
+        <!-- applovin -->
+        <activity
+            android:name="com.applovin.adview.AppLovinInterstitialActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.applovin.adview.AppLovinConfirmationActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <meta-data
+            android:name="applovin.sdk.key"
+            android:value="aqULsa4oR7H9uQJrVI4-hGyFMgAc_RwZFPv6-zvQ5AZzbup5At4t806UgH6fi1DzQ74O5zpA8N8kGyqRquIyuO" />
     </application>
 </manifest>

@@ -5,14 +5,14 @@ package com.inner.adsdk;
  */
 
 public class AdReward {
-    private int amount;
+    private String amount;
     private String type;
 
-    public int getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 

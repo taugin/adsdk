@@ -10,6 +10,7 @@ import com.inner.adsdk.adloader.addfp.AdDfpLoader;
 import com.inner.adsdk.adloader.adfb.FBLoader;
 import com.inner.adsdk.adloader.admob.AdmobLoader;
 import com.inner.adsdk.adloader.adx.AdxLoader;
+import com.inner.adsdk.adloader.applovin.AppLovinLoader;
 import com.inner.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.inner.adsdk.adloader.listener.IManagerListener;
 import com.inner.adsdk.adloader.listener.ISdkLoader;
@@ -127,6 +128,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                             }
                         } else if (config.isDfp()) {
                             loader = new AdDfpLoader();
+                            loader.init(mContext);
+                            loader.setPidConfig(config);
+                            loader.setListenerManager(this);
+                            loader.setAdId(adId);
+                            if (loader.allowUseLoader()) {
+                                mAdLoaders.add(loader);
+                            }
+                        } else if (config.isAppLovin()) {
+                            loader = new AppLovinLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);

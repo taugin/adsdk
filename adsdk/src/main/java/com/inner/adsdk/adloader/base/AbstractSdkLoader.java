@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Administrator on 2018/2/9.
  */
 
-public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
+public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
 
     // 广告的最大默认缓存时间
     protected static final long MAX_CACHED_TIME = 15 * 60 * 1000;
@@ -75,9 +75,7 @@ public class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
     }
 
     @Override
-    public String getSdkName() {
-        return null;
-    }
+    public abstract String getSdkName();
 
     public String getAdType() {
         if (mPidConfig != null) {

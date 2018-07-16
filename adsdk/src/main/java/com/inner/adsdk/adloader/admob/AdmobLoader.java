@@ -432,7 +432,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     AdReward item = new AdReward();
                     if (rewardItem != null) {
-                        item.setAmount(rewardItem.getAmount());
+                        item.setAmount(String.valueOf(rewardItem.getAmount()));
                         item.setType(rewardItem.getType());
                     }
                     getAdListener().onRewarded(item);

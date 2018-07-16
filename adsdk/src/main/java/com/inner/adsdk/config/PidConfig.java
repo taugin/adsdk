@@ -140,6 +140,10 @@ public class PidConfig {
         return TextUtils.equals(Constant.AD_SDK_DFP, sdk);
     }
 
+    public boolean isAppLovin() {
+        return TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk);
+    }
+
     public boolean isBannerType() {
         return TextUtils.equals(Constant.TYPE_BANNER, adType);
     }
