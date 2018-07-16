@@ -54,15 +54,6 @@ public class MainActivity extends AppCompatActivity {
             loadAdViewCommon(R.layout.ad_common_native_card_medium_upbtn);
         } else if (v.getId() == R.id.native_common3) {
             loadAdViewCommon(R.layout.ad_common_native_card_small);
-        } else if (v.getId() == R.id.webmob_interstitial) {
-            AdSdk.get(mContext).loadInterstitial("interstitial", new SimpleAdSdkListener(){
-                @Override
-                public void onLoaded(String pidName, String source, String adType) {
-                    AdSdk.get(mContext).showInterstitial(pidName);
-                }
-            });
-        } else if (v.getId() == R.id.webmob_native) {
-            loadAdViewCommon(LAYOUT[new Random(System.currentTimeMillis()).nextInt(LAYOUT.length)]);
         } else if (v.getId() == R.id.reward_video) {
             AdSdk.get(this).loadInterstitial("reward_video", new SimpleAdSdkListener(){
 
