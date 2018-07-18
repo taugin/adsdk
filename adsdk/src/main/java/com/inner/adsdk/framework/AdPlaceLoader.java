@@ -329,15 +329,21 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     if (loader.isRewardedVideoType()) {
-                        if (loader.isRewaredVideoLoaded() && loader.showRewardedVideo()) {
-                            mCurrentAdLoader = loader;
-                            AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                        if (loader.isRewaredVideoLoaded()) {
+                            ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
+                            if (loader.showRewardedVideo()) {
+                                mCurrentAdLoader = loader;
+                                AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                            }
                             break;
                         }
                     } else {
-                        if (loader.isInterstitialLoaded() && loader.showInterstitial()) {
-                            mCurrentAdLoader = loader;
-                            AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                        if (loader.isInterstitialLoaded()) {
+                            ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
+                            if (loader.showInterstitial()) {
+                                mCurrentAdLoader = loader;
+                                AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                            }
                             break;
                         }
                     }
