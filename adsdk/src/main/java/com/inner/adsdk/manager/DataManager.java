@@ -90,7 +90,7 @@ public class DataManager {
             pkgmd5 = pkgmd5.toLowerCase(Locale.getDefault());
             String filename = pkgmd5.substring(0, 8);
             cfgName = "cfg" + filename + ".dat";
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.v(Log.TAG, "error : " + e);
         }
         return cfgName;
@@ -110,9 +110,9 @@ public class DataManager {
         return null;
     }
 
-    public GtConfig getRemoteGtPolicy(String key) {
+    public GtConfig getRemoteGtPolicy() {
         if (mDataRequest != null) {
-            String data = mDataRequest.getString(key);
+            String data = mDataRequest.getString(Constant.ADPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseGtPolicy(data);
             }

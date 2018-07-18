@@ -80,7 +80,7 @@ public class GtAdLoader {
         if (adConfig == null) {
             return;
         }
-        GtConfig gtConfig = DataManager.get(mContext).getRemoteGtPolicy(Constant.ADPOLICY_NAME);
+        GtConfig gtConfig = DataManager.get(mContext).getRemoteGtPolicy();
         if (gtConfig == null && adConfig != null) {
             gtConfig = adConfig.getGtConfig();
         }
