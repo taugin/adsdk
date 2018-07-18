@@ -1,22 +1,16 @@
 package com.inner.adsdk.config;
 
-import java.util.List;
-
 /**
  * Created by Administrator on 2018/2/9.
  */
 
-public class GtConfig {
+public class GtConfig extends AttrConfig {
     private boolean enable = false;
     private long upDelay;
     private long interval;
     private int maxCount;
     private int maxVersion;
     private long minInterval;
-
-    private List<String> countryList;
-    private List<String> attrList;
-    private List<String> mediaList;
 
     public boolean isEnable() {
         return enable;
@@ -66,30 +60,6 @@ public class GtConfig {
         this.minInterval = minInterval;
     }
 
-    public List<String> getCountryList() {
-        return countryList;
-    }
-
-    public void setCountryList(List<String> countryList) {
-        this.countryList = countryList;
-    }
-
-    public List<String> getAttrList() {
-        return attrList;
-    }
-
-    public void setAttrList(List<String> attrList) {
-        this.attrList = attrList;
-    }
-
-    public List<String> getMediaList() {
-        return mediaList;
-    }
-
-    public void setMediaList(List<String> mediaList) {
-        this.mediaList = mediaList;
-    }
-
     @Override
     public String toString() {
         return "GtConfig{" +
@@ -99,9 +69,9 @@ public class GtConfig {
                 ", maxCount=" + maxCount +
                 ", maxVersion=" + maxVersion +
                 ", minInterval=" + minInterval +
-                ", countryList=" + countryList +
-                ", attrList=" + attrList +
-                ", mediaList=" + mediaList +
+                ", countryList=" + getCountryList() +
+                ", attrList=" + getAttrList() +
+                ", mediaList=" + getMediaList() +
                 '}';
     }
 }

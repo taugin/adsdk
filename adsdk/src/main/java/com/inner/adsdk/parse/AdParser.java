@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
+import com.inner.adsdk.config.AttrConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.PidConfig;
@@ -34,7 +35,7 @@ public class AdParser implements IParser {
         JSONArray jarray = null;
         try {
             jobj = new JSONObject(content);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.v(Log.TAG, "error : not a json object");
         }
         if (jobj != null) {
@@ -42,7 +43,7 @@ public class AdParser implements IParser {
         }
         try {
             jarray = new JSONArray(content);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.v(Log.TAG, "error : not a json array");
         }
         if (jarray != null) {
@@ -106,14 +107,14 @@ public class AdParser implements IParser {
             Iterator<String> iterator = jobj.keys();
             String key = null;
             String value = null;
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 key = iterator.next();
                 value = jobj.getString(key);
                 if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
                     adIds.put(key, value);
                 }
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.v(Log.TAG, "parseAdIds error : " + e);
         }
         return adIds;
@@ -148,6 +149,21 @@ public class AdParser implements IParser {
             if (jobj.has(MIN_INTERVAL)) {
                 gtConfig.setMinInterval(jobj.getLong(MIN_INTERVAL));
             }
+            parseAttrConfig(gtConfig, jobj);
+        } catch (Exception e) {
+            Log.v(Log.TAG, "parseGtPolicyInternal error : " + e);
+        }
+        return gtConfig;
+    }
+
+    /**
+     * 解析归因配置
+     *
+     * @param attrConfig
+     * @param jobj
+     */
+    private void parseAttrConfig(AttrConfig attrConfig, JSONObject jobj) {
+        try {
             if (jobj.has(COUNTRY_LIST)) {
                 JSONArray jarray = jobj.getJSONArray(COUNTRY_LIST);
                 if (jarray != null && jarray.length() > 0) {
@@ -158,7 +174,7 @@ public class AdParser implements IParser {
                             list.add(s);
                         }
                     }
-                    gtConfig.setCountryList(list);
+                    attrConfig.setCountryList(list);
                 }
             }
             if (jobj.has(ATTRS)) {
@@ -171,7 +187,7 @@ public class AdParser implements IParser {
                             list.add(s);
                         }
                     }
-                    gtConfig.setAttrList(list);
+                    attrConfig.setAttrList(list);
                 }
             }
             if (jobj.has(MEDIA_SOURCE)) {
@@ -184,13 +200,12 @@ public class AdParser implements IParser {
                             list.add(s);
                         }
                     }
-                    gtConfig.setMediaList(list);
+                    attrConfig.setMediaList(list);
                 }
             }
         } catch (Exception e) {
-            Log.v(Log.TAG, "parseGtPolicyInternal error : " + e);
+            Log.e(Log.TAG, "parseAttrConfig error : " + e);
         }
-        return gtConfig;
     }
 
     private List<AdPlace> parseAdPlaces(String content) {
@@ -369,14 +384,14 @@ public class AdParser implements IParser {
             Iterator<String> iterator = jobj.keys();
             String key = null;
             String value = null;
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 key = iterator.next();
                 value = jobj.getString(key);
                 if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
                     adRefs.put(key, value);
                 }
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.v(Log.TAG, "parseAdRefs error : " + e);
         }
         return adRefs;
