@@ -5,7 +5,7 @@ def useProject = true;
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.bubble.shooter.casual.game.booster"
+        applicationId "com.flash.color.caller.screen"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1

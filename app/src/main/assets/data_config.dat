@@ -59,7 +59,7 @@
           "sdk": "applovin",
           "type": "banner",
           "pid": "1bb8d0234f0f8c3d",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,
@@ -73,8 +73,14 @@
           "sdk": "admob",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
-          "disable": 1
+          "disable": 0
         },
+        {
+           "sdk": "fb",
+           "type": "interstitial",
+           "pid": "509068866191430_509575026140814",
+           "disable": 0
+         },
         {
           "sdk": "wemob",
           "type": "interstitial",
@@ -91,7 +97,7 @@
           "sdk": "applovin",
           "type": "interstitial",
           "pid": "4a885e75685fed5c",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,
@@ -111,7 +117,7 @@
            "sdk": "applovin",
            "type": "reward",
            "pid": "8a60714b81a59889",
-           "disable": 0
+           "disable": 1
          }
       ],
       "maxcount": 100,
