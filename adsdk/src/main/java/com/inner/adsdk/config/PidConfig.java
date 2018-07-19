@@ -8,7 +8,7 @@ import com.inner.adsdk.constant.Constant;
  * Created by Administrator on 2018/2/9.
  */
 
-public class PidConfig {
+public class PidConfig extends AttrConfig {
 
     private String adPlaceName;
 

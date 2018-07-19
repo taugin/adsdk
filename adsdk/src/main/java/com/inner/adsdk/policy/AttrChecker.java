@@ -20,7 +20,14 @@ public class AttrChecker {
 
     private Context mContext;
 
+    public AttrChecker() {
+    }
+
     public AttrChecker(Context context) {
+        mContext = context;
+    }
+
+    public void setContext(Context context) {
         mContext = context;
     }
 
@@ -109,11 +116,19 @@ public class AttrChecker {
     }
 
     private String getAfStatus() {
-        return Utils.getString(mContext, Constant.AF_STATUS);
+        try {
+            return Utils.getString(mContext, Constant.AF_STATUS);
+        } catch(Exception e) {
+        }
+        return null;
     }
 
     private String getMediaSource() {
-        return Utils.getString(mContext, Constant.AF_MEDIA_SOURCE);
+        try {
+            return Utils.getString(mContext, Constant.AF_MEDIA_SOURCE);
+        } catch(Exception e) {
+        }
+        return null;
     }
 
     private String getCountry() {

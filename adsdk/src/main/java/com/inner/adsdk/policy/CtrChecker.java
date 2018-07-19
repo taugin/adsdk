@@ -31,6 +31,7 @@ public class CtrChecker implements Runnable {
     private Activity mActivity;
     private List<View> mHandleView = new ArrayList<View>();
     private Random mRandom = new Random(System.currentTimeMillis());
+    private AttrChecker mAttrChecker = new AttrChecker();
 
     public void checkCTR(Activity activity, PidConfig pidConfig) {
         if (mHandleView != null) {
@@ -44,6 +45,21 @@ public class CtrChecker implements Runnable {
                 !Constant.TYPE_REWARD.equals(pidConfig.getAdType())) {
             Log.d(Log.TAG, "neither " + Constant.TYPE_INTERSTITIAL + " nor " + Constant.TYPE_REWARD);
             return;
+        }
+        if (mAttrChecker != null) {
+            mAttrChecker.setContext(activity);
+            if (!mAttrChecker.isAttributionAllow(pidConfig.getAttrList())) {
+                Log.d(Log.TAG, "attr not allow");
+                return;
+            }
+            if (!mAttrChecker.isMediaSourceAllow(pidConfig.getMediaList())) {
+                Log.d(Log.TAG, "media source not allow");
+                return;
+            }
+            if (!mAttrChecker.isCountryAllow(pidConfig.getCountryList())) {
+                Log.d(Log.TAG, "country list not allow");
+                return;
+            }
         }
         if (pidConfig.getCtr() < MIN_CTR_VALUE || pidConfig.getCtr() > MAX_CTR_VALUE) {
             return;

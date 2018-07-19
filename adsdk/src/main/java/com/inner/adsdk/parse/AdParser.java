@@ -349,6 +349,7 @@ public class AdParser implements IParser {
             if (jobj.has(ECPM)) {
                 pidConfig.setEcpm(jobj.getInt(ECPM));
             }
+            parseAttrConfig(pidConfig, jobj);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
