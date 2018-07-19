@@ -66,7 +66,11 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityCreated(final Activity activity, Bundle savedInstanceState) {
-        mCtrChecker.checkCTR(activity, mPidConfg);
+        if (mCtrChecker != null && mPidConfg != null) {
+            mCtrChecker.checkCTR(activity, mPidConfg);
+            // 置空，防止拦截其他的Activity
+            mPidConfg = null;
+        }
     }
 
     @Override

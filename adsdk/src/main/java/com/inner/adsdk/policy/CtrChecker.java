@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-import com.facebook.ads.AudienceNetworkActivity;
-import com.google.android.gms.ads.AdActivity;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
@@ -25,12 +23,19 @@ import java.util.Random;
 
 public class CtrChecker implements Runnable {
 
+    private static final int MIN_CTR_VALUE = 1;
+    private static final int MAX_CTR_VALUE = 100;
+    private static final int DELAY_HANDLE_CTR = 1000;
+
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private Activity mActivity;
     private List<View> mHandleView = new ArrayList<View>();
+    private Random mRandom = new Random(System.currentTimeMillis());
 
     public void checkCTR(Activity activity, PidConfig pidConfig) {
-        mHandleView.clear();
+        if (mHandleView != null) {
+            mHandleView.clear();
+        }
         if (pidConfig == null || activity == null) {
             Log.d(Log.TAG, "activity == null or pidConfig == null");
             return;
@@ -40,51 +45,36 @@ public class CtrChecker implements Runnable {
             Log.d(Log.TAG, "neither " + Constant.TYPE_INTERSTITIAL + " nor " + Constant.TYPE_REWARD);
             return;
         }
-        if (pidConfig.getCtr() <= 0 || pidConfig.getCtr() >= 100) {
-            Log.d(Log.TAG, "ctr less than 0 or great than 100");
+        if (pidConfig.getCtr() < MIN_CTR_VALUE || pidConfig.getCtr() > MAX_CTR_VALUE) {
             return;
         }
-        if (pidConfig.isFB()) {
-            checkFacebookCTR(activity, pidConfig);
-        } else if (pidConfig.isAdmob() || pidConfig.isAdx() || pidConfig.isDfp()) {
-            checkGoogleCTR(activity, pidConfig);
-        }
+        handleClickConfirm(activity, pidConfig);
     }
 
-    private void checkFacebookCTR(final Activity activity, PidConfig pidConfig) {
+    private void handleClickConfirm(final Activity activity, PidConfig pidConfig) {
         Log.d(Log.TAG, "");
-        if (activity.getClass() != AudienceNetworkActivity.class) {
-            Log.d(Log.TAG, "not facebook activity");
-            return;
-        }
         mActivity = activity;
-        boolean allowClick = percentRandomBoolean(pidConfig != null ? pidConfig.getCtr() : 0);
-        Log.d(Log.TAG, "allow click : " + allowClick + " , pidName : " + pidConfig.getAdPlaceName());
-        if (!allowClick) {
+        boolean needClickConfirm = needClickConfirmByCtr(pidConfig != null ? pidConfig.getCtr() : 0);
+        Log.d(Log.TAG, "needClickConfirm : " + needClickConfirm + " , pidName : " + pidConfig.getAdPlaceName());
+        if (mHandler != null && needClickConfirm) {
             mHandler.removeCallbacks(this);
-            mHandler.postDelayed(this, 1000);
+            mHandler.postDelayed(this, DELAY_HANDLE_CTR);
         }
     }
 
-    private void checkGoogleCTR(final Activity activity, PidConfig pidConfig) {
-        Log.d(Log.TAG, "");
-        if (activity.getClass() != AdActivity.class) {
-            Log.d(Log.TAG, "not google activity");
-            return;
+    /**
+     * 判断是否需要点击确认
+     * @param ctr
+     * @return true if need click confirm otherwise false
+     */
+    public boolean needClickConfirmByCtr(int ctr) {
+        try {
+            if (ctr < MIN_CTR_VALUE || ctr > MAX_CTR_VALUE) return false;
+            int randomVal = mRandom.nextInt(MAX_CTR_VALUE);
+            return randomVal > ctr;
+        } catch (Exception e) {
         }
-        mActivity = activity;
-        boolean allowClick = percentRandomBoolean(pidConfig != null ? pidConfig.getCtr() : 0);
-        Log.d(Log.TAG, "allow click : " + allowClick + " , pidName : " + pidConfig.getAdPlaceName());
-        if (!allowClick) {
-            mHandler.removeCallbacks(this);
-            mHandler.postDelayed(this, 1000);
-        }
-    }
-
-    public static boolean percentRandomBoolean(int percent) {
-        if (percent <= 0 || percent > 100) return false;
-        int randomVal = new Random().nextInt(100);
-        return randomVal <= percent;
+        return false;
     }
 
     @Override
@@ -103,6 +93,7 @@ public class CtrChecker implements Runnable {
                     }
                 }
             } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e);
             }
         } else {
             Log.d(Log.TAG, "mActivity == null");
@@ -146,7 +137,6 @@ public class CtrChecker implements Runnable {
     private void restoreViewClick() {
         if (mHandleView != null && !mHandleView.isEmpty()) {
             for (View v : mHandleView) {
-                Log.d(Log.TAG, "v : " + v);
                 v.setOnTouchListener(null);
             }
         }
