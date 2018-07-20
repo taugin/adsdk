@@ -5,7 +5,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionName "1.1.10"
+        versionName "1.1.11"
     }
 
     buildTypes {
@@ -34,7 +34,7 @@ dependencies {
     }
     implementation 'com.google.android.gms:play-services-ads:15.0.0'
     implementation 'com.google.firebase:firebase-config:15.0.0'
-    implementation 'com.wemob:wemob:2.3.7'
+    implementation 'com.wemob:wemob:2.3.8'
     implementation 'com.applovin:applovin-sdk:+'
 }
 
