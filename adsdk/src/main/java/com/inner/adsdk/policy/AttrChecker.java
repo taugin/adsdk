@@ -43,7 +43,7 @@ public class AttrChecker {
             return true;
         }
         String afStatus = getAfStatus();
-        Log.d(Log.TAG, "af_status : " + afStatus);
+        Log.v(Log.TAG, "af_status : " + afStatus);
         if (attr != null && !attr.contains(afStatus)) {
             return false;
         }
@@ -87,7 +87,7 @@ public class AttrChecker {
      */
     public boolean isMediaSourceAllow(List<String> mediaList) {
         String mediaSource = getMediaSource();
-        Log.d(Log.TAG, "media_source : " + mediaSource);
+        Log.v(Log.TAG, "media_source : " + mediaSource);
         if (mediaList != null && !mediaList.isEmpty()) {
             List<String> includeMs = new ArrayList<String>();
             List<String> excludeMs = new ArrayList<String>();

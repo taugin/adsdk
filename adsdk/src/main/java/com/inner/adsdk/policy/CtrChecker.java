@@ -38,26 +38,26 @@ public class CtrChecker implements Runnable {
             mHandleView.clear();
         }
         if (pidConfig == null || activity == null) {
-            Log.d(Log.TAG, "activity == null or pidConfig == null");
+            Log.v(Log.TAG, "activity == null or pidConfig == null");
             return;
         }
         if (!Constant.TYPE_INTERSTITIAL.equals(pidConfig.getAdType()) &&
                 !Constant.TYPE_REWARD.equals(pidConfig.getAdType())) {
-            Log.d(Log.TAG, "neither " + Constant.TYPE_INTERSTITIAL + " nor " + Constant.TYPE_REWARD);
+            Log.v(Log.TAG, "neither " + Constant.TYPE_INTERSTITIAL + " nor " + Constant.TYPE_REWARD);
             return;
         }
         if (mAttrChecker != null) {
             mAttrChecker.setContext(activity);
             if (!mAttrChecker.isAttributionAllow(pidConfig.getAttrList())) {
-                Log.d(Log.TAG, "attr not allow");
+                Log.v(Log.TAG, "attr not allow");
                 return;
             }
             if (!mAttrChecker.isMediaSourceAllow(pidConfig.getMediaList())) {
-                Log.d(Log.TAG, "media source not allow");
+                Log.v(Log.TAG, "media source not allow");
                 return;
             }
             if (!mAttrChecker.isCountryAllow(pidConfig.getCountryList())) {
-                Log.d(Log.TAG, "country list not allow");
+                Log.v(Log.TAG, "country list not allow");
                 return;
             }
         }
@@ -68,10 +68,10 @@ public class CtrChecker implements Runnable {
     }
 
     private void handleClickConfirm(final Activity activity, PidConfig pidConfig) {
-        Log.d(Log.TAG, "");
+        Log.v(Log.TAG, "handle click confirm");
         mActivity = activity;
         boolean needClickConfirm = needClickConfirmByCtr(pidConfig != null ? pidConfig.getCtr() : 0);
-        Log.d(Log.TAG, "needClickConfirm : " + needClickConfirm + " , pidName : " + pidConfig.getAdPlaceName());
+        Log.v(Log.TAG, "need click confirm : " + needClickConfirm + " , pidname : " + pidConfig.getAdPlaceName());
         if (mHandler != null && needClickConfirm) {
             mHandler.removeCallbacks(this);
             mHandler.postDelayed(this, DELAY_HANDLE_CTR);
@@ -80,10 +80,12 @@ public class CtrChecker implements Runnable {
 
     /**
      * 判断是否需要点击确认
+     *
      * @param ctr
      * @return true if need click confirm otherwise false
      */
     public boolean needClickConfirmByCtr(int ctr) {
+        Log.v(Log.TAG, "need click confirm by ctr : " + ctr);
         try {
             if (ctr < MIN_CTR_VALUE || ctr > MAX_CTR_VALUE) return false;
             int randomVal = mRandom.nextInt(MAX_CTR_VALUE);
@@ -112,7 +114,7 @@ public class CtrChecker implements Runnable {
                 Log.e(Log.TAG, "error : " + e);
             }
         } else {
-            Log.d(Log.TAG, "mActivity == null");
+            Log.v(Log.TAG, "mActivity == null");
         }
     }
 
@@ -123,7 +125,7 @@ public class CtrChecker implements Runnable {
      */
     private void handleViewCtr(final View view) {
         if (mActivity == null || view == null) {
-            Log.d(Log.TAG, "mActivity == null or view == null");
+            Log.v(Log.TAG, "mActivity == null or view == null");
             return;
         }
         final GestureDetector gestureDetector = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
