@@ -250,7 +250,10 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onInterstitialDismissed(Ad ad) {
                 Log.v(Log.TAG, "");
-                fbInterstitial = null;
+                if (fbInterstitial != null) {
+                    fbInterstitial.destroy();
+                    fbInterstitial = null;
+                }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }

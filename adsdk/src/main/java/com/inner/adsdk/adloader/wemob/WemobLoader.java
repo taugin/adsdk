@@ -251,7 +251,10 @@ public class WemobLoader extends AbstractSdkLoader {
             @Override
             public void onAdClosed() {
                 Log.v(Log.TAG, "");
-                interstitialAd = null;
+                if (interstitialAd != null) {
+                    interstitialAd.destroy();
+                    interstitialAd = null;
+                }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
