@@ -323,7 +323,11 @@ public class AdParser implements IParser {
                 pidConfig.setSdk(jobj.getString(SDK));
             }
             if (jobj.has(PID)) {
-                pidConfig.setPid(jobj.getString(PID));
+                String pid = jobj.getString(PID);
+                if (pid != null) {
+                    pid = pid.trim();
+                }
+                pidConfig.setPid(pid);
             }
             if (jobj.has(CTR)) {
                 pidConfig.setCtr(jobj.getInt(CTR));
