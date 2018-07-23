@@ -353,6 +353,9 @@ public class AdParser implements IParser {
             if (jobj.has(ECPM)) {
                 pidConfig.setEcpm(jobj.getInt(ECPM));
             }
+            if (jobj.has(FINISH_FORCTR)) {
+                pidConfig.setFinishForCtr(jobj.getInt(FINISH_FORCTR) == 1);
+            }
             parseAttrConfig(pidConfig, jobj);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

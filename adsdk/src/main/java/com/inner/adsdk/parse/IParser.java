@@ -65,6 +65,8 @@ public interface IParser {
     String DELAY_LOAD_TIME = "dlt";
     // ECPM
     String ECPM = "ecpm";
+    // double click for ctr
+    String FINISH_FORCTR = "ffc";
 
     // 启用或禁用GT
     String ENABLE = "e";

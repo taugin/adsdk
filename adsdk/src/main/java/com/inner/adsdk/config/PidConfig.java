@@ -32,6 +32,9 @@ public class PidConfig extends AttrConfig {
 
     private int ecpm;
 
+    // 0 : finish click, 1 : double click
+    private boolean finishForCtr;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -118,6 +121,14 @@ public class PidConfig extends AttrConfig {
 
     public void setEcpm(int ecpm) {
         this.ecpm = ecpm;
+    }
+
+    public boolean isFinishForCtr() {
+        return finishForCtr;
+    }
+
+    public void setFinishForCtr(boolean finishForCtr) {
+        this.finishForCtr = finishForCtr;
     }
 
     public boolean isAdmob() {

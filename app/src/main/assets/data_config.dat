@@ -74,20 +74,22 @@
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr":5,
-          "disable": 0
+          "disable": 1
         },
         {
            "sdk": "fb",
            "type": "interstitial",
            "pid": "509068866191430_509575026140814",
            "ctr":5,
-           "disable": 0
+           "disable": 1
          },
         {
           "sdk": "wemob",
           "type": "interstitial",
           "pid": "interstitial1",
-          "disable": 1
+          "ctr":5,
+          "ffc":1,
+          "disable": 0
         },
         {
           "sdk": "dfp",

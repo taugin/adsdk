@@ -32,6 +32,7 @@ public class CtrChecker implements Runnable {
     private List<View> mHandleView = new ArrayList<View>();
     private Random mRandom = new Random(System.currentTimeMillis());
     private AttrChecker mAttrChecker = new AttrChecker();
+    private PidConfig mPidConfig;
 
     public void checkCTR(Activity activity, PidConfig pidConfig) {
         if (mHandleView != null) {
@@ -70,6 +71,7 @@ public class CtrChecker implements Runnable {
     private void handleClickConfirm(final Activity activity, PidConfig pidConfig) {
         Log.v(Log.TAG, "handle click confirm");
         mActivity = activity;
+        mPidConfig = pidConfig;
         boolean needClickConfirm = needClickConfirmByCtr(pidConfig != null ? pidConfig.getCtr() : 0);
         Log.v(Log.TAG, "need click confirm : " + needClickConfirm + " , pidname : " + pidConfig.getAdPlaceName());
         if (mHandler != null && needClickConfirm) {
@@ -131,13 +133,12 @@ public class CtrChecker implements Runnable {
         final GestureDetector gestureDetector = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
-                restoreViewClick();
+                if (mPidConfig != null && mPidConfig.isFinishForCtr()) {
+                    finishAdActivity();
+                } else {
+                    restoreViewClick();
+                }
                 return super.onSingleTapUp(e);
-            }
-
-            @Override
-            public void onLongPress(MotionEvent e) {
-                restoreViewClick();
             }
         });
         view.setOnTouchListener(new View.OnTouchListener() {
@@ -147,6 +148,17 @@ public class CtrChecker implements Runnable {
                 return true;
             }
         });
+    }
+
+    private void finishAdActivity() {
+        Log.d(Log.TAG, "");
+        try {
+            if (mActivity != null) {
+                mActivity.finish();
+            }
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
     }
 
     /**
