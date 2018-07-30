@@ -65,29 +65,29 @@ public class CtrChecker implements Runnable {
         if (pidConfig.getCtr() < MIN_CTR_VALUE || pidConfig.getCtr() > MAX_CTR_VALUE) {
             return;
         }
-        handleClickConfirm(activity, pidConfig);
+        handleControlCTR(activity, pidConfig);
     }
 
-    private void handleClickConfirm(final Activity activity, PidConfig pidConfig) {
-        Log.v(Log.TAG, "handle click confirm");
+    private void handleControlCTR(final Activity activity, PidConfig pidConfig) {
+        Log.v(Log.TAG, "handle control ctr");
         mActivity = activity;
         mPidConfig = pidConfig;
-        boolean needClickConfirm = needClickConfirmByCtr(pidConfig != null ? pidConfig.getCtr() : 0);
-        Log.v(Log.TAG, "need click confirm : " + needClickConfirm + " , pidname : " + pidConfig.getAdPlaceName());
-        if (mHandler != null && needClickConfirm) {
+        boolean needControlCTR = needControlCTR(pidConfig != null ? pidConfig.getCtr() : 0);
+        Log.v(Log.TAG, "pidname : " + pidConfig.getAdPlaceName() + " , ncc : " + needControlCTR + " , ffc : " + pidConfig.isFinishForCtr());
+        if (mHandler != null && needControlCTR) {
             mHandler.removeCallbacks(this);
             mHandler.postDelayed(this, DELAY_HANDLE_CTR);
         }
     }
 
     /**
-     * 判断是否需要点击确认
+     * 判断是否需要控制CTR
      *
      * @param ctr
-     * @return true if need click confirm otherwise false
+     * @return true if need control ctr otherwise false
      */
-    public boolean needClickConfirmByCtr(int ctr) {
-        Log.v(Log.TAG, "need click confirm by ctr : " + ctr);
+    public boolean needControlCTR(int ctr) {
+        Log.v(Log.TAG, "need control by ctr : " + ctr);
         try {
             if (ctr < MIN_CTR_VALUE || ctr > MAX_CTR_VALUE) return false;
             int randomVal = mRandom.nextInt(MAX_CTR_VALUE);
@@ -154,7 +154,7 @@ public class CtrChecker implements Runnable {
         Log.d(Log.TAG, "");
         try {
             if (mActivity != null) {
-                mActivity.finish();
+                mActivity.onBackPressed();
             }
         } catch(Exception e) {
             Log.e(Log.TAG, "error : " + e);
