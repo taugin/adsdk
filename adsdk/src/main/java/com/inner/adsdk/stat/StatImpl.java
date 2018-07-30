@@ -24,6 +24,7 @@ public class StatImpl implements IStat {
     private static StatImpl sStatImpl;
 
     private Properties mEventIdAlias;
+    private Object mFacebookObject = null;
 
     public static StatImpl get() {
         synchronized (StatImpl.class) {
@@ -241,6 +242,62 @@ public class StatImpl implements IStat {
         }
     }
 
+    private void initFacebook(Context context) {
+        if (mFacebookObject != null) {
+            return;
+        }
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.facebook.appevents.AppEventsLogger");
+            Method method = clazz.getMethod("newLogger", Context.class);
+            mFacebookObject = method.invoke(null, context);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.v(Log.TAG, "StatImpl initFacebook error : " + error);
+        }
+    }
+
+    private void sendFacebook(Context context, String value, String eventId, Map<String, String> extra) {
+        initFacebook(context);
+        if (mFacebookObject == null) {
+            return;
+        }
+        Bundle bundle = new Bundle();
+
+        if (!TextUtils.isEmpty(value)) {
+            bundle.putString("entry_point", value);
+        } else {
+            bundle.putString("entry_point", eventId);
+        }
+        if (extra != null && !extra.isEmpty()) {
+            for (Map.Entry<String, String> entry : extra.entrySet()) {
+                if (entry != null) {
+                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
+                        bundle.putString(entry.getKey(), entry.getValue());
+                    }
+                }
+            }
+        }
+
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.facebook.appevents.AppEventsLogger");
+            Method method = clazz.getMethod("logEvent", String.class, Bundle.class);
+            method.invoke(mFacebookObject, eventId, bundle);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.v(Log.TAG, "StatImpl sendFacebook error : " + error);
+        }
+    }
+
     @Override
     public void reportAdRequest(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
@@ -274,6 +331,7 @@ public class StatImpl implements IStat {
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
+        sendFacebook(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
@@ -286,6 +344,7 @@ public class StatImpl implements IStat {
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         sendAppsflyer(context, pidName, eventId, extra);
+        sendFacebook(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
