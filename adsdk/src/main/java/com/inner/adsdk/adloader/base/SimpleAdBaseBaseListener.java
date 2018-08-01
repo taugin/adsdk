@@ -183,10 +183,18 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
          * 错误回调不需要判断是否是当前loader
          */
         if (mOnAdSdkListener != null) {
-            mOnAdSdkListener.onError(placeName, source, adType);
+            if (error == Constant.AD_ERROR_LOADING) {
+                mOnAdSdkListener.onLoading(placeName, source, adType);
+            } else {
+                mOnAdSdkListener.onError(placeName, source, adType);
+            }
         }
         if (mAdPlaceLoaderListener != null) {
-            mAdPlaceLoaderListener.onError(placeName, source, adType);
+            if (error == Constant.AD_ERROR_LOADING) {
+                mAdPlaceLoaderListener.onLoading(placeName, source, adType);
+            } else {
+                mAdPlaceLoaderListener.onError(placeName, source, adType);
+            }
         }
     }
 
