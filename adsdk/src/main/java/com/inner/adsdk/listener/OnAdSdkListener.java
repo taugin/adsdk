@@ -8,6 +8,7 @@ import com.inner.adsdk.AdReward;
 
 public interface OnAdSdkListener {
     public void onLoaded(String pidName, String source, String adType);
+    public void onLoading(String pidName, String source, String adType);
     public void onShow(String pidName, String source, String adType);
     public void onClick(String pidName, String source, String adType);
     public void onDismiss(String pidName, String source, String adType);
