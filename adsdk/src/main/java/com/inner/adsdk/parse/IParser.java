@@ -91,11 +91,26 @@ public interface IParser {
     String BLOCK_LOADING = "bl";
     // 是否上报错误日志
     String REPORT_ERROR = "re";
+    // 是否上报时间
+    String REPORT_TIME = "rt";
+    // 是否上报友盟
+    String REPORT_UMENG = "ru";
+    // 是否上报Appsflyer
+    String REPORT_APPSFLYER = "ra";
+    // 是否上报firebase
+    String REPORT_FIREBASE = "rf";
+    // 是否上报facebook
+    String REPORT_FACEBOOK = "rfb";
 
     AdConfig parseAdConfig(String data);
+
     AdPlace parseAdPlace(String data);
+
     GtConfig parseGtPolicy(String data);
+
     Map<String, String> parseAdIds(String data);
+
     AdSwitch parseAdSwitch(String data);
+
     Map<String, String> parseAdRefs(String data);
 }

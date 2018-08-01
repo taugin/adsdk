@@ -102,6 +102,9 @@ public class StatImpl implements IStat {
      * @param extra
      */
     private void sendFirebaseAnalytics(Context context, String value, String eventId, Map<String, String> extra) {
+        if (!isReportFirebase(context)) {
+            return;
+        }
         Log.d(Log.TAG, "StatImpl Firebase Analytics");
         Bundle bundle = new Bundle();
         if (!TextUtils.isEmpty(value)) {
@@ -145,6 +148,9 @@ public class StatImpl implements IStat {
      * @param extra
      */
     private void sendUmeng(Context context, String value, String eventId, Map<String, String> extra) {
+        if (!isReportUmeng(context)) {
+            return;
+        }
         Log.d(Log.TAG, "StatImpl sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
@@ -185,6 +191,9 @@ public class StatImpl implements IStat {
      * @param value
      */
     private void sendUmengEventValue(Context context, String eventId, Map<String, String> extra, int value) {
+        if (!isReportUmeng(context)) {
+            return;
+        }
         Log.d(Log.TAG, "StatImpl sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (extra != null && !extra.isEmpty()) {
@@ -220,6 +229,9 @@ public class StatImpl implements IStat {
      * @param extra
      */
     private void sendAppsflyer(Context context, String value, String eventId, Map<String, String> extra) {
+        if (!isReportAppsflyer(context)) {
+            return;
+        }
         Log.d(Log.TAG, "StatImpl sendAppsflyer Analytics");
         Map<String, Object> eventValue = new HashMap<String, Object>();
         if (!TextUtils.isEmpty(value)) {
@@ -262,6 +274,9 @@ public class StatImpl implements IStat {
     }
 
     private void sendFacebook(Context context, String value, String eventId, Map<String, String> extra) {
+        if (!isReportFacebook(context)) {
+            return;
+        }
         initFacebook(context);
         if (mFacebookObject == null) {
             return;
@@ -471,6 +486,38 @@ public class StatImpl implements IStat {
         AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
         if (adSwitch != null) {
             return adSwitch.isReportTime();
+        }
+        return true;
+    }
+
+    private boolean isReportUmeng(Context context) {
+        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
+        if (adSwitch != null) {
+            return adSwitch.isReportUmeng();
+        }
+        return true;
+    }
+
+    private boolean isReportFirebase(Context context) {
+        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
+        if (adSwitch != null) {
+            return adSwitch.isReportFirebase();
+        }
+        return true;
+    }
+
+    private boolean isReportAppsflyer(Context context) {
+        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
+        if (adSwitch != null) {
+            return adSwitch.isReportAppsflyer();
+        }
+        return true;
+    }
+
+    private boolean isReportFacebook(Context context) {
+        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
+        if (adSwitch != null) {
+            return adSwitch.isReportFacebook();
         }
         return true;
     }

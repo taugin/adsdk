@@ -25,6 +25,7 @@ import java.util.Map;
 public class DataManager {
 
     private static final String DATA_CONFIG = "data_%s.dat";
+    private static final String PREF_ADSWITCH_MD5 = "pref_adswitch_md5";
     private static DataManager sDataManager;
 
     public static DataManager get(Context context) {
@@ -53,6 +54,7 @@ public class DataManager {
     private Context mContext;
     private AdConfig mLocalAdConfig;
     private IParser mParser;
+    private AdSwitch mAdSwitch;
 
     public void init() {
         if (mDataRequest == null) {
@@ -131,18 +133,22 @@ public class DataManager {
     }
 
     public AdSwitch getAdSwitch() {
-        AdSwitch adSwitch = null;
         if (mDataRequest != null) {
             String data = mDataRequest.getString(Constant.ADSWITCH_NAME);
             if (!TextUtils.isEmpty(data)) {
-                adSwitch = mParser.parseAdSwitch(data);
+                String oldSwitchMd5 = Utils.getString(mContext, PREF_ADSWITCH_MD5);
+                String newSwitchMd5 = Utils.string2MD5(data);
+                if (mAdSwitch == null || !TextUtils.equals(oldSwitchMd5, newSwitchMd5)) {
+                    mAdSwitch = mParser.parseAdSwitch(data);
+                    Utils.putString(mContext, PREF_ADSWITCH_MD5, newSwitchMd5);
+                }
             }
-            if (adSwitch == null && mLocalAdConfig != null) {
-                adSwitch = mLocalAdConfig.getAdSwitch();
+            if (mAdSwitch == null && mLocalAdConfig != null) {
+                mAdSwitch = mLocalAdConfig.getAdSwitch();
             }
-            Log.v(Log.TAG, "adSwitch : " + adSwitch);
+            Log.v(Log.TAG, "ads : " + mAdSwitch);
         }
-        return adSwitch;
+        return mAdSwitch;
     }
 
     public Map<String, String> getRemoteAdRefs() {

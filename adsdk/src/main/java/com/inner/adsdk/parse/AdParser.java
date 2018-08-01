@@ -376,6 +376,21 @@ public class AdParser implements IParser {
             if (jobj.has(REPORT_ERROR)) {
                 adSwitch.setReportError(jobj.getInt(REPORT_ERROR) == 1);
             }
+            if (jobj.has(REPORT_TIME)) {
+                adSwitch.setReportTime(jobj.getInt(REPORT_TIME) == 1);
+            }
+            if (jobj.has(REPORT_UMENG)) {
+                adSwitch.setReportUmeng(jobj.getInt(REPORT_UMENG) == 1);
+            }
+            if (jobj.has(REPORT_APPSFLYER)) {
+                adSwitch.setReportAppsflyer(jobj.getInt(REPORT_APPSFLYER) == 1);
+            }
+            if (jobj.has(REPORT_FIREBASE)) {
+                adSwitch.setReportFirebase(jobj.getInt(REPORT_FIREBASE) == 1);
+            }
+            if (jobj.has(REPORT_FACEBOOK)) {
+                adSwitch.setReportFacebook(jobj.getInt(REPORT_FACEBOOK) == 1);
+            }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdSwitch error : " + e);
         }

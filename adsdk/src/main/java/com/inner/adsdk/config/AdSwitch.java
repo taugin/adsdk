@@ -8,6 +8,10 @@ public class AdSwitch {
     private boolean blockLoading;
     private boolean reportError;
     private boolean reportTime;
+    private boolean reportUmeng;
+    private boolean reportFirebase;
+    private boolean reportAppsflyer;
+    private boolean reportFacebook;
 
     public boolean isBlockLoading() {
         return blockLoading;
@@ -33,11 +37,48 @@ public class AdSwitch {
         this.reportTime = reportTime;
     }
 
+    public boolean isReportUmeng() {
+        return reportUmeng;
+    }
+
+    public void setReportUmeng(boolean reportUmeng) {
+        this.reportUmeng = reportUmeng;
+    }
+
+    public boolean isReportFirebase() {
+        return reportFirebase;
+    }
+
+    public void setReportFirebase(boolean reportFirebase) {
+        this.reportFirebase = reportFirebase;
+    }
+
+    public boolean isReportAppsflyer() {
+        return reportAppsflyer;
+    }
+
+    public void setReportAppsflyer(boolean reportAppsflyer) {
+        this.reportAppsflyer = reportAppsflyer;
+    }
+
+    public boolean isReportFacebook() {
+        return reportFacebook;
+    }
+
+    public void setReportFacebook(boolean reportFacebook) {
+        this.reportFacebook = reportFacebook;
+    }
+
     @Override
     public String toString() {
-        return "AdSwitch{" +
-                "blockLoading=" + blockLoading +
-                ", reportError=" + reportError +
+        return "ads{" +
+                "bl=" + blockLoading +
+                ", re=" + reportError +
+                ", rt=" + reportTime +
+                ", ru=" + reportUmeng +
+                ", rf=" + reportFirebase +
+                ", ra=" + reportAppsflyer +
+                ", rfb=" + reportFacebook +
                 '}';
     }
 }
