@@ -31,7 +31,6 @@ public class AdSdk {
 
     private Context mContext;
     private Map<String, AdPlaceLoader> mAdLoaders = new HashMap<String, AdPlaceLoader>();
-    private AdConfig mLocalAdConfig;
     private WeakReference<Activity> mActivity;
 
     private AdSdk(Context context) {
@@ -81,10 +80,9 @@ public class AdSdk {
      * 初始化
      */
     public void init() {
-        mLocalAdConfig = DataManager.get(mContext).getLocalAdConfig();
+        DataManager.get(mContext).init();
         ActivityMonitor.get(mContext).init();
         StatImpl.get().init();
-        DataManager.get(mContext).init();
         GtAdLoader.get(mContext).init(this);
     }
 
@@ -136,8 +134,9 @@ public class AdSdk {
     private String getAdRefPidName(String pidName) {
         String adrefPidName = pidName;
         Map<String, String> adRefs = DataManager.get(mContext).getRemoteAdRefs();
-        if (adRefs == null && mLocalAdConfig != null) {
-            adRefs = mLocalAdConfig.getAdRefs();
+        AdConfig localConfig = DataManager.get(mContext).getAdConfig();
+        if (adRefs == null && localConfig != null) {
+            adRefs = localConfig.getAdRefs();
         }
         if (adRefs != null && adRefs.containsKey(pidName)) {
             adrefPidName = adRefs.get(pidName);
@@ -158,13 +157,14 @@ public class AdSdk {
     private AdPlaceLoader createAdPlaceLoader(String pidName, AdPlace adPlace) {
         AdPlaceLoader loader = null;
         boolean useRemote = true;
-        if (mLocalAdConfig != null && adPlace == null) {
-            adPlace = mLocalAdConfig.get(pidName);
+        AdConfig localConfig = DataManager.get(mContext).getAdConfig();
+        if (localConfig != null && adPlace == null) {
+            adPlace = localConfig.get(pidName);
             useRemote = false;
         }
         Map<String, String> adIds = DataManager.get(mContext).getRemoteAdIds();
-        if (mLocalAdConfig != null && adIds == null) {
-            adIds = mLocalAdConfig.getAdIds();
+        if (localConfig != null && adIds == null) {
+            adIds = localConfig.getAdIds();
         }
         Log.v(Log.TAG, "pidName : " + pidName + " , adPlace : " + adPlace);
         if (adPlace != null) {

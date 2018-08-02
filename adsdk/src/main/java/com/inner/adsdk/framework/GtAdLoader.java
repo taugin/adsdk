@@ -76,7 +76,7 @@ public class GtAdLoader {
     }
 
     private void updateAdPolicy() {
-        AdConfig adConfig = DataManager.get(mContext).getLocalAdConfig();
+        AdConfig adConfig = DataManager.get(mContext).getAdConfig();
         if (adConfig == null) {
             return;
         }

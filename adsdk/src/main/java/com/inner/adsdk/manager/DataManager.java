@@ -57,6 +57,7 @@ public class DataManager {
     private AdSwitch mAdSwitch;
 
     public void init() {
+        parserLocalData();
         if (mDataRequest == null) {
             mDataRequest = new RemoteConfigRequest(mContext);
         }
@@ -71,7 +72,7 @@ public class DataManager {
         }
     }
 
-    public AdConfig getLocalAdConfig() {
+    private void parserLocalData() {
         String cfgName = getConfigName();
         String defName = getDefaultName();
         Log.v(Log.TAG, "cfg : " + cfgName + " , def : " + defName);
@@ -81,6 +82,12 @@ public class DataManager {
                 data = Utils.readAssets(mContext, defName);
             }
             mLocalAdConfig = mParser.parseAdConfig(data);
+        }
+    }
+
+    public AdConfig getAdConfig() {
+        if (mLocalAdConfig == null) {
+            parserLocalData();
         }
         return mLocalAdConfig;
     }
