@@ -19,6 +19,8 @@ public interface IAdLoader {
 
     public void setAdPlaceConfig(AdPlace adPlace);
 
+    public void setOriginPidName(String pidName);
+
     public boolean needReload(AdPlace adPlace);
 
     public void setAdIds(Map<String, String> adids);

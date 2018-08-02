@@ -23,6 +23,10 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public void setOriginPidName(String pidName) {
+    }
+
+    @Override
     public void setAdIds(Map<String, String> adids) {
     }
 

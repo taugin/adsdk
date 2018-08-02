@@ -107,10 +107,16 @@ public class AdSdk {
 
     private AdPlaceLoader getAdLoader(String pidName, boolean forLoad) {
         Log.d(Log.TAG, "getAdLoader forLoad : " + forLoad);
-        String oldPidName = pidName;
+        // 存储原始pid名称
+        String originPidName = pidName;
+        // 获取关联pid名称
         pidName = getAdRefPidName(pidName);
-        Log.v(Log.TAG, "pidName : " + oldPidName + " , adrefPidName : " + pidName);
-        AdPlaceLoader loader = mAdLoaders.get(pidName);
+        Log.v(Log.TAG, "originPidName : " + originPidName + " , adrefPidName : " + pidName);
+        // 如果共享loader对象的话，重置原始pid名称
+        if (originPidName != null && originPidName.endsWith("_share")) {
+            originPidName = pidName;
+        }
+        AdPlaceLoader loader = mAdLoaders.get(originPidName);
         if (!forLoad) {
             return loader;
         }
@@ -119,7 +125,10 @@ public class AdSdk {
         if (loader == null || loader.needReload(adPlace)) {
             loader = createAdPlaceLoader(pidName, adPlace);
             if (loader != null) {
-                mAdLoaders.put(pidName, loader);
+                if (!TextUtils.equals(originPidName, pidName)) {
+                    loader.setOriginPidName(originPidName);
+                }
+                mAdLoaders.put(originPidName, loader);
             }
         }
         return loader;

@@ -24,4 +24,5 @@ public interface IManagerListener {
     boolean hasNotifyLoaded();
     void notifyAdLoaded();
     Activity getActivity();
+    String getOriginPidName();
 }

@@ -50,6 +50,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     private WeakReference<Activity> mActivity;
     private ViewGroup mAdContainer;
     private ISdkLoader mCurrentAdLoader;
+    private String mOriginPidName;
 
     public AdPlaceLoader(Context context) {
         mContext = context;
@@ -63,6 +64,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     @Override
     public void setAdPlaceConfig(AdPlace adPlace) {
         mAdPlace = adPlace;
+    }
+
+    @Override
+    public void setOriginPidName(String pidName) {
+        mOriginPidName = pidName;
     }
 
     @Override
@@ -802,6 +808,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                     && TextUtils.equals(getPidByLoader(mCurrentAdLoader), pidName);
         }
         return isCurrentLoader;
+    }
+
+    @Override
+    public String getOriginPidName() {
+        return mOriginPidName;
     }
 
     private void clearAdBaseListener() {
