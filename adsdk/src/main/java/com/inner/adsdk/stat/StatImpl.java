@@ -1,6 +1,8 @@
 package com.inner.adsdk.stat;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -372,6 +374,7 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId(context, "error", sdk, type);
+        extra = addExtraForError(context, extra);
         sendFirebaseAnalytics(context, pidName, eventId, extra);
         sendUmeng(context, pidName, eventId, extra);
         // sendAppsflyer(context, pidName, eventId, extra);
@@ -520,5 +523,38 @@ public class StatImpl implements IStat {
             return adSwitch.isReportFacebook();
         }
         return true;
+    }
+
+    private Map<String, String> addExtraForError(Context context, Map<String, String> extra) {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            StringBuilder builder = new StringBuilder();
+            boolean isConnected = false;
+            String networkType = null;
+            String subworkType = null;
+            if (networkInfo != null) {
+                isConnected = networkInfo.isAvailable();
+                networkType = networkInfo.getTypeName();
+                subworkType = networkInfo.getSubtypeName();
+            }
+            builder.append(isConnected ? "Y" : "N");
+            if (!TextUtils.isEmpty(networkType)) {
+                builder.append("[");
+                builder.append(networkType);
+                if (!TextUtils.isEmpty(subworkType)) {
+                    builder.append("-");
+                    builder.append(subworkType);
+                }
+                builder.append("]");
+            }
+            if (extra == null) {
+                extra = new HashMap<String, String>();
+            }
+            extra.put("network", builder.toString());
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return extra;
     }
 }
