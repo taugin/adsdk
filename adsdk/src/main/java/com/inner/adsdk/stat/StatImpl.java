@@ -390,6 +390,7 @@ public class StatImpl implements IStat {
         eventId = generateEventIdAlias(context, eventId);
         sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
+        sendAppsflyer(context, null, eventId, null);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
@@ -402,6 +403,7 @@ public class StatImpl implements IStat {
         eventId = generateEventIdAlias(context, eventId);
         sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
+        sendAppsflyer(context, null, eventId, null);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
@@ -414,6 +416,7 @@ public class StatImpl implements IStat {
         eventId = generateEventIdAlias(context, eventId);
         sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
+        sendAppsflyer(context, null, eventId, null);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
@@ -426,6 +429,7 @@ public class StatImpl implements IStat {
         eventId = generateEventIdAlias(context, eventId);
         sendFirebaseAnalytics(context, null, eventId, null);
         sendUmeng(context, null, eventId, null);
+        sendAppsflyer(context, null, eventId, null);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
