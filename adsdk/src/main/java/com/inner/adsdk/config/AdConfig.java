@@ -17,6 +17,9 @@ public class AdConfig {
     // 广告内策略
     private GtConfig gtConfig;
 
+    // ST
+    private StConfig stConfig;
+
     // 广告配置
     private List<AdPlace> adPlaceList;
 
@@ -62,6 +65,14 @@ public class AdConfig {
 
     public void setAdRefs(Map<String, String> adRefs) {
         this.adRefs = adRefs;
+    }
+
+    public StConfig getStConfig() {
+        return stConfig;
+    }
+
+    public void setStConfig(StConfig stConfig) {
+        this.stConfig = stConfig;
     }
 
     /**

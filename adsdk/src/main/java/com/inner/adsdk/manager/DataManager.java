@@ -7,6 +7,7 @@ import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.GtConfig;
+import com.inner.adsdk.config.StConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.parse.AdParser;
@@ -124,6 +125,16 @@ public class DataManager {
             String data = mDataRequest.getString(Constant.ADPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseGtPolicy(data);
+            }
+        }
+        return null;
+    }
+
+    public StConfig getRemoteStPolicy() {
+        if (mDataRequest != null) {
+            String data = mDataRequest.getString(Constant.STPOLICY_NAME);
+            if (!TextUtils.isEmpty(data)) {
+                return mParser.parseStPolicy(data);
             }
         }
         return null;

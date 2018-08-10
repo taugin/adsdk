@@ -2,8 +2,9 @@ package com.inner.adsdk.parse;
 
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
-import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.config.AdSwitch;
+import com.inner.adsdk.config.GtConfig;
+import com.inner.adsdk.config.StConfig;
 
 import java.util.Map;
 
@@ -23,6 +24,8 @@ public interface IParser {
     String ADIDS = "adids";
     // 应用外的配置信息
     String GTCONFIG = "gtconfig";
+    // ST配置
+    String STCONFIG = "stconfig";
     // 广告位汇总
     String ADPLACES = "adplaces";
     // 开光控制配置信息
@@ -107,6 +110,8 @@ public interface IParser {
     AdPlace parseAdPlace(String data);
 
     GtConfig parseGtPolicy(String data);
+
+    StConfig parseStPolicy(String data);
 
     Map<String, String> parseAdIds(String data);
 

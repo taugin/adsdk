@@ -8,6 +8,7 @@ import com.inner.adsdk.config.AttrConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.PidConfig;
+import com.inner.adsdk.config.StConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Aes;
 import com.inner.adsdk.log.Log;
@@ -65,6 +66,7 @@ public class AdParser implements IParser {
             JSONObject jobj = new JSONObject(data);
             Map<String, String> adIds = null;
             GtConfig gtConfig = null;
+            StConfig stConfig = null;
             List<AdPlace> adPlaces = null;
             AdSwitch adSwitch = null;
             Map<String, String> adrefs = null;
@@ -73,6 +75,9 @@ public class AdParser implements IParser {
             }
             if (jobj.has(GTCONFIG)) {
                 gtConfig = parseGtPolicyInternal(jobj.getString(GTCONFIG));
+            }
+            if (jobj.has(STCONFIG)) {
+                stConfig = parseStPolicyInternal(jobj.getString(STCONFIG));
             }
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
@@ -83,13 +88,16 @@ public class AdParser implements IParser {
             if (jobj.has(ADREFS)) {
                 adrefs = parseAdRefs(jobj.getString(ADREFS));
             }
-            if (adPlaces != null || gtConfig != null || adIds != null || adSwitch != null || adrefs != null) {
+            if (adPlaces != null || gtConfig != null
+                    || adIds != null || adSwitch != null
+                    || adrefs != null || stConfig != null) {
                 adConfig = new AdConfig();
                 adConfig.setAdPlaceList(adPlaces);
                 adConfig.setGtConfig(gtConfig);
                 adConfig.setAdIds(adIds);
                 adConfig.setAdSwitch(adSwitch);
                 adConfig.setAdRefs(adrefs);
+                adConfig.setStConfig(stConfig);
             }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdConfigInternal error : " + e);
@@ -154,6 +162,27 @@ public class AdParser implements IParser {
             Log.v(Log.TAG, "parseGtPolicyInternal error : " + e);
         }
         return gtConfig;
+    }
+
+    @Override
+    public StConfig parseStPolicy(String data) {
+        data = getContent(data);
+        return parseStPolicyInternal(data);
+    }
+
+    private StConfig parseStPolicyInternal(String content) {
+        StConfig stConfig = null;
+        try {
+            JSONObject jobj = new JSONObject(content);
+            stConfig = new StConfig();
+            if (jobj.has(ENABLE)) {
+                stConfig.setEnable(jobj.getInt(ENABLE) == 1);
+            }
+            parseAttrConfig(stConfig, jobj);
+        } catch (Exception e) {
+            Log.v(Log.TAG, "parseStPolicyInternal error : " + e);
+        }
+        return stConfig;
     }
 
     /**

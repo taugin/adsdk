@@ -60,8 +60,10 @@ public class Constant {
     public static final String PREF_GT_REQUEST_TIME = "pref_gt_request_time";
     public static final String ADPLACE_OUTER_NAME = "gt_outer_place";
     public static final String ADPLACE_FILM_NAME = "gt_film_place";
+    public static final String STPLACE_OUTER_NAME = "st_outer_place";
     public static final String ADIDS_NAME = "adids";
     public static final String ADPOLICY_NAME = "gtconfig";
+    public static final String STPOLICY_NAME = "stconfig";
     public static final String ADSWITCH_NAME = "adswitch";
     public static final String ADREFS_NAME = "adrefs";
 
