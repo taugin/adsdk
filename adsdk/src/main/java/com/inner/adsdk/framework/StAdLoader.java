@@ -71,9 +71,6 @@ public class StAdLoader implements Handler.Callback {
 
     private void updateSTPolicy() {
         AdConfig adConfig = DataManager.get(mContext).getAdConfig();
-        if (adConfig == null) {
-            return;
-        }
         StConfig stConfig = DataManager.get(mContext).getRemoteStPolicy();
         if (stConfig == null && adConfig != null) {
             stConfig = adConfig.getStConfig();

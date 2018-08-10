@@ -84,9 +84,6 @@ public class GtAdLoader {
 
     private void updateAdPolicy() {
         AdConfig adConfig = DataManager.get(mContext).getAdConfig();
-        if (adConfig == null) {
-            return;
-        }
         GtConfig gtConfig = DataManager.get(mContext).getRemoteGtPolicy();
         if (gtConfig == null && adConfig != null) {
             gtConfig = adConfig.getGtConfig();
