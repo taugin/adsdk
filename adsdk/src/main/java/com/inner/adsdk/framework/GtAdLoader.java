@@ -1,16 +1,8 @@
 package com.inner.adsdk.framework;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.SystemClock;
 
 import com.inner.adsdk.AdSdk;
-import com.inner.adsdk.compand.IService;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.constant.Constant;
@@ -57,29 +49,6 @@ public class GtAdLoader {
         }
         GtPolicy.get(mContext).init();
         updateAdPolicy();
-        if (!hasAlarmService()) {
-            Log.d(Log.TAG, "no alarm service, so start loop");
-            startLoop();
-        } else {
-            register();
-        }
-    }
-
-    private void register() {
-        try {
-            IntentFilter filter = new IntentFilter(Constant.ACTION_BASIC_ALARM);
-            mContext.registerReceiver(mBroadcastReceiver, filter);
-        } catch (Exception e) {
-        }
-    }
-
-    private boolean hasAlarmService() {
-        try {
-            Class.forName(Constant.ALARM_SERVICE);
-            return true;
-        } catch (Exception e) {
-        }
-        return false;
     }
 
     private void updateAdPolicy() {
@@ -89,16 +58,6 @@ public class GtAdLoader {
             gtConfig = adConfig.getGtConfig();
         }
         GtPolicy.get(mContext).setPolicy(gtConfig);
-    }
-
-    public void startLoop() {
-        Intent alarmIntent = new Intent(mContext, IService.class);
-        alarmIntent.setAction(Constant.ACTION_ALARM);
-        alarmIntent.setPackage(mContext.getPackageName());
-        PendingIntent pIntent = PendingIntent.getService(mContext, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Service.ALARM_SERVICE);
-        long pendingTime = SystemClock.elapsedRealtime() + Constant.ALARM_INTERVAL_TIME;
-        alarmMgr.set(AlarmManager.ELAPSED_REALTIME, pendingTime, pIntent);
     }
 
     public void onFire() {
@@ -147,11 +106,4 @@ public class GtAdLoader {
             });
         }
     }
-
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            onFire();
-        }
-    };
 }

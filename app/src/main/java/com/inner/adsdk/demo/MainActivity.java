@@ -1,8 +1,14 @@
 package com.inner.adsdk.demo;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
@@ -14,8 +20,10 @@ import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdReward;
 import com.inner.adsdk.AdSdk;
+import com.inner.adsdk.framework.TaskMonitor;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,9 +49,28 @@ public class MainActivity extends AppCompatActivity {
         AdSdk.get(mContext).init();
     }
 
+    private boolean hasEnable() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            long ts = System.currentTimeMillis();
+            UsageStatsManager usageStatsManager = (UsageStatsManager) getApplicationContext().getSystemService(Activity.USAGE_STATS_SERVICE);
+            List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, 0, ts);
+            if (queryUsageStats == null || queryUsageStats.isEmpty()) {
+                return false;
+            }
+            return true;
+        }
+        return true;
+    }
+
     public void onClick(View v) {
         if (v.getId() == R.id.gt_outer) {
-            loadGtOuter();
+            // loadGtOuter();
+            if (!hasEnable()) {
+                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                startActivity(intent);
+            } else {
+                TaskMonitor.get(this).startMonitor();
+            }
         } else if (v.getId() == R.id.interstitial) {
             loadInterstitial();
         } else if (v.getId() == R.id.complex) {
@@ -61,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     AdSdk.get(getBaseContext()).showInterstitial(pidName);
+                }
+
+                @Override
+                public void onLoading(String pidName, String source, String adType) {
+                    Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 }
 
                 @Override
