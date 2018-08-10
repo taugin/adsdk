@@ -49,6 +49,17 @@ public class AdxLoader extends AbstractSdkLoader {
     private AdLoader.Builder loadingBuilder;
 
     @Override
+    public boolean isModuleLoaded() {
+        try {
+            MobileAds.class.getName();
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
+    }
+
+    @Override
     public void setAdId(String adId) {
         if (!TextUtils.isEmpty(adId)) {
             MobileAds.initialize(mContext, adId);

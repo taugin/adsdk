@@ -80,4 +80,10 @@ public interface ISdkLoader {
     public boolean useAndClearFlag();
 
     public boolean allowUseLoader();
+
+    /**
+     * 判断模块是否加载
+     * @return
+     */
+    public boolean isModuleLoaded();
 }

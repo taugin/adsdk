@@ -98,57 +98,69 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                         }
                         if (config.isAdmob()) {
                             loader = new AdmobLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
-                            loader.setListenerManager(this);
-                            loader.setAdId(adId);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
+                            if (loader.isModuleLoaded()) {
+                                loader.init(mContext);
+                                loader.setPidConfig(config);
+                                loader.setListenerManager(this);
+                                loader.setAdId(adId);
+                                if (loader.allowUseLoader()) {
+                                    mAdLoaders.add(loader);
+                                }
                             }
                         } else if (config.isFB()) {
                             loader = new FBLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
-                            loader.setListenerManager(this);
-                            loader.setAdId(adId);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
+                            if (loader.isModuleLoaded()) {
+                                loader.init(mContext);
+                                loader.setPidConfig(config);
+                                loader.setListenerManager(this);
+                                loader.setAdId(adId);
+                                if (loader.allowUseLoader()) {
+                                    mAdLoaders.add(loader);
+                                }
                             }
                         } else if (config.isAdx()) {
                             loader = new AdxLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
-                            loader.setListenerManager(this);
-                            loader.setAdId(adId);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
+                            if (loader.isModuleLoaded()) {
+                                loader.init(mContext);
+                                loader.setPidConfig(config);
+                                loader.setListenerManager(this);
+                                loader.setAdId(adId);
+                                if (loader.allowUseLoader()) {
+                                    mAdLoaders.add(loader);
+                                }
                             }
                         } else if (config.isWemob()) {
                             loader = new WemobLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
-                            loader.setListenerManager(this);
-                            loader.setAdId(adId);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
+                            if (loader.isModuleLoaded()) {
+                                loader.init(mContext);
+                                loader.setPidConfig(config);
+                                loader.setListenerManager(this);
+                                loader.setAdId(adId);
+                                if (loader.allowUseLoader()) {
+                                    mAdLoaders.add(loader);
+                                }
                             }
                         } else if (config.isDfp()) {
                             loader = new AdDfpLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
-                            loader.setListenerManager(this);
-                            loader.setAdId(adId);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
+                            if (loader.isModuleLoaded()) {
+                                loader.init(mContext);
+                                loader.setPidConfig(config);
+                                loader.setListenerManager(this);
+                                loader.setAdId(adId);
+                                if (loader.allowUseLoader()) {
+                                    mAdLoaders.add(loader);
+                                }
                             }
                         } else if (config.isAppLovin()) {
                             loader = new AppLovinLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
-                            loader.setListenerManager(this);
-                            loader.setAdId(adId);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
+                            if (loader.isModuleLoaded()) {
+                                loader.init(mContext);
+                                loader.setPidConfig(config);
+                                loader.setListenerManager(this);
+                                loader.setAdId(adId);
+                                if (loader.allowUseLoader()) {
+                                    mAdLoaders.add(loader);
+                                }
                             }
                         }
                     }

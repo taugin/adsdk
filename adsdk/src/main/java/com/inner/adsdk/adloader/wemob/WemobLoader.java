@@ -31,6 +31,17 @@ public class WemobLoader extends AbstractSdkLoader {
     private Params mParams;
 
     @Override
+    public boolean isModuleLoaded() {
+        try {
+            Sdk.class.getName();
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
+    }
+
+    @Override
     public void setAdId(String adId) {
         if (!TextUtils.isEmpty(adId)) {
             try {
@@ -160,7 +171,7 @@ public class WemobLoader extends AbstractSdkLoader {
             viewGroup.removeAllViews();
             ViewParent viewParent = bannerView.getParent();
             if (viewParent instanceof ViewGroup) {
-                ((ViewGroup)viewParent).removeView(bannerView);
+                ((ViewGroup) viewParent).removeView(bannerView);
             }
             viewGroup.addView(bannerView);
             if (viewGroup.getVisibility() != View.VISIBLE) {
