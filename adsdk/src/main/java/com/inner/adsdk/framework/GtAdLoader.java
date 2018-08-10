@@ -61,8 +61,15 @@ public class GtAdLoader {
             Log.d(Log.TAG, "no alarm service, so start loop");
             startLoop();
         } else {
+            register();
+        }
+    }
+
+    private void register() {
+        try {
             IntentFilter filter = new IntentFilter(Constant.ACTION_BASIC_ALARM);
             mContext.registerReceiver(mBroadcastReceiver, filter);
+        } catch (Exception e) {
         }
     }
 
