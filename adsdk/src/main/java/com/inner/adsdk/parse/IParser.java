@@ -107,6 +107,9 @@ public interface IParser {
     String REPORT_FIREBASE = "rf";
     // 是否上报facebook
     String REPORT_FACEBOOK = "rfb";
+    // 排除的报名
+    String EXCLUDE_PACKAGES = "ep";
+
 
     AdConfig parseAdConfig(String data);
 

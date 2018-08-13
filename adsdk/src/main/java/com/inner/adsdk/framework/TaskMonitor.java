@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 
+import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.TaskUtils;
 
 /**
@@ -129,6 +130,7 @@ public class TaskMonitor implements Handler.Callback {
      * 开启Monitor
      */
     public void startMonitor() {
+        Log.v(Log.TAG, "start monitor");
         sendHandleMessage();
     }
 
@@ -136,7 +138,10 @@ public class TaskMonitor implements Handler.Callback {
      * 关闭Monitor
      */
     public void stopMonitor() {
-        cancelHandleMessage();
+        if (mHandlerThread != null && mThreadHandler != null) {
+            Log.v(Log.TAG, "stop monitor");
+            cancelHandleMessage();
+        }
     }
 
     private OnTaskMonitorListener mOnTaskMonitorListener;

@@ -209,11 +209,32 @@ public class AdParser implements IParser {
             if (jobj.has(INTERVAL)) {
                 ttConfig.setInterval(jobj.getInt(INTERVAL));
             }
+            if (jobj.has(EXCLUDE_PACKAGES)) {
+                ttConfig.setExcludes(parseStringList(jobj.getString(EXCLUDE_PACKAGES)));
+            }
             parseAttrConfig(ttConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseStPolicyInternal error : " + e);
         }
         return ttConfig;
+    }
+
+    private List<String> parseStringList(String str) {
+        List<String> list = null;
+        try {
+            JSONArray jarray = new JSONArray(str);
+            if (jarray != null && jarray.length() > 0) {
+                list = new ArrayList<String>(jarray.length());
+                for (int index = 0; index < jarray.length(); index++) {
+                    String s = jarray.getString(index);
+                    if (!TextUtils.isEmpty(s)) {
+                        list.add(s);
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
 
     /**

@@ -60,11 +60,14 @@ public class FtTtAdLoader implements TaskMonitor.OnTaskMonitorListener {
     }
 
     public void onFire() {
-        updateTtPolicy();
-        if (TtPolicy.get(mContext).isTtAllowed() && TaskUtils.hasAppUsagePermission(mContext)) {
-            Log.v(Log.TAG, "load and startup task monitor");
-            mAdSdk.loadInterstitial(Constant.ADPLACE_TASK_NAME, mAdSdkListener);
-            TaskMonitor.get(mContext).startMonitor();
+        if (TaskUtils.hasAppUsagePermission(mContext)) {
+            updateTtPolicy();
+            if (TtPolicy.get(mContext).isTtAllowed()) {
+                mAdSdk.loadInterstitial(Constant.ADPLACE_TASK_NAME, mAdSdkListener);
+                TaskMonitor.get(mContext).startMonitor();
+            }
+        } else {
+            Log.v(Log.TAG, "miss app usage");
         }
     }
 

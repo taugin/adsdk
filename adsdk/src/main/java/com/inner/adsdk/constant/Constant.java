@@ -59,6 +59,8 @@ public class Constant {
     public static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_remote_config_request_time";
     public static final String PREF_GT_REQUEST_TIME = "pref_gt_request_time";
     public static final String PREF_TT_LAST_TIME = "pref_tt_last_time";
+
+    // 配置文件中使用的名字++++++
     public static final String ADPLACE_OUTER_NAME = "gt_outer_place";
     public static final String ADPLACE_FILM_NAME = "gt_film_place";
     public static final String ADPLACE_TASK_NAME = "gt_task_place";
@@ -69,6 +71,7 @@ public class Constant {
     public static final String TTPOLICY_NAME = "ttconfig";
     public static final String ADSWITCH_NAME = "adswitch";
     public static final String ADREFS_NAME = "adrefs";
+    // 配置文件中使用的名字======
 
     public static final String AF_STATUS = "af_status";
     public static final String AF_MEDIA_SOURCE = "af_media_source";
