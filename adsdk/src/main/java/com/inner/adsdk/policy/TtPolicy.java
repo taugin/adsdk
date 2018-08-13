@@ -61,8 +61,9 @@ public class TtPolicy {
         if (mTtConfig != null && mTtConfig.getInterval() > 0) {
             long now = System.currentTimeMillis();
             long last = getLastShowTime();
-            Log.v(Log.TAG, "TtConfig.isIntervalAllow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)));
-            return now - last > mTtConfig.getInterval();
+            boolean intervalAllow = now - last > mTtConfig.getInterval();
+            Log.v(Log.TAG, "TtConfig.isIntervalAllow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)) + " , do : " + intervalAllow);
+            return intervalAllow;
         }
         return true;
     }
@@ -111,6 +112,17 @@ public class TtPolicy {
         if (!isIntervalAllow()) {
             return false;
         }
+        Log.v(Log.TAG, "tt");
         return true;
+    }
+
+    public boolean isInWhiteList(String pkgname, String className) {
+        // exclude launcher
+        if (pkgname != null && pkgname.contains("launcher")
+                || className != null && className.contains("launcher")) {
+            Log.v(Log.TAG, "launcher not show");
+            return true;
+        }
+        return false;
     }
 }

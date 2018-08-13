@@ -62,15 +62,18 @@ public class FtTtAdLoader implements TaskMonitor.OnTaskMonitorListener {
     public void onFire() {
         updateTtPolicy();
         if (TtPolicy.get(mContext).isTtAllowed() && TaskUtils.hasAppUsagePermission(mContext)) {
+            Log.v(Log.TAG, "load and startup task monitor");
+            mAdSdk.loadInterstitial(Constant.ADPLACE_TASK_NAME, mAdSdkListener);
             TaskMonitor.get(mContext).startMonitor();
         }
     }
 
     @Override
     public void onAppSwitch(String pkgname, String className) {
-        Log.d(Log.TAG, "pkgname : " + pkgname + " , className : " + className);
-        if (TtPolicy.get(mContext).isTtAllowed()) {
-            if (mAdSdk.isInterstitialLoaded(Constant.ADPLACE_TASK_NAME) && /*白名单*/true) {
+        Log.d(Log.TAG, "app switch pkgname : " + pkgname + " , className : " + className);
+        updateTtPolicy();
+        if (TtPolicy.get(mContext).isTtAllowed()  && !TtPolicy.get(mContext).isInWhiteList(pkgname, className)) {
+            if (mAdSdk.isInterstitialLoaded(Constant.ADPLACE_TASK_NAME)) {
                 mAdSdk.showInterstitial(Constant.ADPLACE_TASK_NAME);
             } else {
                 mAdSdk.loadInterstitial(Constant.ADPLACE_TASK_NAME, mAdSdkListener);
@@ -80,8 +83,9 @@ public class FtTtAdLoader implements TaskMonitor.OnTaskMonitorListener {
 
     @Override
     public void onActivitySwitch(String pkgname, String oldActivity, String newActivity) {
-        Log.d(Log.TAG, "pkgname : " + pkgname + " , oldActivity : " + oldActivity + " , newActivity : " + newActivity);
-        if (TtPolicy.get(mContext).isTtAllowed()) {
+        Log.d(Log.TAG, "activity switch pkgname : " + pkgname + " , oldActivity : " + oldActivity + " , newActivity : " + newActivity);
+        updateTtPolicy();
+        if (TtPolicy.get(mContext).isTtAllowed()  && !TtPolicy.get(mContext).isInWhiteList(pkgname, newActivity)) {
             if (mAdSdk.isInterstitialLoaded(Constant.ADPLACE_TASK_NAME)) {
                 mAdSdk.showInterstitial(Constant.ADPLACE_TASK_NAME);
             } else {
@@ -93,6 +97,7 @@ public class FtTtAdLoader implements TaskMonitor.OnTaskMonitorListener {
     private SimpleAdSdkListener mAdSdkListener = new SimpleAdSdkListener() {
         @Override
         public void onShow(String pidName, String source, String adType) {
+            Log.v(Log.TAG, "show ads and stop task monitor");
             TtPolicy.get(mContext).reportTtShow();
             TaskMonitor.get(mContext).stopMonitor();
         }
