@@ -475,6 +475,9 @@ public class AdParser implements IParser {
             if (jobj.has(REPORT_FACEBOOK)) {
                 adSwitch.setReportFacebook(jobj.getInt(REPORT_FACEBOOK) == 1);
             }
+            if (jobj.has(GT_TT_SWITCH)) {
+                adSwitch.setGtTtSwitch(jobj.getInt(GT_TT_SWITCH));
+            }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdSwitch error : " + e);
         }

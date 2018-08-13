@@ -5,13 +5,27 @@ package com.inner.adsdk.config;
  */
 
 public class AdSwitch {
+
+    public static final int GT_TT_SWITCH_ALL = 0;
+    public static final int GT_TT_SWITCH_GT = 1;
+    public static final int GT_TT_SWITCH_TT = 2;
+
+    // 阻塞loading
     private boolean blockLoading;
+    // 上报错误日志
     private boolean reportError;
+    // 上报加载时间
     private boolean reportTime;
+    // 上报友盟
     private boolean reportUmeng;
+    // 上报Firebase
     private boolean reportFirebase;
+    // 上报Appsflyer
     private boolean reportAppsflyer;
+    // 上报Facebook
     private boolean reportFacebook;
+    // gt 与 tt 策略
+    private int gtTtSwitch;
 
     public boolean isBlockLoading() {
         return blockLoading;
@@ -67,6 +81,14 @@ public class AdSwitch {
 
     public void setReportFacebook(boolean reportFacebook) {
         this.reportFacebook = reportFacebook;
+    }
+
+    public int getGtTtSwitch() {
+        return gtTtSwitch;
+    }
+
+    public void setGtTtSwitch(int gtTtSwitch) {
+        this.gtTtSwitch = gtTtSwitch;
     }
 
     @Override
