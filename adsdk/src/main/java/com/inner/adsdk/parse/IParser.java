@@ -109,8 +109,8 @@ public interface IParser {
     String REPORT_FACEBOOK = "rfb";
     // 排除的报名
     String EXCLUDE_PACKAGES = "ep";
-    // gt tt switch
-    String GT_TT_SWITCH = "gts";
+    // gt at exclusive
+    String GT_AT_EXCLUSIVE = "gae";
 
 
     AdConfig parseAdConfig(String data);

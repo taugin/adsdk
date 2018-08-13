@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.manager.DataManager;
+import com.inner.adsdk.utils.TaskUtils;
 
 /**
  * Created by Administrator on 2018-8-10.
@@ -60,13 +61,14 @@ public class AdReceiver {
                 return;
             }
             if (Constant.ACTION_BASIC_ALARM.equals(intent.getAction())) {
-
-                if (isGtTtAll(context)) {
+                if (isGtAtExclusive(context)) {
+                    if (TaskUtils.hasAppUsagePermission(context)) {
+                        AtAdLoader.get(context).onFire();
+                    } else {
+                        GtAdLoader.get(context).onFire();
+                    }
+                } else {
                     GtAdLoader.get(context).onFire();
-                    AtAdLoader.get(context).onFire();
-                } else if (isGtOnly(context)) {
-                    GtAdLoader.get(context).onFire();
-                } else if (isTtOnly(context)) {
                     AtAdLoader.get(context).onFire();
                 }
             } else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
@@ -77,26 +79,10 @@ public class AdReceiver {
         }
     };
 
-    private boolean isGtTtAll(Context context) {
+    private boolean isGtAtExclusive(Context context) {
         AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
         if (adSwitch != null) {
-            return adSwitch.getGtTtSwitch() == AdSwitch.GT_TT_SWITCH_ALL;
-        }
-        return false;
-    }
-
-    private boolean isGtOnly(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.getGtTtSwitch() == AdSwitch.GT_TT_SWITCH_GT;
-        }
-        return false;
-    }
-
-    private boolean isTtOnly(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.getGtTtSwitch() == AdSwitch.GT_TT_SWITCH_TT;
+            return adSwitch.isGtAtExclusive();
         }
         return false;
     }

@@ -1,6 +1,7 @@
 package com.inner.adsdk.policy;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.inner.adsdk.config.AtConfig;
 import com.inner.adsdk.constant.Constant;
@@ -204,7 +205,6 @@ public class AtPolicy {
             Log.v(Log.TAG, "screen is not on");
             return false;
         }
-        Log.v(Log.TAG, "tt");
         return true;
     }
 
@@ -217,6 +217,10 @@ public class AtPolicy {
         }
         if (mAtConfig != null && mAtConfig.getExcludes() != null && mAtConfig.getExcludes().contains(pkgname)) {
             Log.v(Log.TAG, "white name " + pkgname);
+            return true;
+        }
+        if (mContext != null && TextUtils.equals(pkgname, mContext.getPackageName())) {
+            Log.v(Log.TAG, "exclude self");
             return true;
         }
         return false;

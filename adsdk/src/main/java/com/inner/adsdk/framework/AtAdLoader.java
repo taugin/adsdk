@@ -60,13 +60,9 @@ public class AtAdLoader implements TaskMonitor.OnTaskMonitorListener {
     }
 
     public void resumeLoader() {
-        if (TaskUtils.hasAppUsagePermission(mContext)) {
-            updateTtPolicy();
-            if (AtPolicy.get(mContext).isAtAllowed()) {
-                if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
-                    TaskMonitor.get(mContext).startMonitor();
-                }
-            }
+        Log.v(Log.TAG, "resume loader");
+        if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
+            TaskMonitor.get(mContext).startMonitor();
         } else {
             Log.v(Log.TAG, "miss app usage");
         }
@@ -88,7 +84,7 @@ public class AtAdLoader implements TaskMonitor.OnTaskMonitorListener {
     public void onAppSwitch(String pkgname, String className) {
         Log.d(Log.TAG, "app switch pkgname : " + pkgname + " , className : " + className);
         updateTtPolicy();
-        if (AtPolicy.get(mContext).isAtAllowed()  && !AtPolicy.get(mContext).isInWhiteList(pkgname, className)) {
+        if (AtPolicy.get(mContext).isAtAllowed() && !AtPolicy.get(mContext).isInWhiteList(pkgname, className)) {
             if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
                 mAdSdk.showInterstitial(Constant.ATPLACE_OUTER_NAME);
             } else {
@@ -101,7 +97,7 @@ public class AtAdLoader implements TaskMonitor.OnTaskMonitorListener {
     public void onActivitySwitch(String pkgname, String oldActivity, String newActivity) {
         Log.d(Log.TAG, "activity switch pkgname : " + pkgname + " , oldActivity : " + oldActivity + " , newActivity : " + newActivity);
         updateTtPolicy();
-        if (AtPolicy.get(mContext).isAtAllowed()  && !AtPolicy.get(mContext).isInWhiteList(pkgname, newActivity)) {
+        if (AtPolicy.get(mContext).isAtAllowed() && !AtPolicy.get(mContext).isInWhiteList(pkgname, newActivity)) {
             if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
                 mAdSdk.showInterstitial(Constant.ATPLACE_OUTER_NAME);
             } else {
