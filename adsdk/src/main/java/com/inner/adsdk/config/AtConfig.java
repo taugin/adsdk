@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Administrator on 2018-8-10.
  */
 
-public class TtConfig extends AttrConfig {
+public class AtConfig extends AttrConfig {
     private boolean enable;
 
     private int upDelay;
@@ -49,7 +49,7 @@ public class TtConfig extends AttrConfig {
 
     @Override
     public String toString() {
-        return "TtConfig{" +
+        return "AtConfig{" +
                 "enable=" + enable +
                 ", interval=" + interval +
                 ", countryList=" + getCountryList() +

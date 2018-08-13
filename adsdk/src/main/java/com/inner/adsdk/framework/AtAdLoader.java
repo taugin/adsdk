@@ -4,36 +4,36 @@ import android.content.Context;
 
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.config.AdConfig;
-import com.inner.adsdk.config.TtConfig;
+import com.inner.adsdk.config.AtConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
-import com.inner.adsdk.policy.TtPolicy;
+import com.inner.adsdk.policy.AtPolicy;
 import com.inner.adsdk.utils.TaskUtils;
 
 /**
  * Created by Administrator on 2018/7/19.
  */
 
-public class FtTtAdLoader implements TaskMonitor.OnTaskMonitorListener {
+public class AtAdLoader implements TaskMonitor.OnTaskMonitorListener {
 
     private static final int MSG_LOOP = 1;
     private static final int LOOP_DELAY = 500;
 
-    private static FtTtAdLoader sFtTtAdLoader;
+    private static AtAdLoader sAtAdLoader;
 
-    public static FtTtAdLoader get(Context context) {
-        if (sFtTtAdLoader == null) {
+    public static AtAdLoader get(Context context) {
+        if (sAtAdLoader == null) {
             create(context);
         }
-        return sFtTtAdLoader;
+        return sAtAdLoader;
     }
 
     private static void create(Context context) {
-        synchronized (FtTtAdLoader.class) {
-            if (sFtTtAdLoader == null) {
-                sFtTtAdLoader = new FtTtAdLoader(context);
+        synchronized (AtAdLoader.class) {
+            if (sAtAdLoader == null) {
+                sAtAdLoader = new AtAdLoader(context);
             }
         }
     }
@@ -41,7 +41,7 @@ public class FtTtAdLoader implements TaskMonitor.OnTaskMonitorListener {
     private Context mContext;
     private AdSdk mAdSdk;
 
-    private FtTtAdLoader(Context context) {
+    private AtAdLoader(Context context) {
         mContext = context.getApplicationContext();
     }
 
@@ -52,18 +52,18 @@ public class FtTtAdLoader implements TaskMonitor.OnTaskMonitorListener {
 
     private void updateTtPolicy() {
         AdConfig adConfig = DataManager.get(mContext).getAdConfig();
-        TtConfig ttConfig = DataManager.get(mContext).getRemoteTtPolicy();
-        if (ttConfig == null && adConfig != null) {
-            ttConfig = adConfig.getTtConfig();
+        AtConfig atConfig = DataManager.get(mContext).getRemoteTtPolicy();
+        if (atConfig == null && adConfig != null) {
+            atConfig = adConfig.getAtConfig();
         }
-        TtPolicy.get(mContext).setPolicy(ttConfig);
+        AtPolicy.get(mContext).setPolicy(atConfig);
     }
 
     public void resumeLoader() {
         if (TaskUtils.hasAppUsagePermission(mContext)) {
             updateTtPolicy();
-            if (TtPolicy.get(mContext).isTtAllowed()) {
-                if (mAdSdk.isInterstitialLoaded(Constant.ADPLACE_TASK_NAME)) {
+            if (AtPolicy.get(mContext).isAtAllowed()) {
+                if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
                     TaskMonitor.get(mContext).startMonitor();
                 }
             }
@@ -75,8 +75,8 @@ public class FtTtAdLoader implements TaskMonitor.OnTaskMonitorListener {
     public void onFire() {
         if (TaskUtils.hasAppUsagePermission(mContext)) {
             updateTtPolicy();
-            if (TtPolicy.get(mContext).isTtAllowed()) {
-                mAdSdk.loadInterstitial(Constant.ADPLACE_TASK_NAME, mAdSdkListener);
+            if (AtPolicy.get(mContext).isAtAllowed()) {
+                mAdSdk.loadInterstitial(Constant.ATPLACE_OUTER_NAME, mAdSdkListener);
                 TaskMonitor.get(mContext).startMonitor();
             }
         } else {
@@ -88,11 +88,11 @@ public class FtTtAdLoader implements TaskMonitor.OnTaskMonitorListener {
     public void onAppSwitch(String pkgname, String className) {
         Log.d(Log.TAG, "app switch pkgname : " + pkgname + " , className : " + className);
         updateTtPolicy();
-        if (TtPolicy.get(mContext).isTtAllowed()  && !TtPolicy.get(mContext).isInWhiteList(pkgname, className)) {
-            if (mAdSdk.isInterstitialLoaded(Constant.ADPLACE_TASK_NAME)) {
-                mAdSdk.showInterstitial(Constant.ADPLACE_TASK_NAME);
+        if (AtPolicy.get(mContext).isAtAllowed()  && !AtPolicy.get(mContext).isInWhiteList(pkgname, className)) {
+            if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
+                mAdSdk.showInterstitial(Constant.ATPLACE_OUTER_NAME);
             } else {
-                mAdSdk.loadInterstitial(Constant.ADPLACE_TASK_NAME, mAdSdkListener);
+                mAdSdk.loadInterstitial(Constant.ATPLACE_OUTER_NAME, mAdSdkListener);
             }
         }
     }
@@ -101,11 +101,11 @@ public class FtTtAdLoader implements TaskMonitor.OnTaskMonitorListener {
     public void onActivitySwitch(String pkgname, String oldActivity, String newActivity) {
         Log.d(Log.TAG, "activity switch pkgname : " + pkgname + " , oldActivity : " + oldActivity + " , newActivity : " + newActivity);
         updateTtPolicy();
-        if (TtPolicy.get(mContext).isTtAllowed()  && !TtPolicy.get(mContext).isInWhiteList(pkgname, newActivity)) {
-            if (mAdSdk.isInterstitialLoaded(Constant.ADPLACE_TASK_NAME)) {
-                mAdSdk.showInterstitial(Constant.ADPLACE_TASK_NAME);
+        if (AtPolicy.get(mContext).isAtAllowed()  && !AtPolicy.get(mContext).isInWhiteList(pkgname, newActivity)) {
+            if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
+                mAdSdk.showInterstitial(Constant.ATPLACE_OUTER_NAME);
             } else {
-                mAdSdk.loadInterstitial(Constant.ADPLACE_TASK_NAME, mAdSdkListener);
+                mAdSdk.loadInterstitial(Constant.ATPLACE_OUTER_NAME, mAdSdkListener);
             }
         }
     }
@@ -114,7 +114,7 @@ public class FtTtAdLoader implements TaskMonitor.OnTaskMonitorListener {
         @Override
         public void onShow(String pidName, String source, String adType) {
             Log.v(Log.TAG, "show ads and stop task monitor");
-            TtPolicy.get(mContext).reportTtShow();
+            AtPolicy.get(mContext).reportAtShow();
             TaskMonitor.get(mContext).stopMonitor();
         }
     };

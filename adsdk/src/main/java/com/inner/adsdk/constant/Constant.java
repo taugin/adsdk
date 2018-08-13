@@ -61,14 +61,13 @@ public class Constant {
     public static final String PREF_TT_LAST_TIME = "pref_tt_last_time";
 
     // 配置文件中使用的名字++++++
-    public static final String ADPLACE_OUTER_NAME = "gt_outer_place";
-    public static final String ADPLACE_FILM_NAME = "gt_film_place";
-    public static final String ADPLACE_TASK_NAME = "gt_task_place";
+    public static final String GTPLACE_OUTER_NAME = "gt_outer_place";
+    public static final String ATPLACE_OUTER_NAME = "at_outer_place";
     public static final String STPLACE_OUTER_NAME = "st_outer_place";
     public static final String ADIDS_NAME = "adids";
     public static final String ADPOLICY_NAME = "gtconfig";
     public static final String STPOLICY_NAME = "stconfig";
-    public static final String TTPOLICY_NAME = "ttconfig";
+    public static final String ATPOLICY_NAME = "atconfig";
     public static final String ADSWITCH_NAME = "adswitch";
     public static final String ADREFS_NAME = "adrefs";
     // 配置文件中使用的名字======

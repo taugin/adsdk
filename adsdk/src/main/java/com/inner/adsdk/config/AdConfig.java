@@ -21,7 +21,7 @@ public class AdConfig {
     private StConfig stConfig;
 
     // TT
-    private TtConfig ttConfig;
+    private AtConfig atConfig;
 
     // 广告配置
     private List<AdPlace> adPlaceList;
@@ -78,12 +78,12 @@ public class AdConfig {
         this.stConfig = stConfig;
     }
 
-    public TtConfig getTtConfig() {
-        return ttConfig;
+    public AtConfig getAtConfig() {
+        return atConfig;
     }
 
-    public void setTtConfig(TtConfig ttConfig) {
-        this.ttConfig = ttConfig;
+    public void setAtConfig(AtConfig atConfig) {
+        this.atConfig = atConfig;
     }
 
     /**

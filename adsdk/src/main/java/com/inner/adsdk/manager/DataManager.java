@@ -6,9 +6,9 @@ import android.text.TextUtils;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
+import com.inner.adsdk.config.AtConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.config.StConfig;
-import com.inner.adsdk.config.TtConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.parse.AdParser;
@@ -141,9 +141,9 @@ public class DataManager {
         return null;
     }
 
-    public TtConfig getRemoteTtPolicy() {
+    public AtConfig getRemoteTtPolicy() {
         if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.TTPOLICY_NAME);
+            String data = mDataRequest.getString(Constant.ATPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseTtPolicy(data);
             }

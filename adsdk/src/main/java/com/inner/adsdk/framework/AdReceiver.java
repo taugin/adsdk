@@ -63,16 +63,16 @@ public class AdReceiver {
 
                 if (isGtTtAll(context)) {
                     GtAdLoader.get(context).onFire();
-                    FtTtAdLoader.get(context).onFire();
+                    AtAdLoader.get(context).onFire();
                 } else if (isGtOnly(context)) {
                     GtAdLoader.get(context).onFire();
                 } else if (isTtOnly(context)) {
-                    FtTtAdLoader.get(context).onFire();
+                    AtAdLoader.get(context).onFire();
                 }
             } else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
                 TaskMonitor.get(context).stopMonitor();
             } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-                FtTtAdLoader.get(context).resumeLoader();
+                AtAdLoader.get(context).resumeLoader();
             }
         }
     };

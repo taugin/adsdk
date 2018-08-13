@@ -75,7 +75,7 @@ public class GtAdLoader {
             Log.v(Log.TAG, "");
             StatImpl.get().reportAdOuterRequest(mContext);
             GtPolicy.get(mContext).startGtRequest();
-            mAdSdk.loadComplexAds(Constant.ADPLACE_OUTER_NAME, new SimpleAdSdkListener() {
+            mAdSdk.loadComplexAds(Constant.GTPLACE_OUTER_NAME, new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);

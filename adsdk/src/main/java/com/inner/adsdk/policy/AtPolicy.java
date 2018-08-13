@@ -2,7 +2,7 @@ package com.inner.adsdk.policy;
 
 import android.content.Context;
 
-import com.inner.adsdk.config.TtConfig;
+import com.inner.adsdk.config.AtConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.log.Log;
@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Administrator on 2018-8-10.
  */
 
-public class TtPolicy {
+public class AtPolicy {
     private static final List<String> WHITE_LIST;
 
     static {
@@ -61,45 +61,45 @@ public class TtPolicy {
         WHITE_LIST.add("com.whatsapp");
     }
 
-    private static TtPolicy sTtPolicy;
+    private static AtPolicy sAtPolicy;
 
-    public static TtPolicy get(Context context) {
-        synchronized (TtPolicy.class) {
-            if (sTtPolicy == null) {
+    public static AtPolicy get(Context context) {
+        synchronized (AtPolicy.class) {
+            if (sAtPolicy == null) {
                 createInstance(context);
             }
         }
-        return sTtPolicy;
+        return sAtPolicy;
     }
 
     private static void createInstance(Context context) {
-        synchronized (TtPolicy.class) {
-            if (sTtPolicy == null) {
-                sTtPolicy = new TtPolicy(context);
+        synchronized (AtPolicy.class) {
+            if (sAtPolicy == null) {
+                sAtPolicy = new AtPolicy(context);
             }
         }
     }
 
-    private TtPolicy(Context context) {
+    private AtPolicy(Context context) {
         mContext = context;
         mAttrChecker = new AttrChecker(context);
     }
 
     private Context mContext;
-    private TtConfig mTtConfig;
+    private AtConfig mAtConfig;
     private AttrChecker mAttrChecker;
 
     public void init() {
     }
 
-    public void setPolicy(TtConfig ttConfig) {
-        mTtConfig = ttConfig;
-        if (mTtConfig != null && (mTtConfig.getExcludes() == null || mTtConfig.getExcludes().isEmpty())) {
-            mTtConfig.setExcludes(WHITE_LIST);
+    public void setPolicy(AtConfig atConfig) {
+        mAtConfig = atConfig;
+        if (mAtConfig != null && (mAtConfig.getExcludes() == null || mAtConfig.getExcludes().isEmpty())) {
+            mAtConfig.setExcludes(WHITE_LIST);
         }
     }
 
-    public void reportTtShow() {
+    public void reportAtShow() {
         Utils.putLong(mContext, Constant.PREF_TT_LAST_TIME, System.currentTimeMillis());
     }
 
@@ -112,20 +112,20 @@ public class TtPolicy {
     }
 
     private boolean isDelayAllow() {
-        if (mTtConfig != null && mTtConfig.getUpDelay() > 0) {
+        if (mAtConfig != null && mAtConfig.getUpDelay() > 0) {
             long now = System.currentTimeMillis();
             long firstStartTime = getFirstStartUpTime();
-            return now - firstStartTime > mTtConfig.getUpDelay();
+            return now - firstStartTime > mAtConfig.getUpDelay();
         }
         return true;
     }
 
     private boolean isIntervalAllow() {
-        if (mTtConfig != null && mTtConfig.getInterval() > 0) {
+        if (mAtConfig != null && mAtConfig.getInterval() > 0) {
             long now = System.currentTimeMillis();
             long last = getLastShowTime();
-            boolean intervalAllow = now - last > mTtConfig.getInterval();
-            Log.v(Log.TAG, "TtConfig.isIntervalAllow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)) + " , do : " + intervalAllow);
+            boolean intervalAllow = now - last > mAtConfig.getInterval();
+            Log.v(Log.TAG, "AtConfig.isIntervalAllow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)) + " , do : " + intervalAllow);
             return intervalAllow;
         }
         return true;
@@ -144,29 +144,29 @@ public class TtPolicy {
      * @return
      */
     private boolean isConfigAllow() {
-        if (mTtConfig != null) {
-            return mTtConfig.isEnable();
+        if (mAtConfig != null) {
+            return mAtConfig.isEnable();
         }
         return false;
     }
 
-    private boolean checkAdTtConfig() {
+    private boolean checkAdAtConfig() {
         if (!isConfigAllow()) {
             Log.v(Log.TAG, "config not allowed");
             return false;
         }
 
-        if (mTtConfig != null && !mAttrChecker.isAttributionAllow(mTtConfig.getAttrList())) {
+        if (mAtConfig != null && !mAttrChecker.isAttributionAllow(mAtConfig.getAttrList())) {
             Log.v(Log.TAG, "attribution not allowed");
             return false;
         }
 
-        if (mTtConfig != null && !mAttrChecker.isCountryAllow(mTtConfig.getCountryList())) {
+        if (mAtConfig != null && !mAttrChecker.isCountryAllow(mAtConfig.getCountryList())) {
             Log.v(Log.TAG, "country not allowed");
             return false;
         }
 
-        if (mTtConfig != null && !mAttrChecker.isMediaSourceAllow(mTtConfig.getMediaList())) {
+        if (mAtConfig != null && !mAttrChecker.isMediaSourceAllow(mAtConfig.getMediaList())) {
             Log.v(Log.TAG, "mediasource not allowed");
             return false;
         }
@@ -174,9 +174,9 @@ public class TtPolicy {
         return true;
     }
 
-    public boolean isTtAllowed() {
-        Log.v(Log.TAG, "ttConfig : " + mTtConfig);
-        if (!checkAdTtConfig()) {
+    public boolean isAtAllowed() {
+        Log.v(Log.TAG, "atConfig : " + mAtConfig);
+        if (!checkAdAtConfig()) {
             return false;
         }
 
@@ -215,7 +215,7 @@ public class TtPolicy {
             Log.v(Log.TAG, "exclude launcher");
             return true;
         }
-        if (mTtConfig != null && mTtConfig.getExcludes() != null && mTtConfig.getExcludes().contains(pkgname)) {
+        if (mAtConfig != null && mAtConfig.getExcludes() != null && mAtConfig.getExcludes().contains(pkgname)) {
             Log.v(Log.TAG, "white name " + pkgname);
             return true;
         }
