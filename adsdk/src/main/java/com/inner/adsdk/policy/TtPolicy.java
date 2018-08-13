@@ -107,6 +107,19 @@ public class TtPolicy {
         return Utils.getLong(mContext, Constant.PREF_TT_LAST_TIME, 0);
     }
 
+    private long getFirstStartUpTime() {
+        return Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0);
+    }
+
+    private boolean isDelayAllow() {
+        if (mTtConfig != null && mTtConfig.getUpDelay() > 0) {
+            long now = System.currentTimeMillis();
+            long firstStartTime = getFirstStartUpTime();
+            return now - firstStartTime > mTtConfig.getUpDelay();
+        }
+        return true;
+    }
+
     private boolean isIntervalAllow() {
         if (mTtConfig != null && mTtConfig.getInterval() > 0) {
             long now = System.currentTimeMillis();
@@ -137,7 +150,7 @@ public class TtPolicy {
         return false;
     }
 
-    private boolean checkAdFtConfig() {
+    private boolean checkAdTtConfig() {
         if (!isConfigAllow()) {
             Log.v(Log.TAG, "config not allowed");
             return false;
@@ -163,10 +176,17 @@ public class TtPolicy {
 
     public boolean isTtAllowed() {
         Log.v(Log.TAG, "ttConfig : " + mTtConfig);
-        if (!checkAdFtConfig()) {
+        if (!checkAdTtConfig()) {
             return false;
         }
+
+        if (!isDelayAllow()) {
+            Log.v(Log.TAG, "delay not allowed");
+            return false;
+        }
+
         if (!isIntervalAllow()) {
+            Log.v(Log.TAG, "interval not allowed");
             return false;
         }
 

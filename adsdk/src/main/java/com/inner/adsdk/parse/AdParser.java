@@ -206,6 +206,9 @@ public class AdParser implements IParser {
             if (jobj.has(ENABLE)) {
                 ttConfig.setEnable(jobj.getInt(ENABLE) == 1);
             }
+            if (jobj.has(UPDELAY)) {
+                ttConfig.setUpDelay(jobj.getInt(UPDELAY));
+            }
             if (jobj.has(INTERVAL)) {
                 ttConfig.setInterval(jobj.getInt(INTERVAL));
             }

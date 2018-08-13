@@ -44,6 +44,7 @@ public class CoreReceiver {
         try {
             IntentFilter filter = new IntentFilter();
             filter.addAction(Constant.ACTION_BASIC_ALARM);
+            filter.addAction(Intent.ACTION_SCREEN_ON);
             filter.addAction(Intent.ACTION_SCREEN_OFF);
             mContext.registerReceiver(mBroadcastReceiver, filter);
         } catch (Exception e) {
@@ -61,6 +62,8 @@ public class CoreReceiver {
                 FtTtAdLoader.get(context).onFire();
             } else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
                 TaskMonitor.get(context).stopMonitor();
+            } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
+                FtTtAdLoader.get(context).resumeLoader();
             }
         }
     };

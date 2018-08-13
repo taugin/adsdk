@@ -9,6 +9,8 @@ import java.util.List;
 public class TtConfig extends AttrConfig {
     private boolean enable;
 
+    private int upDelay;
+
     private int interval;
 
     private List<String> excludes;
@@ -19,6 +21,14 @@ public class TtConfig extends AttrConfig {
 
     public void setEnable(boolean enable) {
         this.enable = enable;
+    }
+
+    public int getUpDelay() {
+        return upDelay;
+    }
+
+    public void setUpDelay(int upDelay) {
+        this.upDelay = upDelay;
     }
 
     public int getInterval() {
