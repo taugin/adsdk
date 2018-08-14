@@ -81,8 +81,8 @@ public class AdParser implements IParser {
             if (jobj.has(STCONFIG)) {
                 stConfig = parseStPolicyInternal(jobj.getString(STCONFIG));
             }
-            if (jobj.has(TTCONFIG)) {
-                atConfig = parseTtPolicyInternal(jobj.getString(TTCONFIG));
+            if (jobj.has(ATCONFIG)) {
+                atConfig = parseTtPolicyInternal(jobj.getString(ATCONFIG));
             }
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
@@ -184,6 +184,9 @@ public class AdParser implements IParser {
             stConfig = new StConfig();
             if (jobj.has(ENABLE)) {
                 stConfig.setEnable(jobj.getInt(ENABLE) == 1);
+            }
+            if (jobj.has(UPDELAY)) {
+                stConfig.setUpDelay(jobj.getInt(UPDELAY));
             }
             parseAttrConfig(stConfig, jobj);
         } catch (Exception e) {

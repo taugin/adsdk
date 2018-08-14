@@ -3,6 +3,7 @@ package com.inner.adsdk.policy;
 import android.content.Context;
 
 import com.inner.adsdk.config.StConfig;
+import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
@@ -57,6 +58,15 @@ public class StPolicy {
     }
 
     /**
+     * 获取应用首次展示时间
+     *
+     * @return
+     */
+    private long getFirstStartUpTime() {
+        return Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0);
+    }
+
+    /**
      * 配置是否允许
      *
      * @return
@@ -68,6 +78,20 @@ public class StPolicy {
         return false;
     }
 
+    /**
+     * 延迟间隔是否允许
+     *
+     * @return
+     */
+    private boolean isDelayAllow() {
+        if (mStConfig != null && mStConfig.getUpDelay() > 0) {
+            long now = System.currentTimeMillis();
+            long firstStartTime = getFirstStartUpTime();
+            return now - firstStartTime > mStConfig.getUpDelay();
+        }
+        return true;
+    }
+
     private boolean checkAdStConfig() {
         if (!isConfigAllow()) {
             Log.v(Log.TAG, "config not allowed");
@@ -75,7 +99,7 @@ public class StPolicy {
         }
 
         if (mStConfig != null && !mAttrChecker.isAttributionAllow(mStConfig.getAttrList())) {
-            Log.v(Log.TAG, "attribution not allowed");
+            Log.v(Log.TAG, "attr not allowed");
             return false;
         }
 
@@ -89,6 +113,10 @@ public class StPolicy {
             return false;
         }
 
+        if (!isDelayAllow()) {
+            Log.v(Log.TAG, "delay not allowed");
+            return false;
+        }
         return true;
     }
 

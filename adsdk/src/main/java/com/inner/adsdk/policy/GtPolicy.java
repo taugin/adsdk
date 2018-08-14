@@ -265,7 +265,7 @@ public class GtPolicy {
         }
 
         if (mGtConfig != null && !mAttrChecker.isAttributionAllow(mGtConfig.getAttrList())) {
-            Log.v(Log.TAG, "attribution not allowed");
+            Log.v(Log.TAG, "attr not allowed");
             return false;
         }
 

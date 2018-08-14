@@ -158,7 +158,7 @@ public class AtPolicy {
         }
 
         if (mAtConfig != null && !mAttrChecker.isAttributionAllow(mAtConfig.getAttrList())) {
-            Log.v(Log.TAG, "attribution not allowed");
+            Log.v(Log.TAG, "attr not allowed");
             return false;
         }
 

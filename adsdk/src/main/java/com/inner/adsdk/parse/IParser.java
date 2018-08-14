@@ -28,7 +28,7 @@ public interface IParser {
     // ST配置
     String STCONFIG = "stconfig";
     // TT配置
-    String TTCONFIG = "atconfig";
+    String ATCONFIG = "atconfig";
     // 广告位汇总
     String ADPLACES = "adplaces";
     // 开光控制配置信息
