@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.inner.adsdk.config.AdSwitch;
-import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.manager.DataManager;
 import com.inner.adsdk.utils.TaskUtils;
 
@@ -43,10 +42,18 @@ public class AdReceiver {
         register();
     }
 
+    private String getAlarmAction() {
+        try {
+            return mContext.getPackageName() + ".action.ALARM";
+        } catch(Exception e) {
+        }
+        return Intent.ACTION_SEND + "_ALARM";
+    }
+
     private void register() {
         try {
             IntentFilter filter = new IntentFilter();
-            filter.addAction(Constant.ACTION_BASIC_ALARM);
+            filter.addAction(getAlarmAction());
             filter.addAction(Intent.ACTION_SCREEN_ON);
             filter.addAction(Intent.ACTION_SCREEN_OFF);
             mContext.registerReceiver(mBroadcastReceiver, filter);
@@ -60,7 +67,7 @@ public class AdReceiver {
             if (intent == null) {
                 return;
             }
-            if (Constant.ACTION_BASIC_ALARM.equals(intent.getAction())) {
+            if (getAlarmAction().equals(intent.getAction())) {
                 if (isGtAtExclusive(context)) {
                     if (TaskUtils.hasAppUsagePermission(context)) {
                         AtAdLoader.get(context).onFire();
@@ -69,7 +76,9 @@ public class AdReceiver {
                     }
                 } else {
                     GtAdLoader.get(context).onFire();
-                    AtAdLoader.get(context).onFire();
+                    if (TaskUtils.hasAppUsagePermission(context)) {
+                        AtAdLoader.get(context).onFire();
+                    }
                 }
             } else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
                 TaskMonitor.get(context).stopMonitor();

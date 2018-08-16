@@ -20,7 +20,7 @@ import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdReward;
 import com.inner.adsdk.AdSdk;
-import com.inner.adsdk.framework.TaskMonitor;
+import com.inner.adsdk.framework.AtAdLoader;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 
 import java.util.List;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                 startActivity(intent);
             } else {
-                TaskMonitor.get(this).startMonitor();
+                AtAdLoader.get(this).onFire();
             }
         } else if (v.getId() == R.id.interstitial) {
             loadInterstitial();

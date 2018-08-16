@@ -13,10 +13,11 @@
   },
   "adrefs": {
     "st_outer_place": "gt_outer_place",
-    "gt_task_place": "gt_outer_place"
+    "at_outer_place": "gt_outer_place"
   },
-  "ttconfig": {
+  "atconfig": {
     "e": 1,
+    "d": 1800,
     "i": 60000
   },
   "gtconfig": {
@@ -64,7 +65,7 @@
           "sdk": "dfp",
           "type": "banner",
           "pid": "/6253334/dfp_example_ad",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "applovin",
@@ -85,14 +86,14 @@
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "fb",
           "type": "interstitial",
           "pid": "509068866191430_511572092607774",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "wemob",
@@ -100,7 +101,7 @@
           "pid": "interstitial1",
           "ctr": 5,
           "ffc": 1,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
