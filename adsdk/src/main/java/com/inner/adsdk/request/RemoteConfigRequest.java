@@ -35,10 +35,7 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
 
     @Override
     public void request() {
-        ensureFirebase();
-        if (mFirebaseRemoteConfig != null) {
-            mFirebaseRemoteConfig.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
-        }
+        refresh();
     }
 
     @Override

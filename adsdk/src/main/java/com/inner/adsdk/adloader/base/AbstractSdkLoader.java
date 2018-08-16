@@ -408,6 +408,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return false;
     }
 
+    protected String getPid() {
+        if (mPidConfig != null) {
+            return mPidConfig.getPid();
+        }
+        return null;
+    }
+
     private void reportLoadAdTime(int state) {
         if (state == STATE_REQUEST) {
             mRequestTime = SystemClock.elapsedRealtime();

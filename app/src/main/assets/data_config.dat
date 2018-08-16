@@ -124,6 +124,18 @@
       "mode": "con",
       "pids": [
         {
+          "sdk": "dfp",
+          "type": "reward",
+          "pid": "/200187824/A000-test/test-reward-video",
+          "disable": 0
+        },
+        {
+          "sdk": "dfp",
+          "type": "reward",
+          "pid": "/200187824/A000-test/test-video",
+          "disable": 0
+        },
+        {
           "sdk": "admob",
           "type": "reward",
           "pid": "ca-app-pub-3940256099942544/5224354917",
