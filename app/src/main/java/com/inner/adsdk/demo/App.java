@@ -1,10 +1,10 @@
-package com.inner.adsdk.demo;
+package com.hauyu.adsdk.demo;
 
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.inner.bcsdk.BcSdk;
+import com.hauyu.bcsdk.BcSdk;
 
 
 /**

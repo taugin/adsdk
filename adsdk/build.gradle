@@ -46,8 +46,7 @@ uploadArchives {
             repository(url: uri('F:\\workdir\\products\\privaterepo'))
             pom.version  = android.defaultConfig.versionName
             pom.artifactId = "adsdk"
-            pom.groupId = "com.inner.adsdk"
-            pom.name = "inner-adsdk"
+            pom.groupId = "com.hauyu"
             pom.packaging = "aar"
         }
     }

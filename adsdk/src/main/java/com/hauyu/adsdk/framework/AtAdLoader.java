@@ -1,0 +1,117 @@
+package com.hauyu.adsdk.framework;
+
+import android.content.Context;
+
+import com.hauyu.adsdk.AdSdk;
+import com.hauyu.adsdk.config.AdConfig;
+import com.hauyu.adsdk.config.AtConfig;
+import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.listener.SimpleAdSdkListener;
+import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.manager.DataManager;
+import com.hauyu.adsdk.policy.AtPolicy;
+import com.hauyu.adsdk.utils.TaskUtils;
+
+/**
+ * Created by Administrator on 2018/7/19.
+ */
+
+public class AtAdLoader implements TaskMonitor.OnTaskMonitorListener {
+
+    private static final int MSG_LOOP = 1;
+    private static final int LOOP_DELAY = 500;
+
+    private static AtAdLoader sAtAdLoader;
+
+    public static AtAdLoader get(Context context) {
+        if (sAtAdLoader == null) {
+            create(context);
+        }
+        return sAtAdLoader;
+    }
+
+    private static void create(Context context) {
+        synchronized (AtAdLoader.class) {
+            if (sAtAdLoader == null) {
+                sAtAdLoader = new AtAdLoader(context);
+            }
+        }
+    }
+
+    private Context mContext;
+    private AdSdk mAdSdk;
+
+    private AtAdLoader(Context context) {
+        mContext = context.getApplicationContext();
+    }
+
+    public void init(AdSdk adsdk) {
+        mAdSdk = adsdk;
+        TaskMonitor.get(mContext).setOnTaskMonitorListener(this);
+    }
+
+    private void updateTtPolicy() {
+        AdConfig adConfig = DataManager.get(mContext).getAdConfig();
+        AtConfig atConfig = DataManager.get(mContext).getRemoteTtPolicy();
+        if (atConfig == null && adConfig != null) {
+            atConfig = adConfig.getAtConfig();
+        }
+        AtPolicy.get(mContext).setPolicy(atConfig);
+    }
+
+    public void resumeLoader() {
+        Log.v(Log.TAG, "resume loader");
+        if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
+            TaskMonitor.get(mContext).startMonitor();
+        } else {
+            Log.v(Log.TAG, "miss app usage");
+        }
+    }
+
+    public void onFire() {
+        if (TaskUtils.hasAppUsagePermission(mContext)) {
+            updateTtPolicy();
+            if (AtPolicy.get(mContext).isAtAllowed()) {
+                mAdSdk.loadInterstitial(Constant.ATPLACE_OUTER_NAME, mAdSdkListener);
+                TaskMonitor.get(mContext).startMonitor();
+            }
+        } else {
+            Log.v(Log.TAG, "miss app usage");
+        }
+    }
+
+    @Override
+    public void onAppSwitch(String pkgname, String className) {
+        Log.d(Log.TAG, "app switch pkgname : " + pkgname + " , className : " + className);
+        updateTtPolicy();
+        if (AtPolicy.get(mContext).isAtAllowed() && !AtPolicy.get(mContext).isInWhiteList(pkgname, className)) {
+            if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
+                mAdSdk.showInterstitial(Constant.ATPLACE_OUTER_NAME);
+            } else {
+                mAdSdk.loadInterstitial(Constant.ATPLACE_OUTER_NAME, mAdSdkListener);
+            }
+        }
+    }
+
+    @Override
+    public void onActivitySwitch(String pkgname, String oldActivity, String newActivity) {
+        Log.d(Log.TAG, "activity switch pkgname : " + pkgname + " , oldActivity : " + oldActivity + " , newActivity : " + newActivity);
+        updateTtPolicy();
+        if (AtPolicy.get(mContext).isAtAllowed() && !AtPolicy.get(mContext).isInWhiteList(pkgname, newActivity)) {
+            if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
+                mAdSdk.showInterstitial(Constant.ATPLACE_OUTER_NAME);
+            } else {
+                mAdSdk.loadInterstitial(Constant.ATPLACE_OUTER_NAME, mAdSdkListener);
+            }
+        }
+    }
+
+    private SimpleAdSdkListener mAdSdkListener = new SimpleAdSdkListener() {
+        @Override
+        public void onShow(String pidName, String source, String adType) {
+            Log.v(Log.TAG, "show ads and stop task monitor");
+            AtPolicy.get(mContext).reportAtShow();
+            TaskMonitor.get(mContext).stopMonitor();
+        }
+    };
+}

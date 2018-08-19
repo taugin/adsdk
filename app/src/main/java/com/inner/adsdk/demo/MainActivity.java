@@ -1,4 +1,4 @@
-package com.inner.adsdk.demo;
+package com.hauyu.adsdk.demo;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -16,12 +16,13 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.inner.adsdk.AdExtra;
-import com.inner.adsdk.AdParams;
-import com.inner.adsdk.AdReward;
-import com.inner.adsdk.AdSdk;
-import com.inner.adsdk.framework.AtAdLoader;
-import com.inner.adsdk.listener.SimpleAdSdkListener;
+import com.hauyu.adsdk.AdExtra;
+import com.hauyu.adsdk.AdParams;
+import com.hauyu.adsdk.AdReward;
+import com.hauyu.adsdk.AdSdk;
+import com.hauyu.adsdk.framework.AtAdLoader;
+import com.hauyu.adsdk.listener.SimpleAdSdkListener;
+import com.inner.adsdk.demo.Log;
 
 import java.util.List;
 import java.util.Random;

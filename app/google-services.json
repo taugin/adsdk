@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:333634090616:android:c97211288a1f6ee6",
+        "mobilesdk_app_id": "1:333634090616:android:ed520fef4b6f1a12",
         "android_client_info": {
-          "package_name": "com.inner.adsdk.demo"
+          "package_name": "com.hauyu.adsdk.demo"
         }
       },
       "oauth_client": [
@@ -39,9 +39,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:333634090616:android:697b4a5769623966",
+        "mobilesdk_app_id": "1:333634090616:android:4fbaccdd914a1d9d",
         "android_client_info": {
-          "package_name": "com.inner.bcsdk.demo"
+          "package_name": "com.hauyu.bcsdk.demo"
         }
       },
       "oauth_client": [

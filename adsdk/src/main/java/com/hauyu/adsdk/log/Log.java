@@ -1,9 +1,9 @@
-package com.inner.adsdk.demo;
+package com.hauyu.adsdk.log;
 
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
-import com.hauyu.adsdk.demo.BuildConfig;
+import com.hauyu.adsdk.BuildConfig;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -72,6 +72,15 @@ public class Log {
             String extraString = getMethodNameAndLineNumber();
             tag = privateTag() ? tag : getTag();
             android.util.Log.e(tag, extraString + message);
+        }
+    }
+
+    public static void e(String tag, String message, Throwable throwable) {
+        tag = checkLogTag(tag);
+        if (isLoggable(tag, ERROR)) {
+            String extraString = getMethodNameAndLineNumber();
+            tag = privateTag() ? tag : getTag();
+            android.util.Log.e(tag, extraString + message, throwable);
         }
     }
 
