@@ -223,7 +223,7 @@ public class AdParser implements IParser {
             }
             parseAttrConfig(atConfig, jobj);
         } catch (Exception e) {
-            Log.v(Log.TAG, "parseStPolicyInternal error : " + e);
+            Log.v(Log.TAG, "parseAtPolicyInternal error : " + e);
         }
         return atConfig;
     }
