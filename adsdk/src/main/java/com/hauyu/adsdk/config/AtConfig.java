@@ -13,6 +13,8 @@ public class AtConfig extends AttrConfig {
 
     private int interval;
 
+    private int maxCount;
+
     private List<String> excludes;
 
     public boolean isEnable() {
@@ -37,6 +39,14 @@ public class AtConfig extends AttrConfig {
 
     public void setInterval(int interval) {
         this.interval = interval;
+    }
+
+    public int getMaxCount() {
+        return maxCount;
+    }
+
+    public void setMaxCount(int maxCount) {
+        this.maxCount = maxCount;
     }
 
     public List<String> getExcludes() {

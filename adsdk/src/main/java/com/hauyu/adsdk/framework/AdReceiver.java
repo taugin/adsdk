@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.hauyu.adsdk.config.AdSwitch;
+import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.manager.DataManager;
 import com.hauyu.adsdk.utils.TaskUtils;
+import com.hauyu.adsdk.utils.Utils;
 
 /**
  * Created by Administrator on 2018-8-10.
@@ -39,7 +41,17 @@ public class AdReceiver {
     }
 
     public void init() {
+        reportFirstStartUpTime();
         register();
+    }
+
+    /**
+     * 记录应用首次启动时间
+     */
+    private void reportFirstStartUpTime() {
+        if (Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0) <= 0) {
+            Utils.putLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, System.currentTimeMillis());
+        }
     }
 
     private String getAlarmAction() {

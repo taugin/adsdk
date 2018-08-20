@@ -93,6 +93,10 @@ public class AtPolicy {
     public void init() {
     }
 
+    private long getFirstStartUpTime() {
+        return Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0);
+    }
+
     public void setPolicy(AtConfig atConfig) {
         mAtConfig = atConfig;
         if (mAtConfig != null && (mAtConfig.getExcludes() == null || mAtConfig.getExcludes().isEmpty())) {
@@ -100,16 +104,88 @@ public class AtPolicy {
         }
     }
 
+    /**
+     * 记录AT展示
+     */
     public void reportAtShow() {
-        Utils.putLong(mContext, Constant.PREF_TT_LAST_TIME, System.currentTimeMillis());
+        Utils.putLong(mContext, Constant.PREF_AT_LAST_SHOWTIME, System.currentTimeMillis());
+        reportTotalShowTimes();
     }
 
+    /**
+     * 记录每天的首次展示时间
+     */
+    private void recordFirstShowTime() {
+        long times = getTotalShowTimes();
+        if (times == 1) {
+            Utils.putLong(mContext, Constant.PREF_AT_FIRST_SHOWTIME, System.currentTimeMillis());
+        }
+    }
+
+    /**
+     * 记录ad展示次数
+     */
+    private void reportTotalShowTimes() {
+        long times = getTotalShowTimes();
+        times += 1;
+        if (times <= 0) {
+            times = 1;
+        }
+        Utils.putLong(mContext, Constant.PREF_AT_TOTAL_SHOWTIMES, times);
+        recordFirstShowTime();
+    }
+
+    /**
+     * 重置当天的总展示次数
+     */
+    private void resetTotalShowTimes() {
+        Log.d(Log.TAG, "reset total show times");
+        Utils.putLong(mContext, Constant.PREF_AT_TOTAL_SHOWTIMES, 0);
+    }
+
+    /**
+     * 获取ad展示次数
+     *
+     * @return
+     */
+    private long getTotalShowTimes() {
+        return Utils.getLong(mContext, Constant.PREF_AT_TOTAL_SHOWTIMES, 0);
+    }
+
+    /**
+     * 获取最后一次展示时间
+     * @return
+     */
     private long getLastShowTime() {
-        return Utils.getLong(mContext, Constant.PREF_TT_LAST_TIME, 0);
+        return Utils.getLong(mContext, Constant.PREF_AT_LAST_SHOWTIME, 0);
     }
 
-    private long getFirstStartUpTime() {
-        return Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0);
+    /**
+     * 24小时清除计数
+     */
+    private void resetTotalShowIfNeed() {
+        long now = System.currentTimeMillis();
+        long lastDay = Utils.getLong(mContext, Constant.PREF_AT_FIRST_SHOWTIME, now);
+        Log.v(Log.TAG, "AtConfig.resetTotalShowIfNeed now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
+        if (now - lastDay > Constant.ONE_DAY_TIME) {
+            resetTotalShowTimes();
+        }
+    }
+
+    /**
+     * 最大展示数是否允许
+     *
+     * @return
+     */
+    private boolean isMaxShowAllow() {
+        resetTotalShowIfNeed();
+        if (mAtConfig != null && mAtConfig.getMaxCount() > 0) {
+            long times = getTotalShowTimes();
+            Log.d(Log.TAG, "total show times : " + times + " , mc : " + mAtConfig.getMaxCount());
+            // 此处<=的逻辑会导致最大展示次数多1次
+            return times <= mAtConfig.getMaxCount();
+        }
+        return true;
     }
 
     private boolean isDelayAllow() {
@@ -183,6 +259,11 @@ public class AtPolicy {
 
         if (!isDelayAllow()) {
             Log.v(Log.TAG, "delay not allowed");
+            return false;
+        }
+
+        if (!isMaxShowAllow()) {
+            Log.v(Log.TAG, "max show not allowed");
             return false;
         }
 

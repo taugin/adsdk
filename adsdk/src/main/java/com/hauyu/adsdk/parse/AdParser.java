@@ -82,7 +82,7 @@ public class AdParser implements IParser {
                 stConfig = parseStPolicyInternal(jobj.getString(STCONFIG));
             }
             if (jobj.has(ATCONFIG)) {
-                atConfig = parseTtPolicyInternal(jobj.getString(ATCONFIG));
+                atConfig = parseAtPolicyInternal(jobj.getString(ATCONFIG));
             }
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
@@ -196,12 +196,12 @@ public class AdParser implements IParser {
     }
 
     @Override
-    public AtConfig parseTtPolicy(String data) {
+    public AtConfig parseAtPolicy(String data) {
         data = getContent(data);
-        return parseTtPolicyInternal(data);
+        return parseAtPolicyInternal(data);
     }
 
-    private AtConfig parseTtPolicyInternal(String content) {
+    private AtConfig parseAtPolicyInternal(String content) {
         AtConfig atConfig = null;
         try {
             JSONObject jobj = new JSONObject(content);
@@ -214,6 +214,9 @@ public class AdParser implements IParser {
             }
             if (jobj.has(INTERVAL)) {
                 atConfig.setInterval(jobj.getInt(INTERVAL));
+            }
+            if (jobj.has(MAX_COUNT)) {
+                atConfig.setMaxCount(jobj.getInt(MAX_COUNT));
             }
             if (jobj.has(EXCLUDE_PACKAGES)) {
                 atConfig.setExcludes(parseStringList(jobj.getString(EXCLUDE_PACKAGES)));

@@ -46,7 +46,6 @@ public class GtPolicy {
     private AttrChecker mAttrChecker;
 
     public void init() {
-        reportFirstStartUpTime();
     }
 
     public void setPolicy(GtConfig gtConfig) {
@@ -86,7 +85,7 @@ public class GtPolicy {
      * 更新ad最后展示时间
      */
     private void updateLastShowTime() {
-        Utils.putLong(mContext, Constant.PREF_LAST_GT_SHOWTIME, System.currentTimeMillis());
+        Utils.putLong(mContext, Constant.PREF_GT_LAST_SHOWTIME, System.currentTimeMillis());
     }
 
     /**
@@ -95,16 +94,7 @@ public class GtPolicy {
      * @return
      */
     private long getLastShowTime() {
-        return Utils.getLong(mContext, Constant.PREF_LAST_GT_SHOWTIME, 0);
-    }
-
-    /**
-     * 记录应用首次启动时间
-     */
-    private void reportFirstStartUpTime() {
-        if (Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0) <= 0) {
-            Utils.putLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, System.currentTimeMillis());
-        }
+        return Utils.getLong(mContext, Constant.PREF_GT_LAST_SHOWTIME, 0);
     }
 
     /**
@@ -125,13 +115,13 @@ public class GtPolicy {
         if (times <= 0) {
             times = 1;
         }
-        Utils.putLong(mContext, Constant.PREF_GT_SHOW_TIMES, times);
+        Utils.putLong(mContext, Constant.PREF_GT_TOTAL_SHOWTIMES, times);
         recordFirstShowTime();
     }
 
     private void resetTotalShowTimes() {
         Log.d(Log.TAG, "reset total show times");
-        Utils.putLong(mContext, Constant.PREF_GT_SHOW_TIMES, 0);
+        Utils.putLong(mContext, Constant.PREF_GT_TOTAL_SHOWTIMES, 0);
     }
 
     /**
@@ -140,7 +130,7 @@ public class GtPolicy {
      * @return
      */
     private long getTotalShowTimes() {
-        return Utils.getLong(mContext, Constant.PREF_GT_SHOW_TIMES, 0);
+        return Utils.getLong(mContext, Constant.PREF_GT_TOTAL_SHOWTIMES, 0);
     }
 
     /**
@@ -187,7 +177,7 @@ public class GtPolicy {
     private void recordFirstShowTime() {
         long times = getTotalShowTimes();
         if (times == 1) {
-            Utils.putLong(mContext, Constant.PREF_FIRST_SHOW_TIME_ONEDAY, System.currentTimeMillis());
+            Utils.putLong(mContext, Constant.PREF_GT_FIRST_SHOWTIME, System.currentTimeMillis());
         }
     }
 
@@ -196,7 +186,7 @@ public class GtPolicy {
      */
     private void resetTotalShowIfNeed() {
         long now = System.currentTimeMillis();
-        long lastDay = Utils.getLong(mContext, Constant.PREF_FIRST_SHOW_TIME_ONEDAY, now);
+        long lastDay = Utils.getLong(mContext, Constant.PREF_GT_FIRST_SHOWTIME, now);
         Log.v(Log.TAG, "GtConfig.resetTotalShowIfNeed now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
         if (now - lastDay > Constant.ONE_DAY_TIME) {
             int times = (int) getTotalShowTimes();
