@@ -1,12 +1,13 @@
 package com.hauyu.adsdk.policy;
 
 import android.content.Context;
+import android.content.res.Configuration;
 
 import com.hauyu.adsdk.config.GtConfig;
+import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.ActivityMonitor;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.StatImpl;
-import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Date;
@@ -248,6 +249,31 @@ public class GtPolicy {
         return true;
     }
 
+    public boolean isScreenOrientationAllow() {
+        if (mGtConfig != null) {
+            int orientation = Configuration.ORIENTATION_UNDEFINED;
+            try {
+                orientation = mContext.getResources().getConfiguration().orientation;
+            } catch (Exception e) {
+            }
+            int configOrientation = mGtConfig.getScreenOrientation();
+            if (configOrientation == 0) {
+                // 不限屏幕方向
+                return true;
+            }
+            if (configOrientation == 1) {
+                // 限制竖屏方向
+                return orientation == Configuration.ORIENTATION_PORTRAIT;
+            }
+
+            if (configOrientation == 2) {
+                // 限制横屏方向
+                return orientation == Configuration.ORIENTATION_LANDSCAPE;
+            }
+        }
+        return true;
+    }
+
     private boolean checkAdGtConfig() {
         if (!isConfigAllow()) {
             Log.v(Log.TAG, "config not allowed");
@@ -314,6 +340,11 @@ public class GtPolicy {
 
         if (!Utils.isScreenOn(mContext)) {
             Log.v(Log.TAG, "screen is not on");
+            return false;
+        }
+
+        if (!isScreenOrientationAllow()) {
+            Log.v(Log.TAG, "so not allow");
             return false;
         }
         return true;
