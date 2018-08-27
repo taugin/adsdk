@@ -9,27 +9,27 @@
     }
   },
   "stconfig": {
-    "e": 1
+    "e": 0
   },
   "adrefs": {
     "st_outer_place": "gt_outer_place",
     "at_outer_place": "gt_outer_place"
   },
   "atconfig": {
-    "e": 1,
+    "e": 0,
     "d": 1800,
     "i": 60000
   },
   "gtconfig": {
-    "e": 0,
+    "e": 1,
     "d": 3600,
     "i": 1800,
     "mc": 20,
     "mv": -1,
-    "mi": 120000,
     "attr": [],
     "ec": [],
-    "ms": []
+    "ms": [],
+    "so":1
   },
   "adplaces": [
     {
@@ -59,13 +59,13 @@
           "sdk": "dfp",
           "type": "native",
           "pid": "/6499/example/native",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",
           "type": "banner",
           "pid": "/6253334/dfp_example_ad",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "applovin",
