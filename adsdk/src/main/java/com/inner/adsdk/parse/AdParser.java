@@ -164,6 +164,9 @@ public class AdParser implements IParser {
             if (jobj.has(MIN_INTERVAL)) {
                 gtConfig.setMinInterval(jobj.getLong(MIN_INTERVAL));
             }
+            if (jobj.has(SCREEN_ORIENTATION)) {
+                gtConfig.setScreenOrientation(jobj.getInt(SCREEN_ORIENTATION));
+            }
             parseAttrConfig(gtConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseGtPolicyInternal error : " + e);

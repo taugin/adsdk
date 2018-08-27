@@ -11,6 +11,7 @@ public class GtConfig extends AttrConfig {
     private int maxCount;
     private int maxVersion;
     private long minInterval;
+    private int screenOrientation;
 
     public boolean isEnable() {
         return enable;
@@ -58,6 +59,14 @@ public class GtConfig extends AttrConfig {
 
     public void setMinInterval(long minInterval) {
         this.minInterval = minInterval;
+    }
+
+    public int getScreenOrientation() {
+        return screenOrientation;
+    }
+
+    public void setScreenOrientation(int screenOrientation) {
+        this.screenOrientation = screenOrientation;
     }
 
     @Override

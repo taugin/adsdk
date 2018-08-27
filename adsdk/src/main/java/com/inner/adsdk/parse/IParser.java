@@ -92,6 +92,8 @@ public interface IParser {
     String ATTRS = "attr";
     // 媒体列表 !adwords表示排除的媒体，adwords表示包含的媒体
     String MEDIA_SOURCE = "ms";
+    // 屏幕方向 0 : undefined, 1: portrait, 2 : landscape
+    String SCREEN_ORIENTATION = "so";
 
     // 阻止重复加载(如果当前loader正在处于加载中，则不再重新加载)
     String BLOCK_LOADING = "bl";
