@@ -123,7 +123,7 @@ public interface IParser {
 
     StConfig parseStPolicy(String data);
 
-    AtConfig parseTtPolicy(String data);
+    AtConfig parseAtPolicy(String data);
 
     Map<String, String> parseAdIds(String data);
 

@@ -58,7 +58,7 @@ public class Constant {
     public static final String PREF_FIRST_SHOW_TIME_ONEDAY = "pref_first_show_time_oneday";
     public static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_remote_config_request_time";
     public static final String PREF_GT_REQUEST_TIME = "pref_gt_request_time";
-    public static final String PREF_TT_LAST_TIME = "pref_tt_last_time";
+    public static final String PREF_AT_LAST_TIME = "pref_at_last_time";
 
     // 配置文件中使用的名字++++++
     public static final String GTPLACE_OUTER_NAME = "gt_outer_place";

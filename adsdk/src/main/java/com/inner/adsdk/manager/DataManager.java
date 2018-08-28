@@ -141,11 +141,11 @@ public class DataManager {
         return null;
     }
 
-    public AtConfig getRemoteTtPolicy() {
+    public AtConfig getRemoteAtPolicy() {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(Constant.ATPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
-                return mParser.parseTtPolicy(data);
+                return mParser.parseAtPolicy(data);
             }
         }
         return null;

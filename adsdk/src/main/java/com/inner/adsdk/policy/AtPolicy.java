@@ -101,11 +101,11 @@ public class AtPolicy {
     }
 
     public void reportAtShow() {
-        Utils.putLong(mContext, Constant.PREF_TT_LAST_TIME, System.currentTimeMillis());
+        Utils.putLong(mContext, Constant.PREF_AT_LAST_TIME, System.currentTimeMillis());
     }
 
     private long getLastShowTime() {
-        return Utils.getLong(mContext, Constant.PREF_TT_LAST_TIME, 0);
+        return Utils.getLong(mContext, Constant.PREF_AT_LAST_TIME, 0);
     }
 
     private long getFirstStartUpTime() {

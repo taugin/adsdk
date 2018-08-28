@@ -82,7 +82,7 @@ public class AdParser implements IParser {
                 stConfig = parseStPolicyInternal(jobj.getString(STCONFIG));
             }
             if (jobj.has(ATCONFIG)) {
-                atConfig = parseTtPolicyInternal(jobj.getString(ATCONFIG));
+                atConfig = parseAtPolicyInternal(jobj.getString(ATCONFIG));
             }
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
@@ -199,12 +199,12 @@ public class AdParser implements IParser {
     }
 
     @Override
-    public AtConfig parseTtPolicy(String data) {
+    public AtConfig parseAtPolicy(String data) {
         data = getContent(data);
-        return parseTtPolicyInternal(data);
+        return parseAtPolicyInternal(data);
     }
 
-    private AtConfig parseTtPolicyInternal(String content) {
+    private AtConfig parseAtPolicyInternal(String content) {
         AtConfig atConfig = null;
         try {
             JSONObject jobj = new JSONObject(content);
