@@ -39,6 +39,11 @@ public class AdExtra {
     public static final String AD_SDK_DFP = Constant.AD_SDK_DFP;
 
     /**
+     * APPLOVIN SDK 名字
+     */
+    public static final String AD_SDK_APPLOVIN = Constant.AD_SDK_APPLOVIN;
+
+    /**
      * ADMOB banner尺寸 320 x 50
      */
     public static final int ADMOB_BANNER = Constant.BANNER;
