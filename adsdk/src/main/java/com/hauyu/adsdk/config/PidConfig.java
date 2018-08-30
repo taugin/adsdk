@@ -159,6 +159,10 @@ public class PidConfig extends AttrConfig {
         return TextUtils.equals(Constant.AD_SDK_MOPUB, sdk);
     }
 
+    public boolean isAppnext() {
+        return TextUtils.equals(Constant.AD_SDK_APPNEXT, sdk);
+    }
+
     public boolean isBannerType() {
         return TextUtils.equals(Constant.TYPE_BANNER, adType);
     }

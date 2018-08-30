@@ -49,6 +49,11 @@ public class AdExtra {
     public static final String AD_SDK_MOPUB = Constant.AD_SDK_MOPUB;
 
     /**
+     * APPNEXT SDK 名字
+     */
+    public static final String AD_SDK_APPNEXT = Constant.AD_SDK_APPNEXT;
+
+    /**
      * ADMOB banner尺寸 320 x 50
      */
     public static final int ADMOB_BANNER = Constant.BANNER;

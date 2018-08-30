@@ -23,6 +23,7 @@ import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.policy.AdPolicy;
+import com.inner.adsdk.adloader.adappnext.AppnextLoader;
 import com.inner.adsdk.adloader.mopub.MopubLoader;
 
 import java.lang.ref.WeakReference;
@@ -165,12 +166,25 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                             }
                         } else if (config.isMopub()) {
                             loader = new MopubLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
-                            loader.setListenerManager(this);
-                            loader.setAdId(adId);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
+                            if (loader.isModuleLoaded()) {
+                                loader.init(mContext);
+                                loader.setPidConfig(config);
+                                loader.setListenerManager(this);
+                                loader.setAdId(adId);
+                                if (loader.allowUseLoader()) {
+                                    mAdLoaders.add(loader);
+                                }
+                            }
+                        } else if (config.isAppnext()) {
+                            loader = new AppnextLoader();
+                            if (loader.isModuleLoaded()) {
+                                loader.init(mContext);
+                                loader.setPidConfig(config);
+                                loader.setListenerManager(this);
+                                loader.setAdId(adId);
+                                if (loader.allowUseLoader()) {
+                                    mAdLoaders.add(loader);
+                                }
                             }
                         }
                     }
