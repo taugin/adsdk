@@ -399,10 +399,11 @@ public class AppnextLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        nativeAd = new NativeAd(mContext, mPidConfig.getPid());
-        nativeAd.setAdListener(new NativeAdListener() {
+        NativeAd loadingNativeAd = new NativeAd(mContext, mPidConfig.getPid());
+        loadingNativeAd.setAdListener(new NativeAdListener() {
             public void onAdLoaded(NativeAd nAd) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                nativeAd = nAd;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
                 notifyAdLoaded(false);
@@ -425,7 +426,6 @@ public class AppnextLoader extends AbstractSdkLoader {
                 if (adError != null) {
                     Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , msg : " + adError.getErrorMessage());
                 }
-                nativeAd = null;
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
@@ -447,7 +447,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                 }
             }
         });
-        nativeAd.loadAd(new NativeAdRequest()
+        loadingNativeAd.loadAd(new NativeAdRequest()
                 .setCachingPolicy(NativeAdRequest.CachingPolicy.STATIC_ONLY)
                 .setCreativeType(NativeAdRequest.CreativeType.ALL)
                 .setVideoLength(NativeAdRequest.VideoLength.SHORT)
