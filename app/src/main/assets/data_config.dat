@@ -21,7 +21,7 @@
     "i": 60000
   },
   "gtconfig": {
-    "e": 1,
+    "e": 0,
     "d": 3600,
     "i": 1800,
     "mc": 20,
@@ -29,7 +29,7 @@
     "attr": [],
     "ec": [],
     "ms": [],
-    "so":1
+    "so": 1
   },
   "adplaces": [
     {
@@ -74,17 +74,23 @@
           "disable": 1
         },
         {
-            "sdk":"mopub",
-            "type":"banner",
-            "pid":"b195f8dd8ded45fe847ad89ed1d016da",
-            "disable":1
+          "sdk": "mopub",
+          "type": "banner",
+          "pid": "b195f8dd8ded45fe847ad89ed1d016da",
+          "disable": 1
         },
-         {
-             "sdk":"appnext",
-             "type":"native",
-             "pid":"660a9f5d-d1ee-47b0-9a55-7f62fdc88e3c",
-             "disable":0
-         }
+        {
+          "sdk": "appnext",
+          "type": "native",
+          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
+          "disable": 0
+        },
+        {
+          "sdk": "appnext",
+          "type": "banner",
+          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
+          "disable": 0
+        }
       ],
       "maxcount": 100,
       "percent": 100
@@ -127,18 +133,18 @@
           "pid": "4a885e75685fed5c",
           "disable": 1
         },
-         {
-             "sdk":"mopub",
-             "type":"interstitial",
-             "pid":"24534e1901884e398f1253216226017e",
-             "disable":1
-         },
-            {
-               "sdk":"appnext",
-               "type":"interstitial",
-               "pid":"660a9f5d-d1ee-47b0-9a55-7f62fdc88e3c",
-               "disable":0
-            }
+        {
+          "sdk": "mopub",
+          "type": "interstitial",
+          "pid": "24534e1901884e398f1253216226017e",
+          "disable": 1
+        },
+        {
+          "sdk": "appnext",
+          "type": "interstitial",
+          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
+          "disable": 0
+        }
       ],
       "maxcount": 100,
       "percent": 100
@@ -180,7 +186,7 @@
         {
           "sdk": "appnext",
           "type": "reward",
-          "pid": "660a9f5d-d1ee-47b0-9a55-7f62fdc88e3c",
+          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
           "disable": 0
         }
       ],

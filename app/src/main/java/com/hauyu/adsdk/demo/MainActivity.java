@@ -193,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
                 showAdView(pidName);
             } else if (AdExtra.AD_TYPE_INTERSTITIAL.equalsIgnoreCase(adType)) {
                 AdSdk.get(getBaseContext()).showInterstitial(pidName);
+            } else if (AdExtra.AD_TYPE_REWARD.equalsIgnoreCase(adType)) {
+                AdSdk.get(getBaseContext()).showInterstitial(pidName);
             }
         }
 
