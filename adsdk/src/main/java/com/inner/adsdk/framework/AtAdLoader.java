@@ -82,10 +82,16 @@ public class AtAdLoader implements TaskMonitor.OnTaskMonitorListener {
         Log.d(Log.TAG, "app switch pkgname : " + pkgname + " , className : " + className);
         updateAtPolicy();
         if (AtPolicy.get(mContext).isAtAllowed() && !AtPolicy.get(mContext).isInWhiteList(pkgname, className)) {
-            if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
-                mAdSdk.showInterstitial(Constant.ATPLACE_OUTER_NAME);
+            if (AtPolicy.get(mContext).isShowOnFirstPage()) {
+                if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
+                    mAdSdk.showInterstitial(Constant.ATPLACE_OUTER_NAME);
+                } else {
+                    mAdSdk.loadInterstitial(Constant.ATPLACE_OUTER_NAME, mAdSdkListener);
+                }
             } else {
-                mAdSdk.loadInterstitial(Constant.ATPLACE_OUTER_NAME, mAdSdkListener);
+                if (!mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
+                    mAdSdk.loadInterstitial(Constant.ATPLACE_OUTER_NAME, mAdSdkListener);
+                }
             }
         }
     }

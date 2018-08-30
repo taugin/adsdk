@@ -225,4 +225,11 @@ public class AtPolicy {
         }
         return false;
     }
+
+    public boolean isShowOnFirstPage() {
+        if (mAtConfig != null) {
+            return mAtConfig.isShowOnFirstPage();
+        }
+        return false;
+    }
 }

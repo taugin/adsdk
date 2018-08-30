@@ -221,6 +221,9 @@ public class AdParser implements IParser {
             if (jobj.has(EXCLUDE_PACKAGES)) {
                 atConfig.setExcludes(parseStringList(jobj.getString(EXCLUDE_PACKAGES)));
             }
+            if (jobj.has(SHOW_ON_FIRST_PAGE)) {
+                atConfig.setShowOnFirstPage(jobj.getInt(SHOW_ON_FIRST_PAGE) == 1);
+            }
             parseAttrConfig(atConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseStPolicyInternal error : " + e);
