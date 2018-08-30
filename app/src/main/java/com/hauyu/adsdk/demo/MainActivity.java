@@ -22,7 +22,6 @@ import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.framework.AtAdLoader;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
-import com.inner.adsdk.demo.Log;
 
 import java.util.List;
 import java.util.Random;

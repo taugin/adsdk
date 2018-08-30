@@ -1,4 +1,4 @@
-package com.inner.adsdk.adloader.mopub;
+package com.hauyu.adsdk.adloader.mopub;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;

@@ -1,9 +1,7 @@
-package com.inner.adsdk.demo;
+package com.hauyu.adsdk.demo;
 
 import android.annotation.SuppressLint;
 import android.os.Environment;
-
-import com.hauyu.adsdk.demo.BuildConfig;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -20,7 +18,7 @@ public class Log {
     private static final int ERROR = android.util.Log.ERROR;
     private static final int WARN = android.util.Log.WARN;
 
-    public static final String TAG = "adlib";
+    public static final String TAG = "hauyu";
     public static final boolean DEBUGABLE = BuildConfig.DEBUG;
 
     private static boolean isLoggable(String tag, int level) {
