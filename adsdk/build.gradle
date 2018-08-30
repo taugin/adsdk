@@ -43,6 +43,10 @@ dependencies {
         exclude module: 'libAvid-mopub' // To exclude AVID
         exclude module: 'moat-mobile-app-kit'
     }
+
+    implementation 'com.appnext.sdk:ads:2.+'
+    implementation 'com.appnext.sdk:banners:2.+'
+    implementation 'com.appnext.sdk:native-ads2:2.+' // New Native Ads
 }
 
 // 发布aar
@@ -51,7 +55,7 @@ uploadArchives {
     repositories {
         mavenDeployer {
             repository(url: uri('F:\\workdir\\products\\privaterepo'))
-            pom.version  = android.defaultConfig.versionName
+            pom.version = android.defaultConfig.versionName
             pom.artifactId = "adsdk"
             pom.groupId = "com.inner.adsdk"
             pom.name = "inner-adsdk"

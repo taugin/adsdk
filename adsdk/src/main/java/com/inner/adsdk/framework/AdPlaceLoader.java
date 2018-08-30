@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.inner.adsdk.AdParams;
+import com.inner.adsdk.adloader.adappnext.AppnextLoader;
 import com.inner.adsdk.adloader.addfp.AdDfpLoader;
 import com.inner.adsdk.adloader.adfb.FBLoader;
 import com.inner.adsdk.adloader.admob.AdmobLoader;
@@ -165,12 +166,25 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                             }
                         } else if (config.isMopub()) {
                             loader = new MopubLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
-                            loader.setListenerManager(this);
-                            loader.setAdId(adId);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
+                            if (loader.isModuleLoaded()) {
+                                loader.init(mContext);
+                                loader.setPidConfig(config);
+                                loader.setListenerManager(this);
+                                loader.setAdId(adId);
+                                if (loader.allowUseLoader()) {
+                                    mAdLoaders.add(loader);
+                                }
+                            }
+                        } else if (config.isAppnext()) {
+                            loader = new AppnextLoader();
+                            if (loader.isModuleLoaded()) {
+                                loader.init(mContext);
+                                loader.setPidConfig(config);
+                                loader.setListenerManager(this);
+                                loader.setAdId(adId);
+                                if (loader.allowUseLoader()) {
+                                    mAdLoaders.add(loader);
+                                }
                             }
                         }
                     }

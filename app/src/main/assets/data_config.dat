@@ -77,8 +77,14 @@
             "sdk":"mopub",
             "type":"banner",
             "pid":"b195f8dd8ded45fe847ad89ed1d016da",
-            "disable":0
-        }
+            "disable":1
+        },
+         {
+             "sdk":"appnext",
+             "type":"native",
+             "pid":"660a9f5d-d1ee-47b0-9a55-7f62fdc88e3c",
+             "disable":0
+         }
       ],
       "maxcount": 100,
       "percent": 100
@@ -125,8 +131,14 @@
              "sdk":"mopub",
              "type":"interstitial",
              "pid":"24534e1901884e398f1253216226017e",
-             "disable":0
-         }
+             "disable":1
+         },
+            {
+               "sdk":"appnext",
+               "type":"interstitial",
+               "pid":"660a9f5d-d1ee-47b0-9a55-7f62fdc88e3c",
+               "disable":0
+            }
       ],
       "maxcount": 100,
       "percent": 100
@@ -151,6 +163,12 @@
           "sdk": "mopub",
           "type": "reward",
           "pid": "920b6145fb1546cf8b5cf2ac34638bb7",
+          "disable": 1
+        },
+        {
+          "sdk": "appnext",
+          "type": "reward",
+          "pid": "660a9f5d-d1ee-47b0-9a55-7f62fdc88e3c",
           "disable": 0
         }
       ],

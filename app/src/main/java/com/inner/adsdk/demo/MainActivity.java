@@ -189,7 +189,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onLoaded(String pidName, String source, String adType) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-            AdSdk.get(getBaseContext()).showInterstitial(pidName);
+            if (AdExtra.AD_TYPE_BANNER.equalsIgnoreCase(adType) || AdExtra.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
+                showAdView(pidName);
+            } else if (AdExtra.AD_TYPE_INTERSTITIAL.equalsIgnoreCase(adType)) {
+                AdSdk.get(getBaseContext()).showInterstitial(pidName);
+            }
         }
 
         @Override

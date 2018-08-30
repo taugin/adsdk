@@ -22,6 +22,7 @@ allprojects {
         google()
         jcenter()
         mavenLocal()
+        maven {url "http://dl.appnext.com/"}
         // maven {url "https://s3.amazonaws.com/moat-sdk-builds"}
     }
 }
