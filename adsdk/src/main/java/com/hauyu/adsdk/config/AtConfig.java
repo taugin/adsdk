@@ -17,6 +17,8 @@ public class AtConfig extends AttrConfig {
 
     private List<String> excludes;
 
+    private boolean showOnFirstPage;
+
     public boolean isEnable() {
         return enable;
     }
@@ -55,6 +57,14 @@ public class AtConfig extends AttrConfig {
 
     public void setExcludes(List<String> excludes) {
         this.excludes = excludes;
+    }
+
+    public boolean isShowOnFirstPage() {
+        return showOnFirstPage;
+    }
+
+    public void setShowOnFirstPage(boolean showOnFirstPage) {
+        this.showOnFirstPage = showOnFirstPage;
     }
 
     @Override

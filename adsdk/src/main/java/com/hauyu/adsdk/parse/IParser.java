@@ -113,6 +113,8 @@ public interface IParser {
     String EXCLUDE_PACKAGES = "ep";
     // gt at exclusive
     String GT_AT_EXCLUSIVE = "gae";
+    // at show on first page
+    String SHOW_ON_FIRST_PAGE = "sofp";
 
 
     AdConfig parseAdConfig(String data);
