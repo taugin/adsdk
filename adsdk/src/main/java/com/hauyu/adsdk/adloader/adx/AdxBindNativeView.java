@@ -12,20 +12,15 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.VideoController;
 import com.google.android.gms.ads.formats.MediaView;
 import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAdView;
-import com.hauyu.adsdk.config.PidConfig;
-import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.R;
 import com.hauyu.adsdk.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Params;
 import com.hauyu.adsdk.log.Log;
-
-import java.util.List;
 
 /**
  * Created by Administrator on 2018/4/26.
@@ -118,7 +113,7 @@ public class AdxBindNativeView {
         mParams.setAdMediaView(R.id.native_media_cover);
         try {
             showUnifiedAdView(rootView, nativeAd, pidConfig);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, new Throwable());
         }
         try {
@@ -164,27 +159,44 @@ public class AdxBindNativeView {
 
         ViewGroup mediaViewLayout = rootView.findViewById(mParams.getAdMediaView());
         MediaView mediaView = createMediaView(rootView.getContext());
-        mediaViewLayout.addView(mediaView);
-
-        ImageView coverView = (ImageView) adView.getImageView();
-
-        VideoController vc = nativeAd.getVideoController();
-        if (vc.hasVideoContent()) {
-            adView.setMediaView(mediaView);
-            coverView.setVisibility(View.GONE);
-            vc.setVideoLifecycleCallbacks(new VideoController.VideoLifecycleCallbacks() {
-                public void onVideoEnd() {
-                    super.onVideoEnd();
-                }
-            });
-        } else {
-            adView.setImageView(coverView);
-            mediaViewLayout.setVisibility(View.GONE);
-            List<NativeAd.Image> images = nativeAd.getImages();
-            if (images.size() > 0 && images.get(0) != null) {
-                coverView.setImageDrawable(images.get(0).getDrawable());
-            }
+        if (mediaViewLayout != null && mediaView != null) {
+            mediaViewLayout.addView(mediaView, -1, -1);
         }
+
+        // 废弃ImageView作为Cover
+        ImageView coverView = (ImageView) adView.getImageView();
+        if (coverView != null) {
+            coverView.setVisibility(View.GONE);
+        }
+
+        if (mediaViewLayout != null) {
+            mediaViewLayout.setVisibility(View.VISIBLE);
+        }
+
+        if (mediaView != null) {
+            adView.setMediaView(mediaView);
+        }
+
+        // google 强制使用MediaView
+        /**
+         VideoController vc = nativeAd.getVideoController();
+         if (vc.hasVideoContent()) {
+         adView.setMediaView(mediaView);
+         coverView.setVisibility(View.GONE);
+         mediaViewLayout.setVisibility(View.VISIBLE);
+         vc.setVideoLifecycleCallbacks(new VideoController.VideoLifecycleCallbacks() {
+         public void onVideoEnd() {
+         super.onVideoEnd();
+         }
+         });
+         } else {
+         adView.setImageView(coverView);
+         mediaViewLayout.setVisibility(View.GONE);
+         List<NativeAd.Image> images = nativeAd.getImages();
+         if (images.size() > 0 && images.get(0) != null) {
+         coverView.setImageDrawable(images.get(0).getDrawable());
+         }
+         }*/
 
         try {
             if (adView.getStarRatingView() != null) {
@@ -196,7 +208,7 @@ public class AdxBindNativeView {
                     adView.getStarRatingView().setVisibility(View.VISIBLE);
                 }
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, new Throwable());
         }
         adView.setNativeAd(nativeAd);
