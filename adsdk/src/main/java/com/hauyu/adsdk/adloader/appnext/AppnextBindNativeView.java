@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.adloader.adappnext;
+package com.hauyu.adsdk.adloader.appnext;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;

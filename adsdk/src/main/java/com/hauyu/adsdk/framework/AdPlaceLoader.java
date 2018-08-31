@@ -23,7 +23,7 @@ import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.policy.AdPolicy;
-import com.hauyu.adsdk.adloader.adappnext.AppnextLoader;
+import com.hauyu.adsdk.adloader.appnext.AppnextLoader;
 import com.hauyu.adsdk.adloader.mopub.MopubLoader;
 
 import java.lang.ref.WeakReference;
