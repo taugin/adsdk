@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.inner.adsdk.AdParams;
-import com.inner.adsdk.adloader.adappnext.AppnextLoader;
+import com.inner.adsdk.adloader.appnext.AppnextLoader;
 import com.inner.adsdk.adloader.addfp.AdDfpLoader;
 import com.inner.adsdk.adloader.adfb.FBLoader;
 import com.inner.adsdk.adloader.admob.AdmobLoader;

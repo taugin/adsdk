@@ -1,4 +1,4 @@
-package com.inner.adsdk.adloader.adappnext;
+package com.inner.adsdk.adloader.appnext;
 
 import android.view.View;
 import android.view.ViewGroup;
