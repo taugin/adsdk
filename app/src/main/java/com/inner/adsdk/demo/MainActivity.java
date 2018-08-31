@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout layout = new RelativeLayout(this);
         layout.setGravity(Gravity.CENTER);
         Dialog dialog = new Dialog(this);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(layout);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
