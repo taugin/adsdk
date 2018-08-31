@@ -40,14 +40,20 @@
         {
           "sdk": "adx",
           "type": "native",
-          "pid": "ca-mb-app-pub-7694108583341291/2159435159/4916606539",
-          "disable": 1
+          "pid": "ca-app-pub-3940256099942544/2247696110",
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
           "disable": 1
+        },
+        {
+          "sdk": "admob",
+          "type": "native",
+          "pid": "ca-app-pub-3940256099942544/2247696110",
+          "disable": 0
         },
         {
           "sdk": "wemob",
@@ -83,13 +89,13 @@
           "sdk": "appnext",
           "type": "native",
           "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "appnext",
           "type": "banner",
           "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,

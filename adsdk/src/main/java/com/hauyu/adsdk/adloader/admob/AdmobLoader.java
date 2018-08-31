@@ -6,18 +6,23 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.VideoOptions;
+import com.google.android.gms.ads.formats.NativeAdOptions;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
-import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.framework.Params;
+import com.hauyu.adsdk.log.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +49,9 @@ public class AdmobLoader extends AbstractSdkLoader {
     private AdView loadingView;
     private InterstitialAd interstitialAd;
     private RewardedVideoAd rewardedVideoAd;
+    private AdLoader.Builder loadingBuilder;
+    private UnifiedNativeAd nativeAd;
+    private Params mParams;
 
     @Override
     public boolean isModuleLoaded() {
@@ -497,6 +505,138 @@ public class AdmobLoader extends AbstractSdkLoader {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isNativeLoaded() {
+        boolean loaded = super.isNativeLoaded();
+        if (nativeAd != null) {
+            loaded = !isCachedAdExpired(nativeAd);
+        }
+        if (loaded) {
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+        }
+        return loaded;
+    }
+
+    @Override
+    public void loadNative(Params params) {
+        mParams = params;
+
+        if (!checkPidConfig()) {
+            Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
+            }
+            return;
+        }
+        if (isNativeLoaded()) {
+            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            notifyAdLoaded(true);
+            return;
+        }
+        if (isLoading()) {
+            if (blockLoading()) {
+                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
+                }
+                return;
+            } else {
+                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+                if (loadingBuilder != null) {
+                    loadingBuilder.forAppInstallAd(null).forContentAd(null).withAdListener(null);
+                    if (nativeAd != null) {
+                        clearCachedAdTime(nativeAd);
+                    }
+                }
+            }
+        }
+        setLoading(true, STATE_REQUEST);
+        loadingBuilder = new AdLoader.Builder(mContext, mPidConfig.getPid());
+        loadingBuilder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
+            @Override
+            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                nativeAd = unifiedNativeAd;
+                setLoading(false, STATE_SUCCESS);
+                putCachedAdTime(nativeAd);
+                notifyAdLoaded(false);
+                if (mStat != null) {
+                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+            }
+        }).withAdListener(new AdListener() {
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+            }
+
+            @Override
+            public void onAdClicked() {
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onAdClick();
+                }
+                if (mStat != null) {
+                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+
+            @Override
+            public void onAdImpression() {
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onAdImpression();
+                }
+                if (mStat != null) {
+                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                if (errorCode == AdRequest.ERROR_CODE_NO_FILL) {
+                    updateLastNoFillTime();
+                }
+                setLoading(false, STATE_FAILURE);
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+                }
+                if (mStat != null) {
+                    mStat.reportAdError(mContext, codeToError(errorCode), getSdkName(), getAdType(), null);
+                }
+            }
+        });
+
+        VideoOptions videoOptions = new VideoOptions.Builder()
+                .build();
+        NativeAdOptions nativeAdOptions = new NativeAdOptions.Builder()
+                .setVideoOptions(videoOptions)
+                .build();
+        loadingBuilder.withNativeAdOptions(nativeAdOptions);
+        AdLoader adLoader = loadingBuilder.build();
+        if (adLoader != null) {
+            adLoader.loadAd(new AdRequest.Builder().build());
+        }
+        if (mStat != null) {
+            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        }
+        Log.v(Log.TAG, "");
+    }
+
+    @Override
+    public void showNative(ViewGroup viewGroup) {
+        AdmobBindNativeView admobBindNativeView = new AdmobBindNativeView();
+        clearCachedAdTime(nativeAd);
+        admobBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
+        nativeAd = null;
     }
 
     @Override
