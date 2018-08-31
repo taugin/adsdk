@@ -61,5 +61,23 @@
         <activity
             android:name="com.mopub.mobileads.MraidVideoPlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
+
+        <activity
+            android:name="com.appnext.ads.interstitial.InterstitialActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleInstance"
+            android:multiprocess="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.appnext.ads.fullscreen.FullscreenActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleInstance"
+            android:multiprocess="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
     </application>
 </manifest>
