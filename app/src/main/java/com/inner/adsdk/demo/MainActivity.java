@@ -134,9 +134,9 @@ public class MainActivity extends AppCompatActivity {
         AdParams.Builder builder = new AdParams.Builder();
         //  设置外部布局参数
         if (layoutId == R.layout.ad_common_native_card_small) {
-            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
+            // builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
         } else {
-            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
+            // builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
         }
         builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
