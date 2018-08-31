@@ -352,6 +352,12 @@ public class AdParser implements IParser {
             if (jobj.has(ECPMSORT)) {
                 adPlace.setEcpmSort(jobj.getInt(ECPMSORT));
             }
+            if (jobj.has(NEED_CACHE)) {
+                adPlace.setNeedCache(jobj.getInt(NEED_CACHE) == 1);
+            }
+            if (jobj.has(DELAY_NOTIFY_TIME)) {
+                adPlace.setDelayNotifyTime(jobj.getLong(DELAY_NOTIFY_TIME));
+            }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
             sortPidList(adPlace);
         } catch (Exception e) {

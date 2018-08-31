@@ -30,6 +30,10 @@ public class AdPlace {
 
     private int ecpmSort;
 
+    private boolean needCache;
+
+    private long delayNotifyTime;
+
     public String getName() {
         return name;
     }
@@ -123,6 +127,22 @@ public class AdPlace {
 
     public boolean isRandom() {
         return TextUtils.equals(Constant.MODE_RAN, getMode());
+    }
+
+    public boolean isNeedCache() {
+        return needCache;
+    }
+
+    public void setNeedCache(boolean needCache) {
+        this.needCache = needCache;
+    }
+
+    public long getDelayNotifyTime() {
+        return delayNotifyTime;
+    }
+
+    public void setDelayNotifyTime(long delayNotifyTime) {
+        this.delayNotifyTime = delayNotifyTime;
     }
 
     @Override

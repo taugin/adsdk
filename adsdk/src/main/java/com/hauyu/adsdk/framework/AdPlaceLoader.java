@@ -2,6 +2,8 @@ package com.hauyu.adsdk.framework;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
@@ -53,6 +55,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     private ViewGroup mAdContainer;
     private ISdkLoader mCurrentAdLoader;
     private String mOriginPidName;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     public AdPlaceLoader(Context context) {
         mContext = context;
@@ -276,6 +279,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         }
         mCurrentAdLoader = null;
         mHasNotifyLoaded = false;
+        // 处理场景缓存
+        if (processAdPlaceCache()) {
+            return;
+        }
         if (mAdPlace.isConcurrent()) {
             loadInterstitialConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -425,6 +432,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         mAdParams = adParams;
         mCurrentAdLoader = null;
         mHasNotifyLoaded = false;
+        // 处理场景缓存
+        if (processAdPlaceCache()) {
+            return;
+        }
         if (mAdPlace.isConcurrent()) {
             loadAdViewConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -590,6 +601,23 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         return null;
     }
 
+    private String getLoadedSdk() {
+        if (mAdLoaders != null) {
+            for (ISdkLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    boolean loaded = loader.isBannerLoaded()
+                            || loader.isNativeLoaded()
+                            || loader.isInterstitialLoaded()
+                            || loader.isRewaredVideoLoaded();
+                    if (loaded) {
+                        return loader.getSdkName();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * 加载混合广告
      *
@@ -606,6 +634,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         mAdParams = adParams;
         mCurrentAdLoader = null;
         mHasNotifyLoaded = false;
+        // 处理场景缓存
+        if (processAdPlaceCache()) {
+            return;
+        }
         if (mAdPlace.isConcurrent()) {
             loadComplexAdsConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -895,4 +927,44 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
             showAdViewInternal();
         }
     }
+
+    /**
+     * 处理场景缓存
+     *
+     * @return
+     */
+    private boolean processAdPlaceCache() {
+        if (mAdPlace == null) {
+            Log.v(Log.TAG, "place is null");
+            return false;
+        }
+        if (!mAdPlace.isNeedCache()) {
+            Log.v(Log.TAG, "place no need cache");
+            return false;
+        }
+        if (isInterstitialLoaded() || isAdViewLoaded() || isComplexAdsLoaded()) {
+            notifyLoadedWithDelay();
+            return true;
+        }
+        return false;
+    }
+
+    private void notifyLoadedWithDelay() {
+        if (mHandler != null) {
+            mHandler.removeCallbacks(mNotifyRunnable);
+            Log.v(Log.TAG, "notify loaded with delay : " + mAdPlace.getDelayNotifyTime());
+            mHandler.postDelayed(mNotifyRunnable, mAdPlace.getDelayNotifyTime());
+        }
+    }
+
+    private Runnable mNotifyRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mOnAdSdkListener != null) {
+                Log.v(Log.TAG, "notify place loaded " + mAdPlace.getName() + " - " + getLoadedSdk() + " - " + getLoadedType());
+                notifyAdLoaded();
+                mOnAdSdkListener.onLoaded(mAdPlace.getName(), getLoadedSdk(), getLoadedType());
+            }
+        }
+    };
 }

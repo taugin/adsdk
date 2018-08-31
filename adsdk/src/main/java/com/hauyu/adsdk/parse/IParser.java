@@ -51,6 +51,10 @@ public interface IParser {
     String ECPMSORT = "es";
     // 具体广告位配置
     String PIDS = "pids";
+    // 场景缓存
+    String NEED_CACHE = "nc";
+    // 延迟通知加载成功的时间
+    String DELAY_NOTIFY_TIME = "dnt";
 
     // 广告平台 fb, admob, adx
     String SDK = "sdk";
