@@ -34,6 +34,8 @@ public class AdPlace {
 
     private long delayNotifyTime;
 
+    private boolean refShare;
+
     public String getName() {
         return name;
     }
@@ -143,6 +145,14 @@ public class AdPlace {
 
     public void setDelayNotifyTime(long delayNotifyTime) {
         this.delayNotifyTime = delayNotifyTime;
+    }
+
+    public boolean isRefShare() {
+        return refShare;
+    }
+
+    public void setRefShare(boolean refShare) {
+        this.refShare = refShare;
     }
 
     @Override

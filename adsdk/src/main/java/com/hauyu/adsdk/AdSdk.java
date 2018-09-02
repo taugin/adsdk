@@ -7,18 +7,17 @@ import android.view.ViewGroup;
 
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
+import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.ActivityMonitor;
 import com.hauyu.adsdk.framework.AdPlaceLoader;
+import com.hauyu.adsdk.framework.AdReceiver;
 import com.hauyu.adsdk.framework.AtAdLoader;
 import com.hauyu.adsdk.framework.GtAdLoader;
 import com.hauyu.adsdk.framework.StAdLoader;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.stat.StatImpl;
-import com.hauyu.adsdk.BuildConfig;
-import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.framework.AdReceiver;
 import com.hauyu.adsdk.manager.DataManager;
+import com.hauyu.adsdk.stat.StatImpl;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.lang.ref.WeakReference;
@@ -114,31 +113,54 @@ public class AdSdk {
 
     private AdPlaceLoader getAdLoader(String pidName, boolean forLoad) {
         Log.d(Log.TAG, "getAdLoader forLoad : " + forLoad);
-        // 存储原始pid名称
-        String originPidName = pidName;
-        // 获取关联pid名称
-        pidName = getAdRefPidName(pidName);
-        Log.v(Log.TAG, "originPidName : " + originPidName + " , adrefPidName : " + pidName);
-        // 如果共享loader对象的话，重置原始pid名称
-        if (originPidName != null && originPidName.endsWith("_share")) {
-            originPidName = pidName;
+        // 获取引用的pidname
+        String refPidName = getAdRefPidName(pidName);
+
+        Log.v(Log.TAG, "pidName : " + pidName + " , refPidName : " + refPidName);
+        boolean useShareObject = false;
+        // 如果共享loader对象
+        if (!TextUtils.equals(pidName, refPidName) && isRefShare(refPidName)) {
+            useShareObject = true;
         }
-        AdPlaceLoader loader = mAdLoaders.get(originPidName);
+        if (useShareObject) {
+            // 将共享对象赋值给新的场景
+            if (mAdLoaders.containsKey(refPidName) && !mAdLoaders.containsKey(pidName)) {
+                mAdLoaders.put(pidName, mAdLoaders.get(refPidName));
+            }
+        }
+        AdPlaceLoader loader = mAdLoaders.get(pidName);
         if (!forLoad) {
+            if (useShareObject && !TextUtils.equals(pidName, refPidName) && loader != null) {
+                loader.setOriginPidName(pidName);
+            }
             return loader;
         }
-        AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(pidName);
+        AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(refPidName);
         // loader为null，或者AdPlace内容有变化，则重新加载loader
         if (loader == null || loader.needReload(adPlace)) {
-            loader = createAdPlaceLoader(pidName, adPlace);
+            loader = createAdPlaceLoader(refPidName, adPlace);
             if (loader != null) {
-                if (!TextUtils.equals(originPidName, pidName)) {
-                    loader.setOriginPidName(originPidName);
+                if (!TextUtils.equals(pidName, refPidName)) {
+                    loader.setOriginPidName(pidName);
                 }
-                mAdLoaders.put(originPidName, loader);
+                mAdLoaders.put(pidName, loader);
+                if (useShareObject && !mAdLoaders.containsKey(refPidName)) {
+                    mAdLoaders.put(refPidName, loader);
+                }
             }
         }
         return loader;
+    }
+
+    private boolean isRefShare(String pidName) {
+        AdConfig localConfig = DataManager.get(mContext).getAdConfig();
+        if (localConfig != null) {
+            AdPlace adPlace = localConfig.get(pidName);
+            if (adPlace != null) {
+                return adPlace.isRefShare();
+            }
+        }
+        return false;
     }
 
     /**

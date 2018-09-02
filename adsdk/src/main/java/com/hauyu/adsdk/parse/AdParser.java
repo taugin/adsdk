@@ -358,6 +358,9 @@ public class AdParser implements IParser {
             if (jobj.has(DELAY_NOTIFY_TIME)) {
                 adPlace.setDelayNotifyTime(jobj.getLong(DELAY_NOTIFY_TIME));
             }
+            if (jobj.has(REF_SHARE)) {
+                adPlace.setRefShare(jobj.getInt(REF_SHARE) == 1);
+            }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
             sortPidList(adPlace);
         } catch (Exception e) {
