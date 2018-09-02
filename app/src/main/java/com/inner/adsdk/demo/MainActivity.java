@@ -5,10 +5,8 @@ import android.app.Dialog;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
@@ -20,7 +18,6 @@ import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdReward;
 import com.inner.adsdk.AdSdk;
-import com.inner.adsdk.framework.TaskMonitor;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 
 import java.util.List;
@@ -64,13 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClick(View v) {
         if (v.getId() == R.id.gt_outer) {
-            // loadGtOuter();
-            if (!hasEnable()) {
-                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                startActivity(intent);
-            } else {
-                TaskMonitor.get(this).startMonitor();
-            }
+            loadGtOuter();
         } else if (v.getId() == R.id.interstitial) {
             loadInterstitial();
         } else if (v.getId() == R.id.complex) {
@@ -95,7 +86,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadInterstitial() {
-        AdSdk.get(mContext).loadInterstitial("interstitial", mSimpleAdsdkListener);
+        //AdSdk.get(mContext).loadInterstitial("interstitial", mSimpleAdsdkListener);
+        if (AdSdk.get(mContext).isInterstitialLoaded("interstitial")) {
+            AdSdk.get(mContext).showInterstitial("interstitial");
+        } else {
+            AdSdk.get(mContext).loadInterstitial("interstitial", null);
+        }
     }
 
     private void loadAdComplex() {

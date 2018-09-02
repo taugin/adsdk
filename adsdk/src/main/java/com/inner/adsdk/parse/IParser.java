@@ -55,6 +55,8 @@ public interface IParser {
     String NEED_CACHE = "nc";
     // 延迟通知加载成功的时间
     String DELAY_NOTIFY_TIME = "dnt";
+    // 是否共享广告场景的广告
+    String REF_SHARE = "rs";
 
     // 广告平台 fb, admob, adx
     String SDK = "sdk";
