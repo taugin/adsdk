@@ -179,7 +179,7 @@ public class GtPolicy {
         if (mGtConfig != null && mGtConfig.getInterval() > 0) {
             long now = System.currentTimeMillis();
             long last = getLastShowTime();
-            Log.v(Log.TAG, "GtConfig.isIntervalAllow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)));
+            Log.v(Log.TAG, "gt i allow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)));
             return now - last > mGtConfig.getInterval();
         }
         return true;
@@ -198,7 +198,7 @@ public class GtPolicy {
     private void resetTotalShowIfNeed() {
         long now = System.currentTimeMillis();
         long lastDay = Utils.getLong(mContext, Constant.PREF_FIRST_SHOW_TIME_ONEDAY, now);
-        Log.v(Log.TAG, "GtConfig.resetTotalShowIfNeed now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
+        Log.v(Log.TAG, "gt reset total show now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
         if (now - lastDay > Constant.ONE_DAY_TIME) {
             int times = (int) getTotalShowTimes();
             if (times > 0) {
@@ -301,22 +301,22 @@ public class GtPolicy {
         }
 
         if (mGtConfig != null && !mAttrChecker.isMediaSourceAllow(mGtConfig.getMediaList())) {
-            Log.v(Log.TAG, "mediasource not allowed");
+            Log.v(Log.TAG, "ms not allowed");
             return false;
         }
 
         if (!isDelayAllow()) {
-            Log.v(Log.TAG, "delay not allowed");
+            Log.v(Log.TAG, "d not allowed");
             return false;
         }
 
         if (!isIntervalAllow()) {
-            Log.v(Log.TAG, "interval not allowed");
+            Log.v(Log.TAG, "i not allowed");
             return false;
         }
 
         if (!isMaxShowAllow()) {
-            Log.v(Log.TAG, "maxshow not allowed");
+            Log.v(Log.TAG, "mc not allowed");
             return false;
         }
 

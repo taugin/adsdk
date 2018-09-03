@@ -131,9 +131,9 @@ public class AdConfig {
 
     @Override
     public String toString() {
-        return "AdConfig{" +
-                "gtConfig=" + gtConfig +
-                ", adPlaceList=" + adPlaceList +
+        return "adc{" +
+                "gt=" + gtConfig +
+                ", list=" + adPlaceList +
                 '}';
     }
 }

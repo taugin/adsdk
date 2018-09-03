@@ -27,11 +27,11 @@ public class StConfig extends AttrConfig {
 
     @Override
     public String toString() {
-        return "StConfig{" +
-                "enable=" + enable +
-                ", countryList=" + getCountryList() +
-                ", attrList=" + getAttrList() +
-                ", mediaList=" + getMediaList() +
+        return "st{" +
+                "e=" + enable +
+                ", cl=" + getCountryList() +
+                ", al=" + getAttrList() +
+                ", ml=" + getMediaList() +
                 '}';
     }
 }

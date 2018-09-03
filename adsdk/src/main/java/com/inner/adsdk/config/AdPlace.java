@@ -157,15 +157,15 @@ public class AdPlace {
 
     @Override
     public String toString() {
-        return "AdPlace{" +
+        return "adp{" +
                 "name='" + name + '\'' +
                 ", mode='" + mode + '\'' +
-                ", pidsList=" + pidsList +
-                ", maxCount=" + maxCount +
-                ", percent=" + percent +
-                ", autoSwitch=" + autoSwitch +
-                ", uniqueValue='" + uniqueValue + '\'' +
-                ", loadOnlyOnce=" + loadOnlyOnce +
+                ", list=" + pidsList +
+                ", mc=" + maxCount +
+                ", p=" + percent +
+                ", as=" + autoSwitch +
+                ", uv='" + uniqueValue + '\'' +
+                ", loo=" + loadOnlyOnce +
                 '}';
     }
 }

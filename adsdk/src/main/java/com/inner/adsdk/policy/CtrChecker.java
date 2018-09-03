@@ -54,11 +54,11 @@ public class CtrChecker implements Runnable {
                 return;
             }
             if (!mAttrChecker.isMediaSourceAllow(pidConfig.getMediaList())) {
-                Log.v(Log.TAG, "media source not allow");
+                Log.v(Log.TAG, "ms not allow");
                 return;
             }
             if (!mAttrChecker.isCountryAllow(pidConfig.getCountryList())) {
-                Log.v(Log.TAG, "country list not allow");
+                Log.v(Log.TAG, "country not allow");
                 return;
             }
         }

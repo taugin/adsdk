@@ -126,7 +126,7 @@ public class AtPolicy {
             long now = System.currentTimeMillis();
             long last = getLastShowTime();
             boolean intervalAllow = now - last > mAtConfig.getInterval();
-            Log.v(Log.TAG, "AtConfig.isIntervalAllow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)) + " , do : " + intervalAllow);
+            Log.v(Log.TAG, "at i allow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)) + " , do : " + intervalAllow);
             return intervalAllow;
         }
         return true;
@@ -168,7 +168,7 @@ public class AtPolicy {
         }
 
         if (mAtConfig != null && !mAttrChecker.isMediaSourceAllow(mAtConfig.getMediaList())) {
-            Log.v(Log.TAG, "mediasource not allowed");
+            Log.v(Log.TAG, "ms not allowed");
             return false;
         }
 
@@ -176,18 +176,18 @@ public class AtPolicy {
     }
 
     public boolean isAtAllowed() {
-        Log.v(Log.TAG, "atConfig : " + mAtConfig);
+        Log.v(Log.TAG, "at : " + mAtConfig);
         if (!checkAdAtConfig()) {
             return false;
         }
 
         if (!isDelayAllow()) {
-            Log.v(Log.TAG, "delay not allowed");
+            Log.v(Log.TAG, "d not allowed");
             return false;
         }
 
         if (!isIntervalAllow()) {
-            Log.v(Log.TAG, "interval not allowed");
+            Log.v(Log.TAG, "i not allowed");
             return false;
         }
 

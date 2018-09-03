@@ -181,12 +181,12 @@ public class PidConfig extends AttrConfig {
 
     @Override
     public String toString() {
-        return "PidConfig{" +
-                "adPlaceName='" + adPlaceName + '\'' +
+        return "pc{" +
+                "name='" + adPlaceName + '\'' +
                 ", sdk='" + sdk + '\'' +
                 ", pid='" + pid + '\'' +
                 ", ctr=" + ctr +
-                ", adType='" + adType + '\'' +
+                ", type='" + adType + '\'' +
                 ", ecpm='" + ecpm + '\'' +
                 '}';
     }

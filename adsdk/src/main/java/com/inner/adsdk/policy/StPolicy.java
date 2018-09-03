@@ -109,12 +109,12 @@ public class StPolicy {
         }
 
         if (mStConfig != null && !mAttrChecker.isMediaSourceAllow(mStConfig.getMediaList())) {
-            Log.v(Log.TAG, "mediasource not allowed");
+            Log.v(Log.TAG, "ms not allowed");
             return false;
         }
 
         if (!isDelayAllow()) {
-            Log.v(Log.TAG, "delay not allowed");
+            Log.v(Log.TAG, "d not allowed");
             return false;
         }
         return true;

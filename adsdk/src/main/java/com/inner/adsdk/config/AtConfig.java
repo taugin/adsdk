@@ -59,12 +59,12 @@ public class AtConfig extends AttrConfig {
 
     @Override
     public String toString() {
-        return "AtConfig{" +
-                "enable=" + enable +
-                ", interval=" + interval +
-                ", countryList=" + getCountryList() +
-                ", attrList=" + getAttrList() +
-                ", mediaList=" + getMediaList() +
+        return "at{" +
+                "e=" + enable +
+                ", i=" + interval +
+                ", cl=" + getCountryList() +
+                ", al=" + getAttrList() +
+                ", ml=" + getMediaList() +
                 '}';
     }
 }

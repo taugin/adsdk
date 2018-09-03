@@ -66,12 +66,12 @@ public class AdPolicy {
 
     public boolean allowAdPlaceLoad(AdPlace adPlace) {
         if (adPlace == null) {
-            Log.v(Log.TAG, "adPlace is null");
+            Log.v(Log.TAG, "place is null");
             return false;
         }
         String pidName = adPlace.getName();
         if (TextUtils.isEmpty(pidName)) {
-            Log.v(Log.TAG, "pidName is null");
+            Log.v(Log.TAG, "name is null");
             return false;
         }
         resetShowCountEveryDay(pidName);

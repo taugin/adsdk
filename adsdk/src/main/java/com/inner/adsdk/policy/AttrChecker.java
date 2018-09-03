@@ -37,13 +37,13 @@ public class AttrChecker {
      * @return
      */
     public boolean isAttributionAllow(List<String> attr) {
-        boolean disableAttribution = android.util.Log.isLoggable("disable_attribute", android.util.Log.VERBOSE);
+        boolean disableAttribution = android.util.Log.isLoggable("organic", android.util.Log.VERBOSE);
         Log.v(Log.TAG, "da : " + disableAttribution);
         if (disableAttribution) {
             return true;
         }
         String afStatus = getAfStatus();
-        Log.v(Log.TAG, "af_status : " + afStatus);
+        Log.v(Log.TAG, "af_s : " + afStatus);
         if (attr != null && !attr.contains(afStatus)) {
             return false;
         }
@@ -87,7 +87,7 @@ public class AttrChecker {
      */
     public boolean isMediaSourceAllow(List<String> mediaList) {
         String mediaSource = getMediaSource();
-        Log.v(Log.TAG, "media_source : " + mediaSource);
+        Log.v(Log.TAG, "ms : " + mediaSource);
         if (mediaList != null && !mediaList.isEmpty()) {
             List<String> includeMs = new ArrayList<String>();
             List<String> excludeMs = new ArrayList<String>();

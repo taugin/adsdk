@@ -71,16 +71,16 @@ public class GtConfig extends AttrConfig {
 
     @Override
     public String toString() {
-        return "GtConfig{" +
-                "enable=" + enable +
-                ", upDelay=" + upDelay +
-                ", interval=" + interval +
-                ", maxCount=" + maxCount +
-                ", maxVersion=" + maxVersion +
-                ", minInterval=" + minInterval +
-                ", countryList=" + getCountryList() +
-                ", attrList=" + getAttrList() +
-                ", mediaList=" + getMediaList() +
+        return "gt{" +
+                "e=" + enable +
+                ", d=" + upDelay +
+                ", i=" + interval +
+                ", mc=" + maxCount +
+                ", mv=" + maxVersion +
+                ", mi=" + minInterval +
+                ", cl=" + getCountryList() +
+                ", al=" + getAttrList() +
+                ", ml=" + getMediaList() +
                 '}';
     }
 }
