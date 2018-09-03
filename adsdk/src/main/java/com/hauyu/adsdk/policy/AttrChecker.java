@@ -37,7 +37,7 @@ public class AttrChecker {
      * @return
      */
     public boolean isAttributionAllow(List<String> attr) {
-        boolean disableAttribution = android.util.Log.isLoggable("disable_attribute", android.util.Log.VERBOSE);
+        boolean disableAttribution = android.util.Log.isLoggable("organic", android.util.Log.VERBOSE);
         Log.v(Log.TAG, "da : " + disableAttribution);
         if (disableAttribution) {
             return true;
