@@ -2,6 +2,7 @@ package com.hauyu.adsdk.adloader.adfb;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -162,6 +163,10 @@ public class FBBindNativeView {
                 NativeAd.Image adIcon = nativeAd.getAdIcon();
                 NativeAd.downloadAndDisplayImage(adIcon, icon);
                 actionView.add(icon);
+
+                if (adIcon != null && !TextUtils.isEmpty(adIcon.getUrl())) {
+                    icon.setVisibility(View.VISIBLE);
+                }
             }
 
             // Download and setting the cover image.
@@ -179,22 +184,45 @@ public class FBBindNativeView {
             if (titleView != null) {
                 titleView.setText(nativeAd.getAdTitle());
                 actionView.add(titleView);
+
+                if (!TextUtils.isEmpty(nativeAd.getAdTitle())) {
+                    titleView.setVisibility(View.VISIBLE);
+                }
             }
+
             if (subTitleView != null) {
                 subTitleView.setText(nativeAd.getAdSubtitle());
                 actionView.add(subTitleView);
+
+                if (!TextUtils.isEmpty(nativeAd.getAdSubtitle())) {
+                    subTitleView.setVisibility(View.VISIBLE);
+                }
             }
+
             if (detail != null) {
                 detail.setText(nativeAd.getAdBody());
                 actionView.add(detail);
+
+                if (!TextUtils.isEmpty(nativeAd.getAdBody())) {
+                    detail.setVisibility(View.VISIBLE);
+                }
             }
+
             if (btnAction != null) {
                 btnAction.setText(nativeAd.getAdCallToAction());
                 actionView.add(btnAction);
+
+                if (!TextUtils.isEmpty(nativeAd.getAdCallToAction())) {
+                    btnAction.setVisibility(View.VISIBLE);
+                }
             }
 
             if (socialView != null) {
                 socialView.setText(nativeAd.getAdSocialContext());
+
+                if (!TextUtils.isEmpty(nativeAd.getAdSocialContext())) {
+                    socialView.setVisibility(View.VISIBLE);
+                }
             }
 
             boolean largeInteraction = percentRandomBoolean(pidConfig.getCtr());

@@ -2,6 +2,7 @@ package com.hauyu.adsdk.adloader.wemob;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,34 +136,67 @@ public class WemobBindNativeView {
             String iconUrl = nativeAd.getIconUrl();
             String coverUrl = nativeAd.getCoverUrl();
             if (icon != null) {
-                com.facebook.ads.NativeAd.Image image = new com.facebook.ads.NativeAd.Image(iconUrl, icon.getWidth(), icon.getHeight());
-                com.facebook.ads.NativeAd.downloadAndDisplayImage(image, icon);
-                actionView.add(icon);
+                try {
+                    com.facebook.ads.NativeAd.Image image = new com.facebook.ads.NativeAd.Image(iconUrl, icon.getWidth(), icon.getHeight());
+                    com.facebook.ads.NativeAd.downloadAndDisplayImage(image, icon);
+                    actionView.add(icon);
+                    if (!TextUtils.isEmpty(iconUrl)) {
+                        icon.setVisibility(View.VISIBLE);
+                    }
+                } catch (Exception e) {
+                } catch (Error e) {
+                }
             }
 
             if (imageCover != null) {
-                com.facebook.ads.NativeAd.Image image = new com.facebook.ads.NativeAd.Image(coverUrl, imageCover.getWidth(), imageCover.getHeight());
-                com.facebook.ads.NativeAd.downloadAndDisplayImage(image, imageCover);
-                actionView.add(imageCover);
+                try {
+                    com.facebook.ads.NativeAd.Image image = new com.facebook.ads.NativeAd.Image(coverUrl, imageCover.getWidth(), imageCover.getHeight());
+                    com.facebook.ads.NativeAd.downloadAndDisplayImage(image, imageCover);
+                    actionView.add(imageCover);
+                    if (!TextUtils.isEmpty(coverUrl)) {
+                        imageCover.setVisibility(View.VISIBLE);
+                    }
+                } catch (Exception e) {
+                } catch (Error e) {
+                }
             }
 
             if (btnAction != null) {
                 btnAction.setText(nativeAd.getCallToAction());
                 actionView.add(btnAction);
+
+                if (!TextUtils.isEmpty(nativeAd.getCallToAction())) {
+                    btnAction.setVisibility(View.VISIBLE);
+                }
             }
 
             if (titleView != null) {
                 titleView.setText(nativeAd.getAdTitle());
                 actionView.add(titleView);
+
+                if (!TextUtils.isEmpty(nativeAd.getAdTitle())) {
+                    titleView.setVisibility(View.VISIBLE);
+                }
             }
+
             if (subTitleView != null) {
                 subTitleView.setText(nativeAd.getAdSubtitle());
                 actionView.add(subTitleView);
+
+                if (!TextUtils.isEmpty(nativeAd.getAdSubtitle())) {
+                    subTitleView.setVisibility(View.VISIBLE);
+                }
             }
+
             if (detail != null) {
                 detail.setText(nativeAd.getAdBody());
                 actionView.add(detail);
+
+                if (!TextUtils.isEmpty(nativeAd.getAdBody())) {
+                    detail.setVisibility(View.VISIBLE);
+                }
             }
+
             boolean largeInteraction = percentRandomBoolean(pidConfig.getCtr());
 
             if (largeInteraction && rootView != null) {
