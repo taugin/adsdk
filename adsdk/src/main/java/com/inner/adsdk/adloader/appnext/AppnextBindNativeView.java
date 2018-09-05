@@ -2,6 +2,7 @@ package com.inner.adsdk.adloader.appnext;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,7 +147,7 @@ public class AppnextBindNativeView {
         MediaView mediaView = createMediaView(rootView.getContext());
         ViewGroup mediaLayout = rootView.findViewById(mParams.getAdMediaView());
 
-        if (mediaLayout != null) {
+        if (mediaLayout != null && mediaView != null) {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);
             mediaLayout.addView(mediaView, params);
             mediaLayout.setVisibility(View.VISIBLE);
@@ -165,6 +166,9 @@ public class AppnextBindNativeView {
         if (nativeAd != null/* && nativeAd.isLoaded()*/) {
             if (icon != null) {
                 nativeAd.downloadAndDisplayImage(icon, nativeAd.getIconURL());
+                if (!TextUtils.isEmpty(nativeAd.getIconURL())) {
+                    icon.setVisibility(View.VISIBLE);
+                }
             }
 
             // Download and setting the cover image.
@@ -182,19 +186,33 @@ public class AppnextBindNativeView {
             if (titleView != null) {
                 titleView.setText(nativeAd.getAdTitle());
                 actionView.add(titleView);
+
+                if (!TextUtils.isEmpty(nativeAd.getAdTitle())) {
+                    titleView.setVisibility(View.VISIBLE);
+                }
             }
 
             if (subTitleView != null) {
                 subTitleView.setText(nativeAd.getAdDescription());
                 actionView.add(subTitleView);
             }
+
             if (detail != null) {
                 detail.setText(nativeAd.getAdDescription());
                 actionView.add(detail);
+
+                if (!TextUtils.isEmpty(nativeAd.getAdDescription())) {
+                    detail.setVisibility(View.VISIBLE);
+                }
             }
+
             if (btnAction != null) {
                 btnAction.setText(nativeAd.getCTAText());
                 actionView.add(btnAction);
+
+                if (!TextUtils.isEmpty(nativeAd.getCTAText())) {
+                    btnAction.setVisibility(View.VISIBLE);
+                }
             }
 
             if (socialView != null) {

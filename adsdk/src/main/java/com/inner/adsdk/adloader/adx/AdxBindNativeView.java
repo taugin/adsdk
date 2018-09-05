@@ -1,6 +1,7 @@
 package com.inner.adsdk.adloader.adx;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,12 +150,32 @@ public class AdxBindNativeView {
         adView.setCallToActionView(adView.findViewById(mParams.getAdAction()));
         adView.setIconView(adView.findViewById(mParams.getAdIcon()));
 
-        ((TextView) adView.getHeadlineView()).setText(nativeAd.getHeadline());
-        ((TextView) adView.getBodyView()).setText(nativeAd.getBody());
-        ((Button) adView.getCallToActionView()).setText(nativeAd.getCallToAction());
+        if (!TextUtils.isEmpty(nativeAd.getHeadline())) {
+            ((TextView) adView.getHeadlineView()).setText(nativeAd.getHeadline());
+
+            adView.getHeadlineView().setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(nativeAd.getBody())) {
+            ((TextView) adView.getBodyView()).setText(nativeAd.getBody());
+
+            adView.getBodyView().setVisibility(View.VISIBLE);
+        }
+
+        if (!TextUtils.isEmpty(nativeAd.getCallToAction())) {
+            ((Button) adView.getCallToActionView()).setText(nativeAd.getCallToAction());
+
+            adView.getCallToActionView().setVisibility(View.VISIBLE);
+        }
+
         NativeAd.Image image = nativeAd.getIcon();
         if (image != null) {
-            ((ImageView) adView.getIconView()).setImageDrawable(image.getDrawable());
+            View iconView = adView.getIconView();
+            if (iconView instanceof ImageView) {
+                ((ImageView) iconView).setImageDrawable(image.getDrawable());
+
+                iconView.setVisibility(View.VISIBLE);
+            }
         }
 
         ViewGroup mediaViewLayout = rootView.findViewById(mParams.getAdMediaView());
