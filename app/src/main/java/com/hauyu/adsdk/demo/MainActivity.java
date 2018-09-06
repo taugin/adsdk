@@ -29,14 +29,14 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int LAYOUT[] = new int[]{
             R.layout.ad_common_native_card_small,
-            R.layout.ad_common_native_card_medium,
-            R.layout.ad_common_native_card_medium_upbtn
+            R.layout.ad_common_native_card_medium
     };
     private static final int CARDID[] = new int[]{
             AdExtra.NATIVE_CARD_SMALL,
             AdExtra.NATIVE_CARD_MEDIUM,
             AdExtra.NATIVE_CARD_LARGE
     };
+
     private static final String TAG = "MA";
     private Context mContext;
 
@@ -77,12 +77,8 @@ public class MainActivity extends AppCompatActivity {
             loadInterstitial();
         } else if (v.getId() == R.id.complex) {
             loadAdComplex();
-        } else if (v.getId() == R.id.native_common1) {
-            loadAdViewCommon(R.layout.ad_common_native_card_medium);
-        } else if (v.getId() == R.id.native_common2) {
-            loadAdViewCommon(R.layout.ad_common_native_card_medium_upbtn);
-        } else if (v.getId() == R.id.native_common3) {
-            loadAdViewCommon(R.layout.ad_common_native_card_small);
+        } else if (v.getId() == R.id.native_common) {
+            loadAdViewCommon();
         } else if (v.getId() == R.id.reward_video) {
             AdSdk.get(this).loadInterstitial("reward_video", mSimpleAdsdkListener);
         }
@@ -137,13 +133,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loadAdViewCommon(int layoutId) {
+    private void loadAdViewCommon() {
         AdParams.Builder builder = new AdParams.Builder();
         //  设置外部布局参数
+        int layoutId = LAYOUT[new Random().nextInt(LAYOUT.length)];
         if (layoutId == R.layout.ad_common_native_card_small) {
-            // builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
+            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
         } else {
-            // builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
+            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
         }
         builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);

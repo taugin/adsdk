@@ -15,72 +15,74 @@
             android:layout_marginTop="6dp"
             android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/app_usage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="APPUSAGE权限" />
+
+            <Button
+                android:id="@+id/gt_outer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+
+                android:text="GT测试" />
         </LinearLayout>
-        <Button
-            android:id="@+id/app_usage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="APPUSAGE权限" />
-        <Button
-            android:id="@+id/gt_outer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="应用外测试" />
 
-        <Button
-            android:id="@+id/interstitial"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="插屏测试" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/complex"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="复合测试" />
+            <Button
+                android:id="@+id/interstitial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="插屏测试" />
 
-        <Button
-            android:id="@+id/reward_video"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:onClick="onClick"
-            android:text="激励视频" />
+            <Button
+                android:id="@+id/complex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="复合测试" />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/native_common1"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:onClick="onClick"
-            android:text="NATIVE通用布局1" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/native_common2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:onClick="onClick"
-            android:text="NATIVE通用布局2" />
+            <Button
+                android:id="@+id/reward_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="激励视频" />
 
-        <Button
-            android:id="@+id/native_common3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:onClick="onClick"
-            android:text="NATIVE通用布局3" />
+            <Button
+                android:id="@+id/native_common"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="NATIVE通用布局" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
