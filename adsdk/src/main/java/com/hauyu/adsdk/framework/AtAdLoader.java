@@ -50,9 +50,9 @@ public class AtAdLoader implements TaskMonitor.OnTaskMonitorListener {
         TaskMonitor.get(mContext).setOnTaskMonitorListener(this);
     }
 
-    private void updateTtPolicy() {
+    private void updateAtPolicy() {
         AdConfig adConfig = DataManager.get(mContext).getAdConfig();
-        AtConfig atConfig = DataManager.get(mContext).getRemoteTtPolicy();
+        AtConfig atConfig = DataManager.get(mContext).getRemoteAtPolicy();
         if (atConfig == null && adConfig != null) {
             atConfig = adConfig.getAtConfig();
         }
@@ -70,7 +70,7 @@ public class AtAdLoader implements TaskMonitor.OnTaskMonitorListener {
 
     public void onFire() {
         if (TaskUtils.hasAppUsagePermission(mContext)) {
-            updateTtPolicy();
+            updateAtPolicy();
             if (AtPolicy.get(mContext).isAtAllowed()) {
                 mAdSdk.loadInterstitial(Constant.ATPLACE_OUTER_NAME, mAdSdkListener);
                 TaskMonitor.get(mContext).startMonitor();
@@ -83,7 +83,7 @@ public class AtAdLoader implements TaskMonitor.OnTaskMonitorListener {
     @Override
     public void onAppSwitch(String pkgname, String className) {
         Log.d(Log.TAG, "app switch pkgname : " + pkgname + " , className : " + className);
-        updateTtPolicy();
+        updateAtPolicy();
         if (AtPolicy.get(mContext).isAtAllowed() && !AtPolicy.get(mContext).isInWhiteList(pkgname, className)) {
             if (AtPolicy.get(mContext).isShowOnFirstPage()) {
                 if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
@@ -102,7 +102,7 @@ public class AtAdLoader implements TaskMonitor.OnTaskMonitorListener {
     @Override
     public void onActivitySwitch(String pkgname, String oldActivity, String newActivity) {
         Log.d(Log.TAG, "activity switch pkgname : " + pkgname + " , oldActivity : " + oldActivity + " , newActivity : " + newActivity);
-        updateTtPolicy();
+        updateAtPolicy();
         if (AtPolicy.get(mContext).isAtAllowed() && !AtPolicy.get(mContext).isInWhiteList(pkgname, newActivity)) {
             if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
                 mAdSdk.showInterstitial(Constant.ATPLACE_OUTER_NAME);
