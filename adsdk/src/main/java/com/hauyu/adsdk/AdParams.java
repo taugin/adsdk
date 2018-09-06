@@ -3,6 +3,7 @@ package com.hauyu.adsdk;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Params;
 
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class AdParams {
 
     private AdParams(Map<String, Params> params) {
         this.mAdParams = params;
+        fillCommonIfNeed();
     }
 
     public Params getParams(String sdk) {
@@ -25,6 +27,60 @@ public class AdParams {
             return mAdParams.get(sdk);
         }
         return null;
+    }
+
+    private void fillCommonIfNeed() {
+        if (mAdParams == null || mAdParams.isEmpty()) {
+            return;
+        }
+        Params commonParams = mAdParams.get(Constant.AD_SDK_COMMON);
+        if (!isNativeParamsSet(commonParams)) {
+            return;
+        }
+        String sdk = null;
+        Params params = null;
+        for (Map.Entry<String, Params> entry : mAdParams.entrySet()) {
+            if (entry != null) {
+                sdk = entry.getKey();
+                params = entry.getValue();
+                if (Constant.AD_SDK_COMMON.equals(sdk) || isNativeParamsSet(params)) {
+                    continue;
+                }
+                fillCommonParams(params, commonParams);
+            }
+        }
+    }
+
+    private boolean isNativeParamsSet(Params params) {
+        if (params == null) {
+            return false;
+        }
+        if (params.getNativeRootLayout() <= 0
+                && params.getNativeRootView() == null
+                && params.getNativeCardStyle() <= 0) {
+            // 未设置commonsdk参数
+            return false;
+        }
+        return true;
+    }
+
+    private void fillCommonParams(Params sdkParams, Params commonParams) {
+        if (sdkParams == null || commonParams == null) {
+            return;
+        }
+        sdkParams.setAdCardStyle(commonParams.getNativeCardStyle());
+        sdkParams.setAdRootLayout(commonParams.getNativeRootLayout());
+        sdkParams.setAdRootView(commonParams.getNativeRootView());
+        sdkParams.setAdTitle(commonParams.getAdTitle());
+        sdkParams.setAdSubTitle(commonParams.getAdSubTitle());
+        sdkParams.setAdSocial(commonParams.getAdSocial());
+        sdkParams.setAdDetail(commonParams.getAdDetail());
+        sdkParams.setAdIcon(commonParams.getAdIcon());
+        sdkParams.setAdAction(commonParams.getAdAction());
+        sdkParams.setAdCover(commonParams.getAdCover());
+        sdkParams.setAdChoices(commonParams.getAdChoices());
+        sdkParams.setAdMediaView(commonParams.getAdMediaView());
+        sdkParams.setAdSponsored(commonParams.getAdSponsored());
     }
 
     public static class Builder {
