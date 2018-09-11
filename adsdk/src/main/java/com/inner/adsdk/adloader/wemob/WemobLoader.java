@@ -98,7 +98,7 @@ public class WemobLoader extends AbstractSdkLoader {
         loadingView.setAdListener(new AdListener() {
             @Override
             public void onAdFailedToLoad(AdError adError) {
-                Log.v(Log.TAG, "reason : " + getError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "reason : " + getError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
@@ -235,7 +235,7 @@ public class WemobLoader extends AbstractSdkLoader {
         interstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdFailedToLoad(AdError adError) {
-                Log.v(Log.TAG, "reason : " + getError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "reason : " + getError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
@@ -355,7 +355,7 @@ public class WemobLoader extends AbstractSdkLoader {
             @Override
             public void onAdFailedToLoad(AdError adError) {
                 if (adError != null) {
-                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + getError(adError));
+                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + getError(adError) + " , pid : " + getPid());
                     if (adError.errorCode == AdError.ERROR_CODE_NO_FILL) {
                         updateLastNoFillTime();
                     }

@@ -16,6 +16,10 @@ import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.inner.adsdk.AdReward;
 import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
@@ -47,6 +51,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
     private Params mParams;
     private PublisherAdView loadingView;
     private AdLoader.Builder loadingBuilder;
+    private RewardedVideoAd rewardedVideoAd;
 
     @Override
     public boolean isModuleLoaded() {
@@ -120,7 +125,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
-                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
@@ -275,7 +280,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
-                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
@@ -443,7 +448,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 if (errorCode == AdRequest.ERROR_CODE_NO_FILL) {
                     updateLastNoFillTime();
                 }
@@ -479,6 +484,156 @@ public class AdDfpLoader extends AbstractSdkLoader {
         clearCachedAdTime(nativeAd);
         adDfpBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
         nativeAd = null;
+    }
+
+    @Override
+    public void loadRewardedVideo() {
+        if (!checkPidConfig()) {
+            Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
+            }
+            return;
+        }
+        if (isRewaredVideoLoaded()) {
+            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                setLoadedFlag();
+                getAdListener().onInterstitialLoaded();
+            }
+            return;
+        }
+        if (isLoading()) {
+            if (blockLoading()) {
+                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
+                }
+                return;
+            } else {
+                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+                if (rewardedVideoAd != null) {
+                    rewardedVideoAd.setRewardedVideoAdListener(null);
+                    clearCachedAdTime(rewardedVideoAd);
+                }
+            }
+        }
+        setLoading(true, STATE_REQUEST);
+        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext);
+        rewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded() {
+                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                setLoading(false, STATE_SUCCESS);
+                putCachedAdTime(interstitialAd);
+                if (mStat != null) {
+                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+                if (getAdListener() != null) {
+                    setLoadedFlag();
+                    getAdListener().onRewardedVideoAdLoaded();
+                }
+            }
+
+            @Override
+            public void onRewardedVideoAdFailedToLoad(int i) {
+                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                setLoading(false, STATE_FAILURE);
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
+                }
+                if (mStat != null) {
+                    mStat.reportAdError(mContext, codeToError(i), getSdkName(), getAdType(), null);
+                }
+            }
+
+            @Override
+            public void onRewardedVideoAdOpened() {
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onRewardedVideoAdShowed();
+                }
+                if (mStat != null) {
+                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+            }
+
+            @Override
+            public void onRewardedVideoStarted() {
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onRewardedVideoStarted();
+                }
+            }
+
+            @Override
+            public void onRewardedVideoAdClosed() {
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onRewardedVideoAdClosed();
+                }
+            }
+
+            @Override
+            public void onRewarded(RewardItem rewardItem) {
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    AdReward item = new AdReward();
+                    if (rewardItem != null) {
+                        item.setAmount(String.valueOf(rewardItem.getAmount()));
+                        item.setType(rewardItem.getType());
+                    }
+                    getAdListener().onRewarded(item);
+                }
+            }
+
+            @Override
+            public void onRewardedVideoAdLeftApplication() {
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onRewardedVideoAdClicked();
+                }
+                if (mStat != null) {
+                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+            }
+
+            @Override
+            public void onRewardedVideoCompleted() {
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onRewardedVideoCompleted();
+                }
+            }
+        });
+        rewardedVideoAd.loadAd(mPidConfig.getPid(), new PublisherAdRequest.Builder().build());
+        if (mStat != null) {
+            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        }
+        Log.v(Log.TAG, "");
+    }
+
+    @Override
+    public boolean isRewaredVideoLoaded() {
+        boolean loaded = super.isInterstitialLoaded();
+        if (rewardedVideoAd != null) {
+            loaded = rewardedVideoAd.isLoaded() && !isCachedAdExpired(rewardedVideoAd);
+        }
+        if (loaded) {
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+        }
+        return loaded;
+    }
+
+    @Override
+    public boolean showRewardedVideo() {
+        if (rewardedVideoAd != null && rewardedVideoAd.isLoaded()) {
+            rewardedVideoAd.show();
+            clearCachedAdTime(rewardedVideoAd);
+            rewardedVideoAd = null;
+            return true;
+        }
+        return false;
     }
 
     @Override
