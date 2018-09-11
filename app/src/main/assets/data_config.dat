@@ -181,6 +181,12 @@
           "sdk": "appnext",
           "type": "reward",
           "pid": "5d32ae77-1949-4322-808e-c08705deec84",
+          "disable": 1
+        },
+        {
+          "sdk": "dfp",
+          "type": "reward",
+          "pid": "/6499/example/rewarded-video",
           "disable": 0
         }
       ],
