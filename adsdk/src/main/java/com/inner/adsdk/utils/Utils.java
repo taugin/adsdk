@@ -1,6 +1,7 @@
 package com.inner.adsdk.utils;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.content.ComponentName;
@@ -25,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2017/12/27.
@@ -291,18 +293,6 @@ public class Utils {
         return null;
     }
 
-    public static String getDeviceId(Context context) {
-        if (context == null) {
-            return null;
-        }
-        if (context.checkCallingOrSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-            String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE))
-                    .getDeviceId();
-            return deviceId;
-        }
-        return null;
-    }
-
     public static boolean launchApplication(Context context, String packageName) {
         try {
             Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
@@ -336,6 +326,7 @@ public class Utils {
         return false;
     }
 
+    @SuppressLint("MissingPermission")
     public static String getImei(Context context) {
         if (context.checkCallingOrSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
             TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -350,7 +341,7 @@ public class Utils {
         return null;
     }
 
-    public static String getAId(Context context) {
+    public static String getAndroidId(Context context) {
         String ANDROID_ID = Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         return ANDROID_ID;
     }
@@ -389,26 +380,28 @@ public class Utils {
 
     /**
      * 获取版本名称
+     *
      * @param context
      * @return
      */
     public static String getVersionName(Context context) {
         try {
             return getPackageInfo(context).versionName;
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
         return null;
     }
 
     /**
      * 获取版本号
+     *
      * @param context
      * @return
      */
     public static int getVersionCode(Context context) {
         try {
             return getPackageInfo(context).versionCode;
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
         return -1;
@@ -440,5 +433,57 @@ public class Utils {
             Log.d(Log.TAG, "error : " + e);
         }
         return value;
+    }
+
+    /**
+     * 获取国家代码
+     * @param context
+     * @return
+     */
+    public static String getCountry(Context context) {
+        String country = getCountryFromSimOrNetwork(context);
+        if (TextUtils.isEmpty(country)) {
+            country = getCountryFromLocale(context);
+        }
+        return country;
+    }
+
+    /**
+     * 从SIM卡或网络获取国家代码
+     * @param context
+     * @return
+     */
+    private static String getCountryFromSimOrNetwork(Context context) {
+        String country = null;
+        try {
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            country = telephonyManager.getSimCountryIso();
+            if (TextUtils.isEmpty(country)) {
+                country = telephonyManager.getNetworkCountryIso();
+            }
+            country = country.toLowerCase(Locale.getDefault());
+        } catch (Exception e) {
+        }
+        return country;
+    }
+
+    /**
+     * 从locale获取国家代码
+     * @param context
+     * @return
+     */
+    private static String getCountryFromLocale(Context context) {
+        String country = null;
+        try {
+            Locale locale = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                locale = context.getResources().getConfiguration().getLocales().get(0);
+            } else {
+                locale = context.getResources().getConfiguration().locale;
+            }
+            country = locale.getCountry().toLowerCase(Locale.getDefault());
+        } catch (Exception e) {
+        }
+        return country;
     }
 }

@@ -1,8 +1,6 @@
 package com.inner.adsdk.policy;
 
 import android.content.Context;
-import android.os.Build;
-import android.text.TextUtils;
 
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
@@ -10,7 +8,6 @@ import com.inner.adsdk.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Administrator on 2018/7/18.
@@ -132,20 +129,6 @@ public class AttrChecker {
     }
 
     private String getCountry() {
-        String country = null;
-        try {
-            Locale locale = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                locale = mContext.getResources().getConfiguration().getLocales().get(0);
-            } else {
-                locale = mContext.getResources().getConfiguration().locale;
-            }
-            country = locale.getCountry();
-        } catch (Exception e) {
-        }
-        if (!TextUtils.isEmpty(country)) {
-            country = country.toLowerCase(Locale.getDefault());
-        }
-        return country;
+        return Utils.getCountry(mContext);
     }
 }

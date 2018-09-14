@@ -21,6 +21,7 @@ import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdReward;
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
+import com.inner.adsdk.utils.Utils;
 
 import java.util.List;
 import java.util.Random;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = this;
         AdSdk.get(mContext).init();
     }
