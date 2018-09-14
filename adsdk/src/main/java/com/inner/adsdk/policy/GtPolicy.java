@@ -333,7 +333,7 @@ public class GtPolicy {
             return false;
         }
 
-        if (isGtShowing()) {
+        if (isGtShowing() && false) {
             Log.v(Log.TAG, "gt is showing");
             return false;
         }
