@@ -21,6 +21,7 @@ import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
+import com.hauyu.adsdk.utils.Utils;
 
 import java.util.List;
 import java.util.Random;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = this;
         AdSdk.get(mContext).init();
     }
