@@ -133,7 +133,7 @@ public class StPolicy {
             return false;
         }
 
-        if (isStShowing()) {
+        if (isStShowing() && false) {
             Log.v(Log.TAG, "st is showing");
             return false;
         }
