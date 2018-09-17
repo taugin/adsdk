@@ -788,6 +788,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     }
 
     @Override
+    public String getAdMode() {
+        if (mAdPlace != null) {
+            return mAdPlace.getMode();
+        }
+        return super.getAdMode();
+    }
+
+    @Override
     public void resume() {
         Log.d(Log.TAG, "");
         if (mAdLoaders != null) {

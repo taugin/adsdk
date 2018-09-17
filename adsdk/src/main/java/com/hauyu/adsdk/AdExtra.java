@@ -203,4 +203,19 @@ public class AdExtra {
      * REWARD类型
      */
     public static final String AD_TYPE_REWARD = Constant.TYPE_REWARD;
+
+    /**
+     * CON
+     */
+    public static final String AD_MODE_CON = Constant.MODE_CON;
+
+    /**
+     * SEQ
+     */
+    public static final String AD_MODE_SEQ = Constant.MODE_SEQ;
+
+    /**
+     * RAN
+     */
+    public static final String AD_MODE_RAN = Constant.MODE_RAN;
 }

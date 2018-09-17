@@ -325,6 +325,14 @@ public class AdSdk {
         return 0;
     }
 
+    public String getAdMode(String pidName) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            return loader.getAdMode();
+        }
+        return null;
+    }
+
     public void resume(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {

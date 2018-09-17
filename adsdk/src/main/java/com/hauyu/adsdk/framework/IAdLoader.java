@@ -40,6 +40,7 @@ public interface IAdLoader {
     public void showComplexAds(ViewGroup adContainer);
 
     public int getAdCount();
+    public String getAdMode();
     public void resume();
     public void pause();
 

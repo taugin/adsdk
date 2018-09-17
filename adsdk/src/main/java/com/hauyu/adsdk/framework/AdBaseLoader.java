@@ -89,6 +89,11 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public String getAdMode() {
+        return null;
+    }
+
+    @Override
     public void resume() {
     }
 
