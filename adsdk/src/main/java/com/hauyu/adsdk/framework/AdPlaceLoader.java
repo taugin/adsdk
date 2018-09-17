@@ -254,9 +254,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     public boolean isInterstitialLoaded() {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null && loader.isInterstitialLoaded()) {
-                    Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
-                    return true;
+                if (loader != null) {
+                    if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
+                        Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        return true;
+                    }
+                    if (loader.isRewardedVideoType() && loader.isRewaredVideoLoaded()) {
+                        Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        return true;
+                    }
                 }
             }
         }
@@ -377,24 +383,20 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    if (loader.isRewardedVideoType()) {
-                        if (loader.isRewaredVideoLoaded()) {
-                            ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
-                            if (loader.showRewardedVideo()) {
-                                mCurrentAdLoader = loader;
-                                AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
-                            }
-                            break;
+                    if (loader.isRewardedVideoType() && loader.isRewaredVideoLoaded()) {
+                        ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
+                        if (loader.showRewardedVideo()) {
+                            mCurrentAdLoader = loader;
+                            AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         }
-                    } else {
-                        if (loader.isInterstitialLoaded()) {
-                            ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
-                            if (loader.showInterstitial()) {
-                                mCurrentAdLoader = loader;
-                                AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
-                            }
-                            break;
+                        break;
+                    } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
+                        ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
+                        if (loader.showInterstitial()) {
+                            mCurrentAdLoader = loader;
+                            AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         }
+                        break;
                     }
                 }
             }
