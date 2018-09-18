@@ -12,6 +12,7 @@ public class GtConfig extends AttrConfig {
     private int maxVersion;
     private long minInterval;
     private int screenOrientation;
+    private long timeOut = 300000;
 
     public boolean isEnable() {
         return enable;
@@ -69,18 +70,28 @@ public class GtConfig extends AttrConfig {
         this.screenOrientation = screenOrientation;
     }
 
+    public long getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(long timeOut) {
+        this.timeOut = timeOut;
+    }
+
     @Override
     public String toString() {
-        return "GtConfig{" +
-                "enable=" + enable +
-                ", upDelay=" + upDelay +
-                ", interval=" + interval +
-                ", maxCount=" + maxCount +
-                ", maxVersion=" + maxVersion +
-                ", minInterval=" + minInterval +
-                ", countryList=" + getCountryList() +
-                ", attrList=" + getAttrList() +
-                ", mediaList=" + getMediaList() +
+        return "gt{" +
+                "e=" + enable +
+                ", d=" + upDelay +
+                ", i=" + interval +
+                ", mc=" + maxCount +
+                ", mv=" + maxVersion +
+                ", mi=" + minInterval +
+                ", cl=" + getCountryList() +
+                ", al=" + getAttrList() +
+                ", ml=" + getMediaList() +
+                ", so=" + screenOrientation +
+                ", to=" + timeOut +
                 '}';
     }
 }

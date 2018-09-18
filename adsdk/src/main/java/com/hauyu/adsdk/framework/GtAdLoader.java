@@ -69,16 +69,26 @@ public class GtAdLoader {
     private void fireOuterAd() {
         if (mAdSdk != null) {
             updateAdPolicy();
-            if (!GtPolicy.get(mContext).isGtAllowed() || !GtPolicy.get(mContext).isMatchMinInterval()) {
+            if (!GtPolicy.get(mContext).isGtAllowed()) {
+                return;
+            }
+            if (!GtPolicy.get(mContext).isMatchMinInterval()) {
+                Log.v(Log.TAG, "mi not allow");
+                return;
+            }
+            if (GtPolicy.get(mContext).isLoading()) {
+                Log.v(Log.TAG, "gt is loading");
                 return;
             }
             Log.v(Log.TAG, "");
             StatImpl.get().reportAdOuterRequest(mContext);
             GtPolicy.get(mContext).startGtRequest();
+            GtPolicy.get(mContext).setLoading(true);
             mAdSdk.loadComplexAds(Constant.GTPLACE_OUTER_NAME, new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    GtPolicy.get(mContext).setLoading(false);
                     StatImpl.get().reportAdOuterLoaded(mContext);
                     if (GtPolicy.get(mContext).isGtAllowed()) {
                         mAdSdk.showComplexAds(pidName, null);
@@ -102,6 +112,7 @@ public class GtAdLoader {
                 @Override
                 public void onError(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "error pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    GtPolicy.get(mContext).setLoading(false);
                 }
             });
         }
