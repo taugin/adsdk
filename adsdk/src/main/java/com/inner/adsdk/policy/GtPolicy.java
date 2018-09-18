@@ -2,6 +2,8 @@ package com.inner.adsdk.policy;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.Handler;
+import android.os.Message;
 
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.constant.Constant;
@@ -16,7 +18,7 @@ import java.util.Date;
  * Created by Administrator on 2018/3/19.
  */
 
-public class GtPolicy {
+public class GtPolicy implements Handler.Callback {
     private static GtPolicy sGtPolicy;
 
     public static GtPolicy get(Context context) {
@@ -39,12 +41,17 @@ public class GtPolicy {
     private GtPolicy(Context context) {
         mContext = context;
         mAttrChecker = new AttrChecker(context);
+        mHandler = new Handler(this);
     }
+
+    private static final int MSG_GT_LOADING = 10000;
 
     private Context mContext;
     private GtConfig mGtConfig;
     private boolean mGtShowing = false;
     private AttrChecker mAttrChecker;
+    private boolean mLoading = false;
+    private Handler mHandler;
 
     public void init() {
         reportFirstStartUpTime();
@@ -52,6 +59,14 @@ public class GtPolicy {
 
     public void setPolicy(GtConfig gtConfig) {
         mGtConfig = gtConfig;
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (msg != null && msg.what == MSG_GT_LOADING) {
+            mLoading = false;
+        }
+        return false;
     }
 
     /**
@@ -81,6 +96,34 @@ public class GtPolicy {
      */
     public void startGtRequest() {
         Utils.putLong(mContext, Constant.PREF_GT_REQUEST_TIME, System.currentTimeMillis());
+    }
+
+    private long getTimeout() {
+        long timeOut = 0;
+        if (mGtConfig != null) {
+            timeOut = mGtConfig.getTimeOut();
+        }
+        return timeOut;
+    }
+
+    public void setLoading(boolean loading) {
+        mLoading = loading;
+        if (mLoading) {
+            if (mHandler != null) {
+                mHandler.removeMessages(MSG_GT_LOADING);
+                Log.v(Log.TAG, "gt send loading timeout : " + getTimeout());
+                mHandler.sendEmptyMessageDelayed(MSG_GT_LOADING, getTimeout());
+            }
+        } else {
+            if (mHandler != null) {
+                mHandler.removeMessages(MSG_GT_LOADING);
+                Log.v(Log.TAG, "gt remove loading timeout");
+            }
+        }
+    }
+
+    public boolean isLoading() {
+        return mLoading;
     }
 
     /**
@@ -247,6 +290,7 @@ public class GtPolicy {
 
     /**
      * 判断是否符合最小时间间隔
+     *
      * @return
      */
     public boolean isMatchMinInterval() {

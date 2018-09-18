@@ -12,6 +12,7 @@ public class GtConfig extends AttrConfig {
     private int maxVersion;
     private long minInterval;
     private int screenOrientation;
+    private long timeOut = 300000;
 
     public boolean isEnable() {
         return enable;
@@ -69,6 +70,14 @@ public class GtConfig extends AttrConfig {
         this.screenOrientation = screenOrientation;
     }
 
+    public long getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(long timeOut) {
+        this.timeOut = timeOut;
+    }
+
     @Override
     public String toString() {
         return "gt{" +
@@ -81,6 +90,8 @@ public class GtConfig extends AttrConfig {
                 ", cl=" + getCountryList() +
                 ", al=" + getAttrList() +
                 ", ml=" + getMediaList() +
+                ", so=" + screenOrientation +
+                ", to=" + timeOut +
                 '}';
     }
 }
