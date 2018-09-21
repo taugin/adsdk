@@ -37,6 +37,16 @@ public interface IStat {
      * @param type
      * @param extra
      */
+    public void reportAdCallShow(Context context, String pidName, String sdk, String type, Map<String, String> extra);
+
+    /**
+     * 广告展示
+     * @param context
+     * @param pidName
+     * @param sdk
+     * @param type
+     * @param extra
+     */
     public void reportAdShow(Context context, String pidName, String sdk, String type, Map<String, String> extra);
 
     /**

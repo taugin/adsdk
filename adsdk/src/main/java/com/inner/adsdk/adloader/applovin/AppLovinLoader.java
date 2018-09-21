@@ -319,6 +319,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             interstitialAdDialog.showAndRender(loadedAd);
             clearCachedAdTime(loadedAd);
             loadedAd = null;
+            if (mStat != null) {
+                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            }
             return true;
         }
         return false;

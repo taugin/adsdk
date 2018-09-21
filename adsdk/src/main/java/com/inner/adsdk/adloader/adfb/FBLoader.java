@@ -330,6 +330,9 @@ public class FBLoader extends AbstractSdkLoader {
             fbInterstitial.show();
             clearCachedAdTime(fbInterstitial);
             fbInterstitial = null;
+            if (mStat != null) {
+                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            }
             return true;
         }
         return false;
