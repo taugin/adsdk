@@ -20,6 +20,7 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
+            android:noHistory="true"
             android:theme="@android:style/Theme.Translucent" />
         <!-- applovin -->
         <activity
