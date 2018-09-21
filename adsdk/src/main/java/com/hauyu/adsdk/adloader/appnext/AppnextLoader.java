@@ -343,6 +343,9 @@ public class AppnextLoader extends AbstractSdkLoader {
             interstitial.showAd();
             clearCachedAdTime(interstitial);
             interstitial = null;
+            if (mStat != null) {
+                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            }
             return true;
         }
         return false;

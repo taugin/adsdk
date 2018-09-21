@@ -336,6 +336,9 @@ public class MopubLoader extends AbstractSdkLoader {
             boolean showed = moPubInterstitial.show();
             clearCachedAdTime(moPubInterstitial);
             moPubInterstitial = null;
+            if (mStat != null) {
+                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            }
             return showed;
         }
         return false;
