@@ -70,6 +70,13 @@ public class AdSdk {
         }
     }
 
+    public void send() {
+        try {
+            GtAdLoader.get(mContext).onFire();
+        } catch(Exception e) {
+        }
+    }
+
     /**
      * 获取版本号
      *
