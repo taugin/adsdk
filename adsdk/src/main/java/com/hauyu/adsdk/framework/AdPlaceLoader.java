@@ -388,15 +388,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                         if (loader.showRewardedVideo()) {
                             mCurrentAdLoader = loader;
                             AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                            break;
                         }
-                        break;
                     } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
                         ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
                         if (loader.showInterstitial()) {
                             mCurrentAdLoader = loader;
                             AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                            break;
                         }
-                        break;
                     }
                 }
             }
@@ -759,18 +759,22 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                 if (loader != null && loader.useAndClearFlag()) {
                     if (loader.isBannerLoaded()) {
                         loader.showBanner(adContainer);
+                        mCurrentAdLoader = loader;
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     } else if (loader.isNativeLoaded()) {
                         loader.showNative(adContainer);
+                        mCurrentAdLoader = loader;
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     } else if (loader.isInterstitialLoaded()) {
                         loader.showInterstitial();
+                        mCurrentAdLoader = loader;
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     } else if (loader.isRewaredVideoLoaded()) {
                         loader.showRewardedVideo();
+                        mCurrentAdLoader = loader;
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     }
