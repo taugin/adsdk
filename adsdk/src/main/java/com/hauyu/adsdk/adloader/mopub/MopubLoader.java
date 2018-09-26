@@ -158,6 +158,9 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -208,6 +211,9 @@ public class MopubLoader extends AbstractSdkLoader {
             moPubView = null;
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            }
+            if (mStat != null) {
+                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "mopubloader error : " + e);
@@ -290,6 +296,9 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
@@ -303,6 +312,9 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
@@ -428,6 +440,9 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                }
             }
 
             @Override
@@ -442,6 +457,9 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
