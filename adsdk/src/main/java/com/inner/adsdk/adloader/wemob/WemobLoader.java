@@ -134,6 +134,9 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -180,6 +183,9 @@ public class WemobLoader extends AbstractSdkLoader {
             bannerView = null;
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            }
+            if (mStat != null) {
+                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "wemobloader error : " + e);
@@ -280,6 +286,9 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                }
             }
 
             @Override
@@ -287,6 +296,9 @@ public class WemobLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 if (mStat != null) {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+                if (mStat != null) {
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -400,6 +412,9 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                }
             }
 
             @Override
@@ -410,6 +425,9 @@ public class WemobLoader extends AbstractSdkLoader {
                 }
                 if (mStat != null) {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+                if (mStat != null) {
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
             }
         });

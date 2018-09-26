@@ -104,9 +104,6 @@ public class StatImpl implements IStat {
      * @param extra
      */
     private void sendFirebaseAnalytics(Context context, String value, String eventId, Map<String, String> extra) {
-        if (!isReportFirebase(context)) {
-            return;
-        }
         Log.d(Log.TAG, "StatImpl Firebase Analytics");
         Bundle bundle = new Bundle();
         if (!TextUtils.isEmpty(value)) {
@@ -150,9 +147,6 @@ public class StatImpl implements IStat {
      * @param extra
      */
     private void sendUmeng(Context context, String value, String eventId, Map<String, String> extra) {
-        if (!isReportUmeng(context)) {
-            return;
-        }
         Log.d(Log.TAG, "StatImpl sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
@@ -231,9 +225,6 @@ public class StatImpl implements IStat {
      * @param extra
      */
     private void sendAppsflyer(Context context, String value, String eventId, Map<String, String> extra) {
-        if (!isReportAppsflyer(context)) {
-            return;
-        }
         Log.d(Log.TAG, "StatImpl sendAppsflyer Analytics");
         Map<String, Object> eventValue = new HashMap<String, Object>();
         if (!TextUtils.isEmpty(value)) {
@@ -276,9 +267,6 @@ public class StatImpl implements IStat {
     }
 
     private void sendFacebook(Context context, String value, String eventId, Map<String, String> extra) {
-        if (!isReportFacebook(context)) {
-            return;
-        }
         initFacebook(context);
         if (mFacebookObject == null) {
             return;
@@ -321,8 +309,12 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId(context, "request", sdk, type);
-        sendFirebaseAnalytics(context, pidName, eventId, extra);
-        sendUmeng(context, pidName, eventId, extra);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, pidName, eventId, extra);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, pidName, eventId, extra);
+        }
         // sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
@@ -333,8 +325,12 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId(context, "loaded", sdk, type);
-        sendFirebaseAnalytics(context, pidName, eventId, extra);
-        sendUmeng(context, pidName, eventId, extra);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, pidName, eventId, extra);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, pidName, eventId, extra);
+        }
         // sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
@@ -345,10 +341,18 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId(context, "callshow", sdk, type);
-        sendFirebaseAnalytics(context, pidName, eventId, extra);
-        sendUmeng(context, pidName, eventId, extra);
-        sendAppsflyer(context, pidName, eventId, extra);
-        sendFacebook(context, pidName, eventId, extra);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, pidName, eventId, extra);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, pidName, eventId, extra);
+        }
+        if (isReportAppsflyer(context)) {
+            sendAppsflyer(context, pidName, eventId, extra);
+        }
+        if (isReportFacebook(context)) {
+            sendFacebook(context, pidName, eventId, extra);
+        }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
@@ -358,10 +362,18 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId(context, "show", sdk, type);
-        sendFirebaseAnalytics(context, pidName, eventId, extra);
-        sendUmeng(context, pidName, eventId, extra);
-        sendAppsflyer(context, pidName, eventId, extra);
-        sendFacebook(context, pidName, eventId, extra);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, pidName, eventId, extra);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, pidName, eventId, extra);
+        }
+        if (isReportAppsflyer(context)) {
+            sendAppsflyer(context, pidName, eventId, extra);
+        }
+        if (isReportFacebook(context)) {
+            sendFacebook(context, pidName, eventId, extra);
+        }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
@@ -371,10 +383,18 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId(context, "click", sdk, type);
-        sendFirebaseAnalytics(context, pidName, eventId, extra);
-        sendUmeng(context, pidName, eventId, extra);
-        sendAppsflyer(context, pidName, eventId, extra);
-        sendFacebook(context, pidName, eventId, extra);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, pidName, eventId, extra);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, pidName, eventId, extra);
+        }
+        if (isReportAppsflyer(context)) {
+            sendAppsflyer(context, pidName, eventId, extra);
+        }
+        if (isReportFacebook(context)) {
+            sendFacebook(context, pidName, eventId, extra);
+        }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
@@ -388,8 +408,12 @@ public class StatImpl implements IStat {
         }
         String eventId = generateEventId(context, "error", sdk, type);
         extra = addExtraForError(context, extra);
-        sendFirebaseAnalytics(context, pidName, eventId, extra);
-        sendUmeng(context, pidName, eventId, extra);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, pidName, eventId, extra);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, pidName, eventId, extra);
+        }
         // sendAppsflyer(context, pidName, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
@@ -401,9 +425,15 @@ public class StatImpl implements IStat {
         }
         String eventId = "outer_gt_request";
         eventId = generateEventIdAlias(context, eventId);
-        sendFirebaseAnalytics(context, null, eventId, null);
-        sendUmeng(context, null, eventId, null);
-        sendAppsflyer(context, null, eventId, null);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, null, eventId, null);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, null, eventId, null);
+        }
+        if (isReportAppsflyer(context)) {
+            sendAppsflyer(context, null, eventId, null);
+        }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
@@ -414,9 +444,15 @@ public class StatImpl implements IStat {
         }
         String eventId = "outer_gt_loaded";
         eventId = generateEventIdAlias(context, eventId);
-        sendFirebaseAnalytics(context, null, eventId, null);
-        sendUmeng(context, null, eventId, null);
-        sendAppsflyer(context, null, eventId, null);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, null, eventId, null);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, null, eventId, null);
+        }
+        if (isReportAppsflyer(context)) {
+            sendAppsflyer(context, null, eventId, null);
+        }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
@@ -427,9 +463,15 @@ public class StatImpl implements IStat {
         }
         String eventId = "outer_gt_show";
         eventId = generateEventIdAlias(context, eventId);
-        sendFirebaseAnalytics(context, null, eventId, null);
-        sendUmeng(context, null, eventId, null);
-        sendAppsflyer(context, null, eventId, null);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, null, eventId, null);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, null, eventId, null);
+        }
+        if (isReportAppsflyer(context)) {
+            sendAppsflyer(context, null, eventId, null);
+        }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
@@ -440,9 +482,15 @@ public class StatImpl implements IStat {
         }
         String eventId = "outer_gt_showing";
         eventId = generateEventIdAlias(context, eventId);
-        sendFirebaseAnalytics(context, null, eventId, null);
-        sendUmeng(context, null, eventId, null);
-        sendAppsflyer(context, null, eventId, null);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, null, eventId, null);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, null, eventId, null);
+        }
+        if (isReportAppsflyer(context)) {
+            sendAppsflyer(context, null, eventId, null);
+        }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
@@ -454,8 +502,12 @@ public class StatImpl implements IStat {
         String eventId = "outer_gt_showtimes";
         eventId = generateEventIdAlias(context, eventId);
         String value = String.valueOf(times);
-        sendFirebaseAnalytics(context, value, eventId, null);
-        sendUmeng(context, value, eventId, null);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, value, eventId, null);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, value, eventId, null);
+        }
         Log.v(Log.TAG, "StatImpl stat key : outer_gt_showtimes , times : " + times);
     }
 
@@ -472,7 +524,9 @@ public class StatImpl implements IStat {
         Map<String, String> map = new HashMap<String, String>();
         map.put("sdk", sdk);
         map.put("type", type);
-        sendUmengEventValue(context, eventId, map, value);
+        if (isReportUmeng(context)) {
+            sendUmengEventValue(context, eventId, map, value);
+        }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
     }
 
@@ -490,8 +544,36 @@ public class StatImpl implements IStat {
         map.put("sdk", sdk);
         map.put("type", type);
         map.put("error", error);
-        sendUmengEventValue(context, eventId, map, value);
+        if (isReportUmeng(context)) {
+            sendUmengEventValue(context, eventId, map, value);
+        }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
+    }
+
+    @Override
+    public void reportAdImpForLTV(Context context, String sdk, String pid) {
+        if (context == null) {
+            return;
+        }
+        String eventId = "Ad_Imp";
+        Map<String, String> extra = new HashMap<String, String>();
+        extra.put("sdkName", sdk);
+        extra.put("Pid", pid);
+        sendAppsflyer(context, null, eventId, extra);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid);
+    }
+
+    @Override
+    public void reportAdClickForLTV(Context context, String sdk, String pid) {
+        if (context == null) {
+            return;
+        }
+        String eventId = "Ad_Click";
+        Map<String, String> extra = new HashMap<String, String>();
+        extra.put("sdkName", sdk);
+        extra.put("Pid", pid);
+        sendAppsflyer(context, null, eventId, extra);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid);
     }
 
     private boolean isReportError(Context context) {

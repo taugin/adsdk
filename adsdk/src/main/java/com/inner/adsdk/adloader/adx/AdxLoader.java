@@ -141,6 +141,9 @@ public class AdxLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -161,12 +164,6 @@ public class AdxLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked() {
                 Log.v(Log.TAG, "");
-                if (mStat != null) {
-                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (getAdListener() != null) {
-                    getAdListener().onAdClick();
-                }
             }
 
             @Override
@@ -210,6 +207,9 @@ public class AdxLoader extends AbstractSdkLoader {
             bannerView = null;
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            }
+            if (mStat != null) {
+                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "adxloader error : " + e);
@@ -294,6 +294,9 @@ public class AdxLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                }
             }
 
             @Override
@@ -301,6 +304,9 @@ public class AdxLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 if (mStat != null) {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+                if (mStat != null) {
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -426,6 +432,9 @@ public class AdxLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                }
             }
 
             @Override
@@ -441,6 +450,9 @@ public class AdxLoader extends AbstractSdkLoader {
                 }
                 if (mStat != null) {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+                if (mStat != null) {
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
             }
 

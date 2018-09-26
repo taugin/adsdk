@@ -140,6 +140,9 @@ public class FBLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -186,6 +189,9 @@ public class FBLoader extends AbstractSdkLoader {
             bannerView = null;
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            }
+            if (mStat != null) {
+                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
@@ -256,6 +262,9 @@ public class FBLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                }
             }
 
             @Override
@@ -309,6 +318,9 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
@@ -428,6 +440,9 @@ public class FBLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                }
             }
 
             @Override
@@ -438,6 +453,9 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 if (mStat != null) {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+                if (mStat != null) {
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
             }
         });
@@ -528,6 +546,9 @@ public class FBLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+                if (mStat != null) {
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                }
             }
 
             @Override
@@ -572,6 +593,9 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 if (mStat != null) {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
             }
         });
