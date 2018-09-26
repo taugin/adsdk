@@ -358,6 +358,9 @@ public class AppnextLoader extends AbstractSdkLoader {
             if (mStat != null) {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
+            if (mStat != null) {
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+            }
             return true;
         }
         return false;
@@ -647,6 +650,12 @@ public class AppnextLoader extends AbstractSdkLoader {
             rewardedVideoAd.showAd();
             clearCachedAdTime(rewardedVideoAd);
             rewardedVideoAd = null;
+            if (mStat != null) {
+                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            }
+            if (mStat != null) {
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+            }
             return true;
         }
         return false;

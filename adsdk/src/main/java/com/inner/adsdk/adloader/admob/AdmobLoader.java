@@ -361,6 +361,9 @@ public class AdmobLoader extends AbstractSdkLoader {
             if (mStat != null) {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
+            if (mStat != null) {
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+            }
             return true;
         }
         return false;
@@ -517,6 +520,12 @@ public class AdmobLoader extends AbstractSdkLoader {
             rewardedVideoAd.show();
             clearCachedAdTime(rewardedVideoAd);
             rewardedVideoAd = null;
+            if (mStat != null) {
+                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            }
+            if (mStat != null) {
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+            }
             return true;
         }
         return false;
