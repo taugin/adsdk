@@ -351,6 +351,9 @@ public class MopubLoader extends AbstractSdkLoader {
             if (mStat != null) {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
+            if (mStat != null) {
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+            }
             return showed;
         }
         return false;
@@ -499,6 +502,12 @@ public class MopubLoader extends AbstractSdkLoader {
     @Override
     public boolean showRewardedVideo() {
         MoPubRewardedVideos.showRewardedVideo(getPidConfig().getPid());
+        if (mStat != null) {
+            mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        }
+        if (mStat != null) {
+            mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+        }
         return true;
     }
 

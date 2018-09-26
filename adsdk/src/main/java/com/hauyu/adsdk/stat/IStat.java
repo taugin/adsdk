@@ -120,6 +120,14 @@ public interface IStat {
      * @param sdk
      * @param pid
      */
+    public void reportAdShowForLTV(Context context, String sdk, String pid);
+
+    /**
+     * ltv上报展示
+     * @param context
+     * @param sdk
+     * @param pid
+     */
     public void reportAdImpForLTV(Context context, String sdk, String pid);
 
     /**

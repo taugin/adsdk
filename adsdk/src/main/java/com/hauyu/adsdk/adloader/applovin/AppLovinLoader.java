@@ -334,6 +334,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (mStat != null) {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
+            if (mStat != null) {
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+            }
             return true;
         }
         return false;
@@ -510,6 +513,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
             });
             clearCachedAdTime(incentivizedInterstitial);
             incentivizedInterstitial = null;
+            if (mStat != null) {
+                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            }
+            if (mStat != null) {
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+            }
             return true;
         }
         return false;

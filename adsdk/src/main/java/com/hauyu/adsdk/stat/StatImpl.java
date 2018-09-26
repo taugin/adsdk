@@ -551,14 +551,27 @@ public class StatImpl implements IStat {
     }
 
     @Override
+    public void reportAdShowForLTV(Context context, String sdk, String pid) {
+        if (context == null) {
+            return;
+        }
+        String eventId = "s_ad_show";
+        Map<String, String> extra = new HashMap<String, String>();
+        extra.put("sdk_name", sdk);
+        extra.put("pid", pid);
+        sendAppsflyer(context, null, eventId, extra);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid);
+    }
+
+    @Override
     public void reportAdImpForLTV(Context context, String sdk, String pid) {
         if (context == null) {
             return;
         }
-        String eventId = "Ad_Imp";
+        String eventId = "s_ad_imp";
         Map<String, String> extra = new HashMap<String, String>();
-        extra.put("sdkName", sdk);
-        extra.put("Pid", pid);
+        extra.put("sdk_name", sdk);
+        extra.put("pid", pid);
         sendAppsflyer(context, null, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid);
     }
@@ -568,10 +581,10 @@ public class StatImpl implements IStat {
         if (context == null) {
             return;
         }
-        String eventId = "Ad_Click";
+        String eventId = "s_ad_click";
         Map<String, String> extra = new HashMap<String, String>();
-        extra.put("sdkName", sdk);
-        extra.put("Pid", pid);
+        extra.put("sdk_name", sdk);
+        extra.put("pid", pid);
         sendAppsflyer(context, null, eventId, extra);
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid);
     }
