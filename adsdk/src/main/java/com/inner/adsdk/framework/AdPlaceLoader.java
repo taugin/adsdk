@@ -204,7 +204,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                 params = mAdParams.getParams(Constant.AD_SDK_COMMON);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, new Throwable());
+            Log.e(Log.TAG, "error : " + e, e);
         }
         return params;
     }

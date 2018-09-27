@@ -77,7 +77,7 @@ public class FBBindNativeView {
                 adContainer.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, new Throwable());
+            Log.e(Log.TAG, "error : " + e, e);
         }
     }
 
@@ -238,7 +238,7 @@ public class FBBindNativeView {
                 adContainer.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, new Throwable());
+            Log.e(Log.TAG, "error : " + e, e);
         }
     }
 
