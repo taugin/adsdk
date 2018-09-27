@@ -70,7 +70,7 @@ public class AdxBindNativeView {
         try {
             showUnifiedAdView(rootView, nativeAd, pidConfig);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, new Throwable());
+            Log.e(Log.TAG, "error : " + e, e);
         }
         try {
             adContainer.removeAllViews();
@@ -80,7 +80,7 @@ public class AdxBindNativeView {
                 adContainer.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, new Throwable());
+            Log.e(Log.TAG, "error : " + e, e);
         }
     }
 
@@ -115,7 +115,7 @@ public class AdxBindNativeView {
         try {
             showUnifiedAdView(rootView, nativeAd, pidConfig);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, new Throwable());
+            Log.e(Log.TAG, "error : " + e, e);
         }
         try {
             adContainer.removeAllViews();
@@ -125,7 +125,7 @@ public class AdxBindNativeView {
                 adContainer.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, new Throwable());
+            Log.e(Log.TAG, "error : " + e, e);
         }
     }
 
@@ -230,7 +230,7 @@ public class AdxBindNativeView {
                 }
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, new Throwable());
+            Log.e(Log.TAG, "error : " + e, e);
         }
         adView.setNativeAd(nativeAd);
     }
