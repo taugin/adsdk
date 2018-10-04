@@ -27,11 +27,13 @@
             android:name="com.applovin.adview.AppLovinInterstitialActivity"
             android:configChanges="orientation|screenSize"
             android:excludeFromRecents="true"
+            android:noHistory="true"
             android:launchMode="singleInstance" />
         <activity
             android:name="com.applovin.adview.AppLovinConfirmationActivity"
             android:configChanges="orientation|screenSize"
             android:excludeFromRecents="true"
+            android:noHistory="true"
             android:launchMode="singleInstance" />
 
         <meta-data
@@ -50,10 +52,16 @@
         <!-- Interstitials -->
         <activity
             android:name="com.mopub.mobileads.MoPubActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true" />
         <activity
             android:name="com.mopub.mobileads.MraidActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true" />
 
         <!-- Rewarded Video and Rewarded Playables -->
         <activity
