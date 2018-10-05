@@ -27,14 +27,14 @@
             android:name="com.applovin.adview.AppLovinInterstitialActivity"
             android:configChanges="orientation|screenSize"
             android:excludeFromRecents="true"
-            android:noHistory="true"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            android:noHistory="true" />
         <activity
             android:name="com.applovin.adview.AppLovinConfirmationActivity"
             android:configChanges="orientation|screenSize"
             android:excludeFromRecents="true"
-            android:noHistory="true"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            android:noHistory="true" />
 
         <meta-data
             android:name="applovin.sdk.key"
@@ -42,12 +42,14 @@
         <!-- MoPub's consent dialog -->
         <activity
             android:name="com.mopub.common.privacy.ConsentDialogActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true" />
 
         <!-- All ad formats -->
         <activity
             android:name="com.mopub.common.MoPubBrowser"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true" />
 
         <!-- Interstitials -->
         <activity
@@ -66,10 +68,12 @@
         <!-- Rewarded Video and Rewarded Playables -->
         <activity
             android:name="com.mopub.mobileads.RewardedMraidActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true" />
         <activity
             android:name="com.mopub.mobileads.MraidVideoPlayerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true" />
 
         <activity
             android:name="com.appnext.ads.interstitial.InterstitialActivity"
