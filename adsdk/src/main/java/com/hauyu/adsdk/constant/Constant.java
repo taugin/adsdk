@@ -88,6 +88,7 @@ public class Constant {
     public static final int AD_ERROR_LOADING = 3;
     public static final int AD_ERROR_LOAD = 4;
     public static final int AD_ERROR_TIMEOUT = 5;
+    public static final int AD_ERROR_CONTEXT = 6;
 
     public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 }
