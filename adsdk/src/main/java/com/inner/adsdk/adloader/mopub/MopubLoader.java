@@ -228,6 +228,9 @@ public class MopubLoader extends AbstractSdkLoader {
         }
         if (activity == null) {
             Log.v(Log.TAG, "mopub interstitial need an activity context");
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_CONTEXT);
+            }
             return;
         }
 
@@ -376,6 +379,9 @@ public class MopubLoader extends AbstractSdkLoader {
         }
         if (activity == null) {
             Log.v(Log.TAG, "mopub reward need an activity context");
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_CONTEXT);
+            }
             return;
         }
         MoPub.onCreate(activity);
