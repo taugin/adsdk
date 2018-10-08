@@ -41,7 +41,7 @@
           "sdk": "adx",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
@@ -53,7 +53,7 @@
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "wemob",
@@ -96,6 +96,12 @@
           "type": "banner",
           "pid": "5d32ae77-1949-4322-808e-c08705deec84",
           "disable": 1
+        },
+        {
+          "sdk": "mopub",
+          "type": "native",
+          "pid": "11a17b188668469fb0412708c3d16813",
+          "disable": 0
         }
       ],
       "maxcount": 100,

@@ -147,4 +147,12 @@
                 android:padding="4dp" />
         </FrameLayout>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/native_adprivacy"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:padding="10dp"
+        android:visibility="gone" />
 </FrameLayout>

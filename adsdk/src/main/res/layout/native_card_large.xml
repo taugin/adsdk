@@ -64,8 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/native_icon"
-                android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -78,6 +78,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
+                        android:layout_toRightOf="@+id/native_title"
                         android:background="@drawable/ad_badge_bg_dark"
                         android:gravity="center"
                         android:paddingBottom="2dp"
@@ -85,7 +86,6 @@
                         android:paddingRight="4dp"
                         android:paddingTop="2dp"
                         android:text="AD"
-                        android:layout_toRightOf="@+id/native_title"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="8sp" />
 
@@ -150,13 +150,21 @@
             style="@style/AdButtonLargeStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:layout_gravity="center"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="Learn More" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/native_adprivacy"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:padding="10dp"
+        android:visibility="gone" />
 </android.support.v7.widget.CardView>

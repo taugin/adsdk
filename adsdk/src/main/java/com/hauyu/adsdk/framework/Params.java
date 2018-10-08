@@ -25,6 +25,7 @@ public class Params {
     private int adChoices;
     private int adSponsored;
     private int adSocial;
+    private int adPrivacy;
 
     public Params() {
     }
@@ -139,5 +140,13 @@ public class Params {
 
     public void setAdSocial(int adSocial) {
         this.adSocial = adSocial;
+    }
+
+    public int getAdPrivacy() {
+        return adPrivacy;
+    }
+
+    public void setAdPrivacy(int adPrivacy) {
+        this.adPrivacy = adPrivacy;
     }
 }
