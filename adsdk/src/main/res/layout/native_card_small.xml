@@ -46,14 +46,14 @@
             android:id="@+id/native_header_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="4dp"
+            android:layout_alignBottom="@+id/native_cover_info"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ad_header_gradient_bg"
+            android:orientation="horizontal"
             android:paddingBottom="4dp"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
-            android:background="@drawable/ad_header_gradient_bg"
-            android:layout_marginTop="8dp"
-            android:layout_alignBottom="@+id/native_cover_info"
-            android:orientation="horizontal">
+            android:paddingTop="4dp">
 
             <ImageView
                 android:id="@+id/native_icon"
@@ -68,8 +68,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="16dp"
-                android:layout_toRightOf="@id/native_icon"
                 android:layout_toLeftOf="@+id/native_action_btn"
+                android:layout_toRightOf="@id/native_icon"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -132,4 +132,12 @@
                 android:text="Learn More" />
         </RelativeLayout>
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/native_adprivacy"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:padding="10dp"
+        android:visibility="gone" />
 </android.support.v7.widget.CardView>

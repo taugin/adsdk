@@ -156,4 +156,12 @@
             android:layout_marginRight="16dp"
             android:text="Learn More" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/native_adprivacy"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:padding="10dp"
+        android:visibility="gone" />
 </android.support.v7.widget.CardView>
