@@ -681,15 +681,31 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
-                if (mParams.getAdPrivacy() > 0) {
-                    View adPrivacyView = adView.findViewById(mParams.getAdPrivacy());
-                    if (adPrivacyView != null) {
-                        adPrivacyView.setVisibility(View.VISIBLE);
-                    }
-                }
                 if (nativeAd.getMoPubAdRenderer() instanceof MoPubVideoNativeAdRenderer) {
                     if (mParams.getAdMediaView() > 0) {
-                        adView.findViewById(mParams.getAdMediaView()).setVisibility(View.VISIBLE);
+                        View view = adView.findViewById(mParams.getAdMediaView());
+                        if (view != null) {
+                            view.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    if (mParams.getAdCover() > 0) {
+                        View view = adView.findViewById(mParams.getAdCover());
+                        if (view != null) {
+                            view.setVisibility(View.GONE);
+                        }
+                    }
+                } else if (nativeAd.getMoPubAdRenderer() instanceof MoPubStaticNativeAdRenderer) {
+                    if (mParams.getAdMediaView() > 0) {
+                        View view = adView.findViewById(mParams.getAdMediaView());
+                        if (view != null) {
+                            view.setVisibility(View.GONE);
+                        }
+                    }
+                    if (mParams.getAdCover() > 0) {
+                        View view = adView.findViewById(mParams.getAdCover());
+                        if (view != null) {
+                            view.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             } catch (Exception e) {
