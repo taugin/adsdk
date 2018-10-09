@@ -1,23 +1,22 @@
 package com.inner.adsdk.adloader.mopub;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 
 import com.inner.adsdk.R;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.utils.Utils;
 import com.mopub.nativeads.MediaLayout;
 import com.mopub.nativeads.MediaViewBinder;
 import com.mopub.nativeads.MoPubNative;
-import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
 import com.mopub.nativeads.ViewBinder;
-
-import java.util.Random;
 
 /**
  * Created by Administrator on 2018/2/11.
@@ -81,7 +80,6 @@ public class MopubBindNativeView {
         mParams.setAdCover(R.id.native_image_cover);
         mParams.setAdChoices(R.id.native_ad_choices_container);
         mParams.setAdMediaView(R.id.native_media_cover);
-        mParams.setAdPrivacy(R.id.native_adprivacy);
         bindNativeViewWithRootView(context, rootView, nativeAd, pidConfig);
     }
 
@@ -131,8 +129,15 @@ public class MopubBindNativeView {
     private MediaViewBinder getVideoViewBinder(Context context, View layout) {
         ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
         MediaLayout mediaLayout = createMediaLayout(context);
-        mediaLayout.setId(0x10001);
+        mediaLayout.setId(getMediaLayoutId());
         coverLayout.addView(mediaLayout);
+
+        ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
+        adChoiceLayout.setVisibility(View.VISIBLE);
+        ImageView imageView = createImageView(context);
+        imageView.setId(getImageViewId());
+        int size = Utils.dp2px(context, 20);
+        adChoiceLayout.addView(imageView, size, size);
 
         MediaViewBinder videoViewBinder = new MediaViewBinder.Builder(mParams.getNativeRootLayout())
                 .mediaLayoutId(mediaLayout.getId())
@@ -140,7 +145,7 @@ public class MopubBindNativeView {
                 .titleId(mParams.getAdTitle())
                 .textId(mParams.getAdDetail())
                 .callToActionId(mParams.getAdAction())
-                .privacyInformationIconImageId(mParams.getAdPrivacy())
+                .privacyInformationIconImageId(imageView.getId())
                 .build();
         return videoViewBinder;
     }
@@ -152,18 +157,25 @@ public class MopubBindNativeView {
         } else {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
         }
-        MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(), layout);
+        MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(moPubAdRenderer);
     }
 
-    private ViewBinder getStaticViewBinder() {
+    private ViewBinder getStaticViewBinder(Context context, View layout) {
+        ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
+        adChoiceLayout.setVisibility(View.VISIBLE);
+        ImageView imageView = createImageView(context);
+        imageView.setId(getImageViewId());
+        int size = Utils.dp2px(context, 20);
+        adChoiceLayout.addView(imageView, size, size);
+
         ViewBinder viewBinder = new ViewBinder.Builder(mParams.getNativeRootLayout())
                 .mainImageId(mParams.getAdCover())
                 .iconImageId(mParams.getAdIcon())
                 .titleId(mParams.getAdTitle())
                 .textId(mParams.getAdDetail())
                 .callToActionId(mParams.getAdAction())
-                .privacyInformationIconImageId(mParams.getAdPrivacy())
+                .privacyInformationIconImageId(imageView.getId())
                 .build();
         return viewBinder;
     }
@@ -177,5 +189,30 @@ public class MopubBindNativeView {
             Log.e(Log.TAG, "error : " + e);
         }
         return null;
+    }
+
+    private ImageView createImageView(Context context) {
+        try {
+            return new ImageView(context);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    private int getMediaLayoutId() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return View.generateViewId();
+        }
+        return 0x1001;
+    }
+
+    private int getImageViewId() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return View.generateViewId();
+        }
+        return 0x1002;
     }
 }

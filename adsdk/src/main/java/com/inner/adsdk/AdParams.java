@@ -81,7 +81,6 @@ public class AdParams {
         sdkParams.setAdChoices(commonParams.getAdChoices());
         sdkParams.setAdMediaView(commonParams.getAdMediaView());
         sdkParams.setAdSponsored(commonParams.getAdSponsored());
-        sdkParams.setAdPrivacy(commonParams.getAdPrivacy());
     }
 
     public static class Builder {
@@ -171,11 +170,6 @@ public class AdParams {
 
         public Builder setAdSocial(String sdk, int adSocial) {
             getParams(sdk).setAdSocial(adSocial);
-            return this;
-        }
-
-        public Builder setAdPrivacy(String sdk, int adPrivacy) {
-            getParams(sdk).setAdPrivacy(adPrivacy);
             return this;
         }
 
