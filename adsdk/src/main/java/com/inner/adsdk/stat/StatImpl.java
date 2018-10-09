@@ -230,6 +230,15 @@ public class StatImpl implements IStat {
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
         }
+        if (extra != null && !extra.isEmpty()) {
+            for (Map.Entry<String, String> entry : extra.entrySet()) {
+                if (entry != null) {
+                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
+                        eventValue.put(entry.getKey(), entry.getValue());
+                    }
+                }
+            }
+        }
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.appsflyer.AppsFlyerLib");
