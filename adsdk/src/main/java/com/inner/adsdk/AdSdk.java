@@ -114,6 +114,10 @@ public class AdSdk {
         }
     }
 
+    public String getString(String key) {
+        return DataManager.get(mContext).getString(key);
+    }
+
     private AdPlaceLoader getAdLoader(String pidName) {
         return getAdLoader(pidName, false);
     }
