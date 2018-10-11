@@ -189,4 +189,11 @@ public class DataManager {
         }
         return null;
     }
+
+    public String getString(String key) {
+        if (mDataRequest != null) {
+            return mDataRequest.getString(key);
+        }
+        return null;
+    }
 }
