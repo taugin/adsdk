@@ -62,9 +62,6 @@ public class CtrChecker implements Runnable {
                 return;
             }
         }
-        if (pidConfig.getCtr() < MIN_CTR_VALUE || pidConfig.getCtr() > MAX_CTR_VALUE) {
-            return;
-        }
         handleControlCTR(activity, pidConfig);
     }
 
@@ -73,8 +70,9 @@ public class CtrChecker implements Runnable {
         mActivity = activity;
         mPidConfig = pidConfig;
         boolean needControlCTR = needControlCTR(pidConfig != null ? pidConfig.getCtr() : 0);
-        Log.v(Log.TAG, "pidname : " + pidConfig.getAdPlaceName() + " , ncc : " + needControlCTR + " , ffc : " + pidConfig.isFinishForCtr());
-        if (mHandler != null && needControlCTR) {
+        long delayClickTime = pidConfig != null ? pidConfig.getDelayClickTime() : 0;
+        Log.v(Log.TAG, "pidname : " + pidConfig.getAdPlaceName() + " , ncc : " + needControlCTR + " , ffc : " + pidConfig.isFinishForCtr() + " , dct : " + delayClickTime);
+        if (mHandler != null && (needControlCTR || delayClickTime > 0)) {
             mHandler.removeCallbacks(this);
             mHandler.postDelayed(this, DELAY_HANDLE_CTR);
         }
@@ -91,8 +89,9 @@ public class CtrChecker implements Runnable {
         try {
             if (ctr < MIN_CTR_VALUE || ctr > MAX_CTR_VALUE) return false;
             int randomVal = mRandom.nextInt(MAX_CTR_VALUE);
-            return randomVal > ctr;
+            return randomVal < ctr;
         } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
         return false;
     }
@@ -102,21 +101,54 @@ public class CtrChecker implements Runnable {
         if (mActivity != null) {
             try {
                 List<View> allViews = getAllChildViews(mActivity.getWindow().getDecorView());
-                if (allViews != null && !allViews.isEmpty()) {
-                    for (View view : allViews) {
-                        if (view instanceof WebView || (view != null && view.isClickable())) {
-                            if (mHandleView != null) {
-                                mHandleView.add(view);
-                            }
-                            handleViewCtr(view);
-                        }
-                    }
+                long delayClickTime = 0;
+                if (mPidConfig != null) {
+                    delayClickTime = mPidConfig.getDelayClickTime();
+                }
+                if (delayClickTime > 0) {
+                    interceptClickDelayTime(allViews, delayClickTime);
+                } else {
+                    interceptClickForCtr(allViews);
                 }
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e);
             }
         } else {
             Log.v(Log.TAG, "mActivity == null");
+        }
+    }
+
+    private void interceptClickForCtr(List<View> allViews) {
+        if (allViews != null && !allViews.isEmpty()) {
+            for (View view : allViews) {
+                if (view instanceof WebView || (view != null && view.isClickable())) {
+                    if (mHandleView != null) {
+                        mHandleView.add(view);
+                    }
+                    handleViewCtr(view);
+                }
+            }
+        }
+    }
+
+    private void interceptClickDelayTime(List<View> allViews, long delayClickTime) {
+        if (allViews != null && !allViews.isEmpty()) {
+            for (View view : allViews) {
+                if (view instanceof WebView || (view != null && view.isClickable())) {
+                    if (mHandleView != null) {
+                        mHandleView.add(view);
+                    }
+                    handleViewDelayTime(view);
+                }
+            }
+            if (mHandler != null) {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        restoreViewClick();
+                    }
+                }, delayClickTime);
+            }
         }
     }
 
@@ -150,13 +182,31 @@ public class CtrChecker implements Runnable {
         });
     }
 
+    /**
+     * 设置按钮禁止点击
+     *
+     * @param view
+     */
+    private void handleViewDelayTime(final View view) {
+        if (mActivity == null || view == null) {
+            Log.v(Log.TAG, "mActivity == null or view == null");
+            return;
+        }
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+    }
+
     private void finishAdActivity() {
         Log.d(Log.TAG, "");
         try {
             if (mActivity != null) {
                 mActivity.onBackPressed();
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
     }

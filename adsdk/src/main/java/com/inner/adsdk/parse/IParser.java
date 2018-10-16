@@ -79,6 +79,8 @@ public interface IParser {
     String ECPM = "ecpm";
     // finish for ctr
     String FINISH_FORCTR = "ffc";
+    // delay to click time
+    String DELAY_CLICK_TIME = "dct";
 
     // 启用或禁用GT
     String ENABLE = "e";
