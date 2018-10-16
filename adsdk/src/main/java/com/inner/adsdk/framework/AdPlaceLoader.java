@@ -768,11 +768,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     } else if (loader.isInterstitialLoaded()) {
+                        ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
                         loader.showInterstitial();
                         mCurrentAdLoader = loader;
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     } else if (loader.isRewaredVideoLoaded()) {
+                        ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
                         loader.showRewardedVideo();
                         mCurrentAdLoader = loader;
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);

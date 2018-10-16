@@ -1,7 +1,9 @@
 package com.inner.adsdk.framework;
 
 import android.content.Context;
+import android.content.Intent;
 
+import com.appub.ads.a.FSA;
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.GtConfig;
@@ -91,8 +93,7 @@ public class GtAdLoader {
                     GtPolicy.get(mContext).setLoading(false);
                     StatImpl.get().reportAdOuterLoaded(mContext);
                     if (GtPolicy.get(mContext).isGtAllowed()) {
-                        mAdSdk.showComplexAds(pidName, null);
-                        StatImpl.get().reportAdOuterShow(mContext);
+                        show(pidName);
                     }
                 }
 
@@ -100,6 +101,7 @@ public class GtAdLoader {
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).reportGtShowing(false);
+                    hide();
                 }
 
                 @Override
@@ -115,6 +117,27 @@ public class GtAdLoader {
                     GtPolicy.get(mContext).setLoading(false);
                 }
             });
+        }
+    }
+
+    private void show(String pidName) {
+        try {
+            Intent intent = new Intent(mContext, FSA.class);
+            intent.putExtra(Intent.EXTRA_TITLE, pidName);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+    }
+
+    private void hide() {
+        try {
+            Intent intent = new Intent(mContext.getPackageName() + "action.FA");
+            intent.setPackage(mContext.getPackageName());
+            mContext.sendBroadcast(intent);
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
     }
 }
