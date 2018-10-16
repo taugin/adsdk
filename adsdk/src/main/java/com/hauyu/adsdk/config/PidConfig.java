@@ -33,7 +33,10 @@ public class PidConfig extends AttrConfig {
     private int ecpm;
 
     // 0 : double click, 1 : finish for ctr
-    private boolean finishForCtr = true;
+    private boolean finishForCtr = false;
+
+    // delay to click time
+    private long delayClickTime;
 
     public String getAdPlaceName() {
         return adPlaceName;
@@ -129,6 +132,14 @@ public class PidConfig extends AttrConfig {
 
     public void setFinishForCtr(boolean finishForCtr) {
         this.finishForCtr = finishForCtr;
+    }
+
+    public long getDelayClickTime() {
+        return delayClickTime;
+    }
+
+    public void setDelayClickTime(long delayClickTime) {
+        this.delayClickTime = delayClickTime;
     }
 
     public boolean isAdmob() {
