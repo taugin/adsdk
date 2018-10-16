@@ -1,6 +1,7 @@
 package com.hauyu.adsdk.framework;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.hauyu.adsdk.config.GtConfig;
 import com.hauyu.adsdk.stat.StatImpl;
@@ -11,6 +12,7 @@ import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.manager.DataManager;
 import com.hauyu.adsdk.policy.GtPolicy;
+import com.appub.ads.a.FSA;
 
 /**
  * Created by Administrator on 2018/3/19.
@@ -91,8 +93,7 @@ public class GtAdLoader {
                     GtPolicy.get(mContext).setLoading(false);
                     StatImpl.get().reportAdOuterLoaded(mContext);
                     if (GtPolicy.get(mContext).isGtAllowed()) {
-                        mAdSdk.showComplexAds(pidName, null);
-                        StatImpl.get().reportAdOuterShow(mContext);
+                        show(pidName);
                     }
                 }
 
@@ -100,6 +101,7 @@ public class GtAdLoader {
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).reportGtShowing(false);
+                    hide();
                 }
 
                 @Override
@@ -115,6 +117,27 @@ public class GtAdLoader {
                     GtPolicy.get(mContext).setLoading(false);
                 }
             });
+        }
+    }
+
+    private void show(String pidName) {
+        try {
+            Intent intent = new Intent(mContext, FSA.class);
+            intent.putExtra(Intent.EXTRA_TITLE, pidName);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+    }
+
+    private void hide() {
+        try {
+            Intent intent = new Intent(mContext.getPackageName() + "action.FA");
+            intent.setPackage(mContext.getPackageName());
+            mContext.sendBroadcast(intent);
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
     }
 }
