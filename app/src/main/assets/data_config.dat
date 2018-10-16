@@ -21,7 +21,7 @@
     "i": 60000
   },
   "gtconfig": {
-    "e": 0,
+    "e": 1,
     "d": 3600,
     "i": 1800,
     "mc": 20,
@@ -244,12 +244,14 @@
         {
           "sdk": "adx",
           "type": "interstitial",
-          "pid": "ca-app-pub-3940256099942544/1033173712"
+          "pid": "ca-app-pub-3940256099942544/1033173712",
+          "dct":2000
         },
         {
           "sdk": "wemob",
           "type": "interstitial",
-          "pid": "interstitial1"
+          "pid": "interstitial1",
+          "dct":2000
         }
       ],
       "maxcount": 100,
