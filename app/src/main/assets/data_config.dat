@@ -236,6 +236,21 @@
       "as": 0,
       "pids": [
         {
+          "sdk": "wemob",
+          "type": "native",
+          "pid": "native1",
+          "disable": 0
+        },{
+          "sdk": "mopub",
+          "type": "native",
+          "pid": "11a17b188668469fb0412708c3d16813",
+          "disable": 0
+        },{
+          "sdk": "appnext",
+          "type": "native",
+          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
+          "disable": 0
+        },{
           "sdk": "dfp",
           "type": "native",
           "pid": "/6499/example/native",
