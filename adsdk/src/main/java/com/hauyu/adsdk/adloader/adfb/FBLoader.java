@@ -44,6 +44,9 @@ public class FBLoader extends AbstractSdkLoader {
     private AdView loadingView;
     private RewardedVideoAd rewardedVideoAd;
 
+    private NativeAd gNativeAd;
+    private AdView gBannerView;
+
     @Override
     public boolean isModuleLoaded() {
         try {
@@ -186,6 +189,7 @@ public class FBLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
+            gBannerView = bannerView;
             bannerView = null;
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -475,6 +479,7 @@ public class FBLoader extends AbstractSdkLoader {
         FBBindNativeView fbBindNativeView = new FBBindNativeView();
         clearCachedAdTime(nativeAd);
         fbBindNativeView.bindFBNative(mParams, viewGroup, nativeAd, mPidConfig);
+        gNativeAd = nativeAd;
         nativeAd = null;
     }
 
@@ -640,14 +645,13 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     public void destroy() {
-        if (fbInterstitial != null) {
-            fbInterstitial.destroy();
+        if (gBannerView != null) {
+            gBannerView.destroy();
+            gBannerView = null;
         }
-        if (bannerView != null) {
-            bannerView.destroy();
-        }
-        if (nativeAd != null) {
-            nativeAd.destroy();
+        if (gNativeAd != null) {
+            gNativeAd.destroy();
+            gNativeAd = null;
         }
     }
 

@@ -53,6 +53,9 @@ public class AdDfpLoader extends AbstractSdkLoader {
     private AdLoader.Builder loadingBuilder;
     private RewardedVideoAd rewardedVideoAd;
 
+    private PublisherAdView gBannerView;
+    private UnifiedNativeAd gNativeAd;
+
     @Override
     public boolean isModuleLoaded() {
         try {
@@ -209,6 +212,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
+            gBannerView = bannerView;
             bannerView = null;
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -501,6 +505,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
         AdDfpBindNativeView adDfpBindNativeView = new AdDfpBindNativeView();
         clearCachedAdTime(nativeAd);
         adDfpBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
+        gNativeAd = nativeAd;
         nativeAd = null;
     }
 
@@ -682,11 +687,13 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
     @Override
     public void destroy() {
-        if (bannerView != null) {
-            bannerView.destroy();
+        if (gBannerView != null) {
+            gBannerView.destroy();
+            gBannerView = null;
         }
-        if (nativeAd != null) {
-            nativeAd = null;
+        if (gNativeAd != null) {
+            gNativeAd.destroy();
+            gNativeAd = null;
         }
     }
 

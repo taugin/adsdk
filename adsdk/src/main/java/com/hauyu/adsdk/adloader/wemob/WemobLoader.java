@@ -30,6 +30,9 @@ public class WemobLoader extends AbstractSdkLoader {
     private NativeAd nativeAd;
     private Params mParams;
 
+    private BannerAdView gBannerView;
+    private NativeAd gNativeAd;
+
     @Override
     public boolean isModuleLoaded() {
         try {
@@ -123,6 +126,10 @@ public class WemobLoader extends AbstractSdkLoader {
             @Override
             public void onAdClosed() {
                 Log.v(Log.TAG, "");
+                if (interstitialAd != null) {
+                    interstitialAd.destroy();
+                    interstitialAd = null;
+                }
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
@@ -180,6 +187,7 @@ public class WemobLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
+            gBannerView = bannerView;
             bannerView = null;
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -459,19 +467,19 @@ public class WemobLoader extends AbstractSdkLoader {
         WemobBindNativeView wemobBindNativeView = new WemobBindNativeView();
         clearCachedAdTime(nativeAd);
         wemobBindNativeView.bindWemobNative(mParams, viewGroup, nativeAd, mPidConfig);
+        gNativeAd = nativeAd;
         nativeAd = null;
     }
 
     @Override
     public void destroy() {
-        if (interstitialAd != null) {
-            interstitialAd.destroy();
+        if (gBannerView != null) {
+            gBannerView.destroy();
+            gBannerView = null;
         }
-        if (bannerView != null) {
-            bannerView.destroy();
-        }
-        if (nativeAd != null) {
-            nativeAd.destroy();
+        if (gNativeAd != null) {
+            gNativeAd.destroy();
+            gNativeAd = null;
         }
     }
 

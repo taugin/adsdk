@@ -43,7 +43,10 @@ public class MopubLoader extends AbstractSdkLoader {
     private MoPubStaticNativeAdRenderer moPubAdRenderer;
     private NativeAd nativeAd;
     private Params mParams;
-    private NativeAd mNativeAd;
+
+
+    private NativeAd gNativeAd;
+    private MoPubView gMoPubView;
 
     @Override
     public boolean isModuleLoaded() {
@@ -219,6 +222,7 @@ public class MopubLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
+            gMoPubView = moPubView;
             moPubView = null;
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -335,7 +339,10 @@ public class MopubLoader extends AbstractSdkLoader {
             @Override
             public void onInterstitialDismissed(MoPubInterstitial interstitial) {
                 Log.v(Log.TAG, "");
-                moPubInterstitial = null;
+                if (moPubInterstitial != null) {
+                    moPubInterstitial.destroy();
+                    moPubInterstitial = null;
+                }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
@@ -618,8 +625,8 @@ public class MopubLoader extends AbstractSdkLoader {
     }
 
     private void reportMoPubNativeType() {
-        if (mNativeAd != null) {
-            MoPubAdRenderer render = mNativeAd.getMoPubAdRenderer();
+        if (gNativeAd != null) {
+            MoPubAdRenderer render = gNativeAd.getMoPubAdRenderer();
             if (render instanceof MoPubStaticNativeAdRenderer) {
                 if (mStat != null) {
                     mStat.reportAdShow(mContext, getAdPlaceName() + "_static", getSdkName(), getAdType(), null);
@@ -635,7 +642,7 @@ public class MopubLoader extends AbstractSdkLoader {
     @Override
     public void showNative(ViewGroup viewGroup) {
         Log.v(Log.TAG, "showNative - mopub");
-        mNativeAd = nativeAd;
+        gNativeAd = nativeAd;
         if (nativeAd != null) {
             clearCachedAdTime(nativeAd);
             nativeAd.setMoPubNativeEventListener(new NativeAd.MoPubNativeEventListener() {
@@ -739,11 +746,13 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public void destroy() {
-        if (moPubInterstitial != null) {
-            moPubInterstitial.destroy();
+        if (gMoPubView != null) {
+            gMoPubView.destroy();
+            gMoPubView = null;
         }
-        if (moPubView != null) {
-            moPubView.destroy();
+        if (gNativeAd != null) {
+            gNativeAd.destroy();
+            gNativeAd = null;
         }
     }
 
