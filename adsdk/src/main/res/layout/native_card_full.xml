@@ -113,9 +113,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
-                    android:gravity="left|top"
+                    android:gravity="center"
                     android:singleLine="true"
-                    android:text="One Clean is a light, fast and smart phone cleaner for your Android phones or tablet."
+                    android:text="sub title"
                     android:textColor="@color/secondaryTextColor"
                     android:textSize="12sp"
                     android:visibility="gone" />
