@@ -137,4 +137,12 @@ public interface IStat {
      * @param pid
      */
     public void reportAdClickForLTV(Context context, String sdk, String pid);
+
+    /**
+     * 上报FSA结束事件
+     * @param context
+     * @param key
+     * @param value
+     */
+    public void reportFinishFSA(Context context, String key, String value);
 }

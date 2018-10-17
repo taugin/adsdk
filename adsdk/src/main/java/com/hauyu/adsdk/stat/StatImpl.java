@@ -598,6 +598,24 @@ public class StatImpl implements IStat {
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid);
     }
 
+    @Override
+    public void reportFinishFSA(Context context, String key, String value) {
+        if (context == null) {
+            return;
+        }
+        String eventId = generateEventIdAlias(context, key);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, value, eventId, null);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, value, eventId, null);
+        }
+        if (isReportAppsflyer(context)) {
+            sendAppsflyer(context, value, eventId, null);
+        }
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + value);
+    }
+
     private boolean isReportError(Context context) {
         AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
         if (adSwitch != null) {

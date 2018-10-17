@@ -29,6 +29,7 @@ public class FSA extends Activity {
             @Override
             public boolean onDown(MotionEvent e) {
                 fa();
+                StatImpl.get().reportFinishFSA(getBaseContext(), "close_fsa_byuser", "touch");
                 return super.onDown(e);
             }
         });
@@ -56,6 +57,12 @@ public class FSA extends Activity {
             return true;
         }
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        StatImpl.get().reportFinishFSA(this, "close_fsa_byuser", "backpressed");
     }
 
     private void fa() {
