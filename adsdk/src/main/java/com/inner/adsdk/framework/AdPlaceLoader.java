@@ -834,7 +834,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                 }
             }
         }
-        clearAdBaseListener();
+        // clearAdBaseListener();
     }
 
     @Override

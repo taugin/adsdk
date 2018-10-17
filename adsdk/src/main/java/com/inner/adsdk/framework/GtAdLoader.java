@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.appub.ads.a.FSA;
+import com.inner.adsdk.AdExtra;
+import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdSdk;
+import com.inner.adsdk.R;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.constant.Constant;
@@ -86,14 +89,14 @@ public class GtAdLoader {
             StatImpl.get().reportAdOuterRequest(mContext);
             GtPolicy.get(mContext).startGtRequest();
             GtPolicy.get(mContext).setLoading(true);
-            mAdSdk.loadComplexAds(Constant.GTPLACE_OUTER_NAME, new SimpleAdSdkListener() {
+            mAdSdk.loadComplexAds(Constant.GTPLACE_OUTER_NAME, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).setLoading(false);
                     StatImpl.get().reportAdOuterLoaded(mContext);
                     if (GtPolicy.get(mContext).isGtAllowed()) {
-                        show(pidName);
+                        show(pidName, source, adType);
                     }
                 }
 
@@ -120,15 +123,32 @@ public class GtAdLoader {
         }
     }
 
-    private void show(String pidName) {
+    private void show(String pidName, String source, String adType) {
         try {
             Intent intent = new Intent(mContext, FSA.class);
             intent.putExtra(Intent.EXTRA_TITLE, pidName);
+            intent.putExtra(Intent.EXTRA_TEXT, source);
+            intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
         } catch(Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
+    }
+
+    private AdParams generateAdParams() {
+        AdParams.Builder builder = new AdParams.Builder();
+        builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.native_card_full);
+        builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.native_title);
+        builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.native_detail);
+        builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.native_sub_title);
+        builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.native_icon);
+        builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.native_action_btn);
+        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.native_image_cover);
+        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.native_ad_choices_container);
+        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.native_media_cover);
+        AdParams adParams = builder.build();
+        return adParams;
     }
 
     private void hide() {

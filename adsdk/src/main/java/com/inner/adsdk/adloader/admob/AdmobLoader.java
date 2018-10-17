@@ -53,6 +53,9 @@ public class AdmobLoader extends AbstractSdkLoader {
     private UnifiedNativeAd nativeAd;
     private Params mParams;
 
+    private AdView gBannerView;
+    private UnifiedNativeAd gNativeAd;
+
     @Override
     public boolean isModuleLoaded() {
         try {
@@ -209,6 +212,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
+            gBannerView = bannerView;
             bannerView = null;
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -666,6 +670,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         AdmobBindNativeView admobBindNativeView = new AdmobBindNativeView();
         clearCachedAdTime(nativeAd);
         admobBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
+        gNativeAd = nativeAd;
         nativeAd = null;
     }
 
@@ -691,8 +696,13 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public void destroy() {
-        if (bannerView != null) {
-            bannerView.destroy();
+        if (gBannerView != null) {
+            gBannerView.destroy();
+            gBannerView = null;
+        }
+        if (gNativeAd != null) {
+            gNativeAd.destroy();
+            gNativeAd = null;
         }
     }
 

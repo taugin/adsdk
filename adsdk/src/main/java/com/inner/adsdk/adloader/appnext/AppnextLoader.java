@@ -53,6 +53,9 @@ public class AppnextLoader extends AbstractSdkLoader {
     private BannerView loadingView;
     private RewardedVideo rewardedVideoAd;
 
+    private BannerView gBannerView;
+    private NativeAd gNativeAd;
+
     @Override
     public boolean isModuleLoaded() {
         try {
@@ -200,6 +203,7 @@ public class AppnextLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
+            gBannerView = bannerView;
             bannerView = null;
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -488,6 +492,7 @@ public class AppnextLoader extends AbstractSdkLoader {
         AppnextBindNativeView appnextBindNativeView = new AppnextBindNativeView();
         clearCachedAdTime(nativeAd);
         appnextBindNativeView.bindAppnextNative(mParams, viewGroup, nativeAd, mPidConfig);
+        gNativeAd = nativeAd;
         nativeAd = null;
     }
 
@@ -663,14 +668,13 @@ public class AppnextLoader extends AbstractSdkLoader {
 
     @Override
     public void destroy() {
-        if (interstitial != null) {
-            interstitial.destroy();
+        if (gBannerView != null) {
+            gBannerView.destroy();
+            gBannerView = null;
         }
-        if (bannerView != null) {
-            bannerView.destroy();
-        }
-        if (nativeAd != null) {
-            nativeAd.destroy();
+        if (gNativeAd != null) {
+            gNativeAd.destroy();
+            gNativeAd = null;
         }
     }
 

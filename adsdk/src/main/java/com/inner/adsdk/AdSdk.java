@@ -361,7 +361,7 @@ public class AdSdk {
     public void destroy(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            mAdLoaders.remove(pidName);
+            // mAdLoaders.remove(pidName);
             loader.destroy();
         }
     }

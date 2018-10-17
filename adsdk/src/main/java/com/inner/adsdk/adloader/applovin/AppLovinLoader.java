@@ -39,6 +39,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     private AppLovinIncentivizedInterstitial incentivizedInterstitial;
 
+    private AppLovinAdView gAppLovinAdView;
+
     @Override
     public boolean isModuleLoaded() {
         try {
@@ -182,6 +184,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
+            gAppLovinAdView = appLovinAdView;
             appLovinAdView = null;
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -522,6 +525,14 @@ public class AppLovinLoader extends AbstractSdkLoader {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void destroy() {
+        if (gAppLovinAdView != null) {
+            gAppLovinAdView.destroy();
+            gAppLovinAdView = null;
+        }
     }
 
     private String codeToError(int code) {
