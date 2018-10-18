@@ -66,6 +66,7 @@ public class Constant {
     public static final String GTPLACE_OUTER_NAME = "gt_outer_place";
     public static final String ATPLACE_OUTER_NAME = "at_outer_place";
     public static final String STPLACE_OUTER_NAME = "st_outer_place";
+    public static final String NTPLACE_OUTER_NAME = "nt_outer_place";
     public static final String ADIDS_NAME = "adids";
     public static final String ADPOLICY_NAME = "gtconfig";
     public static final String STPOLICY_NAME = "stconfig";
