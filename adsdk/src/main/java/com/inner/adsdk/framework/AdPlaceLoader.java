@@ -747,16 +747,39 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     }
 
     /**
+     * 检测是否是指定的source和adtype
+     * @param loader
+     * @param source
+     * @param adType
+     * @return
+     */
+    private boolean checkSourceAndType(ISdkLoader loader, String source, String adType) {
+        if (loader == null) {
+            return false;
+        }
+        if (!TextUtils.isEmpty(source) && !TextUtils.equals(loader.getSdkName(), source)) {
+            return false;
+        }
+        if (!TextUtils.isEmpty(adType) && !TextUtils.equals(loader.getAdType(), adType)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * 展示混合广告
      *
      * @param adContainer
      */
     @Override
-    public void showComplexAds(ViewGroup adContainer) {
+    public void showComplexAds(ViewGroup adContainer, String source, String adType) {
         Log.d(Log.TAG, "");
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null && loader.useAndClearFlag()) {
+                    if (!checkSourceAndType(loader, source, adType)) {
+                        continue;
+                    }
                     if (loader.isBannerLoaded()) {
                         loader.showBanner(adContainer);
                         mCurrentAdLoader = loader;

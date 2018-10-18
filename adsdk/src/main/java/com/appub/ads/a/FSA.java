@@ -69,7 +69,7 @@ public class FSA extends Activity {
     private void showNAd() {
         FrameLayout frameLayout = new FrameLayout(this);
         frameLayout.setBackgroundColor(Color.WHITE);
-        AdSdk.get(this).showComplexAds(mPidName, frameLayout);
+        AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, frameLayout);
         setContentView(frameLayout);
     }
 
@@ -86,7 +86,7 @@ public class FSA extends Activity {
 
     private void showGAd() {
         if (!TextUtils.isEmpty(mPidName)) {
-            AdSdk.get(this).showComplexAds(mPidName, null);
+            AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, null);
             StatImpl.get().reportAdOuterShow(this);
         } else {
             fa();

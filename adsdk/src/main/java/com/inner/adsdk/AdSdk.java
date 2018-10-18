@@ -322,9 +322,13 @@ public class AdSdk {
     }
 
     public void showComplexAds(String pidName, ViewGroup adContainer) {
+        showComplexAds(pidName, null, null, adContainer);
+    }
+
+    public void showComplexAds(String pidName, String source, String adType, ViewGroup adContainer) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            loader.showComplexAds(adContainer);
+            loader.showComplexAds(adContainer, source, adType);
         }
     }
 
