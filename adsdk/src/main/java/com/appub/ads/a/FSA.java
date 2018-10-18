@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.hauyu.adsdk.AdSdk;
@@ -72,6 +73,18 @@ public class FSA extends Activity {
         frameLayout.setBackgroundColor(Color.WHITE);
         AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, frameLayout);
         setContentView(frameLayout);
+        int id = getResources().getIdentifier("native_close", "id", getPackageName());
+        if (id > 0) {
+            View view = findViewById(id);
+            if (view != null) {
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fa();
+                    }
+                });
+            }
+        }
     }
 
     private void initGesture() {
