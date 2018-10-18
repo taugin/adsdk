@@ -164,15 +164,5 @@
             android:paddingRight="20dp"
             android:text="Learn More" />
 
-
-        <ImageView
-            android:id="@+id/native_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@android:drawable/list_selector_background"
-            android:clickable="true"
-            android:src="@android:drawable/ic_menu_close_clear_cancel" />
     </RelativeLayout>
 </FrameLayout>

@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.constant.Constant;
@@ -68,22 +70,41 @@ public class FSA extends Activity {
     }
 
     private void showNAd() {
-        FrameLayout frameLayout = new FrameLayout(this);
-        frameLayout.setBackgroundColor(Color.WHITE);
-        AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, frameLayout);
-        setContentView(frameLayout);
-        int id = getResources().getIdentifier("native_close", "id", getPackageName());
-        if (id > 0) {
-            View view = findViewById(id);
-            if (view != null) {
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        fa();
-                    }
-                });
+        RelativeLayout rootLayout = new RelativeLayout(this);
+        rootLayout.setBackgroundColor(Color.WHITE);
+        setContentView(rootLayout);
+        RelativeLayout adLayout = new RelativeLayout(this);
+        adLayout.setGravity(Gravity.CENTER);
+        rootLayout.addView(adLayout, -1, -1);
+
+        ImageView imageView = generateCloseView();
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-2, -2);
+        int margin = dp2px(this, 10);
+        params.setMargins(margin, margin, 0, 0);
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fa();
             }
-        }
+        });
+        rootLayout.addView(imageView, params);
+
+        AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, adLayout);
+    }
+
+    private int dp2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    private ImageView generateCloseView() {
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+        imageView.setBackgroundResource(android.R.drawable.list_selector_background);
+        imageView.setClickable(true);
+        return imageView;
     }
 
     private void initGesture() {

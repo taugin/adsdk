@@ -149,6 +149,11 @@ public class GtAdLoader {
 
     private AdParams generateAdParams() {
         AdParams.Builder builder = new AdParams.Builder();
+        builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
+        builder.setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE);
+        builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.FB_MEDIUM_RECTANGLE);
+        builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_MEDIUM_RECTANGLE);
+
         builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.native_card_full);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.native_title);
         builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.native_detail);
