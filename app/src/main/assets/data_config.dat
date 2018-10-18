@@ -24,12 +24,13 @@
     "e": 1,
     "d": 3600,
     "i": 1800,
-    "mc": 20,
+    "mc": 100,
     "mv": -1,
     "attr": [],
     "ec": [],
     "ms": [],
-    "so": 1
+    "so": 1,
+    "ntr":50
   },
   "adplaces": [
     {
@@ -166,18 +167,6 @@
       "mode": "con",
       "pids": [
         {
-          "sdk": "dfp",
-          "type": "reward",
-          "pid": "/200187824/A000-test/test-reward-video",
-          "disable": 0
-        },
-        {
-          "sdk": "dfp",
-          "type": "reward",
-          "pid": "/200187824/A000-test/test-video",
-          "disable": 0
-        },
-        {
           "sdk": "admob",
           "type": "reward",
           "pid": "ca-app-pub-3940256099942544/5224354917",
@@ -199,6 +188,12 @@
           "sdk": "appnext",
           "type": "reward",
           "pid": "5d32ae77-1949-4322-808e-c08705deec84",
+          "disable": 1
+        },
+        {
+          "sdk": "dfp",
+          "type": "reward",
+          "pid": "/6499/example/rewarded-video",
           "disable": 0
         }
       ],
@@ -242,37 +237,62 @@
       "as": 0,
       "pids": [
         {
-          "sdk": "wemob",
-          "type": "native",
-          "pid": "native1",
-          "disable": 0
-        },{
-          "sdk": "mopub",
-          "type": "native",
-          "pid": "11a17b188668469fb0412708c3d16813",
-          "disable": 0
-        },{
-          "sdk": "appnext",
-          "type": "native",
-          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 0
-        },{
-          "sdk": "dfp",
-          "type": "native",
-          "pid": "/6499/example/native",
-          "disable": 0
-        },{
           "sdk": "adx",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "dct":2000,
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "wemob",
           "type": "interstitial",
           "pid": "interstitial1",
           "dct":2000,
+          "disable": 0
+        }
+      ],
+      "maxcount": 100,
+      "percent": 100
+    },
+    {
+      "name": "nt_outer_place",
+      "mode": "con",
+      "as": 0,
+      "pids": [
+        {
+          "sdk": "admob",
+          "type": "banner",
+          "pid": "ca-app-pub-3940256099942544/6300978111",
+          "disable": 0
+        },
+        {
+          "sdk": "mopub",
+          "type": "native",
+          "pid": "11a17b188668469fb0412708c3d16813",
+          "disable": 1
+        },
+        {
+           "sdk": "admob",
+           "type": "native",
+           "pid": "ca-app-pub-3940256099942544/2247696110",
+           "disable":0
+        },
+        {
+          "sdk": "appnext",
+          "type": "native",
+          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
+          "disable": 1
+        },
+        {
+          "sdk": "dfp",
+          "type": "native",
+          "pid": "/6499/example/native",
+          "disable": 1
+        },
+        {
+          "sdk": "wemob",
+          "type": "native",
+          "pid": "native1",
           "disable": 1
         }
       ],
