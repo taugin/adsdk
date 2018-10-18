@@ -11,6 +11,7 @@ public class AttrConfig {
     private List<String> countryList;
     private List<String> attrList;
     private List<String> mediaList;
+    private int ntRate;
 
     public List<String> getCountryList() {
         return countryList;
@@ -34,5 +35,13 @@ public class AttrConfig {
 
     public void setMediaList(List<String> mediaList) {
         this.mediaList = mediaList;
+    }
+
+    public int getNtRate() {
+        return ntRate;
+    }
+
+    public void setNtRate(int ntRate) {
+        this.ntRate = ntRate;
     }
 }

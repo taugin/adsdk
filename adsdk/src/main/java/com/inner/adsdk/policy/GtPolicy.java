@@ -98,6 +98,20 @@ public class GtPolicy implements Handler.Callback {
         Utils.putLong(mContext, Constant.PREF_GT_REQUEST_TIME, System.currentTimeMillis());
     }
 
+    public int getNTRate() {
+        int nTRate = 0;
+        if (mGtConfig != null) {
+            nTRate = mGtConfig.getNtRate();
+        }
+        if (nTRate < 0) {
+            nTRate = 0;
+        }
+        if (nTRate > 100) {
+            nTRate = 100;
+        }
+        return nTRate;
+    }
+
     private long getTimeout() {
         long timeOut = 0;
         if (mGtConfig != null) {

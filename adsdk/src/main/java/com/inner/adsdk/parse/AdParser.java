@@ -299,6 +299,9 @@ public class AdParser implements IParser {
                     attrConfig.setMediaList(list);
                 }
             }
+            if (jobj.has(NTRATE)) {
+                attrConfig.setNtRate(jobj.getInt(NTRATE));
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "parseAttrConfig error : " + e);
         }
