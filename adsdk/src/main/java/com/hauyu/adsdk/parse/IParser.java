@@ -102,6 +102,8 @@ public interface IParser {
     String MEDIA_SOURCE = "ms";
     // 屏幕方向 0 : undefined, 1: portrait, 2 : landscape
     String SCREEN_ORIENTATION = "so";
+    // native gt 比例
+    String NTRATE = "ntr";
 
     // 阻止重复加载(如果当前loader正在处于加载中，则不再重新加载)
     String BLOCK_LOADING = "bl";

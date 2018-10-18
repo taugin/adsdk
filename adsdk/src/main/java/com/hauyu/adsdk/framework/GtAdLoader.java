@@ -17,6 +17,8 @@ import com.hauyu.adsdk.manager.DataManager;
 import com.hauyu.adsdk.policy.GtPolicy;
 import com.hauyu.adsdk.stat.StatImpl;
 
+import java.util.Random;
+
 /**
  * Created by Administrator on 2018/3/19.
  */
@@ -89,7 +91,7 @@ public class GtAdLoader {
             StatImpl.get().reportAdOuterRequest(mContext);
             GtPolicy.get(mContext).startGtRequest();
             GtPolicy.get(mContext).setLoading(true);
-            mAdSdk.loadComplexAds(Constant.GTPLACE_OUTER_NAME, generateAdParams(), new SimpleAdSdkListener() {
+            mAdSdk.loadComplexAds(getNextPidName(), generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
@@ -121,6 +123,15 @@ public class GtAdLoader {
                 }
             });
         }
+    }
+
+    private String getNextPidName() {
+        int nTRate = GtPolicy.get(mContext).getNTRate();
+        boolean isNtPid = new Random(System.currentTimeMillis()).nextInt(100) < nTRate;
+        if (isNtPid) {
+            return Constant.NTPLACE_OUTER_NAME;
+        }
+        return Constant.GTPLACE_OUTER_NAME;
     }
 
     private void show(String pidName, String source, String adType) {
