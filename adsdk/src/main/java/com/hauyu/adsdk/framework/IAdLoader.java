@@ -37,7 +37,7 @@ public interface IAdLoader {
     public boolean isComplexAdsLoaded();
     public String getLoadedType();
     public void loadComplexAds(AdParams adParams);
-    public void showComplexAds(ViewGroup adContainer);
+    public void showComplexAds(ViewGroup adContainer, String source, String adType);
 
     public int getAdCount();
     public String getAdMode();
