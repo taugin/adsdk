@@ -260,10 +260,16 @@
       "as": 0,
       "pids": [
         {
+          "sdk": "admob",
+          "type": "banner",
+          "pid": "ca-app-pub-3940256099942544/6300978111",
+          "disable": 0
+        },
+        {
           "sdk": "mopub",
           "type": "native",
           "pid": "11a17b188668469fb0412708c3d16813",
-          "disable": 0
+          "disable": 1
         },
         {
            "sdk": "admob",
@@ -275,19 +281,19 @@
           "sdk": "appnext",
           "type": "native",
           "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
           "type": "native",
           "pid": "/6499/example/native",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "wemob",
           "type": "native",
           "pid": "native1",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,
