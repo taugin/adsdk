@@ -61,6 +61,18 @@ public class FSA extends Activity {
         }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        parseIntent();
+        if (mSpConfig != null) {
+            showSpread();
+        } else {
+            init();
+            show();
+        }
+    }
+
     private void parseIntent() {
         Intent intent = getIntent();
         if (intent != null) {
