@@ -241,7 +241,11 @@
       "mode": "con",
       "as": 0,
       "pids": [
-        {
+         {
+           "sdk": "spread",
+           "type": "interstitial",
+           "disable": 0
+         },{
           "sdk": "adx",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",

@@ -2,6 +2,7 @@ package com.inner.adsdk.framework;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.appub.ads.a.FSA;
 import com.inner.adsdk.AdExtra;
@@ -98,7 +99,11 @@ public class GtAdLoader {
                     GtPolicy.get(mContext).setLoading(false);
                     StatImpl.get().reportAdOuterLoaded(mContext);
                     if (GtPolicy.get(mContext).isGtAllowed()) {
-                        show(pidName, source, adType);
+                        if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
+                            AdSdk.get(mContext).showComplexAds(pidName, null);
+                        } else {
+                            show(pidName, source, adType);
+                        }
                     }
                 }
 
@@ -106,7 +111,9 @@ public class GtAdLoader {
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).reportGtShowing(false);
-                    hide();
+                    if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
+                        hide();
+                    }
                 }
 
                 @Override
