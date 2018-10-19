@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +27,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.constant.Constant;
@@ -229,7 +233,7 @@ public class FSA extends Activity {
             ImageView imageView = generateCloseView();
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-2, -2);
             int margin = dp2px(this, 8);
-            params.setMargins(margin, margin, 0, 0);
+            params.setMargins(margin, margin, margin, margin);
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             imageView.setOnClickListener(new View.OnClickListener() {
@@ -239,6 +243,21 @@ public class FSA extends Activity {
                 }
             });
             rootLayout.addView(imageView, params);
+
+            TextView textView = new TextView(this);
+            textView.setText("sponsored");
+            float[] roundArray = new float[]{16.0F, 16.0F, 16.0F, 16.0F, 16.0F, 16.0F, 16.0F, 16.0F};
+            ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(roundArray, (RectF)null, (float[])null));
+            shapeDrawable.getPaint().setColor(Color.parseColor("#44000000"));
+            textView.setBackground(shapeDrawable);
+            textView.setTextColor(Color.parseColor("#F5F5F5"));
+            params = new RelativeLayout.LayoutParams(-2, -2);
+            margin = dp2px(this, 8);
+            params.setMargins(margin, margin, margin, margin);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            textView.setPadding(margin / 2, margin / 4, margin / 2, margin / 4);
+            rootLayout.addView(textView, params);
 
             String nativeData = NATIVE_TEMPLATE.replace("#COVER_URL#", mSpConfig.getBanner());
             nativeData = nativeData.replace("#ICON_URL#", mSpConfig.getIcon());
