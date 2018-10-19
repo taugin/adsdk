@@ -111,6 +111,13 @@ public class GtPolicy implements Handler.Callback {
         return nTRate;
     }
 
+    public boolean isShowBottomActivity() {
+        if (mGtConfig != null){
+            return mGtConfig.isShowBottomActivity();
+        }
+        return true;
+    }
+
     private long getTimeout() {
         long timeOut = 0;
         if (mGtConfig != null) {
