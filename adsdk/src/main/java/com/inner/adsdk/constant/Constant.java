@@ -16,6 +16,7 @@ public class Constant {
     public static final String AD_SDK_APPLOVIN = "applovin";
     public static final String AD_SDK_MOPUB = "mopub";
     public static final String AD_SDK_APPNEXT = "appnext";
+    public static final String AD_SDK_SPREAD = "spread";
 
     public static final int    NOSET = -1;
     public static final int    BANNER = 1000;
@@ -73,6 +74,7 @@ public class Constant {
     public static final String ATPOLICY_NAME = "atconfig";
     public static final String ADSWITCH_NAME = "adswitch";
     public static final String ADREFS_NAME = "adrefs";
+    public static final String ADSPREAD_NAME = "spconfig";
     // 配置文件中使用的名字======
 
     public static final String AF_STATUS = "af_status";
@@ -84,6 +86,7 @@ public class Constant {
     public static final int AD_ERROR_LOAD = 4;
     public static final int AD_ERROR_TIMEOUT = 5;
     public static final int AD_ERROR_CONTEXT = 6;
+    public static final int AD_ERROR_UNSUPPORT = 7;
 
     public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 }

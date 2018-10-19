@@ -42,7 +42,7 @@
           "sdk": "adx",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
@@ -54,7 +54,7 @@
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "wemob",
@@ -156,8 +156,13 @@
           "sdk": "appnext",
           "type": "interstitial",
           "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 0
-        }
+          "disable": 1
+        },
+         {
+           "sdk": "spread",
+           "type": "interstitial",
+           "disable": 0
+         }
       ],
       "maxcount": 100,
       "percent": 100

@@ -3,10 +3,12 @@ package com.inner.adsdk.parse;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
-import com.inner.adsdk.config.GtConfig;
-import com.inner.adsdk.config.StConfig;
 import com.inner.adsdk.config.AtConfig;
+import com.inner.adsdk.config.GtConfig;
+import com.inner.adsdk.config.SpConfig;
+import com.inner.adsdk.config.StConfig;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -126,6 +128,16 @@ public interface IParser {
     // at show on first page
     String SHOW_ON_FIRST_PAGE = "sofp";
 
+    // banner
+    String BANNER = "banner";
+    String ICON = "icon";
+    String TITLE = "title";
+    String PKGNAME = "pkgname";
+    String SUBTITLE = "subtitle";
+    String DETAIL = "detail";
+    String LINKURL = "linkurl";
+    String CTA = "cta";
+
 
     AdConfig parseAdConfig(String data);
 
@@ -142,4 +154,6 @@ public interface IParser {
     AdSwitch parseAdSwitch(String data);
 
     Map<String, String> parseAdRefs(String data);
+
+    List<SpConfig> parseSpread(String data);
 }

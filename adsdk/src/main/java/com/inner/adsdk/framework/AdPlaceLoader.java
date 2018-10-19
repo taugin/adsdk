@@ -19,6 +19,7 @@ import com.inner.adsdk.adloader.listener.IManagerListener;
 import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
 import com.inner.adsdk.adloader.mopub.MopubLoader;
+import com.inner.adsdk.adloader.spread.SpLoader;
 import com.inner.adsdk.adloader.wemob.WemobLoader;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.PidConfig;
@@ -180,6 +181,17 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                             }
                         } else if (config.isAppnext()) {
                             loader = new AppnextLoader();
+                            if (loader.isModuleLoaded()) {
+                                loader.init(mContext);
+                                loader.setPidConfig(config);
+                                loader.setListenerManager(this);
+                                loader.setAdId(adId);
+                                if (loader.allowUseLoader()) {
+                                    mAdLoaders.add(loader);
+                                }
+                            }
+                        } else if (config.isSpread()) {
+                            loader = new SpLoader();
                             if (loader.isModuleLoaded()) {
                                 loader.init(mContext);
                                 loader.setPidConfig(config);

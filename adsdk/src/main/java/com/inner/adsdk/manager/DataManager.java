@@ -8,6 +8,7 @@ import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.AtConfig;
 import com.inner.adsdk.config.GtConfig;
+import com.inner.adsdk.config.SpConfig;
 import com.inner.adsdk.config.StConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
@@ -17,6 +18,7 @@ import com.inner.adsdk.request.IDataRequest;
 import com.inner.adsdk.request.RemoteConfigRequest;
 import com.inner.adsdk.utils.Utils;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -185,6 +187,16 @@ public class DataManager {
             String data = mDataRequest.getString(Constant.ADREFS_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseAdRefs(data);
+            }
+        }
+        return null;
+    }
+
+    public List<SpConfig> getRemoteSpread() {
+        if (mDataRequest != null) {
+            String data = mDataRequest.getString(Constant.ADSPREAD_NAME);
+            if (!TextUtils.isEmpty(data)) {
+                return mParser.parseSpread(data);
             }
         }
         return null;
