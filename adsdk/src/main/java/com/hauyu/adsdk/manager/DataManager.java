@@ -8,15 +8,17 @@ import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.config.AtConfig;
 import com.hauyu.adsdk.config.GtConfig;
+import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.config.StConfig;
+import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.parse.AdParser;
 import com.hauyu.adsdk.parse.IParser;
 import com.hauyu.adsdk.request.IDataRequest;
 import com.hauyu.adsdk.request.RemoteConfigRequest;
-import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.utils.Utils;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -185,6 +187,16 @@ public class DataManager {
             String data = mDataRequest.getString(Constant.ADREFS_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseAdRefs(data);
+            }
+        }
+        return null;
+    }
+
+    public List<SpConfig> getRemoteSpread() {
+        if (mDataRequest != null) {
+            String data = mDataRequest.getString(Constant.ADSPREAD_NAME);
+            if (!TextUtils.isEmpty(data)) {
+                return mParser.parseSpread(data);
             }
         }
         return null;

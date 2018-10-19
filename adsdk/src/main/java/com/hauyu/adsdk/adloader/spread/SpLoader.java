@@ -1,0 +1,77 @@
+package com.hauyu.adsdk.adloader.spread;
+
+import android.content.Intent;
+
+import com.appub.ads.a.FSA;
+import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
+import com.hauyu.adsdk.config.SpConfig;
+import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.manager.DataManager;
+
+import java.util.List;
+import java.util.Random;
+
+/**
+ * Created by Administrator on 2018-10-19.
+ */
+
+public class SpLoader extends AbstractSdkLoader {
+
+    private List<SpConfig> mSpreads;
+
+    @Override
+    public boolean isModuleLoaded() {
+        return true;
+    }
+
+    @Override
+    public String getSdkName() {
+        return Constant.AD_SDK_SPREAD;
+    }
+
+    @Override
+    public void loadInterstitial() {
+        mSpreads = DataManager.get(mContext).getRemoteSpread();
+        if (mSpreads != null && !mSpreads.isEmpty()) {
+            if (getAdListener() != null) {
+                setLoadedFlag();
+                getAdListener().onInterstitialLoaded();
+            }
+        } else {
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+            }
+        }
+    }
+
+    @Override
+    public boolean isInterstitialLoaded() {
+        return mSpreads != null && !mSpreads.isEmpty();
+    }
+
+    @Override
+    public boolean showInterstitial() {
+        if (mSpreads != null && !mSpreads.isEmpty()) {
+            show();
+            mSpreads = null;
+            return true;
+        }
+        return false;
+    }
+
+    private void show() {
+        try {
+            int size = mSpreads.size();
+            if (size > 0) {
+                SpConfig spConfig = mSpreads.get(new Random(System.currentTimeMillis()).nextInt(size));
+                Intent intent = new Intent(mContext, FSA.class);
+                intent.putExtra(Intent.EXTRA_STREAM, spConfig);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+    }
+}

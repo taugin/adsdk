@@ -96,6 +96,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadInterstitial() {
+        if (getAdListener() != null) {
+            getAdListener().onAdFailed(Constant.AD_ERROR_UNSUPPORT);
+        }
     }
 
     @Override
@@ -105,6 +108,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadNative(Params params) {
+        if (getAdListener() != null) {
+            getAdListener().onAdFailed(Constant.AD_ERROR_UNSUPPORT);
+        }
     }
 
     @Override
@@ -114,6 +120,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadBanner(int adSize) {
+        if (getAdListener() != null) {
+            getAdListener().onAdFailed(Constant.AD_ERROR_UNSUPPORT);
+        }
     }
 
     @Override
@@ -122,6 +131,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadRewardedVideo() {
+        if (getAdListener() != null) {
+            getAdListener().onAdFailed(Constant.AD_ERROR_UNSUPPORT);
+        }
     }
 
     @Override

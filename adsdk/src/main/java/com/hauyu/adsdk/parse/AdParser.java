@@ -2,16 +2,17 @@ package com.hauyu.adsdk.parse;
 
 import android.text.TextUtils;
 
+import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.config.AtConfig;
 import com.hauyu.adsdk.config.AttrConfig;
 import com.hauyu.adsdk.config.GtConfig;
-import com.hauyu.adsdk.config.StConfig;
-import com.hauyu.adsdk.framework.Aes;
-import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.PidConfig;
+import com.hauyu.adsdk.config.SpConfig;
+import com.hauyu.adsdk.config.StConfig;
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.framework.Aes;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -535,5 +536,75 @@ public class AdParser implements IParser {
             Log.v(Log.TAG, "parseAdRefs error : " + e);
         }
         return adRefs;
+    }
+
+    @Override
+    public List<SpConfig> parseSpread(String data) {
+        List<SpConfig> spreads = null;
+        data = getContent(data);
+        try {
+            JSONObject jobj = new JSONObject(data);
+            SpConfig spConfig = parseSpConfig(jobj);
+            spreads = new ArrayList<SpConfig>(1);
+            spreads.add(spConfig);
+        } catch (Exception e) {
+        }
+        if (spreads == null || spreads.isEmpty()) {
+            try {
+                JSONArray jarray = new JSONArray(data);
+                int len = jarray.length();
+                if (len > 0) {
+                    spreads = new ArrayList<SpConfig>(len);
+                    JSONObject jobj = null;
+                    SpConfig spConfig = null;
+                    for (int index = 0; index < len; index++) {
+                        jobj = jarray.getJSONObject(index);
+                        spConfig = parseSpConfig(jobj);
+                        if (spConfig != null) {
+                            spreads.add(spConfig);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.v(Log.TAG, "parseSpread error : " + e);
+            }
+        }
+        return spreads;
+    }
+
+    private SpConfig parseSpConfig(JSONObject jobj) {
+        SpConfig spConfig = null;
+        try {
+            if (jobj != null) {
+                spConfig = new SpConfig();
+                if (jobj.has(BANNER)) {
+                    spConfig.setBanner(jobj.getString(BANNER));
+                }
+                if (jobj.has(ICON)) {
+                    spConfig.setIcon(jobj.getString(ICON));
+                }
+                if (jobj.has(TITLE)) {
+                    spConfig.setTitle(jobj.getString(TITLE));
+                }
+                if (jobj.has(PKGNAME)) {
+                    spConfig.setPkgname(jobj.getString(PKGNAME));
+                }
+                if (jobj.has(SUBTITLE)) {
+                    spConfig.setSubTitle(jobj.getString(SUBTITLE));
+                }
+                if (jobj.has(DETAIL)) {
+                    spConfig.setDetail(jobj.getString(DETAIL));
+                }
+                if (jobj.has(LINKURL)) {
+                    spConfig.setLinkUrl(jobj.getString(LINKURL));
+                }
+                if (jobj.has(CTA)) {
+                    spConfig.setCta(jobj.getString(CTA));
+                }
+            }
+        } catch (Exception e) {
+            Log.v(Log.TAG, "parseSpConfig error : " + e);
+        }
+        return spConfig;
     }
 }

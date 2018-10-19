@@ -5,9 +5,12 @@ import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.config.AtConfig;
 import com.hauyu.adsdk.config.GtConfig;
+import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.config.StConfig;
 
+import java.util.List;
 import java.util.Map;
+
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -126,6 +129,16 @@ public interface IParser {
     // at show on first page
     String SHOW_ON_FIRST_PAGE = "sofp";
 
+    // banner
+    String BANNER = "banner";
+    String ICON = "icon";
+    String TITLE = "title";
+    String PKGNAME = "pkgname";
+    String SUBTITLE = "subtitle";
+    String DETAIL = "detail";
+    String LINKURL = "linkurl";
+    String CTA = "cta";
+
 
     AdConfig parseAdConfig(String data);
 
@@ -142,4 +155,6 @@ public interface IParser {
     AdSwitch parseAdSwitch(String data);
 
     Map<String, String> parseAdRefs(String data);
+
+    List<SpConfig> parseSpread(String data);
 }
