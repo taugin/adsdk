@@ -106,6 +106,8 @@ public interface IParser {
     String SCREEN_ORIENTATION = "so";
     // native gt 比例
     String NTRATE = "ntr";
+    // 是否展示底层activity
+    String SHOW_BOTTOM_ACTIVITY = "sba";
 
     // 阻止重复加载(如果当前loader正在处于加载中，则不再重新加载)
     String BLOCK_LOADING = "bl";

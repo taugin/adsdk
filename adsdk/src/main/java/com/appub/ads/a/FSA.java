@@ -22,6 +22,8 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -52,6 +54,14 @@ public class FSA extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        try {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
         parseIntent();
         if (mSpConfig != null) {
             showSpread();
@@ -259,7 +269,7 @@ public class FSA extends Activity {
             TextView textView = new TextView(this);
             textView.setText("sponsored");
             float[] roundArray = new float[]{16.0F, 16.0F, 16.0F, 16.0F, 16.0F, 16.0F, 16.0F, 16.0F};
-            ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(roundArray, (RectF)null, (float[])null));
+            ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(roundArray, (RectF) null, (float[]) null));
             shapeDrawable.getPaint().setColor(Color.parseColor("#44000000"));
             textView.setBackground(shapeDrawable);
             textView.setTextColor(Color.parseColor("#F5F5F5"));
@@ -330,7 +340,7 @@ public class FSA extends Activity {
                 }
             });
             StatImpl.get().reportAdShow(this, mPidName, mSource, mAdType, null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.v(Log.TAG, "error : " + e);
             finish();
         }

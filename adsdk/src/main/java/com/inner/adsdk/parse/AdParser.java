@@ -171,6 +171,9 @@ public class AdParser implements IParser {
             if (jobj.has(TIMEOUT)) {
                 gtConfig.setTimeOut(jobj.getLong(TIMEOUT));
             }
+            if (jobj.has(SHOW_BOTTOM_ACTIVITY)) {
+                gtConfig.setShowBottomActivity(jobj.getInt(SHOW_BOTTOM_ACTIVITY) == 1);
+            }
             parseAttrConfig(gtConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseGtPolicyInternal error : " + e);
