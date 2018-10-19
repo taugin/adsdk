@@ -8,6 +8,7 @@ import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.manager.DataManager;
+import com.hauyu.adsdk.stat.StatImpl;
 
 import java.util.List;
 import java.util.Random;
@@ -38,6 +39,7 @@ public class SpLoader extends AbstractSdkLoader {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded();
             }
+            StatImpl.get().reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         } else {
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
@@ -67,8 +69,12 @@ public class SpLoader extends AbstractSdkLoader {
                 SpConfig spConfig = mSpreads.get(new Random(System.currentTimeMillis()).nextInt(size));
                 Intent intent = new Intent(mContext, FSA.class);
                 intent.putExtra(Intent.EXTRA_STREAM, spConfig);
+                intent.putExtra(Intent.EXTRA_TITLE, getAdPlaceName());
+                intent.putExtra(Intent.EXTRA_TEXT, getSdkName());
+                intent.putExtra(Intent.EXTRA_TEMPLATE, getAdType());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
+                StatImpl.get().reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

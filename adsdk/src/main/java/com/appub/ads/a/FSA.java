@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -220,7 +219,6 @@ public class FSA extends Activity {
             return;
         }
         try {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             RelativeLayout rootLayout = new RelativeLayout(this);
             rootLayout.setBackgroundColor(Color.WHITE);
             setContentView(rootLayout);
@@ -297,8 +295,10 @@ public class FSA extends Activity {
                     } catch (Exception e) {
                         Log.v(Log.TAG, "error : " + e);
                     }
+                    StatImpl.get().reportAdClick(getBaseContext(), mPidName, mSource, mAdType, null);
                 }
             });
+            StatImpl.get().reportAdShow(this, mPidName, mSource, mAdType, null);
         } catch(Exception e) {
             Log.v(Log.TAG, "error : " + e);
             finish();
