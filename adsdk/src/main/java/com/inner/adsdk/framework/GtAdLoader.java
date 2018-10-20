@@ -102,7 +102,9 @@ public class GtAdLoader {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
                             AdSdk.get(mContext).showComplexAds(pidName, null);
                         } else {
-                            if (GtPolicy.get(mContext).isShowBottomActivity()) {
+                            if (GtPolicy.get(mContext).isShowBottomActivity()
+                                    || Constant.TYPE_BANNER.equals(adType)
+                                    || Constant.TYPE_NATIVE.equals(adType)) {
                                 show(pidName, source, adType);
                             } else {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
@@ -116,7 +118,9 @@ public class GtAdLoader {
                     Log.v(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).reportGtShowing(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
-                            && GtPolicy.get(mContext).isShowBottomActivity()) {
+                            && GtPolicy.get(mContext).isShowBottomActivity()
+                            && !Constant.TYPE_BANNER.equals(adType)
+                            && !Constant.TYPE_NATIVE.equals(adType)) {
                         hide();
                     }
                 }
