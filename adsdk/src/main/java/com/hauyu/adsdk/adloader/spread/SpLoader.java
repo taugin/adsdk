@@ -1,6 +1,9 @@
 package com.hauyu.adsdk.adloader.spread;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 
 import com.appub.ads.a.FSA;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
@@ -75,9 +78,35 @@ public class SpLoader extends AbstractSdkLoader {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
                 StatImpl.get().reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                registerDismiss();
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
     }
+
+    private void registerDismiss() {
+        unregisterDismiss();
+        try {
+            mContext.registerReceiver(mBroadcastReceiver, new IntentFilter(mContext.getPackageName() + ".action.SPDISMISS"));
+        } catch(Exception e) {
+        }
+    }
+
+    private void unregisterDismiss() {
+        try {
+            mContext.unregisterReceiver(mBroadcastReceiver);
+        } catch (Exception e) {
+        }
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            unregisterDismiss();
+            if (getAdListener() != null) {
+                getAdListener().onAdDismiss();
+            }
+        }
+    };
 }

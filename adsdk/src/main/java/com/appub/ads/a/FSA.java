@@ -209,6 +209,10 @@ public class FSA extends Activity {
         } else {
             AdSdk.get(this).destroy(mPidName);
         }
+
+        if (Constant.AD_SDK_SPREAD.equals(mSource)) {
+            sendBroadcast(new Intent(getPackageName() + ".action.SPDISMISS").setPackage(getPackageName()));
+        }
     }
 
     private void register() {
