@@ -182,8 +182,9 @@ public class FSA extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
-                || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType)) {
+        if ((Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
+                || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType))
+                && !Constant.AD_SDK_SPREAD.equals(mSource)) {
             StatImpl.get().reportFinishFSA(this, "close_fsa_byuser", "backpressed");
         }
     }
@@ -225,9 +226,7 @@ public class FSA extends Activity {
         try {
             unregisterReceiver(mBroadcastReceiver);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e);
         }
     }
 
