@@ -35,7 +35,7 @@ android {
 }
 repositories {
     maven {
-        url 'F:\\workdir\\products\\privaterepo'
+        url rootProject.ext.publishUri
     }
 }
 dependencies {
