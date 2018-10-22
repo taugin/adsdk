@@ -35,7 +35,7 @@ android {
 }
 repositories {
     maven {
-        url 'F:\\workdir\\products\\privaterepo'
+        url rootProject.ext.publishUri
     }
 }
 dependencies {
@@ -46,7 +46,7 @@ dependencies {
     if (useProject) {
         implementation project(":adsdk")
     } else {
-        implementation 'com.hauyu:adsdk:2.0.1'
+        implementation 'com.hauyu:adsdk:+'
     }
 }
 
@@ -54,4 +54,3 @@ configurations.all {
     resolutionStrategy.force 'com.google.android.gms:play-services-base:15.0.1'
     resolutionStrategy.force 'com.google.firebase:firebase-analytics:15.0.2'
 }
-apply plugin: 'com.google.gms.google-services'

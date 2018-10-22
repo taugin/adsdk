@@ -54,7 +54,7 @@ apply plugin: 'maven'
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: uri('F:\\workdir\\products\\privaterepo'))
+            repository(url: uri(rootProject.ext.publishUri))
             pom.version = android.defaultConfig.versionName
             pom.artifactId = "adsdk"
             pom.groupId = "com.hauyu"
