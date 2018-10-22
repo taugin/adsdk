@@ -119,6 +119,10 @@ public class AdxLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
+                if (gBannerView != null) {
+                    gBannerView.destroy();
+                    gBannerView = null;
+                }
             }
 
             @Override
