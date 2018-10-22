@@ -145,6 +145,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
+                if (gAppLovinAdView != null) {
+                    gAppLovinAdView.destroy();
+                    gAppLovinAdView = null;
+                }
             }
         });
 
