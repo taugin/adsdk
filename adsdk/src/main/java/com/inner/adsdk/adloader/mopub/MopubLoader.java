@@ -41,7 +41,6 @@ public class MopubLoader extends AbstractSdkLoader {
     private MoPubInterstitial moPubInterstitial;
     private MoPubView loadingView;
     private MoPubView moPubView;
-    private MoPubStaticNativeAdRenderer moPubAdRenderer;
     private NativeAd nativeAd;
     private Params mParams;
 
@@ -246,7 +245,7 @@ public class MopubLoader extends AbstractSdkLoader {
         if (mManagerListener != null) {
             activity = mManagerListener.getActivity();
         }
-        if (activity == null) {
+        if (activity == null && false) {
             Log.v(Log.TAG, "mopub interstitial need an activity context");
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_CONTEXT);
@@ -285,7 +284,7 @@ public class MopubLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        moPubInterstitial = new MoPubInterstitial(mManagerListener.getActivity(), mPidConfig.getPid());
+        moPubInterstitial = new MoPubInterstitial(mContext, mPidConfig.getPid());
         moPubInterstitial.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
             @Override
             public void onInterstitialLoaded(MoPubInterstitial interstitial) {
@@ -407,7 +406,7 @@ public class MopubLoader extends AbstractSdkLoader {
             }
             return;
         }
-        MoPub.onCreate(activity);
+//      MoPub.onCreate(activity);
 
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
@@ -416,6 +415,11 @@ public class MopubLoader extends AbstractSdkLoader {
             }
             return;
         }
+
+        SdkConfiguration sdkConfiguration = new SdkConfiguration.Builder(getPid())
+                .build();
+        MoPub.initializeSdk(activity, sdkConfiguration, initSdkListener());
+
         if (isRewaredVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
