@@ -22,6 +22,7 @@ import com.mopub.mobileads.MoPubInterstitial;
 import com.mopub.mobileads.MoPubRewardedVideoListener;
 import com.mopub.mobileads.MoPubRewardedVideos;
 import com.mopub.mobileads.MoPubView;
+import com.mopub.nativeads.AdMobAdRender;
 import com.mopub.nativeads.MoPubAdRenderer;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
@@ -692,7 +693,8 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
-                if (nativeAd.getMoPubAdRenderer() instanceof MoPubVideoNativeAdRenderer) {
+                if (nativeAd.getMoPubAdRenderer() instanceof MoPubVideoNativeAdRenderer
+                        || nativeAd.getMoPubAdRenderer() instanceof AdMobAdRender) {
                     if (mParams.getAdMediaView() > 0) {
                         View view = adView.findViewById(mParams.getAdMediaView());
                         if (view != null) {
