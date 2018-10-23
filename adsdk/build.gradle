@@ -34,7 +34,7 @@ dependencies {
         exclude group: 'com.google.android.gms'
     }
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
-    implementation 'com.google.firebase:firebase-config:15.0.0'
+    implementation 'com.google.firebase:firebase-config:15.0.2'
     implementation 'com.wemob:wemob:2.3.8'
     implementation 'com.applovin:applovin-sdk:8.1.4'
 
