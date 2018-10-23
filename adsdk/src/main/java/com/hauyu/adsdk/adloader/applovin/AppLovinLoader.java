@@ -56,8 +56,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
     public void init(Context context) {
         super.init(context);
         AppLovinSdk.initializeSdk(context);
-        final AppLovinSdk sdk = AppLovinSdk.getInstance(context);
-        sdk.getSettings().setTestAdsEnabled(true);
     }
 
     public String getSdkName() {
