@@ -126,10 +126,6 @@ public class WemobLoader extends AbstractSdkLoader {
             @Override
             public void onAdClosed() {
                 Log.v(Log.TAG, "");
-                if (gBannerView != null) {
-                    gBannerView.destroy();
-                    gBannerView = null;
-                }
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
