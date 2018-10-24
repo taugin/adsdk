@@ -82,6 +82,7 @@ public class MopubBindNativeView {
         mParams.setAdCover(R.id.native_image_cover);
         mParams.setAdChoices(R.id.native_ad_choices_container);
         mParams.setAdMediaView(R.id.native_media_cover);
+        mParams.setAdRootView(rootView);
         bindNativeViewWithRootView(context, rootView, nativeAd, pidConfig);
     }
 
@@ -112,18 +113,24 @@ public class MopubBindNativeView {
             return;
         }
 
-        bindVideoRender(context, nativeAd);
-        bindStaticRender(context, nativeAd);
-        bindAdMobRender(context, nativeAd);
-        bindFBRender(context, nativeAd);
+        try {
+            bindVideoRender(context, nativeAd);
+            bindStaticRender(context, nativeAd);
+            bindAdMobRender(context, nativeAd);
+            bindFBRender(context, nativeAd);
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
     }
 
     private void bindVideoRender(Context context, MoPubNative nativeAd) {
         View layout = null;
         if (mParams.getNativeRootView() != null) {
             layout = mParams.getNativeRootView();
-        } else {
+        } else if (mParams.getNativeRootLayout() > 0) {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
+        } else {
+            Log.e(Log.TAG, "bindVideoRender  root layout == 0x0");
         }
         MoPubVideoAdRender mopubVideoRender = new MoPubVideoAdRender(getVideoViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(mopubVideoRender);
@@ -157,8 +164,10 @@ public class MopubBindNativeView {
         View layout = null;
         if (mParams.getNativeRootView() != null) {
             layout = mParams.getNativeRootView();
-        } else {
+        } else if (mParams.getNativeRootLayout() > 0) {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
+        } else {
+            Log.e(Log.TAG, "bindStaticRender  root layout == 0x0");
         }
         MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(moPubAdRenderer);
@@ -187,8 +196,10 @@ public class MopubBindNativeView {
         View layout = null;
         if (mParams.getNativeRootView() != null) {
             layout = mParams.getNativeRootView();
-        } else {
+        } else if (mParams.getNativeRootLayout() > 0) {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
+        } else {
+            Log.e(Log.TAG, "bindAdMobRender  root layout == 0x0");
         }
         GooglePlayServicesAdRenderer adRender = new GooglePlayServicesAdRenderer(getVideoViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(adRender);
@@ -198,8 +209,10 @@ public class MopubBindNativeView {
         View layout = null;
         if (mParams.getNativeRootView() != null) {
             layout = mParams.getNativeRootView();
-        } else {
+        } else if (mParams.getNativeRootLayout() > 0) {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
+        } else {
+            Log.e(Log.TAG, "bindFBRender  root layout == 0x0");
         }
         FBAdRender render = new FBAdRender(getStaticViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(render);
@@ -231,13 +244,13 @@ public class MopubBindNativeView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             return View.generateViewId();
         }
-        return 0x1001;
+        return 0x1000001;
     }
 
     private int getImageViewId() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             return View.generateViewId();
         }
-        return 0x1002;
+        return 0x1000002;
     }
 }
