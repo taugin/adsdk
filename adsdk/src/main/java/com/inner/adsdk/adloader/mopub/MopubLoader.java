@@ -194,10 +194,6 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
-                if (gMoPubView != null) {
-                    gMoPubView.destroy();
-                    gMoPubView = null;
-                }
             }
         });
         loadingView.loadAd();
