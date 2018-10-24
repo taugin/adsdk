@@ -90,6 +90,7 @@ public class AdSdk {
      * 初始化
      */
     public void init() {
+        Log.v(Log.TAG, "adver : " + getSdkVersion());
         DataManager.get(mContext).init();
         ActivityMonitor.get(mContext).init();
         StatImpl.get().init();
