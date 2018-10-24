@@ -13,8 +13,8 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Params;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
-import com.mopub.nativeads.AdMobAdRender;
 import com.mopub.nativeads.FBAdRender;
+import com.mopub.nativeads.GooglePlayServicesAdRenderer;
 import com.mopub.nativeads.MediaLayout;
 import com.mopub.nativeads.MediaViewBinder;
 import com.mopub.nativeads.MoPubNative;
@@ -190,7 +190,7 @@ public class MopubBindNativeView {
         } else {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
         }
-        AdMobAdRender adRender = new AdMobAdRender(getVideoViewBinder(context, layout), layout);
+        GooglePlayServicesAdRenderer adRender = new GooglePlayServicesAdRenderer(getVideoViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(adRender);
     }
 
