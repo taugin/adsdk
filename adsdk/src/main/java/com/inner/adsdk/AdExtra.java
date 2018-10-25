@@ -54,6 +54,11 @@ public class AdExtra {
     public static final String AD_SDK_APPNEXT = Constant.AD_SDK_APPNEXT;
 
     /**
+     * INMOBI SDK 名字
+     */
+    public static final String AD_SDK_INMOBI = Constant.AD_SDK_INMOBI;
+
+    /**
      * ADMOB banner尺寸 320 x 50
      */
     public static final int ADMOB_BANNER = Constant.BANNER;
@@ -168,6 +173,16 @@ public class AdExtra {
      * DFP banner尺寸 smart_banner
      */
     public static final int DFP_SMART_BANNER = Constant.SMART_BANNER;
+
+    /**
+     * INMOBI banner尺寸 320 x 50
+     */
+    public static final int INMOBI_BANNER = Constant.BANNER;
+
+    /**
+     * INMOBI banner尺寸 300 x 250
+     */
+    public static final int INMOBI_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
 
     /**
      * 原生广告模板值

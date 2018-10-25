@@ -138,8 +138,10 @@ public class MainActivity extends AppCompatActivity {
         int layoutId = LAYOUT[new Random().nextInt(LAYOUT.length)];
         if (layoutId == R.layout.ad_common_native_card_small) {
             builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
+            builder.setBannerSize(AdExtra.AD_SDK_INMOBI, AdExtra.INMOBI_BANNER);
         } else {
             builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
+            builder.setBannerSize(AdExtra.AD_SDK_INMOBI, AdExtra.INMOBI_MEDIUM_RECTANGLE);
         }
         View view = LayoutInflater.from(this).inflate(layoutId, null);
         // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
