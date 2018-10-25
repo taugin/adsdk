@@ -114,5 +114,30 @@
             android:launchMode="singleInstance"
             android:multiprocess="true"
             android:noHistory="true"/>
+
+        <activity
+            android:name="com.fyber.inneractive.sdk.activities.InneractiveFullscreenAdActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleInstance"
+            android:multiprocess="true"
+            android:noHistory="true"
+            android:taskAffinity=":inneractive"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.fyber.inneractive.sdk.activities.InneractiveInternalBrowserActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:noHistory="true"
+            android:taskAffinity=":inneractive"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <!--<activity-->
+            <!--android:name="com.fyber.inneractive.sdk.activities.InneractiveRichMediaVideoPlayerActivity"-->
+            <!--android:excludeFromRecents="true"-->
+            <!--android:hardwareAccelerated="true"-->
+            <!--android:launchMode="singleInstance"-->
+            <!--android:multiprocess="true"-->
+            <!--android:noHistory="true"-->
+            <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />-->
     </application>
 </manifest>

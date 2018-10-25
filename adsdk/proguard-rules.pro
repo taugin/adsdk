@@ -108,3 +108,8 @@
 -dontwarn com.moat.**
 # skip AVID classes
 -keep class com.integralads.avid.library.* {*;}
+
+# Gson
+-keep class com.google.gson.stream.** { *; }
+-keepattributes EnclosingMethod
+-keep class com.fyber.** { *; }

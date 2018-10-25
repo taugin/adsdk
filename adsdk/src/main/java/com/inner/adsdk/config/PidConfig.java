@@ -182,6 +182,10 @@ public class PidConfig extends AttrConfig {
         return TextUtils.equals(Constant.AD_SDK_INMOBI, sdk);
     }
 
+    public boolean isInnerActive() {
+        return TextUtils.equals(Constant.AD_SDK_INNERACTIVE, sdk);
+    }
+
     public boolean isBannerType() {
         return TextUtils.equals(Constant.TYPE_BANNER, adType);
     }

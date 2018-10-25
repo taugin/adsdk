@@ -18,6 +18,7 @@ public class Constant {
     public static final String AD_SDK_APPNEXT = "appnext";
     public static final String AD_SDK_SPREAD = "spread";
     public static final String AD_SDK_INMOBI = "inmobi";
+    public static final String AD_SDK_INNERACTIVE = "inneractive";
 
     public static final int    NOSET = -1;
     public static final int    BANNER = 1000;

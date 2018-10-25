@@ -21,6 +21,12 @@ android {
             println("output : " + output.toString())
         }
     }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 
 dependencies {
@@ -38,6 +44,7 @@ dependencies {
     implementation 'com.wemob:wemob:2.3.8'
     implementation 'com.applovin:applovin-sdk:8.1.4'
 
+    // MoPub
     implementation('com.mopub:mopub-sdk:5.4.0@aar') {
         transitive = true
         exclude module: 'libAvid-mopub' // To exclude AVID
@@ -60,6 +67,14 @@ dependencies {
     implementation 'com.appnext.sdk:ads:2.+'
     implementation 'com.appnext.sdk:banners:2.+'
     implementation 'com.appnext.sdk:native-ads2:2.+' // New Native Ads
+
+    // Inner-Active
+    implementation 'com.inneractive:ia-mraid-kit:7.1.7'
+    implementation 'com.inneractive:ia-native-kit:7.1.7'
+    implementation 'com.inneractive:ia-sdk-core:7.1.7'
+    implementation 'com.inneractive:ia-video-kit:7.1.7'
+    // required resources
+    implementation 'com.google.code.gson:gson:2.8.1'
 }
 
 // 发布aar

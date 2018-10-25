@@ -59,6 +59,11 @@ public class AdExtra {
     public static final String AD_SDK_INMOBI = Constant.AD_SDK_INMOBI;
 
     /**
+     * INNERACTIVE SDK 名字
+     */
+    public static final String AD_SDK_INNERACTIVE = Constant.AD_SDK_INNERACTIVE;
+
+    /**
      * ADMOB banner尺寸 320 x 50
      */
     public static final int ADMOB_BANNER = Constant.BANNER;
