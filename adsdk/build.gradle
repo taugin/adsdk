@@ -46,7 +46,7 @@ dependencies {
         exclude module: 'mopub-sdk-interstitial' // use below com.mopub:mopub-sdk-interstitial:5.4.0-webeye@aar'
     }
     implementation 'com.mopub:mopub-sdk-interstitial:5.4.0-webeye@aar'
-    implementation('com.mopub.mediation:admob:15.0.1.0-webeye')
+    implementation('com.mopub.mediation:admob:15.0.1.0-webeye2')
     implementation('com.mopub.mediation:facebookaudiencenetwork:4.28.1.0-webeye@aar')
     implementation('com.mopub.mediation:applovin:8.1.4.0')
 
