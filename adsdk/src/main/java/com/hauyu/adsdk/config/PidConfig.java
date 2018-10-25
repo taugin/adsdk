@@ -158,10 +158,6 @@ public class PidConfig extends AttrConfig {
         return TextUtils.equals(Constant.AD_SDK_DFP, sdk);
     }
 
-    public boolean isMopub() {
-        return TextUtils.equals(Constant.AD_SDK_MOPUB, sdk);
-    }
-
     public boolean isSpread() {
         return TextUtils.equals(Constant.AD_SDK_SPREAD, sdk);
     }

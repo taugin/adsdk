@@ -16,7 +16,6 @@ import com.hauyu.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.hauyu.adsdk.adloader.listener.IManagerListener;
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
 import com.hauyu.adsdk.adloader.listener.OnAdBaseListener;
-import com.hauyu.adsdk.adloader.mopub.MopubLoader;
 import com.hauyu.adsdk.adloader.spread.SpLoader;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.PidConfig;
@@ -134,17 +133,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                             }
                         } else if (config.isDfp()) {
                             loader = new AdDfpLoader();
-                            if (loader.isModuleLoaded()) {
-                                loader.init(mContext);
-                                loader.setPidConfig(config);
-                                loader.setListenerManager(this);
-                                loader.setAdId(adId);
-                                if (loader.allowUseLoader()) {
-                                    mAdLoaders.add(loader);
-                                }
-                            }
-                        } else if (config.isMopub()) {
-                            loader = new MopubLoader();
                             if (loader.isModuleLoaded()) {
                                 loader.init(mContext);
                                 loader.setPidConfig(config);
