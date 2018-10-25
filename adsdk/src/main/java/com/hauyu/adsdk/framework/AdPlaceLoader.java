@@ -12,15 +12,12 @@ import com.hauyu.adsdk.adloader.addfp.AdDfpLoader;
 import com.hauyu.adsdk.adloader.adfb.FBLoader;
 import com.hauyu.adsdk.adloader.admob.AdmobLoader;
 import com.hauyu.adsdk.adloader.adx.AdxLoader;
-import com.hauyu.adsdk.adloader.applovin.AppLovinLoader;
-import com.hauyu.adsdk.adloader.appnext.AppnextLoader;
 import com.hauyu.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.hauyu.adsdk.adloader.listener.IManagerListener;
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
 import com.hauyu.adsdk.adloader.listener.OnAdBaseListener;
 import com.hauyu.adsdk.adloader.mopub.MopubLoader;
 import com.hauyu.adsdk.adloader.spread.SpLoader;
-import com.hauyu.adsdk.adloader.wemob.WemobLoader;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;
@@ -135,17 +132,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                                     mAdLoaders.add(loader);
                                 }
                             }
-                        } else if (config.isWemob()) {
-                            loader = new WemobLoader();
-                            if (loader.isModuleLoaded()) {
-                                loader.init(mContext);
-                                loader.setPidConfig(config);
-                                loader.setListenerManager(this);
-                                loader.setAdId(adId);
-                                if (loader.allowUseLoader()) {
-                                    mAdLoaders.add(loader);
-                                }
-                            }
                         } else if (config.isDfp()) {
                             loader = new AdDfpLoader();
                             if (loader.isModuleLoaded()) {
@@ -157,30 +143,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                                     mAdLoaders.add(loader);
                                 }
                             }
-                        } else if (config.isAppLovin()) {
-                            loader = new AppLovinLoader();
-                            if (loader.isModuleLoaded()) {
-                                loader.init(mContext);
-                                loader.setPidConfig(config);
-                                loader.setListenerManager(this);
-                                loader.setAdId(adId);
-                                if (loader.allowUseLoader()) {
-                                    mAdLoaders.add(loader);
-                                }
-                            }
                         } else if (config.isMopub()) {
                             loader = new MopubLoader();
-                            if (loader.isModuleLoaded()) {
-                                loader.init(mContext);
-                                loader.setPidConfig(config);
-                                loader.setListenerManager(this);
-                                loader.setAdId(adId);
-                                if (loader.allowUseLoader()) {
-                                    mAdLoaders.add(loader);
-                                }
-                            }
-                        } else if (config.isAppnext()) {
-                            loader = new AppnextLoader();
                             if (loader.isModuleLoaded()) {
                                 loader.init(mContext);
                                 loader.setPidConfig(config);

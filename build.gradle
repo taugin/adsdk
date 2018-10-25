@@ -30,7 +30,6 @@ allprojects {
         google()
         jcenter()
         mavenLocal()
-        maven { url "http://dl.appnext.com/" }
     }
 }
 

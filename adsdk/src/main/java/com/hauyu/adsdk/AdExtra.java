@@ -29,29 +29,14 @@ public class AdExtra {
     public static final String AD_SDK_ADX = Constant.AD_SDK_ADX;
 
     /**
-     * WEMOB SDK 名字
-     */
-    public static final String AD_SDK_WEMOB = Constant.AD_SDK_WEMOB;
-
-    /**
      * DFP SDK 名字
      */
     public static final String AD_SDK_DFP = Constant.AD_SDK_DFP;
 
     /**
-     * APPLOVIN SDK 名字
-     */
-    public static final String AD_SDK_APPLOVIN = Constant.AD_SDK_APPLOVIN;
-
-    /**
      * MOPUB SDK 名字
      */
     public static final String AD_SDK_MOPUB = Constant.AD_SDK_MOPUB;
-
-    /**
-     * APPNEXT SDK 名字
-     */
-    public static final String AD_SDK_APPNEXT = Constant.AD_SDK_APPNEXT;
 
     /**
      * ADMOB banner尺寸 320 x 50

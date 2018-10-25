@@ -154,24 +154,12 @@ public class PidConfig extends AttrConfig {
         return TextUtils.equals(Constant.AD_SDK_ADX, sdk);
     }
 
-    public boolean isWemob() {
-        return TextUtils.equals(Constant.AD_SDK_WEMOB, sdk);
-    }
-
     public boolean isDfp() {
         return TextUtils.equals(Constant.AD_SDK_DFP, sdk);
     }
 
-    public boolean isAppLovin() {
-        return TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk);
-    }
-
     public boolean isMopub() {
         return TextUtils.equals(Constant.AD_SDK_MOPUB, sdk);
-    }
-
-    public boolean isAppnext() {
-        return TextUtils.equals(Constant.AD_SDK_APPNEXT, sdk);
     }
 
     public boolean isSpread() {

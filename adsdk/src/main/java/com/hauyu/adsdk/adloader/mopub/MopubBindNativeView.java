@@ -13,8 +13,6 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Params;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
-import com.mopub.nativeads.FacebookAdRenderer;
-import com.mopub.nativeads.GooglePlayServicesAdRenderer;
 import com.mopub.nativeads.MediaLayout;
 import com.mopub.nativeads.MediaViewBinder;
 import com.mopub.nativeads.MoPubNative;
@@ -127,20 +125,6 @@ public class MopubBindNativeView {
         } catch (Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
-        try {
-            bindAdMobRender(context, nativeAd);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        }
-        try {
-            bindFBRender(context, nativeAd);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        }
     }
 
     private void bindVideoRender(Context context, MoPubNative nativeAd) {
@@ -210,32 +194,6 @@ public class MopubBindNativeView {
                 .privacyInformationIconImageId(imageView.getId())
                 .build();
         return viewBinder;
-    }
-
-    private void bindAdMobRender(Context context, MoPubNative nativeAd) {
-        View layout = null;
-        if (mParams.getNativeRootView() != null) {
-            layout = mParams.getNativeRootView();
-        } else if (mParams.getNativeRootLayout() > 0) {
-            layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
-        } else {
-            Log.e(Log.TAG, "bindAdMobRender  root layout == 0x0");
-        }
-        GooglePlayServicesAdRenderer adRender = new GooglePlayServicesAdRenderer(getVideoViewBinder(context, layout), layout);
-        nativeAd.registerAdRenderer(adRender);
-    }
-
-    private void bindFBRender(Context context, MoPubNative nativeAd) {
-        View layout = null;
-        if (mParams.getNativeRootView() != null) {
-            layout = mParams.getNativeRootView();
-        } else if (mParams.getNativeRootLayout() > 0) {
-            layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
-        } else {
-            Log.e(Log.TAG, "bindFBRender  root layout == 0x0");
-        }
-        FacebookAdRenderer render = new FacebookAdRenderer(getStaticViewBinder(context, layout), layout);
-        nativeAd.registerAdRenderer(render);
     }
 
     private MediaLayout createMediaLayout(Context context) {
