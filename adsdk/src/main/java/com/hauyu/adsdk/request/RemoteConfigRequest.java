@@ -17,6 +17,7 @@ import java.util.Date;
  * Created by Administrator on 2018/2/12.
  */
 
+@SuppressWarnings("unchecked")
 public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
 
     private static final int CACHE_EXPIRETIME = 15 * 60;
