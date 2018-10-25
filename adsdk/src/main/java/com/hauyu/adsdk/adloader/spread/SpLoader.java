@@ -25,11 +25,6 @@ public class SpLoader extends AbstractSdkLoader {
     private List<SpConfig> mSpreads;
 
     @Override
-    public boolean isModuleLoaded() {
-        return true;
-    }
-
-    @Override
     public String getSdkName() {
         return Constant.AD_SDK_SPREAD;
     }

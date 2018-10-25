@@ -48,17 +48,6 @@ public class FBLoader extends AbstractSdkLoader {
     private AdView gBannerView;
 
     @Override
-    public boolean isModuleLoaded() {
-        try {
-            InterstitialAd.class.getName();
-            return true;
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return false;
-    }
-
-    @Override
     public String getSdkName() {
         return Constant.AD_SDK_FACEBOOK;
     }
