@@ -57,6 +57,7 @@ dependencies {
     implementation('com.mopub.mediation:facebookaudiencenetwork:4.28.1.0-webeye@aar')
     implementation('com.mopub.mediation:applovin:8.1.4.0')
     implementation('com.mopub.mediation:inmobi:1.0.1')
+    implementation('com.mopub.mediation:inneractive:7.1.7.0-webeye')
 
     //inmobi
     implementation 'com.inmobi.monetization:inmobi-ads:7.2.1'

@@ -21,7 +21,6 @@ import com.inner.adsdk.log.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -36,17 +35,6 @@ public class InmobiLoader extends AbstractSdkLoader {
     private InMobiInterstitial mInMobiRewardVideo;
     private InMobiNative mInMobiNative;
     private Params mParams;
-
-    @Override
-    public boolean isModuleLoaded() {
-        try {
-            InMobiInterstitial.class.getName();
-            return true;
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return false;
-    }
 
     @Override
     public void setAdId(String adId) {
@@ -180,6 +168,10 @@ public class InmobiLoader extends AbstractSdkLoader {
             }
         });
         loadingView.load();
+        if (mStat != null) {
+            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        }
+        Log.v(Log.TAG, "");
     }
 
     @Override
@@ -339,6 +331,10 @@ public class InmobiLoader extends AbstractSdkLoader {
             }
         });
         mInMobiInterstitial.load();
+        if (mStat != null) {
+            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        }
+        Log.v(Log.TAG, "");
     }
 
     @Override
@@ -669,6 +665,7 @@ public class InmobiLoader extends AbstractSdkLoader {
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
+        Log.v(Log.TAG, "");
     }
 
     @Override

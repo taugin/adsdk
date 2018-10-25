@@ -48,17 +48,6 @@ public class MopubLoader extends AbstractSdkLoader {
     private NativeAd gNativeAd;
     private MoPubView gMoPubView;
 
-    @Override
-    public boolean isModuleLoaded() {
-        try {
-            MoPubInterstitial.class.getName();
-            return true;
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return false;
-    }
-
     private SdkInitializationListener initSdkListener() {
         return new SdkInitializationListener() {
 
@@ -197,6 +186,10 @@ public class MopubLoader extends AbstractSdkLoader {
             }
         });
         loadingView.loadAd();
+        if (mStat != null) {
+            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        }
+        Log.v(Log.TAG, "");
     }
 
     @Override
@@ -349,6 +342,10 @@ public class MopubLoader extends AbstractSdkLoader {
             }
         });
         moPubInterstitial.load();
+        if (mStat != null) {
+            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        }
+        Log.v(Log.TAG, "");
     }
 
     @Override

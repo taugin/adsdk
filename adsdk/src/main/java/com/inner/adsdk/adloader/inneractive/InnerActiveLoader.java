@@ -20,7 +20,6 @@ import com.fyber.inneractive.sdk.external.InneractiveNativeAdUnitController;
 import com.fyber.inneractive.sdk.external.InneractiveNativeAdViewBinder;
 import com.fyber.inneractive.sdk.external.InneractiveUserConfig;
 import com.fyber.inneractive.sdk.external.VideoContentListener;
-import com.google.android.gms.ads.AdRequest;
 import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
@@ -40,17 +39,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
     private InneractiveAdSpot mNativeSpot;
 
     @Override
-    public boolean isModuleLoaded() {
-        try {
-            InneractiveAdManager.class.getName();
-            return true;
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return false;
-    }
-
-    @Override
     public String getSdkName() {
         return Constant.AD_SDK_INNERACTIVE;
     }
@@ -59,7 +47,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
     public void setAdId(String adId) {
         super.setAdId(adId);
         if (!TextUtils.isEmpty(adId)) {
-            InneractiveAdManager.setLogLevel(android.util.Log.VERBOSE);
             InneractiveAdManager.initialize(mContext, adId);
         }
     }
@@ -232,6 +219,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
+        Log.v(Log.TAG, "");
     }
 
     @Override
@@ -503,6 +491,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
+        Log.v(Log.TAG, "");
     }
 
 
@@ -675,6 +664,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                 });
 
                 setLoading(false, STATE_SUCCESS);
+                mIsNativeLoaded = true;
                 putCachedAdTime(mNativeSpot);
                 notifyAdLoaded(false);
                 if (mStat != null) {
@@ -688,6 +678,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
+        Log.v(Log.TAG, "");
     }
 
     @Override

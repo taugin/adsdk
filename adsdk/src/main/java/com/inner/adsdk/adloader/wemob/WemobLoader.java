@@ -34,17 +34,6 @@ public class WemobLoader extends AbstractSdkLoader {
     private NativeAd gNativeAd;
 
     @Override
-    public boolean isModuleLoaded() {
-        try {
-            Sdk.class.getName();
-            return true;
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return false;
-    }
-
-    @Override
     public void setAdId(String adId) {
         if (!TextUtils.isEmpty(adId)) {
             try {

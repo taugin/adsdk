@@ -42,17 +42,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private AppLovinAdView gAppLovinAdView;
 
     @Override
-    public boolean isModuleLoaded() {
-        try {
-            AppLovinSdk.class.getName();
-            return true;
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return false;
-    }
-
-    @Override
     public void init(Context context) {
         super.init(context);
         AppLovinSdk.initializeSdk(context);
