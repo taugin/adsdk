@@ -13,7 +13,7 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Params;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
-import com.mopub.nativeads.FBAdRender;
+import com.mopub.nativeads.FacebookAdRenderer;
 import com.mopub.nativeads.GooglePlayServicesAdRenderer;
 import com.mopub.nativeads.MediaLayout;
 import com.mopub.nativeads.MediaViewBinder;
@@ -115,10 +115,30 @@ public class MopubBindNativeView {
 
         try {
             bindVideoRender(context, nativeAd);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
+        try {
             bindStaticRender(context, nativeAd);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
+        try {
             bindAdMobRender(context, nativeAd);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
+        try {
             bindFBRender(context, nativeAd);
-        } catch(Exception e) {
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        } catch (Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
     }
@@ -214,7 +234,7 @@ public class MopubBindNativeView {
         } else {
             Log.e(Log.TAG, "bindFBRender  root layout == 0x0");
         }
-        FBAdRender render = new FBAdRender(getStaticViewBinder(context, layout), layout);
+        FacebookAdRenderer render = new FacebookAdRenderer(getStaticViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(render);
     }
 
