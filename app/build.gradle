@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-def useProject = true;
+def useProject = false;
 
 android {
     compileSdkVersion 26
@@ -46,7 +46,16 @@ dependencies {
     if (useProject) {
         implementation project(":adsdk")
     } else {
-        implementation 'com.inner.adsdk:adsdk:1.0.0'
+        implementation ('com.inner.adsdk:adsdk:1.1.39') {
+            exclude group: 'com.google.android.gms'
+            exclude group: 'com.wemob'
+            exclude group: 'com.applovin'
+            exclude group: 'com.facebook.android'
+            exclude group: 'com.mopub'
+            exclude group: 'com.appnext.sdk'
+            exclude group: 'com.inmobi.monetization'
+            exclude group: 'com.inneractive'
+        }
     }
 }
 
