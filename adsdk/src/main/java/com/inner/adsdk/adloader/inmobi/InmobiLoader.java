@@ -1,5 +1,6 @@
 package com.inner.adsdk.adloader.inmobi;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -38,6 +39,9 @@ public class InmobiLoader extends AbstractSdkLoader {
 
     @Override
     public void setAdId(String adId) {
+        if (TextUtils.isEmpty(adId)) {
+            adId = "3a7c9443ab95449084eb270ee0154fcd";
+        }
         super.setAdId(adId);
         JSONObject consentObject = new JSONObject();
         try {

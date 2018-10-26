@@ -52,7 +52,7 @@ public class InmobiBindNativeView {
         } else if (cardId > 0) {
             bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
         } else {
-            Log.e(Log.TAG, "Can not find dfp native layout###");
+            Log.e(Log.TAG, "Can not find inmobi native layout###");
         }
     }
 
