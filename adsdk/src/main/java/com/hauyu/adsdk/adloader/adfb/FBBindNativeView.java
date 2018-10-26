@@ -13,9 +13,6 @@ import android.widget.TextView;
 import com.facebook.ads.AdChoicesView;
 import com.facebook.ads.MediaView;
 import com.facebook.ads.NativeAd;
-import com.hauyu.adsdk.config.PidConfig;
-import com.hauyu.adsdk.framework.Params;
-import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.R;
 import com.hauyu.adsdk.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;
@@ -255,6 +252,8 @@ public class FBBindNativeView {
         try {
             return new MediaView(context);
         } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        } catch (Error e) {
             Log.e(Log.TAG, "error : " + e);
         }
         return null;
