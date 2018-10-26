@@ -15,6 +15,7 @@ import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
 import com.mopub.nativeads.FacebookAdRenderer;
 import com.mopub.nativeads.GooglePlayServicesAdRenderer;
+import com.mopub.nativeads.InMobiNativeAdRenderer;
 import com.mopub.nativeads.MediaLayout;
 import com.mopub.nativeads.MediaViewBinder;
 import com.mopub.nativeads.MoPubNative;
@@ -141,6 +142,13 @@ public class MopubBindNativeView {
         } catch (Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
+        try {
+            bindInmobiRender(context, nativeAd);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
     }
 
     private void bindVideoRender(Context context, MoPubNative nativeAd) {
@@ -219,7 +227,7 @@ public class MopubBindNativeView {
         } else if (mParams.getNativeRootLayout() > 0) {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
         } else {
-            Log.e(Log.TAG, "bindAdMobRender  root layout == 0x0");
+            Log.e(Log.TAG, "bindAdMobRender root layout == 0x0");
         }
         GooglePlayServicesAdRenderer adRender = new GooglePlayServicesAdRenderer(getVideoViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(adRender);
@@ -232,9 +240,22 @@ public class MopubBindNativeView {
         } else if (mParams.getNativeRootLayout() > 0) {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
         } else {
-            Log.e(Log.TAG, "bindFBRender  root layout == 0x0");
+            Log.e(Log.TAG, "bindFBRender root layout == 0x0");
         }
         FacebookAdRenderer render = new FacebookAdRenderer(getStaticViewBinder(context, layout), layout);
+        nativeAd.registerAdRenderer(render);
+    }
+
+    private void bindInmobiRender(Context context, MoPubNative nativeAd) {
+        View layout = null;
+        if (mParams.getNativeRootView() != null) {
+            layout = mParams.getNativeRootView();
+        } else if (mParams.getNativeRootLayout() > 0) {
+            layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
+        } else {
+            Log.e(Log.TAG, "bindInmobiRender root layout == 0x0");
+        }
+        InMobiNativeAdRenderer render = new InMobiNativeAdRenderer(getStaticViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(render);
     }
 
