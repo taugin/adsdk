@@ -216,6 +216,7 @@ public class MopubBindNativeView {
                 .textId(mParams.getAdDetail())
                 .callToActionId(mParams.getAdAction())
                 .privacyInformationIconImageId(imageView.getId())
+                .addExtra(InMobiNativeAdRenderer.VIEW_BINDER_KEY_PRIMARY_AD_VIEW_LAYOUT, mParams.getAdMediaView())
                 .build();
         return viewBinder;
     }
