@@ -241,6 +241,8 @@ public class AdxBindNativeView {
             return mediaView;
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e);
         }
         return null;
     }
