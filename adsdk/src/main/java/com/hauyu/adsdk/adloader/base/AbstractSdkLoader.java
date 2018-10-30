@@ -399,7 +399,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void onLoadTimeout() {
         Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - load time out");
         setLoading(false, STATE_TIMTOUT);
-        if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)) {
+        if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)
+                || TextUtils.equals(getAdType(), Constant.TYPE_REWARD)) {
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_TIMEOUT);
             }
@@ -408,6 +409,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_TIMEOUT);
             }
+        }
+        if (mStat != null) {
+            mStat.reportAdError(mContext, "AD_ERROR_TIMEOUT", getSdkName(), getAdType(), null);
         }
     }
 
