@@ -135,6 +135,7 @@ public class FSA extends Activity {
             intent.putExtra(Intent.EXTRA_TEMPLATE, mAdType);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            fa();
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
