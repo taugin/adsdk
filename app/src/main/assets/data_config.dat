@@ -33,7 +33,7 @@
     "ms": [],
     "so": 1,
     "ntr":0,
-    "sba":0
+    "sba":1
   },
   "adplaces": [
     {
@@ -289,7 +289,7 @@
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "dct":2000,
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "wemob",
@@ -302,7 +302,7 @@
           "sdk": "inmobi",
           "type": "interstitial",
           "pid": "1538651605680",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,
