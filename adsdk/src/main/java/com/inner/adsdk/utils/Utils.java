@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
@@ -25,8 +26,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 /**
  * Created by Administrator on 2017/12/27.
@@ -485,5 +488,31 @@ public class Utils {
         } catch (Exception e) {
         }
         return country;
+    }
+
+    public static Intent getIntentByAction(Context context, String action) {
+        Intent intent = null;
+        if (TextUtils.isEmpty(action)) {
+            return intent;
+        }
+        try {
+            Intent queryIntent = new Intent(action);
+            List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(queryIntent, 0);
+            List<String> activitiyNames = new ArrayList<String>();
+            for (ResolveInfo info : list) {
+                if (info != null && info.activityInfo != null && !TextUtils.isEmpty(info.activityInfo.name)) {
+                    activitiyNames.add(info.activityInfo.name);
+                }
+            }
+            if (!activitiyNames.isEmpty()) {
+                int size = activitiyNames.size();
+                String className = activitiyNames.get(new Random(System.currentTimeMillis()).nextInt(size));
+                intent = new Intent(action);
+                intent.setClassName(context.getPackageName(), className);
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return intent;
     }
 }

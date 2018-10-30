@@ -17,6 +17,7 @@ import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
 import com.inner.adsdk.policy.GtPolicy;
 import com.inner.adsdk.stat.StatImpl;
+import com.inner.adsdk.utils.Utils;
 
 import java.util.Random;
 
@@ -150,19 +151,6 @@ public class GtAdLoader {
         return Constant.GTPLACE_OUTER_NAME;
     }
 
-    private void show(String pidName, String source, String adType) {
-        try {
-            Intent intent = new Intent(mContext, FSA.class);
-            intent.putExtra(Intent.EXTRA_TITLE, pidName);
-            intent.putExtra(Intent.EXTRA_TEXT, source);
-            intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);
-        } catch(Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-    }
-
     private AdParams generateAdParams() {
         AdParams.Builder builder = new AdParams.Builder();
         builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
@@ -183,12 +171,28 @@ public class GtAdLoader {
         return adParams;
     }
 
+    private void show(String pidName, String source, String adType) {
+        try {
+            Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.AFPICKER");
+            if (intent == null) {
+                intent = new Intent(mContext, FSA.class);
+            }
+            intent.putExtra(Intent.EXTRA_TITLE, pidName);
+            intent.putExtra(Intent.EXTRA_TEXT, source);
+            intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+    }
+
     private void hide() {
         try {
             Intent intent = new Intent(mContext.getPackageName() + "action.FA");
             intent.setPackage(mContext.getPackageName());
             mContext.sendBroadcast(intent);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
     }

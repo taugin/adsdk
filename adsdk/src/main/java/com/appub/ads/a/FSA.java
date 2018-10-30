@@ -36,6 +36,7 @@ import com.inner.adsdk.config.SpConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.stat.StatImpl;
+import com.inner.adsdk.utils.Utils;
 
 /**
  * Created by Administrator on 2018-10-16.
@@ -50,6 +51,7 @@ public class FSA extends Activity {
     private String mPidName;
     private String mSource;
     private String mAdType;
+    private String mAction;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,22 +65,21 @@ public class FSA extends Activity {
         } catch (Error e) {
         }
         parseIntent();
-        if (mSpConfig != null) {
-            showSpread();
-        } else {
-            init();
-            show();
-        }
+        updateDataAndView();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         parseIntent();
+        updateDataAndView();
+    }
+
+    private void updateDataAndView() {
         if (mSpConfig != null) {
             showSpread();
         } else {
-            init();
+            registerArgument();
             show();
         }
     }
@@ -90,29 +91,58 @@ public class FSA extends Activity {
             mSource = intent.getStringExtra(Intent.EXTRA_TEXT);
             mAdType = intent.getStringExtra(Intent.EXTRA_TEMPLATE);
             mSpConfig = (SpConfig) intent.getSerializableExtra(Intent.EXTRA_STREAM);
+            mAction = intent.getAction();
         }
     }
 
-    private void init() {
+    /**
+     * 注册相关参数
+     */
+    private void registerArgument() {
         if (Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
                 || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType)) {
-            register();
-            initGesture();
+            registerBroadcast();
+            registerGesture();
         }
     }
 
+    /**
+     * 展示广告
+     */
     private void show() {
         if (Constant.TYPE_NATIVE.equalsIgnoreCase(mAdType)
                 || Constant.TYPE_BANNER.equalsIgnoreCase(mAdType)) {
             showNAd();
         } else if (Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
                 || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType)) {
-            showGAd();
+            // 当前action为PICKER并且存在RESOLVE的action，则弹出 C activity
+            Intent intent = Utils.getIntentByAction(this, getPackageName() + ".action.AFRESOLVE");
+            if (TextUtils.equals(mAction, getPackageName() + ".action.AFPICKER") && intent != null) {
+                showCActivity(intent);
+            } else {
+                showGAd();
+            }
         } else {
             fa();
         }
     }
 
+    private void showCActivity(Intent intent) {
+        Log.v(Log.TAG, "show c activity");
+        try {
+            intent.putExtra(Intent.EXTRA_TITLE, mPidName);
+            intent.putExtra(Intent.EXTRA_TEXT, mSource);
+            intent.putExtra(Intent.EXTRA_TEMPLATE, mAdType);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+    }
+
+    /**
+     * 展示原生广告
+     */
     private void showNAd() {
         RelativeLayout rootLayout = new RelativeLayout(this);
         rootLayout.setBackgroundColor(Color.WHITE);
@@ -151,7 +181,7 @@ public class FSA extends Activity {
         return imageView;
     }
 
-    private void initGesture() {
+    private void registerGesture() {
         mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDown(MotionEvent e) {
@@ -162,6 +192,9 @@ public class FSA extends Activity {
         });
     }
 
+    /**
+     * 展示插屏广告
+     */
     private void showGAd() {
         if (!TextUtils.isEmpty(mPidName)) {
             AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, null);
@@ -215,7 +248,7 @@ public class FSA extends Activity {
         }
     }
 
-    private void register() {
+    private void registerBroadcast() {
         IntentFilter filter = new IntentFilter(getPackageName() + "action.FA");
         try {
             registerReceiver(mBroadcastReceiver, filter);
@@ -242,6 +275,10 @@ public class FSA extends Activity {
     };
 
     /////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * 展示应用内推广页面
+     */
     private void showSpread() {
         if (!checkArgs()) {
             finish();
