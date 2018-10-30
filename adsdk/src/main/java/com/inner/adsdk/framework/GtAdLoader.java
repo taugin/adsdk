@@ -189,7 +189,7 @@ public class GtAdLoader {
 
     private void hide() {
         try {
-            Intent intent = new Intent(mContext.getPackageName() + "action.FA");
+            Intent intent = new Intent(mContext.getPackageName() + ".action.FA");
             intent.setPackage(mContext.getPackageName());
             mContext.sendBroadcast(intent);
         } catch (Exception e) {

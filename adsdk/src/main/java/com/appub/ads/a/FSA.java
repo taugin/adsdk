@@ -249,7 +249,7 @@ public class FSA extends Activity {
     }
 
     private void registerBroadcast() {
-        IntentFilter filter = new IntentFilter(getPackageName() + "action.FA");
+        IntentFilter filter = new IntentFilter(getPackageName() + ".action.FA");
         try {
             registerReceiver(mBroadcastReceiver, filter);
         } catch (Exception e) {
