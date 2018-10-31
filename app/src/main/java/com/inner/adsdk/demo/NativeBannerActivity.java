@@ -17,7 +17,7 @@ public class NativeBannerActivity extends FSA {
         super.onCreate(savedInstanceState);
         WindowManager.LayoutParams params = getWindow().getAttributes();
         DisplayMetrics dm = getResources().getDisplayMetrics();
-        // params.width = (int) (dm.widthPixels * 0.9f);
+        params.width = (int) (dm.widthPixels * 0.9f);
         params.height = (int) (dm.heightPixels * 0.6f);
         getWindow().setAttributes(params);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
