@@ -15,6 +15,7 @@ import android.graphics.drawable.shapes.RoundRectShape;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -52,10 +53,12 @@ public class FSA extends Activity {
     private String mSource;
     private String mAdType;
     private String mAction;
+    private Handler mHandler = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mHandler = new Handler();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         try {
@@ -123,7 +126,7 @@ public class FSA extends Activity {
                 showGAd();
             }
         } else {
-            fa();
+            finishActivityWithDelay();
         }
     }
 
@@ -135,7 +138,7 @@ public class FSA extends Activity {
             intent.putExtra(Intent.EXTRA_TEMPLATE, mAdType);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            fa();
+            finishActivityWithDelay();
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
@@ -161,7 +164,7 @@ public class FSA extends Activity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fa();
+                finishActivityWithDelay();
             }
         });
         rootLayout.addView(imageView, params);
@@ -186,7 +189,7 @@ public class FSA extends Activity {
         mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDown(MotionEvent e) {
-                fa();
+                finishActivityWithDelay();
                 StatImpl.get().reportFinishFSA(getBaseContext(), "close_fsa_byuser", "touch");
                 return super.onDown(e);
             }
@@ -201,7 +204,7 @@ public class FSA extends Activity {
             AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, null);
             StatImpl.get().reportAdOuterShow(this);
         } else {
-            fa();
+            finishActivityWithDelay();
         }
     }
 
@@ -220,6 +223,19 @@ public class FSA extends Activity {
                 || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType))
                 && !Constant.AD_SDK_SPREAD.equals(mSource)) {
             StatImpl.get().reportFinishFSA(this, "close_fsa_byuser", "backpressed");
+        }
+    }
+
+    private void finishActivityWithDelay() {
+        if (mHandler != null) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fa();
+                }
+            }, 500);
+        } else {
+            fa();
         }
     }
 
@@ -271,7 +287,7 @@ public class FSA extends Activity {
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            fa();
+            finishActivityWithDelay();
         }
     };
 
@@ -302,7 +318,7 @@ public class FSA extends Activity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    fa();
+                    finishActivityWithDelay();
                 }
             });
             rootLayout.addView(imageView, params);
