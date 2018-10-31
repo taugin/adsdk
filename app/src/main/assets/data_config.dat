@@ -30,8 +30,8 @@
     "ec": [],
     "ms": [],
     "so": 1,
-    "ntr":50,
-    "sba":0
+    "ntr":0,
+    "sba":1
   },
   "adplaces": [
     {
@@ -245,7 +245,7 @@
          {
            "sdk": "spread",
            "type": "interstitial",
-           "disable": 0
+           "disable": 1
          },{
           "sdk": "adx",
           "type": "interstitial",
@@ -258,7 +258,7 @@
           "type": "interstitial",
           "pid": "interstitial1",
           "dct":2000,
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,
