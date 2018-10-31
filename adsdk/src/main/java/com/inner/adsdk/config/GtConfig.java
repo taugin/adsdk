@@ -14,6 +14,7 @@ public class GtConfig extends AttrConfig {
     private int screenOrientation;
     private long timeOut = 300000;
     private boolean showBottomActivity = true;
+    private long configInstallTime;
 
     public boolean isEnable() {
         return enable;
@@ -85,6 +86,14 @@ public class GtConfig extends AttrConfig {
 
     public void setShowBottomActivity(boolean showBottomActivity) {
         this.showBottomActivity = showBottomActivity;
+    }
+
+    public long getConfigInstallTime() {
+        return configInstallTime;
+    }
+
+    public void setConfigInstallTime(long configInstallTime) {
+        this.configInstallTime = configInstallTime;
     }
 
     @Override
