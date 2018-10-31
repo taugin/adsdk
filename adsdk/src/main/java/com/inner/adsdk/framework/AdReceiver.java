@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.text.TextUtils;
 
+import com.inner.adsdk.BuildConfig;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.manager.DataManager;
@@ -46,12 +48,23 @@ public class AdReceiver {
     private void register() {
         try {
             IntentFilter filter = new IntentFilter();
-            filter.addAction(Constant.ACTION_BASIC_ALARM);
+            filter.addAction(getAlarmAction());
             filter.addAction(Intent.ACTION_SCREEN_ON);
             filter.addAction(Intent.ACTION_SCREEN_OFF);
             mContext.registerReceiver(mBroadcastReceiver, filter);
         } catch (Exception e) {
         }
+    }
+
+    private String getAlarmAction() {
+        if (BuildConfig.VERSION_NAME.startsWith("1.1.")) {
+            return Constant.ACTION_BASIC_ALARM;
+        }
+        try {
+            return mContext.getPackageName() + ".action.ALARM";
+        } catch (Exception e) {
+        }
+        return Intent.ACTION_SEND + "_ALARM";
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -60,7 +73,7 @@ public class AdReceiver {
             if (intent == null) {
                 return;
             }
-            if (Constant.ACTION_BASIC_ALARM.equals(intent.getAction())) {
+            if (TextUtils.equals(getAlarmAction(), intent.getAction())) {
                 if (isGtAtExclusive(context)) {
                     if (TaskUtils.hasAppUsagePermission(context)) {
                         AtAdLoader.get(context).onFire();
