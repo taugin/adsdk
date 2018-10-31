@@ -1,6 +1,7 @@
 package com.hauyu.adsdk.policy;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Message;
@@ -314,7 +315,33 @@ public class GtPolicy implements Handler.Callback {
         return true;
     }
 
-    public boolean isScreenOrientationAllow() {
+    private boolean matchInstallTime() {
+        if (mGtConfig != null) {
+            long configInstallTime = mGtConfig.getConfigInstallTime();
+            long firstInstallTime = getFirstInstallTime();
+            String cit = configInstallTime > 0 ? Constant.SDF_1.format(new Date(configInstallTime)) : "0";
+            String fit = firstInstallTime > 0 ? Constant.SDF_1.format(new Date(firstInstallTime)) : "0";
+            Log.v(Log.TAG, "cit : " + cit + " , fit : " + fit);
+            if (configInstallTime <= 0 || firstInstallTime <= 0) {
+                return true;
+            }
+            return firstInstallTime <= configInstallTime;
+        }
+        return true;
+    }
+
+    private long getFirstInstallTime() {
+        long firstInstallTime = 0;
+        try {
+            PackageInfo packageInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+            firstInstallTime = packageInfo.firstInstallTime;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return firstInstallTime;
+    }
+
+    private boolean isScreenOrientationAllow() {
         if (mGtConfig != null) {
             int orientation = Configuration.ORIENTATION_UNDEFINED;
             try {
@@ -377,6 +404,11 @@ public class GtPolicy implements Handler.Callback {
 
         if (!isAppVerAllow()) {
             Log.v(Log.TAG, "maxver not allowed");
+            return false;
+        }
+
+        if (!matchInstallTime()) {
+            Log.v(Log.TAG, "cit not allowed");
             return false;
         }
         return true;

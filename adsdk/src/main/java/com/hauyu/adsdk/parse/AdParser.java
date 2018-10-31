@@ -174,6 +174,9 @@ public class AdParser implements IParser {
             if (jobj.has(SHOW_BOTTOM_ACTIVITY)) {
                 gtConfig.setShowBottomActivity(jobj.getInt(SHOW_BOTTOM_ACTIVITY) == 1);
             }
+            if (jobj.has(CONFIG_INSTALL_TIME)) {
+                gtConfig.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
+            }
             parseAttrConfig(gtConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseGtPolicyInternal error : " + e);

@@ -1,6 +1,7 @@
 package com.hauyu.adsdk.constant;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -86,5 +87,5 @@ public class Constant {
     public static final int AD_ERROR_CONTEXT = 6;
     public static final int AD_ERROR_UNSUPPORT = 7;
 
-    public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
 }

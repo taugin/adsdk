@@ -109,6 +109,8 @@ public interface IParser {
     String NTRATE = "ntr";
     // 是否展示底层activity
     String SHOW_BOTTOM_ACTIVITY = "sba";
+    // 首次安装时间判断
+    String CONFIG_INSTALL_TIME = "cit";
 
     // 阻止重复加载(如果当前loader正在处于加载中，则不再重新加载)
     String BLOCK_LOADING = "bl";
