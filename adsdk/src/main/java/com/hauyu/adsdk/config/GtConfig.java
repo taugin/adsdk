@@ -1,5 +1,9 @@
 package com.hauyu.adsdk.config;
 
+import com.hauyu.adsdk.constant.Constant;
+
+import java.util.Date;
+
 /**
  * Created by Administrator on 2018/2/9.
  */
@@ -13,7 +17,7 @@ public class GtConfig extends AttrConfig {
     private long minInterval;
     private int screenOrientation;
     private long timeOut = 300000;
-    private boolean showBottomActivity = true;
+    private boolean showBottomActivity;
     private long configInstallTime;
 
     public boolean isEnable() {
@@ -110,6 +114,8 @@ public class GtConfig extends AttrConfig {
                 ", ml=" + getMediaList() +
                 ", so=" + screenOrientation +
                 ", to=" + timeOut +
+                ", sba=" + showBottomActivity +
+                ", cit=" + Constant.SDF_1.format(new Date(configInstallTime)) +
                 '}';
     }
 }
