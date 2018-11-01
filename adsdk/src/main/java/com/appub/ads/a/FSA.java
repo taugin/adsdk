@@ -36,6 +36,7 @@ import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.config.SpConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.policy.GtPolicy;
 import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
 
@@ -58,6 +59,9 @@ public class FSA extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            setFinishOnTouchOutside(false);
+        }
         mHandler = new Handler();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -170,6 +174,7 @@ public class FSA extends Activity {
         rootLayout.addView(imageView, params);
 
         AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, adLayout);
+        GtPolicy.get(this).reportGtShowing(true);
     }
 
     private int dp2px(Context context, float dpValue) {
