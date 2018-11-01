@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.TextUtils;
 
-import com.inner.adsdk.BuildConfig;
 import com.inner.adsdk.config.AdSwitch;
-import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.manager.DataManager;
 import com.inner.adsdk.utils.TaskUtils;
 
@@ -57,9 +55,6 @@ public class AdReceiver {
     }
 
     private String getAlarmAction() {
-        if (BuildConfig.VERSION_NAME.startsWith("1.1.")) {
-            return Constant.ACTION_BASIC_ALARM;
-        }
         try {
             return mContext.getPackageName() + ".action.ALARM";
         } catch (Exception e) {
