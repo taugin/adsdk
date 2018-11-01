@@ -64,6 +64,11 @@ public class AdExtra {
     public static final String AD_SDK_INNERACTIVE = Constant.AD_SDK_INNERACTIVE;
 
     /**
+     * DSP SDK 名字
+     */
+    public static final String AD_SDK_DSP = Constant.AD_SDK_DSPMOB;
+
+    /**
      * ADMOB banner尺寸 320 x 50
      */
     public static final int ADMOB_BANNER = Constant.BANNER;

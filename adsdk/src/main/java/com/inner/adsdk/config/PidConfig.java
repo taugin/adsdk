@@ -186,6 +186,10 @@ public class PidConfig extends AttrConfig {
         return TextUtils.equals(Constant.AD_SDK_INNERACTIVE, sdk);
     }
 
+    public boolean isDspMob() {
+        return TextUtils.equals(Constant.AD_SDK_DSPMOB, sdk);
+    }
+
     public boolean isBannerType() {
         return TextUtils.equals(Constant.TYPE_BANNER, adType);
     }

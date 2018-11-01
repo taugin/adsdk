@@ -219,7 +219,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
-        Log.v(Log.TAG, "");
     }
 
     @Override
@@ -491,7 +490,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
-        Log.v(Log.TAG, "");
     }
 
 

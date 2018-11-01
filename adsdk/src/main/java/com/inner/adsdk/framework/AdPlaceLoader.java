@@ -15,6 +15,7 @@ import com.inner.adsdk.adloader.adx.AdxLoader;
 import com.inner.adsdk.adloader.applovin.AppLovinLoader;
 import com.inner.adsdk.adloader.appnext.AppnextLoader;
 import com.inner.adsdk.adloader.base.SimpleAdBaseBaseListener;
+import com.inner.adsdk.adloader.dspmob.DspMobLoader;
 import com.inner.adsdk.adloader.inmobi.InmobiLoader;
 import com.inner.adsdk.adloader.inneractive.InnerActiveLoader;
 import com.inner.adsdk.adloader.listener.IManagerListener;
@@ -204,6 +205,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                                 Log.e(Log.TAG, "miss " + config.getSdk() + " app id");
                             }
                             if (loader.allowUseLoader() && !TextUtils.isEmpty(adId)) {
+                                mAdLoaders.add(loader);
+                            }
+                        } else if (config.isDspMob() && AdHelper.isModuleLoaded(config.getSdk())) {
+                            loader = new DspMobLoader();
+                            loader.init(mContext);
+                            loader.setPidConfig(config);
+                            loader.setListenerManager(this);
+                            loader.setAdId(adId);
+                            if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
                         }

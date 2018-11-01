@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.applovin.sdk.AppLovinSdk;
 import com.appnext.base.Appnext;
+import com.dspmob.sdk.DspMob;
 import com.facebook.ads.InterstitialAd;
 import com.fyber.inneractive.sdk.external.InneractiveAdManager;
 import com.google.android.gms.ads.MobileAds;
@@ -52,6 +53,9 @@ public class AdHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
             return true;
+        }
+        if (TextUtils.equals(Constant.AD_SDK_DSPMOB, sdk)) {
+            return hasDspMobModule();
         }
         return false;
     }
@@ -149,6 +153,16 @@ public class AdHelper {
     private static boolean hasWemobModule() {
         try {
             Sdk.class.getName();
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
+    }
+
+    private static boolean hasDspMobModule() {
+        try {
+            DspMob.class.getName();
             return true;
         } catch (Exception e) {
         } catch (Error e) {
