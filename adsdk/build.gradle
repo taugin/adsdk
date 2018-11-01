@@ -76,7 +76,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.1'
 
     // Dsp
-    implementation 'com.dspmob.sdk:dspsdk:0.15'
+    implementation 'com.dspmob.sdk:dspsdk:0.16'
     implementation 'com.mopub.mediation:dspmob:0.13.1@aar'
 }
 
