@@ -51,8 +51,6 @@ public class Constant {
 
     public static final String KEY_PASSWORD = "123456789";
 
-    public static final String ACTION_BASIC_ALARM = "com.inner.basic.intent.action.ALARM";
-
     public static final long   ONE_DAY_TIME = 24 * 60 * 60 * 1000;
     public static final String PREF_LAST_GT_SHOWTIME = "pref_last_outer_showtime";
     public static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
