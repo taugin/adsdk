@@ -78,6 +78,15 @@ dependencies {
     // Dsp
     implementation 'com.dspmob.sdk:dspsdk:0.16'
     implementation 'com.mopub.mediation:dspmob:0.13.1@aar'
+
+    // DAP
+    implementation 'com.duapps.ad:cw:1.2.1'
+
+    // Altamob
+    implementation  'com.altamob:sdk:5.2.0.8'
+
+    // CludeMobi
+    implementation 'com.cloudtech:ads:3.3.8'
 }
 
 // 发布aar

@@ -1,6 +1,8 @@
 package com.inner.adsdk.adloader.base;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
@@ -516,5 +518,17 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             setLoadedFlag();
             getAdListener().onAdLoaded();
         }
+    }
+
+
+    protected String getMetaData(String key) {
+        ApplicationInfo info = null;
+        try {
+            info = mContext.getPackageManager()
+                    .getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return info != null ? info.metaData.getString(key) : null;
     }
 }

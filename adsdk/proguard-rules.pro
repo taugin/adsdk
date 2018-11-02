@@ -113,3 +113,39 @@
 -keep class com.google.gson.stream.** { *; }
 -keepattributes EnclosingMethod
 -keep class com.fyber.** { *; }
+
+# DAP
+-keep class com.duapps.ad.**{*;}
+-dontwarn com.duapps.ad.**
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keepnames @com.google.android.gms.common.annotation.KeepName class *
+-keepclassmembernames class * {
+ @com.google.android.gms.common.annotation.KeepName *;}
+-keep class com.google.android.gms.common.GooglePlayServicesUtil {
+ public <methods>;}
+-keep class com.google.android.gms.ads.identifier.AdvertisingIdClient{
+ public <methods>;
+}
+-keep class com.google.android.gms.ads.identifier.AdvertisingIdClient$Info {
+ public <methods>;
+}
+
+# Altamob
+-dontwarn java.lang.invoke.*
+-keep class com.altamob.** {*;}
+-keep class com.mobi.** {*;}
+-keepclassmembers class * {
+  @android.webkit.JavascriptInterface <methods>;
+}
+
+# CloudMobi
+#for sdk
+-keep public class com.cloudtech.**{*;}
+-dontwarn com.cloudtech.**
+#for gaid
+-keep class **.AdvertisingIdClient$** { *; }
+#for js and webview interface
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}

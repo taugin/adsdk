@@ -25,11 +25,11 @@ ext {
 
 allprojects {
     repositories {
+        google()
+        jcenter()
         mavenCentral()
         maven { url rootProject.ext.publishUri }
         maven { url 'https://gitee.com/taugin/werepo/raw/release' }
-        google()
-        jcenter()
         mavenLocal()
         maven { url "http://dl.appnext.com/" }
     }

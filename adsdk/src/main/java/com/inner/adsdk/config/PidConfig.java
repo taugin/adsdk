@@ -190,6 +190,18 @@ public class PidConfig extends AttrConfig {
         return TextUtils.equals(Constant.AD_SDK_DSPMOB, sdk);
     }
 
+    public boolean isDap() {
+        return TextUtils.equals(Constant.AD_SDK_DAP, sdk);
+    }
+
+    public boolean isAltamob() {
+        return TextUtils.equals(Constant.AD_SDK_ALTAMOB, sdk);
+    }
+
+    public boolean isCloudMobi() {
+        return TextUtils.equals(Constant.AD_SDK_CLOUDMOBI, sdk);
+    }
+
     public boolean isBannerType() {
         return TextUtils.equals(Constant.TYPE_BANNER, adType);
     }

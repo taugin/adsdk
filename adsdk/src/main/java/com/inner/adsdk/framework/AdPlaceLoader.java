@@ -12,9 +12,12 @@ import com.inner.adsdk.adloader.addfp.AdDfpLoader;
 import com.inner.adsdk.adloader.adfb.FBLoader;
 import com.inner.adsdk.adloader.admob.AdmobLoader;
 import com.inner.adsdk.adloader.adx.AdxLoader;
+import com.inner.adsdk.adloader.altamob.AltamobLoader;
 import com.inner.adsdk.adloader.applovin.AppLovinLoader;
 import com.inner.adsdk.adloader.appnext.AppnextLoader;
 import com.inner.adsdk.adloader.base.SimpleAdBaseBaseListener;
+import com.inner.adsdk.adloader.cloudmobi.CloudMobiLoader;
+import com.inner.adsdk.adloader.dap.DapLoader;
 import com.inner.adsdk.adloader.dspmob.DspMobLoader;
 import com.inner.adsdk.adloader.inmobi.InmobiLoader;
 import com.inner.adsdk.adloader.inneractive.InnerActiveLoader;
@@ -209,6 +212,33 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                             }
                         } else if (config.isDspMob() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new DspMobLoader();
+                            loader.init(mContext);
+                            loader.setPidConfig(config);
+                            loader.setListenerManager(this);
+                            loader.setAdId(adId);
+                            if (loader.allowUseLoader()) {
+                                mAdLoaders.add(loader);
+                            }
+                        } else if (config.isDap() && AdHelper.isModuleLoaded(config.getSdk())) {
+                            loader = new DapLoader();
+                            loader.init(mContext);
+                            loader.setPidConfig(config);
+                            loader.setListenerManager(this);
+                            loader.setAdId(adId);
+                            if (loader.allowUseLoader()) {
+                                mAdLoaders.add(loader);
+                            }
+                        } else if (config.isAltamob() && AdHelper.isModuleLoaded(config.getSdk())) {
+                            loader = new AltamobLoader();
+                            loader.init(mContext);
+                            loader.setPidConfig(config);
+                            loader.setListenerManager(this);
+                            loader.setAdId(adId);
+                            if (loader.allowUseLoader()) {
+                                mAdLoaders.add(loader);
+                            }
+                        } else if (config.isCloudMobi() && AdHelper.isModuleLoaded(config.getSdk())) {
+                            loader = new CloudMobiLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);

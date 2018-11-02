@@ -4,12 +4,15 @@ import android.text.TextUtils;
 
 import com.applovin.sdk.AppLovinSdk;
 import com.appnext.base.Appnext;
+import com.cloudtech.ads.core.CTService;
 import com.dspmob.sdk.DspMob;
+import com.duapps.ad.base.DuAdNetwork;
 import com.facebook.ads.InterstitialAd;
 import com.fyber.inneractive.sdk.external.InneractiveAdManager;
 import com.google.android.gms.ads.MobileAds;
 import com.inmobi.ads.InMobiInterstitial;
 import com.inner.adsdk.constant.Constant;
+import com.mobi.sdk.ADSDK;
 import com.mopub.mobileads.MoPubInterstitial;
 import com.wemob.ads.Sdk;
 
@@ -56,6 +59,15 @@ public class AdHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_DSPMOB, sdk)) {
             return hasDspMobModule();
+        }
+        if (TextUtils.equals(Constant.AD_SDK_DAP, sdk)) {
+            return hasDapMobModule();
+        }
+        if (TextUtils.equals(Constant.AD_SDK_ALTAMOB, sdk)) {
+            return hasAltamobMobModule();
+        }
+        if (TextUtils.equals(Constant.AD_SDK_CLOUDMOBI, sdk)) {
+            return hasCloudMobiModule();
         }
         return false;
     }
@@ -163,6 +175,36 @@ public class AdHelper {
     private static boolean hasDspMobModule() {
         try {
             DspMob.class.getName();
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
+    }
+
+    private static boolean hasDapMobModule() {
+        try {
+            DuAdNetwork.class.getName();
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
+    }
+
+    private static boolean hasAltamobMobModule() {
+        try {
+            ADSDK.class.getName();
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
+    }
+
+    private static boolean hasCloudMobiModule() {
+        try {
+            CTService.class.getName();
             return true;
         } catch (Exception e) {
         } catch (Error e) {
