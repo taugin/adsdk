@@ -29,9 +29,8 @@ public class AltamobLoader extends AbstractSdkLoader {
 
         String appkey = getMetaData("appKey");
         if (TextUtils.isEmpty(appkey)) {
-            throw new IllegalArgumentException("ALTAMOB need set ${ALTAMOB_APP_KEY} in gradle");
+            Log.e(Log.TAG, ">>>>>>>>>>>>>>>>>>miss [<meta-data android:name=\"appKey\" android:value=\"\"/>]<<<<<<<<<<<<<<<<<<");
         }
-
         ADSDK.getInstance(mContext).init();
     }
 

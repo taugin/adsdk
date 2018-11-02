@@ -1,7 +1,5 @@
 package com.inner.adsdk.adloader.dap;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import com.duapps.ad.AbsInterstitialListener;
@@ -33,10 +31,14 @@ public class DapLoader extends AbstractSdkLoader {
 
         String license = getMetaData("app_license");
         if (TextUtils.isEmpty(license)) {
-            throw new IllegalArgumentException("DAP need set ${DAP_LICENSE} in gradle");
+            Log.e(Log.TAG, ">>>>>>>>>>>>>>>>>>miss [<meta-data android:name=\"app_license\" android:value=\"\"/>]<<<<<<<<<<<<<<<<<<");
         }
 
-        DuAdNetwork.init(mContext, mAdId);
+        try {
+            DuAdNetwork.init(mContext, mAdId);
+        } catch(Exception e) {
+            Log.e(Log.TAG, ">>>>>>>>>>>>>>>>>>" + e + "<<<<<<<<<<<<<<<<<<");
+        }
     }
 
     @Override

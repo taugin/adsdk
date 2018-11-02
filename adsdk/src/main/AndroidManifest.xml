@@ -141,9 +141,9 @@
             <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />-->
 
         <!-- DAP -->
-        <meta-data
-            android:name="app_license"
-            android:value="${DAP_LICENSE}" />
+        <!--<meta-data-->
+            <!--android:name="app_license"-->
+            <!--android:value="${DAP_LICENSE}" />-->
 
         <provider
             android:name="com.duapps.ad.stats.DuAdCacheProvider"
@@ -166,9 +166,9 @@
             android:noHistory="true" />
 
         <!-- Altamob -->
-        <meta-data
-            android:name="appKey"
-            android:value="${ALTAMOB_APP_KEY}" />
+        <!--<meta-data-->
+            <!--android:name="appKey"-->
+            <!--android:value="${ALTAMOB_APP_KEY}" />-->
 
         <activity android:name="com.mobi.sdk.InterstitialActivity"
             android:excludeFromRecents="true"
