@@ -35,7 +35,10 @@ public class DapLoader extends AbstractSdkLoader {
         }
 
         try {
-            DuAdNetwork.init(mContext, mAdId);
+            DapUtil.addPid(Integer.valueOf(mPidConfig.getPid()));
+            DuAdNetwork.init(mContext, DapUtil.getAdJson());
+
+            Log.v(Log.TAG, DapUtil.getAdJson());
         } catch(Exception e) {
             Log.e(Log.TAG, ">>>>>>>>>>>>>>>>>>" + e + "<<<<<<<<<<<<<<<<<<");
         }
