@@ -35,10 +35,13 @@ public class DapLoader extends AbstractSdkLoader {
         }
 
         try {
-            DapUtil.addPid(Integer.valueOf(mPidConfig.getPid()));
-            DuAdNetwork.init(mContext, DapUtil.getAdJson());
-
-            Log.v(Log.TAG, DapUtil.getAdJson());
+            String pidJson = adId;
+            if (TextUtils.isEmpty(adId)) {
+                DapUtil.addPid(Integer.valueOf(mPidConfig.getPid()));
+                pidJson = DapUtil.getAdJson();
+                Log.v(Log.TAG, pidJson);
+            }
+            DuAdNetwork.init(mContext, pidJson);
         } catch(Exception e) {
             Log.e(Log.TAG, ">>>>>>>>>>>>>>>>>>" + e + "<<<<<<<<<<<<<<<<<<");
         }
