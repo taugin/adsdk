@@ -681,6 +681,14 @@ public class InnerActiveLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup) {
+        showNative(viewGroup, null);
+    }
+
+    @Override
+    public void showNative(ViewGroup viewGroup, Params params) {
+        if (params != null) {
+            mParams = params;
+        }
         // Create a binder, providing it with your assets view ids
         InneractiveNativeAdViewBinder adViewBinder = new InneractiveNativeAdViewBinder.Builder()
                 .setIconViewId(mParams.getAdIcon())
@@ -696,7 +704,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             Log.e("StorySample", "failed binder ad to UI: " + exception.getMessage());
         }
     }
-
 
     private String codeToError(InneractiveErrorCode code) {
         return code.toString();

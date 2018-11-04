@@ -583,10 +583,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      * 展示广告(banner or native)
      *
      * @param adContainer
+     * @param adParams
      */
     @Override
-    public void showAdView(ViewGroup adContainer) {
+    public void showAdView(ViewGroup adContainer, AdParams adParams) {
         Log.d(Log.TAG, "showAdView");
+        if(adParams != null) {
+            mAdParams = adParams;
+        }
         mAdContainer = adContainer;
         showAdViewInternal();
     }
@@ -603,7 +607,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                         break;
                     } else if (loader.isNativeLoaded()) {
                         mCurrentAdLoader = loader;
-                        loader.showNative(mAdContainer);
+                        loader.showNative(mAdContainer, getParams(loader));
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     }
@@ -830,8 +834,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      * @param adContainer
      */
     @Override
-    public void showComplexAds(ViewGroup adContainer, String source, String adType) {
+    public void showComplexAds(ViewGroup adContainer, AdParams adParams, String source, String adType) {
         Log.d(Log.TAG, "");
+        if (adParams != null) {
+            mAdParams = adParams;
+        }
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null && loader.useAndClearFlag()) {
@@ -844,7 +851,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;
                     } else if (loader.isNativeLoaded()) {
-                        loader.showNative(adContainer);
+                        loader.showNative(adContainer, getParams(loader));
                         mCurrentAdLoader = loader;
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
                         break;

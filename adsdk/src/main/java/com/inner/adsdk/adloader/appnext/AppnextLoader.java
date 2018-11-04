@@ -477,7 +477,15 @@ public class AppnextLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup) {
+        showNative(viewGroup, null);
+    }
+
+    @Override
+    public void showNative(ViewGroup viewGroup, Params params) {
         Log.v(Log.TAG, "showNative - appnext");
+        if (params != null) {
+            mParams = params;
+        }
         AppnextBindNativeView appnextBindNativeView = new AppnextBindNativeView();
         clearCachedAdTime(nativeAd);
         appnextBindNativeView.bindAppnextNative(mParams, viewGroup, nativeAd, mPidConfig);

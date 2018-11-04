@@ -448,7 +448,15 @@ public class WemobLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup) {
+        showNative(viewGroup, null);
+    }
+
+    @Override
+    public void showNative(ViewGroup viewGroup, Params params) {
         Log.v(Log.TAG, "showNative - wemob");
+        if (params != null) {
+            mParams = params;
+        }
         WemobBindNativeView wemobBindNativeView = new WemobBindNativeView();
         clearCachedAdTime(nativeAd);
         wemobBindNativeView.bindWemobNative(mParams, viewGroup, nativeAd, mPidConfig);

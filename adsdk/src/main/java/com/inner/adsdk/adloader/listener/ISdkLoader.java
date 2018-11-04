@@ -39,7 +39,7 @@ public interface ISdkLoader {
     public void loadNative(Params params);
 
     // 展示原生
-    public void showNative(ViewGroup viewGroup);
+    public void showNative(ViewGroup viewGroup, Params params);
 
     public void loadBanner(int adSize);
 
