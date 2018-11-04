@@ -164,6 +164,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showAdView(String pidName) {
+        AdParams.Builder builder = new AdParams.Builder();
+        builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_large);
+        builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
+        builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
+        builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
+        builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
+        builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
+        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
+        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+        AdParams adParams = builder.build();
+
         RelativeLayout layout = new RelativeLayout(this);
         layout.setGravity(Gravity.CENTER);
         Dialog dialog = new Dialog(this);
@@ -173,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
         params.width = getResources().getDisplayMetrics().widthPixels;
         dialog.getWindow().setAttributes(params);
-        AdSdk.get(this).showAdView(pidName, layout);
+        AdSdk.get(this).showAdView(pidName, adParams, layout);
         dialog.show();
     }
 

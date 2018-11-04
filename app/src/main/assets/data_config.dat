@@ -30,7 +30,7 @@
     "ec": [],
     "ms": [],
     "so": 1,
-    "ntr":100
+    "ntr":50
   },
   "adplaces": [
     {
@@ -42,19 +42,19 @@
           "sdk": "adx",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "wemob",
