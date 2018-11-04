@@ -45,19 +45,19 @@
           "sdk": "adx",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "wemob",
@@ -111,7 +111,7 @@
           "sdk": "inmobi",
           "type": "banner",
           "pid": "1540597066220",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "inmobi",
