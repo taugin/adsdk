@@ -643,11 +643,6 @@ public class MopubLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void showNative(ViewGroup viewGroup) {
-        showNative(viewGroup, null);
-    }
-
-    @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         Log.v(Log.TAG, "showNative - mopub");
         if (params != null) {

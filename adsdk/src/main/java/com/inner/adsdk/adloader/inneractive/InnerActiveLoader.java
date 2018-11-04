@@ -680,11 +680,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void showNative(ViewGroup viewGroup) {
-        showNative(viewGroup, null);
-    }
-
-    @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         if (params != null) {
             mParams = params;
