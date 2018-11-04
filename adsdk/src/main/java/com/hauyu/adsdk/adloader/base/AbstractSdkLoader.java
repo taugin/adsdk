@@ -114,10 +114,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     @Override
-    public void showNative(ViewGroup viewGroup) {
-    }
-
-    @Override
     public void showNative(ViewGroup viewGroup, Params params) {
     }
 

@@ -23,6 +23,7 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
@@ -32,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
@@ -73,6 +75,18 @@ public class FSA extends Activity {
         }
         parseIntent();
         updateDataAndView();
+    }
+
+    protected AdParams getAdParams() {
+        return null;
+    }
+
+    protected ViewGroup getRootLayout(Context context) {
+        return null;
+    }
+
+    protected int getAdLayoutId() {
+        return 0;
     }
 
     @Override
@@ -155,9 +169,18 @@ public class FSA extends Activity {
         RelativeLayout rootLayout = new RelativeLayout(this);
         rootLayout.setBackgroundColor(Color.WHITE);
         setContentView(rootLayout);
-        RelativeLayout adLayout = new RelativeLayout(this);
-        adLayout.setGravity(Gravity.CENTER);
-        rootLayout.addView(adLayout, -1, -1);
+        ViewGroup adRootLayout = getRootLayout(rootLayout.getContext());
+        int adLayoutId = getAdLayoutId();
+        ViewGroup adLayout = null;
+        if (adRootLayout == null || adLayoutId <= 0
+                || adRootLayout.findViewById(adLayoutId) == null) {
+            adLayout = new RelativeLayout(this);
+            ((RelativeLayout)adLayout).setGravity(Gravity.CENTER);
+            rootLayout.addView(adLayout, -1, -1);
+        } else {
+            adLayout = adRootLayout.findViewById(adLayoutId);
+            rootLayout.addView(adRootLayout, -1, -1);
+        }
 
         ImageView imageView = generateCloseView();
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-2, -2);
@@ -172,8 +195,7 @@ public class FSA extends Activity {
             }
         });
         rootLayout.addView(imageView, params);
-
-        AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, adLayout);
+        AdSdk.get(this).showComplexAds(mPidName, getAdParams(), mSource, mAdType, adLayout);
         GtPolicy.get(this).reportGtShowing(true);
     }
 
