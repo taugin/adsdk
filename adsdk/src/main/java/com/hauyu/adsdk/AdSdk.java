@@ -292,9 +292,13 @@ public class AdSdk {
     }
 
     public void showAdView(String pidName, ViewGroup adContainer) {
+        showAdView(pidName, null, adContainer);
+    }
+
+    public void showAdView(String pidName, AdParams adParams, ViewGroup adContainer) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            loader.showAdView(adContainer);
+            loader.showAdView(adContainer, adParams);
         }
     }
 
@@ -314,11 +318,11 @@ public class AdSdk {
         loadComplexAds(pidName, null, l);
     }
 
-    public void loadComplexAds(String pidName, AdParams extra, OnAdSdkListener l) {
+    public void loadComplexAds(String pidName, AdParams adParams, OnAdSdkListener l) {
         AdPlaceLoader loader = getAdLoader(pidName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
-            loader.loadComplexAds(extra);
+            loader.loadComplexAds(adParams);
         }
     }
 
@@ -327,9 +331,13 @@ public class AdSdk {
     }
 
     public void showComplexAds(String pidName, String source, String adType, ViewGroup adContainer) {
+        showComplexAds(pidName, null, source, adType, adContainer);
+    }
+
+    public void showComplexAds(String pidName, AdParams adParams, String source, String adType, ViewGroup adContainer) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            loader.showComplexAds(adContainer, source, adType);
+            loader.showComplexAds(adContainer, adParams, source, adType);
         }
     }
 

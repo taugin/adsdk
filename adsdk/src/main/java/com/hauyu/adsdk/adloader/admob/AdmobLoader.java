@@ -656,6 +656,15 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup) {
+        showNative(viewGroup, null);
+    }
+
+    @Override
+    public void showNative(ViewGroup viewGroup, Params params) {
+        Log.v(Log.TAG, "showNative - admob");
+        if (params != null) {
+            mParams = params;
+        }
         AdmobBindNativeView admobBindNativeView = new AdmobBindNativeView();
         clearCachedAdTime(nativeAd);
         admobBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);

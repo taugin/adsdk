@@ -62,7 +62,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void showAdView(ViewGroup adContainer) {
+    public void showAdView(ViewGroup adContainer, AdParams adParams) {
     }
 
     @Override
@@ -80,8 +80,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void showComplexAds(ViewGroup adContainer, String source, String adType) {
-
+    public void showComplexAds(ViewGroup adContainer, AdParams adParams, String source, String adType) {
     }
 
     @Override

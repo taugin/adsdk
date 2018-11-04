@@ -486,6 +486,15 @@ public class AdxLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup) {
+        showNative(viewGroup, null);
+    }
+
+    @Override
+    public void showNative(ViewGroup viewGroup, Params params) {
+        Log.v(Log.TAG, "showNative - adx");
+        if (params != null) {
+            mParams = params;
+        }
         AdxBindNativeView adxBindNativeView = new AdxBindNativeView();
         clearCachedAdTime(nativeAd);
         adxBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
