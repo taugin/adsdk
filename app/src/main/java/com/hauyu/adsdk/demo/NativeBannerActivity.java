@@ -44,15 +44,15 @@ public class NativeBannerActivity extends FSA {
         tv.setGravity(Gravity.CENTER);
         layout.addView(tv);
         RelativeLayout rl = new RelativeLayout(context);
-        rl.setGravity(Gravity.CENTER);
+        rl.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL);
         rl.setId(0x1000);
-        layout.addView(rl);
-        return null;
+        layout.addView(rl, -1, -1);
+        return layout;
     }
 
     @Override
     protected int getAdLayoutId() {
-        return 0;//0x1000;
+        return 0x1000;
     }
 
     @Override
