@@ -90,6 +90,21 @@ public class FSA extends Activity {
     }
 
     @Override
+    public void setContentView(View view) {
+        Log.e(Log.TAG, "ignore function setContentView");
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        Log.e(Log.TAG, "ignore function setContentView");
+    }
+
+    @Override
+    public void setContentView(View view, ViewGroup.LayoutParams params) {
+        Log.e(Log.TAG, "ignore function setContentView");
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         parseIntent();
@@ -168,18 +183,17 @@ public class FSA extends Activity {
     private void showNAd() {
         RelativeLayout rootLayout = new RelativeLayout(this);
         rootLayout.setBackgroundColor(Color.WHITE);
-        setContentView(rootLayout);
+        super.setContentView(rootLayout);
         ViewGroup adRootLayout = getRootLayout(rootLayout.getContext());
         int adLayoutId = getAdLayoutId();
         ViewGroup adLayout = null;
-        if (adRootLayout == null || adLayoutId <= 0
-                || adRootLayout.findViewById(adLayoutId) == null) {
-            adLayout = new RelativeLayout(this);
-            ((RelativeLayout)adLayout).setGravity(Gravity.CENTER);
-            rootLayout.addView(adLayout, -1, -1);
-        } else {
-            adLayout = adRootLayout.findViewById(adLayoutId);
+
+        if (adRootLayout != null && adLayoutId > 0 && ((adLayout = adRootLayout.findViewById(adLayoutId)) instanceof ViewGroup)) {
             rootLayout.addView(adRootLayout, -1, -1);
+        } else {
+            adLayout = new RelativeLayout(this);
+            ((RelativeLayout) adLayout).setGravity(Gravity.CENTER);
+            rootLayout.addView(adLayout, -1, -1);
         }
 
         ImageView imageView = generateCloseView();
@@ -332,7 +346,7 @@ public class FSA extends Activity {
         try {
             RelativeLayout rootLayout = new RelativeLayout(this);
             rootLayout.setBackgroundColor(Color.WHITE);
-            setContentView(rootLayout);
+            super.setContentView(rootLayout);
             RelativeLayout adLayout = new RelativeLayout(this);
             adLayout.setGravity(Gravity.CENTER);
             rootLayout.addView(adLayout, -1, -1);
