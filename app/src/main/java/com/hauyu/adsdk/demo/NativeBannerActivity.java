@@ -34,7 +34,7 @@ public class NativeBannerActivity extends FSA {
     }
 
     @Override
-    protected ViewGroup getRootLayout(Context context) {
+    protected ViewGroup getRootLayout(Context context, String adType) {
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
         TextView tv = new TextView(context);
@@ -51,7 +51,7 @@ public class NativeBannerActivity extends FSA {
     }
 
     @Override
-    protected int getAdLayoutId() {
+    protected int getAdLayoutId(String adType) {
         return 0x1000;
     }
 
