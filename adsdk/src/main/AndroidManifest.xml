@@ -145,19 +145,6 @@
             <!--android:name="app_license"-->
             <!--android:value="${DAP_LICENSE}" />-->
 
-        <provider
-            android:name="com.duapps.ad.stats.DuAdCacheProvider"
-            android:authorities="${applicationId}.DuAdCacheProvider"
-            android:exported="false">
-        </provider>
-
-        <receiver android:name="com.duapps.ad.base.PackageAddReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
         <activity android:name="com.duapps.ad.InterstitialAdActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
