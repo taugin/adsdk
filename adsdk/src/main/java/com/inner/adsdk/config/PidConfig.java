@@ -170,10 +170,6 @@ public class PidConfig extends AttrConfig {
         return TextUtils.equals(Constant.AD_SDK_MOPUB, sdk);
     }
 
-    public boolean isAppnext() {
-        return TextUtils.equals(Constant.AD_SDK_APPNEXT, sdk);
-    }
-
     public boolean isSpread() {
         return TextUtils.equals(Constant.AD_SDK_SPREAD, sdk);
     }
@@ -188,18 +184,6 @@ public class PidConfig extends AttrConfig {
 
     public boolean isDspMob() {
         return TextUtils.equals(Constant.AD_SDK_DSPMOB, sdk);
-    }
-
-    public boolean isDap() {
-        return TextUtils.equals(Constant.AD_SDK_DAP, sdk);
-    }
-
-    public boolean isAltamob() {
-        return TextUtils.equals(Constant.AD_SDK_ALTAMOB, sdk);
-    }
-
-    public boolean isCloudMobi() {
-        return TextUtils.equals(Constant.AD_SDK_CLOUDMOBI, sdk);
     }
 
     public boolean isBannerType() {

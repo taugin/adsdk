@@ -63,9 +63,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
-    implementation 'com.appnext.sdk:ads:2.+'
-    implementation 'com.appnext.sdk:banners:2.+'
-    implementation 'com.appnext.sdk:native-ads2:2.+' // New Native Ads
 
     // Inner-Active
     implementation 'com.inneractive:ia-mraid-kit:7.1.7'
@@ -78,15 +75,6 @@ dependencies {
     // Dsp
     implementation 'com.dspmob.sdk:dspsdk:0.17'
     implementation 'com.mopub.mediation:dspmob:0.13.1@aar'
-
-    // DAP
-    implementation 'com.duapps.ad:cw:1.2.1'
-
-    // Altamob
-    implementation  'com.altamob:sdk:5.2.0.8'
-
-    // CludeMobi
-    implementation 'com.cloudtech:ads:3.3.8'
 }
 
 // 发布aar

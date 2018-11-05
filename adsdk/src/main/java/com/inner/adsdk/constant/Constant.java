@@ -16,14 +16,10 @@ public class Constant {
     public static final String AD_SDK_DFP = "dfp";
     public static final String AD_SDK_APPLOVIN = "applovin";
     public static final String AD_SDK_MOPUB = "mopub";
-    public static final String AD_SDK_APPNEXT = "appnext";
     public static final String AD_SDK_SPREAD = "spread";
     public static final String AD_SDK_INMOBI = "inmobi";
     public static final String AD_SDK_INNERACTIVE = "inneractive";
     public static final String AD_SDK_DSPMOB = "dspmob";
-    public static final String AD_SDK_DAP = "dap";
-    public static final String AD_SDK_ALTAMOB = "altamob";
-    public static final String AD_SDK_CLOUDMOBI = "cloudmobi";
 
     public static final int    NOSET = -1;
     public static final int    BANNER = 1000;

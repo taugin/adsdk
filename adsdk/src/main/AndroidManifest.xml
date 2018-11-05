@@ -77,24 +77,6 @@
             android:excludeFromRecents="true" />
 
         <activity
-            android:name="com.appnext.ads.interstitial.InterstitialActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleInstance"
-            android:multiprocess="true"
-            android:noHistory="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name="com.appnext.ads.fullscreen.FullscreenActivity"
-            android:excludeFromRecents="true"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleInstance"
-            android:multiprocess="true"
-            android:noHistory="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-
-        <activity
             android:name="com.appub.ads.a.FSA"
             android:launchMode="singleInstance"
             android:excludeFromRecents="true"
@@ -139,54 +121,5 @@
             <!--android:multiprocess="true"-->
             <!--android:noHistory="true"-->
             <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />-->
-
-        <!-- DAP -->
-        <!--<meta-data-->
-            <!--android:name="app_license"-->
-            <!--android:value="${DAP_LICENSE}" />-->
-
-        <provider
-            android:name="com.duapps.ad.stats.DuAdCacheProvider"
-            android:authorities="${applicationId}.DuAdCacheProvider"
-            android:exported="false">
-        </provider>
-
-        <receiver android:name="com.duapps.ad.base.PackageAddReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
-        <activity android:name="com.duapps.ad.InterstitialAdActivity"
-            android:excludeFromRecents="true"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleInstance"
-            android:multiprocess="true"
-            android:noHistory="true" />
-
-        <!-- Altamob -->
-        <!--<meta-data-->
-            <!--android:name="appKey"-->
-            <!--android:value="${ALTAMOB_APP_KEY}" />-->
-
-        <activity android:name="com.mobi.sdk.InterstitialActivity"
-            android:excludeFromRecents="true"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleInstance"
-            android:multiprocess="true"
-            android:noHistory="true" />
-
-        <!-- CloudMobi -->
-        <activity android:name="com.cloudtech.ads.view.InnerWebLandingActivity"
-            android:launchMode="singleInstance"/>
-        <activity
-            android:name="com.cloudtech.ads.view.InterstitialActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleInstance"
-            android:multiprocess="true"
-            android:noHistory="true" />
     </application>
 </manifest>

@@ -49,11 +49,6 @@ public class AdExtra {
     public static final String AD_SDK_MOPUB = Constant.AD_SDK_MOPUB;
 
     /**
-     * APPNEXT SDK 名字
-     */
-    public static final String AD_SDK_APPNEXT = Constant.AD_SDK_APPNEXT;
-
-    /**
      * INMOBI SDK 名字
      */
     public static final String AD_SDK_INMOBI = Constant.AD_SDK_INMOBI;
@@ -67,21 +62,6 @@ public class AdExtra {
      * DSPMOB SDK 名字
      */
     public static final String AD_SDK_DSP = Constant.AD_SDK_DSPMOB;
-
-    /**
-     * DAP SDK 名字
-     */
-    public static final String AD_SDK_DAP = Constant.AD_SDK_DAP;
-
-    /**
-     * ALTAMOB SDK 名字
-     */
-    public static final String AD_SDK_ALTAMOB = Constant.AD_SDK_ALTAMOB;
-
-    /**
-     * CLOUDMOBI SDK 名字
-     */
-    public static final String AD_SDK_CLOUDMOBI = Constant.AD_SDK_CLOUDMOBI;
 
     /**
      * ADMOB banner尺寸 320 x 50
