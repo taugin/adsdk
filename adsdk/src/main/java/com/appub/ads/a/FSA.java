@@ -81,11 +81,11 @@ public class FSA extends Activity {
         return null;
     }
 
-    protected ViewGroup getRootLayout(Context context) {
+    protected ViewGroup getRootLayout(Context context, String adType) {
         return null;
     }
 
-    protected int getAdLayoutId() {
+    protected int getAdLayoutId(String adType) {
         return 0;
     }
 
@@ -184,8 +184,8 @@ public class FSA extends Activity {
         RelativeLayout rootLayout = new RelativeLayout(this);
         rootLayout.setBackgroundColor(Color.WHITE);
         super.setContentView(rootLayout);
-        ViewGroup adRootLayout = getRootLayout(rootLayout.getContext());
-        int adLayoutId = getAdLayoutId();
+        ViewGroup adRootLayout = getRootLayout(rootLayout.getContext(), mAdType);
+        int adLayoutId = getAdLayoutId(mAdType);
         ViewGroup adLayout = null;
 
         if (adRootLayout != null && adLayoutId > 0 && ((adLayout = adRootLayout.findViewById(adLayoutId)) instanceof ViewGroup)) {
