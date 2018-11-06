@@ -73,8 +73,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.1'
 
     // Dsp
-    implementation 'com.dspmob.sdk:dspsdk:0.17'
-    implementation 'com.mopub.mediation:dspmob:0.13.1@aar'
+    implementation 'com.dspmob.sdk:dspsdk:0.18'
+    implementation 'com.mopub.mediation:dspmob:0.18.0@aar'
 }
 
 // 发布aar
