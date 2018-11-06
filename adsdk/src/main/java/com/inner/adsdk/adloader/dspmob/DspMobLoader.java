@@ -31,7 +31,7 @@ public class DspMobLoader extends AbstractSdkLoader {
 
     @Override
     public void setAdId(String adId) {
-        DspMob.init(mContext);
+        DspMob.init(mContext, adId);
         super.setAdId(adId);
     }
 
@@ -78,10 +78,13 @@ public class DspMobLoader extends AbstractSdkLoader {
         setLoading(true, STATE_REQUEST);
 
         mBannerAd = new BannerAd(mContext);
+        mBannerAd.setAdId(mPidConfig.getPid());
         if (adSize == Constant.BANNER) {
             mBannerAd.setAdSize(AdSize.Banner_320_50);
         } else if (adSize == Constant.MEDIUM_RECTANGLE) {
             mBannerAd.setAdSize(AdSize.Banner_300_250);
+        } else {
+            mBannerAd.setAdSize(AdSize.Banner_320_50);
         }
         mBannerAd.setBidFloor((float) getPidConfig().getEcpm() / 100f);
         mBannerAd.setListener(new AdListener() {
@@ -236,6 +239,7 @@ public class DspMobLoader extends AbstractSdkLoader {
         setLoading(true, STATE_REQUEST);
 
         mInterstitialAd = new InterstitialAd(mContext);
+        mInterstitialAd.setAdId(mPidConfig.getPid());
         mInterstitialAd.setBidFloor((float) getPidConfig().getEcpm() / 100f);
         mInterstitialAd.setListener(new AdListener() {
             @Override
