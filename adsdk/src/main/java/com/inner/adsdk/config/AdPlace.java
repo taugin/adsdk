@@ -18,9 +18,9 @@ public class AdPlace {
 
     private List<PidConfig> pidsList;
 
-    private int maxCount;
+    private int maxCount = 100;
 
-    private int percent;
+    private int percent = 100;
 
     private boolean autoSwitch;
 
