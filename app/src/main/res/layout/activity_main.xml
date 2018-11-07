@@ -84,5 +84,12 @@
                 android:onClick="onClick"
                 android:text="NATIVE通用布局" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/native_banner_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:gravity="center" />
     </LinearLayout>
 </ScrollView>

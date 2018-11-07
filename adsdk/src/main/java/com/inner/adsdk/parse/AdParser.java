@@ -356,6 +356,9 @@ public class AdParser implements IParser {
             if (jobj.has(AUTO_SWITCH)) {
                 adPlace.setAutoSwitch(jobj.getInt(AUTO_SWITCH) == 1);
             }
+            if (jobj.has(AUTO_INTERVAL)) {
+                adPlace.setAutoInterval(jobj.getLong(AUTO_INTERVAL));
+            }
             if (jobj.has(LOAD_ONLY_ONCE)) {
                 adPlace.setLoadOnlyOnce(jobj.getBoolean(LOAD_ONLY_ONCE));
             }

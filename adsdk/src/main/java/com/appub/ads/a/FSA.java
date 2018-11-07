@@ -464,4 +464,23 @@ public class FSA extends Activity {
         }
         return true;
     }
+
+    public static class MView extends View {
+
+        private boolean mViewDetached = false;
+
+        public MView(Context context) {
+            super(context);
+        }
+
+        public boolean isViewDetached() {
+            return mViewDetached;
+        }
+
+        @Override
+        protected void onDetachedFromWindow() {
+            super.onDetachedFromWindow();
+            mViewDetached = true;
+        }
+    }
 }
