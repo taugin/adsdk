@@ -1,58 +1,60 @@
 package com.hauyu.adsdk.demo;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.DisplayMetrics;
-import android.view.WindowManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import com.appub.ads.a.FSA;
-import android.content.Context;
-import android.graphics.Color;
-import android.view.Gravity;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
+import com.hauyu.adsdk.AdSdk;
+import com.hauyu.adsdk.listener.SimpleAdSdkListener;
+
 
 /**
  * Created by Administrator on 2018-10-31.
  */
 
 public class NativeBannerActivity extends FSA {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowManager.LayoutParams params = getWindow().getAttributes();
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        params.width = (int) (dm.widthPixels * 0.9f);
-        params.height = (int) (dm.heightPixels * 0.6f);
-        getWindow().setAttributes(params);
-        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 
     @Override
-    protected ViewGroup getRootLayout(Context context, String adType) {
-        LinearLayout layout = new LinearLayout(context);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        TextView tv = new TextView(context);
-        tv.setText(android.R.string.ok);
-        tv.setTextColor(Color.BLACK);
-        tv.setTextSize(50);
-        tv.setGravity(Gravity.CENTER);
-        layout.addView(tv);
-        RelativeLayout rl = new RelativeLayout(context);
-        rl.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL);
-        rl.setId(0x1000);
-        layout.addView(rl, -1, -1);
-        return layout;
+    protected View getRootLayout(Context context, String adType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.ad_ntlayout, null);
+        final FrameLayout banner1 = view.findViewById(R.id.banner1);
+        final FrameLayout banner2 = view.findViewById(R.id.banner2);
+        final FrameLayout banner3 = view.findViewById(R.id.banner3);
+        AdSdk.get(this).loadAdView("banner1", new SimpleAdSdkListener() {
+            @Override
+            public void onLoaded(String pidName, String source, String adType) {
+                AdSdk.get(getApplication()).showAdView(pidName, banner1);
+            }
+        });
+        AdSdk.get(this).loadAdView("banner2", new SimpleAdSdkListener() {
+            @Override
+            public void onLoaded(String pidName, String source, String adType) {
+                AdSdk.get(getApplication()).showAdView(pidName, banner2);
+            }
+        });
+        AdSdk.get(this).loadAdView("banner3", new SimpleAdSdkListener() {
+            @Override
+            public void onLoaded(String pidName, String source, String adType) {
+                AdSdk.get(getApplication()).showAdView(pidName, banner3);
+            }
+        });
+        return view;
     }
 
     @Override
     protected int getAdLayoutId(String adType) {
-        return 0x1000;
+        return R.id.nt_layout;
     }
 
     @Override
