@@ -24,6 +24,7 @@ import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.policy.AdPolicy;
+import com.appub.ads.a.FSA;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 每个广告位对应一个AdPlaceLoader对象
  */
 
-public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
+public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Runnable {
     private List<ISdkLoader> mAdLoaders = new ArrayList<ISdkLoader>();
     private AdPlace mAdPlace;
     private Map<String, String> mAdIds;
@@ -49,10 +50,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     // banner和native的listener集合
     private Map<ISdkLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<ISdkLoader, OnAdBaseListener>();
     private WeakReference<Activity> mActivity;
-    private ViewGroup mAdContainer;
+    private WeakReference<ViewGroup> mAdContainer;
     private ISdkLoader mCurrentAdLoader;
     private String mOriginPidName;
     private Handler mHandler = new Handler(Looper.getMainLooper());
+    private FSA.MView mMView;
 
     public AdPlaceLoader(Context context) {
         mContext = context;
@@ -485,11 +487,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     @Override
     public void showAdView(ViewGroup adContainer, AdParams adParams) {
         Log.d(Log.TAG, "showAdView");
-        if(adParams != null) {
+        if (adParams != null) {
             mAdParams = adParams;
         }
-        mAdContainer = adContainer;
+        mAdContainer = new WeakReference<ViewGroup>(adContainer);
         showAdViewInternal();
+        autoSwitchAdView();
     }
 
     private void showAdViewInternal() {
@@ -497,15 +500,21 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         if (mAdLoaders != null && mAdContainer != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    if (loader.isBannerLoaded()) {
+                    ViewGroup viewGroup = null;
+                    if (mAdContainer != null) {
+                        viewGroup = mAdContainer.get();
+                    }
+                    if (loader.isBannerLoaded() && viewGroup != null) {
                         mCurrentAdLoader = loader;
-                        loader.showBanner(mAdContainer);
+                        loader.showBanner(viewGroup);
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                        viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
                         break;
-                    } else if (loader.isNativeLoaded()) {
+                    } else if (loader.isNativeLoaded() && viewGroup != null) {
                         mCurrentAdLoader = loader;
-                        loader.showNative(mAdContainer, getParams(loader));
+                        loader.showNative(viewGroup, getParams(loader));
                         AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                        viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
                         break;
                     }
                 }
@@ -968,4 +977,47 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
             }
         }
     };
+
+    private void autoSwitchAdView() {
+        if (mAdPlace == null) {
+            Log.v(Log.TAG, "place is null");
+            return;
+        }
+        if (mAdPlace.getAutoInterval() <= 0) {
+            Log.v(Log.TAG, "no need auto switch");
+            return;
+        }
+        if (mHandler == null) {
+            Log.v(Log.TAG, "handler is null");
+            return;
+        }
+        mHandler.removeCallbacks(this);
+        Log.v(Log.TAG, "wait " + mAdPlace.getAutoInterval() + " ms");
+        mHandler.postDelayed(this, mAdPlace.getAutoInterval());
+    }
+
+    @Override
+    public void run() {
+        if (!isAdViewLoaded()) {
+            Log.v(Log.TAG, "ai not loaded");
+            return;
+        }
+
+        ViewGroup viewGroup = null;
+        if (mAdContainer != null) {
+            viewGroup = mAdContainer.get();
+        }
+        if (viewGroup == null) {
+            Log.v(Log.TAG, "ai empty view group");
+            return;
+        }
+
+        if (mMView == null || mMView.isViewDetached()) {
+            Log.v(Log.TAG, "ai detached");
+            return;
+        }
+        resume();
+        showNextAdView();
+        autoSwitchAdView();
+    }
 }

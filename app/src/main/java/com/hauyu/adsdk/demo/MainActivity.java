@@ -41,11 +41,13 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MA";
     private Context mContext;
+    private RelativeLayout mNativeBannerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = this;
         AdSdk.get(mContext).init();
@@ -132,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 if ("interstitial".equals(adType) || "reward".equals(adType)) {
                     AdSdk.get(mContext).showComplexAds(pidName, null);
                 } else {
-                    showAdView(pidName);
+                    AdSdk.get(mContext).showAdView(pidName, mNativeBannerLayout);
                 }
             }
         });
@@ -214,7 +216,8 @@ public class MainActivity extends AppCompatActivity {
         public void onLoaded(String pidName, String source, String adType) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
             if (AdExtra.AD_TYPE_BANNER.equalsIgnoreCase(adType) || AdExtra.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
-                showAdView(pidName);
+                // showAdView(pidName);
+                AdSdk.get(getBaseContext()).showAdView(pidName, mNativeBannerLayout);
             } else if (AdExtra.AD_TYPE_INTERSTITIAL.equalsIgnoreCase(adType)) {
                 AdSdk.get(getBaseContext()).showInterstitial(pidName);
             } else if (AdExtra.AD_TYPE_REWARD.equalsIgnoreCase(adType)) {

@@ -24,6 +24,8 @@ public class AdPlace {
 
     private boolean autoSwitch;
 
+    private long autoInterval;
+
     private String uniqueValue;
 
     private boolean loadOnlyOnce = true;
@@ -95,6 +97,14 @@ public class AdPlace {
         this.autoSwitch = autoSwitch;
     }
 
+    public long getAutoInterval() {
+        return autoInterval;
+    }
+
+    public void setAutoInterval(long autoInterval) {
+        this.autoInterval = autoInterval;
+    }
+
     public String getUniqueValue() {
         return uniqueValue;
     }
@@ -160,12 +170,13 @@ public class AdPlace {
         return "AdPlace{" +
                 "name='" + name + '\'' +
                 ", mode='" + mode + '\'' +
-                ", pidsList=" + pidsList +
-                ", maxCount=" + maxCount +
-                ", percent=" + percent +
-                ", autoSwitch=" + autoSwitch +
-                ", uniqueValue='" + uniqueValue + '\'' +
-                ", loadOnlyOnce=" + loadOnlyOnce +
+                ", list=" + pidsList +
+                ", mc=" + maxCount +
+                ", p=" + percent +
+                ", as=" + autoSwitch +
+                ", ai=" + autoInterval +
+                ", uv='" + uniqueValue + '\'' +
+                ", loo=" + loadOnlyOnce +
                 '}';
     }
 }

@@ -85,6 +85,7 @@
       "name": "banner_and_native",
       "mode": "con",
       "as": 1,
+      "ai": 12000,
       "pids": [
         {
           "sdk": "adx",
