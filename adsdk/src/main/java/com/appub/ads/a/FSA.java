@@ -467,13 +467,20 @@ public class FSA extends Activity {
     public static class MView extends View {
 
         private boolean mViewDetached = false;
+        private boolean mViewVisible = true;
 
         public MView(Context context) {
             super(context);
         }
 
-        public boolean isViewDetached() {
-            return mViewDetached;
+        public boolean isViewVisible() {
+            return !mViewDetached && mViewVisible;
+        }
+
+        @Override
+        protected void onVisibilityChanged(View changedView, int visibility) {
+            super.onVisibilityChanged(changedView, visibility);
+            mViewVisible = visibility == View.VISIBLE;
         }
 
         @Override

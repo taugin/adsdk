@@ -1012,8 +1012,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             return;
         }
 
-        if (mMView == null || mMView.isViewDetached()) {
-            Log.v(Log.TAG, "ai detached");
+        if (mMView == null || !mMView.isViewVisible()) {
+            Log.v(Log.TAG, "ai not visible");
             return;
         }
         resume();
