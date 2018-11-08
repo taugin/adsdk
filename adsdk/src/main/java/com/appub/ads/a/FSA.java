@@ -18,7 +18,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.GestureDetector;
@@ -36,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.config.SpConfig;
@@ -45,6 +49,9 @@ import com.inner.adsdk.log.Log;
 import com.inner.adsdk.policy.GtPolicy;
 import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2018-10-16.
@@ -316,6 +323,8 @@ public class FSA extends Activity {
         if (Constant.AD_SDK_SPREAD.equals(mSource)) {
             sendBroadcast(new Intent(getPackageName() + ".action.SPDISMISS").setPackage(getPackageName()));
         }
+
+        stopTimeUpdate();
     }
 
     private void registerBroadcast() {
@@ -485,44 +494,184 @@ public class FSA extends Activity {
     /**
      * 展示锁屏界面
      */
+    private TextView mTimeTextView;
+    private TextView mWeekTextView;
+    private BroadcastReceiver mTimeReceiver;
+
     private void showLockScreenView() {
+        Log.v(Log.TAG, "show lock screen view");
+
+        // 1，create Activity layout
         LinearLayout layout = new LinearLayout(this);
         super.setContentView(layout);
 
-        LinearLayout.LayoutParams params = null;
-        params = new LinearLayout.LayoutParams(-1, -1, 2);
         layout.setOrientation(LinearLayout.VERTICAL);
-        Log.v(Log.TAG, "show lock screen view");
-        TextView tv = new TextView(this);
-        tv.setTextColor(Color.BLACK);
-//        tv.setBackgroundColor(Color.WHITE);
-        tv.setGravity(Gravity.CENTER);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
-        tv.setText("Lock Screen View");
         WallpaperManager wm = WallpaperManager.getInstance(this);
         Drawable drawable = wm.getDrawable();
-        layout.setBackground(drawable);
-        layout.addView(tv, params);
-        RelativeLayout rl = new RelativeLayout(this);
-        rl.setGravity(Gravity.CENTER);
-        mLockAdLayout = rl;
-        params = new LinearLayout.LayoutParams(-1, -1, 1);
-        layout.addView(mLockAdLayout, params);
+//        layout.setBackground(drawable);
+
+        // 2，create ViewPager
+        ViewPager viewPager = new ViewPager(this);
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    fa();
+                }
+            }
+        });
+
+        // 3，create Ad Pager layout
+        LinearLayout pagerLayout = new LinearLayout(this);
+        pagerLayout.setOrientation(LinearLayout.VERTICAL);
+        pagerLayout.setBackgroundColor(Color.parseColor("#000000"));
+
+        // 3.1，create TimeView
+        mTimeTextView = new TextView(this);
+        mTimeTextView.setTextColor(Color.WHITE);
+        mTimeTextView.setGravity(Gravity.CENTER);
+        mTimeTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 56);
+        mTimeTextView.setPadding(0, Utils.dp2px(this, 24f), 0, Utils.dp2px(this, 6f));
+        LinearLayout.LayoutParams timeViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        timeViewParams.weight = 0;
+        pagerLayout.addView(mTimeTextView, timeViewParams);
+
+        // 3.2，create WeekView
+        mWeekTextView = new TextView(this);
+        mWeekTextView.setTextColor(Color.WHITE);
+        mWeekTextView.setGravity(Gravity.CENTER);
+        mWeekTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        mWeekTextView.setPadding(0, Utils.dp2px(this, 0f), 0, Utils.dp2px(this, 30f));
+        LinearLayout.LayoutParams weekViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        weekViewParams.weight = 0;
+        pagerLayout.addView(mWeekTextView, weekViewParams);
+
+        // 3.3，create Ad Layout
+        RelativeLayout adLayout = new RelativeLayout(this);
+        adLayout.setGravity(Gravity.CENTER);
+        adLayout.setPadding(Utils.dp2px(this, 16f), 0, Utils.dp2px(this, 16f), 0);
+        mLockAdLayout = adLayout;
+        LinearLayout.LayoutParams adLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        adLayoutParams.weight = 1;
+        pagerLayout.addView(mLockAdLayout, adLayoutParams);
+
+        // 3.4，create Scroll View
+        TextView slideView = new TextView(this);
+        slideView.setText("Slide to unlock >>");
+        slideView.setTextColor(Color.WHITE);
+        slideView.setGravity(Gravity.CENTER);
+        slideView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        slideView.setPadding(0, Utils.dp2px(this, 16f), 0, Utils.dp2px(this, 16f));
+
+        LinearLayout.LayoutParams slideViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        slideViewParams.weight = 0;
+        pagerLayout.addView(slideView, slideViewParams);
+
+        // 4，set ViewPager Adapter
+        LsViewPagerAdapter adapter = new LsViewPagerAdapter(pagerLayout);
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(1);
+
+        // 5，add ViewPager to Activity layout
+        layout.addView(viewPager, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+        startTimeUpdate();
+
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 showLockViewAd();
             }
-        }, 1000);
+        }, 500);
+    }
+
+    private void startTimeUpdate() {
+        updateTime();
+
+        IntentFilter filter=new IntentFilter();
+        filter.addAction(Intent.ACTION_TIME_TICK);
+
+        mTimeReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (action.equals(Intent.ACTION_TIME_TICK)) {
+                    updateTime();
+                }
+            }
+        };
+
+        registerReceiver(mTimeReceiver,filter);
+    }
+
+    private void updateTime() {
+        Date date = new Date();
+        mTimeTextView.setText(new SimpleDateFormat("H:mm").format(date));
+        mWeekTextView.setText(new SimpleDateFormat("MM/dd  EEE").format(date));
+    }
+
+    private void stopTimeUpdate() {
+        try {
+            if (mTimeReceiver != null) {
+                unregisterReceiver(mTimeReceiver);
+            }
+        } catch (Exception | Error e) {
+            e.printStackTrace();
+        }
     }
 
     private void showLockViewAd() {
-        AdSdk.get(this).loadAdView(Constant.LTPLACE_OUTER_NAME, new SimpleAdSdkListener() {
+        AdParams params = new AdParams.Builder()
+                .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
+                .setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE)
+                .build();
+        AdSdk.get(this).loadAdView(Constant.LTPLACE_OUTER_NAME, params, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 AdSdk.get(getBaseContext()).showAdView(pidName, getAdParams(), mLockAdLayout);
             }
         });
+    }
+
+    private class LsViewPagerAdapter extends PagerAdapter {
+
+        private ViewGroup mAdView;
+
+        public LsViewPagerAdapter(ViewGroup adView) {
+            mAdView = adView;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            if (position == 0) {
+                View view = new View(container.getContext());
+                view.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+                container.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                return view;
+            } else if (position == 1) {
+                container.addView(mAdView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                return mAdView;
+            }
+            return null;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            if (object instanceof View) {
+                container.removeView((View) object);
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
     }
 
     /**
