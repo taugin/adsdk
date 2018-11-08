@@ -378,7 +378,7 @@ public class GtPolicy implements Handler.Callback {
 
     private boolean checkAdGtConfig() {
         if (!isConfigAllow()) {
-            Log.v(Log.TAG, "config not allowed");
+            Log.v(Log.TAG, "con not allowed");
             return false;
         }
 
@@ -425,7 +425,7 @@ public class GtPolicy implements Handler.Callback {
     }
 
     public boolean isGtAllowed() {
-        Log.v(Log.TAG, "gtconfig : " + mGtConfig);
+        Log.v(Log.TAG, "gt : " + mGtConfig);
         if (!checkAdGtConfig()) {
             return false;
         }

@@ -15,12 +15,18 @@
   },
   "adrefs": {
     "st_outer_place": "gt_outer_place",
-    "at_outer_place": "gt_outer_place"
+    "at_outer_place": "gt_outer_place",
+    "lt_outer_place": "banner_and_native"
   },
   "atconfig": {
     "e": 0,
     "d": 1800,
     "i": 60000
+  },
+  "ltconfig": {
+    "e": 1,
+    "d": 3600,
+    "attr": []
   },
   "gtconfig": {
     "e": 1,
@@ -79,7 +85,6 @@
       "name": "banner_and_native",
       "mode": "con",
       "as": 1,
-      "ai": 12000,
       "pids": [
         {
           "sdk": "adx",
