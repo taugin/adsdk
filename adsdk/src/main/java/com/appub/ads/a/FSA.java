@@ -1,6 +1,7 @@
 package com.appub.ads.a;
 
 import android.app.Activity;
+import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
@@ -30,6 +32,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,6 +40,7 @@ import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.config.SpConfig;
 import com.inner.adsdk.constant.Constant;
+import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.policy.GtPolicy;
 import com.inner.adsdk.stat.StatImpl;
@@ -57,10 +61,14 @@ public class FSA extends Activity {
     private String mAdType;
     private String mAction;
     private Handler mHandler = null;
+    private boolean mInLockView;
+    private ViewGroup mLockAdLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mInLockView = false;
+        parseIntent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             setFinishOnTouchOutside(false);
         }
@@ -73,7 +81,6 @@ public class FSA extends Activity {
         } catch (Exception e) {
         } catch (Error e) {
         }
-        parseIntent();
         updateDataAndView();
     }
 
@@ -107,12 +114,15 @@ public class FSA extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
+        mInLockView = false;
         parseIntent();
         updateDataAndView();
     }
 
     private void updateDataAndView() {
-        if (mSpConfig != null) {
+        if (isLockView()) {
+            showLockScreenView();
+        } else if (mSpConfig != null) {
             showSpread();
         } else {
             registerArgument();
@@ -127,6 +137,7 @@ public class FSA extends Activity {
             mSource = intent.getStringExtra(Intent.EXTRA_TEXT);
             mAdType = intent.getStringExtra(Intent.EXTRA_TEMPLATE);
             mSpConfig = (SpConfig) intent.getSerializableExtra(Intent.EXTRA_STREAM);
+            mInLockView = intent.getBooleanExtra(Intent.EXTRA_LOCAL_ONLY, false);
             mAction = intent.getAction();
         }
     }
@@ -465,6 +476,58 @@ public class FSA extends Activity {
         return true;
     }
 
+    /////////////////////////////////////////////////////////////////////////////////
+
+    private boolean isLockView() {
+        return mInLockView;
+    }
+
+    /**
+     * 展示锁屏界面
+     */
+    private void showLockScreenView() {
+        LinearLayout layout = new LinearLayout(this);
+        super.setContentView(layout);
+
+        LinearLayout.LayoutParams params = null;
+        params = new LinearLayout.LayoutParams(-1, -1, 2);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        Log.v(Log.TAG, "show lock screen view");
+        TextView tv = new TextView(this);
+        tv.setTextColor(Color.BLACK);
+//        tv.setBackgroundColor(Color.WHITE);
+        tv.setGravity(Gravity.CENTER);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+        tv.setText("Lock Screen View");
+        WallpaperManager wm = WallpaperManager.getInstance(this);
+        Drawable drawable = wm.getDrawable();
+        layout.setBackground(drawable);
+        layout.addView(tv, params);
+        RelativeLayout rl = new RelativeLayout(this);
+        rl.setGravity(Gravity.CENTER);
+        mLockAdLayout = rl;
+        params = new LinearLayout.LayoutParams(-1, -1, 1);
+        layout.addView(mLockAdLayout, params);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showLockViewAd();
+            }
+        }, 1000);
+    }
+
+    private void showLockViewAd() {
+        AdSdk.get(this).loadAdView(Constant.LTPLACE_OUTER_NAME, new SimpleAdSdkListener() {
+            @Override
+            public void onLoaded(String pidName, String source, String adType) {
+                AdSdk.get(getBaseContext()).showAdView(pidName, getAdParams(), mLockAdLayout);
+            }
+        });
+    }
+
+    /**
+     * 监听Banner或native是否可见的类
+     */
     public static class MView extends View {
 
         private boolean mViewDetached = false;

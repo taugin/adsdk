@@ -5,6 +5,7 @@ import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.AtConfig;
 import com.inner.adsdk.config.GtConfig;
+import com.inner.adsdk.config.LtConfig;
 import com.inner.adsdk.config.SpConfig;
 import com.inner.adsdk.config.StConfig;
 
@@ -29,8 +30,10 @@ public interface IParser {
     String GTCONFIG = "gtconfig";
     // ST配置
     String STCONFIG = "stconfig";
-    // TT配置
+    // AT配置
     String ATCONFIG = "atconfig";
+    // LT配置
+    String LTCONFIG = "ltconfig";
     // 广告位汇总
     String ADPLACES = "adplaces";
     // 开光控制配置信息
@@ -162,4 +165,6 @@ public interface IParser {
     Map<String, String> parseAdRefs(String data);
 
     List<SpConfig> parseSpread(String data);
+
+    LtConfig parseLtPolicy(String data);
 }
