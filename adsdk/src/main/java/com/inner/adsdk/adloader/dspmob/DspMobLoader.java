@@ -1,5 +1,6 @@
 package com.inner.adsdk.adloader.dspmob;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -29,10 +30,41 @@ public class DspMobLoader extends AbstractSdkLoader {
         return Constant.AD_SDK_DSPMOB;
     }
 
+    private String getAdId(String pid) {
+        if (TextUtils.isEmpty(pid)) {
+            return pid;
+        }
+        if (pid.contains("/")) {
+            return pid.substring(0, pid.indexOf("/"));
+        }
+        return "";
+    }
+
+    private String getPid(String pid) {
+        if (TextUtils.isEmpty(pid)) {
+            return pid;
+        }
+        if (pid.contains("/")) {
+            return pid.substring(pid.indexOf("/") + 1);
+        }
+        return pid;
+    }
+
     @Override
     public void setAdId(String adId) {
-        DspMob.init(mContext, adId);
         super.setAdId(adId);
+        if (!TextUtils.isEmpty(adId)) {
+            DspMob.init(mContext, adId);
+        } else {
+            initDspMob();
+        }
+    }
+
+    private void initDspMob() {
+        String adId = getAdId(mPidConfig.getPid());
+        if (!TextUtils.isEmpty(adId)) {
+            DspMob.init(mContext, adId);
+        }
     }
 
     @Override
@@ -78,7 +110,7 @@ public class DspMobLoader extends AbstractSdkLoader {
         setLoading(true, STATE_REQUEST);
 
         mBannerAd = new BannerAd(mContext);
-        mBannerAd.setAdId(mPidConfig.getPid());
+        mBannerAd.setAdId(getPid(mPidConfig.getPid()));
         if (adSize == Constant.BANNER) {
             mBannerAd.setAdSize(AdSize.Banner_320_50);
         } else if (adSize == Constant.MEDIUM_RECTANGLE) {
@@ -239,7 +271,7 @@ public class DspMobLoader extends AbstractSdkLoader {
         setLoading(true, STATE_REQUEST);
 
         mInterstitialAd = new InterstitialAd(mContext);
-        mInterstitialAd.setAdId(mPidConfig.getPid());
+        mInterstitialAd.setAdId(getPid(mPidConfig.getPid()));
         mInterstitialAd.setBidFloor((float) getPidConfig().getEcpm() / 100f);
         mInterstitialAd.setListener(new AdListener() {
             @Override
