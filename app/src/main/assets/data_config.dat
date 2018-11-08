@@ -85,11 +85,18 @@
       "name": "banner_and_native",
       "mode": "con",
       "as": 1,
+      "ai": 8000,
       "pids": [
         {
           "sdk": "adx",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
+          "disable": 0
+        },
+        {
+          "sdk": "fb",
+          "type": "native",
+          "pid": "YOUR_PLACEMENT_ID",
           "disable": 0
         },
         {
