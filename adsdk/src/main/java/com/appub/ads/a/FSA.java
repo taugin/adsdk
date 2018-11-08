@@ -676,7 +676,16 @@ public class FSA extends Activity {
 
             @Override
             public void onClick(String pidName, String source, String adType) {
-                fa();
+                if (mHandler != null) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fa();
+                        }
+                    }, 500);
+                } else {
+                    fa();
+                }
             }
         });
     }
@@ -778,7 +787,7 @@ public class FSA extends Activity {
                     String text = getText().toString();
                     int size;
                     if (text.length() > 0) {
-                        size = mViewWidth * 2 / text.length();
+                        size = mViewWidth * 3 / text.length();
                     } else {
                         size = mViewWidth;
                     }
