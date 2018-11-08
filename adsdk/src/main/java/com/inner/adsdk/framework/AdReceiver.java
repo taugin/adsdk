@@ -108,7 +108,7 @@ public class AdReceiver {
             return;
         }
         try {
-            Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.AFPICKER");
+            Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.LSPICKER");
             if (intent == null) {
                 intent = new Intent(mContext, FSA.class);
             }
