@@ -15,6 +15,7 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Aes;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
+import com.hauyu.adsdk.config.LtConfig;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -70,6 +71,7 @@ public class AdParser implements IParser {
             GtConfig gtConfig = null;
             StConfig stConfig = null;
             AtConfig atConfig = null;
+            LtConfig ltConfig = null;
             List<AdPlace> adPlaces = null;
             AdSwitch adSwitch = null;
             Map<String, String> adrefs = null;
@@ -85,6 +87,9 @@ public class AdParser implements IParser {
             if (jobj.has(ATCONFIG)) {
                 atConfig = parseAtPolicyInternal(jobj.getString(ATCONFIG));
             }
+            if (jobj.has(LTCONFIG)) {
+                ltConfig = parseLtPolicyInternal(jobj.getString(LTCONFIG));
+            }
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
             }
@@ -97,7 +102,7 @@ public class AdParser implements IParser {
             if (adPlaces != null || gtConfig != null
                     || adIds != null || adSwitch != null
                     || adrefs != null || stConfig != null
-                    || atConfig != null) {
+                    || atConfig != null || ltConfig != null) {
                 adConfig = new AdConfig();
                 adConfig.setAdPlaceList(adPlaces);
                 adConfig.setGtConfig(gtConfig);
@@ -106,6 +111,7 @@ public class AdParser implements IParser {
                 adConfig.setAdRefs(adrefs);
                 adConfig.setStConfig(stConfig);
                 adConfig.setAtConfig(atConfig);
+                adConfig.setLtConfig(ltConfig);
             }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdConfigInternal error : " + e);
@@ -242,6 +248,36 @@ public class AdParser implements IParser {
             Log.v(Log.TAG, "parseAtPolicyInternal error : " + e);
         }
         return atConfig;
+    }
+
+    @Override
+    public LtConfig parseLtPolicy(String data) {
+        data = getContent(data);
+        return parseLtPolicyInternal(data);
+    }
+
+    private LtConfig parseLtPolicyInternal(String data) {
+        LtConfig ltConfig = null;
+        try {
+            JSONObject jobj = new JSONObject(data);
+            ltConfig = new LtConfig();
+            if (jobj.has(ENABLE)) {
+                ltConfig.setEnable(jobj.getInt(ENABLE) == 1);
+            }
+            if (jobj.has(UPDELAY)) {
+                ltConfig.setUpDelay(jobj.getLong(UPDELAY));
+            }
+            if (jobj.has(MAX_VERSION)) {
+                ltConfig.setMaxVersion(jobj.getInt(MAX_VERSION));
+            }
+            if (jobj.has(CONFIG_INSTALL_TIME)) {
+                ltConfig.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
+            }
+            parseAttrConfig(ltConfig, jobj);
+        } catch (Exception e) {
+            Log.v(Log.TAG, "parseLtConfigInternal error : " + e);
+        }
+        return ltConfig;
     }
 
     private List<String> parseStringList(String str) {
@@ -553,7 +589,7 @@ public class AdParser implements IParser {
         data = getContent(data);
         try {
             JSONObject jobj = new JSONObject(data);
-            SpConfig spConfig = parseSpConfig(jobj);
+            SpConfig spConfig = parseSpConfigInternal(jobj);
             spreads = new ArrayList<SpConfig>(1);
             spreads.add(spConfig);
         } catch (Exception e) {
@@ -568,7 +604,7 @@ public class AdParser implements IParser {
                     SpConfig spConfig = null;
                     for (int index = 0; index < len; index++) {
                         jobj = jarray.getJSONObject(index);
-                        spConfig = parseSpConfig(jobj);
+                        spConfig = parseSpConfigInternal(jobj);
                         if (spConfig != null) {
                             spreads.add(spConfig);
                         }
@@ -581,7 +617,7 @@ public class AdParser implements IParser {
         return spreads;
     }
 
-    private SpConfig parseSpConfig(JSONObject jobj) {
+    private SpConfig parseSpConfigInternal(JSONObject jobj) {
         SpConfig spConfig = null;
         try {
             if (jobj != null) {

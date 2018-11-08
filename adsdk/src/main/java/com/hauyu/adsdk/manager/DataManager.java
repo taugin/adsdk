@@ -17,6 +17,7 @@ import com.hauyu.adsdk.parse.IParser;
 import com.hauyu.adsdk.request.IDataRequest;
 import com.hauyu.adsdk.request.RemoteConfigRequest;
 import com.hauyu.adsdk.utils.Utils;
+import com.hauyu.adsdk.config.LtConfig;
 
 import java.util.List;
 import java.util.Locale;
@@ -125,7 +126,7 @@ public class DataManager {
 
     public GtConfig getRemoteGtPolicy() {
         if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.ADPOLICY_NAME);
+            String data = mDataRequest.getString(Constant.GTPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseGtPolicy(data);
             }
@@ -148,6 +149,16 @@ public class DataManager {
             String data = mDataRequest.getString(Constant.ATPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseAtPolicy(data);
+            }
+        }
+        return null;
+    }
+
+    public LtConfig getRemoteLtPolicy() {
+        if (mDataRequest != null) {
+            String data = mDataRequest.getString(Constant.LTPOLICY_NAME);
+            if (!TextUtils.isEmpty(data)) {
+                return mParser.parseLtPolicy(data);
             }
         }
         return null;

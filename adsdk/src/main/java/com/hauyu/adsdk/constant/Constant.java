@@ -67,10 +67,12 @@ public class Constant {
     public static final String ATPLACE_OUTER_NAME = "at_outer_place";
     public static final String STPLACE_OUTER_NAME = "st_outer_place";
     public static final String NTPLACE_OUTER_NAME = "nt_outer_place";
+    public static final String LTPLACE_OUTER_NAME = "lt_outer_place";
     public static final String ADIDS_NAME = "adids";
-    public static final String ADPOLICY_NAME = "gtconfig";
+    public static final String GTPOLICY_NAME = "gtconfig";
     public static final String STPOLICY_NAME = "stconfig";
     public static final String ATPOLICY_NAME = "atconfig";
+    public static final String LTPOLICY_NAME = "ltconfig";
     public static final String ADSWITCH_NAME = "adswitch";
     public static final String ADREFS_NAME = "adrefs";
     public static final String ADSPREAD_NAME = "spconfig";

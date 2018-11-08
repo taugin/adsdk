@@ -5,9 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import com.appub.ads.a.FSA;
+import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdSwitch;
+import com.hauyu.adsdk.config.LtConfig;
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.manager.DataManager;
+import com.hauyu.adsdk.policy.LtPolicy;
 import com.hauyu.adsdk.utils.TaskUtils;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -96,6 +101,7 @@ public class AdReceiver {
                 TaskMonitor.get(context).stopMonitor();
             } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
                 AtAdLoader.get(context).resumeLoader();
+                showLS();
             }
         }
     };
@@ -106,5 +112,32 @@ public class AdReceiver {
             return adSwitch.isGtAtExclusive();
         }
         return false;
+    }
+
+    private void showLS() {
+        updatePolicy();
+        if (!LtPolicy.get(mContext).isLtAllowed()) {
+            return;
+        }
+        try {
+            Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.AFPICKER");
+            if (intent == null) {
+                intent = new Intent(mContext, FSA.class);
+            }
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        } catch (Exception e) {
+            Log.v(Log.TAG, "error : " + e);
+        }
+    }
+
+    private void updatePolicy() {
+        AdConfig adConfig = DataManager.get(mContext).getAdConfig();
+        LtConfig ltConfig = DataManager.get(mContext).getRemoteLtPolicy();
+        if (ltConfig == null && adConfig != null) {
+            ltConfig = adConfig.getLtConfig();
+        }
+        LtPolicy.get(mContext).setPolicy(ltConfig);
     }
 }

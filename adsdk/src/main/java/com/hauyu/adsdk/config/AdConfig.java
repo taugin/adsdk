@@ -20,8 +20,11 @@ public class AdConfig {
     // ST
     private StConfig stConfig;
 
-    // TT
+    // AT
     private AtConfig atConfig;
+
+    // LT
+    private LtConfig ltConfig;
 
     // 广告配置
     private List<AdPlace> adPlaceList;
@@ -84,6 +87,14 @@ public class AdConfig {
 
     public void setAtConfig(AtConfig atConfig) {
         this.atConfig = atConfig;
+    }
+
+    public LtConfig getLtConfig() {
+        return ltConfig;
+    }
+
+    public void setLtConfig(LtConfig ltConfig) {
+        this.ltConfig = ltConfig;
     }
 
     /**
