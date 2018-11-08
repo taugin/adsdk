@@ -23,14 +23,14 @@
                 android:id="@+id/native_image_cover"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                app:layout_aspectRatio="178%"
+                app:layout_aspectRatio="192%"
                 app:layout_widthPercent="100%" />
 
             <RelativeLayout
                 android:id="@+id/native_media_cover"
                 android:contentDescription="@null"
                 android:visibility="gone"
-                app:layout_aspectRatio="178%"
+                app:layout_aspectRatio="192%"
                 app:layout_widthPercent="100%" />
 
             <RelativeLayout

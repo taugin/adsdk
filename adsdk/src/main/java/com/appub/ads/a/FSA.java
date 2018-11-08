@@ -6,8 +6,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -19,7 +24,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -36,6 +44,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.config.SpConfig;
@@ -45,6 +54,9 @@ import com.inner.adsdk.log.Log;
 import com.inner.adsdk.policy.GtPolicy;
 import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2018-10-16.
@@ -127,6 +139,20 @@ public class FSA extends Activity {
         } else {
             registerArgument();
             show();
+        }
+    }
+
+    private void disableSystemLS() {
+        try {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        } catch (Exception e) {
+        }
+    }
+
+    private void cleanSystemLS() {
+        try {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        } catch (Exception e) {
         }
     }
 
@@ -271,6 +297,9 @@ public class FSA extends Activity {
 
     @Override
     public void onBackPressed() {
+        if (isLockView()) {
+            return;
+        }
         super.onBackPressed();
         if ((Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
                 || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType))
@@ -316,6 +345,8 @@ public class FSA extends Activity {
         if (Constant.AD_SDK_SPREAD.equals(mSource)) {
             sendBroadcast(new Intent(getPackageName() + ".action.SPDISMISS").setPackage(getPackageName()));
         }
+
+        stopTimeUpdate();
     }
 
     private void registerBroadcast() {
@@ -478,6 +509,14 @@ public class FSA extends Activity {
 
     /////////////////////////////////////////////////////////////////////////////////
 
+    protected Drawable getBackgroudDrawable() {
+        return null;
+    }
+
+    protected int getBackgroundColor() {
+        return Color.BLACK;
+    }
+
     private boolean isLockView() {
         return mInLockView;
     }
@@ -485,44 +524,211 @@ public class FSA extends Activity {
     /**
      * 展示锁屏界面
      */
+    private TextView mTimeTextView;
+    private TextView mWeekTextView;
+    private BroadcastReceiver mTimeReceiver;
+
     private void showLockScreenView() {
+        Log.v(Log.TAG, "show lock screen view");
+
+        // 1，create Activity layout
         LinearLayout layout = new LinearLayout(this);
         super.setContentView(layout);
 
-        LinearLayout.LayoutParams params = null;
-        params = new LinearLayout.LayoutParams(-1, -1, 2);
         layout.setOrientation(LinearLayout.VERTICAL);
-        Log.v(Log.TAG, "show lock screen view");
-        TextView tv = new TextView(this);
-        tv.setTextColor(Color.BLACK);
-//        tv.setBackgroundColor(Color.WHITE);
-        tv.setGravity(Gravity.CENTER);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
-        tv.setText("Lock Screen View");
-        WallpaperManager wm = WallpaperManager.getInstance(this);
-        Drawable drawable = wm.getDrawable();
-        layout.setBackground(drawable);
-        layout.addView(tv, params);
-        RelativeLayout rl = new RelativeLayout(this);
-        rl.setGravity(Gravity.CENTER);
-        mLockAdLayout = rl;
-        params = new LinearLayout.LayoutParams(-1, -1, 1);
-        layout.addView(mLockAdLayout, params);
+
+        // 2，create ViewPager
+        ViewPager viewPager = new ViewPager(this);
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    fa();
+                }
+            }
+        });
+
+        // 3，create Ad Pager layout
+        LinearLayout pagerLayout = new LinearLayout(this);
+        pagerLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+        pagerLayout.setOrientation(LinearLayout.VERTICAL);
+        Drawable drawable = getBackgroudDrawable();
+        if (drawable == null) {
+            try {
+                WallpaperManager wm = WallpaperManager.getInstance(this);
+                drawable = wm.getDrawable();
+            } catch (Exception e) {
+            }
+        }
+        if (drawable == null) {
+            pagerLayout.setBackgroundColor(getBackgroundColor());
+        } else {
+            pagerLayout.setBackground(drawable);
+        }
+
+        // 3.1，create TimeView
+        mTimeTextView = new TextView(this);
+        mTimeTextView.setTextColor(Color.WHITE);
+        mTimeTextView.setGravity(Gravity.CENTER);
+        mTimeTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 56);
+        mTimeTextView.setPadding(0, Utils.dp2px(this, 24f), 0, Utils.dp2px(this, 6f));
+        LinearLayout.LayoutParams timeViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        timeViewParams.weight = 0;
+        timeViewParams.topMargin = Utils.dp2px(this, 24f);
+        pagerLayout.addView(mTimeTextView, timeViewParams);
+
+        // 3.2，create WeekView
+        mWeekTextView = new TextView(this);
+        mWeekTextView.setTextColor(Color.WHITE);
+        mWeekTextView.setGravity(Gravity.CENTER);
+        mWeekTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        mWeekTextView.setPadding(0, Utils.dp2px(this, 0f), 0, Utils.dp2px(this, 30f));
+        LinearLayout.LayoutParams weekViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        weekViewParams.weight = 0;
+        pagerLayout.addView(mWeekTextView, weekViewParams);
+
+        // 3.3，create Ad Layout
+        RelativeLayout adLayout = new RelativeLayout(this);
+        adLayout.setGravity(Gravity.CENTER);
+        adLayout.setPadding(Utils.dp2px(this, 8f), 0, Utils.dp2px(this, 8f), 0);
+        mLockAdLayout = adLayout;
+        LinearLayout.LayoutParams adLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        adLayoutParams.weight = 1;
+        pagerLayout.addView(mLockAdLayout, adLayoutParams);
+
+        // 3.4，create Scroll View
+        TextView slideView = new MyTextView(this);
+        slideView.setText("Slide To Unlock >>");
+        slideView.setTextColor(Color.WHITE);
+        slideView.setGravity(Gravity.CENTER);
+        slideView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+
+        LinearLayout.LayoutParams slideViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        slideViewParams.weight = 0;
+        slideViewParams.bottomMargin = Utils.dp2px(this, 16f);
+        slideViewParams.topMargin = Utils.dp2px(this, 16f);
+        pagerLayout.addView(slideView, slideViewParams);
+
+        // 4，set ViewPager Adapter
+        LsViewPagerAdapter adapter = new LsViewPagerAdapter(pagerLayout);
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(1);
+
+        // 5，add ViewPager to Activity layout
+        layout.addView(viewPager, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+        startTimeUpdate();
+
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 showLockViewAd();
             }
-        }, 1000);
+        }, 500);
+    }
+
+    private void startTimeUpdate() {
+        updateTime();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_TIME_TICK);
+
+        mTimeReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (action.equals(Intent.ACTION_TIME_TICK)) {
+                    updateTime();
+                }
+            }
+        };
+
+        registerReceiver(mTimeReceiver, filter);
+    }
+
+    private void updateTime() {
+        Date date = new Date();
+        mTimeTextView.setText(new SimpleDateFormat("H:mm").format(date));
+        mWeekTextView.setText(new SimpleDateFormat("yyyy/MM/dd  EEE").format(date));
+    }
+
+    private void stopTimeUpdate() {
+        try {
+            if (mTimeReceiver != null) {
+                unregisterReceiver(mTimeReceiver);
+            }
+        } catch (Exception | Error e) {
+            e.printStackTrace();
+        }
     }
 
     private void showLockViewAd() {
-        AdSdk.get(this).loadAdView(Constant.LTPLACE_OUTER_NAME, new SimpleAdSdkListener() {
+        AdParams params = new AdParams.Builder()
+                .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
+                .setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE)
+                .setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_MEDIUM)
+                .build();
+        AdSdk.get(this).loadAdView(Constant.LTPLACE_OUTER_NAME, params, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 AdSdk.get(getBaseContext()).showAdView(pidName, getAdParams(), mLockAdLayout);
             }
+
+            @Override
+            public void onClick(String pidName, String source, String adType) {
+                if (mHandler != null) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fa();
+                        }
+                    }, 500);
+                } else {
+                    fa();
+                }
+            }
         });
+    }
+
+    private class LsViewPagerAdapter extends PagerAdapter {
+
+        private ViewGroup mAdView;
+
+        public LsViewPagerAdapter(ViewGroup adView) {
+            mAdView = adView;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            if (position == 0) {
+                View view = new View(container.getContext());
+                view.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+                container.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                return view;
+            } else if (position == 1) {
+                container.addView(mAdView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                return mAdView;
+            }
+            return null;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            if (object instanceof View) {
+                container.removeView((View) object);
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
     }
 
     /**
@@ -552,5 +758,63 @@ public class FSA extends Activity {
             super.onDetachedFromWindow();
             mViewDetached = true;
         }
+    }
+
+    public class MyTextView extends TextView {
+        private LinearGradient mLinearGradient;
+        private Matrix mGradientMatrix;
+        private Paint mPaint;
+        private int mViewWidth = 0;
+        private int mTranslate = 0;
+
+        private boolean mAnimating = true;
+        private int delta = 15;
+
+        public MyTextView(Context ctx) {
+            this(ctx, null);
+        }
+
+        public MyTextView(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+
+        @Override
+        protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+            super.onSizeChanged(w, h, oldw, oldh);
+            if (mViewWidth == 0) {
+                mViewWidth = getMeasuredWidth();
+                if (mViewWidth > 0) {
+                    mPaint = getPaint();
+                    String text = getText().toString();
+                    int size;
+                    if (text.length() > 0) {
+                        size = mViewWidth * 3 / text.length();
+                    } else {
+                        size = mViewWidth;
+                    }
+                    mLinearGradient = new LinearGradient(-size, 0, 0, 0,
+                            new int[]{0x88ffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x88ffffff},
+                            new float[]{0, 0.1f, 0.5f, 0.9f, 1}, Shader.TileMode.CLAMP); //边缘融合
+                    mPaint.setShader(mLinearGradient);
+                    mGradientMatrix = new Matrix();
+                }
+            }
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            if (mAnimating && mGradientMatrix != null) {
+                float mTextWidth = getPaint().measureText(getText().toString());
+                mTranslate += delta;
+                if (mTranslate > mTextWidth + 100 || mTranslate < 1) {
+                    mTranslate = 0;
+                }
+                mGradientMatrix.setTranslate(mTranslate, 0);
+                mLinearGradient.setLocalMatrix(mGradientMatrix);
+                postInvalidateDelayed(50);
+            }
+        }
+
     }
 }
