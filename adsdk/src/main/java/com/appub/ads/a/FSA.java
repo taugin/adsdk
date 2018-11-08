@@ -132,9 +132,7 @@ public class FSA extends Activity {
     }
 
     private void updateDataAndView() {
-        cleanSystemLS();
         if (isLockView()) {
-            disableSystemLS();
             showLockScreenView();
         } else if (mSpConfig != null) {
             showSpread();
