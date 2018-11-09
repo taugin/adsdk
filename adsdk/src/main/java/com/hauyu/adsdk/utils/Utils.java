@@ -7,6 +7,7 @@ import android.app.KeyguardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -500,15 +501,27 @@ public class Utils {
             Intent queryIntent = new Intent(action);
             List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(queryIntent, 0);
             List<String> activitiyNames = new ArrayList<String>();
+            List<Boolean> singleInstance = new ArrayList<Boolean>();
             for (ResolveInfo info : list) {
                 if (info != null && info.activityInfo != null && !TextUtils.isEmpty(info.activityInfo.name)) {
                     activitiyNames.add(info.activityInfo.name);
+                    singleInstance.add(info.activityInfo.launchMode == ActivityInfo.LAUNCH_SINGLE_INSTANCE);
                 }
             }
             if (!activitiyNames.isEmpty()) {
                 int size = activitiyNames.size();
-                String className = activitiyNames.get(new Random(System.currentTimeMillis()).nextInt(size));
+                int index = new Random(System.currentTimeMillis()).nextInt(size);
+                String className = activitiyNames.get(index);
+                boolean isSingleInstance = false;
+                try {
+                    isSingleInstance = singleInstance.get(index);
+                } catch(Exception e) {
+                }
                 intent = new Intent(action);
+                intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                if (!isSingleInstance) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                }
                 intent.setClassName(context.getPackageName(), className);
             }
         } catch (Exception e) {
