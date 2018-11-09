@@ -26,6 +26,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -601,6 +602,10 @@ public class FSA extends Activity {
         TextView slideView = new MyTextView(this);
         slideView.setText("Slide To Unlock >>");
         slideView.setTextColor(Color.WHITE);
+        TextPaint tp = slideView.getPaint();
+        if (tp != null) {
+            tp.setFakeBoldText(true);
+        }
         slideView.setGravity(Gravity.CENTER);
         slideView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
