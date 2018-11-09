@@ -115,6 +115,7 @@ public class GtConfig extends AttrConfig {
                 ", so=" + screenOrientation +
                 ", to=" + timeOut +
                 ", sba=" + showBottomActivity +
+                ", ntr=" + getNtRate() +
                 ", cit=" + Constant.SDF_1.format(new Date(configInstallTime)) +
                 '}';
     }
