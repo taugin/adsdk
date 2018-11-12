@@ -349,7 +349,26 @@ public class DspMobLoader extends AbstractSdkLoader {
     }
 
     private String codeToError(AdError adError) {
-        return adError.toString();
+        int errorCode = -1;
+        if (adError != null) {
+            errorCode = adError.getCode();
+            if (errorCode == AdError.NO_FILL.ordinal()) {
+                return "NO_FILL[" + errorCode + "]";
+            }
+            if (errorCode == AdError.INTERNAL_ERROR.ordinal()) {
+                return "INTERNAL_ERROR[" + errorCode + "]";
+            }
+            if (errorCode == AdError.INVALID_REQUEST.ordinal()) {
+                return "INVALID_REQUEST[" + errorCode + "]";
+            }
+            if (errorCode == AdError.NETWORK_ERROR.ordinal()) {
+                return "NETWORK_ERROR[" + errorCode + "]";
+            }
+            if (errorCode == AdError.TIMEOUT.ordinal()) {
+                return "NETWORK_ERROR[" + errorCode + "]";
+            }
+        }
+        return "UNKNOWN[" + errorCode + "]";
     }
 
     @Override

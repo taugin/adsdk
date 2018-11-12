@@ -102,13 +102,13 @@
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "wemob",
@@ -169,6 +169,12 @@
           "type": "native",
           "pid": "1538433861066",
           "disable": 1
+        },
+        {
+          "sdk": "dspmob",
+          "type": "banner",
+          "pid": "10002/60002",
+          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -211,25 +217,25 @@
           "sdk": "dfp",
           "type": "interstitial",
           "pid": "/6499/example/interstitial",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "applovin",
           "type": "interstitial",
           "pid": "4a885e75685fed5c",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "appnext",
           "type": "interstitial",
           "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "spread",
@@ -240,12 +246,18 @@
           "sdk": "inmobi",
           "type": "interstitial",
           "pid": "1538651605680",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "inneractive",
           "type": "interstitial",
           "pid": "190736",
+          "disable": 1
+        },
+        {
+          "sdk": "dspmob",
+          "type": "interstitial",
+          "pid": "10002/60003",
           "disable": 0
         }
       ],
