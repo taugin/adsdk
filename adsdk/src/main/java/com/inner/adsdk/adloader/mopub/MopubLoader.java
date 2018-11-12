@@ -168,6 +168,9 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
+                if (isDestroyAfterClick()) {
+                    moPubView = null;
+                }
             }
 
             @Override
@@ -217,7 +220,9 @@ public class MopubLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             gMoPubView = moPubView;
-            moPubView = null;
+            if (!isDestroyAfterClick()) {
+                moPubView = null;
+            }
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
@@ -679,6 +684,9 @@ public class MopubLoader extends AbstractSdkLoader {
                     if (mStat != null) {
                         mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                     }
+                    if (isDestroyAfterClick()) {
+                        nativeAd = null;
+                    }
                 }
             });
 
@@ -726,7 +734,9 @@ public class MopubLoader extends AbstractSdkLoader {
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e);
             }
-            nativeAd = null;
+            if (!isDestroyAfterClick()) {
+                nativeAd = null;
+            }
         } else {
             Log.e(Log.TAG, "nativeAd is null");
         }

@@ -139,6 +139,9 @@ public class AdxLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
+                if (isDestroyAfterClick()) {
+                    bannerView = null;
+                }
             }
 
             @Override
@@ -197,7 +200,9 @@ public class AdxLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             gBannerView = bannerView;
-            bannerView = null;
+            if (!isDestroyAfterClick()) {
+                bannerView = null;
+            }
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
@@ -431,6 +436,9 @@ public class AdxLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
+                if (isDestroyAfterClick()) {
+                    nativeAd = null;
+                }
             }
 
             @Override
@@ -494,7 +502,9 @@ public class AdxLoader extends AbstractSdkLoader {
         clearCachedAdTime(nativeAd);
         adxBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
         gNativeAd = nativeAd;
-        nativeAd = null;
+        if (!isDestroyAfterClick()) {
+            nativeAd = null;
+        }
     }
 
     @Override

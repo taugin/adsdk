@@ -308,6 +308,14 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         mCachedTime.remove(object);
     }
 
+    protected boolean isDestroyAfterClick() {
+        try {
+            return mPidConfig.isDestroyAfterClick();
+        } catch(Exception e) {
+        }
+        return false;
+    }
+
     @Override
     public boolean allowUseLoader() {
         if (mPidConfig != null) {
@@ -518,7 +526,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             getAdListener().onAdLoaded();
         }
     }
-
 
     protected String getMetaData(String key) {
         ApplicationInfo info = null;

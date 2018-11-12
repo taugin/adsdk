@@ -513,6 +513,9 @@ public class AdParser implements IParser {
             if (jobj.has(DELAY_CLICK_TIME)) {
                 pidConfig.setDelayClickTime(jobj.getLong(DELAY_CLICK_TIME));
             }
+            if (jobj.has(DESTROY_AFTER_CLICK)) {
+                pidConfig.setDestroyAfterClick(jobj.getInt(DESTROY_AFTER_CLICK) == 1);
+            }
             parseAttrConfig(pidConfig, jobj);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
