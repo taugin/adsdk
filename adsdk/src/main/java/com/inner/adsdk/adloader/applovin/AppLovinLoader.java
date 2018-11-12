@@ -148,6 +148,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
+                if (isDestroyAfterClick()) {
+                    appLovinAdView = null;
+                }
             }
         });
         loadingAdView.loadNextAd();
@@ -172,7 +175,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             gAppLovinAdView = appLovinAdView;
-            appLovinAdView = null;
+            if (!isDestroyAfterClick()) {
+                appLovinAdView = null;
+            }
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
