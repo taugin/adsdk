@@ -38,6 +38,8 @@ public class PidConfig extends AttrConfig {
     // delay to click time
     private long delayClickTime;
 
+    private boolean destroyAfterClick;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -142,6 +144,14 @@ public class PidConfig extends AttrConfig {
         this.delayClickTime = delayClickTime;
     }
 
+    public boolean isDestroyAfterClick() {
+        return destroyAfterClick;
+    }
+
+    public void setDestroyAfterClick(boolean destroyAfterClick) {
+        this.destroyAfterClick = destroyAfterClick;
+    }
+
     public boolean isAdmob() {
         return TextUtils.equals(Constant.AD_SDK_ADMOB, sdk);
     }
@@ -187,6 +197,7 @@ public class PidConfig extends AttrConfig {
                 ", ctr=" + ctr +
                 ", adType='" + adType + '\'' +
                 ", ecpm='" + ecpm + '\'' +
+                ", dac='" + destroyAfterClick + '\'' +
                 '}';
     }
 }

@@ -19,12 +19,6 @@ import java.util.Map;
 
 public interface IParser {
 
-    String WHITE_LIST = "wlist";
-    String IMEI = "imei";
-    String AID = "aid";
-    String STATUS = "s";
-    String DATA = "data";
-
     // 各个广告平台的appid
     String ADIDS = "adids";
     // 应用外的配置信息
@@ -89,6 +83,8 @@ public interface IParser {
     String FINISH_FORCTR = "ffc";
     // delay to click time
     String DELAY_CLICK_TIME = "dct";
+    // destroy after click
+    String DESTROY_AFTER_CLICK = "dac";
 
     // 启用或禁用GT
     String ENABLE = "e";
