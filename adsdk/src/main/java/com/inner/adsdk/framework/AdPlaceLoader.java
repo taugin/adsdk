@@ -348,6 +348,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (processAdPlaceCache()) {
             return;
         }
+
+        List<PidConfig> pidList = mAdPlace.getPidsList();
+        if ((pidList == null || pidList.isEmpty()) && mOnAdSdkListener != null) {
+            mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            return;
+        }
+
         if (mAdPlace.isConcurrent()) {
             loadInterstitialConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -495,6 +502,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         mHasNotifyLoaded = false;
         // 处理场景缓存
         if (processAdPlaceCache()) {
+            return;
+        }
+
+        List<PidConfig> pidList = mAdPlace.getPidsList();
+        if ((pidList == null || pidList.isEmpty()) && mOnAdSdkListener != null) {
+            mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
             return;
         }
         if (mAdPlace.isConcurrent()) {
@@ -710,6 +723,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (processAdPlaceCache()) {
             return;
         }
+
+        List<PidConfig> pidList = mAdPlace.getPidsList();
+        if ((pidList == null || pidList.isEmpty()) && mOnAdSdkListener != null) {
+            mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            return;
+        }
+
         if (mAdPlace.isConcurrent()) {
             loadComplexAdsConcurrent();
         } else if (mAdPlace.isSequence()) {
