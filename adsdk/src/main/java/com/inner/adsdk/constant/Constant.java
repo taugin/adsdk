@@ -24,6 +24,7 @@ public class Constant {
     public static final String AD_SDK_DAP = "dap";
     public static final String AD_SDK_ALTAMOB = "altamob";
     public static final String AD_SDK_CLOUDMOBI = "cloudmobi";
+    public static final String AD_SDK_MOBVISTA = "mobvista";
 
     public static final int    NOSET = -1;
     public static final int    BANNER = 1000;

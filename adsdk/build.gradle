@@ -89,6 +89,12 @@ dependencies {
 
     // CludeMobi
     implementation 'com.cloudtech:ads:3.3.8'
+
+    // Mobvista
+    implementation 'com.adywind:core:4.4.20'
+    implementation 'com.adywind:ui:4.4.20'
+    implementation 'com.adywind:component:4.4.20'
+    implementation 'com.adywind:native:4.4.20'
 }
 
 // 发布aar

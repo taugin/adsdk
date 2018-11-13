@@ -149,3 +149,14 @@
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
 }
+
+# MobVista
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class com.adywind.ad.appwall.ui.** {*; }
+-keep class com.adywind.ad.common.ui.** {*; }
+-keep class com.power.AdyService {*; }
+-keep class com.power.AdyReceiver {*; }
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}

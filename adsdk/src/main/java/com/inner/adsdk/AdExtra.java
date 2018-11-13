@@ -83,6 +83,11 @@ public class AdExtra {
      */
     public static final String AD_SDK_CLOUDMOBI = Constant.AD_SDK_CLOUDMOBI;
 
+    /*
+     * MOBVISTA SDK 名字
+     */
+    public static final String AD_SDK_MOBVISTA = Constant.AD_SDK_MOBVISTA;
+
     /**
      * ADMOB banner尺寸 320 x 50
      */

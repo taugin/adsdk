@@ -2,6 +2,7 @@ package com.inner.adsdk.framework;
 
 import android.text.TextUtils;
 
+import com.adywind.core.api.SDK;
 import com.applovin.sdk.AppLovinSdk;
 import com.appnext.base.Appnext;
 import com.cloudtech.ads.core.CTService;
@@ -68,6 +69,9 @@ public class AdHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_CLOUDMOBI, sdk)) {
             return hasCloudMobiModule();
+        }
+        if (TextUtils.equals(Constant.AD_SDK_MOBVISTA, sdk)) {
+            return hasMobvistaMobModule();
         }
         return false;
     }
@@ -205,6 +209,16 @@ public class AdHelper {
     private static boolean hasCloudMobiModule() {
         try {
             CTService.class.getName();
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
+    }
+
+    private static boolean hasMobvistaMobModule() {
+        try {
+            SDK.class.getName();
             return true;
         } catch (Exception e) {
         } catch (Error e) {

@@ -212,6 +212,10 @@ public class PidConfig extends AttrConfig {
         return TextUtils.equals(Constant.AD_SDK_CLOUDMOBI, sdk);
     }
 
+    public boolean isMobvista() {
+        return TextUtils.equals(Constant.AD_SDK_MOBVISTA, sdk);
+    }
+
     public boolean isBannerType() {
         return TextUtils.equals(Constant.TYPE_BANNER, adType);
     }
