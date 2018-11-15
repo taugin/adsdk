@@ -16,7 +16,8 @@
   "adrefs": {
     "st_outer_place": "gt_outer_place",
     "at_outer_place": "gt_outer_place",
-    "lt_outer_place": "banner_and_native"
+    "lt_outer_place": "banner_and_native",
+    "ht_outer_place": "gt_outer_place"
   },
   "atconfig": {
     "e": 0,
@@ -28,8 +29,14 @@
     "d": 3600,
     "attr": []
   },
+  "htconfig": {
+      "e": 1,
+      "d": 3600,
+      "i": 3600,
+      "attr": []
+    },
   "gtconfig": {
-    "e": 1,
+    "e": 0,
     "d": 3600,
     "i": 1800,
     "mc": 100,
