@@ -34,6 +34,7 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -87,7 +88,6 @@ public class FSA extends Activity {
         }
         mHandler = new Handler();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         try {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -132,7 +132,35 @@ public class FSA extends Activity {
         updateDataAndView();
     }
 
+    private void updateFullScreenState() {
+        try {
+            if (isLockView()) {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            } else {
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+                int flagTranslucentNavigation = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Window window = getWindow();
+                    WindowManager.LayoutParams attributes = window.getAttributes();
+                    attributes.flags |= flagTranslucentNavigation;
+                    window.setAttributes(attributes);
+                    window.setStatusBarColor(Color.TRANSPARENT);
+                } else {
+                    Window window = getWindow();
+                    WindowManager.LayoutParams attributes = window.getAttributes();
+                    attributes.flags |= flagTranslucentStatus | flagTranslucentNavigation;
+                    window.setAttributes(attributes);
+                }
+            }
+        } catch (Exception | Error e) {
+        }
+    }
+
     private void updateDataAndView() {
+        updateFullScreenState();
         if (isLockView()) {
             showLockScreenView();
         } else if (mSpConfig != null) {
@@ -528,8 +556,54 @@ public class FSA extends Activity {
     private TextView mWeekTextView;
     private BroadcastReceiver mTimeReceiver;
 
+    /**
+     * 创建ViewPager，异常时返回空值
+     *
+     * @return
+     */
+    private ViewPager createViewPager() {
+        try {
+            ViewPager viewPager = new ViewPager(this);
+            ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (position == 0) {
+                        fa();
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                }
+            };
+            try {
+                viewPager.setOffscreenPageLimit(2);
+            } catch (Exception | Error e) {
+                Log.e(Log.TAG, "error : " + e);
+            }
+            try {
+                viewPager.addOnPageChangeListener(listener);
+            } catch (Exception | Error e) {
+                try {
+                    viewPager.setOnPageChangeListener(listener);
+                } catch (Exception | Error error) {
+                    Log.e(Log.TAG, "error : " + e);
+                    return null;
+                }
+            }
+            return viewPager;
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
     private void showLockScreenView() {
-        Log.v(Log.TAG, "show lock screen view");
+        Log.v(Log.TAG, "show ls view");
 
         // 1，create Activity layout
         LinearLayout layout = new LinearLayout(this);
@@ -537,19 +611,7 @@ public class FSA extends Activity {
 
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        // 2，create ViewPager
-        ViewPager viewPager = new ViewPager(this);
-        viewPager.setOffscreenPageLimit(2);
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                if (position == 0) {
-                    fa();
-                }
-            }
-        });
-
-        // 3，create Ad Pager layout
+        // 2，create Ad Pager layout
         LinearLayout pagerLayout = new LinearLayout(this);
         pagerLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         pagerLayout.setOrientation(LinearLayout.VERTICAL);
@@ -567,18 +629,18 @@ public class FSA extends Activity {
             pagerLayout.setBackground(drawable);
         }
 
-        // 3.1，create TimeView
+        // 2.1，create TimeView
         mTimeTextView = new TextView(this);
         mTimeTextView.setTextColor(Color.WHITE);
         mTimeTextView.setGravity(Gravity.CENTER);
-        mTimeTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 56);
+        mTimeTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 72);
         mTimeTextView.setPadding(0, Utils.dp2px(this, 24f), 0, Utils.dp2px(this, 6f));
         LinearLayout.LayoutParams timeViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         timeViewParams.weight = 0;
         timeViewParams.topMargin = Utils.dp2px(this, 24f);
         pagerLayout.addView(mTimeTextView, timeViewParams);
 
-        // 3.2，create WeekView
+        // 2.2，create WeekView
         mWeekTextView = new TextView(this);
         mWeekTextView.setTextColor(Color.WHITE);
         mWeekTextView.setGravity(Gravity.CENTER);
@@ -588,7 +650,7 @@ public class FSA extends Activity {
         weekViewParams.weight = 0;
         pagerLayout.addView(mWeekTextView, weekViewParams);
 
-        // 3.3，create Ad Layout
+        // 2.3，create Ad Layout
         RelativeLayout adLayout = new RelativeLayout(this);
         adLayout.setGravity(Gravity.CENTER);
         adLayout.setPadding(Utils.dp2px(this, 8f), 0, Utils.dp2px(this, 8f), 0);
@@ -597,7 +659,7 @@ public class FSA extends Activity {
         adLayoutParams.weight = 1;
         pagerLayout.addView(mLockAdLayout, adLayoutParams);
 
-        // 3.4，create Scroll View
+        // 2.4，create Scroll View
         TextView slideView = new MyTextView(this);
         slideView.setText("Slide To Unlock >>");
         slideView.setTextColor(Color.WHITE);
@@ -614,13 +676,26 @@ public class FSA extends Activity {
         slideViewParams.topMargin = Utils.dp2px(this, 16f);
         pagerLayout.addView(slideView, slideViewParams);
 
-        // 4，set ViewPager Adapter
-        LsViewPagerAdapter adapter = new LsViewPagerAdapter(pagerLayout);
-        viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(1);
+        View tempLayout = null;
+        // 3，create ViewPager, set ViewPager Adapter
+        try {
+            ViewPager viewPager = createViewPager();
+            LsViewPagerAdapter adapter = new LsViewPagerAdapter(pagerLayout);
+            viewPager.setAdapter(adapter);
+            viewPager.setCurrentItem(1);
+            tempLayout = viewPager;
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+
+        if (tempLayout == null) {
+            tempLayout = pagerLayout;
+            slideCloseView(tempLayout);
+            slideView.setText(">> Double Click To Unlock <<");
+        }
 
         // 5，add ViewPager to Activity layout
-        layout.addView(viewPager, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        layout.addView(tempLayout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
         startTimeUpdate();
 
@@ -630,6 +705,42 @@ public class FSA extends Activity {
                 showLockViewAd();
             }
         }, 500);
+    }
+
+    private void slideCloseView(final View view) {
+        if (view == null) {
+            return;
+        }
+        final GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                if (mHandler != null) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fa();
+                        }
+                    }, 500);
+                } else {
+                    fa();
+                }
+                return super.onDoubleTap(e);
+            }
+        });
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (gestureDetector.onTouchEvent(event)) {
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void startTimeUpdate() {
