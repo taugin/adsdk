@@ -59,6 +59,7 @@ public class Constant {
     public static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_remote_config_request_time";
     public static final String PREF_GT_REQUEST_TIME = "pref_gt_request_time";
     public static final String PREF_AT_LAST_TIME = "pref_at_last_time";
+    public static final String PREF_HT_LAST_TIME = "pref_ht_last_time";
 
     // 配置文件中使用的名字++++++
     public static final String GTPLACE_OUTER_NAME = "gt_outer_place";
@@ -66,11 +67,13 @@ public class Constant {
     public static final String STPLACE_OUTER_NAME = "st_outer_place";
     public static final String NTPLACE_OUTER_NAME = "nt_outer_place";
     public static final String LTPLACE_OUTER_NAME = "lt_outer_place";
+    public static final String HTPLACE_OUTER_NAME = "ht_outer_place";
     public static final String ADIDS_NAME = "adids";
     public static final String GTPOLICY_NAME = "gtconfig";
     public static final String STPOLICY_NAME = "stconfig";
     public static final String ATPOLICY_NAME = "atconfig";
     public static final String LTPOLICY_NAME = "ltconfig";
+    public static final String HTPOLICY_NAME = "htconfig";
     public static final String ADSWITCH_NAME = "adswitch";
     public static final String ADREFS_NAME = "adrefs";
     public static final String ADSPREAD_NAME = "spconfig";

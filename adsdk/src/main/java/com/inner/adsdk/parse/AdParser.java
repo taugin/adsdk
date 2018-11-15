@@ -8,6 +8,7 @@ import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.AtConfig;
 import com.inner.adsdk.config.AttrConfig;
 import com.inner.adsdk.config.GtConfig;
+import com.inner.adsdk.config.HtConfig;
 import com.inner.adsdk.config.LtConfig;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.config.SpConfig;
@@ -72,6 +73,7 @@ public class AdParser implements IParser {
             StConfig stConfig = null;
             AtConfig atConfig = null;
             LtConfig ltConfig = null;
+            HtConfig htConfig = null;
             List<AdPlace> adPlaces = null;
             AdSwitch adSwitch = null;
             Map<String, String> adrefs = null;
@@ -90,6 +92,9 @@ public class AdParser implements IParser {
             if (jobj.has(LTCONFIG)) {
                 ltConfig = parseLtPolicyInternal(jobj.getString(LTCONFIG));
             }
+            if (jobj.has(HTCONFIG)) {
+                htConfig = parseHtPolicyInternal(jobj.getString(HTCONFIG));
+            }
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
             }
@@ -102,7 +107,8 @@ public class AdParser implements IParser {
             if (adPlaces != null || gtConfig != null
                     || adIds != null || adSwitch != null
                     || adrefs != null || stConfig != null
-                    || atConfig != null || ltConfig != null) {
+                    || atConfig != null || ltConfig != null
+                    || htConfig != null) {
                 adConfig = new AdConfig();
                 adConfig.setAdPlaceList(adPlaces);
                 adConfig.setGtConfig(gtConfig);
@@ -112,6 +118,7 @@ public class AdParser implements IParser {
                 adConfig.setStConfig(stConfig);
                 adConfig.setAtConfig(atConfig);
                 adConfig.setLtConfig(ltConfig);
+                adConfig.setHtConfig(htConfig);
             }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdConfigInternal error : " + e);
@@ -275,6 +282,39 @@ public class AdParser implements IParser {
             Log.v(Log.TAG, "parseLtConfigInternal error : " + e);
         }
         return ltConfig;
+    }
+
+    @Override
+    public HtConfig parseHtPolicy(String data) {
+        data = getContent(data);
+        return parseHtPolicyInternal(data);
+    }
+
+    private HtConfig parseHtPolicyInternal(String data) {
+        HtConfig htConfig = null;
+        try {
+            JSONObject jobj = new JSONObject(data);
+            htConfig = new HtConfig();
+            if (jobj.has(ENABLE)) {
+                htConfig.setEnable(jobj.getInt(ENABLE) == 1);
+            }
+            if (jobj.has(UPDELAY)) {
+                htConfig.setUpDelay(jobj.getLong(UPDELAY));
+            }
+            if (jobj.has(INTERVAL)) {
+                htConfig.setInterval(jobj.getLong(INTERVAL));
+            }
+            if (jobj.has(MAX_VERSION)) {
+                htConfig.setMaxVersion(jobj.getInt(MAX_VERSION));
+            }
+            if (jobj.has(CONFIG_INSTALL_TIME)) {
+                htConfig.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
+            }
+            parseAttrConfig(htConfig, jobj);
+        } catch (Exception e) {
+            Log.v(Log.TAG, "parseLtConfigInternal error : " + e);
+        }
+        return htConfig;
     }
 
     private List<String> parseStringList(String str) {
