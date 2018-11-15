@@ -13,6 +13,7 @@ import com.hauyu.adsdk.framework.AdPlaceLoader;
 import com.hauyu.adsdk.framework.AdReceiver;
 import com.hauyu.adsdk.framework.AtAdLoader;
 import com.hauyu.adsdk.framework.GtAdLoader;
+import com.hauyu.adsdk.framework.HtAdLoader;
 import com.hauyu.adsdk.framework.StAdLoader;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.log.Log;
@@ -98,6 +99,7 @@ public class AdSdk {
         GtAdLoader.get(mContext).init(this);
         StAdLoader.get(mContext).init(this);
         AtAdLoader.get(mContext).init(this);
+        HtAdLoader.get(mContext).init(this);
     }
 
     /**

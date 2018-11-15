@@ -5,6 +5,7 @@ import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.config.AtConfig;
 import com.hauyu.adsdk.config.GtConfig;
+import com.hauyu.adsdk.config.HtConfig;
 import com.hauyu.adsdk.config.LtConfig;
 import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.config.StConfig;
@@ -29,6 +30,8 @@ public interface IParser {
     String ATCONFIG = "atconfig";
     // LT配置
     String LTCONFIG = "ltconfig";
+    // HT配置
+    String HTCONFIG = "htconfig";
     // 广告位汇总
     String ADPLACES = "adplaces";
     // 开光控制配置信息
@@ -164,4 +167,6 @@ public interface IParser {
     List<SpConfig> parseSpread(String data);
 
     LtConfig parseLtPolicy(String data);
+
+    HtConfig parseHtPolicy(String data);
 }

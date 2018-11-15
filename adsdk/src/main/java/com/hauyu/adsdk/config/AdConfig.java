@@ -26,6 +26,9 @@ public class AdConfig {
     // LT
     private LtConfig ltConfig;
 
+    // HT
+    private HtConfig htConfig;
+
     // 广告配置
     private List<AdPlace> adPlaceList;
 
@@ -95,6 +98,14 @@ public class AdConfig {
 
     public void setLtConfig(LtConfig ltConfig) {
         this.ltConfig = ltConfig;
+    }
+
+    public HtConfig getHtConfig() {
+        return htConfig;
+    }
+
+    public void setHtConfig(HtConfig htConfig) {
+        this.htConfig = htConfig;
     }
 
     /**

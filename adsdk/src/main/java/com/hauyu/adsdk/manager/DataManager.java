@@ -18,6 +18,7 @@ import com.hauyu.adsdk.request.IDataRequest;
 import com.hauyu.adsdk.request.RemoteConfigRequest;
 import com.hauyu.adsdk.utils.Utils;
 import com.hauyu.adsdk.config.LtConfig;
+import com.hauyu.adsdk.config.HtConfig;
 
 import java.util.List;
 import java.util.Locale;
@@ -159,6 +160,16 @@ public class DataManager {
             String data = mDataRequest.getString(Constant.LTPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseLtPolicy(data);
+            }
+        }
+        return null;
+    }
+
+    public HtConfig getRemoteHtPolicy() {
+        if (mDataRequest != null) {
+            String data = mDataRequest.getString(Constant.HTPOLICY_NAME);
+            if (!TextUtils.isEmpty(data)) {
+                return mParser.parseHtPolicy(data);
             }
         }
         return null;

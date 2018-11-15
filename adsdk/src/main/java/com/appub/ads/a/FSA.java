@@ -34,7 +34,6 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -56,6 +55,7 @@ import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.policy.GtPolicy;
 import com.hauyu.adsdk.stat.StatImpl;
 import com.hauyu.adsdk.utils.Utils;
+import com.hauyu.adsdk.policy.HtPolicy;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -276,7 +276,11 @@ public class FSA extends Activity {
         });
         rootLayout.addView(imageView, params);
         AdSdk.get(this).showComplexAds(mPidName, getAdParams(), mSource, mAdType, adLayout);
-        GtPolicy.get(this).reportGtShowing(true);
+        if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)) {
+            GtPolicy.get(this).reportGtShowing(true);
+        } else if (TextUtils.equals(Constant.HTPLACE_OUTER_NAME, mPidName)) {
+            HtPolicy.get(this).reportHtShowing(true);
+        }
     }
 
     private int dp2px(Context context, float dpValue) {

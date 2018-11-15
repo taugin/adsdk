@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 
 import com.appub.ads.a.FSA;
 import com.hauyu.adsdk.config.AdConfig;
@@ -25,9 +26,11 @@ public class AdReceiver {
     private static AdReceiver sAdReceiver;
 
     private Context mContext;
+    private Handler mHandler;
 
     private AdReceiver(Context context) {
         mContext = context.getApplicationContext();
+        mHandler = new Handler();
     }
 
     public static AdReceiver get(Context context) {
@@ -73,6 +76,7 @@ public class AdReceiver {
             filter.addAction(getAlarmAction());
             filter.addAction(Intent.ACTION_SCREEN_ON);
             filter.addAction(Intent.ACTION_SCREEN_OFF);
+            filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
             mContext.registerReceiver(mBroadcastReceiver, filter);
         } catch (Exception e) {
         }
@@ -101,7 +105,17 @@ public class AdReceiver {
                 TaskMonitor.get(context).stopMonitor();
             } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
                 AtAdLoader.get(context).resumeLoader();
-                showLS();
+                showLs();
+            } else if (Intent.ACTION_CLOSE_SYSTEM_DIALOGS.equals(intent.getAction())) {
+                String reason = intent.getStringExtra("reason");
+                if ("homekey".equals(reason)) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            homeKeyPressed();
+                        }
+                    }, 2000);
+                }
             }
         }
     };
@@ -114,8 +128,8 @@ public class AdReceiver {
         return false;
     }
 
-    private void showLS() {
-        updatePolicy();
+    private void showLs() {
+        updateLtPolicy();
         if (!LtPolicy.get(mContext).isLtAllowed()) {
             return;
         }
@@ -133,12 +147,16 @@ public class AdReceiver {
         }
     }
 
-    private void updatePolicy() {
+    private void updateLtPolicy() {
         AdConfig adConfig = DataManager.get(mContext).getAdConfig();
         LtConfig ltConfig = DataManager.get(mContext).getRemoteLtPolicy();
         if (ltConfig == null && adConfig != null) {
             ltConfig = adConfig.getLtConfig();
         }
         LtPolicy.get(mContext).setPolicy(ltConfig);
+    }
+
+    private void homeKeyPressed() {
+        HtAdLoader.get(mContext).fireHome();
     }
 }
