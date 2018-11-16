@@ -12,6 +12,7 @@ import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
 import com.inner.adsdk.stat.StatImpl;
+import com.inner.adsdk.utils.Utils;
 
 import java.util.List;
 import java.util.Random;
@@ -65,7 +66,10 @@ public class SpLoader extends AbstractSdkLoader {
             int size = mSpreads.size();
             if (size > 0) {
                 SpConfig spConfig = mSpreads.get(new Random(System.currentTimeMillis()).nextInt(size));
-                Intent intent = new Intent(mContext, FSA.class);
+                Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.AFPICKER");
+                if (intent == null) {
+                    intent = new Intent(mContext, FSA.class);
+                }
                 intent.putExtra(Intent.EXTRA_STREAM, spConfig);
                 intent.putExtra(Intent.EXTRA_TITLE, getAdPlaceName());
                 intent.putExtra(Intent.EXTRA_TEXT, getSdkName());
