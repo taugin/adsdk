@@ -791,7 +791,9 @@ public class FSA extends Activity {
         AdSdk.get(this).loadAdView(Constant.LTPLACE_OUTER_NAME, params, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
-                AdSdk.get(getBaseContext()).showAdView(pidName, getAdParams(), mLockAdLayout);
+                if(!isFinishing()) {
+                    AdSdk.get(getBaseContext()).showAdView(pidName, getAdParams(), mLockAdLayout);
+                }
             }
 
             @Override
