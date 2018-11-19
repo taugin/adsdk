@@ -1,15 +1,4 @@
 {
-  "adids": {
-    "admob": "",
-    "adx": "",
-    "fb": "",
-    "wemob": {
-      "appkey": "abs.workout.women.fitness.tabata",
-      "channel": "11061_6101_001"
-    },
-    "inmobi": "3a7c9443ab95449084eb270ee0154fcd",
-    "inneractive": "106652"
-  },
   "stconfig": {
     "e": 0
   },
@@ -97,13 +86,13 @@
           "sdk": "adx",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "fb",
           "type": "native",
           "pid": "YOUR_PLACEMENT_ID",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
@@ -120,7 +109,7 @@
         {
           "sdk": "wemob",
           "type": "native",
-          "pid": "native1",
+          "pid": "abs.workout.women.fitness.tabata|11061_6101_001|native1",
           "disable": 1
         },
         {
@@ -168,13 +157,13 @@
         {
           "sdk": "inmobi",
           "type": "banner",
-          "pid": "1540597066220",
+          "pid": "3a7c9443ab95449084eb270ee0154fcd|1540597066220",
           "disable": 1
         },
         {
           "sdk": "inmobi",
           "type": "native",
-          "pid": "1538433861066",
+          "pid": "3a7c9443ab95449084eb270ee0154fcd|1538433861066",
           "disable": 1
         },
         {
@@ -196,29 +185,29 @@
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "adx",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "fb",
           "type": "interstitial",
           "pid": "YOUR_PLACEMENT_ID",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "wemob",
           "type": "interstitial",
-          "pid": "interstitial1",
+          "pid": "abs.workout.women.fitness.tabata|11061_6101_001|interstitial1",
           "ctr": 5,
           "ffc": 1,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
@@ -252,20 +241,21 @@
         {
           "sdk": "inmobi",
           "type": "interstitial",
-          "pid": "1538651605680",
+          "pid": "3a7c9443ab95449084eb270ee0154fcd|1538651605680",
           "disable": 1
         },
         {
           "sdk": "inneractive",
           "type": "interstitial",
-          "pid": "190736",
-          "disable": 1
+          "pid": "106652&190736",
+          "sep":"&",
+          "disable": 0
         },
         {
           "sdk": "dspmob",
           "type": "interstitial",
           "pid": "10002/60003",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,
@@ -308,7 +298,7 @@
         {
           "sdk": "inmobi",
           "type": "reward",
-          "pid": "1541432243676",
+          "pid": "3a7c9443ab95449084eb270ee0154fcd|1541432243676",
           "disable": 0
         }
       ],
@@ -366,14 +356,14 @@
         {
           "sdk": "wemob",
           "type": "interstitial",
-          "pid": "interstitial1",
+          "pid": "abs.workout.women.fitness.tabata|11061_6101_001|interstitial1",
           "dct": 2000,
           "disable": 1
         },
         {
           "sdk": "inmobi",
           "type": "interstitial",
-          "pid": "1538651605680",
+          "pid": "3a7c9443ab95449084eb270ee0154fcd|1538651605680",
           "disable": 1
         }
       ],
@@ -418,7 +408,7 @@
         {
           "sdk": "wemob",
           "type": "native",
-          "pid": "native1",
+          "pid": "abs.workout.women.fitness.tabata|11061_6101_001|native1",
           "disable": 1
         }
       ],

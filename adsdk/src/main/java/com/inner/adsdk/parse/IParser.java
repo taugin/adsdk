@@ -87,6 +87,8 @@ public interface IParser {
     String DELAY_CLICK_TIME = "dct";
     // destroy after click
     String DESTROY_AFTER_CLICK = "dac";
+    // sep
+    String SEP = "sep";
 
     // 启用或禁用GT
     String ENABLE = "e";

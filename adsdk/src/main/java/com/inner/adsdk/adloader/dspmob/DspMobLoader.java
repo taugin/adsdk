@@ -30,41 +30,28 @@ public class DspMobLoader extends AbstractSdkLoader {
         return Constant.AD_SDK_DSPMOB;
     }
 
-    private String getAdId(String pid) {
-        if (TextUtils.isEmpty(pid)) {
-            return pid;
-        }
-        if (pid.contains("/")) {
-            return pid.substring(0, pid.indexOf("/"));
-        }
-        return "";
-    }
-
-    private String getPid(String pid) {
-        if (TextUtils.isEmpty(pid)) {
-            return pid;
-        }
-        if (pid.contains("/")) {
-            return pid.substring(pid.indexOf("/") + 1);
-        }
-        return pid;
-    }
-
     @Override
     public void setAdId(String adId) {
         super.setAdId(adId);
         if (!TextUtils.isEmpty(adId)) {
             DspMob.init(mContext, adId);
         } else {
-            initDspMob();
+            if (getPidConfig() != null) {
+                parsePidInfo(getPidConfig().getPid());
+                String appId = getAppId();
+                if (!TextUtils.isEmpty(appId)) {
+                    DspMob.init(mContext, appId);
+                }
+            }
         }
     }
 
-    private void initDspMob() {
-        String adId = getAdId(mPidConfig.getPid());
-        if (!TextUtils.isEmpty(adId)) {
-            DspMob.init(mContext, adId);
+    @Override
+    protected void parsePidInfo(String pidStr) {
+        if (pidStr != null && pidStr.contains("/")) {
+            getPidConfig().setSep("/");
         }
+        super.parsePidInfo(pidStr);
     }
 
     @Override
@@ -110,7 +97,7 @@ public class DspMobLoader extends AbstractSdkLoader {
         setLoading(true, STATE_REQUEST);
 
         mBannerAd = new BannerAd(mContext);
-        mBannerAd.setAdId(getPid(mPidConfig.getPid()));
+        mBannerAd.setAdId(getSdkPid());
         if (adSize == Constant.BANNER) {
             mBannerAd.setAdSize(AdSize.Banner_320_50);
         } else if (adSize == Constant.MEDIUM_RECTANGLE) {
@@ -147,7 +134,7 @@ public class DspMobLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
@@ -164,7 +151,7 @@ public class DspMobLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdFailedToLoad(AdError adError) {
-                Log.v(Log.TAG, "reason : " + codeToError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                Log.v(Log.TAG, "reason : " + codeToError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getSdkPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
@@ -201,7 +188,7 @@ public class DspMobLoader extends AbstractSdkLoader {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "loader error : " + e);
@@ -227,7 +214,7 @@ public class DspMobLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
             }
             return true;
         }
@@ -271,7 +258,7 @@ public class DspMobLoader extends AbstractSdkLoader {
         setLoading(true, STATE_REQUEST);
 
         mInterstitialAd = new InterstitialAd(mContext);
-        mInterstitialAd.setAdId(getPid(mPidConfig.getPid()));
+        mInterstitialAd.setAdId(getSdkPid());
         mInterstitialAd.setBidFloor((float) getPidConfig().getEcpm() / 100f);
         mInterstitialAd.setListener(new AdListener() {
             @Override
@@ -296,7 +283,7 @@ public class DspMobLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -314,7 +301,7 @@ public class DspMobLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                 }
             }
 
@@ -331,7 +318,7 @@ public class DspMobLoader extends AbstractSdkLoader {
             @Override
             public void onAdFailedToLoad(AdError adError) {
                 Log.i(TAG, "Failed loading fullscreen ad! with error: " + adError.toString());
-                Log.v(Log.TAG, "reason : " + codeToError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                Log.v(Log.TAG, "reason : " + codeToError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getSdkPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);

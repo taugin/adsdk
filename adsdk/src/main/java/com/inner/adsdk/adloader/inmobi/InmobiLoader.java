@@ -39,18 +39,28 @@ public class InmobiLoader extends AbstractSdkLoader {
 
     @Override
     public void setAdId(String adId) {
-        if (TextUtils.isEmpty(adId)) {
-            adId = "3a7c9443ab95449084eb270ee0154fcd";
-        }
         super.setAdId(adId);
+        String appId = null;
+        if (TextUtils.isEmpty(adId)) {
+            if (getPidConfig() != null) {
+                parsePidInfo(getPidConfig().getPid());
+                appId = getAppId();
+            }
+            if (TextUtils.isEmpty(appId)) {
+                appId = "3a7c9443ab95449084eb270ee0154fcd";
+            }
+        } else {
+            appId = adId;
+        }
         JSONObject consentObject = new JSONObject();
         try {
             // Provide correct consent value to sdk which is obtained by User
             consentObject.put(InMobiSdk.IM_GDPR_CONSENT_AVAILABLE, true);
             // Provide 0 if GDPR is not applicable and 1 if applicable
             consentObject.put("gdpr", "1");
-        } catch (JSONException e) {}
-        InMobiSdk.init(getContext(), adId, consentObject);
+        } catch (JSONException e) {
+        }
+        InMobiSdk.init(getContext(), appId, consentObject);
         //InMobiSdk.setLogLevel(InMobiSdk.LogLevel.DEBUG);
     }
 
@@ -87,17 +97,19 @@ public class InmobiLoader extends AbstractSdkLoader {
                 }
             }
         }
-        setLoading(true, STATE_REQUEST);
+
         long lPid = 0;
         try {
-            lPid = Long.valueOf(mPidConfig.getPid());
+            lPid = Long.valueOf(getSdkPid());
         } catch (NumberFormatException e) {
-            Log.v(Log.TAG, "pid convert error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.v(Log.TAG, "pid convert error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " , lPid : " + lPid);
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
             }
             return;
         }
+
+        setLoading(true, STATE_REQUEST);
 
         loadingView = new InMobiBanner(getContext(), lPid);
         if (adSize == Constant.BANNER) {
@@ -141,7 +153,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
@@ -206,7 +218,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "showBanner error : " + e);
@@ -245,19 +257,21 @@ public class InmobiLoader extends AbstractSdkLoader {
                 }
             }
         }
-        setLoading(true, STATE_REQUEST);
 
         long lPid = -1;
         try {
-            lPid = Long.valueOf(mPidConfig.getPid());
-        } catch (NumberFormatException e) { }
+            lPid = Long.valueOf(getSdkPid());
+        } catch (NumberFormatException e) {
+        }
         if (lPid < 0) {
-            Log.v(Log.TAG, "pid convert error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.v(Log.TAG, "pid convert error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " , lPid : " + lPid);
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
             }
             return;
         }
+
+        setLoading(true, STATE_REQUEST);
 
         mInMobiInterstitial = new InMobiInterstitial(getContext(), lPid, new InterstitialAdEventListener() {
             @Override
@@ -300,7 +314,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                 }
             }
 
@@ -312,7 +326,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -363,7 +377,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
             }
             return true;
         }
@@ -410,19 +424,21 @@ public class InmobiLoader extends AbstractSdkLoader {
                 Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             }
         }
-        setLoading(true, STATE_REQUEST);
 
         long lPid = -1;
         try {
-            lPid = Long.valueOf(mPidConfig.getPid());
-        } catch (NumberFormatException e) { }
+            lPid = Long.valueOf(getSdkPid());
+        } catch (NumberFormatException e) {
+        }
         if (lPid < 0) {
-            Log.v(Log.TAG, "pid convert error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.v(Log.TAG, "pid convert error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " , lPid : " + lPid);
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
             }
             return;
         }
+
+        setLoading(true, STATE_REQUEST);
 
         mInMobiRewardVideo = new InMobiInterstitial(getContext(), lPid, new InterstitialAdEventListener() {
             @Override
@@ -464,7 +480,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                 }
             }
 
@@ -479,7 +495,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
                 }
             }
 
@@ -514,7 +530,8 @@ public class InmobiLoader extends AbstractSdkLoader {
                         }
                         Log.v(Log.TAG, "Ad Reward: " + adReward.toString());
                         getAdListener().onRewarded(adReward);
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
                 }
             }
         });
@@ -537,7 +554,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
             }
             return true;
         }
@@ -593,19 +610,21 @@ public class InmobiLoader extends AbstractSdkLoader {
                 }
             }
         }
-        setLoading(true, STATE_REQUEST);
 
         long lPid = -1;
         try {
-            lPid = Long.valueOf(mPidConfig.getPid());
-        } catch (NumberFormatException e) { }
+            lPid = Long.valueOf(getSdkPid());
+        } catch (NumberFormatException e) {
+        }
         if (lPid < 0) {
-            Log.v(Log.TAG, "pid convert error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.v(Log.TAG, "pid convert error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " , lPid : " + lPid);
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
             }
             return;
         }
+
+        setLoading(true, STATE_REQUEST);
 
         if (mInMobiNative == null) {
             mInMobiNative = new InMobiNative(mContext, lPid, new NativeAdEventListener() {
@@ -624,7 +643,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdLoadFailed(InMobiNative nativeAd, InMobiAdRequestStatus status) {
                     super.onAdLoadFailed(nativeAd, status);
-                    Log.v(Log.TAG, "reason : " + status.getMessage() + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                    Log.v(Log.TAG, "reason : " + status.getMessage() + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getSdkPid());
                     setLoading(false, STATE_FAILURE);
                     if (getAdListener() != null) {
                         getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
@@ -645,7 +664,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                         mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                     }
                     if (mStat != null) {
-                        mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                        mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
                     }
                 }
 
@@ -660,7 +679,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                         mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                     }
                     if (mStat != null) {
-                        mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                        mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                     }
                 }
             });
@@ -680,7 +699,7 @@ public class InmobiLoader extends AbstractSdkLoader {
         }
         InmobiBindNativeView inmobiBindNativeView = new InmobiBindNativeView();
         clearCachedAdTime(mInMobiNative);
-        inmobiBindNativeView.bindNative(mParams, viewGroup, mInMobiNative, mPidConfig);
+        inmobiBindNativeView.bindNative(mParams, viewGroup, mInMobiNative, getPidConfig());
         mInMobiNative = null;
     }
 
