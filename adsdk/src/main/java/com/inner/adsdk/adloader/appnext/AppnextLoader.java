@@ -109,7 +109,7 @@ public class AppnextLoader extends AbstractSdkLoader {
             size = BannerSize.BANNER;
         }
         loadingView = new BannerView(mContext);
-        loadingView.setPlacementId(mPidConfig.getPid());
+        loadingView.setPlacementId(getSdkPid());
         loadingView.setBannerSize(size);
         loadingView.setBannerListener(new BannerListener() {
             @Override
@@ -131,7 +131,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
@@ -198,7 +198,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
@@ -257,7 +257,7 @@ public class AppnextLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        interstitial = new Interstitial(mContext, mPidConfig.getPid());
+        interstitial = new Interstitial(mContext, getSdkPid());
         interstitial.setOnAdLoadedCallback(new OnAdLoaded() {
             @Override
             public void adLoaded(String s) {
@@ -284,7 +284,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
                 }
             }
         });
@@ -300,7 +300,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                 }
             }
         });
@@ -352,7 +352,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
             }
             return true;
         }
@@ -410,7 +410,7 @@ public class AppnextLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        NativeAd loadingNativeAd = new NativeAd(mContext, mPidConfig.getPid());
+        NativeAd loadingNativeAd = new NativeAd(mContext, getSdkPid());
         loadingNativeAd.setAdListener(new NativeAdListener() {
             public void onAdLoaded(NativeAd nAd) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
@@ -432,7 +432,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                 }
             }
 
@@ -460,7 +460,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
                 }
             }
         });
@@ -483,7 +483,7 @@ public class AppnextLoader extends AbstractSdkLoader {
         }
         AppnextBindNativeView appnextBindNativeView = new AppnextBindNativeView();
         clearCachedAdTime(nativeAd);
-        appnextBindNativeView.bindAppnextNative(mParams, viewGroup, nativeAd, mPidConfig);
+        appnextBindNativeView.bindAppnextNative(mParams, viewGroup, nativeAd, getPidConfig());
         gNativeAd = nativeAd;
         nativeAd = null;
     }
@@ -528,7 +528,7 @@ public class AppnextLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        rewardedVideoAd = new RewardedVideo(mContext, mPidConfig.getPid());
+        rewardedVideoAd = new RewardedVideo(mContext, getSdkPid());
         rewardedVideoAd.setOnAdLoadedCallback(new OnAdLoaded() {
             @Override
             public void adLoaded(String s) {
@@ -556,7 +556,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
                 }
             }
         });
@@ -572,7 +572,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                 }
             }
         });
@@ -613,8 +613,8 @@ public class AppnextLoader extends AbstractSdkLoader {
                     AdReward adReward = new AdReward();
                     adReward.setType(Constant.ECPM);
                     int ecpm = 0;
-                    if (mPidConfig != null) {
-                        ecpm = mPidConfig.getEcpm();
+                    if (getPidConfig() != null) {
+                        ecpm = getPidConfig().getEcpm();
                     }
                     adReward.setAmount(String.valueOf(ecpm));
                     getAdListener().onRewarded(adReward);
@@ -651,7 +651,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
             }
             return true;
         }

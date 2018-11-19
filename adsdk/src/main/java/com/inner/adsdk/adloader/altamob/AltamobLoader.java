@@ -53,7 +53,7 @@ public class AltamobLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
             }
             return true;
         }
@@ -96,7 +96,7 @@ public class AltamobLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
 
-        mInterstitialAd = new InterstitialAd(mContext, mPidConfig.getPid());
+        mInterstitialAd = new InterstitialAd(mContext, getSdkPid());
         mInterstitialAd.setInterstitialAdListener(new InterstitialAdListener() {
             @Override
             public void onLoaded(AD ad, String s) {
@@ -115,7 +115,7 @@ public class AltamobLoader extends AbstractSdkLoader {
             @Override
             public void onError(ADError adError, String s) {
                 Log.i(TAG, "Failed loading fullscreen ad! with error: " + adError.errorCode);
-                Log.v(Log.TAG, "reason : " + codeToError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                Log.v(Log.TAG, "reason : " + codeToError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getSdkPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
@@ -135,7 +135,7 @@ public class AltamobLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                 }
             }
 
@@ -146,7 +146,7 @@ public class AltamobLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();

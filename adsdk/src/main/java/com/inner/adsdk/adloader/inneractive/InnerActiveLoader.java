@@ -48,6 +48,14 @@ public class InnerActiveLoader extends AbstractSdkLoader {
         super.setAdId(adId);
         if (!TextUtils.isEmpty(adId)) {
             InneractiveAdManager.initialize(mContext, adId);
+        } else {
+            if (getPidConfig() != null) {
+                parsePidInfo(getPidConfig().getPid());
+                String appId = getAppId();
+                if (!TextUtils.isEmpty(appId)) {
+                    InneractiveAdManager.initialize(mContext, appId);
+                }
+            }
         }
     }
 
@@ -64,6 +72,14 @@ public class InnerActiveLoader extends AbstractSdkLoader {
     public void loadBanner(int adSize) {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
+            }
+            return;
+        }
+
+        if (!InneractiveAdManager.wasInitialized()) {
+            Log.v(Log.TAG, "sdk not initialized error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
             }
@@ -120,7 +136,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
         controller.addContentController(videoContentController);
         mBannerSpot.addUnitController(controller);
 
-        InneractiveAdRequest adRequest = new InneractiveAdRequest(mPidConfig.getPid());
+        InneractiveAdRequest adRequest = new InneractiveAdRequest(getSdkPid());
         adRequest.setUserParams(new InneractiveUserConfig()
                 // .setGender()
                 // .setZipCode("<zip_code>")
@@ -133,7 +149,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             @Override
             public void onInneractiveFailedAdRequest(InneractiveAdSpot adSpot, InneractiveErrorCode errorCode) {
                 Log.i(TAG, "Failed loading Square! with error: " + errorCode);
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getSdkPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
@@ -179,7 +195,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                             mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                         }
                         if (mStat != null) {
-                            mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                            mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                         }
                         if (getAdListener() != null) {
                             getAdListener().onAdClick();
@@ -241,7 +257,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "admobloader error : " + e);
@@ -297,7 +313,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
             }
             return true;
         }
@@ -309,6 +325,14 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
+            }
+            return;
+        }
+
+        if (!InneractiveAdManager.wasInitialized()) {
+            Log.v(Log.TAG, "sdk not initialized error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
             }
             return;
         }
@@ -349,7 +373,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
         InneractiveFullscreenUnitController controller = new InneractiveFullscreenUnitController();
         mFullScreenSpot.addUnitController(controller);
 
-        InneractiveAdRequest adRequest = new InneractiveAdRequest(mPidConfig.getPid());
+        InneractiveAdRequest adRequest = new InneractiveAdRequest(getSdkPid());
         adRequest.setUserParams(new InneractiveUserConfig()
                 // .setGender(<gender>)
                 // .setZipCode("<zip_code>")
@@ -362,7 +386,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             @Override
             public void onInneractiveFailedAdRequest(InneractiveAdSpot adSpot, InneractiveErrorCode errorCode) {
                 Log.i(TAG, "Failed loading fullscreen ad! with error: " + errorCode);
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getSdkPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
@@ -386,7 +410,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                             mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                         }
                         if (mStat != null) {
-                            mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                            mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
                         }
                         if (getAdListener() != null) {
                             if (isRewarded) {
@@ -412,7 +436,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                             mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                         }
                         if (mStat != null) {
-                            mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                            mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                         }
                     }
 
@@ -516,6 +540,14 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             return;
         }
 
+        if (!InneractiveAdManager.wasInitialized()) {
+            Log.v(Log.TAG, "sdk not initialized error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
+            }
+            return;
+        }
+
         if (isNativeLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             notifyAdLoaded(true);
@@ -566,7 +598,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
 
         mNativeSpot.addUnitController(controller);
 
-        InneractiveAdRequestWithNative request = new InneractiveAdRequestWithNative(mPidConfig.getPid());
+        InneractiveAdRequestWithNative request = new InneractiveAdRequestWithNative(getSdkPid());
         request.setIsInFeed(false)   // This is an in-feed ad ?
                 .setTitleAssetMode(InneractiveAdRequestWithNative.NativeAssetMode.REQUIRED)
                 .setActionAssetMode(InneractiveAdRequestWithNative.NativeAssetMode.OPTIONAL)
@@ -588,7 +620,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             @Override
             public void onInneractiveFailedAdRequest(InneractiveAdSpot adSpot, InneractiveErrorCode errorCode) {
                 Log.i(TAG, "Failed loading Native! with error: " + errorCode);
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getSdkPid());
                 if (errorCode == InneractiveErrorCode.NO_FILL) {
                     updateLastNoFillTime();
                 }
@@ -616,7 +648,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                             mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                         }
                         if (mStat != null) {
-                            mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                            mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
                         }
                     }
 
@@ -630,7 +662,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                             mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                         }
                         if (mStat != null) {
-                            mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                            mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                         }
                     }
 

@@ -23,7 +23,7 @@ public class CloudMobiLoader extends AbstractSdkLoader {
     @Override
     public void setAdId(String adId) {
         super.setAdId(adId);
-        CTService.init(mContext, adId);
+        CTService.init(mContext, getSdkPid());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class CloudMobiLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
             }
             return true;
         }
@@ -90,14 +90,14 @@ public class CloudMobiLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
 
-        CTService.preloadMRAIDInterstitial(mContext, mPidConfig.getPid(),
-                new MyCTAdEventListener(){
+        CTService.preloadMRAIDInterstitial(mContext, getSdkPid(),
+                new MyCTAdEventListener() {
                     @Override
                     public void onInterstitialLoadSucceed(CTNative result) {
                     }
 
                     @Override
-                    public void onAdviewGotAdSucceed(CTNative result){
+                    public void onAdviewGotAdSucceed(CTNative result) {
                         mInterstitialAd = result;
                         mIsInterstitialLoaded = true;
                         setLoading(false, STATE_SUCCESS);
@@ -124,7 +124,7 @@ public class CloudMobiLoader extends AbstractSdkLoader {
                     @Override
                     public void onAdviewGotAdFail(CTNative result) {
                         Log.i(TAG, "Failed loading fullscreen ad! with error: " + result.getErrorsMsg());
-                        Log.v(Log.TAG, "reason : " + result.getErrorsMsg() + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                        Log.v(Log.TAG, "reason : " + result.getErrorsMsg() + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getSdkPid());
                         setLoading(false, STATE_FAILURE);
                         if (getAdListener() != null) {
                             getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
@@ -144,7 +144,7 @@ public class CloudMobiLoader extends AbstractSdkLoader {
                             mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                         }
                         if (mStat != null) {
-                            mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                            mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
                         }
                     }
                 });
