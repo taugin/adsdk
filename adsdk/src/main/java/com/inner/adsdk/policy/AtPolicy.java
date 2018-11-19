@@ -4,20 +4,17 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.inner.adsdk.config.AtConfig;
-import com.inner.adsdk.constant.Constant;
-import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Administrator on 2018-8-10.
  */
 
-public class AtPolicy {
+public class AtPolicy extends BasePolicy {
     private static final List<String> WHITE_LIST;
 
     static {
@@ -82,112 +79,25 @@ public class AtPolicy {
     }
 
     private AtPolicy(Context context) {
-        mContext = context;
-        mAttrChecker = new AttrChecker(context);
+        super(context, "at");
     }
 
-    private Context mContext;
     private AtConfig mAtConfig;
-    private AttrChecker mAttrChecker;
 
     public void init() {
     }
 
     public void setPolicy(AtConfig atConfig) {
+        super.setPolicy(atConfig);
         mAtConfig = atConfig;
         if (mAtConfig != null && (mAtConfig.getExcludes() == null || mAtConfig.getExcludes().isEmpty())) {
             mAtConfig.setExcludes(WHITE_LIST);
         }
     }
 
-    public void reportAtShow() {
-        Utils.putLong(mContext, Constant.PREF_AT_LAST_TIME, System.currentTimeMillis());
-    }
-
-    private long getLastShowTime() {
-        return Utils.getLong(mContext, Constant.PREF_AT_LAST_TIME, 0);
-    }
-
-    private long getFirstStartUpTime() {
-        return Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0);
-    }
-
-    private boolean isDelayAllow() {
-        if (mAtConfig != null && mAtConfig.getUpDelay() > 0) {
-            long now = System.currentTimeMillis();
-            long firstStartTime = getFirstStartUpTime();
-            return now - firstStartTime > mAtConfig.getUpDelay();
-        }
-        return true;
-    }
-
-    private boolean isIntervalAllow() {
-        if (mAtConfig != null && mAtConfig.getInterval() > 0) {
-            long now = System.currentTimeMillis();
-            long last = getLastShowTime();
-            boolean intervalAllow = now - last > mAtConfig.getInterval();
-            Log.v(Log.TAG, "at i allow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)) + " , do : " + intervalAllow);
-            return intervalAllow;
-        }
-        return true;
-    }
-
-    private boolean isTopApp() {
-        boolean appOnTop = ActivityMonitor.get(mContext).appOnTop();
-        boolean isTopApp = Utils.isTopActivy(mContext);
-        Log.v(Log.TAG, "appOnTop : " + appOnTop + " , isTopApp : " + isTopApp);
-        return appOnTop;
-    }
-
-    /**
-     * 配置是否允许
-     *
-     * @return
-     */
-    private boolean isConfigAllow() {
-        if (mAtConfig != null) {
-            return mAtConfig.isEnable();
-        }
-        return false;
-    }
-
-    private boolean checkAdAtConfig() {
-        if (!isConfigAllow()) {
-            Log.v(Log.TAG, "config not allowed");
-            return false;
-        }
-
-        if (mAtConfig != null && !mAttrChecker.isAttributionAllow(mAtConfig.getAttrList())) {
-            Log.v(Log.TAG, "attr not allowed");
-            return false;
-        }
-
-        if (mAtConfig != null && !mAttrChecker.isCountryAllow(mAtConfig.getCountryList())) {
-            Log.v(Log.TAG, "country not allowed");
-            return false;
-        }
-
-        if (mAtConfig != null && !mAttrChecker.isMediaSourceAllow(mAtConfig.getMediaList())) {
-            Log.v(Log.TAG, "ms not allowed");
-            return false;
-        }
-
-        return true;
-    }
-
     public boolean isAtAllowed() {
         Log.v(Log.TAG, "at : " + mAtConfig);
-        if (!checkAdAtConfig()) {
-            return false;
-        }
-
-        if (!isDelayAllow()) {
-            Log.v(Log.TAG, "d not allowed");
-            return false;
-        }
-
-        if (!isIntervalAllow()) {
-            Log.v(Log.TAG, "i not allowed");
+        if (!checkBaseConfig()) {
             return false;
         }
 

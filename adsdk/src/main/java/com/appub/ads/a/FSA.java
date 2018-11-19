@@ -54,6 +54,7 @@ import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.policy.GtPolicy;
 import com.inner.adsdk.policy.HtPolicy;
+import com.inner.adsdk.policy.LtPolicy;
 import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
 
@@ -278,9 +279,9 @@ public class FSA extends Activity {
 
         AdSdk.get(this).showComplexAds(mPidName, getAdParams(), mSource, mAdType, adLayout);
         if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)) {
-            GtPolicy.get(this).reportGtShowing(true);
+            GtPolicy.get(this).reportShowing(true);
         } else if (TextUtils.equals(Constant.HTPLACE_OUTER_NAME, mPidName)) {
-            HtPolicy.get(this).reportHtShowing(true);
+            HtPolicy.get(this).reportShowing(true);
         }
     }
 

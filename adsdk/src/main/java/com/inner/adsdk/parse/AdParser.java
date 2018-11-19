@@ -6,7 +6,7 @@ import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.AtConfig;
-import com.inner.adsdk.config.AttrConfig;
+import com.inner.adsdk.config.BaseConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.config.HtConfig;
 import com.inner.adsdk.config.LtConfig;
@@ -149,6 +149,44 @@ public class AdParser implements IParser {
         return adIds;
     }
 
+    private void parseBaseConfig(BaseConfig baseConfig, JSONObject jobj) {
+        if (baseConfig == null) {
+            return;
+        }
+        try {
+            if (jobj.has(ENABLE)) {
+                baseConfig.setEnable(jobj.getInt(ENABLE) == 1);
+            }
+            if (jobj.has(UPDELAY)) {
+                baseConfig.setUpDelay(jobj.getLong(UPDELAY));
+            }
+            if (jobj.has(INTERVAL)) {
+                baseConfig.setInterval(jobj.getLong(INTERVAL));
+            }
+            if (jobj.has(MAX_COUNT)) {
+                baseConfig.setMaxCount(jobj.getInt(MAX_COUNT));
+            }
+            if (jobj.has(MAX_VERSION)) {
+                baseConfig.setMaxVersion(jobj.getInt(MAX_VERSION));
+            }
+            if (jobj.has(MIN_INTERVAL)) {
+                baseConfig.setMinInterval(jobj.getLong(MIN_INTERVAL));
+            }
+            if (jobj.has(SCREEN_ORIENTATION)) {
+                baseConfig.setScreenOrientation(jobj.getInt(SCREEN_ORIENTATION));
+            }
+            if (jobj.has(TIMEOUT)) {
+                baseConfig.setTimeOut(jobj.getLong(TIMEOUT));
+            }
+            if (jobj.has(CONFIG_INSTALL_TIME)) {
+                baseConfig.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
+            }
+            parseAttrConfig(baseConfig, jobj);
+        } catch (Exception e) {
+            Log.v(Log.TAG, "parseBasePolicyInternal error : " + e);
+        }
+    }
+
     @Override
     public GtConfig parseGtPolicy(String data) {
         data = getContent(data);
@@ -160,37 +198,10 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(content);
             gtConfig = new GtConfig();
-            if (jobj.has(ENABLE)) {
-                gtConfig.setEnable(jobj.getInt(ENABLE) == 1);
-            }
-            if (jobj.has(UPDELAY)) {
-                gtConfig.setUpDelay(jobj.getLong(UPDELAY));
-            }
-            if (jobj.has(INTERVAL)) {
-                gtConfig.setInterval(jobj.getLong(INTERVAL));
-            }
-            if (jobj.has(MAX_COUNT)) {
-                gtConfig.setMaxCount(jobj.getInt(MAX_COUNT));
-            }
-            if (jobj.has(MAX_VERSION)) {
-                gtConfig.setMaxVersion(jobj.getInt(MAX_VERSION));
-            }
-            if (jobj.has(MIN_INTERVAL)) {
-                gtConfig.setMinInterval(jobj.getLong(MIN_INTERVAL));
-            }
-            if (jobj.has(SCREEN_ORIENTATION)) {
-                gtConfig.setScreenOrientation(jobj.getInt(SCREEN_ORIENTATION));
-            }
-            if (jobj.has(TIMEOUT)) {
-                gtConfig.setTimeOut(jobj.getLong(TIMEOUT));
-            }
             if (jobj.has(SHOW_BOTTOM_ACTIVITY)) {
                 gtConfig.setShowBottomActivity(jobj.getInt(SHOW_BOTTOM_ACTIVITY) == 1);
             }
-            if (jobj.has(CONFIG_INSTALL_TIME)) {
-                gtConfig.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
-            }
-            parseAttrConfig(gtConfig, jobj);
+            parseBaseConfig(gtConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseGtPolicyInternal error : " + e);
         }
@@ -208,13 +219,7 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(content);
             stConfig = new StConfig();
-            if (jobj.has(ENABLE)) {
-                stConfig.setEnable(jobj.getInt(ENABLE) == 1);
-            }
-            if (jobj.has(UPDELAY)) {
-                stConfig.setUpDelay(jobj.getInt(UPDELAY));
-            }
-            parseAttrConfig(stConfig, jobj);
+            parseBaseConfig(stConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseStPolicyInternal error : " + e);
         }
@@ -232,22 +237,13 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(content);
             atConfig = new AtConfig();
-            if (jobj.has(ENABLE)) {
-                atConfig.setEnable(jobj.getInt(ENABLE) == 1);
-            }
-            if (jobj.has(UPDELAY)) {
-                atConfig.setUpDelay(jobj.getInt(UPDELAY));
-            }
-            if (jobj.has(INTERVAL)) {
-                atConfig.setInterval(jobj.getInt(INTERVAL));
-            }
             if (jobj.has(EXCLUDE_PACKAGES)) {
                 atConfig.setExcludes(parseStringList(jobj.getString(EXCLUDE_PACKAGES)));
             }
             if (jobj.has(SHOW_ON_FIRST_PAGE)) {
                 atConfig.setShowOnFirstPage(jobj.getInt(SHOW_ON_FIRST_PAGE) == 1);
             }
-            parseAttrConfig(atConfig, jobj);
+            parseBaseConfig(atConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseStPolicyInternal error : " + e);
         }
@@ -265,19 +261,7 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(data);
             ltConfig = new LtConfig();
-            if (jobj.has(ENABLE)) {
-                ltConfig.setEnable(jobj.getInt(ENABLE) == 1);
-            }
-            if (jobj.has(UPDELAY)) {
-                ltConfig.setUpDelay(jobj.getLong(UPDELAY));
-            }
-            if (jobj.has(MAX_VERSION)) {
-                ltConfig.setMaxVersion(jobj.getInt(MAX_VERSION));
-            }
-            if (jobj.has(CONFIG_INSTALL_TIME)) {
-                ltConfig.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
-            }
-            parseAttrConfig(ltConfig, jobj);
+            parseBaseConfig(ltConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseLtConfigInternal error : " + e);
         }
@@ -295,22 +279,7 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(data);
             htConfig = new HtConfig();
-            if (jobj.has(ENABLE)) {
-                htConfig.setEnable(jobj.getInt(ENABLE) == 1);
-            }
-            if (jobj.has(UPDELAY)) {
-                htConfig.setUpDelay(jobj.getLong(UPDELAY));
-            }
-            if (jobj.has(INTERVAL)) {
-                htConfig.setInterval(jobj.getLong(INTERVAL));
-            }
-            if (jobj.has(MAX_VERSION)) {
-                htConfig.setMaxVersion(jobj.getInt(MAX_VERSION));
-            }
-            if (jobj.has(CONFIG_INSTALL_TIME)) {
-                htConfig.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
-            }
-            parseAttrConfig(htConfig, jobj);
+            parseBaseConfig(htConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseLtConfigInternal error : " + e);
         }
@@ -338,10 +307,10 @@ public class AdParser implements IParser {
     /**
      * 解析归因配置
      *
-     * @param attrConfig
+     * @param baseConfig
      * @param jobj
      */
-    private void parseAttrConfig(AttrConfig attrConfig, JSONObject jobj) {
+    private void parseAttrConfig(BaseConfig baseConfig, JSONObject jobj) {
         try {
             if (jobj.has(COUNTRY_LIST)) {
                 JSONArray jarray = jobj.getJSONArray(COUNTRY_LIST);
@@ -353,7 +322,7 @@ public class AdParser implements IParser {
                             list.add(s);
                         }
                     }
-                    attrConfig.setCountryList(list);
+                    baseConfig.setCountryList(list);
                 }
             }
             if (jobj.has(ATTRS)) {
@@ -366,7 +335,7 @@ public class AdParser implements IParser {
                             list.add(s);
                         }
                     }
-                    attrConfig.setAttrList(list);
+                    baseConfig.setAttrList(list);
                 }
             }
             if (jobj.has(MEDIA_SOURCE)) {
@@ -379,11 +348,11 @@ public class AdParser implements IParser {
                             list.add(s);
                         }
                     }
-                    attrConfig.setMediaList(list);
+                    baseConfig.setMediaList(list);
                 }
             }
             if (jobj.has(NTRATE)) {
-                attrConfig.setNtRate(jobj.getInt(NTRATE));
+                baseConfig.setNtRate(jobj.getInt(NTRATE));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "parseAttrConfig error : " + e);
