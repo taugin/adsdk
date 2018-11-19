@@ -42,26 +42,15 @@ public class Constant {
     public static final String KEY_PASSWORD = "123456789";
 
     public static final long   ONE_DAY_TIME = 24 * 60 * 60 * 1000;
+
     public static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
+
     public static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_remote_config_request_time";
-    //GT
-    // gt last show time
-    public static final String PREF_GT_LAST_SHOWTIME = "pref_gt_last_showtime";
-    // gt total show times
-    public static final String PREF_GT_TOTAL_SHOWTIMES = "pref_gt_total_showtimes";
-    // gt first show time in every day
-    public static final String PREF_GT_FIRST_SHOWTIME = "pref_gt_first_showtime";
-    // gt request time in every time
-    public static final String PREF_GT_REQUEST_TIME = "pref_gt_request_time";
-    // at last show time
-    public static final String PREF_AT_LAST_SHOWTIME = "pref_at_last_showtime";
-    // at total show times
-    public static final String PREF_AT_TOTAL_SHOWTIMES = "pref_at_total_showtimes";
-    // at first show time in every day
-    public static final String PREF_AT_FIRST_SHOWTIME = "pref_at_first_showtime";
-    //AT
-    public static final String PREF_AT_LAST_TIME = "pref_at_last_time";
-    public static final String PREF_HT_LAST_TIME = "pref_ht_last_time";
+
+    public static final String PREF_LAST_SHOWTIME = "pref_%s_last_showtime";
+    public static final String PREF_TOTAL_SHOWTIMES = "pref_%s_total_showtimes";
+    public static final String PREF_FIRST_SHOWTIME_ONEDAY = "pref_%s_first_showtime_oneday";
+    public static final String PREF_REQUEST_TIME = "pref_%s_request_time";
 
     // 配置文件中使用的名字++++++
     public static final String GTPLACE_OUTER_NAME = "gt_outer_place";

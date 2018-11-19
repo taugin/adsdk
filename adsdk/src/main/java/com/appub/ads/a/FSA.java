@@ -277,9 +277,9 @@ public class FSA extends Activity {
         rootLayout.addView(imageView, params);
         AdSdk.get(this).showComplexAds(mPidName, getAdParams(), mSource, mAdType, adLayout);
         if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)) {
-            GtPolicy.get(this).reportGtShowing(true);
+            GtPolicy.get(this).reportShowing(true);
         } else if (TextUtils.equals(Constant.HTPLACE_OUTER_NAME, mPidName)) {
-            HtPolicy.get(this).reportHtShowing(true);
+            HtPolicy.get(this).reportShowing(true);
         }
     }
 

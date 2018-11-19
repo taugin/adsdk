@@ -105,7 +105,7 @@ public class HtAdLoader {
                 @Override
                 public void onShow(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    HtPolicy.get(mContext).reportHtShowing(true);
+                    HtPolicy.get(mContext).reportShowing(true);
                 }
 
                 @Override

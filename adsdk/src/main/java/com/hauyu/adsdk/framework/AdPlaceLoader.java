@@ -350,14 +350,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
                         if (loader.showRewardedVideo()) {
                             mCurrentAdLoader = loader;
-                            AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                             break;
                         }
                     } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
                         ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
                         if (loader.showInterstitial()) {
                             mCurrentAdLoader = loader;
-                            AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                             break;
                         }
                     }
@@ -520,13 +520,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (loader.isBannerLoaded() && viewGroup != null) {
                         mCurrentAdLoader = loader;
                         loader.showBanner(viewGroup);
-                        AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
                         break;
                     } else if (loader.isNativeLoaded() && viewGroup != null) {
                         mCurrentAdLoader = loader;
                         loader.showNative(viewGroup, getParams(loader));
-                        AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
                         break;
                     }
@@ -774,24 +774,24 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (loader.isBannerLoaded()) {
                         loader.showBanner(adContainer);
                         mCurrentAdLoader = loader;
-                        AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         break;
                     } else if (loader.isNativeLoaded()) {
                         loader.showNative(adContainer, getParams(loader));
                         mCurrentAdLoader = loader;
-                        AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         break;
                     } else if (loader.isInterstitialLoaded()) {
                         ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
                         loader.showInterstitial();
                         mCurrentAdLoader = loader;
-                        AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         break;
                     } else if (loader.isRewaredVideoLoaded()) {
                         ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
                         loader.showRewardedVideo();
                         mCurrentAdLoader = loader;
-                        AdPolicy.get(mContext).reportAdPlaceShow(mAdPlace);
+                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         break;
                     }
                 }

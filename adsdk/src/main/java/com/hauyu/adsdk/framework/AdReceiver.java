@@ -65,9 +65,18 @@ public class AdReceiver {
     private String getAlarmAction() {
         try {
             return mContext.getPackageName() + ".action.ALARM";
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
         return Intent.ACTION_SEND + "_ALARM";
+    }
+
+    /**
+     * 获取应用首次展示时间
+     *
+     * @return
+     */
+    public long getFirstStartUpTime() {
+        return Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0);
     }
 
     private void register() {
@@ -114,7 +123,7 @@ public class AdReceiver {
                         public void run() {
                             homeKeyPressed();
                         }
-                    }, 2000);
+                    }, 1000);
                 }
             }
         }
@@ -142,6 +151,7 @@ public class AdReceiver {
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
+            LtPolicy.get(mContext).reportShowing(true);
         } catch (Exception e) {
             Log.v(Log.TAG, "error : " + e);
         }

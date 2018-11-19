@@ -101,12 +101,12 @@ public class StAdLoader implements Handler.Callback {
 
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
-                    StPolicy.get(mContext).reportStShowing(false);
+                    StPolicy.get(mContext).reportShowing(false);
                 }
 
                 @Override
                 public void onShow(String pidName, String source, String adType) {
-                    StPolicy.get(mContext).reportStShowing(true);
+                    StPolicy.get(mContext).reportShowing(true);
                 }
             });
         }

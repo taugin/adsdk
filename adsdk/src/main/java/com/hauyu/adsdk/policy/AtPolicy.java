@@ -4,20 +4,17 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.config.AtConfig;
-import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.framework.ActivityMonitor;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Administrator on 2018-8-10.
  */
 
-public class AtPolicy {
+public class AtPolicy extends BasePolicy {
     private static final List<String> WHITE_LIST;
 
     static {
@@ -82,193 +79,25 @@ public class AtPolicy {
     }
 
     private AtPolicy(Context context) {
-        mContext = context;
-        mAttrChecker = new AttrChecker(context);
+        super(context, "at");
     }
 
-    private Context mContext;
     private AtConfig mAtConfig;
-    private AttrChecker mAttrChecker;
 
     public void init() {
     }
 
-    private long getFirstStartUpTime() {
-        return Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0);
-    }
-
     public void setPolicy(AtConfig atConfig) {
+        super.setPolicy(atConfig);
         mAtConfig = atConfig;
         if (mAtConfig != null && (mAtConfig.getExcludes() == null || mAtConfig.getExcludes().isEmpty())) {
             mAtConfig.setExcludes(WHITE_LIST);
         }
     }
 
-    /**
-     * 记录AT展示
-     */
-    public void reportAtShow() {
-        Utils.putLong(mContext, Constant.PREF_AT_LAST_SHOWTIME, System.currentTimeMillis());
-        reportTotalShowTimes();
-    }
-
-    /**
-     * 记录每天的首次展示时间
-     */
-    private void recordFirstShowTime() {
-        long times = getTotalShowTimes();
-        if (times == 1) {
-            Utils.putLong(mContext, Constant.PREF_AT_FIRST_SHOWTIME, System.currentTimeMillis());
-        }
-    }
-
-    /**
-     * 记录ad展示次数
-     */
-    private void reportTotalShowTimes() {
-        long times = getTotalShowTimes();
-        times += 1;
-        if (times <= 0) {
-            times = 1;
-        }
-        Utils.putLong(mContext, Constant.PREF_AT_TOTAL_SHOWTIMES, times);
-        recordFirstShowTime();
-    }
-
-    /**
-     * 重置当天的总展示次数
-     */
-    private void resetTotalShowTimes() {
-        Log.d(Log.TAG, "reset total show times");
-        Utils.putLong(mContext, Constant.PREF_AT_TOTAL_SHOWTIMES, 0);
-    }
-
-    /**
-     * 获取ad展示次数
-     *
-     * @return
-     */
-    private long getTotalShowTimes() {
-        return Utils.getLong(mContext, Constant.PREF_AT_TOTAL_SHOWTIMES, 0);
-    }
-
-    /**
-     * 获取最后一次展示时间
-     * @return
-     */
-    private long getLastShowTime() {
-        return Utils.getLong(mContext, Constant.PREF_AT_LAST_SHOWTIME, 0);
-    }
-
-    /**
-     * 24小时清除计数
-     */
-    private void resetTotalShowIfNeed() {
-        long now = System.currentTimeMillis();
-        long lastDay = Utils.getLong(mContext, Constant.PREF_AT_FIRST_SHOWTIME, now);
-        Log.v(Log.TAG, "AtConfig.resetTotalShowIfNeed now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
-        if (now - lastDay > Constant.ONE_DAY_TIME) {
-            resetTotalShowTimes();
-        }
-    }
-
-    /**
-     * 最大展示数是否允许
-     *
-     * @return
-     */
-    private boolean isMaxShowAllow() {
-        resetTotalShowIfNeed();
-        if (mAtConfig != null && mAtConfig.getMaxCount() > 0) {
-            long times = getTotalShowTimes();
-            Log.d(Log.TAG, "total show times : " + times + " , mc : " + mAtConfig.getMaxCount());
-            // 此处<=的逻辑会导致最大展示次数多1次
-            return times <= mAtConfig.getMaxCount();
-        }
-        return true;
-    }
-
-    private boolean isDelayAllow() {
-        if (mAtConfig != null && mAtConfig.getUpDelay() > 0) {
-            long now = System.currentTimeMillis();
-            long firstStartTime = getFirstStartUpTime();
-            return now - firstStartTime > mAtConfig.getUpDelay();
-        }
-        return true;
-    }
-
-    private boolean isIntervalAllow() {
-        if (mAtConfig != null && mAtConfig.getInterval() > 0) {
-            long now = System.currentTimeMillis();
-            long last = getLastShowTime();
-            boolean intervalAllow = now - last > mAtConfig.getInterval();
-            Log.v(Log.TAG, "AtConfig.isIntervalAllow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)) + " , do : " + intervalAllow);
-            return intervalAllow;
-        }
-        return true;
-    }
-
-    private boolean isTopApp() {
-        boolean appOnTop = ActivityMonitor.get(mContext).appOnTop();
-        boolean isTopApp = Utils.isTopActivy(mContext);
-        Log.v(Log.TAG, "appOnTop : " + appOnTop + " , isTopApp : " + isTopApp);
-        return appOnTop;
-    }
-
-    /**
-     * 配置是否允许
-     *
-     * @return
-     */
-    private boolean isConfigAllow() {
-        if (mAtConfig != null) {
-            return mAtConfig.isEnable();
-        }
-        return false;
-    }
-
-    private boolean checkAdAtConfig() {
-        if (!isConfigAllow()) {
-            Log.v(Log.TAG, "config not allowed");
-            return false;
-        }
-
-        if (mAtConfig != null && !mAttrChecker.isAttributionAllow(mAtConfig.getAttrList())) {
-            Log.v(Log.TAG, "attr not allowed");
-            return false;
-        }
-
-        if (mAtConfig != null && !mAttrChecker.isCountryAllow(mAtConfig.getCountryList())) {
-            Log.v(Log.TAG, "country not allowed");
-            return false;
-        }
-
-        if (mAtConfig != null && !mAttrChecker.isMediaSourceAllow(mAtConfig.getMediaList())) {
-            Log.v(Log.TAG, "mediasource not allowed");
-            return false;
-        }
-
-        return true;
-    }
-
     public boolean isAtAllowed() {
-        Log.v(Log.TAG, "atConfig : " + mAtConfig);
-        if (!checkAdAtConfig()) {
-            return false;
-        }
-
-        if (!isDelayAllow()) {
-            Log.v(Log.TAG, "delay not allowed");
-            return false;
-        }
-
-        if (!isMaxShowAllow()) {
-            Log.v(Log.TAG, "max show not allowed");
-            return false;
-        }
-
-        if (!isIntervalAllow()) {
-            Log.v(Log.TAG, "interval not allowed");
+        Log.v(Log.TAG, "at : " + mAtConfig);
+        if (!checkBaseConfig()) {
             return false;
         }
 

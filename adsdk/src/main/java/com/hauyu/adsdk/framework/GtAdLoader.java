@@ -117,7 +117,7 @@ public class GtAdLoader {
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    GtPolicy.get(mContext).reportGtShowing(false);
+                    GtPolicy.get(mContext).reportShowing(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                             && GtPolicy.get(mContext).isShowBottomActivity()
                             && !Constant.TYPE_BANNER.equals(adType)
@@ -129,7 +129,7 @@ public class GtAdLoader {
                 @Override
                 public void onShow(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    GtPolicy.get(mContext).reportGtShowing(true);
+                    GtPolicy.get(mContext).reportShowing(true);
                     StatImpl.get().reportAdOuterShowing(mContext);
                 }
 

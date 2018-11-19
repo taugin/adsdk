@@ -8,7 +8,7 @@ import com.hauyu.adsdk.constant.Constant;
  * Created by Administrator on 2018/2/9.
  */
 
-public class PidConfig extends AttrConfig {
+public class PidConfig extends BaseConfig {
 
     private String adPlaceName;
 

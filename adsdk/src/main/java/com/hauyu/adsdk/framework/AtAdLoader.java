@@ -116,7 +116,7 @@ public class AtAdLoader implements TaskMonitor.OnTaskMonitorListener {
         @Override
         public void onShow(String pidName, String source, String adType) {
             Log.v(Log.TAG, "show ads and stop task monitor");
-            AtPolicy.get(mContext).reportAtShow();
+            AtPolicy.get(mContext).reportShowing(true);
             TaskMonitor.get(mContext).stopMonitor();
         }
     };
