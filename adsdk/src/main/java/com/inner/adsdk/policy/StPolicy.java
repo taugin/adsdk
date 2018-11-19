@@ -3,8 +3,6 @@ package com.inner.adsdk.policy;
 import android.content.Context;
 
 import com.inner.adsdk.config.StConfig;
-import com.inner.adsdk.constant.Constant;
-import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
 
@@ -12,7 +10,7 @@ import com.inner.adsdk.utils.Utils;
  * Created by Administrator on 2018-8-10.
  */
 
-public class StPolicy {
+public class StPolicy extends BasePolicy {
     private static StPolicy sStPolicy;
 
     public static StPolicy get(Context context) {
@@ -33,108 +31,22 @@ public class StPolicy {
     }
 
     private StPolicy(Context context) {
-        mContext = context;
-        mAttrChecker = new AttrChecker(context);
+        super(context, "st");
     }
 
-    private Context mContext;
     private StConfig mStConfig;
-    private boolean mStShowing = false;
-    private AttrChecker mAttrChecker;
 
     public void init() {
     }
 
     public void setPolicy(StConfig stConfig) {
+        super.setPolicy(stConfig);
         mStConfig = stConfig;
-    }
-
-    public void reportStShowing(boolean showing) {
-        mStShowing = showing;
-    }
-
-    private boolean isStShowing() {
-        return mStShowing;
-    }
-
-    /**
-     * 获取应用首次展示时间
-     *
-     * @return
-     */
-    private long getFirstStartUpTime() {
-        return Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0);
-    }
-
-    /**
-     * 配置是否允许
-     *
-     * @return
-     */
-    private boolean isConfigAllow() {
-        if (mStConfig != null) {
-            return mStConfig.isEnable();
-        }
-        return false;
-    }
-
-    /**
-     * 延迟间隔是否允许
-     *
-     * @return
-     */
-    private boolean isDelayAllow() {
-        if (mStConfig != null && mStConfig.getUpDelay() > 0) {
-            long now = System.currentTimeMillis();
-            long firstStartTime = getFirstStartUpTime();
-            return now - firstStartTime > mStConfig.getUpDelay();
-        }
-        return true;
-    }
-
-    private boolean checkAdStConfig() {
-        if (!isConfigAllow()) {
-            Log.v(Log.TAG, "config not allowed");
-            return false;
-        }
-
-        if (mStConfig != null && !mAttrChecker.isAttributionAllow(mStConfig.getAttrList())) {
-            Log.v(Log.TAG, "attr not allowed");
-            return false;
-        }
-
-        if (mStConfig != null && !mAttrChecker.isCountryAllow(mStConfig.getCountryList())) {
-            Log.v(Log.TAG, "country not allowed");
-            return false;
-        }
-
-        if (mStConfig != null && !mAttrChecker.isMediaSourceAllow(mStConfig.getMediaList())) {
-            Log.v(Log.TAG, "ms not allowed");
-            return false;
-        }
-
-        if (!isDelayAllow()) {
-            Log.v(Log.TAG, "d not allowed");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean isTopApp() {
-        boolean appOnTop = ActivityMonitor.get(mContext).appOnTop();
-        boolean isTopApp = Utils.isTopActivy(mContext);
-        Log.v(Log.TAG, "appOnTop : " + appOnTop + " , isTopApp : " + isTopApp);
-        return appOnTop;
     }
 
     public boolean isStAllowed() {
         Log.v(Log.TAG, "stconfig : " + mStConfig);
-        if (!checkAdStConfig()) {
-            return false;
-        }
-
-        if (isStShowing() && false) {
-            Log.v(Log.TAG, "st is showing");
+        if (!checkBaseConfig()) {
             return false;
         }
 
