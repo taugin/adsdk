@@ -78,19 +78,35 @@
                     android:layout_below="@+id/native_icon"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/native_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_weight="1"
+                            android:ellipsize="marquee"
+                            android:gravity="left|top"
+                            android:singleLine="true"
+                            android:text="Charge Master"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="28sp" />
 
                         <TextView
                             android:id="@+id/native_sponsored_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="top"
                             android:layout_marginLeft="4dp"
                             android:layout_toRightOf="@+id/native_title"
+                            android:layout_weight="0"
                             android:background="@drawable/ad_badge_bg_dark"
                             android:gravity="center"
                             android:paddingBottom="2dp"
@@ -102,19 +118,7 @@
                             android:textColor="@android:color/darker_gray"
                             android:textSize="8sp" />
 
-                        <TextView
-                            android:id="@+id/native_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:ellipsize="marquee"
-                            android:gravity="left|top"
-                            android:singleLine="true"
-                            android:text="Charge Master"
-                            android:textColor="@color/primaryTextColor"
-                            android:textSize="28sp" />
-
-                    </RelativeLayout>
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/native_sub_title"
