@@ -55,6 +55,8 @@ public class AdxLoader extends AbstractSdkLoader {
     public void setAdId(String adId) {
         if (!TextUtils.isEmpty(adId)) {
             MobileAds.initialize(mContext, adId);
+        } else if (!TextUtils.isEmpty(getAppId())) {
+            MobileAds.initialize(mContext, getAppId());
         }
     }
 

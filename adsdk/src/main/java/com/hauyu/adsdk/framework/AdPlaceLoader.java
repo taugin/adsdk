@@ -504,11 +504,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             mAdParams = adParams;
         }
         mAdContainer = new WeakReference<ViewGroup>(adContainer);
-        showAdViewInternal();
+        showAdViewInternal(true);
         autoSwitchAdView();
     }
 
-    private void showAdViewInternal() {
+    private void showAdViewInternal(boolean needCounting) {
         Log.d(Log.TAG, "showAdViewInternal");
         if (mAdLoaders != null && mAdContainer != null) {
             for (ISdkLoader loader : mAdLoaders) {
@@ -520,13 +520,17 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (loader.isBannerLoaded() && viewGroup != null) {
                         mCurrentAdLoader = loader;
                         loader.showBanner(viewGroup);
-                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                        if (needCounting) {
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                        }
                         viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
                         break;
                     } else if (loader.isNativeLoaded() && viewGroup != null) {
                         mCurrentAdLoader = loader;
                         loader.showNative(viewGroup, getParams(loader));
-                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                        if (needCounting) {
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                        }
                         viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
                         break;
                     }
@@ -954,7 +958,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      */
     private void showNextAdView() {
         if (isAdViewLoaded()) {
-            showAdViewInternal();
+            showAdViewInternal(false);
         }
     }
 

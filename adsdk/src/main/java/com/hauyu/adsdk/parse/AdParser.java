@@ -525,6 +525,12 @@ public class AdParser implements IParser {
             if (jobj.has(DESTROY_AFTER_CLICK)) {
                 pidConfig.setDestroyAfterClick(jobj.getInt(DESTROY_AFTER_CLICK) == 1);
             }
+            if (jobj.has(APPID)) {
+                pidConfig.setAppId(jobj.getString(APPID));
+            }
+            if (jobj.has(EXTID)) {
+                pidConfig.setExtId(jobj.getString(EXTID));
+            }
             parseAttrConfig(pidConfig, jobj);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
