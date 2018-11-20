@@ -137,8 +137,7 @@ public class WemobBindNativeView {
             String coverUrl = nativeAd.getCoverUrl();
             if (icon != null) {
                 try {
-                    com.facebook.ads.NativeAd.Image image = new com.facebook.ads.NativeAd.Image(iconUrl, icon.getWidth(), icon.getHeight());
-                    com.facebook.ads.NativeAd.downloadAndDisplayImage(image, icon);
+                    com.mopub.nativeads.NativeImageHelper.loadImageView(iconUrl, icon);
                     actionView.add(icon);
                     if (!TextUtils.isEmpty(iconUrl)) {
                         icon.setVisibility(View.VISIBLE);
@@ -150,8 +149,7 @@ public class WemobBindNativeView {
 
             if (imageCover != null) {
                 try {
-                    com.facebook.ads.NativeAd.Image image = new com.facebook.ads.NativeAd.Image(coverUrl, imageCover.getWidth(), imageCover.getHeight());
-                    com.facebook.ads.NativeAd.downloadAndDisplayImage(image, imageCover);
+                    com.mopub.nativeads.NativeImageHelper.loadImageView(coverUrl, imageCover);
                     actionView.add(imageCover);
                     if (!TextUtils.isEmpty(coverUrl)) {
                         imageCover.setVisibility(View.VISIBLE);

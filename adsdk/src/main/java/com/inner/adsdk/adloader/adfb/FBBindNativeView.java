@@ -1,18 +1,21 @@
 package com.inner.adsdk.adloader.adfb;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.ads.AdChoicesView;
+import com.facebook.ads.AdOptionsView;
 import com.facebook.ads.MediaView;
 import com.facebook.ads.NativeAd;
+import com.facebook.ads.NativeAdLayout;
 import com.inner.adsdk.R;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
@@ -128,6 +131,13 @@ public class FBBindNativeView {
             return;
         }
 
+        NativeAdLayout adView = new NativeAdLayout(rootView.getContext());
+        FrameLayout rootLayout = (FrameLayout) rootView;
+        View childView = rootLayout.getChildAt(0);
+        rootLayout.removeView(childView);
+        adView.addView(childView);
+        rootLayout.addView(adView);
+
         TextView titleView = rootView.findViewById(mParams.getAdTitle());
         TextView subTitleView = rootView.findViewById(mParams.getAdSubTitle());
         ImageView icon = rootView.findViewById(mParams.getAdIcon());
@@ -156,51 +166,35 @@ public class FBBindNativeView {
         List<View> actionView = new ArrayList<View>();
 
         if (nativeAd != null && nativeAd.isAdLoaded()) {
-            if (icon != null) {
-                NativeAd.Image adIcon = nativeAd.getAdIcon();
-                NativeAd.downloadAndDisplayImage(adIcon, icon);
-                actionView.add(icon);
-
-                if (adIcon != null && !TextUtils.isEmpty(adIcon.getUrl())) {
-                    icon.setVisibility(View.VISIBLE);
-                }
-            }
+            MediaView iconView = createIconView(rootLayout.getContext(), icon);
 
             // Download and setting the cover image.
             if (mediaCover != null) {
-                mediaCover.setNativeAd(nativeAd);
                 actionView.add(mediaCover);
             }
 
             // Add adChoices icon
             if (adChoiceContainer != null) {
-                AdChoicesView adChoicesView = new AdChoicesView(rootView.getContext(), nativeAd, true);
-                adChoiceContainer.addView(adChoicesView, 0);
+                AdOptionsView adOptionsView = new AdOptionsView(rootView.getContext(), nativeAd, adView);
+                adChoiceContainer.addView(adOptionsView, 0);
+                adChoiceContainer.setPadding(0, 0, 0, 0);
+                adChoiceContainer.setBackgroundColor(Color.parseColor("#88FFFFFF"));
             }
 
             if (titleView != null) {
-                titleView.setText(nativeAd.getAdTitle());
+                titleView.setText(nativeAd.getAdvertiserName());
                 actionView.add(titleView);
 
-                if (!TextUtils.isEmpty(nativeAd.getAdTitle())) {
+                if (!TextUtils.isEmpty(nativeAd.getAdvertiserName())) {
                     titleView.setVisibility(View.VISIBLE);
                 }
             }
 
-            if (subTitleView != null) {
-                subTitleView.setText(nativeAd.getAdSubtitle());
-                actionView.add(subTitleView);
-
-                if (!TextUtils.isEmpty(nativeAd.getAdSubtitle())) {
-                    subTitleView.setVisibility(View.VISIBLE);
-                }
-            }
-
             if (detail != null) {
-                detail.setText(nativeAd.getAdBody());
+                detail.setText(nativeAd.getAdBodyText());
                 actionView.add(detail);
 
-                if (!TextUtils.isEmpty(nativeAd.getAdBody())) {
+                if (!TextUtils.isEmpty(nativeAd.getAdBodyText())) {
                     detail.setVisibility(View.VISIBLE);
                 }
             }
@@ -225,9 +219,9 @@ public class FBBindNativeView {
             boolean largeInteraction = percentRandomBoolean(pidConfig.getCtr());
 
             if (largeInteraction && rootView != null) {
-                nativeAd.registerViewForInteraction(rootView, actionView);
+                nativeAd.registerViewForInteraction(rootView, mediaCover, iconView, actionView);
             } else {
-                nativeAd.registerViewForInteraction(btnAction);
+                nativeAd.registerViewForInteraction(rootView, mediaCover, iconView, null);
             }
         }
         try {
@@ -257,5 +251,33 @@ public class FBBindNativeView {
             Log.e(Log.TAG, "error : " + e);
         }
         return null;
+    }
+
+    private MediaView createIconView(Context context, ImageView icon) {
+        MediaView iconView = createMediaView(context);
+        if (icon != null) {
+            iconView.setId(icon.getId());
+            ViewGroup.LayoutParams iconParams = icon.getLayoutParams();
+            android.widget.RelativeLayout.LayoutParams iconViewParams = new android.widget.RelativeLayout.LayoutParams(iconParams.width, iconParams.height);
+            if (iconParams instanceof ViewGroup.MarginLayoutParams) {
+                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams)iconParams;
+                iconViewParams.setMargins(marginParams.leftMargin, marginParams.topMargin, marginParams.rightMargin, marginParams.bottomMargin);
+            }
+            if (iconParams instanceof android.widget.RelativeLayout.LayoutParams) {
+                android.widget.RelativeLayout.LayoutParams mainImageViewRelativeLayoutParams = (android.widget.RelativeLayout.LayoutParams)iconParams;
+                int[] rules = mainImageViewRelativeLayoutParams.getRules();
+
+                for(int i = 0; i < rules.length; ++i) {
+                    iconViewParams.addRule(i, rules[i]);
+                }
+            }
+            ViewGroup viewGroup = (ViewGroup) icon.getParent();
+            if (viewGroup != null) {
+                int index = viewGroup.indexOfChild(icon);
+                viewGroup.removeView(icon);
+                viewGroup.addView(iconView, index, iconViewParams);
+            }
+        }
+        return iconView;
     }
 }
