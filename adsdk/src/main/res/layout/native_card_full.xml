@@ -17,7 +17,6 @@
             android:id="@+id/native_cover_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:background="#00000000">
 
             <ImageView
@@ -106,7 +105,7 @@
                         android:singleLine="true"
                         android:text="Charge Master"
                         android:textColor="@color/primaryTextColor"
-                        android:textSize="20sp" />
+                        android:textSize="28sp" />
 
                 </RelativeLayout>
 
