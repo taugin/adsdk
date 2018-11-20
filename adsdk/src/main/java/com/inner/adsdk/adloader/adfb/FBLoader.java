@@ -12,6 +12,7 @@ import com.facebook.ads.AdView;
 import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdListener;
 import com.facebook.ads.NativeAd;
+import com.facebook.ads.NativeAdListener;
 import com.facebook.ads.RewardedVideoAd;
 import com.facebook.ads.RewardedVideoAdListener;
 import com.inner.adsdk.AdReward;
@@ -20,7 +21,6 @@ import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
 
-import java.util.EnumSet;
 import java.util.HashMap;
 
 /**
@@ -403,7 +403,12 @@ public class FBLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
         nativeAd = new NativeAd(mContext, mPidConfig.getPid());
-        nativeAd.setAdListener(new AdListener() {
+        nativeAd.setAdListener(new NativeAdListener() {
+            @Override
+            public void onMediaDownloaded(Ad ad) {
+
+            }
+
             @Override
             public void onError(Ad ad, AdError adError) {
                 if (adError != null) {
@@ -463,7 +468,8 @@ public class FBLoader extends AbstractSdkLoader {
                 }
             }
         });
-        nativeAd.loadAd(EnumSet.of(NativeAd.MediaCacheFlag.IMAGE));
+
+        nativeAd.loadAd(NativeAd.MediaCacheFlag.ALL);
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
