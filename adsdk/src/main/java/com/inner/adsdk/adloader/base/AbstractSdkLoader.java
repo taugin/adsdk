@@ -537,4 +537,18 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         return info != null ? info.metaData.getString(key) : null;
     }
+
+    protected String getAppId() {
+        if (mPidConfig != null) {
+            return mPidConfig.getAppId();
+        }
+        return null;
+    }
+
+    protected String getExtId() {
+        if (mPidConfig != null) {
+            return mPidConfig.getExtId();
+        }
+        return null;
+    }
 }

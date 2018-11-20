@@ -60,6 +60,8 @@ public class AdDfpLoader extends AbstractSdkLoader {
     public void setAdId(String adId) {
         if (!TextUtils.isEmpty(adId)) {
             MobileAds.initialize(mContext, adId);
+        } else if (!TextUtils.isEmpty(getAppId())) {
+            MobileAds.initialize(mContext, getAppId());
         }
     }
 
@@ -198,7 +200,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
             viewGroup.removeAllViews();
             ViewParent viewParent = bannerView.getParent();
             if (viewParent instanceof ViewGroup) {
-                ((ViewGroup)viewParent).removeView(bannerView);
+                ((ViewGroup) viewParent).removeView(bannerView);
             }
             viewGroup.addView(bannerView);
             if (viewGroup.getVisibility() != View.VISIBLE) {

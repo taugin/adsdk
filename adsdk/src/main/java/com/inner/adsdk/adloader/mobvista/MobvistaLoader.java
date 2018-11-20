@@ -52,6 +52,12 @@ public class MobvistaLoader extends AbstractSdkLoader {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        } else if (!TextUtils.isEmpty(getAppId()) && !TextUtils.isEmpty(getExtId())) {
+            try {
+                SDK.setUploadDataLevel(mContext, SDK.UPLOAD_DATA_ALL);
+                SDK.init(mContext, getAppId(), getExtId());
+            } catch(Exception e) {
+            }
         }
     }
 
@@ -322,13 +328,14 @@ public class MobvistaLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
-        Log.v(Log.TAG, "showNative - admob");
+        Log.v(Log.TAG, "showNative - mobvista");
         if (params != null) {
             mParams = params;
         }
         MobvistaBindNativeView nativeView = new MobvistaBindNativeView();
         clearCachedAdTime(mAd);
         nativeView.bindNative(mParams, viewGroup, mNativeAds, mAd, mPidConfig);
+        mAd = null;
     }
 
     @Override

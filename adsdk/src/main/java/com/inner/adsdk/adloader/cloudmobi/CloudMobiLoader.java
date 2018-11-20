@@ -1,5 +1,7 @@
 package com.inner.adsdk.adloader.cloudmobi;
 
+import android.text.TextUtils;
+
 import com.cloudtech.ads.callback.CTAdEventListener;
 import com.cloudtech.ads.core.CTNative;
 import com.cloudtech.ads.core.CTService;
@@ -23,7 +25,13 @@ public class CloudMobiLoader extends AbstractSdkLoader {
     @Override
     public void setAdId(String adId) {
         super.setAdId(adId);
-        CTService.init(mContext, adId);
+        if (!TextUtils.isEmpty(adId)) {
+            CTService.init(mContext, adId);
+        } else if (!TextUtils.isEmpty(getAppId())) {
+            CTService.init(mContext, getAppId());
+        } else if (!TextUtils.isEmpty(getPid())) {
+            CTService.init(mContext, getPid());
+        }
     }
 
     @Override
