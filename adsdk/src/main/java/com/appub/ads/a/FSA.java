@@ -18,7 +18,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.graphics.drawable.shapes.Shape;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -263,8 +265,9 @@ public class FSA extends Activity {
         }
 
         ImageView imageView = generateCloseView();
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-2, -2);
-        int margin = dp2px(this, 10);
+        int size = Utils.dp2px(this, 28);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
+        int margin = dp2px(this, 8);
         params.setMargins(margin, margin, 0, 0);
         params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -291,7 +294,21 @@ public class FSA extends Activity {
     private ImageView generateCloseView() {
         ImageView imageView = new ImageView(this);
         imageView.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-        imageView.setBackgroundResource(android.R.drawable.list_selector_background);
+        Shape shape = new OvalShape();
+
+        ShapeDrawable shapePressed = new ShapeDrawable(shape);
+        shapePressed.getPaint().setColor(Color.parseColor("#AA888888"));
+
+        shape = new OvalShape();
+        ShapeDrawable shapeNormal = new ShapeDrawable(shape);
+        shapeNormal.getPaint().setColor(Color.parseColor("#AA444444"));
+
+        StateListDrawable drawable = new StateListDrawable();
+        drawable.addState(new int[]{android.R.attr.state_pressed}, shapePressed);
+        drawable.addState(new int[]{android.R.attr.state_enabled}, shapeNormal);
+        imageView.setBackground(drawable);
+        int padding = Utils.dp2px(this, 2);
+        imageView.setPadding(padding, padding, padding, padding);
         imageView.setClickable(true);
         return imageView;
     }
