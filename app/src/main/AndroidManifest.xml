@@ -69,6 +69,12 @@
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
+        <meta-data
+            android:name="app_license"
+            android:value="162025bb97c64772b2288919d51b0250" />
+        <meta-data
+            android:name="appKey"
+            android:value="dd2ce8ce-3e6c-f732-5f52-453441711c4b" />
     </application>
 
 </manifest>
