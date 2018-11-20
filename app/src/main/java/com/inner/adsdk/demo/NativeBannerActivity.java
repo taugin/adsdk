@@ -3,15 +3,11 @@ package com.inner.adsdk.demo;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.appub.ads.a.FSA;
 import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
-import com.inner.adsdk.AdSdk;
-import com.inner.adsdk.listener.SimpleAdSdkListener;
 
 /**
  * Created by Administrator on 2018-10-31.
@@ -26,29 +22,29 @@ public class NativeBannerActivity extends FSA {
 
     @Override
     protected View getRootLayout(Context context, String adType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.ad_ntlayout, null);
-        final FrameLayout banner1 = view.findViewById(R.id.banner1);
-        final FrameLayout banner2 = view.findViewById(R.id.banner2);
-        final FrameLayout banner3 = view.findViewById(R.id.banner3);
-        AdSdk.get(this).loadAdView("banner1", new SimpleAdSdkListener() {
-            @Override
-            public void onLoaded(String pidName, String source, String adType) {
-                AdSdk.get(getApplication()).showAdView(pidName, banner1);
-            }
-        });
-        AdSdk.get(this).loadAdView("banner2", new SimpleAdSdkListener() {
-            @Override
-            public void onLoaded(String pidName, String source, String adType) {
-                AdSdk.get(getApplication()).showAdView(pidName, banner2);
-            }
-        });
-        AdSdk.get(this).loadAdView("banner3", new SimpleAdSdkListener() {
-            @Override
-            public void onLoaded(String pidName, String source, String adType) {
-                AdSdk.get(getApplication()).showAdView(pidName, banner3);
-            }
-        });
-        return view;
+//        View view = LayoutInflater.from(context).inflate(R.layout.ad_ntlayout, null);
+//        final FrameLayout banner1 = view.findViewById(R.id.banner1);
+//        final FrameLayout banner2 = view.findViewById(R.id.banner2);
+//        final FrameLayout banner3 = view.findViewById(R.id.banner3);
+//        AdSdk.get(this).loadAdView("banner1", new SimpleAdSdkListener() {
+//            @Override
+//            public void onLoaded(String pidName, String source, String adType) {
+//                AdSdk.get(getApplication()).showAdView(pidName, banner1);
+//            }
+//        });
+//        AdSdk.get(this).loadAdView("banner2", new SimpleAdSdkListener() {
+//            @Override
+//            public void onLoaded(String pidName, String source, String adType) {
+//                AdSdk.get(getApplication()).showAdView(pidName, banner2);
+//            }
+//        });
+//        AdSdk.get(this).loadAdView("banner3", new SimpleAdSdkListener() {
+//            @Override
+//            public void onLoaded(String pidName, String source, String adType) {
+//                AdSdk.get(getApplication()).showAdView(pidName, banner3);
+//            }
+//        });
+        return null;
     }
 
     @Override
@@ -69,6 +65,6 @@ public class NativeBannerActivity extends FSA {
         builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
         builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
         AdParams adParams = builder.build();
-        return adParams;
+        return null;
     }
 }
