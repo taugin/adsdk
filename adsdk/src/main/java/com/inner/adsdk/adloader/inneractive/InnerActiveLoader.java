@@ -48,6 +48,8 @@ public class InnerActiveLoader extends AbstractSdkLoader {
         super.setAdId(adId);
         if (!TextUtils.isEmpty(adId)) {
             InneractiveAdManager.initialize(mContext, adId);
+        } else if (!TextUtils.isEmpty(getAppId())) {
+            InneractiveAdManager.initialize(mContext, getAppId());
         }
     }
 

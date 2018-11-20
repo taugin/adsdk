@@ -47,6 +47,14 @@ public class WemobLoader extends AbstractSdkLoader {
             } catch (Exception e) {
                 Log.d(Log.TAG, "error : " + e);
             }
+        } else if (!TextUtils.isEmpty(getAppId()) && !TextUtils.isEmpty(getExtId())) {
+            try {
+                Sdk.instance().setAppKey(getAppId());
+                Sdk.instance().setChannelId(getExtId());
+                Sdk.instance().init(mContext);
+                Log.d(Log.TAG, "appkey : " + getAppId() + " , channel : " + getExtId());
+            } catch(Exception e) {
+            }
         }
     }
 

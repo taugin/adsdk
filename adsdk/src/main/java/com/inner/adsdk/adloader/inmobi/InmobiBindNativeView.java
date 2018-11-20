@@ -164,7 +164,9 @@ public class InmobiBindNativeView {
             View mediaView = nativeAd.getPrimaryViewOfWidth(rootLayout.getContext(), mediaViewLayout,
                     rootLayout, rootLayout.getWidth());
             mediaViewLayout.setVisibility(View.VISIBLE);
-            mediaViewLayout.addView(mediaView);
+            if (mediaView != null) {
+                mediaViewLayout.addView(mediaView);
+            }
             actionView.add(mediaViewLayout);
         }
 

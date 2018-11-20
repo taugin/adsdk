@@ -40,6 +40,10 @@ public class PidConfig extends BaseConfig {
 
     private boolean destroyAfterClick;
 
+    private String appId;
+
+    private String extId;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -150,6 +154,22 @@ public class PidConfig extends BaseConfig {
 
     public void setDestroyAfterClick(boolean destroyAfterClick) {
         this.destroyAfterClick = destroyAfterClick;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getExtId() {
+        return extId;
+    }
+
+    public void setExtId(String extId) {
+        this.extId = extId;
     }
 
     public boolean isAdmob() {

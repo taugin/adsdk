@@ -55,6 +55,8 @@ public class DspMobLoader extends AbstractSdkLoader {
         super.setAdId(adId);
         if (!TextUtils.isEmpty(adId)) {
             DspMob.init(mContext, adId);
+        } else if (!TextUtils.isEmpty(getAppId())) {
+            DspMob.init(mContext, getAppId());
         } else {
             initDspMob();
         }
