@@ -99,7 +99,7 @@ public class AdxLoader extends AbstractSdkLoader {
             size = AdSize.BANNER;
         }
         loadingView = new AdView(mContext);
-        loadingView.setAdUnitId(getSdkPid());
+        loadingView.setAdUnitId(mPidConfig.getPid());
         loadingView.setAdSize(size);
         loadingView.setAdListener(new AdListener() {
             @Override
@@ -112,7 +112,7 @@ public class AdxLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
-                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getSdkPid());
+                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
@@ -134,7 +134,7 @@ public class AdxLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
@@ -207,7 +207,7 @@ public class AdxLoader extends AbstractSdkLoader {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
+                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "adxloader error : " + e);
@@ -260,7 +260,7 @@ public class AdxLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
         interstitialAd = new InterstitialAd(mContext);
-        interstitialAd.setAdUnitId(getSdkPid());
+        interstitialAd.setAdUnitId(mPidConfig.getPid());
         interstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
@@ -273,7 +273,7 @@ public class AdxLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
-                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getSdkPid());
+                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
@@ -293,7 +293,7 @@ public class AdxLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
@@ -304,7 +304,7 @@ public class AdxLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -352,7 +352,7 @@ public class AdxLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
             }
             return true;
         }
@@ -405,7 +405,7 @@ public class AdxLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        loadingBuilder = new AdLoader.Builder(mContext, getSdkPid());
+        loadingBuilder = new AdLoader.Builder(mContext, mPidConfig.getPid());
         loadingBuilder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
             @Override
             public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
@@ -434,7 +434,7 @@ public class AdxLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
                 if (isDestroyAfterClick()) {
                     nativeAd = null;
@@ -456,13 +456,13 @@ public class AdxLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getSdkPid());
+                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 if (errorCode == AdRequest.ERROR_CODE_NO_FILL) {
                     updateLastNoFillTime();
                 }
@@ -500,7 +500,7 @@ public class AdxLoader extends AbstractSdkLoader {
         }
         AdxBindNativeView adxBindNativeView = new AdxBindNativeView();
         clearCachedAdTime(nativeAd);
-        adxBindNativeView.bindNative(mParams, viewGroup, nativeAd, getPidConfig());
+        adxBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
         gNativeAd = nativeAd;
         if (!isDestroyAfterClick()) {
             nativeAd = null;

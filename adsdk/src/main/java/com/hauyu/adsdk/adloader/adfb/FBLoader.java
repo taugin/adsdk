@@ -95,12 +95,12 @@ public class FBLoader extends AbstractSdkLoader {
         if (size == null) {
             size = AdSize.BANNER_HEIGHT_50;
         }
-        loadingView = new AdView(mContext, getSdkPid(), size);
+        loadingView = new AdView(mContext, mPidConfig.getPid(), size);
         loadingView.setAdListener(new AdListener() {
             @Override
             public void onError(Ad ad, AdError adError) {
                 if (adError != null) {
-                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getSdkPid());
+                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
                     if (adError.getErrorCode() == AdError.NO_FILL_ERROR_CODE) {
                         updateLastNoFillTime();
                     }
@@ -133,7 +133,7 @@ public class FBLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
@@ -189,7 +189,7 @@ public class FBLoader extends AbstractSdkLoader {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
+                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
@@ -249,7 +249,7 @@ public class FBLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        fbInterstitial = new InterstitialAd(mContext, getSdkPid());
+        fbInterstitial = new InterstitialAd(mContext, mPidConfig.getPid());
         fbInterstitial.setAdListener(new InterstitialAdListener() {
             @Override
             public void onInterstitialDisplayed(Ad ad) {
@@ -261,7 +261,7 @@ public class FBLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
@@ -280,7 +280,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onError(Ad ad, AdError adError) {
                 if (adError != null) {
-                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getSdkPid());
+                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
                     if (adError.getErrorCode() == AdError.NO_FILL_ERROR_CODE) {
                         updateLastNoFillTime();
                     }
@@ -318,7 +318,7 @@ public class FBLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
@@ -344,7 +344,7 @@ public class FBLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
             }
             return true;
         }
@@ -402,12 +402,12 @@ public class FBLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        nativeAd = new NativeAd(mContext, getSdkPid());
+        nativeAd = new NativeAd(mContext, mPidConfig.getPid());
         nativeAd.setAdListener(new AdListener() {
             @Override
             public void onError(Ad ad, AdError adError) {
                 if (adError != null) {
-                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getSdkPid());
+                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
                     if (adError.getErrorCode() == AdError.NO_FILL_ERROR_CODE) {
                         updateLastNoFillTime();
                     }
@@ -442,7 +442,7 @@ public class FBLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
                 if (isDestroyAfterClick()) {
                     nativeAd = null;
@@ -459,7 +459,7 @@ public class FBLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
             }
         });
@@ -478,7 +478,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         FBBindNativeView fbBindNativeView = new FBBindNativeView();
         clearCachedAdTime(nativeAd);
-        fbBindNativeView.bindFBNative(mParams, viewGroup, nativeAd, getPidConfig());
+        fbBindNativeView.bindFBNative(mParams, viewGroup, nativeAd, mPidConfig);
         gNativeAd = nativeAd;
         if (!isDestroyAfterClick()) {
             nativeAd = null;
@@ -526,7 +526,7 @@ public class FBLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        rewardedVideoAd = new RewardedVideoAd(mContext, getSdkPid());
+        rewardedVideoAd = new RewardedVideoAd(mContext, mPidConfig.getPid());
         rewardedVideoAd.setAdListener(new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoCompleted() {
@@ -539,8 +539,8 @@ public class FBLoader extends AbstractSdkLoader {
                     AdReward adReward = new AdReward();
                     adReward.setType(Constant.ECPM);
                     int ecpm = 0;
-                    if (getPidConfig() != null) {
-                        ecpm = getPidConfig().getEcpm();
+                    if (mPidConfig != null) {
+                        ecpm = mPidConfig.getEcpm();
                     }
                     adReward.setAmount(String.valueOf(ecpm));
                     getAdListener().onRewarded(adReward);
@@ -557,7 +557,7 @@ public class FBLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
@@ -571,7 +571,7 @@ public class FBLoader extends AbstractSdkLoader {
 
             @Override
             public void onError(Ad ad, AdError adError) {
-                Log.v(Log.TAG, "reason : " + getError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getSdkPid());
+                Log.v(Log.TAG, "reason : " + getError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
@@ -605,7 +605,7 @@ public class FBLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
             }
         });
@@ -638,7 +638,7 @@ public class FBLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
             }
             return true;
         }
