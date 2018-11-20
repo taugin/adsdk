@@ -158,7 +158,9 @@ public class GtAdLoader {
         builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.FB_MEDIUM_RECTANGLE);
         builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_MEDIUM_RECTANGLE);
 
-        builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.native_card_full);
+        int layoutId[] = new int[] {R.layout.native_card_full, R.layout.native_card_mix};
+
+        builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId[new Random(System.currentTimeMillis()).nextInt(layoutId.length)]);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.native_title);
         builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.native_detail);
         builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.native_sub_title);
