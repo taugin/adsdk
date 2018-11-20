@@ -44,6 +44,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected static final int STATE_TIMTOUT = 4;
 
     private static Map<Object, Long> mCachedTime = new ConcurrentHashMap<Object, Long>();
+    protected PidConfig mPidConfig;
     protected Context mContext;
     protected IStat mStat;
     protected IManagerListener mManagerListener;
@@ -52,11 +53,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private boolean mLoadedFlag = false;
     private Handler mHandler = null;
     private long mRequestTime = 0;
-    private PidConfig mPidConfig;
-
-    private String mAppId;
-    private String mExtraId;
-    private String mSdkPid;
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -315,7 +311,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected boolean isDestroyAfterClick() {
         try {
             return mPidConfig.isDestroyAfterClick();
-        } catch (Exception e) {
+        } catch(Exception e) {
         }
         return false;
     }
@@ -437,10 +433,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return false;
     }
 
-    protected String getSdkPid() {
-        if (!TextUtils.isEmpty(mSdkPid)) {
-            return mSdkPid;
-        }
+    protected String getPid() {
         if (mPidConfig != null) {
             return mPidConfig.getPid();
         }
@@ -543,63 +536,5 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             e.printStackTrace();
         }
         return info != null ? info.metaData.getString(key) : null;
-    }
-
-    /**
-     * 解析pid
-     *
-     * @param pidStr
-     */
-    protected void parsePidInfo(String pidStr) {
-        if (TextUtils.isEmpty(pidStr)) {
-            return;
-        }
-        String sep = getPidConfig().getSep();
-        if (TextUtils.isEmpty(sep)) {
-            sep = "|";
-        }
-        if (TextUtils.equals("|", sep)) {
-            sep = "\\|";
-        } else if (TextUtils.equals("*", sep)) {
-            sep = "\\*";
-        } else if (TextUtils.equals("^", sep)) {
-            sep = "\\^";
-        }
-        String[] pidSplit = pidStr.split(sep);
-        if (pidSplit == null || pidSplit.length <= 0) {
-            return;
-        }
-        if (pidSplit.length == 1) {
-            mSdkPid = pidSplit[0];
-        } else if (pidSplit.length == 2) {
-            mAppId = pidSplit[0];
-            mSdkPid = pidSplit[1];
-        } else if (pidSplit.length == 3) {
-            mAppId = pidSplit[0];
-            mExtraId = pidSplit[1];
-            mSdkPid = pidSplit[2];
-        } else {
-            mSdkPid = pidStr;
-        }
-    }
-
-    public String getAppId() {
-        return mAppId;
-    }
-
-    public void setAppId(String appId) {
-        mAppId = appId;
-    }
-
-    public String getExtraId() {
-        return mExtraId;
-    }
-
-    public void setExtraId(String extraId) {
-        mExtraId = extraId;
-    }
-
-    public void setSdkPid(String sdkPid) {
-        mSdkPid = sdkPid;
     }
 }

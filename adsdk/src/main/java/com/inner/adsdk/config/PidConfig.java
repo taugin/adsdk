@@ -40,8 +40,6 @@ public class PidConfig extends BaseConfig {
 
     private boolean destroyAfterClick;
 
-    private String sep = "|";
-
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -152,14 +150,6 @@ public class PidConfig extends BaseConfig {
 
     public void setDestroyAfterClick(boolean destroyAfterClick) {
         this.destroyAfterClick = destroyAfterClick;
-    }
-
-    public String getSep() {
-        return sep;
-    }
-
-    public void setSep(String sep) {
-        this.sep = sep;
     }
 
     public boolean isAdmob() {

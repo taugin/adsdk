@@ -40,29 +40,19 @@ public class MobvistaLoader extends AbstractSdkLoader {
     @Override
     public void setAdId(String adId) {
         super.setAdId(adId);
-        String appId = null;
-        String appKey = null;
+
         if (!TextUtils.isEmpty(adId)) {
             try {
                 JSONObject object = new JSONObject(adId);
-                appId = object.optString("appid");
-                appKey = object.optString("appkey");
+                String appId = object.optString("appid");
+                String appKey = object.optString("appkey");
+
+                SDK.setUploadDataLevel(mContext, SDK.UPLOAD_DATA_ALL);
+                SDK.init(mContext, appId, appKey);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else {
-            if (getPidConfig() != null) {
-                parsePidInfo(getPidConfig().getPid());
-                appId = getAppId();
-                appKey = getExtraId();
-            }
         }
-        initMobvista(appId, appKey);
-    }
-
-    private void initMobvista(String appId, String appKey) {
-        SDK.setUploadDataLevel(mContext, SDK.UPLOAD_DATA_ALL);
-        SDK.init(mContext, appId, appKey);
     }
 
     @Override
@@ -84,7 +74,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
             }
             return true;
         }
@@ -127,7 +117,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
 
-        mInterstitialAd = new InterstitialAd(mContext, getSdkPid());
+        mInterstitialAd = new InterstitialAd(mContext, mPidConfig.getPid());
         mInterstitialAd.setAdListener(new InterstitialAdListener() {
             @Override
             public void onLoadError(int i) {
@@ -136,7 +126,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
                         + " , placename : " + getAdPlaceName()
                         + " , sdk : " + getSdkName()
                         + " , type : " + getAdType()
-                        + " , pid : " + getSdkPid());
+                        + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
@@ -168,7 +158,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -186,7 +176,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
@@ -254,7 +244,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
 
-        mNativeAds = new NativeAds(mContext, getSdkPid(), 1);
+        mNativeAds = new NativeAds(mContext, mPidConfig.getPid(), 1);
         mNativeAds.setListener(new AdListener() {
             @Override
             public void onLoadError(AdError adError) {
@@ -310,7 +300,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
@@ -332,13 +322,13 @@ public class MobvistaLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
-        Log.v(Log.TAG, "showNative - mobvista");
+        Log.v(Log.TAG, "showNative - admob");
         if (params != null) {
             mParams = params;
         }
         MobvistaBindNativeView nativeView = new MobvistaBindNativeView();
         clearCachedAdTime(mAd);
-        nativeView.bindNative(mParams, viewGroup, mNativeAds, mAd, getPidConfig());
+        nativeView.bindNative(mParams, viewGroup, mNativeAds, mAd, mPidConfig);
     }
 
     @Override

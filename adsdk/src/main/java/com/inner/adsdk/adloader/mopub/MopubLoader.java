@@ -130,7 +130,7 @@ public class MopubLoader extends AbstractSdkLoader {
         setLoading(true, STATE_REQUEST);
         loadingView = new MoPubView(mContext);
         loadingView.setAutorefreshEnabled(false);
-        loadingView.setAdUnitId(getSdkPid());
+        loadingView.setAdUnitId(mPidConfig.getPid());
         loadingView.setBannerAdListener(new MoPubView.BannerAdListener() {
             @Override
             public void onBannerLoaded(MoPubView banner) {
@@ -163,7 +163,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
@@ -227,7 +227,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
+                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "mopubloader error : " + e);
@@ -279,7 +279,7 @@ public class MopubLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        moPubInterstitial = new MoPubInterstitial(mContext, getSdkPid());
+        moPubInterstitial = new MoPubInterstitial(mContext, mPidConfig.getPid());
         moPubInterstitial.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
             @Override
             public void onInterstitialLoaded(MoPubInterstitial interstitial) {
@@ -314,7 +314,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -331,7 +331,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
@@ -376,7 +376,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
             }
             return showed;
         }
@@ -415,7 +415,7 @@ public class MopubLoader extends AbstractSdkLoader {
             return;
         }
 
-        SdkConfiguration sdkConfiguration = new SdkConfiguration.Builder(getSdkPid())
+        SdkConfiguration sdkConfiguration = new SdkConfiguration.Builder(getPid())
                 .build();
         MoPub.initializeSdk(activity, sdkConfiguration, initSdkListener());
 
@@ -476,7 +476,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
@@ -494,7 +494,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
             }
 
@@ -516,8 +516,8 @@ public class MopubLoader extends AbstractSdkLoader {
                     AdReward adReward = new AdReward();
                     adReward.setType(Constant.ECPM);
                     int ecpm = 0;
-                    if (getPidConfig() != null) {
-                        ecpm = getPidConfig().getEcpm();
+                    if (mPidConfig != null) {
+                        ecpm = mPidConfig.getEcpm();
                     }
                     adReward.setAmount(String.valueOf(ecpm));
                     getAdListener().onRewarded(adReward);
@@ -538,7 +538,7 @@ public class MopubLoader extends AbstractSdkLoader {
             mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
         if (mStat != null) {
-            mStat.reportAdShowForLTV(mContext, getSdkName(), getSdkPid());
+            mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
         }
         return true;
     }
@@ -593,7 +593,7 @@ public class MopubLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        MoPubNative moPubNative = new MoPubNative(mContext, getSdkPid(), new MoPubNative.MoPubNativeNetworkListener() {
+        MoPubNative moPubNative = new MoPubNative(mContext, mPidConfig.getPid(), new MoPubNative.MoPubNativeNetworkListener() {
 
             @Override
             public void onNativeLoad(final NativeAd nAd) {
@@ -612,7 +612,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onNativeFail(NativeErrorCode errorCode) {
-                Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , msg : " + codeToErrorNative(errorCode) + " , pid : " + getSdkPid());
+                Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , msg : " + codeToErrorNative(errorCode) + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
@@ -624,7 +624,7 @@ public class MopubLoader extends AbstractSdkLoader {
         });
 
         MopubBindNativeView bindNativeView = new MopubBindNativeView();
-        bindNativeView.bindMopubNative(mParams, mContext, moPubNative, getPidConfig());
+        bindNativeView.bindMopubNative(mParams, mContext, moPubNative, mPidConfig);
         moPubNative.makeRequest();
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -667,7 +667,7 @@ public class MopubLoader extends AbstractSdkLoader {
                         mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                     }
                     if (mStat != null) {
-                        mStat.reportAdImpForLTV(mContext, getSdkName(), getSdkPid());
+                        mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
                     }
                     reportMoPubNativeType();
                 }
@@ -682,7 +682,7 @@ public class MopubLoader extends AbstractSdkLoader {
                         mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                     }
                     if (mStat != null) {
-                        mStat.reportAdClickForLTV(mContext, getSdkName(), getSdkPid());
+                        mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                     }
                     if (isDestroyAfterClick()) {
                         nativeAd = null;
