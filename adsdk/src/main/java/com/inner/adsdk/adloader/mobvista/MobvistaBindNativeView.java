@@ -143,8 +143,7 @@ public class MobvistaBindNativeView {
                     height = Integer.valueOf(h);
                 }
             }
-            NativeAd.Image image = new NativeAd.Image(imageUrl, width, height);
-            NativeAd.downloadAndDisplayImage(image, imageView);
+            com.mopub.nativeads.NativeImageHelper.loadImageView(imageUrl, imageView);
             imageView.setVisibility(View.VISIBLE);
         } else {
             if (imageView != null) {
@@ -155,8 +154,7 @@ public class MobvistaBindNativeView {
         String iconUrl = ad.getIconUrl();
         ImageView iconImageView = rootView.findViewById(mParams.getAdIcon());
         if (iconImageView != null) {
-            NativeAd.Image image = new NativeAd.Image(iconUrl, iconImageView.getWidth(), iconImageView.getWidth());
-            NativeAd.downloadAndDisplayImage(image, iconImageView);
+            com.mopub.nativeads.NativeImageHelper.loadImageView(iconUrl, iconImageView);
             iconImageView.setVisibility(View.VISIBLE);
         }
 
