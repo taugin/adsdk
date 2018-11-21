@@ -105,7 +105,7 @@ public class ChargeWrapper implements View.OnClickListener {
 
     private void update() {
         BsPolicy bsPolicy = BsPolicy.get();
-        if(bsPolicy == null){
+        if (bsPolicy == null) {
             return;
         }
         int percent = bsPolicy.getPercent();
@@ -267,16 +267,16 @@ public class ChargeWrapper implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id == R.id.ad_cm_view_cancel){
+        if (id == R.id.ad_cm_view_cancel) {
             if (mActivity != null) {
                 mActivity.finish();
             }
-        }else if(id == R.id.ad_cm_view_more){
+        } else if (id == R.id.ad_cm_view_more) {
             showDialog();
         }
     }
 
-    private void showDialog(){
+    private void showDialog() {
         final AlertDialog.Builder normalDialog = new AlertDialog.Builder(mActivity);
         normalDialog.setTitle(R.string.ad_cm_dialog_title);
         normalDialog.setMessage(R.string.ad_cm_dialog_message);
@@ -286,12 +286,27 @@ public class ChargeWrapper implements View.OnClickListener {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         CtPolicy.get(mActivity).disableMonitor();
-                        if (mActivity != null) {
-                            mActivity.finish();
-                        }
+                        finishActivityDelay();
                     }
                 });
         normalDialog.show();
+    }
+
+    private void finishActivityDelay() {
+        if (handler != null) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mActivity != null) {
+                        mActivity.finish();
+                    }
+                }
+            }, 500);
+        } else {
+            if (mActivity != null) {
+                mActivity.finish();
+            }
+        }
     }
 
     public void onResume() {
