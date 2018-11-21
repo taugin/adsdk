@@ -114,9 +114,9 @@
                     android:gravity="left|top"
                     android:singleLine="true"
                     android:text="sub title"
-                    android:visibility="gone"
                     android:textColor="@color/secondaryTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/native_social"
@@ -145,7 +145,8 @@
             android:maxLines="3"
             android:text="detail"
             android:textColor="@color/secondaryTextColor"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:visibility="gone" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/native_action_btn"
