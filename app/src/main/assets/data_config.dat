@@ -5,7 +5,9 @@
   "adrefs": {
     "st_outer_place": "gt_outer_place",
     "at_outer_place": "gt_outer_place",
-    "lt_outer_place": "banner_and_native"
+    "lt_outer_place": "banner_and_native",
+    "ht_outer_place": "gt_outer_place",
+    "ct_outer_place": "banner_and_native"
   },
   "atconfig": {
     "e": 0,
@@ -13,10 +15,17 @@
     "i": 60000
   },
   "ltconfig": {
-    "e": 0,
+    "e": 1,
     "d": 3600,
+    "i": 1800,
     "attr": []
   },
+  "ctconfig": {
+      "e": 1,
+      "d": 3600,
+      "di": 60000,
+      "attr": []
+   },
   "gtconfig": {
     "e": 1,
     "d": 3600,
@@ -73,7 +82,6 @@
       "name": "banner_and_native",
       "mode": "con",
       "as": 1,
-      "ai": 8000,
       "pids": [
         {
           "sdk": "adx",
@@ -91,7 +99,7 @@
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
@@ -176,14 +184,14 @@
           "aid": "107602",
           "eid": "8eaa4ea7727f830d7bb513b3e049b5f2",
           "pid": "62935",
-          "disable": 0
+          "disable": 1
         },
          {
            "sdk": "inneractive",
            "type": "banner",
            "aid": "106499",
            "pid": "190202",
-           "disable": 0
+           "disable": 1
          }
       ],
       "maxcount": 100,
