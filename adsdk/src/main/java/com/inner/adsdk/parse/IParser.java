@@ -4,6 +4,7 @@ import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.AtConfig;
+import com.inner.adsdk.config.CtConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.config.HtConfig;
 import com.inner.adsdk.config.LtConfig;
@@ -31,6 +32,8 @@ public interface IParser {
     String LTCONFIG = "ltconfig";
     // HT配置
     String HTCONFIG = "htconfig";
+    // CT配置
+    String CTCONFIG = "ctconfig";
     // 广告位汇总
     String ADPLACES = "adplaces";
     // 开光控制配置信息
@@ -118,6 +121,8 @@ public interface IParser {
     String SHOW_BOTTOM_ACTIVITY = "sba";
     // 首次安装时间判断
     String CONFIG_INSTALL_TIME = "cit";
+    // 禁用间隔
+    String DISABLE_INTERVAL = "di";
 
     // 阻止重复加载(如果当前loader正在处于加载中，则不再重新加载)
     String BLOCK_LOADING = "bl";
@@ -172,4 +177,6 @@ public interface IParser {
     LtConfig parseLtPolicy(String data);
 
     HtConfig parseHtPolicy(String data);
+
+    CtConfig parseCtPolicy(String data);
 }

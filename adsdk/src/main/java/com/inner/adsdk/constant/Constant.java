@@ -61,6 +61,7 @@ public class Constant {
     public static final String PREF_TOTAL_SHOWTIMES = "pref_%s_total_showtimes";
     public static final String PREF_FIRST_SHOWTIME_ONEDAY = "pref_%s_first_showtime_oneday";
     public static final String PREF_REQUEST_TIME = "pref_%s_request_time";
+    public static final String PREF_CHARGE_MONITOR = "pref_cm_monitor";
 
     // 配置文件中使用的名字++++++
     public static final String GTPLACE_OUTER_NAME = "gt_outer_place";
@@ -69,12 +70,14 @@ public class Constant {
     public static final String NTPLACE_OUTER_NAME = "nt_outer_place";
     public static final String LTPLACE_OUTER_NAME = "lt_outer_place";
     public static final String HTPLACE_OUTER_NAME = "ht_outer_place";
+    public static final String CTPLACE_OUTER_NAME = "ct_outer_place";
     public static final String ADIDS_NAME = "adids";
     public static final String GTPOLICY_NAME = "gtconfig";
     public static final String STPOLICY_NAME = "stconfig";
     public static final String ATPOLICY_NAME = "atconfig";
     public static final String LTPOLICY_NAME = "ltconfig";
     public static final String HTPOLICY_NAME = "htconfig";
+    public static final String CTPOLICY_NAME = "ctconfig";
     public static final String ADSWITCH_NAME = "adswitch";
     public static final String ADREFS_NAME = "adrefs";
     public static final String ADSPREAD_NAME = "spconfig";
