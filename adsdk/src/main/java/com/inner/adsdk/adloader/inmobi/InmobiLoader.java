@@ -35,6 +35,7 @@ public class InmobiLoader extends AbstractSdkLoader {
     private InMobiInterstitial mInMobiInterstitial;
     private InMobiInterstitial mInMobiRewardVideo;
     private InMobiNative mInMobiNative;
+    private InMobiNative mLoadingNative;
     private Params mParams;
 
     @Override
@@ -558,7 +559,7 @@ public class InmobiLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isNativeLoaded() {
-        boolean loaded = false;
+        boolean loaded = super.isNativeLoaded();
         if (mInMobiNative != null) {
             loaded = !isCachedAdExpired(mInMobiNative);
         }
@@ -599,8 +600,9 @@ public class InmobiLoader extends AbstractSdkLoader {
                 return;
             } else {
                 Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (mInMobiNative != null) {
-                    mInMobiNative.destroy();
+                if (mLoadingNative != null) {
+                    mLoadingNative.setListener(null);
+                    mLoadingNative.destroy();
                     clearCachedAdTime(mInMobiNative);
                 }
             }
@@ -621,65 +623,64 @@ public class InmobiLoader extends AbstractSdkLoader {
 
         setLoading(true, STATE_REQUEST);
 
-        if (mInMobiNative == null) {
-            mInMobiNative = new InMobiNative(mContext, lPid, new NativeAdEventListener() {
-                @Override
-                public void onAdLoadSucceeded(InMobiNative nativeAd) {
-                    super.onAdLoadSucceeded(nativeAd);
-                    Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                    setLoading(false, STATE_SUCCESS);
-                    putCachedAdTime(mInMobiNative);
-                    notifyAdLoaded(false);
-                    if (mStat != null) {
-                        mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                    }
+        mLoadingNative = new InMobiNative(mContext, lPid, new NativeAdEventListener() {
+            @Override
+            public void onAdLoadSucceeded(InMobiNative nativeAd) {
+                super.onAdLoadSucceeded(nativeAd);
+                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                setLoading(false, STATE_SUCCESS);
+                mInMobiNative = nativeAd;
+                putCachedAdTime(mInMobiNative);
+                notifyAdLoaded(false);
+                if (mStat != null) {
+                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
+            }
 
-                @Override
-                public void onAdLoadFailed(InMobiNative nativeAd, InMobiAdRequestStatus status) {
-                    super.onAdLoadFailed(nativeAd, status);
-                    Log.v(Log.TAG, "reason : " + status.getMessage() + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
-                    setLoading(false, STATE_FAILURE);
-                    if (getAdListener() != null) {
-                        getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
-                    }
-                    if (mStat != null) {
-                        mStat.reportAdError(mContext, status.getMessage(), getSdkName(), getAdType(), null);
-                    }
+            @Override
+            public void onAdLoadFailed(InMobiNative nativeAd, InMobiAdRequestStatus status) {
+                super.onAdLoadFailed(nativeAd, status);
+                Log.v(Log.TAG, "reason : " + status.getMessage() + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                setLoading(false, STATE_FAILURE);
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
+                if (mStat != null) {
+                    mStat.reportAdError(mContext, status.getMessage(), getSdkName(), getAdType(), null);
+                }
+            }
 
-                @Override
-                public void onAdImpressed(InMobiNative nativeAd) {
-                    super.onAdImpressed(nativeAd);
-                    Log.v(Log.TAG, "");
-                    if (getAdListener() != null) {
-                        getAdListener().onAdImpression();
-                    }
-                    if (mStat != null) {
-                        mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                    }
-                    if (mStat != null) {
-                        mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
-                    }
+            @Override
+            public void onAdImpressed(InMobiNative nativeAd) {
+                super.onAdImpressed(nativeAd);
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onAdImpression();
                 }
+                if (mStat != null) {
+                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+                if (mStat != null) {
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                }
+            }
 
-                @Override
-                public void onAdClicked(InMobiNative nativeAd) {
-                    super.onAdClicked(nativeAd);
-                    Log.v(Log.TAG, "");
-                    if (getAdListener() != null) {
-                        getAdListener().onAdClick();
-                    }
-                    if (mStat != null) {
-                        mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                    }
-                    if (mStat != null) {
-                        mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
-                    }
+            @Override
+            public void onAdClicked(InMobiNative nativeAd) {
+                super.onAdClicked(nativeAd);
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onAdClick();
                 }
-            });
-        }
-        mInMobiNative.load();
+                if (mStat != null) {
+                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                }
+                if (mStat != null) {
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                }
+            }
+        });
+        mLoadingNative.load();
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }

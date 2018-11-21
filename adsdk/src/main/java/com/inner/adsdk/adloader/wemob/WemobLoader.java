@@ -27,6 +27,7 @@ public class WemobLoader extends AbstractSdkLoader {
     private InterstitialAd interstitialAd;
     private BannerAdView bannerView;
     private BannerAdView loadingView;
+    private NativeAd loadingNativeAd;
     private NativeAd nativeAd;
     private Params mParams;
 
@@ -53,7 +54,7 @@ public class WemobLoader extends AbstractSdkLoader {
                 Sdk.instance().setChannelId(getExtId());
                 Sdk.instance().init(mContext);
                 Log.d(Log.TAG, "appkey : " + getAppId() + " , channel : " + getExtId());
-            } catch(Exception e) {
+            } catch (Exception e) {
             }
         }
     }
@@ -366,16 +367,16 @@ public class WemobLoader extends AbstractSdkLoader {
                 return;
             } else {
                 Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (nativeAd != null) {
-                    nativeAd.setAdListener(null);
-                    nativeAd.destroy();
-                    clearCachedAdTime(nativeAd);
+                if (loadingNativeAd != null) {
+                    loadingNativeAd.setAdListener(null);
+                    loadingNativeAd.destroy();
+                    clearCachedAdTime(loadingNativeAd);
                 }
             }
         }
         setLoading(true, STATE_REQUEST);
-        nativeAd = new NativeAd(mContext, mPidConfig.getPid());
-        nativeAd.setAdListener(new AdListener() {
+        loadingNativeAd = new NativeAd(mContext, mPidConfig.getPid());
+        loadingNativeAd.setAdListener(new AdListener() {
             @Override
             public void onAdFailedToLoad(AdError adError) {
                 if (adError != null) {
@@ -397,6 +398,7 @@ public class WemobLoader extends AbstractSdkLoader {
             public void onAdLoaded(int i) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
+                nativeAd = loadingNativeAd;
                 putCachedAdTime(nativeAd);
                 notifyAdLoaded(false);
                 if (mStat != null) {
@@ -443,7 +445,7 @@ public class WemobLoader extends AbstractSdkLoader {
                 }
             }
         });
-        nativeAd.loadAd();
+        loadingNativeAd.loadAd();
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
