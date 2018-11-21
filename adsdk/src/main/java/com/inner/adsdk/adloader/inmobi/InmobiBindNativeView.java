@@ -136,12 +136,27 @@ public class InmobiBindNativeView {
         TextView detail = rootLayout.findViewById(mParams.getAdDetail());
         AppCompatButton btnAction = rootLayout.findViewById(mParams.getAdAction());
 
-        titleView.setText(nativeAd.getAdTitle());
-        detail.setText(nativeAd.getAdDescription());
-        btnAction.setText(nativeAd.getAdCtaText());
-
         List<View> actionView = new ArrayList<View>();
-        actionView.add(btnAction);
+
+        if (titleView != null) {
+            titleView.setText(nativeAd.getAdTitle());
+            if (!TextUtils.isEmpty(nativeAd.getAdTitle())) {
+                btnAction.setVisibility(View.VISIBLE);
+            }
+        }
+        if (detail != null) {
+            detail.setText(nativeAd.getAdDescription());
+            if (!TextUtils.isEmpty(nativeAd.getAdDescription())) {
+                btnAction.setVisibility(View.VISIBLE);
+            }
+        }
+        if (btnAction != null) {
+            btnAction.setText(nativeAd.getAdCtaText());
+            if (!TextUtils.isEmpty(nativeAd.getAdCtaText())) {
+                btnAction.setVisibility(View.VISIBLE);
+            }
+            actionView.add(btnAction);
+        }
 
         String iconUrl = nativeAd.getAdIconUrl();
         if (icon != null) {

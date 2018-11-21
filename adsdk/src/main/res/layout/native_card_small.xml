@@ -46,9 +46,7 @@
             android:id="@+id/native_header_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/native_cover_info"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/ad_header_gradient_bg"
+            android:layout_below="@+id/native_cover_info"
             android:orientation="horizontal"
             android:paddingBottom="4dp"
             android:paddingLeft="6dp"
@@ -86,14 +84,14 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="4dp"
-                        android:background="@drawable/ad_badge_bg_dark2"
+                        android:background="@drawable/ad_badge_bg_dark"
                         android:gravity="center"
                         android:paddingBottom="2dp"
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
                         android:paddingTop="2dp"
                         android:text="AD"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/darker_gray"
                         android:textSize="8sp" />
 
                     <TextView
@@ -105,7 +103,7 @@
                         android:gravity="left|top"
                         android:singleLine="true"
                         android:text="Charge Master"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/primaryTextColor"
                         android:textSize="16sp" />
 
                 </RelativeLayout>
@@ -118,7 +116,8 @@
                     android:gravity="left|top"
                     android:singleLine="true"
                     android:text="sub title"
-                    android:textColor="@android:color/white"
+                    android:visibility="gone"
+                    android:textColor="@color/secondaryTextColor"
                     android:textSize="12sp" />
 
             </LinearLayout>

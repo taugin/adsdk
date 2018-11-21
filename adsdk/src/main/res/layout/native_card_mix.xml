@@ -159,7 +159,8 @@
                     android:maxLines="3"
                     android:text="detail"
                     android:textColor="@color/secondaryTextColor"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:visibility="gone" />
             </LinearLayout>
 
 
