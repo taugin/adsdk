@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.os.Handler;
 
 import com.appub.ads.a.FSA;
@@ -16,6 +17,9 @@ import com.hauyu.adsdk.manager.DataManager;
 import com.hauyu.adsdk.policy.LtPolicy;
 import com.hauyu.adsdk.utils.TaskUtils;
 import com.hauyu.adsdk.utils.Utils;
+import com.hauyu.adsdk.config.CtConfig;
+import com.hauyu.adsdk.policy.BsPolicy;
+import com.hauyu.adsdk.policy.CtPolicy;
 
 /**
  * Created by Administrator on 2018-8-10.
@@ -83,9 +87,14 @@ public class AdReceiver {
         try {
             IntentFilter filter = new IntentFilter();
             filter.addAction(getAlarmAction());
+            filter.addAction(getAlarmAction() + "_CONNECT");
+            filter.addAction(getAlarmAction() + "_DISCONNECT");
             filter.addAction(Intent.ACTION_SCREEN_ON);
             filter.addAction(Intent.ACTION_SCREEN_OFF);
             filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+            filter.addAction(Intent.ACTION_POWER_CONNECTED);
+            filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+            filter.addAction(Intent.ACTION_BATTERY_CHANGED);
             mContext.registerReceiver(mBroadcastReceiver, filter);
         } catch (Exception e) {
         }
@@ -125,6 +134,14 @@ public class AdReceiver {
                         }
                     }, 1000);
                 }
+            } else if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())
+                    || (getAlarmAction() + "_CONNECT").equals(intent.getAction())) {
+                startCMActivity(context, true);
+            } else if (Intent.ACTION_POWER_DISCONNECTED.equals(intent.getAction())
+                    || (getAlarmAction() + "_DISCONNECT").equals(intent.getAction())) {
+                startCMActivity(context, false);
+            } else if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
+                fillBattery(intent);
             }
         }
     };
@@ -168,5 +185,52 @@ public class AdReceiver {
 
     private void homeKeyPressed() {
         HtAdLoader.get(mContext).fireHome();
+    }
+
+    private void updateCtPolicy() {
+        AdConfig adConfig = DataManager.get(mContext).getAdConfig();
+        CtConfig ctConfig = DataManager.get(mContext).getRemoteCtPolicy();
+        if (ctConfig == null && adConfig != null) {
+            ctConfig = adConfig.getCtConfig();
+        }
+        CtPolicy.get(mContext).setPolicy(ctConfig);
+    }
+
+    private void startCMActivity(Context context, boolean charging) {
+        updateCtPolicy();
+        if (!CtPolicy.get(mContext).isCtAllowed()) {
+            return;
+        }
+        Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.CMPICKER");
+        if (intent == null) {
+            intent = new Intent(mContext, FSA.class);
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(~Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.putExtra(Intent.EXTRA_QUIET_MODE, true);
+        BsPolicy.get().isCharging = charging;
+        try {
+            context.startActivity(intent);
+            CtPolicy.get(mContext).reportShowing(true);
+        } catch (Exception e) {
+        }
+    }
+
+    private void fillBattery(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+        BsPolicy.get().level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 100);
+        BsPolicy.get().scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
+        BsPolicy.get().plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0); // default set as battery
+        BsPolicy.get().health = intent.getIntExtra(BatteryManager.EXTRA_HEALTH,
+                BatteryManager.BATTERY_HEALTH_UNKNOWN);
+        BsPolicy.get().status = intent.getIntExtra(BatteryManager.EXTRA_STATUS,
+                BatteryManager.BATTERY_STATUS_UNKNOWN);
+        BsPolicy.get().temperature = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0);
+        BsPolicy.get().voltage = intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0);
+        BsPolicy.get().present = intent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, true);
+        BsPolicy.get().technology = intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY);
+        BsPolicy.get().timestamp = System.currentTimeMillis();
     }
 }

@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
@@ -528,5 +529,10 @@ public class Utils {
             Log.e(Log.TAG, "error : " + e);
         }
         return intent;
+    }
+
+    public static Method getClassMethod(String packageName, String methodName, Class<?>... parameterTypes)
+            throws NoSuchMethodException, ClassNotFoundException {
+        return Class.forName(packageName).getMethod(methodName, parameterTypes);
     }
 }

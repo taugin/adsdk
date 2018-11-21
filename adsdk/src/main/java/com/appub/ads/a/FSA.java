@@ -1,11 +1,14 @@
 package com.appub.ads.a;
 
+import android.animation.IntEvaluator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -28,6 +31,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -39,6 +43,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -50,14 +55,16 @@ import android.widget.TextView;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
+import com.hauyu.adsdk.R;
 import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.framework.ChargeWrapper;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.policy.GtPolicy;
+import com.hauyu.adsdk.policy.HtPolicy;
 import com.hauyu.adsdk.stat.StatImpl;
 import com.hauyu.adsdk.utils.Utils;
-import com.hauyu.adsdk.policy.HtPolicy;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -79,11 +86,14 @@ public class FSA extends Activity {
     private Handler mHandler = null;
     private boolean mInLockView;
     private ViewGroup mLockAdLayout;
+    private boolean mInChargeView;
+    private ChargeWrapper mChargeWrapper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mInLockView = false;
+        mInChargeView = false;
         parseIntent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             setFinishOnTouchOutside(false);
@@ -97,6 +107,22 @@ public class FSA extends Activity {
         } catch (Error e) {
         }
         updateDataAndView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mChargeWrapper != null) {
+            mChargeWrapper.onResume();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mChargeWrapper != null) {
+            mChargeWrapper.onPause();
+        }
     }
 
     protected AdParams getAdParams() {
@@ -113,16 +139,28 @@ public class FSA extends Activity {
 
     @Override
     public void setContentView(View view) {
+        if (mInChargeView) {
+            super.setContentView(view);
+            return;
+        }
         Log.e(Log.TAG, "ignore function setContentView");
     }
 
     @Override
     public void setContentView(int layoutResID) {
+        if (mInChargeView) {
+            super.setContentView(layoutResID);
+            return;
+        }
         Log.e(Log.TAG, "ignore function setContentView");
     }
 
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
+        if (mInChargeView) {
+            super.setContentView(view, params);
+            return;
+        }
         Log.e(Log.TAG, "ignore function setContentView");
     }
 
@@ -130,12 +168,15 @@ public class FSA extends Activity {
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         mInLockView = false;
+        mInChargeView = false;
         parseIntent();
         updateDataAndView();
     }
 
     private void updateFullScreenState() {
         try {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             if (isLockView()) {
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             } else {
@@ -161,9 +202,20 @@ public class FSA extends Activity {
         }
     }
 
+    private void ensureChargeWrapper() {
+        if (mChargeWrapper == null) {
+            mChargeWrapper = new ChargeWrapper(this);
+        }
+    }
+
     private void updateDataAndView() {
         updateFullScreenState();
-        if (isLockView()) {
+        if (mInChargeView) {
+            ensureChargeWrapper();
+            if (mChargeWrapper != null) {
+                mChargeWrapper.showChargeView();
+            }
+        } else if (isLockView()) {
             showLockScreenView();
         } else if (mSpConfig != null) {
             showSpread();
@@ -195,6 +247,7 @@ public class FSA extends Activity {
             mAdType = intent.getStringExtra(Intent.EXTRA_TEMPLATE);
             mSpConfig = (SpConfig) intent.getSerializableExtra(Intent.EXTRA_STREAM);
             mInLockView = intent.getBooleanExtra(Intent.EXTRA_LOCAL_ONLY, false);
+            mInChargeView = intent.getBooleanExtra(Intent.EXTRA_QUIET_MODE, false);
             mAction = intent.getAction();
         }
     }
@@ -394,7 +447,9 @@ public class FSA extends Activity {
         if (Constant.AD_SDK_SPREAD.equals(mSource)) {
             sendBroadcast(new Intent(getPackageName() + ".action.SPDISMISS").setPackage(getPackageName()));
         }
-
+        if (mChargeWrapper != null) {
+            mChargeWrapper.onDestroy();
+        }
         stopTimeUpdate();
     }
 
@@ -808,7 +863,7 @@ public class FSA extends Activity {
         AdSdk.get(this).loadAdView(Constant.LTPLACE_OUTER_NAME, params, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
-                if(!isFinishing()) {
+                if (!isFinishing()) {
                     AdSdk.get(getBaseContext()).showAdView(pidName, getAdParams(), mLockAdLayout);
                 }
             }
@@ -953,6 +1008,118 @@ public class FSA extends Activity {
                 postInvalidateDelayed(50);
             }
         }
+    }
 
+    public static class DotProgress extends View {
+        private Paint emptyPaint;
+        private Paint filledPaint;
+        private boolean init = false;
+        private int step = -1;
+        private float dotRadius;
+        private float margin;
+        private final int stepCount;
+
+        public DotProgress(Context context, AttributeSet attrs) {
+            super(context, attrs);
+            TypedArray a = context.getTheme().obtainStyledAttributes(
+                    attrs, R.styleable.DotProgress, 0, 0);
+            int baseColor, emptyAlpha, filledAlpha;
+            try {
+                emptyAlpha = a.getInteger(R.styleable.DotProgress_emptyAlpha, 63);
+                filledAlpha = a.getInteger(R.styleable.DotProgress_filledAlpha, 159);
+                stepCount = a.getInteger(R.styleable.DotProgress_stepCount, 3);
+                baseColor = a.getColor(R.styleable.DotProgress_dotBaseColor, Color.WHITE);
+                dotRadius = a.getDimensionPixelSize(R.styleable.DotProgress_dotRadius,
+                        (int) (getResources().getDisplayMetrics().density * 3));
+            } finally {
+                a.recycle();
+            }
+            int baseColorR = Color.red(baseColor);
+            int baseColorG = Color.green(baseColor);
+            int baseColorB = Color.blue(baseColor);
+            emptyPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            emptyPaint.setARGB(emptyAlpha, baseColorR, baseColorG, baseColorB);
+            filledPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            filledPaint.setARGB(filledAlpha, baseColorR, baseColorG, baseColorB);
+        }
+
+        public void setStep(int nextStep) {
+            if (nextStep >= stepCount || nextStep < -1) {
+                throw new IllegalArgumentException(
+                        "Step count should be with in [-1" + (stepCount - 1) + "]");
+            }
+            this.step = nextStep;
+            postInvalidate();
+        }
+
+        @Override
+        public void draw(Canvas canvas) {
+            super.draw(canvas);
+            if (!init) {
+                init = true;
+                margin = (canvas.getWidth() - stepCount * dotRadius * 2) / (stepCount + 1);
+            }
+            for (int index = 0; index < stepCount; ++index) {
+                canvas.drawCircle(margin + dotRadius + index * (margin + 2 * dotRadius), canvas.getHeight() / 2,
+                        dotRadius, index <= step ? filledPaint : emptyPaint);
+            }
+        }
+    }
+
+    public static class BlinkImageView extends AppCompatImageView implements ValueAnimator.AnimatorUpdateListener {
+        private int startAlpha, endAlpha, duration;
+        private boolean isBlinking = false;
+
+        ValueAnimator colorAnimation;
+
+        public BlinkImageView(Context context, AttributeSet attrs) {
+            super(context, attrs);
+            TypedArray a = context.getTheme().obtainStyledAttributes(
+                    attrs, R.styleable.BlinkImageView, 0, 0);
+            try {
+                startAlpha = a.getInteger(R.styleable.BlinkImageView_startAlpha, 63);
+                endAlpha = a.getInteger(R.styleable.BlinkImageView_endAlpha, 255);
+                duration = a.getInteger(R.styleable.BlinkImageView_blinkDuration, 800);
+            } finally {
+                a.recycle();
+            }
+            setAlpha(startAlpha / 256f);
+        }
+
+        public void startBlink() {
+            if (!isBlinking) {
+                colorAnimation = ValueAnimator.ofObject(new IntEvaluator(), startAlpha, endAlpha);
+                colorAnimation.setRepeatMode(ValueAnimator.REVERSE);
+                colorAnimation.setRepeatCount(ValueAnimator.INFINITE);
+                colorAnimation.setDuration(duration); // milliseconds
+                colorAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+                colorAnimation.addUpdateListener(this);
+                colorAnimation.start();
+                isBlinking = true;
+            }
+        }
+
+        public void stopBlink() {
+            if (isBlinking) {
+                colorAnimation.removeUpdateListener(this);
+                colorAnimation.end();
+                postInvalidate();
+                isBlinking = false;
+            }
+        }
+
+        public void solid() {
+            setAlpha(1.0f);
+        }
+
+        public void halftrans() {
+            setAlpha(startAlpha / 256f);
+        }
+
+        @Override
+        public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            int alphaValue = (int) valueAnimator.getAnimatedValue();
+            setAlpha(alphaValue / 256f);
+        }
     }
 }
