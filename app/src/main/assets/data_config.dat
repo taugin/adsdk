@@ -104,8 +104,9 @@
         {
           "sdk": "admob",
           "type": "banner",
+          "dac":1,
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
@@ -175,7 +176,8 @@
           "type": "native",
           "aid": "3a7c9443ab95449084eb270ee0154fcd",
           "pid": "1538433861066",
-          "disable": 0
+          "dac":1,
+          "disable": 1
         },
         {
           "sdk": "dspmob",
@@ -195,10 +197,19 @@
         {
           "sdk": "inneractive",
           "type": "banner",
-          "aid": "106499",
-          "pid": "190202",
+          "aid": "106659",
+          "pid": "192541",
+          "dac":1,
           "disable": 1
-        }
+        },
+         {
+           "sdk": "inneractive",
+           "type": "native",
+           "aid": "106659",
+           "pid": "665456",
+           "dac":1,
+           "disable": 0
+         }
       ],
       "maxcount": 100,
       "percent": 100
@@ -277,8 +288,8 @@
         {
           "sdk": "inneractive",
           "type": "interstitial",
-          "aid": "106499",
-          "pid": "190203",
+          "aid": "106659",
+          "pid": "190759",
           "disable": 0
         },
         {
