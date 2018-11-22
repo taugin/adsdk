@@ -33,3 +33,4 @@
 
 #Facebook Analytics
 -keep class com.facebook.appevents.AppEventsLogger {*;}
+-dontwarn com.adywind.nativeads.**
