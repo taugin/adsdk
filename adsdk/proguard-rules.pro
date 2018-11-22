@@ -149,3 +149,5 @@
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
 }
+#Facebook
+-dontwarn com.adywind.nativeads.**
