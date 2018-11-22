@@ -23,6 +23,7 @@ import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.policy.BsPolicy;
 import com.inner.adsdk.policy.CtPolicy;
+import com.inner.adsdk.utils.Utils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -47,11 +48,14 @@ public class ChargeWrapper implements View.OnClickListener {
     }
 
     public void showChargeView() {
+        if (mActivity == null) {
+            return;
+        }
+        if (Utils.isScreenLocked(mActivity)) {
+            mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                    | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        }
         mActivity.setContentView(R.layout.native_card_cm);
-        mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         chargeCancel = mActivity.findViewById(R.id.ad_cm_view_cancel);
         chargeCancel.setOnClickListener(this);
         chargeMore = mActivity.findViewById(R.id.ad_cm_view_more);
