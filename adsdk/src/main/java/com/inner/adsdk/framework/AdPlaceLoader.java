@@ -193,10 +193,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
                             loader.setAdId(adId);
-                            if (TextUtils.isEmpty(adId)) {
-                                Log.e(Log.TAG, "miss " + config.getSdk() + " app id");
-                            }
-                            if (loader.allowUseLoader() && !TextUtils.isEmpty(adId)) {
+                            if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isDspMob() && AdHelper.isModuleLoaded(config.getSdk())) {

@@ -35,8 +35,8 @@ public class InnerActiveLoader extends AbstractSdkLoader {
     private boolean mIsFullScreenLoaded;
     private InneractiveAdSpot mFullScreenSpot;
 
-    private boolean mIsNativeLoaded;
     private InneractiveAdSpot mNativeSpot;
+    private InneractiveAdSpot gNativeSpot;
 
     @Override
     public String getSdkName() {
@@ -71,6 +71,15 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             }
             return;
         }
+
+        if (!InneractiveAdManager.wasInitialized()) {
+            Log.v(Log.TAG, "sdk not initialized error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
+            }
+            return;
+        }
+
 
         if (isBannerLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
@@ -186,6 +195,9 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                         if (getAdListener() != null) {
                             getAdListener().onAdClick();
                         }
+                        if (isDestroyAfterClick()) {
+                            mIsBannerLoaded = false;
+                        }
                     }
 
                     @Override
@@ -238,7 +250,9 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             controller.unbindView(viewGroup);
             // showing the ad
             controller.bindView(viewGroup);
-            mIsBannerLoaded = false;
+            if (!isDestroyAfterClick()) {
+                mIsBannerLoaded = false;
+            }
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
@@ -311,6 +325,14 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
+            }
+            return;
+        }
+
+        if (!InneractiveAdManager.wasInitialized()) {
+            Log.v(Log.TAG, "sdk not initialized error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
             }
             return;
         }
@@ -497,7 +519,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isNativeLoaded() {
-        boolean loaded = mIsNativeLoaded && mNativeSpot != null && mNativeSpot.isReady() && !isCachedAdExpired(mNativeSpot);
+        boolean loaded = mNativeSpot != null && mNativeSpot.isReady() && !isCachedAdExpired(mNativeSpot);
         if (loaded) {
             Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
         }
@@ -512,6 +534,14 @@ public class InnerActiveLoader extends AbstractSdkLoader {
 
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
+            }
+            return;
+        }
+
+        if (!InneractiveAdManager.wasInitialized()) {
+            Log.v(Log.TAG, "sdk not initialized error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
             }
@@ -634,6 +664,9 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                         if (mStat != null) {
                             mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                         }
+                        if (isDestroyAfterClick()) {
+                            mNativeSpot = null;
+                        }
                     }
 
                     @Override
@@ -664,7 +697,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                 });
 
                 setLoading(false, STATE_SUCCESS);
-                mIsNativeLoaded = true;
                 putCachedAdTime(mNativeSpot);
                 notifyAdLoaded(false);
                 if (mStat != null) {
@@ -695,6 +727,10 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                 .setActionButtonViewId(mParams.getAdAction())
                 .build();
         InneractiveNativeAdUnitController adUnitController = (InneractiveNativeAdUnitController) mNativeSpot.getSelectedUnitController();
+        gNativeSpot = mNativeSpot;
+        if (!isDestroyAfterClick()) {
+            mNativeSpot = null;
+        }
         try {
             adUnitController.bindView(adViewBinder, viewGroup);
         } catch (IllegalArgumentException exception) {
@@ -717,6 +753,11 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             mFullScreenSpot.destroy();
             mFullScreenSpot.setRequestListener(null);
             mFullScreenSpot = null;
+        }
+        if (gNativeSpot != null) {
+            gNativeSpot.destroy();
+            gNativeSpot.setRequestListener(null);
+
         }
     }
 }

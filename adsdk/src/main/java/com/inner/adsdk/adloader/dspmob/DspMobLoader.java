@@ -154,6 +154,9 @@ public class DspMobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
+                if (isDestroyAfterClick()) {
+                    mIsBannerLoaded = false;
+                }
             }
 
             @Override
@@ -198,7 +201,9 @@ public class DspMobLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
 
-            mIsBannerLoaded = false;
+            if (!isDestroyAfterClick()) {
+                mIsBannerLoaded = false;
+            }
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }

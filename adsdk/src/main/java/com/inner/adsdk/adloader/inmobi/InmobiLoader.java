@@ -32,10 +32,12 @@ public class InmobiLoader extends AbstractSdkLoader {
 
     private InMobiBanner loadingView;
     private InMobiBanner mInMobiBanner;
+    private InMobiBanner gInMobiBanner;
     private InMobiInterstitial mInMobiInterstitial;
     private InMobiInterstitial mInMobiRewardVideo;
     private InMobiNative mInMobiNative;
     private InMobiNative mLoadingNative;
+    private InMobiNative gInMobiNative;
     private Params mParams;
 
     @Override
@@ -154,6 +156,9 @@ public class InmobiLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
+                if (isDestroyAfterClick()) {
+                    mInMobiBanner = null;
+                }
             }
 
             @Override
@@ -209,7 +214,10 @@ public class InmobiLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
-            mInMobiBanner = null;
+            gInMobiBanner = mInMobiBanner;
+            if (!isDestroyAfterClick()) {
+                mInMobiBanner = null;
+            }
             if (mStat != null) {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
@@ -678,6 +686,9 @@ public class InmobiLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
                 }
+                if (isDestroyAfterClick()) {
+                    mInMobiNative = null;
+                }
             }
         });
         mLoadingNative.load();
@@ -696,14 +707,20 @@ public class InmobiLoader extends AbstractSdkLoader {
         InmobiBindNativeView inmobiBindNativeView = new InmobiBindNativeView();
         clearCachedAdTime(mInMobiNative);
         inmobiBindNativeView.bindNative(mParams, viewGroup, mInMobiNative, mPidConfig);
-        mInMobiNative = null;
+        gInMobiNative = mInMobiNative;
+        if (!isDestroyAfterClick()) {
+            mInMobiNative = null;
+        }
     }
 
     @Override
     public void destroy() {
-        if (mInMobiNative != null) {
-            mInMobiNative.destroy();
-            mInMobiNative = null;
+        if (gInMobiNative != null) {
+            gInMobiNative.destroy();
+            gInMobiNative = null;
+        }
+        if (gInMobiBanner != null) {
+            gInMobiBanner = null;
         }
     }
 }
