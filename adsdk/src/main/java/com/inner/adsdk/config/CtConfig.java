@@ -20,10 +20,10 @@ public class CtConfig extends BaseConfig {
     public String toString() {
         return "ct{" +
                 "e=" + isEnable() +
-                "d=" + getUpDelay() +
-                "i=" + getInterval() +
-                "mc=" + getMaxCount() +
-                "mv=" + getMaxVersion() +
+                ", d=" + getUpDelay() +
+                ", i=" + getInterval() +
+                ", mc=" + getMaxCount() +
+                ", mv=" + getMaxVersion() +
                 ", cl=" + getCountryList() +
                 ", al=" + getAttrList() +
                 ", ml=" + getMediaList() +
