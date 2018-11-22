@@ -160,3 +160,6 @@
 -keepclassmembers class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
+
+#Facebook
+-dontwarn com.adywind.nativeads.**
