@@ -80,7 +80,6 @@
             android:name="com.appub.ads.a.FSA"
             android:launchMode="singleInstance"
             android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
 
