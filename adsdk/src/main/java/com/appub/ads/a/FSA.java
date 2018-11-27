@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -92,6 +93,7 @@ public class FSA extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mInLockView = false;
         mInChargeView = false;
         parseIntent();
@@ -107,6 +109,15 @@ public class FSA extends Activity {
         } catch (Error e) {
         }
         updateDataAndView();
+    }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        try {
+            super.setRequestedOrientation(requestedOrientation);
+        } catch(Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
     }
 
     @Override
