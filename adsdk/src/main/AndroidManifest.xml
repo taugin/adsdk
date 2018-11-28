@@ -99,7 +99,6 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" />
 
         <!-- InMobi -->
