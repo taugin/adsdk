@@ -215,6 +215,16 @@ public class AdExtra {
     public static final int INMOBI_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
 
     /**
+     * DSPMOB尺寸 尺寸 320 x 50
+     */
+    public static final int DSPMOB_BANNER = Constant.BANNER;
+
+    /**
+     * DSPMOB尺寸 尺寸 300 x 250
+     */
+    public static final int DSP_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
+
+    /**
      * 原生广告模板值
      */
     public static final int NATIVE_CARD_SMALL = Constant.NATIVE_CARD_SMALL;
