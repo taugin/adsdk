@@ -66,7 +66,7 @@ public class AdExtra {
     /**
      * DSPMOB SDK 名字
      */
-    public static final String AD_SDK_DSP = Constant.AD_SDK_DSPMOB;
+    public static final String AD_SDK_DSPMOB = Constant.AD_SDK_DSPMOB;
 
     /**
      * DAP SDK 名字
@@ -222,7 +222,7 @@ public class AdExtra {
     /**
      * DSPMOB尺寸 尺寸 300 x 250
      */
-    public static final int DSP_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
+    public static final int DSPMOB_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
 
     /**
      * 原生广告模板值
