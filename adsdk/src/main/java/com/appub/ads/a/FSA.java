@@ -870,7 +870,7 @@ public class FSA extends Activity {
         AdParams params = new AdParams.Builder()
                 .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
                 .setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE)
-                .setBannerSize(AdExtra.AD_SDK_DSP, AdExtra.DSP_MEDIUM_RECTANGLE)
+                .setBannerSize(AdExtra.AD_SDK_DSPMOB, AdExtra.DSPMOB_MEDIUM_RECTANGLE)
                 .setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_MEDIUM)
                 .build();
         AdSdk.get(this).loadAdView(Constant.LTPLACE_OUTER_NAME, params, new SimpleAdSdkListener() {
