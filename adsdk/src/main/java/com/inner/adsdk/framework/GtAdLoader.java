@@ -109,6 +109,7 @@ public class GtAdLoader {
                                 show(pidName, source, adType);
                             } else {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
+                                StatImpl.get().reportAdOuterShow(mContext);
                             }
                         }
                     }
