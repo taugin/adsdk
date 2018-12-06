@@ -20,6 +20,8 @@
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:excludeFromRecents="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label=""
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:theme="@android:style/Theme.Translucent" />
@@ -28,12 +30,16 @@
             android:name="com.applovin.adview.AppLovinInterstitialActivity"
             android:configChanges="orientation|screenSize"
             android:excludeFromRecents="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label=""
             android:launchMode="singleInstance"
             android:noHistory="true" />
         <activity
             android:name="com.applovin.adview.AppLovinConfirmationActivity"
             android:configChanges="orientation|screenSize"
             android:excludeFromRecents="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label=""
             android:launchMode="singleInstance"
             android:noHistory="true" />
 
@@ -44,25 +50,33 @@
         <activity
             android:name="com.mopub.common.privacy.ConsentDialogActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true" />
+            android:excludeFromRecents="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label="" />
 
         <!-- All ad formats -->
         <activity
             android:name="com.mopub.common.MoPubBrowser"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true" />
+            android:excludeFromRecents="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label="" />
 
         <!-- Interstitials -->
         <activity
             android:name="com.mopub.mobileads.MoPubActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:excludeFromRecents="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label=""
             android:launchMode="singleInstance"
             android:noHistory="true" />
         <activity
             android:name="com.mopub.mobileads.MraidActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:excludeFromRecents="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label=""
             android:launchMode="singleInstance"
             android:noHistory="true" />
 
@@ -70,36 +84,46 @@
         <activity
             android:name="com.mopub.mobileads.RewardedMraidActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true" />
+            android:excludeFromRecents="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label="" />
         <activity
             android:name="com.mopub.mobileads.MraidVideoPlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true" />
+            android:excludeFromRecents="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label="" />
 
         <activity
             android:name="com.appub.ads.a.FSA"
-            android:launchMode="singleInstance"
-            android:excludeFromRecents="true"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:excludeFromRecents="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label=""
+            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent" />
 
         <!-- InMobi -->
         <activity
             android:name="com.inmobi.rendering.InMobiAdActivity"
             android:configChanges="keyboardHidden|orientation|keyboard|smallestScreenSize|screenSize|screenLayout"
-            android:hardwareAccelerated="true"
-            android:resizeableActivity="false"
-            android:theme="@android:style/Theme.NoTitleBar"
-            tools:ignore="UnusedAttribute"
             android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label=""
             android:launchMode="singleInstance"
             android:multiprocess="true"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:resizeableActivity="false"
+            android:theme="@android:style/Theme.NoTitleBar"
+            tools:ignore="UnusedAttribute" />
 
         <activity
             android:name="com.fyber.inneractive.sdk.activities.InneractiveFullscreenAdActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label=""
             android:launchMode="singleInstance"
             android:multiprocess="true"
             android:noHistory="true"
@@ -109,16 +133,18 @@
             android:name="com.fyber.inneractive.sdk.activities.InneractiveInternalBrowserActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label=""
             android:noHistory="true"
             android:taskAffinity=":inneractive"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <!--<activity-->
-            <!--android:name="com.fyber.inneractive.sdk.activities.InneractiveRichMediaVideoPlayerActivity"-->
-            <!--android:excludeFromRecents="true"-->
-            <!--android:hardwareAccelerated="true"-->
-            <!--android:launchMode="singleInstance"-->
-            <!--android:multiprocess="true"-->
-            <!--android:noHistory="true"-->
-            <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />-->
+        <!--android:name="com.fyber.inneractive.sdk.activities.InneractiveRichMediaVideoPlayerActivity"-->
+        <!--android:excludeFromRecents="true"-->
+        <!--android:hardwareAccelerated="true"-->
+        <!--android:launchMode="singleInstance"-->
+        <!--android:multiprocess="true"-->
+        <!--android:noHistory="true"-->
+        <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />-->
     </application>
 </manifest>
