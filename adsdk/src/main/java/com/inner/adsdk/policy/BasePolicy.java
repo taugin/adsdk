@@ -331,6 +331,13 @@ public class BasePolicy implements Handler.Callback {
         return firstInstallTime;
     }
 
+    public boolean isShowBottomActivity() {
+        if (mBaseConfig != null){
+            return mBaseConfig.isShowBottomActivity();
+        }
+        return false;
+    }
+
     protected boolean isScreenOrientationAllow() {
         if (mBaseConfig != null) {
             int orientation = Configuration.ORIENTATION_UNDEFINED;

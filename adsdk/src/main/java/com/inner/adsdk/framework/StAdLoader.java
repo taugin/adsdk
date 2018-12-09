@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.config.AdConfig;
@@ -21,7 +22,7 @@ import com.inner.adsdk.policy.StPolicy;
  * Created by Administrator on 2018/7/19.
  */
 
-public class StAdLoader implements Handler.Callback {
+public class StAdLoader extends BottomLoader implements Handler.Callback {
 
     private static final int LOAD_DELAY = 1000;
     private static final int MSG_ST_LOAD = 1000;
@@ -55,6 +56,11 @@ public class StAdLoader implements Handler.Callback {
     public void init(AdSdk adSdk) {
         mAdSdk = adSdk;
         register();
+    }
+
+    @Override
+    protected Context getContext() {
+        return mContext;
     }
 
     private void register() {
@@ -95,13 +101,29 @@ public class StAdLoader implements Handler.Callback {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     if (StPolicy.get(mContext).isStAllowed()) {
-                        mAdSdk.showComplexAds(pidName, null);
+                        if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
+                            AdSdk.get(mContext).showComplexAds(pidName, null);
+                        } else {
+                            if (StPolicy.get(mContext).isShowBottomActivity()
+                                    || Constant.TYPE_BANNER.equals(adType)
+                                    || Constant.TYPE_NATIVE.equals(adType)) {
+                                show(pidName, source, adType);
+                            } else {
+                                AdSdk.get(mContext).showComplexAds(pidName, null);
+                            }
+                        }
                     }
                 }
 
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
                     StPolicy.get(mContext).reportShowing(false);
+                    if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
+                            && StPolicy.get(mContext).isShowBottomActivity()
+                            && !Constant.TYPE_BANNER.equals(adType)
+                            && !Constant.TYPE_NATIVE.equals(adType)) {
+                        hide();
+                    }
                 }
 
                 @Override

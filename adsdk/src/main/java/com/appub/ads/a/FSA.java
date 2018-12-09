@@ -115,7 +115,7 @@ public class FSA extends Activity {
     public void setRequestedOrientation(int requestedOrientation) {
         try {
             super.setRequestedOrientation(requestedOrientation);
-        } catch(Exception | Error e) {
+        } catch (Exception | Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
     }
@@ -230,9 +230,11 @@ public class FSA extends Activity {
             showLockScreenView();
         } else if (mSpConfig != null) {
             showSpread();
-        } else {
+        } else if (!TextUtils.isEmpty(mPidName)) {
             registerArgument();
             show();
+        } else {
+            finishActivityWithDelay(10);
         }
     }
 
@@ -395,7 +397,10 @@ public class FSA extends Activity {
     private void showGAd() {
         if (!TextUtils.isEmpty(mPidName)) {
             AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, null);
-            StatImpl.get().reportAdOuterShow(this);
+            // 只统计GT相关的展示数据
+            if (TextUtils.equals(mPidName, Constant.GTPLACE_OUTER_NAME)) {
+                StatImpl.get().reportAdOuterShow(this);
+            }
         } else {
             finishActivityWithDelay();
         }
@@ -423,13 +428,17 @@ public class FSA extends Activity {
     }
 
     private void finishActivityWithDelay() {
+        finishActivityWithDelay(500);
+    }
+
+    private void finishActivityWithDelay(final int delay) {
         if (mHandler != null) {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     fa();
                 }
-            }, 500);
+            }, delay);
         } else {
             fa();
         }
