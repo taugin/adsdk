@@ -51,13 +51,6 @@ public class GtPolicy extends BasePolicy {
         StatImpl.get().reportAdGtShowTimes(mContext, times);
     }
 
-    public boolean isShowBottomActivity() {
-        if (mGtConfig != null){
-            return mGtConfig.isShowBottomActivity();
-        }
-        return true;
-    }
-
     public boolean isGtAllowed() {
         Log.v(Log.TAG, "gt : " + mGtConfig);
         if (!checkBaseConfig()) {

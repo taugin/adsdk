@@ -187,6 +187,9 @@ public class AdParser implements IParser {
             if (jobj.has(CONFIG_INSTALL_TIME)) {
                 baseConfig.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
             }
+            if (jobj.has(SHOW_BOTTOM_ACTIVITY)) {
+                baseConfig.setShowBottomActivity(jobj.getInt(SHOW_BOTTOM_ACTIVITY) == 1);
+            }
             parseAttrConfig(baseConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseBasePolicyInternal error : " + e);
@@ -204,9 +207,6 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(content);
             gtConfig = new GtConfig();
-            if (jobj.has(SHOW_BOTTOM_ACTIVITY)) {
-                gtConfig.setShowBottomActivity(jobj.getInt(SHOW_BOTTOM_ACTIVITY) == 1);
-            }
             parseBaseConfig(gtConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseGtPolicyInternal error : " + e);

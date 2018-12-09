@@ -20,6 +20,7 @@ public class BaseConfig {
     private List<String> attrList;
     private List<String> mediaList;
     private int ntRate;
+    private boolean showBottomActivity;
 
 
     public boolean isEnable() {
@@ -124,5 +125,13 @@ public class BaseConfig {
 
     public void setNtRate(int ntRate) {
         this.ntRate = ntRate;
+    }
+
+    public boolean isShowBottomActivity() {
+        return showBottomActivity;
+    }
+
+    public void setShowBottomActivity(boolean showBottomActivity) {
+        this.showBottomActivity = showBottomActivity;
     }
 }

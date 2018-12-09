@@ -9,15 +9,6 @@ import java.util.Date;
  */
 
 public class GtConfig extends BaseConfig {
-    private boolean showBottomActivity;
-
-    public boolean isShowBottomActivity() {
-        return showBottomActivity;
-    }
-
-    public void setShowBottomActivity(boolean showBottomActivity) {
-        this.showBottomActivity = showBottomActivity;
-    }
 
     @Override
     public String toString() {
@@ -33,7 +24,7 @@ public class GtConfig extends BaseConfig {
                 ", ml=" + getMediaList() +
                 ", so=" + getScreenOrientation() +
                 ", to=" + getTimeOut() +
-                ", sba=" + showBottomActivity +
+                ", sba=" + isShowBottomActivity() +
                 ", ntr=" + getNtRate() +
                 ", cit=" + Constant.SDF_1.format(new Date(getConfigInstallTime())) +
                 '}';
