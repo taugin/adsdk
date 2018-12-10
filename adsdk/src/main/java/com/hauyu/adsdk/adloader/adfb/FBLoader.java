@@ -1,5 +1,6 @@
 package com.hauyu.adsdk.adloader.adfb;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -9,6 +10,7 @@ import com.facebook.ads.AdError;
 import com.facebook.ads.AdListener;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
+import com.facebook.ads.AudienceNetworkAds;
 import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdListener;
 import com.facebook.ads.NativeAd;
@@ -46,6 +48,12 @@ public class FBLoader extends AbstractSdkLoader {
 
     private NativeAd gNativeAd;
     private AdView gBannerView;
+
+    @Override
+    public void init(Context context) {
+        super.init(context);
+        AudienceNetworkAds.initialize(context);
+    }
 
     @Override
     public String getSdkName() {
@@ -624,9 +632,9 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isRewaredVideoLoaded() {
-        boolean loaded = super.isInterstitialLoaded();
+        boolean loaded = super.isRewaredVideoLoaded();
         if (rewardedVideoAd != null) {
-            loaded = rewardedVideoAd.isAdLoaded() && !isCachedAdExpired(rewardedVideoAd);
+            loaded = rewardedVideoAd.isAdLoaded() && !rewardedVideoAd.isAdInvalidated()/* && !isCachedAdExpired(rewardedVideoAd)*/;
         }
         if (loaded) {
             Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
@@ -636,7 +644,7 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showRewardedVideo() {
-        if (rewardedVideoAd != null && rewardedVideoAd.isAdLoaded()) {
+        if (rewardedVideoAd != null && rewardedVideoAd.isAdLoaded() && !rewardedVideoAd.isAdInvalidated()) {
             rewardedVideoAd.show();
             clearCachedAdTime(rewardedVideoAd);
             rewardedVideoAd = null;

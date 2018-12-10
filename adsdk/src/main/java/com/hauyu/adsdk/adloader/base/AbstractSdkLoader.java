@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
 
     // 广告的最大默认缓存时间
-    protected static final long MAX_CACHED_TIME = 15 * 60 * 1000;
+    protected static final long MAX_CACHED_TIME = 30 * 60 * 1000;
     // 加载未返回的超时消息
     protected static final int MSG_LOADING_TIMEOUT = 1000;
     // 加载未返回的超时时间5分钟
