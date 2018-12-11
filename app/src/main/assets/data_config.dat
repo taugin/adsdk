@@ -33,7 +33,7 @@
     "attr": []
   },
   "gtconfig": {
-    "e": 0,
+    "e": 1,
     "d": 3600,
     "i": 1800,
     "mc": 100,
@@ -42,8 +42,8 @@
     "ec": [],
     "ms": [],
     "so": 1,
-    "ntr": 100,
-    "sba": 1
+    "ntr": 0,
+    "sba": 0
   },
   "adplaces": [
     {
@@ -208,21 +208,21 @@
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
-          "sdk": "adx",
+          "sdk": "admob",
           "type": "interstitial",
-          "pid": "ca-app-pub-3940256099942544/1033173712",
+          "pid": "ca-app-pub-2365082100233001/9192245349",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "fb",
           "type": "interstitial",
           "pid": "YOUR_PLACEMENT_ID",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "wemob",
@@ -230,31 +230,31 @@
           "pid": "interstitial1",
           "ctr": 5,
           "ffc": 1,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
           "type": "interstitial",
-          "pid": "/6499/example/interstitial",
+          "pid": "/200187824/u060507/a316-i-ensp",
           "disable": 0
         },
         {
           "sdk": "applovin",
           "type": "interstitial",
           "pid": "4a885e75685fed5c",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "appnext",
           "type": "interstitial",
           "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "spread",
@@ -265,13 +265,13 @@
           "sdk": "inmobi",
           "type": "interstitial",
           "pid": "1538651605680",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "inneractive",
           "type": "interstitial",
           "pid": "190736",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,
@@ -363,9 +363,9 @@
           "disable": 1
         },
         {
-          "sdk": "adx",
+          "sdk": "dfp",
           "type": "interstitial",
-          "pid": "ca-app-pub-3940256099942544/1033173712",
+          "pid": "/200187824/u060507/a316-i-ensp",
           "dct": 2000,
           "disable": 0
         },

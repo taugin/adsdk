@@ -1,11 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.adsdk.encrypt'
+
 
 def useProject = true;
 
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.hauyu.adsdk.demo"
+        applicationId "win.money.game.luckyday"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
@@ -24,7 +26,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
