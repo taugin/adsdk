@@ -22,6 +22,7 @@ import com.mopub.mobileads.MoPubInterstitial;
 import com.mopub.mobileads.MoPubRewardedVideoListener;
 import com.mopub.mobileads.MoPubRewardedVideos;
 import com.mopub.mobileads.MoPubView;
+import com.mopub.nativeads.FacebookAdRenderer;
 import com.mopub.nativeads.GooglePlayServicesAdRenderer;
 import com.mopub.nativeads.InMobiNativeAdRenderer;
 import com.mopub.nativeads.MoPubAdRenderer;
@@ -704,6 +705,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
                 if (nativeAd.getMoPubAdRenderer() instanceof MoPubVideoNativeAdRenderer
                         || nativeAd.getMoPubAdRenderer() instanceof GooglePlayServicesAdRenderer
+                        || nativeAd.getMoPubAdRenderer() instanceof FacebookAdRenderer
                         || nativeAd.getMoPubAdRenderer() instanceof InMobiNativeAdRenderer) {
                     if (mParams.getAdMediaView() > 0) {
                         View view = adView.findViewById(mParams.getAdMediaView());
