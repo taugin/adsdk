@@ -2,11 +2,15 @@ package com.inner.adsdk.adloader.mopub;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
+import com.facebook.ads.AdIconView;
+import com.facebook.ads.MediaView;
 import com.inner.adsdk.R;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
@@ -243,8 +247,62 @@ public class MopubBindNativeView {
         } else {
             Log.e(Log.TAG, "bindFBRender root layout == 0x0");
         }
-        FacebookAdRenderer render = new FacebookAdRenderer(getStaticViewBinder(context, layout), layout);
+
+        ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
+        MediaView mediaView = createMediaView(context);
+        mediaView.setId(getMediaViewId());
+        coverLayout.addView(mediaView);
+
+        ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
+        adChoiceLayout.setVisibility(View.VISIBLE);
+        RelativeLayout adChoiceRelativeLayout = new RelativeLayout(layout.getContext());
+        adChoiceRelativeLayout.setId(getRelativeLayoutId());
+        adChoiceLayout.addView(adChoiceRelativeLayout);
+
+        AdIconView iconView = createAdIconView(layout.getContext(),
+                (ImageView) layout.findViewById(mParams.getAdIcon()));
+
+        FacebookAdRenderer.FacebookViewBinder binder =
+                new FacebookAdRenderer.FacebookViewBinder.Builder(mParams.getNativeRootLayout())
+                        .titleId(mParams.getAdTitle())
+                        .textId(mParams.getAdDetail())
+                        .advertiserNameId(mParams.getAdSponsored())
+                        .callToActionId(mParams.getAdAction())
+                        .mediaViewId(mediaView.getId())
+                        .adIconViewId(iconView.getId())
+                        .adChoicesRelativeLayoutId(adChoiceRelativeLayout.getId())
+                        .build();
+
+        FacebookAdRenderer render = new FacebookAdRenderer(binder, layout);
         nativeAd.registerAdRenderer(render);
+    }
+
+    private AdIconView createAdIconView(Context context, ImageView icon) {
+        AdIconView iconView = createAdIconView(context);
+        if (icon != null) {
+            iconView.setId(icon.getId());
+            ViewGroup.LayoutParams iconParams = icon.getLayoutParams();
+            android.widget.RelativeLayout.LayoutParams iconViewParams = new android.widget.RelativeLayout.LayoutParams(iconParams.width, iconParams.height);
+            if (iconParams instanceof ViewGroup.MarginLayoutParams) {
+                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams)iconParams;
+                iconViewParams.setMargins(marginParams.leftMargin, marginParams.topMargin, marginParams.rightMargin, marginParams.bottomMargin);
+            }
+            if (iconParams instanceof android.widget.RelativeLayout.LayoutParams) {
+                android.widget.RelativeLayout.LayoutParams mainImageViewRelativeLayoutParams = (android.widget.RelativeLayout.LayoutParams)iconParams;
+                int[] rules = mainImageViewRelativeLayoutParams.getRules();
+
+                for(int i = 0; i < rules.length; ++i) {
+                    iconViewParams.addRule(i, rules[i]);
+                }
+            }
+            ViewGroup viewGroup = (ViewGroup) icon.getParent();
+            if (viewGroup != null) {
+                int index = viewGroup.indexOfChild(icon);
+                viewGroup.removeView(icon);
+                viewGroup.addView(iconView, index, iconViewParams);
+            }
+        }
+        return iconView;
     }
 
     private void bindInmobiRender(Context context, MoPubNative nativeAd) {
@@ -263,6 +321,28 @@ public class MopubBindNativeView {
     private MediaLayout createMediaLayout(Context context) {
         try {
             return new MediaLayout(context);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    private MediaView createMediaView(Context context) {
+        try {
+            return new MediaView(context);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    private AdIconView createAdIconView(Context context) {
+        try {
+            return new AdIconView(context);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         } catch (Error e) {
@@ -294,5 +374,19 @@ public class MopubBindNativeView {
             return View.generateViewId();
         }
         return 0x1000002;
+    }
+
+    private int getRelativeLayoutId() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return View.generateViewId();
+        }
+        return 0x1000003;
+    }
+
+    private int getMediaViewId() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return View.generateViewId();
+        }
+        return 0x1000004;
     }
 }
