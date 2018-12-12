@@ -21,12 +21,13 @@ import com.hauyu.adsdk.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Params;
 import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 
 /**
  * Created by Administrator on 2018/4/26.
  */
 
-public class AdmobBindNativeView {
+public class AdmobBindNativeView extends BaseBindNativeView {
     private Params mParams;
 
     public void bindNative(Params params, ViewGroup adContainer, UnifiedNativeAd nativeAd, PidConfig pidConfig) {
@@ -133,6 +134,14 @@ public class AdmobBindNativeView {
         } catch(Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
+
+        // 恢复icon图标
+        try {
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+
         adView.addView(rootView);
 
         adView.setHeadlineView(rootView.findViewById(mParams.getAdTitle()));
