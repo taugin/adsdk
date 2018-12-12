@@ -119,6 +119,13 @@ public class AppnextBindNativeView {
         }
 
         NativeAdView adView = new NativeAdView(rootView.getContext());
+        try {
+            if (rootView.getParent() != null) {
+                ((ViewGroup) rootView.getParent()).removeView(rootView);
+            }
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
         adView.addView(rootView);
 
         TextView titleView = rootView.findViewById(mParams.getAdTitle());

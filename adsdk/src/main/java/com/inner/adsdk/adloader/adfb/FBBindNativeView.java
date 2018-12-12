@@ -121,6 +121,13 @@ public class FBBindNativeView {
         }
 
         NativeAdLayout adView = new NativeAdLayout(rootView.getContext());
+        try {
+            if (rootView.getParent() != null) {
+                ((ViewGroup) rootView.getParent()).removeView(rootView);
+            }
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
         adView.addView(rootView);
 
         TextView titleView = rootView.findViewById(mParams.getAdTitle());
@@ -242,7 +249,6 @@ public class FBBindNativeView {
         MediaView iconView = null;
         if (icon != null) {
             iconView = createMediaView(context);
-            iconView.setId(icon.getId());
             ViewGroup.LayoutParams iconParams = icon.getLayoutParams();
             android.widget.RelativeLayout.LayoutParams iconViewParams = new android.widget.RelativeLayout.LayoutParams(iconParams.width, iconParams.height);
             if (iconParams instanceof ViewGroup.MarginLayoutParams) {
