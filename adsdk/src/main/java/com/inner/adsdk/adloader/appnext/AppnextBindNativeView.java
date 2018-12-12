@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -70,16 +69,6 @@ public class AppnextBindNativeView {
         Context context = adContainer.getContext();
         View rootView = LayoutInflater.from(context).inflate(layoutId, null);
         bindNativeViewWithTemplate(adContainer, rootView, nativeAd, pidConfig);
-        try {
-            adContainer.removeAllViews();
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -2);
-            adContainer.addView(rootView, params);
-            if (adContainer.getVisibility() != View.VISIBLE) {
-                adContainer.setVisibility(View.VISIBLE);
-            }
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        }
     }
 
     /**
@@ -130,11 +119,7 @@ public class AppnextBindNativeView {
         }
 
         NativeAdView adView = new NativeAdView(rootView.getContext());
-        FrameLayout rootLayout = (FrameLayout) rootView;
-        View childView = rootLayout.getChildAt(0);
-        rootLayout.removeView(childView);
-        adView.addView(childView);
-        rootLayout.addView(adView);
+        adView.addView(rootView);
 
         TextView titleView = rootView.findViewById(mParams.getAdTitle());
         TextView subTitleView = rootView.findViewById(mParams.getAdSubTitle());
@@ -232,7 +217,7 @@ public class AppnextBindNativeView {
         try {
             adContainer.removeAllViews();
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -2);
-            adContainer.addView(rootView, params);
+            adContainer.addView(adView, params);
             if (adContainer.getVisibility() != View.VISIBLE) {
                 adContainer.setVisibility(View.VISIBLE);
             }

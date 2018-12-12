@@ -6,14 +6,12 @@ import android.util.AndroidRuntimeException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.adywind.core.api.Ad;
 import com.adywind.nativeads.api.NativeAds;
-import com.facebook.ads.NativeAd;
 import com.inner.adsdk.R;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
@@ -97,9 +95,6 @@ public class MobvistaBindNativeView {
         }
         if (rootView == null) {
             throw new AndroidRuntimeException("rootView is null");
-        }
-        if (!(rootView instanceof FrameLayout)) {
-            throw new AndroidRuntimeException("Root View must be a FrameLayout");
         }
         try {
             showAdView(rootView, nativeAds, ad, pidConfig);
