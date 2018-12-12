@@ -2,7 +2,6 @@ package com.inner.adsdk.adloader.mopub;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +52,7 @@ public class MopubBindNativeView {
         } else if (cardId > 0) {
             bindNativeWithCard(context, cardId, nativeAd, pidConfig);
         } else {
-            Log.e(Log.TAG, "Can not find Mopub native layout###");
+            Log.e(Log.TAG, "Can not find mopub native layout###");
         }
     }
 

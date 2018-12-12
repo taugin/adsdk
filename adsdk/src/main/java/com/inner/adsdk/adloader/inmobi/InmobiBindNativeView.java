@@ -63,9 +63,6 @@ public class InmobiBindNativeView {
         if (rootView == null) {
             throw new AndroidRuntimeException("rootView is null");
         }
-        if (!(rootView instanceof FrameLayout)) {
-            throw new AndroidRuntimeException("Root View must be a FrameLayout");
-        }
         try {
             showNativeAdView(rootView, nativeAd, pidConfig);
         } catch (Exception e) {
@@ -129,7 +126,7 @@ public class InmobiBindNativeView {
     }
 
     private void showNativeAdView(View rootView, final InMobiNative nativeAd, PidConfig pidConfig) throws Exception {
-        FrameLayout rootLayout = (FrameLayout) rootView;
+        ViewGroup rootLayout = (ViewGroup) rootView;
 
         TextView titleView = rootLayout.findViewById(mParams.getAdTitle());
         ImageView icon = rootLayout.findViewById(mParams.getAdIcon());
