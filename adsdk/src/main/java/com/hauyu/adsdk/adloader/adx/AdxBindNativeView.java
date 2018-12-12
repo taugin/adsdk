@@ -126,6 +126,13 @@ public class AdxBindNativeView {
 
     private View showUnifiedAdView(View rootView, UnifiedNativeAd nativeAd, PidConfig pidConfig) throws Exception {
         UnifiedNativeAdView adView = new UnifiedNativeAdView(rootView.getContext());
+        try {
+            if (rootView.getParent() != null) {
+                ((ViewGroup) rootView.getParent()).removeView(rootView);
+            }
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
         adView.addView(rootView);
 
         adView.setHeadlineView(rootView.findViewById(mParams.getAdTitle()));
