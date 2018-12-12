@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -72,16 +71,6 @@ public class FBBindNativeView {
         Context context = adContainer.getContext();
         View rootView = LayoutInflater.from(context).inflate(layoutId, null);
         bindNativeViewWithTemplate(adContainer, rootView, nativeAd, pidConfig);
-        try {
-            adContainer.removeAllViews();
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -2);
-            adContainer.addView(rootView, params);
-            if (adContainer.getVisibility() != View.VISIBLE) {
-                adContainer.setVisibility(View.VISIBLE);
-            }
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        }
     }
 
     /**
@@ -132,11 +121,7 @@ public class FBBindNativeView {
         }
 
         NativeAdLayout adView = new NativeAdLayout(rootView.getContext());
-        FrameLayout rootLayout = (FrameLayout) rootView;
-        View childView = rootLayout.getChildAt(0);
-        rootLayout.removeView(childView);
-        adView.addView(childView);
-        rootLayout.addView(adView);
+        adView.addView(rootView);
 
         TextView titleView = rootView.findViewById(mParams.getAdTitle());
         TextView subTitleView = rootView.findViewById(mParams.getAdSubTitle());
@@ -166,7 +151,7 @@ public class FBBindNativeView {
         List<View> actionView = new ArrayList<View>();
 
         if (nativeAd != null && nativeAd.isAdLoaded()) {
-            MediaView iconView = createIconView(rootLayout.getContext(), icon);
+            MediaView iconView = createIconView(rootView.getContext(), icon);
 
             // Download and setting the cover image.
             if (mediaCover != null) {
@@ -227,7 +212,7 @@ public class FBBindNativeView {
         try {
             adContainer.removeAllViews();
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -2);
-            adContainer.addView(rootView, params);
+            adContainer.addView(adView, params);
             if (adContainer.getVisibility() != View.VISIBLE) {
                 adContainer.setVisibility(View.VISIBLE);
             }
@@ -254,8 +239,9 @@ public class FBBindNativeView {
     }
 
     private MediaView createIconView(Context context, ImageView icon) {
-        MediaView iconView = createMediaView(context);
+        MediaView iconView = null;
         if (icon != null) {
+            iconView = createMediaView(context);
             iconView.setId(icon.getId());
             ViewGroup.LayoutParams iconParams = icon.getLayoutParams();
             android.widget.RelativeLayout.LayoutParams iconViewParams = new android.widget.RelativeLayout.LayoutParams(iconParams.width, iconParams.height);
