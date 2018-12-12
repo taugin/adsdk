@@ -14,6 +14,7 @@ import com.appnext.nativeads.MediaView;
 import com.appnext.nativeads.NativeAd;
 import com.appnext.nativeads.NativeAdView;
 import com.inner.adsdk.R;
+import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
@@ -27,7 +28,7 @@ import java.util.Random;
  * Created by Administrator on 2018/2/11.
  */
 
-public class AppnextBindNativeView {
+public class AppnextBindNativeView extends BaseBindNativeView {
     private Params mParams;
 
     public void bindAppnextNative(Params params, ViewGroup adContainer, NativeAd nativeAd, PidConfig pidConfig) {
@@ -126,6 +127,14 @@ public class AppnextBindNativeView {
         } catch(Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
+
+        // 恢复icon图标
+        try {
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+
         adView.addView(rootView);
 
         TextView titleView = rootView.findViewById(mParams.getAdTitle());

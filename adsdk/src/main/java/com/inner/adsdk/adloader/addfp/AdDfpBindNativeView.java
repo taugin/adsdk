@@ -17,6 +17,7 @@ import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 import com.inner.adsdk.R;
+import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
@@ -26,7 +27,7 @@ import com.inner.adsdk.log.Log;
  * Created by Administrator on 2018/4/26.
  */
 
-public class AdDfpBindNativeView {
+public class AdDfpBindNativeView extends BaseBindNativeView {
     private Params mParams;
 
     public void bindNative(Params params, ViewGroup adContainer, UnifiedNativeAd nativeAd, PidConfig pidConfig) {
@@ -133,6 +134,14 @@ public class AdDfpBindNativeView {
         } catch(Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
+
+        // 恢复icon图标
+        try {
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+
         adView.addView(rootView);
 
         adView.setHeadlineView(rootView.findViewById(mParams.getAdTitle()));

@@ -16,6 +16,7 @@ import com.facebook.ads.MediaView;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdLayout;
 import com.inner.adsdk.R;
+import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
@@ -29,7 +30,7 @@ import java.util.Random;
  * Created by Administrator on 2018/2/11.
  */
 
-public class FBBindNativeView {
+public class FBBindNativeView extends BaseBindNativeView {
     private Params mParams;
 
     public void bindFBNative(Params params, ViewGroup adContainer, NativeAd nativeAd, PidConfig pidConfig) {
@@ -119,6 +120,12 @@ public class FBBindNativeView {
             Log.v(Log.TAG, "bindNativeViewWithRootView mParams == null");
             return;
         }
+        // 恢复icon图标
+        try {
+            //restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
 
         NativeAdLayout adView = new NativeAdLayout(rootView.getContext());
         try {
@@ -128,6 +135,7 @@ public class FBBindNativeView {
         } catch(Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
+
         adView.addView(rootView);
 
         TextView titleView = rootView.findViewById(mParams.getAdTitle());
@@ -249,6 +257,7 @@ public class FBBindNativeView {
         MediaView iconView = null;
         if (icon != null) {
             iconView = createMediaView(context);
+            iconView.setId(icon.getId());
             ViewGroup.LayoutParams iconParams = icon.getLayoutParams();
             android.widget.RelativeLayout.LayoutParams iconViewParams = new android.widget.RelativeLayout.LayoutParams(iconParams.width, iconParams.height);
             if (iconParams instanceof ViewGroup.MarginLayoutParams) {

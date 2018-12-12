@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.adywind.core.api.Ad;
 import com.adywind.nativeads.api.NativeAds;
 import com.inner.adsdk.R;
+import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
@@ -21,7 +22,7 @@ import com.inner.adsdk.log.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MobvistaBindNativeView {
+public class MobvistaBindNativeView extends BaseBindNativeView {
 
     private Params mParams;
 
@@ -114,6 +115,13 @@ public class MobvistaBindNativeView {
     }
 
     private void showAdView(View rootView, NativeAds nativeAds, Ad ad, PidConfig pidConfig) throws Exception {
+        // 恢复icon图标
+        try {
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+
         TextView titleTextView = rootView.findViewById(mParams.getAdTitle());
         titleTextView.setText(ad.getTitle());
 
