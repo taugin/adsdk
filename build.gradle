@@ -5,11 +5,11 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url 'F:\\workdir\\products\\privaterepo' }
+        // maven { url 'F:\\workdir\\products\\privaterepo' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.0'
-        classpath 'com.adsdk:encrypt:1.0.0'
+        // classpath 'com.adsdk:encrypt:1.0.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

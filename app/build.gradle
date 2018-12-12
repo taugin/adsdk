@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.adsdk.encrypt'
+// apply plugin: 'com.adsdk.encrypt'
 
 
 def useProject = true;
