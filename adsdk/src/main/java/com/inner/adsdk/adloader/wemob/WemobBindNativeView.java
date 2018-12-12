@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.inner.adsdk.R;
+import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
@@ -25,7 +26,7 @@ import java.util.Random;
  * Created by Administrator on 2018/6/8.
  */
 
-public class WemobBindNativeView {
+public class WemobBindNativeView extends BaseBindNativeView {
     private Params mParams;
 
     public void bindWemobNative(Params params, ViewGroup adContainer, NativeAd nativeAd, PidConfig pidConfig) {
@@ -116,6 +117,13 @@ public class WemobBindNativeView {
         if (mParams == null) {
             Log.v(Log.TAG, "bindNativeViewWithRootView mParams == null");
             return;
+        }
+
+        // 恢复icon图标
+        try {
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
 
         TextView titleView = rootView.findViewById(mParams.getAdTitle());

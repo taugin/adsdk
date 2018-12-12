@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.inmobi.ads.InMobiNative;
 import com.inner.adsdk.R;
+import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
@@ -26,7 +27,7 @@ import java.util.List;
  * Created by Administrator on 2018/4/26.
  */
 
-public class InmobiBindNativeView {
+public class InmobiBindNativeView extends BaseBindNativeView {
     private Params mParams;
 
     public void bindNative(Params params, ViewGroup adContainer, InMobiNative nativeAd, PidConfig pidConfig) {
@@ -126,6 +127,13 @@ public class InmobiBindNativeView {
     }
 
     private void showNativeAdView(View rootView, final InMobiNative nativeAd, PidConfig pidConfig) throws Exception {
+        // 恢复icon图标
+        try {
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+
         ViewGroup rootLayout = (ViewGroup) rootView;
 
         TextView titleView = rootLayout.findViewById(mParams.getAdTitle());
