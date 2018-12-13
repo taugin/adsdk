@@ -125,13 +125,13 @@ public class AdReceiver {
                 showLs();
             } else if (Intent.ACTION_CLOSE_SYSTEM_DIALOGS.equals(intent.getAction())) {
                 String reason = intent.getStringExtra("reason");
-                if ("homekey".equals(reason)) {
+                if ("homekey".equals(reason) || "recentapps".equals(reason)) {
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             homeKeyPressed();
                         }
-                    }, 1000);
+                    }, 500);
                 }
             } else if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())
                     || (getAlarmAction() + "_CONNECT").equals(intent.getAction())) {

@@ -2,7 +2,6 @@ package com.inner.adsdk.adloader.mopub;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.facebook.ads.AdIconView;
 import com.facebook.ads.MediaView;
 import com.inner.adsdk.R;
+import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
@@ -29,7 +29,7 @@ import com.mopub.nativeads.ViewBinder;
  * Created by Administrator on 2018/2/11.
  */
 
-public class MopubBindNativeView {
+public class MopubBindNativeView extends BaseBindNativeView {
     private Params mParams;
 
     public void bindMopubNative(Params params, Context context, MoPubNative nativeAd, PidConfig pidConfig) {
@@ -53,7 +53,7 @@ public class MopubBindNativeView {
         } else if (cardId > 0) {
             bindNativeWithCard(context, cardId, nativeAd, pidConfig);
         } else {
-            Log.e(Log.TAG, "Can not find Mopub native layout###");
+            Log.e(Log.TAG, "Can not find mopub native layout###");
         }
     }
 
@@ -116,6 +116,13 @@ public class MopubBindNativeView {
         if (mParams == null) {
             Log.v(Log.TAG, "bindNativeViewWithRootView mParams == null");
             return;
+        }
+
+        // 恢复icon图标
+        try {
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
 
         try {

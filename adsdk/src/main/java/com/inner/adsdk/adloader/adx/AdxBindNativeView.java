@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -18,6 +17,7 @@ import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 import com.inner.adsdk.R;
+import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
@@ -27,7 +27,7 @@ import com.inner.adsdk.log.Log;
  * Created by Administrator on 2018/4/26.
  */
 
-public class AdxBindNativeView {
+public class AdxBindNativeView extends BaseBindNativeView {
     private Params mParams;
 
     public void bindNative(Params params, ViewGroup adContainer, UnifiedNativeAd nativeAd, PidConfig pidConfig) {
@@ -64,18 +64,16 @@ public class AdxBindNativeView {
         if (rootView == null) {
             throw new AndroidRuntimeException("rootView is null");
         }
-        if (!(rootView instanceof FrameLayout)) {
-            throw new AndroidRuntimeException("Root View must be a FrameLayout");
-        }
+        View view = null;
         try {
-            showUnifiedAdView(rootView, nativeAd, pidConfig);
+            view = showUnifiedAdView(rootView, nativeAd, pidConfig);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
         try {
             adContainer.removeAllViews();
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -2);
-            adContainer.addView(rootView, params);
+            adContainer.addView(view, params);
             if (adContainer.getVisibility() != View.VISIBLE) {
                 adContainer.setVisibility(View.VISIBLE);
             }
@@ -100,9 +98,6 @@ public class AdxBindNativeView {
         if (rootView == null) {
             throw new AndroidRuntimeException("rootView is null");
         }
-        if (!(rootView instanceof FrameLayout)) {
-            throw new AndroidRuntimeException("Root View must be a FrameLayout");
-        }
         mParams.setAdTitle(R.id.native_title);
         mParams.setAdSubTitle(R.id.native_sub_title);
         mParams.setAdSocial(R.id.native_social);
@@ -112,15 +107,16 @@ public class AdxBindNativeView {
         mParams.setAdCover(R.id.native_image_cover);
         mParams.setAdChoices(R.id.native_ad_choices_container);
         mParams.setAdMediaView(R.id.native_media_cover);
+        View view = null;
         try {
-            showUnifiedAdView(rootView, nativeAd, pidConfig);
+            view = showUnifiedAdView(rootView, nativeAd, pidConfig);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
         try {
             adContainer.removeAllViews();
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -2);
-            adContainer.addView(rootView, params);
+            adContainer.addView(view, params);
             if (adContainer.getVisibility() != View.VISIBLE) {
                 adContainer.setVisibility(View.VISIBLE);
             }
@@ -129,13 +125,24 @@ public class AdxBindNativeView {
         }
     }
 
-    private void showUnifiedAdView(View rootView, UnifiedNativeAd nativeAd, PidConfig pidConfig) throws Exception {
+    private View showUnifiedAdView(View rootView, UnifiedNativeAd nativeAd, PidConfig pidConfig) throws Exception {
         UnifiedNativeAdView adView = new UnifiedNativeAdView(rootView.getContext());
-        FrameLayout rootLayout = (FrameLayout) rootView;
-        View childView = rootLayout.getChildAt(0);
-        rootLayout.removeView(childView);
-        adView.addView(childView);
-        rootLayout.addView(adView);
+        try {
+            if (rootView.getParent() != null) {
+                ((ViewGroup) rootView.getParent()).removeView(rootView);
+            }
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+
+        // 恢复icon图标
+        try {
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+
+        adView.addView(rootView);
 
         adView.setHeadlineView(rootView.findViewById(mParams.getAdTitle()));
         adView.setImageView(adView.findViewById(mParams.getAdCover()));
@@ -233,6 +240,7 @@ public class AdxBindNativeView {
             Log.e(Log.TAG, "error : " + e, e);
         }
         adView.setNativeAd(nativeAd);
+        return adView;
     }
 
     private MediaView createMediaView(Context context) {
