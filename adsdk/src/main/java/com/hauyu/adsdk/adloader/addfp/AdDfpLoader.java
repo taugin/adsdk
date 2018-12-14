@@ -51,7 +51,8 @@ public class AdDfpLoader extends AbstractSdkLoader {
     private Params mParams;
     private PublisherAdView loadingView;
     private AdLoader.Builder loadingBuilder;
-    private RewardedVideoAd rewardedVideoAd;
+    private RewardedVideoAd loadingRewardVideo;
+    private RewardedVideoAd loadedRewardVideo;
 
     private PublisherAdView gBannerView;
     private UnifiedNativeAd gNativeAd;
@@ -540,20 +541,21 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 return;
             } else {
                 Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (rewardedVideoAd != null) {
-                    rewardedVideoAd.setRewardedVideoAdListener(null);
-                    clearCachedAdTime(rewardedVideoAd);
+                if (loadingRewardVideo != null) {
+                    loadingRewardVideo.setRewardedVideoAdListener(null);
+                    clearCachedAdTime(loadingRewardVideo);
                 }
             }
         }
         setLoading(true, STATE_REQUEST);
-        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext);
-        rewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+        loadingRewardVideo = MobileAds.getRewardedVideoAdInstance(mContext);
+        loadingRewardVideo.setRewardedVideoAdListener(new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(interstitialAd);
+                loadedRewardVideo = loadingRewardVideo;
+                putCachedAdTime(loadedRewardVideo);
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
@@ -640,7 +642,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 }
             }
         });
-        rewardedVideoAd.loadAd(mPidConfig.getPid(), new PublisherAdRequest.Builder().build());
+        loadingRewardVideo.loadAd(mPidConfig.getPid(), new PublisherAdRequest.Builder().build());
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
@@ -650,8 +652,8 @@ public class AdDfpLoader extends AbstractSdkLoader {
     @Override
     public boolean isRewaredVideoLoaded() {
         boolean loaded = super.isInterstitialLoaded();
-        if (rewardedVideoAd != null) {
-            loaded = rewardedVideoAd.isLoaded() && !isCachedAdExpired(rewardedVideoAd);
+        if (loadedRewardVideo != null) {
+            loaded = loadedRewardVideo.isLoaded() && !isCachedAdExpired(loadedRewardVideo);
         }
         if (loaded) {
             Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
@@ -661,10 +663,10 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showRewardedVideo() {
-        if (rewardedVideoAd != null && rewardedVideoAd.isLoaded()) {
-            rewardedVideoAd.show();
-            clearCachedAdTime(rewardedVideoAd);
-            rewardedVideoAd = null;
+        if (loadedRewardVideo != null && loadedRewardVideo.isLoaded()) {
+            loadedRewardVideo.show();
+            clearCachedAdTime(loadedRewardVideo);
+            loadedRewardVideo = null;
             if (mStat != null) {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }

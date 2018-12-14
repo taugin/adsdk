@@ -48,7 +48,8 @@ public class AdmobLoader extends AbstractSdkLoader {
     private AdView bannerView;
     private AdView loadingView;
     private InterstitialAd interstitialAd;
-    private RewardedVideoAd rewardedVideoAd;
+    private RewardedVideoAd loadingRewardVideo;
+    private RewardedVideoAd loadedRewardVideo;
     private AdLoader.Builder loadingBuilder;
     private UnifiedNativeAd nativeAd;
     private Params mParams;
@@ -395,20 +396,21 @@ public class AdmobLoader extends AbstractSdkLoader {
                 return;
             } else {
                 Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (rewardedVideoAd != null) {
-                    rewardedVideoAd.setRewardedVideoAdListener(null);
-                    clearCachedAdTime(rewardedVideoAd);
+                if (loadingRewardVideo != null) {
+                    loadingRewardVideo.setRewardedVideoAdListener(null);
+                    clearCachedAdTime(loadingRewardVideo);
                 }
             }
         }
         setLoading(true, STATE_REQUEST);
-        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(mContext);
-        rewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+        loadingRewardVideo = MobileAds.getRewardedVideoAdInstance(mContext);
+        loadingRewardVideo.setRewardedVideoAdListener(new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(interstitialAd);
+                loadedRewardVideo = loadingRewardVideo;
+                putCachedAdTime(loadedRewardVideo);
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
@@ -495,7 +497,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
             }
         });
-        rewardedVideoAd.loadAd(mPidConfig.getPid(), new AdRequest.Builder().build());
+        loadingRewardVideo.loadAd(mPidConfig.getPid(), new AdRequest.Builder().build());
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
@@ -504,9 +506,9 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isRewaredVideoLoaded() {
-        boolean loaded = super.isInterstitialLoaded();
-        if (rewardedVideoAd != null) {
-            loaded = rewardedVideoAd.isLoaded() && !isCachedAdExpired(rewardedVideoAd);
+        boolean loaded = super.isRewaredVideoLoaded();
+        if (loadedRewardVideo != null) {
+            loaded = loadedRewardVideo.isLoaded() && !isCachedAdExpired(loadedRewardVideo);
         }
         if (loaded) {
             Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
@@ -516,10 +518,10 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showRewardedVideo() {
-        if (rewardedVideoAd != null && rewardedVideoAd.isLoaded()) {
-            rewardedVideoAd.show();
-            clearCachedAdTime(rewardedVideoAd);
-            rewardedVideoAd = null;
+        if (loadedRewardVideo != null && loadedRewardVideo.isLoaded()) {
+            loadedRewardVideo.show();
+            clearCachedAdTime(loadedRewardVideo);
+            loadedRewardVideo = null;
             if (mStat != null) {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
@@ -684,8 +686,8 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (bannerView != null) {
             bannerView.resume();
         }
-        if (rewardedVideoAd != null) {
-            rewardedVideoAd.resume(mContext);
+        if (loadingRewardVideo != null) {
+            loadingRewardVideo.resume(mContext);
         }
     }
 
@@ -694,8 +696,8 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (bannerView != null) {
             bannerView.pause();
         }
-        if (rewardedVideoAd != null) {
-            rewardedVideoAd.pause(mContext);
+        if (loadingRewardVideo != null) {
+            loadingRewardVideo.pause(mContext);
         }
     }
 
