@@ -518,7 +518,8 @@ public class FSA extends Activity {
             rootLayout.addView(adLayout, -1, -1);
 
             ImageView imageView = generateCloseView();
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-2, -2);
+            int size = Utils.dp2px(this, 28);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
             int margin = dp2px(this, 8);
             params.setMargins(margin, margin, margin, margin);
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
