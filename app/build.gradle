@@ -1,7 +1,10 @@
 apply plugin: 'com.android.application'
+apply from: '../encrypt.gradle'
 
 def useProject = true;
-
+ext {
+    encryptFiles = ["spconfig"]
+}
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -24,12 +27,24 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
         debug {
             signingConfig signingConfigs.config
+        }
+    }
+    flavorDimensions "color"
+
+    productFlavors {
+        google {
+            dimension "color"
+            applicationId "com.inner.adsdk.demo.google"
+        }
+        amazon {
+            dimension "color"
+            applicationId "com.inner.adsdk.demo.amazon"
         }
     }
 }
