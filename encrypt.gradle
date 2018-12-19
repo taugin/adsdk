@@ -19,7 +19,7 @@ project.afterEvaluate {
         project.android.productFlavors.each { flavor ->
             def productFlavor = toUpperCaseFirstOne(flavor.name)
             String taskName = String.format("transformResourcesWithMergeJavaResFor%sRelease", productFlavor)
-            def rTask = project.tasks.getByName(taskName)
+            def rTask = project.tasks.findByName(taskName)
             if (rTask != null) {
                 String encryptTaskName = String.format("encrypt%sRelease", productFlavor)
                 project.tasks.create(encryptTaskName, {
@@ -31,7 +31,7 @@ project.afterEvaluate {
             }
         }
     } else {
-        def rTask = project.tasks.getByName("transformResourcesWithMergeJavaResForRelease")
+        def rTask = project.tasks.findByName("transformResourcesWithMergeJavaResForRelease")
         if (rTask != null) {
             String encryptRelease = "encryptRelease"
             project.tasks.create(encryptRelease, {
