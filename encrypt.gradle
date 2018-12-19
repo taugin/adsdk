@@ -46,14 +46,14 @@ project.afterEvaluate {
 
 /**
  * 获取applicationId
- * @param flaver
+ * @param flavor
  * @return
  */
-def getApplicationId(flaver) {
-    if (flaver == null || flaver.trim().length() == 0) {
+def getApplicationId(flavor) {
+    if (flavor == null || flavor.trim().length() == 0) {
         return project.android.defaultConfig.applicationId
     }
-    def productFlavor = project.android.productFlavors[flaver]
+    def productFlavor = project.android.productFlavors[flavor]
     if (productFlavor.applicationId == null) {
         return project.android.defaultConfig.applicationId
     }
@@ -62,14 +62,14 @@ def getApplicationId(flaver) {
 
 /**
  * 获取assets输出目录
- * @param flaver
+ * @param flavor
  * @return
  */
-def getAssetsOutDir(flaver) {
-    def productFlaver = toUpperCaseFirstOne(flaver)
-    def flaverNoSlash = productFlaver == null ? "" : productFlaver;
-    def outAssetsDir = String.format("intermediates/assets/%s/release", flaverNoSlash)
-    def mergeAssetsDir = String.format("intermediates/merged_assets/%srelease/merge%sReleaseAssets/out", flaverNoSlash, flaverNoSlash)
+def getAssetsOutDir(flavor) {
+    def productFlaver = toUpperCaseFirstOne(flavor)
+    def flavorNoSlash = productFlaver == null ? "" : productFlaver;
+    def outAssetsDir = String.format("intermediates/assets/%s/release", flavorNoSlash)
+    def mergeAssetsDir = String.format("intermediates/merged_assets/%srelease/merge%sReleaseAssets/out", flavorNoSlash, flavorNoSlash)
     outAssetsDir = new File(project.getBuildDir(), outAssetsDir)
     mergeAssetsDir = new File(project.getBuildDir(), mergeAssetsDir)
     if (outAssetsDir.exists()) {
@@ -119,22 +119,69 @@ def getEncryptFileTree(assetDir) {
     return null
 }
 
+def getSignConfig(flavor) {
+    def signConfig = null
+    if (flavor == null) {
+        try {
+            signConfig = project.android.buildTypes.release.signingConfig
+        } catch (Exception e) {
+        }
+    } else {
+        try {
+            signConfig = project.android.productFlavors[flavor].signingConfig
+        } catch (Exception e) {
+        }
+    }
+    return signConfig
+}
+
+/**
+ * 生成签名的md5文件，一边验证是否被重打包
+ * @param assetDir
+ */
+def generateSignMd5(flavor, assetDir) {
+    def signConfig = getSignConfig(flavor)
+    def signMd5 = null
+    if (signConfig != null && signConfig.hasProperty("storeFile") && signConfig.hasProperty("storePassword")) {
+        def cmdString = String.format("keytool -v -list -keystore %s -storepass %s", signConfig.storeFile, signConfig.storePassword)
+        def result = cmdString.execute().text.trim()
+        BufferedReader br = new BufferedReader(new StringReader(result))
+        try {
+            def line = null
+            while((line = br.readLine()) != null) {
+                if (line.trim().startsWith("MD5:") || line.trim().startsWith("md5:")) {
+                    signMd5 = line.trim().substring("MD5:".length()).trim()
+                    break;
+                }
+            }
+        } catch(Exception e) {
+        }
+    }
+    if (signMd5 != null && signMd5.trim().length() > 0) {
+        signMd5 = signMd5.replaceAll(":", "")
+        signMd5 = signMd5.toLowerCase()
+    }
+    println "signMd5 : " + signMd5
+    return null
+}
+
 /**
  * 加密asset文件
- * @param flaver
+ * @param flavor
  * @return
  */
-def encryptAssetsFiles(flaver) {
+def encryptAssetsFiles(flavor) {
     def secret = ext != null && ext.has("secret") ? ext["secret"] : "123456789"
-    def appId = getApplicationId(flaver)
-    def assetDir = getAssetsOutDir(flaver)
+    def appId = getApplicationId(flavor)
+    def assetDir = getAssetsOutDir(flavor)
     if (assetDir == null) {
         System.err.println("[ERROR] Can not find the output Asset Dir");
         return;
     }
+    def signFile = generateSignMd5(flavor, assetDir)
     def adFile = getAdConfigFile(assetDir, appId);
     def mainTree = getEncryptFileTree(assetDir)
-    // println "flaver     : " + flaver
+    // println "flavor     : " + flavor
     // println "appId      : " + appId
     // println "secret     : " + secret
     // println "assetDir   : " + assetDir
