@@ -5,6 +5,9 @@ import java.security.MessageDigest
 
 
 def toUpperCaseFirstOne(String s) {
+    if (s == null) {
+        return null
+    }
     if (Character.isUpperCase(s.charAt(0))) {
         return s;
     }
@@ -63,8 +66,10 @@ def getApplicationId(flaver) {
  * @return
  */
 def getAssetsOutDir(flaver) {
-    def outAssetsDir = String.format("intermediates/assets/%srelease", flaver == null ? "" : flaver + "/")
-    def mergeAssetsDir = String.format("intermediates/merged_assets/%srelease/mergeReleaseAssets/out", flaver == null ? "" : flaver + "/")
+    def productFlaver = toUpperCaseFirstOne(flaver)
+    def flaverNoSlash = productFlaver == null ? "" : productFlaver;
+    def outAssetsDir = String.format("intermediates/assets/%s/release", flaverNoSlash)
+    def mergeAssetsDir = String.format("intermediates/merged_assets/%srelease/merge%sReleaseAssets/out", flaverNoSlash, flaverNoSlash)
     outAssetsDir = new File(project.getBuildDir(), outAssetsDir)
     mergeAssetsDir = new File(project.getBuildDir(), mergeAssetsDir)
     if (outAssetsDir.exists()) {
@@ -96,6 +101,11 @@ def getAdConfigFile(assetsDir, appId) {
     return null
 }
 
+/**
+ * 获取待加密的文件树
+ * @param assetDir
+ * @return
+ */
 def getEncryptFileTree(assetDir) {
     def output = ext != null && ext.has("encryptFiles") ? ext.encryptFiles : null
     if (output != null) {
@@ -120,6 +130,7 @@ def encryptAssetsFiles(flaver) {
     def assetDir = getAssetsOutDir(flaver)
     if (assetDir == null) {
         System.err.println("[ERROR] Can not find the output Asset Dir");
+        return;
     }
     def adFile = getAdConfigFile(assetDir, appId);
     def mainTree = getEncryptFileTree(assetDir)
@@ -128,7 +139,11 @@ def encryptAssetsFiles(flaver) {
     // println "secret     : " + secret
     // println "assetDir   : " + assetDir
     println "encrypt file : " + adFile
-    Aes.encryptFile(adFile, secret)
+    try {
+        Aes.encryptFile(adFile, secret)
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
     if (mainTree != null) {
         mainTree.each { File file ->
             println "encrypt file : " + file
@@ -141,14 +156,14 @@ def encryptAssetsFiles(flaver) {
     }
 }
 
-public class Aes {
+class Aes {
     private static void appendHex(StringBuffer paramStringBuffer, byte paramByte) {
         paramStringBuffer.append(
                 "0123456789ABCDEF".charAt(0xF & paramByte >> 4)).append(
                 "0123456789ABCDEF".charAt(paramByte & 0xF));
     }
 
-    public static String decrypt(String key, String content) {
+    static String decrypt(String key, String content) {
         try {
             String str = new String(decrypt(getRawKey(key.getBytes()),
                     toByte(content)));
@@ -159,8 +174,8 @@ public class Aes {
         return null;
     }
 
-    public static byte[] decrypt(byte[] key,
-                                 byte[] content) throws Exception {
+    static byte[] decrypt(byte[] key,
+                          byte[] content) throws Exception {
         SecretKeySpec localSecretKeySpec = new SecretKeySpec(key,
                 "AES");
         Cipher localCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -169,7 +184,7 @@ public class Aes {
         return localCipher.doFinal(content);
     }
 
-    public static String decryptRaw(String seed, byte[] content) {
+    static String decryptRaw(String seed, byte[] content) {
         try {
             String str = new String(
                     decrypt(getRawKey(seed.getBytes()), content));
@@ -180,7 +195,7 @@ public class Aes {
         return null;
     }
 
-    public static String encryptPublic(String key, String content) {
+    static String encryptPublic(String key, String content) {
         try {
             byte[] result = encrypt(getRawKey(key.getBytes()),
                     content.getBytes());
@@ -200,7 +215,7 @@ public class Aes {
         return localCipher.doFinal(content);
     }
 
-    public static byte[] encryptRaw(String key, String content) {
+    static byte[] encryptRaw(String key, String content) {
         try {
             byte[] arrayOfByte = encrypt(getRawKey(key.getBytes()),
                     content.getBytes());
@@ -211,7 +226,7 @@ public class Aes {
         return null;
     }
 
-    public static String fromHex(String content) {
+    static String fromHex(String content) {
         return new String(toByte(content));
     }
 
@@ -235,7 +250,7 @@ public class Aes {
         return arrayOfByte;
     }
 
-    public static byte[] toByte(String content) {
+    static byte[] toByte(String content) {
         int i = content.length() / 2;
         byte[] arrayOfByte = new byte[i];
         for (int j = 0; j < i; j++)
@@ -244,11 +259,11 @@ public class Aes {
         return arrayOfByte;
     }
 
-    public static String toHex(String content) {
+    static String toHex(String content) {
         return toHex(content.getBytes());
     }
 
-    public static String toHex(byte[] content) {
+    static String toHex(byte[] content) {
         if (content == null)
             return "";
         StringBuffer localStringBuffer = new StringBuffer(
@@ -302,7 +317,7 @@ public class Aes {
         return false;
     }
 
-    public static void encryptFile(String originFile, String secret) {
+    static void encryptFile(String originFile, String secret) {
         try {
             String encrypt = encryptPublic(secret, readFromFile(new File(originFile))); //加密
             writeToFile(new File(originFile), encrypt);
@@ -311,7 +326,7 @@ public class Aes {
         }
     }
 
-    public static String byte2MD5(byte[] byteArray) {
+    static String byte2MD5(byte[] byteArray) {
         MessageDigest md5 = null;
         try {
             md5 = MessageDigest.getInstance("MD5");
@@ -331,11 +346,11 @@ public class Aes {
         return hexValue.toString();
     }
 
-    public static String string2MD5(String source) {
+    static String string2MD5(String source) {
         return string2MD5(source, "utf-8");
     }
 
-    public static String string2MD5(String source, String encode) {
+    static String string2MD5(String source, String encode) {
         try {
             return byte2MD5(source.getBytes(encode));
         } catch (Exception e) {
