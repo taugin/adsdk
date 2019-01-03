@@ -421,6 +421,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             incentivizedInterstitial.show(mContext, new AppLovinAdRewardListener() {
                 @Override
                 public void userRewardVerified(AppLovinAd appLovinAd, Map<String, String> map) {
+                    Log.v(Log.TAG, "");
                     AdReward item = null;
                     try {
                         String currencyName = (String) map.get("currency");
