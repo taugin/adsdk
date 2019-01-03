@@ -4,6 +4,11 @@ import javax.crypto.spec.SecretKeySpec
 import java.security.MessageDigest
 
 
+/**
+ * 首字母转大写
+ * @param s
+ * @return
+ */
 def toUpperCaseFirstOne(String s) {
     if (s == null) {
         return null
@@ -15,7 +20,7 @@ def toUpperCaseFirstOne(String s) {
 }
 
 project.afterEvaluate {
-    if (project.android.productFlavors.size() > 0) {
+    if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
             def productFlavor = toUpperCaseFirstOne(flavor.name)
             String taskName = String.format("transformResourcesWithMergeJavaResFor%sRelease", productFlavor)
@@ -30,7 +35,7 @@ project.afterEvaluate {
                 rTask.dependsOn encryptTaskName
             }
         }
-    } else {
+    } else { // 无产品风味
         def rTask = project.tasks.findByName("transformResourcesWithMergeJavaResForRelease")
         if (rTask != null) {
             String encryptRelease = "encryptRelease"
@@ -119,6 +124,11 @@ def getEncryptFileTree(assetDir) {
     return null
 }
 
+/**
+ * 获取签名信息
+ * @param flavor
+ * @return
+ */
 def getSignConfig(flavor) {
     def signConfig = null
     if (flavor == null) {
