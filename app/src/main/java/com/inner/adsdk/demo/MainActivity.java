@@ -1,10 +1,12 @@
 package com.inner.adsdk.demo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.inner.adsdk.AdExtra;
@@ -42,15 +45,27 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MA";
     private Context mContext;
     private RelativeLayout mNativeBannerLayout;
+    private TextView mRewardCount;
+    private View mShowReward;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mRewardCount = findViewById(R.id.reward_count);
+        mShowReward = findViewById(R.id.show_reward);
+        mShowReward.setEnabled(false);
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = this;
         AdSdk.get(mContext).init();
+        RewardManager.get(mContext).registerListener(mOnRewardListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RewardManager.get(mContext).unregisterListener(mOnRewardListener);
     }
 
     private boolean hasEnable() {
@@ -80,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
             loadAdViewCommon();
         } else if (v.getId() == R.id.reward_video) {
             AdSdk.get(this).loadInterstitial("reward_video", mSimpleAdsdkListener);
+        } else if (v.getId() == R.id.show_reward) {
+            RewardManager.get(mContext).showReward();
         }
     }
 
@@ -190,11 +207,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mOnRewardListener.onRefresh(RewardManager.get(mContext).isRewardLoaded());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        mOnRewardListener.onRefresh(RewardManager.get(mContext).isRewardLoaded());
     }
 
     private void runToast(final String toast) {
@@ -260,6 +279,58 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onStarted(String pidName, String source, String adType) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+        }
+    };
+
+
+    private RewardManager.OnRewardListener mOnRewardListener = new RewardManager.OnRewardListener() {
+        @Override
+        public void onRefresh(boolean adLoaded) {
+            mShowReward.setEnabled(adLoaded);
+        }
+
+        @Override
+        public void onReward() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Reward has complete");
+            builder.setMessage("Congratulations");
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    try {
+                        int count = Integer.parseInt(mRewardCount.getText().toString());
+                        mRewardCount.setText(String.valueOf(count + 1));
+                    } catch (Exception e) {
+                        Log.e(Log.TAG, "error : " + e, e);
+                    }
+                }
+            });
+            builder.create().show();
+        }
+
+        @Override
+        public void onDismiss() {
+
+        }
+
+        @Override
+        public void onClick() {
+
+        }
+
+        @Override
+        public void onNoReward() {
+
+        }
+
+        @Override
+        public void onShow() {
+
+        }
+
+        @Override
+        public void onLoaded() {
+
         }
     };
 }

@@ -331,8 +331,8 @@
       "percent": 100
     },
     {
-      "name": "reward_video",
-      "mode": "con",
+      "name": "reward_place1",
+      "mode": "seq",
       "pids": [
         {
           "sdk": "admob",
@@ -350,13 +350,7 @@
           "sdk": "mopub",
           "type": "reward",
           "pid": "920b6145fb1546cf8b5cf2ac34638bb7",
-          "disable": 1
-        },
-        {
-          "sdk": "appnext",
-          "type": "reward",
-          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",
@@ -369,7 +363,7 @@
           "type": "reward",
           "aid": "3a7c9443ab95449084eb270ee0154fcd",
           "pid": "1541432243676",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,

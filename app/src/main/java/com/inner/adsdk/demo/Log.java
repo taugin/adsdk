@@ -73,6 +73,15 @@ public class Log {
         }
     }
 
+    public static void e(String tag, String message, Throwable e) {
+        tag = checkLogTag(tag);
+        if (isLoggable(tag, ERROR)) {
+            String extraString = getMethodNameAndLineNumber();
+            tag = privateTag() ? tag : getTag();
+            android.util.Log.e(tag, extraString + message, e);
+        }
+    }
+
     private static boolean privateTag() {
         return GLOBAL_TAG;
     }
