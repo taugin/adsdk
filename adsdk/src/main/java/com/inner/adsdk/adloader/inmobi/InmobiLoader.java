@@ -447,7 +447,6 @@ public class InmobiLoader extends AbstractSdkLoader {
         mInMobiRewardVideo = new InMobiInterstitial(getContext(), lPid, new InterstitialAdEventListener() {
             @Override
             public void onAdLoadSucceeded(InMobiInterstitial inMobiInterstitial) {
-                super.onAdLoadSucceeded(inMobiInterstitial);
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 if (mStat != null) {
@@ -461,7 +460,6 @@ public class InmobiLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdLoadFailed(InMobiInterstitial inMobiInterstitial, InMobiAdRequestStatus inMobiAdRequestStatus) {
-                super.onAdLoadFailed(inMobiInterstitial, inMobiAdRequestStatus);
                 String error = inMobiAdRequestStatus == null ? "" : inMobiAdRequestStatus.getMessage();
                 Log.v(Log.TAG, "reason : " + error + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
@@ -475,7 +473,6 @@ public class InmobiLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdClicked(InMobiInterstitial inMobiInterstitial, Map<Object, Object> map) {
-                super.onAdClicked(inMobiInterstitial, map);
                 Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClicked();
@@ -490,7 +487,6 @@ public class InmobiLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdDisplayed(InMobiInterstitial inMobiInterstitial) {
-                super.onAdDisplayed(inMobiInterstitial);
                 Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoStarted();
@@ -505,7 +501,6 @@ public class InmobiLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdDismissed(InMobiInterstitial inMobiInterstitial) {
-                super.onAdDismissed(inMobiInterstitial);
                 Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClosed();
@@ -514,16 +509,12 @@ public class InmobiLoader extends AbstractSdkLoader {
 
             @Override
             public void onUserLeftApplication(InMobiInterstitial inMobiInterstitial) {
-                super.onUserLeftApplication(inMobiInterstitial);
+                Log.v(Log.TAG, "");
             }
 
             @Override
             public void onRewardsUnlocked(InMobiInterstitial inMobiInterstitial, Map<Object, Object> map) {
-                super.onRewardsUnlocked(inMobiInterstitial, map);
-                Log.v(Log.TAG, "onRewardsUnlocked");
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoCompleted();
-                }
+                Log.v(Log.TAG, "");
                 if (getAdListener() != null && map != null && map.size() > 0) {
                     try {
                         AdReward adReward = new AdReward();
@@ -536,6 +527,9 @@ public class InmobiLoader extends AbstractSdkLoader {
                         getAdListener().onRewarded(adReward);
                     } catch (Exception e) {
                     }
+                }
+                if (getAdListener() != null) {
+                    getAdListener().onRewardedVideoCompleted();
                 }
             }
         });
