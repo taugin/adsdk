@@ -438,14 +438,17 @@ public class GlobalCacheLoader implements Handler.Callback {
      * @return
      */
     private int getLoadedCount() {
-        synchronized (mLoadedAdPlaces) {
-            checkRewardStatus();
-            int count = mLoadedAdPlaces != null ? mLoadedAdPlaces.size() : 0;
-            if (BuildConfig.DEBUG) {
-                Log.v(Log.TAG, "count : " + count);
+        if (mAllAdPlaces != null && !mAllAdPlaces.isEmpty()) {
+            synchronized (mLoadedAdPlaces) {
+                checkRewardStatus();
+                int count = mLoadedAdPlaces != null ? mLoadedAdPlaces.size() : 0;
+                if (BuildConfig.DEBUG) {
+                    Log.v(Log.TAG, "count : " + count);
+                }
+                return count;
             }
-            return count;
         }
+        return 0;
     }
 
     public boolean isRewardLoaded() {
