@@ -134,6 +134,7 @@ public class GlobalCacheLoader implements Handler.Callback {
         if (Utils.isScreenOn(mContext)
                 && !Utils.isScreenLocked(mContext)
                 && ActivityMonitor.get(mContext).appOnTop()
+                && hasListeners()
                 && isNeedLoadReward()) {
             synchronized (mAllAdPlaces) {
                 if (mAllAdPlaces != null && !mAllAdPlaces.isEmpty()) {
@@ -244,6 +245,10 @@ public class GlobalCacheLoader implements Handler.Callback {
 
     private boolean isNeedLoadReward() {
         return getLoadedCount() < mCoreAdCount;
+    }
+
+    private boolean hasListeners() {
+        return mListeners != null && !mListeners.isEmpty();
     }
 
     private class AdSdkCallback extends SimpleAdSdkListener {
