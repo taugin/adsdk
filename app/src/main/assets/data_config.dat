@@ -332,6 +332,7 @@
     },
     {
       "name": "reward_place1",
+      "gc":1,
       "mode": "seq",
       "pids": [
         {
@@ -341,11 +342,17 @@
           "disable": 1
         },
         {
-          "sdk": "applovin",
+          "sdk": "fb",
           "type": "reward",
-          "pid": "8a60714b81a59889",
-          "disable": 1
+          "pid": "YOUR_PLACEMENT_ID",
+          "disable": 0
         },
+         {
+           "sdk": "applovin",
+           "type": "reward",
+           "pid": "8a60714b81a59889",
+           "disable": 1
+         },
         {
           "sdk": "mopub",
           "type": "reward",

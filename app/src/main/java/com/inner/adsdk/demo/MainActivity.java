@@ -24,6 +24,7 @@ import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdReward;
 import com.inner.adsdk.AdSdk;
+import com.inner.adsdk.listener.OnAdRewardListener;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.utils.Utils;
 
@@ -59,13 +60,13 @@ public class MainActivity extends AppCompatActivity {
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = this;
         AdSdk.get(mContext).init();
-        RewardManager.get(mContext).registerListener(mOnRewardListener);
+        AdSdk.get(mContext).registerListener(mOnAdRewardListener);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RewardManager.get(mContext).unregisterListener(mOnRewardListener);
+        AdSdk.get(mContext).unregisterListener(mOnAdRewardListener);
     }
 
     private boolean hasEnable() {
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (v.getId() == R.id.reward_video) {
             AdSdk.get(this).loadInterstitial("reward_video", mSimpleAdsdkListener);
         } else if (v.getId() == R.id.show_reward) {
-            RewardManager.get(mContext).showReward();
+            AdSdk.get(mContext).showRewardVideo();
         }
     }
 
@@ -207,13 +208,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mOnRewardListener.onRefresh(RewardManager.get(mContext).isRewardLoaded());
+        mOnAdRewardListener.onRefresh(AdSdk.get(mContext).isRewardLoaded());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mOnRewardListener.onRefresh(RewardManager.get(mContext).isRewardLoaded());
+        mOnAdRewardListener.onRefresh(AdSdk.get(mContext).isRewardLoaded());
     }
 
     private void runToast(final String toast) {
@@ -283,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-    private RewardManager.OnRewardListener mOnRewardListener = new RewardManager.OnRewardListener() {
+    private OnAdRewardListener mOnAdRewardListener = new OnAdRewardListener() {
         @Override
         public void onRefresh(boolean adLoaded) {
             mShowReward.setEnabled(adLoaded);
