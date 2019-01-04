@@ -12,9 +12,11 @@ import com.hauyu.adsdk.framework.ActivityMonitor;
 import com.hauyu.adsdk.framework.AdPlaceLoader;
 import com.hauyu.adsdk.framework.AdReceiver;
 import com.hauyu.adsdk.framework.AtAdLoader;
+import com.hauyu.adsdk.framework.GlobalCacheLoader;
 import com.hauyu.adsdk.framework.GtAdLoader;
 import com.hauyu.adsdk.framework.HtAdLoader;
 import com.hauyu.adsdk.framework.StAdLoader;
+import com.hauyu.adsdk.listener.OnAdRewardListener;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.manager.DataManager;
@@ -100,6 +102,7 @@ public class AdSdk {
         StAdLoader.get(mContext).init(this);
         AtAdLoader.get(mContext).init(this);
         HtAdLoader.get(mContext).init(this);
+        GlobalCacheLoader.get(getFinalContext()).init();
     }
 
     /**
@@ -379,5 +382,31 @@ public class AdSdk {
             // mAdLoaders.remove(pidName);
             loader.destroy();
         }
+    }
+
+    public void showRewardVideo() {
+        GlobalCacheLoader.get(getFinalContext()).showReward();
+    }
+
+    public boolean isRewardLoaded() {
+        return GlobalCacheLoader.get(getFinalContext()).isRewardLoaded();
+    }
+
+    public void registerListener(OnAdRewardListener l) {
+        GlobalCacheLoader.get(getFinalContext()).registerListener(l);
+    }
+
+    public void unregisterListener(OnAdRewardListener l) {
+        GlobalCacheLoader.get(getFinalContext()).unregisterListener(l);
+    }
+
+    private Context getFinalContext() {
+        Context context = null;
+        if (mActivity != null && mActivity.get() != null) {
+            context = mActivity.get();
+        } else {
+            context = mContext;
+        }
+        return context;
     }
 }

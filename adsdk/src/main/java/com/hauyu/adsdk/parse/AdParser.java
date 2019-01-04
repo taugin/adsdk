@@ -446,6 +446,9 @@ public class AdParser implements IParser {
             if (jobj.has(REF_SHARE)) {
                 adPlace.setRefShare(jobj.getInt(REF_SHARE) == 1);
             }
+            if (jobj.has(GLOBAL_CACHE)) {
+                adPlace.setGlobalCache(jobj.getInt(GLOBAL_CACHE) == 1);
+            }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
             sortPidList(adPlace);
         } catch (Exception e) {
