@@ -98,6 +98,7 @@ public class GlobalCacheLoader implements Handler.Callback {
         if (msg != null && msg.what == MSG_LOAD_ADS) {
             startRequestRewardVideo();
             sendMessageDelayInternal(false);
+            notifyOnRefresh();
             return true;
         }
         return false;
@@ -266,6 +267,7 @@ public class GlobalCacheLoader implements Handler.Callback {
         @Override
         public void onClick(String pidName, String source, String adType) {
             notifyOnClick();
+            notifyOnRefresh();
         }
 
         @Override
