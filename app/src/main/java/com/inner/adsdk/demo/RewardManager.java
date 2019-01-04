@@ -1,5 +1,6 @@
 package com.inner.adsdk.demo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +13,7 @@ import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.utils.Utils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,6 +38,9 @@ public class RewardManager implements Handler.Callback {
                 createInstance(context);
             }
         }
+        if (sRewardManager != null) {
+            sRewardManager.setActivity(context);
+        }
         return sRewardManager;
     }
 
@@ -58,6 +63,7 @@ public class RewardManager implements Handler.Callback {
     private Stack<OnRewardListener> mListeners;
     private int mCoreAdCount = 2;
     private Map<String, AdSdkCallback> mListenerMap = new HashMap<String, AdSdkCallback>();
+    private WeakReference<Activity> mActivity = null;
 
     private RewardManager(Context context) {
         mAllAdPlaces.add("reward_place1");
@@ -78,6 +84,12 @@ public class RewardManager implements Handler.Callback {
             return true;
         }
         return false;
+    }
+
+    private void setActivity(Context activity) {
+        if (activity instanceof Activity) {
+            mActivity = new WeakReference<Activity>((Activity) activity);
+        }
     }
 
     private void sendMessageDelayInternal(boolean first) {
@@ -111,7 +123,11 @@ public class RewardManager implements Handler.Callback {
                                 if (BuildConfig.DEBUG) {
                                     Log.v(Log.TAG, "load reward");
                                 }
-                                AdSdk.get(mContext).loadInterstitial(adplace, getCallback(adplace));
+                                if (mActivity != null && mActivity.get() != null) {
+                                    AdSdk.get(mActivity.get()).loadInterstitial(adplace, getCallback(adplace));
+                                } else {
+                                    AdSdk.get(mContext).loadInterstitial(adplace, getCallback(adplace));
+                                }
                             } else {
                                 if (BuildConfig.DEBUG) {
                                     Log.v(Log.TAG, "add to adplaces from loadAds");
