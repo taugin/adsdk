@@ -64,6 +64,8 @@ public interface IParser {
     String DELAY_NOTIFY_TIME = "dnt";
     // 是否共享广告场景的广告
     String REF_SHARE = "rs";
+    // 是否全局缓存
+    String GLOBAL_CACHE = "gc";
 
     // 广告平台 fb, admob, adx
     String SDK = "sdk";

@@ -12,10 +12,12 @@ import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.framework.AdPlaceLoader;
 import com.inner.adsdk.framework.AdReceiver;
 import com.inner.adsdk.framework.AtAdLoader;
+import com.inner.adsdk.framework.GlobalCacheLoader;
 import com.inner.adsdk.framework.GtAdLoader;
 import com.inner.adsdk.framework.HtAdLoader;
 import com.inner.adsdk.framework.StAdLoader;
 import com.inner.adsdk.listener.OnAdSdkListener;
+import com.inner.adsdk.listener.OnAdRewardListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
 import com.inner.adsdk.stat.StatImpl;
@@ -100,6 +102,7 @@ public class AdSdk {
         StAdLoader.get(mContext).init(this);
         AtAdLoader.get(mContext).init(this);
         HtAdLoader.get(mContext).init(this);
+        GlobalCacheLoader.get(getFinalContext()).init();
     }
 
     /**
@@ -379,5 +382,31 @@ public class AdSdk {
             // mAdLoaders.remove(pidName);
             loader.destroy();
         }
+    }
+
+    public void showRewardVideo() {
+        GlobalCacheLoader.get(getFinalContext()).showReward();
+    }
+
+    public boolean isRewardLoaded() {
+        return GlobalCacheLoader.get(getFinalContext()).isRewardLoaded();
+    }
+
+    public void registerListener(OnAdRewardListener l) {
+        GlobalCacheLoader.get(getFinalContext()).registerListener(l);
+    }
+
+    public void unregisterListener(OnAdRewardListener l) {
+        GlobalCacheLoader.get(getFinalContext()).unregisterListener(l);
+    }
+
+    private Context getFinalContext() {
+        Context context = null;
+        if (mActivity != null && mActivity.get() != null) {
+            context = mActivity.get();
+        } else {
+            context = mContext;
+        }
+        return context;
     }
 }

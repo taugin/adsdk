@@ -38,6 +38,8 @@ public class AdPlace {
 
     private boolean refShare;
 
+    private boolean globalCache;
+
     public String getName() {
         return name;
     }
@@ -163,6 +165,14 @@ public class AdPlace {
 
     public void setRefShare(boolean refShare) {
         this.refShare = refShare;
+    }
+
+    public boolean isGlobalCache() {
+        return globalCache;
+    }
+
+    public void setGlobalCache(boolean globalCache) {
+        this.globalCache = globalCache;
     }
 
     @Override
