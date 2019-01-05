@@ -482,10 +482,14 @@ public class GlobalCacheLoader implements Handler.Callback {
                     AdSdk.get(mContext).showInterstitial(item.pidName);
                 } else {
                     Log.v(Log.TAG, "No rewards found");
+                    if (mLoadedAdPlaces != null) {
+                        mLoadedAdPlaces.clear();
+                    }
+                    notifyOnRefresh();
                     notifyOnNoReward();
                 }
             } else {
-                Log.v(Log.TAG, "No rewards loading success");
+                notifyOnRefresh();
                 notifyOnNoReward();
             }
         }
