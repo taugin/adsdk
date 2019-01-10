@@ -27,7 +27,7 @@
     "attr": []
   },
   "ctconfig": {
-    "e": 0,
+    "e": 1,
     "d": 3600,
     "di": 60000,
     "attr": []
@@ -100,20 +100,20 @@
           "sdk": "fb",
           "type": "native",
           "pid": "YOUR_PLACEMENT_ID",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "banner",
           "dac":1,
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "wemob",
@@ -209,7 +209,7 @@
            "aid": "106659",
            "pid": "665456",
            "dac":1,
-           "disable": 0
+           "disable": 1
          }
       ],
       "maxcount": 100,
