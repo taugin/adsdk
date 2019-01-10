@@ -300,7 +300,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     @Override
     public Activity getActivity() {
-        if (mActivity != null) {
+        if (mActivity != null && mActivity.get() != null && !mActivity.get().isFinishing()) {
             return mActivity.get();
         }
         return null;
