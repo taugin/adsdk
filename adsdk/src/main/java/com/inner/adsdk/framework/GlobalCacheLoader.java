@@ -494,15 +494,15 @@ public class GlobalCacheLoader implements Handler.Callback {
     }
 
     public void registerListener(OnAdRewardListener l) {
-        if (mListeners != null) {
+        if (mListeners != null && !mListeners.contains(l)) {
             mListeners.push(l);
         }
         sendMessageDelayInternal(false);
     }
 
     public void unregisterListener(OnAdRewardListener l) {
-        if (mListeners != null) {
-            mListeners.pop();
+        if (mListeners != null && mListeners.contains(l)) {
+            mListeners.remove(l);
         }
         cancelSendMessageIfNeed();
     }
