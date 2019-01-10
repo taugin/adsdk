@@ -20,6 +20,12 @@
     "i": 1800,
     "attr": []
   },
+  "htconfig": {
+    "e": 1,
+    "d": 3600,
+    "i": 1800,
+    "attr": []
+  },
   "ctconfig": {
       "e": 1,
       "d": 3600,
@@ -93,7 +99,7 @@
           "sdk": "fb",
           "type": "native",
           "pid": "YOUR_PLACEMENT_ID",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
@@ -105,7 +111,7 @@
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "wemob",
