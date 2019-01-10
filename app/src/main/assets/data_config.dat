@@ -121,12 +121,6 @@
           "disable": 0
         },
         {
-          "sdk": "wemob",
-          "type": "native",
-          "pid": "native1",
-          "disable": 1
-        },
-        {
           "sdk": "dfp",
           "type": "native",
           "pid": "/6499/example/native",
@@ -136,63 +130,6 @@
           "sdk": "dfp",
           "type": "banner",
           "pid": "/6253334/dfp_example_ad",
-          "disable": 1
-        },
-        {
-          "sdk": "applovin",
-          "type": "banner",
-          "pid": "1bb8d0234f0f8c3d",
-          "disable": 1
-        },
-        {
-          "sdk": "mopub",
-          "type": "banner",
-          "pid": "b195f8dd8ded45fe847ad89ed1d016da",
-          "disable": 1
-        },
-        {
-          "sdk": "appnext",
-          "type": "native",
-          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 1
-        },
-        {
-          "sdk": "appnext",
-          "type": "banner",
-          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 1
-        },
-        {
-          "sdk": "mopub",
-          "type": "native",
-          "pid": "11a17b188668469fb0412708c3d16813",
-          "disable": 1
-        },
-        {
-          "sdk": "inmobi",
-          "type": "banner",
-          "pid": "1540597066220",
-          "disable": 1
-        },
-        {
-          "sdk": "inmobi",
-          "type": "native",
-          "pid": "1538433861066",
-          "disable": 1
-        },
-        {
-          "sdk": "mobvista",
-          "type": "native",
-          "aid": "107602",
-          "eid": "8eaa4ea7727f830d7bb513b3e049b5f2",
-          "pid": "62935",
-          "disable": 1
-        },
-        {
-          "sdk": "inneractive",
-          "type": "banner",
-          "aid": "106499",
-          "pid": "190202",
           "disable": 1
         }
       ],
@@ -225,53 +162,15 @@
           "disable": 0
         },
         {
-          "sdk": "wemob",
-          "type": "interstitial",
-          "pid": "interstitial1",
-          "ctr": 5,
-          "ffc": 1,
-          "disable": 0
-        },
-        {
           "sdk": "dfp",
           "type": "interstitial",
           "pid": "/6499/example/interstitial",
           "disable": 0
         },
         {
-          "sdk": "applovin",
-          "type": "interstitial",
-          "pid": "4a885e75685fed5c",
-          "disable": 0
-        },
-        {
-          "sdk": "mopub",
-          "type": "interstitial",
-          "pid": "24534e1901884e398f1253216226017e",
-          "disable": 0
-        },
-        {
-          "sdk": "appnext",
-          "type": "interstitial",
-          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 0
-        },
-        {
           "sdk": "spread",
           "type": "interstitial",
           "disable": 1
-        },
-        {
-          "sdk": "inmobi",
-          "type": "interstitial",
-          "pid": "1538651605680",
-          "disable": 0
-        },
-        {
-          "sdk": "inneractive",
-          "type": "interstitial",
-          "pid": "190736",
-          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -288,34 +187,10 @@
           "disable": 1
         },
         {
-          "sdk": "applovin",
-          "type": "reward",
-          "pid": "8a60714b81a59889",
-          "disable": 1
-        },
-        {
-          "sdk": "mopub",
-          "type": "reward",
-          "pid": "920b6145fb1546cf8b5cf2ac34638bb7",
-          "disable": 1
-        },
-        {
-          "sdk": "appnext",
-          "type": "reward",
-          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 1
-        },
-        {
           "sdk": "dfp",
           "type": "reward",
           "pid": "/6499/example/rewarded-video",
           "disable": 1
-        },
-        {
-          "sdk": "inmobi",
-          "type": "reward",
-          "pid": "1541432243676",
-          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -368,19 +243,6 @@
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "dct": 2000,
           "disable": 0
-        },
-        {
-          "sdk": "wemob",
-          "type": "interstitial",
-          "pid": "interstitial1",
-          "dct": 2000,
-          "disable": 1
-        },
-        {
-          "sdk": "inmobi",
-          "type": "interstitial",
-          "pid": "1538651605680",
-          "disable": 1
         }
       ],
       "maxcount": 100,
@@ -398,33 +260,15 @@
           "disable": 0
         },
         {
-          "sdk": "mopub",
-          "type": "native",
-          "pid": "11a17b188668469fb0412708c3d16813",
-          "disable": 1
-        },
-        {
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
           "disable": 0
         },
         {
-          "sdk": "appnext",
-          "type": "native",
-          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 1
-        },
-        {
           "sdk": "dfp",
           "type": "native",
           "pid": "/6499/example/native",
-          "disable": 1
-        },
-        {
-          "sdk": "wemob",
-          "type": "native",
-          "pid": "native1",
           "disable": 1
         }
       ],
