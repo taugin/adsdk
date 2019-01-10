@@ -107,8 +107,6 @@ public class GlobalCacheLoader implements Handler.Callback {
     private void setActivity(Context activity) {
         if (activity instanceof Activity) {
             mActivity = new WeakReference<Activity>((Activity) activity);
-        } else {
-            mActivity = null;
         }
     }
 
@@ -131,10 +129,10 @@ public class GlobalCacheLoader implements Handler.Callback {
     }
 
     private void startRequestRewardVideo() {
-        if (Utils.isScreenOn(mContext)
-                && !Utils.isScreenLocked(mContext)
+        if (hasListeners()
                 && ActivityMonitor.get(mContext).appOnTop()
-                && hasListeners()
+                && !Utils.isScreenLocked(mContext)
+                && Utils.isScreenOn(mContext)
                 && isNeedLoadReward()) {
             synchronized (mAllAdPlaces) {
                 if (mAllAdPlaces != null && !mAllAdPlaces.isEmpty()) {
@@ -145,7 +143,7 @@ public class GlobalCacheLoader implements Handler.Callback {
                                 if (BuildConfig.DEBUG) {
                                     Log.v(Log.TAG, "start load reward");
                                 }
-                                if (mActivity != null && mActivity.get() != null) {
+                                if (mActivity != null && mActivity.get() != null && !mActivity.get().isFinishing()) {
                                     AdSdk.get(mActivity.get()).loadInterstitial(adPlace, getCallback(adPlace));
                                 } else {
                                     AdSdk.get(mContext).loadInterstitial(adPlace, getCallback(adPlace));

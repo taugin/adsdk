@@ -50,8 +50,6 @@ public class AdSdk {
         if (sAdSdk != null) {
             if (context instanceof Activity) {
                 sAdSdk.setActivity((Activity) context);
-            } else {
-                sAdSdk.setActivity(null);
             }
         }
         return sAdSdk;
@@ -68,8 +66,6 @@ public class AdSdk {
     private void setActivity(Activity activity) {
         if (activity != null) {
             mActivity = new WeakReference<Activity>(activity);
-        } else {
-            mActivity = null;
         }
     }
 
@@ -257,7 +253,7 @@ public class AdSdk {
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             if (activity == null) {
-                if (mActivity != null && mActivity.get() != null) {
+                if (mActivity != null && mActivity.get() != null && !mActivity.get().isFinishing()) {
                     activity = mActivity.get();
                 }
             }
