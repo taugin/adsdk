@@ -195,17 +195,15 @@ public class FSA extends Activity {
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-                int flagTranslucentNavigation = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     Window window = getWindow();
                     WindowManager.LayoutParams attributes = window.getAttributes();
-                    attributes.flags |= flagTranslucentNavigation;
                     window.setAttributes(attributes);
                     window.setStatusBarColor(Color.TRANSPARENT);
                 } else {
                     Window window = getWindow();
                     WindowManager.LayoutParams attributes = window.getAttributes();
-                    attributes.flags |= flagTranslucentStatus | flagTranslucentNavigation;
+                    attributes.flags |= flagTranslucentStatus;
                     window.setAttributes(attributes);
                 }
             }
@@ -227,6 +225,7 @@ public class FSA extends Activity {
                 mChargeWrapper.showChargeView();
             }
         } else if (isLockView()) {
+            hideNavigationBar(this);
             showLockScreenView();
         } else if (mSpConfig != null) {
             showSpread();
@@ -331,7 +330,7 @@ public class FSA extends Activity {
         }
 
         ImageView imageView = generateCloseView();
-        int size = Utils.dp2px(this, 28);
+        int size = Utils.dp2px(this, 24);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
         int margin = dp2px(this, 8);
         params.setMargins(margin, margin, 0, 0);
@@ -363,11 +362,11 @@ public class FSA extends Activity {
         Shape shape = new OvalShape();
 
         ShapeDrawable shapePressed = new ShapeDrawable(shape);
-        shapePressed.getPaint().setColor(Color.parseColor("#AA888888"));
+        shapePressed.getPaint().setColor(Color.parseColor("#88888888"));
 
         shape = new OvalShape();
         ShapeDrawable shapeNormal = new ShapeDrawable(shape);
-        shapeNormal.getPaint().setColor(Color.parseColor("#AA444444"));
+        shapeNormal.getPaint().setColor(Color.parseColor("#88aaaaaa"));
 
         StateListDrawable drawable = new StateListDrawable();
         drawable.addState(new int[]{android.R.attr.state_pressed}, shapePressed);
@@ -518,7 +517,7 @@ public class FSA extends Activity {
             rootLayout.addView(adLayout, -1, -1);
 
             ImageView imageView = generateCloseView();
-            int size = Utils.dp2px(this, 28);
+            int size = Utils.dp2px(this, 24);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
             int margin = dp2px(this, 8);
             params.setMargins(margin, margin, margin, margin);
@@ -871,7 +870,23 @@ public class FSA extends Activity {
                 unregisterReceiver(mTimeReceiver);
             }
         } catch (Exception | Error e) {
-            e.printStackTrace();
+            Log.e(Log.TAG, "error : " + e, e);
+        }
+    }
+
+    public static void hideNavigationBar(Activity activity) {
+        try {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) { // lower api
+                View v = activity.getWindow().getDecorView();
+                v.setSystemUiVisibility(View.GONE);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                View decorView = activity.getWindow().getDecorView();
+                int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                decorView.setSystemUiVisibility(uiOptions);
+            }
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
         }
     }
 
