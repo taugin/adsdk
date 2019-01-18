@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.text.TextUtils;
 
 import com.appub.ads.a.FSA;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
@@ -14,6 +15,7 @@ import com.hauyu.adsdk.manager.DataManager;
 import com.hauyu.adsdk.stat.StatImpl;
 import com.hauyu.adsdk.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -32,7 +34,7 @@ public class SpLoader extends AbstractSdkLoader {
 
     @Override
     public void loadInterstitial() {
-        mSpreads = DataManager.get(mContext).getRemoteSpread();
+        mSpreads = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
         if (mSpreads != null && !mSpreads.isEmpty()) {
             if (getAdListener() != null) {
                 setLoadedFlag();
@@ -46,6 +48,43 @@ public class SpLoader extends AbstractSdkLoader {
         }
     }
 
+    /**
+     * 检出有效的配置
+     * @param spList
+     * @return
+     */
+    private List<SpConfig> checkSpConfig(List<SpConfig> spList) {
+        if (spList == null || spList.isEmpty()) {
+            return null;
+        }
+        mSpreads = new ArrayList<SpConfig>();
+        for (SpConfig config : spList) {
+            // 参数有效，并且未安装
+            if (checkArgs(config) && !Utils.isInstalled(mContext, config.getPkgname())) {
+                mSpreads.add(config);
+            }
+        }
+        return mSpreads;
+    }
+
+    /**
+     * 检查参数合法性
+     * @param config
+     * @return
+     */
+    private boolean checkArgs(SpConfig config) {
+        if (config == null
+                || TextUtils.isEmpty(config.getBanner())
+                || TextUtils.isEmpty(config.getIcon())
+                || TextUtils.isEmpty(config.getTitle())
+                || TextUtils.isEmpty(config.getPkgname())
+                || TextUtils.isEmpty(config.getDetail())
+                || TextUtils.isEmpty(config.getCta())) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public boolean isInterstitialLoaded() {
         return mSpreads != null && !mSpreads.isEmpty();
@@ -55,6 +94,7 @@ public class SpLoader extends AbstractSdkLoader {
     public boolean showInterstitial() {
         if (mSpreads != null && !mSpreads.isEmpty()) {
             show();
+            mSpreads.clear();
             mSpreads = null;
             return true;
         }
