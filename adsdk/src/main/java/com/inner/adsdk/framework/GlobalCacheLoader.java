@@ -121,7 +121,7 @@ public class GlobalCacheLoader implements Handler.Callback {
     }
 
     private void cancelSendMessageIfNeed() {
-        if (mListeners == null && mListeners.isEmpty()) {
+        if (mListeners == null || mListeners.isEmpty()) {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOAD_ADS);
             }
