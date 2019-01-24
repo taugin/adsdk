@@ -176,7 +176,7 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
         }
 
         NativeAd.Image image = nativeAd.getIcon();
-        if (image != null) {
+        if (image != null && image.getDrawable() != null) {
             View iconView = adView.getIconView();
             if (iconView instanceof ImageView) {
                 ((ImageView) iconView).setImageDrawable(image.getDrawable());
