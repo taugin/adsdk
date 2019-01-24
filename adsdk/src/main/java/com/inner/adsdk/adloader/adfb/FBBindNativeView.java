@@ -167,6 +167,9 @@ public class FBBindNativeView extends BaseBindNativeView {
 
         if (nativeAd != null && nativeAd.isAdLoaded()) {
             MediaView iconView = createIconView(rootView.getContext(), icon);
+            if (iconView != null) {
+                iconView.setVisibility(View.VISIBLE);
+            }
 
             // Download and setting the cover image.
             if (mediaCover != null) {
@@ -258,6 +261,7 @@ public class FBBindNativeView extends BaseBindNativeView {
         if (icon != null) {
             iconView = createMediaView(context);
             iconView.setId(icon.getId());
+            iconView.setVisibility(icon.getVisibility());
             ViewGroup.LayoutParams iconParams = icon.getLayoutParams();
             android.widget.RelativeLayout.LayoutParams iconViewParams = new android.widget.RelativeLayout.LayoutParams(iconParams.width, iconParams.height);
             if (iconParams instanceof ViewGroup.MarginLayoutParams) {

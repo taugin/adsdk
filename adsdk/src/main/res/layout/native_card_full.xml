@@ -90,7 +90,7 @@
                         android:singleLine="true"
                         android:text="Charge Master"
                         android:textColor="@color/primaryTextColor"
-                        android:textSize="28sp" />
+                        android:textSize="24sp" />
 
                     <TextView
                         android:id="@+id/native_sponsored_label"
