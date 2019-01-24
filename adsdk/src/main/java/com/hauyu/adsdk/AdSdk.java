@@ -258,6 +258,10 @@ public class AdSdk {
                 }
             }
             loader.loadInterstitial(activity);
+        } else {
+            if (l != null) {
+                l.onError(pidName, null, null);
+            }
         }
     }
 
@@ -289,6 +293,10 @@ public class AdSdk {
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             loader.loadAdView(adParams);
+        } else {
+            if (l != null) {
+                l.onError(pidName, null, null);
+            }
         }
     }
 
@@ -324,6 +332,10 @@ public class AdSdk {
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             loader.loadComplexAds(adParams);
+        } else {
+            if (l != null) {
+                l.onError(pidName, null, null);
+            }
         }
     }
 
