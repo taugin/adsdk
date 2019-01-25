@@ -48,6 +48,10 @@ public class BasePolicy implements Handler.Callback {
         return false;
     }
 
+    public String getType() {
+        return mType;
+    }
+
     private long getTimeout() {
         long timeOut = 0;
         if (mBaseConfig != null) {

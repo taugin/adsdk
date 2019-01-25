@@ -11,6 +11,7 @@ import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
 import com.inner.adsdk.policy.HtPolicy;
+import com.inner.adsdk.stat.StatImpl;
 
 /**
  * Created by Administrator on 2018/3/19.
@@ -77,10 +78,12 @@ public class HtAdLoader extends BottomLoader {
             }
             Log.v(Log.TAG, "");
             HtPolicy.get(mContext).setLoading(true);
+            StatImpl.get().reportAdOuterRequest(mContext, HtPolicy.get(mContext).getType(), Constant.HTPLACE_OUTER_NAME);
             mAdSdk.loadComplexAds(Constant.HTPLACE_OUTER_NAME, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    StatImpl.get().reportAdOuterLoaded(mContext, HtPolicy.get(mContext).getType(), pidName);
                     HtPolicy.get(mContext).setLoading(false);
                     if (HtPolicy.get(mContext).isHtAllowed()) {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
@@ -94,6 +97,9 @@ public class HtAdLoader extends BottomLoader {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }
                         }
+                        StatImpl.get().reportAdOuterCallShow(mContext, HtPolicy.get(mContext).getType(), pidName);
+                    } else {
+                        StatImpl.get().reportAdOuterDisallow(mContext, HtPolicy.get(mContext).getType(), pidName);
                     }
                 }
 
@@ -113,6 +119,7 @@ public class HtAdLoader extends BottomLoader {
                 public void onShow(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     HtPolicy.get(mContext).reportShowing(true);
+                    StatImpl.get().reportAdOuterShowing(mContext, HtPolicy.get(mContext).getType(), pidName);
                 }
 
                 @Override
