@@ -17,6 +17,7 @@ import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.manager.DataManager;
 import com.hauyu.adsdk.policy.StPolicy;
+import com.hauyu.adsdk.stat.StatImpl;
 
 /**
  * Created by Administrator on 2018/7/19.
@@ -97,9 +98,11 @@ public class StAdLoader extends BottomLoader implements Handler.Callback {
                 return;
             }
             Log.v(Log.TAG, "");
+            StatImpl.get().reportAdOuterRequest(mContext, StPolicy.get(mContext).getType(), Constant.STPLACE_OUTER_NAME);
             mAdSdk.loadComplexAds(Constant.STPLACE_OUTER_NAME, new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
+                    StatImpl.get().reportAdOuterLoaded(mContext, StPolicy.get(mContext).getType(), pidName);
                     if (StPolicy.get(mContext).isStAllowed()) {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
                             AdSdk.get(mContext).showComplexAds(pidName, null);
@@ -112,6 +115,9 @@ public class StAdLoader extends BottomLoader implements Handler.Callback {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }
                         }
+                        StatImpl.get().reportAdOuterCallShow(mContext, StPolicy.get(mContext).getType(), pidName);
+                    } else {
+                        StatImpl.get().reportAdOuterDisallow(mContext, StPolicy.get(mContext).getType(), pidName);
                     }
                 }
 
@@ -129,6 +135,7 @@ public class StAdLoader extends BottomLoader implements Handler.Callback {
                 @Override
                 public void onShow(String pidName, String source, String adType) {
                     StPolicy.get(mContext).reportShowing(true);
+                    StatImpl.get().reportAdOuterShowing(mContext, StPolicy.get(mContext).getType(), pidName);
                 }
             });
         }

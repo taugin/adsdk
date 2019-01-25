@@ -89,15 +89,16 @@ public class GtAdLoader extends BottomLoader {
                 return;
             }
             Log.v(Log.TAG, "");
-            StatImpl.get().reportAdOuterRequest(mContext);
+            String outerPidName = getNextPidName();
+            StatImpl.get().reportAdOuterRequest(mContext, GtPolicy.get(mContext).getType(), outerPidName);
             GtPolicy.get(mContext).startGtRequest();
             GtPolicy.get(mContext).setLoading(true);
-            mAdSdk.loadComplexAds(getNextPidName(), generateAdParams(), new SimpleAdSdkListener() {
+            mAdSdk.loadComplexAds(outerPidName, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).setLoading(false);
-                    StatImpl.get().reportAdOuterLoaded(mContext);
+                    StatImpl.get().reportAdOuterLoaded(mContext, GtPolicy.get(mContext).getType(), pidName);
                     if (GtPolicy.get(mContext).isGtAllowed()) {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
                             AdSdk.get(mContext).showComplexAds(pidName, null);
@@ -108,9 +109,11 @@ public class GtAdLoader extends BottomLoader {
                                 show(pidName, source, adType);
                             } else {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
-                                StatImpl.get().reportAdOuterShow(mContext);
                             }
                         }
+                        StatImpl.get().reportAdOuterCallShow(mContext, GtPolicy.get(mContext).getType(), pidName);
+                    } else {
+                        StatImpl.get().reportAdOuterDisallow(mContext, GtPolicy.get(mContext).getType(), pidName);
                     }
                 }
 
@@ -130,7 +133,7 @@ public class GtAdLoader extends BottomLoader {
                 public void onShow(String pidName, String source, String adType) {
                     Log.v(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).reportShowing(true);
-                    StatImpl.get().reportAdOuterShowing(mContext);
+                    StatImpl.get().reportAdOuterShowing(mContext, GtPolicy.get(mContext).getType(), pidName);
                 }
 
                 @Override

@@ -427,88 +427,111 @@ public class StatImpl implements IStat {
         Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
+    private String generateAdOuterKey(String adOuterType, String op) {
+        return "outer_" + adOuterType + "_" + op;
+    }
+
     @Override
-    public void reportAdOuterRequest(Context context) {
+    public void reportAdOuterRequest(Context context, String adOuterType, String pidName) {
         if (context == null) {
             return;
         }
-        String eventId = "outer_gt_request";
+        String eventId = generateAdOuterKey(adOuterType, "request");
         eventId = generateEventIdAlias(context, eventId);
         if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, null, eventId, null);
+            sendFirebaseAnalytics(context, pidName, eventId, null);
         }
         if (isReportUmeng(context)) {
-            sendUmeng(context, null, eventId, null);
+            sendUmeng(context, pidName, eventId, null);
         }
         if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, null, eventId, null);
+            sendAppsflyer(context, pidName, eventId, null);
         }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
-    public void reportAdOuterLoaded(Context context) {
+    public void reportAdOuterLoaded(Context context, String adOuterType, String pidName) {
         if (context == null) {
             return;
         }
-        String eventId = "outer_gt_loaded";
+        String eventId = generateAdOuterKey(adOuterType, "loaded");
         eventId = generateEventIdAlias(context, eventId);
         if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, null, eventId, null);
+            sendFirebaseAnalytics(context, pidName, eventId, null);
         }
         if (isReportUmeng(context)) {
-            sendUmeng(context, null, eventId, null);
+            sendUmeng(context, pidName, eventId, null);
         }
         if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, null, eventId, null);
+            sendAppsflyer(context, pidName, eventId, null);
         }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
-    public void reportAdOuterShow(Context context) {
+    public void reportAdOuterCallShow(Context context, String adOuterType, String pidName) {
         if (context == null) {
             return;
         }
-        String eventId = "outer_gt_show";
+        String eventId = generateAdOuterKey(adOuterType, "callshow");
         eventId = generateEventIdAlias(context, eventId);
         if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, null, eventId, null);
+            sendFirebaseAnalytics(context, pidName, eventId, null);
         }
         if (isReportUmeng(context)) {
-            sendUmeng(context, null, eventId, null);
+            sendUmeng(context, pidName, eventId, null);
         }
         if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, null, eventId, null);
+            sendAppsflyer(context, pidName, eventId, null);
         }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
-    public void reportAdOuterShowing(Context context) {
+    public void reportAdOuterShowing(Context context, String adOuterType, String pidName) {
         if (context == null) {
             return;
         }
-        String eventId = "outer_gt_showing";
+        String eventId = generateAdOuterKey(adOuterType, "showing");
         eventId = generateEventIdAlias(context, eventId);
         if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, null, eventId, null);
+            sendFirebaseAnalytics(context, pidName, eventId, null);
         }
         if (isReportUmeng(context)) {
-            sendUmeng(context, null, eventId, null);
+            sendUmeng(context, pidName, eventId, null);
         }
         if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, null, eventId, null);
+            sendAppsflyer(context, pidName, eventId, null);
         }
         Log.v(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
-    public void reportAdGtShowTimes(Context context, int times) {
+    public void reportAdOuterDisallow(Context context, String adOuterType, String pidName) {
         if (context == null) {
             return;
         }
-        String eventId = "outer_gt_showtimes";
+        String eventId = generateAdOuterKey(adOuterType, "disallow");
+        eventId = generateEventIdAlias(context, eventId);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, pidName, eventId, null);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, pidName, eventId, null);
+        }
+        if (isReportAppsflyer(context)) {
+            sendAppsflyer(context, pidName, eventId, null);
+        }
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
+    }
+
+    @Override
+    public void reportAdOuterShowTimes(Context context, String adOuterType, int times) {
+        if (context == null) {
+            return;
+        }
+        String eventId = generateAdOuterKey(adOuterType, "showtimes");
         eventId = generateEventIdAlias(context, eventId);
         String value = String.valueOf(times);
         if (isReportFirebase(context)) {
@@ -517,7 +540,7 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, value, eventId, null);
         }
-        Log.v(Log.TAG, "StatImpl stat key : outer_gt_showtimes , times : " + times);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + ", times : " + times);
     }
 
     @Override

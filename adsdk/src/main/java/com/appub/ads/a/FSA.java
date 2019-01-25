@@ -395,10 +395,6 @@ public class FSA extends Activity {
     private void showGAd() {
         if (!TextUtils.isEmpty(mPidName)) {
             AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, null);
-            // 只统计GT相关的展示数据
-            if (TextUtils.equals(mPidName, Constant.GTPLACE_OUTER_NAME)) {
-                StatImpl.get().reportAdOuterShow(this);
-            }
         } else {
             finishActivityWithDelay();
         }

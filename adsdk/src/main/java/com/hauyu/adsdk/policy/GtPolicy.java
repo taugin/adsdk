@@ -48,7 +48,7 @@ public class GtPolicy extends BasePolicy {
 
     @Override
     protected void reportShowTimesOneday(Context context, int times) {
-        StatImpl.get().reportAdGtShowTimes(mContext, times);
+        StatImpl.get().reportAdOuterShowTimes(mContext, getType(), times);
     }
 
     public boolean isGtAllowed() {
