@@ -112,7 +112,7 @@
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
