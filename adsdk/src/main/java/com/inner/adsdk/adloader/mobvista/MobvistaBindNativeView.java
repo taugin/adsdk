@@ -122,14 +122,23 @@ public class MobvistaBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e);
         }
 
-        TextView titleTextView = rootView.findViewById(mParams.getAdTitle());
-        titleTextView.setText(ad.getTitle());
+        TextView titleView = rootView.findViewById(mParams.getAdTitle());
+        if (titleView != null) {
+            titleView.setText(ad.getTitle());
+            if (!TextUtils.isEmpty(ad.getTitle())) {
+                titleView.setVisibility(View.VISIBLE);
+            }
+        }
 
         View detailView = rootView.findViewById(mParams.getAdDetail());
         View subTitleView = rootView.findViewById(mParams.getAdSubTitle());
         View bodyView = detailView != null ? detailView : subTitleView;
-        ((TextView) bodyView).setText(ad.getBody());
-        bodyView.setVisibility(View.VISIBLE);
+        if (bodyView instanceof TextView) {
+            ((TextView) bodyView).setText(ad.getBody());
+            if (!TextUtils.isEmpty(ad.getBody())) {
+                bodyView.setVisibility(View.VISIBLE);
+            }
+        }
 
         ImageView imageView = rootView.findViewById(mParams.getAdCover());
         String imageUrl = ad.getImageUrl();
@@ -163,17 +172,15 @@ public class MobvistaBindNativeView extends BaseBindNativeView {
 
         TextView ctaTextView = rootView.findViewById(mParams.getAdAction());
         String cta = ad.getCta();
-        if (ctaTextView != null && !TextUtils.isEmpty(cta)) {
+        if (ctaTextView != null) {
             ctaTextView.setText(cta);
-            ctaTextView.setVisibility(View.VISIBLE);
-        } else {
-            if (ctaTextView != null) {
-                ctaTextView.setVisibility(View.GONE);
+            if (!TextUtils.isEmpty(cta)) {
+                ctaTextView.setVisibility(View.VISIBLE);
             }
         }
 
         List<View> viewList = new ArrayList<>();
-        viewList.add(titleTextView);
+        viewList.add(titleView);
         viewList.add(bodyView);
         viewList.add(imageView);
         viewList.add(iconImageView);

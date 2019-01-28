@@ -1,7 +1,6 @@
 package com.inner.adsdk.adloader.wemob;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,7 +130,7 @@ public class WemobBindNativeView extends BaseBindNativeView {
         ImageView icon = rootView.findViewById(mParams.getAdIcon());
         ImageView imageCover = rootView.findViewById(mParams.getAdCover());
         TextView detail = rootView.findViewById(mParams.getAdDetail());
-        AppCompatButton btnAction = rootView.findViewById(mParams.getAdAction());
+        TextView btnAction = rootView.findViewById(mParams.getAdAction());
 
         if (imageCover != null) {
             imageCover.setVisibility(View.VISIBLE);
