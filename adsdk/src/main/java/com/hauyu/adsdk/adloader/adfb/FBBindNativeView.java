@@ -2,7 +2,6 @@ package com.hauyu.adsdk.adloader.adfb;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -144,7 +143,7 @@ public class FBBindNativeView extends BaseBindNativeView {
         ImageView imageCover = rootView.findViewById(mParams.getAdCover());
         TextView socialView = rootView.findViewById(mParams.getAdSocial());
         TextView detail = rootView.findViewById(mParams.getAdDetail());
-        AppCompatButton btnAction = rootView.findViewById(mParams.getAdAction());
+        TextView btnAction = rootView.findViewById(mParams.getAdAction());
         ViewGroup adChoiceContainer = rootView.findViewById(mParams.getAdChoices());
         MediaView mediaCover = createMediaView(rootView.getContext());
         ViewGroup mediaLayout = rootView.findViewById(mParams.getAdMediaView());
