@@ -56,6 +56,7 @@
                 android:id="@+id/native_icon"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:visibility="gone"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@null" />
 
@@ -104,12 +105,12 @@
 
                 <TextView
                     android:id="@+id/native_sub_title"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
-                    android:gravity="left|top"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
                     android:singleLine="true"
-                    android:text="One Clean is a light, fast and smart phone cleaner for your Android phones or tablet."
                     android:textColor="@color/secondaryTextColor"
                     android:textSize="12sp"
                     android:visibility="gone" />
@@ -119,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
-                    android:gravity="left|top"
+                    android:gravity="center"
                     android:singleLine="true"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="12sp"
@@ -148,7 +149,7 @@
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/native_action_btn"
             style="@style/AdButtonLargeStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
