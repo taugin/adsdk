@@ -37,8 +37,8 @@
                     <RelativeLayout
                         android:id="@+id/common_media_cover"
                         android:contentDescription="@null"
-                        android:visibility="gone"
                         android:gravity="center"
+                        android:visibility="gone"
                         app:layout_aspectRatio="190%"
                         app:layout_widthPercent="100%" />
 
@@ -74,13 +74,14 @@
                         android:layout_height="@dimen/dp_36"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:contentDescription="@null" />
+                        android:layout_marginRight="@dimen/dp_16"
+                        android:contentDescription="@null"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/dp_16"
                         android:layout_toRightOf="@+id/common_icon"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
