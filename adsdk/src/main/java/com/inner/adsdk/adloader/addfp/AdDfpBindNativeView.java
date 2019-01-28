@@ -6,7 +6,6 @@ import android.util.AndroidRuntimeException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -144,35 +143,56 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
 
         adView.addView(rootView);
 
-        adView.setHeadlineView(rootView.findViewById(mParams.getAdTitle()));
-        adView.setImageView(adView.findViewById(mParams.getAdCover()));
+        View titleView = rootView.findViewById(mParams.getAdTitle());
+        if (titleView != null) {
+            adView.setHeadlineView(titleView);
+        }
+        View adCoverView = adView.findViewById(mParams.getAdCover());
+        if (adCoverView != null) {
+            adView.setImageView(adCoverView);
+        }
 
         // 由于dfp没有subTitle的接口，因此将使用subTitle或者detailView
         View detailView = adView.findViewById(mParams.getAdDetail());
         View subTitleView = adView.findViewById(mParams.getAdSubTitle());
         View bodyView = detailView != null ? detailView : subTitleView;
 
-        adView.setBodyView(bodyView);
+        if (bodyView != null) {
+            adView.setBodyView(bodyView);
+        }
 
-        adView.setCallToActionView(adView.findViewById(mParams.getAdAction()));
-        adView.setIconView(adView.findViewById(mParams.getAdIcon()));
+        View ctaView = adView.findViewById(mParams.getAdAction());
+        if (ctaView != null) {
+            adView.setCallToActionView(ctaView);
+        }
+        View adIconView = adView.findViewById(mParams.getAdIcon());
+        if (adIconView != null) {
+            adView.setIconView(adIconView);
+        }
 
         if (!TextUtils.isEmpty(nativeAd.getHeadline())) {
-            ((TextView) adView.getHeadlineView()).setText(nativeAd.getHeadline());
+            titleView = adView.getHeadlineView();
+            if (titleView instanceof TextView) {
+                ((TextView)titleView).setText(nativeAd.getHeadline());
 
-            adView.getHeadlineView().setVisibility(View.VISIBLE);
+                titleView.setVisibility(View.VISIBLE);
+            }
         }
 
         if (!TextUtils.isEmpty(nativeAd.getBody())) {
-            ((TextView) adView.getBodyView()).setText(nativeAd.getBody());
-
-            adView.getBodyView().setVisibility(View.VISIBLE);
+            bodyView = adView.getBodyView();
+            if (bodyView instanceof TextView) {
+                ((TextView)bodyView).setText(nativeAd.getBody());
+                bodyView.setVisibility(View.VISIBLE);
+            }
         }
 
         if (!TextUtils.isEmpty(nativeAd.getCallToAction())) {
-            ((Button) adView.getCallToActionView()).setText(nativeAd.getCallToAction());
-
-            adView.getCallToActionView().setVisibility(View.VISIBLE);
+            ctaView = adView.getCallToActionView();
+            if (ctaView instanceof TextView) {
+                ((TextView) ctaView).setText(nativeAd.getCallToAction());
+                ctaView.setVisibility(View.VISIBLE);
+            }
         }
 
         NativeAd.Image image = nativeAd.getIcon();
@@ -180,7 +200,6 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
             View iconView = adView.getIconView();
             if (iconView instanceof ImageView) {
                 ((ImageView) iconView).setImageDrawable(image.getDrawable());
-
                 iconView.setVisibility(View.VISIBLE);
             }
         }
@@ -227,13 +246,14 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
          }*/
 
         try {
-            if (adView.getStarRatingView() != null) {
+            View rateBarView = adView.getStarRatingView();
+            if (rateBarView != null) {
                 if (nativeAd.getStarRating() == null) {
-                    adView.getStarRatingView().setVisibility(View.INVISIBLE);
+                    rateBarView.setVisibility(View.INVISIBLE);
                 } else {
-                    ((RatingBar) adView.getStarRatingView())
+                    ((RatingBar) rateBarView)
                             .setRating(nativeAd.getStarRating().floatValue());
-                    adView.getStarRatingView().setVisibility(View.VISIBLE);
+                    rateBarView.setVisibility(View.VISIBLE);
                 }
             }
         } catch (Exception e) {

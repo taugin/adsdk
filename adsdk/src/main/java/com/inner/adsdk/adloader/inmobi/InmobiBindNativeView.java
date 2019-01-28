@@ -1,6 +1,5 @@
 package com.inner.adsdk.adloader.inmobi;
 
-import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 import android.view.LayoutInflater;
@@ -139,20 +138,20 @@ public class InmobiBindNativeView extends BaseBindNativeView {
         TextView titleView = rootLayout.findViewById(mParams.getAdTitle());
         ImageView icon = rootLayout.findViewById(mParams.getAdIcon());
         TextView detail = rootLayout.findViewById(mParams.getAdDetail());
-        AppCompatButton btnAction = rootLayout.findViewById(mParams.getAdAction());
+        TextView btnAction = rootLayout.findViewById(mParams.getAdAction());
 
         List<View> actionView = new ArrayList<View>();
 
         if (titleView != null) {
             titleView.setText(nativeAd.getAdTitle());
             if (!TextUtils.isEmpty(nativeAd.getAdTitle())) {
-                btnAction.setVisibility(View.VISIBLE);
+                titleView.setVisibility(View.VISIBLE);
             }
         }
         if (detail != null) {
             detail.setText(nativeAd.getAdDescription());
             if (!TextUtils.isEmpty(nativeAd.getAdDescription())) {
-                btnAction.setVisibility(View.VISIBLE);
+                detail.setVisibility(View.VISIBLE);
             }
         }
         if (btnAction != null) {
