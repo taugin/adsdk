@@ -5,15 +5,8 @@ import android.text.TextUtils;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
-import com.inner.adsdk.config.AtConfig;
 import com.inner.adsdk.config.BaseConfig;
-import com.inner.adsdk.config.CtConfig;
-import com.inner.adsdk.config.GtConfig;
-import com.inner.adsdk.config.HtConfig;
-import com.inner.adsdk.config.LtConfig;
 import com.inner.adsdk.config.PidConfig;
-import com.inner.adsdk.config.SpConfig;
-import com.inner.adsdk.config.StConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Aes;
 import com.inner.adsdk.log.Log;
@@ -70,35 +63,11 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(data);
             Map<String, String> adIds = null;
-            GtConfig gtConfig = null;
-            StConfig stConfig = null;
-            AtConfig atConfig = null;
-            LtConfig ltConfig = null;
-            HtConfig htConfig = null;
-            CtConfig ctConfig = null;
             List<AdPlace> adPlaces = null;
             AdSwitch adSwitch = null;
             Map<String, String> adrefs = null;
             if (jobj.has(ADIDS)) {
                 adIds = parseAdIds(jobj.getString(ADIDS));
-            }
-            if (jobj.has(GTCONFIG)) {
-                gtConfig = parseGtPolicyInternal(jobj.getString(GTCONFIG));
-            }
-            if (jobj.has(STCONFIG)) {
-                stConfig = parseStPolicyInternal(jobj.getString(STCONFIG));
-            }
-            if (jobj.has(ATCONFIG)) {
-                atConfig = parseAtPolicyInternal(jobj.getString(ATCONFIG));
-            }
-            if (jobj.has(LTCONFIG)) {
-                ltConfig = parseLtPolicyInternal(jobj.getString(LTCONFIG));
-            }
-            if (jobj.has(HTCONFIG)) {
-                htConfig = parseHtPolicyInternal(jobj.getString(HTCONFIG));
-            }
-            if (jobj.has(CTCONFIG)) {
-                ctConfig = parseCtPolicyInternal(jobj.getString(CTCONFIG));
             }
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
@@ -109,22 +78,13 @@ public class AdParser implements IParser {
             if (jobj.has(ADREFS)) {
                 adrefs = parseAdRefs(jobj.getString(ADREFS));
             }
-            if (adPlaces != null || gtConfig != null
-                    || adIds != null || adSwitch != null
-                    || adrefs != null || stConfig != null
-                    || atConfig != null || ltConfig != null
-                    || htConfig != null || ctConfig != null) {
+            if (adPlaces != null || adIds != null || adSwitch != null
+                    || adrefs != null) {
                 adConfig = new AdConfig();
                 adConfig.setAdPlaceList(adPlaces);
-                adConfig.setGtConfig(gtConfig);
                 adConfig.setAdIds(adIds);
                 adConfig.setAdSwitch(adSwitch);
                 adConfig.setAdRefs(adrefs);
-                adConfig.setStConfig(stConfig);
-                adConfig.setAtConfig(atConfig);
-                adConfig.setLtConfig(ltConfig);
-                adConfig.setHtConfig(htConfig);
-                adConfig.setCtConfig(ctConfig);
             }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdConfigInternal error : " + e);
@@ -205,122 +165,6 @@ public class AdParser implements IParser {
         }
     }
 
-    @Override
-    public GtConfig parseGtPolicy(String data) {
-        data = getContent(data);
-        return parseGtPolicyInternal(data);
-    }
-
-    private GtConfig parseGtPolicyInternal(String content) {
-        GtConfig gtConfig = null;
-        try {
-            JSONObject jobj = new JSONObject(content);
-            gtConfig = new GtConfig();
-            parseBaseConfig(gtConfig, jobj);
-        } catch (Exception e) {
-            Log.v(Log.TAG, "parseGtPolicyInternal error : " + e);
-        }
-        return gtConfig;
-    }
-
-    @Override
-    public StConfig parseStPolicy(String data) {
-        data = getContent(data);
-        return parseStPolicyInternal(data);
-    }
-
-    private StConfig parseStPolicyInternal(String content) {
-        StConfig stConfig = null;
-        try {
-            JSONObject jobj = new JSONObject(content);
-            stConfig = new StConfig();
-            parseBaseConfig(stConfig, jobj);
-        } catch (Exception e) {
-            Log.v(Log.TAG, "parseStPolicyInternal error : " + e);
-        }
-        return stConfig;
-    }
-
-    @Override
-    public AtConfig parseAtPolicy(String data) {
-        data = getContent(data);
-        return parseAtPolicyInternal(data);
-    }
-
-    private AtConfig parseAtPolicyInternal(String content) {
-        AtConfig atConfig = null;
-        try {
-            JSONObject jobj = new JSONObject(content);
-            atConfig = new AtConfig();
-            if (jobj.has(EXCLUDE_PACKAGES)) {
-                atConfig.setExcludes(parseStringList(jobj.getString(EXCLUDE_PACKAGES)));
-            }
-            if (jobj.has(SHOW_ON_FIRST_PAGE)) {
-                atConfig.setShowOnFirstPage(jobj.getInt(SHOW_ON_FIRST_PAGE) == 1);
-            }
-            parseBaseConfig(atConfig, jobj);
-        } catch (Exception e) {
-            Log.v(Log.TAG, "parseStPolicyInternal error : " + e);
-        }
-        return atConfig;
-    }
-
-    @Override
-    public LtConfig parseLtPolicy(String data) {
-        data = getContent(data);
-        return parseLtPolicyInternal(data);
-    }
-
-    private LtConfig parseLtPolicyInternal(String data) {
-        LtConfig ltConfig = null;
-        try {
-            JSONObject jobj = new JSONObject(data);
-            ltConfig = new LtConfig();
-            parseBaseConfig(ltConfig, jobj);
-        } catch (Exception e) {
-            Log.v(Log.TAG, "parseLtConfigInternal error : " + e);
-        }
-        return ltConfig;
-    }
-
-    @Override
-    public HtConfig parseHtPolicy(String data) {
-        data = getContent(data);
-        return parseHtPolicyInternal(data);
-    }
-
-    private HtConfig parseHtPolicyInternal(String data) {
-        HtConfig htConfig = null;
-        try {
-            JSONObject jobj = new JSONObject(data);
-            htConfig = new HtConfig();
-            parseBaseConfig(htConfig, jobj);
-        } catch (Exception e) {
-            Log.v(Log.TAG, "parseHtConfigInternal error : " + e);
-        }
-        return htConfig;
-    }
-
-    @Override
-    public CtConfig parseCtPolicy(String data) {
-        data = getContent(data);
-        return parseCtPolicyInternal(data);
-    }
-
-    private CtConfig parseCtPolicyInternal(String data) {
-        CtConfig ctConfig = null;
-        try {
-            JSONObject jobj = new JSONObject(data);
-            ctConfig = new CtConfig();
-            parseBaseConfig(ctConfig, jobj);
-            if (jobj.has(DISABLE_INTERVAL)) {
-                ctConfig.setDisableInterval(jobj.getLong(DISABLE_INTERVAL));
-            }
-        } catch (Exception e) {
-            Log.v(Log.TAG, "parseCtConfigInternal error : " + e);
-        }
-        return ctConfig;
-    }
 
     private List<String> parseStringList(String str) {
         List<String> list = null;
@@ -653,85 +497,6 @@ public class AdParser implements IParser {
             Log.v(Log.TAG, "parseAdRefs error : " + e);
         }
         return adRefs;
-    }
-
-    @Override
-    public List<SpConfig> parseSpread(String data) {
-        List<SpConfig> spreads = null;
-        data = getContent(data);
-        try {
-            JSONObject jobj = new JSONObject(data);
-            SpConfig spConfig = parseSpConfigInternal(jobj);
-            spreads = new ArrayList<SpConfig>(1);
-            spreads.add(spConfig);
-        } catch (Exception e) {
-        }
-        if (spreads == null || spreads.isEmpty()) {
-            try {
-                JSONArray jarray = new JSONArray(data);
-                int len = jarray.length();
-                if (len > 0) {
-                    spreads = new ArrayList<SpConfig>(len);
-                    JSONObject jobj = null;
-                    SpConfig spConfig = null;
-                    for (int index = 0; index < len; index++) {
-                        jobj = jarray.getJSONObject(index);
-                        spConfig = parseSpConfigInternal(jobj);
-                        if (spConfig != null) {
-                            spreads.add(spConfig);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                Log.v(Log.TAG, "parseSpread error : " + e);
-            }
-        }
-        return spreads;
-    }
-
-    private SpConfig parseSpConfigInternal(JSONObject jobj) {
-        SpConfig spConfig = null;
-        try {
-            if (jobj != null) {
-                spConfig = new SpConfig();
-                if (jobj.has(BANNER)) {
-                    spConfig.setBanner(jobj.getString(BANNER));
-                }
-                if (jobj.has(ICON)) {
-                    spConfig.setIcon(jobj.getString(ICON));
-                }
-                if (jobj.has(TITLE)) {
-                    spConfig.setTitle(jobj.getString(TITLE));
-                }
-                if (jobj.has(PKGNAME)) {
-                    spConfig.setPkgname(jobj.getString(PKGNAME));
-                }
-                if (jobj.has(SUBTITLE)) {
-                    spConfig.setSubTitle(jobj.getString(SUBTITLE));
-                }
-                if (jobj.has(DETAIL)) {
-                    spConfig.setDetail(jobj.getString(DETAIL));
-                }
-                if (jobj.has(LINKURL)) {
-                    spConfig.setLinkUrl(jobj.getString(LINKURL));
-                }
-                if (jobj.has(CTA)) {
-                    spConfig.setCta(jobj.getString(CTA));
-                }
-                if (jobj.has(TYPE)) {
-                    spConfig.setType(jobj.getString(TYPE));
-                }
-                if (jobj.has(DISABLE)) {
-                    spConfig.setDisable(jobj.getInt(DISABLE) == 1);
-                }
-                if (jobj.has(HTML)) {
-                    spConfig.setHtml(jobj.getString(HTML));
-                }
-            }
-        } catch (Exception e) {
-            Log.v(Log.TAG, "parseSpConfig error : " + e);
-        }
-        return spConfig;
     }
 
     @Override

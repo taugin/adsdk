@@ -80,7 +80,7 @@ public class GlobalCacheLoader implements Handler.Callback {
 
     public void init() {
         fetchGlobalCacheAdPlace();
-        sendMessageDelayInternal(true);
+        sendMessageDelayInternal(true, false);
     }
 
     private void fetchGlobalCacheAdPlace() {
@@ -98,7 +98,7 @@ public class GlobalCacheLoader implements Handler.Callback {
     public boolean handleMessage(Message msg) {
         if (msg != null && msg.what == MSG_LOAD_ADS) {
             startRequestRewardVideo();
-            sendMessageDelayInternal(false);
+            sendMessageDelayInternal(false, false);
             notifyOnRefresh();
             return true;
         }
@@ -111,11 +111,16 @@ public class GlobalCacheLoader implements Handler.Callback {
         }
     }
 
-    private void sendMessageDelayInternal(boolean first) {
+    private void sendMessageDelayInternal(boolean first, boolean immediate) {
         if (mAllAdPlaces != null && !mAllAdPlaces.isEmpty()) {
             if (mHandler != null) {
-                if (!mHandler.hasMessages(MSG_LOAD_ADS)) {
-                    mHandler.sendEmptyMessageDelayed(MSG_LOAD_ADS, first ? DELAY_LOAD_TIME_FIRST : DELAY_LOAD_TIME);
+                if (immediate) {
+                    mHandler.removeMessages(MSG_LOAD_ADS);
+                    mHandler.sendEmptyMessageDelayed(MSG_LOAD_ADS, DELAY_LOAD_TIME_FIRST);
+                } else {
+                    if (!mHandler.hasMessages(MSG_LOAD_ADS)) {
+                        mHandler.sendEmptyMessageDelayed(MSG_LOAD_ADS, first ? DELAY_LOAD_TIME_FIRST : DELAY_LOAD_TIME);
+                    }
                 }
             }
         }
@@ -280,6 +285,7 @@ public class GlobalCacheLoader implements Handler.Callback {
             remove(pidName);
             notifyOnRefresh();
             notifyOnDismiss();
+            sendMessageDelayInternal(true, true);
         }
 
         @Override
@@ -498,7 +504,7 @@ public class GlobalCacheLoader implements Handler.Callback {
         if (mListeners != null && !mListeners.contains(l)) {
             mListeners.push(l);
         }
-        sendMessageDelayInternal(false);
+        sendMessageDelayInternal(false, false);
     }
 
     public void unregisterListener(OnAdRewardListener l) {

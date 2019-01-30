@@ -11,14 +11,10 @@ import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.framework.AdPlaceLoader;
-import com.inner.adsdk.listener.OnAdRewardListener;
 import com.inner.adsdk.listener.OnAdSdkListener;
+import com.inner.adsdk.listener.OnAdRewardListener;
 import com.inner.adsdk.loader.AdReceiver;
-import com.inner.adsdk.loader.AtAdLoader;
 import com.inner.adsdk.loader.GlobalCacheLoader;
-import com.inner.adsdk.loader.GtAdLoader;
-import com.inner.adsdk.loader.HtAdLoader;
-import com.inner.adsdk.loader.StAdLoader;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
 import com.inner.adsdk.stat.StatImpl;
@@ -70,13 +66,6 @@ public class AdSdk {
         }
     }
 
-    public void send() {
-        try {
-            GtAdLoader.get(mContext).onFire();
-        } catch(Exception e) {
-        }
-    }
-
     /**
      * 获取版本号
      *
@@ -95,10 +84,6 @@ public class AdSdk {
         ActivityMonitor.get(mContext).init();
         StatImpl.get().init();
         AdReceiver.get(mContext).init();
-        GtAdLoader.get(mContext).init(this);
-        StAdLoader.get(mContext).init(this);
-        AtAdLoader.get(mContext).init(this);
-        HtAdLoader.get(mContext).init(this);
         GlobalCacheLoader.get(getFinalContext()).init();
     }
 

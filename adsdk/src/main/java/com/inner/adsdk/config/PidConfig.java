@@ -227,10 +227,6 @@ public class PidConfig extends BaseConfig {
         return TextUtils.equals(Constant.AD_SDK_MOPUB, sdk);
     }
 
-    public boolean isSpread() {
-        return TextUtils.equals(Constant.AD_SDK_SPREAD, sdk);
-    }
-
     public boolean isInmobi() {
         return TextUtils.equals(Constant.AD_SDK_INMOBI, sdk);
     }

@@ -49,9 +49,6 @@ public class AdHelper {
         if (TextUtils.equals(Constant.AD_SDK_WEMOB, sdk)) {
             return hasWemobModule();
         }
-        if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
-            return true;
-        }
         if (TextUtils.equals(Constant.AD_SDK_DSPMOB, sdk)) {
             return hasDspMobModule();
         }

@@ -9,7 +9,6 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.appub.ads.a.FSA;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.adloader.addfp.AdDfpLoader;
 import com.inner.adsdk.adloader.adfb.FBLoader;
@@ -25,7 +24,6 @@ import com.inner.adsdk.adloader.listener.IManagerListener;
 import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
 import com.inner.adsdk.adloader.mopub.MopubLoader;
-import com.inner.adsdk.adloader.spread.SpLoader;
 import com.inner.adsdk.adloader.wemob.WemobLoader;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.PidConfig;
@@ -66,7 +64,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private ISdkLoader mCurrentAdLoader;
     private String mOriginPidName;
     private Handler mHandler = new Handler(Looper.getMainLooper());
-    private FSA.MView mMView;
     private static List<ISdkLoader> sLoadedAdLoaders = new ArrayList<ISdkLoader>();
     private boolean mAdPlaceSeqLoading = false;
 
@@ -170,15 +167,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             }
                         } else if (config.isMopub() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new MopubLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
-                            loader.setListenerManager(this);
-                            loader.setAdId(adId);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
-                            }
-                        } else if (config.isSpread() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new SpLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
@@ -774,13 +762,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 mCurrentAdLoader = loader;
                 loader.showBanner(viewGroup);
                 AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
-                viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
                 return true;
             } else if (loader.isNativeLoaded() && viewGroup != null) {
                 mCurrentAdLoader = loader;
                 loader.showNative(viewGroup, getParams(loader));
                 AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
-                viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
                 return true;
             }
         }
@@ -802,7 +788,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         if (needCounting) {
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         }
-                        viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
                         break;
                     } else if (loader.isNativeLoaded() && viewGroup != null) {
                         mCurrentAdLoader = loader;
@@ -810,7 +795,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         if (needCounting) {
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         }
-                        viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
                         break;
                     }
                 }
@@ -1132,31 +1116,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                             break;
                         }
-                    } else if (loader.isBannerType() && loader.isBannerLoaded()) {
-                        show(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType());
-                        break;
-                    } else if (loader.isNativeType() && loader.isNativeLoaded()) {
-                        show(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType());
-                        break;
                     }
                 }
             }
-        }
-    }
-
-    private void show(String pidName, String source, String adType) {
-        try {
-            Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.FAPICKER", false);
-            if (intent == null) {
-                intent = new Intent(mContext, FSA.class);
-            }
-            intent.putExtra(Intent.EXTRA_TITLE, pidName);
-            intent.putExtra(Intent.EXTRA_TEXT, source);
-            intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
         }
     }
 
@@ -1400,11 +1362,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         if (viewGroup == null) {
             Log.v(Log.TAG, "ai empty view group");
-            return;
-        }
-
-        if (mMView == null || !mMView.isViewVisible()) {
-            Log.v(Log.TAG, "ai not visible");
             return;
         }
         resume();

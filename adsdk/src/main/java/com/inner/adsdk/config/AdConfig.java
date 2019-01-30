@@ -14,24 +14,6 @@ public class AdConfig {
 
     private Map<String, String> adIds;
 
-    // 广告内策略
-    private GtConfig gtConfig;
-
-    // ST
-    private StConfig stConfig;
-
-    // AT
-    private AtConfig atConfig;
-
-    // LT
-    private LtConfig ltConfig;
-
-    // HT
-    private HtConfig htConfig;
-
-    //CT
-    private CtConfig ctConfig;
-
     // 广告配置
     private List<AdPlace> adPlaceList;
 
@@ -45,14 +27,6 @@ public class AdConfig {
 
     public void setAdIds(Map<String, String> adIds) {
         this.adIds = adIds;
-    }
-
-    public GtConfig getGtConfig() {
-        return gtConfig;
-    }
-
-    public void setGtConfig(GtConfig gtConfig) {
-        this.gtConfig = gtConfig;
     }
 
     public List<AdPlace> getAdPlaceList() {
@@ -77,46 +51,6 @@ public class AdConfig {
 
     public void setAdRefs(Map<String, String> adRefs) {
         this.adRefs = adRefs;
-    }
-
-    public StConfig getStConfig() {
-        return stConfig;
-    }
-
-    public void setStConfig(StConfig stConfig) {
-        this.stConfig = stConfig;
-    }
-
-    public AtConfig getAtConfig() {
-        return atConfig;
-    }
-
-    public void setAtConfig(AtConfig atConfig) {
-        this.atConfig = atConfig;
-    }
-
-    public LtConfig getLtConfig() {
-        return ltConfig;
-    }
-
-    public void setLtConfig(LtConfig ltConfig) {
-        this.ltConfig = ltConfig;
-    }
-
-    public HtConfig getHtConfig() {
-        return htConfig;
-    }
-
-    public void setHtConfig(HtConfig htConfig) {
-        this.htConfig = htConfig;
-    }
-
-    public CtConfig getCtConfig() {
-        return ctConfig;
-    }
-
-    public void setCtConfig(CtConfig ctConfig) {
-        this.ctConfig = ctConfig;
     }
 
     /**
@@ -165,7 +99,6 @@ public class AdConfig {
     @Override
     public String toString() {
         return "adc{" +
-                "gt=" + gtConfig +
                 ", list=" + adPlaceList +
                 '}';
     }
