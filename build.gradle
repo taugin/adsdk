@@ -29,7 +29,7 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url rootProject.ext.publishUri }
-        maven { url 'https://gitee.com/taugin/werepo/raw/release' }
+        // maven { url 'https://gitee.com/taugin/werepo/raw/release' }
         mavenLocal()
         maven { url "http://dl.appnext.com/" }
     }
