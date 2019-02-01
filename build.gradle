@@ -32,7 +32,7 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
-        // maven { url rootProject.ext.publishUri }
+        maven { url rootProject.ext.publishUri }
         mavenLocal()
         maven { url "http://dl.appnext.com/" }
         maven { url "http://maven.display.io/" }
