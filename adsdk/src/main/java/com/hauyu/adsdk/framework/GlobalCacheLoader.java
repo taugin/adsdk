@@ -130,7 +130,7 @@ public class GlobalCacheLoader implements Handler.Callback {
 
     private void startRequestRewardVideo() {
         if (hasListeners()
-                && ActivityMonitor.get(mContext).appOnTop()
+                && ActivityMonitor.get(mContext).appOnTopForReward()
                 && !Utils.isScreenLocked(mContext)
                 && Utils.isScreenOn(mContext)
                 && isNeedLoadReward()) {

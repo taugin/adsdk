@@ -11,6 +11,7 @@ import com.hauyu.adsdk.config.PidConfig;
 import com.hauyu.adsdk.policy.CtrChecker;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -21,6 +22,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     private static ActivityMonitor sActivityMonitor;
     private AtomicInteger mAtomicInteger = new AtomicInteger(0);
+    private AtomicBoolean mAtomicBoolean = new AtomicBoolean();
 
     private CtrChecker mCtrChecker = new CtrChecker();
     private PidConfig mPidConfg;
@@ -82,10 +84,16 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityResumed(Activity activity) {
+        if (mAtomicBoolean != null) {
+            mAtomicBoolean.set(true);
+        }
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
+        if (mAtomicBoolean != null) {
+            mAtomicBoolean.set(false);
+        }
     }
 
     @Override
@@ -106,6 +114,13 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     public boolean appOnTop() {
         if (mAtomicInteger != null) {
             return mAtomicInteger.get() > 0;
+        }
+        return false;
+    }
+
+    public boolean appOnTopForReward() {
+        if (mAtomicBoolean != null) {
+            return mAtomicBoolean.get();
         }
         return false;
     }
