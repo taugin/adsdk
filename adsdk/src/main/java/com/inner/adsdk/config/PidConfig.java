@@ -236,6 +236,10 @@ public class PidConfig extends BaseConfig {
         return TextUtils.equals(Constant.AD_SDK_MOBVISTA, sdk);
     }
 
+    public boolean isDisplayIo() {
+        return TextUtils.equals(Constant.AD_SDK_DISPLAYIO, sdk);
+    }
+
     public boolean isBannerType() {
         return TextUtils.equals(Constant.TYPE_BANNER, adType);
     }

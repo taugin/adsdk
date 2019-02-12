@@ -32,6 +32,7 @@ allprojects {
         // maven { url 'https://gitee.com/taugin/werepo/raw/release' }
         mavenLocal()
         maven { url "http://dl.appnext.com/" }
+        maven { url "http://maven.display.io/" }
     }
 }
 

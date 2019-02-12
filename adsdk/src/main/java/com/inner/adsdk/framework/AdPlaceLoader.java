@@ -19,6 +19,7 @@ import com.inner.adsdk.adloader.appnext.AppnextLoader;
 import com.inner.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.inner.adsdk.adloader.cloudmobi.CloudMobiLoader;
 import com.inner.adsdk.adloader.dap.DapLoader;
+import com.inner.adsdk.adloader.dispio.DisplayIoLoader;
 import com.inner.adsdk.adloader.dspmob.DspMobLoader;
 import com.inner.adsdk.adloader.inmobi.InmobiLoader;
 import com.inner.adsdk.adloader.inneractive.InnerActiveLoader;
@@ -248,6 +249,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             }
                         } else if (config.isMobvista() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new MobvistaLoader();
+                            loader.init(mContext);
+                            loader.setPidConfig(config);
+                            loader.setListenerManager(this);
+                            loader.setAdId(adId);
+                            if (loader.allowUseLoader()) {
+                                mAdLoaders.add(loader);
+                            }
+                        } else if (config.isDisplayIo() && AdHelper.isModuleLoaded(config.getSdk())) {
+                            loader = new DisplayIoLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);

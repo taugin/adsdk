@@ -17,6 +17,8 @@ import com.mobi.sdk.ADSDK;
 import com.mopub.mobileads.MoPubInterstitial;
 import com.wemob.ads.Sdk;
 
+import io.display.sdk.Placement;
+
 /**
  * Created by Administrator on 2018-10-25.
  */
@@ -72,6 +74,9 @@ public class AdHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_MOBVISTA, sdk)) {
             return hasMobvistaMobModule();
+        }
+        if (TextUtils.equals(Constant.AD_SDK_DISPLAYIO, sdk)) {
+            return hasDisplayIoModule();
         }
         return false;
     }
@@ -219,6 +224,16 @@ public class AdHelper {
     private static boolean hasMobvistaMobModule() {
         try {
             SDK.class.getName();
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
+    }
+
+    private static boolean hasDisplayIoModule() {
+        try {
+            Placement.class.getName();
             return true;
         } catch (Exception e) {
         } catch (Error e) {

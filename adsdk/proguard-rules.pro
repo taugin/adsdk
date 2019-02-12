@@ -163,3 +163,7 @@
 
 #Facebook
 -dontwarn com.adywind.nativeads.**
+
+#display io
+-keep class io.display.sdk.Controller.** { *;}
+-dontwarn io.display.sdk.Controller.**
