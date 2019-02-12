@@ -12,6 +12,8 @@ import com.inner.adsdk.constant.Constant;
 import com.mopub.mobileads.MoPubInterstitial;
 import com.wemob.ads.Sdk;
 
+import io.display.sdk.Placement;
+
 /**
  * Created by Administrator on 2018-10-25.
  */
@@ -52,6 +54,9 @@ public class AdHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_DSPMOB, sdk)) {
             return hasDspMobModule();
+        }
+        if (TextUtils.equals(Constant.AD_SDK_DISPLAYIO, sdk)) {
+            return hasDisplayIoModule();
         }
         return false;
     }
@@ -149,6 +154,16 @@ public class AdHelper {
     private static boolean hasDspMobModule() {
         try {
             DspMob.class.getName();
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
+    }
+
+    private static boolean hasDisplayIoModule() {
+        try {
+            Placement.class.getName();
             return true;
         } catch (Exception e) {
         } catch (Error e) {

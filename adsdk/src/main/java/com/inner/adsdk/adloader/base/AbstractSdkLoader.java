@@ -49,9 +49,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected IStat mStat;
     protected IManagerListener mManagerListener;
     protected String mAdId;
+    protected Handler mHandler = null;
+
     private boolean mLoading = false;
     private boolean mLoadedFlag = false;
-    private Handler mHandler = null;
     private long mRequestTime = 0;
 
     @Override

@@ -75,6 +75,9 @@ dependencies {
     // Dsp
     implementation 'com.dspmob.sdk:dspsdk:0.22'
     implementation 'com.mopub.mediation:dspmob:0.21.0@aar'
+
+    // display io
+    implementation 'io.display:android-sdk:2.0.0.10'
 }
 
 // 发布aar
