@@ -110,12 +110,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadInterstitial() {
-        //AdSdk.get(mContext).loadInterstitial("interstitial", mSimpleAdsdkListener);
-        if (AdSdk.get(mContext).isInterstitialLoaded("interstitial")) {
-            AdSdk.get(mContext).showInterstitial("interstitial");
-        } else {
-            AdSdk.get(mContext).loadInterstitial("interstitial", null);
-        }
+        AdSdk.get(mContext).loadInterstitial("interstitial1", mSimpleAdsdkListener);
     }
 
     private void loadAdComplex() {
@@ -176,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
         AdParams adParams = builder.build();
 
-        AdSdk.get(mContext).loadAdView("banner_and_native", adParams, mSimpleAdsdkListener);
+        AdSdk.get(mContext).loadAdView("banner3", adParams, mSimpleAdsdkListener);
     }
 
     private void showAdView(String pidName) {
@@ -230,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onLoaded(String pidName, String source, String adType) {
+            Toast.makeText(mContext, source + " - " + adType + " - " + pidName + " - onLoaded()", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
             if (AdExtra.AD_TYPE_BANNER.equalsIgnoreCase(adType) || AdExtra.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
                 // showAdView(pidName);
@@ -249,16 +245,19 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onShow(String pidName, String source, String adType) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            Toast.makeText(mContext, source + " - " + adType + " - " + pidName + " - onShow()", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onClick(String pidName, String source, String adType) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            Toast.makeText(mContext, source + " - " + adType + " - " + pidName + " - onClick()", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onDismiss(String pidName, String source, String adType) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            Toast.makeText(mContext, source + " - " + adType + " - " + pidName + " - onDismiss()", Toast.LENGTH_SHORT).show();
         }
 
         @Override

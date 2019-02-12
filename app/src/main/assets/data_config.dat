@@ -7,7 +7,8 @@
     "at_outer_place": "gt_outer_place",
     "lt_outer_place": "banner_and_native",
     "ht_outer_place": "gt_outer_place",
-    "ct_outer_place": "banner_and_native"
+    "ct_outer_place": "banner_and_native",
+    "gt_outer_place":"interstitial1"
   },
   "atconfig": {
     "e": 0,
@@ -15,7 +16,7 @@
     "i": 60000
   },
   "ltconfig": {
-    "e": 1,
+    "e": 0,
     "d": 3600,
     "i": 1800,
     "attr": []
@@ -27,7 +28,7 @@
     "attr": []
   },
   "ctconfig": {
-    "e": 1,
+    "e": 0,
     "d": 3600,
     "di": 60000,
     "attr": []
@@ -60,14 +61,15 @@
       ]
     },
     {
-      "name": "banner2",
+      "name": "interstitial1",
       "mode": "con",
       "as": 1,
       "pids": [
         {
-          "sdk": "dfp",
-          "type": "banner",
-          "pid": "/6253334/dfp_example_ad",
+          "sdk": "displayio",
+          "type": "interstitial",
+          "pid": "4837",
+          "aid":"7559",
           "disable": 0
         }
       ]
@@ -78,9 +80,10 @@
       "as": 1,
       "pids": [
         {
-          "sdk": "applovin",
+          "sdk": "displayio",
           "type": "banner",
-          "pid": "1bb8d0234f0f8c3d",
+          "pid": "4838",
+          "aid":"7559",
           "disable": 0
         }
       ]
@@ -332,7 +335,7 @@
     },
     {
       "name": "reward_place1",
-      "gc":1,
+      "gc":0,
       "mode": "seq",
       "pids": [
         {
@@ -453,7 +456,7 @@
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
@@ -465,7 +468,7 @@
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "appnext",
@@ -486,7 +489,14 @@
           "eid": "11061_6101_001",
           "pid": "native1",
           "disable": 1
-        }
+        },
+        {
+                  "sdk": "displayio",
+                  "type": "banner",
+                  "pid": "4838",
+                  "aid":"7559",
+                  "disable": 0
+                }
       ],
       "maxcount": 100,
       "percent": 100
