@@ -413,7 +413,10 @@ public class FSA extends Activity {
         if (isLockView()) {
             return;
         }
-        super.onBackPressed();
+        try {
+            super.onBackPressed();
+        } catch (Exception e) {
+        }
         if ((Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
                 || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType))
                 && !Constant.AD_SDK_SPREAD.equals(mSource)) {
