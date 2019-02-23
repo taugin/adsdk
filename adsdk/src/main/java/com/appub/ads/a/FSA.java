@@ -62,8 +62,12 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.ChargeWrapper;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.policy.AtPolicy;
+import com.hauyu.adsdk.policy.CtPolicy;
 import com.hauyu.adsdk.policy.GtPolicy;
 import com.hauyu.adsdk.policy.HtPolicy;
+import com.hauyu.adsdk.policy.LtPolicy;
+import com.hauyu.adsdk.policy.StPolicy;
 import com.hauyu.adsdk.stat.StatImpl;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -344,10 +348,19 @@ public class FSA extends Activity {
         });
         rootLayout.addView(imageView, params);
         AdSdk.get(this).showComplexAds(mPidName, getAdParams(), mSource, mAdType, adLayout);
-        if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)) {
+        if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)
+                || TextUtils.equals(Constant.GTPLACE_OUTER_NAME, mPidName)) {
             GtPolicy.get(this).reportShowing(true);
         } else if (TextUtils.equals(Constant.HTPLACE_OUTER_NAME, mPidName)) {
             HtPolicy.get(this).reportShowing(true);
+        } else if (TextUtils.equals(Constant.ATPLACE_OUTER_NAME, mPidName)) {
+            AtPolicy.get(this).reportShowing(true);
+        } else if (TextUtils.equals(Constant.STPLACE_OUTER_NAME, mPidName)) {
+            StPolicy.get(this).reportShowing(true);
+        } else if (TextUtils.equals(Constant.CTPLACE_OUTER_NAME, mPidName)) {
+            CtPolicy.get(this).reportShowing(true);
+        } else if (TextUtils.equals(Constant.LTPLACE_OUTER_NAME, mPidName)) {
+            LtPolicy.get(this).reportShowing(true);
         }
     }
 
