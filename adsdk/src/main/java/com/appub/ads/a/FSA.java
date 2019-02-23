@@ -62,8 +62,12 @@ import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.ChargeWrapper;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.policy.AtPolicy;
+import com.inner.adsdk.policy.CtPolicy;
 import com.inner.adsdk.policy.GtPolicy;
 import com.inner.adsdk.policy.HtPolicy;
+import com.inner.adsdk.policy.LtPolicy;
+import com.inner.adsdk.policy.StPolicy;
 import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
 
@@ -346,10 +350,19 @@ public class FSA extends Activity {
         rootLayout.addView(imageView, params);
 
         AdSdk.get(this).showComplexAds(mPidName, getAdParams(), mSource, mAdType, adLayout);
-        if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)) {
+        if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)
+                || TextUtils.equals(Constant.GTPLACE_OUTER_NAME, mPidName)) {
             GtPolicy.get(this).reportShowing(true);
         } else if (TextUtils.equals(Constant.HTPLACE_OUTER_NAME, mPidName)) {
             HtPolicy.get(this).reportShowing(true);
+        } else if (TextUtils.equals(Constant.ATPLACE_OUTER_NAME, mPidName)) {
+            AtPolicy.get(this).reportShowing(true);
+        } else if (TextUtils.equals(Constant.STPLACE_OUTER_NAME, mPidName)) {
+            StPolicy.get(this).reportShowing(true);
+        } else if (TextUtils.equals(Constant.CTPLACE_OUTER_NAME, mPidName)) {
+            CtPolicy.get(this).reportShowing(true);
+        } else if (TextUtils.equals(Constant.LTPLACE_OUTER_NAME, mPidName)) {
+            LtPolicy.get(this).reportShowing(true);
         }
     }
 
