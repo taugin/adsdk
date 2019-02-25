@@ -140,6 +140,9 @@ public class FSA extends Activity {
         }
     }
 
+    protected void onAdShowing(View containerView) {
+    }
+
     protected AdParams getAdParams() {
         return null;
     }
@@ -152,8 +155,14 @@ public class FSA extends Activity {
         return 0;
     }
 
+    protected void onLtShowing(View containerView) {
+    }
+
     protected AdParams getLtParams() {
         return null;
+    }
+
+    public void onCtShowing(View containerView) {
     }
 
     public AdParams getCtParams() {
@@ -358,6 +367,7 @@ public class FSA extends Activity {
         rootLayout.addView(imageView, params);
 
         AdSdk.get(this).showComplexAds(mPidName, getAdParams(), mSource, mAdType, adLayout);
+        onAdShowing(adLayout);
         if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)
                 || TextUtils.equals(Constant.GTPLACE_OUTER_NAME, mPidName)) {
             GtPolicy.get(this).reportShowing(true);
@@ -926,7 +936,8 @@ public class FSA extends Activity {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 if (!isFinishing()) {
-                    AdSdk.get(getBaseContext()).showAdView(pidName, getAdParams(), mLockAdLayout);
+                    AdSdk.get(getBaseContext()).showAdView(pidName, getLtParams(), mLockAdLayout);
+                    onLtShowing(mLockAdLayout);
                 }
             }
 
