@@ -152,6 +152,14 @@ public class FSA extends Activity {
         return 0;
     }
 
+    protected AdParams getLtParams() {
+        return null;
+    }
+
+    public AdParams getCtParams() {
+        return null;
+    }
+
     @Override
     public void setContentView(View view) {
         if (mInChargeView) {
@@ -903,11 +911,14 @@ public class FSA extends Activity {
     }
 
     private void showLockViewAd() {
-        AdParams params = new AdParams.Builder()
-                .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
-                .setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE)
-                .setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_MEDIUM)
-                .build();
+        AdParams params = getLtParams();
+        if (params == null) {
+            params = new AdParams.Builder()
+                    .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
+                    .setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE)
+                    .setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_MEDIUM)
+                    .build();
+        }
         AdSdk.get(this).loadAdView(Constant.LTPLACE_OUTER_NAME, params, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
