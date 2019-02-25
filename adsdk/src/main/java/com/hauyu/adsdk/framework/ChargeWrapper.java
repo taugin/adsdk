@@ -113,10 +113,18 @@ public class ChargeWrapper implements View.OnClickListener {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 if (mActivity != null && !mActivity.isFinishing()) {
-                    AdSdk.get(mActivity).showAdView(pidName, mAdContainer);
+                    AdSdk.get(mActivity).showAdView(pidName, getParams(), mAdContainer);
+                    onCtShowing(mAdContainer);
                 }
             }
         });
+    }
+
+    private void onCtShowing(View containerView) {
+        try {
+            ((FSA)mActivity).onCtShowing(containerView);
+        } catch (Exception | Error e) {
+        }
     }
 
     private void update() {
