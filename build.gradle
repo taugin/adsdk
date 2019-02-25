@@ -26,7 +26,7 @@ ext {
 allprojects {
     repositories {
         maven { url rootProject.ext.publishUri }
-        maven { url 'https://gitee.com/taugin/werepo/raw/release' }
+        maven { url 'https://taugi.gitee.io/werepo' }
         google()
         jcenter()
         mavenLocal()
