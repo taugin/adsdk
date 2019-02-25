@@ -209,7 +209,7 @@ public class FSA extends Activity {
         try {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            if (isLockView()) {
+            if (isLockView() || mInChargeView) {
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             } else {
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
