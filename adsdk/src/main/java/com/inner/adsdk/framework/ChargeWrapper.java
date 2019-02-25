@@ -89,14 +89,26 @@ public class ChargeWrapper implements View.OnClickListener {
         }
     }
 
+    private AdParams getParams() {
+        AdParams adParams = null;
+        try {
+            adParams = ((FSA)mActivity).getCtParams();
+        } catch (Exception | Error e) {
+        }
+        if (adParams == null) {
+            AdParams.Builder builder = new AdParams.Builder();
+            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
+            builder.setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE);
+            builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.FB_MEDIUM_RECTANGLE);
+            builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_MEDIUM_RECTANGLE);
+            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_SMALL);
+            adParams = builder.build();
+        }
+        return adParams;
+    }
+
     private void fillAd() {
-        AdParams.Builder builder = new AdParams.Builder();
-        builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
-        builder.setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE);
-        builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.FB_MEDIUM_RECTANGLE);
-        builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_MEDIUM_RECTANGLE);
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_SMALL);
-        AdParams adParams = builder.build();
+        AdParams adParams = getParams();
         AdSdk.get(mActivity).loadAdView(Constant.CTPLACE_OUTER_NAME, adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
