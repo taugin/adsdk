@@ -148,7 +148,7 @@ public class FBBindNativeView extends BaseBindNativeView {
         MediaView mediaCover = createMediaView(rootView.getContext());
         ViewGroup mediaLayout = rootView.findViewById(mParams.getAdMediaView());
 
-        if (mediaLayout != null) {
+        if (mediaLayout != null && mediaCover != null) {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);
             mediaLayout.addView(mediaCover, params);
             mediaLayout.setVisibility(View.VISIBLE);
