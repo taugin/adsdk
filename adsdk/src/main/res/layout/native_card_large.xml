@@ -98,7 +98,7 @@
                         android:gravity="left|top"
                         android:singleLine="true"
                         android:text="Charge Master"
-                        android:textColor="@color/primaryTextColor"
+                        android:textColor="@color/primaryColor"
                         android:textSize="18sp" />
 
                 </RelativeLayout>
@@ -111,7 +111,7 @@
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:textColor="@color/secondaryTextColor"
+                    android:textColor="@color/secondaryColor"
                     android:textSize="12sp"
                     android:visibility="gone" />
 
@@ -142,7 +142,7 @@
             android:gravity="center"
             android:maxLines="3"
             android:text="detail"
-            android:textColor="@color/secondaryTextColor"
+            android:textColor="@color/secondaryColor"
             android:textSize="15sp"
             android:visibility="gone" />
 
@@ -155,7 +155,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="16dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="Learn More" />

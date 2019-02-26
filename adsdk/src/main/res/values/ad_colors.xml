@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryTextColor">#3F51B5</color>
-    <color name="secondaryTextColor">#303F9F</color>
-    <color name="colorBtnBlue">#7122e5</color>
-    <color name="colorBtnBluePressed">#AA7122e5</color>
+    <color name="primaryColor">@android:color/black</color>
+    <color name="secondaryColor">@android:color/darker_gray</color>
+    <color name="colorBtnBlue">#FF4286F4</color>
+    <color name="colorBtnBluePressed">#AA4286F4</color>
 </resources>
