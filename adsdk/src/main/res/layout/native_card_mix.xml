@@ -49,14 +49,13 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/ad_body_bg"
-            android:paddingBottom="16dp">
+            android:background="@drawable/ad_body_bg">
 
             <LinearLayout
                 android:id="@+id/native_header_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/native_action_btn"
+                android:layout_above="@+id/native_action_layout"
                 android:layout_marginBottom="4dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
@@ -69,8 +68,8 @@
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:layout_marginBottom="20dp"
-                    android:visibility="gone"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,10 +80,9 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/native_title"
@@ -92,11 +90,15 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_weight="1"
+                            android:layout_marginTop="2dp"
+                            android:maxWidth="240dp"
                             android:ellipsize="marquee"
-                            android:gravity="left|top"
-                            android:singleLine="true"
+                            android:gravity="center"
+                            android:layout_gravity="center_horizontal"
+                            android:singleLine="false"
+                            android:maxLines="2"
                             android:text="Charge Master"
-                            android:textColor="@color/primaryTextColor"
+                            android:textColor="@color/primaryColor"
                             android:textSize="24sp" />
 
                         <TextView
@@ -104,7 +106,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="top"
-                            android:layout_marginLeft="4dp"
+                            android:layout_marginLeft="14dp"
                             android:layout_toRightOf="@+id/native_title"
                             android:layout_weight="0"
                             android:background="@drawable/ad_badge_bg_dark"
@@ -118,7 +120,7 @@
                             android:textColor="@android:color/darker_gray"
                             android:textSize="8sp" />
 
-                    </LinearLayout>
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/native_sub_title"
@@ -129,7 +131,7 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="sub title"
-                        android:textColor="@color/secondaryTextColor"
+                        android:textColor="@color/secondaryColor"
                         android:textSize="12sp"
                         android:visibility="gone" />
 
@@ -158,25 +160,31 @@
                     android:gravity="center"
                     android:maxLines="3"
                     android:text="detail"
-                    android:textColor="@color/secondaryTextColor"
+                    android:textColor="@color/secondaryColor"
                     android:textSize="15sp"
                     android:visibility="gone" />
             </LinearLayout>
 
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/native_action_btn"
-                style="@style/AdButtonFullStyle"
+            <FrameLayout
+                android:id="@+id/native_action_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="center"
-                android:layout_marginLeft="34dp"
-                android:layout_marginRight="34dp"
-                android:layout_marginTop="15dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="Learn More" />
+                android:layout_alignParentBottom="true">
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/native_action_btn"
+                    style="@style/AdButtonFullStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/ad_button_bg"
+                    android:text="Learn More" />
+            </FrameLayout>
         </RelativeLayout>
     </RelativeLayout>
 </FrameLayout>
