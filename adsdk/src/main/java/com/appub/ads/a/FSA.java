@@ -825,7 +825,6 @@ public class FSA extends Activity {
             Log.e(Log.TAG, "error : " + e);
         }
 
-        tempLayout = null;
         if (tempLayout == null) {
             final ScrollLayout scrollLayout = new ScrollLayout(this);
             scrollLayout.setOnScreenListener(new ScrollLayout.OnScreenListener() {
