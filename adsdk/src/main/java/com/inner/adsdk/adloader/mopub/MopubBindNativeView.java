@@ -286,7 +286,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
 
     private AdIconView createAdIconView(Context context, ImageView icon) {
         AdIconView iconView = createAdIconView(context);
-        if (icon != null) {
+        if (icon != null && iconView != null) {
             iconView.setId(icon.getId());
             ViewGroup.LayoutParams iconParams = icon.getLayoutParams();
             android.widget.RelativeLayout.LayoutParams iconViewParams = new android.widget.RelativeLayout.LayoutParams(iconParams.width, iconParams.height);
