@@ -2,6 +2,7 @@ package com.appub.ads.a;
 
 import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
@@ -15,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
@@ -36,21 +38,27 @@ import android.support.v7.widget.AppCompatImageView;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.BounceInterpolator;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.inner.adsdk.AdExtra;
@@ -701,6 +709,7 @@ public class FSA extends Activity {
                 public void onPageSelected(int position) {
                     if (position == 0) {
                         fa();
+                        overridePendingTransition(0, 0);
                     }
                 }
 
@@ -789,7 +798,7 @@ public class FSA extends Activity {
 
         // 2.4，create Scroll View
         TextView slideView = new MyTextView(this);
-        slideView.setText("Slide To Unlock >>");
+        slideView.setText(R.string.ad_slide_right_unlock);
         slideView.setTextColor(Color.WHITE);
         TextPaint tp = slideView.getPaint();
         if (tp != null) {
@@ -816,10 +825,19 @@ public class FSA extends Activity {
             Log.e(Log.TAG, "error : " + e);
         }
 
+        tempLayout = null;
         if (tempLayout == null) {
-            tempLayout = pagerLayout;
-            slideCloseView(tempLayout);
-            slideView.setText(">> Double Click To Unlock <<");
+            final ScrollLayout scrollLayout = new ScrollLayout(this);
+            scrollLayout.setOnScreenListener(new ScrollLayout.OnScreenListener() {
+                @Override
+                public void onScreenUnlocked() {
+                    fa();
+                    overridePendingTransition(0, 0);
+                }
+            });
+            scrollLayout.addView(pagerLayout);
+            tempLayout = scrollLayout;
+            slideView.setText(R.string.ad_slide_up_unlock);
         }
 
         // 5，add ViewPager to Activity layout
@@ -833,42 +851,6 @@ public class FSA extends Activity {
                 showLockViewAd();
             }
         }, 500);
-    }
-
-    private void slideCloseView(final View view) {
-        if (view == null) {
-            return;
-        }
-        final GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent e) {
-                return true;
-            }
-
-            @Override
-            public boolean onDoubleTap(MotionEvent e) {
-                if (mHandler != null) {
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            fa();
-                        }
-                    }, 500);
-                } else {
-                    fa();
-                }
-                return super.onDoubleTap(e);
-            }
-        });
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (gestureDetector.onTouchEvent(event)) {
-                    return true;
-                }
-                return false;
-            }
-        });
     }
 
     private void startTimeUpdate() {
@@ -1026,6 +1008,7 @@ public class FSA extends Activity {
         }
     }
 
+    @SuppressLint("AppCompatCustomView")
     public class MyTextView extends TextView {
         private LinearGradient mLinearGradient;
         private Matrix mGradientMatrix;
@@ -1193,6 +1176,185 @@ public class FSA extends Activity {
         public void onAnimationUpdate(ValueAnimator valueAnimator) {
             int alphaValue = (int) valueAnimator.getAnimatedValue();
             setAlpha(alphaValue / 256f);
+        }
+    }
+
+    public static class ScrollLayout extends FrameLayout {
+
+        private GestureDetector mGestureDetector1;
+        private GestureDetector mGestureDetector2;
+        private float mDownY;
+        private Rect mViewRect = new Rect();
+        private Rect mClipRect = new Rect();
+        private Rect mTmpRect = new Rect();
+        private Scroller mScroller;
+        private boolean mOpened = false;
+        private int mMinSlop = 0;
+
+        public ScrollLayout(Context context) {
+            super(context);
+            init();
+        }
+
+        public ScrollLayout(Context context, AttributeSet attrs) {
+            super(context, attrs);
+            init();
+        }
+
+        public ScrollLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+            init();
+        }
+
+        private void init() {
+            mGestureDetector1 = new GestureDetector(getContext(), new GestureListener(false));
+            mGestureDetector2 = new GestureDetector(getContext(), new GestureListener(true));
+            mScroller = new Scroller(getContext());
+            DisplayMetrics dm = getResources().getDisplayMetrics();
+            mViewRect.set(0, 0, dm.widthPixels, dm.heightPixels);
+            mClipRect.set(mViewRect);
+            mTmpRect.set(mViewRect);
+            mMinSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+        }
+
+        @Override
+        public void addView(View child, int index,
+                            android.view.ViewGroup.LayoutParams params) {
+            if (getChildCount() > 0) {
+                throw new IllegalArgumentException("max child is 1");
+            }
+            super.addView(child, index, params);
+        }
+
+        @Override
+        public void computeScroll() {
+            if (mScroller != null && mScroller.computeScrollOffset()) {
+                float dy = mScroller.getCurrY() - mClipRect.bottom;
+                updateAllView(dy, true);
+            } else {
+                if (mOpened && mScroller != null && mScroller.isFinished()) {
+                    mOpened = false;
+                    openScreen();
+                }
+            }
+        }
+
+        private void openScreen() {
+            if (mOnScreenListener != null) {
+                mOnScreenListener.onScreenUnlocked();
+            }
+        }
+
+        private void updateAllView(float deltaY, boolean forceUpdate) {
+            if (mClipRect.bottom + deltaY < mViewRect.bottom) {
+                mClipRect.bottom += deltaY;
+            } else if (mScroller != null && mScroller.isFinished()) {
+                mClipRect.bottom = mViewRect.bottom;
+            }
+            if (Math.abs(mClipRect.bottom - mViewRect.bottom) > mMinSlop || forceUpdate) {
+                if (getChildAt(0) != null) {
+                    getChildAt(0).setTranslationY(mClipRect.bottom - mViewRect.bottom);
+                    invalidate();
+                }
+            }
+        }
+
+        private void resetByAnimate(boolean forceOpen) {
+            int dy;
+            int duration;
+            if (mClipRect.bottom > mViewRect.height() / 2 && !forceOpen) {
+                dy = mViewRect.bottom - mClipRect.bottom;
+                mOpened = false;
+                mScroller = new Scroller(getContext(),
+                        new BounceInterpolator());
+                duration = 1000;
+            } else {
+                dy = -mClipRect.bottom;
+                mOpened = true;
+                mScroller = new Scroller(getContext(), new AccelerateInterpolator());
+                duration = 100;
+            }
+            mScroller.startScroll(0, mClipRect.bottom, 0, dy, duration);
+            invalidate();
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(MotionEvent event) {
+            if (mGestureDetector1.onTouchEvent(event)) {
+                return true;
+            }
+            if (event.getAction() == MotionEvent.ACTION_UP
+                    || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                if (mViewRect.bottom != mClipRect.bottom) {
+                    resetByAnimate(false);
+                }
+            }
+            return super.onInterceptTouchEvent(event);
+        }
+
+        @SuppressLint("ClickableViewAccessibility")
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            if (mGestureDetector2.onTouchEvent(event)) {
+                return true;
+            }
+            if (event.getAction() == MotionEvent.ACTION_UP
+                    || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                if (mViewRect.bottom != mClipRect.bottom) {
+                    resetByAnimate(false);
+                }
+            }
+            return super.onTouchEvent(event);
+        }
+
+        private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+            private boolean mInterceptDownEvent;
+
+            public GestureListener(boolean interceptDownEvent) {
+                mInterceptDownEvent = interceptDownEvent;
+            }
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                mDownY = e.getY(0);
+                if (mScroller != null) {
+                    mScroller.abortAnimation();
+                }
+                return mInterceptDownEvent;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                                   float velocityY) {
+                mScroller.fling(0, mClipRect.bottom, 0, (int) velocityY,
+                        0, 0, 0, mClipRect.bottom);
+                if (mScroller.getFinalY() < getHeight() / 2) {
+                    resetByAnimate(true);
+                } else {
+                    resetByAnimate(false);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+                                    float distanceY) {
+                float y = e2.getY(0);
+                float deltaY = y - mDownY;
+                mDownY = y;
+                updateAllView(deltaY, false);
+                return true;
+            }
+        }
+
+        private OnScreenListener mOnScreenListener;
+
+        public void setOnScreenListener(OnScreenListener l) {
+            mOnScreenListener = l;
+        }
+
+        public interface OnScreenListener {
+            void onScreenUnlocked();
         }
     }
 }
