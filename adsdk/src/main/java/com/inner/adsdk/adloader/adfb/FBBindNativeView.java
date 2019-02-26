@@ -259,27 +259,29 @@ public class FBBindNativeView extends BaseBindNativeView {
         MediaView iconView = null;
         if (icon != null) {
             iconView = createMediaView(context);
-            iconView.setId(icon.getId());
-            iconView.setVisibility(icon.getVisibility());
-            ViewGroup.LayoutParams iconParams = icon.getLayoutParams();
-            android.widget.RelativeLayout.LayoutParams iconViewParams = new android.widget.RelativeLayout.LayoutParams(iconParams.width, iconParams.height);
-            if (iconParams instanceof ViewGroup.MarginLayoutParams) {
-                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams)iconParams;
-                iconViewParams.setMargins(marginParams.leftMargin, marginParams.topMargin, marginParams.rightMargin, marginParams.bottomMargin);
-            }
-            if (iconParams instanceof android.widget.RelativeLayout.LayoutParams) {
-                android.widget.RelativeLayout.LayoutParams mainImageViewRelativeLayoutParams = (android.widget.RelativeLayout.LayoutParams)iconParams;
-                int[] rules = mainImageViewRelativeLayoutParams.getRules();
-
-                for(int i = 0; i < rules.length; ++i) {
-                    iconViewParams.addRule(i, rules[i]);
+            if (iconView != null) {
+                iconView.setId(icon.getId());
+                iconView.setVisibility(icon.getVisibility());
+                ViewGroup.LayoutParams iconParams = icon.getLayoutParams();
+                android.widget.RelativeLayout.LayoutParams iconViewParams = new android.widget.RelativeLayout.LayoutParams(iconParams.width, iconParams.height);
+                if (iconParams instanceof ViewGroup.MarginLayoutParams) {
+                    ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) iconParams;
+                    iconViewParams.setMargins(marginParams.leftMargin, marginParams.topMargin, marginParams.rightMargin, marginParams.bottomMargin);
                 }
-            }
-            ViewGroup viewGroup = (ViewGroup) icon.getParent();
-            if (viewGroup != null) {
-                int index = viewGroup.indexOfChild(icon);
-                viewGroup.removeView(icon);
-                viewGroup.addView(iconView, index, iconViewParams);
+                if (iconParams instanceof android.widget.RelativeLayout.LayoutParams) {
+                    android.widget.RelativeLayout.LayoutParams mainImageViewRelativeLayoutParams = (android.widget.RelativeLayout.LayoutParams) iconParams;
+                    int[] rules = mainImageViewRelativeLayoutParams.getRules();
+
+                    for (int i = 0; i < rules.length; ++i) {
+                        iconViewParams.addRule(i, rules[i]);
+                    }
+                }
+                ViewGroup viewGroup = (ViewGroup) icon.getParent();
+                if (viewGroup != null) {
+                    int index = viewGroup.indexOfChild(icon);
+                    viewGroup.removeView(icon);
+                    viewGroup.addView(iconView, index, iconViewParams);
+                }
             }
         }
         return iconView;
