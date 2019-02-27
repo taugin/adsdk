@@ -64,6 +64,7 @@ import android.widget.TextView;
 import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdSdk;
+import com.inner.adsdk.BuildConfig;
 import com.inner.adsdk.R;
 import com.inner.adsdk.config.SpConfig;
 import com.inner.adsdk.constant.Constant;
@@ -798,7 +799,7 @@ public class FSA extends Activity {
 
         // 2.4，create Scroll View
         TextView slideView = new MyTextView(this);
-        slideView.setText(R.string.ad_slide_right_unlock);
+        slideView.setText(R.string.ad_slide_unlock);
         slideView.setTextColor(Color.WHITE);
         TextPaint tp = slideView.getPaint();
         if (tp != null) {
@@ -825,7 +826,7 @@ public class FSA extends Activity {
             Log.e(Log.TAG, "error : " + e);
         }
 
-        if (tempLayout == null) {
+        if (tempLayout == null || BuildConfig.DEBUG) {
             final ScrollLayout scrollLayout = new ScrollLayout(this);
             scrollLayout.setOnScreenListener(new ScrollLayout.OnScreenListener() {
                 @Override
@@ -836,7 +837,7 @@ public class FSA extends Activity {
             });
             scrollLayout.addView(pagerLayout);
             tempLayout = scrollLayout;
-            slideView.setText(R.string.ad_slide_up_unlock);
+            slideView.setText(R.string.ad_slide_unlock);
         }
 
         // 5，add ViewPager to Activity layout
@@ -1180,15 +1181,19 @@ public class FSA extends Activity {
 
     public static class ScrollLayout extends FrameLayout {
 
+        private static final int UNKNOWN = 0;
+        private static final int VERTICAL = 1;
+        private static final int HORIZONTAL = 2;
         private GestureDetector mGestureDetector1;
         private GestureDetector mGestureDetector2;
         private float mDownY;
+        private float mDownX;
         private Rect mViewRect = new Rect();
         private Rect mClipRect = new Rect();
-        private Rect mTmpRect = new Rect();
         private Scroller mScroller;
         private boolean mOpened = false;
         private int mMinSlop = 0;
+        private int mOrientation = UNKNOWN;
 
         public ScrollLayout(Context context) {
             super(context);
@@ -1212,7 +1217,6 @@ public class FSA extends Activity {
             DisplayMetrics dm = getResources().getDisplayMetrics();
             mViewRect.set(0, 0, dm.widthPixels, dm.heightPixels);
             mClipRect.set(mViewRect);
-            mTmpRect.set(mViewRect);
             mMinSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         }
 
@@ -1228,11 +1232,17 @@ public class FSA extends Activity {
         @Override
         public void computeScroll() {
             if (mScroller != null && mScroller.computeScrollOffset()) {
-                float dy = mScroller.getCurrY() - mClipRect.bottom;
-                updateAllView(dy, true);
+                if (mOrientation == VERTICAL) {
+                    float dy = mScroller.getCurrY() - mClipRect.bottom;
+                    updateVertical(dy, true);
+                } else if (mOrientation == HORIZONTAL) {
+                    float dx = mScroller.getCurrX() - mClipRect.right;
+                    updateHorizontal(dx, true);
+                }
             } else {
                 if (mOpened && mScroller != null && mScroller.isFinished()) {
                     mOpened = false;
+                    mOrientation = UNKNOWN;
                     openScreen();
                 }
             }
@@ -1244,7 +1254,7 @@ public class FSA extends Activity {
             }
         }
 
-        private void updateAllView(float deltaY, boolean forceUpdate) {
+        private void updateVertical(float deltaY, boolean forceUpdate) {
             if (mClipRect.bottom + deltaY < mViewRect.bottom) {
                 mClipRect.bottom += deltaY;
             } else if (mScroller != null && mScroller.isFinished()) {
@@ -1256,9 +1266,29 @@ public class FSA extends Activity {
                     invalidate();
                 }
             }
+            if (mScroller != null && mScroller.isFinished() && Math.abs(mViewRect.bottom - mClipRect.bottom) <= 0) {
+                mOrientation = UNKNOWN;
+            }
         }
 
-        private void resetByAnimate(boolean forceOpen) {
+        private void updateHorizontal(float deltaX, boolean forceUpdate) {
+            if (mClipRect.right + deltaX < mViewRect.right) {
+                mClipRect.right += deltaX;
+            } else if (mScroller != null && mScroller.isFinished()) {
+                mClipRect.right = mViewRect.right;
+            }
+            if (Math.abs(mClipRect.right - mViewRect.right) > mMinSlop || forceUpdate) {
+                if (getChildAt(0) != null) {
+                    getChildAt(0).setTranslationX(mViewRect.right - mClipRect.right);
+                    invalidate();
+                }
+            }
+            if (mScroller != null && mScroller.isFinished() && Math.abs(mViewRect.right - mClipRect.right) <= 0) {
+                mOrientation = UNKNOWN;
+            }
+        }
+
+        private void resetByAnimateVertical(boolean forceOpen) {
             int dy;
             int duration;
             if (mClipRect.bottom > mViewRect.height() / 2 && !forceOpen) {
@@ -1277,6 +1307,26 @@ public class FSA extends Activity {
             invalidate();
         }
 
+        private void resetByAnimateHorizontal(boolean forceOpen) {
+            int dx;
+            int duration;
+            if (mClipRect.right > mViewRect.width() / 2 && !forceOpen) {
+                dx = mViewRect.right - mClipRect.right;
+                mOpened = false;
+                mScroller = new Scroller(getContext(),
+                        new BounceInterpolator());
+                duration = 1000;
+            } else {
+                dx = -mClipRect.right;
+                mOpened = true;
+                mScroller = new Scroller(getContext(), new AccelerateInterpolator());
+                duration = 100;
+            }
+            mScroller.startScroll(mClipRect.right, 0, dx, 0, duration);
+            invalidate();
+        }
+
+
         @Override
         public boolean onInterceptTouchEvent(MotionEvent event) {
             if (mGestureDetector1.onTouchEvent(event)) {
@@ -1284,8 +1334,14 @@ public class FSA extends Activity {
             }
             if (event.getAction() == MotionEvent.ACTION_UP
                     || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                if (mViewRect.bottom != mClipRect.bottom) {
-                    resetByAnimate(false);
+                if (mOrientation == VERTICAL) {
+                    if (mViewRect.bottom != mClipRect.bottom) {
+                        resetByAnimateVertical(false);
+                    }
+                } else if (mOrientation == HORIZONTAL) {
+                    if (mViewRect.right != mClipRect.right) {
+                        resetByAnimateHorizontal(false);
+                    }
                 }
             }
             return super.onInterceptTouchEvent(event);
@@ -1299,8 +1355,14 @@ public class FSA extends Activity {
             }
             if (event.getAction() == MotionEvent.ACTION_UP
                     || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                if (mViewRect.bottom != mClipRect.bottom) {
-                    resetByAnimate(false);
+                if (mOrientation == VERTICAL) {
+                    if (mViewRect.bottom != mClipRect.bottom) {
+                        resetByAnimateVertical(false);
+                    }
+                } else if (mOrientation == HORIZONTAL) {
+                    if (mViewRect.right != mClipRect.right) {
+                        resetByAnimateHorizontal(false);
+                    }
                 }
             }
             return super.onTouchEvent(event);
@@ -1315,6 +1377,7 @@ public class FSA extends Activity {
 
             @Override
             public boolean onDown(MotionEvent e) {
+                mDownX = e.getX(0);
                 mDownY = e.getY(0);
                 if (mScroller != null) {
                     mScroller.abortAnimation();
@@ -1325,24 +1388,77 @@ public class FSA extends Activity {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                                    float velocityY) {
-                mScroller.fling(0, mClipRect.bottom, 0, (int) velocityY,
-                        0, 0, 0, mClipRect.bottom);
-                if (mScroller.getFinalY() < getHeight() / 2) {
-                    resetByAnimate(true);
-                } else {
-                    resetByAnimate(false);
+                float x1 = 0f;
+                float y1 = 0f;
+                float x2 = 0f;
+                float y2 = 0f;
+                try {
+                    x1 = e1.getX(0);
+                    x2 = e2.getX(0);
+
+                    y1 = e1.getY(0);
+                    y2 = e2.getY(0);
+                } catch (Exception e) {
                 }
-                return true;
+                if (mOrientation == UNKNOWN) {
+                    if (Math.abs(velocityX) > Math.abs(velocityY)) {
+                        mOrientation = HORIZONTAL;
+                    } else {
+                        mOrientation = VERTICAL;
+                    }
+                }
+                if (mOrientation == VERTICAL) {
+                    if (mScroller != null) {
+                        mScroller.fling(0, mClipRect.bottom, 0, (int) velocityY,
+                                0, 0, 0, mClipRect.bottom);
+                        resetByAnimateVertical(mScroller.getFinalY() < getHeight() / 2);
+                    }
+                    return true;
+                } else if (mOrientation == HORIZONTAL) {
+                    if (mScroller != null) {
+                        mScroller.fling(mClipRect.right, 0, (int) velocityX, 0,
+                                0, mClipRect.right, 0, 0);
+                        resetByAnimateHorizontal(mScroller.getFinalX() > getWidth() / 2);
+                    }
+                    return true;
+                }
+                return false;
             }
 
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
                                     float distanceY) {
-                float y = e2.getY(0);
-                float deltaY = y - mDownY;
-                mDownY = y;
-                updateAllView(deltaY, false);
-                return true;
+                float x1 = 0f;
+                float y1 = 0f;
+                float x2 = 0f;
+                float y2 = 0f;
+                try {
+                    x1 = e1.getX(0);
+                    x2 = e2.getX(0);
+
+                    y1 = e1.getY(0);
+                    y2 = e2.getY(0);
+                } catch (Exception e) {
+                }
+                if (mOrientation == UNKNOWN && Math.abs(x1 - x2) > mMinSlop) {
+                    mOrientation = HORIZONTAL;
+                } else if (mOrientation == UNKNOWN && Math.abs(y1 - y2) > mMinSlop) {
+                    mOrientation = VERTICAL;
+                }
+                if (mOrientation == VERTICAL) {
+                    float y = e2.getY(0);
+                    float deltaY = y - mDownY;
+                    mDownY = y;
+                    updateVertical(deltaY, false);
+                    return true;
+                } else if (mOrientation == HORIZONTAL) {
+                    float x = e2.getX(0);
+                    float deltaX = mDownX - x;
+                    mDownX = x;
+                    updateHorizontal(deltaX, false);
+                    return true;
+                }
+                return false;
             }
         }
 

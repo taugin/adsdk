@@ -17,6 +17,5 @@
     <string name="ad_cm_dialog_disable">Disable</string>
     <string name="ad_cm_dialog_cancel">Not now</string>
 
-    <string name="ad_slide_right_unlock">"Slide Right To Unlock &gt;&gt;"</string>
-    <string name="ad_slide_up_unlock">"&gt;&gt; Slide Up To Unlock &lt;&lt;"</string>
+    <string name="ad_slide_unlock">"&gt;&gt; Slide To Unlock &lt;&lt;"</string>
 </resources>
