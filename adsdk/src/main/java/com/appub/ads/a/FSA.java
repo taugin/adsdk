@@ -49,7 +49,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -1236,7 +1235,7 @@ public class FSA extends Activity {
                     float dy = mScroller.getCurrY() - mClipRect.bottom;
                     updateVertical(dy, true);
                 } else if (mOrientation == HORIZONTAL) {
-                    float dx = mScroller.getCurrX() - mClipRect.right;
+                    float dx = mScroller.getCurrX() - mClipRect.left;
                     updateHorizontal(dx, true);
                 }
             } else {
@@ -1272,18 +1271,18 @@ public class FSA extends Activity {
         }
 
         private void updateHorizontal(float deltaX, boolean forceUpdate) {
-            if (mClipRect.right + deltaX < mViewRect.right) {
-                mClipRect.right += deltaX;
+            if (mClipRect.left + deltaX > mViewRect.left) {
+                mClipRect.left += deltaX;
             } else if (mScroller != null && mScroller.isFinished()) {
-                mClipRect.right = mViewRect.right;
+                mClipRect.left = mViewRect.left;
             }
-            if (Math.abs(mClipRect.right - mViewRect.right) > mMinSlop || forceUpdate) {
+            if (Math.abs(mClipRect.left - mViewRect.left) > mMinSlop || forceUpdate) {
                 if (getChildAt(0) != null) {
-                    getChildAt(0).setTranslationX(mViewRect.right - mClipRect.right);
+                    getChildAt(0).setTranslationX(mClipRect.left - mViewRect.left);
                     invalidate();
                 }
             }
-            if (mScroller != null && mScroller.isFinished() && Math.abs(mViewRect.right - mClipRect.right) <= 0) {
+            if (mScroller != null && mScroller.isFinished() && Math.abs(mClipRect.left - mViewRect.left) <= 0) {
                 mOrientation = UNKNOWN;
             }
         }
@@ -1300,8 +1299,8 @@ public class FSA extends Activity {
             } else {
                 dy = -mClipRect.bottom;
                 mOpened = true;
-                mScroller = new Scroller(getContext(), new AccelerateInterpolator());
-                duration = 100;
+                mScroller = new Scroller(getContext(), new AccelerateDecelerateInterpolator());
+                duration = 500;
             }
             mScroller.startScroll(0, mClipRect.bottom, 0, dy, duration);
             invalidate();
@@ -1310,19 +1309,19 @@ public class FSA extends Activity {
         private void resetByAnimateHorizontal(boolean forceOpen) {
             int dx;
             int duration;
-            if (mClipRect.right > mViewRect.width() / 2 && !forceOpen) {
-                dx = mViewRect.right - mClipRect.right;
+            if (mClipRect.left < mViewRect.width() / 2 && !forceOpen) {
+                dx = mViewRect.left - mClipRect.left;
                 mOpened = false;
                 mScroller = new Scroller(getContext(),
                         new BounceInterpolator());
                 duration = 1000;
             } else {
-                dx = -mClipRect.right;
+                dx = mClipRect.left;
                 mOpened = true;
-                mScroller = new Scroller(getContext(), new AccelerateInterpolator());
-                duration = 100;
+                mScroller = new Scroller(getContext(), new AccelerateDecelerateInterpolator());
+                duration = 500;
             }
-            mScroller.startScroll(mClipRect.right, 0, dx, 0, duration);
+            mScroller.startScroll(mClipRect.left, 0, dx, 0, duration);
             invalidate();
         }
 
@@ -1339,7 +1338,7 @@ public class FSA extends Activity {
                         resetByAnimateVertical(false);
                     }
                 } else if (mOrientation == HORIZONTAL) {
-                    if (mViewRect.right != mClipRect.right) {
+                    if (mViewRect.left != mClipRect.left) {
                         resetByAnimateHorizontal(false);
                     }
                 }
@@ -1360,7 +1359,7 @@ public class FSA extends Activity {
                         resetByAnimateVertical(false);
                     }
                 } else if (mOrientation == HORIZONTAL) {
-                    if (mViewRect.right != mClipRect.right) {
+                    if (mViewRect.left != mClipRect.left) {
                         resetByAnimateHorizontal(false);
                     }
                 }
@@ -1411,14 +1410,22 @@ public class FSA extends Activity {
                     if (mScroller != null) {
                         mScroller.fling(0, mClipRect.bottom, 0, (int) velocityY,
                                 0, 0, 0, mClipRect.bottom);
-                        resetByAnimateVertical(mScroller.getFinalY() < getHeight() / 2);
+                        mClipRect.bottom = mScroller.getFinalY();
+                        if (velocityY > 0 && mClipRect.bottom < getHeight() / 2) {
+                            mClipRect.bottom = getHeight() / 2 + 10;
+                        }
+                        resetByAnimateVertical(velocityY < 0 && mScroller.getFinalY() < getHeight() / 2);
                     }
                     return true;
                 } else if (mOrientation == HORIZONTAL) {
                     if (mScroller != null) {
-                        mScroller.fling(mClipRect.right, 0, (int) velocityX, 0,
+                        mScroller.fling(mClipRect.left, 0, (int) (velocityX / 2), 0,
                                 0, mClipRect.right, 0, 0);
-                        resetByAnimateHorizontal(mScroller.getFinalX() > getWidth() / 2);
+                        mClipRect.left = mScroller.getFinalX();
+                        if (velocityX < 0 && mClipRect.left > getWidth() / 2) {
+                            mClipRect.left = getWidth() / 2 - 10;
+                        }
+                        resetByAnimateHorizontal(velocityX > 0 && mScroller.getFinalX() > getWidth() * 2 / 3);
                     }
                     return true;
                 }
@@ -1453,7 +1460,7 @@ public class FSA extends Activity {
                     return true;
                 } else if (mOrientation == HORIZONTAL) {
                     float x = e2.getX(0);
-                    float deltaX = mDownX - x;
+                    float deltaX = x - mDownX;
                     mDownX = x;
                     updateHorizontal(deltaX, false);
                     return true;
