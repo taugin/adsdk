@@ -561,6 +561,9 @@ public class AdParser implements IParser {
             if (jobj.has(EXTID)) {
                 pidConfig.setExtId(jobj.getString(EXTID));
             }
+            if (jobj.has(ASPECT_RATIO)) {
+                pidConfig.setAspectRatio(jobj.getDouble(ASPECT_RATIO));
+            }
             parseAttrConfig(pidConfig, jobj);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

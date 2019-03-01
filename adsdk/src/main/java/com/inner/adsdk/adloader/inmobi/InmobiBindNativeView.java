@@ -43,11 +43,15 @@ public class InmobiBindNativeView extends BaseBindNativeView {
         View rootView = mParams.getNativeRootView();
         int cardId = mParams.getNativeCardStyle();
         if (rootView != null) {
+            preSetMediaView(rootView, pidConfig);
             bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
+            postSetMediaView(rootView, pidConfig);
         } else if (rootLayout > 0) {
             if (adContainer != null && adContainer.getContext() != null) {
                 rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
+                preSetMediaView(rootView, pidConfig);
                 bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
+                postSetMediaView(rootView, pidConfig);
             }
         } else if (cardId > 0) {
             bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
@@ -108,6 +112,7 @@ public class InmobiBindNativeView extends BaseBindNativeView {
         mParams.setAdCover(R.id.native_image_cover);
         mParams.setAdChoices(R.id.native_ad_choices_container);
         mParams.setAdMediaView(R.id.native_media_cover);
+        preSetMediaView(rootView, pidConfig);
         try {
             showNativeAdView(rootView, nativeAd, pidConfig);
         } catch (Exception e) {
@@ -123,6 +128,7 @@ public class InmobiBindNativeView extends BaseBindNativeView {
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
+        postSetMediaView(rootView, pidConfig);
     }
 
     private void showNativeAdView(View rootView, final InMobiNative nativeAd, PidConfig pidConfig) throws Exception {
