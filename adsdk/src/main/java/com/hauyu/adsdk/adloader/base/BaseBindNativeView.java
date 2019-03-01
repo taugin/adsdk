@@ -1,10 +1,15 @@
 package com.hauyu.adsdk.adloader.base;
 
+import android.support.percent.PercentRelativeLayout;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import com.hauyu.adsdk.R;
+import com.hauyu.adsdk.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.utils.Utils;
 
 
 /**
@@ -53,6 +58,95 @@ public class BaseBindNativeView {
                 viewGroup.removeView(srcView);
                 viewGroup.addView(dstView, index, dstParams);
             }
+        }
+    }
+
+    protected void preSetMediaView(View rootView, PidConfig pidConfig) {
+        if (rootView == null || pidConfig == null || pidConfig.getAspectRatio() <= 0f) {
+            return;
+        }
+        try {
+            PercentRelativeLayout percentRelativeLayout = rootView.findViewById(R.id.native_cover_info);
+            View imageView = rootView.findViewById(R.id.native_image_cover);
+            View mediaLayout = rootView.findViewById(R.id.native_media_cover);
+            if (percentRelativeLayout == null) {
+                return;
+            }
+
+            ViewGroup.LayoutParams params = null;
+            if (percentRelativeLayout != null) {
+                params = percentRelativeLayout.getLayoutParams();
+                if (params == null) {
+                    params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dp2px(rootView.getContext(), 50));
+                } else {
+                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    params.height = Utils.dp2px(rootView.getContext(), 50);
+                }
+                percentRelativeLayout.setLayoutParams(params);
+            }
+            if (imageView != null) {
+                params = imageView.getLayoutParams();
+                if (params == null) {
+                    params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                }
+                params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                imageView.setLayoutParams(params);
+            }
+
+            if (mediaLayout != null) {
+                params = mediaLayout.getLayoutParams();
+                if (params == null) {
+                    params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                }
+                params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                mediaLayout.setLayoutParams(params);
+            }
+        } catch (Exception | Error e) {
+        }
+    }
+
+    protected void postSetMediaView(View rootView, PidConfig pidConfig) {
+        if (rootView == null || pidConfig == null || pidConfig.getAspectRatio() <= 0f) {
+            return;
+        }
+
+        try {
+            PercentRelativeLayout percentRelativeLayout = rootView.findViewById(R.id.native_cover_info);
+            if (percentRelativeLayout == null) {
+                return;
+            }
+            calcLayout(percentRelativeLayout, pidConfig.getAspectRatio());
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
+    }
+
+    private void calcLayout(final View view, final double aspectRatio) {
+        if (view == null) {
+            return;
+        }
+        try {
+            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    try {
+                        int width = view.getWidth();
+                        if (width > 0) {
+                            view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) view.getLayoutParams();
+                            params.height = (int) (width / aspectRatio);
+                            view.setLayoutParams(params);
+                            Log.v(Log.TAG, "width : " + width + " , height : " + params.height);
+                        }
+                    } catch (Exception | Error e) {
+                        Log.e(Log.TAG, "error : " + e, e);
+                    }
+                }
+            });
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
         }
     }
 }
