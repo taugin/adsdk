@@ -44,6 +44,8 @@ public class PidConfig extends BaseConfig {
 
     private String extId;
 
+    private double aspectRatio;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -170,6 +172,14 @@ public class PidConfig extends BaseConfig {
 
     public void setExtId(String extId) {
         this.extId = extId;
+    }
+
+    public double getAspectRatio() {
+        return aspectRatio;
+    }
+
+    public void setAspectRatio(double aspectRatio) {
+        this.aspectRatio = aspectRatio;
     }
 
     public boolean isAdmob() {

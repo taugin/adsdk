@@ -96,6 +96,8 @@ public interface IParser {
     String APPID = "aid";
     // ext id
     String EXTID = "eid";
+    // Mediaview 比例
+    String ASPECT_RATIO = "ar";
 
     // 启用或禁用GT
     String ENABLE = "e";
