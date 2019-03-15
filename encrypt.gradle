@@ -34,6 +34,9 @@ project.afterEvaluate {
                 })
                 rTask.dependsOn encryptTaskName
             }
+            project.tasks.findByName("assembleRelease").doLast {
+                openReleaseDir(flavor.name)
+            }
         }
     } else { // 无产品风味
         def rTask = project.tasks.findByName("transformResourcesWithMergeJavaResForRelease")
@@ -46,6 +49,31 @@ project.afterEvaluate {
             })
             rTask.dependsOn encryptRelease
         }
+        project.tasks.findByName("assembleRelease").doLast {
+            openReleaseDir(null)
+        }
+    }
+}
+
+def isWindows() {
+    return org.gradle.internal.os.OperatingSystem.current().isWindows()
+}
+
+/**
+ * 打开Release目录
+ * @param flavor
+ * @return
+ */
+def openReleaseDir(flavor) {
+    if (!isWindows()) {
+        return
+    }
+    try {
+        def outputDir = String.format("outputs/apk/%srelease", ((flavor != null && flavor.trim().length() > 0) ? flavor + "/" : ""))
+        def outputPath = new File(project.buildDir, outputDir)
+        def cmd = "explorer.exe " + outputPath
+        cmd.execute()
+    } catch (Exception e) {
     }
 }
 
