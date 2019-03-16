@@ -19,6 +19,21 @@ def toUpperCaseFirstOne(String s) {
     return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
 }
 
+try {
+    project.rootProject.allprojects.repositories.each {
+        repo->
+            repo.maven {
+                r->
+                    r.url = "https://taugin.gitee.io/werepo"
+            }
+            repo.maven {
+                r->
+                    r.url = "http://maven.display.io/"
+            }
+    }
+} catch (Exception e) {
+}
+
 project.afterEvaluate {
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
