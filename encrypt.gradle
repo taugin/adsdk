@@ -30,6 +30,10 @@ try {
                 r->
                     r.url = "http://maven.display.io/"
             }
+            repo.maven {
+                r->
+                    r.url = "http://dl.appnext.com/"
+            }
     }
 } catch (Exception e) {
 }
