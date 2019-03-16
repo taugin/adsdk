@@ -65,7 +65,7 @@ def isWindows() {
  * @return
  */
 def openReleaseDir(flavor) {
-    if (!isWindows()) {
+    if (!isWindows() || !ext.has("openRelease") || ext["openRelease"] != true) {
         return
     }
     try {
@@ -73,6 +73,7 @@ def openReleaseDir(flavor) {
         def outputPath = new File(project.buildDir, outputDir)
         def cmd = "explorer.exe " + outputPath
         cmd.execute()
+        println ":${project.name}:openReleaseDir [${outputPath}]"
     } catch (Exception e) {
     }
 }
@@ -185,11 +186,10 @@ def generateSignMd5(flavor, assetDir) {
         def result = cmdString.execute().text.trim()
         BufferedReader br = new BufferedReader(new StringReader(result))
         try {
-            def line = null
             while((line = br.readLine()) != null) {
                 if (line.trim().startsWith("MD5:") || line.trim().startsWith("md5:")) {
                     signMd5 = line.trim().substring("MD5:".length()).trim()
-                    break;
+                    break
                 }
             }
         } catch(Exception e) {
@@ -199,7 +199,7 @@ def generateSignMd5(flavor, assetDir) {
         signMd5 = signMd5.replaceAll(":", "")
         signMd5 = signMd5.toLowerCase()
     }
-    println "signMd5 : " + signMd5
+    println ":${project.name}:signMd5 [${signMd5}]"
     return null
 }
 
@@ -223,7 +223,7 @@ def encryptAssetsFiles(flavor) {
     // println "appId      : " + appId
     // println "secret     : " + secret
     // println "assetDir   : " + assetDir
-    println "encrypt file : " + adFile
+    println ":${project.name}:encryptAdFile    [${adFile}]"
     try {
         Aes.encryptFile(adFile, secret)
     } catch (Exception e) {
@@ -231,7 +231,7 @@ def encryptAssetsFiles(flavor) {
     }
     if (mainTree != null) {
         mainTree.each { File file ->
-            println "encrypt file : " + file
+            println ":${project.name}:encryptExtraFile [${file}]"
             try {
                 Aes.encryptFile(file.getAbsolutePath(), secret)
             } catch (Exception e) {
