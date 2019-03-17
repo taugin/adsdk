@@ -53,8 +53,11 @@ project.afterEvaluate {
                 })
                 rTask.dependsOn encryptTaskName
             }
-            project.tasks.findByName("assembleRelease").doLast {
-                openReleaseDir(flavor.name)
+            def aTask = project.tasks.findByName("assembleRelease");
+            if (aTask != null) {
+                aTask.doLast {
+                    openReleaseDir(flavor.name)
+                }
             }
         }
     } else { // 无产品风味
@@ -68,8 +71,11 @@ project.afterEvaluate {
             })
             rTask.dependsOn encryptRelease
         }
-        project.tasks.findByName("assembleRelease").doLast {
-            openReleaseDir(null)
+        def aTask = project.tasks.findByName("assembleRelease");
+        if (aTask != null) {
+            aTask.doLast {
+                openReleaseDir(null)
+            }
         }
     }
 }
