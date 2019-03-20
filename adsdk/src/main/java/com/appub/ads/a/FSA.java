@@ -50,8 +50,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.BounceInterpolator;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -571,6 +574,7 @@ public class FSA extends Activity {
             });
             rootLayout.addView(imageView, params);
 
+            // 添加推广标识
             TextView textView = new TextView(this);
             textView.setText("sponsored");
             float[] roundArray = new float[]{16.0F, 16.0F, 16.0F, 16.0F, 16.0F, 16.0F, 16.0F, 16.0F};
@@ -586,15 +590,12 @@ public class FSA extends Activity {
             textView.setPadding(margin / 2, margin / 4, margin / 2, margin / 4);
             rootLayout.addView(textView, params);
 
-            String nativeData = NATIVE_TEMPLATE.replace("#COVER_URL#", mSpConfig.getBanner());
-            nativeData = nativeData.replace("#ICON_URL#", mSpConfig.getIcon());
-            nativeData = nativeData.replace("#TITLE#", mSpConfig.getTitle());
-            nativeData = nativeData.replace("#DESC#", mSpConfig.getDetail());
+            // 添加webview对象
             WebView webview = new WebView(this);
             webview.getSettings().setJavaScriptEnabled(true);
             webview.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-            webview.loadData(nativeData, "text/html", "utf-8");
 
+            // 添加底部按钮
             RelativeLayout buttonLayout = new RelativeLayout(this);
             buttonLayout.setId(generateViewId(0x1000001));
             params = new RelativeLayout.LayoutParams(-1, dp2px(this, 84));
@@ -602,6 +603,112 @@ public class FSA extends Activity {
             adLayout.addView(buttonLayout, params);
 
             Button button = new Button(this);
+            params = new RelativeLayout.LayoutParams(-1, -1);
+            margin = dp2px(this, 16);
+            params.setMargins(margin, margin, margin, margin);
+            buttonLayout.addView(button, params);
+
+            params = new RelativeLayout.LayoutParams(-1, -1);
+            params.addRule(RelativeLayout.ABOVE, buttonLayout.getId());
+            adLayout.addView(webview, params);
+
+            if (TextUtils.isEmpty(mSpConfig.getType()) || TextUtils.equals(SpConfig.TYPE_APP, mSpConfig.getType())) {
+                buttonLayout.setVisibility(View.VISIBLE);
+                textView.setVisibility(View.VISIBLE);
+                showAppSpread(webview, button);
+            } else {
+                buttonLayout.setVisibility(View.GONE);
+                textView.setVisibility(View.GONE);
+                if (TextUtils.equals(SpConfig.TYPE_URL, mSpConfig.getType())) {
+                    showUrlContent(webview, mSpConfig.getLinkUrl());
+                } else if (TextUtils.equals(SpConfig.TYPE_HTML, mSpConfig.getType())) {
+                    showJsTag(webview, mSpConfig.getHtml());
+                }
+            }
+            StatImpl.get().reportAdShow(this, mPidName, mSource, mAdType, null);
+        } catch (Exception e) {
+            Log.v(Log.TAG, "error : " + e);
+            finish();
+        }
+    }
+
+    private void showUrlContent(WebView webView, String url) {
+        if (webView == null || TextUtils.isEmpty(url)) {
+            return;
+        }
+        try {
+            webView.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public void onConsoleMessage(String message, int lineNumber, String sourceID) {
+                    Log.v(Log.TAG, "message : " + message);
+                }
+            });
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        Log.e(Log.TAG, "error : " + e);
+                    }
+                    return true;
+                }
+
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                    try {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    } catch (Exception e) {
+                        Log.e(Log.TAG, "error : " + e);
+                    }
+                    return true;
+                }
+            });
+            webView.loadUrl(url);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error " + e);
+        }
+    }
+
+    private void showJsTag(final WebView webView, String jsTag) {
+        if (webView == null) {
+            return;
+        }
+        try {
+            webView.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public void onConsoleMessage(String message, int lineNumber, String sourceID) {
+                    Log.v(Log.TAG, "message : " + message);
+                }
+            });
+            webView.loadData(jsTag, "text/html", "utf-8");
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error " + e);
+        }
+    }
+
+    private void showAppSpread(WebView webView, Button button) {
+        if (webView == null) {
+            return;
+        }
+        try {
+            webView.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public void onConsoleMessage(String message, int lineNumber, String sourceID) {
+                    Log.v(Log.TAG, "message : " + message);
+                }
+            });
+            String nativeData = NATIVE_TEMPLATE.replace("#COVER_URL#", mSpConfig.getBanner());
+            nativeData = nativeData.replace("#ICON_URL#", mSpConfig.getIcon());
+            nativeData = nativeData.replace("#TITLE#", mSpConfig.getTitle());
+            nativeData = nativeData.replace("#DESC#", mSpConfig.getDetail());
+            webView.loadData(nativeData, "text/html", "utf-8");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 button.setElevation(dp2px(this, 6));
                 button.setTranslationZ(0);
@@ -619,14 +726,6 @@ public class FSA extends Activity {
             button.setSingleLine();
             button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             button.setText(mSpConfig.getCta());
-            params = new RelativeLayout.LayoutParams(-1, -1);
-            margin = dp2px(this, 16);
-            params.setMargins(margin, margin, margin, margin);
-            buttonLayout.addView(button, params);
-
-            params = new RelativeLayout.LayoutParams(-1, -1);
-            params.addRule(RelativeLayout.ABOVE, buttonLayout.getId());
-            adLayout.addView(webview, params);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -644,10 +743,8 @@ public class FSA extends Activity {
                     StatImpl.get().reportAdClick(getBaseContext(), mPidName, mSource, mAdType, null);
                 }
             });
-            StatImpl.get().reportAdShow(this, mPidName, mSource, mAdType, null);
         } catch (Exception e) {
-            Log.v(Log.TAG, "error : " + e);
-            finish();
+            Log.e(Log.TAG, "error " + e);
         }
     }
 
@@ -659,14 +756,35 @@ public class FSA extends Activity {
     }
 
     private boolean checkArgs() {
-        if (mSpConfig == null
-                || TextUtils.isEmpty(mSpConfig.getBanner())
-                || TextUtils.isEmpty(mSpConfig.getIcon())
-                || TextUtils.isEmpty(mSpConfig.getTitle())
-                || TextUtils.isEmpty(mSpConfig.getPkgname())
-                || TextUtils.isEmpty(mSpConfig.getDetail())
-                || TextUtils.isEmpty(mSpConfig.getCta())) {
+        if (mSpConfig == null) {
             return false;
+        }
+        if (TextUtils.isEmpty(mSpConfig.getType()) || TextUtils.equals(SpConfig.TYPE_APP, mSpConfig.getType())) {
+            if (TextUtils.isEmpty(mSpConfig.getBanner())
+                    || TextUtils.isEmpty(mSpConfig.getIcon())
+                    || TextUtils.isEmpty(mSpConfig.getTitle())
+                    || TextUtils.isEmpty(mSpConfig.getPkgname())
+                    || TextUtils.isEmpty(mSpConfig.getDetail())
+                    || TextUtils.isEmpty(mSpConfig.getCta())) {
+                return false;
+            }
+        } else if (TextUtils.equals(SpConfig.TYPE_URL, mSpConfig.getType())) {
+            if (TextUtils.isEmpty(mSpConfig.getLinkUrl())) {
+                return false;
+            }
+        } else if (TextUtils.equals(SpConfig.TYPE_HTML, mSpConfig.getType())) {
+            if (TextUtils.isEmpty(mSpConfig.getHtml())) {
+                return false;
+            }
+        } else {
+            if (TextUtils.isEmpty(mSpConfig.getBanner())
+                    || TextUtils.isEmpty(mSpConfig.getIcon())
+                    || TextUtils.isEmpty(mSpConfig.getTitle())
+                    || TextUtils.isEmpty(mSpConfig.getPkgname())
+                    || TextUtils.isEmpty(mSpConfig.getDetail())
+                    || TextUtils.isEmpty(mSpConfig.getCta())) {
+                return false;
+            }
         }
         return true;
     }

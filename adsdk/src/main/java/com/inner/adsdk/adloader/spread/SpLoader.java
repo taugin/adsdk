@@ -60,7 +60,7 @@ public class SpLoader extends AbstractSdkLoader {
         mSpreads = new ArrayList<SpConfig>();
         for (SpConfig config : spList) {
             // 参数有效，并且未安装
-            if (checkArgs(config) && !Utils.isInstalled(mContext, config.getPkgname())) {
+            if (checkArgs(config) && !Utils.isInstalled(mContext, config.getPkgname()) && !config.isDisable()) {
                 mSpreads.add(config);
             }
         }
@@ -69,18 +69,39 @@ public class SpLoader extends AbstractSdkLoader {
 
     /**
      * 检查参数合法性
-     * @param config
+     * @param spConfig
      * @return
      */
-    private boolean checkArgs(SpConfig config) {
-        if (config == null
-                || TextUtils.isEmpty(config.getBanner())
-                || TextUtils.isEmpty(config.getIcon())
-                || TextUtils.isEmpty(config.getTitle())
-                || TextUtils.isEmpty(config.getPkgname())
-                || TextUtils.isEmpty(config.getDetail())
-                || TextUtils.isEmpty(config.getCta())) {
+    private boolean checkArgs(SpConfig spConfig) {
+        if (spConfig == null) {
             return false;
+        }
+        if (TextUtils.isEmpty(spConfig.getType()) || TextUtils.equals(SpConfig.TYPE_APP, spConfig.getType())) {
+            if (TextUtils.isEmpty(spConfig.getBanner())
+                    || TextUtils.isEmpty(spConfig.getIcon())
+                    || TextUtils.isEmpty(spConfig.getTitle())
+                    || TextUtils.isEmpty(spConfig.getPkgname())
+                    || TextUtils.isEmpty(spConfig.getDetail())
+                    || TextUtils.isEmpty(spConfig.getCta())) {
+                return false;
+            }
+        } else if (TextUtils.equals(SpConfig.TYPE_URL, spConfig.getType())) {
+            if (TextUtils.isEmpty(spConfig.getLinkUrl())) {
+                return false;
+            }
+        } else if (TextUtils.equals(SpConfig.TYPE_HTML, spConfig.getType())) {
+            if (TextUtils.isEmpty(spConfig.getHtml())) {
+                return false;
+            }
+        } else {
+            if (TextUtils.isEmpty(spConfig.getBanner())
+                    || TextUtils.isEmpty(spConfig.getIcon())
+                    || TextUtils.isEmpty(spConfig.getTitle())
+                    || TextUtils.isEmpty(spConfig.getPkgname())
+                    || TextUtils.isEmpty(spConfig.getDetail())
+                    || TextUtils.isEmpty(spConfig.getCta())) {
+                return false;
+            }
         }
         return true;
     }
