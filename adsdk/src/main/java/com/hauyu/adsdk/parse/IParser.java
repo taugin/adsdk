@@ -159,6 +159,7 @@ public interface IParser {
     String DETAIL = "detail";
     String LINKURL = "linkurl";
     String CTA = "cta";
+    String HTML = "html";
 
 
     AdConfig parseAdConfig(String data);
