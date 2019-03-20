@@ -616,14 +616,18 @@ public class FSA extends Activity {
                 buttonLayout.setVisibility(View.VISIBLE);
                 textView.setVisibility(View.VISIBLE);
                 showAppSpread(webview, button);
-            } else {
+            } else if (TextUtils.equals(SpConfig.TYPE_URL, mSpConfig.getType())) {
                 buttonLayout.setVisibility(View.GONE);
                 textView.setVisibility(View.GONE);
-                if (TextUtils.equals(SpConfig.TYPE_URL, mSpConfig.getType())) {
-                    showUrlContent(webview, mSpConfig.getLinkUrl());
-                } else if (TextUtils.equals(SpConfig.TYPE_HTML, mSpConfig.getType())) {
-                    showJsTag(webview, mSpConfig.getHtml());
-                }
+                showUrlContent(webview, mSpConfig.getLinkUrl());
+            } else if (TextUtils.equals(SpConfig.TYPE_HTML, mSpConfig.getType())) {
+                buttonLayout.setVisibility(View.GONE);
+                textView.setVisibility(View.GONE);
+                showHtml(webview, mSpConfig.getHtml());
+            } else {
+                buttonLayout.setVisibility(View.VISIBLE);
+                textView.setVisibility(View.VISIBLE);
+                showAppSpread(webview, button);
             }
             StatImpl.get().reportAdShow(this, mPidName, mSource, mAdType, null);
         } catch (Exception e) {
@@ -676,7 +680,7 @@ public class FSA extends Activity {
         }
     }
 
-    private void showJsTag(final WebView webView, String jsTag) {
+    private void showHtml(final WebView webView, String html) {
         if (webView == null) {
             return;
         }
@@ -687,7 +691,7 @@ public class FSA extends Activity {
                     Log.v(Log.TAG, "message : " + message);
                 }
             });
-            webView.loadData(jsTag, "text/html", "utf-8");
+            webView.loadData(html, "text/html", "utf-8");
         } catch (Exception e) {
             Log.e(Log.TAG, "error " + e);
         }
