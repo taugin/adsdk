@@ -33,7 +33,7 @@
     "attr": []
   },
   "gtconfig": {
-    "e": 0,
+    "e": 1,
     "d": 3600,
     "i": 1800,
     "mc": 100,
@@ -42,7 +42,7 @@
     "ec": [],
     "ms": [],
     "so": 1,
-    "ntr": 100,
+    "ntr": 0,
     "sba": 1
   },
   "adplaces": [
@@ -100,14 +100,20 @@
           "sdk": "adx",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
+          "disable": 1
         },
         {
-          "sdk": "fb",
+          "sdk": "mopub",
           "type": "native",
-          "pid": "YOUR_PLACEMENT_ID",
-          "disable": 0
+          "pid": "11a17b188668469fb0412708c3d16813",
+          "disable": 1
         },
+         {
+           "sdk": "mopub",
+           "type": "banner",
+           "pid": "252412d5e9364a05ab77d9396346d73d",
+           "disable": 0
+         },
         {
           "sdk": "admob",
           "type": "banner",
@@ -118,7 +124,7 @@
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
@@ -145,19 +151,19 @@
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "adx",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
-          "sdk": "fb",
+          "sdk": "mopub",
           "type": "interstitial",
-          "pid": "YOUR_PLACEMENT_ID",
+          "pid": "24534e1901884e398f1253216226017e",
           "ctr": 5,
           "disable": 0
         },
@@ -165,7 +171,7 @@
           "sdk": "dfp",
           "type": "interstitial",
           "pid": "/6499/example/interstitial",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "spread",
@@ -238,9 +244,9 @@
           "disable": 1
         },
         {
-          "sdk": "adx",
+          "sdk": "mopub",
           "type": "interstitial",
-          "pid": "ca-app-pub-3940256099942544/1033173712",
+          "pid": "24534e1901884e398f1253216226017e",
           "dct": 2000,
           "disable": 0
         }
