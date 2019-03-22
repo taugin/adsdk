@@ -2,9 +2,9 @@ package com.hauyu.adsdk.framework;
 
 import android.text.TextUtils;
 
-import com.facebook.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.hauyu.adsdk.constant.Constant;
+import com.mopub.mobileads.MoPubInterstitial;
 
 /**
  * Created by Administrator on 2018-10-25.
@@ -23,8 +23,8 @@ public class AdHelper {
         if (TextUtils.equals(Constant.AD_SDK_ADX, sdk)) {
             return hasAdxModule();
         }
-        if (TextUtils.equals(Constant.AD_SDK_FACEBOOK, sdk)) {
-            return hasFBModule();
+        if (TextUtils.equals(Constant.AD_SDK_MOPUB, sdk)) {
+            return hasMopubModule();
         }
         if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
             return true;
@@ -62,9 +62,9 @@ public class AdHelper {
         return false;
     }
 
-    private static boolean hasFBModule() {
+    private static boolean hasMopubModule() {
         try {
-            InterstitialAd.class.getName();
+            MoPubInterstitial.class.getName();
             return true;
         } catch (Exception e) {
         } catch (Error e) {

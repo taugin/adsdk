@@ -7,15 +7,16 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.appub.ads.a.FSA;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.adloader.addfp.AdDfpLoader;
-import com.hauyu.adsdk.adloader.adfb.FBLoader;
 import com.hauyu.adsdk.adloader.admob.AdmobLoader;
 import com.hauyu.adsdk.adloader.adx.AdxLoader;
 import com.hauyu.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.hauyu.adsdk.adloader.listener.IManagerListener;
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
 import com.hauyu.adsdk.adloader.listener.OnAdBaseListener;
+import com.hauyu.adsdk.adloader.mopub.MopubLoader;
 import com.hauyu.adsdk.adloader.spread.SpLoader;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.PidConfig;
@@ -24,7 +25,6 @@ import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.policy.AdPolicy;
-import com.appub.ads.a.FSA;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -109,8 +109,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
-                        } else if (config.isFB() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new FBLoader();
+                        } else if (config.isMopub() && AdHelper.isModuleLoaded(config.getSdk())) {
+                            loader = new MopubLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
