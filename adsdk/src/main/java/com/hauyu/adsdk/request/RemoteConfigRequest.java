@@ -61,12 +61,12 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
                 long now = System.currentTimeMillis();
                 long last = Utils.getLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME);
                 boolean needRequest = now - last > REFRESH_INTERVAL;
-                Log.v(Log.TAG, "adsdk refresh now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)) + " , do : " + needRequest);
+                Log.iv(Log.TAG, "adsdk refresh now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)) + " , do : " + needRequest);
                 if (needRequest) {
                     try {
                         mFirebaseRemoteConfig.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
                         Utils.putLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
-                        Log.v(Log.TAG, "adsdk refresh fetch called");
+                        Log.iv(Log.TAG, "adsdk refresh fetch called");
                     } catch (Exception e) {
                         Log.e(Log.TAG, "error : " + e);
                     }
@@ -78,7 +78,7 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
     @Override
     public String getString(String key) {
         String value = readConfigFromAsset(key);
-        Log.v(Log.TAG, "local config : " + key + " , value : " + value);
+        Log.iv(Log.TAG, "local config : " + key + " , value : " + value);
         if (TextUtils.isEmpty(value)) {
             if (mFirebaseRemoteConfig != null) {
                 value = mFirebaseRemoteConfig.getString(key);
