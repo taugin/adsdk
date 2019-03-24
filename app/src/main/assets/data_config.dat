@@ -165,7 +165,7 @@
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
@@ -176,7 +176,7 @@
         {
           "sdk": "spread",
           "type": "interstitial",
-          "disable": 1
+          "disable": 0
         }
       ],
       "maxcount": 100,
