@@ -48,6 +48,15 @@ public class Log {
         }
     }
 
+    public static void pv(String tag, String message) {
+        tag = checkLogTag(tag);
+        if (isLoggable(tag, VERBOSE)) {
+            String extraString = getMethodNameAndLineNumber();
+            tag = privateTag() ? tag : getTag();
+            android.util.Log.v(tag, extraString + message);
+        }
+    }
+
     public static void i(String tag, String message) {
         tag = checkLogTag(tag);
         if (isLoggable(tag, INFO)) {

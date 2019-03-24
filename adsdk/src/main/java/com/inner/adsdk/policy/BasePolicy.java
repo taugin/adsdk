@@ -420,7 +420,10 @@ public class BasePolicy implements Handler.Callback {
         if (!TextUtils.isEmpty(mType)) {
             msgWhat = mType.hashCode();
         }
-        // Log.v(Log.TAG, "msgWhat : " + msgWhat);
         return msgWhat;
+    }
+
+    protected void logv(String msg) {
+        Log.pv(Log.TAG, msg);
     }
 }
