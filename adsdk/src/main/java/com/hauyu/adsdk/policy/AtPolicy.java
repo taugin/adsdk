@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.config.AtConfig;
-import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.ArrayList;
@@ -96,23 +95,23 @@ public class AtPolicy extends BasePolicy {
     }
 
     public boolean isAtAllowed() {
-        Log.v(Log.TAG, "at : " + mAtConfig);
+        logv("at : " + mAtConfig);
         if (!checkBaseConfig()) {
             return false;
         }
 
         if (isTopApp()) {
-            Log.v(Log.TAG, "app is on the top");
+            logv("app is on the top");
             return false;
         }
 
         if (Utils.isScreenLocked(mContext)) {
-            Log.v(Log.TAG, "screen is locked");
+            logv("screen is locked");
             return false;
         }
 
         if (!Utils.isScreenOn(mContext)) {
-            Log.v(Log.TAG, "screen is not on");
+            logv("screen is not on");
             return false;
         }
         return true;
@@ -122,15 +121,15 @@ public class AtPolicy extends BasePolicy {
         // exclude launcher
         if (pkgname != null && pkgname.contains("launcher")
                 || className != null && className.contains("launcher")) {
-            Log.v(Log.TAG, "exclude launcher");
+            logv("exclude launcher");
             return true;
         }
         if (mAtConfig != null && mAtConfig.getExcludes() != null && mAtConfig.getExcludes().contains(pkgname)) {
-            Log.v(Log.TAG, "white name " + pkgname);
+            logv("white name " + pkgname);
             return true;
         }
         if (mContext != null && TextUtils.equals(pkgname, mContext.getPackageName())) {
-            Log.v(Log.TAG, "exclude self");
+            logv("exclude self");
             return true;
         }
         return false;

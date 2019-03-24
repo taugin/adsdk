@@ -243,4 +243,8 @@ public class CtrChecker implements Runnable {
         }
         return allViews;
     }
+
+    protected void logv(String msg) {
+        Log.v(Log.TAG, msg);
+    }
 }

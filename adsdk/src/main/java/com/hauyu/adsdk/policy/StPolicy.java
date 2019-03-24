@@ -3,7 +3,6 @@ package com.hauyu.adsdk.policy;
 import android.content.Context;
 
 import com.hauyu.adsdk.config.StConfig;
-import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.StatImpl;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -51,23 +50,23 @@ public class StPolicy extends BasePolicy {
     }
 
     public boolean isStAllowed() {
-        Log.v(Log.TAG, "stconfig : " + mStConfig);
+        logv("stconfig : " + mStConfig);
         if (!checkBaseConfig()) {
             return false;
         }
 
         if (isTopApp()) {
-            Log.v(Log.TAG, "app is on the top");
+            logv("app is on the top");
             return false;
         }
 
         if (Utils.isScreenLocked(mContext)) {
-            Log.v(Log.TAG, "screen is locked");
+            logv("screen is locked");
             return false;
         }
 
         if (!Utils.isScreenOn(mContext)) {
-            Log.v(Log.TAG, "screen is not on");
+            logv("screen is not on");
             return false;
         }
         return true;

@@ -716,8 +716,8 @@ public class FSA extends Activity {
                 button.setTranslationZ(0);
             }
             StateListDrawable drawable = new StateListDrawable();
-            drawable.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(Color.parseColor("#CC7122e5")));
-            drawable.addState(new int[]{android.R.attr.state_enabled}, new ColorDrawable(Color.parseColor("#7122e5")));
+            drawable.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(Color.parseColor("#AA4286F4")));
+            drawable.addState(new int[]{android.R.attr.state_enabled}, new ColorDrawable(Color.parseColor("#FF4286F4")));
             button.setId(generateViewId(0x1000002));
             button.setBackground(drawable);
             button.setPadding(0, 0, 0, 0);

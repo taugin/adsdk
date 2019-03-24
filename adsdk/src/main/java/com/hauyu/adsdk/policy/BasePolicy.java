@@ -423,4 +423,8 @@ public class BasePolicy implements Handler.Callback {
         // Log.v(Log.TAG, "msgWhat : " + msgWhat);
         return msgWhat;
     }
+
+    protected void logv(String msg) {
+        Log.v(Log.TAG, msg);
+    }
 }
