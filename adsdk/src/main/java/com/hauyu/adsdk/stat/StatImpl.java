@@ -447,7 +447,7 @@ public class StatImpl implements IStat {
         if (isReportAppsflyer(context)) {
             sendAppsflyer(context, pidName, eventId, null);
         }
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -466,7 +466,7 @@ public class StatImpl implements IStat {
         if (isReportAppsflyer(context)) {
             sendAppsflyer(context, pidName, eventId, null);
         }
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -485,7 +485,7 @@ public class StatImpl implements IStat {
         if (isReportAppsflyer(context)) {
             sendAppsflyer(context, pidName, eventId, null);
         }
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -504,7 +504,7 @@ public class StatImpl implements IStat {
         if (isReportAppsflyer(context)) {
             sendAppsflyer(context, pidName, eventId, null);
         }
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -523,7 +523,7 @@ public class StatImpl implements IStat {
         if (isReportAppsflyer(context)) {
             sendAppsflyer(context, pidName, eventId, null);
         }
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -540,7 +540,7 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, value, eventId, null);
         }
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId + ", times : " + times);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + ", times : " + times);
     }
 
     @Override

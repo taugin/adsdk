@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.hauyu.adsdk.config.CtConfig;
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
 /**
@@ -66,13 +67,13 @@ public class CtPolicy extends BasePolicy {
     }
 
     public boolean isCtAllowed() {
-        logv("ct : " + mCtConfig);
+        Log.iv(Log.TAG, "ct : " + mCtConfig);
         if (!checkBaseConfig()) {
             return false;
         }
 
         if (isDisable()) {
-            logv("user disable");
+            Log.iv(Log.TAG, "user disable");
             return false;
         }
 

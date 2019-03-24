@@ -66,13 +66,13 @@ public class BasePolicy implements Handler.Callback {
         if (mLoading) {
             if (mHandler != null) {
                 mHandler.removeMessages(getMsgWhat());
-                Log.v(Log.TAG, mType + " send loading timeout : " + getTimeout());
+                Log.iv(Log.TAG, mType + " send loading timeout : " + getTimeout());
                 mHandler.sendEmptyMessageDelayed(getMsgWhat(), getTimeout());
             }
         } else {
             if (mHandler != null) {
                 mHandler.removeMessages(getMsgWhat());
-                Log.v(Log.TAG, mType + " remove loading timeout");
+                Log.iv(Log.TAG, mType + " remove loading timeout");
             }
         }
     }
@@ -97,7 +97,7 @@ public class BasePolicy implements Handler.Callback {
         if (mBaseConfig != null) {
             long now = System.currentTimeMillis();
             long lastReqTime = Utils.getLong(mContext, getPrefKey(Constant.PREF_REQUEST_TIME), 0);
-            Log.v(Log.TAG, "now : " + now + " , last : " + lastReqTime + " , exp : " + (now - lastReqTime) + " , mi : " + mBaseConfig.getMinInterval());
+            Log.iv(Log.TAG, "now : " + now + " , last : " + lastReqTime + " , exp : " + (now - lastReqTime) + " , mi : " + mBaseConfig.getMinInterval());
             return now - lastReqTime >= mBaseConfig.getMinInterval();
         }
         return true;
@@ -200,7 +200,7 @@ public class BasePolicy implements Handler.Callback {
     private void resetTotalShowIfNeed() {
         long now = System.currentTimeMillis();
         long lastDay = Utils.getLong(mContext, getPrefKey(Constant.PREF_FIRST_SHOWTIME_ONEDAY), now);
-        Log.v(Log.TAG, mType + " reset total show now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
+        Log.iv(Log.TAG, mType + " reset total show now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
         if (now - lastDay > Constant.ONE_DAY_TIME) {
             int times = (int) getTotalShowTimes();
             if (times > 0) {
@@ -227,17 +227,17 @@ public class BasePolicy implements Handler.Callback {
 
     private boolean isAttrAllow() {
         if (mBaseConfig != null && !mAttrChecker.isAttributionAllow(mBaseConfig.getAttrList())) {
-            Log.v(Log.TAG, "attr not allowed");
+            Log.iv(Log.TAG, "attr not allowed");
             return false;
         }
 
         if (mBaseConfig != null && !mAttrChecker.isCountryAllow(mBaseConfig.getCountryList())) {
-            Log.v(Log.TAG, "country not allowed");
+            Log.iv(Log.TAG, "country not allowed");
             return false;
         }
 
         if (mBaseConfig != null && !mAttrChecker.isMediaSourceAllow(mBaseConfig.getMediaList())) {
-            Log.v(Log.TAG, "ms not allowed");
+            Log.iv(Log.TAG, "ms not allowed");
             return false;
         }
         return true;
@@ -266,7 +266,7 @@ public class BasePolicy implements Handler.Callback {
         if (mBaseConfig != null && mBaseConfig.getInterval() > 0) {
             long now = System.currentTimeMillis();
             long last = getLastShowTime();
-            Log.v(Log.TAG, mType + " i allow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)));
+            Log.iv(Log.TAG, mType + " i allow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)));
             return now - last > mBaseConfig.getInterval();
         }
         return true;
@@ -305,7 +305,7 @@ public class BasePolicy implements Handler.Callback {
     protected boolean isTopApp() {
         boolean appOnTop = ActivityMonitor.get(mContext).appOnTop();
         boolean isTopApp = Utils.isTopActivy(mContext);
-        Log.v(Log.TAG, "appOnTop : " + appOnTop + " , isTopApp : " + isTopApp);
+        Log.iv(Log.TAG, "appOnTop : " + appOnTop + " , isTopApp : " + isTopApp);
         return appOnTop;
     }
 
@@ -315,7 +315,7 @@ public class BasePolicy implements Handler.Callback {
             long firstInstallTime = getFirstInstallTime();
             String cit = configInstallTime > 0 ? Constant.SDF_1.format(new Date(configInstallTime)) : "0";
             String fit = firstInstallTime > 0 ? Constant.SDF_1.format(new Date(firstInstallTime)) : "0";
-            Log.v(Log.TAG, "cit : " + cit + " , fit : " + fit);
+            Log.iv(Log.TAG, "cit : " + cit + " , fit : " + fit);
             if (configInstallTime <= 0 || firstInstallTime <= 0) {
                 return true;
             }
@@ -369,7 +369,7 @@ public class BasePolicy implements Handler.Callback {
 
     protected boolean checkBaseConfig() {
         if (!isConfigAllow()) {
-            Log.v(Log.TAG, "con not allowed");
+            Log.iv(Log.TAG, "con not allowed");
             return false;
         }
 
@@ -378,32 +378,32 @@ public class BasePolicy implements Handler.Callback {
         }
 
         if (!isDelayAllow()) {
-            Log.v(Log.TAG, "d not allowed");
+            Log.iv(Log.TAG, "d not allowed");
             return false;
         }
 
         if (!isIntervalAllow()) {
-            Log.v(Log.TAG, "i not allowed");
+            Log.iv(Log.TAG, "i not allowed");
             return false;
         }
 
         if (!isMaxShowAllow()) {
-            Log.v(Log.TAG, "mc not allowed");
+            Log.iv(Log.TAG, "mc not allowed");
             return false;
         }
 
         if (!isAppVerAllow()) {
-            Log.v(Log.TAG, "maxver not allowed");
+            Log.iv(Log.TAG, "maxver not allowed");
             return false;
         }
 
         if (!matchInstallTime()) {
-            Log.v(Log.TAG, "cit not allowed");
+            Log.iv(Log.TAG, "cit not allowed");
             return false;
         }
 
         if (!isScreenOrientationAllow()) {
-            Log.v(Log.TAG, "so not allow");
+            Log.iv(Log.TAG, "so not allow");
             return false;
         }
         return true;
@@ -411,7 +411,6 @@ public class BasePolicy implements Handler.Callback {
 
     private String getPrefKey(String keyMacro) {
         String prefKey = String.format(Locale.getDefault(), keyMacro, mType);
-        // Log.v(Log.TAG, "prefKey : " + prefKey);
         return prefKey;
     }
 
@@ -420,11 +419,6 @@ public class BasePolicy implements Handler.Callback {
         if (!TextUtils.isEmpty(mType)) {
             msgWhat = mType.hashCode();
         }
-        // Log.v(Log.TAG, "msgWhat : " + msgWhat);
         return msgWhat;
-    }
-
-    protected void logv(String msg) {
-        Log.v(Log.TAG, msg);
     }
 }

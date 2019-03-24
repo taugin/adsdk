@@ -3,6 +3,7 @@ package com.hauyu.adsdk.policy;
 import android.content.Context;
 
 import com.hauyu.adsdk.config.LtConfig;
+import com.hauyu.adsdk.log.Log;
 
 /**
  * Created by Administrator on 2018/3/19.
@@ -43,7 +44,7 @@ public class LtPolicy extends BasePolicy {
     }
 
     public boolean isLtAllowed() {
-        logv("lt : " + mLtConfig);
+        Log.iv(Log.TAG, "lt : " + mLtConfig);
         if (!checkBaseConfig()) {
             return false;
         }

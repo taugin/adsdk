@@ -69,11 +69,11 @@ public class AtAdLoader extends BottomLoader implements TaskMonitor.OnTaskMonito
     }
 
     public void resumeLoader() {
-        Log.v(Log.TAG, "resume loader");
+        Log.iv(Log.TAG, "resume loader");
         if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
             TaskMonitor.get(mContext).startMonitor();
         } else {
-            Log.v(Log.TAG, "miss app usage");
+            Log.iv(Log.TAG, "miss app usage");
         }
     }
 
@@ -85,7 +85,7 @@ public class AtAdLoader extends BottomLoader implements TaskMonitor.OnTaskMonito
                 TaskMonitor.get(mContext).startMonitor();
             }
         } else {
-            Log.v(Log.TAG, "miss app usage");
+            Log.iv(Log.TAG, "miss app usage");
         }
     }
 
@@ -124,7 +124,7 @@ public class AtAdLoader extends BottomLoader implements TaskMonitor.OnTaskMonito
     private SimpleAdSdkListener mAdSdkListener = new SimpleAdSdkListener() {
         @Override
         public void onLoaded(String pidName, String source, String adType) {
-            Log.v(Log.TAG, "at loaded");
+            Log.iv(Log.TAG, "at loaded");
             mPidName = pidName;
             mSource = source;
             mAdType = adType;
@@ -132,14 +132,14 @@ public class AtAdLoader extends BottomLoader implements TaskMonitor.OnTaskMonito
 
         @Override
         public void onShow(String pidName, String source, String adType) {
-            Log.v(Log.TAG, "show ads and stop task monitor");
+            Log.iv(Log.TAG, "show ads and stop task monitor");
             AtPolicy.get(mContext).reportShowing(true);
             TaskMonitor.get(mContext).stopMonitor();
         }
 
         @Override
         public void onDismiss(String pidName, String source, String adType) {
-            Log.v(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            Log.iv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
             AtPolicy.get(mContext).reportShowing(false);
             if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                     && AtPolicy.get(mContext).isShowBottomActivity()

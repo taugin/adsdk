@@ -3,6 +3,7 @@ package com.hauyu.adsdk.policy;
 import android.content.Context;
 
 import com.hauyu.adsdk.config.GtConfig;
+import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.StatImpl;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -51,23 +52,23 @@ public class GtPolicy extends BasePolicy {
     }
 
     public boolean isGtAllowed() {
-        logv("gt : " + mGtConfig);
+        Log.iv(Log.TAG, "gt : " + mGtConfig);
         if (!checkBaseConfig()) {
             return false;
         }
 
         if (isTopApp()) {
-            logv("app is on the top");
+            Log.iv(Log.TAG, "app is on the top");
             return false;
         }
 
         if (Utils.isScreenLocked(mContext)) {
-            logv("screen is locked");
+            Log.iv(Log.TAG, "screen is locked");
             return false;
         }
 
         if (!Utils.isScreenOn(mContext)) {
-            logv("screen is not on");
+            Log.iv(Log.TAG, "screen is not on");
             return false;
         }
         return true;

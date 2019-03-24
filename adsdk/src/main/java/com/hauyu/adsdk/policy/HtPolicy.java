@@ -3,6 +3,7 @@ package com.hauyu.adsdk.policy;
 import android.content.Context;
 
 import com.hauyu.adsdk.config.HtConfig;
+import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.StatImpl;
 
 /**
@@ -44,7 +45,7 @@ public class HtPolicy extends BasePolicy {
     }
 
     public boolean isHtAllowed() {
-        logv("ht : " + mHtConfig);
+        Log.iv(Log.TAG, "ht : " + mHtConfig);
         if (!checkBaseConfig()) {
             return false;
         }
