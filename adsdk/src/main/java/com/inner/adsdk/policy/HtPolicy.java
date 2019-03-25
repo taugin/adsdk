@@ -3,6 +3,7 @@ package com.inner.adsdk.policy;
 import android.content.Context;
 
 import com.inner.adsdk.config.HtConfig;
+import com.inner.adsdk.log.Log;
 import com.inner.adsdk.stat.StatImpl;
 
 /**
@@ -44,7 +45,7 @@ public class HtPolicy extends BasePolicy {
     }
 
     public boolean isHtAllowed() {
-        logv( "ht : " + mHtConfig);
+        Log.pv(Log.TAG, "ht : " + mHtConfig);
         if (!checkBaseConfig()) {
             return false;
         }

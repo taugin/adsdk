@@ -1,4 +1,4 @@
-package com.inner.adsdk.framework;
+package com.inner.adsdk.loader;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -169,7 +169,7 @@ public class AdReceiver {
             mContext.startActivity(intent);
             LtPolicy.get(mContext).reportShowing(true);
         } catch (Exception e) {
-            Log.v(Log.TAG, "error : " + e);
+            Log.pv(Log.TAG, "error : " + e);
         }
     }
 

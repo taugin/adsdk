@@ -1,4 +1,4 @@
-package com.inner.adsdk.framework;
+package com.inner.adsdk.loader;
 
 import android.content.Context;
 import android.content.Intent;

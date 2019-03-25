@@ -45,7 +45,7 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
             return;
         }
         if (task.isSuccessful()) {
-            Log.v(Log.TAG, "onComplete fetch successfully");
+            Log.pv(Log.TAG, "onComplete fetch successfully");
             mFirebaseRemoteConfig.activateFetched();
         } else {
             Log.e(Log.TAG, "error : " + task.getException());
@@ -60,12 +60,12 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
                 long now = System.currentTimeMillis();
                 long last = Utils.getLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME);
                 boolean needRequest = now - last > REFRESH_INTERVAL;
-                Log.v(Log.TAG, "adsdk refresh now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)) + " , do : " + needRequest);
+                Log.pv(Log.TAG, "adsdk refresh now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)) + " , do : " + needRequest);
                 if (needRequest) {
                     try {
                         mFirebaseRemoteConfig.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
                         Utils.putLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
-                        Log.v(Log.TAG, "adsdk refresh fetch called");
+                        Log.pv(Log.TAG, "adsdk refresh fetch called");
                     } catch (Exception e) {
                         Log.e(Log.TAG, "error : " + e);
                     }

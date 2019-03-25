@@ -35,12 +35,12 @@ public class AttrChecker {
      */
     public boolean isAttributionAllow(List<String> attr) {
         boolean disableAttribution = android.util.Log.isLoggable("organic", android.util.Log.VERBOSE);
-        logv( "da : " + disableAttribution);
+        Log.pv(Log.TAG, "da : " + disableAttribution);
         if (disableAttribution) {
             return true;
         }
         String afStatus = getAfStatus();
-        logv( "af_s : " + afStatus);
+        Log.pv(Log.TAG, "af_s : " + afStatus);
         if (attr != null && !attr.contains(afStatus)) {
             return false;
         }
@@ -49,7 +49,7 @@ public class AttrChecker {
 
     public boolean isCountryAllow(List<String> countryList) {
         String country = getCountry();
-        logv( "country : " + country);
+        Log.pv(Log.TAG, "country : " + country);
         if (countryList != null && !countryList.isEmpty()) {
             List<String> includeCountries = new ArrayList<String>();
             List<String> excludeCountries = new ArrayList<String>();
@@ -84,7 +84,7 @@ public class AttrChecker {
      */
     public boolean isMediaSourceAllow(List<String> mediaList) {
         String mediaSource = getMediaSource();
-        logv( "ms : " + mediaSource);
+        Log.pv(Log.TAG, "ms : " + mediaSource);
         if (mediaList != null && !mediaList.isEmpty()) {
             List<String> includeMs = new ArrayList<String>();
             List<String> excludeMs = new ArrayList<String>();
@@ -130,9 +130,5 @@ public class AttrChecker {
 
     private String getCountry() {
         return Utils.getCountry(mContext);
-    }
-
-    protected void logv(String msg) {
-        Log.pv(Log.TAG, msg);
     }
 }

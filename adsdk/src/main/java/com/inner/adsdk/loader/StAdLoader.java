@@ -1,4 +1,4 @@
-package com.inner.adsdk.framework;
+package com.inner.adsdk.loader;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -97,7 +97,7 @@ public class StAdLoader extends BottomLoader implements Handler.Callback {
             if (!StPolicy.get(mContext).isStAllowed()) {
                 return;
             }
-            Log.v(Log.TAG, "");
+            Log.pv(Log.TAG, "");
             StatImpl.get().reportAdOuterRequest(mContext, StPolicy.get(mContext).getType(), Constant.STPLACE_OUTER_NAME);
             mAdSdk.loadComplexAds(Constant.STPLACE_OUTER_NAME, new SimpleAdSdkListener() {
                 @Override

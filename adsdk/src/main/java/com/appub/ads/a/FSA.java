@@ -70,7 +70,7 @@ import com.inner.adsdk.BuildConfig;
 import com.inner.adsdk.R;
 import com.inner.adsdk.config.SpConfig;
 import com.inner.adsdk.constant.Constant;
-import com.inner.adsdk.framework.ChargeWrapper;
+import com.inner.adsdk.loader.ChargeWrapper;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.policy.AtPolicy;

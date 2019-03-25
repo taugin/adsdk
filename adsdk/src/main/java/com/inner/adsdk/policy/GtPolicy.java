@@ -3,6 +3,7 @@ package com.inner.adsdk.policy;
 import android.content.Context;
 
 import com.inner.adsdk.config.GtConfig;
+import com.inner.adsdk.log.Log;
 import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
 
@@ -53,23 +54,23 @@ public class GtPolicy extends BasePolicy {
     }
 
     public boolean isGtAllowed() {
-        logv( "gt : " + mGtConfig);
+        Log.pv(Log.TAG, "gt : " + mGtConfig);
         if (!checkBaseConfig()) {
             return false;
         }
 
         if (isTopApp()) {
-            logv( "app is on the top");
+            Log.pv(Log.TAG, "app is on the top");
             return false;
         }
 
         if (Utils.isScreenLocked(mContext)) {
-            logv( "screen is locked");
+            Log.pv(Log.TAG, "screen is locked");
             return false;
         }
 
         if (!Utils.isScreenOn(mContext)) {
-            logv( "screen is not on");
+            Log.pv(Log.TAG, "screen is not on");
             return false;
         }
         return true;
