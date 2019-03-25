@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.BuildConfig;
+import com.appub.ads.a.BuildConfig;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.listener.OnAdRewardListener;

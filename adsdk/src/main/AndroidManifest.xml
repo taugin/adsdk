@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hauyu.adsdk">
+    package="com.appub.ads.a">
 
     <uses-sdk android:minSdkVersion="9" />
 

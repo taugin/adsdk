@@ -15,10 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appub.ads.a.FSA;
+import com.appub.ads.a.R;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.R;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.policy.BsPolicy;

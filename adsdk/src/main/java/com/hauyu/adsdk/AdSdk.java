@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.appub.ads.a.BuildConfig;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.constant.Constant;
