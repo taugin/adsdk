@@ -39,26 +39,26 @@ public class CtrChecker implements Runnable {
             mHandleView.clear();
         }
         if (pidConfig == null || activity == null) {
-            Log.v(Log.TAG, "activity == null or pidConfig == null");
+            logv( "activity == null or pidConfig == null");
             return;
         }
         if (!Constant.TYPE_INTERSTITIAL.equals(pidConfig.getAdType()) &&
                 !Constant.TYPE_REWARD.equals(pidConfig.getAdType())) {
-            Log.v(Log.TAG, "neither " + Constant.TYPE_INTERSTITIAL + " nor " + Constant.TYPE_REWARD);
+            logv( "neither " + Constant.TYPE_INTERSTITIAL + " nor " + Constant.TYPE_REWARD);
             return;
         }
         if (mAttrChecker != null) {
             mAttrChecker.setContext(activity);
             if (!mAttrChecker.isAttributionAllow(pidConfig.getAttrList())) {
-                Log.v(Log.TAG, "attr not allow");
+                logv( "attr not allow");
                 return;
             }
             if (!mAttrChecker.isMediaSourceAllow(pidConfig.getMediaList())) {
-                Log.v(Log.TAG, "ms not allow");
+                logv( "ms not allow");
                 return;
             }
             if (!mAttrChecker.isCountryAllow(pidConfig.getCountryList())) {
-                Log.v(Log.TAG, "country not allow");
+                logv( "country not allow");
                 return;
             }
         }
@@ -66,12 +66,12 @@ public class CtrChecker implements Runnable {
     }
 
     private void handleControlCTR(final Activity activity, PidConfig pidConfig) {
-        Log.v(Log.TAG, "handle control ctr");
+        logv( "handle control ctr");
         mActivity = activity;
         mPidConfig = pidConfig;
         boolean needControlCTR = needControlCTR(pidConfig != null ? pidConfig.getCtr() : 0);
         long delayClickTime = pidConfig != null ? pidConfig.getDelayClickTime() : 0;
-        Log.v(Log.TAG, "pidname : " + pidConfig.getAdPlaceName() + " , ncc : " + needControlCTR + " , ffc : " + pidConfig.isFinishForCtr() + " , dct : " + delayClickTime);
+        logv( "pidname : " + pidConfig.getAdPlaceName() + " , ncc : " + needControlCTR + " , ffc : " + pidConfig.isFinishForCtr() + " , dct : " + delayClickTime);
         if (mHandler != null && (needControlCTR || delayClickTime > 0)) {
             mHandler.removeCallbacks(this);
             mHandler.postDelayed(this, DELAY_HANDLE_CTR);
@@ -85,7 +85,7 @@ public class CtrChecker implements Runnable {
      * @return true if need control ctr otherwise false
      */
     public boolean needControlCTR(int ctr) {
-        Log.v(Log.TAG, "need control by ctr : " + ctr);
+        logv( "need control by ctr : " + ctr);
         try {
             if (ctr < MIN_CTR_VALUE || ctr > MAX_CTR_VALUE) return false;
             int randomVal = mRandom.nextInt(MAX_CTR_VALUE);
@@ -114,7 +114,7 @@ public class CtrChecker implements Runnable {
                 Log.e(Log.TAG, "error : " + e);
             }
         } else {
-            Log.v(Log.TAG, "mActivity == null");
+            logv( "mActivity == null");
         }
     }
 
@@ -159,7 +159,7 @@ public class CtrChecker implements Runnable {
      */
     private void handleViewCtr(final View view) {
         if (mActivity == null || view == null) {
-            Log.v(Log.TAG, "mActivity == null or view == null");
+            logv( "mActivity == null or view == null");
             return;
         }
         final GestureDetector gestureDetector = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
@@ -189,7 +189,7 @@ public class CtrChecker implements Runnable {
      */
     private void handleViewDelayTime(final View view) {
         if (mActivity == null || view == null) {
-            Log.v(Log.TAG, "mActivity == null or view == null");
+            logv( "mActivity == null or view == null");
             return;
         }
         view.setOnTouchListener(new View.OnTouchListener() {
@@ -242,5 +242,9 @@ public class CtrChecker implements Runnable {
         } catch (Exception e) {
         }
         return allViews;
+    }
+
+    protected void logv(String msg) {
+        Log.pv(Log.TAG, msg);
     }
 }
