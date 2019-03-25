@@ -1,4 +1,4 @@
-package com.inner.adsdk.framework;
+package com.inner.adsdk.loader;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -130,7 +130,7 @@ public class TaskMonitor implements Handler.Callback {
      * 开启Monitor
      */
     public void startMonitor() {
-        Log.v(Log.TAG, "start monitor");
+        Log.pv(Log.TAG, "start monitor");
         sendHandleMessage();
     }
 
@@ -139,7 +139,7 @@ public class TaskMonitor implements Handler.Callback {
      */
     public void stopMonitor() {
         if (mHandlerThread != null && mThreadHandler != null) {
-            Log.v(Log.TAG, "stop monitor");
+            Log.pv(Log.TAG, "stop monitor");
             cancelHandleMessage();
         }
     }

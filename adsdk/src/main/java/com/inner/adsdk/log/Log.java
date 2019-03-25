@@ -19,12 +19,24 @@ public class Log {
     private static final int INFO = android.util.Log.INFO;
     private static final int ERROR = android.util.Log.ERROR;
     private static final int WARN = android.util.Log.WARN;
+    private static final boolean INTERNAL_LOG_ENABLE;
 
     public static final String TAG = "adlib";
-    public static final boolean DEBUGABLE = BuildConfig.DEBUG;
+    public static final boolean DB = BuildConfig.DEBUG;
+
+    static {
+        boolean internal = false;
+        try {
+            File tagFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File debugFile = new File(tagFolder, ".debug");
+            internal = debugFile.exists();
+        } catch (Exception e) {
+        }
+        INTERNAL_LOG_ENABLE = DB ? DB : internal;
+    }
 
     private static boolean isLoggable(String tag, int level) {
-        if (DEBUGABLE) {
+        if (DB) {
             return true;
         }
         return android.util.Log.isLoggable(tag, level);
@@ -50,7 +62,7 @@ public class Log {
 
     public static void pv(String tag, String message) {
         tag = checkLogTag(tag);
-        if (isLoggable(tag, VERBOSE)) {
+        if (isLoggable(tag, VERBOSE) && INTERNAL_LOG_ENABLE) {
             String extraString = getMethodNameAndLineNumber();
             tag = privateTag() ? tag : getTag();
             android.util.Log.v(tag, extraString + message);

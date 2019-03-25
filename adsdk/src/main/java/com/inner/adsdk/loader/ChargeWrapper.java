@@ -1,4 +1,4 @@
-package com.inner.adsdk.framework;
+package com.inner.adsdk.loader;
 
 import android.app.Activity;
 import android.app.AlertDialog;

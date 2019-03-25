@@ -1,4 +1,4 @@
-package com.inner.adsdk.framework;
+package com.inner.adsdk.loader;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -69,7 +69,6 @@ public class GtAdLoader extends BottomLoader {
     }
 
     public void onFire() {
-        Log.d(Log.TAG, "onFire");
         DataManager.get(mContext).refresh();
         fireOuterAd();
     }
@@ -81,14 +80,14 @@ public class GtAdLoader extends BottomLoader {
                 return;
             }
             if (!GtPolicy.get(mContext).isMatchMinInterval()) {
-                Log.v(Log.TAG, "mi not allow");
+                Log.pv(Log.TAG, "mi not allow");
                 return;
             }
             if (GtPolicy.get(mContext).isLoading()) {
-                Log.v(Log.TAG, "gt is loading");
+                Log.pv(Log.TAG, "gt is loading");
                 return;
             }
-            Log.v(Log.TAG, "");
+            Log.pv(Log.TAG, "");
             String outerPidName = getNextPidName();
             StatImpl.get().reportAdOuterRequest(mContext, GtPolicy.get(mContext).getType(), outerPidName);
             GtPolicy.get(mContext).startGtRequest();
@@ -96,7 +95,7 @@ public class GtAdLoader extends BottomLoader {
             mAdSdk.loadComplexAds(outerPidName, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
-                    Log.v(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.pv(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).setLoading(false);
                     StatImpl.get().reportAdOuterLoaded(mContext, GtPolicy.get(mContext).getType(), pidName);
                     if (GtPolicy.get(mContext).isGtAllowed()) {
@@ -119,7 +118,7 @@ public class GtAdLoader extends BottomLoader {
 
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
-                    Log.v(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.pv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).reportShowing(false);
                     if ((!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                             && GtPolicy.get(mContext).isShowBottomActivity()
@@ -132,14 +131,14 @@ public class GtAdLoader extends BottomLoader {
 
                 @Override
                 public void onShow(String pidName, String source, String adType) {
-                    Log.v(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.pv(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).reportShowing(true);
                     StatImpl.get().reportAdOuterShowing(mContext, GtPolicy.get(mContext).getType(), pidName);
                 }
 
                 @Override
                 public void onError(String pidName, String source, String adType) {
-                    Log.v(Log.TAG, "error pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.pv(Log.TAG, "error pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).setLoading(false);
                 }
             });
