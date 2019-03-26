@@ -40,6 +40,11 @@ public class AdPlace {
 
     private boolean globalCache;
 
+    /**
+     * 瀑布流请求间隔
+     */
+    private long waterfallInt;
+
     public String getName() {
         return name;
     }
@@ -173,6 +178,14 @@ public class AdPlace {
 
     public void setGlobalCache(boolean globalCache) {
         this.globalCache = globalCache;
+    }
+
+    public long getWaterfallInt() {
+        return waterfallInt;
+    }
+
+    public void setWaterfallInt(long waterfallInt) {
+        this.waterfallInt = waterfallInt;
     }
 
     @Override

@@ -318,8 +318,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onInterstitialError(int error) {
                     if (iterator.hasNext()) {
-                        Log.e(Log.TAG, "load next interstitial");
-                        loadInterstitialSequenceInternal(iterator);
+                        Log.iv(Log.TAG, "load next interstitial");
+                        loadInterstitialSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
                     } else {
                         super.onInterstitialError(error);
                     }
@@ -330,6 +330,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             } else {
                 loader.loadInterstitial();
             }
+        }
+    }
+
+    private void loadInterstitialSequenceInternalWithDelay(final Iterator<ISdkLoader> iterator, long delay) {
+        if (delay <= 0 || mHandler == null) {
+            loadInterstitialSequenceInternal(iterator);
+        } else {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loadInterstitialSequenceInternal(iterator);
+                }
+            }, delay);
         }
     }
 
@@ -474,8 +487,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onAdFailed(int error) {
                     if (iterator.hasNext()) {
-                        Log.e(Log.TAG, "load next adview");
-                        loadAdViewSequenceInternal(iterator);
+                        Log.iv(Log.TAG, "load next adview");
+                        loadAdViewSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
                     } else {
                         super.onAdFailed(error);
                     }
@@ -488,6 +501,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getAdType());
             }
+        }
+    }
+
+    private void loadAdViewSequenceInternalWithDelay(final Iterator<ISdkLoader> iterator, long delay) {
+        if (delay <= 0 || mHandler == null) {
+            loadAdViewSequenceInternal(iterator);
+        } else {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loadAdViewSequenceInternal(iterator);
+                }
+            }, delay);
         }
     }
 
@@ -684,8 +710,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onAdFailed(int error) {
                     if (iterator.hasNext()) {
-                        Log.e(Log.TAG, "load next complex");
-                        loadComplexAdsSequenceInternal(iterator);
+                        Log.iv(Log.TAG, "load next complex");
+                        loadComplexAdsSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
                     } else {
                         super.onAdFailed(error);
                     }
@@ -694,8 +720,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onInterstitialError(int error) {
                     if (iterator.hasNext()) {
-                        Log.e(Log.TAG, "load next complex");
-                        loadComplexAdsSequenceInternal(iterator);
+                        Log.iv(Log.TAG, "load next complex");
+                        loadComplexAdsSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
                     } else {
                         super.onInterstitialError(error);
                     }
@@ -712,6 +738,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
             }
+        }
+    }
+
+    private void loadComplexAdsSequenceInternalWithDelay(final Iterator<ISdkLoader> iterator, long delay) {
+        if (delay <= 0 || mHandler == null) {
+            loadComplexAdsSequenceInternal(iterator);
+        } else {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loadComplexAdsSequenceInternal(iterator);
+                }
+            }, delay);
         }
     }
 

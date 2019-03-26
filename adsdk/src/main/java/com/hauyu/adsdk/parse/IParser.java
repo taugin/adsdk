@@ -67,6 +67,8 @@ public interface IParser {
     String REF_SHARE = "rs";
     // 是否全局缓存
     String GLOBAL_CACHE = "gc";
+    // waterfall 请求间隔
+    String WATERFALL_INTERVAL = "int";
 
     // 广告平台 fb, admob, adx
     String SDK = "sdk";
