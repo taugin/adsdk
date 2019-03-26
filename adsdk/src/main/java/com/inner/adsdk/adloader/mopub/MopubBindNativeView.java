@@ -127,7 +127,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         // 恢复icon图标
         try {
             restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
 
@@ -138,6 +138,13 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } catch (Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
+
+        try {
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+
         try {
             bindStaticRender(context, nativeAd);
         } catch (Exception e) {
@@ -145,6 +152,13 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } catch (Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
+
+        try {
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+
         try {
             bindAdMobRender(context, nativeAd);
         } catch (Exception e) {
@@ -152,6 +166,13 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } catch (Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
+
+        try {
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+
         try {
             bindFBRender(context, nativeAd);
         } catch (Exception e) {
@@ -159,6 +180,13 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } catch (Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
+
+        try {
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+
         try {
             bindInmobiRender(context, nativeAd);
         } catch (Exception e) {
@@ -297,14 +325,14 @@ public class MopubBindNativeView extends BaseBindNativeView {
             ViewGroup.LayoutParams iconParams = icon.getLayoutParams();
             android.widget.RelativeLayout.LayoutParams iconViewParams = new android.widget.RelativeLayout.LayoutParams(iconParams.width, iconParams.height);
             if (iconParams instanceof ViewGroup.MarginLayoutParams) {
-                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams)iconParams;
+                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) iconParams;
                 iconViewParams.setMargins(marginParams.leftMargin, marginParams.topMargin, marginParams.rightMargin, marginParams.bottomMargin);
             }
             if (iconParams instanceof android.widget.RelativeLayout.LayoutParams) {
-                android.widget.RelativeLayout.LayoutParams mainImageViewRelativeLayoutParams = (android.widget.RelativeLayout.LayoutParams)iconParams;
+                android.widget.RelativeLayout.LayoutParams mainImageViewRelativeLayoutParams = (android.widget.RelativeLayout.LayoutParams) iconParams;
                 int[] rules = mainImageViewRelativeLayoutParams.getRules();
 
-                for(int i = 0; i < rules.length; ++i) {
+                for (int i = 0; i < rules.length; ++i) {
                     iconViewParams.addRule(i, rules[i]);
                 }
             }
