@@ -6,7 +6,7 @@ import android.content.Intent;
 import com.appub.ads.a.FSA;
 import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
-import com.inner.adsdk.R;
+import com.appub.ads.a.R;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
 

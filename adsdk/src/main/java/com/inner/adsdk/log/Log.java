@@ -3,7 +3,7 @@ package com.inner.adsdk.log;
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
-import com.inner.adsdk.BuildConfig;
+import com.appub.ads.a.BuildConfig;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -8,9 +8,9 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.appub.ads.a.BuildConfig;
 import com.inner.adsdk.AdReward;
 import com.inner.adsdk.AdSdk;
-import com.inner.adsdk.BuildConfig;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.framework.ActivityMonitor;
