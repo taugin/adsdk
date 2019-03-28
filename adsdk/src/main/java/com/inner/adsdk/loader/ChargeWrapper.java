@@ -18,7 +18,7 @@ import com.appub.ads.a.FSA;
 import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdSdk;
-import com.inner.adsdk.R;
+import com.appub.ads.a.R;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.policy.BsPolicy;
