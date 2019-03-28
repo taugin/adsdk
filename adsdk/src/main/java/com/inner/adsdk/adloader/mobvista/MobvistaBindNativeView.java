@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.adywind.core.api.Ad;
 import com.adywind.nativeads.api.NativeAds;
-import com.inner.adsdk.R;
+import com.appub.ads.a.R;
 import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
