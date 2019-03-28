@@ -102,6 +102,7 @@ public class FSA extends Activity {
     private ViewGroup mLockAdLayout;
     private boolean mInChargeView;
     private ChargeWrapper mChargeWrapper;
+    private ViewGroup mAdLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -358,6 +359,7 @@ public class FSA extends Activity {
             ((RelativeLayout) adLayout).setGravity(Gravity.CENTER);
             rootLayout.addView(adLayout, -1, -1);
         }
+        mAdLayout = adLayout;
 
         ImageView imageView = generateCloseView();
         int size = Utils.dp2px(this, 24);
@@ -373,21 +375,44 @@ public class FSA extends Activity {
             }
         });
         rootLayout.addView(imageView, params);
-        AdSdk.get(this).showComplexAds(mPidName, getAdParams(), mSource, mAdType, adLayout);
-        onAdShowing(adLayout);
-        if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)
-                || TextUtils.equals(Constant.GTPLACE_OUTER_NAME, mPidName)) {
-            GtPolicy.get(this).reportShowing(true);
-        } else if (TextUtils.equals(Constant.HTPLACE_OUTER_NAME, mPidName)) {
-            HtPolicy.get(this).reportShowing(true);
-        } else if (TextUtils.equals(Constant.ATPLACE_OUTER_NAME, mPidName)) {
-            AtPolicy.get(this).reportShowing(true);
-        } else if (TextUtils.equals(Constant.STPLACE_OUTER_NAME, mPidName)) {
-            StPolicy.get(this).reportShowing(true);
-        } else if (TextUtils.equals(Constant.CTPLACE_OUTER_NAME, mPidName)) {
-            CtPolicy.get(this).reportShowing(true);
-        } else if (TextUtils.equals(Constant.LTPLACE_OUTER_NAME, mPidName)) {
-            LtPolicy.get(this).reportShowing(true);
+
+        if (isAutoShowAdView()) {
+            showAdViewInternal();
+        }
+    }
+
+    /**
+     * 是否立即显示广告
+     * @return
+     */
+    protected boolean isAutoShowAdView() {
+        return true;
+    }
+
+    protected void showAdView() {
+        if (!isAutoShowAdView()) {
+            showAdViewInternal();
+        }
+    }
+
+    private void showAdViewInternal() {
+        if (mAdLayout != null) {
+            AdSdk.get(this).showComplexAds(mPidName, getAdParams(), mSource, mAdType, mAdLayout);
+            onAdShowing(mAdLayout);
+            if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)
+                    || TextUtils.equals(Constant.GTPLACE_OUTER_NAME, mPidName)) {
+                GtPolicy.get(this).reportShowing(true);
+            } else if (TextUtils.equals(Constant.HTPLACE_OUTER_NAME, mPidName)) {
+                HtPolicy.get(this).reportShowing(true);
+            } else if (TextUtils.equals(Constant.ATPLACE_OUTER_NAME, mPidName)) {
+                AtPolicy.get(this).reportShowing(true);
+            } else if (TextUtils.equals(Constant.STPLACE_OUTER_NAME, mPidName)) {
+                StPolicy.get(this).reportShowing(true);
+            } else if (TextUtils.equals(Constant.CTPLACE_OUTER_NAME, mPidName)) {
+                CtPolicy.get(this).reportShowing(true);
+            } else if (TextUtils.equals(Constant.LTPLACE_OUTER_NAME, mPidName)) {
+                LtPolicy.get(this).reportShowing(true);
+            }
         }
     }
 
