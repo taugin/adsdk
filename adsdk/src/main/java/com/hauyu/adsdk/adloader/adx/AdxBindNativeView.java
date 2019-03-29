@@ -162,7 +162,7 @@ public class AdxBindNativeView extends BaseBindNativeView {
 
         boolean allClick = allElementCanClick(pidConfig.getCtr());
 
-        Log.pv(Log.TAG, "all click : " + allClick + " , ctr : " + pidConfig.getCtr());
+        Log.iv(Log.TAG, "all click : " + allClick + " , ctr : " + pidConfig.getCtr());
 
         if (allClick) {
             if (titleView != null) {
