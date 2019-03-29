@@ -148,43 +148,53 @@ public class AdxBindNativeView extends BaseBindNativeView {
         adView.addView(rootView);
 
         View titleView = rootView.findViewById(mParams.getAdTitle());
-        if (titleView != null) {
-            adView.setHeadlineView(titleView);
-        }
         View adCoverView = adView.findViewById(mParams.getAdCover());
-        if (adCoverView != null) {
-            adView.setImageView(adCoverView);
-        }
-
         // 由于adx没有subTitle的接口，因此将使用subTitle或者detailView
         View detailView = adView.findViewById(mParams.getAdDetail());
         View subTitleView = adView.findViewById(mParams.getAdSubTitle());
         View bodyView = detailView != null ? detailView : subTitleView;
 
-        if (bodyView != null) {
-            adView.setBodyView(bodyView);
-        }
-
         View ctaView = adView.findViewById(mParams.getAdAction());
-        if (ctaView != null) {
-            adView.setCallToActionView(ctaView);
-        }
+
         View adIconView = adView.findViewById(mParams.getAdIcon());
-        if (adIconView != null) {
-            adView.setIconView(adIconView);
+
+        View rateBarView = adView.getStarRatingView();
+
+        boolean allClick = allElementCanClick(pidConfig.getCtr());
+
+        Log.pv(Log.TAG, "all click : " + allClick + " , ctr : " + pidConfig.getCtr());
+
+        if (allClick) {
+            if (titleView != null) {
+                adView.setHeadlineView(titleView);
+            }
+            if (adCoverView != null) {
+                adView.setImageView(adCoverView);
+            }
+            if (bodyView != null) {
+                adView.setBodyView(bodyView);
+            }
+            if (ctaView != null) {
+                adView.setCallToActionView(ctaView);
+            }
+            if (adIconView != null) {
+                adView.setIconView(adIconView);
+            }
+        } else {
+            if (ctaView != null) {
+                adView.setCallToActionView(ctaView);
+            }
         }
 
+        // 设置广告元素内容
         if (!TextUtils.isEmpty(nativeAd.getHeadline())) {
-            titleView = adView.getHeadlineView();
             if (titleView instanceof TextView) {
                 ((TextView)titleView).setText(nativeAd.getHeadline());
-
                 titleView.setVisibility(View.VISIBLE);
             }
         }
 
         if (!TextUtils.isEmpty(nativeAd.getBody())) {
-            bodyView = adView.getBodyView();
             if (bodyView instanceof TextView) {
                 ((TextView)bodyView).setText(nativeAd.getBody());
                 bodyView.setVisibility(View.VISIBLE);
@@ -192,7 +202,6 @@ public class AdxBindNativeView extends BaseBindNativeView {
         }
 
         if (!TextUtils.isEmpty(nativeAd.getCallToAction())) {
-            ctaView = adView.getCallToActionView();
             if (ctaView instanceof TextView) {
                 ((TextView) ctaView).setText(nativeAd.getCallToAction());
                 ctaView.setVisibility(View.VISIBLE);
@@ -201,10 +210,9 @@ public class AdxBindNativeView extends BaseBindNativeView {
 
         NativeAd.Image image = nativeAd.getIcon();
         if (image != null && image.getDrawable() != null) {
-            View iconView = adView.getIconView();
-            if (iconView instanceof ImageView) {
-                ((ImageView) iconView).setImageDrawable(image.getDrawable());
-                iconView.setVisibility(View.VISIBLE);
+            if (adIconView instanceof ImageView) {
+                ((ImageView) adIconView).setImageDrawable(image.getDrawable());
+                adIconView.setVisibility(View.VISIBLE);
             }
         }
 
@@ -228,29 +236,7 @@ public class AdxBindNativeView extends BaseBindNativeView {
             adView.setMediaView(mediaView);
         }
 
-        // google 强制使用MediaView
-        /**
-         VideoController vc = nativeAd.getVideoController();
-         if (vc.hasVideoContent()) {
-         adView.setMediaView(mediaView);
-         coverView.setVisibility(View.GONE);
-         mediaViewLayout.setVisibility(View.VISIBLE);
-         vc.setVideoLifecycleCallbacks(new VideoController.VideoLifecycleCallbacks() {
-         public void onVideoEnd() {
-         super.onVideoEnd();
-         }
-         });
-         } else {
-         adView.setImageView(coverView);
-         mediaViewLayout.setVisibility(View.GONE);
-         List<NativeAd.Image> images = nativeAd.getImages();
-         if (images.size() > 0 && images.get(0) != null) {
-         coverView.setImageDrawable(images.get(0).getDrawable());
-         }
-         }*/
-
         try {
-            View rateBarView = adView.getStarRatingView();
             if (rateBarView != null) {
                 if (nativeAd.getStarRating() == null) {
                     rateBarView.setVisibility(View.INVISIBLE);
