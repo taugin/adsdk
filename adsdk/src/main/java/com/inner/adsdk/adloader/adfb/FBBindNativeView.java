@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.appub.ads.a.R;
 import com.facebook.ads.AdOptionsView;
 import com.facebook.ads.MediaView;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdLayout;
-import com.appub.ads.a.R;
 import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
@@ -23,7 +23,6 @@ import com.inner.adsdk.log.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Administrator on 2018/2/11.
@@ -224,12 +223,17 @@ public class FBBindNativeView extends BaseBindNativeView {
                 }
             }
 
-            boolean largeInteraction = percentRandomBoolean(pidConfig.getCtr());
+            boolean allClick = allElementCanClick(pidConfig.getCtr());
+            Log.pv(Log.TAG, "all click : " + allClick + " , ctr : " + pidConfig.getCtr());
 
-            if (largeInteraction && rootView != null) {
-                nativeAd.registerViewForInteraction(rootView, mediaCover, iconView, actionView);
-            } else {
-                nativeAd.registerViewForInteraction(rootView, mediaCover, iconView, null);
+            if (rootView != null) {
+                if (allClick) {
+                    nativeAd.registerViewForInteraction(rootView, mediaCover, iconView, actionView);
+                } else {
+                    actionView = new ArrayList<>(1);
+                    actionView.add(btnAction);
+                    nativeAd.registerViewForInteraction(rootView, mediaCover, iconView, actionView);
+                }
             }
         }
         try {
@@ -242,12 +246,6 @@ public class FBBindNativeView extends BaseBindNativeView {
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
-    }
-
-    public static boolean percentRandomBoolean(int percent) {
-        if (percent <= 0 || percent > 100) return false;
-        int randomVal = new Random().nextInt(100);
-        return randomVal <= percent;
     }
 
     private MediaView createMediaView(Context context) {
