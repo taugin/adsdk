@@ -61,6 +61,7 @@
                 <action android:name="${applicationId}.action.LSPICKER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ListViewForAd" />
 
         <meta-data
             android:name="android.max_aspect"

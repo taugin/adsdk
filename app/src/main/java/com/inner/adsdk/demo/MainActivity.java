@@ -98,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
             AdSdk.get(this).loadInterstitial("reward_video", mSimpleAdsdkListener);
         } else if (v.getId() == R.id.show_reward) {
             AdSdk.get(mContext).showRewardVideo();
+        } else if (v.getId() == R.id.show_listview_ad) {
+            startActivity(new Intent(this, ListViewForAd.class));
         }
     }
 
