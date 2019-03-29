@@ -103,6 +103,8 @@ public class FSA extends Activity {
     private boolean mInChargeView;
     private ChargeWrapper mChargeWrapper;
     private ViewGroup mAdLayout;
+    private ImageView mCloseView;
+    private TextView mSponsoredView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -361,21 +363,20 @@ public class FSA extends Activity {
         }
         mAdLayout = adLayout;
 
-        ImageView imageView = generateCloseView();
+        mCloseView = generateCloseView();
         int size = Utils.dp2px(this, 24);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
         int margin = dp2px(this, 8);
         params.setMargins(margin, margin, 0, 0);
         params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        mCloseView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finishActivityWithDelay();
             }
         });
-        rootLayout.addView(imageView, params);
-
+        rootLayout.addView(mCloseView, params);
         if (isAutoShowAdView()) {
             showAdViewInternal();
         }
@@ -387,6 +388,22 @@ public class FSA extends Activity {
      */
     protected boolean isAutoShowAdView() {
         return true;
+    }
+
+    /**
+     * 返回关闭按钮
+     * @return
+     */
+    protected View getCloseView() {
+        return mCloseView;
+    }
+
+    /**
+     * 获取推广标记
+     * @return
+     */
+    protected View getSponsoredView() {
+        return mSponsoredView;
     }
 
     protected void showAdView() {
@@ -610,6 +627,7 @@ public class FSA extends Activity {
             params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             textView.setPadding(margin / 2, margin / 4, margin / 2, margin / 4);
             rootLayout.addView(textView, params);
+            mSponsoredView = textView;
 
             // 添加webview对象
             WebView webview = new WebView(this);
