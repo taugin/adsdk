@@ -12,6 +12,8 @@ import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
 
+import java.util.Random;
+
 /**
  * Created by Administrator on 2018-12-12.
  */
@@ -148,5 +150,11 @@ public class BaseBindNativeView {
         } catch (Exception | Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
+    }
+
+    protected boolean allElementCanClick(int percent) {
+        if (percent <= 0 || percent >= 100) return true;
+        int randomVal = new Random(System.currentTimeMillis()).nextInt(100);
+        return randomVal <= percent;
     }
 }
