@@ -78,10 +78,10 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:26.1.0'
 
     // Inner-Active
-    implementation 'com.inneractive:ia-mraid-kit:7.1.7'
-    implementation 'com.inneractive:ia-native-kit:7.1.7'
-    implementation 'com.inneractive:ia-sdk-core:7.1.7'
-    implementation 'com.inneractive:ia-video-kit:7.1.7'
+    implementation 'com.inneractive:ia-mraid-kit:7.2.1'
+    implementation 'com.inneractive:ia-native-kit:7.2.1'
+    implementation 'com.inneractive:ia-sdk-core:7.2.1'
+    implementation 'com.inneractive:ia-video-kit:7.2.1'
     // required resources
     implementation 'com.google.code.gson:gson:2.8.1'
 
@@ -94,6 +94,7 @@ dependencies {
 }
 
 // 发布aar
+
 apply plugin: 'maven'
 uploadArchives {
     repositories {
@@ -104,6 +105,26 @@ uploadArchives {
             pom.groupId = "com.inner.adsdk"
             pom.name = "inner-adsdk"
             pom.packaging = "aar"
+        }
+    }
+}
+
+apply plugin: 'maven-publish'
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'com.inneractive'
+            //artifactId 'ia-mraid-kit'
+            //artifactId 'ia-native-kit'
+            //artifactId 'ia-sdk-core'
+            artifactId 'ia-video-kit'
+            version '7.2.1'
+            artifact 'D:\\temp\\InneractiveAdSDK-Android-v7.2.1\\Inneractive SDK\\ia-video-kit-release-7.2.1.aar'
+        }
+    }
+    repositories {
+        maven {
+            url = uri(rootProject.ext.publishUri)
         }
     }
 }
