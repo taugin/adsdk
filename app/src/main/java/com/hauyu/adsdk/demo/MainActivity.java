@@ -110,11 +110,9 @@ public class MainActivity extends AppCompatActivity {
         AdParams.Builder builder = new AdParams.Builder();
         //  设置外部布局参数
         int layoutId = LAYOUT[new Random(System.currentTimeMillis()).nextInt(LAYOUT.length)];
-        if (layoutId == R.layout.ad_common_native_card_small) {
-            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
-        } else {
-            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
-        }
+        builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
+        builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_MEDIUM_RECTANGLE);
+        builder.setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE);
         View view = LayoutInflater.from(this).inflate(layoutId, null);
         // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
         builder.setAdRootView(AdExtra.AD_SDK_COMMON, view);
@@ -131,11 +129,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                if ("interstitial".equals(adType) || "reward".equals(adType)) {
-                    AdSdk.get(mContext).showComplexAds(pidName, null);
-                } else {
-                    AdSdk.get(mContext).showAdView(pidName, mNativeBannerLayout);
-                }
+                AdSdk.get(mContext).showComplexAds(pidName);
             }
         });
     }
