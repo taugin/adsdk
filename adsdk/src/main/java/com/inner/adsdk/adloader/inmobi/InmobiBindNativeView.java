@@ -95,6 +95,8 @@ public class InmobiBindNativeView extends BaseBindNativeView {
             layoutId = R.layout.native_card_medium;
         } else if (cardId == Constant.NATIVE_CARD_LARGE) {
             layoutId = R.layout.native_card_large;
+        } else if (cardId == Constant.NATIVE_CARD_FULL) {
+            layoutId = R.layout.native_card_full;
         }
         View rootView = LayoutInflater.from(adContainer.getContext()).inflate(layoutId, null);
         if (rootView == null) {
