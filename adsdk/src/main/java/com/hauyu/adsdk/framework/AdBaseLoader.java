@@ -84,6 +84,10 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public void showComplexAds() {
+    }
+
+    @Override
     public int getAdCount() {
         return 0;
     }
