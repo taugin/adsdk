@@ -34,6 +34,7 @@ public class Constant {
     public static final int NATIVE_CARD_SMALL = 1;
     public static final int NATIVE_CARD_MEDIUM = 2;
     public static final int NATIVE_CARD_LARGE = 3;
+    public static final int NATIVE_CARD_FULL = 4;
 
     public static final String MODE_SEQ = "seq";
     public static final String MODE_CON = "con";
