@@ -34,8 +34,10 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     private static final int LAYOUT[] = new int[]{
-            //R.layout.ad_common_native_card_small,
-            R.layout.ad_common_native_card_medium
+            R.layout.ad_common_native_card_small,
+            R.layout.ad_common_native_card_medium,
+            R.layout.ad_common_native_banner,
+            R.layout.ad_common_native_card_large
     };
     private static final int CARDID[] = new int[]{
             AdExtra.NATIVE_CARD_SMALL,
@@ -122,10 +124,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
         builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_MEDIUM_RECTANGLE);
         builder.setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE);
-        View view = LayoutInflater.from(this).inflate(layoutId, null);
-        // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
-        // builder.setAdRootView(AdExtra.AD_SDK_COMMON, view);
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_MEDIUM);
+        builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
+        // builder.setAdRootView(AdExtra.AD_SDK_COMMON, LayoutInflater.from(this).inflate(layoutId, null));
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
         builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
         builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
