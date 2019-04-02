@@ -493,6 +493,10 @@ public class Utils {
     }
 
     public static Intent getIntentByAction(Context context, String action) {
+        return getIntentByAction(context, action, true);
+    }
+
+    public static Intent getIntentByAction(Context context, String action, boolean addNoHistory) {
         Intent intent = null;
         if (TextUtils.isEmpty(action)) {
             return intent;
@@ -500,18 +504,18 @@ public class Utils {
         try {
             Intent queryIntent = new Intent(action);
             List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(queryIntent, 0);
-            List<String> activitiyNames = new ArrayList<String>();
+            List<String> activityNames = new ArrayList<String>();
             List<Boolean> singleInstance = new ArrayList<Boolean>();
             for (ResolveInfo info : list) {
                 if (info != null && info.activityInfo != null && !TextUtils.isEmpty(info.activityInfo.name)) {
-                    activitiyNames.add(info.activityInfo.name);
+                    activityNames.add(info.activityInfo.name);
                     singleInstance.add(info.activityInfo.launchMode == ActivityInfo.LAUNCH_SINGLE_INSTANCE);
                 }
             }
-            if (!activitiyNames.isEmpty()) {
-                int size = activitiyNames.size();
+            if (!activityNames.isEmpty()) {
+                int size = activityNames.size();
                 int index = new Random(System.currentTimeMillis()).nextInt(size);
-                String className = activitiyNames.get(index);
+                String className = activityNames.get(index);
                 boolean isSingleInstance = false;
                 try {
                     isSingleInstance = singleInstance.get(index);
@@ -519,7 +523,7 @@ public class Utils {
                 }
                 intent = new Intent(action);
                 intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                if (!isSingleInstance) {
+                if (!isSingleInstance && addNoHistory) {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 }
                 intent.setClassName(context.getPackageName(), className);
