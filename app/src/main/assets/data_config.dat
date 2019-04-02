@@ -8,7 +8,7 @@
     "lt_outer_place": "banner_and_native",
     "ht_outer_place": "gt_outer_place",
     "ct_outer_place": "banner_and_native",
-    "gt_outer_place":"interstitial1"
+    "gt_outer_place": "interstitial1"
   },
   "atconfig": {
     "e": 0,
@@ -34,7 +34,7 @@
     "attr": []
   },
   "gtconfig": {
-    "e": 1,
+    "e": 0,
     "d": 3600,
     "i": 1800,
     "mc": 100,
@@ -43,7 +43,7 @@
     "ec": [],
     "ms": [],
     "so": 1,
-    "sba":1,
+    "sba": 1,
     "ntr": 0
   },
   "adplaces": [
@@ -69,7 +69,7 @@
           "sdk": "displayio",
           "type": "interstitial",
           "pid": "4837",
-          "aid":"7559",
+          "aid": "7559",
           "disable": 0
         }
       ]
@@ -83,7 +83,7 @@
           "sdk": "displayio",
           "type": "banner",
           "pid": "4838",
-          "aid":"7559",
+          "aid": "7559",
           "disable": 0
         }
       ]
@@ -108,7 +108,7 @@
         {
           "sdk": "admob",
           "type": "banner",
-          "dac":1,
+          "dac": 1,
           "pid": "ca-app-pub-3940256099942544/6300978111",
           "disable": 1
         },
@@ -180,7 +180,7 @@
           "type": "native",
           "aid": "3a7c9443ab95449084eb270ee0154fcd",
           "pid": "1538433861066",
-          "dac":1,
+          "dac": 1,
           "disable": 1
         },
         {
@@ -203,17 +203,17 @@
           "type": "banner",
           "aid": "106659",
           "pid": "192541",
-          "dac":1,
+          "dac": 1,
           "disable": 1
         },
-         {
-           "sdk": "inneractive",
-           "type": "native",
-           "aid": "106659",
-           "pid": "665456",
-           "dac":1,
-           "disable": 1
-         }
+        {
+          "sdk": "inneractive",
+          "type": "native",
+          "aid": "106659",
+          "pid": "665456",
+          "dac": 1,
+          "disable": 1
+        }
       ],
       "maxcount": 100,
       "percent": 100
@@ -335,7 +335,7 @@
     },
     {
       "name": "reward_place1",
-      "gc":0,
+      "gc": 0,
       "mode": "seq",
       "pids": [
         {
@@ -350,12 +350,12 @@
           "pid": "YOUR_PLACEMENT_ID",
           "disable": 0
         },
-         {
-           "sdk": "applovin",
-           "type": "reward",
-           "pid": "8a60714b81a59889",
-           "disable": 1
-         },
+        {
+          "sdk": "applovin",
+          "type": "reward",
+          "pid": "8a60714b81a59889",
+          "disable": 1
+        },
         {
           "sdk": "mopub",
           "type": "reward",
@@ -396,15 +396,28 @@
           "disable": 0
         },
         {
+          "sdk": "fb",
+          "type": "native",
+          "pid": "YOUR_PLACEMENT_ID",
+          "disable": 0
+        },
+        {
           "sdk": "admob",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
-          "disable": 1
+          "disable": 0
+        },
+        {
+          "sdk": "mopub",
+          "type": "native",
+          "pid": "11a17b188668469fb0412708c3d16813",
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "reward",
-          "pid": "ca-app-pub-3940256099942544/5224354917"
+          "pid": "ca-app-pub-3940256099942544/5224354917",
+          "disable": 1
         }
       ],
       "maxcount": 100,
@@ -491,12 +504,12 @@
           "disable": 1
         },
         {
-                  "sdk": "displayio",
-                  "type": "banner",
-                  "pid": "4838",
-                  "aid":"7559",
-                  "disable": 0
-                }
+          "sdk": "displayio",
+          "type": "banner",
+          "pid": "4838",
+          "aid": "7559",
+          "disable": 0
+        }
       ],
       "maxcount": 100,
       "percent": 100
