@@ -111,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
         }
         View view = LayoutInflater.from(this).inflate(layoutId, null);
         // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
-        builder.setAdRootView(AdExtra.AD_SDK_COMMON, view);
+        // builder.setAdRootView(AdExtra.AD_SDK_COMMON, view);
+        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_FULL);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
         builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
         builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
@@ -125,11 +126,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                if ("interstitial".equals(adType) || "reward".equals(adType)) {
-                    AdSdk.get(mContext).showComplexAds(pidName, null);
-                } else {
-                    AdSdk.get(mContext).showAdView(pidName, mNativeBannerLayout);
-                }
+                AdSdk.get(mContext).showComplexAds(pidName);
             }
         });
     }

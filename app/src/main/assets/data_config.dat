@@ -383,7 +383,7 @@
           "sdk": "admob",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
