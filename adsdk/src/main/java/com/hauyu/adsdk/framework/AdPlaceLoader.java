@@ -157,9 +157,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private Params getParams(ISdkLoader loader) {
         Params params = null;
         try {
-            params = mAdParams.getParams(loader.getSdkName());
+            if (mAdParams != null) {
+                params = mAdParams.getParams(loader.getSdkName());
+                if (params == null) {
+                    params = mAdParams.getParams(Constant.AD_SDK_COMMON);
+                }
+            }
             if (params == null) {
-                params = mAdParams.getParams(Constant.AD_SDK_COMMON);
+                params = new Params();
+                params.setAdCardStyle(Constant.NATIVE_CARD_FULL);
+                params.setBannerSize(Constant.AD_SDK_ADMOB, Constant.MEDIUM_RECTANGLE);
+                params.setBannerSize(Constant.AD_SDK_ADX, Constant.MEDIUM_RECTANGLE);
+                params.setBannerSize(Constant.AD_SDK_DFP, Constant.MEDIUM_RECTANGLE);
+                Log.v(Log.TAG, "use default ad params");
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
