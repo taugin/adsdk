@@ -355,6 +355,13 @@ public class AdSdk {
         }
     }
 
+    public void showComplexAds(String pidName) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            loader.showComplexAds();
+        }
+    }
+
     public int getAdCount(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {

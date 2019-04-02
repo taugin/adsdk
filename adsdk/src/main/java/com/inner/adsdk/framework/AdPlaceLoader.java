@@ -2,6 +2,7 @@ package com.inner.adsdk.framework;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -31,6 +32,7 @@ import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.listener.OnAdSdkListener;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.utils.Utils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -869,6 +871,53 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void showComplexAds() {
+        if (mAdLoaders != null) {
+            for (ISdkLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    if (loader.isRewardedVideoType() && loader.isRewaredVideoLoaded()) {
+                        ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
+                        if (loader.showRewardedVideo()) {
+                            mCurrentAdLoader = loader;
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                            break;
+                        }
+                    } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
+                        ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
+                        if (loader.showInterstitial()) {
+                            mCurrentAdLoader = loader;
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                            break;
+                        }
+                    } else if (loader.isBannerType() && loader.isBannerLoaded()) {
+                        show(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType());
+                        break;
+                    } else if (loader.isNativeType() && loader.isNativeLoaded()) {
+                        show(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType());
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private void show(String pidName, String source, String adType) {
+        try {
+            Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.AFPICKER");
+            if (intent == null) {
+                intent = new Intent(mContext, FSA.class);
+            }
+            intent.putExtra(Intent.EXTRA_TITLE, pidName);
+            intent.putExtra(Intent.EXTRA_TEXT, source);
+            intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
     }
 

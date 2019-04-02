@@ -139,6 +139,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
             Log.v(Log.TAG, "has notify loaded");
             return;
         }
+        notifyAdLoaded();
         if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onLoaded(placeName, source, adType);
         }
