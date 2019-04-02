@@ -18,6 +18,7 @@ import com.fyber.inneractive.sdk.external.InneractiveFullscreenUnitController;
 import com.fyber.inneractive.sdk.external.InneractiveFullscreenVideoContentController;
 import com.fyber.inneractive.sdk.external.InneractiveNativeAdUnitController;
 import com.fyber.inneractive.sdk.external.InneractiveNativeAdViewBinder;
+import com.fyber.inneractive.sdk.external.InneractiveUnitController;
 import com.fyber.inneractive.sdk.external.InneractiveUserConfig;
 import com.fyber.inneractive.sdk.external.VideoContentListener;
 import com.inner.adsdk.adloader.base.AbstractSdkLoader;
@@ -208,6 +209,11 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                     @Override
                     public void onAdWillOpenExternalApp(InneractiveAdSpot adSpot) {
                         Log.i(TAG, "onAdWillOpenExternalApp");
+                    }
+
+                    @Override
+                    public void onAdEnteredErrorState(InneractiveAdSpot inneractiveAdSpot, InneractiveUnitController.AdDisplayError adDisplayError) {
+                        Log.i(TAG, "onAdEnteredErrorState");
                     }
 
                     @Override
@@ -446,6 +452,11 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                     }
 
                     @Override
+                    public void onAdEnteredErrorState(InneractiveAdSpot inneractiveAdSpot, InneractiveUnitController.AdDisplayError adDisplayError) {
+                        Log.i(TAG, "onAdEnteredErrorState");
+                    }
+
+                    @Override
                     public void onAdWillCloseInternalBrowser(InneractiveAdSpot inneractiveAdSpot) {
                         Log.i(TAG, "onAdWillCloseInternalBrowser");
                         onAdDismissed(inneractiveAdSpot);
@@ -676,6 +687,11 @@ public class InnerActiveLoader extends AbstractSdkLoader {
 
                     @Override
                     public void onAdWillOpenExternalApp(InneractiveAdSpot adSpot) {
+                        Log.i(TAG, "onAdWillOpenExternalApp");
+                    }
+
+                    @Override
+                    public void onAdEnteredErrorState(InneractiveAdSpot inneractiveAdSpot, InneractiveUnitController.AdDisplayError adDisplayError) {
                         Log.i(TAG, "onAdWillOpenExternalApp");
                     }
 
