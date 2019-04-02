@@ -887,7 +887,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private void show(String pidName, String source, String adType) {
         try {
-            Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.FAPICKER");
+            Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.FAPICKER", false);
             if (intent == null) {
                 intent = new Intent(mContext, FSA.class);
             }
