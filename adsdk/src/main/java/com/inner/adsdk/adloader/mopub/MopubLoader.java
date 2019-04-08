@@ -341,6 +341,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 if (moPubInterstitial != null) {
                     moPubInterstitial.destroy();
+                    clearCachedAdTime(moPubInterstitial);
                     moPubInterstitial = null;
                 }
                 if (getAdListener() != null) {
