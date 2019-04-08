@@ -210,7 +210,7 @@ public class DataManager {
             if (mAdSwitch == null && mLocalAdConfig != null) {
                 mAdSwitch = mLocalAdConfig.getAdSwitch();
             }
-            Log.v(Log.TAG, "ads : " + mAdSwitch);
+            Log.pv(Log.TAG, "ads : " + mAdSwitch);
         }
         return mAdSwitch;
     }
