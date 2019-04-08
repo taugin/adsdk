@@ -305,7 +305,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected void clearCachedAdTime(Object object) {
-        mCachedTime.remove(object);
+        try {
+            mCachedTime.remove(object);
+        } catch (Exception | Error e) {
+        }
     }
 
     protected boolean isDestroyAfterClick() {
