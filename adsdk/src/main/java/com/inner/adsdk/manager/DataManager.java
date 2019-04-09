@@ -7,6 +7,7 @@ import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.AtConfig;
+import com.inner.adsdk.config.BaseConfig;
 import com.inner.adsdk.config.CtConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.config.HtConfig;
@@ -17,6 +18,7 @@ import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.parse.AdParser;
 import com.inner.adsdk.parse.IParser;
+import com.inner.adsdk.parse.IParseExtra;
 import com.inner.adsdk.request.IDataRequest;
 import com.inner.adsdk.request.RemoteConfigRequest;
 import com.inner.adsdk.utils.Utils;
@@ -240,5 +242,14 @@ public class DataManager {
             return mDataRequest.getString(key);
         }
         return null;
+    }
+
+    public void parseRemotePolicy(BaseConfig baseConfig, IParseExtra parserCallback) {
+        if (mDataRequest != null) {
+            String data = mDataRequest.getString(baseConfig.getName());
+            if (!TextUtils.isEmpty(data)) {
+                mParser.parsePolicy(data, baseConfig, parserCallback);
+            }
+        }
     }
 }

@@ -190,6 +190,12 @@ public class AdParser implements IParser {
             if (jobj.has(SHOW_BOTTOM_ACTIVITY)) {
                 baseConfig.setShowBottomActivity(jobj.getInt(SHOW_BOTTOM_ACTIVITY) == 1);
             }
+            if (jobj.has(PLACE_NAME_INT)) {
+                baseConfig.setPlaceNameInt(jobj.getString(PLACE_NAME_INT));
+            }
+            if (jobj.has(PLACE_NAME_ADV)) {
+                baseConfig.setPlaceNameAdv(jobj.getString(PLACE_NAME_ADV));
+            }
             parseAttrConfig(baseConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseBasePolicyInternal error : " + e);
@@ -708,5 +714,19 @@ public class AdParser implements IParser {
             Log.v(Log.TAG, "parseSpConfig error : " + e);
         }
         return spConfig;
+    }
+
+    @Override
+    public void parsePolicy(String data, BaseConfig baseConfig, IParseExtra parserCallback) {
+        data = getContent(data);
+        try {
+            JSONObject jobj = new JSONObject(data);
+            parseBaseConfig(baseConfig, jobj);
+            if (parserCallback != null) {
+                parserCallback.parse(baseConfig, jobj);
+            }
+        } catch (Exception e) {
+            Log.v(Log.TAG, "parsePolicy error : " + e);
+        }
     }
 }

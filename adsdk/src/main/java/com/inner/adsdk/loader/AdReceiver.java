@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.BatteryManager;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -22,6 +23,9 @@ import com.inner.adsdk.policy.LtPolicy;
 import com.inner.adsdk.utils.TaskUtils;
 import com.inner.adsdk.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Administrator on 2018-8-10.
  */
@@ -32,6 +36,7 @@ public class AdReceiver {
 
     private Context mContext;
     private Handler mHandler;
+    private List<OnTriggerListener> mTriggerList = new ArrayList<OnTriggerListener>();
 
     private AdReceiver(Context context) {
         mContext = context.getApplicationContext();
@@ -56,6 +61,13 @@ public class AdReceiver {
     public void init() {
         reportFirstStartUpTime();
         register();
+    }
+
+    public void registerTriggerListener(OnTriggerListener l) {
+        try {
+            mTriggerList.add(l);
+        } catch (Exception e) {
+        }
     }
 
     /**
@@ -88,6 +100,7 @@ public class AdReceiver {
             filter.addAction(Intent.ACTION_POWER_CONNECTED);
             filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
             filter.addAction(Intent.ACTION_BATTERY_CHANGED);
+            filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             mContext.registerReceiver(mBroadcastReceiver, filter);
         } catch (Exception e) {
         }
@@ -118,11 +131,14 @@ public class AdReceiver {
                     GtAdLoader.get(context).onFire();
                     AtAdLoader.get(context).onFire();
                 }
+                triggerAlarm(context);
             } else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
                 TaskMonitor.get(context).stopMonitor();
+                triggerScreenOff(context);
             } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
                 AtAdLoader.get(context).resumeLoader();
                 showLs();
+                triggerScreenOn(context);
             } else if (Intent.ACTION_CLOSE_SYSTEM_DIALOGS.equals(intent.getAction())) {
                 String reason = intent.getStringExtra("reason");
                 if ("homekey".equals(reason) || "recentapps".equals(reason)) {
@@ -132,18 +148,34 @@ public class AdReceiver {
                             homeKeyPressed();
                         }
                     }, 500);
+                    triggerHome(context);
                 }
             } else if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())
                     || (getAlarmAction() + "_CONNECT").equals(intent.getAction())) {
                 startCMActivity(context, true);
+                triggerPowerConnect(context, intent);
             } else if (Intent.ACTION_POWER_DISCONNECTED.equals(intent.getAction())
                     || (getAlarmAction() + "_DISCONNECT").equals(intent.getAction())) {
                 startCMActivity(context, false);
+                triggerPowerDisconnect(context, intent);
             } else if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
                 fillBattery(intent);
+                triggerBatteryChange(context, intent);
+            } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
+                triggerNetworkChange(context, intent);
             }
         }
     };
+
+    public void onReceive(Context context, Intent intent) {
+        if (Intent.ACTION_PACKAGE_ADDED.equals(intent.getAction())) {
+            triggerPackageAdded(context, intent);
+        } else if (Intent.ACTION_PACKAGE_REMOVED.equals(intent.getAction())) {
+            triggerPackageRemoved(context, intent);
+        } else if (Intent.ACTION_PACKAGE_REPLACED.equals(intent.getAction())) {
+            triggerPackageReplaced(context, intent);
+        }
+    }
 
     private boolean isGtAtExclusive(Context context) {
         AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
@@ -231,5 +263,139 @@ public class AdReceiver {
         BsPolicy.get().present = intent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, true);
         BsPolicy.get().technology = intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY);
         BsPolicy.get().timestamp = System.currentTimeMillis();
+    }
+
+    public interface OnTriggerListener {
+        void onAlarm(Context context);
+
+        void onHomePressed(Context context);
+
+        void onScreenOn(Context context);
+
+        void onScreenOff(Context context);
+
+        void onPowerConnect(Context context, Intent intent);
+
+        void onPowerDisconnect(Context context, Intent intent);
+
+        void onBatteryChange(Context context, Intent intent);
+
+        void onPackageAdded(Context context, Intent intent);
+
+        void onPackageReplaced(Context context, Intent intent);
+
+        void onPackageRemoved(Context context, Intent intent);
+
+        void onNetworkChange(Context context, Intent intent);
+    }
+
+    private void triggerAlarm(Context context) {
+        if (mTriggerList != null && !mTriggerList.isEmpty()) {
+            for (OnTriggerListener l : mTriggerList) {
+                if (l != null) {
+                    l.onAlarm(context);
+                }
+            }
+        }
+    }
+
+    private void triggerHome(Context context) {
+        if (mTriggerList != null && !mTriggerList.isEmpty()) {
+            for (OnTriggerListener l : mTriggerList) {
+                if (l != null) {
+                    l.onHomePressed(context);
+                }
+            }
+        }
+    }
+
+    private void triggerScreenOn(Context context) {
+        if (mTriggerList != null && !mTriggerList.isEmpty()) {
+            for (OnTriggerListener l : mTriggerList) {
+                if (l != null) {
+                    l.onScreenOn(context);
+                }
+            }
+        }
+    }
+
+    private void triggerScreenOff(Context context) {
+        if (mTriggerList != null && !mTriggerList.isEmpty()) {
+            for (OnTriggerListener l : mTriggerList) {
+                if (l != null) {
+                    l.onScreenOff(context);
+                }
+            }
+        }
+    }
+
+    private void triggerPowerConnect(Context context, Intent intent) {
+        if (mTriggerList != null && !mTriggerList.isEmpty()) {
+            for (OnTriggerListener l : mTriggerList) {
+                if (l != null) {
+                    l.onPowerConnect(context, intent);
+                }
+            }
+        }
+    }
+
+    private void triggerPowerDisconnect(Context context, Intent intent) {
+        if (mTriggerList != null && !mTriggerList.isEmpty()) {
+            for (OnTriggerListener l : mTriggerList) {
+                if (l != null) {
+                    l.onPowerDisconnect(context, intent);
+                }
+            }
+        }
+    }
+
+    private void triggerBatteryChange(Context context, Intent intent) {
+        if (mTriggerList != null && !mTriggerList.isEmpty()) {
+            for (OnTriggerListener l : mTriggerList) {
+                if (l != null) {
+                    l.onBatteryChange(context, intent);
+                }
+            }
+        }
+    }
+
+    private void triggerPackageAdded(Context context, Intent intent) {
+        if (mTriggerList != null && !mTriggerList.isEmpty()) {
+            for (OnTriggerListener l : mTriggerList) {
+                if (l != null) {
+                    l.onPackageAdded(context, intent);
+                }
+            }
+        }
+    }
+
+    private void triggerPackageRemoved(Context context, Intent intent) {
+        if (mTriggerList != null && !mTriggerList.isEmpty()) {
+            for (OnTriggerListener l : mTriggerList) {
+                if (l != null) {
+                    l.onPackageRemoved(context, intent);
+                }
+            }
+        }
+    }
+
+    private void triggerPackageReplaced(Context context, Intent intent) {
+        if (mTriggerList != null && !mTriggerList.isEmpty()) {
+            for (OnTriggerListener l : mTriggerList) {
+                if (l != null) {
+                    l.onPackageReplaced(context, intent);
+                }
+            }
+        }
+    }
+
+    private void triggerNetworkChange(Context context, Intent intent) {
+        if (mTriggerList != null && !mTriggerList.isEmpty()) {
+            for (OnTriggerListener l : mTriggerList) {
+                if (l != null) {
+                    l.onNetworkChange(context, intent);
+                }
+            }
+        }
     }
 }
