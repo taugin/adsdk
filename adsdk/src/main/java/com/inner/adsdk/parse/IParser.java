@@ -4,6 +4,7 @@ import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.AtConfig;
+import com.inner.adsdk.config.BaseConfig;
 import com.inner.adsdk.config.CtConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.config.HtConfig;
@@ -127,6 +128,10 @@ public interface IParser {
     String CONFIG_INSTALL_TIME = "cit";
     // 禁用间隔
     String DISABLE_INTERVAL = "di";
+    // 插屏广告位名称
+    String PLACE_NAME_INT = "pni";
+    // view广告位名称
+    String PLACE_NAME_ADV = "pna";
 
     // 阻止重复加载(如果当前loader正在处于加载中，则不再重新加载)
     String BLOCK_LOADING = "bl";
@@ -184,4 +189,6 @@ public interface IParser {
     HtConfig parseHtPolicy(String data);
 
     CtConfig parseCtPolicy(String data);
+
+    void parsePolicy(String data, BaseConfig baseConfig, IParseExtra parserCallback);
 }
