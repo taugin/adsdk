@@ -4,6 +4,7 @@ import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.config.AtConfig;
+import com.hauyu.adsdk.config.BaseConfig;
 import com.hauyu.adsdk.config.CtConfig;
 import com.hauyu.adsdk.config.GtConfig;
 import com.hauyu.adsdk.config.HtConfig;
@@ -130,6 +131,10 @@ public interface IParser {
     String CONFIG_INSTALL_TIME = "cit";
     // 禁用间隔
     String DISABLE_INTERVAL = "di";
+    // 插屏广告位名称
+    String PLACE_NAME_INT = "pni";
+    // view广告位名称
+    String PLACE_NAME_ADV = "pna";
 
     // 阻止重复加载(如果当前loader正在处于加载中，则不再重新加载)
     String BLOCK_LOADING = "bl";
@@ -187,4 +192,6 @@ public interface IParser {
     HtConfig parseHtPolicy(String data);
 
     CtConfig parseCtPolicy(String data);
+
+    void parsePolicy(String data, BaseConfig baseConfig, IParseExtra parserCallback);
 }

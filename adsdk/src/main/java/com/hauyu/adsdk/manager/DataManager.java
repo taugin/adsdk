@@ -7,19 +7,21 @@ import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.config.AtConfig;
+import com.hauyu.adsdk.config.BaseConfig;
+import com.hauyu.adsdk.config.CtConfig;
 import com.hauyu.adsdk.config.GtConfig;
+import com.hauyu.adsdk.config.HtConfig;
+import com.hauyu.adsdk.config.LtConfig;
 import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.config.StConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.parse.AdParser;
+import com.hauyu.adsdk.parse.IParseExtra;
 import com.hauyu.adsdk.parse.IParser;
 import com.hauyu.adsdk.request.IDataRequest;
 import com.hauyu.adsdk.request.RemoteConfigRequest;
 import com.hauyu.adsdk.utils.Utils;
-import com.hauyu.adsdk.config.LtConfig;
-import com.hauyu.adsdk.config.HtConfig;
-import com.hauyu.adsdk.config.CtConfig;
 
 import java.util.List;
 import java.util.Locale;
@@ -240,5 +242,14 @@ public class DataManager {
             return mDataRequest.getString(key);
         }
         return null;
+    }
+
+    public void parseRemotePolicy(BaseConfig baseConfig, IParseExtra parserCallback) {
+        if (mDataRequest != null) {
+            String data = mDataRequest.getString(baseConfig.getName());
+            if (!TextUtils.isEmpty(data)) {
+                mParser.parsePolicy(data, baseConfig, parserCallback);
+            }
+        }
     }
 }

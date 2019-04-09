@@ -147,6 +147,7 @@ public class StAdLoader extends BottomLoader implements Handler.Callback {
             if (!mHandler.hasMessages(MSG_ST_LOAD)) {
                 mHandler.sendEmptyMessageDelayed(MSG_ST_LOAD, LOAD_DELAY);
             }
+            AdReceiver.get(context).onReceive(context, intent);
         }
     };
 }

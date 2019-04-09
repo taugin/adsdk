@@ -21,7 +21,12 @@ public class BaseConfig {
     private List<String> mediaList;
     private int ntRate;
     private boolean showBottomActivity = true;
+    private String placeNameInt;
+    private String placeNameAdv;
 
+    public String getName() {
+        return "base config";
+    }
 
     public boolean isEnable() {
         return enable;
@@ -133,5 +138,21 @@ public class BaseConfig {
 
     public void setShowBottomActivity(boolean showBottomActivity) {
         this.showBottomActivity = showBottomActivity;
+    }
+
+    public String getPlaceNameInt() {
+        return placeNameInt;
+    }
+
+    public void setPlaceNameInt(String placeNameInt) {
+        this.placeNameInt = placeNameInt;
+    }
+
+    public String getPlaceNameAdv() {
+        return placeNameAdv;
+    }
+
+    public void setPlaceNameAdv(String placeNameAdv) {
+        this.placeNameAdv = placeNameAdv;
     }
 }

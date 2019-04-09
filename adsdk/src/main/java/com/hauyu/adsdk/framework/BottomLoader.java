@@ -7,6 +7,7 @@ import com.appub.ads.a.FSA;
 import com.appub.ads.a.R;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
+import com.hauyu.adsdk.config.BaseConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -16,9 +17,13 @@ import java.util.Random;
  * Created by Administrator on 2018/12/9.
  */
 
-public abstract class BottomLoader {
+public abstract class BottomLoader implements AdReceiver.OnTriggerListener {
     
     protected abstract Context getContext();
+
+    protected BaseConfig getBaseConfig() {
+        return null;
+    }
 
     protected AdParams generateAdParams() {
         AdParams.Builder builder = new AdParams.Builder();
@@ -65,5 +70,49 @@ public abstract class BottomLoader {
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
+    }
+
+    @Override
+    public void onAlarm(Context context) {
+    }
+
+    @Override
+    public void onHomePressed(Context context) {
+    }
+
+    @Override
+    public void onScreenOn(Context context) {
+    }
+
+    @Override
+    public void onScreenOff(Context context) {
+    }
+
+    @Override
+    public void onPowerConnect(Context context, Intent intent) {
+    }
+
+    @Override
+    public void onPowerDisconnect(Context context, Intent intent) {
+    }
+
+    @Override
+    public void onBatteryChange(Context context, Intent intent) {
+    }
+
+    @Override
+    public void onPackageAdded(Context context, Intent intent) {
+    }
+
+    @Override
+    public void onPackageReplaced(Context context, Intent intent) {
+    }
+
+    @Override
+    public void onPackageRemoved(Context context, Intent intent) {
+    }
+
+    @Override
+    public void onNetworkChange(Context context, Intent intent) {
     }
 }
