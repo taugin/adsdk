@@ -96,6 +96,7 @@ public class AdReceiver {
             filter.addAction(getAlarmAction() + "_DISCONNECT");
             filter.addAction(Intent.ACTION_SCREEN_ON);
             filter.addAction(Intent.ACTION_SCREEN_OFF);
+            filter.addAction(Intent.ACTION_USER_PRESENT);
             filter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
             filter.addAction(Intent.ACTION_POWER_CONNECTED);
             filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
@@ -139,6 +140,8 @@ public class AdReceiver {
                 AtAdLoader.get(context).resumeLoader();
                 showLs();
                 triggerScreenOn(context);
+            } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+                triggerUserPresent(context);
             } else if (Intent.ACTION_CLOSE_SYSTEM_DIALOGS.equals(intent.getAction())) {
                 String reason = intent.getStringExtra("reason");
                 if ("homekey".equals(reason) || "recentapps".equals(reason)) {
@@ -274,6 +277,8 @@ public class AdReceiver {
 
         void onScreenOff(Context context);
 
+        void onUserPresent(Context context);
+
         void onPowerConnect(Context context, Intent intent);
 
         void onPowerDisconnect(Context context, Intent intent);
@@ -314,6 +319,16 @@ public class AdReceiver {
             for (OnTriggerListener l : mTriggerList) {
                 if (l != null) {
                     l.onScreenOn(context);
+                }
+            }
+        }
+    }
+
+    private void triggerUserPresent(Context context) {
+        if (mTriggerList != null && !mTriggerList.isEmpty()) {
+            for (OnTriggerListener l : mTriggerList) {
+                if (l != null) {
+                    l.onUserPresent(context);
                 }
             }
         }
