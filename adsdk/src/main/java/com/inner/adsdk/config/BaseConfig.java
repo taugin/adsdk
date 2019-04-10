@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Administrator on 2018/7/18.
  */
 
-public class BaseConfig {
+public abstract class BaseConfig {
     private boolean enable = false;
     private long upDelay;
     private long interval;
@@ -24,9 +24,7 @@ public class BaseConfig {
     private String placeNameInt;
     private String placeNameAdv;
 
-    public String getName() {
-        return "base config";
-    }
+    public abstract String getName();
 
     public boolean isEnable() {
         return enable;
