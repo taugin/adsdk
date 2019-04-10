@@ -89,6 +89,10 @@ public abstract class BottomLoader implements AdReceiver.OnTriggerListener {
     }
 
     @Override
+    public void onUserPresent(Context context) {
+    }
+
+    @Override
     public void onPowerConnect(Context context, Intent intent) {
     }
 
