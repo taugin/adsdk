@@ -1,6 +1,7 @@
 package com.hauyu.adsdk.config;
 
-import com.inner.adsdk.constant.Constant;
+
+import com.hauyu.adsdk.constant.Constant;
 
 import java.util.List;
 

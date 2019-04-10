@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.hauyu.adsdk.config.HtConfig;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.stat.StatImpl;
 
 /**
  * Created by Administrator on 2018/3/19.
@@ -50,10 +49,5 @@ public class HtPolicy extends BasePolicy {
             return false;
         }
         return true;
-    }
-
-    @Override
-    protected void reportShowTimesOneday(Context context, int times) {
-        StatImpl.get().reportAdOuterShowTimes(mContext, getType(), times);
     }
 }

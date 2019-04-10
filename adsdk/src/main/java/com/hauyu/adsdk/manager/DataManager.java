@@ -248,7 +248,7 @@ public class DataManager {
         if (mDataRequest != null && baseConfig != null) {
             String name = baseConfig.getName();
             if (TextUtils.isEmpty(name)) {
-                Log.pv(Log.TAG, "can not find cfg name");
+                Log.iv(Log.TAG, "can not find cfg name");
                 return;
             }
             String data = mDataRequest.getString(name);
