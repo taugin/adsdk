@@ -10,6 +10,8 @@ import com.hauyu.adsdk.constant.Constant;
 
 public class PidConfig extends BaseConfig {
 
+    public static final String PID_CONFIG = "pids";
+
     private String adPlaceName;
 
     private String sdk;
@@ -45,6 +47,11 @@ public class PidConfig extends BaseConfig {
     private String extId;
 
     private double aspectRatio;
+
+    @Override
+    public String getName() {
+        return PID_CONFIG;
+    }
 
     public String getAdPlaceName() {
         return adPlaceName;

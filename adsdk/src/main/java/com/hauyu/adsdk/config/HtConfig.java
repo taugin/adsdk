@@ -12,6 +12,11 @@ import java.util.Date;
 public class HtConfig extends BaseConfig {
 
     @Override
+    public String getName() {
+        return Constant.HTPOLICY_NAME;
+    }
+
+    @Override
     public String toString() {
         return "ht{" +
                 "e=" + isEnable() +

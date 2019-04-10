@@ -1,10 +1,17 @@
 package com.hauyu.adsdk.config;
 
+import com.inner.adsdk.constant.Constant;
+
 /**
  * Created by Administrator on 2018-8-10.
  */
 
 public class CtConfig extends BaseConfig {
+
+    @Override
+    public String getName() {
+        return Constant.CTPOLICY_NAME;
+    }
 
     private long disableInterval;
 

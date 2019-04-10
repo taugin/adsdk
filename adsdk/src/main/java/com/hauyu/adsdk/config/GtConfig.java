@@ -11,6 +11,11 @@ import java.util.Date;
 public class GtConfig extends BaseConfig {
 
     @Override
+    public String getName() {
+        return Constant.GTPOLICY_NAME;
+    }
+
+    @Override
     public String toString() {
         return "gt{" +
                 "e=" + isEnable() +

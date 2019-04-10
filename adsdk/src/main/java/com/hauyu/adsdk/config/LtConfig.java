@@ -12,6 +12,11 @@ import java.util.Date;
 public class LtConfig extends BaseConfig {
 
     @Override
+    public String getName() {
+        return Constant.LTPOLICY_NAME;
+    }
+
+    @Override
     public String toString() {
         return "lt{" +
                 "e=" + isEnable() +
