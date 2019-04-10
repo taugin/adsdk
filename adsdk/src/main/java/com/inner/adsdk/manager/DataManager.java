@@ -245,8 +245,13 @@ public class DataManager {
     }
 
     public void parseRemotePolicy(BaseConfig baseConfig, IParseExtra parserCallback) {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(baseConfig.getName());
+        if (mDataRequest != null && baseConfig != null) {
+            String name = baseConfig.getName();
+            if (TextUtils.isEmpty(name)) {
+                Log.pv(Log.TAG, "can not find cfg name");
+                return;
+            }
+            String data = mDataRequest.getString(name);
             if (!TextUtils.isEmpty(data)) {
                 mParser.parsePolicy(data, baseConfig, parserCallback);
             }
