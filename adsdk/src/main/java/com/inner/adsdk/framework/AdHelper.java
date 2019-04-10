@@ -3,13 +3,13 @@ package com.inner.adsdk.framework;
 import android.text.TextUtils;
 
 import com.applovin.sdk.AppLovinSdk;
-import com.dspmob.sdk.DspMob;
 import com.facebook.ads.InterstitialAd;
 import com.fyber.inneractive.sdk.external.InneractiveAdManager;
 import com.google.android.gms.ads.MobileAds;
 import com.inmobi.ads.InMobiInterstitial;
 import com.inner.adsdk.constant.Constant;
 import com.mopub.mobileads.MoPubInterstitial;
+import com.we.sdk.exchange.DspMob;
 import com.wemob.ads.Sdk;
 
 import io.display.sdk.Placement;
