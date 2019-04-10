@@ -6,7 +6,6 @@ import com.adywind.core.api.SDK;
 import com.applovin.sdk.AppLovinSdk;
 import com.appnext.base.Appnext;
 import com.cloudtech.ads.core.CTService;
-import com.dspmob.sdk.DspMob;
 import com.duapps.ad.base.DuAdNetwork;
 import com.facebook.ads.InterstitialAd;
 import com.fyber.inneractive.sdk.external.InneractiveAdManager;
@@ -15,6 +14,7 @@ import com.inmobi.ads.InMobiInterstitial;
 import com.inner.adsdk.constant.Constant;
 import com.mobi.sdk.ADSDK;
 import com.mopub.mobileads.MoPubInterstitial;
+import com.we.sdk.exchange.DspMob;
 import com.wemob.ads.Sdk;
 
 import io.display.sdk.Placement;

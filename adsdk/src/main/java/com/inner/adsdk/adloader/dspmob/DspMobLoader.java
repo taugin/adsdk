@@ -4,25 +4,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.dspmob.sdk.AdError;
-import com.dspmob.sdk.AdListener;
-import com.dspmob.sdk.AdSize;
-import com.dspmob.sdk.BannerAd;
-import com.dspmob.sdk.DspMob;
-import com.dspmob.sdk.InterstitialAd;
 import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
+import com.we.sdk.exchange.AdSize;
+import com.we.sdk.exchange.DspMob;
+import com.we.sdk.exchange.ExchangeAdError;
+import com.we.sdk.exchange.ExchangeAdListener;
+import com.we.sdk.exchange.ExchangeBannerAd;
+import com.we.sdk.exchange.ExchangeInterstitialAd;
 
 public class DspMobLoader extends AbstractSdkLoader {
 
     private final String TAG = "DspMobLoader";
 
     private boolean mIsBannerLoaded;
-    private BannerAd mBannerAd;
+    private ExchangeBannerAd mBannerAd;
 
     private boolean mIsInterstitialLoaded;
-    private InterstitialAd mInterstitialAd;
+    private ExchangeInterstitialAd mInterstitialAd;
 
     @Override
     public String getSdkName() {
@@ -77,7 +77,7 @@ public class DspMobLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
 
-        mBannerAd = new BannerAd(mContext);
+        mBannerAd = new ExchangeBannerAd(mContext);
         if (adSize == Constant.BANNER) {
             mBannerAd.setAdSize(AdSize.Banner_320_50);
         } else if (adSize == Constant.MEDIUM_RECTANGLE) {
@@ -86,7 +86,7 @@ public class DspMobLoader extends AbstractSdkLoader {
             mBannerAd.setAdSize(AdSize.Banner_320_50);
         }
         mBannerAd.setBidFloor((float) getPidConfig().getEcpm() / 100f);
-        mBannerAd.setListener(new AdListener() {
+        mBannerAd.setListener(new ExchangeAdListener() {
             @Override
             public void onAdLoaded() {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
@@ -133,7 +133,7 @@ public class DspMobLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdFailedToLoad(AdError adError) {
+            public void onAdFailedToLoad(ExchangeAdError adError) {
                 Log.v(Log.TAG, "reason : " + codeToError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
@@ -242,9 +242,9 @@ public class DspMobLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
 
-        mInterstitialAd = new InterstitialAd(mContext);
+        mInterstitialAd = new ExchangeInterstitialAd(mContext);
         mInterstitialAd.setBidFloor((float) getPidConfig().getEcpm() / 100f);
-        mInterstitialAd.setListener(new AdListener() {
+        mInterstitialAd.setListener(new ExchangeAdListener() {
             @Override
             public void onAdLoaded() {
                 mIsInterstitialLoaded = true;
@@ -300,8 +300,7 @@ public class DspMobLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdFailedToLoad(AdError adError) {
-                Log.i(TAG, "Failed loading fullscreen ad! with error: " + adError.toString());
+            public void onAdFailedToLoad(ExchangeAdError adError) {
                 Log.v(Log.TAG, "reason : " + codeToError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
@@ -319,23 +318,23 @@ public class DspMobLoader extends AbstractSdkLoader {
         }
     }
 
-    private String codeToError(AdError adError) {
+    private String codeToError(ExchangeAdError adError) {
         int errorCode = -1;
         if (adError != null) {
             errorCode = adError.getCode();
-            if (errorCode == AdError.NO_FILL.ordinal()) {
+            if (errorCode == ExchangeAdError.ERROR_CODE_NO_FILL) {
                 return "NO_FILL[" + errorCode + "]";
             }
-            if (errorCode == AdError.INTERNAL_ERROR.ordinal()) {
+            if (errorCode == ExchangeAdError.ERROR_CODE_INTERNAL_ERROR) {
                 return "INTERNAL_ERROR[" + errorCode + "]";
             }
-            if (errorCode == AdError.INVALID_REQUEST.ordinal()) {
+            if (errorCode == ExchangeAdError.ERROR_CODE_INVALID_REQUEST) {
                 return "INVALID_REQUEST[" + errorCode + "]";
             }
-            if (errorCode == AdError.NETWORK_ERROR.ordinal()) {
+            if (errorCode == ExchangeAdError.ERROR_CODE_NETWORK_ERROR) {
                 return "NETWORK_ERROR[" + errorCode + "]";
             }
-            if (errorCode == AdError.TIMEOUT.ordinal()) {
+            if (errorCode == ExchangeAdError.ERROR_CODE_TIMEOUT) {
                 return "NETWORK_ERROR[" + errorCode + "]";
             }
         }
