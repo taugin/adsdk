@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.log.Log;
-import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
 
 /**
@@ -46,11 +45,6 @@ public class GtPolicy extends BasePolicy {
     public void setPolicy(GtConfig gtConfig) {
         super.setPolicy(gtConfig);
         mGtConfig = gtConfig;
-    }
-
-    @Override
-    protected void reportShowTimesOneday(Context context, int times) {
-        StatImpl.get().reportAdOuterShowTimes(mContext, getType(), times);
     }
 
     public boolean isGtAllowed() {

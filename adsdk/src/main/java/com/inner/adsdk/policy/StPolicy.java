@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.inner.adsdk.config.StConfig;
 import com.inner.adsdk.log.Log;
-import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
 
 /**
@@ -43,11 +42,6 @@ public class StPolicy extends BasePolicy {
     public void setPolicy(StConfig stConfig) {
         super.setPolicy(stConfig);
         mStConfig = stConfig;
-    }
-
-    @Override
-    protected void reportShowTimesOneday(Context context, int times) {
-        StatImpl.get().reportAdOuterShowTimes(mContext, getType(), times);
     }
 
     public boolean isStAllowed() {
