@@ -12,6 +12,7 @@ import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.loader.AdReceiver;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
 
 import java.util.Date;
@@ -210,7 +211,8 @@ public class BasePolicy implements Handler.Callback {
         }
     }
 
-    protected void reportShowTimesOneday(Context context, int times) {
+    private void reportShowTimesOneday(Context context, int times) {
+        StatImpl.get().reportAdOuterShowTimes(mContext, getType(), times);
     }
 
     /**
