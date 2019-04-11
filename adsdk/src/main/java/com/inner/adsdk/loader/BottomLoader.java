@@ -21,7 +21,7 @@ public abstract class BottomLoader implements AdReceiver.OnTriggerListener {
     
     protected abstract Context getContext();
 
-    protected BaseConfig getBaseConfig() {
+    protected BaseConfig getConfig() {
         return null;
     }
 
@@ -108,10 +108,6 @@ public abstract class BottomLoader implements AdReceiver.OnTriggerListener {
 
     @Override
     public void onPackageAdded(Context context, Intent intent) {
-    }
-
-    @Override
-    public void onPackageReplaced(Context context, Intent intent) {
     }
 
     @Override

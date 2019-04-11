@@ -175,8 +175,6 @@ public class AdReceiver {
             triggerPackageAdded(context, intent);
         } else if (Intent.ACTION_PACKAGE_REMOVED.equals(intent.getAction())) {
             triggerPackageRemoved(context, intent);
-        } else if (Intent.ACTION_PACKAGE_REPLACED.equals(intent.getAction())) {
-            triggerPackageReplaced(context, intent);
         }
     }
 
@@ -287,8 +285,6 @@ public class AdReceiver {
 
         void onPackageAdded(Context context, Intent intent);
 
-        void onPackageReplaced(Context context, Intent intent);
-
         void onPackageRemoved(Context context, Intent intent);
 
         void onNetworkChange(Context context, Intent intent);
@@ -389,16 +385,6 @@ public class AdReceiver {
             for (OnTriggerListener l : mTriggerList) {
                 if (l != null) {
                     l.onPackageRemoved(context, intent);
-                }
-            }
-        }
-    }
-
-    private void triggerPackageReplaced(Context context, Intent intent) {
-        if (mTriggerList != null && !mTriggerList.isEmpty()) {
-            for (OnTriggerListener l : mTriggerList) {
-                if (l != null) {
-                    l.onPackageReplaced(context, intent);
                 }
             }
         }

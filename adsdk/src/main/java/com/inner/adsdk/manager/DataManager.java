@@ -253,6 +253,7 @@ public class DataManager {
             }
             String data = mDataRequest.getString(name);
             if (!TextUtils.isEmpty(data)) {
+                baseConfig.clear();
                 mParser.parsePolicy(data, baseConfig, parserCallback);
             }
         }
