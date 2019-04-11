@@ -7,7 +7,6 @@ import com.appub.ads.a.FSA;
 import com.appub.ads.a.R;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
-import com.hauyu.adsdk.config.BaseConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -17,11 +16,23 @@ import java.util.Random;
  * Created by Administrator on 2018/12/9.
  */
 
-public abstract class BottomLoader implements AdReceiver.OnTriggerListener {
+public abstract class BottomLoader<Config, Policy> implements AdReceiver.OnTriggerListener {
+
+    protected Config mConfig;
+
+    protected Policy mPolicy;
     
     protected abstract Context getContext();
 
-    protected BaseConfig getBaseConfig() {
+    public Config getConfig() {
+        return null;
+    }
+
+    public Config createConfig() {
+        return null;
+    }
+
+    public Policy createPolicy() {
         return null;
     }
 
