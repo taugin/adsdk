@@ -69,7 +69,7 @@ public class StAdLoader extends BottomLoader implements Handler.Callback {
             IntentFilter filter = new IntentFilter();
             filter.addAction(Intent.ACTION_PACKAGE_ADDED);
             filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-            filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
+            // filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
             filter.addDataScheme("package");
             mContext.registerReceiver(mPackageReceiver, filter);
         } catch (Exception e) {
