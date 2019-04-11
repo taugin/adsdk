@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.appub.ads.a.FSA;
+import com.appub.ads.a.R;
 import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
-import com.appub.ads.a.R;
-import com.inner.adsdk.config.BaseConfig;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
 
@@ -17,11 +16,23 @@ import java.util.Random;
  * Created by Administrator on 2018/12/9.
  */
 
-public abstract class BottomLoader implements AdReceiver.OnTriggerListener {
+public abstract class BottomLoader<Config, Policy> implements AdReceiver.OnTriggerListener {
+
+    protected Config mConfig;
+
+    protected Policy mPolicy;
     
     protected abstract Context getContext();
 
-    protected BaseConfig getConfig() {
+    public Config getConfig() {
+        return null;
+    }
+
+    public Config createConfig() {
+        return null;
+    }
+
+    public Policy createPolicy() {
         return null;
     }
 
