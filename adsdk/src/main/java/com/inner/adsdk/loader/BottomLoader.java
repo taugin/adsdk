@@ -36,6 +36,9 @@ public abstract class BottomLoader<Config, Policy> implements AdReceiver.OnTrigg
         return null;
     }
 
+    public void reportShowing() {
+    }
+
     protected AdParams generateAdParams() {
         AdParams.Builder builder = new AdParams.Builder();
         builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
