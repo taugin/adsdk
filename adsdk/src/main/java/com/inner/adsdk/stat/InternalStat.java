@@ -193,6 +193,10 @@ public class InternalStat {
         }
     }
 
+    public static void reportEvent(Context context, String key) {
+        reportEvent(context, key, null, null);
+    }
+
     public static void reportEvent(Context context, String key, Map<String, String> map) {
         reportEvent(context, key, null, map);
     }
