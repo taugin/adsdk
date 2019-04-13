@@ -76,6 +76,7 @@ public class DspMobLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
+        setBannerSize(adSize);
 
         mBannerAd = new ExchangeBannerAd(mContext);
         if (adSize == Constant.BANNER) {

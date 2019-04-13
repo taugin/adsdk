@@ -105,6 +105,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
+        setBannerSize(adSize);
 
         mBannerSpot = InneractiveAdSpotManager.get().createSpot();
         InneractiveAdViewUnitController controller = new InneractiveAdViewUnitController();

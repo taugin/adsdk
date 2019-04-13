@@ -129,6 +129,7 @@ public class MopubLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
+        setBannerSize(adSize);
         loadingView = new MoPubView(mContext);
         loadingView.setAutorefreshEnabled(false);
         loadingView.setAdUnitId(mPidConfig.getPid());

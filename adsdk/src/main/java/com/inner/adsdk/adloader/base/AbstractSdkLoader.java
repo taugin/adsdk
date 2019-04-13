@@ -54,6 +54,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private boolean mLoading = false;
     private boolean mLoadedFlag = false;
     private long mRequestTime = 0;
+    private int mBannerSize = Constant.NOSET;
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -527,7 +528,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private void notifyAdLoadedByListener() {
         if (getAdListener() != null) {
             setLoadedFlag();
-            getAdListener().onAdLoaded();
+            getAdListener().onAdLoaded(this);
         }
     }
 
@@ -555,4 +556,28 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         return null;
     }
+
+    protected void setBannerSize(int size) {
+        mBannerSize = size;
+    }
+
+    @Override
+    public int getBannerSize() {
+        return mBannerSize;
+    }
+
+    @Override
+    public int getEcpm() {
+        return getPidConfig().getEcpm();
+    }
+
+    @Override
+    public String toString() {
+        return  "pn = " + getAdPlaceName() + " , " +
+                "tp = " + getAdType() + " , " +
+                "sr = " + getSdkName() + " , " +
+                "ba = " + Constant.Banner.valueOf(getBannerSize()) + " , " +
+                "ec = " + getEcpm();
+    }
+
 }

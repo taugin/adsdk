@@ -108,6 +108,7 @@ public class InmobiLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
+        setBannerSize(adSize);
 
         loadingView = new InMobiBanner(getContext(), lPid);
         if (adSize == Constant.BANNER) {

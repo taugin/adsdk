@@ -104,6 +104,7 @@ public class AppnextLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
+        setBannerSize(adSize);
         BannerSize size = ADSIZE.get(adSize);
         if (size == null) {
             size = BannerSize.BANNER;

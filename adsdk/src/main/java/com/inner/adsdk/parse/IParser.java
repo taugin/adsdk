@@ -99,6 +99,8 @@ public interface IParser {
     String EXTID = "eid";
     // Mediaview 比例
     String ASPECT_RATIO = "ar";
+    // bannersize
+    String BANNER_SIZE = "bs";
 
     // 启用或禁用GT
     String ENABLE = "e";
