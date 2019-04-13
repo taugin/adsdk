@@ -48,6 +48,8 @@ public class PidConfig extends BaseConfig {
 
     private double aspectRatio;
 
+    private String bannerSize;
+
     @Override
     public String getName() {
         return PID_CONFIG;
@@ -187,6 +189,14 @@ public class PidConfig extends BaseConfig {
 
     public void setAspectRatio(double aspectRatio) {
         this.aspectRatio = aspectRatio;
+    }
+
+    public String getBannerSize() {
+        return bannerSize;
+    }
+
+    public void setBannerSize(String bannerSize) {
+        this.bannerSize = bannerSize;
     }
 
     public boolean isAdmob() {

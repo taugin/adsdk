@@ -95,6 +95,7 @@ public class WemobLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
+        setBannerSize(adSize);
         loadingView = new BannerAdView(mContext, mPidConfig.getPid());
         loadingView.setAdListener(new AdListener() {
             @Override

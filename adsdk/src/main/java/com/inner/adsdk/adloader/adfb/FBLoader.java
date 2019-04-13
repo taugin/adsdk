@@ -100,6 +100,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
         AdSize size = ADSIZE.get(adSize);
+        setBannerSize(adSize);
         if (size == null) {
             size = AdSize.BANNER_HEIGHT_50;
         }

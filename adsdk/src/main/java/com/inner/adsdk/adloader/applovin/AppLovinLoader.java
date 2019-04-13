@@ -90,6 +90,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
+        setBannerSize(adSize);
         loadingAdView = new AppLovinAdView(AppLovinAdSize.BANNER, mPidConfig.getPid(), mContext);
         loadingAdView.setAdLoadListener(new AppLovinAdLoadListener() {
             @Override

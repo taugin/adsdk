@@ -96,6 +96,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
 
         try {
             setLoading(true, STATE_REQUEST);
+            setBannerSize(adSize);
             Placement placement = Controller.getInstance().getPlacement(mPidConfig.getPid());
             AdRequest adRequest = null;
             try {

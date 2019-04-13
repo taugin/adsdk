@@ -2,8 +2,10 @@ package com.inner.adsdk.adloader.base;
 
 import com.inner.adsdk.AdReward;
 import com.inner.adsdk.adloader.listener.IManagerListener;
+import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
 import com.inner.adsdk.constant.Constant;
+import com.inner.adsdk.framework.AdPlaceLoader;
 import com.inner.adsdk.listener.OnAdSdkListener;
 import com.inner.adsdk.log.Log;
 
@@ -54,7 +56,15 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onAdLoaded() {
+    public void onAdLoaded(ISdkLoader loader) {
+        // 所有加载成功的loader都将通知给adplaceloader
+        try {
+            if (mAdPlaceLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
+                ((AdPlaceLoader.AdPlaceLoaderListener) mAdPlaceLoaderListener).onLoaded(loader);
+            }
+        } catch (Exception e) {
+        }
+
         if (hasNotifyLoaded()) {
             Log.v(Log.TAG, "has notify loaded ******************");
             return;
