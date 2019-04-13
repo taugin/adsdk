@@ -187,4 +187,15 @@ public class AdExtra {
      * RAN
      */
     public static final String AD_MODE_RAN = Constant.MODE_RAN;
+
+    /**
+     * 通用banner广告尺寸，类比admob banner尺寸
+     */
+    public static final int    COMMON_BANNER = Constant.BANNER;
+    public static final int    COMMON_FULL_BANNER = Constant.FULL_BANNER;
+    public static final int    COMMON_LARGE_BANNER = Constant.LARGE_BANNER;
+    public static final int    COMMON_LEADERBOARD = Constant.LEADERBOARD;
+    public static final int    COMMON_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
+    public static final int    COMMON_WIDE_SKYSCRAPER = Constant.WIDE_SKYSCRAPER;
+    public static final int    COMMON_SMART_BANNER = Constant.SMART_BANNER;
 }

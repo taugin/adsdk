@@ -86,4 +86,48 @@ public class Constant {
     public static final int AD_ERROR_UNSUPPORT = 7;
 
     public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
+
+    public enum Banner {
+        NOSET(Constant.NOSET),
+        BANNER(Constant.BANNER),
+        FULL_BANNER(Constant.FULL_BANNER),
+        LARGE_BANNER(Constant.LARGE_BANNER),
+        LEADERBOARD(Constant.LEADERBOARD),
+        MEDIUM_RECTANGLE(Constant.MEDIUM_RECTANGLE),
+        WIDE_SKYSCRAPER(Constant.WIDE_SKYSCRAPER),
+        SMART_BANNER(Constant.SMART_BANNER);
+
+        private int value = 0;
+
+        private Banner(int value) {     //必须是private的，否则编译错误
+            this.value = value;
+        }
+
+        public static Banner valueOf(int value) {    //手写的从int到enum的转换函数
+            switch (value) {
+                case Constant.NOSET:
+                    return NOSET;
+                case Constant.BANNER:
+                    return BANNER;
+                case Constant.FULL_BANNER:
+                    return FULL_BANNER;
+                case Constant.LARGE_BANNER:
+                    return LARGE_BANNER;
+                case Constant.LEADERBOARD:
+                    return LEADERBOARD;
+                case Constant.MEDIUM_RECTANGLE:
+                    return MEDIUM_RECTANGLE;
+                case Constant.WIDE_SKYSCRAPER:
+                    return WIDE_SKYSCRAPER;
+                case Constant.SMART_BANNER:
+                    return SMART_BANNER;
+                default:
+                    return null;
+            }
+        }
+
+        public int value() {
+            return value;
+        }
+    }
 }

@@ -573,6 +573,9 @@ public class AdParser implements IParser {
             if (jobj.has(ASPECT_RATIO)) {
                 pidConfig.setAspectRatio(jobj.getDouble(ASPECT_RATIO));
             }
+            if (jobj.has(BANNER_SIZE)) {
+                pidConfig.setBannerSize(jobj.getString(BANNER_SIZE));
+            }
             parseAttrConfig(pidConfig, jobj);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

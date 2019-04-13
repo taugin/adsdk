@@ -80,4 +80,8 @@ public interface ISdkLoader {
     public boolean useAndClearFlag();
 
     public boolean allowUseLoader();
+
+    public int getBannerSize();
+
+    public int getEcpm();
 }

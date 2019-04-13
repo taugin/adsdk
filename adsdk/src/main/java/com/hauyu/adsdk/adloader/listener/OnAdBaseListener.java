@@ -10,7 +10,7 @@ public interface OnAdBaseListener {
     /**
      * banner or native loaded
      */
-    public void onAdLoaded();
+    public void onAdLoaded(ISdkLoader loader);
 
     /**
      * banner or native show

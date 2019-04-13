@@ -2,10 +2,12 @@ package com.hauyu.adsdk.adloader.base;
 
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.listener.IManagerListener;
+import com.hauyu.adsdk.adloader.listener.ISdkLoader;
 import com.hauyu.adsdk.adloader.listener.OnAdBaseListener;
+import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.framework.AdPlaceLoader;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.constant.Constant;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -54,7 +56,15 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onAdLoaded() {
+    public void onAdLoaded(ISdkLoader loader) {
+        // 所有加载成功的loader都将通知给adplaceloader
+        try {
+            if (mAdPlaceLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
+                ((AdPlaceLoader.AdPlaceLoaderListener) mAdPlaceLoaderListener).onLoaded(loader);
+            }
+        } catch (Exception e) {
+        }
+
         if (hasNotifyLoaded()) {
             Log.v(Log.TAG, "has notify loaded ******************");
             return;
