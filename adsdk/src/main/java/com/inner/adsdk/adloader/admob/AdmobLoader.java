@@ -124,7 +124,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+                    getAdListener().onAdFailed(toSdkError(i));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, codeToError(i), getSdkName(), getAdType(), null);
@@ -285,7 +285,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
+                    getAdListener().onInterstitialError(toSdkError(i));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, codeToError(i), getSdkName(), getAdType(), null);
@@ -426,7 +426,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
+                    getAdListener().onInterstitialError(toSdkError(i));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, codeToError(i), getSdkName(), getAdType(), null);
@@ -643,7 +643,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+                    getAdListener().onAdFailed(toSdkError(errorCode));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, codeToError(errorCode), getSdkName(), getAdType(), null);
@@ -728,5 +728,21 @@ public class AdmobLoader extends AbstractSdkLoader {
             return "ERROR_CODE_NO_FILL[" + code + "]";
         }
         return "UNKNOWN[" + code + "]";
+    }
+
+    protected int toSdkError(int code) {
+        if (code == AdRequest.ERROR_CODE_INTERNAL_ERROR) {
+            return Constant.AD_ERROR_INTERNAL;
+        }
+        if (code == AdRequest.ERROR_CODE_INVALID_REQUEST) {
+            return Constant.AD_ERROR_INVALID_REQUEST;
+        }
+        if (code == AdRequest.ERROR_CODE_NETWORK_ERROR) {
+            return Constant.AD_ERROR_NETWORK;
+        }
+        if (code == AdRequest.ERROR_CODE_NO_FILL) {
+            return Constant.AD_ERROR_NOFILL;
+        }
+        return Constant.AD_ERROR_UNKNOWN;
     }
 }

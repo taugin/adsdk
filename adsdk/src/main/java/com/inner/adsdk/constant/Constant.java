@@ -88,13 +88,78 @@ public class Constant {
     public static final String AF_STATUS = "af_status";
     public static final String AF_MEDIA_SOURCE = "af_media_source";
 
+    /**
+     * 未知错误
+     */
+    public static final int AD_ERROR_UNKNOWN = 0;
+    /**
+     * 配置错误
+     */
     public static final int AD_ERROR_CONFIG = 1;
+    /**
+     * 无填充
+     */
     public static final int AD_ERROR_FILLTIME = 2;
+    /**
+     * 正在加载中
+     */
     public static final int AD_ERROR_LOADING = 3;
+    /**
+     * 加载失败
+     */
     public static final int AD_ERROR_LOAD = 4;
+    /**
+     * 超时
+     */
     public static final int AD_ERROR_TIMEOUT = 5;
+    /**
+     * 上下文错误
+     */
     public static final int AD_ERROR_CONTEXT = 6;
+    /**
+     * 不支持
+     */
     public static final int AD_ERROR_UNSUPPORT = 7;
+
+    /**
+     * 加载太频繁
+     */
+    public static final int AD_ERROR_TOO_FREQUENCY = 8;
+
+    /**
+     * 网络错误
+     */
+    public static final int AD_ERROR_NETWORK = 9;
+
+    /**
+     * 无效请求
+     */
+    public static final int AD_ERROR_INVALID_REQUEST = 10;
+
+    /**
+     * 内部错误
+     */
+    public static final int AD_ERROR_INTERNAL = 11;
+
+    /**
+     * 无填充
+     */
+    public static final int AD_ERROR_NOFILL = 12;
+
+    /**
+     * 服务器错误
+     */
+    public static final int AD_ERROR_SERVER = 13;
+
+    /**
+     * 中介错误
+     */
+    public static final int AD_ERROR_MEDIATION = 14;
+
+    /**
+     * 无效的pid
+     */
+    public static final int AD_ERROR_INVALID_PID = 15;
 
     public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
 

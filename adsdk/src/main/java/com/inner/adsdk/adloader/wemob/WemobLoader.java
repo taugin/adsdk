@@ -517,4 +517,30 @@ public class WemobLoader extends AbstractSdkLoader {
         }
         return "UNKNOWN[" + errorCode + "]";
     }
+
+    protected int toSdkError(AdError adError) {
+        int errorCode = 0;
+        if (adError != null) {
+            errorCode = adError.errorCode;
+            if (errorCode == AdError.ERROR_CODE_NO_FILL) {
+                return Constant.AD_ERROR_NOFILL;
+            }
+            if (errorCode == AdError.ERROR_CODE_TIMEOUT) {
+                return Constant.AD_ERROR_TIMEOUT;
+            }
+            if (errorCode == AdError.ERROR_CODE_INTERNAL_ERROR) {
+                return Constant.AD_ERROR_INTERNAL;
+            }
+            if (errorCode == AdError.ERROR_CODE_INVALID_PID) {
+                return Constant.AD_ERROR_INVALID_PID;
+            }
+            if (errorCode == AdError.ERROR_CODE_NETWORK_ERROR) {
+                return Constant.AD_ERROR_NETWORK;
+            }
+            if (errorCode == AdError.ERROR_CODE_INVALID_REQUEST) {
+                return Constant.AD_ERROR_INVALID_REQUEST;
+            }
+        }
+        return Constant.AD_ERROR_UNKNOWN;
+    }
 }
