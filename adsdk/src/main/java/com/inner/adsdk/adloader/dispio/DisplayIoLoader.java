@@ -396,7 +396,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                 public void onNoAds() {
                     setLoading(false, STATE_FAILURE);
                     if (getAdListener() != null) {
-                        getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
+                        getAdListener().onInterstitialError(Constant.AD_ERROR_NOFILL);
                     }
                     if (mStat != null) {
                         mStat.reportAdError(mContext, "no ads", getSdkName(), getAdType(), null);
@@ -486,5 +486,21 @@ public class DisplayIoLoader extends AbstractSdkLoader {
             Log.e(Log.TAG, "error : " + e);
         }
         Controller.getInstance().onDestroy();
+    }
+
+    protected int toSdkError(int code) {
+        if (code == com.google.android.gms.ads.AdRequest.ERROR_CODE_INTERNAL_ERROR) {
+            return Constant.AD_ERROR_INTERNAL;
+        }
+        if (code == com.google.android.gms.ads.AdRequest.ERROR_CODE_INVALID_REQUEST) {
+            return Constant.AD_ERROR_INVALID_REQUEST;
+        }
+        if (code == com.google.android.gms.ads.AdRequest.ERROR_CODE_NETWORK_ERROR) {
+            return Constant.AD_ERROR_NETWORK;
+        }
+        if (code == com.google.android.gms.ads.AdRequest.ERROR_CODE_NO_FILL) {
+            return Constant.AD_ERROR_NOFILL;
+        }
+        return Constant.AD_ERROR_UNKNOWN;
     }
 }

@@ -138,7 +138,7 @@ public class DspMobLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+                    getAdListener().onAdFailed(toSdkError(adError));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, codeToError(adError), getSdkName(), getAdType(), null);
@@ -305,7 +305,7 @@ public class DspMobLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(adError) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
+                    getAdListener().onInterstitialError(toSdkError(adError));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, codeToError(adError), getSdkName(), getAdType(), null);
@@ -340,6 +340,29 @@ public class DspMobLoader extends AbstractSdkLoader {
             }
         }
         return "UNKNOWN[" + errorCode + "]";
+    }
+
+    protected int toSdkError(ExchangeAdError adError) {
+        int code = Constant.AD_ERROR_UNKNOWN;
+        if (adError != null) {
+            code = adError.getCode();
+            if (code == ExchangeAdError.ERROR_CODE_NO_FILL) {
+                return Constant.AD_ERROR_NOFILL;
+            }
+            if (code == ExchangeAdError.ERROR_CODE_INTERNAL_ERROR) {
+                return Constant.AD_ERROR_INTERNAL;
+            }
+            if (code == ExchangeAdError.ERROR_CODE_INVALID_REQUEST) {
+                return Constant.AD_ERROR_INVALID_REQUEST;
+            }
+            if (code == ExchangeAdError.ERROR_CODE_NETWORK_ERROR) {
+                return Constant.AD_ERROR_NETWORK;
+            }
+            if (code == ExchangeAdError.ERROR_CODE_TIMEOUT) {
+                return Constant.AD_ERROR_TIMEOUT;
+            }
+        }
+        return Constant.AD_ERROR_UNKNOWN;
     }
 
     @Override

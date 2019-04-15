@@ -118,6 +118,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
                 mOnAdSdkListener.onLoading(placeName, source, adType);
             } else {
                 mOnAdSdkListener.onError(placeName, source, adType);
+                mOnAdSdkListener.onError(placeName, source, adType, error);
             }
         }
         if (mAdPlaceLoaderListener != null) {
@@ -125,6 +126,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
                 mAdPlaceLoaderListener.onLoading(placeName, source, adType);
             } else {
                 mAdPlaceLoaderListener.onError(placeName, source, adType);
+                mAdPlaceLoaderListener.onError(placeName, source, adType, error);
             }
         }
     }
@@ -198,6 +200,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
                 mOnAdSdkListener.onLoading(placeName, source, adType);
             } else {
                 mOnAdSdkListener.onError(placeName, source, adType);
+                mOnAdSdkListener.onError(placeName, source, adType, error);
             }
         }
         if (mAdPlaceLoaderListener != null) {
@@ -205,6 +208,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
                 mAdPlaceLoaderListener.onLoading(placeName, source, adType);
             } else {
                 mAdPlaceLoaderListener.onError(placeName, source, adType);
+                mAdPlaceLoaderListener.onError(placeName, source, adType, error);
             }
         }
     }

@@ -137,7 +137,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + error + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+                    getAdListener().onAdFailed(toSdkError(inMobiAdRequestStatus));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, error, getSdkName(), getAdType(), null);
@@ -301,7 +301,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + error + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
+                    getAdListener().onInterstitialError(toSdkError(inMobiAdRequestStatus));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, error, getSdkName(), getAdType(), null);
@@ -465,7 +465,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + error + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
+                    getAdListener().onInterstitialError(toSdkError(inMobiAdRequestStatus));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, error, getSdkName(), getAdType(), null);
@@ -646,7 +646,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + status.getMessage() + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+                    getAdListener().onAdFailed(toSdkError(status));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, status.getMessage(), getSdkName(), getAdType(), null);
@@ -717,5 +717,31 @@ public class InmobiLoader extends AbstractSdkLoader {
         if (gInMobiBanner != null) {
             gInMobiBanner = null;
         }
+    }
+
+    protected int toSdkError(InMobiAdRequestStatus status) {
+        InMobiAdRequestStatus.StatusCode code = InMobiAdRequestStatus.StatusCode.NO_FILL;
+        if (status != null) {
+            code = status.getStatusCode();
+            if (code == InMobiAdRequestStatus.StatusCode.INTERNAL_ERROR) {
+                return Constant.AD_ERROR_INTERNAL;
+            }
+            if (code == InMobiAdRequestStatus.StatusCode.INVALID_RESPONSE_IN_LOAD) {
+                return Constant.AD_ERROR_INVALID_REQUEST;
+            }
+            if (code == InMobiAdRequestStatus.StatusCode.NETWORK_UNREACHABLE) {
+                return Constant.AD_ERROR_NETWORK;
+            }
+            if (code == InMobiAdRequestStatus.StatusCode.NO_FILL) {
+                return Constant.AD_ERROR_NOFILL;
+            }
+            if (code == InMobiAdRequestStatus.StatusCode.REQUEST_TIMED_OUT) {
+                return Constant.AD_ERROR_TIMEOUT;
+            }
+            if (code == InMobiAdRequestStatus.StatusCode.SERVER_ERROR) {
+                return Constant.AD_ERROR_SERVER;
+            }
+        }
+        return Constant.AD_ERROR_UNKNOWN;
     }
 }

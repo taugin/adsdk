@@ -116,7 +116,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+                    getAdListener().onAdFailed(toSdkError(adError));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, getError(adError), getSdkName(), getAdType(), null);
@@ -184,7 +184,7 @@ public class FBLoader extends AbstractSdkLoader {
             viewGroup.removeAllViews();
             ViewParent viewParent = bannerView.getParent();
             if (viewParent instanceof ViewGroup) {
-                ((ViewGroup)viewParent).removeView(bannerView);
+                ((ViewGroup) viewParent).removeView(bannerView);
             }
             viewGroup.addView(bannerView);
             if (viewGroup.getVisibility() != View.VISIBLE) {
@@ -296,7 +296,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
+                    getAdListener().onInterstitialError(toSdkError(adError));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, getError(adError), getSdkName(), getAdType(), null);
@@ -428,7 +428,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+                    getAdListener().onAdFailed(toSdkError(adError));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, getError(adError), getSdkName(), getAdType(), null);
@@ -594,7 +594,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
+                    getAdListener().onInterstitialError(toSdkError(adError));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, getError(adError), getSdkName(), getAdType(), null);
@@ -698,5 +698,34 @@ public class FBLoader extends AbstractSdkLoader {
             }
         }
         return "UNKNOWN[" + errorCode + "]";
+    }
+
+    protected int toSdkError(AdError adError) {
+        int code = 0;
+        if (adError != null) {
+            code = adError.getErrorCode();
+            if (code == AdError.NO_FILL_ERROR_CODE) {
+                return Constant.AD_ERROR_NOFILL;
+            }
+            if (code == AdError.SERVER_ERROR_CODE) {
+                return Constant.AD_ERROR_SERVER;
+            }
+            if (code == AdError.INTERNAL_ERROR_CODE) {
+                return Constant.AD_ERROR_INTERNAL;
+            }
+            if (code == AdError.MEDIATION_ERROR_CODE) {
+                return Constant.AD_ERROR_MEDIATION;
+            }
+            if (code == AdError.NETWORK_ERROR_CODE) {
+                return Constant.AD_ERROR_NETWORK;
+            }
+            if (code == AdError.LOAD_TOO_FREQUENTLY_ERROR_CODE) {
+                return Constant.AD_ERROR_TOO_FREQUENCY;
+            }
+            if (code == AdError.INTERSTITIAL_AD_TIMEOUT) {
+                return Constant.AD_ERROR_TIMEOUT;
+            }
+        }
+        return Constant.AD_ERROR_UNKNOWN;
     }
 }
