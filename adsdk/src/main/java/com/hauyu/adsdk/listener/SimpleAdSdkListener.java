@@ -32,6 +32,10 @@ public class SimpleAdSdkListener implements OnAdSdkListener {
     }
 
     @Override
+    public void onError(String pidName, String source, String adType, int errorCode) {
+    }
+
+    @Override
     public void onRewarded(String pidName, String source, String adType, AdReward item) {
     }
 

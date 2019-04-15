@@ -148,7 +148,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+                    getAdListener().onAdFailed(toSdkError(errorCode));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, codeToError(errorCode), getSdkName(), getAdType(), null);
@@ -299,7 +299,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
+                    getAdListener().onInterstitialError(toSdkError(errorCode));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, codeToError(errorCode), getSdkName(), getAdType(), null);
@@ -459,7 +459,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
+                    getAdListener().onInterstitialError(toSdkError(errorCode));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, codeToError(errorCode), getSdkName(), getAdType(), null);
@@ -615,7 +615,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , msg : " + codeToErrorNative(errorCode) + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
+                    getAdListener().onAdFailed(toSdkError2(errorCode));
                 }
                 if (mStat != null) {
                     mStat.reportAdError(mContext, codeToErrorNative(errorCode), getSdkName(), getAdType(), null);
@@ -784,5 +784,46 @@ public class MopubLoader extends AbstractSdkLoader {
             return errorCode.toString();
         }
         return "UNKNOWN";
+    }
+
+    protected int toSdkError(MoPubErrorCode errorCode) {
+        if (errorCode == MoPubErrorCode.INTERNAL_ERROR) {
+            return Constant.AD_ERROR_INTERNAL;
+        }
+        if (errorCode == MoPubErrorCode.NETWORK_INVALID_STATE) {
+            return Constant.AD_ERROR_INVALID_REQUEST;
+        }
+        if (errorCode == MoPubErrorCode.NETWORK_INVALID_STATE) {
+            return Constant.AD_ERROR_NETWORK;
+        }
+        if (errorCode == MoPubErrorCode.NO_FILL) {
+            return Constant.AD_ERROR_NOFILL;
+        }
+        if (errorCode == MoPubErrorCode.NETWORK_TIMEOUT) {
+            return Constant.AD_ERROR_TIMEOUT;
+        }
+        if (errorCode == MoPubErrorCode.SERVER_ERROR) {
+            return Constant.AD_ERROR_SERVER;
+        }
+        return Constant.AD_ERROR_UNKNOWN;
+    }
+
+    protected int toSdkError2(NativeErrorCode errorCode) {
+        if (errorCode == NativeErrorCode.NETWORK_INVALID_STATE) {
+            return Constant.AD_ERROR_INVALID_REQUEST;
+        }
+        if (errorCode == NativeErrorCode.NETWORK_INVALID_STATE) {
+            return Constant.AD_ERROR_NETWORK;
+        }
+        if (errorCode == NativeErrorCode.NETWORK_NO_FILL) {
+            return Constant.AD_ERROR_NOFILL;
+        }
+        if (errorCode == NativeErrorCode.NETWORK_TIMEOUT) {
+            return Constant.AD_ERROR_TIMEOUT;
+        }
+        if (errorCode == NativeErrorCode.SERVER_ERROR_RESPONSE_CODE) {
+            return Constant.AD_ERROR_SERVER;
+        }
+        return Constant.AD_ERROR_UNKNOWN;
     }
 }
