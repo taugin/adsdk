@@ -77,7 +77,7 @@ public class CloudMobiLoader extends AbstractSdkLoader {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded();
+                getAdListener().onInterstitialLoaded(CloudMobiLoader.this);
             }
             return;
         }
@@ -115,7 +115,7 @@ public class CloudMobiLoader extends AbstractSdkLoader {
                         }
                         if (getAdListener() != null) {
                             setLoadedFlag();
-                            getAdListener().onInterstitialLoaded();
+                            getAdListener().onInterstitialLoaded(CloudMobiLoader.this);
                         }
                     }
 

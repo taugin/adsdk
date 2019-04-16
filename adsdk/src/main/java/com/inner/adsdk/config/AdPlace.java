@@ -40,6 +40,12 @@ public class AdPlace {
 
     private boolean globalCache;
 
+    private String bannerSize;
+
+    private boolean highEcpm;
+
+    private String placeType;
+
     public String getName() {
         return name;
     }
@@ -175,6 +181,30 @@ public class AdPlace {
         this.globalCache = globalCache;
     }
 
+    public String getBannerSize() {
+        return bannerSize;
+    }
+
+    public void setBannerSize(String bannerSize) {
+        this.bannerSize = bannerSize;
+    }
+
+    public boolean isHighEcpm() {
+        return highEcpm;
+    }
+
+    public void setHighEcpm(boolean highEcpm) {
+        this.highEcpm = highEcpm;
+    }
+
+    public String getPlaceType() {
+        return placeType;
+    }
+
+    public void setPlaceType(String placeType) {
+        this.placeType = placeType;
+    }
+
     @Override
     public String toString() {
         return "adp{" +
@@ -185,6 +215,7 @@ public class AdPlace {
                 ", p=" + percent +
                 ", as=" + autoSwitch +
                 ", ai=" + autoInterval +
+                ", bs=" + bannerSize +
                 ", uv='" + uniqueValue + '\'' +
                 ", loo=" + loadOnlyOnce +
                 '}';

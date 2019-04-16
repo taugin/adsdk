@@ -458,6 +458,15 @@ public class AdParser implements IParser {
             if (jobj.has(GLOBAL_CACHE)) {
                 adPlace.setGlobalCache(jobj.getInt(GLOBAL_CACHE) == 1);
             }
+            if (jobj.has(BANNER_SIZE)) {
+                adPlace.setBannerSize(jobj.getString(BANNER_SIZE));
+            }
+            if (jobj.has(HIGH_ECPM)) {
+                adPlace.setHighEcpm(jobj.getInt(HIGH_ECPM) == 1);
+            }
+            if (jobj.has(PLACE_TYPE)) {
+                adPlace.setPlaceType(jobj.getString(PLACE_TYPE));
+            }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
             sortPidList(adPlace);
         } catch (Exception e) {

@@ -268,7 +268,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded();
+                getAdListener().onInterstitialLoaded(this);
             }
             return;
         }
@@ -363,7 +363,10 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                             if (mStat != null) {
                                 mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                             }
-                            notifyAdLoaded(false);
+                            if (getAdListener() != null) {
+                                setLoadedFlag();
+                                getAdListener().onInterstitialLoaded(DisplayIoLoader.this);
+                            }
                         }
 
                         @Override

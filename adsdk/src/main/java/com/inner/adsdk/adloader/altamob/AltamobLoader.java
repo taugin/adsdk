@@ -74,7 +74,7 @@ public class AltamobLoader extends AbstractSdkLoader {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded();
+                getAdListener().onInterstitialLoaded(AltamobLoader.this);
             }
             return;
         }
@@ -108,7 +108,7 @@ public class AltamobLoader extends AbstractSdkLoader {
                 }
                 if (getAdListener() != null) {
                     setLoadedFlag();
-                    getAdListener().onInterstitialLoaded();
+                    getAdListener().onInterstitialLoaded(AltamobLoader.this);
                 }
             }
 

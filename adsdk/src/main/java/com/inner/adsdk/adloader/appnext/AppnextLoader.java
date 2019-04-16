@@ -238,7 +238,7 @@ public class AppnextLoader extends AbstractSdkLoader {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded();
+                getAdListener().onInterstitialLoaded(AppnextLoader.this);
             }
             return;
         }
@@ -267,7 +267,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                 putCachedAdTime(interstitial);
                 if (getAdListener() != null) {
                     setLoadedFlag();
-                    getAdListener().onInterstitialLoaded();
+                    getAdListener().onInterstitialLoaded(AppnextLoader.this);
                 }
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
@@ -509,7 +509,7 @@ public class AppnextLoader extends AbstractSdkLoader {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onRewardedVideoAdLoaded();
+                getAdListener().onRewardedVideoAdLoaded(AppnextLoader.this);
             }
             return;
         }
@@ -541,7 +541,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                 }
                 if (getAdListener() != null) {
                     setLoadedFlag();
-                    getAdListener().onRewardedVideoAdLoaded();
+                    getAdListener().onRewardedVideoAdLoaded(AppnextLoader.this);
                 }
             }
         });

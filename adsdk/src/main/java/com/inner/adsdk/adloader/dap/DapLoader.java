@@ -87,7 +87,7 @@ public class DapLoader extends AbstractSdkLoader {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded();
+                getAdListener().onInterstitialLoaded(DapLoader.this);
             }
             return;
         }
@@ -134,7 +134,7 @@ public class DapLoader extends AbstractSdkLoader {
                 }
                 if (getAdListener() != null) {
                     setLoadedFlag();
-                    getAdListener().onInterstitialLoaded();
+                    getAdListener().onInterstitialLoaded(DapLoader.this);
                 }
             }
 

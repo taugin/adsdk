@@ -349,9 +349,9 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 setLoadedFlag();
                 if (isRewarded) {
-                    getAdListener().onRewardedVideoAdLoaded();
+                    getAdListener().onRewardedVideoAdLoaded(InnerActiveLoader.this);
                 } else {
-                    getAdListener().onInterstitialLoaded();
+                    getAdListener().onInterstitialLoaded(this);
                 }
             }
             return;
@@ -513,9 +513,9 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     if (isRewarded) {
-                        getAdListener().onRewardedVideoAdLoaded();
+                        getAdListener().onRewardedVideoAdLoaded(InnerActiveLoader.this);
                     } else {
-                        getAdListener().onInterstitialLoaded();
+                        getAdListener().onInterstitialLoaded(InnerActiveLoader.this);
                     }
                 }
             }

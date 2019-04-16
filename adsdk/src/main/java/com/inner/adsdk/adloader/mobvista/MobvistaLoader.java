@@ -101,7 +101,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded();
+                getAdListener().onInterstitialLoaded(MobvistaLoader.this);
             }
             return;
         }
@@ -152,7 +152,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
                 }
                 if (getAdListener() != null) {
                     setLoadedFlag();
-                    getAdListener().onInterstitialLoaded();
+                    getAdListener().onInterstitialLoaded(MobvistaLoader.this);
                 }
             }
 
