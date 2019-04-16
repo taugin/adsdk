@@ -17,6 +17,7 @@ import com.inner.adsdk.utils.Utils;
 
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by Administrator on 2018-11-19.
@@ -29,6 +30,8 @@ public class BasePolicy implements Handler.Callback {
     private String mType;
     private boolean mLoading = false;
     private Handler mHandler;
+    private static final String LAST_SCENE_TIME = "pref_last_scene_time";
+    private static final String LAST_SCENE_TYPE = "pref_last_scene_type";
 
     protected BasePolicy(Context context, String type) {
         mContext = context;
@@ -98,7 +101,13 @@ public class BasePolicy implements Handler.Callback {
         if (mBaseConfig != null) {
             long now = System.currentTimeMillis();
             long lastReqTime = Utils.getLong(mContext, getPrefKey(Constant.PREF_REQUEST_TIME), 0);
-            Log.pv(Log.TAG, "now : " + now + " , last : " + lastReqTime + " , exp : " + (now - lastReqTime) + " , mi : " + mBaseConfig.getMinInterval());
+
+            long leftTime = mBaseConfig.getMinInterval() - (now - lastReqTime);
+            if (leftTime > 0) {
+                Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
+                Log.pv(Log.TAG, mType + " mi : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
+            }
+
             return now - lastReqTime >= mBaseConfig.getMinInterval();
         }
         return true;
@@ -113,7 +122,13 @@ public class BasePolicy implements Handler.Callback {
         if (showing) {
             updateLastShowTime();
             reportTotalShowTimes();
+            reportLastScene();
         }
+    }
+
+    private void reportLastScene() {
+        Utils.putLong(mContext, LAST_SCENE_TIME, System.currentTimeMillis());
+        Utils.putString(mContext, LAST_SCENE_TYPE, getType());
     }
 
     /**
@@ -220,14 +235,14 @@ public class BasePolicy implements Handler.Callback {
      *
      * @return
      */
-    private boolean isConfigAllow() {
+    protected boolean isConfigAllow() {
         if (mBaseConfig != null) {
             return mBaseConfig.isEnable();
         }
         return false;
     }
 
-    private boolean isAttrAllow() {
+    protected boolean isAttrAllow() {
         if (mBaseConfig != null && !mAttrChecker.isAttributionAllow(mBaseConfig.getAttrList())) {
             Log.pv(Log.TAG, "attr not allowed");
             return false;
@@ -250,7 +265,7 @@ public class BasePolicy implements Handler.Callback {
      *
      * @return
      */
-    private boolean isDelayAllow() {
+    protected boolean isDelayAllow() {
         if (mBaseConfig != null && mBaseConfig.getUpDelay() > 0) {
             long now = System.currentTimeMillis();
             long firstStartTime = getFirstStartUpTime();
@@ -264,11 +279,15 @@ public class BasePolicy implements Handler.Callback {
      *
      * @return
      */
-    private boolean isIntervalAllow() {
+    protected boolean isIntervalAllow() {
         if (mBaseConfig != null && mBaseConfig.getInterval() > 0) {
             long now = System.currentTimeMillis();
             long last = getLastShowTime();
-            Log.pv(Log.TAG, mType + " i allow now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)));
+            long leftTime = mBaseConfig.getInterval() - (now - last);
+            if (leftTime > 0) {
+                Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
+                Log.pv(Log.TAG, mType + " i : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
+            }
             return now - last > mBaseConfig.getInterval();
         }
         return true;
@@ -279,7 +298,7 @@ public class BasePolicy implements Handler.Callback {
      *
      * @return
      */
-    private boolean isMaxShowAllow() {
+    protected boolean isMaxShowAllow() {
         resetTotalShowIfNeed();
         if (mBaseConfig != null && mBaseConfig.getMaxCount() > 0) {
             long times = getTotalShowTimes();
@@ -295,7 +314,7 @@ public class BasePolicy implements Handler.Callback {
      *
      * @return
      */
-    private boolean isAppVerAllow() {
+    protected boolean isAppVerAllow() {
         if (mBaseConfig != null && mBaseConfig.getMaxVersion() > 0) {
             int verCode = Utils.getVersionCode(mContext);
             return verCode <= mBaseConfig.getMaxVersion();
@@ -311,7 +330,7 @@ public class BasePolicy implements Handler.Callback {
         return appOnTop;
     }
 
-    private boolean matchInstallTime() {
+    protected boolean matchInstallTime() {
         if (mBaseConfig != null) {
             long configInstallTime = mBaseConfig.getConfigInstallTime();
             long firstInstallTime = getFirstInstallTime();
@@ -335,6 +354,14 @@ public class BasePolicy implements Handler.Callback {
         } catch (Error e) {
         }
         return firstInstallTime;
+    }
+
+    public long getLastSceneTime() {
+        return Utils.getLong(mContext, LAST_SCENE_TIME);
+    }
+
+    public String getLastSceneType() {
+        return Utils.getString(mContext, LAST_SCENE_TYPE);
     }
 
     public boolean isShowBottomActivity() {
@@ -369,6 +396,20 @@ public class BasePolicy implements Handler.Callback {
         return true;
     }
 
+    protected boolean isSceneIntervalAllow() {
+        if (mBaseConfig != null && mBaseConfig.getSceneInterval() > 0) {
+            long now = System.currentTimeMillis();
+            long last = getLastSceneTime();
+            long leftTime = mBaseConfig.getSceneInterval() - (now - last);
+            if (leftTime > 0) {
+                Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
+                Log.pv(Log.TAG, mType + " si : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
+            }
+            return now - last > mBaseConfig.getSceneInterval();
+        }
+        return true;
+    }
+
     protected boolean checkBaseConfig() {
         if (!isConfigAllow()) {
             Log.pv(Log.TAG, "con not allowed");
@@ -386,6 +427,11 @@ public class BasePolicy implements Handler.Callback {
 
         if (!isIntervalAllow()) {
             Log.pv(Log.TAG, "i not allowed");
+            return false;
+        }
+
+        if (!isSceneIntervalAllow()) {
+            Log.pv(Log.TAG, "si not allowed");
             return false;
         }
 

@@ -134,6 +134,8 @@ public interface IParser {
     String PLACE_NAME_INT = "pni";
     // view广告位名称
     String PLACE_NAME_ADV = "pna";
+    // 场景间隔
+    String SCENE_INTERVAL = "si";
 
     // 阻止重复加载(如果当前loader正在处于加载中，则不再重新加载)
     String BLOCK_LOADING = "bl";
