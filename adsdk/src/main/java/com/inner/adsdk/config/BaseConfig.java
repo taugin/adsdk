@@ -23,6 +23,7 @@ public abstract class BaseConfig {
     private boolean showBottomActivity = true;
     private String placeNameInt;
     private String placeNameAdv;
+    private long sceneInterval;
 
     public abstract String getName();
 
@@ -152,6 +153,14 @@ public abstract class BaseConfig {
 
     public void setPlaceNameAdv(String placeNameAdv) {
         this.placeNameAdv = placeNameAdv;
+    }
+
+    public long getSceneInterval() {
+        return sceneInterval;
+    }
+
+    public void setSceneInterval(long sceneInterval) {
+        this.sceneInterval = sceneInterval;
     }
 
     public void clear() {
