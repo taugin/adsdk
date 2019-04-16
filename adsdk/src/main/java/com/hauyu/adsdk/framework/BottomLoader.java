@@ -8,6 +8,7 @@ import com.appub.ads.a.R;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.policy.BasePolicy;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Random;
@@ -37,6 +38,10 @@ public abstract class BottomLoader<Config, Policy> implements AdReceiver.OnTrigg
     }
 
     public void reportShowing() {
+        try {
+            ((BasePolicy) mPolicy).reportShowing(true);
+        } catch (Exception e) {
+        }
     }
 
     protected AdParams generateAdParams() {
