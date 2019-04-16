@@ -67,6 +67,10 @@ public interface IParser {
     String REF_SHARE = "rs";
     // 是否全局缓存
     String GLOBAL_CACHE = "gc";
+    // 优先高ecpm
+    String HIGH_ECPM = "he";
+    // 场景类型
+    String PLACE_TYPE = "pt";
 
     // 广告平台 fb, admob, adx
     String SDK = "sdk";

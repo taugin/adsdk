@@ -215,7 +215,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded();
+                getAdListener().onInterstitialLoaded(this);
             }
             return;
         }
@@ -289,7 +289,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     }
                     if (getAdListener() != null) {
                         setLoadedFlag();
-                        getAdListener().onInterstitialLoaded();
+                        getAdListener().onInterstitialLoaded(AppLovinLoader.this);
                     }
                 }
 
@@ -363,7 +363,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded();
+                getAdListener().onRewardedVideoAdLoaded(this);
             }
             return;
         }
@@ -394,7 +394,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 }
                 if (getAdListener() != null) {
                     setLoadedFlag();
-                    getAdListener().onRewardedVideoAdLoaded();
+                    getAdListener().onRewardedVideoAdLoaded(AppLovinLoader.this);
                 }
             }
 

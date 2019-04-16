@@ -45,6 +45,11 @@ public class Constant {
     public static final String TYPE_INTERSTITIAL = "interstitial";
     public static final String TYPE_REWARD = "reward";
 
+    public static final String PLACE_TYPE_ADVIEW = "adview";
+    public static final String PLACE_TYPE_INTERSTITIAL = "interstitial";
+    public static final String PLACE_TYPE_REWARD = "reward";
+    public static final String PLACE_TYPE_COMPLEX = "complex";
+
     public static final String ECPM = "ecpm";
 
     public static final String APPKEY = "appkey";

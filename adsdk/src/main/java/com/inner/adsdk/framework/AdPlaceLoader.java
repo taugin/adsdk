@@ -32,6 +32,7 @@ import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.listener.OnAdSdkListener;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.stat.InternalStat;
 import com.inner.adsdk.utils.Utils;
 
 import java.lang.ref.WeakReference;
@@ -265,13 +266,32 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (pidConfig != null) {
                 String bannerSize = pidConfig.getBannerSize();
                 if (!TextUtils.isEmpty(bannerSize)) {
-                    Constant.Banner banner = Constant.Banner.valueOf(bannerSize);
+                    Constant.Banner banner = null;
+                    try {
+                        banner = Constant.Banner.valueOf(bannerSize);
+                    } catch (Exception e) {
+                    }
                     if (banner != null) {
                         return banner.value();
                     }
                 }
             }
         }
+
+        if (mAdPlace != null) {
+            String bannerSize = mAdPlace.getBannerSize();
+            if (!TextUtils.isEmpty(bannerSize)) {
+                Constant.Banner banner = null;
+                try {
+                    banner = Constant.Banner.valueOf(bannerSize);
+                } catch (Exception e) {
+                }
+                if (banner != null) {
+                    return banner.value();
+                }
+            }
+        }
+
         try {
             Map<String, Integer> map = getParams(loader).getBannerSize();
             return (int) map.get(loader.getSdkName());
@@ -282,6 +302,41 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 return (int) map.get(Constant.AD_SDK_COMMON);
             } catch (Exception e2) {
                 Log.e(Log.TAG, "error : " + e2);
+            }
+        }
+        return Constant.NOSET;
+    }
+
+    /**
+     * 获取通用的banner大小
+     *
+     * @return
+     */
+    private int getCommonBannerSize() {
+        if (mAdPlace != null) {
+            String bannerSize = mAdPlace.getBannerSize();
+            if (!TextUtils.isEmpty(bannerSize)) {
+                Constant.Banner banner = null;
+                try {
+                    banner = Constant.Banner.valueOf(bannerSize);
+                } catch (Exception e) {
+                }
+                if (banner != null) {
+                    return banner.value();
+                }
+            }
+        }
+
+        if (mAdParams != null) {
+            Params params = mAdParams.getParams(Constant.AD_SDK_COMMON);
+            if (params != null) {
+                Map<String, Integer> bannerMap = params.getBannerSize();
+                if (bannerMap != null && bannerMap.containsKey(Constant.AD_SDK_COMMON)) {
+                    Integer integer = bannerMap.get(Constant.AD_SDK_COMMON);
+                    if (integer != null) {
+                        return integer.intValue();
+                    }
+                }
             }
         }
         return Constant.NOSET;
@@ -446,7 +501,49 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public void showInterstitial() {
         Log.d(Log.TAG, "showInterstitial");
-        showInterstitialInternal();
+        boolean shown = false;
+        if (mAdPlace != null && mAdPlace.isHighEcpm()) {
+            if (TextUtils.equals(mAdPlace.getPlaceType(), Constant.PLACE_TYPE_INTERSTITIAL)) {
+                shown = showHighEcpmInterstitial();
+            } else if (TextUtils.equals(mAdPlace.getPlaceType(), Constant.PLACE_TYPE_REWARD)) {
+                shown = showHighEcpmReward();
+            }
+        }
+        if (!shown) {
+            showInterstitialInternal();
+        } else {
+            Log.pv(Log.TAG, "show he high int or reward");
+        }
+    }
+
+    private boolean showHighEcpmInterstitial() {
+        ISdkLoader loader = getIntSdkLoader();
+        if (loader != null) {
+            if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
+                ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
+                if (loader.showInterstitial()) {
+                    mCurrentAdLoader = loader;
+                    AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean showHighEcpmReward() {
+        ISdkLoader loader = getRewardSdkLoader();
+        if (loader != null) {
+            if (loader.isRewardedVideoType() && loader.isRewaredVideoLoaded()) {
+                ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
+                if (loader.showRewardedVideo()) {
+                    mCurrentAdLoader = loader;
+                    AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void showInterstitialInternal() {
@@ -611,8 +708,41 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             mAdParams = adParams;
         }
         mAdContainer = new WeakReference<ViewGroup>(adContainer);
-        showAdViewInternal(true);
-        autoSwitchAdView();
+        boolean shown = false;
+        if (mAdPlace != null && mAdPlace.isHighEcpm() && TextUtils.equals(mAdPlace.getPlaceType(), Constant.PLACE_TYPE_ADVIEW)) {
+            shown = showHighEcpmAdView();
+        }
+        if (!shown) {
+            showAdViewInternal(true);
+            autoSwitchAdView();
+        } else {
+            Log.pv(Log.TAG, "show he high banner or native");
+        }
+    }
+
+    private boolean showHighEcpmAdView() {
+        int bannerSize = getCommonBannerSize();
+        ISdkLoader loader = getAdViewSdkLoader(bannerSize);
+        if (loader != null) {
+            ViewGroup viewGroup = null;
+            if (mAdContainer != null) {
+                viewGroup = mAdContainer.get();
+            }
+            if (loader.isBannerLoaded() && viewGroup != null) {
+                mCurrentAdLoader = loader;
+                loader.showBanner(viewGroup);
+                AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
+                return true;
+            } else if (loader.isNativeLoaded() && viewGroup != null) {
+                mCurrentAdLoader = loader;
+                loader.showNative(viewGroup, getParams(loader));
+                AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
+                return true;
+            }
+        }
+        return false;
     }
 
     private void showAdViewInternal(boolean needCounting) {
@@ -1086,7 +1216,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     public class AdPlaceLoaderListener extends SimpleAdSdkListener {
 
         public void onLoaded(ISdkLoader loader) {
-            // putSdkLoader(loader);
+            putSdkLoader(mContext, loader);
         }
 
         @Override
@@ -1222,7 +1352,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private static int ecpmSort(ISdkLoader l1, ISdkLoader l2) {
-        if(l1 != null && l2 != null) {
+        if (l1 != null && l2 != null) {
             return l1.getEcpm() - l2.getEcpm();
         }
         if (l1 == null && l2 != null) {
@@ -1236,9 +1366,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     /**
      * 按照ecpm的大小排序放置loader，当placename和pid都相同时替换
+     *
      * @param loader
      */
-    private static synchronized void putSdkLoader(ISdkLoader loader) {
+    private static synchronized void putSdkLoader(Context context, ISdkLoader loader) {
         try {
             if (sLoadedAdLoaders != null && loader != null) {
                 synchronized (sLoadedAdLoaders) {
@@ -1261,6 +1392,22 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             return ecpmSort(o2, o1);
                         }
                     });
+                    removeUnuseLoader();
+                }
+            }
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e);
+            if (context != null) {
+                InternalStat.reportEvent(context, "putSdkLoader : " + (e != null ? e.getMessage() : "unknown error"));
+            }
+        }
+    }
+
+    private static void removeUnuseLoader() {
+        try {
+            if (sLoadedAdLoaders != null) {
+                synchronized (sLoadedAdLoaders) {
+                    ISdkLoader l = null;
                     for (int index = sLoadedAdLoaders.size() - 1; index >= 0; index--) {
                         l = sLoadedAdLoaders.get(index);
                         if (l != null
@@ -1273,15 +1420,51 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     }
                 }
             }
-        } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e);
+        } catch (Exception e) {
         }
     }
 
-    private static ISdkLoader getSdkLoader(String placeName, String sdk, String adType, int bannerSize, int ecpm) {
+    private static ISdkLoader getAdViewSdkLoader(int bannerSize) {
         if (sLoadedAdLoaders != null) {
             synchronized (sLoadedAdLoaders) {
+                for (ISdkLoader loader : sLoadedAdLoaders) {
+                    if (loader != null && (loader.isBannerLoaded() || loader.isNativeLoaded())) {
+                        if (TextUtils.equals(loader.getAdType(), Constant.TYPE_NATIVE)) {
+                            return loader;
+                        }
+                        if (TextUtils.equals(loader.getAdType(), Constant.TYPE_BANNER) && loader.getBannerSize() == bannerSize) {
+                            return loader;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
+    private static ISdkLoader getIntSdkLoader() {
+        if (sLoadedAdLoaders != null) {
+            synchronized (sLoadedAdLoaders) {
+                for (ISdkLoader loader : sLoadedAdLoaders) {
+                    if (loader != null && loader.isInterstitialLoaded()
+                            && TextUtils.equals(loader.getAdType(), Constant.TYPE_INTERSTITIAL)) {
+                        return loader;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private static ISdkLoader getRewardSdkLoader() {
+        if (sLoadedAdLoaders != null) {
+            synchronized (sLoadedAdLoaders) {
+                for (ISdkLoader loader : sLoadedAdLoaders) {
+                    if (loader != null && loader.isRewaredVideoLoaded()
+                            && TextUtils.equals(loader.getAdType(), Constant.TYPE_REWARD)) {
+                        return loader;
+                    }
+                }
             }
         }
         return null;
