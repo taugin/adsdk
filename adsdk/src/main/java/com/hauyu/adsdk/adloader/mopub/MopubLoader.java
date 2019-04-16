@@ -258,7 +258,7 @@ public class MopubLoader extends AbstractSdkLoader {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded();
+                getAdListener().onInterstitialLoaded(this);
             }
             return;
         }
@@ -290,7 +290,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
                 if (getAdListener() != null) {
                     setLoadedFlag();
-                    getAdListener().onInterstitialLoaded();
+                    getAdListener().onInterstitialLoaded(MopubLoader.this);
                 }
             }
 
@@ -423,7 +423,7 @@ public class MopubLoader extends AbstractSdkLoader {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded();
+                getAdListener().onRewardedVideoAdLoaded(this);
             }
             return;
         }
@@ -450,7 +450,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
                 if (getAdListener() != null) {
                     setLoadedFlag();
-                    getAdListener().onRewardedVideoAdLoaded();
+                    getAdListener().onRewardedVideoAdLoaded(MopubLoader.this);
                 }
             }
 
@@ -604,10 +604,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (mStat != null) {
                     mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
-                if (getAdListener() != null) {
-                    setLoadedFlag();
-                    getAdListener().onRewardedVideoAdLoaded();
-                }
+                notifyAdLoaded(false);
             }
 
             @Override
@@ -698,6 +695,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (parent instanceof ViewGroup) {
                     ((ViewGroup) parent).removeView(adView);
                 }
+                viewGroup.removeAllViews();
                 viewGroup.addView(adView);
                 if (viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);

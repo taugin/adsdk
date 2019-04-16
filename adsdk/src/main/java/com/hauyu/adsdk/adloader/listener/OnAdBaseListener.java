@@ -45,7 +45,7 @@ public interface OnAdBaseListener {
     /**
      * interstitial load
      */
-    public void onInterstitialLoaded();
+    public void onInterstitialLoaded(ISdkLoader loader);
 
     /**
      * interstitial show
@@ -85,7 +85,7 @@ public interface OnAdBaseListener {
     /**
      * reward load
      */
-    public void onRewardedVideoAdLoaded();
+    public void onRewardedVideoAdLoaded(ISdkLoader loader);
 
     /**
      * reward show

@@ -146,9 +146,16 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onInterstitialLoaded() {
+    public void onInterstitialLoaded(ISdkLoader loader) {
+        try {
+            if (mAdPlaceLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
+                ((AdPlaceLoader.AdPlaceLoaderListener) mAdPlaceLoaderListener).onLoaded(loader);
+            }
+        } catch (Exception e) {
+        }
+
         if (hasNotifyLoaded()) {
-            Log.v(Log.TAG, "has notify loaded");
+            Log.v(Log.TAG, "has notify loaded ++++++++++++++++++");
             return;
         }
         notifyAdLoaded();
@@ -244,7 +251,20 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onRewardedVideoAdLoaded() {
+    public void onRewardedVideoAdLoaded(ISdkLoader loader) {
+        try {
+            if (mAdPlaceLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
+                ((AdPlaceLoader.AdPlaceLoaderListener) mAdPlaceLoaderListener).onLoaded(loader);
+            }
+        } catch (Exception e) {
+        }
+
+        if (hasNotifyLoaded()) {
+            Log.v(Log.TAG, "has notify loaded ------------------");
+            return;
+        }
+        notifyAdLoaded();
+
         if (mOnAdSdkListener != null && isCurrent()) {
             mOnAdSdkListener.onLoaded(placeName, source, adType);
         }

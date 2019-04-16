@@ -38,7 +38,7 @@ public class SpLoader extends AbstractSdkLoader {
         if (mSpreads != null && !mSpreads.isEmpty()) {
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded();
+                getAdListener().onInterstitialLoaded(this);
             }
             StatImpl.get().reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         } else {

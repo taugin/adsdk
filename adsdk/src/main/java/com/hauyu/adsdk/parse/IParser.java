@@ -70,6 +70,10 @@ public interface IParser {
     String GLOBAL_CACHE = "gc";
     // waterfall 请求间隔
     String WATERFALL_INTERVAL = "int";
+    // 优先高ecpm
+    String HIGH_ECPM = "he";
+    // 场景类型
+    String PLACE_TYPE = "pt";
 
     // 广告平台 fb, admob, adx
     String SDK = "sdk";

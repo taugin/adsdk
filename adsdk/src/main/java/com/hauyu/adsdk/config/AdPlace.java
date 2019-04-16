@@ -45,6 +45,12 @@ public class AdPlace {
      */
     private long waterfallInt;
 
+    private String bannerSize;
+
+    private boolean highEcpm;
+
+    private String placeType;
+
     public String getName() {
         return name;
     }
@@ -188,6 +194,30 @@ public class AdPlace {
         this.waterfallInt = waterfallInt;
     }
 
+    public String getBannerSize() {
+        return bannerSize;
+    }
+
+    public void setBannerSize(String bannerSize) {
+        this.bannerSize = bannerSize;
+    }
+
+    public boolean isHighEcpm() {
+        return highEcpm;
+    }
+
+    public void setHighEcpm(boolean highEcpm) {
+        this.highEcpm = highEcpm;
+    }
+
+    public String getPlaceType() {
+        return placeType;
+    }
+
+    public void setPlaceType(String placeType) {
+        this.placeType = placeType;
+    }
+
     @Override
     public String toString() {
         return "AdPlace{" +
@@ -198,6 +228,7 @@ public class AdPlace {
                 ", p=" + percent +
                 ", as=" + autoSwitch +
                 ", ai=" + autoInterval +
+                ", bs=" + bannerSize +
                 ", uv='" + uniqueValue + '\'' +
                 ", loo=" + loadOnlyOnce +
                 '}';
