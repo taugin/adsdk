@@ -8,6 +8,7 @@ import com.appub.ads.a.R;
 import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.policy.BasePolicy;
 import com.inner.adsdk.utils.Utils;
 
 import java.util.Random;
@@ -37,6 +38,10 @@ public abstract class BottomLoader<Config, Policy> implements AdReceiver.OnTrigg
     }
 
     public void reportShowing() {
+        try {
+            ((BasePolicy) mPolicy).reportShowing(true);
+        } catch (Exception e) {
+        }
     }
 
     protected AdParams generateAdParams() {
