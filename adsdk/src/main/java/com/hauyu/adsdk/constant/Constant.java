@@ -152,6 +152,8 @@ public class Constant {
 
     public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
 
+    public static final SimpleDateFormat SDF_LEFT_TIME = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+
     public enum Banner {
         NOSET(Constant.NOSET),
         BANNER(Constant.BANNER),

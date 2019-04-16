@@ -23,6 +23,7 @@ public abstract class BaseConfig {
     private boolean showBottomActivity = true;
     private String placeNameInt;
     private String placeNameAdv;
+    private long sceneInterval;
 
     public abstract String getName();
 
@@ -152,5 +153,33 @@ public abstract class BaseConfig {
 
     public void setPlaceNameAdv(String placeNameAdv) {
         this.placeNameAdv = placeNameAdv;
+    }
+
+    public long getSceneInterval() {
+        return sceneInterval;
+    }
+
+    public void setSceneInterval(long sceneInterval) {
+        this.sceneInterval = sceneInterval;
+    }
+
+    public void clear() {
+        enable = false;
+        upDelay = 0;
+        interval = 0;
+        maxCount = 0;
+        maxVersion = 0;
+        minInterval = 0;
+        screenOrientation = 0;
+        configInstallTime = 0;
+        timeOut = 300000;
+        countryList = null;
+        attrList = null;
+        mediaList = null;
+        ntRate = 0;
+        showBottomActivity = true;
+        placeNameInt = null;
+        placeNameAdv = null;
+        sceneInterval = 0;
     }
 }

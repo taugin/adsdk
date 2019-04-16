@@ -196,6 +196,9 @@ public class AdParser implements IParser {
             if (jobj.has(PLACE_NAME_ADV)) {
                 baseConfig.setPlaceNameAdv(jobj.getString(PLACE_NAME_ADV));
             }
+            if (jobj.has(SCENE_INTERVAL)) {
+                baseConfig.setSceneInterval(jobj.getLong(SCENE_INTERVAL));
+            }
             parseAttrConfig(baseConfig, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseBasePolicyInternal error : " + e);
