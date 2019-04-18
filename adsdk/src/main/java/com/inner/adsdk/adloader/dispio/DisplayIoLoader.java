@@ -128,7 +128,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                                             }
                                             if (mStat != null) {
-                                                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                                                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
                                             }
                                         }
                                     }
@@ -321,7 +321,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                             mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                                         }
                                         if (mStat != null) {
-                                            mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                                            mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
                                         }
                                         Log.v(Log.TAG, "");
                                     }
@@ -340,7 +340,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                             mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                                         }
                                         if (mStat != null) {
-                                            mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                                            mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
                                         }
                                     }
 
@@ -446,7 +446,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
             }
             return true;
         }
