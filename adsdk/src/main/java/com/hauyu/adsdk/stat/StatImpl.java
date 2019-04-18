@@ -583,7 +583,7 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdShowForLTV(Context context, String sdk, String pid) {
+    public void reportAdShowForLTV(Context context, String sdk, String pid, String ecpm) {
         if (context == null) {
             return;
         }
@@ -591,12 +591,14 @@ public class StatImpl implements IStat {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put("sdk_name", sdk);
         extra.put("pid", pid);
+        extra.put("ecpm", ecpm);
         sendAppsflyer(context, null, eventId, extra);
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid);
+        sendFacebook(context, null, eventId, extra);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
     }
 
     @Override
-    public void reportAdImpForLTV(Context context, String sdk, String pid) {
+    public void reportAdImpForLTV(Context context, String sdk, String pid, String ecpm) {
         if (context == null) {
             return;
         }
@@ -604,12 +606,14 @@ public class StatImpl implements IStat {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put("sdk_name", sdk);
         extra.put("pid", pid);
+        extra.put("ecpm", ecpm);
         sendAppsflyer(context, null, eventId, extra);
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid);
+        sendFacebook(context, null, eventId, extra);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
     }
 
     @Override
-    public void reportAdClickForLTV(Context context, String sdk, String pid) {
+    public void reportAdClickForLTV(Context context, String sdk, String pid, String ecpm) {
         if (context == null) {
             return;
         }
@@ -617,8 +621,10 @@ public class StatImpl implements IStat {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put("sdk_name", sdk);
         extra.put("pid", pid);
+        extra.put("ecpm", ecpm);
         sendAppsflyer(context, null, eventId, extra);
-        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid);
+        sendFacebook(context, null, eventId, extra);
+        Log.v(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
     }
 
     @Override

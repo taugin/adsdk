@@ -143,7 +143,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
@@ -216,7 +216,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "dfploader error : " + e);
@@ -302,7 +302,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
                 }
             }
 
@@ -313,7 +313,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -361,7 +361,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
             }
             return true;
         }
@@ -443,7 +443,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
                 }
                 if (isDestroyAfterClick()) {
                     nativeAd = null;
@@ -465,7 +465,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
                 }
             }
 
@@ -588,7 +588,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
                 }
             }
 
@@ -631,7 +631,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
                 }
                 if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid());
+                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
                 }
             }
 
@@ -672,7 +672,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
             }
             if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid());
+                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
             }
             return true;
         }
