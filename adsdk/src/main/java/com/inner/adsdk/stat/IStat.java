@@ -126,7 +126,7 @@ public interface IStat {
      * @param sdk
      * @param pid
      */
-    public void reportAdShowForLTV(Context context, String sdk, String pid);
+    public void reportAdShowForLTV(Context context, String sdk, String pid, String ecpm);
 
     /**
      * ltv上报展示
@@ -134,7 +134,7 @@ public interface IStat {
      * @param sdk
      * @param pid
      */
-    public void reportAdImpForLTV(Context context, String sdk, String pid);
+    public void reportAdImpForLTV(Context context, String sdk, String pid, String ecpm);
 
     /**
      * ltv上报点击
@@ -142,7 +142,7 @@ public interface IStat {
      * @param sdk
      * @param pid
      */
-    public void reportAdClickForLTV(Context context, String sdk, String pid);
+    public void reportAdClickForLTV(Context context, String sdk, String pid, String ecpm);
 
     /**
      * 上报FSA结束事件
