@@ -1,5 +1,6 @@
 package com.hauyu.adsdk.framework;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
@@ -66,7 +67,7 @@ public abstract class BottomLoader<Config, Policy> implements AdReceiver.OnTrigg
     }
 
     protected void show(String pidName, String source, String adType) {
-        try {
+
             Intent intent = Utils.getIntentByAction(getContext(), getContext().getPackageName() + ".action.AFPICKER");
             if (intent == null) {
                 intent = new Intent(getContext(), FSA.class);
@@ -75,9 +76,16 @@ public abstract class BottomLoader<Config, Policy> implements AdReceiver.OnTrigg
             intent.putExtra(Intent.EXTRA_TEXT, source);
             intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
+        try {
+            PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+            pendingIntent.send();
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
+            try {
+                getContext().startActivity(intent);
+            } catch (Exception e1) {
+                Log.e(Log.TAG, "error : " + e);
+            }
         }
     }
 

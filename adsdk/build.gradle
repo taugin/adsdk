@@ -3,7 +3,10 @@ apply plugin: 'com.android.library'
 apply plugin: 'stringfog'
 stringfog {
     // 这是加解密 key，可以自由定义。
-    key 'cxcs_fxxk'
+    def random = ["a", "b", "c", "d", "e", "f", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    Collections.shuffle(random)
+    key random.join()
+    println "fogkey : " + key
     // 开关
     enable true
     // 加解密库的实现类路径，需和上面配置的加解密算法库一致。
