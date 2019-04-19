@@ -74,6 +74,8 @@ public interface IParser {
     String HIGH_ECPM = "he";
     // 场景类型
     String PLACE_TYPE = "pt";
+    // 顺序加载超时值
+    String SEQ_TIMEOUT = "sto";
 
     // 广告平台 fb, admob, adx
     String SDK = "sdk";

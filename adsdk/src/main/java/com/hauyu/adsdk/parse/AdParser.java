@@ -470,6 +470,9 @@ public class AdParser implements IParser {
             if (jobj.has(PLACE_TYPE)) {
                 adPlace.setPlaceType(jobj.getString(PLACE_TYPE));
             }
+            if (jobj.has(SEQ_TIMEOUT)) {
+                adPlace.setSeqTimeout(jobj.getLong(SEQ_TIMEOUT));
+            }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
             sortPidList(adPlace);
         } catch (Exception e) {

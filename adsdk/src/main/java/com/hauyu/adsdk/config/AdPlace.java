@@ -51,6 +51,8 @@ public class AdPlace {
 
     private String placeType;
 
+    private long seqTimeout = 300000;
+
     public String getName() {
         return name;
     }
@@ -216,6 +218,14 @@ public class AdPlace {
 
     public void setPlaceType(String placeType) {
         this.placeType = placeType;
+    }
+
+    public long getSeqTimeout() {
+        return seqTimeout;
+    }
+
+    public void setSeqTimeout(long seqTimeout) {
+        this.seqTimeout = seqTimeout;
     }
 
     @Override
