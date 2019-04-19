@@ -33,6 +33,8 @@ import java.util.List;
 public class AdReceiver {
 
     private static AdReceiver sAdReceiver;
+    private static final int MSG_SHOW_LOCKSCREEN = 123456789;
+    private static final int DELAY = 5000;
 
     private Context mContext;
     private Handler mHandler;
@@ -138,9 +140,10 @@ public class AdReceiver {
                 triggerScreenOff(context);
             } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
                 AtAdLoader.get(context).resumeLoader();
-                showLs();
+                showLockScreen();
                 triggerScreenOn(context);
             } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+                showLockScreen();
                 triggerUserPresent(context);
             } else if (Intent.ACTION_CLOSE_SYSTEM_DIALOGS.equals(intent.getAction())) {
                 String reason = intent.getStringExtra("reason");
@@ -186,6 +189,17 @@ public class AdReceiver {
         return false;
     }
 
+    private void showLockScreen() {
+        if (mHandler != null) {
+            if (!mHandler.hasMessages(MSG_SHOW_LOCKSCREEN)) {
+                showLs();
+                mHandler.sendEmptyMessageDelayed(MSG_SHOW_LOCKSCREEN, DELAY);
+            } else {
+                mHandler.removeMessages(MSG_SHOW_LOCKSCREEN);
+            }
+        }
+    }
+
     private void showLs() {
         updateLtPolicy();
         if (!LtPolicy.get(mContext).isLtAllowed()) {
@@ -199,6 +213,7 @@ public class AdReceiver {
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             mContext.startActivity(intent);
             LtPolicy.get(mContext).reportShowing(true);
         } catch (Exception e) {
