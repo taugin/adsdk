@@ -20,7 +20,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionName "1.9.4-pure"
+        versionName "1.9.5-pure"
         consumerProguardFiles 'proguard-rules.pro'
     }
 
