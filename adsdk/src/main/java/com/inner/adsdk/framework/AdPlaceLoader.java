@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
@@ -49,7 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 每个广告位对应一个AdPlaceLoader对象
  */
 
-public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Runnable {
+public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Runnable, Handler.Callback {
     private List<ISdkLoader> mAdLoaders = new ArrayList<ISdkLoader>();
     private AdPlace mAdPlace;
     private Map<String, String> mAdIds;
@@ -67,6 +68,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private FSA.MView mMView;
     private static List<ISdkLoader> sLoadedAdLoaders = new ArrayList<ISdkLoader>();
+    private boolean mAdPlaceSeqLoading = false;
 
     public AdPlaceLoader(Context context) {
         mContext = context;
@@ -446,10 +448,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private void loadInterstitialSequence() {
-        if (mAdLoaders != null) {
+        if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
             // 使用迭代器处理
-            final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
-            loadInterstitialSequenceInternal(iterator);
+            if (!isAdPlaceSeqLoading()) {
+                setAdPlaceSeqLoading(true);
+                final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
+                loadInterstitialSequenceInternal(iterator);
+            } else {
+                Log.pv(Log.TAG, mAdPlace.getName() + " seq is loading ...");
+            }
+        } else {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
         }
     }
 
@@ -483,8 +494,21 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         Log.e(Log.TAG, "load next interstitial");
                         loadInterstitialSequenceInternal(iterator);
                     } else {
+                        setAdPlaceSeqLoading(false);
                         super.onInterstitialError(error);
                     }
+                }
+
+                @Override
+                public void onInterstitialLoaded(ISdkLoader loader) {
+                    setAdPlaceSeqLoading(false);
+                    super.onInterstitialLoaded(loader);
+                }
+
+                @Override
+                public void onRewardedVideoAdLoaded(ISdkLoader loader) {
+                    setAdPlaceSeqLoading(false);
+                    super.onRewardedVideoAdLoaded(loader);
                 }
             });
             if (loader.isRewardedVideoType()) {
@@ -645,8 +669,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private void loadAdViewSequence() {
-        final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
-        loadAdViewSequenceInternal(iterator);
+        if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
+            if (!isAdPlaceSeqLoading()) {
+                setAdPlaceSeqLoading(true);
+                final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
+                loadAdViewSequenceInternal(iterator);
+            } else {
+                Log.pv(Log.TAG, mAdPlace.getName() + " seq is loading ...");
+            }
+        } else {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+        }
     }
 
     private void loadAdViewRandom() {
@@ -681,8 +716,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         Log.e(Log.TAG, "load next adview");
                         loadAdViewSequenceInternal(iterator);
                     } else {
+                        setAdPlaceSeqLoading(false);
                         super.onAdFailed(error);
                     }
+                }
+
+                @Override
+                public void onAdLoaded(ISdkLoader loader) {
+                    setAdPlaceSeqLoading(false);
+                    super.onAdLoaded(loader);
                 }
             });
             if (loader.isBannerType()) {
@@ -906,8 +948,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private void loadComplexAdsSequence() {
-        final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
-        loadComplexAdsSequenceInternal(iterator);
+        if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
+            if (!isAdPlaceSeqLoading()) {
+                setAdPlaceSeqLoading(true);
+                final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
+                loadComplexAdsSequenceInternal(iterator);
+            } else {
+                Log.pv(Log.TAG, mAdPlace.getName() + " seq is loading ...");
+            }
+        } else {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+        }
     }
 
     private void loadComplexAdsSequenceInternal(final Iterator<ISdkLoader> iterator) {
@@ -924,6 +977,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         Log.e(Log.TAG, "load next complex");
                         loadComplexAdsSequenceInternal(iterator);
                     } else {
+                        setAdPlaceSeqLoading(false);
                         super.onAdFailed(error);
                     }
                 }
@@ -934,8 +988,27 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         Log.e(Log.TAG, "load next complex");
                         loadComplexAdsSequenceInternal(iterator);
                     } else {
+                        setAdPlaceSeqLoading(false);
                         super.onInterstitialError(error);
                     }
+                }
+
+                @Override
+                public void onAdLoaded(ISdkLoader loader) {
+                    setAdPlaceSeqLoading(false);
+                    super.onAdLoaded(loader);
+                }
+
+                @Override
+                public void onInterstitialLoaded(ISdkLoader loader) {
+                    setAdPlaceSeqLoading(false);
+                    super.onInterstitialLoaded(loader);
+                }
+
+                @Override
+                public void onRewardedVideoAdLoaded(ISdkLoader loader) {
+                    setAdPlaceSeqLoading(false);
+                    super.onRewardedVideoAdLoaded(loader);
                 }
             });
             if (loader.isBannerType()) {
@@ -1486,5 +1559,57 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             }
         }
         return size;
+    }
+
+    private void setAdPlaceSeqLoading(boolean loading) {
+        mAdPlaceSeqLoading = loading;
+        if (mAdPlaceSeqLoading) {
+            if (mHandler != null) {
+                mHandler.removeMessages(getMsgWhat());
+                if (mAdPlace != null && !TextUtils.isEmpty(mAdPlace.getName())) {
+                    Log.pv(Log.TAG, mAdPlace.getName() + " send seq loading timeout : " + getTimeout());
+                }
+                mHandler.sendEmptyMessageDelayed(getMsgWhat(), getTimeout());
+            }
+        } else {
+            if (mHandler != null) {
+                mHandler.removeMessages(getMsgWhat());
+                if (mAdPlace != null && !TextUtils.isEmpty(mAdPlace.getName())) {
+                    Log.pv(Log.TAG, mAdPlace.getName() + " remove seq loading timeout");
+                }
+            }
+        }
+    }
+
+    private boolean isAdPlaceSeqLoading() {
+        return mAdPlaceSeqLoading;
+    }
+
+    private long getTimeout() {
+        if (mAdPlace != null) {
+            return mAdPlace.getSeqTimeout();
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (msg != null && msg.what == getMsgWhat()) {
+            setAdPlaceSeqLoading(false);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 获取id
+     * @return
+     */
+    private int getMsgWhat() {
+        int msgWhat = 0;
+        if (mAdPlace != null && !TextUtils.isEmpty(mAdPlace.getName())) {
+            msgWhat = mAdPlace.getName().hashCode();
+        }
+        return msgWhat;
     }
 }
