@@ -224,12 +224,18 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         try {
             Map<String, Integer> map = getParams(loader).getBannerSize();
-            return (int) map.get(loader.getSdkName());
+            Integer banner = map.get(loader.getSdkName());
+            if (banner != null) {
+                return banner.intValue();
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
             try {
                 Map<String, Integer> map = getParams(loader).getBannerSize();
-                return (int) map.get(Constant.AD_SDK_COMMON);
+                Integer banner = map.get(Constant.AD_SDK_COMMON);
+                if (banner != null) {
+                    return banner.intValue();
+                }
             } catch (Exception e2) {
                 Log.e(Log.TAG, "error : " + e2);
             }
