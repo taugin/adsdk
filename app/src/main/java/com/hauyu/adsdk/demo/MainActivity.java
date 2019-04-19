@@ -30,7 +30,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     private static final int LAYOUT[] = new int[]{
-            //R.layout.ad_common_native_card_small,
+            R.layout.ad_common_native_card_small,
             R.layout.ad_common_native_card_medium
     };
     private static final int CARDID[] = new int[]{
@@ -144,8 +144,9 @@ public class MainActivity extends AppCompatActivity {
             builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
         }
         View view = LayoutInflater.from(this).inflate(layoutId, null);
+        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, CARDID[new Random().nextInt(CARDID.length)]);
         // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
-        builder.setAdRootView(AdExtra.AD_SDK_COMMON, view);
+        // builder.setAdRootView(AdExtra.AD_SDK_COMMON, view);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
         builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
         builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);

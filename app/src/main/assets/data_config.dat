@@ -93,20 +93,20 @@
     },
     {
       "name": "banner_and_native",
-      "mode": "con",
+      "mode": "seq",
       "as": 1,
       "pids": [
         {
           "sdk": "adx",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "mopub",
           "type": "native",
           "pid": "11a17b188668469fb0412708c3d16813",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "mopub",
@@ -118,25 +118,25 @@
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",
           "type": "native",
           "pid": "/6499/example/native",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",
           "type": "banner",
           "pid": "/6253334/dfp_example_ad",
-          "disable": 1
+          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -144,34 +144,34 @@
     },
     {
       "name": "interstitial",
-      "mode": "con",
+      "mode": "seq",
       "pids": [
         {
           "sdk": "admob",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "adx",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "mopub",
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
           "ctr": 5,
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",
           "type": "interstitial",
           "pid": "/6499/example/interstitial",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "spread",
