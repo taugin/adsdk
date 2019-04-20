@@ -36,7 +36,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     // 加载未返回的超时消息
     protected static final int MSG_LOADING_TIMEOUT = 1000;
     // 加载未返回的超时时间5分钟
-    protected static final int LOADING_TIMEOUT = 5 * 60 * 1000;
+    protected static final int LOADING_TIMEOUT = 60 * 1000;
 
     protected static final int STATE_REQUEST = 1;
     protected static final int STATE_SUCCESS = 2;
