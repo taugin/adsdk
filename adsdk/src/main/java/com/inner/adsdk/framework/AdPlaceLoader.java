@@ -484,7 +484,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         ISdkLoader loader = iterator.next();
         if (loader != null && loader.allowUseLoader()) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+            SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
                 public void onInterstitialError(int error) {
@@ -508,13 +508,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     setAdPlaceSeqLoading(false);
                     super.onRewardedVideoAdLoaded(loader);
                 }
-            });
+            };
+            registerAdBaseListener(loader, simpleAdBaseBaseListener);
             if (loader.isRewardedVideoType()) {
                 loader.loadRewardedVideo();
             } else if (loader.isInterstitialType()) {
                 loader.loadInterstitial();
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                simpleAdBaseBaseListener.onInterstitialError(Constant.AD_ERROR_CONFIG);
             }
         }
     }
@@ -708,7 +710,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         ISdkLoader loader = iterator.next();
         if (loader != null && loader.allowUseLoader()) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+            SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
                 public void onAdFailed(int error) {
@@ -726,13 +728,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     setAdPlaceSeqLoading(false);
                     super.onAdLoaded(loader);
                 }
-            });
+            };
+            registerAdBaseListener(loader, simpleAdBaseBaseListener);
             if (loader.isBannerType()) {
                 loader.loadBanner(getBannerSize(loader));
             } else if (loader.isNativeType()) {
                 loader.loadNative(getParams(loader));
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getAdType());
+                simpleAdBaseBaseListener.onAdFailed(Constant.AD_ERROR_CONFIG);
             }
         }
     }
@@ -965,7 +969,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         ISdkLoader loader = iterator.next();
         if (loader != null && loader.allowUseLoader()) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+            SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
                 public void onAdFailed(int error) {
@@ -1006,7 +1010,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     setAdPlaceSeqLoading(false);
                     super.onRewardedVideoAdLoaded(loader);
                 }
-            });
+            };
+            registerAdBaseListener(loader, simpleAdBaseBaseListener);
             if (loader.isBannerType()) {
                 loader.loadBanner(getBannerSize(loader));
             } else if (loader.isNativeType()) {
@@ -1017,6 +1022,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 loader.loadRewardedVideo();
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                simpleAdBaseBaseListener.onAdFailed(Constant.AD_ERROR_CONFIG);
             }
         }
     }
