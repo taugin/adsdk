@@ -433,8 +433,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 if (loader != null && loader.allowUseLoader()) {
                     if (loader.isRewardedVideoType()) {
                         loader.loadRewardedVideo();
-                    } else {
+                    } else if (loader.isInterstitialType()) {
                         loader.loadInterstitial();
+                    } else {
+                        Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                     }
                 }
             }
@@ -467,8 +469,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this));
                 if (loader.isRewardedVideoType()) {
                     loader.loadRewardedVideo();
-                } else {
+                } else if (loader.isInterstitialType()) {
                     loader.loadInterstitial();
+                } else {
+                    Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 }
             }
         }
@@ -507,8 +511,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             });
             if (loader.isRewardedVideoType()) {
                 loader.loadRewardedVideo();
-            } else {
+            } else if (loader.isInterstitialType()) {
                 loader.loadInterstitial();
+            } else {
+                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
             }
         }
     }
