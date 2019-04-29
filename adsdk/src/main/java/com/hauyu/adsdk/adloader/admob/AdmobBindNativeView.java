@@ -147,6 +147,11 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e);
         }
 
+        /**
+         * 默认adchoiceview不可见
+         */
+        restoreAdChoiceView(rootView, mParams.getAdChoices());
+
         adView.addView(rootView);
 
         View titleView = rootView.findViewById(mParams.getAdTitle());

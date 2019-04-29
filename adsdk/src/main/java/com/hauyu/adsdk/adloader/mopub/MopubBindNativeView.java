@@ -127,6 +127,11 @@ public class MopubBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e);
         }
 
+        /**
+         * 默认adchoiceview不可见
+         */
+        restoreAdChoiceView(rootView, mParams.getAdChoices());
+
         try {
             bindVideoRender(context, nativeAd);
         } catch (Exception e) {

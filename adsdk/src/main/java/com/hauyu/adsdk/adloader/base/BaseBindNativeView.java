@@ -30,6 +30,17 @@ public class BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e);
         }
     }
+
+    protected void restoreAdChoiceView(View rootView, int iconId) {
+        try {
+            View adChoiceView = rootView.findViewById(iconId);
+            if (adChoiceView instanceof ViewGroup) {
+                ((ViewGroup)adChoiceView).removeAllViews();
+            }
+        } catch(Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+    }
     /**
      * 替换view
      * @param srcView 原始View
