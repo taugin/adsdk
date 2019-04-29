@@ -340,15 +340,22 @@ public class AdSdk {
         }
     }
 
-    public boolean showComplexAds(String pidName, ViewGroup adContainer) {
-        return showComplexAds(pidName, null, null, adContainer);
+    public void showComplexAds(String pidName, ViewGroup adContainer) {
+        showComplexAds(pidName, null, null, adContainer);
     }
 
-    public boolean showComplexAds(String pidName, String source, String adType, ViewGroup adContainer) {
-        return showComplexAds(pidName, null, source, adType, adContainer);
+    public void showComplexAds(String pidName, String source, String adType, ViewGroup adContainer) {
+        showComplexAds(pidName, null, source, adType, adContainer);
     }
 
-    public boolean showComplexAds(String pidName, AdParams adParams, String source, String adType, ViewGroup adContainer) {
+    public void showComplexAds(String pidName, AdParams adParams, String source, String adType, ViewGroup adContainer) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            loader.showComplexAds(adContainer, adParams, source, adType);
+        }
+    }
+
+    public boolean showComplexAdsWithResult(String pidName, AdParams adParams, String source, String adType, ViewGroup adContainer) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
             return loader.showComplexAds(adContainer, adParams, source, adType);
@@ -356,12 +363,11 @@ public class AdSdk {
         return false;
     }
 
-    public boolean showComplexAds(String pidName) {
+    public void showComplexAds(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            return loader.showComplexAds();
+            loader.showComplexAds();
         }
-        return false;
     }
 
     /**

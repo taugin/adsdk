@@ -415,7 +415,7 @@ public class FSA extends Activity {
 
     private void showAdViewInternal() {
         if (mAdLayout != null) {
-            boolean shown = AdSdk.get(this).showComplexAds(mPidName, getAdParams(), mSource, mAdType, mAdLayout);
+            boolean shown = AdSdk.get(this).showComplexAdsWithResult(mPidName, getAdParams(), mSource, mAdType, mAdLayout);
             if (shown) {
                 onAdShowing(mAdLayout);
                 if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)
@@ -482,7 +482,7 @@ public class FSA extends Activity {
      */
     private void showGAd() {
         if (!TextUtils.isEmpty(mPidName)) {
-            boolean shown = AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, null);
+            boolean shown = AdSdk.get(this).showComplexAdsWithResult(mPidName, null,  mSource, mAdType, null);
             if (!shown) {
                 finishActivityWithDelay();
             }
