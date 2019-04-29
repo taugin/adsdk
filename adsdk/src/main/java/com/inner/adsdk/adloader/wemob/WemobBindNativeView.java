@@ -133,6 +133,11 @@ public class WemobBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e);
         }
 
+        /**
+         * 默认adchoiceview不可见
+         */
+        restoreAdChoiceView(rootView, mParams.getAdChoices());
+
         TextView titleView = rootView.findViewById(mParams.getAdTitle());
         TextView subTitleView = rootView.findViewById(mParams.getAdSubTitle());
         ImageView icon = rootView.findViewById(mParams.getAdIcon());

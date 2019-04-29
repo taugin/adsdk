@@ -141,6 +141,11 @@ public class InmobiBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e);
         }
 
+        /**
+         * 默认adchoiceview不可见
+         */
+        restoreAdChoiceView(rootView, mParams.getAdChoices());
+
         ViewGroup rootLayout = (ViewGroup) rootView;
 
         TextView titleView = rootLayout.findViewById(mParams.getAdTitle());
