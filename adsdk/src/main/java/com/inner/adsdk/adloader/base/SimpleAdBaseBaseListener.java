@@ -15,8 +15,6 @@ import com.inner.adsdk.log.Log;
 
 public class SimpleAdBaseBaseListener implements OnAdBaseListener {
 
-    private OnAdSdkListener mOnAdSdkListener;
-    private OnAdSdkListener mAdPlaceLoaderListener;
     private IManagerListener listener;
     private String source;
     private String adType;
@@ -29,10 +27,6 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         this.placeName = placeName;
         this.pidName = pidName;
         this.listener = l;
-        if (l != null) {
-            mOnAdSdkListener = l.getOnAdSdkListener();
-            mAdPlaceLoaderListener = l.getOnAdPlaceLoaderListener();
-        }
     }
 
     private boolean isCurrent() {
@@ -55,12 +49,28 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         }
     }
 
+    private OnAdSdkListener getOnAdSdkListener() {
+        if (listener != null) {
+            return listener.getOnAdSdkListener();
+        }
+        return null;
+    }
+
+    private OnAdSdkListener getOnAdPlaceLoaderListener() {
+        if (listener != null) {
+            return listener.getOnAdPlaceLoaderListener();
+        }
+        return null;
+    }
+
     @Override
     public void onAdLoaded(ISdkLoader loader) {
         // 所有加载成功的loader都将通知给adplaceloader
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
         try {
-            if (mAdPlaceLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
-                ((AdPlaceLoader.AdPlaceLoaderListener) mAdPlaceLoaderListener).onLoaded(loader);
+            if (placeLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
+                ((AdPlaceLoader.AdPlaceLoaderListener) placeLoaderListener).onLoaded(loader);
             }
         } catch (Exception e) {
         }
@@ -70,41 +80,47 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
             return;
         }
         notifyAdLoaded();
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onLoaded(placeName, source, adType);
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onLoaded(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onLoaded(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onLoaded(placeName, source, adType);
         }
     }
 
     @Override
     public void onAdShow() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onShow(placeName, source, adType);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onShow(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onShow(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onShow(placeName, source, adType);
         }
     }
 
     @Override
     public void onAdClick() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onClick(placeName, source, adType);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onClick(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onClick(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onClick(placeName, source, adType);
         }
     }
 
     @Override
     public void onAdDismiss() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onDismiss(placeName, source, adType);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onDismiss(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onDismiss(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onDismiss(placeName, source, adType);
         }
     }
 
@@ -113,31 +129,35 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         /**
          * 错误回调不需要判断是否是当前loader
          */
-        if (mOnAdSdkListener != null) {
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null) {
             if (error == Constant.AD_ERROR_LOADING) {
-                mOnAdSdkListener.onLoading(placeName, source, adType);
+                adSdkListener.onLoading(placeName, source, adType);
             } else {
-                mOnAdSdkListener.onError(placeName, source, adType);
-                mOnAdSdkListener.onError(placeName, source, adType, error);
+                adSdkListener.onError(placeName, source, adType);
+                adSdkListener.onError(placeName, source, adType, error);
             }
         }
-        if (mAdPlaceLoaderListener != null) {
-            if (error  == Constant.AD_ERROR_LOADING) {
-                mAdPlaceLoaderListener.onLoading(placeName, source, adType);
+        if (placeLoaderListener != null) {
+            if (error == Constant.AD_ERROR_LOADING) {
+                placeLoaderListener.onLoading(placeName, source, adType);
             } else {
-                mAdPlaceLoaderListener.onError(placeName, source, adType);
-                mAdPlaceLoaderListener.onError(placeName, source, adType, error);
+                placeLoaderListener.onError(placeName, source, adType);
+                placeLoaderListener.onError(placeName, source, adType, error);
             }
         }
     }
 
     @Override
     public void onAdImpression() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onShow(placeName, source, adType);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onShow(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onShow(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onShow(placeName, source, adType);
         }
     }
 
@@ -147,9 +167,11 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
 
     @Override
     public void onInterstitialLoaded(ISdkLoader loader) {
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
         try {
-            if (mAdPlaceLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
-                ((AdPlaceLoader.AdPlaceLoaderListener) mAdPlaceLoaderListener).onLoaded(loader);
+            if (placeLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
+                ((AdPlaceLoader.AdPlaceLoaderListener) placeLoaderListener).onLoaded(loader);
             }
         } catch (Exception e) {
         }
@@ -159,41 +181,47 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
             return;
         }
         notifyAdLoaded();
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onLoaded(placeName, source, adType);
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onLoaded(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onLoaded(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onLoaded(placeName, source, adType);
         }
     }
 
     @Override
     public void onInterstitialShow() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onShow(placeName, source, adType);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onShow(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onShow(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onShow(placeName, source, adType);
         }
     }
 
     @Override
     public void onInterstitialClick() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onClick(placeName, source, adType);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onClick(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onClick(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onClick(placeName, source, adType);
         }
     }
 
     @Override
     public void onInterstitialDismiss() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onDismiss(placeName, source, adType);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onDismiss(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onDismiss(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onDismiss(placeName, source, adType);
         }
     }
 
@@ -202,59 +230,69 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         /**
          * 错误回调不需要判断是否是当前loader
          */
-        if (mOnAdSdkListener != null) {
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null) {
             if (error == Constant.AD_ERROR_LOADING) {
-                mOnAdSdkListener.onLoading(placeName, source, adType);
+                adSdkListener.onLoading(placeName, source, adType);
             } else {
-                mOnAdSdkListener.onError(placeName, source, adType);
-                mOnAdSdkListener.onError(placeName, source, adType, error);
+                adSdkListener.onError(placeName, source, adType);
+                adSdkListener.onError(placeName, source, adType, error);
             }
         }
-        if (mAdPlaceLoaderListener != null) {
+        if (placeLoaderListener != null) {
             if (error == Constant.AD_ERROR_LOADING) {
-                mAdPlaceLoaderListener.onLoading(placeName, source, adType);
+                placeLoaderListener.onLoading(placeName, source, adType);
             } else {
-                mAdPlaceLoaderListener.onError(placeName, source, adType);
-                mAdPlaceLoaderListener.onError(placeName, source, adType, error);
+                placeLoaderListener.onError(placeName, source, adType);
+                placeLoaderListener.onError(placeName, source, adType, error);
             }
         }
     }
 
     @Override
     public void onRewarded(AdReward reward) {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onRewarded(placeName, source, adType, reward);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onRewarded(placeName, source, adType, reward);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onRewarded(placeName, source, adType, reward);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onRewarded(placeName, source, adType, reward);
         }
     }
 
     @Override
     public void onRewardedVideoAdClosed() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onDismiss(placeName, source, adType);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onDismiss(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onDismiss(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onDismiss(placeName, source, adType);
         }
     }
 
     @Override
     public void onRewardedVideoAdClicked() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onClick(placeName, source, adType);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onClick(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onClick(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onClick(placeName, source, adType);
         }
     }
 
     @Override
     public void onRewardedVideoAdLoaded(ISdkLoader loader) {
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
         try {
-            if (mAdPlaceLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
-                ((AdPlaceLoader.AdPlaceLoaderListener) mAdPlaceLoaderListener).onLoaded(loader);
+            if (placeLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
+                ((AdPlaceLoader.AdPlaceLoaderListener) placeLoaderListener).onLoaded(loader);
             }
         } catch (Exception e) {
         }
@@ -265,41 +303,47 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         }
         notifyAdLoaded();
 
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onLoaded(placeName, source, adType);
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onLoaded(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onLoaded(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onLoaded(placeName, source, adType);
         }
     }
 
     @Override
     public void onRewardedVideoAdShowed() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onShow(placeName, source, adType);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onShow(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onShow(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onShow(placeName, source, adType);
         }
     }
 
     @Override
     public void onRewardedVideoCompleted() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onCompleted(placeName, source, adType);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onCompleted(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onCompleted(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onCompleted(placeName, source, adType);
         }
     }
 
     @Override
     public void onRewardedVideoStarted() {
-        if (mOnAdSdkListener != null && isCurrent()) {
-            mOnAdSdkListener.onStarted(placeName, source, adType);
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onStarted(placeName, source, adType);
         }
-        if (mAdPlaceLoaderListener != null && isCurrent()) {
-            mAdPlaceLoaderListener.onStarted(placeName, source, adType);
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onStarted(placeName, source, adType);
         }
     }
 }
