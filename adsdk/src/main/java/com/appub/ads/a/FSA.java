@@ -414,21 +414,26 @@ public class FSA extends Activity {
 
     private void showAdViewInternal() {
         if (mAdLayout != null) {
-            AdSdk.get(this).showComplexAds(mPidName, getAdParams(), mSource, mAdType, mAdLayout);
-            onAdShowing(mAdLayout);
-            if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)
-                    || TextUtils.equals(Constant.GTPLACE_OUTER_NAME, mPidName)) {
-                GtPolicy.get(this).reportShowing(true);
-            } else if (TextUtils.equals(Constant.HTPLACE_OUTER_NAME, mPidName)) {
-                HtPolicy.get(this).reportShowing(true);
-            } else if (TextUtils.equals(Constant.ATPLACE_OUTER_NAME, mPidName)) {
-                AtPolicy.get(this).reportShowing(true);
-            } else if (TextUtils.equals(Constant.STPLACE_OUTER_NAME, mPidName)) {
-                StPolicy.get(this).reportShowing(true);
-            } else if (TextUtils.equals(Constant.CTPLACE_OUTER_NAME, mPidName)) {
-                CtPolicy.get(this).reportShowing(true);
-            } else if (TextUtils.equals(Constant.LTPLACE_OUTER_NAME, mPidName)) {
-                LtPolicy.get(this).reportShowing(true);
+            boolean shown = AdSdk.get(this).showComplexAds(mPidName, getAdParams(), mSource, mAdType, mAdLayout);
+            if (shown) {
+                onAdShowing(mAdLayout);
+                if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)
+                        || TextUtils.equals(Constant.GTPLACE_OUTER_NAME, mPidName)) {
+                    GtPolicy.get(this).reportShowing(true);
+                } else if (TextUtils.equals(Constant.HTPLACE_OUTER_NAME, mPidName)) {
+                    HtPolicy.get(this).reportShowing(true);
+                } else if (TextUtils.equals(Constant.ATPLACE_OUTER_NAME, mPidName)) {
+                    AtPolicy.get(this).reportShowing(true);
+                } else if (TextUtils.equals(Constant.STPLACE_OUTER_NAME, mPidName)) {
+                    StPolicy.get(this).reportShowing(true);
+                } else if (TextUtils.equals(Constant.CTPLACE_OUTER_NAME, mPidName)) {
+                    CtPolicy.get(this).reportShowing(true);
+                } else if (TextUtils.equals(Constant.LTPLACE_OUTER_NAME, mPidName)) {
+                    LtPolicy.get(this).reportShowing(true);
+                }
+            } else {
+                Log.v(Log.TAG, "can not find loader for FSA");
+                finishActivityWithDelay();
             }
         }
     }
@@ -476,7 +481,10 @@ public class FSA extends Activity {
      */
     private void showGAd() {
         if (!TextUtils.isEmpty(mPidName)) {
-            AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, null);
+            boolean shown = AdSdk.get(this).showComplexAds(mPidName, mSource, mAdType, null);
+            if (!shown) {
+                finishActivityWithDelay();
+            }
         } else {
             finishActivityWithDelay();
         }

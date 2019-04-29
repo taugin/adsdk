@@ -340,25 +340,39 @@ public class AdSdk {
         }
     }
 
-    public void showComplexAds(String pidName, ViewGroup adContainer) {
-        showComplexAds(pidName, null, null, adContainer);
+    public boolean showComplexAds(String pidName, ViewGroup adContainer) {
+        return showComplexAds(pidName, null, null, adContainer);
     }
 
-    public void showComplexAds(String pidName, String source, String adType, ViewGroup adContainer) {
-        showComplexAds(pidName, null, source, adType, adContainer);
+    public boolean showComplexAds(String pidName, String source, String adType, ViewGroup adContainer) {
+        return showComplexAds(pidName, null, source, adType, adContainer);
     }
 
-    public void showComplexAds(String pidName, AdParams adParams, String source, String adType, ViewGroup adContainer) {
+    public boolean showComplexAds(String pidName, AdParams adParams, String source, String adType, ViewGroup adContainer) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            loader.showComplexAds(adContainer, adParams, source, adType);
+            return loader.showComplexAds(adContainer, adParams, source, adType);
         }
+        return false;
     }
 
-    public void showComplexAds(String pidName) {
+    public boolean showComplexAds(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            loader.showComplexAds();
+            return loader.showComplexAds();
+        }
+        return false;
+    }
+
+    /**
+     * 独立是设置监听器接口
+     * @param pidName
+     * @param l
+     */
+    public void setOnAdSdkListener(String pidName, OnAdSdkListener l) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            loader.setOnAdSdkListener(l);
         }
     }
 
