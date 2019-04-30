@@ -1061,7 +1061,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public boolean showComplexAds(ViewGroup adContainer, AdParams adParams, String source, String adType) {
         Log.d(Log.TAG, "");
-        if (isHighEcpmMode()) {
+        if (isHighEcpmMode() && adContainer != null) {
             return showHighEcpmComplexAdView(adContainer);
         }
         return showComplexAdsInNormalMode(adContainer, adParams, source, adType);
@@ -1106,6 +1106,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return false;
     }
 
+    /**
+     * 获取高ECPM的banner和native广告位
+     * @param viewGroup
+     * @return
+     */
     private boolean showHighEcpmComplexAdView(ViewGroup viewGroup) {
         int bannerSize = getCommonBannerSize();
         ISdkLoader loader = getAdViewSdkLoader(bannerSize);
