@@ -33,7 +33,8 @@ import java.util.Map;
 
 public class DataManager {
 
-    private static final String DATA_CONFIG = "data_%s.dat";
+    private static final String DATA_CONFIG_FORMAT = "data_%s.dat";
+    private static final String DATA_CONFIG = "cfg_data_config";
     private static final String PREF_ADSWITCH_MD5 = "pref_adswitch_md5";
     private static DataManager sDataManager;
 
@@ -66,7 +67,7 @@ public class DataManager {
     private AdSwitch mAdSwitch;
 
     public void init() {
-        parserLocalData();
+        parseLocalData();
         if (mDataRequest == null) {
             mDataRequest = new RemoteConfigRequest(mContext);
         }
@@ -81,23 +82,44 @@ public class DataManager {
         }
     }
 
-    private void parserLocalData() {
+    private void parseLocalData() {
         String cfgName = getConfigName();
         String defName = getDefaultName();
         Log.v(Log.TAG, "cfg : " + cfgName + " , def : " + defName);
-        if (mLocalAdConfig == null) {
+        if (mLocalAdConfig == null && mParser != null) {
             String data = Utils.readAssets(mContext, cfgName);
             if (TextUtils.isEmpty(data)) {
                 data = Utils.readAssets(mContext, defName);
             }
             mLocalAdConfig = mParser.parseAdConfig(data);
+            if (mLocalAdConfig != null) {
+                mLocalAdConfig.setAdConfigMd5(Utils.string2MD5(data));
+                Log.v(Log.TAG, "use lo data");
+            }
+        }
+    }
+
+    private void parseRemoteData() {
+        Log.v(Log.TAG, "parse re data");
+        String data = null;
+        if (mDataRequest != null) {
+            data = mDataRequest.getString(DATA_CONFIG);
+        }
+        if (!TextUtils.isEmpty(data)
+                && (mLocalAdConfig == null || !TextUtils.equals(mLocalAdConfig.getAdConfigMd5(), Utils.string2MD5(data)))) {
+            if (mParser != null) {
+                mLocalAdConfig = mParser.parseAdConfig(data);
+                if (mLocalAdConfig != null) {
+                    mLocalAdConfig.setAdConfigMd5(Utils.string2MD5(data));
+                    Log.v(Log.TAG, "use re data");
+                }
+            }
         }
     }
 
     public AdConfig getAdConfig() {
-        if (mLocalAdConfig == null) {
-            parserLocalData();
-        }
+        parseRemoteData();
+        parseLocalData();
         return mLocalAdConfig;
     }
 
@@ -115,7 +137,7 @@ public class DataManager {
     }
 
     private String getDefaultName() {
-        return String.format(Locale.getDefault(), DATA_CONFIG, "config");
+        return String.format(Locale.getDefault(), DATA_CONFIG_FORMAT, "config");
     }
 
     public AdPlace getRemoteAdPlace(String key) {
