@@ -88,7 +88,7 @@ public class BasePolicy implements Handler.Callback {
     /**
      * 记录开始请求时间
      */
-    public void startGtRequest() {
+    public void updateLastFailTime() {
         Utils.putLong(mContext, getPrefKey(Constant.PREF_REQUEST_TIME), System.currentTimeMillis());
     }
 

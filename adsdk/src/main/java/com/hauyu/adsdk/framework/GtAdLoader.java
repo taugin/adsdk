@@ -90,7 +90,6 @@ public class GtAdLoader extends BottomLoader {
             Log.iv(Log.TAG, "");
             String outerPidName = getNextPidName();
             StatImpl.get().reportAdOuterRequest(mContext, GtPolicy.get(mContext).getType(), outerPidName);
-            GtPolicy.get(mContext).startGtRequest();
             GtPolicy.get(mContext).setLoading(true);
             mAdSdk.loadComplexAds(outerPidName, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
@@ -138,6 +137,7 @@ public class GtAdLoader extends BottomLoader {
                 @Override
                 public void onError(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "error pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    GtPolicy.get(mContext).updateLastFailTime();
                     GtPolicy.get(mContext).setLoading(false);
                 }
             });
