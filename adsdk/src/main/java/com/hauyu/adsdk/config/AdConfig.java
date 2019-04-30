@@ -39,6 +39,8 @@ public class AdConfig {
 
     private Map<String, String> adRefs; // 广告场景相互引用
 
+    private String adConfigMd5;
+
     public Map<String, String> getAdIds() {
         return adIds;
     }
@@ -117,6 +119,14 @@ public class AdConfig {
 
     public void setCtConfig(CtConfig ctConfig) {
         this.ctConfig = ctConfig;
+    }
+
+    public String getAdConfigMd5() {
+        return adConfigMd5;
+    }
+
+    public void setAdConfigMd5(String adConfigMd5) {
+        this.adConfigMd5 = adConfigMd5;
     }
 
     /**
