@@ -79,3 +79,4 @@ configurations.all {
     resolutionStrategy.force 'com.google.android.gms:play-services-base:15.0.0'
     resolutionStrategy.force 'com.google.firebase:firebase-analytics:15.0.0'
 }
+apply plugin: 'com.google.gms.google-services'
