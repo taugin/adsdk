@@ -32,6 +32,7 @@ public class Constant {
     public static final String MODE_SEQ = "seq";
     public static final String MODE_CON = "con";
     public static final String MODE_RAN = "ran";
+    public static final String MODE_QUE = "que";
 
     public static final String TYPE_BANNER = "banner";
     public static final String TYPE_NATIVE = "native";
