@@ -73,6 +73,8 @@ public interface IParser {
     String PLACE_TYPE = "pt";
     // 顺序加载超时值
     String SEQ_TIMEOUT = "sto";
+    // 队列模式下加载的大小
+    String QUEUE_SIZE = "qs";
 
     // 广告平台 fb, admob, adx
     String SDK = "sdk";
