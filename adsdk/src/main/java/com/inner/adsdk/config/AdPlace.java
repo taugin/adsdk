@@ -48,6 +48,8 @@ public class AdPlace {
 
     private long seqTimeout = 300000;
 
+    private int queueSize = 2;
+
     public String getName() {
         return name;
     }
@@ -151,6 +153,10 @@ public class AdPlace {
         return TextUtils.equals(Constant.MODE_RAN, getMode());
     }
 
+    public boolean isQueue() {
+        return TextUtils.equals(Constant.MODE_QUE, getMode());
+    }
+
     public boolean isNeedCache() {
         return needCache;
     }
@@ -213,6 +219,14 @@ public class AdPlace {
 
     public void setSeqTimeout(long seqTimeout) {
         this.seqTimeout = seqTimeout;
+    }
+
+    public int getQueueSize() {
+        return queueSize;
+    }
+
+    public void setQueueSize(int queueSize) {
+        this.queueSize = queueSize;
     }
 
     @Override
