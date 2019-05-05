@@ -596,10 +596,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
                     loadInterstitialQueueInternal(iterator);
                 } else {
-                    Log.iv(Log.TAG, mAdPlace.getName() + " que is loading ...");
+                    Log.pv(Log.TAG, mAdPlace.getName() + " que is loading ...");
                 }
             } else {
-                Log.iv(Log.TAG, mAdPlace.getName() + " has enough ...");
+                Log.pv(Log.TAG, mAdPlace.getName() + " has enough ...");
             }
         } else {
             if (mOnAdSdkListener != null) {
@@ -643,8 +643,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onInterstitialError(int error) {
                     if (iterator.hasNext()) {
-                        Log.iv(Log.TAG, "load next interstitial in que");
-                        loadInterstitialQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                        Log.pv(Log.TAG, "load next interstitial in que");
+                        loadInterstitialQueueInternalWithDelay(iterator, 0);
                     } else {
                         setAdPlaceSeqLoading(false);
                         super.onInterstitialError(error);
@@ -657,8 +657,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         setAdPlaceSeqLoading(false);
                         super.onInterstitialLoaded(loader);
                     } else {
-                        Log.iv(Log.TAG, "load for core interstitial");
-                        loadInterstitialQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                        Log.pv(Log.TAG, "load for core interstitial");
+                        loadInterstitialQueueInternalWithDelay(iterator, 0);
                     }
                 }
 
@@ -668,8 +668,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         setAdPlaceSeqLoading(false);
                         super.onRewardedVideoAdLoaded(loader);
                     } else {
-                        Log.iv(Log.TAG, "load for core interstitial");
-                        loadInterstitialQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                        Log.pv(Log.TAG, "load for core interstitial");
+                        loadInterstitialQueueInternalWithDelay(iterator, 0);
                     }
                 }
             };
@@ -956,10 +956,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
                     loadAdViewQueueInternal(iterator);
                 } else {
-                    Log.iv(Log.TAG, mAdPlace.getName() + " que is loading ...");
+                    Log.pv(Log.TAG, mAdPlace.getName() + " que is loading ...");
                 }
             } else {
-                Log.iv(Log.TAG, mAdPlace.getName() + " has enough ...");
+                Log.pv(Log.TAG, mAdPlace.getName() + " has enough ...");
             }
         } else {
             if (mOnAdSdkListener != null) {
@@ -1003,8 +1003,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onAdFailed(int error) {
                     if (iterator.hasNext()) {
-                        Log.iv(Log.TAG, "load next AdView in que");
-                        loadAdViewQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                        Log.pv(Log.TAG, "load next AdView in que");
+                        loadAdViewQueueInternalWithDelay(iterator, 0);
                     } else {
                         setAdPlaceSeqLoading(false);
                         super.onAdFailed(error);
@@ -1017,8 +1017,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         setAdPlaceSeqLoading(false);
                         super.onAdLoaded(loader);
                     } else {
-                        Log.iv(Log.TAG, "load for core AdView");
-                        loadAdViewQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                        Log.pv(Log.TAG, "load for core AdView");
+                        loadAdViewQueueInternalWithDelay(iterator, 0);
                     }
                 }
             };
@@ -1397,10 +1397,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
                     loadComplexAdsQueueInternal(iterator);
                 } else {
-                    Log.iv(Log.TAG, mAdPlace.getName() + " que is loading ...");
+                    Log.pv(Log.TAG, mAdPlace.getName() + " que is loading ...");
                 }
             } else {
-                Log.iv(Log.TAG, mAdPlace.getName() + " has enough ...");
+                Log.pv(Log.TAG, mAdPlace.getName() + " has enough ...");
             }
         } else {
             if (mOnAdSdkListener != null) {
@@ -1420,8 +1420,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onAdFailed(int error) {
                     if (iterator.hasNext()) {
-                        Log.iv(Log.TAG, "load next complex in que");
-                        loadComplexAdsQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                        Log.pv(Log.TAG, "load next complex in que");
+                        loadComplexAdsQueueInternalWithDelay(iterator, 0);
                     } else {
                         setAdPlaceSeqLoading(false);
                         super.onAdFailed(error);
@@ -1471,8 +1471,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onInterstitialError(int error) {
                     if (iterator.hasNext()) {
-                        Log.iv(Log.TAG, "load next complex in que");
-                        loadComplexAdsQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                        Log.pv(Log.TAG, "load next complex in que");
+                        loadComplexAdsQueueInternalWithDelay(iterator, 0);
                     } else {
                         setAdPlaceSeqLoading(false);
                         super.onInterstitialError(error);
@@ -1485,8 +1485,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         setAdPlaceSeqLoading(false);
                         super.onAdLoaded(loader);
                     } else {
-                        Log.iv(Log.TAG, "load for core");
-                        loadComplexAdsQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                        Log.pv(Log.TAG, "load for core");
+                        loadComplexAdsQueueInternalWithDelay(iterator, 0);
                     }
                 }
 
@@ -1496,8 +1496,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         setAdPlaceSeqLoading(false);
                         super.onInterstitialLoaded(loader);
                     } else {
-                        Log.iv(Log.TAG, "load for core");
-                        loadComplexAdsQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                        Log.pv(Log.TAG, "load for core");
+                        loadComplexAdsQueueInternalWithDelay(iterator, 0);
                     }
                 }
 
@@ -1507,8 +1507,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         setAdPlaceSeqLoading(false);
                         super.onRewardedVideoAdLoaded(loader);
                     } else {
-                        Log.iv(Log.TAG, "load for core");
-                        loadComplexAdsQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                        Log.pv(Log.TAG, "load for core");
+                        loadComplexAdsQueueInternalWithDelay(iterator, 0);
                     }
                 }
             };
