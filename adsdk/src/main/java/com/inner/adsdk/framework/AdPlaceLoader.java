@@ -1733,6 +1733,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     @Override
+    public boolean isLoading() {
+        return isAdPlaceSeqLoading();
+    }
+
+    @Override
     public void resume() {
         Log.d(Log.TAG, "");
         if (mAdLoaders != null) {
