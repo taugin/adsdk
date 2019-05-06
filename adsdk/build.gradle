@@ -20,13 +20,13 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionName "1.9.7"
-        consumerProguardFiles 'proguard-rules.pro'
+        versionName "1.9.8"
+        consumerProguardFiles 'proguard-rules-adsdk.pro'
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
