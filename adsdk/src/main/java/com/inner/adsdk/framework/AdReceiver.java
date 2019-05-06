@@ -1,4 +1,4 @@
-package com.inner.adsdk.loader;
+package com.inner.adsdk.framework;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,6 +15,11 @@ import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.CtConfig;
 import com.inner.adsdk.config.LtConfig;
 import com.inner.adsdk.constant.Constant;
+import com.inner.adsdk.listener.OnTriggerListener;
+import com.inner.adsdk.loader.AtAdLoader;
+import com.inner.adsdk.loader.GtAdLoader;
+import com.inner.adsdk.loader.HtAdLoader;
+import com.inner.adsdk.loader.TaskMonitor;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
 import com.inner.adsdk.policy.BsPolicy;
@@ -68,6 +73,13 @@ public class AdReceiver {
     public void registerTriggerListener(OnTriggerListener l) {
         try {
             mTriggerList.add(l);
+        } catch (Exception e) {
+        }
+    }
+
+    public void unregisterTriggerListener(OnTriggerListener l) {
+        try {
+            mTriggerList.remove(l);
         } catch (Exception e) {
         }
     }
@@ -217,7 +229,7 @@ public class AdReceiver {
             mContext.startActivity(intent);
             LtPolicy.get(mContext).reportShowing(true);
         } catch (Exception e) {
-            Log.pv(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -279,30 +291,6 @@ public class AdReceiver {
         BsPolicy.get().present = intent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, true);
         BsPolicy.get().technology = intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY);
         BsPolicy.get().timestamp = System.currentTimeMillis();
-    }
-
-    public interface OnTriggerListener {
-        void onAlarm(Context context);
-
-        void onHomePressed(Context context);
-
-        void onScreenOn(Context context);
-
-        void onScreenOff(Context context);
-
-        void onUserPresent(Context context);
-
-        void onPowerConnect(Context context, Intent intent);
-
-        void onPowerDisconnect(Context context, Intent intent);
-
-        void onBatteryChange(Context context, Intent intent);
-
-        void onPackageAdded(Context context, Intent intent);
-
-        void onPackageRemoved(Context context, Intent intent);
-
-        void onNetworkChange(Context context, Intent intent);
     }
 
     private void triggerAlarm(Context context) {

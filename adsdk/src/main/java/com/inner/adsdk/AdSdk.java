@@ -6,14 +6,17 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.appub.ads.a.BuildConfig;
+import com.inner.adsdk.common.BaseConfig;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.framework.AdPlaceLoader;
+import com.inner.adsdk.framework.AdReceiver;
+import com.inner.adsdk.listener.IParseListener;
 import com.inner.adsdk.listener.OnAdRewardListener;
 import com.inner.adsdk.listener.OnAdSdkListener;
-import com.inner.adsdk.loader.AdReceiver;
+import com.inner.adsdk.listener.OnTriggerListener;
 import com.inner.adsdk.loader.AtAdLoader;
 import com.inner.adsdk.loader.GlobalCacheLoader;
 import com.inner.adsdk.loader.GtAdLoader;
@@ -444,5 +447,17 @@ public class AdSdk {
             context = mContext;
         }
         return context;
+    }
+
+    public void parseConfig(BaseConfig baseConfig, IParseListener iParseListener) {
+        DataManager.get(mContext).parseRemotePolicy(baseConfig, iParseListener);
+    }
+
+    public void registerTriggerListener(OnTriggerListener l) {
+        AdReceiver.get(mContext).registerTriggerListener(l);
+    }
+
+    public void unregisterTriggerListener(OnTriggerListener l) {
+        AdReceiver.get(mContext).unregisterTriggerListener(l);
     }
 }

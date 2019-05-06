@@ -1,4 +1,4 @@
-package com.inner.adsdk.loader;
+package com.inner.adsdk.common;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,8 +8,8 @@ import com.appub.ads.a.FSA;
 import com.appub.ads.a.R;
 import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
+import com.inner.adsdk.listener.OnTriggerListener;
 import com.inner.adsdk.log.Log;
-import com.inner.adsdk.policy.BasePolicy;
 import com.inner.adsdk.utils.Utils;
 
 import java.util.Random;
@@ -18,12 +18,12 @@ import java.util.Random;
  * Created by Administrator on 2018/12/9.
  */
 
-public abstract class BottomLoader<Config, Policy> implements AdReceiver.OnTriggerListener {
+public abstract class BaseLoader<Config, Policy> implements OnTriggerListener {
 
     protected Config mConfig;
 
     protected Policy mPolicy;
-    
+
     protected abstract Context getContext();
 
     public Config getConfig() {

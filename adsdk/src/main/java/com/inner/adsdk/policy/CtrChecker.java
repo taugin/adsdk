@@ -39,26 +39,26 @@ public class CtrChecker implements Runnable {
             mHandleView.clear();
         }
         if (pidConfig == null || activity == null) {
-            Log.pv(Log.TAG, "activity == null or pidConfig == null");
+            Log.iv(Log.TAG, "activity == null or pidConfig == null");
             return;
         }
         if (!Constant.TYPE_INTERSTITIAL.equals(pidConfig.getAdType()) &&
                 !Constant.TYPE_REWARD.equals(pidConfig.getAdType())) {
-            Log.pv(Log.TAG, "neither " + Constant.TYPE_INTERSTITIAL + " nor " + Constant.TYPE_REWARD);
+            Log.iv(Log.TAG, "neither " + Constant.TYPE_INTERSTITIAL + " nor " + Constant.TYPE_REWARD);
             return;
         }
         if (mAttrChecker != null) {
             mAttrChecker.setContext(activity);
             if (!mAttrChecker.isAttributionAllow(pidConfig.getAttrList())) {
-                Log.pv(Log.TAG, "attr not allow");
+                Log.iv(Log.TAG, "attr not allow");
                 return;
             }
             if (!mAttrChecker.isMediaSourceAllow(pidConfig.getMediaList())) {
-                Log.pv(Log.TAG, "ms not allow");
+                Log.iv(Log.TAG, "ms not allow");
                 return;
             }
             if (!mAttrChecker.isCountryAllow(pidConfig.getCountryList())) {
-                Log.pv(Log.TAG, "country not allow");
+                Log.iv(Log.TAG, "country not allow");
                 return;
             }
         }
@@ -66,12 +66,12 @@ public class CtrChecker implements Runnable {
     }
 
     private void handleControlCTR(final Activity activity, PidConfig pidConfig) {
-        Log.pv(Log.TAG, "handle control ctr");
+        Log.iv(Log.TAG, "handle control ctr");
         mActivity = activity;
         mPidConfig = pidConfig;
         boolean needControlCTR = needControlCTR(pidConfig != null ? pidConfig.getCtr() : 0);
         long delayClickTime = pidConfig != null ? pidConfig.getDelayClickTime() : 0;
-        Log.pv(Log.TAG, "pidname : " + pidConfig.getAdPlaceName() + " , ncc : " + needControlCTR + " , ffc : " + pidConfig.isFinishForCtr() + " , dct : " + delayClickTime);
+        Log.iv(Log.TAG, "pidname : " + pidConfig.getAdPlaceName() + " , ncc : " + needControlCTR + " , ffc : " + pidConfig.isFinishForCtr() + " , dct : " + delayClickTime);
         if (mHandler != null && (needControlCTR || delayClickTime > 0)) {
             mHandler.removeCallbacks(this);
             mHandler.postDelayed(this, DELAY_HANDLE_CTR);
@@ -85,7 +85,7 @@ public class CtrChecker implements Runnable {
      * @return true if need control ctr otherwise false
      */
     public boolean needControlCTR(int ctr) {
-        Log.pv(Log.TAG, "need control by ctr : " + ctr);
+        Log.iv(Log.TAG, "need control by ctr : " + ctr);
         try {
             if (ctr < MIN_CTR_VALUE || ctr > MAX_CTR_VALUE) return false;
             int randomVal = mRandom.nextInt(MAX_CTR_VALUE);
@@ -114,7 +114,7 @@ public class CtrChecker implements Runnable {
                 Log.e(Log.TAG, "error : " + e);
             }
         } else {
-            Log.pv(Log.TAG, "mActivity == null");
+            Log.iv(Log.TAG, "mActivity == null");
         }
     }
 
@@ -159,7 +159,7 @@ public class CtrChecker implements Runnable {
      */
     private void handleViewCtr(final View view) {
         if (mActivity == null || view == null) {
-            Log.pv(Log.TAG, "mActivity == null or view == null");
+            Log.iv(Log.TAG, "mActivity == null or view == null");
             return;
         }
         final GestureDetector gestureDetector = new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
@@ -189,7 +189,7 @@ public class CtrChecker implements Runnable {
      */
     private void handleViewDelayTime(final View view) {
         if (mActivity == null || view == null) {
-            Log.pv(Log.TAG, "mActivity == null or view == null");
+            Log.iv(Log.TAG, "mActivity == null or view == null");
             return;
         }
         view.setOnTouchListener(new View.OnTouchListener() {

@@ -1,6 +1,6 @@
-package com.inner.adsdk.parse;
+package com.inner.adsdk.listener;
 
-import com.inner.adsdk.config.BaseConfig;
+import com.inner.adsdk.common.BaseConfig;
 
 import org.json.JSONObject;
 
@@ -8,6 +8,6 @@ import org.json.JSONObject;
  * Created by Administrator on 2019-4-9.
  */
 
-public interface IParseExtra {
+public interface IParseListener {
     void parse(BaseConfig baseConfig, JSONObject jobj);
 }

@@ -2,11 +2,12 @@ package com.inner.adsdk.parse;
 
 import android.text.TextUtils;
 
+import com.inner.adsdk.listener.IParseListener;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.AtConfig;
-import com.inner.adsdk.config.BaseConfig;
+import com.inner.adsdk.common.BaseConfig;
 import com.inner.adsdk.config.CtConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.config.HtConfig;
@@ -738,7 +739,7 @@ public class AdParser implements IParser {
     }
 
     @Override
-    public void parsePolicy(String data, BaseConfig baseConfig, IParseExtra parserCallback) {
+    public void parsePolicy(String data, BaseConfig baseConfig, IParseListener parserCallback) {
         data = getContent(data);
         try {
             JSONObject jobj = new JSONObject(data);

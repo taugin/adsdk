@@ -1,4 +1,4 @@
-package com.inner.adsdk.config;
+package com.inner.adsdk.common;
 
 import java.util.List;
 

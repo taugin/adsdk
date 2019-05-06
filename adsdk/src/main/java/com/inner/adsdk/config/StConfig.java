@@ -1,5 +1,6 @@
 package com.inner.adsdk.config;
 
+import com.inner.adsdk.common.BaseConfig;
 import com.inner.adsdk.constant.Constant;
 
 /**

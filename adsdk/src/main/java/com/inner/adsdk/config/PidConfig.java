@@ -2,6 +2,7 @@ package com.inner.adsdk.config;
 
 import android.text.TextUtils;
 
+import com.inner.adsdk.common.BaseConfig;
 import com.inner.adsdk.constant.Constant;
 
 /**

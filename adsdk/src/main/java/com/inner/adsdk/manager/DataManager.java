@@ -7,7 +7,7 @@ import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.AtConfig;
-import com.inner.adsdk.config.BaseConfig;
+import com.inner.adsdk.common.BaseConfig;
 import com.inner.adsdk.config.CtConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.config.HtConfig;
@@ -18,7 +18,7 @@ import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.parse.AdParser;
 import com.inner.adsdk.parse.IParser;
-import com.inner.adsdk.parse.IParseExtra;
+import com.inner.adsdk.listener.IParseListener;
 import com.inner.adsdk.request.IDataRequest;
 import com.inner.adsdk.request.RemoteConfigRequest;
 import com.inner.adsdk.utils.Utils;
@@ -234,7 +234,7 @@ public class DataManager {
             if (mAdSwitch == null && mLocalAdConfig != null) {
                 mAdSwitch = mLocalAdConfig.getAdSwitch();
             }
-            Log.pv(Log.TAG, "ads : " + mAdSwitch);
+            Log.iv(Log.TAG, "ads : " + mAdSwitch);
         }
         return mAdSwitch;
     }
@@ -266,11 +266,11 @@ public class DataManager {
         return null;
     }
 
-    public void parseRemotePolicy(BaseConfig baseConfig, IParseExtra parserCallback) {
+    public void parseRemotePolicy(BaseConfig baseConfig, IParseListener parserCallback) {
         if (mDataRequest != null && baseConfig != null) {
             String name = baseConfig.getName();
             if (TextUtils.isEmpty(name)) {
-                Log.pv(Log.TAG, "can not find cfg name");
+                Log.iv(Log.TAG, "can not find cfg name");
                 return;
             }
             String data = mDataRequest.getString(name);

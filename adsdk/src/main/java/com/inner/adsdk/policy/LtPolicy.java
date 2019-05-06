@@ -2,6 +2,7 @@ package com.inner.adsdk.policy;
 
 import android.content.Context;
 
+import com.inner.adsdk.common.BasePolicy;
 import com.inner.adsdk.config.LtConfig;
 import com.inner.adsdk.log.Log;
 
@@ -44,7 +45,7 @@ public class LtPolicy extends BasePolicy {
     }
 
     public boolean isLtAllowed() {
-        Log.pv(Log.TAG, "lt : " + mLtConfig);
+        Log.iv(Log.TAG, "lt : " + mLtConfig);
         if (!checkBaseConfig()) {
             return false;
         }

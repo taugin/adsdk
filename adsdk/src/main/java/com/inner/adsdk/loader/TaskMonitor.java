@@ -130,7 +130,7 @@ public class TaskMonitor implements Handler.Callback {
      * 开启Monitor
      */
     public void startMonitor() {
-        Log.pv(Log.TAG, "start monitor");
+        Log.iv(Log.TAG, "start monitor");
         sendHandleMessage();
     }
 
@@ -139,7 +139,7 @@ public class TaskMonitor implements Handler.Callback {
      */
     public void stopMonitor() {
         if (mHandlerThread != null && mThreadHandler != null) {
-            Log.pv(Log.TAG, "stop monitor");
+            Log.iv(Log.TAG, "stop monitor");
             cancelHandleMessage();
         }
     }

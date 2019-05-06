@@ -142,7 +142,7 @@ public class GlobalCacheLoader implements Handler.Callback {
                             if (!AdSdk.get(mContext).isInterstitialLoaded(adPlace)) {
                                 addLoadingAdPlace(adPlace);
                                 if (BuildConfig.DEBUG) {
-                                    Log.pv(Log.TAG, "start load reward");
+                                    Log.iv(Log.TAG, "start load reward");
                                 }
                                 if (mActivity != null && mActivity.get() != null && !mActivity.get().isFinishing()) {
                                     AdSdk.get(mActivity.get()).loadInterstitial(adPlace, getCallback(adPlace));
@@ -151,7 +151,7 @@ public class GlobalCacheLoader implements Handler.Callback {
                                 }
                             } else {
                                 if (BuildConfig.DEBUG) {
-                                    Log.pv(Log.TAG, "add to adplaces from loadAds");
+                                    Log.iv(Log.TAG, "add to adplaces from loadAds");
                                 }
                                 add(adPlace);
                             }
@@ -261,7 +261,7 @@ public class GlobalCacheLoader implements Handler.Callback {
         public void onLoaded(String pidName, String source, String adType) {
             removeLoadingAdplace(pidName);
             if (BuildConfig.DEBUG) {
-                Log.pv(Log.TAG, "add to adplaces from onloaded");
+                Log.iv(Log.TAG, "add to adplaces from onloaded");
             }
             add(pidName);
             notifyOnRefresh();
@@ -276,7 +276,7 @@ public class GlobalCacheLoader implements Handler.Callback {
 
         @Override
         public void onDismiss(String pidName, String source, String adType) {
-            Log.pv(Log.TAG, "onDismiss source : " + source);
+            Log.iv(Log.TAG, "onDismiss source : " + source);
             remove(pidName);
             notifyOnRefresh();
             notifyOnDismiss();
@@ -284,7 +284,7 @@ public class GlobalCacheLoader implements Handler.Callback {
 
         @Override
         public void onCompleted(String pidName, String source, String adType) {
-            Log.pv(Log.TAG, "onCompleted source : " + source);
+            Log.iv(Log.TAG, "onCompleted source : " + source);
             notifyOnRefresh();
         }
 
@@ -312,7 +312,7 @@ public class GlobalCacheLoader implements Handler.Callback {
 
         @Override
         public void onRewarded(String pidName, String source, String adType, AdReward item) {
-            Log.pv(Log.TAG, "onRewarded source : " + source);
+            Log.iv(Log.TAG, "onRewarded source : " + source);
             notifyOnReward();
             notifyOnRefresh();
         }
@@ -334,7 +334,7 @@ public class GlobalCacheLoader implements Handler.Callback {
                 }
                 if (!contain) {
                     if (BuildConfig.DEBUG) {
-                        Log.pv(Log.TAG, "add to loaded ad places");
+                        Log.iv(Log.TAG, "add to loaded ad places");
                     }
                     mLoadedAdPlaces.add(new RewardItem(s, false));
                 }
@@ -357,7 +357,7 @@ public class GlobalCacheLoader implements Handler.Callback {
                 for (RewardItem item : mLoadedAdPlaces) {
                     if (item != null && TextUtils.equals(item.pidName, s)) {
                         if (BuildConfig.DEBUG) {
-                            Log.pv(Log.TAG, "modify item : " + s + " , to showing : " + showing);
+                            Log.iv(Log.TAG, "modify item : " + s + " , to showing : " + showing);
                         }
                         item.showing = showing;
                         if (showing) {
@@ -384,7 +384,7 @@ public class GlobalCacheLoader implements Handler.Callback {
                             && mLoadedAdPlaces.contains(item)
                             && item.showing) {
                         if (BuildConfig.DEBUG) {
-                            Log.pv(Log.TAG, "remove item : " + item.pidName);
+                            Log.iv(Log.TAG, "remove item : " + item.pidName);
                         }
                         mLoadedAdPlaces.remove(item);
                     }
@@ -449,7 +449,7 @@ public class GlobalCacheLoader implements Handler.Callback {
                 checkRewardStatus();
                 int count = mLoadedAdPlaces != null ? mLoadedAdPlaces.size() : 0;
                 if (BuildConfig.DEBUG) {
-                    Log.pv(Log.TAG, "count : " + count);
+                    Log.iv(Log.TAG, "count : " + count);
                 }
                 return count;
             }
@@ -480,7 +480,7 @@ public class GlobalCacheLoader implements Handler.Callback {
                     modify(item.pidName, true);
                     AdSdk.get(mContext).showInterstitial(item.pidName);
                 } else {
-                    Log.pv(Log.TAG, "No rewards found");
+                    Log.iv(Log.TAG, "No rewards found");
                     if (mLoadedAdPlaces != null) {
                         mLoadedAdPlaces.clear();
                     }
@@ -509,7 +509,7 @@ public class GlobalCacheLoader implements Handler.Callback {
     }
 
     private void notifyOnReward() {
-        Log.pv(Log.TAG, "");
+        Log.iv(Log.TAG, "");
         if (mListeners != null) {
             try {
                 mListeners.peek().onReward();
@@ -528,7 +528,7 @@ public class GlobalCacheLoader implements Handler.Callback {
     }
 
     private void notifyOnDismiss() {
-        Log.pv(Log.TAG, "");
+        Log.iv(Log.TAG, "");
         if (mListeners != null) {
             try {
                 mListeners.peek().onDismiss();
@@ -538,7 +538,7 @@ public class GlobalCacheLoader implements Handler.Callback {
     }
 
     private void notifyOnClick() {
-        Log.pv(Log.TAG, "");
+        Log.iv(Log.TAG, "");
         if (mListeners != null) {
             try {
                 mListeners.peek().onClick();
@@ -548,7 +548,7 @@ public class GlobalCacheLoader implements Handler.Callback {
     }
 
     private void notifyOnNoReward() {
-        Log.pv(Log.TAG, "");
+        Log.iv(Log.TAG, "");
         if (mListeners != null) {
             try {
                 mListeners.peek().onNoReward();
@@ -558,7 +558,7 @@ public class GlobalCacheLoader implements Handler.Callback {
     }
 
     private void notifyOnShow() {
-        Log.pv(Log.TAG, "");
+        Log.iv(Log.TAG, "");
         if (mListeners != null) {
             try {
                 mListeners.peek().onShow();
@@ -568,7 +568,7 @@ public class GlobalCacheLoader implements Handler.Callback {
     }
 
     private void notifyOnLoaded() {
-        Log.pv(Log.TAG, "");
+        Log.iv(Log.TAG, "");
         if (mListeners != null) {
             try {
                 mListeners.peek().onLoaded();

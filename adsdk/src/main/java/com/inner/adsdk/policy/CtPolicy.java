@@ -2,6 +2,7 @@ package com.inner.adsdk.policy;
 
 import android.content.Context;
 
+import com.inner.adsdk.common.BasePolicy;
 import com.inner.adsdk.config.CtConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
@@ -67,13 +68,13 @@ public class CtPolicy extends BasePolicy {
     }
 
     public boolean isCtAllowed() {
-        Log.pv(Log.TAG, "ct : " + mCtConfig);
+        Log.iv(Log.TAG, "ct : " + mCtConfig);
         if (!checkBaseConfig()) {
             return false;
         }
 
         if (isDisable()) {
-            Log.pv(Log.TAG, "user disable");
+            Log.iv(Log.TAG, "user disable");
             return false;
         }
 
