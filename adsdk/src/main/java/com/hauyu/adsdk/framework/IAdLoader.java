@@ -43,6 +43,7 @@ public interface IAdLoader {
 
     public int getAdCount();
     public String getAdMode();
+    public boolean isLoading();
     public void resume();
     public void pause();
 

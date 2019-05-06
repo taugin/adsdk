@@ -100,6 +100,11 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public boolean isLoading() {
+        return false;
+    }
+
+    @Override
     public void resume() {
     }
 

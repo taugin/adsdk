@@ -401,6 +401,14 @@ public class AdSdk {
         return null;
     }
 
+    public boolean isLoading(String pidName) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            return loader.isLoading();
+        }
+        return false;
+    }
+
     public void resume(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
