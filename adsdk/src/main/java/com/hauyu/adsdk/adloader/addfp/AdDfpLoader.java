@@ -695,11 +695,11 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
     @Override
     public void destroy() {
-        if (gBannerView != null) {
+        if (gBannerView != null && !isDestroyAfterClick()) {
             gBannerView.destroy();
             gBannerView = null;
         }
-        if (gNativeAd != null) {
+        if (gNativeAd != null && !isDestroyAfterClick()) {
             gNativeAd.destroy();
             gNativeAd = null;
         }
