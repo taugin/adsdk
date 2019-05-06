@@ -2,6 +2,7 @@ package com.hauyu.adsdk.policy;
 
 import android.content.Context;
 
+import com.hauyu.adsdk.common.BasePolicy;
 import com.hauyu.adsdk.config.CtConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.log.Log;

@@ -12,11 +12,12 @@ import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.config.StConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Aes;
+import com.hauyu.adsdk.listener.IParseListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 import com.hauyu.adsdk.config.LtConfig;
 import com.hauyu.adsdk.config.HtConfig;
-import com.hauyu.adsdk.config.BaseConfig;
+import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.config.CtConfig;
 
 import org.json.JSONArray;
@@ -741,7 +742,7 @@ public class AdParser implements IParser {
     }
 
     @Override
-    public void parsePolicy(String data, BaseConfig baseConfig, IParseExtra parserCallback) {
+    public void parsePolicy(String data, BaseConfig baseConfig, IParseListener parserCallback) {
         data = getContent(data);
         try {
             JSONObject jobj = new JSONObject(data);

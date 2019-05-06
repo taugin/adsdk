@@ -4,13 +4,14 @@ import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.config.AtConfig;
-import com.hauyu.adsdk.config.BaseConfig;
+import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.config.CtConfig;
 import com.hauyu.adsdk.config.GtConfig;
 import com.hauyu.adsdk.config.HtConfig;
 import com.hauyu.adsdk.config.LtConfig;
 import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.config.StConfig;
+import com.hauyu.adsdk.listener.IParseListener;
 
 import java.util.List;
 import java.util.Map;
@@ -205,5 +206,5 @@ public interface IParser {
 
     CtConfig parseCtPolicy(String data);
 
-    void parsePolicy(String data, BaseConfig baseConfig, IParseExtra parserCallback);
+    void parsePolicy(String data, BaseConfig baseConfig, IParseListener parserCallback);
 }

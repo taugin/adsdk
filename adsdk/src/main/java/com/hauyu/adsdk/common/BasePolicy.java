@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.policy;
+package com.hauyu.adsdk.common;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -7,11 +7,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.hauyu.adsdk.config.BaseConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.ActivityMonitor;
 import com.hauyu.adsdk.framework.AdReceiver;
 import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.policy.AttrChecker;
 import com.hauyu.adsdk.stat.StatImpl;
 import com.hauyu.adsdk.utils.Utils;
 

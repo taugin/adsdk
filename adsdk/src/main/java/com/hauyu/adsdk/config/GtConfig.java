@@ -1,5 +1,6 @@
 package com.hauyu.adsdk.config;
 
+import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.constant.Constant;
 
 import java.util.Date;

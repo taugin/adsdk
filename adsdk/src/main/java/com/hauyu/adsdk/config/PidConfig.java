@@ -2,6 +2,7 @@ package com.hauyu.adsdk.config;
 
 import android.text.TextUtils;
 
+import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.constant.Constant;
 
 /**

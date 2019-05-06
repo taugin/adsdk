@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.AdSdk;
+import com.hauyu.adsdk.common.BaseLoader;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.HtConfig;
 import com.hauyu.adsdk.constant.Constant;
@@ -17,7 +18,7 @@ import com.hauyu.adsdk.stat.StatImpl;
  * Created by Administrator on 2018/3/19.
  */
 
-public class HtAdLoader extends BottomLoader {
+public class HtAdLoader extends BaseLoader {
 
     private static HtAdLoader sHtAdLoader;
 

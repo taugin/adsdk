@@ -21,10 +21,17 @@
 #-renamesourcefileattribute SourceFile
 #-keepattributes SourceFile,LineNumberTable
 
--include proguard-rules-adsdk.pro
--keep class com.inner.adsdk.* {public *;}
--keep class com.inner.adsdk.listener.* {public *;}
--keep class com.inner.adsdk.common.* {public *; protected *;}
--keep class com.inner.adsdk.log.* {public *;}
--keep class com.inner.adsdk.stat.* {public *;}
--keep class com.inner.adsdk.utils.Utils {public *;}
+#umeng
+-keep class com.umeng.commonsdk.** {*;}
+-keep class com.umeng.analytics.** {*;}
+
+#appsflyer Analytics
+-keep class com.appsflyer.** {*;}
+
+#Firebase Analytics
+-keep class com.google.firebase.analytics.FirebaseAnalytics{*;}
+
+#Facebook Analytics
+-keep class com.facebook.appevents.AppEventsLogger {*;}
+-dontwarn com.adywind.nativeads.**
+-dontwarn com.mopub.**

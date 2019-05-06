@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.AdSdk;
+import com.hauyu.adsdk.common.BaseLoader;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AtConfig;
 import com.hauyu.adsdk.constant.Constant;
@@ -17,7 +18,7 @@ import com.hauyu.adsdk.utils.TaskUtils;
  * Created by Administrator on 2018/7/19.
  */
 
-public class AtAdLoader extends BottomLoader implements TaskMonitor.OnTaskMonitorListener {
+public class AtAdLoader extends BaseLoader implements TaskMonitor.OnTaskMonitorListener {
 
     private static final int MSG_LOOP = 1;
     private static final int LOOP_DELAY = 500;

@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.config;
+package com.hauyu.adsdk.common;
 
 import java.util.List;
 

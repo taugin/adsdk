@@ -7,7 +7,7 @@ import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.config.AtConfig;
-import com.hauyu.adsdk.config.BaseConfig;
+import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.config.CtConfig;
 import com.hauyu.adsdk.config.GtConfig;
 import com.hauyu.adsdk.config.HtConfig;
@@ -17,7 +17,7 @@ import com.hauyu.adsdk.config.StConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.parse.AdParser;
-import com.hauyu.adsdk.parse.IParseExtra;
+import com.hauyu.adsdk.listener.IParseListener;
 import com.hauyu.adsdk.parse.IParser;
 import com.hauyu.adsdk.request.IDataRequest;
 import com.hauyu.adsdk.request.RemoteConfigRequest;
@@ -266,7 +266,7 @@ public class DataManager {
         return null;
     }
 
-    public void parseRemotePolicy(BaseConfig baseConfig, IParseExtra parserCallback) {
+    public void parseRemotePolicy(BaseConfig baseConfig, IParseListener parserCallback) {
         if (mDataRequest != null && baseConfig != null) {
             String name = baseConfig.getName();
             if (TextUtils.isEmpty(name)) {

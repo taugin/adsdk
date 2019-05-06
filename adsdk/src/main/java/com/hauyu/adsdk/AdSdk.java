@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.appub.ads.a.BuildConfig;
+import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.constant.Constant;
@@ -17,8 +18,10 @@ import com.hauyu.adsdk.framework.GlobalCacheLoader;
 import com.hauyu.adsdk.framework.GtAdLoader;
 import com.hauyu.adsdk.framework.HtAdLoader;
 import com.hauyu.adsdk.framework.StAdLoader;
+import com.hauyu.adsdk.listener.IParseListener;
 import com.hauyu.adsdk.listener.OnAdRewardListener;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
+import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.manager.DataManager;
 import com.hauyu.adsdk.stat.StatImpl;
@@ -444,5 +447,18 @@ public class AdSdk {
             context = mContext;
         }
         return context;
+    }
+
+
+    public void parseConfig(BaseConfig baseConfig, IParseListener iParseListener) {
+        DataManager.get(mContext).parseRemotePolicy(baseConfig, iParseListener);
+    }
+
+    public void registerTriggerListener(OnTriggerListener l) {
+        AdReceiver.get(mContext).registerTriggerListener(l);
+    }
+
+    public void unregisterTriggerListener(OnTriggerListener l) {
+        AdReceiver.get(mContext).unregisterTriggerListener(l);
     }
 }

@@ -1,7 +1,7 @@
-package com.hauyu.adsdk.parse;
+package com.hauyu.adsdk.listener;
 
 
-import com.hauyu.adsdk.config.BaseConfig;
+import com.hauyu.adsdk.common.BaseConfig;
 
 import org.json.JSONObject;
 
@@ -9,6 +9,6 @@ import org.json.JSONObject;
  * Created by Administrator on 2019-4-9.
  */
 
-public interface IParseExtra {
+public interface IParseListener {
     void parse(BaseConfig baseConfig, JSONObject jobj);
 }

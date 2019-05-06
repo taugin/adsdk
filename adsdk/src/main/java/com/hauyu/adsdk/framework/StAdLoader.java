@@ -10,6 +10,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.AdSdk;
+import com.hauyu.adsdk.common.BaseLoader;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.StConfig;
 import com.hauyu.adsdk.constant.Constant;
@@ -23,7 +24,7 @@ import com.hauyu.adsdk.stat.StatImpl;
  * Created by Administrator on 2018/7/19.
  */
 
-public class StAdLoader extends BottomLoader implements Handler.Callback {
+public class StAdLoader extends BaseLoader implements Handler.Callback {
 
     private static final int LOAD_DELAY = 1000;
     private static final int MSG_ST_LOAD = 1000;
