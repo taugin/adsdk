@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply from: 'https://imgtu.gitee.io/com/gradle/encrypt.gradle'
 
 def useProject = true;
 
