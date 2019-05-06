@@ -24,7 +24,7 @@ try {
         repo->
             repo.maven {
                 r->
-                    r.url = "https://taugin.gitee.io/werepo"
+                    r.url = "https://imgtu.gitee.io/"
             }
             repo.maven {
                 r->
