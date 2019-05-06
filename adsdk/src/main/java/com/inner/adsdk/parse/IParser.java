@@ -1,10 +1,11 @@
 package com.inner.adsdk.parse;
 
+import com.inner.adsdk.listener.IParseListener;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.AtConfig;
-import com.inner.adsdk.config.BaseConfig;
+import com.inner.adsdk.common.BaseConfig;
 import com.inner.adsdk.config.CtConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.config.HtConfig;
@@ -202,5 +203,5 @@ public interface IParser {
 
     CtConfig parseCtPolicy(String data);
 
-    void parsePolicy(String data, BaseConfig baseConfig, IParseExtra parserCallback);
+    void parsePolicy(String data, BaseConfig baseConfig, IParseListener parserCallback);
 }

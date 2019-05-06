@@ -226,7 +226,7 @@ public class FBBindNativeView extends BaseBindNativeView {
             }
 
             boolean allClick = allElementCanClick(pidConfig.getCtr());
-            Log.pv(Log.TAG, "all click : " + allClick + " , ctr : " + pidConfig.getCtr());
+            Log.iv(Log.TAG, "all click : " + allClick + " , ctr : " + pidConfig.getCtr());
 
             if (rootView != null) {
                 if (allClick) {

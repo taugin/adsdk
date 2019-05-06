@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.inner.adsdk.AdSdk;
+import com.inner.adsdk.common.BaseLoader;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.HtConfig;
 import com.inner.adsdk.constant.Constant;
@@ -17,7 +18,7 @@ import com.inner.adsdk.stat.StatImpl;
  * Created by Administrator on 2018/3/19.
  */
 
-public class HtAdLoader extends BottomLoader {
+public class HtAdLoader extends BaseLoader {
 
     private static HtAdLoader sHtAdLoader;
 
@@ -73,16 +74,16 @@ public class HtAdLoader extends BottomLoader {
                 return;
             }
             if (HtPolicy.get(mContext).isLoading()) {
-                Log.pv(Log.TAG, "ht is loading");
+                Log.iv(Log.TAG, "ht is loading");
                 return;
             }
-            Log.pv(Log.TAG, "");
+            Log.iv(Log.TAG, "");
             HtPolicy.get(mContext).setLoading(true);
             StatImpl.get().reportAdOuterRequest(mContext, HtPolicy.get(mContext).getType(), Constant.HTPLACE_OUTER_NAME);
             mAdSdk.loadComplexAds(Constant.HTPLACE_OUTER_NAME, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
-                    Log.pv(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.iv(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     StatImpl.get().reportAdOuterLoaded(mContext, HtPolicy.get(mContext).getType(), pidName);
                     HtPolicy.get(mContext).setLoading(false);
                     if (HtPolicy.get(mContext).isHtAllowed()) {
@@ -105,7 +106,7 @@ public class HtAdLoader extends BottomLoader {
 
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
-                    Log.pv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.iv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     HtPolicy.get(mContext).reportShowing(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                             && HtPolicy.get(mContext).isShowBottomActivity()
@@ -117,14 +118,14 @@ public class HtAdLoader extends BottomLoader {
 
                 @Override
                 public void onShow(String pidName, String source, String adType) {
-                    Log.pv(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.iv(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     HtPolicy.get(mContext).reportShowing(true);
                     StatImpl.get().reportAdOuterShowing(mContext, HtPolicy.get(mContext).getType(), pidName);
                 }
 
                 @Override
                 public void onError(String pidName, String source, String adType) {
-                    Log.pv(Log.TAG, "error pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.iv(Log.TAG, "error pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     HtPolicy.get(mContext).setLoading(false);
                 }
             });

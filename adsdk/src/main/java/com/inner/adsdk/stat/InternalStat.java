@@ -55,7 +55,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.pv(Log.TAG, "error : " + error);
+            Log.iv(Log.TAG, "error : " + error);
         }
     }
 
@@ -94,7 +94,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.pv(Log.TAG, "error : " + error);
+            Log.iv(Log.TAG, "error : " + error);
         }
     }
 
@@ -133,7 +133,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.pv(Log.TAG, "error : " + error);
+            Log.iv(Log.TAG, "error : " + error);
         }
     }
 
@@ -152,7 +152,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.pv(Log.TAG, "error : " + error);
+            Log.iv(Log.TAG, "error : " + error);
         }
     }
 
@@ -189,7 +189,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.pv(Log.TAG, "error : " + error);
+            Log.iv(Log.TAG, "error : " + error);
         }
     }
 

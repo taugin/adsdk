@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.inner.adsdk.AdSdk;
+import com.inner.adsdk.common.BaseLoader;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AtConfig;
 import com.inner.adsdk.constant.Constant;
@@ -17,7 +18,7 @@ import com.inner.adsdk.utils.TaskUtils;
  * Created by Administrator on 2018/7/19.
  */
 
-public class AtAdLoader extends BottomLoader implements TaskMonitor.OnTaskMonitorListener {
+public class AtAdLoader extends BaseLoader implements TaskMonitor.OnTaskMonitorListener {
 
     private static AtAdLoader sAtAdLoader;
 
@@ -66,11 +67,11 @@ public class AtAdLoader extends BottomLoader implements TaskMonitor.OnTaskMonito
     }
 
     public void resumeLoader() {
-        Log.pv(Log.TAG, "resume loader");
+        Log.iv(Log.TAG, "resume loader");
         if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
             TaskMonitor.get(mContext).startMonitor();
         } else {
-            Log.pv(Log.TAG, "miss app usage");
+            Log.iv(Log.TAG, "miss app usage");
         }
     }
 
@@ -82,7 +83,7 @@ public class AtAdLoader extends BottomLoader implements TaskMonitor.OnTaskMonito
                 TaskMonitor.get(mContext).startMonitor();
             }
         } else {
-            Log.pv(Log.TAG, "miss app usage");
+            Log.iv(Log.TAG, "miss app usage");
         }
     }
 
@@ -121,7 +122,7 @@ public class AtAdLoader extends BottomLoader implements TaskMonitor.OnTaskMonito
     private SimpleAdSdkListener mAdSdkListener = new SimpleAdSdkListener() {
         @Override
         public void onLoaded(String pidName, String source, String adType) {
-            Log.pv(Log.TAG, "at loaded");
+            Log.iv(Log.TAG, "at loaded");
             mPidName = pidName;
             mSource = source;
             mAdType = adType;
@@ -129,14 +130,14 @@ public class AtAdLoader extends BottomLoader implements TaskMonitor.OnTaskMonito
 
         @Override
         public void onShow(String pidName, String source, String adType) {
-            Log.pv(Log.TAG, "show ads and stop task monitor");
+            Log.iv(Log.TAG, "show ads and stop task monitor");
             AtPolicy.get(mContext).reportShowing(true);
             TaskMonitor.get(mContext).stopMonitor();
         }
 
         @Override
         public void onDismiss(String pidName, String source, String adType) {
-            Log.pv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            Log.iv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
             AtPolicy.get(mContext).reportShowing(false);
             if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                     && AtPolicy.get(mContext).isShowBottomActivity()

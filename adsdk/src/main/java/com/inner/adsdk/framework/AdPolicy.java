@@ -46,7 +46,7 @@ public class AdPolicy {
 
     public void reportAdPlaceShow(String originPidname, AdPlace adPlace) {
         if (adPlace == null) {
-            Log.pv(Log.TAG, "adPlace == null");
+            Log.iv(Log.TAG, "adPlace == null");
             return;
         }
         String pidName = originPidname;
@@ -54,7 +54,7 @@ public class AdPolicy {
             pidName = adPlace.getName();
         }
         if (TextUtils.isEmpty(pidName)) {
-            Log.pv(Log.TAG, "pidName == null");
+            Log.iv(Log.TAG, "pidName == null");
             return;
         }
         long loadCount = Utils.getLong(mContext, getShowCountKey(pidName), 0);
@@ -69,24 +69,24 @@ public class AdPolicy {
 
     public boolean allowAdPlaceLoad(AdPlace adPlace) {
         if (adPlace == null) {
-            Log.pv(Log.TAG, "place is null");
+            Log.iv(Log.TAG, "place is null");
             return false;
         }
         String pidName = adPlace.getName();
         if (TextUtils.isEmpty(pidName)) {
-            Log.pv(Log.TAG, "name is null");
+            Log.iv(Log.TAG, "name is null");
             return false;
         }
         resetShowCountEveryDay(pidName);
         boolean exceedMaxCount = reachMaxShowCount(pidName, adPlace.getMaxCount());
         if (exceedMaxCount) {
             long maxCount = adPlace.getMaxCount();
-            Log.pv(Log.TAG, "[" + pidName + "]" + " exceed max count " + maxCount);
+            Log.iv(Log.TAG, "[" + pidName + "]" + " exceed max count " + maxCount);
             return false;
         }
         boolean allowByPercent = allowLoadByPercent(adPlace.getPercent());
         if (!allowByPercent) {
-            Log.pv(Log.TAG, "percent not allow");
+            Log.iv(Log.TAG, "percent not allow");
             return false;
         }
         return true;
@@ -109,7 +109,7 @@ public class AdPolicy {
         long resetTime = Utils.getLong(mContext, getResetTimeKey(pidName), 0);
         long curTime = System.currentTimeMillis();
         if (curTime - resetTime > ONE_DAY) {
-            Log.pv(Log.TAG, "reset load count : " + pidName);
+            Log.iv(Log.TAG, "reset load count : " + pidName);
             Utils.putLong(mContext, getShowCountKey(pidName), 0);
             Utils.putLong(mContext, getResetTimeKey(pidName), curTime);
         }

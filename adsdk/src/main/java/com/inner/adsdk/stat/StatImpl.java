@@ -328,7 +328,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -347,7 +347,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -368,7 +368,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -389,7 +389,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -410,7 +410,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -433,7 +433,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     private String generateAdOuterKey(String adOuterType, String op) {
@@ -459,7 +459,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, null);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -481,7 +481,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, null);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -503,7 +503,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, null);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -525,7 +525,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, null);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -547,7 +547,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, null);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
     }
 
     @Override
@@ -567,7 +567,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, value, eventId, null);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + ", times : " + times);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + ", times : " + times);
     }
 
     @Override
@@ -589,7 +589,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, null, eventId, map);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
     }
 
     @Override
@@ -612,7 +612,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, null, eventId, map);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
     }
 
     @Override
@@ -632,7 +632,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, null, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
     }
 
     @Override
@@ -652,7 +652,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, null, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
     }
 
     @Override
@@ -672,7 +672,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, null, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
     }
 
     @Override
@@ -693,7 +693,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, value, eventId, null);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + value);
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + value);
     }
 
     private boolean isReportError(Context context) {

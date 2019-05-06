@@ -2,6 +2,7 @@ package com.inner.adsdk.policy;
 
 import android.content.Context;
 
+import com.inner.adsdk.common.BasePolicy;
 import com.inner.adsdk.config.StConfig;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
@@ -45,23 +46,23 @@ public class StPolicy extends BasePolicy {
     }
 
     public boolean isStAllowed() {
-        Log.pv(Log.TAG, "stconfig : " + mStConfig);
+        Log.iv(Log.TAG, "stconfig : " + mStConfig);
         if (!checkBaseConfig()) {
             return false;
         }
 
         if (isTopApp()) {
-            Log.pv(Log.TAG, "app is on the top");
+            Log.iv(Log.TAG, "app is on the top");
             return false;
         }
 
         if (Utils.isScreenLocked(mContext)) {
-            Log.pv(Log.TAG, "screen is locked");
+            Log.iv(Log.TAG, "screen is locked");
             return false;
         }
 
         if (!Utils.isScreenOn(mContext)) {
-            Log.pv(Log.TAG, "screen is not on");
+            Log.iv(Log.TAG, "screen is not on");
             return false;
         }
         return true;

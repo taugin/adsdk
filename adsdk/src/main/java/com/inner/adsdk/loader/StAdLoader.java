@@ -10,9 +10,11 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.inner.adsdk.AdSdk;
+import com.inner.adsdk.common.BaseLoader;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.StConfig;
 import com.inner.adsdk.constant.Constant;
+import com.inner.adsdk.framework.AdReceiver;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
@@ -23,7 +25,7 @@ import com.inner.adsdk.stat.StatImpl;
  * Created by Administrator on 2018/7/19.
  */
 
-public class StAdLoader extends BottomLoader implements Handler.Callback {
+public class StAdLoader extends BaseLoader implements Handler.Callback {
 
     private static final int LOAD_DELAY = 1000;
     private static final int MSG_ST_LOAD = 1000;
@@ -97,7 +99,7 @@ public class StAdLoader extends BottomLoader implements Handler.Callback {
             if (!StPolicy.get(mContext).isStAllowed()) {
                 return;
             }
-            Log.pv(Log.TAG, "");
+            Log.iv(Log.TAG, "");
             StatImpl.get().reportAdOuterRequest(mContext, StPolicy.get(mContext).getType(), Constant.STPLACE_OUTER_NAME);
             mAdSdk.loadComplexAds(Constant.STPLACE_OUTER_NAME, new SimpleAdSdkListener() {
                 @Override
