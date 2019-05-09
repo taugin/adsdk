@@ -188,6 +188,11 @@ public class AdSdk {
      */
     private String getAdRefPidName(String pidName) {
         String adrefPidName = pidName;
+        // 获取通过代码设置的别名
+        adrefPidName = getAdPlaceAlias(pidName);
+        if (!TextUtils.isEmpty(adrefPidName)) {
+            return adrefPidName;
+        }
         Map<String, String> adRefs = DataManager.get(mContext).getRemoteAdRefs();
         AdConfig localConfig = DataManager.get(mContext).getAdConfig();
         if (adRefs == null && localConfig != null) {
@@ -468,5 +473,47 @@ public class AdSdk {
 
     public void unregisterTriggerListener(OnTriggerListener l) {
         AdReceiver.get(mContext).unregisterTriggerListener(l);
+    }
+
+    /**
+     * 动态设置广告场景的别名
+     * @param srcAdPlace
+     * @param dstAdPlace
+     */
+    public void setAdPlaceAlias(String srcAdPlace, String dstAdPlace) {
+        if (!TextUtils.isEmpty(srcAdPlace) && !TextUtils.isEmpty(dstAdPlace)) {
+            Utils.putString(mContext, Constant.AD_SDK_PREFIX + srcAdPlace, dstAdPlace);
+            removeObjectFromAdLoaders(srcAdPlace);
+        }
+    }
+
+    /**
+     * 清除广告位别名
+     * @param srcAdPlace
+     */
+    public void clearAdPlaceAlias(String srcAdPlace) {
+        if (!TextUtils.isEmpty(srcAdPlace)) {
+            Utils.clearPrefs(mContext, Constant.AD_SDK_PREFIX + srcAdPlace);
+            removeObjectFromAdLoaders(srcAdPlace);
+        }
+    }
+
+    private void removeObjectFromAdLoaders(String srcAdPlace) {
+        try {
+            mAdLoaders.remove(srcAdPlace);
+        } catch (Exception | Error e) {
+        }
+    }
+
+    /**
+     * 读取广告场景的别名
+     * @param srcAdPlace
+     * @return
+     */
+    private String getAdPlaceAlias(String srcAdPlace) {
+        if (!TextUtils.isEmpty(srcAdPlace)) {
+            return Utils.getString(mContext, Constant.AD_SDK_PREFIX + srcAdPlace, null);
+        }
+        return null;
     }
 }
