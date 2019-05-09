@@ -22,6 +22,8 @@ public class Constant {
     public static final String AD_SDK_DSPMOB = "dspmob";
     public static final String AD_SDK_DISPLAYIO = "displayio";
 
+    public static final String AD_SDK_PREFIX = "pref_adsdk_";
+
     public static final int    NOSET = -1;
     public static final int    BANNER = 1000;
     public static final int    FULL_BANNER = 1001;

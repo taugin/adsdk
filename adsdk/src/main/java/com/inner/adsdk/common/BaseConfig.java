@@ -23,7 +23,7 @@ public abstract class BaseConfig {
     private boolean showBottomActivity = true;
     private String placeNameInt;
     private String placeNameAdv;
-    private long sceneInterval;
+    private long sceneInterval = 300000;
 
     public abstract String getName();
 
