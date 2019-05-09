@@ -117,6 +117,10 @@ public class Utils {
         return null;
     }
 
+    public static void clearPrefs(Context context, String key) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().remove(key).commit();
+    }
+
     public static void putString(Context context, String key, String value) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, value).commit();
     }
