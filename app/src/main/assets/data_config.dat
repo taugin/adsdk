@@ -15,25 +15,25 @@
     "i": 60000
   },
   "ltconfig": {
-    "e": 1,
+    "e": 0,
     "d": 3600,
     "i": 1800,
     "attr": []
   },
   "htconfig": {
-    "e": 1,
+    "e": 0,
     "d": 3600,
     "i": 3600,
     "attr": []
   },
   "ctconfig": {
-    "e": 1,
+    "e": 0,
     "d": 3600,
     "di": 60000,
     "attr": []
   },
   "gtconfig": {
-    "e": 1,
+    "e": 0,
     "d": 3600,
     "i": 1800,
     "mc": 100,
@@ -47,51 +47,6 @@
   },
   "adplaces": [
     {
-      "name": "banner1",
-      "mode": "con",
-      "as": 1,
-      "maxcount": 100,
-      "percent": 100,
-      "pids": [
-        {
-          "sdk": "admob",
-          "type": "banner",
-          "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
-        }
-      ]
-    },
-    {
-      "name": "banner2",
-      "mode": "con",
-      "as": 1,
-      "maxcount": 100,
-      "percent": 100,
-      "pids": [
-        {
-          "sdk": "dfp",
-          "type": "banner",
-          "pid": "/6253334/dfp_example_ad",
-          "disable": 0
-        }
-      ]
-    },
-    {
-      "name": "banner3",
-      "mode": "con",
-      "as": 1,
-      "maxcount": 100,
-      "percent": 100,
-      "pids": [
-        {
-          "sdk": "applovin",
-          "type": "banner",
-          "pid": "1bb8d0234f0f8c3d",
-          "disable": 0
-        }
-      ]
-    },
-    {
       "name": "banner_and_native",
       "mode": "seq",
       "as": 1,
@@ -100,31 +55,43 @@
           "sdk": "adx",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
+          "disable": 1
+        },
+        {
+          "sdk": "fb",
+          "type": "native",
+          "pid": "YOUR_PLACEMENT_ID",
+          "disable": 1
+        },
+        {
+          "sdk": "fb",
+          "type": "banner",
+          "pid": "YOUR_PLACEMENT_ID",
           "disable": 0
         },
         {
           "sdk": "mopub",
           "type": "native",
           "pid": "11a17b188668469fb0412708c3d16813",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "banner",
           "pid": "252412d5e9364a05ab77d9396346d73d",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
@@ -151,12 +118,19 @@
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "adx",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
+          "ctr": 5,
+          "disable": 1
+        },
+        {
+          "sdk": "fb",
+          "type": "interstitial",
+          "pid": "YOUR_PLACEMENT_ID",
           "ctr": 5,
           "disable": 0
         },
@@ -165,18 +139,18 @@
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
           "type": "interstitial",
           "pid": "/6499/example/interstitial",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "spread",
           "type": "interstitial",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,

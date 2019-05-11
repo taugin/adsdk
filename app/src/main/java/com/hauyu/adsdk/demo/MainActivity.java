@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
         builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_MEDIUM_RECTANGLE);
         builder.setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE);
+        builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.FB_MEDIUM_RECTANGLE);
         View view = LayoutInflater.from(this).inflate(layoutId, null);
         // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
         builder.setAdRootView(AdExtra.AD_SDK_COMMON, view);
@@ -143,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
         }
+        builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.FB_MEDIUM_RECTANGLE);
         View view = LayoutInflater.from(this).inflate(layoutId, null);
         builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, CARDID[new Random().nextInt(CARDID.length)]);
         // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
