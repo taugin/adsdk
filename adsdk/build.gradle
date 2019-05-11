@@ -21,7 +21,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 26
         versionName "2.5.0"
-        consumerProguardFiles 'proguard-rules.pro'
+        consumerProguardFiles 'proguard-rules-adsdk.pro'
     }
 
     buildTypes {
