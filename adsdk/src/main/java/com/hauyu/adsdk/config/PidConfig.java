@@ -208,6 +208,10 @@ public class PidConfig extends BaseConfig {
         return TextUtils.equals(Constant.AD_SDK_MOPUB, sdk);
     }
 
+    public boolean isFB() {
+        return TextUtils.equals(Constant.AD_SDK_FACEBOOK, sdk);
+    }
+
     public boolean isAdx() {
         return TextUtils.equals(Constant.AD_SDK_ADX, sdk);
     }

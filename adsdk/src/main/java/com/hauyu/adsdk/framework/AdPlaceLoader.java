@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.appub.ads.a.FSA;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.adloader.addfp.AdDfpLoader;
+import com.hauyu.adsdk.adloader.adfb.FBLoader;
 import com.hauyu.adsdk.adloader.admob.AdmobLoader;
 import com.hauyu.adsdk.adloader.adx.AdxLoader;
 import com.hauyu.adsdk.adloader.base.SimpleAdBaseBaseListener;
@@ -110,6 +111,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         }
                         if (config.isAdmob() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new AdmobLoader();
+                            loader.init(mContext);
+                            loader.setPidConfig(config);
+                            loader.setListenerManager(this);
+                            loader.setAdId(adId);
+                            if (loader.allowUseLoader()) {
+                                mAdLoaders.add(loader);
+                            }
+                        } else if (config.isFB() && AdHelper.isModuleLoaded(config.getSdk())) {
+                            loader = new FBLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);

@@ -10,6 +10,7 @@ import java.util.Locale;
 public class Constant {
     public static final String AD_SDK_COMMON = "common";
     public static final String AD_SDK_ADMOB = "admob";
+    public static final String AD_SDK_FACEBOOK = "fb";
     public static final String AD_SDK_ADX = "adx";
     public static final String AD_SDK_DFP = "dfp";
     public static final String AD_SDK_SPREAD = "spread";
@@ -17,14 +18,14 @@ public class Constant {
 
     public static final String AD_SDK_PREFIX = "pref_adsdk_";
 
-    public static final int    NOSET = -1;
-    public static final int    BANNER = 1000;
-    public static final int    FULL_BANNER = 1001;
-    public static final int    LARGE_BANNER = 1002;
-    public static final int    LEADERBOARD = 1003;
-    public static final int    MEDIUM_RECTANGLE = 1004;
-    public static final int    WIDE_SKYSCRAPER = 1005;
-    public static final int    SMART_BANNER = 1006;
+    public static final int NOSET = -1;
+    public static final int BANNER = 1000;
+    public static final int FULL_BANNER = 1001;
+    public static final int LARGE_BANNER = 1002;
+    public static final int LEADERBOARD = 1003;
+    public static final int MEDIUM_RECTANGLE = 1004;
+    public static final int WIDE_SKYSCRAPER = 1005;
+    public static final int SMART_BANNER = 1006;
 
     public static final int NATIVE_CARD_SMALL = 1;
     public static final int NATIVE_CARD_MEDIUM = 2;
@@ -50,7 +51,7 @@ public class Constant {
 
     public static final String KEY_PASSWORD = "123456789";
 
-    public static final long   ONE_DAY_TIME = 24 * 60 * 60 * 1000;
+    public static final long ONE_DAY_TIME = 24 * 60 * 60 * 1000;
 
     public static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
 

@@ -21,7 +21,7 @@ public class AdExtra {
     /**
      * FB SDK 名字
      */
-    public static final String AD_SDK_MOPUB = Constant.AD_SDK_MOPUB;
+    public static final String AD_SDK_FACEBOOK = Constant.AD_SDK_FACEBOOK;
 
     /**
      * ADX SDK 名字
@@ -102,6 +102,22 @@ public class AdExtra {
      * ADX banner尺寸 smart_banner
      */
     public static final int ADX_SMART_BANNER = Constant.SMART_BANNER;
+
+    /**
+     * FB banner尺寸 w x 50
+     */
+    public static final int FB_BANNER = Constant.BANNER;
+
+    /**
+     * FB banner尺寸 w x 90
+     */
+    public static final int FB_LARGE_BANNER = Constant.LARGE_BANNER;
+
+    /**
+     * FB banner尺寸 w x 250
+     */
+    public static final int FB_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
+
 
     /**
      * DFP banner尺寸 320 x 50
@@ -191,11 +207,11 @@ public class AdExtra {
     /**
      * 通用banner广告尺寸，类比admob banner尺寸
      */
-    public static final int    COMMON_BANNER = Constant.BANNER;
-    public static final int    COMMON_FULL_BANNER = Constant.FULL_BANNER;
-    public static final int    COMMON_LARGE_BANNER = Constant.LARGE_BANNER;
-    public static final int    COMMON_LEADERBOARD = Constant.LEADERBOARD;
-    public static final int    COMMON_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
-    public static final int    COMMON_WIDE_SKYSCRAPER = Constant.WIDE_SKYSCRAPER;
-    public static final int    COMMON_SMART_BANNER = Constant.SMART_BANNER;
+    public static final int COMMON_BANNER = Constant.BANNER;
+    public static final int COMMON_FULL_BANNER = Constant.FULL_BANNER;
+    public static final int COMMON_LARGE_BANNER = Constant.LARGE_BANNER;
+    public static final int COMMON_LEADERBOARD = Constant.LEADERBOARD;
+    public static final int COMMON_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
+    public static final int COMMON_WIDE_SKYSCRAPER = Constant.WIDE_SKYSCRAPER;
+    public static final int COMMON_SMART_BANNER = Constant.SMART_BANNER;
 }
