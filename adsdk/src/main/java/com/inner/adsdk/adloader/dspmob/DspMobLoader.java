@@ -94,9 +94,7 @@ public class DspMobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mBannerAd);
                 mIsBannerLoaded = true;
-                if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
+                reportAdLoaded();
                 notifyAdLoaded(false);
             }
 
@@ -111,12 +109,8 @@ public class DspMobLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked() {
                 Log.v(Log.TAG, "");
-                if (mStat != null) {
-                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdClick();
+                reportAdClickForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -140,16 +134,12 @@ public class DspMobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(toSdkError(adError));
                 }
-                if (mStat != null) {
-                    mStat.reportAdError(mContext, codeToError(adError), getSdkName(), getAdType(), null);
-                }
+                reportAdError(codeToError(adError));
             }
         });
         mBannerAd.request();
 
-        if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-        }
+        reportAdRequest();
     }
 
     @Override
@@ -170,12 +160,8 @@ public class DspMobLoader extends AbstractSdkLoader {
             if (!isDestroyAfterClick()) {
                 mIsBannerLoaded = false;
             }
-            if (mStat != null) {
-                mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            }
-            if (mStat != null) {
-                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-            }
+            reportAdShowing();
+            reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "loader error : " + e);
         }
@@ -196,12 +182,8 @@ public class DspMobLoader extends AbstractSdkLoader {
             mInterstitialAd.show();
 
             clearCachedAdTime(mInterstitialAd);
-            if (mStat != null) {
-                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            }
-            if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-            }
+            reportAdCallShow();
+            reportAdShowForLtv();
             return true;
         }
         return false;
@@ -251,9 +233,7 @@ public class DspMobLoader extends AbstractSdkLoader {
                 mIsInterstitialLoaded = true;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mInterstitialAd);
-                if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
+                reportAdLoaded();
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onInterstitialLoaded(DspMobLoader.this);
@@ -264,12 +244,8 @@ public class DspMobLoader extends AbstractSdkLoader {
             public void onAdShown() {
                 Log.i(TAG, "onAdImpression");
                 Log.v(Log.TAG, "");
-                if (mStat != null) {
-                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdShowing();
+                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
@@ -282,12 +258,8 @@ public class DspMobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialClick();
                 }
-                if (mStat != null) {
-                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdClick();
+                reportAdClickForLTV();
             }
 
             @Override
@@ -307,16 +279,12 @@ public class DspMobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(toSdkError(adError));
                 }
-                if (mStat != null) {
-                    mStat.reportAdError(mContext, codeToError(adError), getSdkName(), getAdType(), null);
-                }
+                reportAdError(codeToError(adError));
             }
         });
         mInterstitialAd.request();
 
-        if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-        }
+        reportAdRequest();
     }
 
     private String codeToError(ExchangeAdError adError) {

@@ -105,9 +105,7 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
-                if (mStat != null) {
-                    mStat.reportAdError(mContext, getError(adError), getSdkName(), getAdType(), null);
-                }
+                reportAdError(getError(adError));
             }
 
             @Override
@@ -116,9 +114,7 @@ public class WemobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(loadingView);
                 bannerView = loadingView;
-                if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
+                reportAdLoaded();
                 notifyAdLoaded(false);
             }
 
@@ -133,12 +129,8 @@ public class WemobLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked() {
                 Log.v(Log.TAG, "");
-                if (mStat != null) {
-                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdClick();
+                reportAdClickForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -156,9 +148,7 @@ public class WemobLoader extends AbstractSdkLoader {
             }
         });
         loadingView.loadAd();
-        if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-        }
+        reportAdRequest();
         Log.v(Log.TAG, "");
     }
 
@@ -189,12 +179,8 @@ public class WemobLoader extends AbstractSdkLoader {
             if (!isDestroyAfterClick()) {
                 bannerView = null;
             }
-            if (mStat != null) {
-                mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            }
-            if (mStat != null) {
-                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-            }
+            reportAdShowing();
+            reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "wemobloader error : " + e);
         }
@@ -254,9 +240,7 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
-                if (mStat != null) {
-                    mStat.reportAdError(mContext, getError(adError), getSdkName(), getAdType(), null);
-                }
+                reportAdError(getError(adError));
             }
 
             @Override
@@ -264,9 +248,7 @@ public class WemobLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
-                if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
+                reportAdLoaded();
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onInterstitialLoaded(WemobLoader.this);
@@ -291,32 +273,22 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialClick();
                 }
-                if (mStat != null) {
-                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdClick();
+                reportAdClickForLTV();
             }
 
             @Override
             public void onAdShown() {
                 Log.v(Log.TAG, "");
-                if (mStat != null) {
-                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdShowing();
+                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
             }
         });
         interstitialAd.loadAd();
-        if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-        }
+        reportAdRequest();
         Log.v(Log.TAG, "");
     }
 
@@ -326,12 +298,8 @@ public class WemobLoader extends AbstractSdkLoader {
             interstitialAd.show();
             clearCachedAdTime(interstitialAd);
             interstitialAd = null;
-            if (mStat != null) {
-                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            }
-            if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-            }
+            reportAdCallShow();
+            reportAdShowForLtv();
             return true;
         }
         return false;
@@ -390,9 +358,7 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
-                if (mStat != null) {
-                    mStat.reportAdError(mContext, getError(adError), getSdkName(), getAdType(), null);
-                }
+                reportAdError(getError(adError));
             }
 
             @Override
@@ -402,9 +368,7 @@ public class WemobLoader extends AbstractSdkLoader {
                 nativeAd = loadingNativeAd;
                 putCachedAdTime(nativeAd);
                 notifyAdLoaded(false);
-                if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
+                reportAdLoaded();
             }
 
             @Override
@@ -421,12 +385,8 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
-                if (mStat != null) {
-                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdClick();
+                reportAdClickForLTV();
                 if (isDestroyAfterClick()) {
                     nativeAd = null;
                 }
@@ -438,18 +398,12 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdImpression();
                 }
-                if (mStat != null) {
-                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdShowing();
+                reportAdImpForLTV();
             }
         });
         loadingNativeAd.loadAd();
-        if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-        }
+        reportAdRequest();
         Log.v(Log.TAG, "");
     }
 
