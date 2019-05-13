@@ -124,12 +124,8 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                             if (getAdListener() != null) {
                                                 getAdListener().onAdShow();
                                             }
-                                            if (mStat != null) {
-                                                mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                                            }
-                                            if (mStat != null) {
-                                                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                                            }
+                                            reportAdShowing();
+                                            reportAdImpForLTV();
                                         }
                                     }
 
@@ -160,9 +156,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                             }
                             mAdView = BannerAdContainer.getAdView(mContext);
                             putCachedAdTime(mAdView);
-                            if (mStat != null) {
-                                mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                            }
+                            reportAdLoaded();
                             notifyAdLoaded(false);
                         }
 
@@ -173,9 +167,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                             if (getAdListener() != null) {
                                 getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                             }
-                            if (mStat != null) {
-                                mStat.reportAdError(mContext, "failed to load", getSdkName(), getAdType(), null);
-                            }
+                            reportAdError("failed to load");
                         }
                     });
                     try {
@@ -186,9 +178,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                         if (getAdListener() != null) {
                             getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                         }
-                        if (mStat != null) {
-                            mStat.reportAdError(mContext, (e != null ? e.getLocalizedMessage() : "null"), getSdkName(), getAdType(), null);
-                        }
+                        reportAdError((e != null ? e.getLocalizedMessage() : "null"));
                     }
                 }
 
@@ -198,16 +188,12 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                     if (getAdListener() != null) {
                         getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                     }
-                    if (mStat != null) {
-                        mStat.reportAdError(mContext, "no ads", getSdkName(), getAdType(), null);
-                    }
+                    reportAdError("no ads");
                 }
             });
             adRequest.requestAd();
             mRequestId = adRequest.getId();
-            if (mStat != null) {
-                mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            }
+            reportAdRequest();
             Log.v(Log.TAG, "");
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
@@ -215,9 +201,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
             }
-            if (mStat != null) {
-                mStat.reportAdError(mContext, (e != null ? e.getLocalizedMessage() : "null"), getSdkName(), getAdType(), null);
-            }
+            reportAdError((e != null ? e.getLocalizedMessage() : "null"));
         }
     }
 
@@ -317,12 +301,8 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                 ad.setEventListener(new AdEventListener() {
                                     @Override
                                     public void onShown(Ad ad) {
-                                        if (mStat != null) {
-                                            mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                                        }
-                                        if (mStat != null) {
-                                            mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                                        }
+                                        reportAdShowing();
+                                        reportAdImpForLTV();
                                         Log.v(Log.TAG, "");
                                     }
 
@@ -336,12 +316,8 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                         if (getAdListener() != null) {
                                             getAdListener().onInterstitialClick();
                                         }
-                                        if (mStat != null) {
-                                            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                                        }
-                                        if (mStat != null) {
-                                            mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                                        }
+                                        reportAdClick();
+                                        reportAdClickForLTV();
                                     }
 
                                     @Override
@@ -360,9 +336,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                             }
                             mInterstitial = ad;
                             putCachedAdTime(mInterstitial);
-                            if (mStat != null) {
-                                mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                            }
+                            reportAdLoaded();
                             if (getAdListener() != null) {
                                 setLoadedFlag();
                                 getAdListener().onInterstitialLoaded(DisplayIoLoader.this);
@@ -376,9 +350,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                             if (getAdListener() != null) {
                                 getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                             }
-                            if (mStat != null) {
-                                mStat.reportAdError(mContext, "failed to load", getSdkName(), getAdType(), null);
-                            }
+                            reportAdError("failed to load");
                         }
                     });
                     try {
@@ -389,9 +361,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                         if (getAdListener() != null) {
                             getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                         }
-                        if (mStat != null) {
-                            mStat.reportAdError(mContext, (e != null ? e.getLocalizedMessage() : "null"), getSdkName(), getAdType(), null);
-                        }
+                        reportAdError((e != null ? e.getLocalizedMessage() : "null"));
                     }
                 }
 
@@ -401,16 +371,12 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                     if (getAdListener() != null) {
                         getAdListener().onInterstitialError(Constant.AD_ERROR_NOFILL);
                     }
-                    if (mStat != null) {
-                        mStat.reportAdError(mContext, "no ads", getSdkName(), getAdType(), null);
-                    }
+                    reportAdError("no ads");
                 }
             });
             adRequest.requestAd();
             mRequestId = adRequest.getId();
-            if (mStat != null) {
-                mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            }
+            reportAdRequest();
             Log.v(Log.TAG, "");
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
@@ -418,9 +384,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
             }
-            if (mStat != null) {
-                mStat.reportAdError(mContext, (e != null ? e.getLocalizedMessage() : "null"), getSdkName(), getAdType(), null);
-            }
+            reportAdError((e != null ? e.getLocalizedMessage() : "null"));
         }
     }
 
@@ -442,12 +406,8 @@ public class DisplayIoLoader extends AbstractSdkLoader {
             mInterstitial.showAd(mContext);
             clearCachedAdTime(mInterstitial);
             mInterstitial = null;
-            if (mStat != null) {
-                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            }
-            if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-            }
+            reportAdCallShow();
+            reportAdShowForLtv();
             return true;
         }
         return false;
