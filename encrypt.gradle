@@ -34,6 +34,11 @@ try {
                 r->
                     r.url = "http://dl.appnext.com/"
             }
+            /*
+            repo.maven {
+                r->
+                    r.url = "https://dl.bintray.com/wesdk/WeSdk"
+            }*/
     }
 } catch (Exception e) {
 }
