@@ -52,12 +52,8 @@ public class CloudMobiLoader extends AbstractSdkLoader {
             CTService.showInterstitial(mInterstitialAd);
 
             clearCachedAdTime(mInterstitialAd);
-            if (mStat != null) {
-                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            }
-            if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-            }
+            reportAdCallShow();
+            reportAdShowForLtv();
             return true;
         }
         return false;
@@ -110,9 +106,7 @@ public class CloudMobiLoader extends AbstractSdkLoader {
                         mIsInterstitialLoaded = true;
                         setLoading(false, STATE_SUCCESS);
                         putCachedAdTime(mInterstitialAd);
-                        if (mStat != null) {
-                            mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                        }
+                        reportAdLoaded();
                         if (getAdListener() != null) {
                             setLoadedFlag();
                             getAdListener().onInterstitialLoaded(CloudMobiLoader.this);
@@ -137,9 +131,7 @@ public class CloudMobiLoader extends AbstractSdkLoader {
                         if (getAdListener() != null) {
                             getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                         }
-                        if (mStat != null) {
-                            mStat.reportAdError(mContext, result.getErrorsMsg(), getSdkName(), getAdType(), null);
-                        }
+                        reportAdError(result.getErrorsMsg());
                     }
 
                     @Override
@@ -148,18 +140,12 @@ public class CloudMobiLoader extends AbstractSdkLoader {
                         if (getAdListener() != null) {
                             getAdListener().onInterstitialClick();
                         }
-                        if (mStat != null) {
-                            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                        }
-                        if (mStat != null) {
-                            mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                        }
+                        reportAdClick();
+                        reportAdClickForLTV();
                     }
                 });
 
-        if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-        }
+        reportAdRequest();
     }
 
     public class MyCTAdEventListener extends CTAdEventListener {

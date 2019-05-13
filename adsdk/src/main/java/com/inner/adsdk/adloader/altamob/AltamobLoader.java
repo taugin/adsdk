@@ -49,12 +49,8 @@ public class AltamobLoader extends AbstractSdkLoader {
             mInterstitialAd.show();
 
             clearCachedAdTime(mInterstitialAd);
-            if (mStat != null) {
-                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            }
-            if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-            }
+            reportAdCallShow();
+            reportAdShowForLtv();
             return true;
         }
         return false;
@@ -103,9 +99,7 @@ public class AltamobLoader extends AbstractSdkLoader {
                 mIsInterstitialLoaded = true;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mInterstitialAd);
-                if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
+                reportAdLoaded();
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onInterstitialLoaded(AltamobLoader.this);
@@ -120,9 +114,7 @@ public class AltamobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
-                if (mStat != null) {
-                    mStat.reportAdError(mContext, codeToError(adError), getSdkName(), getAdType(), null);
-                }
+                reportAdError(codeToError(adError));
             }
 
             @Override
@@ -131,23 +123,15 @@ public class AltamobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialClick();
                 }
-                if (mStat != null) {
-                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdClick();
+                reportAdClickForLTV();
             }
 
             @Override
             public void onShowed() {
                 Log.i(TAG, "onAdImpression");
-                if (mStat != null) {
-                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdShowing();
+                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
@@ -165,9 +149,7 @@ public class AltamobLoader extends AbstractSdkLoader {
         });
         mInterstitialAd.loadAd();
 
-        if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-        }
+        reportAdRequest();
     }
 
     public static String codeToError(ADError adError) {

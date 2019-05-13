@@ -76,12 +76,8 @@ public class MobvistaLoader extends AbstractSdkLoader {
             mInterstitialAd.show();
 
             clearCachedAdTime(mInterstitialAd);
-            if (mStat != null) {
-                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            }
-            if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-            }
+            reportAdCallShow();
+            reportAdShowForLtv();
             return true;
         }
         return false;
@@ -137,9 +133,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
                 }
-                if (mStat != null) {
-                    mStat.reportAdError(mContext, interstitialCodeToError(i), getSdkName(), getAdType(), null);
-                }
+                reportAdError(interstitialCodeToError(i));
             }
 
             @Override
@@ -147,9 +141,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
                 mIsInterstitialLoaded = true;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mInterstitialAd);
-                if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
+                reportAdLoaded();
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     getAdListener().onInterstitialLoaded(MobvistaLoader.this);
@@ -160,12 +152,8 @@ public class MobvistaLoader extends AbstractSdkLoader {
             public void onAdShowed() {
                 Log.i(TAG, "onAdImpression");
                 Log.v(Log.TAG, "");
-                if (mStat != null) {
-                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdShowing();
+                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
@@ -178,12 +166,8 @@ public class MobvistaLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialClick();
                 }
-                if (mStat != null) {
-                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdClick();
+                reportAdClickForLTV();
             }
 
             @Override
@@ -198,9 +182,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
         });
         mInterstitialAd.fill();
 
-        if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-        }
+        reportAdRequest();
     }
 
     @Override
@@ -262,9 +244,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
                 }
-                if (mStat != null) {
-                    mStat.reportAdError(mContext, adError.getMessage(), getSdkName(), getAdType(), null);
-                }
+                reportAdError(adError.getMessage());
             }
 
             @Override
@@ -283,9 +263,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
                         setLoading(false, STATE_SUCCESS);
                         putCachedAdTime(mAd);
                         notifyAdLoaded(false);
-                        if (mStat != null) {
-                            mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                        }
+                        reportAdLoaded();
                         return;
                     }
                 }
@@ -302,12 +280,8 @@ public class MobvistaLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
-                if (mStat != null) {
-                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                }
+                reportAdClick();
+                reportAdClickForLTV();
             }
 
             @Override
@@ -320,9 +294,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
         });
         mNativeAds.loadAd();
 
-        if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-        }
+        reportAdRequest();
         Log.v(Log.TAG, "");
     }
 
