@@ -89,7 +89,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.1'
 
     // Dsp
-    implementation "com.we.sdk:exchange:0.1.4"
+    implementation "com.we.sdk:exchange:0.1.6"
     implementation 'com.mopub.mediation:taurus-exchange:0.1.2.0'
     implementation('com.stanfy:gson-xml-java:0.1.7') {
         exclude group: 'xmlpull', module: 'xmlpull'
