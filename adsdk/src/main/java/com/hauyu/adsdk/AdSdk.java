@@ -524,4 +524,11 @@ public class AdSdk {
         }
         return null;
     }
+
+    public void setQueueRunning(String pidName, boolean running) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            loader.setQueueRunning(running);
+        }
+    }
 }
