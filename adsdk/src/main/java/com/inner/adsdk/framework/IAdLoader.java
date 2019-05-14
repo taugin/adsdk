@@ -47,5 +47,7 @@ public interface IAdLoader {
     public void resume();
     public void pause();
 
+    public void setQueueRunning(boolean running);
+
     public void destroy();
 }

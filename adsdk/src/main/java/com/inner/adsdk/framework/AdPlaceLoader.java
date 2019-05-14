@@ -74,6 +74,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private FSA.MView mMView;
     private static List<ISdkLoader> sLoadedAdLoaders = new ArrayList<ISdkLoader>();
     private boolean mAdPlaceSeqLoading = false;
+    private boolean mQueueRunning = true;
 
     public AdPlaceLoader(Context context) {
         mContext = context;
@@ -591,7 +592,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      */
     private void loadInterstitialQueue() {
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
-            if (!isInterstitialCoreCount()) {
+            if (!isInterstitialReachToCoreCount()) {
                 if (!isAdPlaceSeqLoading()) {
                     setAdPlaceSeqLoading(true);
                     final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
@@ -620,7 +621,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onInterstitialDismiss() {
                     super.onInterstitialDismiss();
-                    if (!isInterstitialCoreCount()) {
+                    if (!isInterstitialReachToCoreCount()) {
                         loadInterstitialQueue();
                     }
                 }
@@ -628,7 +629,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onAdDismiss() {
                     super.onAdDismiss();
-                    if (!isInterstitialCoreCount()) {
+                    if (!isInterstitialReachToCoreCount()) {
                         loadInterstitialQueue();
                     }
                 }
@@ -636,7 +637,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onRewardedVideoAdClosed() {
                     super.onRewardedVideoAdClosed();
-                    if (!isInterstitialCoreCount()) {
+                    if (!isInterstitialReachToCoreCount()) {
                         loadInterstitialQueue();
                     }
                 }
@@ -654,7 +655,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
                 @Override
                 public void onInterstitialLoaded(ISdkLoader loader) {
-                    if (isInterstitialCoreCount()) {
+                    if (isInterstitialReachToCoreCount()) {
                         setAdPlaceSeqLoading(false);
                         super.onInterstitialLoaded(loader);
                     } else {
@@ -665,7 +666,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
                 @Override
                 public void onRewardedVideoAdLoaded(ISdkLoader loader) {
-                    if (isInterstitialCoreCount()) {
+                    if (isInterstitialReachToCoreCount()) {
                         setAdPlaceSeqLoading(false);
                         super.onRewardedVideoAdLoaded(loader);
                     } else {
@@ -691,7 +692,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      *
      * @return
      */
-    private boolean isInterstitialCoreCount() {
+    private boolean isInterstitialReachToCoreCount() {
+        if (!mQueueRunning) {
+            return true;
+        }
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             return true;
         }
@@ -703,7 +707,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 loadCount++;
             }
         }
-        Log.v(Log.TAG, "###queue count : " + loadCount);
+        Log.v(Log.TAG, "queue core count : " + loadCount);
 
         if (mAdLoaders.size() < mAdPlace.getQueueSize()) {
             return loadCount >= mAdLoaders.size();
@@ -951,7 +955,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      */
     private void loadAdViewQueue() {
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
-            if (!isAdViewCoreCount()) {
+            if (!isAdViewReachToCoreCount()) {
                 if (!isAdPlaceSeqLoading()) {
                     setAdPlaceSeqLoading(true);
                     final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
@@ -980,7 +984,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onAdDismiss() {
                     super.onAdDismiss();
-                    if (!isAdViewCoreCount()) {
+                    if (!isAdViewReachToCoreCount()) {
                         loadAdViewQueue();
                     }
                 }
@@ -988,7 +992,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onAdImpression() {
                     super.onAdImpression();
-                    if (!isAdViewCoreCount()) {
+                    if (!isAdViewReachToCoreCount()) {
                         loadAdViewQueue();
                     }
                 }
@@ -996,7 +1000,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onAdShow() {
                     super.onAdShow();
-                    if (!isAdViewCoreCount()) {
+                    if (!isAdViewReachToCoreCount()) {
                         loadAdViewQueue();
                     }
                 }
@@ -1014,7 +1018,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
                 @Override
                 public void onAdLoaded(ISdkLoader loader) {
-                    if (isAdViewCoreCount()) {
+                    if (isAdViewReachToCoreCount()) {
                         setAdPlaceSeqLoading(false);
                         super.onAdLoaded(loader);
                     } else {
@@ -1040,7 +1044,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      *
      * @return
      */
-    private boolean isAdViewCoreCount() {
+    private boolean isAdViewReachToCoreCount() {
+        if (!mQueueRunning) {
+            return true;
+        }
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             return true;
         }
@@ -1052,7 +1059,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 loadCount++;
             }
         }
-        Log.v(Log.TAG, "###queue count : " + loadCount);
+        Log.v(Log.TAG, "queue core count : " + loadCount);
 
         if (mAdLoaders.size() < mAdPlace.getQueueSize()) {
             return loadCount >= mAdLoaders.size();
@@ -1392,7 +1399,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      */
     private void loadComplexAdsQueue() {
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
-            if (!isComplexAdsLoadCount()) {
+            if (!isComplexAdsReachToLoadCount()) {
                 if (!isAdPlaceSeqLoading()) {
                     setAdPlaceSeqLoading(true);
                     final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
@@ -1432,7 +1439,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onInterstitialDismiss() {
                     super.onInterstitialDismiss();
-                    if (!isComplexAdsLoadCount()) {
+                    if (!isComplexAdsReachToLoadCount()) {
                         loadComplexAdsQueue();
                     }
                 }
@@ -1440,7 +1447,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onAdDismiss() {
                     super.onAdDismiss();
-                    if (!isComplexAdsLoadCount()) {
+                    if (!isComplexAdsReachToLoadCount()) {
                         loadComplexAdsQueue();
                     }
                 }
@@ -1448,7 +1455,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onRewardedVideoAdClosed() {
                     super.onRewardedVideoAdClosed();
-                    if (!isComplexAdsLoadCount()) {
+                    if (!isComplexAdsReachToLoadCount()) {
                         loadComplexAdsQueue();
                     }
                 }
@@ -1456,7 +1463,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onAdShow() {
                     super.onAdShow();
-                    if (!isComplexAdsLoadCount()) {
+                    if (!isComplexAdsReachToLoadCount()) {
                         loadComplexAdsQueue();
                     }
                 }
@@ -1464,7 +1471,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void onAdImpression() {
                     super.onAdImpression();
-                    if (!isComplexAdsLoadCount()) {
+                    if (!isComplexAdsReachToLoadCount()) {
                         loadComplexAdsQueue();
                     }
                 }
@@ -1482,7 +1489,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
                 @Override
                 public void onAdLoaded(ISdkLoader loader) {
-                    if (isComplexAdsLoadCount()) {
+                    if (isComplexAdsReachToLoadCount()) {
                         setAdPlaceSeqLoading(false);
                         super.onAdLoaded(loader);
                     } else {
@@ -1493,7 +1500,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
                 @Override
                 public void onInterstitialLoaded(ISdkLoader loader) {
-                    if (isComplexAdsLoadCount()) {
+                    if (isComplexAdsReachToLoadCount()) {
                         setAdPlaceSeqLoading(false);
                         super.onInterstitialLoaded(loader);
                     } else {
@@ -1504,7 +1511,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
                 @Override
                 public void onRewardedVideoAdLoaded(ISdkLoader loader) {
-                    if (isComplexAdsLoadCount()) {
+                    if (isComplexAdsReachToLoadCount()) {
                         setAdPlaceSeqLoading(false);
                         super.onRewardedVideoAdLoaded(loader);
                     } else {
@@ -1534,7 +1541,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      *
      * @return
      */
-    private boolean isComplexAdsLoadCount() {
+    private boolean isComplexAdsReachToLoadCount() {
+        if (!mQueueRunning) {
+            return true;
+        }
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             return true;
         }
@@ -1548,7 +1558,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 loadCount++;
             }
         }
-        Log.v(Log.TAG, "###queue count : " + loadCount);
+        Log.v(Log.TAG, "queue core count : " + loadCount);
 
         if (mAdLoaders.size() < mAdPlace.getQueueSize()) {
             return loadCount >= mAdLoaders.size();
@@ -1822,6 +1832,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             }
         }
         // clearAdBaseListener();
+    }
+
+    @Override
+    public void setQueueRunning(boolean running) {
+        mQueueRunning = running;
     }
 
     @Override
