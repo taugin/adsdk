@@ -152,7 +152,15 @@ public class AdSdk {
             }
             return loader;
         }
+        // 首先获取远程针对广告位的配置是否存在
         AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(refPidName);
+        // 如果远程无配置，则读取本地或者远程整体广告位配置
+        if (adPlace == null) {
+            AdConfig localConfig = DataManager.get(mContext).getAdConfig();
+            if (localConfig != null ) {
+                adPlace = localConfig.get(pidName);
+            }
+        }
         // loader为null，或者AdPlace内容有变化，则重新加载loader
         if (loader == null || loader.needReload(adPlace)) {
             loader = createAdPlaceLoader(refPidName, adPlace);
