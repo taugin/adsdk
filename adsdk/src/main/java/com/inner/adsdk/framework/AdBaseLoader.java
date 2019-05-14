@@ -113,6 +113,10 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public void setQueueRunning(boolean running) {
+    }
+
+    @Override
     public void destroy() {
     }
 }
