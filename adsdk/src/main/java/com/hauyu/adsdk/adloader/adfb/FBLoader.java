@@ -184,7 +184,7 @@ public class FBLoader extends AbstractSdkLoader {
             if (!isDestroyAfterClick()) {
                 bannerView = null;
             }
-            reportAdShowing();
+            reportAdShow();
             reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
@@ -252,7 +252,7 @@ public class FBLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
             }
 
@@ -322,7 +322,7 @@ public class FBLoader extends AbstractSdkLoader {
             clearCachedAdTime(fbInterstitial);
             fbInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -429,7 +429,7 @@ public class FBLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdImpression();
                 }
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
             }
         });
@@ -522,7 +522,7 @@ public class FBLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdShowed();
                 }
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
             }
 
@@ -595,7 +595,7 @@ public class FBLoader extends AbstractSdkLoader {
             clearCachedAdTime(rewardedVideoAd);
             rewardedVideoAd = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

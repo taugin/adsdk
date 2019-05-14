@@ -202,7 +202,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             if (!isDestroyAfterClick()) {
                 bannerView = null;
             }
-            reportAdShowing();
+            reportAdShow();
             reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "admobloader error : " + e);
@@ -289,7 +289,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdOpened() {
                 Log.v(Log.TAG, "");
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -333,7 +333,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             clearCachedAdTime(interstitialAd);
             interstitialAd = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -403,7 +403,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdShowed();
                 }
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
             }
 
@@ -478,7 +478,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             clearCachedAdTime(loadedRewardVideo);
             loadedRewardVideo = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -571,7 +571,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdImpression();
                 }
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
             }
 
