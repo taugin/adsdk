@@ -6,7 +6,7 @@
     "st_outer_place": "gt_outer_place",
     "at_outer_place": "gt_outer_place",
     "lt_outer_place": "banner_and_native",
-    "ht_outer_place": "gt_outer_place",
+    "ht_outer_place": "interstitial1",
     "ct_outer_place": "banner_and_native",
     "gt_outer_place": "interstitial1"
   },
@@ -22,7 +22,7 @@
     "attr": []
   },
   "htconfig": {
-    "e": 0,
+    "e": 1,
     "d": 3600,
     "i": 1800,
     "attr": []
@@ -66,14 +66,28 @@
       "as": 1,
       "pids": [
         {
-          "sdk": "displayio",
+          "sdk": "adcolony",
           "type": "interstitial",
-          "pid": "4837",
-          "aid": "7559",
+          "pid": "vzd848164b9b524676ae",
+          "aid": "appa124832c06ff4054a0",
           "disable": 0
         }
       ]
     },
+     {
+       "name": "reward_video",
+       "mode": "con",
+       "as": 1,
+       "pids": [
+         {
+           "sdk": "adcolony",
+           "type": "reward",
+           "pid": "vzd6437c6667104c1eb3",
+           "aid": "appa124832c06ff4054a0",
+           "disable": 0
+         }
+       ]
+     },
     {
       "name": "banner3",
       "mode": "con",
