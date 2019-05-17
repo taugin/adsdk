@@ -3,6 +3,7 @@ package com.inner.adsdk.framework;
 import android.text.TextUtils;
 
 import com.adywind.core.api.SDK;
+import com.adcolony.sdk.AdColony;
 import com.applovin.sdk.AppLovinSdk;
 import com.appnext.base.Appnext;
 import com.cloudtech.ads.core.CTService;
@@ -77,6 +78,9 @@ public class AdHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_DISPLAYIO, sdk)) {
             return hasDisplayIoModule();
+        }
+        if (TextUtils.equals(Constant.AD_SDK_ADCOLONY, sdk)) {
+            return hasAdColonyModule();
         }
         return false;
     }
@@ -234,6 +238,16 @@ public class AdHelper {
     private static boolean hasDisplayIoModule() {
         try {
             Placement.class.getName();
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
+    }
+
+    private static boolean hasAdColonyModule() {
+        try {
+            AdColony.class.getName();
             return true;
         } catch (Exception e) {
         } catch (Error e) {

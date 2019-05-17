@@ -26,6 +26,7 @@ public class Constant {
     public static final String AD_SDK_CLOUDMOBI = "cloudmobi";
     public static final String AD_SDK_MOBVISTA = "mobvista";
     public static final String AD_SDK_DISPLAYIO = "displayio";
+    public static final String AD_SDK_ADCOLONY = "adcolony";
 
     public static final String AD_SDK_PREFIX = "pref_adsdk_";
 

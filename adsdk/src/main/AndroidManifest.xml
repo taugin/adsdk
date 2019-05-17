@@ -259,6 +259,13 @@
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
+        <activity
+            android:name="com.adcolony.sdk.AdColonyInterstitialActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:icon="@drawable/ad_tr_bg"
+            android:label=""
+            android:launchMode="singleInstance" />
     </application>
 </manifest>

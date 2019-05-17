@@ -89,6 +89,16 @@ public class AdExtra {
     public static final String AD_SDK_MOBVISTA = Constant.AD_SDK_MOBVISTA;
 
     /**
+     * DISPLAY IO
+     */
+    public static final String AD_SDK_DISPLAYIO = Constant.AD_SDK_DISPLAYIO;
+
+    /**
+     * ADCOLONY
+     */
+    public static final String AD_SDK_ADCOLONY = Constant.AD_SDK_ADCOLONY;
+
+    /**
      * ADMOB banner尺寸 320 x 50
      */
     public static final int ADMOB_BANNER = Constant.BANNER;

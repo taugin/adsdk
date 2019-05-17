@@ -1,0 +1,480 @@
+import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
+import java.security.MessageDigest
+
+
+/**
+ * 首字母转大写
+ * @param s
+ * @return
+ */
+def toUpperCaseFirstOne(String s) {
+    if (s == null) {
+        return null
+    }
+    if (Character.isUpperCase(s.charAt(0))) {
+        return s;
+    }
+    return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
+}
+
+try {
+    project.rootProject.allprojects.repositories.each {
+        repo->
+            repo.maven {
+                r->
+                    r.url = "https://imgtu.gitee.io/"
+            }
+            repo.maven {
+                r->
+                    r.url = "http://maven.display.io/"
+            }
+            repo.maven {
+                r->
+                    r.url = "http://dl.appnext.com/"
+            }
+            repo.maven {
+                r->
+                    r.url = "https://adcolony.bintray.com/AdColony"
+            }
+            /*
+            repo.maven {
+                r->
+                    r.url = "https://dl.bintray.com/wesdk/WeSdk"
+            }*/
+    }
+} catch (Exception e) {
+}
+
+project.afterEvaluate {
+    if (project.android.productFlavors.size() > 0) {// 如果有产品风味
+        project.android.productFlavors.each { flavor ->
+            def productFlavor = toUpperCaseFirstOne(flavor.name)
+            String taskName = String.format("transformResourcesWithMergeJavaResFor%sRelease", productFlavor)
+            def rTask = project.tasks.findByName(taskName)
+            if (rTask != null) {
+                String encryptTaskName = String.format("encrypt%sRelease", productFlavor)
+                project.tasks.create(encryptTaskName, {
+                    doLast {
+                        encryptAssetsFiles(flavor.name)
+                    }
+                })
+                rTask.dependsOn encryptTaskName
+            }
+            def aTask = project.tasks.findByName("assembleRelease");
+            if (aTask != null) {
+                aTask.doLast {
+                    openReleaseDir(flavor.name)
+                }
+            }
+        }
+    } else { // 无产品风味
+        def rTask = project.tasks.findByName("transformResourcesWithMergeJavaResForRelease")
+        if (rTask != null) {
+            String encryptRelease = "encryptRelease"
+            project.tasks.create(encryptRelease, {
+                doLast {
+                    encryptAssetsFiles(null)
+                }
+            })
+            rTask.dependsOn encryptRelease
+        }
+        def aTask = project.tasks.findByName("assembleRelease");
+        if (aTask != null) {
+            aTask.doLast {
+                openReleaseDir(null)
+            }
+        }
+    }
+}
+
+def isWindows() {
+    return org.gradle.internal.os.OperatingSystem.current().isWindows()
+}
+
+/**
+ * 打开Release目录
+ * @param flavor
+ * @return
+ */
+def openReleaseDir(flavor) {
+    if (!isWindows() || !ext.has("openRelease") || ext["openRelease"] != true) {
+        return
+    }
+    try {
+        def outputDir = String.format("outputs/apk/%srelease", ((flavor != null && flavor.trim().length() > 0) ? flavor + "/" : ""))
+        def outputPath = new File(project.buildDir, outputDir)
+        def cmd = "explorer.exe " + outputPath
+        cmd.execute()
+        println ":${project.name}:openReleaseDir [${outputPath}]"
+    } catch (Exception e) {
+    }
+}
+
+/**
+ * 获取applicationId
+ * @param flavor
+ * @return
+ */
+def getApplicationId(flavor) {
+    if (flavor == null || flavor.trim().length() == 0) {
+        return project.android.defaultConfig.applicationId
+    }
+    def productFlavor = project.android.productFlavors[flavor]
+    if (productFlavor.applicationId == null) {
+        return project.android.defaultConfig.applicationId
+    }
+    return productFlavor.applicationId
+}
+
+/**
+ * 获取assets输出目录
+ * @param flavor
+ * @return
+ */
+def getAssetsOutDir(flavor) {
+    def productFlaver = toUpperCaseFirstOne(flavor)
+    def flavorNoSlash = productFlaver == null ? "" : productFlaver;
+    def outAssetsDir = String.format("intermediates/assets/%s/release", flavorNoSlash)
+    def mergeAssetsDir = String.format("intermediates/merged_assets/%srelease/merge%sReleaseAssets/out", flavorNoSlash, flavorNoSlash)
+    outAssetsDir = new File(project.getBuildDir(), outAssetsDir)
+    mergeAssetsDir = new File(project.getBuildDir(), mergeAssetsDir)
+    if (outAssetsDir.exists()) {
+        return outAssetsDir;
+    }
+    if (mergeAssetsDir.exists()) {
+        return mergeAssetsDir;
+    }
+    return null
+}
+
+/**
+ * 获取广告配置文件名称
+ * @param assetsDir
+ * @param appId
+ * @return
+ */
+def getAdConfigFile(assetsDir, appId) {
+    def pkgnameMd5 = Aes.string2MD5(appId)
+    def adConfigName = "cfg" + pkgnameMd5.substring(0, 8) + ".dat"
+    def adConfigFile = new File(assetsDir, adConfigName)
+    def adDefaultFile = new File(assetsDir, "data_config.dat")
+    if (adConfigFile.exists()) {
+        return adConfigFile.getAbsolutePath()
+    }
+    if (adDefaultFile.exists()) {
+        return adDefaultFile.getAbsolutePath()
+    }
+    return null
+}
+
+/**
+ * 获取待加密的文件树
+ * @param assetDir
+ * @return
+ */
+def getEncryptFileTree(assetDir) {
+    def output = ext != null && ext.has("encryptFiles") ? ext.encryptFiles : null
+    if (output != null) {
+        FileTree mainTree = fileTree(dir: assetDir)
+        output.each {
+            out ->
+                mainTree.include out
+        }
+        return mainTree
+    }
+    return null
+}
+
+/**
+ * 获取签名信息
+ * @param flavor
+ * @return
+ */
+def getSignConfig(flavor) {
+    def signConfig = null
+    if (flavor == null) {
+        try {
+            signConfig = project.android.buildTypes.release.signingConfig
+        } catch (Exception e) {
+        }
+    } else {
+        try {
+            signConfig = project.android.productFlavors[flavor].signingConfig
+        } catch (Exception e) {
+        }
+    }
+    return signConfig
+}
+
+/**
+ * 生成签名的md5文件，一边验证是否被重打包
+ * @param assetDir
+ */
+def generateSignMd5(flavor, assetDir) {
+    def signConfig = getSignConfig(flavor)
+    def signMd5 = null
+    if (signConfig != null && signConfig.hasProperty("storeFile") && signConfig.hasProperty("storePassword")) {
+        def cmdString = String.format("keytool -v -list -keystore %s -storepass %s", signConfig.storeFile, signConfig.storePassword)
+        def result = cmdString.execute().text.trim()
+        BufferedReader br = new BufferedReader(new StringReader(result))
+        try {
+            while((line = br.readLine()) != null) {
+                if (line.trim().startsWith("MD5:") || line.trim().startsWith("md5:")) {
+                    signMd5 = line.trim().substring("MD5:".length()).trim()
+                    break
+                }
+            }
+        } catch(Exception e) {
+        }
+    }
+    if (signMd5 != null && signMd5.trim().length() > 0) {
+        signMd5 = signMd5.replaceAll(":", "")
+        signMd5 = signMd5.toLowerCase()
+    }
+    println ":${project.name}:signMd5 [${signMd5}]"
+    return null
+}
+
+/**
+ * 加密asset文件
+ * @param flavor
+ * @return
+ */
+def encryptAssetsFiles(flavor) {
+    def secret = ext != null && ext.has("secret") ? ext["secret"] : "123456789"
+    def appId = getApplicationId(flavor)
+    def assetDir = getAssetsOutDir(flavor)
+    if (assetDir == null) {
+        System.err.println("[ERROR] Can not find the output Asset Dir");
+        return;
+    }
+    def signFile = generateSignMd5(flavor, assetDir)
+    def adFile = getAdConfigFile(assetDir, appId);
+    def mainTree = getEncryptFileTree(assetDir)
+    // println "flavor     : " + flavor
+    // println "appId      : " + appId
+    // println "secret     : " + secret
+    // println "assetDir   : " + assetDir
+    println ":${project.name}:encryptAdFile    [${adFile}]"
+    try {
+        Aes.encryptFile(adFile, secret)
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+    if (mainTree != null) {
+        mainTree.each { File file ->
+            println ":${project.name}:encryptExtraFile [${file}]"
+            try {
+                Aes.encryptFile(file.getAbsolutePath(), secret)
+            } catch (Exception e) {
+                e.printStackTrace()
+            }
+        }
+    }
+}
+
+class Aes {
+    private static void appendHex(StringBuffer paramStringBuffer, byte paramByte) {
+        paramStringBuffer.append(
+                "0123456789ABCDEF".charAt(0xF & paramByte >> 4)).append(
+                "0123456789ABCDEF".charAt(paramByte & 0xF));
+    }
+
+    static String decrypt(String key, String content) {
+        try {
+            String str = new String(decrypt(getRawKey(key.getBytes()),
+                    toByte(content)));
+            return str;
+        } catch (Exception localException) {
+            System.out.println("decrypt error: " + localException);
+        }
+        return null;
+    }
+
+    static byte[] decrypt(byte[] key,
+                          byte[] content) throws Exception {
+        SecretKeySpec localSecretKeySpec = new SecretKeySpec(key,
+                "AES");
+        Cipher localCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        localCipher.init(2, localSecretKeySpec, new IvParameterSpec(
+                new byte[localCipher.getBlockSize()]));
+        return localCipher.doFinal(content);
+    }
+
+    static String decryptRaw(String seed, byte[] content) {
+        try {
+            String str = new String(
+                    decrypt(getRawKey(seed.getBytes()), content));
+            return str;
+        } catch (Exception localException) {
+            System.out.println("decrypt raw error: " + localException);
+        }
+        return null;
+    }
+
+    static String encryptPublic(String key, String content) {
+        try {
+            byte[] result = encrypt(getRawKey(key.getBytes()),
+                    content.getBytes());
+            return toHex(result);
+        } catch (Exception localException) {
+        }
+        return null;
+    }
+
+    private static byte[] encrypt(byte[] key,
+                                  byte[] content) throws Exception {
+        SecretKeySpec localSecretKeySpec = new SecretKeySpec(key,
+                "AES");
+        Cipher localCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        localCipher.init(1, localSecretKeySpec, new IvParameterSpec(
+                new byte[localCipher.getBlockSize()]));
+        return localCipher.doFinal(content);
+    }
+
+    static byte[] encryptRaw(String key, String content) {
+        try {
+            byte[] arrayOfByte = encrypt(getRawKey(key.getBytes()),
+                    content.getBytes());
+            return arrayOfByte;
+        } catch (Exception localException) {
+            System.out.println("encrypt raw error: " + localException);
+        }
+        return null;
+    }
+
+    static String fromHex(String content) {
+        return new String(toByte(content));
+    }
+
+    private static byte[] getRawKey(byte[] key) throws Exception {
+        byte[] arrayOfByte = new byte[16];
+        if (key == null)
+            throw new IllegalArgumentException("seed == null");
+        if (key.length == 0)
+            throw new IllegalArgumentException("seed.length == 0");
+        if (key.length < 16) {
+            int i = 0;
+            while (i < arrayOfByte.length) {
+                if (i < key.length) {
+                    arrayOfByte[i] = key[i];
+                } else {
+                    arrayOfByte[i] = 0;
+                }
+                i++;
+            }
+        }
+        return arrayOfByte;
+    }
+
+    static byte[] toByte(String content) {
+        int i = content.length() / 2;
+        byte[] arrayOfByte = new byte[i];
+        for (int j = 0; j < i; j++)
+            arrayOfByte[j] = Integer.valueOf(
+                    content.substring(j * 2, 2 + j * 2), 16).byteValue();
+        return arrayOfByte;
+    }
+
+    static String toHex(String content) {
+        return toHex(content.getBytes());
+    }
+
+    static String toHex(byte[] content) {
+        if (content == null)
+            return "";
+        StringBuffer localStringBuffer = new StringBuffer(
+                2 * content.length);
+        for (int i = 0; i < content.length; i++)
+            appendHex(localStringBuffer, content[i]);
+        return localStringBuffer.toString();
+    }
+
+    private static String readFromFile(File f) {
+        if (!f.exists()) {
+            return null;
+        }
+        StringBuilder builder = new StringBuilder();
+        try {
+            byte[] buf = new byte[4096];
+            int read = 0;
+            FileInputStream fis = new FileInputStream(f);
+            while ((read = fis.read(buf)) > 0) {
+                builder.append(new String(buf, 0, read));
+            }
+            fis.close();
+            return builder.toString();
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    private static void writeToFile(File f, String out) {
+        try {
+            if (f.exists()) {
+                f.delete();
+            }
+            f.createNewFile();
+            FileOutputStream fos = new FileOutputStream(f);
+            fos.write(out.getBytes());
+            fos.close();
+        } catch (Exception e) {
+        }
+    }
+
+    private static void usage() {
+        String usage = "java -jar aes.jar <-k rawkey> [-e/-d] [-i input] [-o output] [-s str]";
+        System.out.println(usage);
+    }
+
+    private static boolean isEmpty(String str) {
+        if (str == null || str.trim().equals("")) {
+            return true;
+        }
+        return false;
+    }
+
+    static void encryptFile(String originFile, String secret) {
+        try {
+            String encrypt = encryptPublic(secret, readFromFile(new File(originFile))); //加密
+            writeToFile(new File(originFile), encrypt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    static String byte2MD5(byte[] byteArray) {
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+        byte[] md5Bytes = md5.digest(byteArray);
+        StringBuffer hexValue = new StringBuffer();
+        for (int i = 0; i < md5Bytes.length; i++) {
+            int val = md5Bytes[i] & 0xff;
+            if (val < 16) {
+                hexValue.append("0");
+            }
+            hexValue.append(Integer.toHexString(val));
+        }
+        return hexValue.toString();
+    }
+
+    static String string2MD5(String source) {
+        return string2MD5(source, "utf-8");
+    }
+
+    static String string2MD5(String source, String encode) {
+        try {
+            return byte2MD5(source.getBytes(encode));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+}
