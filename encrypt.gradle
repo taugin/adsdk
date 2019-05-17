@@ -34,6 +34,10 @@ try {
                 r->
                     r.url = "http://dl.appnext.com/"
             }
+            repo.maven {
+                r->
+                    r.url = "https://adcolony.bintray.com/AdColony"
+            }
             /*
             repo.maven {
                 r->

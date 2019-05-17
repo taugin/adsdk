@@ -21,6 +21,7 @@ public class Constant {
     public static final String AD_SDK_INNERACTIVE = "inneractive";
     public static final String AD_SDK_DSPMOB = "dspmob";
     public static final String AD_SDK_DISPLAYIO = "displayio";
+    public static final String AD_SDK_ADCOLONY = "adcolony";
 
     public static final String AD_SDK_PREFIX = "pref_adsdk_";
 

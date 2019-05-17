@@ -97,6 +97,12 @@ dependencies {
 
     // display io
     implementation 'io.display:android-sdk:2.0.0.10'
+
+    // AdColony
+    // 会导致同步失败
+    // implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.adcolony:sdk:3.3.10'
+    // implementation 'com.google.android.gms:play-services-ads-identifier:16.0.0'
 }
 
 // 发布aar

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.appub.ads.a.FSA;
 import com.inner.adsdk.AdParams;
+import com.inner.adsdk.adloader.adcolony.AdColonyLoader;
 import com.inner.adsdk.adloader.addfp.AdDfpLoader;
 import com.inner.adsdk.adloader.adfb.FBLoader;
 import com.inner.adsdk.adloader.admob.AdmobLoader;
@@ -216,6 +217,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             }
                         } else if (config.isDisplayIo() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new DisplayIoLoader();
+                            loader.init(mContext);
+                            loader.setPidConfig(config);
+                            loader.setListenerManager(this);
+                            loader.setAdId(adId);
+                            if (loader.allowUseLoader()) {
+                                mAdLoaders.add(loader);
+                            }
+                        } else if (config.isAdColony() && AdHelper.isModuleLoaded(config.getSdk())) {
+                            loader = new AdColonyLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);

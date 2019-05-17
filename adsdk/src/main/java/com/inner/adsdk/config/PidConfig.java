@@ -248,6 +248,10 @@ public class PidConfig extends BaseConfig {
         return TextUtils.equals(Constant.AD_SDK_DISPLAYIO, sdk);
     }
 
+    public boolean isAdColony() {
+        return TextUtils.equals(Constant.AD_SDK_ADCOLONY, sdk);
+    }
+
     public boolean isBannerType() {
         return TextUtils.equals(Constant.TYPE_BANNER, adType);
     }
