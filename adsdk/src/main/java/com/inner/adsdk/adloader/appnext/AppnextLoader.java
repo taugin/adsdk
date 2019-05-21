@@ -320,7 +320,7 @@ public class AppnextLoader extends AbstractSdkLoader {
             clearCachedAdTime(interstitial);
             interstitial = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -587,7 +587,7 @@ public class AppnextLoader extends AbstractSdkLoader {
             clearCachedAdTime(rewardedVideoAd);
             rewardedVideoAd = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

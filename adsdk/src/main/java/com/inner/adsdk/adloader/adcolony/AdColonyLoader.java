@@ -153,7 +153,7 @@ public class AdColonyLoader extends AbstractSdkLoader {
             mAdColonyInterstitial.show();
             mAdColonyInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -279,7 +279,7 @@ public class AdColonyLoader extends AbstractSdkLoader {
             mAdColonyInterstitial.show();
             mAdColonyInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

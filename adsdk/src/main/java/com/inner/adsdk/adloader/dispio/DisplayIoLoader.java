@@ -407,7 +407,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
             clearCachedAdTime(mInterstitial);
             mInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

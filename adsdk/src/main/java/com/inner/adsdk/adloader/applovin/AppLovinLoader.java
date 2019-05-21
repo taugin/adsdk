@@ -298,7 +298,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             clearCachedAdTime(loadedAd);
             loadedAd = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -463,7 +463,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             clearCachedAdTime(incentivizedInterstitial);
             incentivizedInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

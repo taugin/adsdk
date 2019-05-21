@@ -330,7 +330,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
             clearCachedAdTime(interstitialAd);
             interstitialAd = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -609,7 +609,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
             clearCachedAdTime(loadedRewardVideo);
             loadedRewardVideo = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

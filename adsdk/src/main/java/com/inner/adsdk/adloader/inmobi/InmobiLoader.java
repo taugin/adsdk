@@ -351,7 +351,7 @@ public class InmobiLoader extends AbstractSdkLoader {
             clearCachedAdTime(mInMobiInterstitial);
             mInMobiInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -504,7 +504,7 @@ public class InmobiLoader extends AbstractSdkLoader {
             clearCachedAdTime(mInMobiRewardVideo);
             mInMobiRewardVideo = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

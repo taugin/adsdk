@@ -303,7 +303,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
 
             clearCachedAdTime(mFullScreenSpot);
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

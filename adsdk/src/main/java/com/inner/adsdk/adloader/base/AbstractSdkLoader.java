@@ -46,7 +46,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private static Map<Object, Long> mCachedTime = new ConcurrentHashMap<Object, Long>();
     protected PidConfig mPidConfig;
     protected Context mContext;
-    protected IStat mStat1;
     protected IManagerListener mManagerListener;
     protected String mAdId;
     protected Handler mHandler = null;
@@ -55,6 +54,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private boolean mLoadedFlag = false;
     private long mRequestTime = 0;
     private int mBannerSize = Constant.NOSET;
+    protected IStat mStat;
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -64,7 +64,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     @Override
     public void init(Context context) {
         mContext = context;
-        mStat1 = StatImpl.get();
+        mStat = StatImpl.get();
         mHandler = new Handler(this);
     }
 
@@ -450,7 +450,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             if (mRequestTime > 0) {
                 try {
                     int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
-                    mStat1.reportAdLoadSuccessTime(mContext, getSdkName(), getAdType(), time);
+                    mStat.reportAdLoadSuccessTime(mContext, getSdkName(), getAdType(), time);
                 } catch (Exception e) {
                 }
                 mRequestTime = 0;
@@ -463,7 +463,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                         error = "STATE_TIMTOUT";
                     }
                     int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
-                    mStat1.reportAdLoadFailureTime(mContext, getSdkName(), getAdType(), error, time);
+                    mStat.reportAdLoadFailureTime(mContext, getSdkName(), getAdType(), error, time);
                 } catch (Exception e) {
                 }
                 mRequestTime = 0;
@@ -582,62 +582,62 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected void reportAdRequest() {
-        if (mStat1 != null) {
-            mStat1.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        if (mStat != null) {
+            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
     }
 
     protected void reportAdLoaded() {
-        if (mStat1 != null) {
-            mStat1.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        if (mStat != null) {
+            mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
     }
 
     protected void reportAdCallShow() {
-        if (mStat1 != null) {
-            mStat1.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        if (mStat != null) {
+            mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
     }
 
     protected void reportAdShowing() {
-        if (mStat1 != null) {
-            mStat1.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        if (mStat != null) {
+            mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
     }
 
     protected void reportAdShowingForMopub(String placeName) {
-        if (mStat1 != null) {
-            mStat1.reportAdShow(mContext, placeName, getSdkName(), getAdType(), null);
+        if (mStat != null) {
+            mStat.reportAdShow(mContext, placeName, getSdkName(), getAdType(), null);
         }
     }
 
     protected void reportAdClick() {
-        if (mStat1 != null) {
-            mStat1.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+        if (mStat != null) {
+            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
         }
     }
 
     protected void reportAdError(String error) {
-        if (mStat1 != null) {
-            mStat1.reportAdError(mContext, error, getSdkName(), getAdType(), null);
+        if (mStat != null) {
+            mStat.reportAdError(mContext, error, getSdkName(), getAdType(), null);
         }
     }
 
     protected void reportAdClickForLTV() {
-        if (mStat1 != null) {
-            mStat1.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
+        if (mStat != null) {
+            mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
         }
     }
 
-    protected void reportAdShowForLtv() {
-        if (mStat1 != null) {
-            mStat1.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
+    protected void reportAdShowForLTV() {
+        if (mStat != null) {
+            mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
         }
     }
 
     protected void reportAdImpForLTV() {
-        if (mStat1 != null) {
-            mStat1.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
+        if (mStat != null) {
+            mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
         }
     }
 }

@@ -333,7 +333,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             clearCachedAdTime(interstitialAd);
             interstitialAd = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -478,7 +478,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             clearCachedAdTime(loadedRewardVideo);
             loadedRewardVideo = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

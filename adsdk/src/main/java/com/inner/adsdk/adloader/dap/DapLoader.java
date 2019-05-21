@@ -63,7 +63,7 @@ public class DapLoader extends AbstractSdkLoader {
 
             clearCachedAdTime(mInterstitialAd);
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

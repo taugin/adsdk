@@ -324,7 +324,7 @@ public class AdxLoader extends AbstractSdkLoader {
             clearCachedAdTime(interstitialAd);
             interstitialAd = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

@@ -348,7 +348,7 @@ public class MopubLoader extends AbstractSdkLoader {
             clearCachedAdTime(moPubInterstitial);
             moPubInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return showed;
         }
         return false;
@@ -492,7 +492,7 @@ public class MopubLoader extends AbstractSdkLoader {
     public boolean showRewardedVideo() {
         MoPubRewardedVideos.showRewardedVideo(getPidConfig().getPid());
         reportAdCallShow();
-        reportAdShowForLtv();
+        reportAdShowForLTV();
         return true;
     }
 

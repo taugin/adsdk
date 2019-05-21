@@ -299,7 +299,7 @@ public class WemobLoader extends AbstractSdkLoader {
             clearCachedAdTime(interstitialAd);
             interstitialAd = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

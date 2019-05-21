@@ -183,7 +183,7 @@ public class DspMobLoader extends AbstractSdkLoader {
 
             clearCachedAdTime(mInterstitialAd);
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

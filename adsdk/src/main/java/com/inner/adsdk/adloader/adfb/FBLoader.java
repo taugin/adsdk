@@ -322,7 +322,7 @@ public class FBLoader extends AbstractSdkLoader {
             clearCachedAdTime(fbInterstitial);
             fbInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -595,7 +595,7 @@ public class FBLoader extends AbstractSdkLoader {
             clearCachedAdTime(rewardedVideoAd);
             rewardedVideoAd = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
