@@ -287,11 +287,11 @@ public class AdColonyLoader extends AbstractSdkLoader {
 
 
     private String codeToError(AdColonyZone zone) {
-        return "ERROR_UNKNOWN";
+        return "ERROR_NOFILL";
     }
 
     private int toSdkError(AdColonyZone zone) {
-        return Constant.AD_ERROR_UNKNOWN;
+        return Constant.AD_ERROR_NOFILL;
     }
 
     @Override
