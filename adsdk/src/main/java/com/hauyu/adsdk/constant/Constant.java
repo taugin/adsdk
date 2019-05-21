@@ -198,7 +198,7 @@ public class Constant {
                 case Constant.SMART_BANNER:
                     return SMART_BANNER;
                 default:
-                    return null;
+                    return NOSET;
             }
         }
 
