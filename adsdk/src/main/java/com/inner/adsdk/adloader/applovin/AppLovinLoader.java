@@ -169,7 +169,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (!isDestroyAfterClick()) {
                 appLovinAdView = null;
             }
-            reportAdShowing();
+            reportAdShow();
             reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "applovinloader error : " + e);
@@ -237,7 +237,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 @Override
                 public void adDisplayed(AppLovinAd appLovinAd) {
                     Log.v(Log.TAG, "");
-                    reportAdShowing();
+                    reportAdShow();
                     reportAdImpForLTV();
                     if (getAdListener() != null) {
                         getAdListener().onInterstitialShow();
@@ -298,7 +298,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             clearCachedAdTime(loadedAd);
             loadedAd = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -437,7 +437,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     if (getAdListener() != null) {
                         getAdListener().onRewardedVideoAdShowed();
                     }
-                    reportAdShowing();
+                    reportAdShow();
                     reportAdImpForLTV();
                 }
 
@@ -463,7 +463,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             clearCachedAdTime(incentivizedInterstitial);
             incentivizedInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;

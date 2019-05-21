@@ -250,7 +250,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             if (!isDestroyAfterClick()) {
                 mIsBannerLoaded = false;
             }
-            reportAdShowing();
+            reportAdShow();
             reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "admobloader error : " + e);
@@ -303,7 +303,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
 
             clearCachedAdTime(mFullScreenSpot);
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -393,7 +393,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                     public void onAdImpression(InneractiveAdSpot inneractiveAdSpot) {
                         Log.i(TAG, "onAdImpression");
                         Log.v(Log.TAG, "");
-                        reportAdShowing();
+                        reportAdShow();
                         reportAdImpForLTV();
                         if (getAdListener() != null) {
                             if (isRewarded) {
@@ -622,7 +622,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                         if (getAdListener() != null) {
                             getAdListener().onAdImpression();
                         }
-                        reportAdShowing();
+                        reportAdShow();
                         reportAdImpForLTV();
                     }
 

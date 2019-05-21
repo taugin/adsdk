@@ -179,7 +179,7 @@ public class WemobLoader extends AbstractSdkLoader {
             if (!isDestroyAfterClick()) {
                 bannerView = null;
             }
-            reportAdShowing();
+            reportAdShow();
             reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "wemobloader error : " + e);
@@ -280,7 +280,7 @@ public class WemobLoader extends AbstractSdkLoader {
             @Override
             public void onAdShown() {
                 Log.v(Log.TAG, "");
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -299,7 +299,7 @@ public class WemobLoader extends AbstractSdkLoader {
             clearCachedAdTime(interstitialAd);
             interstitialAd = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -398,7 +398,7 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdImpression();
                 }
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
             }
         });

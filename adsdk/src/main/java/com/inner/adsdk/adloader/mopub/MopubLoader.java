@@ -215,7 +215,7 @@ public class MopubLoader extends AbstractSdkLoader {
             if (!isDestroyAfterClick()) {
                 moPubView = null;
             }
-            reportAdShowing();
+            reportAdShow();
             reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "mopubloader error : " + e);
@@ -294,7 +294,7 @@ public class MopubLoader extends AbstractSdkLoader {
             @Override
             public void onInterstitialShown(MoPubInterstitial interstitial) {
                 Log.v(Log.TAG, "");
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -348,7 +348,7 @@ public class MopubLoader extends AbstractSdkLoader {
             clearCachedAdTime(moPubInterstitial);
             moPubInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return showed;
         }
         return false;
@@ -439,7 +439,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoStarted();
                 }
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
             }
 
@@ -492,7 +492,7 @@ public class MopubLoader extends AbstractSdkLoader {
     public boolean showRewardedVideo() {
         MoPubRewardedVideos.showRewardedVideo(getPidConfig().getPid());
         reportAdCallShow();
-        reportAdShowForLtv();
+        reportAdShowForLTV();
         return true;
     }
 
@@ -603,7 +603,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     if (getAdListener() != null) {
                         getAdListener().onAdImpression();
                     }
-                    reportAdShowing();
+                    reportAdShow();
                     reportAdImpForLTV();
                     reportMoPubNativeType();
                 }

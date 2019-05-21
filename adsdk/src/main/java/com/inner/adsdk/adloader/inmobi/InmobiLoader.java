@@ -209,7 +209,7 @@ public class InmobiLoader extends AbstractSdkLoader {
             if (!isDestroyAfterClick()) {
                 mInMobiBanner = null;
             }
-            reportAdShowing();
+            reportAdShow();
             reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "showBanner error : " + e);
@@ -305,7 +305,7 @@ public class InmobiLoader extends AbstractSdkLoader {
             public void onAdDisplayed(InMobiInterstitial inMobiInterstitial) {
                 super.onAdDisplayed(inMobiInterstitial);
                 Log.v(Log.TAG, "");
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -351,7 +351,7 @@ public class InmobiLoader extends AbstractSdkLoader {
             clearCachedAdTime(mInMobiInterstitial);
             mInMobiInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -452,7 +452,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoStarted();
                 }
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
             }
 
@@ -504,7 +504,7 @@ public class InmobiLoader extends AbstractSdkLoader {
             clearCachedAdTime(mInMobiRewardVideo);
             mInMobiRewardVideo = null;
             reportAdCallShow();
-            reportAdShowForLtv();
+            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -608,7 +608,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdImpression();
                 }
-                reportAdShowing();
+                reportAdShow();
                 reportAdImpForLTV();
             }
 
