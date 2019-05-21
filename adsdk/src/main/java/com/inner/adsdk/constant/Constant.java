@@ -186,7 +186,7 @@ public class Constant {
 
         private int value = 0;
 
-        private Banner(int value) {     //必须是private的，否则编译错误
+        Banner(int value) {     //必须是private的，否则编译错误
             this.value = value;
         }
 
@@ -209,7 +209,7 @@ public class Constant {
                 case Constant.SMART_BANNER:
                     return SMART_BANNER;
                 default:
-                    return null;
+                    return NOSET;
             }
         }
 
