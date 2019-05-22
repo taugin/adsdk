@@ -19,13 +19,37 @@ public abstract class BaseConfig {
     private List<String> countryList;
     private List<String> attrList;
     private List<String> mediaList;
-    private int ntRate;
+    private int ntr;
     private boolean showBottomActivity = true;
     private String placeNameInt;
     private String placeNameAdv;
-    private long sceneInterval;
+    private long sceneInterval = 300000;
 
     public abstract String getName();
+
+    private void initValue() {
+        enable = false;
+        upDelay = 0;
+        interval = 0;
+        maxCount = 0;
+        maxVersion = 0;
+        minInterval = 0;
+        screenOrientation = 0;
+        configInstallTime = 0;
+        timeOut = 300000;
+        countryList = null;
+        attrList = null;
+        mediaList = null;
+        ntr = 0;
+        showBottomActivity = true;
+        placeNameInt = null;
+        placeNameAdv = null;
+        sceneInterval = 300000;
+    }
+
+    public BaseConfig() {
+        initValue();
+    }
 
     public boolean isEnable() {
         return enable;
@@ -123,12 +147,12 @@ public abstract class BaseConfig {
         this.mediaList = mediaList;
     }
 
-    public int getNtRate() {
-        return ntRate;
+    public int getNtr() {
+        return ntr;
     }
 
-    public void setNtRate(int ntRate) {
-        this.ntRate = ntRate;
+    public void setNtr(int ntr) {
+        this.ntr = ntr;
     }
 
     public boolean isShowBottomActivity() {
@@ -164,22 +188,6 @@ public abstract class BaseConfig {
     }
 
     public void clear() {
-        enable = false;
-        upDelay = 0;
-        interval = 0;
-        maxCount = 0;
-        maxVersion = 0;
-        minInterval = 0;
-        screenOrientation = 0;
-        configInstallTime = 0;
-        timeOut = 300000;
-        countryList = null;
-        attrList = null;
-        mediaList = null;
-        ntRate = 0;
-        showBottomActivity = true;
-        placeNameInt = null;
-        placeNameAdv = null;
-        sceneInterval = 0;
+        initValue();
     }
 }
