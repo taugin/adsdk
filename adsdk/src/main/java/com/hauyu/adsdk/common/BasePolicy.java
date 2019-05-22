@@ -136,7 +136,7 @@ public class BasePolicy implements Handler.Callback {
     public int getNTRate() {
         int nTRate = 0;
         if (mBaseConfig != null) {
-            nTRate = mBaseConfig.getNtRate();
+            nTRate = mBaseConfig.getNtr();
         }
         if (nTRate < 0) {
             nTRate = 0;

@@ -3,6 +3,9 @@ package com.hauyu.adsdk.common;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.AndroidRuntimeException;
 
 import com.appub.ads.a.FSA;
 import com.appub.ads.a.R;
@@ -20,10 +23,16 @@ import java.util.Random;
 
 public abstract class BaseLoader<Config, Policy> implements OnTriggerListener {
 
+    private static final int MSG_START_SCENE = 0x10000;
+
+    private static final int START_SCENE_INTERVAL = 10 * 1000;
+
     protected Config mConfig;
 
     protected Policy mPolicy;
-    
+
+    protected Handler mHandler = new Handler(Looper.getMainLooper());
+
     protected abstract Context getContext();
 
     public Config getConfig() {
@@ -38,11 +47,34 @@ public abstract class BaseLoader<Config, Policy> implements OnTriggerListener {
         return null;
     }
 
+    /**
+     * 记录展示
+     */
     public void reportShowing() {
         try {
             ((BasePolicy) mPolicy).reportShowing(true);
         } catch (Exception e) {
         }
+    }
+
+    /**
+     * 调用函数启动场景，避免同时启动多个场景
+     */
+    public final void startScene(Object ...object) {
+        synchronized (BaseLoader.class) {
+            if (mHandler != null && !mHandler.hasMessages(MSG_START_SCENE)) {
+                mHandler.sendEmptyMessageDelayed(MSG_START_SCENE, getStartInterval());
+                onStartScene(object);
+            }
+        }
+    }
+
+    protected int getStartInterval() {
+        return START_SCENE_INTERVAL;
+    }
+
+    protected void onStartScene(Object ...object) {
+        throw new AndroidRuntimeException("onStartScene should be override by subclass");
     }
 
     protected AdParams generateAdParams() {

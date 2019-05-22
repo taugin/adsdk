@@ -389,7 +389,7 @@ public class AdParser implements IParser {
                 }
             }
             if (jobj.has(NTRATE)) {
-                baseConfig.setNtRate(jobj.getInt(NTRATE));
+                baseConfig.setNtr(jobj.getInt(NTRATE));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "parseAttrConfig error : " + e);

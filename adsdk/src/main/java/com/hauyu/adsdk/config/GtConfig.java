@@ -31,7 +31,7 @@ public class GtConfig extends BaseConfig {
                 ", so=" + getScreenOrientation() +
                 ", to=" + getTimeOut() +
                 ", sba=" + isShowBottomActivity() +
-                ", ntr=" + getNtRate() +
+                ", ntr=" + getNtr() +
                 ", cit=" + Constant.SDF_1.format(new Date(getConfigInstallTime())) +
                 '}';
     }
