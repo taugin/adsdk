@@ -31,7 +31,7 @@ public abstract class BaseLoader<Config, Policy> implements OnTriggerListener {
 
     protected Policy mPolicy;
 
-    protected Handler mHandler = new Handler(Looper.getMainLooper());
+    private static Handler sHandler = new Handler(Looper.getMainLooper());
 
     protected abstract Context getContext();
 
@@ -62,8 +62,8 @@ public abstract class BaseLoader<Config, Policy> implements OnTriggerListener {
      */
     public final void startScene(Object ...object) {
         synchronized (BaseLoader.class) {
-            if (mHandler != null && !mHandler.hasMessages(MSG_START_SCENE)) {
-                mHandler.sendEmptyMessageDelayed(MSG_START_SCENE, getStartInterval());
+            if (sHandler != null && !sHandler.hasMessages(MSG_START_SCENE)) {
+                sHandler.sendEmptyMessageDelayed(MSG_START_SCENE, getStartInterval());
                 onStartScene(object);
             }
         }
