@@ -124,13 +124,13 @@
           "type": "banner",
           "dac": 1,
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "wemob",
@@ -165,18 +165,6 @@
           "disable": 1
         },
         {
-          "sdk": "appnext",
-          "type": "native",
-          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 1
-        },
-        {
-          "sdk": "appnext",
-          "type": "banner",
-          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 1
-        },
-        {
           "sdk": "mopub",
           "type": "native",
           "pid": "11a17b188668469fb0412708c3d16813",
@@ -202,14 +190,6 @@
           "type": "banner",
           "aid": "10002",
           "pid": "60002",
-          "disable": 1
-        },
-        {
-          "sdk": "mobvista",
-          "type": "native",
-          "aid": "107602",
-          "eid": "8eaa4ea7727f830d7bb513b3e049b5f2",
-          "pid": "62935",
           "disable": 1
         },
         {
@@ -286,12 +266,6 @@
           "disable": 1
         },
         {
-          "sdk": "appnext",
-          "type": "interstitial",
-          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
-          "disable": 1
-        },
-        {
           "sdk": "spread",
           "type": "interstitial",
           "disable": 1
@@ -315,32 +289,6 @@
           "type": "interstitial",
           "aid": "10002",
           "pid": "60003",
-          "disable": 1
-        },
-        {
-          "sdk": "dap",
-          "type": "interstitial",
-          "pid": "160031",
-          "disable": 1
-        },
-        {
-          "sdk": "altamob",
-          "type": "interstitial",
-          "pid": "1662684189370000_1769833153872477",
-          "disable": 1
-        },
-        {
-          "sdk": "cloudmobi",
-          "type": "interstitial",
-          "pid": "60356716",
-          "disable": 1
-        },
-        {
-          "sdk": "mobvista",
-          "type": "interstitial",
-          "aid": "107602",
-          "eid": "8eaa4ea7727f830d7bb513b3e049b5f2",
-          "pid": "62935",
           "disable": 1
         }
       ],
@@ -495,12 +443,6 @@
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
-        },
-        {
-          "sdk": "appnext",
-          "type": "native",
-          "pid": "5d32ae77-1949-4322-808e-c08705deec84",
           "disable": 1
         },
         {
