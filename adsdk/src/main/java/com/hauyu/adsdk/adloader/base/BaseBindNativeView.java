@@ -20,6 +20,8 @@ import java.util.Random;
 
 public class BaseBindNativeView {
 
+    private Random mRandom = new Random(System.currentTimeMillis());
+
     protected void restoreIconView(View rootView, String source, int iconId) {
         try {
             View iconView = rootView.findViewById(iconId);
@@ -164,9 +166,11 @@ public class BaseBindNativeView {
     }
 
     protected boolean allElementCanClick(int percent) {
+        if (percent == 0) {
+            return false;
+        }
         if (percent < 0 || percent >= 100) return true;
-        int randomVal = new Random(System.currentTimeMillis()).nextInt(100);
-        return randomVal < percent;
+        return mRandom.nextInt(100) < percent;
     }
 
     protected void onAdViewShown(View view, PidConfig pidConfig, Params params) {
