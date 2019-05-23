@@ -58,6 +58,7 @@ public class InmobiBindNativeView extends BaseBindNativeView {
         } else {
             Log.e(Log.TAG, "Can not find inmobi native layout###");
         }
+        onAdViewShown(adContainer, pidConfig, mParams);
     }
 
     private void bindNativeViewWithRootView(ViewGroup adContainer, View rootView, InMobiNative nativeAd, PidConfig pidConfig) {

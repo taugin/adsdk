@@ -54,6 +54,7 @@ public class AdxBindNativeView extends BaseBindNativeView {
         } else {
             Log.e(Log.TAG, "Can not find adx native layout###");
         }
+        onAdViewShown(adContainer, pidConfig, mParams);
     }
 
     private void bindNativeViewWithRootView(ViewGroup adContainer, View rootView, UnifiedNativeAd nativeAd, PidConfig pidConfig) {
