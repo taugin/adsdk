@@ -54,6 +54,7 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
         } else {
             Log.e(Log.TAG, "Can not find dfp native layout###");
         }
+        onAdViewShown(adContainer, pidConfig, mParams);
     }
 
     private void bindNativeViewWithRootView(ViewGroup adContainer, View rootView, UnifiedNativeAd nativeAd, PidConfig pidConfig) {

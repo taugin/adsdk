@@ -59,6 +59,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else {
             Log.e(Log.TAG, "Can not find mopub native layout###");
         }
+        onAdViewShown(null, pidConfig, mParams);
     }
 
     private void bindNativeWithCard(Context context, int template, MoPubNative nativeAd, PidConfig pidConfig) {

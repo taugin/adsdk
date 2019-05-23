@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.appub.ads.a.R;
 import com.inner.adsdk.config.PidConfig;
+import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
 
@@ -163,8 +164,11 @@ public class BaseBindNativeView {
     }
 
     protected boolean allElementCanClick(int percent) {
-        if (percent <= 0 || percent >= 100) return true;
+        if (percent < 0 || percent >= 100) return true;
         int randomVal = new Random(System.currentTimeMillis()).nextInt(100);
-        return randomVal <= percent;
+        return randomVal < percent;
+    }
+
+    protected void onAdViewShown(View view, PidConfig pidConfig, Params params) {
     }
 }

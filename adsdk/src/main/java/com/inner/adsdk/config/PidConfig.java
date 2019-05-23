@@ -19,7 +19,7 @@ public class PidConfig extends BaseConfig {
 
     private String pid;
 
-    private int ctr;
+    private int ctr = 100;
 
     private String adType;
 

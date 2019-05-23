@@ -57,6 +57,7 @@ public class WemobBindNativeView extends BaseBindNativeView {
         } else {
             Log.e(Log.TAG, "Can not find wemob native layout###");
         }
+        onAdViewShown(adContainer, pidConfig, mParams);
     }
 
     private void bindNativeWithCard(ViewGroup adContainer, int template, NativeAd nativeAd, PidConfig pidConfig) {
