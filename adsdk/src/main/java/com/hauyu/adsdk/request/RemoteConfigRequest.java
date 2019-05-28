@@ -63,8 +63,12 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
                 long last = Utils.getLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME);
                 boolean needRequest = now - last > REFRESH_INTERVAL;
                 long leftTime = REFRESH_INTERVAL - (now - last);
-                Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
-                Log.iv(Log.TAG, "adsdk refresh next : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
+                if (leftTime > 0) {
+                    Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
+                    Log.iv(Log.TAG, "adsdk refresh next : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
+                } else {
+                    Log.iv(Log.TAG, "adsdk refresh next : time is not correct");
+                }
                 if (needRequest) {
                     try {
                         mFirebaseRemoteConfig.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
