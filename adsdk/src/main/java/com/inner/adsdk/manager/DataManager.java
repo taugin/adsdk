@@ -1,13 +1,14 @@
 package com.inner.adsdk.manager;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
 
+import com.inner.adsdk.common.BaseConfig;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.config.AtConfig;
-import com.inner.adsdk.common.BaseConfig;
 import com.inner.adsdk.config.CtConfig;
 import com.inner.adsdk.config.GtConfig;
 import com.inner.adsdk.config.HtConfig;
@@ -15,10 +16,10 @@ import com.inner.adsdk.config.LtConfig;
 import com.inner.adsdk.config.SpConfig;
 import com.inner.adsdk.config.StConfig;
 import com.inner.adsdk.constant.Constant;
+import com.inner.adsdk.listener.IParseListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.parse.AdParser;
 import com.inner.adsdk.parse.IParser;
-import com.inner.adsdk.listener.IParseListener;
 import com.inner.adsdk.request.IDataRequest;
 import com.inner.adsdk.request.RemoteConfigRequest;
 import com.inner.adsdk.utils.Utils;
@@ -31,7 +32,7 @@ import java.util.Map;
  * Created by Administrator on 2018/2/12.
  */
 
-public class DataManager {
+public class DataManager implements Runnable {
 
     private static final String DATA_CONFIG_FORMAT = "data_%s.dat";
     private static final String DATA_CONFIG = "cfg_data_config";
@@ -65,20 +66,29 @@ public class DataManager {
     private AdConfig mLocalAdConfig;
     private IParser mParser;
     private AdSwitch mAdSwitch;
+    private Handler mHandler = new Handler();
 
     public void init() {
         parseLocalData();
         if (mDataRequest == null) {
             mDataRequest = new RemoteConfigRequest(mContext);
         }
-        if (mDataRequest != null) {
-            mDataRequest.request();
+        if (mHandler != null) {
+            mHandler.removeCallbacks(this);
+            mHandler.postDelayed(this, 5000);
         }
     }
 
     public void refresh() {
         if (mDataRequest != null) {
             mDataRequest.refresh();
+        }
+    }
+
+    @Override
+    public void run() {
+        if (mDataRequest != null) {
+            mDataRequest.request();
         }
     }
 
