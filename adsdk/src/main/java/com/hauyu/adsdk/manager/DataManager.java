@@ -1,6 +1,7 @@
 package com.hauyu.adsdk.manager;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.config.AdConfig;
@@ -31,7 +32,7 @@ import java.util.Map;
  * Created by Administrator on 2018/2/12.
  */
 
-public class DataManager {
+public class DataManager implements Runnable {
 
     private static final String DATA_CONFIG_FORMAT = "data_%s.dat";
     private static final String DATA_CONFIG = "cfg_data_config";
@@ -65,20 +66,29 @@ public class DataManager {
     private AdConfig mLocalAdConfig;
     private IParser mParser;
     private AdSwitch mAdSwitch;
+    private Handler mHandler = new Handler();
 
     public void init() {
         parseLocalData();
         if (mDataRequest == null) {
             mDataRequest = new RemoteConfigRequest(mContext);
         }
-        if (mDataRequest != null) {
-            mDataRequest.request();
+        if (mHandler != null) {
+            mHandler.removeCallbacks(this);
+            mHandler.postDelayed(this, 5000);
         }
     }
 
     public void refresh() {
         if (mDataRequest != null) {
             mDataRequest.refresh();
+        }
+    }
+
+    @Override
+    public void run() {
+        if (mDataRequest != null) {
+            mDataRequest.request();
         }
     }
 

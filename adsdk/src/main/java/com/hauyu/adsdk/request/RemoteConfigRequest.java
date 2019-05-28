@@ -12,6 +12,7 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Administrator on 2018/2/12.
@@ -61,7 +62,9 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
                 long now = System.currentTimeMillis();
                 long last = Utils.getLong(mContext, Constant.PREF_REMOTE_CONFIG_REQUEST_TIME);
                 boolean needRequest = now - last > REFRESH_INTERVAL;
-                Log.iv(Log.TAG, "adsdk refresh now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(last)) + " , do : " + needRequest);
+                long leftTime = REFRESH_INTERVAL - (now - last);
+                Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
+                Log.iv(Log.TAG, "adsdk refresh next : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
                 if (needRequest) {
                     try {
                         mFirebaseRemoteConfig.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
