@@ -19,19 +19,22 @@
     "e": 0,
     "d": 3600,
     "i": 1800,
-    "attr": []
+    "attr": [],
+    "si":0
   },
   "htconfig": {
-    "e": 1,
+    "e": 0,
     "d": 3600,
     "i": 1800,
-    "attr": []
+    "attr": [],
+    "si":0
   },
   "ctconfig": {
     "e": 0,
     "d": 3600,
     "di": 60000,
-    "attr": []
+    "attr": [],
+    "si":0
   },
   "gtconfig": {
     "e": 0,
@@ -44,7 +47,8 @@
     "ms": [],
     "so": 1,
     "sba": 1,
-    "ntr": 0
+    "ntr": 0,
+    "si":0
   },
   "adplaces": [
     {
@@ -117,14 +121,14 @@
           "sdk": "fb",
           "type": "native",
           "pid": "YOUR_PLACEMENT_ID",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
           "type": "banner",
           "dac": 1,
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
@@ -168,7 +172,7 @@
           "sdk": "mopub",
           "type": "native",
           "pid": "11a17b188668469fb0412708c3d16813",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "inmobi",
