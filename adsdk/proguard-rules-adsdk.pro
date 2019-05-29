@@ -21,6 +21,11 @@
 #-renamesourcefileattribute SourceFile
 #-keepattributes SourceFile,LineNumberTable
 
+#所有view子类不混淆
+-keep class * extends android.view.View {public *; protected *;}
+#activity子类public和protected不混淆
+-keep class * extends android.app.Activity {public *; protected *;}
+
 #umeng
 -keep class com.umeng.commonsdk.** {*;}
 -keep class com.umeng.analytics.** {*;}
