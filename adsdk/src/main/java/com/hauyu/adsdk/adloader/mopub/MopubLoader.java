@@ -481,6 +481,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     adReward.setAmount(String.valueOf(ecpm));
                     getAdListener().onRewarded(adReward);
                 }
+                reportAdReward();
             }
         });
         MoPubRewardedVideos.loadRewardedVideo(getPidConfig().getPid());

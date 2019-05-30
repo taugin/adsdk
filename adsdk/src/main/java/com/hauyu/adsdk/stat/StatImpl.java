@@ -414,6 +414,27 @@ public class StatImpl implements IStat {
     }
 
     @Override
+    public void reportAdReward(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
+        if (!checkArgument(context, pidName, sdk, type)) {
+            return;
+        }
+        String eventId = generateEventId(context, "receive", sdk, type);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, pidName, eventId, extra);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, pidName, eventId, extra);
+        }
+        if (isReportAppsflyer(context)) {
+            sendAppsflyer(context, pidName, eventId, extra);
+        }
+        if (isReportFacebook(context)) {
+            sendFacebook(context, pidName, eventId, extra);
+        }
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+    }
+
+    @Override
     public void reportAdError(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
         if (!isReportError(context)) {
             return;

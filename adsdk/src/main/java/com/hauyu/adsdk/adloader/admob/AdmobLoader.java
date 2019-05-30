@@ -437,6 +437,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     }
                     getAdListener().onRewarded(item);
                 }
+                reportAdReward();
             }
 
             @Override
