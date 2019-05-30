@@ -117,6 +117,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
+                reportAdClose();
             }
 
             @Override
@@ -264,6 +265,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
+                reportAdClose();
             }
 
             @Override
@@ -439,6 +441,14 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 }
                 reportAdError(codeToError(errorCode));
             }
+
+            @Override
+            public void onAdClosed() {
+                if (getAdListener() != null) {
+                    getAdListener().onAdDismiss();
+                }
+                reportAdClose();
+            }
         });
 
         VideoOptions videoOptions = new VideoOptions.Builder()
@@ -552,6 +562,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClosed();
                 }
+                reportAdClose();
             }
 
             @Override

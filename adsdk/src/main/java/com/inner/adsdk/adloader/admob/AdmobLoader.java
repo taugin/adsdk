@@ -117,6 +117,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
+                reportAdClose();
             }
 
             @Override
@@ -264,6 +265,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
+                reportAdClose();
             }
 
             @Override
@@ -421,6 +423,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClosed();
                 }
+                reportAdClose();
             }
 
             @Override
@@ -586,6 +589,14 @@ public class AdmobLoader extends AbstractSdkLoader {
                     getAdListener().onAdFailed(toSdkError(errorCode));
                 }
                 reportAdError(codeToError(errorCode));
+            }
+
+            @Override
+            public void onAdClosed() {
+                if (getAdListener() != null) {
+                    getAdListener().onAdDismiss();
+                }
+                reportAdClose();
             }
         });
 
