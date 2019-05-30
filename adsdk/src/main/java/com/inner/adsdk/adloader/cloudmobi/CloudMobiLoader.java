@@ -121,6 +121,7 @@ public class CloudMobiLoader extends AbstractSdkLoader {
                         if (getAdListener() != null) {
                             getAdListener().onInterstitialDismiss();
                         }
+                        reportAdClose();
                     }
 
                     @Override

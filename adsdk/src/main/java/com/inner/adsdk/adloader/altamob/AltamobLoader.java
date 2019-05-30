@@ -145,6 +145,7 @@ public class AltamobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
+                reportAdClose();
             }
         });
         mInterstitialAd.loadAd();

@@ -178,6 +178,7 @@ public class MobvistaLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
+                reportAdClose();
             }
         });
         mInterstitialAd.fill();
