@@ -181,6 +181,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
+                reportAdClose();
             }
         });
         loadingView.loadAd();
@@ -322,6 +323,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
+                reportAdClose();
             }
         });
         moPubInterstitial.load();
@@ -463,6 +465,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClosed();
                 }
+                reportAdClose();
             }
 
             @Override

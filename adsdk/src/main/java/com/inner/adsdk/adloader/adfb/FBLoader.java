@@ -266,6 +266,7 @@ public class FBLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
+                reportAdClose();
             }
 
             @Override
@@ -532,6 +533,7 @@ public class FBLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClosed();
                 }
+                reportAdClose();
             }
 
             @Override
