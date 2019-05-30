@@ -677,7 +677,7 @@ public class FSA extends Activity {
                 textView.setVisibility(View.VISIBLE);
                 showAppSpread(webview, button);
             }
-            StatImpl.get().reportAdShow(this, mPidName, mSource, mAdType, null);
+            StatImpl.get().reportAdShow(this, mPidName, mSource, mAdType, null, null);
         } catch (Exception e) {
             Log.v(Log.TAG, "error : " + e);
             finish();
@@ -792,7 +792,7 @@ public class FSA extends Activity {
                     } catch (Exception e) {
                         Log.v(Log.TAG, "error : " + e);
                     }
-                    StatImpl.get().reportAdClick(getBaseContext(), mPidName, mSource, mAdType, null);
+                    StatImpl.get().reportAdClick(getBaseContext(), mPidName, mSource, mAdType, null, null);
                 }
             });
         } catch (Exception e) {

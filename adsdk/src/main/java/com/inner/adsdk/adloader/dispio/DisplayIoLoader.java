@@ -147,6 +147,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                         if (getAdListener() != null) {
                                             getAdListener().onAdDismiss();
                                         }
+                                        reportAdClose();
                                     }
 
                                     @Override
@@ -326,6 +327,7 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                         if (getAdListener() != null) {
                                             getAdListener().onInterstitialDismiss();
                                         }
+                                        reportAdClose();
                                     }
 
                                     @Override

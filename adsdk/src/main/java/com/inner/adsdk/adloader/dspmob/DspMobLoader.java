@@ -125,6 +125,7 @@ public class DspMobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
+                reportAdClose();
             }
 
             @Override
@@ -270,6 +271,7 @@ public class DspMobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
+                reportAdClose();
             }
 
             @Override

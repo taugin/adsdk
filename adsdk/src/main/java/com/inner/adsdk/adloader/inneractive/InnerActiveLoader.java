@@ -447,6 +447,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                                 getAdListener().onInterstitialDismiss();
                             }
                         }
+                        reportAdClose();
                     }
                 });
 

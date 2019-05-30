@@ -170,6 +170,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
+                reportAdClose();
             }
 
             @Override
@@ -320,6 +321,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
+                reportAdClose();
             }
 
             @Override
@@ -462,6 +464,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClosed();
                 }
+                reportAdClose();
             }
 
             @Override
@@ -624,6 +627,15 @@ public class InmobiLoader extends AbstractSdkLoader {
                 if (isDestroyAfterClick()) {
                     mInMobiNative = null;
                 }
+            }
+
+            @Override
+            public void onAdFullScreenDismissed(InMobiNative inMobiNative) {
+                Log.v(Log.TAG, "");
+                if (getAdListener() != null) {
+                    getAdListener().onInterstitialDismiss();
+                }
+                reportAdClose();
             }
         });
         mLoadingNative.load();

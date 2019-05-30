@@ -129,6 +129,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
+                reportAdClose();
             }
         });
 
@@ -251,6 +252,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     if (getAdListener() != null) {
                         getAdListener().onInterstitialDismiss();
                     }
+                    reportAdClose();
                 }
             });
         }
@@ -447,6 +449,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     if (getAdListener() != null) {
                         getAdListener().onRewardedVideoAdClosed();
                     }
+                    reportAdClose();
                 }
             }, new AppLovinAdClickListener() {
 
