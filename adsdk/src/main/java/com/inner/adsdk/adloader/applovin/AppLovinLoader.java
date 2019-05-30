@@ -397,6 +397,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     if (getAdListener() != null) {
                         getAdListener().onRewarded(item);
                     }
+                    reportAdReward();
                 }
 
                 @Override
