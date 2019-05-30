@@ -582,43 +582,49 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void reportAdRequest() {
         if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), null);
         }
     }
 
     protected void reportAdLoaded() {
         if (mStat != null) {
-            mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), null);
         }
     }
 
     protected void reportAdCallShow() {
         if (mStat != null) {
-            mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), null);
         }
     }
 
     protected void reportAdShow() {
         if (mStat != null) {
-            mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), null);
         }
     }
 
     protected void reportAdShowWithPlaceName(String placeName) {
         if (mStat != null) {
-            mStat.reportAdShow(mContext, placeName, getSdkName(), getAdType(), null);
+            mStat.reportAdShow(mContext, placeName, getSdkName(), getAdType(), getPid(), null);
         }
     }
 
     protected void reportAdClick() {
         if (mStat != null) {
-            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), null);
         }
     }
 
     protected void reportAdError(String error) {
         if (mStat != null) {
-            mStat.reportAdError(mContext, error, getSdkName(), getAdType(), null);
+            mStat.reportAdError(mContext, error, getSdkName(), getAdType(), getPid(), null);
+        }
+    }
+
+    protected void reportAdClose() {
+        if (mStat != null) {
+            mStat.reportAdClose(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), null);
         }
     }
 

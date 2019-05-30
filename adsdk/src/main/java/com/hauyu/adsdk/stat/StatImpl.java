@@ -313,7 +313,7 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdRequest(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
+    public void reportAdRequest(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -332,7 +332,7 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdLoaded(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
+    public void reportAdLoaded(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -351,7 +351,7 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdCallShow(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
+    public void reportAdCallShow(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -372,7 +372,7 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdShow(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
+    public void reportAdShow(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -393,7 +393,7 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdClick(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
+    public void reportAdClick(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -414,7 +414,7 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdError(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
+    public void reportAdError(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
         if (!isReportError(context)) {
             return;
         }
@@ -430,6 +430,27 @@ public class StatImpl implements IStat {
             sendUmeng(context, pidName, eventId, extra);
         }
         // sendAppsflyer(context, pidName, eventId, extra);
+        if (isReportFacebook(context)) {
+            sendFacebook(context, pidName, eventId, extra);
+        }
+        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+    }
+
+    @Override
+    public void reportAdClose(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
+        if (!checkArgument(context, pidName, sdk, type)) {
+            return;
+        }
+        String eventId = generateEventId(context, "close", sdk, type);
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, pidName, eventId, extra);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, pidName, eventId, extra);
+        }
+        if (isReportAppsflyer(context)) {
+            sendAppsflyer(context, pidName, eventId, extra);
+        }
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
