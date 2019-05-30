@@ -40,7 +40,7 @@ public class SpLoader extends AbstractSdkLoader {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded(this);
             }
-            StatImpl.get().reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            StatImpl.get().reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null,null);
         } else {
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
@@ -137,7 +137,7 @@ public class SpLoader extends AbstractSdkLoader {
                 intent.putExtra(Intent.EXTRA_TEMPLATE, getAdType());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
-                StatImpl.get().reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                StatImpl.get().reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null, null);
                 registerDismiss();
             }
         } catch (Exception e) {

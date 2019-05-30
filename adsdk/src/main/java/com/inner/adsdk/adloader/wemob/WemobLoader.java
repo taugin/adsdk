@@ -124,6 +124,7 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
+                reportAdClose();
             }
 
             @Override
@@ -265,6 +266,7 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
+                reportAdClose();
             }
 
             @Override
@@ -377,6 +379,7 @@ public class WemobLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
+                reportAdClose();
             }
 
             @Override
