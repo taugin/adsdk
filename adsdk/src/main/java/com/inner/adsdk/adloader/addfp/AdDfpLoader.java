@@ -576,6 +576,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     }
                     getAdListener().onRewarded(item);
                 }
+                reportAdReward();
             }
 
             @Override

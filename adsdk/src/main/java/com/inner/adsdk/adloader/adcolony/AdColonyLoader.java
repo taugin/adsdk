@@ -266,6 +266,7 @@ public class AdColonyLoader extends AbstractSdkLoader {
                     }
                     getAdListener().onRewarded(item);
                 }
+                reportAdReward();
             }
         });
         AdColony.requestInterstitial(getPid(), listener);

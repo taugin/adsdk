@@ -491,6 +491,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoCompleted();
                 }
+                reportAdReward();
             }
         });
 

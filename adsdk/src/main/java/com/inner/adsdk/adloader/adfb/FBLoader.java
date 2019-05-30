@@ -515,6 +515,7 @@ public class FBLoader extends AbstractSdkLoader {
                     adReward.setAmount(String.valueOf(ecpm));
                     getAdListener().onRewarded(adReward);
                 }
+                reportAdReward();
             }
 
             @Override

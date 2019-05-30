@@ -60,6 +60,16 @@ public interface IStat {
     public void reportAdClick(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra);
 
     /**
+     * 广告点击
+     * @param context
+     * @param pidName
+     * @param sdk
+     * @param type
+     * @param extra
+     */
+    public void reportAdReward(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra);
+
+    /**
      * 广告加载错误
      * @param context
      * @param error

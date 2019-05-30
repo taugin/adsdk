@@ -562,6 +562,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                     adReward.setAmount(String.valueOf(ecpm));
                     getAdListener().onRewarded(adReward);
                 }
+                reportAdReward();
             }
         });
 
