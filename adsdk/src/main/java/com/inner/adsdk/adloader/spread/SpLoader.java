@@ -12,7 +12,6 @@ import com.inner.adsdk.config.SpConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.manager.DataManager;
-import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
 
 import java.util.ArrayList;
@@ -40,11 +39,12 @@ public class SpLoader extends AbstractSdkLoader {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded(this);
             }
-            StatImpl.get().reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null,null);
+            reportAdLoaded();
         } else {
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
             }
+            reportAdError(String.valueOf("ERROR_LOAD"));
         }
     }
 
@@ -137,7 +137,7 @@ public class SpLoader extends AbstractSdkLoader {
                 intent.putExtra(Intent.EXTRA_TEMPLATE, getAdType());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
-                StatImpl.get().reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null, null);
+                reportAdCallShow();
                 registerDismiss();
             }
         } catch (Exception e) {
@@ -148,7 +148,11 @@ public class SpLoader extends AbstractSdkLoader {
     private void registerDismiss() {
         unregisterDismiss();
         try {
-            mContext.registerReceiver(mBroadcastReceiver, new IntentFilter(mContext.getPackageName() + ".action.SPDISMISS"));
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(mContext.getPackageName() + ".action.SPDISMISS");
+            filter.addAction(mContext.getPackageName() + ".action.SPCLICK");
+            filter.addAction(mContext.getPackageName() + ".action.SPSHOW");
+            mContext.registerReceiver(mBroadcastReceiver, filter);
         } catch(Exception e) {
         }
     }
@@ -163,9 +167,19 @@ public class SpLoader extends AbstractSdkLoader {
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            unregisterDismiss();
-            if (getAdListener() != null) {
-                getAdListener().onAdDismiss();
+            if (context == null || intent == null) {
+                return;
+            }
+            if (TextUtils.equals(context.getPackageName() + ".action.SPDISMISS", intent.getAction())) {
+                unregisterDismiss();
+                if (getAdListener() != null) {
+                    getAdListener().onAdDismiss();
+                }
+                reportAdClose();
+            } else if (TextUtils.equals(context.getPackageName() + ".action.SPCLICK", intent.getAction())) {
+                reportAdClick();
+            } else if (TextUtils.equals(context.getPackageName() + ".action.SPSHOW", intent.getAction())) {
+                reportAdShow();
             }
         }
     };
