@@ -461,7 +461,7 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_CLOSE, ecpm, sdk, pid, type);
+        reportADEvent(context, METHOD_REPORT_AD_ERROR, ecpm, sdk, pid, type);
     }
 
     @Override
@@ -483,6 +483,7 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        reportADEvent(context, METHOD_REPORT_AD_CLOSE, ecpm, sdk, pid, type);
     }
 
     private String generateAdOuterKey(String adOuterType, String op) {
@@ -834,6 +835,7 @@ public class StatImpl implements IStat {
     public static final String METHOD_REPORT_AD_REWARD = "reportADReward";
     public static final String METHOD_REPORT_AD_CLOSE = "reportADClose";
     public static final String METHOD_REPORT_AD_CLICK = "reportADClick";
+    public static final String METHOD_REPORT_AD_ERROR = "reportADError";
 
 
     public void reportADEvent(Context context, String methodName, String eCpm, String sdkName, String pid, String type) {
@@ -850,7 +852,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "AnchorImpl send event error : " + error);
+            Log.iv(Log.TAG, "AnchorImpl send event error : " + error);
         }
     }
 }
