@@ -302,8 +302,7 @@ public class FSA extends Activity {
      */
     private void registerArgument() {
         if (Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
-                || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType)
-                || Constant.AD_SDK_DISPLAYIO.equals(mSource)) {
+                || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType)) {
             registerBroadcast();
             registerGesture();
         }

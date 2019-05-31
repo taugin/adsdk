@@ -124,8 +124,7 @@ public class GtAdLoader extends BaseLoader {
                     if ((!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                             && GtPolicy.get(mContext).isShowBottomActivity()
                             && !Constant.TYPE_BANNER.equals(adType)
-                            && !Constant.TYPE_NATIVE.equals(adType))
-                            || Constant.AD_SDK_DISPLAYIO.equals(source)) {
+                            && !Constant.TYPE_NATIVE.equals(adType))) {
                         hide();
                     }
                 }
