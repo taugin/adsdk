@@ -17,7 +17,7 @@ public interface IStat {
      * @param type
      * @param extra
      */
-    public void reportAdRequest(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra);
+    public void reportAdRequest(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
 
     /**
      * 广告请求成功
@@ -27,7 +27,7 @@ public interface IStat {
      * @param type
      * @param extra
      */
-    public void reportAdLoaded(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra);
+    public void reportAdLoaded(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
 
     /**
      * 广告展示
@@ -37,7 +37,7 @@ public interface IStat {
      * @param type
      * @param extra
      */
-    public void reportAdCallShow(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra);
+    public void reportAdCallShow(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
 
     /**
      * 广告展示
@@ -47,7 +47,7 @@ public interface IStat {
      * @param type
      * @param extra
      */
-    public void reportAdShow(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra);
+    public void reportAdShow(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
 
     /**
      * 广告点击
@@ -57,7 +57,7 @@ public interface IStat {
      * @param type
      * @param extra
      */
-    public void reportAdClick(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra);
+    public void reportAdClick(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
 
     /**
      * 广告点击
@@ -67,7 +67,7 @@ public interface IStat {
      * @param type
      * @param extra
      */
-    public void reportAdReward(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra);
+    public void reportAdReward(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
 
     /**
      * 广告加载错误
@@ -77,7 +77,7 @@ public interface IStat {
      * @param type
      * @param extra
      */
-    public void reportAdError(Context context, String error, String sdk, String type, String pid, Map<String, String> extra);
+    public void reportAdError(Context context, String error, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
 
     /**
      * 广告关闭
@@ -87,7 +87,7 @@ public interface IStat {
      * @param type
      * @param extra
      */
-    public void reportAdClose(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra);
+    public void reportAdClose(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
 
     /**
      * GT广告请求

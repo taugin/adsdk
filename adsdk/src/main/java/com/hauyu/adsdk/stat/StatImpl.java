@@ -313,7 +313,7 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdRequest(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
+    public void reportAdRequest(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -329,10 +329,11 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        reportADEvent(context, METHOD_REPORT_AD_REQUEST, ecpm, sdk, pid, type);
     }
 
     @Override
-    public void reportAdLoaded(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
+    public void reportAdLoaded(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -348,10 +349,11 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        reportADEvent(context, METHOD_REPORT_AD_FILL, ecpm, sdk, pid, type);
     }
 
     @Override
-    public void reportAdCallShow(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
+    public void reportAdCallShow(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -369,10 +371,11 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        reportADEvent(context, METHOD_REPORT_AD_SHOW, ecpm, sdk, pid, type);
     }
 
     @Override
-    public void reportAdShow(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
+    public void reportAdShow(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -390,10 +393,11 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        reportADEvent(context, METHOD_REPORT_AD_IMP, ecpm, sdk, pid, type);
     }
 
     @Override
-    public void reportAdClick(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
+    public void reportAdClick(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -411,10 +415,11 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        reportADEvent(context, METHOD_REPORT_AD_CLICK, ecpm, sdk, pid, type);
     }
 
     @Override
-    public void reportAdReward(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
+    public void reportAdReward(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -432,10 +437,11 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        reportADEvent(context, METHOD_REPORT_AD_REWARD, ecpm, sdk, pid, type);
     }
 
     @Override
-    public void reportAdError(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
+    public void reportAdError(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!isReportError(context)) {
             return;
         }
@@ -455,10 +461,11 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        reportADEvent(context, METHOD_REPORT_AD_CLOSE, ecpm, sdk, pid, type);
     }
 
     @Override
-    public void reportAdClose(Context context, String pidName, String sdk, String type, String pid, Map<String, String> extra) {
+    public void reportAdClose(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -817,5 +824,33 @@ public class StatImpl implements IStat {
         } catch (Error e) {
         }
         return extra;
+    }
+
+    // =============================================================================================
+    public static final String METHOD_REPORT_AD_REQUEST = "reportADRequest";
+    public static final String METHOD_REPORT_AD_FILL = "reportADFill";
+    public static final String METHOD_REPORT_AD_SHOW = "reportADShow";
+    public static final String METHOD_REPORT_AD_IMP = "reportADImp";
+    public static final String METHOD_REPORT_AD_REWARD = "reportADReward";
+    public static final String METHOD_REPORT_AD_CLOSE = "reportADClose";
+    public static final String METHOD_REPORT_AD_CLICK = "reportADClick";
+
+
+    public void reportADEvent(Context context, String methodName, String eCpm, String sdkName, String pid, String type) {
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("we.studio.auchor.AnchorImpl");
+            Method method = clazz.getMethod("getInstance");
+            Object instance = method.invoke(null);
+            method = clazz.getMethod(methodName, Context.class, String.class, String.class, String.class, String.class);
+            method.invoke(instance, context, eCpm, sdkName, pid, type);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.v(Log.TAG, "AnchorImpl send event error : " + error);
+        }
     }
 }
