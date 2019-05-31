@@ -120,6 +120,14 @@ public class AdSdk {
         }
     }
 
+    public String getAttribution() {
+        return Utils.getString(mContext, Constant.AF_STATUS);
+    }
+
+    public String getMediaSource() {
+        return Utils.getString(mContext, Constant.AF_MEDIA_SOURCE);
+    }
+
     public String getString(String key) {
         return DataManager.get(mContext).getString(key);
     }
