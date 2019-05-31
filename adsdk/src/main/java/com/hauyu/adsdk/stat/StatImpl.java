@@ -329,7 +329,7 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_REQUEST, ecpm, sdk, pid, type);
+        reportADEvent(context, METHOD_REPORT_AD_REQUEST, ecpm, sdk, pid, type, pidName);
     }
 
     @Override
@@ -349,7 +349,7 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_FILL, ecpm, sdk, pid, type);
+        reportADEvent(context, METHOD_REPORT_AD_FILL, ecpm, sdk, pid, type, pidName);
     }
 
     @Override
@@ -371,7 +371,7 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_SHOW, ecpm, sdk, pid, type);
+        reportADEvent(context, METHOD_REPORT_AD_SHOW, ecpm, sdk, pid, type, pidName);
     }
 
     @Override
@@ -393,7 +393,7 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_IMP, ecpm, sdk, pid, type);
+        reportADEvent(context, METHOD_REPORT_AD_IMP, ecpm, sdk, pid, type, pidName);
     }
 
     @Override
@@ -415,7 +415,7 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_CLICK, ecpm, sdk, pid, type);
+        reportADEvent(context, METHOD_REPORT_AD_CLICK, ecpm, sdk, pid, type, pidName);
     }
 
     @Override
@@ -437,7 +437,7 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_REWARD, ecpm, sdk, pid, type);
+        reportADEvent(context, METHOD_REPORT_AD_REWARD, ecpm, sdk, pid, type, pidName);
     }
 
     @Override
@@ -461,7 +461,7 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_ERROR, ecpm, sdk, pid, type);
+        reportADEvent(context, METHOD_REPORT_AD_ERROR, ecpm, sdk, pid, type, pidName);
     }
 
     @Override
@@ -483,7 +483,7 @@ public class StatImpl implements IStat {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_CLOSE, ecpm, sdk, pid, type);
+        reportADEvent(context, METHOD_REPORT_AD_CLOSE, ecpm, sdk, pid, type, pidName);
     }
 
     private String generateAdOuterKey(String adOuterType, String op) {
@@ -746,6 +746,24 @@ public class StatImpl implements IStat {
         Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + value);
     }
 
+    @Override
+    public void reportAdPlaceSeqRequest(Context context, String pidName) {
+        reportADTrigger(context, pidName, START);
+        Log.iv(Log.TAG, "StatImpl stat SeqRequest : " + pidName);
+    }
+
+    @Override
+    public void reportAdPlaceSeqLoaded(Context context, String pidName) {
+        reportADTrigger(context, pidName, SUCCESS);
+        Log.iv(Log.TAG, "StatImpl stat SeqLoaded : " + pidName);
+    }
+
+    @Override
+    public void reportAdPlaceSeqError(Context context, String pidName) {
+        reportADTrigger(context, pidName, FAILED);
+        Log.iv(Log.TAG, "StatImpl stat SeqError : " + pidName);
+    }
+
     private boolean isReportError(Context context) {
         AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
         if (adSwitch != null) {
@@ -838,14 +856,14 @@ public class StatImpl implements IStat {
     public static final String METHOD_REPORT_AD_ERROR = "reportADError";
 
 
-    public void reportADEvent(Context context, String methodName, String eCpm, String sdkName, String pid, String type) {
+    public void reportADEvent(Context context, String methodName, String eCpm, String sdkName, String pid, String type, String description) {
         String error = null;
         try {
             Class<?> clazz = Class.forName("we.studio.auchor.AnchorImpl");
             Method method = clazz.getMethod("getInstance");
             Object instance = method.invoke(null);
-            method = clazz.getMethod(methodName, Context.class, String.class, String.class, String.class, String.class);
-            method.invoke(instance, context, eCpm, sdkName, pid, type);
+            method = clazz.getMethod(methodName, Context.class, String.class, String.class, String.class, String.class, String.class);
+            method.invoke(instance, context, eCpm, sdkName, pid, type, description);
         } catch (Exception e) {
             error = String.valueOf(e);
         } catch (Error e) {
@@ -853,6 +871,28 @@ public class StatImpl implements IStat {
         }
         if (!TextUtils.isEmpty(error)) {
             Log.iv(Log.TAG, "AnchorImpl send event error : " + error);
+        }
+    }
+
+    public static final String START = "start";
+    public static final String SUCCESS = "success";
+    public static final String FAILED = "failed";
+
+    public void reportADTrigger(Context context, String description, String result) {
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("we.studio.auchor.AnchorImpl");
+            Method method = clazz.getMethod("getInstance");
+            Object instance = method.invoke(null);
+            method = clazz.getMethod("reportADTrigger", Context.class, String.class, String.class);
+            method.invoke(instance, context, description, result);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.v(Log.TAG, "AnchorImpl send event error : " + error);
         }
     }
 }
