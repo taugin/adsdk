@@ -171,4 +171,25 @@ public interface IStat {
      * @param value
      */
     public void reportFinishFSA(Context context, String key, String value);
+
+    /**
+     * 顺序请求
+     * @param context
+     * @param pidName
+     */
+    public void reportAdPlaceSeqRequest(Context context, String pidName);
+
+    /**
+     * 顺序已加载
+     * @param context
+     * @param pidName
+     */
+    public void reportAdPlaceSeqLoaded(Context context, String pidName);
+
+    /**
+     * 顺序失败
+     * @param context
+     * @param pidName
+     */
+    public void reportAdPlaceSeqError(Context context, String pidName);
 }
