@@ -859,7 +859,7 @@ public class StatImpl implements IStat {
     public void reportADEvent(Context context, String methodName, String eCpm, String sdkName, String pid, String type, String description) {
         String error = null;
         try {
-            Class<?> clazz = Class.forName("we.studio.auchor.AnchorImpl");
+            Class<?> clazz = Class.forName("we.studio.auchor.AnchorSDK");
             Method method = clazz.getMethod("getInstance");
             Object instance = method.invoke(null);
             method = clazz.getMethod(methodName, Context.class, String.class, String.class, String.class, String.class, String.class);
@@ -881,7 +881,7 @@ public class StatImpl implements IStat {
     public void reportADTrigger(Context context, String description, String result) {
         String error = null;
         try {
-            Class<?> clazz = Class.forName("we.studio.auchor.AnchorImpl");
+            Class<?> clazz = Class.forName("we.studio.auchor.AnchorSDK");
             Method method = clazz.getMethod("getInstance");
             Object instance = method.invoke(null);
             method = clazz.getMethod("reportADTrigger", Context.class, String.class, String.class);
