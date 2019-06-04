@@ -855,44 +855,39 @@ public class StatImpl implements IStat {
     public static final String METHOD_REPORT_AD_CLICK = "reportADClick";
     public static final String METHOD_REPORT_AD_ERROR = "reportADError";
 
+    public static final String START = "start";
+    public static final String SUCCESS = "success";
+    public static final String FAILED = "failed";
 
     public void reportADEvent(Context context, String methodName, String eCpm, String sdkName, String pid, String type, String description) {
         String error = null;
         try {
             Class<?> clazz = Class.forName("we.studio.auchor.AnchorSDK");
-            Method method = clazz.getMethod("getInstance");
-            Object instance = method.invoke(null);
-            method = clazz.getMethod(methodName, Context.class, String.class, String.class, String.class, String.class, String.class);
-            method.invoke(instance, context, eCpm, sdkName, pid, type, description);
+            Method method = clazz.getMethod(methodName, Context.class, String.class, String.class, String.class, String.class, String.class);
+            method.invoke(null, context, eCpm, sdkName, pid, type, description);
         } catch (Exception e) {
             error = String.valueOf(e);
         } catch (Error e) {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "AnchorImpl send event error : " + error);
+            Log.v("--Anchor--", "AnchorImpl send event error : " + error);
         }
     }
-
-    public static final String START = "start";
-    public static final String SUCCESS = "success";
-    public static final String FAILED = "failed";
 
     public void reportADTrigger(Context context, String description, String result) {
         String error = null;
         try {
             Class<?> clazz = Class.forName("we.studio.auchor.AnchorSDK");
-            Method method = clazz.getMethod("getInstance");
-            Object instance = method.invoke(null);
-            method = clazz.getMethod("reportADTrigger", Context.class, String.class, String.class);
-            method.invoke(instance, context, description, result);
+            Method method = clazz.getMethod("reportADTrigger", Context.class, String.class, String.class);
+            method.invoke(null, context, description, result);
         } catch (Exception e) {
             error = String.valueOf(e);
         } catch (Error e) {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "AnchorImpl send event error : " + error);
+            Log.v("--Anchor--", "AnchorImpl send event error : " + error);
         }
     }
 }
