@@ -112,6 +112,41 @@ public class AttrChecker {
         return true;
     }
 
+    /**
+     * 判断版本号是否允许
+     *
+     * @return
+     */
+    public boolean isVersionAllow(List<String> verList) {
+        String version = getVersion();
+        Log.iv(Log.TAG, "ver : " + version);
+        if (verList != null && !verList.isEmpty()) {
+            List<String> includeVl = new ArrayList<String>();
+            List<String> excludeVl = new ArrayList<String>();
+            for (String s : verList) {
+                if (s != null) {
+                    if (s.startsWith("!")) {
+                        excludeVl.add(s);
+                    } else {
+                        includeVl.add(s);
+                    }
+                }
+            }
+            if (includeVl.size() > 0) {
+                // 包含列表如果不包含当前版本，则返回false
+                if (!includeVl.contains(version)) {
+                    return false;
+                }
+            } else if (excludeVl.size() > 0) {
+                // 排斥列表如果包含当前版本，则返回false
+                if (excludeVl.contains("!" + version)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private String getAfStatus() {
         try {
             return Utils.getString(mContext, Constant.AF_STATUS);
@@ -123,6 +158,14 @@ public class AttrChecker {
     private String getMediaSource() {
         try {
             return Utils.getString(mContext, Constant.AF_MEDIA_SOURCE);
+        } catch(Exception e) {
+        }
+        return null;
+    }
+
+    private String getVersion() {
+        try {
+            return Utils.getVersionName(mContext);
         } catch(Exception e) {
         }
         return null;

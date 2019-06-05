@@ -388,6 +388,19 @@ public class AdParser implements IParser {
                     baseConfig.setMediaList(list);
                 }
             }
+            if (jobj.has(VER_LIST)) {
+                JSONArray jarray = jobj.getJSONArray(VER_LIST);
+                if (jarray != null && jarray.length() > 0) {
+                    List<String> list = new ArrayList<String>(jarray.length());
+                    for (int index = 0; index < jarray.length(); index++) {
+                        String s = jarray.getString(index);
+                        if (!TextUtils.isEmpty(s)) {
+                            list.add(s);
+                        }
+                    }
+                    baseConfig.setVerList(list);
+                }
+            }
             if (jobj.has(NTRATE)) {
                 baseConfig.setNtr(jobj.getInt(NTRATE));
             }
