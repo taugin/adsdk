@@ -129,6 +129,8 @@ public interface IParser {
     String ATTRS = "attr";
     // 媒体列表 !adwords表示排除的媒体，adwords表示包含的媒体
     String MEDIA_SOURCE = "ms";
+    // 版本列表 !ver表示排除的版本，ver表示包含的版本
+    String VER_LIST = "vl";
     // 屏幕方向 0 : undefined, 1: portrait, 2 : landscape
     String SCREEN_ORIENTATION = "so";
     // native gt 比例
