@@ -19,6 +19,7 @@ public abstract class BaseConfig {
     private List<String> countryList;
     private List<String> attrList;
     private List<String> mediaList;
+    private List<String> verList;
     private int ntr;
     private boolean showBottomActivity = true;
     private String placeNameInt;
@@ -40,6 +41,7 @@ public abstract class BaseConfig {
         countryList = null;
         attrList = null;
         mediaList = null;
+        verList = null;
         ntr = 0;
         showBottomActivity = true;
         placeNameInt = null;
@@ -145,6 +147,14 @@ public abstract class BaseConfig {
 
     public void setMediaList(List<String> mediaList) {
         this.mediaList = mediaList;
+    }
+
+    public List<String> getVerList() {
+        return verList;
+    }
+
+    public void setVerList(List<String> verList) {
+        this.verList = verList;
     }
 
     public int getNtr() {

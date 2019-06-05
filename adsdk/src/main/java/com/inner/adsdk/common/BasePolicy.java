@@ -257,6 +257,11 @@ public class BasePolicy implements Handler.Callback {
             Log.iv(Log.TAG, "ms not allowed");
             return false;
         }
+
+        if (mBaseConfig != null && !mAttrChecker.isVersionAllow(mBaseConfig.getVerList())) {
+            Log.iv(Log.TAG, "ver not allowed");
+            return false;
+        }
         return true;
     }
 
