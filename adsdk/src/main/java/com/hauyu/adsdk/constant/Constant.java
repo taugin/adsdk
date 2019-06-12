@@ -18,14 +18,18 @@ public class Constant {
 
     public static final String AD_SDK_PREFIX = "pref_adsdk_";
 
-    public static final int NOSET = -1;
-    public static final int BANNER = 1000;
-    public static final int FULL_BANNER = 1001;
-    public static final int LARGE_BANNER = 1002;
-    public static final int LEADERBOARD = 1003;
-    public static final int MEDIUM_RECTANGLE = 1004;
-    public static final int WIDE_SKYSCRAPER = 1005;
-    public static final int SMART_BANNER = 1006;
+    public static final String AD_SDK_PUSH_PREFIX = "pref_adsdk_push_";
+
+    public static final String AD_SDK_JSON_VER = "ver";
+
+    public static final int    NOSET = -1;
+    public static final int    BANNER = 1000;
+    public static final int    FULL_BANNER = 1001;
+    public static final int    LARGE_BANNER = 1002;
+    public static final int    LEADERBOARD = 1003;
+    public static final int    MEDIUM_RECTANGLE = 1004;
+    public static final int    WIDE_SKYSCRAPER = 1005;
+    public static final int    SMART_BANNER = 1006;
 
     public static final int NATIVE_CARD_SMALL = 1;
     public static final int NATIVE_CARD_MEDIUM = 2;

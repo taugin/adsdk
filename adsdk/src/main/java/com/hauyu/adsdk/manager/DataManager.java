@@ -24,6 +24,8 @@ import com.hauyu.adsdk.request.IDataRequest;
 import com.hauyu.adsdk.request.RemoteConfigRequest;
 import com.hauyu.adsdk.utils.Utils;
 
+import org.json.JSONObject;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -153,6 +155,7 @@ public class DataManager implements Runnable {
     public AdPlace getRemoteAdPlace(String key) {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(key);
+            data = checkLastData(data, key);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseAdPlace(data);
             }
@@ -163,6 +166,7 @@ public class DataManager implements Runnable {
     public GtConfig getRemoteGtPolicy() {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(Constant.GTPOLICY_NAME);
+            data = checkLastData(data, Constant.GTPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseGtPolicy(data);
             }
@@ -173,6 +177,7 @@ public class DataManager implements Runnable {
     public StConfig getRemoteStPolicy() {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(Constant.STPOLICY_NAME);
+            data = checkLastData(data, Constant.STPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseStPolicy(data);
             }
@@ -183,6 +188,7 @@ public class DataManager implements Runnable {
     public AtConfig getRemoteAtPolicy() {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(Constant.ATPOLICY_NAME);
+            data = checkLastData(data, Constant.ATPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseAtPolicy(data);
             }
@@ -193,6 +199,7 @@ public class DataManager implements Runnable {
     public LtConfig getRemoteLtPolicy() {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(Constant.LTPOLICY_NAME);
+            data = checkLastData(data, Constant.LTPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseLtPolicy(data);
             }
@@ -203,6 +210,7 @@ public class DataManager implements Runnable {
     public HtConfig getRemoteHtPolicy() {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(Constant.HTPOLICY_NAME);
+            data = checkLastData(data, Constant.HTPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseHtPolicy(data);
             }
@@ -213,6 +221,7 @@ public class DataManager implements Runnable {
     public CtConfig getRemoteCtPolicy() {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(Constant.CTPOLICY_NAME);
+            data = checkLastData(data, Constant.CTPOLICY_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseCtPolicy(data);
             }
@@ -223,6 +232,7 @@ public class DataManager implements Runnable {
     public Map<String, String> getRemoteAdIds() {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(Constant.ADIDS_NAME);
+            data = checkLastData(data, Constant.ADIDS_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseAdIds(data);
             }
@@ -233,6 +243,7 @@ public class DataManager implements Runnable {
     public AdSwitch getAdSwitch() {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(Constant.ADSWITCH_NAME);
+            data = checkLastData(data, Constant.ADSWITCH_NAME);
             if (!TextUtils.isEmpty(data)) {
                 String oldSwitchMd5 = Utils.getString(mContext, PREF_ADSWITCH_MD5);
                 String newSwitchMd5 = Utils.string2MD5(data);
@@ -252,6 +263,7 @@ public class DataManager implements Runnable {
     public Map<String, String> getRemoteAdRefs() {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(Constant.ADREFS_NAME);
+            data = checkLastData(data, Constant.ADREFS_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseAdRefs(data);
             }
@@ -262,6 +274,7 @@ public class DataManager implements Runnable {
     public List<SpConfig> getRemoteSpread() {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(Constant.ADSPREAD_NAME);
+            data = checkLastData(data, Constant.ADSPREAD_NAME);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseSpread(data);
             }
@@ -284,9 +297,52 @@ public class DataManager implements Runnable {
                 return;
             }
             String data = mDataRequest.getString(name);
+            data = checkLastData(data, name);
             if (!TextUtils.isEmpty(data)) {
                 mParser.parsePolicy(data, baseConfig, parserCallback);
             }
         }
+    }
+
+    /**
+     * 与push过来的数据比对版本号，使用版本号高的数据，如果版本号相等，则使用推送的数据
+     * @param data 从firebase远程配置上获取的数据
+     * @param key 当前配置的key值
+     * @return
+     */
+    private String checkLastData(String data, String key) {
+        boolean useConfig = true;
+        String pushData = Utils.getString(mContext, Constant.AD_SDK_PUSH_PREFIX + key);
+        if (TextUtils.isEmpty(data) && !TextUtils.isEmpty(pushData)) {
+            // 直接使用push配置数据
+            useConfig = false;
+        } else if (!TextUtils.isEmpty(data) && !TextUtils.isEmpty(pushData)) {
+            // 比较两种配置数据的版本，使用高版本的数据
+            int pushVer = -1;
+            int confVer = -1;
+            // 读取推送过来的数据的版本号
+            try {
+                JSONObject jobj = new JSONObject(pushData);
+                if (jobj.has(Constant.AD_SDK_JSON_VER)) {
+                    pushVer = jobj.getInt(Constant.AD_SDK_JSON_VER);
+                }
+            } catch (Exception e) {
+            }
+            // 读取配置的数据的版本号
+            try {
+                JSONObject jobj = new JSONObject(data);
+                if (jobj.has(Constant.AD_SDK_JSON_VER)) {
+                    confVer = jobj.getInt(Constant.AD_SDK_JSON_VER);
+                }
+            } catch (Exception e) {
+            }
+            Log.v(Log.TAG, "confVer : " + confVer + " , pushVer : " + pushVer);
+            useConfig = confVer >= pushVer;
+        } else {
+            // 其他情况使用配置的数据
+            useConfig = true;
+        }
+        Log.iv(Log.TAG, "use " + (useConfig ? "config" : "push") + " data for " + key);
+        return useConfig ? data : pushData;
     }
 }
