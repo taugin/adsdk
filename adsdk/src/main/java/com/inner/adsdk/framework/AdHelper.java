@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.adcolony.sdk.AdColony;
 import com.applovin.sdk.AppLovinSdk;
+import com.brandio.ads.Placement;
 import com.facebook.ads.InterstitialAd;
 import com.fyber.inneractive.sdk.external.InneractiveAdManager;
 import com.google.android.gms.ads.MobileAds;
@@ -13,7 +14,6 @@ import com.mopub.mobileads.MoPubInterstitial;
 import com.we.sdk.exchange.DspMob;
 import com.wemob.ads.Sdk;
 
-import io.display.sdk.Placement;
 
 /**
  * Created by Administrator on 2018-10-25.

@@ -160,3 +160,6 @@
 #display io
 -keep class io.display.sdk.Controller.** { *;}
 -dontwarn io.display.sdk.Controller.**
+
+-keep class com.brandio.ads.Controller.** { *;}
+-dontwarn com.brandio.ads.Controller.**
