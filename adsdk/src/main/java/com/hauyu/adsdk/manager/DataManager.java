@@ -26,6 +26,7 @@ import com.hauyu.adsdk.utils.Utils;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -61,6 +62,7 @@ public class DataManager implements Runnable {
     private DataManager(Context context) {
         mContext = context;
         mParser = new AdParser();
+        mHasInsightsSdk = hasInsightSdk();
     }
 
     private IDataRequest mDataRequest;
@@ -309,8 +311,9 @@ public class DataManager implements Runnable {
      * @param data 从firebase远程配置上获取的数据
      * @param key 当前配置的key值
      * @return
+     * @deprecated
      */
-    private String checkLastData(String data, String key) {
+    private String checkLastData2(String data, String key) {
         boolean useConfig = true;
         String pushData = Utils.getString(mContext, Constant.AD_SDK_PUSH_PREFIX + key);
         if (TextUtils.isEmpty(data) && !TextUtils.isEmpty(pushData)) {
@@ -345,4 +348,63 @@ public class DataManager implements Runnable {
         Log.iv(Log.TAG, "use " + (useConfig ? "config" : "push") + " data for " + key);
         return useConfig ? data : pushData;
     }
+
+    /**
+     * 默认先从insights获取配置的数据，如果数据为空，则使用默认数据
+     * @param data
+     * @param key
+     * @return
+     */
+    private String checkLastData(String data, String key) {
+        String configText = getStringFromInsights(mContext, key);
+        if (!TextUtils.isEmpty(configText)) {
+            return configText;
+        }
+        return data;
+    }
+
+    /**
+     * 从insights获取配置的数据
+     * @param context
+     * @param key
+     * @return
+     */
+    private String getStringFromInsights(Context context, String key) {
+        if (!mHasInsightsSdk) {
+            Log.iv(Log.TAG, "get string from insights not found : " + INSIGHTS_SDK);
+            return null;
+        }
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName(INSIGHTS_SDK);
+            Method method = clazz.getMethod(INSIGHTS_METHOD, Context.class, String.class);
+            return (String) method.invoke(null, context, key);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.iv("--Insights--", "InsightsSDK get string error : " + error);
+        }
+        return null;
+    }
+
+    /**
+     * 判断是否有InsightSdk存在
+     * @return
+     */
+    private boolean hasInsightSdk() {
+        try {
+            Class.forName(INSIGHTS_SDK);
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
+    }
+
+    private static final String INSIGHTS_SDK = "we.studio.insights.InsightsSDK";
+    private static final String INSIGHTS_METHOD = "getLatestConfig";
+    private boolean mHasInsightsSdk = false;
 }

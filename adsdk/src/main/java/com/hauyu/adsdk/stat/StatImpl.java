@@ -27,6 +27,7 @@ public class StatImpl implements IStat {
 
     private Properties mEventIdAlias;
     private Object mFacebookObject = null;
+    private boolean mHasAnchorSdk = false;
 
     public static StatImpl get() {
         synchronized (StatImpl.class) {
@@ -46,6 +47,8 @@ public class StatImpl implements IStat {
     }
 
     private StatImpl() {
+        mHasAnchorSdk = hasAnchorSdk();
+        Log.iv(Log.TAG, "hasAnchorSdk : " + mHasAnchorSdk);
     }
 
     public void init() {
@@ -793,7 +796,7 @@ public class StatImpl implements IStat {
         if (adSwitch != null) {
             return adSwitch.isReportFirebase();
         }
-        return true;
+        return !mHasAnchorSdk;
     }
 
     private boolean isReportAppsflyer(Context context) {
@@ -801,7 +804,7 @@ public class StatImpl implements IStat {
         if (adSwitch != null) {
             return adSwitch.isReportAppsflyer();
         }
-        return true;
+        return !mHasAnchorSdk;
     }
 
     private boolean isReportFacebook(Context context) {
@@ -859,10 +862,17 @@ public class StatImpl implements IStat {
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
 
+    private static final String ANCHOR_SDK = "we.studio.anchor.AnchorSDK";
+    private static final String ANCHOR_REPORT_AD_TRIGGER = "reportADTrigger";
+
     public void reportADEvent(Context context, String methodName, String eCpm, String sdkName, String pid, String type, String description) {
+        if (!mHasAnchorSdk) {
+            Log.iv(Log.TAG, "report ad event not found : " + ANCHOR_SDK);
+            return;
+        }
         String error = null;
         try {
-            Class<?> clazz = Class.forName("we.studio.auchor.AnchorSDK");
+            Class<?> clazz = Class.forName(ANCHOR_SDK);
             Method method = clazz.getMethod(methodName, Context.class, String.class, String.class, String.class, String.class, String.class);
             method.invoke(null, context, eCpm, sdkName, pid, type, description);
         } catch (Exception e) {
@@ -871,15 +881,19 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v("--Anchor--", "AnchorImpl send event error : " + error);
+            Log.iv("--Anchor--", "AnchorImpl send event error : " + error);
         }
     }
 
     public void reportADTrigger(Context context, String description, String result) {
+        if (!mHasAnchorSdk) {
+            Log.iv(Log.TAG, "report ad event not found : " + ANCHOR_SDK);
+            return;
+        }
         String error = null;
         try {
-            Class<?> clazz = Class.forName("we.studio.auchor.AnchorSDK");
-            Method method = clazz.getMethod("reportADTrigger", Context.class, String.class, String.class);
+            Class<?> clazz = Class.forName(ANCHOR_SDK);
+            Method method = clazz.getMethod(ANCHOR_REPORT_AD_TRIGGER, Context.class, String.class, String.class);
             method.invoke(null, context, description, result);
         } catch (Exception e) {
             error = String.valueOf(e);
@@ -887,7 +901,21 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v("--Anchor--", "AnchorImpl send event error : " + error);
+            Log.iv("--Anchor--", "AnchorImpl send event error : " + error);
         }
+    }
+
+    /**
+     * 判断是否有AnchorSDK存在
+     * @return
+     */
+    private boolean hasAnchorSdk() {
+        try {
+            Class.forName(ANCHOR_SDK);
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
     }
 }
