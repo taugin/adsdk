@@ -96,7 +96,7 @@ dependencies {
     }
 
     // display io
-    // implementation 'io.display:android-sdk:2.0.0.10'
+    implementation 'io.display:android-sdk:2.0.0.10'
 
     // AdColony
     // 会导致同步失败

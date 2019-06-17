@@ -64,6 +64,11 @@ public class AdExtra {
     public static final String AD_SDK_DSPMOB = Constant.AD_SDK_DSPMOB;
 
     /**
+     * DISPLAY IO
+     */
+    public static final String AD_SDK_DISPLAYIO = Constant.AD_SDK_DISPLAYIO;
+
+    /**
      * ADCOLONY
      */
     public static final String AD_SDK_ADCOLONY = Constant.AD_SDK_ADCOLONY;
