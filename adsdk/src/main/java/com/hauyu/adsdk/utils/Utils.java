@@ -119,11 +119,17 @@ public class Utils {
     }
 
     public static void clearPrefs(Context context, String key) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().remove(key).commit();
+        try {
+            PreferenceManager.getDefaultSharedPreferences(context).edit().remove(key).apply();
+        } catch (Exception | Error e) {
+        }
     }
 
     public static void putString(Context context, String key, String value) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, value).commit();
+        try {
+            PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, value).apply();
+        } catch (Exception | Error e) {
+        }
     }
 
     public static String getString(Context context, String key) {
@@ -135,7 +141,10 @@ public class Utils {
     }
 
     public static void putBoolean(Context context, String key, boolean value) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(key, value).commit();
+        try {
+            PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+        } catch (Exception | Error e) {
+        }
     }
 
     public static boolean getBoolean(Context context, String key) {
