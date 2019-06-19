@@ -1694,9 +1694,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private boolean showComplexAdsInternal() {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null) {
+                if (loader != null && loader.hasLoadedFlag()) {
                     if (loader.isRewardedVideoType() && loader.isRewaredVideoLoaded()) {
                         ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
+                        loader.useAndClearFlag();
                         if (loader.showRewardedVideo()) {
                             mCurrentAdLoader = loader;
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
@@ -1704,6 +1705,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         }
                     } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
                         ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
+                        loader.useAndClearFlag();
                         if (loader.showInterstitial()) {
                             mCurrentAdLoader = loader;
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
