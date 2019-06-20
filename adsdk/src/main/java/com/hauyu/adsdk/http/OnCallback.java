@@ -5,6 +5,5 @@ package com.hauyu.adsdk.http;
  */
 
 public interface OnCallback {
-    public void onSuccess(String content);
     public void onFailure(int code, String error);
 }

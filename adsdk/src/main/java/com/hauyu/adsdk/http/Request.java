@@ -12,6 +12,8 @@ class Request {
     private int connectTimeout;
     private int readTimeout;
     private OnCallback callback;
+    private long startTime;
+    private boolean cache;
 
     public String getUrl() {
         return url;
@@ -51,5 +53,33 @@ class Request {
 
     public void setCallback(OnCallback callback) {
         this.callback = callback;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public boolean isCache() {
+        return cache;
+    }
+
+    public void setCache(boolean cache) {
+        this.cache = cache;
+    }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "url='" + url + '\'' +
+                ", header=" + header +
+                ", connectTimeout=" + connectTimeout +
+                ", readTimeout=" + readTimeout +
+                ", callback=" + callback +
+                ", startTime=" + startTime +
+                '}';
     }
 }

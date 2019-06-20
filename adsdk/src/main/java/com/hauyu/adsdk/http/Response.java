@@ -11,6 +11,7 @@ class Response {
     private byte[] content;
     private Map<String, String> header;
     private String error;
+    private boolean cache;
 
     public int getStatusCode() {
         return statusCode;
@@ -42,5 +43,13 @@ class Response {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public boolean isCache() {
+        return cache;
+    }
+
+    public void setCache(boolean cache) {
+        this.cache = cache;
     }
 }

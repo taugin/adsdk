@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -72,6 +73,8 @@ import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.ChargeWrapper;
+import com.hauyu.adsdk.http.Http;
+import com.hauyu.adsdk.http.OnImageCallback;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.policy.AtPolicy;
@@ -604,6 +607,27 @@ public class FSA extends Activity {
             return;
         }
         try {
+
+            if (TextUtils.equals(SpConfig.TYPE_URL, mSpConfig.getType())
+                    || TextUtils.equals(SpConfig.TYPE_HTML, mSpConfig.getType())) {
+                showWebViewLayout();
+            } else {
+                showAppLayout();
+            }
+            sendBroadcast(new Intent(getPackageName() + ".action.SPSHOW").setPackage(getPackageName()));
+        } catch (Exception e) {
+            Log.v(Log.TAG, "error : " + e);
+            finish();
+        }
+    }
+
+    /**
+     * 展示APP类型的推广
+     */
+    private void showAppLayout() {
+        try {
+            SpClick spClick = new SpClick();
+            spClick.setSpConfig(mSpConfig);
             RelativeLayout rootLayout = new RelativeLayout(this);
             rootLayout.setBackgroundColor(Color.WHITE);
             super.setContentView(rootLayout);
@@ -643,10 +667,66 @@ public class FSA extends Activity {
             rootLayout.addView(textView, params);
             mSponsoredView = textView;
 
-            // 添加webview对象
-            WebView webview = new WebView(this);
-            webview.getSettings().setJavaScriptEnabled(true);
-            webview.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+            // 添加对象
+            LinearLayout adContentLayout = new LinearLayout(this);
+            adContentLayout.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout mediaLayout = new LinearLayout(this);
+            // mediaLayout.setBackgroundColor(Color.RED);
+            LinearLayout iconLayout = new LinearLayout(this);
+            // iconLayout.setBackgroundColor(Color.GREEN);
+            iconLayout.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+            LinearLayout textLayout = new LinearLayout(this);
+            // textLayout.setBackgroundColor(Color.BLUE);
+            textLayout.setOrientation(LinearLayout.VERTICAL);
+            textLayout.setGravity(Gravity.CENTER);
+
+            LinearLayout.LayoutParams lp = null;
+            lp = new LinearLayout.LayoutParams(-1, -1);
+            lp.weight = 10;
+            adContentLayout.addView(mediaLayout, lp);
+            lp = new LinearLayout.LayoutParams(-1, -1);
+            lp.weight = 11;
+            adContentLayout.addView(iconLayout, lp);
+            lp = new LinearLayout.LayoutParams(-1, -1);
+            lp.weight = 9;
+            adContentLayout.addView(textLayout, lp);
+
+            ImageView mediaView = new ImageView(this);
+            mediaView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            loadAndShowImage(mediaView, mSpConfig.getBanner());
+            mediaLayout.addView(mediaView, -1, -2);
+            mediaView.setOnClickListener(spClick);
+
+            ImageView iconView = new ImageView(this);
+            iconView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            loadAndShowImage(iconView, mSpConfig.getIcon());
+            iconLayout.addView(iconView, -2, -2);
+            iconView.setOnClickListener(spClick);
+
+            TextView titleView = new TextView(this);
+            titleView.setGravity(Gravity.CENTER);
+            titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            titleView.setTextColor(Color.BLACK);
+            titleView.setText(mSpConfig.getTitle());
+            titleView.setMaxLines(2);
+            titleView.setEllipsize(TextUtils.TruncateAt.END);
+            lp = new LinearLayout.LayoutParams(-2, -2);
+            lp.leftMargin = lp.rightMargin = Utils.dp2px(this, 16);
+            textLayout.addView(titleView, lp);
+            titleView.setOnClickListener(spClick);
+
+            TextView descView = new TextView(this);
+            descView.setGravity(Gravity.CENTER);
+            descView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            descView.setTextColor(Color.GRAY);
+            descView.setText(mSpConfig.getDetail());
+            descView.setMaxLines(2);
+            descView.setEllipsize(TextUtils.TruncateAt.END);
+            lp = new LinearLayout.LayoutParams(-2, -2);
+            lp.topMargin = Utils.dp2px(this, 8);
+            lp.leftMargin = lp.rightMargin = Utils.dp2px(this, 16);
+            textLayout.addView(descView, lp);
+            descView.setOnClickListener(spClick);
 
             // 添加底部按钮
             RelativeLayout buttonLayout = new RelativeLayout(this);
@@ -663,29 +743,73 @@ public class FSA extends Activity {
 
             params = new RelativeLayout.LayoutParams(-1, -1);
             params.addRule(RelativeLayout.ABOVE, buttonLayout.getId());
+            adLayout.addView(adContentLayout, params);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                button.setElevation(dp2px(this, 6));
+                button.setTranslationZ(0);
+            }
+            StateListDrawable drawable = new StateListDrawable();
+            drawable.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(Color.parseColor("#AA4286F4")));
+            drawable.addState(new int[]{android.R.attr.state_enabled}, new ColorDrawable(Color.parseColor("#FF4286F4")));
+            button.setBackground(drawable);
+            button.setPadding(0, 0, 0, 0);
+            button.setGravity(Gravity.CENTER);
+            button.getPaint().setFakeBoldText(true);
+            button.setTextColor(Color.WHITE);
+            button.setTypeface(button.getTypeface(), Typeface.BOLD);
+            button.setSingleLine();
+            button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            button.setText(mSpConfig.getCta());
+            button.setOnClickListener(spClick);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, e);
+            finishActivityWithDelay();
+        }
+    }
+
+    /**
+     * 展示webview类型的推广
+     */
+    private void showWebViewLayout() {
+        try {
+            RelativeLayout rootLayout = new RelativeLayout(this);
+            rootLayout.setBackgroundColor(Color.WHITE);
+            super.setContentView(rootLayout);
+            RelativeLayout adLayout = new RelativeLayout(this);
+            adLayout.setGravity(Gravity.CENTER);
+            rootLayout.addView(adLayout, -1, -1);
+
+            ImageView imageView = generateCloseView();
+            int size = Utils.dp2px(this, 24);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
+            int margin = dp2px(this, 8);
+            params.setMargins(margin, margin, margin, margin);
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finishActivityWithDelay();
+                }
+            });
+            rootLayout.addView(imageView, params);
+
+            // 添加webview对象
+            WebView webview = new WebView(this);
+            webview.getSettings().setJavaScriptEnabled(true);
+            webview.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+
+            params = new RelativeLayout.LayoutParams(-1, -1);
             adLayout.addView(webview, params);
 
-            if (TextUtils.isEmpty(mSpConfig.getType()) || TextUtils.equals(SpConfig.TYPE_APP, mSpConfig.getType())) {
-                buttonLayout.setVisibility(View.VISIBLE);
-                textView.setVisibility(View.VISIBLE);
-                showAppSpread(webview, button);
-            } else if (TextUtils.equals(SpConfig.TYPE_URL, mSpConfig.getType())) {
-                buttonLayout.setVisibility(View.GONE);
-                textView.setVisibility(View.GONE);
+            if (TextUtils.equals(SpConfig.TYPE_URL, mSpConfig.getType())) {
                 showUrlContent(webview, mSpConfig.getLinkUrl());
             } else if (TextUtils.equals(SpConfig.TYPE_HTML, mSpConfig.getType())) {
-                buttonLayout.setVisibility(View.GONE);
-                textView.setVisibility(View.GONE);
                 showHtml(webview, mSpConfig.getHtml());
-            } else {
-                buttonLayout.setVisibility(View.VISIBLE);
-                textView.setVisibility(View.VISIBLE);
-                showAppSpread(webview, button);
             }
-            sendBroadcast(new Intent(getPackageName() + ".action.SPSHOW").setPackage(getPackageName()));
         } catch (Exception e) {
-            Log.v(Log.TAG, "error : " + e);
-            finish();
+            Log.e(Log.TAG, "error : " + e);
         }
     }
 
@@ -750,58 +874,54 @@ public class FSA extends Activity {
         }
     }
 
-    private void showAppSpread(WebView webView, Button button) {
-        if (webView == null) {
-            return;
-        }
+    private void loadAndShowImage(final ImageView imageView, String url) {
         try {
-            webView.setWebChromeClient(new WebChromeClient() {
+            Http.get(imageView.getContext()).loadImage(url, null, new OnImageCallback() {
+
                 @Override
-                public void onConsoleMessage(String message, int lineNumber, String sourceID) {
-                    Log.v(Log.TAG, "message : " + message);
+                public void onSuccess(Bitmap bitmap) {
+                    if (imageView != null) {
+                        imageView.setImageBitmap(bitmap);
+                    }
                 }
-            });
-            String nativeData = NATIVE_TEMPLATE.replace("#COVER_URL#", mSpConfig.getBanner());
-            nativeData = nativeData.replace("#ICON_URL#", mSpConfig.getIcon());
-            nativeData = nativeData.replace("#TITLE#", mSpConfig.getTitle());
-            nativeData = nativeData.replace("#DESC#", mSpConfig.getDetail());
-            webView.loadData(nativeData, "text/html", "utf-8");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                button.setElevation(dp2px(this, 6));
-                button.setTranslationZ(0);
-            }
-            StateListDrawable drawable = new StateListDrawable();
-            drawable.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(Color.parseColor("#AA4286F4")));
-            drawable.addState(new int[]{android.R.attr.state_enabled}, new ColorDrawable(Color.parseColor("#FF4286F4")));
-            button.setId(generateViewId(0x1000002));
-            button.setBackground(drawable);
-            button.setPadding(0, 0, 0, 0);
-            button.setGravity(Gravity.CENTER);
-            button.getPaint().setFakeBoldText(true);
-            button.setTextColor(Color.WHITE);
-            button.setTypeface(button.getTypeface(), Typeface.BOLD);
-            button.setSingleLine();
-            button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            button.setText(mSpConfig.getCta());
-            button.setOnClickListener(new View.OnClickListener() {
+
                 @Override
-                public void onClick(View v) {
-                    String url = mSpConfig.getLinkUrl();
-                    if (TextUtils.isEmpty(url)) {
-                        url = "market://details?id=" + mSpConfig.getPkgname();
-                    }
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        startActivity(intent);
-                    } catch (Exception e) {
-                        Log.v(Log.TAG, "error : " + e);
-                    }
-                    sendBroadcast(new Intent(getPackageName() + ".action.SPCLICK").setPackage(getPackageName()));
+                public void onFailure(int code, String error) {
                 }
             });
         } catch (Exception e) {
-            Log.e(Log.TAG, "error " + e);
+        }
+    }
+
+    private static class SpClick implements View.OnClickListener {
+
+        private SpConfig mSpConfig;
+
+        public void setSpConfig(SpConfig spConfig) {
+            mSpConfig = spConfig;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v == null) {
+                return;
+            }
+            String url = mSpConfig.getLinkUrl();
+            if (TextUtils.isEmpty(url)) {
+                url = "market://details?id=" + mSpConfig.getPkgname();
+            }
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Context context = v.getContext();
+            try {
+                context.startActivity(intent);
+            } catch (Exception e) {
+                Log.v(Log.TAG, "error : " + e);
+            }
+            try {
+                context.sendBroadcast(new Intent(context.getPackageName() + ".action.SPCLICK").setPackage(context.getPackageName()));
+            } catch (Exception e) {
+            }
         }
     }
 

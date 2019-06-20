@@ -5,14 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.TextUtils;
+import android.view.ViewGroup;
 
 import com.appub.ads.a.FSA;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.framework.Params;
+import com.hauyu.adsdk.http.Http;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.manager.DataManager;
-import com.hauyu.adsdk.stat.StatImpl;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.ArrayList;
@@ -25,7 +27,8 @@ import java.util.Random;
 
 public class SpLoader extends AbstractSdkLoader {
 
-    private List<SpConfig> mSpreads;
+    private SpConfig mSpread;
+    private Params mParams;
 
     @Override
     public String getSdkName() {
@@ -33,14 +36,16 @@ public class SpLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void loadInterstitial() {
-        mSpreads = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
-        if (mSpreads != null && !mSpreads.isEmpty()) {
+    public void loadNative(Params params) {
+        mSpread = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
+        if (checkArgs(mSpread)) {
             if (getAdListener() != null) {
                 setLoadedFlag();
-                getAdListener().onInterstitialLoaded(this);
+                getAdListener().onAdLoaded(SpLoader.this);
             }
             reportAdLoaded();
+            loadIcon(mSpread.getIcon());
+            loadBanner(mSpread.getBanner());
         } else {
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
@@ -49,27 +54,82 @@ public class SpLoader extends AbstractSdkLoader {
         }
     }
 
+    private void loadIcon(final String iconUrl) {
+        Http.get(mContext).loadImage(iconUrl, null, null);
+    }
+
+    private void loadBanner(final String bannerUrl) {
+        Http.get(mContext).loadImage(bannerUrl, null, null);
+    }
+
+    @Override
+    public boolean isNativeLoaded() {
+        return checkArgs(mSpread);
+    }
+
+    @Override
+    public void showNative(ViewGroup viewGroup, Params params) {
+        Log.v(Log.TAG, "showNative - spread");
+        if (params != null) {
+            mParams = params;
+        }
+        if (mSpread != null) {
+            SpConfig spConfig = mSpread;
+            SpreadBindNativeView spreadBindNativeView = new SpreadBindNativeView();
+            spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spConfig);
+        }
+        reportAdShow();
+        if (getAdListener() != null) {
+            getAdListener().onAdShow();
+        }
+    }
+
+    @Override
+    public void loadInterstitial() {
+        mSpread = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
+        if (checkArgs(mSpread)) {
+            if (getAdListener() != null) {
+                setLoadedFlag();
+                getAdListener().onInterstitialLoaded(this);
+            }
+            reportAdLoaded();
+            loadIcon(mSpread.getIcon());
+            loadBanner(mSpread.getBanner());
+        } else {
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
+            }
+            reportAdError(String.valueOf("ERROR_LOAD"));
+        }
+    }
+
     /**
      * 检出有效的配置
+     *
      * @param spList
      * @return
      */
-    private List<SpConfig> checkSpConfig(List<SpConfig> spList) {
+    private SpConfig checkSpConfig(List<SpConfig> spList) {
         if (spList == null || spList.isEmpty()) {
             return null;
         }
-        mSpreads = new ArrayList<SpConfig>();
+        List<SpConfig> availableSp = new ArrayList<SpConfig>();
         for (SpConfig config : spList) {
             // 参数有效，并且未安装
             if (checkArgs(config) && !Utils.isInstalled(mContext, config.getPkgname()) && !config.isDisable()) {
-                mSpreads.add(config);
+                availableSp.add(config);
             }
         }
-        return mSpreads;
+        if (availableSp != null && !availableSp.isEmpty()) {
+            int size = availableSp.size();
+            return availableSp.get(new Random(System.currentTimeMillis()).nextInt(size));
+        }
+        return null;
     }
 
     /**
      * 检查参数合法性
+     *
      * @param spConfig
      * @return
      */
@@ -109,15 +169,14 @@ public class SpLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isInterstitialLoaded() {
-        return mSpreads != null && !mSpreads.isEmpty();
+        return checkArgs(mSpread);
     }
 
     @Override
     public boolean showInterstitial() {
-        if (mSpreads != null && !mSpreads.isEmpty()) {
+        if (mSpread != null) {
             show();
-            mSpreads.clear();
-            mSpreads = null;
+            mSpread = null;
             return true;
         }
         return false;
@@ -125,9 +184,8 @@ public class SpLoader extends AbstractSdkLoader {
 
     private void show() {
         try {
-            int size = mSpreads.size();
-            if (size > 0) {
-                SpConfig spConfig = mSpreads.get(new Random(System.currentTimeMillis()).nextInt(size));
+            if (mSpread != null) {
+                SpConfig spConfig = mSpread;
                 Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.AFPICKER");
                 if (intent == null) {
                     intent = new Intent(mContext, FSA.class);
@@ -154,7 +212,7 @@ public class SpLoader extends AbstractSdkLoader {
             filter.addAction(mContext.getPackageName() + ".action.SPCLICK");
             filter.addAction(mContext.getPackageName() + ".action.SPSHOW");
             mContext.registerReceiver(mBroadcastReceiver, filter);
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
     }
 
