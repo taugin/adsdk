@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.inner.adsdk.http.Http;
-import com.inner.adsdk.http.OnCallback;
+import com.inner.adsdk.http.OnStringCallback;
 import com.inner.adsdk.log.Log;
 
 
@@ -34,8 +34,8 @@ public class HttpDataRequest implements IDataRequest {
         if (TextUtils.isEmpty(url)) {
             return;
         }
-        Log.d(Log.TAG, "request config url : " + url);
-        Http.get().request(url, null, new OnCallback() {
+        Log.iv(Log.TAG, "request config url : " + url);
+        Http.get(mContext).request(url, null, new OnStringCallback() {
             @Override
             public void onSuccess(String content) {
                 mContent = content;
