@@ -121,11 +121,10 @@ public class GtAdLoader extends BaseLoader {
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).reportShowing(false);
-                    if ((!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
+                    if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                             && GtPolicy.get(mContext).isShowBottomActivity()
                             && !Constant.TYPE_BANNER.equals(adType)
-                            && !Constant.TYPE_NATIVE.equals(adType))
-                            || Constant.AD_SDK_DISPLAYIO.equals(source)) {
+                            && !Constant.TYPE_NATIVE.equals(adType)) {
                         hide();
                     }
                 }
