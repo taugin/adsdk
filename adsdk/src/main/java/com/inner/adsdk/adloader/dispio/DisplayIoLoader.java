@@ -1,5 +1,6 @@
 package com.inner.adsdk.adloader.dispio;
 
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -225,9 +226,16 @@ public class DisplayIoLoader extends AbstractSdkLoader {
             if (viewParent instanceof ViewGroup) {
                 ((ViewGroup) viewParent).removeView(mAdView);
             }
-            viewGroup.addView(mAdView);
+            RelativeLayout bannerLayout = new RelativeLayout(mContext);
+            bannerLayout.setGravity(Gravity.CENTER);
+            viewGroup.addView(bannerLayout);
+            bannerLayout.addView(mAdView);
             BannerPlacement placement =
                     (BannerPlacement) Controller.getInstance().getPlacement(mPidConfig.getPid());
+            try {
+                placement.setFullWidth(getPidConfig().isFullWidth());
+            } catch (Exception e) {
+            }
             BannerAdContainer bannerAdContainer =
                     placement.getBannerContainer(mContext, mRequestId);
             bannerAdContainer.bindTo(mAdView);

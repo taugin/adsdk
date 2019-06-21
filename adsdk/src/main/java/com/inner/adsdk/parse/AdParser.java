@@ -605,6 +605,9 @@ public class AdParser implements IParser {
             if (jobj.has(BANNER_SIZE)) {
                 pidConfig.setBannerSize(jobj.getString(BANNER_SIZE));
             }
+            if (jobj.has(FULL_WIDTH)) {
+                pidConfig.setFullWidth(jobj.getInt(FULL_WIDTH) == 1);
+            }
             parseAttrConfig(pidConfig, jobj);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
