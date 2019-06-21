@@ -24,7 +24,7 @@ public interface IAdLoader {
     public boolean needReload(AdPlace adPlace);
 
     public void setAdIds(Map<String, String> adids);
-    public void setOnAdSdkListener(OnAdSdkListener l);
+    public void setOnAdSdkListener(OnAdSdkListener l, boolean loaded);
 
     public boolean isInterstitialLoaded();
     public void loadInterstitial(Activity activity);

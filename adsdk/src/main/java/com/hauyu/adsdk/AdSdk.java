@@ -276,7 +276,7 @@ public class AdSdk {
     public void loadInterstitial(Activity activity, String pidName, OnAdSdkListener l) {
         AdPlaceLoader loader = getAdLoader(pidName, true);
         if (loader != null) {
-            loader.setOnAdSdkListener(l);
+            loader.setOnAdSdkListener(l, false);
             if (activity == null) {
                 if (mActivity != null && mActivity.get() != null && !mActivity.get().isFinishing()) {
                     activity = mActivity.get();
@@ -316,7 +316,7 @@ public class AdSdk {
     public void loadAdView(String pidName, AdParams adParams, OnAdSdkListener l) {
         AdPlaceLoader loader = getAdLoader(pidName, true);
         if (loader != null) {
-            loader.setOnAdSdkListener(l);
+            loader.setOnAdSdkListener(l, false);
             loader.loadAdView(adParams);
         } else {
             if (l != null) {
@@ -355,7 +355,7 @@ public class AdSdk {
     public void loadComplexAds(String pidName, AdParams adParams, OnAdSdkListener l) {
         AdPlaceLoader loader = getAdLoader(pidName, true);
         if (loader != null) {
-            loader.setOnAdSdkListener(l);
+            loader.setOnAdSdkListener(l, false);
             loader.loadComplexAds(adParams);
         } else {
             if (l != null) {
@@ -400,9 +400,13 @@ public class AdSdk {
      * @param l
      */
     public void setOnAdSdkListener(String pidName, OnAdSdkListener l) {
+        setOnAdSdkListener(pidName, l, false);
+    }
+
+    public void setOnAdSdkListener(String pidName, OnAdSdkListener l, boolean loaded) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            loader.setOnAdSdkListener(l);
+            loader.setOnAdSdkListener(l, loaded);
         }
     }
 

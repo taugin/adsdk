@@ -50,8 +50,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     private OnAdSdkListener getOnAdSdkListener() {
+        return getOnAdSdkListener(false);
+    }
+
+    private OnAdSdkListener getOnAdSdkListener(boolean loaded) {
         if (listener != null) {
-            return listener.getOnAdSdkListener();
+            return listener.getOnAdSdkListener(loaded);
         }
         return null;
     }
@@ -68,6 +72,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         // 所有加载成功的loader都将通知给adplaceloader
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         try {
             if (placeLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
                 ((AdPlaceLoader.AdPlaceLoaderListener) placeLoaderListener).onLoaded(loader);
@@ -83,6 +88,9 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onLoaded(placeName, source, adType);
         }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onLoaded(placeName, source, adType);
+        }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onLoaded(placeName, source, adType);
         }
@@ -92,8 +100,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onAdShow() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onShow(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onShow(placeName, source, adType);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onShow(placeName, source, adType);
@@ -104,8 +116,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onAdClick() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onClick(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onClick(placeName, source, adType);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onClick(placeName, source, adType);
@@ -116,8 +132,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onAdDismiss() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onDismiss(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onDismiss(placeName, source, adType);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onDismiss(placeName, source, adType);
@@ -131,12 +151,21 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
          */
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null) {
             if (error == Constant.AD_ERROR_LOADING) {
                 adSdkListener.onLoading(placeName, source, adType);
             } else {
                 adSdkListener.onError(placeName, source, adType);
                 adSdkListener.onError(placeName, source, adType, error);
+            }
+        }
+        if (adSdkLoadedListener != null) {
+            if (error == Constant.AD_ERROR_LOADING) {
+                adSdkLoadedListener.onLoading(placeName, source, adType);
+            } else {
+                adSdkLoadedListener.onError(placeName, source, adType);
+                adSdkLoadedListener.onError(placeName, source, adType, error);
             }
         }
         if (placeLoaderListener != null) {
@@ -153,8 +182,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onAdImpression() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onShow(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onShow(placeName, source, adType);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onShow(placeName, source, adType);
@@ -169,6 +202,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onInterstitialLoaded(ISdkLoader loader) {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         try {
             if (placeLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
                 ((AdPlaceLoader.AdPlaceLoaderListener) placeLoaderListener).onLoaded(loader);
@@ -184,6 +218,9 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onLoaded(placeName, source, adType);
         }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onLoaded(placeName, source, adType);
+        }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onLoaded(placeName, source, adType);
         }
@@ -193,8 +230,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onInterstitialShow() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onShow(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onShow(placeName, source, adType);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onShow(placeName, source, adType);
@@ -205,8 +246,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onInterstitialClick() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onClick(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onClick(placeName, source, adType);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onClick(placeName, source, adType);
@@ -217,8 +262,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onInterstitialDismiss() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onDismiss(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onDismiss(placeName, source, adType);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onDismiss(placeName, source, adType);
@@ -232,12 +281,21 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
          */
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null) {
             if (error == Constant.AD_ERROR_LOADING) {
                 adSdkListener.onLoading(placeName, source, adType);
             } else {
                 adSdkListener.onError(placeName, source, adType);
                 adSdkListener.onError(placeName, source, adType, error);
+            }
+        }
+        if (adSdkLoadedListener != null) {
+            if (error == Constant.AD_ERROR_LOADING) {
+                adSdkLoadedListener.onLoading(placeName, source, adType);
+            } else {
+                adSdkLoadedListener.onError(placeName, source, adType);
+                adSdkLoadedListener.onError(placeName, source, adType, error);
             }
         }
         if (placeLoaderListener != null) {
@@ -254,8 +312,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onRewarded(AdReward reward) {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onRewarded(placeName, source, adType, reward);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onRewarded(placeName, source, adType, reward);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onRewarded(placeName, source, adType, reward);
@@ -266,8 +328,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onRewardedVideoAdClosed() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onDismiss(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onDismiss(placeName, source, adType);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onDismiss(placeName, source, adType);
@@ -278,8 +344,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onRewardedVideoAdClicked() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onClick(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onClick(placeName, source, adType);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onClick(placeName, source, adType);
@@ -290,6 +360,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onRewardedVideoAdLoaded(ISdkLoader loader) {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         try {
             if (placeLoaderListener instanceof AdPlaceLoader.AdPlaceLoaderListener) {
                 ((AdPlaceLoader.AdPlaceLoaderListener) placeLoaderListener).onLoaded(loader);
@@ -306,6 +377,9 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onLoaded(placeName, source, adType);
         }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onLoaded(placeName, source, adType);
+        }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onLoaded(placeName, source, adType);
         }
@@ -315,8 +389,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onRewardedVideoAdShowed() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onShow(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onShow(placeName, source, adType);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onShow(placeName, source, adType);
@@ -327,8 +405,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onRewardedVideoCompleted() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onCompleted(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onCompleted(placeName, source, adType);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onCompleted(placeName, source, adType);
@@ -339,8 +421,12 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onRewardedVideoStarted() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
         if (adSdkListener != null && isCurrent()) {
             adSdkListener.onStarted(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onStarted(placeName, source, adType);
         }
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onStarted(placeName, source, adType);

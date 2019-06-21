@@ -36,7 +36,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void setOnAdSdkListener(OnAdSdkListener l) {
+    public void setOnAdSdkListener(OnAdSdkListener l, boolean loaded) {
     }
 
     @Override
