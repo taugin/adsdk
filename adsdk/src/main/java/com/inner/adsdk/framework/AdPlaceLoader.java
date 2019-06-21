@@ -58,6 +58,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private Map<String, String> mAdIds;
     private Context mContext;
     private OnAdSdkListener mOnAdSdkListener;
+    private OnAdSdkListener mOnAdSdkLoadedListener;
     private OnAdSdkListener mOnAdPlaceLoaderListener = new AdPlaceLoaderListener();
     private AdParams mAdParams;
     private boolean mHasNotifyLoaded = false;
@@ -385,8 +386,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      * @param l
      */
     @Override
-    public void setOnAdSdkListener(OnAdSdkListener l) {
-        mOnAdSdkListener = l;
+    public void setOnAdSdkListener(OnAdSdkListener l, boolean loaded) {
+        if (loaded) {
+            mOnAdSdkLoadedListener = l;
+        } else {
+            mOnAdSdkListener = l;
+        }
     }
 
     @Override
@@ -1819,8 +1824,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     @Override
-    public OnAdSdkListener getOnAdSdkListener() {
-        return mOnAdSdkListener;
+    public OnAdSdkListener getOnAdSdkListener(boolean loaded) {
+        return loaded ? mOnAdSdkLoadedListener : mOnAdSdkListener;
     }
 
     @Override
