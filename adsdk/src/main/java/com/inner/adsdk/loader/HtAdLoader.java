@@ -108,10 +108,11 @@ public class HtAdLoader extends BaseLoader {
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     HtPolicy.get(mContext).reportShowing(false);
-                    if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
+                    if ((!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                             && HtPolicy.get(mContext).isShowBottomActivity()
                             && !Constant.TYPE_BANNER.equals(adType)
-                            && !Constant.TYPE_NATIVE.equals(adType)) {
+                            && !Constant.TYPE_NATIVE.equals(adType))
+                            || Constant.AD_SDK_DISPLAYIO.equals(source)) {
                         hide();
                     }
                 }

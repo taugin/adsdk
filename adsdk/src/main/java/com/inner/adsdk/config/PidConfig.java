@@ -51,6 +51,8 @@ public class PidConfig extends BaseConfig {
 
     private String bannerSize;
 
+    private boolean fullWidth;
+
     @Override
     public String getName() {
         return PID_CONFIG;
@@ -198,6 +200,14 @@ public class PidConfig extends BaseConfig {
 
     public void setBannerSize(String bannerSize) {
         this.bannerSize = bannerSize;
+    }
+
+    public boolean isFullWidth() {
+        return fullWidth;
+    }
+
+    public void setFullWidth(boolean fullWidth) {
+        this.fullWidth = fullWidth;
     }
 
     public boolean isAdmob() {
