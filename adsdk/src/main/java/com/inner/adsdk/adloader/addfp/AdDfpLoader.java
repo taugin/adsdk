@@ -139,7 +139,6 @@ public class AdDfpLoader extends AbstractSdkLoader {
             public void onAdOpened() {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                reportAdClickForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -204,7 +203,6 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 bannerView = null;
             }
             reportAdShowing();
-            reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "dfploader error : " + e);
         }
@@ -285,14 +283,12 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override
             public void onAdOpened() {
                 Log.v(Log.TAG, "");
                 reportAdShowing();
-                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
@@ -331,7 +327,6 @@ public class AdDfpLoader extends AbstractSdkLoader {
             interstitialAd.show();
             clearCachedAdTime(interstitialAd);
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -407,7 +402,6 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     getAdListener().onAdClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
                 if (isDestroyAfterClick()) {
                     nativeAd = null;
                 }
@@ -425,7 +419,6 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     getAdListener().onAdImpression();
                 }
                 reportAdShowing();
-                reportAdImpForLTV();
             }
 
             @Override
@@ -544,7 +537,6 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoAdShowed();
                 }
                 reportAdShowing();
-                reportAdImpForLTV();
             }
 
             @Override
@@ -585,7 +577,6 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoAdClicked();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override
@@ -620,7 +611,6 @@ public class AdDfpLoader extends AbstractSdkLoader {
             clearCachedAdTime(loadedRewardVideo);
             loadedRewardVideo = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;

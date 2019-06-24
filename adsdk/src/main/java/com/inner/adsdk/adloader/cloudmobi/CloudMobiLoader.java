@@ -53,7 +53,6 @@ public class CloudMobiLoader extends AbstractSdkLoader {
 
             clearCachedAdTime(mInterstitialAd);
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -142,7 +141,6 @@ public class CloudMobiLoader extends AbstractSdkLoader {
                             getAdListener().onInterstitialClick();
                         }
                         reportAdClick();
-                        reportAdClickForLTV();
                     }
                 });
 

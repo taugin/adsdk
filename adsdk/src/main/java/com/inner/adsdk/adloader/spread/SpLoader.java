@@ -78,7 +78,7 @@ public class SpLoader extends AbstractSdkLoader {
             SpreadBindNativeView spreadBindNativeView = new SpreadBindNativeView();
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spConfig);
         }
-        reportAdShow();
+        reportAdShowing();
         if (getAdListener() != null) {
             getAdListener().onAdShow();
         }
@@ -238,7 +238,7 @@ public class SpLoader extends AbstractSdkLoader {
             } else if (TextUtils.equals(context.getPackageName() + ".action.SPCLICK", intent.getAction())) {
                 reportAdClick();
             } else if (TextUtils.equals(context.getPackageName() + ".action.SPSHOW", intent.getAction())) {
-                reportAdShow();
+                reportAdShowing();
             }
         }
     };

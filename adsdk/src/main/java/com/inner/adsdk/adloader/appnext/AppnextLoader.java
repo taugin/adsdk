@@ -127,7 +127,6 @@ public class AppnextLoader extends AbstractSdkLoader {
             public void onAdClicked() {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                reportAdClickForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -184,7 +183,6 @@ public class AppnextLoader extends AbstractSdkLoader {
             gBannerView = bannerView;
             bannerView = null;
             reportAdShowing();
-            reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
@@ -264,7 +262,6 @@ public class AppnextLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialShow();
                 }
                 reportAdShowing();
-                reportAdImpForLTV();
             }
         });
 
@@ -276,7 +273,6 @@ public class AppnextLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
         });
 
@@ -321,7 +317,6 @@ public class AppnextLoader extends AbstractSdkLoader {
             clearCachedAdTime(interstitial);
             interstitial = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -395,7 +390,6 @@ public class AppnextLoader extends AbstractSdkLoader {
                     getAdListener().onAdClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             public void onError(NativeAd nAd, AppnextError adError) {
@@ -417,7 +411,6 @@ public class AppnextLoader extends AbstractSdkLoader {
                     getAdListener().onAdImpression();
                 }
                 reportAdShowing();
-                reportAdImpForLTV();
             }
         });
         loadingNativeAd.loadAd(new NativeAdRequest()
@@ -505,7 +498,6 @@ public class AppnextLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoAdShowed();
                 }
                 reportAdShowing();
-                reportAdImpForLTV();
             }
         });
 
@@ -517,7 +509,6 @@ public class AppnextLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoAdClicked();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
         });
 
@@ -590,7 +581,6 @@ public class AppnextLoader extends AbstractSdkLoader {
             clearCachedAdTime(rewardedVideoAd);
             rewardedVideoAd = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;

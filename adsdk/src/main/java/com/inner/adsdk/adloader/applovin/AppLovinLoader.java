@@ -138,7 +138,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void adClicked(AppLovinAd appLovinAd) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                reportAdClickForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -171,7 +170,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 appLovinAdView = null;
             }
             reportAdShowing();
-            reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "applovinloader error : " + e);
         }
@@ -231,7 +229,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                         getAdListener().onInterstitialClick();
                     }
                     reportAdClick();
-                    reportAdClickForLTV();
                 }
             });
             interstitialAdDialog.setAdDisplayListener(new AppLovinAdDisplayListener() {
@@ -239,7 +236,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 public void adDisplayed(AppLovinAd appLovinAd) {
                     Log.v(Log.TAG, "");
                     reportAdShowing();
-                    reportAdImpForLTV();
                     if (getAdListener() != null) {
                         getAdListener().onInterstitialShow();
                     }
@@ -300,7 +296,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
             clearCachedAdTime(loadedAd);
             loadedAd = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -441,7 +436,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                         getAdListener().onRewardedVideoAdShowed();
                     }
                     reportAdShowing();
-                    reportAdImpForLTV();
                 }
 
                 @Override
@@ -461,13 +455,11 @@ public class AppLovinLoader extends AbstractSdkLoader {
                         getAdListener().onRewardedVideoAdClicked();
                     }
                     reportAdClick();
-                    reportAdClickForLTV();
                 }
             });
             clearCachedAdTime(incentivizedInterstitial);
             incentivizedInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;

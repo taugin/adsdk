@@ -2,10 +2,11 @@ package com.inner.adsdk.framework;
 
 import android.text.TextUtils;
 
-import com.adywind.core.api.SDK;
 import com.adcolony.sdk.AdColony;
+import com.adywind.core.api.SDK;
 import com.applovin.sdk.AppLovinSdk;
 import com.appnext.base.Appnext;
+import com.brandio.ads.Placement;
 import com.cloudtech.ads.core.CTService;
 import com.duapps.ad.base.DuAdNetwork;
 import com.facebook.ads.InterstitialAd;
@@ -18,7 +19,6 @@ import com.mopub.mobileads.MoPubInterstitial;
 import com.we.sdk.exchange.DspMob;
 import com.wemob.ads.Sdk;
 
-import io.display.sdk.Placement;
 
 /**
  * Created by Administrator on 2018-10-25.

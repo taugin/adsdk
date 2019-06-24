@@ -135,7 +135,6 @@ public class FBLoader extends AbstractSdkLoader {
             public void onAdClicked(Ad ad) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                reportAdClickForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -185,7 +184,6 @@ public class FBLoader extends AbstractSdkLoader {
                 bannerView = null;
             }
             reportAdShowing();
-            reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
@@ -253,7 +251,6 @@ public class FBLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialShow();
                 }
                 reportAdShowing();
-                reportAdImpForLTV();
             }
 
             @Override
@@ -303,7 +300,6 @@ public class FBLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override
@@ -323,7 +319,6 @@ public class FBLoader extends AbstractSdkLoader {
             clearCachedAdTime(fbInterstitial);
             fbInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -418,7 +413,6 @@ public class FBLoader extends AbstractSdkLoader {
                     getAdListener().onAdClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
                 if (isDestroyAfterClick()) {
                     nativeAd = null;
                 }
@@ -431,7 +425,6 @@ public class FBLoader extends AbstractSdkLoader {
                     getAdListener().onAdImpression();
                 }
                 reportAdShowing();
-                reportAdImpForLTV();
             }
         });
 
@@ -525,7 +518,6 @@ public class FBLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoAdShowed();
                 }
                 reportAdShowing();
-                reportAdImpForLTV();
             }
 
             @Override
@@ -571,7 +563,6 @@ public class FBLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoAdClicked();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
         });
         rewardedVideoAd.loadAd();
@@ -598,7 +589,6 @@ public class FBLoader extends AbstractSdkLoader {
             clearCachedAdTime(rewardedVideoAd);
             rewardedVideoAd = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;

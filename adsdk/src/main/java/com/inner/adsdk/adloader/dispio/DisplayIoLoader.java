@@ -6,22 +6,22 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.RelativeLayout;
 
+import com.brandio.ads.AdProvider;
+import com.brandio.ads.AdRequest;
+import com.brandio.ads.BannerPlacement;
+import com.brandio.ads.Controller;
+import com.brandio.ads.Placement;
+import com.brandio.ads.ads.Ad;
+import com.brandio.ads.ads.BannerAdContainer;
+import com.brandio.ads.listeners.AdEventListener;
+import com.brandio.ads.listeners.AdLoadListener;
+import com.brandio.ads.listeners.AdRequestListener;
+import com.brandio.ads.listeners.SdkInitListener;
 import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 
-import io.display.sdk.AdProvider;
-import io.display.sdk.AdRequest;
-import io.display.sdk.BannerPlacement;
-import io.display.sdk.Controller;
-import io.display.sdk.Placement;
-import io.display.sdk.ads.Ad;
-import io.display.sdk.ads.BannerAdContainer;
-import io.display.sdk.listeners.AdEventListener;
-import io.display.sdk.listeners.AdLoadListener;
-import io.display.sdk.listeners.AdRequestListener;
-import io.display.sdk.listeners.SdkInitListener;
 
 /**
  * Created by Administrator on 2019-2-12.
@@ -126,7 +126,6 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                                 getAdListener().onAdShow();
                                             }
                                             reportAdShowing();
-                                            reportAdImpForLTV();
                                         }
                                     }
 
@@ -311,7 +310,6 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                     @Override
                                     public void onShown(Ad ad) {
                                         reportAdShowing();
-                                        reportAdImpForLTV();
                                         Log.v(Log.TAG, "");
                                     }
 
@@ -326,7 +324,6 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                             getAdListener().onInterstitialClick();
                                         }
                                         reportAdClick();
-                                        reportAdClickForLTV();
                                     }
 
                                     @Override
@@ -417,7 +414,6 @@ public class DisplayIoLoader extends AbstractSdkLoader {
             clearCachedAdTime(mInterstitial);
             mInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;

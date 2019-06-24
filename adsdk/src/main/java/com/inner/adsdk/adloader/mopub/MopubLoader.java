@@ -158,7 +158,6 @@ public class MopubLoader extends AbstractSdkLoader {
             public void onBannerClicked(MoPubView banner) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                reportAdClickForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -217,7 +216,6 @@ public class MopubLoader extends AbstractSdkLoader {
                 moPubView = null;
             }
             reportAdShowing();
-            reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "mopubloader error : " + e);
         }
@@ -296,7 +294,6 @@ public class MopubLoader extends AbstractSdkLoader {
             public void onInterstitialShown(MoPubInterstitial interstitial) {
                 Log.v(Log.TAG, "");
                 reportAdShowing();
-                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
@@ -309,7 +306,6 @@ public class MopubLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override
@@ -350,7 +346,6 @@ public class MopubLoader extends AbstractSdkLoader {
             clearCachedAdTime(moPubInterstitial);
             moPubInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return showed;
         }
         return false;
@@ -442,7 +437,6 @@ public class MopubLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoStarted();
                 }
                 reportAdShowing();
-                reportAdImpForLTV();
             }
 
             @Override
@@ -456,7 +450,6 @@ public class MopubLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoAdClicked();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override
@@ -496,7 +489,6 @@ public class MopubLoader extends AbstractSdkLoader {
     public boolean showRewardedVideo() {
         MoPubRewardedVideos.showRewardedVideo(getPidConfig().getPid());
         reportAdCallShow();
-        reportAdShowForLTV();
         return true;
     }
 
@@ -608,7 +600,6 @@ public class MopubLoader extends AbstractSdkLoader {
                         getAdListener().onAdImpression();
                     }
                     reportAdShowing();
-                    reportAdImpForLTV();
                     reportMoPubNativeType();
                 }
 
@@ -619,7 +610,6 @@ public class MopubLoader extends AbstractSdkLoader {
                         getAdListener().onAdClick();
                     }
                     reportAdClick();
-                    reportAdClickForLTV();
                     if (isDestroyAfterClick()) {
                         nativeAd = null;
                     }

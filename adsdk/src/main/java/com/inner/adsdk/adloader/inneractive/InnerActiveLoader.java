@@ -185,7 +185,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                         Log.i(TAG, "onAdClicked");
                         Log.v(Log.TAG, "");
                         reportAdClick();
-                        reportAdClickForLTV();
                         if (getAdListener() != null) {
                             getAdListener().onAdClick();
                         }
@@ -251,7 +250,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                 mIsBannerLoaded = false;
             }
             reportAdShowing();
-            reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "admobloader error : " + e);
         }
@@ -303,7 +301,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
 
             clearCachedAdTime(mFullScreenSpot);
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -394,7 +391,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                         Log.i(TAG, "onAdImpression");
                         Log.v(Log.TAG, "");
                         reportAdShowing();
-                        reportAdImpForLTV();
                         if (getAdListener() != null) {
                             if (isRewarded) {
                                 getAdListener().onRewardedVideoAdShowed();
@@ -416,7 +412,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                             }
                         }
                         reportAdClick();
-                        reportAdClickForLTV();
                     }
 
                     @Override
@@ -624,7 +619,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                             getAdListener().onAdImpression();
                         }
                         reportAdShowing();
-                        reportAdImpForLTV();
                     }
 
                     @Override
@@ -634,7 +628,6 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                             getAdListener().onAdClick();
                         }
                         reportAdClick();
-                        reportAdClickForLTV();
                         if (isDestroyAfterClick()) {
                             mNativeSpot = null;
                         }

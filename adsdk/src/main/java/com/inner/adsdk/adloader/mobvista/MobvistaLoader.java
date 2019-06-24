@@ -77,7 +77,6 @@ public class MobvistaLoader extends AbstractSdkLoader {
 
             clearCachedAdTime(mInterstitialAd);
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -153,7 +152,6 @@ public class MobvistaLoader extends AbstractSdkLoader {
                 Log.i(TAG, "onAdImpression");
                 Log.v(Log.TAG, "");
                 reportAdShowing();
-                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
@@ -167,7 +165,6 @@ public class MobvistaLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override
@@ -282,7 +279,6 @@ public class MobvistaLoader extends AbstractSdkLoader {
                     getAdListener().onAdClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override

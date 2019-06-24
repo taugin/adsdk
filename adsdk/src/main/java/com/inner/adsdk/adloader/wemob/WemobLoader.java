@@ -131,7 +131,6 @@ public class WemobLoader extends AbstractSdkLoader {
             public void onAdClicked() {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                reportAdClickForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -181,7 +180,6 @@ public class WemobLoader extends AbstractSdkLoader {
                 bannerView = null;
             }
             reportAdShowing();
-            reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "wemobloader error : " + e);
         }
@@ -276,14 +274,12 @@ public class WemobLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override
             public void onAdShown() {
                 Log.v(Log.TAG, "");
                 reportAdShowing();
-                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
@@ -301,7 +297,6 @@ public class WemobLoader extends AbstractSdkLoader {
             clearCachedAdTime(interstitialAd);
             interstitialAd = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -389,7 +384,6 @@ public class WemobLoader extends AbstractSdkLoader {
                     getAdListener().onAdClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
                 if (isDestroyAfterClick()) {
                     nativeAd = null;
                 }
@@ -402,7 +396,6 @@ public class WemobLoader extends AbstractSdkLoader {
                     getAdListener().onAdImpression();
                 }
                 reportAdShowing();
-                reportAdImpForLTV();
             }
         });
         loadingNativeAd.loadAd();

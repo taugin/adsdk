@@ -639,22 +639,4 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             mStat.reportAdClose(mContext, getAdPlaceName()      , getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), null);
         }
     }
-
-    protected void reportAdClickForLTV() {
-        if (mStat != null) {
-            mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-        }
-    }
-
-    protected void reportAdShowForLTV() {
-        if (mStat != null) {
-            mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-        }
-    }
-
-    protected void reportAdImpForLTV() {
-        if (mStat != null) {
-            mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-        }
-    }
 }

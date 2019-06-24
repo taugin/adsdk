@@ -63,7 +63,6 @@ public class DapLoader extends AbstractSdkLoader {
 
             clearCachedAdTime(mInterstitialAd);
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -137,14 +136,12 @@ public class DapLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override
             public void onAdPresent() {
                 Log.i(TAG, "onAdImpression");
                 reportAdShowing();
-                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
