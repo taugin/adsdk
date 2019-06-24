@@ -145,7 +145,6 @@ public class InmobiLoader extends AbstractSdkLoader {
                 super.onAdClicked(inMobiBanner, map);
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                reportAdClickForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -211,7 +210,6 @@ public class InmobiLoader extends AbstractSdkLoader {
                 mInMobiBanner = null;
             }
             reportAdShow();
-            reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "showBanner error : " + e);
         }
@@ -299,7 +297,6 @@ public class InmobiLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override
@@ -307,7 +304,6 @@ public class InmobiLoader extends AbstractSdkLoader {
                 super.onAdDisplayed(inMobiInterstitial);
                 Log.v(Log.TAG, "");
                 reportAdShow();
-                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
@@ -353,7 +349,6 @@ public class InmobiLoader extends AbstractSdkLoader {
             clearCachedAdTime(mInMobiInterstitial);
             mInMobiInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -445,7 +440,6 @@ public class InmobiLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoAdClicked();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override
@@ -455,7 +449,6 @@ public class InmobiLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoStarted();
                 }
                 reportAdShow();
-                reportAdImpForLTV();
             }
 
             @Override
@@ -508,7 +501,6 @@ public class InmobiLoader extends AbstractSdkLoader {
             clearCachedAdTime(mInMobiRewardVideo);
             mInMobiRewardVideo = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -613,7 +605,6 @@ public class InmobiLoader extends AbstractSdkLoader {
                     getAdListener().onAdImpression();
                 }
                 reportAdShow();
-                reportAdImpForLTV();
             }
 
             @Override
@@ -624,7 +615,6 @@ public class InmobiLoader extends AbstractSdkLoader {
                     getAdListener().onAdClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
                 if (isDestroyAfterClick()) {
                     mInMobiNative = null;
                 }

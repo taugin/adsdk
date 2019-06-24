@@ -116,7 +116,6 @@ public class AdColonyLoader extends AbstractSdkLoader {
             public void onOpened(AdColonyInterstitial ad) {
                 Log.v(Log.TAG, "");
                 reportAdShow();
-                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
@@ -131,7 +130,6 @@ public class AdColonyLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             public void onClosed(AdColonyInterstitial ad) {
@@ -153,7 +151,6 @@ public class AdColonyLoader extends AbstractSdkLoader {
             mAdColonyInterstitial.show();
             mAdColonyInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -228,7 +225,6 @@ public class AdColonyLoader extends AbstractSdkLoader {
             public void onOpened(AdColonyInterstitial ad) {
                 Log.v(Log.TAG, "");
                 reportAdShow();
-                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdShowed();
                 }
@@ -243,7 +239,6 @@ public class AdColonyLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoAdClicked();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             public void onClosed(AdColonyInterstitial ad) {
@@ -280,7 +275,6 @@ public class AdColonyLoader extends AbstractSdkLoader {
             mAdColonyInterstitial.show();
             mAdColonyInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;

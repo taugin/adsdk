@@ -110,7 +110,6 @@ public class DspMobLoader extends AbstractSdkLoader {
             public void onAdClicked() {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                reportAdClickForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -162,7 +161,6 @@ public class DspMobLoader extends AbstractSdkLoader {
                 mIsBannerLoaded = false;
             }
             reportAdShow();
-            reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "loader error : " + e);
         }
@@ -184,7 +182,6 @@ public class DspMobLoader extends AbstractSdkLoader {
 
             clearCachedAdTime(mInterstitialAd);
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -246,7 +243,6 @@ public class DspMobLoader extends AbstractSdkLoader {
                 Log.i(TAG, "onAdImpression");
                 Log.v(Log.TAG, "");
                 reportAdShow();
-                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
@@ -260,7 +256,6 @@ public class DspMobLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override

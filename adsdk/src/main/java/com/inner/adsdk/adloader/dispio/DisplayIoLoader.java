@@ -126,7 +126,6 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                                 getAdListener().onAdShow();
                                             }
                                             reportAdShow();
-                                            reportAdImpForLTV();
                                         }
                                     }
 
@@ -311,7 +310,6 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                     @Override
                                     public void onShown(Ad ad) {
                                         reportAdShow();
-                                        reportAdImpForLTV();
                                         Log.v(Log.TAG, "");
                                     }
 
@@ -326,7 +324,6 @@ public class DisplayIoLoader extends AbstractSdkLoader {
                                             getAdListener().onInterstitialClick();
                                         }
                                         reportAdClick();
-                                        reportAdClickForLTV();
                                     }
 
                                     @Override
@@ -417,7 +414,6 @@ public class DisplayIoLoader extends AbstractSdkLoader {
             clearCachedAdTime(mInterstitial);
             mInterstitial = null;
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;

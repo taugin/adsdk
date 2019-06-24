@@ -133,7 +133,6 @@ public class AdxLoader extends AbstractSdkLoader {
             public void onAdOpened() {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                reportAdClickForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
@@ -198,7 +197,6 @@ public class AdxLoader extends AbstractSdkLoader {
                 bannerView = null;
             }
             reportAdShow();
-            reportAdImpForLTV();
         } catch (Exception e) {
             Log.e(Log.TAG, "adxloader error : " + e);
         }
@@ -279,14 +277,12 @@ public class AdxLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
             }
 
             @Override
             public void onAdOpened() {
                 Log.v(Log.TAG, "");
                 reportAdShow();
-                reportAdImpForLTV();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
                 }
@@ -325,7 +321,6 @@ public class AdxLoader extends AbstractSdkLoader {
             interstitialAd.show();
             clearCachedAdTime(interstitialAd);
             reportAdCallShow();
-            reportAdShowForLTV();
             return true;
         }
         return false;
@@ -401,7 +396,6 @@ public class AdxLoader extends AbstractSdkLoader {
                     getAdListener().onAdClick();
                 }
                 reportAdClick();
-                reportAdClickForLTV();
                 if (isDestroyAfterClick()) {
                     nativeAd = null;
                 }
@@ -419,7 +413,6 @@ public class AdxLoader extends AbstractSdkLoader {
                     getAdListener().onAdImpression();
                 }
                 reportAdShow();
-                reportAdImpForLTV();
             }
 
             @Override
