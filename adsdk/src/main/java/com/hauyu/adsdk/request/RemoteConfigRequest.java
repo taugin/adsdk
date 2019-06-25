@@ -12,6 +12,7 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -85,13 +86,41 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
     @Override
     public String getString(String key) {
         String value = readConfigFromAsset(key);
-        Log.iv(Log.TAG, "local config : " + key + " , value : " + value);
+        Log.iv(Log.TAG, "locale config : " + key + " , value : " + value);
         if (TextUtils.isEmpty(value)) {
             if (mFirebaseRemoteConfig != null) {
-                value = mFirebaseRemoteConfig.getString(key);
+                String attrKey = key + getSuffix();
+                Log.iv(Log.TAG, "remote suffix : " + getSuffix());
+                // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
+                String attrData = mFirebaseRemoteConfig.getString(attrKey);
+                if (TextUtils.isEmpty(attrData)) {
+                    value = mFirebaseRemoteConfig.getString(key);
+                } else {
+                    if (!TextUtils.isEmpty(attrData)) {
+                        Log.iv(Log.TAG, "remote config : " + key + "[" + getAfStatus() + "]");
+                        value = attrData;
+                    }
+                }
             }
         }
         return value;
+    }
+
+    private String getAfStatus() {
+        try {
+            return Utils.getString(mContext, Constant.AF_STATUS, Constant.AF_ORGANIC);
+        } catch(Exception e) {
+        }
+        return null;
+    }
+
+    private String getSuffix() {
+        String afStatus = getAfStatus();
+        if (!TextUtils.isEmpty(afStatus)) {
+            afStatus = afStatus.replaceAll("[^0-9a-zA-Z_]+","");
+            return "_" + afStatus.toLowerCase(Locale.getDefault());
+        }
+        return "";
     }
 
     private void ensureFirebase() {

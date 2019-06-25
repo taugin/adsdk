@@ -89,6 +89,7 @@ public class Constant {
 
     public static final String AF_STATUS = "af_status";
     public static final String AF_MEDIA_SOURCE = "af_media_source";
+    public static final String AF_ORGANIC = "Organic";
 
     /**
      * 未知错误
