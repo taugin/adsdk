@@ -118,6 +118,7 @@ public class DataManager implements Runnable {
         String data = null;
         if (mDataRequest != null) {
             data = mDataRequest.getString(DATA_CONFIG);
+            data = checkLastData(data, DATA_CONFIG);
         }
         if (!TextUtils.isEmpty(data)
                 && (mLocalAdConfig == null || !TextUtils.equals(mLocalAdConfig.getAdConfigMd5(), Utils.string2MD5(data)))) {
