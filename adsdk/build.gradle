@@ -42,6 +42,11 @@ android {
             dirs 'libs'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -60,14 +65,14 @@ dependencies {
     implementation 'com.applovin:applovin-sdk:8.1.4'
 
     // MoPub
-    implementation('com.mopub:mopub-sdk:5.5.0@aar') {
+    implementation('com.mopub:mopub-sdk:5.7.1@aar') {
         transitive = true
         exclude module: 'libAvid-mopub' // To exclude AVID
         exclude module: 'moat-mobile-app-kit'
         exclude group: 'com.android.support'
         exclude module: 'mopub-sdk-interstitial' // use below com.mopub:mopub-sdk-interstitial:5.4.0-webeye@aar'
     }
-    implementation 'com.mopub:mopub-sdk-interstitial:5.5.0-webeye@aar'
+    implementation 'com.mopub:mopub-sdk-interstitial:5.7.1-webeye@aar'
     implementation 'com.mopub.mediation:admob:15.0.1.0-webeye2'
     implementation 'com.mopub.mediation:facebookaudiencenetwork:5.1.0.1-webeye@aar'
     implementation 'com.mopub.mediation:applovin:8.1.4.0'

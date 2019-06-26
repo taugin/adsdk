@@ -707,6 +707,11 @@ public class StatImpl implements IStat {
         Log.iv(Log.TAG, "StatImpl stat seq error : " + pidName);
     }
 
+    @Override
+    public void reportMopubImpressionData(Context context, String pid, String impData) {
+        reportMopubImp(context, pid, impData);
+    }
+
     private boolean isReportError(Context context) {
         AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
         if (adSwitch != null) {
@@ -797,6 +802,7 @@ public class StatImpl implements IStat {
     public static final String METHOD_REPORT_AD_CLOSE = "reportADClose";
     public static final String METHOD_REPORT_AD_CLICK = "reportADClick";
     public static final String METHOD_REPORT_AD_ERROR = "reportADError";
+    public static final String METHOD_REPORT_MOPUB_IMP = "reportMopubImp";
 
     public static final String START = "start";
     public static final String SUCCESS = "success";
@@ -842,6 +848,22 @@ public class StatImpl implements IStat {
         }
         if (!TextUtils.isEmpty(error)) {
             Log.iv("--Anchor--", "AnchorImpl send event error : " + error);
+        }
+    }
+
+    public void reportMopubImp(Context context, String itemId, String extra) {
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName(ANCHOR_SDK);
+            Method method = clazz.getMethod(METHOD_REPORT_MOPUB_IMP, Context.class, String.class, String.class);
+            method.invoke(null, context, itemId, extra);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.v("--Anchor--", "AnchorImpl send event error : " + error);
         }
     }
 
