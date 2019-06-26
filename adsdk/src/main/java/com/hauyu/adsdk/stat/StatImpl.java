@@ -669,66 +669,6 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdShowForLTV(Context context, String sdk, String pid, String ecpm) {
-        if (context == null) {
-            return;
-        }
-        String eventId = "s_ad_show";
-        Map<String, String> extra = new HashMap<String, String>();
-        extra.put("sdk_name", sdk);
-        extra.put("pid", pid);
-        extra.put("ecpm", ecpm);
-        sendAppsflyer(context, null, eventId, extra);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, null, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, null, eventId, extra);
-        }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
-    }
-
-    @Override
-    public void reportAdImpForLTV(Context context, String sdk, String pid, String ecpm) {
-        if (context == null) {
-            return;
-        }
-        String eventId = "s_ad_imp";
-        Map<String, String> extra = new HashMap<String, String>();
-        extra.put("sdk_name", sdk);
-        extra.put("pid", pid);
-        extra.put("ecpm", ecpm);
-        sendAppsflyer(context, null, eventId, extra);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, null, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, null, eventId, extra);
-        }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
-    }
-
-    @Override
-    public void reportAdClickForLTV(Context context, String sdk, String pid, String ecpm) {
-        if (context == null) {
-            return;
-        }
-        String eventId = "s_ad_click";
-        Map<String, String> extra = new HashMap<String, String>();
-        extra.put("sdk_name", sdk);
-        extra.put("pid", pid);
-        extra.put("ecpm", ecpm);
-        sendAppsflyer(context, null, eventId, extra);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, null, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, null, eventId, extra);
-        }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
-    }
-
-    @Override
     public void reportFinishFSA(Context context, String key, String value) {
         if (context == null) {
             return;
@@ -752,19 +692,19 @@ public class StatImpl implements IStat {
     @Override
     public void reportAdPlaceSeqRequest(Context context, String pidName) {
         reportADTrigger(context, pidName, START);
-        Log.iv(Log.TAG, "StatImpl stat SeqRequest : " + pidName);
+        Log.iv(Log.TAG, "StatImpl stat seq request : " + pidName);
     }
 
     @Override
     public void reportAdPlaceSeqLoaded(Context context, String pidName) {
         reportADTrigger(context, pidName, SUCCESS);
-        Log.iv(Log.TAG, "StatImpl stat SeqLoaded : " + pidName);
+        Log.iv(Log.TAG, "StatImpl stat seq loaded : " + pidName);
     }
 
     @Override
     public void reportAdPlaceSeqError(Context context, String pidName) {
         reportADTrigger(context, pidName, FAILED);
-        Log.iv(Log.TAG, "StatImpl stat SeqError : " + pidName);
+        Log.iv(Log.TAG, "StatImpl stat seq error : " + pidName);
     }
 
     private boolean isReportError(Context context) {

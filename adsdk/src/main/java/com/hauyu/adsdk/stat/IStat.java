@@ -141,30 +141,6 @@ public interface IStat {
     public void reportAdLoadFailureTime(Context context, String sdk, String type, String error, int value);
 
     /**
-     * ltv上报展示
-     * @param context
-     * @param sdk
-     * @param pid
-     */
-    public void reportAdShowForLTV(Context context, String sdk, String pid, String ecpm);
-
-    /**
-     * ltv上报展示
-     * @param context
-     * @param sdk
-     * @param pid
-     */
-    public void reportAdImpForLTV(Context context, String sdk, String pid, String ecpm);
-
-    /**
-     * ltv上报点击
-     * @param context
-     * @param sdk
-     * @param pid
-     */
-    public void reportAdClickForLTV(Context context, String sdk, String pid, String ecpm);
-
-    /**
      * 上报FSA结束事件
      * @param context
      * @param key
