@@ -1,7 +1,7 @@
 package com.inner.adsdk.adloader.mopub;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -31,6 +31,9 @@ import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
 import com.mopub.nativeads.MoPubVideoNativeAdRenderer;
 import com.mopub.nativeads.NativeAd;
 import com.mopub.nativeads.NativeErrorCode;
+import com.mopub.network.ImpressionData;
+import com.mopub.network.ImpressionListener;
+import com.mopub.network.ImpressionsEmitter;
 
 import java.util.Set;
 
@@ -40,6 +43,7 @@ import java.util.Set;
 
 public class MopubLoader extends AbstractSdkLoader {
 
+    private static boolean sHasSetImpressionListener = false;
     private MoPubInterstitial moPubInterstitial;
     private MoPubView loadingView;
     private MoPubView moPubView;
@@ -49,6 +53,31 @@ public class MopubLoader extends AbstractSdkLoader {
 
     private NativeAd gNativeAd;
     private MoPubView gMoPubView;
+
+    private void setImpressionListener() {
+        Log.iv(Log.TAG, "add impression listener for mopub");;
+        ImpressionsEmitter.addListener(new ImpressionListener() {
+            @Override
+            public void onImpression(String adUnitId, ImpressionData impressionData) {
+                String impData = null;
+                try {
+                    impData = impressionData.getJsonRepresentation().toString(2);
+                } catch (Exception | Error e) {
+                }
+                Log.iv(Log.TAG, "mopub impression pid : " + adUnitId + " , impData : " + impData);
+                reportMopubImpressionData(adUnitId, impData);
+            }
+        });
+    }
+
+    @Override
+    public void init(Context context) {
+        super.init(context);
+        if (!sHasSetImpressionListener) {
+            setImpressionListener();
+            sHasSetImpressionListener = true;
+        }
+    }
 
     private SdkInitializationListener initSdkListener() {
         return new SdkInitializationListener() {
@@ -75,7 +104,7 @@ public class MopubLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onConsentDialogLoadFailed(@NonNull MoPubErrorCode moPubErrorCode) {
+            public void onConsentDialogLoadFailed(MoPubErrorCode moPubErrorCode) {
             }
         };
     }
@@ -410,7 +439,7 @@ public class MopubLoader extends AbstractSdkLoader {
         setLoading(true, STATE_REQUEST);
         MoPubRewardedVideos.setRewardedVideoListener(new MoPubRewardedVideoListener() {
             @Override
-            public void onRewardedVideoLoadSuccess(@NonNull String adUnitId) {
+            public void onRewardedVideoLoadSuccess(String adUnitId) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 reportAdLoaded();
@@ -421,7 +450,7 @@ public class MopubLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onRewardedVideoLoadFailure(@NonNull String adUnitId, @NonNull MoPubErrorCode errorCode) {
+            public void onRewardedVideoLoadFailure(String adUnitId, MoPubErrorCode errorCode) {
                 Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
@@ -431,7 +460,7 @@ public class MopubLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onRewardedVideoStarted(@NonNull String adUnitId) {
+            public void onRewardedVideoStarted(String adUnitId) {
                 Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoStarted();
@@ -440,11 +469,11 @@ public class MopubLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onRewardedVideoPlaybackError(@NonNull String adUnitId, @NonNull MoPubErrorCode errorCode) {
+            public void onRewardedVideoPlaybackError(String adUnitId, MoPubErrorCode errorCode) {
             }
 
             @Override
-            public void onRewardedVideoClicked(@NonNull String adUnitId) {
+            public void onRewardedVideoClicked(String adUnitId) {
                 Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClicked();
@@ -453,7 +482,7 @@ public class MopubLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onRewardedVideoClosed(@NonNull String adUnitId) {
+            public void onRewardedVideoClosed(String adUnitId) {
                 Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClosed();
@@ -462,7 +491,7 @@ public class MopubLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onRewardedVideoCompleted(@NonNull Set<String> adUnitIds, @NonNull MoPubReward reward) {
+            public void onRewardedVideoCompleted(Set<String> adUnitIds, MoPubReward reward) {
                 Log.v(Log.TAG, "");
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoCompleted();

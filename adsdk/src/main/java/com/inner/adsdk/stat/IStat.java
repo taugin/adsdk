@@ -168,4 +168,12 @@ public interface IStat {
      * @param pidName
      */
     public void reportAdPlaceSeqError(Context context, String pidName);
+
+    /**
+     * 上报mopub展示数据
+     * @param context
+     * @param pid
+     * @param impData
+     */
+    public void reportMopubImpressionData(Context context, String pid, String impData);
 }

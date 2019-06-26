@@ -639,4 +639,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             mStat.reportAdClose(mContext, getAdPlaceName()      , getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), null);
         }
     }
+
+    protected void reportMopubImpressionData(String pid, String impData) {
+        if (mStat != null) {
+            mStat.reportMopubImpressionData(mContext, pid, impData);
+        }
+    }
 }
