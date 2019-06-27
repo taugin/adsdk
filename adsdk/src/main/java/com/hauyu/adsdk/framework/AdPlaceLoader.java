@@ -347,11 +347,33 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public void loadInterstitial(Activity activity) {
         if (mAdPlace == null) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(null, null, null);
+            }
             return;
         }
         if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
             return;
         }
+
+        List<PidConfig> pidList = mAdPlace.getPidsList();
+        if (pidList == null || pidList.isEmpty()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+            return;
+        }
+
+        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+            return;
+        }
+
         if (activity != null) {
             mActivity = new WeakReference<Activity>(activity);
         }
@@ -359,12 +381,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         mHasNotifyLoaded = false;
         // 处理场景缓存
         if (processAdPlaceCache()) {
-            return;
-        }
-
-        List<PidConfig> pidList = mAdPlace.getPidsList();
-        if ((pidList == null || pidList.isEmpty()) && mOnAdSdkListener != null) {
-            mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
             return;
         }
 
@@ -733,9 +749,30 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public void loadAdView(AdParams adParams) {
         if (mAdPlace == null) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(null, null, null);
+            }
             return;
         }
         if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+            return;
+        }
+
+        List<PidConfig> pidList = mAdPlace.getPidsList();
+        if (pidList == null || pidList.isEmpty()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+            return;
+        }
+
+        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
             return;
         }
         mAdParams = adParams;
@@ -743,12 +780,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         mHasNotifyLoaded = false;
         // 处理场景缓存
         if (processAdPlaceCache()) {
-            return;
-        }
-
-        List<PidConfig> pidList = mAdPlace.getPidsList();
-        if ((pidList == null || pidList.isEmpty()) && mOnAdSdkListener != null) {
-            mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
             return;
         }
         if (mAdPlace.isConcurrent()) {
@@ -1154,22 +1185,38 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public void loadComplexAds(AdParams adParams) {
         if (mAdPlace == null) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(null, null, null);
+            }
             return;
         }
         if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
             return;
         }
+
+        List<PidConfig> pidList = mAdPlace.getPidsList();
+        if (pidList == null || pidList.isEmpty()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+            return;
+        }
+
+        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+            return;
+        }
+
         mAdParams = adParams;
         mCurrentAdLoader = null;
         mHasNotifyLoaded = false;
         // 处理场景缓存
         if (processAdPlaceCache()) {
-            return;
-        }
-
-        List<PidConfig> pidList = mAdPlace.getPidsList();
-        if ((pidList == null || pidList.isEmpty()) && mOnAdSdkListener != null) {
-            mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
             return;
         }
 
