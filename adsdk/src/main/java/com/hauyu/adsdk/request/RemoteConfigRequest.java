@@ -89,17 +89,26 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
         Log.iv(Log.TAG, "locale config : " + key + " , value : " + value);
         if (TextUtils.isEmpty(value)) {
             if (mFirebaseRemoteConfig != null) {
-                String attrKey = key + getSuffix();
-                Log.iv(Log.TAG, "remote suffix : " + getSuffix());
+                String dataWithSuffix = null;
+                String mediaSourceSuffix = getMsSuffix();
+                String attrSuffix = getAfSuffix();
+                String mediaSourceKey = key + mediaSourceSuffix;
+                String attrKey = key + attrSuffix;
+                Log.iv(Log.TAG, "media suffix : " + mediaSourceSuffix + " , attribute suffix : " + attrSuffix);
                 // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
+                String mediaData = mFirebaseRemoteConfig.getString(mediaSourceKey);
                 String attrData = mFirebaseRemoteConfig.getString(attrKey);
-                if (TextUtils.isEmpty(attrData)) {
+                if (!TextUtils.isEmpty(mediaData)) {
+                    dataWithSuffix = mediaData;
+                } else {
+                    dataWithSuffix = attrData;
+                }
+                if (TextUtils.isEmpty(dataWithSuffix)) {
                     value = mFirebaseRemoteConfig.getString(key);
                 } else {
-                    if (!TextUtils.isEmpty(attrData)) {
-                        Log.iv(Log.TAG, "remote config : " + key + "[" + getAfStatus() + "]");
-                        value = attrData;
-                    }
+                    String source = !TextUtils.isEmpty(mediaData) ? getMediaSource() : getAfStatus();
+                    Log.iv(Log.TAG, "remote config : " + key + "[" + source + "]");
+                    value = dataWithSuffix;
                 }
             }
         }
@@ -109,25 +118,50 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
     private String getAfStatus() {
         try {
             return Utils.getString(mContext, Constant.AF_STATUS, Constant.AF_ORGANIC);
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
         return null;
     }
 
-    private String getSuffix() {
-        String afStatus = getAfStatus();
-        if (!TextUtils.isEmpty(afStatus)) {
-            afStatus = afStatus.replaceAll("[^0-9a-zA-Z_]+","");
-            return "_" + afStatus.toLowerCase(Locale.getDefault());
+    private String getMediaSource() {
+        try {
+            return Utils.getString(mContext, Constant.AF_MEDIA_SOURCE);
+        } catch (Exception e) {
         }
-        return "";
+        return null;
+    }
+
+    private String getAfSuffix() {
+        String suffix = null;
+        try {
+            suffix = Utils.getString(mContext, Constant.AF_STATUS, Constant.AF_ORGANIC);
+        } catch (Exception e) {
+        }
+        if (TextUtils.isEmpty(suffix)) {
+            suffix = "attr";
+        }
+        suffix = suffix.replaceAll("[^0-9a-zA-Z_]+", "");
+        return "_" + suffix.toLowerCase(Locale.getDefault());
+    }
+
+    private String getMsSuffix() {
+        String suffix = null;
+        try {
+            suffix = Utils.getString(mContext, Constant.AF_MEDIA_SOURCE);
+        } catch (Exception e) {
+        }
+        if (TextUtils.isEmpty(suffix)) {
+            suffix = "ms";
+        }
+        suffix = suffix.replaceAll("[^0-9a-zA-Z_]+", "");
+        return "_" + suffix.toLowerCase(Locale.getDefault());
     }
 
     private void ensureFirebase() {
         if (mFirebaseRemoteConfig == null) {
             try {
                 mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e + "[Should add google-services.json file to root]");
             }
         }
