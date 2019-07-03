@@ -70,7 +70,7 @@ public class WemobBindNativeView extends BaseBindNativeView {
         } else if (template == Constant.NATIVE_CARD_LARGE) {
             layoutId = R.layout.native_card_large;
         } else if (template == Constant.NATIVE_CARD_FULL) {
-            layoutId = R.layout.native_card_full;
+            layoutId = getFullLayout();
         }
         Context context = adContainer.getContext();
         View rootView = LayoutInflater.from(context).inflate(layoutId, null);
