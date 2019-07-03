@@ -175,4 +175,8 @@ public class BaseBindNativeView {
 
     protected void onAdViewShown(View view, PidConfig pidConfig, Params params) {
     }
+
+    protected int getFullLayout() {
+        return mRandom.nextBoolean() ? R.layout.native_card_full : R.layout.native_card_mix;
+    }
 }
