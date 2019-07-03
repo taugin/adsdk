@@ -12,6 +12,7 @@ import com.appnext.banners.BannerListener;
 import com.appnext.banners.BannerSize;
 import com.appnext.banners.BannerView;
 import com.appnext.base.Appnext;
+import com.appnext.core.AppnextAdCreativeType;
 import com.appnext.core.AppnextError;
 import com.appnext.core.callbacks.OnAdClicked;
 import com.appnext.core.callbacks.OnAdClosed;
@@ -114,7 +115,7 @@ public class AppnextLoader extends AbstractSdkLoader {
         loadingView.setBannerSize(size);
         loadingView.setBannerListener(new BannerListener() {
             @Override
-            public void onAdLoaded(String s) {
+            public void onAdLoaded(String s, AppnextAdCreativeType appnextAdCreativeType) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 bannerView = loadingView;
@@ -243,7 +244,7 @@ public class AppnextLoader extends AbstractSdkLoader {
         interstitial = new Interstitial(mContext, mPidConfig.getPid());
         interstitial.setOnAdLoadedCallback(new OnAdLoaded() {
             @Override
-            public void adLoaded(String s) {
+            public void adLoaded(String s, AppnextAdCreativeType appnextAdCreativeType) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitial);
@@ -478,7 +479,7 @@ public class AppnextLoader extends AbstractSdkLoader {
         rewardedVideoAd = new RewardedVideo(mContext, mPidConfig.getPid());
         rewardedVideoAd.setOnAdLoadedCallback(new OnAdLoaded() {
             @Override
-            public void adLoaded(String s) {
+            public void adLoaded(String s, AppnextAdCreativeType appnextAdCreativeType) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(rewardedVideoAd);
