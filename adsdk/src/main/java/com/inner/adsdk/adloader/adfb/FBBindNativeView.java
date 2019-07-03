@@ -156,6 +156,8 @@ public class FBBindNativeView extends BaseBindNativeView {
         MediaView mediaCover = createMediaView(rootView.getContext());
         ViewGroup mediaLayout = rootView.findViewById(mParams.getAdMediaView());
 
+        TextView bodyView = detail != null ? detail : subTitleView;
+
         if (mediaLayout != null && mediaCover != null) {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);
             mediaLayout.addView(mediaCover, params);
@@ -200,12 +202,12 @@ public class FBBindNativeView extends BaseBindNativeView {
                 }
             }
 
-            if (detail != null) {
-                detail.setText(nativeAd.getAdBodyText());
-                actionView.add(detail);
+            if (bodyView != null) {
+                bodyView.setText(nativeAd.getAdBodyText());
+                actionView.add(bodyView);
 
                 if (!TextUtils.isEmpty(nativeAd.getAdBodyText())) {
-                    detail.setVisibility(View.VISIBLE);
+                    bodyView.setVisibility(View.VISIBLE);
                 }
             }
 
