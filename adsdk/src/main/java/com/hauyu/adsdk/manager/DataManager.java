@@ -116,10 +116,8 @@ public class DataManager implements Runnable {
     private void parseRemoteData() {
         Log.v(Log.TAG, "parse re data");
         String data = null;
-        if (mDataRequest != null) {
-            data = mDataRequest.getString(DATA_CONFIG);
-            data = checkLastData(data, DATA_CONFIG);
-        }
+        data = getString(DATA_CONFIG);
+        data = checkLastData(data, DATA_CONFIG);
         if (!TextUtils.isEmpty(data)
                 && (mLocalAdConfig == null || !TextUtils.equals(mLocalAdConfig.getAdConfigMd5(), Utils.string2MD5(data)))) {
             if (mParser != null) {
@@ -156,131 +154,108 @@ public class DataManager implements Runnable {
     }
 
     public AdPlace getRemoteAdPlace(String key) {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(key);
-            data = checkLastData(data, key);
-            if (!TextUtils.isEmpty(data)) {
-                return mParser.parseAdPlace(data);
-            }
+        String data = getString(key);
+        data = checkLastData(data, key);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseAdPlace(data);
         }
         return null;
     }
 
     public GtConfig getRemoteGtPolicy() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.GTPOLICY_NAME);
-            data = checkLastData(data, Constant.GTPOLICY_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                return mParser.parseGtPolicy(data);
-            }
+        String data = getString(Constant.GTPOLICY_NAME);
+        data = checkLastData(data, Constant.GTPOLICY_NAME);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseGtPolicy(data);
         }
         return null;
     }
 
     public StConfig getRemoteStPolicy() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.STPOLICY_NAME);
-            data = checkLastData(data, Constant.STPOLICY_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                return mParser.parseStPolicy(data);
-            }
+        String data = getString(Constant.STPOLICY_NAME);
+        data = checkLastData(data, Constant.STPOLICY_NAME);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseStPolicy(data);
         }
         return null;
     }
 
     public AtConfig getRemoteAtPolicy() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.ATPOLICY_NAME);
-            data = checkLastData(data, Constant.ATPOLICY_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                return mParser.parseAtPolicy(data);
-            }
+        String data = getString(Constant.ATPOLICY_NAME);
+        data = checkLastData(data, Constant.ATPOLICY_NAME);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseAtPolicy(data);
         }
         return null;
     }
 
     public LtConfig getRemoteLtPolicy() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.LTPOLICY_NAME);
-            data = checkLastData(data, Constant.LTPOLICY_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                return mParser.parseLtPolicy(data);
-            }
+        String data = getString(Constant.LTPOLICY_NAME);
+        data = checkLastData(data, Constant.LTPOLICY_NAME);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseLtPolicy(data);
         }
         return null;
     }
 
     public HtConfig getRemoteHtPolicy() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.HTPOLICY_NAME);
-            data = checkLastData(data, Constant.HTPOLICY_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                return mParser.parseHtPolicy(data);
-            }
+        String data = getString(Constant.HTPOLICY_NAME);
+        data = checkLastData(data, Constant.HTPOLICY_NAME);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseHtPolicy(data);
         }
         return null;
     }
 
     public CtConfig getRemoteCtPolicy() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.CTPOLICY_NAME);
-            data = checkLastData(data, Constant.CTPOLICY_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                return mParser.parseCtPolicy(data);
-            }
+        String data = getString(Constant.CTPOLICY_NAME);
+        data = checkLastData(data, Constant.CTPOLICY_NAME);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseCtPolicy(data);
         }
         return null;
     }
 
     public Map<String, String> getRemoteAdIds() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.ADIDS_NAME);
-            data = checkLastData(data, Constant.ADIDS_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                return mParser.parseAdIds(data);
-            }
+        String data = getString(Constant.ADIDS_NAME);
+        data = checkLastData(data, Constant.ADIDS_NAME);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseAdIds(data);
         }
         return null;
     }
 
     public AdSwitch getAdSwitch() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.ADSWITCH_NAME);
-            data = checkLastData(data, Constant.ADSWITCH_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                String oldSwitchMd5 = Utils.getString(mContext, PREF_ADSWITCH_MD5);
-                String newSwitchMd5 = Utils.string2MD5(data);
-                if (mAdSwitch == null || !TextUtils.equals(oldSwitchMd5, newSwitchMd5)) {
-                    mAdSwitch = mParser.parseAdSwitch(data);
-                    Utils.putString(mContext, PREF_ADSWITCH_MD5, newSwitchMd5);
-                }
+        String data = getString(Constant.ADSWITCH_NAME);
+        if (!TextUtils.isEmpty(data)) {
+            String oldSwitchMd5 = Utils.getString(mContext, PREF_ADSWITCH_MD5);
+            String newSwitchMd5 = Utils.string2MD5(data);
+            if (mAdSwitch == null || !TextUtils.equals(oldSwitchMd5, newSwitchMd5)) {
+                mAdSwitch = mParser.parseAdSwitch(data);
+                Utils.putString(mContext, PREF_ADSWITCH_MD5, newSwitchMd5);
             }
-            if (mAdSwitch == null && mLocalAdConfig != null) {
-                mAdSwitch = mLocalAdConfig.getAdSwitch();
-            }
-            Log.iv(Log.TAG, "ads : " + mAdSwitch);
         }
+        if (mAdSwitch == null && mLocalAdConfig != null) {
+            mAdSwitch = mLocalAdConfig.getAdSwitch();
+        }
+        Log.iv(Log.TAG, "ads : " + mAdSwitch);
         return mAdSwitch;
     }
 
     public Map<String, String> getRemoteAdRefs() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.ADREFS_NAME);
-            data = checkLastData(data, Constant.ADREFS_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                return mParser.parseAdRefs(data);
-            }
+        String data = getString(Constant.ADREFS_NAME);
+        data = checkLastData(data, Constant.ADREFS_NAME);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseAdRefs(data);
         }
         return null;
     }
 
     public List<SpConfig> getRemoteSpread() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.ADSPREAD_NAME);
-            data = checkLastData(data, Constant.ADSPREAD_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                return mParser.parseSpread(data);
-            }
+        String data = getString(Constant.ADSPREAD_NAME);
+        data = checkLastData(data, Constant.ADSPREAD_NAME);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseSpread(data);
         }
         return null;
     }
@@ -293,13 +268,13 @@ public class DataManager implements Runnable {
     }
 
     public void parseRemotePolicy(BaseConfig baseConfig, IParseListener parserCallback) {
-        if (mDataRequest != null && baseConfig != null) {
+        if (baseConfig != null) {
             String name = baseConfig.getName();
             if (TextUtils.isEmpty(name)) {
                 Log.iv(Log.TAG, "can not find cfg name");
                 return;
             }
-            String data = mDataRequest.getString(name);
+            String data = getString(name);
             data = checkLastData(data, name);
             if (!TextUtils.isEmpty(data)) {
                 mParser.parsePolicy(data, baseConfig, parserCallback);
@@ -309,8 +284,9 @@ public class DataManager implements Runnable {
 
     /**
      * 与push过来的数据比对版本号，使用版本号高的数据，如果版本号相等，则使用推送的数据
+     *
      * @param data 从firebase远程配置上获取的数据
-     * @param key 当前配置的key值
+     * @param key  当前配置的key值
      * @return
      * @deprecated
      */
@@ -352,20 +328,38 @@ public class DataManager implements Runnable {
 
     /**
      * 默认先从insights获取配置的数据，如果数据为空，则使用默认数据
+     *
      * @param data
      * @param key
      * @return
      */
     private String checkLastData(String data, String key) {
-        String configText = getStringFromInsights(mContext, key);
-        if (!TextUtils.isEmpty(configText)) {
-            return configText;
+        if (!isForbidFromInsights(mContext)) {
+            String configText = getStringFromInsights(mContext, key);
+            if (!TextUtils.isEmpty(configText)) {
+                return configText;
+            }
         }
         return data;
     }
 
     /**
+     * 禁止从insights获取数据
+     *
+     * @param context
+     * @return
+     */
+    private boolean isForbidFromInsights(Context context) {
+        AdSwitch adSwitch = getAdSwitch();
+        if (adSwitch != null) {
+            return adSwitch.isForbidFromInsights();
+        }
+        return false;
+    }
+
+    /**
      * 从insights获取配置的数据
+     *
      * @param context
      * @param key
      * @return
@@ -393,6 +387,7 @@ public class DataManager implements Runnable {
 
     /**
      * 判断是否有InsightSdk存在
+     *
      * @return
      */
     private boolean hasInsightSdk() {
