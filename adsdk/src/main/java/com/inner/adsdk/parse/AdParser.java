@@ -646,6 +646,9 @@ public class AdParser implements IParser {
             if (jobj.has(GT_AT_EXCLUSIVE)) {
                 adSwitch.setGtAtExclusive(jobj.getInt(GT_AT_EXCLUSIVE) == 1);
             }
+            if (jobj.has(FORBID_FROM_INSIGHTS)) {
+                adSwitch.setForbidFromInsights(jobj.getInt(FORBID_FROM_INSIGHTS) == 1);
+            }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdSwitch error : " + e);
         }

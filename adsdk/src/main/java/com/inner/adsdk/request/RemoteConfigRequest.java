@@ -93,7 +93,7 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
                 String attrSuffix = getAfSuffix();
                 String mediaSourceKey = key + mediaSourceSuffix;
                 String attrKey = key + attrSuffix;
-                Log.iv(Log.TAG, "media suffix : " + mediaSourceSuffix + " , attribute suffix : " + attrSuffix);
+                Log.iv(Log.TAG, "media suffix : " + mediaSourceSuffix + " , attr suffix : " + attrSuffix);
                 // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
                 String mediaData = mFirebaseRemoteConfig.getString(mediaSourceKey);
                 String attrData = mFirebaseRemoteConfig.getString(attrKey);

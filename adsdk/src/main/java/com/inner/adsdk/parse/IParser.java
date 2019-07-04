@@ -170,6 +170,8 @@ public interface IParser {
     String GT_AT_EXCLUSIVE = "gae";
     // at show on first page
     String SHOW_ON_FIRST_PAGE = "sofp";
+    // forbid from insight
+    String FORBID_FROM_INSIGHTS = "ffi";
 
     // banner
     String BANNER = "banner";
