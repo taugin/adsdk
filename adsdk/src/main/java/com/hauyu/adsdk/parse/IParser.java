@@ -113,6 +113,8 @@ public interface IParser {
     String ASPECT_RATIO = "ar";
     // bannersize
     String BANNER_SIZE = "bs";
+    // 可点击原生视图
+    String CLICK_VIEWS = "cv";
 
     // 启用或禁用GT
     String ENABLE = "e";

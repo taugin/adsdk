@@ -608,11 +608,31 @@ public class AdParser implements IParser {
             if (jobj.has(BANNER_SIZE)) {
                 pidConfig.setBannerSize(jobj.getString(BANNER_SIZE));
             }
+            parseClickViews(pidConfig, jobj);
             parseAttrConfig(pidConfig, jobj);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
         return pidConfig;
+    }
+
+    private void parseClickViews(PidConfig pidConfig, JSONObject jobj) {
+        try {
+            if (jobj.has(CLICK_VIEWS)) {
+                JSONArray jarray = jobj.getJSONArray(CLICK_VIEWS);
+                if (jarray != null && jarray.length() > 0) {
+                    List<String> list = new ArrayList<String>(jarray.length());
+                    for (int index = 0; index < jarray.length(); index++) {
+                        String s = jarray.getString(index);
+                        if (!TextUtils.isEmpty(s)) {
+                            list.add(s);
+                        }
+                    }
+                    pidConfig.setClickViews(list);
+                }
+            }
+        } catch (Exception e) {
+        }
     }
 
     @Override

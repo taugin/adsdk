@@ -168,11 +168,12 @@
             </LinearLayout>
 
 
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/native_action_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/native_action_btn"
@@ -182,11 +183,28 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="16dp"
                     android:layout_marginLeft="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ad_action_button_bg"
+                    android:text="Learn More" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/native_cancel_btn"
+                    style="@style/AdButtonFullStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/ad_button_bg"
-                    android:text="Learn More" />
-            </FrameLayout>
+                    android:layout_weight="1"
+                    android:background="@drawable/ad_close_button_bg"
+                    android:text="@android:string/cancel"
+                    android:textColor="@android:color/darker_gray" />
+
+            </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
 </FrameLayout>

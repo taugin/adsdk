@@ -12,6 +12,7 @@ import com.hauyu.adsdk.framework.Params;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -19,6 +20,18 @@ import java.util.Random;
  */
 
 public class BaseBindNativeView {
+
+    protected static final String AD_TITLE = "title";
+    protected static final String AD_SUBTITLE = "subtitle";
+    protected static final String AD_ICON = "icon";
+    protected static final String AD_COVER = "cover";
+    protected static final String AD_MEDIA = "media";
+    protected static final String AD_DETAIL = "detail";
+    protected static final String AD_CTA = "cta";
+    protected static final String AD_CHOICES = "choice";
+    protected static final String AD_SPONSORED = "sponsored";
+    protected static final String AD_SOCIAL = "social";
+    protected static final String AD_RATE = "rate";
 
     private Random mRandom = new Random(System.currentTimeMillis());
 
@@ -178,5 +191,16 @@ public class BaseBindNativeView {
 
     protected int getFullLayout() {
         return mRandom.nextBoolean() ? R.layout.native_card_full : R.layout.native_card_mix;
+    }
+
+    protected boolean isClickable(String view, PidConfig pidConfig) {
+        if (pidConfig == null) {
+            return false;
+        }
+        List<String> clickViews = pidConfig.getClickViews();
+        if (clickViews == null || clickViews.isEmpty()) {
+            return true;
+        }
+        return clickViews.contains(view);
     }
 }

@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.constant.Constant;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2018/2/9.
  */
@@ -50,6 +52,8 @@ public class PidConfig extends BaseConfig {
     private double aspectRatio;
 
     private String bannerSize;
+
+    private List<String> clickViews;
 
     @Override
     public String getName() {
@@ -198,6 +202,14 @@ public class PidConfig extends BaseConfig {
 
     public void setBannerSize(String bannerSize) {
         this.bannerSize = bannerSize;
+    }
+
+    public List<String> getClickViews() {
+        return clickViews;
+    }
+
+    public void setClickViews(List<String> clickViews) {
+        this.clickViews = clickViews;
     }
 
     public boolean isAdmob() {

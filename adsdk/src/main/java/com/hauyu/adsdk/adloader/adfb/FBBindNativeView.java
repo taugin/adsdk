@@ -130,7 +130,7 @@ public class FBBindNativeView extends BaseBindNativeView {
         // 恢复icon图标
         try {
             //restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
 
@@ -139,7 +139,7 @@ public class FBBindNativeView extends BaseBindNativeView {
             if (rootView.getParent() != null) {
                 ((ViewGroup) rootView.getParent()).removeView(rootView);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
 
@@ -153,19 +153,19 @@ public class FBBindNativeView extends BaseBindNativeView {
         TextView detail = rootView.findViewById(mParams.getAdDetail());
         TextView btnAction = rootView.findViewById(mParams.getAdAction());
         ViewGroup adChoiceContainer = rootView.findViewById(mParams.getAdChoices());
-        MediaView mediaCover = createMediaView(rootView.getContext());
+        MediaView mediaView = createMediaView(rootView.getContext());
         ViewGroup mediaLayout = rootView.findViewById(mParams.getAdMediaView());
 
         TextView bodyView = detail != null ? detail : subTitleView;
 
-        if (mediaLayout != null && mediaCover != null) {
+        if (mediaLayout != null && mediaView != null) {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);
-            mediaLayout.addView(mediaCover, params);
+            mediaLayout.addView(mediaView, params);
             mediaLayout.setVisibility(View.VISIBLE);
         }
 
-        if (mediaCover != null) {
-            mediaCover.setVisibility(View.VISIBLE);
+        if (mediaView != null) {
+            mediaView.setVisibility(View.VISIBLE);
         }
         if (imageCover != null) {
             imageCover.setVisibility(View.GONE);
@@ -177,12 +177,15 @@ public class FBBindNativeView extends BaseBindNativeView {
         if (nativeAd != null && nativeAd.isAdLoaded()) {
             MediaView iconView = createIconView(rootView.getContext(), icon);
             if (iconView != null) {
+                if (isClickable(AD_ICON, pidConfig)) {
+                    actionView.add(iconView);
+                }
                 iconView.setVisibility(View.VISIBLE);
             }
 
             // Download and setting the cover image.
-            if (mediaCover != null) {
-                actionView.add(mediaCover);
+            if (mediaView != null && isClickable(AD_MEDIA, pidConfig)) {
+                actionView.add(mediaView);
             }
 
             // Add adChoices icon
@@ -195,7 +198,9 @@ public class FBBindNativeView extends BaseBindNativeView {
 
             if (titleView != null) {
                 titleView.setText(nativeAd.getAdvertiserName());
-                actionView.add(titleView);
+                if (isClickable(AD_TITLE, pidConfig)) {
+                    actionView.add(titleView);
+                }
 
                 if (!TextUtils.isEmpty(nativeAd.getAdvertiserName())) {
                     titleView.setVisibility(View.VISIBLE);
@@ -204,7 +209,9 @@ public class FBBindNativeView extends BaseBindNativeView {
 
             if (bodyView != null) {
                 bodyView.setText(nativeAd.getAdBodyText());
-                actionView.add(bodyView);
+                if (isClickable(AD_DETAIL, pidConfig)) {
+                    actionView.add(bodyView);
+                }
 
                 if (!TextUtils.isEmpty(nativeAd.getAdBodyText())) {
                     bodyView.setVisibility(View.VISIBLE);
@@ -213,7 +220,9 @@ public class FBBindNativeView extends BaseBindNativeView {
 
             if (btnAction != null) {
                 btnAction.setText(nativeAd.getAdCallToAction());
-                actionView.add(btnAction);
+                if (isClickable(AD_CTA, pidConfig)) {
+                    actionView.add(btnAction);
+                }
 
                 if (!TextUtils.isEmpty(nativeAd.getAdCallToAction())) {
                     btnAction.setVisibility(View.VISIBLE);
@@ -222,24 +231,19 @@ public class FBBindNativeView extends BaseBindNativeView {
 
             if (socialView != null) {
                 socialView.setText(nativeAd.getAdSocialContext());
+                if (isClickable(AD_SOCIAL, pidConfig)) {
+                    actionView.add(socialView);
+                }
 
                 if (!TextUtils.isEmpty(nativeAd.getAdSocialContext())) {
                     socialView.setVisibility(View.VISIBLE);
                 }
             }
 
-            boolean allClick = allElementCanClick(pidConfig.getCtr());
-            Log.iv(Log.TAG, "all click : " + allClick + " , ctr : " + pidConfig.getCtr());
-
             if (rootView != null) {
-                if (allClick) {
-                    nativeAd.registerViewForInteraction(rootView, mediaCover, iconView, actionView);
-                } else {
-                    actionView = new ArrayList<>(1);
-                    actionView.add(btnAction);
-                    nativeAd.registerViewForInteraction(rootView, mediaCover, iconView, actionView);
-                }
+                nativeAd.registerViewForInteraction(rootView, mediaView, iconView, actionView);
             }
+            Log.iv(Log.TAG, "clickable view : " + pidConfig.getClickViews());
         }
         try {
             adContainer.removeAllViews();
