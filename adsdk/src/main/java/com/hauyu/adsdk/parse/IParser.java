@@ -115,6 +115,8 @@ public interface IParser {
     String BANNER_SIZE = "bs";
     // 可点击原生视图
     String CLICK_VIEWS = "cv";
+    // 加载原生个数
+    String LOAD_NATIVE_COUNT = "lnc";
 
     // 启用或禁用GT
     String ENABLE = "e";

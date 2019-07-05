@@ -24,7 +24,10 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Params;
 import com.hauyu.adsdk.log.Log;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,6 +59,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     private AdView gBannerView;
     private UnifiedNativeAd gNativeAd;
+    private List<UnifiedNativeAd> nativeAdList = Collections.synchronizedList(new ArrayList<UnifiedNativeAd>());
 
     @Override
     public void setAdId(String adId) {
@@ -482,8 +486,22 @@ public class AdmobLoader extends AbstractSdkLoader {
     @Override
     public boolean isNativeLoaded() {
         boolean loaded = super.isNativeLoaded();
-        if (nativeAd != null) {
-            loaded = !isCachedAdExpired(nativeAd);
+        if (mPidConfig != null && mPidConfig.getCnt() > 1) {
+            try {
+                for (UnifiedNativeAd nAd : nativeAdList) {
+                    if (nAd != null) {
+                        loaded = !isCachedAdExpired(nAd);
+                        if (loaded) {
+                            break;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+            }
+        } else {
+            if (nativeAd != null) {
+                loaded = !isCachedAdExpired(nativeAd);
+            }
         }
         if (loaded) {
             Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
@@ -524,15 +542,28 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
             }
         }
+        try {
+            if (nativeAdList != null && !nativeAdList.isEmpty()) {
+                nativeAdList.clear();
+            }
+        } catch (Exception e) {
+        }
         setLoading(true, STATE_REQUEST);
         loadingBuilder = new AdLoader.Builder(mContext, mPidConfig.getPid());
         loadingBuilder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
             @Override
             public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                nativeAd = unifiedNativeAd;
+                if (mPidConfig != null && mPidConfig.getCnt() > 1) {
+                    try {
+                        nativeAdList.add(unifiedNativeAd);
+                    } catch (Exception e) {
+                    }
+                } else {
+                    nativeAd = unifiedNativeAd;
+                }
                 setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(nativeAd);
+                putCachedAdTime(unifiedNativeAd);
                 notifyAdLoaded(false);
                 reportAdLoaded();
             }
@@ -598,7 +629,11 @@ public class AdmobLoader extends AbstractSdkLoader {
         loadingBuilder.withNativeAdOptions(nativeAdOptions);
         AdLoader adLoader = loadingBuilder.build();
         if (adLoader != null) {
-            adLoader.loadAd(new AdRequest.Builder().build());
+            if (mPidConfig != null && mPidConfig.getCnt() > 1) {
+                adLoader.loadAds(new AdRequest.Builder().build(), mPidConfig.getCnt());
+            } else {
+                adLoader.loadAd(new AdRequest.Builder().build());
+            }
         }
         reportAdRequest();
         Log.v(Log.TAG, "");
@@ -609,6 +644,12 @@ public class AdmobLoader extends AbstractSdkLoader {
         Log.v(Log.TAG, "showNative - admob");
         if (params != null) {
             mParams = params;
+        }
+        if (mPidConfig != null && mPidConfig.getCnt() > 1) {
+            try {
+                nativeAd = nativeAdList.remove(0);
+            } catch (Exception e) {
+            }
         }
         AdmobBindNativeView admobBindNativeView = new AdmobBindNativeView();
         clearCachedAdTime(nativeAd);

@@ -608,6 +608,9 @@ public class AdParser implements IParser {
             if (jobj.has(BANNER_SIZE)) {
                 pidConfig.setBannerSize(jobj.getString(BANNER_SIZE));
             }
+            if (jobj.has(LOAD_NATIVE_COUNT)) {
+                pidConfig.setCnt(jobj.getInt(LOAD_NATIVE_COUNT));
+            }
             parseClickViews(pidConfig, jobj);
             parseAttrConfig(pidConfig, jobj);
         } catch (Exception e) {

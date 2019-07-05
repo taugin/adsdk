@@ -55,6 +55,8 @@ public class PidConfig extends BaseConfig {
 
     private List<String> clickViews;
 
+    private int cnt;
+
     @Override
     public String getName() {
         return PID_CONFIG;
@@ -210,6 +212,14 @@ public class PidConfig extends BaseConfig {
 
     public void setClickViews(List<String> clickViews) {
         this.clickViews = clickViews;
+    }
+
+    public int getCnt() {
+        return cnt;
+    }
+
+    public void setCnt(int cnt) {
+        this.cnt = cnt;
     }
 
     public boolean isAdmob() {
