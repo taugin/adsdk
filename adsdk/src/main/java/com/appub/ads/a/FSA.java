@@ -148,6 +148,24 @@ public class FSA extends Activity {
         if (mChargeWrapper != null) {
             mChargeWrapper.onResume();
         }
+        closeViewMonitor();
+    }
+
+    private void closeViewMonitor() {
+        try {
+            int id = getResources().getIdentifier("native_cancel_btn", "id", getPackageName());
+            View closeView = findViewById(id);
+            if (closeView != null) {
+                closeView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finishActivityWithDelay();
+                    }
+                });
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
     }
 
     @Override

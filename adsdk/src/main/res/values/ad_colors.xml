@@ -4,4 +4,6 @@
     <color name="secondaryColor">@android:color/darker_gray</color>
     <color name="colorBtnBlue">#FF4286F4</color>
     <color name="colorBtnBluePressed">#AA4286F4</color>
+    <color name="colorCloseBtnBlue">#FFFFFFFF</color>
+    <color name="colorCloseBtnBluePressed">#AAFFFFFF</color>
 </resources>

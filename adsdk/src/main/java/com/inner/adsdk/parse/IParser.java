@@ -112,6 +112,8 @@ public interface IParser {
     String BANNER_SIZE = "bs";
     // 是否撑满宽度  for display io
     String FULL_WIDTH = "fw";
+    // 可点击原生视图
+    String CLICK_VIEWS = "cv";
 
     // 启用或禁用GT
     String ENABLE = "e";

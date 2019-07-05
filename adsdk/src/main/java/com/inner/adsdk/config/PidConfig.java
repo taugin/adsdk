@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.inner.adsdk.common.BaseConfig;
 import com.inner.adsdk.constant.Constant;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2018/2/9.
  */
@@ -52,6 +54,8 @@ public class PidConfig extends BaseConfig {
     private String bannerSize;
 
     private boolean fullWidth;
+
+    private List<String> clickViews;
 
     @Override
     public String getName() {
@@ -208,6 +212,14 @@ public class PidConfig extends BaseConfig {
 
     public void setFullWidth(boolean fullWidth) {
         this.fullWidth = fullWidth;
+    }
+
+    public List<String> getClickViews() {
+        return clickViews;
+    }
+
+    public void setClickViews(List<String> clickViews) {
+        this.clickViews = clickViews;
     }
 
     public boolean isAdmob() {
