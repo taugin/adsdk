@@ -168,30 +168,23 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
 
         View rateBarView = adView.getStarRatingView();
 
-        boolean allClick = allElementCanClick(pidConfig.getCtr());
-
-        Log.iv(Log.TAG, "all click : " + allClick + " , ctr : " + pidConfig.getCtr());
-
-        if (allClick) {
-            if (titleView != null) {
-                adView.setHeadlineView(titleView);
-            }
-            if (adCoverView != null) {
-                adView.setImageView(adCoverView);
-            }
-            if (bodyView != null) {
-                adView.setBodyView(bodyView);
-            }
-            if (ctaView != null) {
-                adView.setCallToActionView(ctaView);
-            }
-            if (adIconView != null) {
-                adView.setIconView(adIconView);
-            }
-        } else {
-            if (ctaView != null) {
-                adView.setCallToActionView(ctaView);
-            }
+        if (titleView != null && isClickable(AD_TITLE, pidConfig)) {
+            adView.setHeadlineView(titleView);
+        }
+        if (adCoverView != null && isClickable(AD_COVER, pidConfig)) {
+            adView.setImageView(adCoverView);
+        }
+        if (bodyView != null && isClickable(AD_DETAIL, pidConfig)) {
+            adView.setBodyView(bodyView);
+        }
+        if (ctaView != null && isClickable(AD_CTA, pidConfig)) {
+            adView.setCallToActionView(ctaView);
+        }
+        if (adIconView != null && isClickable(AD_ICON, pidConfig)) {
+            adView.setIconView(adIconView);
+        }
+        if (rateBarView != null && isClickable(AD_RATE, pidConfig)) {
+            adView.setStarRatingView(rateBarView);
         }
 
         // 设置广告元素内容
@@ -257,6 +250,7 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
+        Log.iv(Log.TAG, "clickable view : " + pidConfig.getClickViews());
         adView.setNativeAd(nativeAd);
         return adView;
     }

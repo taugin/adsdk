@@ -139,7 +139,11 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
         if (TextUtils.isEmpty(suffix)) {
             suffix = "attr";
         }
-        suffix = suffix.replaceAll("[^0-9a-zA-Z_]+", "");
+        try {
+            suffix = suffix.replaceAll("[^0-9a-zA-Z_]+", "");
+        } catch (Exception e) {
+            suffix = "attr";
+        }
         return "_" + suffix.toLowerCase(Locale.getDefault());
     }
 
@@ -152,7 +156,11 @@ public class RemoteConfigRequest implements IDataRequest, OnCompleteListener {
         if (TextUtils.isEmpty(suffix)) {
             suffix = "ms";
         }
-        suffix = suffix.replaceAll("[^0-9a-zA-Z_]+", "");
+        try {
+            suffix = suffix.replaceAll("[^0-9a-zA-Z_]+", "");
+        } catch (Exception e) {
+            suffix = "ms";
+        }
         return "_" + suffix.toLowerCase(Locale.getDefault());
     }
 
