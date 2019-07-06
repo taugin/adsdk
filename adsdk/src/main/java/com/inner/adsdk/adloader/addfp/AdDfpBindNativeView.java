@@ -155,6 +155,8 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
 
         adView.addView(rootView);
 
+        clearClickListener(mParams, rootView);
+
         View titleView = rootView.findViewById(mParams.getAdTitle());
         View adCoverView = adView.findViewById(mParams.getAdCover());
         // 由于dfp没有subTitle的接口，因此将使用subTitle或者detailView
