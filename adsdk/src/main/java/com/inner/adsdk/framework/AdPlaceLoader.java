@@ -1834,6 +1834,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             intent.putExtra(Intent.EXTRA_TEXT, source);
             intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             mContext.startActivity(intent);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
