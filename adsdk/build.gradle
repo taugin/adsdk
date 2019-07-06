@@ -20,7 +20,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionName "2.5.8"
+        versionName "2.5.9"
         consumerProguardFiles 'proguard-rules-adsdk.pro'
     }
 
