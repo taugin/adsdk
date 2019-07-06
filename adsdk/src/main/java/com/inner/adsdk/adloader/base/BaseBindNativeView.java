@@ -203,4 +203,47 @@ public class BaseBindNativeView {
         }
         return clickViews.contains(view);
     }
+
+    protected void clearClickListener(Params params, View rootView) {
+        if (params == null || rootView == null) {
+            return;
+        }
+        View view;
+        view = rootView.findViewById(params.getAdTitle());
+        if (view != null) {
+            view.setOnClickListener(null);
+        }
+        view = rootView.findViewById(params.getAdSubTitle());
+        if (view != null) {
+            view.setOnClickListener(null);
+        }
+        view = rootView.findViewById(params.getAdIcon());
+        if (view != null) {
+            view.setOnClickListener(null);
+        }
+        view = rootView.findViewById(params.getAdCover());
+        if (view != null) {
+            view.setOnClickListener(null);
+        }
+        view = rootView.findViewById(params.getAdSocial());
+        if (view != null) {
+            view.setOnClickListener(null);
+        }
+        view = rootView.findViewById(params.getAdDetail());
+        if (view != null) {
+            view.setOnClickListener(null);
+        }
+        view = rootView.findViewById(params.getAdAction());
+        if (view != null) {
+            view.setOnClickListener(null);
+        }
+        view = rootView.findViewById(params.getAdChoices());
+        if (view != null) {
+            view.setOnClickListener(null);
+        }
+        view = rootView.findViewById(params.getAdMediaView());
+        if (view != null) {
+            view.setOnClickListener(null);
+        }
+    }
 }

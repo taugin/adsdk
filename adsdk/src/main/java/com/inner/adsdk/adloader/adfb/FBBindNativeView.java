@@ -145,6 +145,8 @@ public class FBBindNativeView extends BaseBindNativeView {
 
         adView.addView(rootView);
 
+        clearClickListener(mParams, rootView);
+
         TextView titleView = rootView.findViewById(mParams.getAdTitle());
         TextView subTitleView = rootView.findViewById(mParams.getAdSubTitle());
         ImageView icon = rootView.findViewById(mParams.getAdIcon());
