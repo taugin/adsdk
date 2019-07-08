@@ -560,6 +560,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return null;
     }
 
+    protected boolean isLoadMultipleNative() {
+        if (mPidConfig != null && mPidConfig.getCnt() > 1) {
+            return true;
+        }
+        return false;
+    }
+
     protected void setBannerSize(int size) {
         mBannerSize = size;
     }
