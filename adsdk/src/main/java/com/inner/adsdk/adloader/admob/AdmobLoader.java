@@ -486,7 +486,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     @Override
     public boolean isNativeLoaded() {
         boolean loaded = super.isNativeLoaded();
-        if (mPidConfig != null && mPidConfig.getCnt() > 1) {
+        if (isLoadMultipleNative()) {
             try {
                 for (UnifiedNativeAd nAd : nativeAdList) {
                     if (nAd != null) {
@@ -554,7 +554,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                if (mPidConfig != null && mPidConfig.getCnt() > 1) {
+                if (isLoadMultipleNative()) {
                     try {
                         nativeAdList.add(unifiedNativeAd);
                     } catch (Exception e) {
@@ -629,7 +629,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         loadingBuilder.withNativeAdOptions(nativeAdOptions);
         AdLoader adLoader = loadingBuilder.build();
         if (adLoader != null) {
-            if (mPidConfig != null && mPidConfig.getCnt() > 1) {
+            if (isLoadMultipleNative()) {
                 adLoader.loadAds(new AdRequest.Builder().build(), mPidConfig.getCnt());
             } else {
                 adLoader.loadAd(new AdRequest.Builder().build());
@@ -645,7 +645,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (params != null) {
             mParams = params;
         }
-        if (mPidConfig != null && mPidConfig.getCnt() > 1) {
+        if (isLoadMultipleNative()) {
             try {
                 nativeAd = nativeAdList.remove(0);
             } catch (Exception e) {
