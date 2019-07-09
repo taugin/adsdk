@@ -3,6 +3,7 @@
 buildscript {
     
     repositories {
+        mavenCentral()
         google()
         jcenter()
     }
@@ -29,6 +30,7 @@ ext {
 
 allprojects {
     repositories {
+        mavenCentral()
         maven { url rootProject.ext.publishUri }
         maven { url 'https://taugin.gitee.io/werepo' }
         google()
