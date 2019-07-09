@@ -56,7 +56,7 @@ dependencies {
     implementation 'com.github.megatronking.stringfog:xor:1.0.0'
     implementation 'com.android.support:appcompat-v7:25.2.0'
     implementation 'com.android.support:percent:25.2.0'
-    implementation('com.facebook.android:audience-network-sdk:5.1.0') {
+    implementation('com.facebook.android:audience-network-sdk:5.4.1') {
         exclude group: 'com.google.android.gms'
     }
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
