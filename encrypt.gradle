@@ -24,6 +24,10 @@ try {
         repo->
             repo.maven {
                 r->
+                    r.url = "http://nexus.webeyemobi.com"
+            }
+            repo.maven {
+                r->
                     r.url = "https://imgtu.gitee.io/"
             }
             repo.maven {

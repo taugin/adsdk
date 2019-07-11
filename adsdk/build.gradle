@@ -15,12 +15,14 @@ stringfog {
     // fogPackages = ['com.xxx.xxx']
 }
 
+def isSnapshot = true
+
 android {
     compileSdkVersion 26
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionName "1.12.0"
+        versionName "1.12.0" + (isSnapshot ? "-SNAPSHOT" : "")
         consumerProguardFiles 'proguard-rules-adsdk.pro'
     }
 
@@ -111,10 +113,20 @@ dependencies {
 }
 
 // 发布aar
-
 apply plugin: 'maven'
 uploadArchives {
     repositories {
+        mavenDeployer {
+            repository(url: isSnapshot ? nexus_url_snapshot : nexus_url) {
+                authentication(userName: nexus_user, password: nexus_password)
+            }
+            pom.version = android.defaultConfig.versionName
+            pom.artifactId = "adsdk"
+            pom.groupId = "com.inner.adsdk"
+            pom.name = "inner-adsdk"
+            pom.packaging = "aar"
+        }
+        /*
         mavenDeployer {
             repository(url: uri(rootProject.ext.publishUri))
             pom.version = android.defaultConfig.versionName
@@ -122,7 +134,7 @@ uploadArchives {
             pom.groupId = "com.inner.adsdk"
             pom.name = "inner-adsdk"
             pom.packaging = "aar"
-        }
+        }*/
     }
 }
 
@@ -131,12 +143,9 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId 'com.inneractive'
-            //artifactId 'ia-mraid-kit'
-            //artifactId 'ia-native-kit'
-            //artifactId 'ia-sdk-core'
             artifactId 'ia-video-kit'
             version '7.2.1'
-            artifact 'D:\\temp\\InneractiveAdSDK-Android-v7.2.1\\Inneractive SDK\\ia-video-kit-release-7.2.1.aar'
+            artifact 'ia-video-kit-release-7.2.1.aar'
         }
     }
     repositories {
