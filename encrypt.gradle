@@ -24,7 +24,7 @@ try {
         repo->
             repo.maven {
                 r->
-                    r.url = "http://nexus.webeyemobi.com"
+                    r.url = "http://nexus.webeyemobi.com/repository/maven-public/"
             }
             repo.maven {
                 r->
@@ -42,11 +42,10 @@ try {
                 r->
                     r.url = "https://adcolony.bintray.com/AdColony"
             }
-            /*
             repo.maven {
                 r->
-                    r.url = "https://dl.bintray.com/wesdk/WeSdk"
-            }*/
+                    r.url = "https://nexus.webeyemobi.com/repository/maven-public/"
+            }
     }
 } catch (Exception e) {
 }
