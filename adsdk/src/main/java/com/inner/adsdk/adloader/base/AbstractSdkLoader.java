@@ -56,6 +56,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private int mBannerSize = Constant.NOSET;
     private IStat mStat;
 
+    private static boolean sLoading = false;
+
     @Override
     public void setListenerManager(IManagerListener l) {
         mManagerListener = l;
@@ -267,22 +269,37 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected synchronized boolean isLoading() {
-        return mLoading;
+        return isLoading(false);
+    }
+
+    protected synchronized boolean isLoading(boolean isStatic) {
+        return isStatic ? sLoading : mLoading;
     }
 
     protected synchronized void setLoading(boolean loading, int state) {
-        mLoading = loading;
+        setLoading(loading, state, false);
+    }
+
+    protected synchronized void setLoading(boolean loading, int state, boolean isStatic) {
+        if (isStatic) {
+            sLoading = loading;
+        } else {
+            mLoading = loading;
+        }
         reportLoadAdTime(state);
-        if (mLoading) {
+        if (loading) {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
-                mHandler.sendEmptyMessageDelayed(MSG_LOADING_TIMEOUT, getTimeout());
-                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - send time out message : " + getTimeout());
+                Message message = Message.obtain();
+                message.what = MSG_LOADING_TIMEOUT;
+                message.obj = isStatic;
+                mHandler.sendMessageDelayed(message, getTimeout());
+                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - send time out message : " + getTimeout() + " , static : " + isStatic);
             }
         } else {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
-                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - remove time out message");
+                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - remove time out message" + " , static : " + isStatic);
             }
         }
     }
@@ -415,9 +432,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return true;
     }
 
-    protected void onLoadTimeout() {
-        Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - load time out");
-        setLoading(false, STATE_TIMTOUT);
+    protected void onLoadTimeout(boolean isStatic) {
+        Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - load time out" + " , static : " + isStatic);
+        setLoading(false, STATE_TIMTOUT, isStatic);
         if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)
                 || TextUtils.equals(getAdType(), Constant.TYPE_REWARD)) {
             if (getAdListener() != null) {
@@ -435,7 +452,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     @Override
     public boolean handleMessage(Message msg) {
         if (msg != null && msg.what == MSG_LOADING_TIMEOUT) {
-            onLoadTimeout();
+            boolean isStatic = false;
+            try {
+                isStatic = (boolean) msg.obj;
+            } catch (Exception e) {
+            }
+            onLoadTimeout(isStatic);
             return true;
         }
         return false;

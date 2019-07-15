@@ -22,6 +22,7 @@ public class Constant {
     public static final String AD_SDK_DSPMOB = "dspmob";
     public static final String AD_SDK_DISPLAYIO = "displayio";
     public static final String AD_SDK_ADCOLONY = "adcolony";
+    public static final String AD_SDK_APPLOVIN_MAX = "applovinmax";
 
     public static final String AD_SDK_PREFIX = "pref_adsdk_";
 
@@ -174,6 +175,11 @@ public class Constant {
      * 无效的pid
      */
     public static final int AD_ERROR_INVALID_PID = 15;
+
+    /**
+     * 未初始化
+     */
+    public static final int AD_ERROR_NOT_INITIALIZED = 16;
 
     public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
 
