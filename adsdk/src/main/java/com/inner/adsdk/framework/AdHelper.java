@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.adcolony.sdk.AdColony;
 import com.adywind.core.api.SDK;
+import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.sdk.AppLovinSdk;
 import com.appnext.base.Appnext;
 import com.brandio.ads.Placement;
@@ -81,6 +82,9 @@ public class AdHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_ADCOLONY, sdk)) {
             return hasAdColonyModule();
+        }
+        if (TextUtils.equals(Constant.AD_SDK_APPLOVIN_MAX, sdk)) {
+            return hasApplovinMaxModule();
         }
         return false;
     }
@@ -248,6 +252,16 @@ public class AdHelper {
     private static boolean hasAdColonyModule() {
         try {
             AdColony.class.getName();
+            return true;
+        } catch (Exception e) {
+        } catch (Error e) {
+        }
+        return false;
+    }
+
+    private static boolean hasApplovinMaxModule() {
+        try {
+            MaxInterstitialAd.class.getName();
             return true;
         } catch (Exception e) {
         } catch (Error e) {

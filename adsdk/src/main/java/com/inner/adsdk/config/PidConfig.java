@@ -304,6 +304,10 @@ public class PidConfig extends BaseConfig {
         return TextUtils.equals(Constant.AD_SDK_ADCOLONY, sdk);
     }
 
+    public boolean isAppLovinMax() {
+        return TextUtils.equals(Constant.AD_SDK_APPLOVIN_MAX, sdk);
+    }
+
     public boolean isBannerType() {
         return TextUtils.equals(Constant.TYPE_BANNER, adType);
     }

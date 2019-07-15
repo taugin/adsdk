@@ -19,6 +19,7 @@ import com.inner.adsdk.adloader.adx.AdxLoader;
 import com.inner.adsdk.adloader.altamob.AltamobLoader;
 import com.inner.adsdk.adloader.applovin.AppLovinLoader;
 import com.inner.adsdk.adloader.appnext.AppnextLoader;
+import com.inner.adsdk.adloader.applovinmax.AppLovinMaxLoader;
 import com.inner.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.inner.adsdk.adloader.cloudmobi.CloudMobiLoader;
 import com.inner.adsdk.adloader.dap.DapLoader;
@@ -278,6 +279,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             }
                         } else if (config.isAdColony() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new AdColonyLoader();
+                            loader.init(mContext);
+                            loader.setPidConfig(config);
+                            loader.setListenerManager(this);
+                            loader.setAdId(adId);
+                            if (loader.allowUseLoader()) {
+                                mAdLoaders.add(loader);
+                            }
+                        } else if (config.isAppLovinMax() && AdHelper.isModuleLoaded(config.getSdk())) {
+                            loader = new AppLovinMaxLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);

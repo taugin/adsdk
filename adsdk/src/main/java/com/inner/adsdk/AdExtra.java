@@ -99,6 +99,11 @@ public class AdExtra {
     public static final String AD_SDK_ADCOLONY = Constant.AD_SDK_ADCOLONY;
 
     /**
+     * APPLOVIN_MAX
+     */
+    public static final String AD_SDK_APPLOVIN_MAX = Constant.AD_SDK_APPLOVIN_MAX;
+
+    /**
      * ADMOB banner尺寸 320 x 50
      */
     public static final int ADMOB_BANNER = Constant.BANNER;

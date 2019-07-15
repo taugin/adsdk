@@ -467,7 +467,7 @@ public class FBLoader extends AbstractSdkLoader {
                     if (getAdListener() != null) {
                         getAdListener().onAdImpression();
                     }
-                    reportAdShow();
+                    reportAdShowing();
                 }
             });
             nativeAd.loadAd(NativeAd.MediaCacheFlag.ALL);
