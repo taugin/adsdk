@@ -24,14 +24,6 @@ try {
         repo->
             repo.maven {
                 r->
-                    r.url = "http://nexus.webeyemobi.com/repository/maven-public/"
-            }
-            repo.maven {
-                r->
-                    r.url = "https://imgtu.gitee.io/"
-            }
-            repo.maven {
-                r->
                     r.url = "http://maven.display.io/"
             }
             repo.maven {
@@ -44,7 +36,11 @@ try {
             }
             repo.maven {
                 r->
-                    r.url = "https://nexus.webeyemobi.com/repository/maven-public/"
+                    r.url = "https://repo1.maven.org/maven2/"
+            }
+            repo.maven {
+                r->
+                    r.url = "http://nexus.webeyemobi.com/repository/maven-public/"
             }
     }
 } catch (Exception e) {
