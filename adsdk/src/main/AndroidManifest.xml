@@ -251,7 +251,7 @@
             android:noHistory="true"
             android:theme="@style/adywind_InterstitialDialogActivityTheme" />
         <activity
-            android:name="io.display.sdk.DioTranslucentActivity"
+            android:name="com.brandio.ads.DioTranslucentActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:excludeFromRecents="true"
             android:icon="@drawable/ad_tr_bg"
