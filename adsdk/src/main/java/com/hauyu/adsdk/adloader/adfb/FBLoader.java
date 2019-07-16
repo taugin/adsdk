@@ -725,6 +725,12 @@ public class FBLoader extends AbstractSdkLoader {
             if (errorCode == AdError.NETWORK_ERROR_CODE) {
                 return "NETWORK_ERROR_CODE[" + errorCode + "]";
             }
+            if (errorCode == AdError.LOAD_TOO_FREQUENTLY_ERROR_CODE) {
+                return "LOAD_TOO_FREQUENTLY_ERROR_CODE[" + errorCode + "]";
+            }
+            if (errorCode == AdError.INTERSTITIAL_AD_TIMEOUT) {
+                return "INTERSTITIAL_AD_TIMEOUT[" + errorCode + "]";
+            }
         }
         return "UNKNOWN[" + errorCode + "]";
     }
