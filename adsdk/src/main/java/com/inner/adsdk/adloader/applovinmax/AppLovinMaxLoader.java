@@ -244,7 +244,9 @@ public class AppLovinMaxLoader extends AbstractSdkLoader {
         }
         Activity activity = null;
         try {
-            activity = createFakeActivity((Application) mContext.getApplicationContext());
+            if (mManagerListener != null) {
+                activity = mManagerListener.getActivity();
+            }
         } catch (Exception e) {
         }
         if (activity == null) {
@@ -354,6 +356,7 @@ public class AppLovinMaxLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showRewardedVideo() {
+        Log.v(Log.TAG, "ready to show applovin max reward video");
         if (rewardedAd != null && rewardedAd.isReady()) {
             Log.v(Log.TAG, "");
             reportAdCallShow();
