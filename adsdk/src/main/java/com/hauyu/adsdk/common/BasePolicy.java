@@ -413,9 +413,24 @@ public class BasePolicy implements Handler.Callback {
         return true;
     }
 
+    /**
+     * 用户是否禁止场景弹出
+     * @return
+     */
+    protected boolean isSceneDisabledByUser() {
+        boolean userDisabled = Utils.getBoolean(mContext, Constant.AD_SDK_SCENE_DISABLED_PREFIX + mType, false);
+        Log.iv(Log.TAG, "user disabled : " + userDisabled);
+        return userDisabled;
+    }
+
     protected boolean checkBaseConfig() {
         if (!isConfigAllow()) {
             Log.iv(Log.TAG, "con not allowed");
+            return false;
+        }
+
+        if (isSceneDisabledByUser()) {
+            Log.iv(Log.TAG, "user disabled");
             return false;
         }
 

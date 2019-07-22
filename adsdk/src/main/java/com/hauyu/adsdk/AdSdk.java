@@ -543,4 +543,13 @@ public class AdSdk {
             loader.setQueueRunning(running);
         }
     }
+
+    /**
+     * 用户禁止场景弹出
+     * @param scene
+     * @param disable true 禁止场景弹出，false 允许场景弹出
+     */
+    public void setSceneDisabledByUser(String scene, boolean disable) {
+        Utils.putBoolean(mContext, Constant.AD_SDK_SCENE_DISABLED_PREFIX + scene, disable);
+    }
 }

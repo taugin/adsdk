@@ -18,6 +18,8 @@ public class Constant {
 
     public static final String AD_SDK_PREFIX = "pref_adsdk_";
 
+    public static final String AD_SDK_SCENE_DISABLED_PREFIX = "pref_adsdk_scene_disabled_";
+
     public static final String AD_SDK_PUSH_PREFIX = "pref_adsdk_push_";
 
     public static final String AD_SDK_JSON_VER = "ver";
