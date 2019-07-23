@@ -551,4 +551,13 @@ public class AdSdk {
     public void setSceneDisabledByUser(String scene, boolean disable) {
         Utils.putBoolean(mContext, Constant.AD_SDK_SCENE_DISABLED_PREFIX + scene, disable);
     }
+
+    /**
+     * 查询当前场景是否被用户禁止弹出
+     * @param scene
+     * @return
+     */
+    public boolean isSceneDisabledByUser(String scene) {
+        return Utils.getBoolean(mContext, Constant.AD_SDK_SCENE_DISABLED_PREFIX + scene, false);
+    }
 }
