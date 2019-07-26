@@ -2,7 +2,6 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import java.security.MessageDigest
-
 /**
  * 首字母转大写
  * @param s
@@ -494,9 +493,37 @@ class Aes {
         return false;
     }
 
+    static String readFromStream(InputStream is) {
+        if (is == null) {
+            return null;
+        }
+        try {
+            StringBuilder builder = new StringBuilder();
+            int read = 0;
+            byte[] buf = new byte[1024];
+            while ((read = is.read(buf)) > 0) {
+                builder.append(new String(buf, 0, read));
+            }
+            is.close();
+            return builder.toString();
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
+        return null;
+    }
+
+    static String readLocal(String filePath) {
+        try {
+            InputStream is = new FileInputStream(filePath);
+            return readFromStream(is);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     static boolean isJson(String file) {
         try {
-            String s = GFileUtils.readFile(new File(file))
+            String s = readLocal(file)
             if (s != null) {
                 s = s.trim()
             }
