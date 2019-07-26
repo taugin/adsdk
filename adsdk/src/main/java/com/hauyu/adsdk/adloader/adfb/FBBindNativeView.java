@@ -129,7 +129,7 @@ public class FBBindNativeView extends BaseBindNativeView {
         }
         // 恢复icon图标
         try {
-            //restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
