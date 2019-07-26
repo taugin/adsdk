@@ -37,9 +37,11 @@ import java.util.Map;
 
 public class DataManager implements Runnable {
 
-    private static final String DATA_CONFIG_FORMAT = "data_%s.dat";
+    private static final String DATA_CONFIG_FORMAT = "data_%s";
     private static final String DATA_CONFIG = "cfg_data_config";
     private static final String PREF_ADSWITCH_MD5 = "pref_adswitch_md5";
+    private static final String CONFIG_SUFFIX1 = ".dat";
+    private static final String CONFIG_SUFFIX2 = ".json";
     private static DataManager sDataManager;
 
     public static DataManager get(Context context) {
@@ -99,11 +101,17 @@ public class DataManager implements Runnable {
     private void parseLocalData() {
         String cfgName = getConfigName();
         String defName = getDefaultName();
-        Log.v(Log.TAG, "cfg : " + cfgName + " , def : " + defName);
+        Log.v(Log.TAG, "cfg : " + cfgName + ".[dat/json] , def : " + defName + ".[dat/json]");
         if (mLocalAdConfig == null && mParser != null) {
-            String data = Utils.readAssets(mContext, cfgName);
+            String data = Utils.readAssets(mContext, cfgName + CONFIG_SUFFIX1);
             if (TextUtils.isEmpty(data)) {
-                data = Utils.readAssets(mContext, defName);
+                data = Utils.readAssets(mContext, cfgName + CONFIG_SUFFIX2);
+            }
+            if (TextUtils.isEmpty(data)) {
+                data = Utils.readAssets(mContext, defName + CONFIG_SUFFIX1);
+            }
+            if (TextUtils.isEmpty(data)) {
+                data = Utils.readAssets(mContext, defName + CONFIG_SUFFIX2);
             }
             mLocalAdConfig = mParser.parseAdConfig(data);
             if (mLocalAdConfig != null) {
@@ -142,7 +150,7 @@ public class DataManager implements Runnable {
             String pkgmd5 = Utils.string2MD5(mContext.getPackageName());
             pkgmd5 = pkgmd5.toLowerCase(Locale.getDefault());
             String filename = pkgmd5.substring(0, 8);
-            cfgName = "cfg" + filename + ".dat";
+            cfgName = "cfg" + filename;
         } catch (Exception e) {
             Log.v(Log.TAG, "error : " + e);
         }
