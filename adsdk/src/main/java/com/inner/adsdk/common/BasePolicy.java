@@ -31,7 +31,7 @@ public class BasePolicy implements Handler.Callback {
     private boolean mLoading = false;
     private Handler mHandler;
     private static final String LAST_SCENE_TIME = "pref_last_scene_time";
-    private static final String LAST_SCENE_TYPE = "pref_last_scene_type";
+    public static final String LAST_SCENE_TYPE = "pref_last_scene_type";
 
     protected BasePolicy(Context context, String type) {
         mContext = context;
