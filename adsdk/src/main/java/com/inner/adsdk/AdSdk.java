@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.appub.ads.a.BuildConfig;
 import com.inner.adsdk.common.BaseConfig;
+import com.inner.adsdk.common.BasePolicy;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.constant.Constant;
@@ -559,5 +560,13 @@ public class AdSdk {
      */
     public boolean isSceneDisabledByUser(String scene) {
         return Utils.getBoolean(mContext, Constant.AD_SDK_SCENE_DISABLED_PREFIX + scene, false);
+    }
+
+    /**
+     * 判断是否有场景广告展示过
+     * @return
+     */
+    public boolean isSceneShown() {
+        return !TextUtils.isEmpty(Utils.getString(mContext, BasePolicy.LAST_SCENE_TYPE));
     }
 }
