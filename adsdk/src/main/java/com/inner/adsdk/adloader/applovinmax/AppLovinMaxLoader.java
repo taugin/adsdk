@@ -114,7 +114,12 @@ public class AppLovinMaxLoader extends AbstractSdkLoader {
         }
         Activity activity = null;
         try {
-            activity = createFakeActivity((Application) mContext.getApplicationContext());
+            if (mManagerListener != null) {
+                activity = mManagerListener.getActivity();
+            }
+            if (activity == null) {
+                activity = createFakeActivity((Application) mContext.getApplicationContext());
+            }
         } catch (Exception e) {
         }
         if (activity == null) {
@@ -161,7 +166,10 @@ public class AppLovinMaxLoader extends AbstractSdkLoader {
             @Override
             public void onAdHidden(MaxAd ad) {
                 Log.v(Log.TAG, "");
-                interstitialAd = null;
+                if (interstitialAd != null) {
+                    interstitialAd.destroy();
+                    interstitialAd = null;
+                }
                 reportAdClose();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
@@ -331,7 +339,10 @@ public class AppLovinMaxLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClosed();
                 }
-                rewardedAd = null;
+                if (rewardedAd != null) {
+                    rewardedAd.destroy();
+                    rewardedAd = null;
+                }
             }
 
             @Override
