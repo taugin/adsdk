@@ -321,7 +321,6 @@ public class FBLoader extends AbstractSdkLoader {
         if (fbInterstitial != null && fbInterstitial.isAdLoaded()) {
             fbInterstitial.show();
             clearCachedAdTime(fbInterstitial);
-            fbInterstitial = null;
             reportAdCallShow();
             return true;
         }
@@ -627,6 +626,10 @@ public class FBLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoAdClosed();
                 }
                 reportAdClose();
+                if (rewardedVideoAd != null) {
+                    rewardedVideoAd.destroy();
+                    rewardedVideoAd = null;
+                }
             }
 
             @Override
@@ -687,7 +690,6 @@ public class FBLoader extends AbstractSdkLoader {
         if (rewardedVideoAd != null && rewardedVideoAd.isAdLoaded() && !rewardedVideoAd.isAdInvalidated()) {
             rewardedVideoAd.show();
             clearCachedAdTime(rewardedVideoAd);
-            rewardedVideoAd = null;
             reportAdCallShow();
             return true;
         }
