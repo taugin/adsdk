@@ -509,7 +509,7 @@ public class AdParser implements IParser {
                 @Override
                 public int compare(PidConfig o1, PidConfig o2) {
                     if (o1 != null && o2 != null) {
-                        return o2.getEcpm() - o1.getEcpm();
+                        return Double.compare(o2.getEcpm(), o1.getEcpm());
                     }
                     return 0;
                 }
@@ -519,7 +519,7 @@ public class AdParser implements IParser {
                 @Override
                 public int compare(PidConfig o1, PidConfig o2) {
                     if (o1 != null && o2 != null) {
-                        return o1.getEcpm() - o2.getEcpm();
+                        return Double.compare(o1.getEcpm(), o2.getEcpm());
                     }
                     return 0;
                 }
@@ -582,7 +582,7 @@ public class AdParser implements IParser {
                 pidConfig.setDelayLoadTime(jobj.getLong(DELAY_LOAD_TIME));
             }
             if (jobj.has(ECPM)) {
-                pidConfig.setEcpm(jobj.getInt(ECPM));
+                pidConfig.setEcpm(jobj.getDouble(ECPM));
             }
             if (jobj.has(FINISH_FORCTR)) {
                 pidConfig.setFinishForCtr(jobj.getInt(FINISH_FORCTR) == 1);

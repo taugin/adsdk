@@ -599,7 +599,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     @Override
-    public int getEcpm() {
+    public double getEcpm() {
         if (mPidConfig != null) {
             return mPidConfig.getEcpm();
         }

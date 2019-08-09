@@ -35,7 +35,7 @@ public class PidConfig extends BaseConfig {
 
     private long delayLoadTime = 0;
 
-    private int ecpm;
+    private double ecpm;
 
     // 0 : double click, 1 : finish for ctr
     private boolean finishForCtr = false;
@@ -144,11 +144,11 @@ public class PidConfig extends BaseConfig {
         this.delayLoadTime = delayLoadTime;
     }
 
-    public int getEcpm() {
+    public double getEcpm() {
         return ecpm;
     }
 
-    public void setEcpm(int ecpm) {
+    public void setEcpm(double ecpm) {
         this.ecpm = ecpm;
     }
 
