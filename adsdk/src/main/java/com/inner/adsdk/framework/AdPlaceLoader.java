@@ -2127,7 +2127,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private static int ecpmSort(ISdkLoader l1, ISdkLoader l2) {
         if (l1 != null && l2 != null) {
-            return l1.getEcpm() - l2.getEcpm();
+            return Double.compare(l1.getEcpm(), l2.getEcpm());
         }
         if (l1 == null && l2 != null) {
             return -1;

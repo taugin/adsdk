@@ -83,5 +83,5 @@ public interface ISdkLoader {
 
     public int getBannerSize();
 
-    public int getEcpm();
+    public double getEcpm();
 }
