@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.config;
+package com.hauyu.adsdk.scconfig;
 
 
 import com.hauyu.adsdk.common.BaseConfig;
@@ -10,18 +10,18 @@ import java.util.Date;
  * Created by Administrator on 2018/2/9.
  */
 
-public class LtConfig extends BaseConfig {
+public class HtConfig extends BaseConfig {
 
-    public static final String LTPOLICY_NAME = "lt" + CONFIG_SUFFIX;
+    public static final String HTPOLICY_NAME = "ht" + CONFIG_SUFFIX;
 
     @Override
     public String getName() {
-        return LTPOLICY_NAME;
+        return HTPOLICY_NAME;
     }
 
     @Override
     public String toString() {
-        return "lt{" +
+        return "ht{" +
                 "e=" + isEnable() +
                 ", d=" + getUpDelay() +
                 ", i=" + getInterval() +

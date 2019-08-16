@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.common.BasePolicy;
-import com.hauyu.adsdk.config.AtConfig;
+import com.hauyu.adsdk.scconfig.AtConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 

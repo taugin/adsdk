@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.common.BaseLoader;
 import com.hauyu.adsdk.config.AdConfig;
-import com.hauyu.adsdk.config.AtConfig;
+import com.hauyu.adsdk.scconfig.AtConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.TaskMonitor;
 import com.hauyu.adsdk.data.DataManager;

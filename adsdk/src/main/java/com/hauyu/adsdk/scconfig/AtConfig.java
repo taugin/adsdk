@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.config;
+package com.hauyu.adsdk.scconfig;
 
 
 import com.hauyu.adsdk.common.BaseConfig;

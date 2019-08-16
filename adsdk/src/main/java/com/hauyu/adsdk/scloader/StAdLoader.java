@@ -12,7 +12,7 @@ import android.text.TextUtils;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.common.BaseLoader;
 import com.hauyu.adsdk.config.AdConfig;
-import com.hauyu.adsdk.config.StConfig;
+import com.hauyu.adsdk.scconfig.StConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.data.DataManager;
