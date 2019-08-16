@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.hauyu.adsdk.config.PidConfig;
-import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.log.Log;
 
 import java.util.ArrayList;
 import java.util.List;

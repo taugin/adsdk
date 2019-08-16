@@ -4,11 +4,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
 
+import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.config.AtConfig;
-import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.config.CtConfig;
 import com.hauyu.adsdk.config.GtConfig;
 import com.hauyu.adsdk.config.HtConfig;
@@ -16,15 +16,12 @@ import com.hauyu.adsdk.config.LtConfig;
 import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.config.StConfig;
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.listener.IParseListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.parse.AdParser;
-import com.hauyu.adsdk.listener.IParseListener;
 import com.hauyu.adsdk.parse.IParser;
 import com.hauyu.adsdk.utils.Utils;
 
-import org.json.JSONObject;
-
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -62,7 +59,6 @@ public class DataManager implements Runnable {
     private DataManager(Context context) {
         mContext = context;
         mParser = new AdParser();
-        mHasInsightsSdk = hasInsightSdk();
     }
 
     private IDataRequest mDataRequest;
@@ -289,124 +285,13 @@ public class DataManager implements Runnable {
     }
 
     /**
-     * 与push过来的数据比对版本号，使用版本号高的数据，如果版本号相等，则使用推送的数据
-     *
-     * @param data 从firebase远程配置上获取的数据
-     * @param key  当前配置的key值
-     * @return
-     * @deprecated
-     */
-    private String checkLastData2(String data, String key) {
-        boolean useConfig = true;
-        String pushData = Utils.getString(mContext, Constant.AD_SDK_PUSH_PREFIX + key);
-        if (TextUtils.isEmpty(data) && !TextUtils.isEmpty(pushData)) {
-            // 直接使用push配置数据
-            useConfig = false;
-        } else if (!TextUtils.isEmpty(data) && !TextUtils.isEmpty(pushData)) {
-            // 比较两种配置数据的版本，使用高版本的数据
-            int pushVer = -1;
-            int confVer = -1;
-            // 读取推送过来的数据的版本号
-            try {
-                JSONObject jobj = new JSONObject(pushData);
-                if (jobj.has(Constant.AD_SDK_JSON_VER)) {
-                    pushVer = jobj.getInt(Constant.AD_SDK_JSON_VER);
-                }
-            } catch (Exception e) {
-            }
-            // 读取配置的数据的版本号
-            try {
-                JSONObject jobj = new JSONObject(data);
-                if (jobj.has(Constant.AD_SDK_JSON_VER)) {
-                    confVer = jobj.getInt(Constant.AD_SDK_JSON_VER);
-                }
-            } catch (Exception e) {
-            }
-            Log.v(Log.TAG, "confVer : " + confVer + " , pushVer : " + pushVer);
-            useConfig = confVer >= pushVer;
-        } else {
-            // 其他情况使用配置的数据
-            useConfig = true;
-        }
-        Log.iv(Log.TAG, "use " + (useConfig ? "config" : "push") + " data for " + key);
-        return useConfig ? data : pushData;
-    }
-
-    /**
-     * 默认先从insights获取配置的数据，如果数据为空，则使用默认数据
+     * 获取默认数据
      *
      * @param data
      * @param key
      * @return
      */
     private String checkLastData(String data, String key) {
-        if (!isForbidFromInsights(mContext)) {
-            String configText = getStringFromInsights(mContext, key);
-            if (!TextUtils.isEmpty(configText)) {
-                return configText;
-            }
-        }
         return data;
     }
-
-    /**
-     * 禁止从insights获取数据
-     *
-     * @param context
-     * @return
-     */
-    private boolean isForbidFromInsights(Context context) {
-        AdSwitch adSwitch = getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isForbidFromInsights();
-        }
-        return false;
-    }
-
-    /**
-     * 从insights获取配置的数据
-     *
-     * @param context
-     * @param key
-     * @return
-     */
-    private String getStringFromInsights(Context context, String key) {
-        if (!mHasInsightsSdk) {
-            Log.iv(Log.TAG, "get string from insights not found : " + INSIGHTS_SDK);
-            return null;
-        }
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName(INSIGHTS_SDK);
-            Method method = clazz.getMethod(INSIGHTS_METHOD, Context.class, String.class);
-            return (String) method.invoke(null, context, key);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv("--Insights--", "InsightsSDK get string error : " + error);
-        }
-        return null;
-    }
-
-    /**
-     * 判断是否有InsightSdk存在
-     *
-     * @return
-     */
-    private boolean hasInsightSdk() {
-        try {
-            Class.forName(INSIGHTS_SDK);
-            return true;
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return false;
-    }
-
-    private static final String INSIGHTS_SDK = "we.studio.insights.InsightsSDK";
-    private static final String INSIGHTS_METHOD = "getLatestConfig";
-    private boolean mHasInsightsSdk = false;
 }

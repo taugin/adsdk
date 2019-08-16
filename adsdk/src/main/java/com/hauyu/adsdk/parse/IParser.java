@@ -1,10 +1,10 @@
 package com.hauyu.adsdk.parse;
 
+import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.config.AtConfig;
-import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.config.CtConfig;
 import com.hauyu.adsdk.config.GtConfig;
 import com.hauyu.adsdk.config.HtConfig;

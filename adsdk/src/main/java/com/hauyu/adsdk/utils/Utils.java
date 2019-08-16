@@ -21,7 +21,6 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.log.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
