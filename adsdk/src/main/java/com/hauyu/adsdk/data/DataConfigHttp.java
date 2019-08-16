@@ -1,8 +1,9 @@
-package com.hauyu.adsdk.core;
+package com.hauyu.adsdk.data;
 
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.hauyu.adsdk.core.BaseRequest;
 import com.hauyu.adsdk.http.Http;
 import com.hauyu.adsdk.http.OnStringCallback;
 import com.hauyu.adsdk.log.Log;
@@ -12,13 +13,13 @@ import com.hauyu.adsdk.log.Log;
  * Created by Administrator on 2018/2/12.
  */
 
-public class HttpDataRequest extends BaseRequest {
+public class DataConfigHttp extends BaseRequest {
 
     private Context mContext;
     private String mUrl;
     private String mContent;
 
-    public HttpDataRequest(Context context) {
+    public DataConfigHttp(Context context) {
         mContext = context;
     }
 

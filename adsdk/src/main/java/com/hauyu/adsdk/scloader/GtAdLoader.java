@@ -12,7 +12,7 @@ import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.policy.GtPolicy;
-import com.hauyu.adsdk.stat.StatImpl;
+import com.hauyu.adsdk.stat.EventImpl;
 
 import java.util.Random;
 
@@ -90,14 +90,14 @@ public class GtAdLoader extends BaseLoader {
             }
             Log.iv(Log.TAG, "");
             String outerPidName = getNextPidName();
-            StatImpl.get().reportAdOuterRequest(mContext, GtPolicy.get(mContext).getType(), outerPidName);
+            EventImpl.get().reportAdOuterRequest(mContext, GtPolicy.get(mContext).getType(), outerPidName);
             GtPolicy.get(mContext).setLoading(true);
             mAdSdk.loadComplexAds(outerPidName, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).setLoading(false);
-                    StatImpl.get().reportAdOuterLoaded(mContext, GtPolicy.get(mContext).getType(), pidName);
+                    EventImpl.get().reportAdOuterLoaded(mContext, GtPolicy.get(mContext).getType(), pidName);
                     if (GtPolicy.get(mContext).isGtAllowed()) {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
                             AdSdk.get(mContext).showComplexAds(pidName, null);
@@ -110,9 +110,9 @@ public class GtAdLoader extends BaseLoader {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }
                         }
-                        StatImpl.get().reportAdOuterCallShow(mContext, GtPolicy.get(mContext).getType(), pidName);
+                        EventImpl.get().reportAdOuterCallShow(mContext, GtPolicy.get(mContext).getType(), pidName);
                     } else {
-                        StatImpl.get().reportAdOuterDisallow(mContext, GtPolicy.get(mContext).getType(), pidName);
+                        EventImpl.get().reportAdOuterDisallow(mContext, GtPolicy.get(mContext).getType(), pidName);
                     }
                 }
 
@@ -132,7 +132,7 @@ public class GtAdLoader extends BaseLoader {
                 public void onShow(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).reportShowing(true);
-                    StatImpl.get().reportAdOuterShowing(mContext, GtPolicy.get(mContext).getType(), pidName);
+                    EventImpl.get().reportAdOuterShowing(mContext, GtPolicy.get(mContext).getType(), pidName);
                 }
 
                 @Override

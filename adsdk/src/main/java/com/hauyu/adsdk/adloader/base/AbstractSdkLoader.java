@@ -18,8 +18,8 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Params;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.data.DataManager;
-import com.hauyu.adsdk.stat.IStat;
-import com.hauyu.adsdk.stat.StatImpl;
+import com.hauyu.adsdk.stat.EventImpl;
+import com.hauyu.adsdk.stat.IEvent;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Map;
@@ -53,7 +53,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private Handler mHandler = null;
     private long mRequestTime = 0;
     private int mBannerSize = Constant.NOSET;
-    private IStat mStat;
+    private IEvent mStat;
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -63,7 +63,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     @Override
     public void init(Context context) {
         mContext = context;
-        mStat = StatImpl.get();
+        mStat = EventImpl.get();
         mHandler = new Handler(this);
     }
 

@@ -20,8 +20,6 @@ import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.parse.AdParser;
 import com.hauyu.adsdk.listener.IParseListener;
 import com.hauyu.adsdk.parse.IParser;
-import com.hauyu.adsdk.core.IDataRequest;
-import com.hauyu.adsdk.core.RemoteConfigRequest;
 import com.hauyu.adsdk.utils.Utils;
 
 import org.json.JSONObject;
@@ -77,7 +75,7 @@ public class DataManager implements Runnable {
     public void init() {
         parseLocalData();
         if (mDataRequest == null) {
-            mDataRequest = new RemoteConfigRequest(mContext);
+            mDataRequest = new DataConfigRemote(mContext);
         }
         if (mHandler != null) {
             mHandler.removeCallbacks(this);

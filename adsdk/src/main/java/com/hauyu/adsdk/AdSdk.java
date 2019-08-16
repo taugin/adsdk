@@ -23,7 +23,7 @@ import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.data.DataManager;
-import com.hauyu.adsdk.stat.StatImpl;
+import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.lang.ref.WeakReference;
@@ -92,10 +92,10 @@ public class AdSdk {
      * 初始化
      */
     public void init() {
-        Log.v(Log.TAG, "adver : " + getSdkVersion());
+        Log.v(Log.TAG, "sdk version : " + getSdkVersion());
         DataManager.get(mContext).init();
         ActivityMonitor.get(mContext).init();
-        StatImpl.get().init();
+        EventImpl.get().init();
         AdReceiver.get(mContext).init();
         GtAdLoader.get(mContext).init(this);
         StAdLoader.get(mContext).init(this);

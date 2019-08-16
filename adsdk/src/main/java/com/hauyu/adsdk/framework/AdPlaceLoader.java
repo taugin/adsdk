@@ -29,8 +29,8 @@ import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.policy.AdPolicy;
+import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.stat.InternalStat;
-import com.hauyu.adsdk.stat.StatImpl;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.lang.ref.WeakReference;
@@ -2214,11 +2214,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         if (mAdPlace != null && !TextUtils.isEmpty(mAdPlace.getName())) {
             if (seqState == SeqState.REQUEST) {
-                StatImpl.get().reportAdPlaceSeqRequest(mContext, mAdPlace.getName());
+                EventImpl.get().reportAdPlaceSeqRequest(mContext, mAdPlace.getName());
             } else if (seqState == SeqState.LOADED) {
-                StatImpl.get().reportAdPlaceSeqLoaded(mContext, mAdPlace.getName());
+                EventImpl.get().reportAdPlaceSeqLoaded(mContext, mAdPlace.getName());
             } else if (seqState == SeqState.ERROR) {
-                StatImpl.get().reportAdPlaceSeqError(mContext, mAdPlace.getName());
+                EventImpl.get().reportAdPlaceSeqError(mContext, mAdPlace.getName());
             }
         }
     }

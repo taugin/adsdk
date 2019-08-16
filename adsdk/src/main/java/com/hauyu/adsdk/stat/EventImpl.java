@@ -7,82 +7,53 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.config.AdSwitch;
-import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.data.DataManager;
+import com.hauyu.adsdk.log.Log;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Created by Administrator on 2018/3/20.
  */
 
-public class StatImpl implements IStat {
+public class EventImpl implements IEvent {
 
-    private static final String ALIAS_PROPERTIES_FILE = "e_alias_pro";
+    private static EventImpl sEventImpl;
 
-    private static StatImpl sStatImpl;
-
-    private Properties mEventIdAlias;
     private Object mFacebookObject = null;
-    private boolean mHasAnchorSdk = false;
 
-    public static StatImpl get() {
-        synchronized (StatImpl.class) {
-            if (sStatImpl == null) {
+    public static EventImpl get() {
+        synchronized (EventImpl.class) {
+            if (sEventImpl == null) {
                 createInstance();
             }
         }
-        return sStatImpl;
+        return sEventImpl;
     }
 
     private static void createInstance() {
-        synchronized (StatImpl.class) {
-            if (sStatImpl == null) {
-                sStatImpl = new StatImpl();
+        synchronized (EventImpl.class) {
+            if (sEventImpl == null) {
+                sEventImpl = new EventImpl();
             }
         }
     }
 
-    private StatImpl() {
-        mHasAnchorSdk = hasAnchorSdk();
-        Log.iv(Log.TAG, "hasAnchorSdk : " + mHasAnchorSdk);
+    private EventImpl() {
     }
 
     public void init() {
     }
 
     private String generateEventIdAlias(Context context, String eventId) {
-        if (TextUtils.isEmpty(eventId)) {
-            return eventId;
-        }
-        if (mEventIdAlias == null) {
-            synchronized (this) {
-                if (mEventIdAlias == null) {
-                    try {
-                        mEventIdAlias = new Properties();
-                        mEventIdAlias.load(context.getAssets().open(ALIAS_PROPERTIES_FILE));
-                    } catch (Exception e) {
-                        Log.e(Log.TAG, "error : " + e);
-                    }
-                }
-            }
-        }
-        String aliasEventId = eventId;
-        if (mEventIdAlias != null) {
-            aliasEventId = mEventIdAlias.getProperty(eventId);
-            if (TextUtils.isEmpty(aliasEventId)) {
-                aliasEventId = eventId;
-            }
-        }
-        return aliasEventId;
+        return eventId;
     }
 
     private boolean checkArgument(Context context, String pidName, String sdk, String type) {
         if (context == null || TextUtils.isEmpty(pidName) || TextUtils.isEmpty(sdk) || TextUtils.isEmpty(type)) {
-            Log.e(Log.TAG, "context or pidname or sdk or type all must not be empty or null");
+            Log.e(Log.TAG, "context == null or pidname == null or sdk == null or type all must not be empty or null");
             return false;
         }
         return true;
@@ -107,7 +78,7 @@ public class StatImpl implements IStat {
      * @param extra
      */
     private void sendFirebaseAnalytics(Context context, String value, String eventId, Map<String, String> extra) {
-        Log.d(Log.TAG, "StatImpl Firebase Analytics");
+        Log.d(Log.TAG, "EventImpl Firebase Analytics");
         Bundle bundle = new Bundle();
         if (!TextUtils.isEmpty(value)) {
             bundle.putString("entry_point", value);
@@ -137,7 +108,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl Firebase error : " + error);
+            Log.v(Log.TAG, "EventImpl Firebase error : " + error);
         }
     }
 
@@ -150,7 +121,7 @@ public class StatImpl implements IStat {
      * @param extra
      */
     private void sendUmeng(Context context, String value, String eventId, Map<String, String> extra) {
-        Log.d(Log.TAG, "StatImpl sendUmeng Analytics");
+        Log.d(Log.TAG, "EventImpl sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
@@ -177,7 +148,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl sendUmeng error : " + error);
+            Log.v(Log.TAG, "EventImpl sendUmeng error : " + error);
         }
     }
 
@@ -193,7 +164,7 @@ public class StatImpl implements IStat {
         if (!isReportUmeng(context)) {
             return;
         }
-        Log.d(Log.TAG, "StatImpl sendUmeng Analytics");
+        Log.d(Log.TAG, "EventImpl sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, String> entry : extra.entrySet()) {
@@ -215,47 +186,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl sendUmengEventValue error : " + error);
-        }
-    }
-
-    /**
-     * 发送appsflyer统计事件
-     *
-     * @param context
-     * @param value
-     * @param eventId
-     * @param extra
-     */
-    private void sendAppsflyer(Context context, String value, String eventId, Map<String, String> extra) {
-        Log.d(Log.TAG, "StatImpl sendAppsflyer Analytics");
-        Map<String, Object> eventValue = new HashMap<String, Object>();
-        if (!TextUtils.isEmpty(value)) {
-            eventValue.put("entry_point", value);
-        }
-        if (extra != null && !extra.isEmpty()) {
-            for (Map.Entry<String, String> entry : extra.entrySet()) {
-                if (entry != null) {
-                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
-                        eventValue.put(entry.getKey(), entry.getValue());
-                    }
-                }
-            }
-        }
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.appsflyer.AppsFlyerLib");
-            Method method = clazz.getMethod("getInstance");
-            Object instance = method.invoke(null);
-            method = clazz.getMethod("trackEvent", Context.class, String.class, Map.class);
-            method.invoke(instance, context, eventId, eventValue);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl sendAppsflyer error : " + error);
+            Log.v(Log.TAG, "EventImpl sendUmengEventValue error : " + error);
         }
     }
 
@@ -274,7 +205,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl initFacebook error : " + error);
+            Log.v(Log.TAG, "EventImpl initFacebook error : " + error);
         }
     }
 
@@ -311,7 +242,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl sendFacebook error : " + error);
+            Log.v(Log.TAG, "EventImpl sendFacebook error : " + error);
         }
     }
 
@@ -327,12 +258,10 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, pidName, eventId, extra);
         }
-        // sendAppsflyer(context, pidName, eventId, extra);
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_REQUEST, ecpm, sdk, pid, type, pidName);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -351,8 +280,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_FILL, ecpm, sdk, pid, type, pidName);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -367,14 +295,10 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, pidName, eventId, extra);
         }
-        if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, pidName, eventId, extra);
-        }
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_SHOW, ecpm, sdk, pid, type, pidName);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -389,14 +313,10 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, pidName, eventId, extra);
         }
-        if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, pidName, eventId, extra);
-        }
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_IMP, ecpm, sdk, pid, type, pidName);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -411,14 +331,10 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, pidName, eventId, extra);
         }
-        if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, pidName, eventId, extra);
-        }
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_CLICK, ecpm, sdk, pid, type, pidName);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -433,14 +349,10 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, pidName, eventId, extra);
         }
-        if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, pidName, eventId, extra);
-        }
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_REWARD, ecpm, sdk, pid, type, pidName);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -459,12 +371,10 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, pidName, eventId, extra);
         }
-        // sendAppsflyer(context, pidName, eventId, extra);
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_ERROR, ecpm, sdk, pid, type, pidName);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -479,14 +389,10 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, pidName, eventId, extra);
         }
-        if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, pidName, eventId, extra);
-        }
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
-        reportADEvent(context, METHOD_REPORT_AD_CLOSE, ecpm, sdk, pid, type, pidName);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     private String generateAdOuterKey(String adOuterType, String op) {
@@ -506,13 +412,10 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, pidName, eventId, null);
         }
-        if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, pidName, eventId, null);
-        }
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, null);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId);
     }
 
     @Override
@@ -528,13 +431,10 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, pidName, eventId, null);
         }
-        if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, pidName, eventId, null);
-        }
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, null);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId);
     }
 
     @Override
@@ -550,13 +450,10 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, pidName, eventId, null);
         }
-        if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, pidName, eventId, null);
-        }
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, null);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId);
     }
 
     @Override
@@ -572,13 +469,10 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, pidName, eventId, null);
         }
-        if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, pidName, eventId, null);
-        }
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, null);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId);
     }
 
     @Override
@@ -594,13 +488,10 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, pidName, eventId, null);
         }
-        if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, pidName, eventId, null);
-        }
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, null);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId);
     }
 
     @Override
@@ -620,7 +511,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, value, eventId, null);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + ", times : " + times);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + ", times : " + times);
     }
 
     @Override
@@ -642,7 +533,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, null, eventId, map);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
     }
 
     @Override
@@ -665,7 +556,7 @@ public class StatImpl implements IStat {
         if (isReportFacebook(context)) {
             sendFacebook(context, null, eventId, map);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
     }
 
     @Override
@@ -680,31 +571,22 @@ public class StatImpl implements IStat {
         if (isReportUmeng(context)) {
             sendUmeng(context, value, eventId, null);
         }
-        if (isReportAppsflyer(context)) {
-            sendAppsflyer(context, value, eventId, null);
-        }
         if (isReportFacebook(context)) {
             sendFacebook(context, value, eventId, null);
         }
-        Log.iv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + value);
+        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + value);
     }
 
     @Override
     public void reportAdPlaceSeqRequest(Context context, String pidName) {
-        reportADTrigger(context, pidName, START);
-        Log.iv(Log.TAG, "StatImpl stat seq request : " + pidName);
     }
 
     @Override
     public void reportAdPlaceSeqLoaded(Context context, String pidName) {
-        reportADTrigger(context, pidName, SUCCESS);
-        Log.iv(Log.TAG, "StatImpl stat seq loaded : " + pidName);
     }
 
     @Override
     public void reportAdPlaceSeqError(Context context, String pidName) {
-        reportADTrigger(context, pidName, FAILED);
-        Log.iv(Log.TAG, "StatImpl stat seq error : " + pidName);
     }
 
     private boolean isReportError(Context context) {
@@ -736,15 +618,7 @@ public class StatImpl implements IStat {
         if (adSwitch != null) {
             return adSwitch.isReportFirebase();
         }
-        return !mHasAnchorSdk;
-    }
-
-    private boolean isReportAppsflyer(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportAppsflyer();
-        }
-        return !mHasAnchorSdk;
+        return true;
     }
 
     private boolean isReportFacebook(Context context) {
@@ -786,76 +660,5 @@ public class StatImpl implements IStat {
         } catch (Error e) {
         }
         return extra;
-    }
-
-    // =============================================================================================
-    public static final String METHOD_REPORT_AD_REQUEST = "reportADRequest";
-    public static final String METHOD_REPORT_AD_FILL = "reportADFill";
-    public static final String METHOD_REPORT_AD_SHOW = "reportADShow";
-    public static final String METHOD_REPORT_AD_IMP = "reportADImp";
-    public static final String METHOD_REPORT_AD_REWARD = "reportADReward";
-    public static final String METHOD_REPORT_AD_CLOSE = "reportADClose";
-    public static final String METHOD_REPORT_AD_CLICK = "reportADClick";
-    public static final String METHOD_REPORT_AD_ERROR = "reportADError";
-
-    public static final String START = "start";
-    public static final String SUCCESS = "success";
-    public static final String FAILED = "failed";
-
-    private static final String ANCHOR_SDK = "we.studio.anchor.AnchorSDK";
-    private static final String ANCHOR_REPORT_AD_TRIGGER = "reportADTrigger";
-
-    public void reportADEvent(Context context, String methodName, String eCpm, String sdkName, String pid, String type, String description) {
-        if (!mHasAnchorSdk) {
-            Log.iv(Log.TAG, "report ad event not found : " + ANCHOR_SDK);
-            return;
-        }
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName(ANCHOR_SDK);
-            Method method = clazz.getMethod(methodName, Context.class, String.class, String.class, String.class, String.class, String.class);
-            method.invoke(null, context, eCpm, sdkName, pid, type, description);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv("--Anchor--", "AnchorImpl send event error : " + error);
-        }
-    }
-
-    public void reportADTrigger(Context context, String description, String result) {
-        if (!mHasAnchorSdk) {
-            Log.iv(Log.TAG, "report ad event not found : " + ANCHOR_SDK);
-            return;
-        }
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName(ANCHOR_SDK);
-            Method method = clazz.getMethod(ANCHOR_REPORT_AD_TRIGGER, Context.class, String.class, String.class);
-            method.invoke(null, context, description, result);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv("--Anchor--", "AnchorImpl send event error : " + error);
-        }
-    }
-
-    /**
-     * 判断是否有AnchorSDK存在
-     * @return
-     */
-    private boolean hasAnchorSdk() {
-        try {
-            Class.forName(ANCHOR_SDK);
-            return true;
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return false;
     }
 }

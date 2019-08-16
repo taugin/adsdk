@@ -1,5 +1,7 @@
 package com.hauyu.adsdk.core;
 
+import com.hauyu.adsdk.data.IDataRequest;
+
 /**
  * Created by Administrator on 2019-8-16.
  */

@@ -12,7 +12,7 @@ import com.hauyu.adsdk.framework.ActivityMonitor;
 import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.policy.AttrChecker;
-import com.hauyu.adsdk.stat.StatImpl;
+import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Date;
@@ -225,7 +225,7 @@ public class BasePolicy implements Handler.Callback {
     }
 
     private void reportShowTimesOneday(Context context, int times) {
-        StatImpl.get().reportAdOuterShowTimes(mContext, getType(), times);
+        EventImpl.get().reportAdOuterShowTimes(mContext, getType(), times);
     }
 
     /**

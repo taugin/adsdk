@@ -83,7 +83,7 @@ import com.hauyu.adsdk.policy.GtPolicy;
 import com.hauyu.adsdk.policy.HtPolicy;
 import com.hauyu.adsdk.policy.LtPolicy;
 import com.hauyu.adsdk.policy.StPolicy;
-import com.hauyu.adsdk.stat.StatImpl;
+import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.text.SimpleDateFormat;
@@ -495,7 +495,7 @@ public class GFAPSD extends Activity {
             @Override
             public boolean onDown(MotionEvent e) {
                 finishActivityWithDelay();
-                StatImpl.get().reportFinishFSA(getBaseContext(), "close_fsa_byuser", "touch");
+                EventImpl.get().reportFinishFSA(getBaseContext(), "close_fsa_byuser", "touch");
                 return super.onDown(e);
             }
         });
@@ -535,7 +535,7 @@ public class GFAPSD extends Activity {
         if ((Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
                 || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType))
                 && !Constant.AD_SDK_SPREAD.equals(mSource)) {
-            StatImpl.get().reportFinishFSA(this, "close_fsa_byuser", "backpressed");
+            EventImpl.get().reportFinishFSA(this, "close_fsa_byuser", "backpressed");
         }
     }
 

@@ -8,7 +8,7 @@ import java.util.Map;
  * Created by Administrator on 2018/2/9.
  */
 
-public interface IStat {
+public interface IEvent {
     /**
      * 广告请求
      * @param context

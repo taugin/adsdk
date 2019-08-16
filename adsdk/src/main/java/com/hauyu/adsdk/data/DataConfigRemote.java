@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.core;
+package com.hauyu.adsdk.data;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.core.BaseRequest;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -24,12 +25,12 @@ import java.util.TimeZone;
  */
 
 @SuppressWarnings("unchecked")
-public class RemoteConfigRequest extends BaseRequest implements OnCompleteListener {
+public class DataConfigRemote extends BaseRequest implements OnCompleteListener {
 
     private static final long CACHE_EXPIRETIME = Long.parseLong("900");
     private static final long REFRESH_INTERVAL = Long.parseLong("900000");
     private static final String PREF_REFRESH_INTERVAL = "pref_refresh_interval";
-    private static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_remote_config_request_time";
+    private static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_data_config_rtime";
     private static final SimpleDateFormat SDF_LEFT_TIME = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private static List<String> REFRESH_INTERVALS;
 
@@ -45,7 +46,7 @@ public class RemoteConfigRequest extends BaseRequest implements OnCompleteListen
         REFRESH_INTERVALS.add("1800000");
     }
 
-    public RemoteConfigRequest(Context context) {
+    public DataConfigRemote(Context context) {
         mContext = context;
         ensureFirebase();
         updateRefreshInterval();

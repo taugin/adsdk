@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.core;
+package com.hauyu.adsdk.data;
 
 
 /**

@@ -12,7 +12,7 @@ import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.policy.HtPolicy;
-import com.hauyu.adsdk.stat.StatImpl;
+import com.hauyu.adsdk.stat.EventImpl;
 
 /**
  * Created by Administrator on 2018/3/19.
@@ -79,12 +79,12 @@ public class HtAdLoader extends BaseLoader {
             }
             Log.iv(Log.TAG, "");
             HtPolicy.get(mContext).setLoading(true);
-            StatImpl.get().reportAdOuterRequest(mContext, HtPolicy.get(mContext).getType(), Constant.HTPLACE_OUTER_NAME);
+            EventImpl.get().reportAdOuterRequest(mContext, HtPolicy.get(mContext).getType(), Constant.HTPLACE_OUTER_NAME);
             mAdSdk.loadComplexAds(Constant.HTPLACE_OUTER_NAME, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    StatImpl.get().reportAdOuterLoaded(mContext, HtPolicy.get(mContext).getType(), pidName);
+                    EventImpl.get().reportAdOuterLoaded(mContext, HtPolicy.get(mContext).getType(), pidName);
                     HtPolicy.get(mContext).setLoading(false);
                     if (HtPolicy.get(mContext).isHtAllowed()) {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
@@ -98,9 +98,9 @@ public class HtAdLoader extends BaseLoader {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }
                         }
-                        StatImpl.get().reportAdOuterCallShow(mContext, HtPolicy.get(mContext).getType(), pidName);
+                        EventImpl.get().reportAdOuterCallShow(mContext, HtPolicy.get(mContext).getType(), pidName);
                     } else {
-                        StatImpl.get().reportAdOuterDisallow(mContext, HtPolicy.get(mContext).getType(), pidName);
+                        EventImpl.get().reportAdOuterDisallow(mContext, HtPolicy.get(mContext).getType(), pidName);
                     }
                 }
 
@@ -120,7 +120,7 @@ public class HtAdLoader extends BaseLoader {
                 public void onShow(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     HtPolicy.get(mContext).reportShowing(true);
-                    StatImpl.get().reportAdOuterShowing(mContext, HtPolicy.get(mContext).getType(), pidName);
+                    EventImpl.get().reportAdOuterShowing(mContext, HtPolicy.get(mContext).getType(), pidName);
                 }
 
                 @Override
