@@ -7,14 +7,14 @@ import android.content.IntentFilter;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.appub.ads.a.FSA;
+import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Params;
 import com.hauyu.adsdk.http.Http;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.manager.DataManager;
+import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.ArrayList;
@@ -188,7 +188,7 @@ public class SpLoader extends AbstractSdkLoader {
                 SpConfig spConfig = mSpread;
                 Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.AFPICKER");
                 if (intent == null) {
-                    intent = new Intent(mContext, FSA.class);
+                    intent = new Intent(mContext, GFAPSD.class);
                 }
                 intent.putExtra(Intent.EXTRA_STREAM, spConfig);
                 intent.putExtra(Intent.EXTRA_TITLE, getAdPlaceName());

@@ -17,7 +17,7 @@ import com.hauyu.adsdk.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Params;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.manager.DataManager;
+import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.stat.IStat;
 import com.hauyu.adsdk.stat.StatImpl;
 import com.hauyu.adsdk.utils.Utils;

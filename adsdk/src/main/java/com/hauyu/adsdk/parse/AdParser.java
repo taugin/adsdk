@@ -11,7 +11,7 @@ import com.hauyu.adsdk.config.PidConfig;
 import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.config.StConfig;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.framework.Aes;
+import com.hauyu.adsdk.core.Aes;
 import com.hauyu.adsdk.listener.IParseListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;

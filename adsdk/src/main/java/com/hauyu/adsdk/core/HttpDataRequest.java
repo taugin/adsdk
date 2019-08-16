@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.request;
+package com.hauyu.adsdk.core;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -12,7 +12,7 @@ import com.hauyu.adsdk.log.Log;
  * Created by Administrator on 2018/2/12.
  */
 
-public class HttpDataRequest implements IDataRequest {
+public class HttpDataRequest extends BaseRequest {
 
     private Context mContext;
     private String mUrl;
@@ -23,7 +23,7 @@ public class HttpDataRequest implements IDataRequest {
     }
 
     @Override
-    public void setAddress(String address) {
+    public void setUrl(String address) {
         mUrl = address;
     }
 
@@ -47,14 +47,5 @@ public class HttpDataRequest implements IDataRequest {
                 mContent = null;
             }
         });
-    }
-
-    @Override
-    public void refresh() {
-    }
-
-    @Override
-    public String getString(String key) {
-        return null;
     }
 }

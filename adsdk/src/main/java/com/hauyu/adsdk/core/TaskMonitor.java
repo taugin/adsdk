@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.framework;
+package com.hauyu.adsdk.core;
 
 import android.content.ComponentName;
 import android.content.Context;

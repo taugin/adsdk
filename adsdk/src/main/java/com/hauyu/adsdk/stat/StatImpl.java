@@ -8,7 +8,7 @@ import android.text.TextUtils;
 
 import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.manager.DataManager;
+import com.hauyu.adsdk.data.DataManager;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;

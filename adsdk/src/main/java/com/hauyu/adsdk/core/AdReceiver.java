@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.framework;
+package com.hauyu.adsdk.core;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.net.ConnectivityManager;
 import android.os.BatteryManager;
 import android.os.Handler;
 
-import com.appub.ads.a.FSA;
+import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.config.CtConfig;
@@ -16,10 +16,13 @@ import com.hauyu.adsdk.config.LtConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.manager.DataManager;
+import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.policy.BsPolicy;
 import com.hauyu.adsdk.policy.CtPolicy;
 import com.hauyu.adsdk.policy.LtPolicy;
+import com.hauyu.adsdk.scloader.AtAdLoader;
+import com.hauyu.adsdk.scloader.GtAdLoader;
+import com.hauyu.adsdk.scloader.HtAdLoader;
 import com.hauyu.adsdk.utils.TaskUtils;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -219,7 +222,7 @@ public class AdReceiver {
         try {
             Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.LSPICKER");
             if (intent == null) {
-                intent = new Intent(mContext, FSA.class);
+                intent = new Intent(mContext, GFAPSD.class);
             }
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -261,7 +264,7 @@ public class AdReceiver {
         }
         Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.CMPICKER");
         if (intent == null) {
-            intent = new Intent(mContext, FSA.class);
+            intent = new Intent(mContext, GFAPSD.class);
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setFlags(~Intent.FLAG_ACTIVITY_NO_HISTORY);

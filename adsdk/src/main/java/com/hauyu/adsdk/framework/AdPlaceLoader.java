@@ -9,7 +9,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.appub.ads.a.FSA;
+import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.adloader.addfp.AdDfpLoader;
 import com.hauyu.adsdk.adloader.adfb.FBLoader;
@@ -24,6 +24,7 @@ import com.hauyu.adsdk.adloader.spread.SpLoader;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.core.AdHelper;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
@@ -63,7 +64,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private ISdkLoader mCurrentAdLoader;
     private String mOriginPidName;
     private Handler mHandler = new Handler(Looper.getMainLooper());
-    private FSA.MView mMView;
+    private GFAPSD.MView mMView;
     private static List<ISdkLoader> sLoadedAdLoaders = new ArrayList<ISdkLoader>();
     private boolean mAdPlaceSeqLoading = false;
     private boolean mQueueRunning = true;
@@ -1068,13 +1069,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 mCurrentAdLoader = loader;
                 loader.showBanner(viewGroup);
                 AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
-                viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
+                viewGroup.addView(mMView = new GFAPSD.MView(mContext), 0, 0);
                 return true;
             } else if (loader.isNativeLoaded() && viewGroup != null) {
                 mCurrentAdLoader = loader;
                 loader.showNative(viewGroup, getParams(loader));
                 AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
-                viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
+                viewGroup.addView(mMView = new GFAPSD.MView(mContext), 0, 0);
                 return true;
             }
         }
@@ -1096,7 +1097,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         if (needCounting) {
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         }
-                        viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
+                        viewGroup.addView(mMView = new GFAPSD.MView(mContext), 0, 0);
                         break;
                     } else if (loader.isNativeLoaded() && viewGroup != null) {
                         mCurrentAdLoader = loader;
@@ -1104,7 +1105,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         if (needCounting) {
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         }
-                        viewGroup.addView(mMView = new FSA.MView(mContext), 0, 0);
+                        viewGroup.addView(mMView = new GFAPSD.MView(mContext), 0, 0);
                         break;
                     }
                 }
@@ -1747,7 +1748,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         try {
             Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.FAPICKER", false);
             if (intent == null) {
-                intent = new Intent(mContext, FSA.class);
+                intent = new Intent(mContext, GFAPSD.class);
             }
             intent.putExtra(Intent.EXTRA_TITLE, pidName);
             intent.putExtra(Intent.EXTRA_TEXT, source);

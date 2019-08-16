@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.manager;
+package com.hauyu.adsdk.data;
 
 import android.content.Context;
 import android.os.Handler;
@@ -20,8 +20,8 @@ import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.parse.AdParser;
 import com.hauyu.adsdk.listener.IParseListener;
 import com.hauyu.adsdk.parse.IParser;
-import com.hauyu.adsdk.request.IDataRequest;
-import com.hauyu.adsdk.request.RemoteConfigRequest;
+import com.hauyu.adsdk.core.IDataRequest;
+import com.hauyu.adsdk.core.RemoteConfigRequest;
 import com.hauyu.adsdk.utils.Utils;
 
 import org.json.JSONObject;

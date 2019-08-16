@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
-import com.appub.ads.a.R;
+import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.config.PidConfig;
 import com.hauyu.adsdk.framework.Params;
 import com.hauyu.adsdk.log.Log;

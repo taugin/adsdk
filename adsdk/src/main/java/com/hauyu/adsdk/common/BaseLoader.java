@@ -7,8 +7,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.AndroidRuntimeException;
 
-import com.appub.ads.a.FSA;
-import com.appub.ads.a.R;
+import com.gekes.fvs.tdsvap.GFAPSD;
+import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.listener.OnTriggerListener;
@@ -102,7 +102,7 @@ public abstract class BaseLoader<Config, Policy> implements OnTriggerListener {
 
             Intent intent = Utils.getIntentByAction(getContext(), getContext().getPackageName() + ".action.AFPICKER");
             if (intent == null) {
-                intent = new Intent(getContext(), FSA.class);
+                intent = new Intent(getContext(), GFAPSD.class);
             }
             intent.putExtra(Intent.EXTRA_TITLE, pidName);
             intent.putExtra(Intent.EXTRA_TEXT, source);

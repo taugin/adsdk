@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.framework;
+package com.hauyu.adsdk.scloader;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -8,9 +8,10 @@ import com.hauyu.adsdk.common.BaseLoader;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AtConfig;
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.core.TaskMonitor;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.manager.DataManager;
+import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.policy.AtPolicy;
 import com.hauyu.adsdk.utils.TaskUtils;
 

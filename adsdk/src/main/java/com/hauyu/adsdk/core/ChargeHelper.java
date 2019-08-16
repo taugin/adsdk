@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.framework;
+package com.hauyu.adsdk.core;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,8 +14,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.appub.ads.a.FSA;
-import com.appub.ads.a.R;
+import com.gekes.fvs.tdsvap.GFAPSD;
+import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
@@ -32,18 +32,18 @@ import java.util.TimerTask;
  * Created by Administrator on 2018-11-21.
  */
 
-public class ChargeWrapper implements View.OnClickListener {
+public class ChargeHelper implements View.OnClickListener {
     private Activity mActivity;
     private ImageView chargeCancel, chargeMore;
-    private FSA.DotProgress speedChargeProgress, continuousChargeProgress;
-    private FSA.BlinkImageView speedBlink, continuousBlink, trickleBlink;
+    private GFAPSD.DotProgress speedChargeProgress, continuousChargeProgress;
+    private GFAPSD.BlinkImageView speedBlink, continuousBlink, trickleBlink;
     private TextView speedText, continuousText, trickleText;
     private TextView timeInfo, batteryLevel;
     private Timer timer;
     private Handler handler = new Handler(Looper.getMainLooper());
     private ViewGroup mAdContainer;
 
-    public ChargeWrapper(Activity activity) {
+    public ChargeHelper(Activity activity) {
         mActivity = activity;
     }
 
@@ -92,7 +92,7 @@ public class ChargeWrapper implements View.OnClickListener {
     private AdParams getParams() {
         AdParams adParams = null;
         try {
-            adParams = ((FSA)mActivity).getCtParams();
+            adParams = ((GFAPSD)mActivity).getCtParams();
         } catch (Exception | Error e) {
         }
         if (adParams == null) {
@@ -121,7 +121,7 @@ public class ChargeWrapper implements View.OnClickListener {
 
     private void onCtShowing(View containerView) {
         try {
-            ((FSA)mActivity).onCtShowing(containerView);
+            ((GFAPSD)mActivity).onCtShowing(containerView);
         } catch (Exception | Error e) {
         }
     }

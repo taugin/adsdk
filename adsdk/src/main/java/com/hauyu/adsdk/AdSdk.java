@@ -5,7 +5,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.appub.ads.a.BuildConfig;
+import com.gekes.fvs.tdsvap.BuildConfig;
 import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.common.BasePolicy;
 import com.hauyu.adsdk.config.AdConfig;
@@ -13,18 +13,16 @@ import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.ActivityMonitor;
 import com.hauyu.adsdk.framework.AdPlaceLoader;
-import com.hauyu.adsdk.framework.AdReceiver;
-import com.hauyu.adsdk.framework.AtAdLoader;
-import com.hauyu.adsdk.framework.GlobalCacheLoader;
-import com.hauyu.adsdk.framework.GtAdLoader;
-import com.hauyu.adsdk.framework.HtAdLoader;
-import com.hauyu.adsdk.framework.StAdLoader;
+import com.hauyu.adsdk.core.AdReceiver;
+import com.hauyu.adsdk.scloader.AtAdLoader;
+import com.hauyu.adsdk.scloader.GtAdLoader;
+import com.hauyu.adsdk.scloader.HtAdLoader;
+import com.hauyu.adsdk.scloader.StAdLoader;
 import com.hauyu.adsdk.listener.IParseListener;
-import com.hauyu.adsdk.listener.OnAdRewardListener;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.manager.DataManager;
+import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.stat.StatImpl;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -103,7 +101,6 @@ public class AdSdk {
         StAdLoader.get(mContext).init(this);
         AtAdLoader.get(mContext).init(this);
         HtAdLoader.get(mContext).init(this);
-        GlobalCacheLoader.get(getFinalContext()).init();
     }
 
     /**
@@ -455,22 +452,6 @@ public class AdSdk {
             // mAdLoaders.remove(pidName);
             loader.destroy();
         }
-    }
-
-    public void showRewardVideo() {
-        GlobalCacheLoader.get(getFinalContext()).showReward();
-    }
-
-    public boolean isRewardLoaded() {
-        return GlobalCacheLoader.get(getFinalContext()).isRewardLoaded();
-    }
-
-    public void registerListener(OnAdRewardListener l) {
-        GlobalCacheLoader.get(getFinalContext()).registerListener(l);
-    }
-
-    public void unregisterListener(OnAdRewardListener l) {
-        GlobalCacheLoader.get(getFinalContext()).unregisterListener(l);
     }
 
     private Context getFinalContext() {

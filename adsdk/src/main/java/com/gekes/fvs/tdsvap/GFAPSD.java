@@ -1,4 +1,4 @@
-package com.appub.ads.a;
+package com.gekes.fvs.tdsvap;
 
 import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
@@ -72,7 +72,7 @@ import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.framework.ChargeWrapper;
+import com.hauyu.adsdk.core.ChargeHelper;
 import com.hauyu.adsdk.http.Http;
 import com.hauyu.adsdk.http.OnImageCallback;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
@@ -93,9 +93,7 @@ import java.util.Date;
  * Created by Administrator on 2018-10-16.
  */
 
-public class FSA extends Activity {
-
-    private static final String NATIVE_TEMPLATE = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=viewport content=\"width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no\"><title>Install Page</title><style>html,body{margin:0;padding:0;height:100%;width:100%}.container{display:flex;flex-direction:column;height:100%}.row-box-1{flex:1}.row-box-2{flex:2}.row-box-3{flex:3}.cover img{width:auto;height:auto;max-width:100%;max-height:200px;clear:both;display:block;margin:auto;}.app{align-self:center;display:flex;flex-direction:column;text-align:center}.app-icon img{width:72px}.app-title{font-size:24px}.app-desc{font-size:16px;color:grey}.app-title,.app-title{padding:12px}.install-box{text-align:center}.install-btn{background:green;margin-bottom:30px}a.install-btn{display:inline-block;width:50%;height:48px;line-height:48px;border-radius:6px;color:white;text-decoration:none}</style></head><body><div class=\"container\"><div class=\"cover\"><img src=\"#COVER_URL#\"alt=\"\" id=\"cover-img\"></div><div class=\"row-box-3 app\"><div class=\"row-box-1\"></div><div class=\"row-box-2 app-icon\"><img src=\"#ICON_URL#\"alt=\"\"></div><div class=\"app-title\">#TITLE#</div><div class=\"app-desc\">#DESC#</div><div class=\"row-box-1\"></div></div></div><script>var coverImg=document.getElementById('cover-img');coverImg.addEventListener('error',function(){this.parentNode.remove(this)},false)</script></body></html>";
+public class GFAPSD extends Activity {
 
     private SpConfig mSpConfig;
     private GestureDetector mGestureDetector;
@@ -107,7 +105,7 @@ public class FSA extends Activity {
     private boolean mInLockView;
     private ViewGroup mLockAdLayout;
     private boolean mInChargeView;
-    private ChargeWrapper mChargeWrapper;
+    private ChargeHelper mChargeHelper;
     private ViewGroup mAdLayout;
     private ImageView mCloseView;
     private TextView mSponsoredView;
@@ -145,8 +143,8 @@ public class FSA extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mChargeWrapper != null) {
-            mChargeWrapper.onResume();
+        if (mChargeHelper != null) {
+            mChargeHelper.onResume();
         }
         closeViewMonitor();
     }
@@ -171,8 +169,8 @@ public class FSA extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (mChargeWrapper != null) {
-            mChargeWrapper.onPause();
+        if (mChargeHelper != null) {
+            mChargeHelper.onPause();
         }
     }
 
@@ -269,8 +267,8 @@ public class FSA extends Activity {
     }
 
     private void ensureChargeWrapper() {
-        if (mChargeWrapper == null) {
-            mChargeWrapper = new ChargeWrapper(this);
+        if (mChargeHelper == null) {
+            mChargeHelper = new ChargeHelper(this);
         }
     }
 
@@ -278,8 +276,8 @@ public class FSA extends Activity {
         updateFullScreenState();
         if (mInChargeView) {
             ensureChargeWrapper();
-            if (mChargeWrapper != null) {
-                mChargeWrapper.showChargeView();
+            if (mChargeHelper != null) {
+                mChargeHelper.showChargeView();
             }
         } else if (isLockView()) {
             hideNavigationBar(this);
@@ -459,7 +457,7 @@ public class FSA extends Activity {
                     LtPolicy.get(this).reportShowing(true);
                 }
             } else {
-                Log.v(Log.TAG, "can not find loader for FSA");
+                Log.v(Log.TAG, "can not find loader for GFAPSD");
                 finishActivityWithDelay();
             }
         }
@@ -582,8 +580,8 @@ public class FSA extends Activity {
         if (Constant.AD_SDK_SPREAD.equals(mSource)) {
             sendBroadcast(new Intent(getPackageName() + ".action.SPDISMISS").setPackage(getPackageName()));
         }
-        if (mChargeWrapper != null) {
-            mChargeWrapper.onDestroy();
+        if (mChargeHelper != null) {
+            mChargeHelper.onDestroy();
         }
         stopTimeUpdate();
     }

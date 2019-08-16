@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.appub.ads.a.R;
+import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;

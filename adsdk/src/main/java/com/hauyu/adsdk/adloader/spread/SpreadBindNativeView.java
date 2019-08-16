@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.appub.ads.a.R;
+import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.config.PidConfig;
 import com.hauyu.adsdk.config.SpConfig;
