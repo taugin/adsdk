@@ -49,7 +49,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/ad_body_bg">
+            android:background="@drawable/cad_body_bg">
 
             <LinearLayout
                 android:id="@+id/native_header_info"
@@ -109,7 +109,7 @@
                             android:layout_marginLeft="14dp"
                             android:layout_toRightOf="@+id/native_title"
                             android:layout_weight="0"
-                            android:background="@drawable/ad_badge_bg_dark"
+                            android:background="@drawable/cad_badge_bg_dark"
                             android:gravity="center"
                             android:paddingBottom="2dp"
                             android:paddingLeft="4dp"
@@ -174,7 +174,7 @@
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/native_action_btn"
-                    style="@style/AdButtonFullStyle"
+                    style="@style/CAdButtonFullStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -182,7 +182,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/ad_button_bg"
+                    android:background="@drawable/cad_button_bg"
                     android:text="Learn More" />
             </FrameLayout>
         </RelativeLayout>

@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
                         android:layout_toRightOf="@+id/native_title"
-                        android:background="@drawable/ad_badge_bg_dark"
+                        android:background="@drawable/cad_badge_bg_dark"
                         android:gravity="center"
                         android:paddingBottom="2dp"
                         android:paddingLeft="4dp"
@@ -148,7 +148,7 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/native_action_btn"
-            style="@style/AdButtonLargeStyle"
+            style="@style/CAdButtonLargeStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

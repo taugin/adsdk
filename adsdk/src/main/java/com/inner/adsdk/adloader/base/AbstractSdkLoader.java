@@ -17,7 +17,7 @@ import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
-import com.inner.adsdk.manager.DataManager;
+import com.inner.adsdk.data.DataManager;
 import com.inner.adsdk.stat.IStat;
 import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;

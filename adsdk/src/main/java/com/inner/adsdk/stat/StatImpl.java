@@ -8,7 +8,7 @@ import android.text.TextUtils;
 
 import com.inner.adsdk.config.AdSwitch;
 import com.inner.adsdk.log.Log;
-import com.inner.adsdk.manager.DataManager;
+import com.inner.adsdk.data.DataManager;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;

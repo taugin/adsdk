@@ -1,4 +1,4 @@
-package com.inner.adsdk.request;
+package com.inner.adsdk.data;
 
 
 /**

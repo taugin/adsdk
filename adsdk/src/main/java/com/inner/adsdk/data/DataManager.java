@@ -1,4 +1,4 @@
-package com.inner.adsdk.manager;
+package com.inner.adsdk.data;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -12,8 +12,6 @@ import com.inner.adsdk.log.Log;
 import com.inner.adsdk.parse.AdParser;
 import com.inner.adsdk.parse.IParseExtra;
 import com.inner.adsdk.parse.IParser;
-import com.inner.adsdk.request.IDataRequest;
-import com.inner.adsdk.request.RConfig;
 import com.inner.adsdk.utils.Utils;
 
 import java.util.Locale;

@@ -16,7 +16,7 @@ import com.inner.adsdk.listener.OnAdRewardListener;
 import com.inner.adsdk.loader.AdReceiver;
 import com.inner.adsdk.loader.GlobalCacheLoader;
 import com.inner.adsdk.log.Log;
-import com.inner.adsdk.manager.DataManager;
+import com.inner.adsdk.data.DataManager;
 import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
 

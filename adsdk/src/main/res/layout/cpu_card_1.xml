@@ -2,13 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#FFFFFFFF">
+    android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/native_native_ad_unit"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:orientation="vertical">
 
@@ -16,7 +15,7 @@
             android:id="@+id/native_cover_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#00000000">
+            android:background="#33000000">
 
             <ImageView
                 android:id="@+id/native_image_cover"
@@ -42,76 +41,68 @@
 
         </android.support.percent.PercentRelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/native_header_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/native_action_layout"
-            android:layout_below="@+id/native_cover_info"
-            android:layout_centerVertical="true"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/native_icon"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginBottom="20dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
                 android:contentDescription="@null"
                 android:visibility="gone" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/native_icon"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/native_icon"
+                android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/native_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_weight="1"
-                        android:layout_marginTop="2dp"
-                        android:maxWidth="240dp"
-                        android:ellipsize="marquee"
-                        android:gravity="center"
-                        android:layout_gravity="center_horizontal"
-                        android:singleLine="false"
-                        android:maxLines="2"
-                        android:text="Charge Master"
-                        android:textColor="@color/primaryColor"
-                        android:textSize="24sp" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left">
 
                     <TextView
                         android:id="@+id/native_sponsored_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:layout_marginLeft="14dp"
-                        android:layout_toRightOf="@+id/native_title"
-                        android:layout_weight="0"
-                        android:background="@drawable/ad_badge_bg_dark"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:background="@drawable/cad_badge_bg_dark"
                         android:gravity="center"
                         android:paddingBottom="2dp"
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
                         android:paddingTop="2dp"
-                        android:singleLine="true"
                         android:text="AD"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="8sp" />
+
+                    <TextView
+                        android:id="@+id/native_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/native_sponsored_label"
+                        android:ellipsize="marquee"
+                        android:gravity="left|top"
+                        android:singleLine="true"
+                        android:text="Charge Master"
+                        android:textColor="@color/primaryColor"
+                        android:textSize="18sp" />
 
                 </RelativeLayout>
 
@@ -119,9 +110,8 @@
                     android:id="@+id/native_sub_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:ellipsize="marquee"
-                    android:gravity="center"
+                    android:gravity="left|top"
                     android:singleLine="true"
                     android:text="sub title"
                     android:textColor="@color/secondaryColor"
@@ -130,10 +120,10 @@
 
                 <TextView
                     android:id="@+id/native_social"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
-                    android:gravity="center"
+                    android:gravity="left|top"
                     android:singleLine="true"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="12sp"
@@ -141,42 +131,31 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/native_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="20dp"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:maxLines="3"
-                android:text="detail"
-                android:textColor="@color/secondaryColor"
-                android:textSize="15sp"
-                android:visibility="gone" />
-        </LinearLayout>
+        </RelativeLayout>
 
-
-        <FrameLayout
-            android:id="@+id/native_action_layout"
+        <TextView
+            android:id="@+id/native_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:ellipsize="marquee"
+            android:gravity="left|center_vertical"
+            android:maxLines="3"
+            android:text="detail"
+            android:textColor="@color/secondaryColor"
+            android:textSize="15sp"
+            android:visibility="gone" />
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/native_action_btn"
-                style="@style/AdButtonFullStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/ad_button_bg"
-                android:text="Learn More" />
-        </FrameLayout>
-    </RelativeLayout>
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/native_action_btn"
+            style="@style/CAdButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Learn More" />
+    </LinearLayout>
 </FrameLayout>

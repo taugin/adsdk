@@ -17,7 +17,7 @@ import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.listener.OnAdRewardListener;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
-import com.inner.adsdk.manager.DataManager;
+import com.inner.adsdk.data.DataManager;
 import com.inner.adsdk.utils.Utils;
 
 import java.lang.ref.WeakReference;

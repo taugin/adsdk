@@ -17,7 +17,7 @@
             android:id="@+id/ad_cm_bglayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ad_cm_bg"
+            android:background="@drawable/cad_cm_bg"
             android:orientation="vertical">
 
             <LinearLayout
@@ -40,7 +40,7 @@
                         android:layout_toLeftOf="@+id/ad_cm_view_cancel"
                         android:background="@android:drawable/list_selector_background"
                         android:padding="8dp"
-                        android:src="@drawable/ad_cm_more" />
+                        android:src="@drawable/cad_cm_more" />
 
                     <ImageView
                         android:id="@+id/ad_cm_view_cancel"
@@ -51,7 +51,7 @@
                         android:layout_marginRight="10dp"
                         android:background="@android:drawable/list_selector_background"
                         android:padding="8dp"
-                        android:src="@drawable/ad_cm_cancel" />
+                        android:src="@drawable/cad_cm_cancel" />
                 </RelativeLayout>
 
                 <TextView
@@ -94,7 +94,7 @@
 
                             <TextView
                                 android:id="@+id/ad_cm_text_speed"
-                                style="@style/AdCMStageTextStyle"
+                                style="@style/CAdCMStageTextStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/ad_cm_speed" />
@@ -112,7 +112,7 @@
 
                             <TextView
                                 android:id="@+id/ad_cm_text_continuous"
-                                style="@style/AdCMStageTextStyle"
+                                style="@style/CAdCMStageTextStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/ad_cm_continuous" />
@@ -132,7 +132,7 @@
 
                             <TextView
                                 android:id="@+id/ad_cm_text_trickle"
-                                style="@style/AdCMStageTextStyle"
+                                style="@style/CAdCMStageTextStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/ad_cm_trickle" />
@@ -153,7 +153,7 @@
                             android:layout_height="23dp"
                             android:layout_marginLeft="34dp"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ad_cm_speed" />
+                            android:src="@drawable/cad_cm_speed" />
 
                         <view
                             android:id="@+id/ad_cm_dot_progress_1"
@@ -169,7 +169,7 @@
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ad_cm_continuous" />
+                            android:src="@drawable/cad_cm_continuous" />
 
                         <view
                             android:id="@+id/ad_cm_dot_progress_2"
@@ -186,7 +186,7 @@
                             android:layout_height="23dp"
                             android:layout_marginRight="34dp"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ad_cm_trickle" />
+                            android:src="@drawable/cad_cm_trickle" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
