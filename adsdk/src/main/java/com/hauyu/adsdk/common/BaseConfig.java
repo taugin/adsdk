@@ -7,6 +7,9 @@ import java.util.List;
  */
 
 public abstract class BaseConfig {
+
+    protected static String CONFIG_SUFFIX = "config";
+
     private boolean enable = false;
     private long upDelay;
     private long interval;

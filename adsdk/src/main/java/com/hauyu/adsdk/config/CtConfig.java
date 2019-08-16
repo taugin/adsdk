@@ -2,7 +2,6 @@ package com.hauyu.adsdk.config;
 
 
 import com.hauyu.adsdk.common.BaseConfig;
-import com.hauyu.adsdk.constant.Constant;
 
 /**
  * Created by Administrator on 2018-8-10.
@@ -10,9 +9,11 @@ import com.hauyu.adsdk.constant.Constant;
 
 public class CtConfig extends BaseConfig {
 
+    public static final String CTPOLICY_NAME = "ct" + CONFIG_SUFFIX;
+
     @Override
     public String getName() {
-        return Constant.CTPOLICY_NAME;
+        return CTPOLICY_NAME;
     }
 
     private long disableInterval;

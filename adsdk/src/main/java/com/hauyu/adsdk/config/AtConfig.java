@@ -2,7 +2,6 @@ package com.hauyu.adsdk.config;
 
 
 import com.hauyu.adsdk.common.BaseConfig;
-import com.hauyu.adsdk.constant.Constant;
 
 import java.util.List;
 
@@ -12,13 +11,15 @@ import java.util.List;
 
 public class AtConfig extends BaseConfig {
 
+    public static final String ATPOLICY_NAME = "at" + CONFIG_SUFFIX;
+
     private List<String> excludes;
 
     private boolean showOnFirstPage;
 
     @Override
     public String getName() {
-        return Constant.ATPOLICY_NAME;
+        return ATPOLICY_NAME;
     }
 
     public List<String> getExcludes() {

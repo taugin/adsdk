@@ -12,9 +12,11 @@ import java.util.Date;
 
 public class LtConfig extends BaseConfig {
 
+    public static final String LTPOLICY_NAME = "lt" + CONFIG_SUFFIX;
+
     @Override
     public String getName() {
-        return Constant.LTPOLICY_NAME;
+        return LTPOLICY_NAME;
     }
 
     @Override

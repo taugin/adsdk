@@ -9,7 +9,7 @@ import com.hauyu.adsdk.config.CtConfig;
 import com.hauyu.adsdk.config.GtConfig;
 import com.hauyu.adsdk.config.HtConfig;
 import com.hauyu.adsdk.config.LtConfig;
-import com.hauyu.adsdk.config.SpConfig;
+import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.config.StConfig;
 import com.hauyu.adsdk.listener.IParseListener;
 
@@ -163,8 +163,6 @@ public interface IParser {
     String REPORT_TIME = "rt";
     // 是否上报友盟
     String REPORT_UMENG = "ru";
-    // 是否上报Appsflyer
-    String REPORT_APPSFLYER = "ra";
     // 是否上报firebase
     String REPORT_FIREBASE = "rf";
     // 是否上报facebook

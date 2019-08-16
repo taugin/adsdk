@@ -12,9 +12,11 @@ import java.util.Date;
 
 public class HtConfig extends BaseConfig {
 
+    public static final String HTPOLICY_NAME = "ht" + CONFIG_SUFFIX;
+
     @Override
     public String getName() {
-        return Constant.HTPOLICY_NAME;
+        return HTPOLICY_NAME;
     }
 
     @Override

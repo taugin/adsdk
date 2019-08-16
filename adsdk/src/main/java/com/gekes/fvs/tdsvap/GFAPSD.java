@@ -70,7 +70,6 @@ import android.widget.TextView;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.config.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.ChargeHelper;
 import com.hauyu.adsdk.http.Http;

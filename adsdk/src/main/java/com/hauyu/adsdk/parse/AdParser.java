@@ -12,7 +12,7 @@ import com.hauyu.adsdk.config.GtConfig;
 import com.hauyu.adsdk.config.HtConfig;
 import com.hauyu.adsdk.config.LtConfig;
 import com.hauyu.adsdk.config.PidConfig;
-import com.hauyu.adsdk.config.SpConfig;
+import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.config.StConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.Aes;
@@ -656,9 +656,6 @@ public class AdParser implements IParser {
             }
             if (jobj.has(REPORT_UMENG)) {
                 adSwitch.setReportUmeng(jobj.getInt(REPORT_UMENG) == 1);
-            }
-            if (jobj.has(REPORT_APPSFLYER)) {
-                adSwitch.setReportAppsflyer(jobj.getInt(REPORT_APPSFLYER) == 1);
             }
             if (jobj.has(REPORT_FIREBASE)) {
                 adSwitch.setReportFirebase(jobj.getInt(REPORT_FIREBASE) == 1);

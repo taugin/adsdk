@@ -13,7 +13,7 @@ import com.hauyu.adsdk.config.CtConfig;
 import com.hauyu.adsdk.config.GtConfig;
 import com.hauyu.adsdk.config.HtConfig;
 import com.hauyu.adsdk.config.LtConfig;
-import com.hauyu.adsdk.config.SpConfig;
+import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.config.StConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.listener.IParseListener;
@@ -165,8 +165,8 @@ public class DataManager implements Runnable {
     }
 
     public GtConfig getRemoteGtPolicy() {
-        String data = getString(Constant.GTPOLICY_NAME);
-        data = checkLastData(data, Constant.GTPOLICY_NAME);
+        String data = getString(GtConfig.GTPOLICY_NAME);
+        data = checkLastData(data, GtConfig.GTPOLICY_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseGtPolicy(data);
         }
@@ -174,8 +174,8 @@ public class DataManager implements Runnable {
     }
 
     public StConfig getRemoteStPolicy() {
-        String data = getString(Constant.STPOLICY_NAME);
-        data = checkLastData(data, Constant.STPOLICY_NAME);
+        String data = getString(StConfig.STPOLICY_NAME);
+        data = checkLastData(data, StConfig.STPOLICY_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseStPolicy(data);
         }
@@ -183,8 +183,8 @@ public class DataManager implements Runnable {
     }
 
     public AtConfig getRemoteAtPolicy() {
-        String data = getString(Constant.ATPOLICY_NAME);
-        data = checkLastData(data, Constant.ATPOLICY_NAME);
+        String data = getString(AtConfig.ATPOLICY_NAME);
+        data = checkLastData(data, AtConfig.ATPOLICY_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseAtPolicy(data);
         }
@@ -192,8 +192,8 @@ public class DataManager implements Runnable {
     }
 
     public LtConfig getRemoteLtPolicy() {
-        String data = getString(Constant.LTPOLICY_NAME);
-        data = checkLastData(data, Constant.LTPOLICY_NAME);
+        String data = getString(LtConfig.LTPOLICY_NAME);
+        data = checkLastData(data, LtConfig.LTPOLICY_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseLtPolicy(data);
         }
@@ -201,8 +201,8 @@ public class DataManager implements Runnable {
     }
 
     public HtConfig getRemoteHtPolicy() {
-        String data = getString(Constant.HTPOLICY_NAME);
-        data = checkLastData(data, Constant.HTPOLICY_NAME);
+        String data = getString(HtConfig.HTPOLICY_NAME);
+        data = checkLastData(data, HtConfig.HTPOLICY_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseHtPolicy(data);
         }
@@ -210,8 +210,8 @@ public class DataManager implements Runnable {
     }
 
     public CtConfig getRemoteCtPolicy() {
-        String data = getString(Constant.CTPOLICY_NAME);
-        data = checkLastData(data, Constant.CTPOLICY_NAME);
+        String data = getString(CtConfig.CTPOLICY_NAME);
+        data = checkLastData(data, CtConfig.CTPOLICY_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseCtPolicy(data);
         }
@@ -254,8 +254,8 @@ public class DataManager implements Runnable {
     }
 
     public List<SpConfig> getRemoteSpread() {
-        String data = getString(Constant.ADSPREAD_NAME);
-        data = checkLastData(data, Constant.ADSPREAD_NAME);
+        String data = getString(SpConfig.ADSPREAD_NAME);
+        data = checkLastData(data, SpConfig.ADSPREAD_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseSpread(data);
         }

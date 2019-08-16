@@ -15,8 +15,6 @@ public class AdSwitch {
     private boolean reportUmeng;
     // 上报Firebase
     private boolean reportFirebase;
-    // 上报Appsflyer
-    private boolean reportAppsflyer;
     // 上报Facebook
     private boolean reportFacebook;
     // gt 与 tt 互斥
@@ -64,14 +62,6 @@ public class AdSwitch {
         this.reportFirebase = reportFirebase;
     }
 
-    public boolean isReportAppsflyer() {
-        return reportAppsflyer;
-    }
-
-    public void setReportAppsflyer(boolean reportAppsflyer) {
-        this.reportAppsflyer = reportAppsflyer;
-    }
-
     public boolean isReportFacebook() {
         return reportFacebook;
     }
@@ -104,7 +94,6 @@ public class AdSwitch {
                 ", rt=" + reportTime +
                 ", ru=" + reportUmeng +
                 ", rf=" + reportFirebase +
-                ", ra=" + reportAppsflyer +
                 ", rfb=" + reportFacebook +
                 '}';
     }

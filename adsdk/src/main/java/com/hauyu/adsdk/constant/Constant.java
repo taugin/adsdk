@@ -78,15 +78,8 @@ public class Constant {
     public static final String HTPLACE_OUTER_NAME = "ht_outer_place";
     public static final String CTPLACE_OUTER_NAME = "ct_outer_place";
     public static final String ADIDS_NAME = "adids";
-    public static final String GTPOLICY_NAME = "gtconfig";
-    public static final String STPOLICY_NAME = "stconfig";
-    public static final String ATPOLICY_NAME = "atconfig";
-    public static final String LTPOLICY_NAME = "ltconfig";
-    public static final String HTPOLICY_NAME = "htconfig";
-    public static final String CTPOLICY_NAME = "ctconfig";
     public static final String ADSWITCH_NAME = "adswitch";
     public static final String ADREFS_NAME = "adrefs";
-    public static final String ADSPREAD_NAME = "spconfig";
     // 配置文件中使用的名字======
 
     public static final String AF_STATUS = "af_status";

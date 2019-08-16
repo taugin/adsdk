@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
-import com.hauyu.adsdk.config.SpConfig;
+import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.framework.Params;

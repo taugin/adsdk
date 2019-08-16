@@ -2,7 +2,6 @@ package com.hauyu.adsdk.config;
 
 
 import com.hauyu.adsdk.common.BaseConfig;
-import com.hauyu.adsdk.constant.Constant;
 
 /**
  * Created by Administrator on 2018-8-10.
@@ -10,9 +9,11 @@ import com.hauyu.adsdk.constant.Constant;
 
 public class StConfig extends BaseConfig {
 
+    public static final String STPOLICY_NAME = "st" + CONFIG_SUFFIX;
+
     @Override
     public String getName() {
-        return Constant.STPOLICY_NAME;
+        return STPOLICY_NAME;
     }
 
     @Override

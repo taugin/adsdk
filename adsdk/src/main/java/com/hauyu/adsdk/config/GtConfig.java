@@ -11,9 +11,11 @@ import java.util.Date;
 
 public class GtConfig extends BaseConfig {
 
+    public static final String GTPOLICY_NAME = "gt" + CONFIG_SUFFIX;
+
     @Override
     public String getName() {
-        return Constant.GTPOLICY_NAME;
+        return GTPOLICY_NAME;
     }
 
     @Override
