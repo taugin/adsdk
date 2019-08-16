@@ -28,6 +28,7 @@ import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.listener.OnAdSdkListener;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
+import com.inner.adsdk.policy.AdPolicy;
 import com.inner.adsdk.stat.InternalStat;
 
 import java.lang.ref.WeakReference;

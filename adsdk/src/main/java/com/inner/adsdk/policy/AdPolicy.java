@@ -1,4 +1,4 @@
-package com.inner.adsdk.framework;
+package com.inner.adsdk.policy;
 
 import android.content.Context;
 import android.text.TextUtils;
