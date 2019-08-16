@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.appub.ads.a.FSA;
+import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
@@ -18,7 +18,7 @@ import com.hauyu.adsdk.listener.SimpleAdSdkListener;
  * Created by Administrator on 2018-10-31.
  */
 
-public class NativeBannerActivity extends FSA {
+public class NativeBannerActivity extends GFAPSD {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
