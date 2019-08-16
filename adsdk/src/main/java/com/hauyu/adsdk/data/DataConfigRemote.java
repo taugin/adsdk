@@ -35,7 +35,7 @@ public class DataConfigRemote extends BaseRequest implements OnCompleteListener 
     private static List<String> REFRESH_INTERVALS;
 
     private Context mContext;
-    private FirebaseRemoteConfig mFirebaseRemoteConfig;
+    private FirebaseRemoteConfig mInstance;
     private Random mRandom = new Random(System.currentTimeMillis());
 
     static {
@@ -65,7 +65,7 @@ public class DataConfigRemote extends BaseRequest implements OnCompleteListener 
         }
         if (task.isSuccessful()) {
             Log.v(Log.TAG, "vconfig complete successfully");
-            mFirebaseRemoteConfig.activateFetched();
+            mInstance.activateFetched();
         } else {
             Log.e(Log.TAG, "error : " + task.getException());
         }
@@ -74,28 +74,36 @@ public class DataConfigRemote extends BaseRequest implements OnCompleteListener 
     @Override
     public void refresh() {
         ensureFirebase();
-        if (mFirebaseRemoteConfig != null) {
-            synchronized (mFirebaseRemoteConfig) {
-                long now = System.currentTimeMillis();
-                long last = Utils.getLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME);
-                boolean needRequest = now - last > getRefreshInterval();
-                long leftTime = getRefreshInterval() - (now - last);
-                if (leftTime > 0) {
-                    SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
-                    Log.iv(Log.TAG, "vconfig time left : " + SDF_LEFT_TIME.format(new Date(leftTime)));
-                } else {
-                    Log.iv(Log.TAG, "vconfig time left : time is not correct");
-                }
-                if (needRequest) {
-                    try {
-                        mFirebaseRemoteConfig.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
-                        Utils.putLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
-                        updateRefreshInterval();
-                    } catch (Exception e) {
-                        Log.e(Log.TAG, "error : " + e);
-                    }
+        if (mInstance != null) {
+            synchronized (mInstance) {
+                if (isNeedRequest()) {
+                    requestConfigData();
                 }
             }
+        }
+    }
+
+    private boolean isNeedRequest() {
+        long now = System.currentTimeMillis();
+        long last = Utils.getLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME);
+        boolean needRequest = now - last > getRefreshInterval();
+        long leftTime = getRefreshInterval() - (now - last);
+        if (leftTime > 0) {
+            SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
+            Log.iv(Log.TAG, "vconfig time left : " + SDF_LEFT_TIME.format(new Date(leftTime)));
+        } else {
+            Log.iv(Log.TAG, "vconfig time left : time is not correct");
+        }
+        return needRequest;
+    }
+
+    private void requestConfigData() {
+        try {
+            mInstance.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
+            Utils.putLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
+            updateRefreshInterval();
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
     }
 
@@ -121,7 +129,7 @@ public class DataConfigRemote extends BaseRequest implements OnCompleteListener 
         String value = readConfigFromAsset(key);
         Log.iv(Log.TAG, "locale config : " + key + " , value : " + value);
         if (TextUtils.isEmpty(value)) {
-            if (mFirebaseRemoteConfig != null) {
+            if (mInstance != null) {
                 String dataWithSuffix = null;
                 String mediaSourceSuffix = getMsSuffix();
                 String attrSuffix = getAfSuffix();
@@ -129,15 +137,15 @@ public class DataConfigRemote extends BaseRequest implements OnCompleteListener 
                 String attrKey = key + attrSuffix;
                 Log.iv(Log.TAG, "media suffix : " + mediaSourceSuffix + " , attr suffix : " + attrSuffix);
                 // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
-                String mediaData = mFirebaseRemoteConfig.getString(mediaSourceKey);
-                String attrData = mFirebaseRemoteConfig.getString(attrKey);
+                String mediaData = mInstance.getString(mediaSourceKey);
+                String attrData = mInstance.getString(attrKey);
                 if (!TextUtils.isEmpty(mediaData)) {
                     dataWithSuffix = mediaData;
                 } else {
                     dataWithSuffix = attrData;
                 }
                 if (TextUtils.isEmpty(dataWithSuffix)) {
-                    value = mFirebaseRemoteConfig.getString(key);
+                    value = mInstance.getString(key);
                 } else {
                     String source = !TextUtils.isEmpty(mediaData) ? getMediaSource() : getAfStatus();
                     Log.iv(Log.TAG, "remote config : " + key + "[" + source + "]");
@@ -199,9 +207,9 @@ public class DataConfigRemote extends BaseRequest implements OnCompleteListener 
     }
 
     private void ensureFirebase() {
-        if (mFirebaseRemoteConfig == null) {
+        if (mInstance == null) {
             try {
-                mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+                mInstance = FirebaseRemoteConfig.getInstance();
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e + "[Should add google-services.json file to root]");
             }
