@@ -34,7 +34,7 @@ public class DataManager implements Runnable {
 
     private static final String DATA_CONFIG_FORMAT = "data_%s";
     private static final String DATA_CONFIG = "cfg_data_config";
-    private static final String PREF_ADSWITCH_MD5 = "pref_adswitch_md5";
+    private static final String PREF_ADSWITCH_FLAG = "pref_adswitch_flag";
     private static final String CONFIG_SUFFIX1 = ".dat";
     private static final String CONFIG_SUFFIX2 = ".json";
     private static DataManager sDataManager;
@@ -95,7 +95,7 @@ public class DataManager implements Runnable {
     private void parseLocalData() {
         String cfgName = getConfigName();
         String defName = getDefaultName();
-        Log.v(Log.TAG, "cfg : " + cfgName + ".[dat/json] , def : " + defName + ".[dat/json]");
+        Log.iv(Log.TAG, "cfg : " + cfgName + ".[dat/json] , def : " + defName + ".[dat/json]");
         if (mLocalAdConfig == null && mParser != null) {
             String data = Utils.readAssets(mContext, cfgName + CONFIG_SUFFIX1);
             if (TextUtils.isEmpty(data)) {
@@ -110,13 +110,13 @@ public class DataManager implements Runnable {
             mLocalAdConfig = mParser.parseAdConfig(data);
             if (mLocalAdConfig != null) {
                 mLocalAdConfig.setAdConfigMd5(Utils.string2MD5(data));
-                Log.v(Log.TAG, "use lo data");
+                Log.v(Log.TAG, "locale data has been set success");
             }
         }
     }
 
     private void parseRemoteData() {
-        Log.v(Log.TAG, "parse re data");
+        Log.iv(Log.TAG, "remote data reading");
         String data = null;
         data = getString(DATA_CONFIG);
         data = checkLastData(data, DATA_CONFIG);
@@ -126,7 +126,7 @@ public class DataManager implements Runnable {
                 mLocalAdConfig = mParser.parseAdConfig(data);
                 if (mLocalAdConfig != null) {
                     mLocalAdConfig.setAdConfigMd5(Utils.string2MD5(data));
-                    Log.v(Log.TAG, "use re data");
+                    Log.iv(Log.TAG, "remote data has been set success");
                 }
             }
         }
@@ -230,11 +230,11 @@ public class DataManager implements Runnable {
     public AdSwitch getAdSwitch() {
         String data = getString(Constant.ADSWITCH_NAME);
         if (!TextUtils.isEmpty(data)) {
-            String oldSwitchMd5 = Utils.getString(mContext, PREF_ADSWITCH_MD5);
+            String oldSwitchMd5 = Utils.getString(mContext, PREF_ADSWITCH_FLAG);
             String newSwitchMd5 = Utils.string2MD5(data);
             if (mAdSwitch == null || !TextUtils.equals(oldSwitchMd5, newSwitchMd5)) {
                 mAdSwitch = mParser.parseAdSwitch(data);
-                Utils.putString(mContext, PREF_ADSWITCH_MD5, newSwitchMd5);
+                Utils.putString(mContext, PREF_ADSWITCH_FLAG, newSwitchMd5);
             }
         }
         if (mAdSwitch == null && mLocalAdConfig != null) {
