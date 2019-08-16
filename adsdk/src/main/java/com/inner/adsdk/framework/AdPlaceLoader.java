@@ -2,7 +2,6 @@ package com.inner.adsdk.framework;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -16,8 +15,6 @@ import com.inner.adsdk.adloader.admob.AdmobLoader;
 import com.inner.adsdk.adloader.adx.AdxLoader;
 import com.inner.adsdk.adloader.applovin.AppLovinLoader;
 import com.inner.adsdk.adloader.base.SimpleAdBaseBaseListener;
-import com.inner.adsdk.adloader.dispio.DisplayIoLoader;
-import com.inner.adsdk.adloader.dspmob.DspMobLoader;
 import com.inner.adsdk.adloader.inmobi.InmobiLoader;
 import com.inner.adsdk.adloader.inneractive.InnerActiveLoader;
 import com.inner.adsdk.adloader.listener.IManagerListener;
@@ -32,7 +29,6 @@ import com.inner.adsdk.listener.OnAdSdkListener;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.stat.InternalStat;
-import com.inner.adsdk.utils.Utils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -185,24 +181,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             }
                         } else if (config.isInnerActive() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new InnerActiveLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
-                            loader.setListenerManager(this);
-                            loader.setAdId(adId);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
-                            }
-                        } else if (config.isDspMob() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new DspMobLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
-                            loader.setListenerManager(this);
-                            loader.setAdId(adId);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
-                            }
-                        } else if (config.isDisplayIo() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new DisplayIoLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);

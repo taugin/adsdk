@@ -13,7 +13,7 @@ import com.inner.adsdk.parse.AdParser;
 import com.inner.adsdk.parse.IParseExtra;
 import com.inner.adsdk.parse.IParser;
 import com.inner.adsdk.request.IDataRequest;
-import com.inner.adsdk.request.RemoteConfigRequest;
+import com.inner.adsdk.request.RConfig;
 import com.inner.adsdk.utils.Utils;
 
 import java.util.Locale;
@@ -60,17 +60,11 @@ public class DataManager {
     public void init() {
         parserLocalData();
         if (mDataRequest == null) {
-            mDataRequest = new RemoteConfigRequest(mContext);
-        }
-        if (mDataRequest != null) {
-            mDataRequest.request();
+            mDataRequest = new RConfig(mContext);
         }
     }
 
     public void refresh() {
-        if (mDataRequest != null) {
-            mDataRequest.refresh();
-        }
     }
 
     private void parserLocalData() {

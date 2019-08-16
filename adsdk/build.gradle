@@ -55,7 +55,6 @@ dependencies {
         exclude group: 'com.google.android.gms'
     }
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
-    implementation 'com.google.firebase:firebase-config:15.0.0'
     implementation 'com.wemob:wemob:2.3.8'
     implementation 'com.applovin:applovin-sdk:8.1.4'
 
@@ -87,16 +86,6 @@ dependencies {
     implementation 'com.inneractive:ia-video-kit:7.2.1'
     // required resources
     implementation 'com.google.code.gson:gson:2.8.1'
-
-    // Dsp
-    implementation "com.we.sdk:exchange:0.1.4"
-    implementation 'com.mopub.mediation:taurus-exchange:0.1.2.0'
-    implementation('com.stanfy:gson-xml-java:0.1.7') {
-        exclude group: 'xmlpull', module: 'xmlpull'
-    }
-
-    // display io
-    implementation 'io.display:android-sdk:2.0.0.10'
 }
 
 // 发布aar
