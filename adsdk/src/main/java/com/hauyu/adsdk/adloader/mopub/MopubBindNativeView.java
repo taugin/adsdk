@@ -57,13 +57,13 @@ public class MopubBindNativeView extends BaseBindNativeView {
     }
 
     private void bindNativeWithCard(Context context, int template, MoPubNative nativeAd, PidConfig pidConfig) {
-        int layoutId = R.layout.native_card_large;
+        int layoutId = R.layout.had_card_large;
         if (template == Constant.NATIVE_CARD_SMALL) {
-            layoutId = R.layout.native_card_small;
+            layoutId = R.layout.had_card_small;
         } else if (template == Constant.NATIVE_CARD_MEDIUM) {
-            layoutId = R.layout.native_card_medium;
+            layoutId = R.layout.had_card_medium;
         } else if (template == Constant.NATIVE_CARD_LARGE) {
-            layoutId = R.layout.native_card_large;
+            layoutId = R.layout.had_card_large;
         } else if (template == Constant.NATIVE_CARD_FULL) {
             layoutId = getFullLayout();
         }

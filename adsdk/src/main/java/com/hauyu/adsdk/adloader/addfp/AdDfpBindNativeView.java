@@ -88,13 +88,13 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
         if (adContainer == null) {
             throw new AndroidRuntimeException("adContainer is null");
         }
-        int layoutId = R.layout.native_card_small;
+        int layoutId = R.layout.had_card_small;
         if (cardId == Constant.NATIVE_CARD_SMALL) {
-            layoutId = R.layout.native_card_small;
+            layoutId = R.layout.had_card_small;
         } else if (cardId == Constant.NATIVE_CARD_MEDIUM) {
-            layoutId = R.layout.native_card_medium;
+            layoutId = R.layout.had_card_medium;
         } else if (cardId == Constant.NATIVE_CARD_LARGE) {
-            layoutId = R.layout.native_card_large;
+            layoutId = R.layout.had_card_large;
         } else if (cardId == Constant.NATIVE_CARD_FULL) {
             layoutId = getFullLayout();
         }

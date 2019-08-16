@@ -55,7 +55,7 @@ public class ChargeHelper implements View.OnClickListener {
             mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                     | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         }
-        mActivity.setContentView(R.layout.native_card_cm);
+        mActivity.setContentView(R.layout.had_card_cm);
         chargeCancel = mActivity.findViewById(R.id.ad_cm_view_cancel);
         chargeCancel.setOnClickListener(this);
         chargeMore = mActivity.findViewById(R.id.ad_cm_view_more);

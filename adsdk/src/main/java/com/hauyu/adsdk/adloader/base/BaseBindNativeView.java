@@ -190,7 +190,7 @@ public class BaseBindNativeView {
     }
 
     protected int getFullLayout() {
-        return mRandom.nextBoolean() ? R.layout.native_card_full : R.layout.native_card_mix;
+        return mRandom.nextBoolean() ? R.layout.had_card_full : R.layout.had_card_mix;
     }
 
     protected boolean isClickable(String view, PidConfig pidConfig) {

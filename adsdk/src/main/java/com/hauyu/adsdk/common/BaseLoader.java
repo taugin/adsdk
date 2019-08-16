@@ -83,7 +83,7 @@ public abstract class BaseLoader<Config, Policy> implements OnTriggerListener {
         builder.setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE);
         builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_MEDIUM_RECTANGLE);
 
-        int layoutId[] = new int[] {R.layout.native_card_full, R.layout.native_card_mix};
+        int layoutId[] = new int[] {R.layout.had_card_full, R.layout.had_card_mix};
 
         builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId[new Random(System.currentTimeMillis()).nextInt(layoutId.length)]);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.native_title);
