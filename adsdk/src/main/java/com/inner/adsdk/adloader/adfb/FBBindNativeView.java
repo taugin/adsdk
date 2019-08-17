@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.appub.ads.a.R;
 import com.facebook.ads.AdOptionsView;
 import com.facebook.ads.MediaView;
 import com.facebook.ads.NativeAd;
@@ -20,6 +19,7 @@ import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
+import com.sub.great.good.R;
 
 import java.util.ArrayList;
 import java.util.List;

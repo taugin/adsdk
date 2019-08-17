@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 
 import com.facebook.ads.AdIconView;
 import com.facebook.ads.MediaView;
-import com.appub.ads.a.R;
 import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
@@ -24,6 +23,7 @@ import com.mopub.nativeads.MediaLayout;
 import com.mopub.nativeads.MediaViewBinder;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.ViewBinder;
+import com.sub.great.good.R;
 
 /**
  * Created by Administrator on 2018/2/11.

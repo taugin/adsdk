@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.appub.ads.a">
+    package="com.sub.great.good">
 
     <uses-sdk android:minSdkVersion="9" />
 

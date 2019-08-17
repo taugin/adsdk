@@ -15,12 +15,12 @@ import com.google.android.gms.ads.formats.MediaView;
 import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAdView;
-import com.appub.ads.a.R;
 import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
+import com.sub.great.good.R;
 
 /**
  * Created by Administrator on 2018/4/26.

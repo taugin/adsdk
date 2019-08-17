@@ -11,13 +11,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.inmobi.ads.InMobiNative;
-import com.appub.ads.a.R;
 import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
 import com.squareup.picasso.Picasso;
+import com.sub.great.good.R;
 
 import java.util.ArrayList;
 import java.util.List;

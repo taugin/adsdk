@@ -6,10 +6,10 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
-import com.appub.ads.a.R;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.utils.Utils;
+import com.sub.great.good.R;
 
 import java.util.Random;
 

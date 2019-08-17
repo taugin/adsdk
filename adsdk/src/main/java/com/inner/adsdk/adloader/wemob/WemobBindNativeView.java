@@ -10,12 +10,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.appub.ads.a.R;
 import com.inner.adsdk.adloader.base.BaseBindNativeView;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
+import com.sub.great.good.R;
 import com.wemob.ads.NativeAd;
 
 import java.util.ArrayList;

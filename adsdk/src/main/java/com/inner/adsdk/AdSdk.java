@@ -5,7 +5,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.appub.ads.a.BuildConfig;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.constant.Constant;
@@ -16,6 +15,7 @@ import com.inner.adsdk.listener.OnAdSdkListener;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
+import com.sub.great.good.BuildConfig;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
