@@ -62,15 +62,15 @@ public class MopubBindNativeView extends BaseBindNativeView {
     }
 
     private void bindNativeWithCard(Context context, int template, MoPubNative nativeAd, PidConfig pidConfig) {
-        int layoutId = R.layout.native_card_large;
+        int layoutId = R.layout.cpu_card_2;
         if (template == Constant.NATIVE_CARD_SMALL) {
-            layoutId = R.layout.native_card_small;
+            layoutId = R.layout.cpu_card_0;
         } else if (template == Constant.NATIVE_CARD_MEDIUM) {
-            layoutId = R.layout.native_card_medium;
+            layoutId = R.layout.cpu_card_1;
         } else if (template == Constant.NATIVE_CARD_LARGE) {
-            layoutId = R.layout.native_card_large;
+            layoutId = R.layout.cpu_card_2;
         } else if (template == Constant.NATIVE_CARD_FULL) {
-            layoutId = R.layout.native_card_full;
+            layoutId = R.layout.cpu_card_3;
         }
         View rootView = LayoutInflater.from(context).inflate(layoutId, null);
         preSetMediaView(rootView, pidConfig);

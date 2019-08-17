@@ -15,12 +15,14 @@ stringfog {
     // fogPackages = ['com.xxx.xxx']
 }
 
+def isSnapshot = true
+
 android {
     compileSdkVersion 26
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionName "1.9.5-pure"
+        versionName "1.9.5-pure" + (isSnapshot ? "-SNAPSHOT" : "")
         consumerProguardFiles 'proguard-rules.pro'
     }
 
@@ -59,14 +61,14 @@ dependencies {
     implementation 'com.applovin:applovin-sdk:8.1.4'
 
     // MoPub
-    implementation('com.mopub:mopub-sdk:5.4.0@aar') {
+    implementation('com.mopub:mopub-sdk:5.7.1@aar') {
         transitive = true
         exclude module: 'libAvid-mopub' // To exclude AVID
         exclude module: 'moat-mobile-app-kit'
         exclude group: 'com.android.support'
         exclude module: 'mopub-sdk-interstitial' // use below com.mopub:mopub-sdk-interstitial:5.4.0-webeye@aar'
     }
-    implementation 'com.mopub:mopub-sdk-interstitial:5.4.0-webeye@aar'
+    implementation 'com.mopub:mopub-sdk-interstitial:5.7.1-webeye@aar'
     implementation 'com.mopub.mediation:admob:15.0.1.0-webeye2'
     implementation 'com.mopub.mediation:facebookaudiencenetwork:5.1.0.1-webeye@aar'
     implementation 'com.mopub.mediation:applovin:8.1.4.0'
@@ -94,13 +96,24 @@ apply plugin: 'maven'
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: uri(rootProject.ext.publishUri))
+            repository(url: isSnapshot ? nexus_url_snapshot : nexus_url) {
+                authentication(userName: nexus_user, password: nexus_password)
+            }
             pom.version = android.defaultConfig.versionName
             pom.artifactId = "adsdk"
             pom.groupId = "com.inner.adsdk"
             pom.name = "inner-adsdk"
             pom.packaging = "aar"
         }
+        /*
+        mavenDeployer {
+            repository(url: uri(rootProject.ext.publishUri))
+            pom.version = android.defaultConfig.versionName
+            pom.artifactId = "adsdk"
+            pom.groupId = "com.inner.adsdk"
+            pom.name = "inner-adsdk"
+            pom.packaging = "aar"
+        }*/
     }
 }
 

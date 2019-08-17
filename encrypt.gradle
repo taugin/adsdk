@@ -2,8 +2,6 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import java.security.MessageDigest
-
-
 /**
  * 首字母转大写
  * @param s
@@ -21,18 +19,26 @@ def toUpperCaseFirstOne(String s) {
 
 try {
     project.rootProject.allprojects.repositories.each {
-        repo->
+        repo ->
             repo.maven {
-                r->
-                    r.url = "https://taugin.gitee.io/werepo"
-            }
-            repo.maven {
-                r->
+                r ->
                     r.url = "http://maven.display.io/"
             }
             repo.maven {
-                r->
+                r ->
                     r.url = "http://dl.appnext.com/"
+            }
+            repo.maven {
+                r ->
+                    r.url = "https://adcolony.bintray.com/AdColony"
+            }
+            repo.maven {
+                r ->
+                    r.url = "https://repo1.maven.org/maven2/"
+            }
+            repo.maven {
+                r ->
+                    r.url = "http://nexus.webeyemobi.com/repository/maven-public/"
             }
     }
 } catch (Exception e) {
@@ -52,6 +58,13 @@ project.afterEvaluate {
                     }
                 })
                 rTask.dependsOn encryptTaskName
+
+                String adFileGenerate = String.format("adFileGenerate%s", productFlavor)
+                project.tasks.create(adFileGenerate, {
+                    doLast {
+                        adFileGenerate(Flavor.name)
+                    }
+                })
             }
             def aTask = project.tasks.findByName("assembleRelease");
             if (aTask != null) {
@@ -77,7 +90,21 @@ project.afterEvaluate {
                 openReleaseDir(null)
             }
         }
+
+        project.tasks.create("adFileGenerate", {
+            doLast {
+                adFileGenerate(null)
+            }
+        })
     }
+}
+
+def getSuffix1() {
+    return ".dat"
+}
+
+def getSuffix2() {
+    return ".json"
 }
 
 def isWindows() {
@@ -141,6 +168,18 @@ def getAssetsOutDir(flavor) {
 }
 
 /**
+ * 生成包名对应的广告配置文件名称
+ * @param flavor
+ * @return
+ */
+def adFileGenerate(flavor) {
+    def appId = getApplicationId(flavor)
+    def pkgnameMd5 = Aes.string2MD5(appId)
+    def adConfigName = "cfg" + pkgnameMd5.substring(0, 8) + ".[dat/json]"
+    println "generateAdFileName : " + adConfigName
+}
+
+/**
  * 获取广告配置文件名称
  * @param assetsDir
  * @param appId
@@ -148,14 +187,23 @@ def getAssetsOutDir(flavor) {
  */
 def getAdConfigFile(assetsDir, appId) {
     def pkgnameMd5 = Aes.string2MD5(appId)
-    def adConfigName = "cfg" + pkgnameMd5.substring(0, 8) + ".dat"
-    def adConfigFile = new File(assetsDir, adConfigName)
-    def adDefaultFile = new File(assetsDir, "data_config.dat")
-    if (adConfigFile.exists()) {
-        return adConfigFile.getAbsolutePath()
+    def adConfigName = "cfg" + pkgnameMd5.substring(0, 8)
+    def adDefaultName = "data_config"
+    def adConfigFile1 = new File(assetsDir, adConfigName + getSuffix1())
+    def adConfigFile2 = new File(assetsDir, adConfigName + getSuffix2())
+    def adDefaultFile1 = new File(assetsDir, adDefaultName + getSuffix1())
+    def adDefaultFile2 = new File(assetsDir, adDefaultName + getSuffix2())
+    if (adConfigFile1.exists()) {
+        return adConfigFile1.getAbsolutePath()
     }
-    if (adDefaultFile.exists()) {
-        return adDefaultFile.getAbsolutePath()
+    if (adConfigFile2.exists()) {
+        return adConfigFile2.getAbsolutePath()
+    }
+    if (adDefaultFile1.exists()) {
+        return adDefaultFile1.getAbsolutePath()
+    }
+    if (adDefaultFile2.exists()) {
+        return adDefaultFile2.getAbsolutePath()
     }
     return null
 }
@@ -211,13 +259,13 @@ def generateSignMd5(flavor, assetDir) {
         def result = cmdString.execute().text.trim()
         BufferedReader br = new BufferedReader(new StringReader(result))
         try {
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 if (line.trim().startsWith("MD5:") || line.trim().startsWith("md5:")) {
                     signMd5 = line.trim().substring("MD5:".length()).trim()
                     break
                 }
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
     }
     if (signMd5 != null && signMd5.trim().length() > 0) {
@@ -242,15 +290,33 @@ def encryptAssetsFiles(flavor) {
         return;
     }
     def signFile = generateSignMd5(flavor, assetDir)
-    def adFile = getAdConfigFile(assetDir, appId);
+    def adFilePath = getAdConfigFile(assetDir, appId);
     def mainTree = getEncryptFileTree(assetDir)
     // println "flavor     : " + flavor
     // println "appId      : " + appId
     // println "secret     : " + secret
     // println "assetDir   : " + assetDir
-    println ":${project.name}:encryptAdFile    [${adFile}]"
+    if (Aes.isJson(adFilePath)) {
+        try {
+            Aes.encryptFile(adFilePath, secret)
+            println ":${project.name}:encryptAdFile    [${adFilePath}]"
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
+    }
     try {
-        Aes.encryptFile(adFile, secret)
+        if (adFilePath != null && adFilePath.endsWith(getSuffix2())) {
+            def adFile = new File(adFilePath)
+            def filePath = adFile.getParent()
+            def fileName = adFile.getName()
+            fileName = fileName.replaceAll(getSuffix2(), getSuffix1())
+            def newAdFile = new File(filePath, fileName)
+            println ":${project.name}:renameAdFile     [${newAdFile}]"
+            if (newAdFile.exists()) {
+                newAdFile.delete()
+            }
+            adFile.renameTo(newAdFile)
+        }
     } catch (Exception e) {
         e.printStackTrace()
     }
@@ -425,6 +491,49 @@ class Aes {
             return true;
         }
         return false;
+    }
+
+    static String readFromStream(InputStream is) {
+        if (is == null) {
+            return null;
+        }
+        try {
+            StringBuilder builder = new StringBuilder();
+            int read = 0;
+            byte[] buf = new byte[1024];
+            while ((read = is.read(buf)) > 0) {
+                builder.append(new String(buf, 0, read));
+            }
+            is.close();
+            return builder.toString();
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
+        return null;
+    }
+
+    static String readLocal(String filePath) {
+        try {
+            InputStream is = new FileInputStream(filePath);
+            return readFromStream(is);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    static boolean isJson(String file) {
+        try {
+            String s = readLocal(file)
+            if (s != null) {
+                s = s.trim()
+            }
+            if (s.startsWith("[") || s.startsWith("{")) {
+                return true
+            }
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
+        return false
     }
 
     static void encryptFile(String originFile, String secret) {

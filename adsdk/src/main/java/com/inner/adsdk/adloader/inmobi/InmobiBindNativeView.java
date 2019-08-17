@@ -88,15 +88,15 @@ public class InmobiBindNativeView extends BaseBindNativeView {
         if (adContainer == null) {
             throw new AndroidRuntimeException("adContainer is null");
         }
-        int layoutId = R.layout.native_card_small;
+        int layoutId = R.layout.cpu_card_0;
         if (cardId == Constant.NATIVE_CARD_SMALL) {
-            layoutId = R.layout.native_card_small;
+            layoutId = R.layout.cpu_card_0;
         } else if (cardId == Constant.NATIVE_CARD_MEDIUM) {
-            layoutId = R.layout.native_card_medium;
+            layoutId = R.layout.cpu_card_1;
         } else if (cardId == Constant.NATIVE_CARD_LARGE) {
-            layoutId = R.layout.native_card_large;
+            layoutId = R.layout.cpu_card_2;
         } else if (cardId == Constant.NATIVE_CARD_FULL) {
-            layoutId = R.layout.native_card_full;
+            layoutId = R.layout.cpu_card_3;
         }
         View rootView = LayoutInflater.from(adContainer.getContext()).inflate(layoutId, null);
         if (rootView == null) {

@@ -62,13 +62,11 @@ public class MainActivity extends AppCompatActivity {
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = this;
         AdSdk.get(mContext).init();
-        AdSdk.get(mContext).registerListener(mOnAdRewardListener);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AdSdk.get(mContext).unregisterListener(mOnAdRewardListener);
     }
 
     private boolean hasEnable() {
@@ -98,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
             loadAdViewCommon();
         } else if (v.getId() == R.id.reward_video) {
             AdSdk.get(this).loadInterstitial("reward_video", mSimpleAdsdkListener);
-        } else if (v.getId() == R.id.show_reward) {
-            AdSdk.get(mContext).showRewardVideo();
         } else if (v.getId() == R.id.show_listview_ad) {
             startActivity(new Intent(this, ListViewForAd.class));
         }
@@ -200,13 +196,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mOnAdRewardListener.onRefresh(AdSdk.get(mContext).isRewardLoaded());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mOnAdRewardListener.onRefresh(AdSdk.get(mContext).isRewardLoaded());
     }
 
     private void runToast(final String toast) {

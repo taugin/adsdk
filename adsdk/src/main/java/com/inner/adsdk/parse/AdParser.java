@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
-import com.inner.adsdk.config.BaseConfig;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Aes;
@@ -115,56 +114,6 @@ public class AdParser implements IParser {
         return adIds;
     }
 
-    private void parseBaseConfig(BaseConfig baseConfig, JSONObject jobj) {
-        if (baseConfig == null) {
-            return;
-        }
-        try {
-            if (jobj.has(ENABLE)) {
-                baseConfig.setEnable(jobj.getInt(ENABLE) == 1);
-            }
-            if (jobj.has(UPDELAY)) {
-                baseConfig.setUpDelay(jobj.getLong(UPDELAY));
-            }
-            if (jobj.has(INTERVAL)) {
-                baseConfig.setInterval(jobj.getLong(INTERVAL));
-            }
-            if (jobj.has(MAX_COUNT)) {
-                baseConfig.setMaxCount(jobj.getInt(MAX_COUNT));
-            }
-            if (jobj.has(MAX_VERSION)) {
-                baseConfig.setMaxVersion(jobj.getInt(MAX_VERSION));
-            }
-            if (jobj.has(MIN_INTERVAL)) {
-                baseConfig.setMinInterval(jobj.getLong(MIN_INTERVAL));
-            }
-            if (jobj.has(SCREEN_ORIENTATION)) {
-                baseConfig.setScreenOrientation(jobj.getInt(SCREEN_ORIENTATION));
-            }
-            if (jobj.has(TIMEOUT)) {
-                baseConfig.setTimeOut(jobj.getLong(TIMEOUT));
-            }
-            if (jobj.has(CONFIG_INSTALL_TIME)) {
-                baseConfig.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
-            }
-            if (jobj.has(SHOW_BOTTOM_ACTIVITY)) {
-                baseConfig.setShowBottomActivity(jobj.getInt(SHOW_BOTTOM_ACTIVITY) == 1);
-            }
-            if (jobj.has(PLACE_NAME_INT)) {
-                baseConfig.setPlaceNameInt(jobj.getString(PLACE_NAME_INT));
-            }
-            if (jobj.has(PLACE_NAME_ADV)) {
-                baseConfig.setPlaceNameAdv(jobj.getString(PLACE_NAME_ADV));
-            }
-            if (jobj.has(SCENE_INTERVAL)) {
-                baseConfig.setSceneInterval(jobj.getLong(SCENE_INTERVAL));
-            }
-            parseAttrConfig(baseConfig, jobj);
-        } catch (Exception e) {
-            Log.v(Log.TAG, "parseBasePolicyInternal error : " + e);
-        }
-    }
-
 
     private List<String> parseStringList(String str) {
         List<String> list = null;
@@ -182,61 +131,6 @@ public class AdParser implements IParser {
         } catch (Exception e) {
         }
         return list;
-    }
-
-    /**
-     * 解析归因配置
-     *
-     * @param baseConfig
-     * @param jobj
-     */
-    private void parseAttrConfig(BaseConfig baseConfig, JSONObject jobj) {
-        try {
-            if (jobj.has(COUNTRY_LIST)) {
-                JSONArray jarray = jobj.getJSONArray(COUNTRY_LIST);
-                if (jarray != null && jarray.length() > 0) {
-                    List<String> list = new ArrayList<String>(jarray.length());
-                    for (int index = 0; index < jarray.length(); index++) {
-                        String s = jarray.getString(index);
-                        if (!TextUtils.isEmpty(s)) {
-                            list.add(s);
-                        }
-                    }
-                    baseConfig.setCountryList(list);
-                }
-            }
-            if (jobj.has(ATTRS)) {
-                JSONArray jarray = jobj.getJSONArray(ATTRS);
-                if (jarray != null && jarray.length() > 0) {
-                    List<String> list = new ArrayList<String>(jarray.length());
-                    for (int index = 0; index < jarray.length(); index++) {
-                        String s = jarray.getString(index);
-                        if (!TextUtils.isEmpty(s)) {
-                            list.add(s);
-                        }
-                    }
-                    baseConfig.setAttrList(list);
-                }
-            }
-            if (jobj.has(MEDIA_SOURCE)) {
-                JSONArray jarray = jobj.getJSONArray(MEDIA_SOURCE);
-                if (jarray != null && jarray.length() > 0) {
-                    List<String> list = new ArrayList<String>(jarray.length());
-                    for (int index = 0; index < jarray.length(); index++) {
-                        String s = jarray.getString(index);
-                        if (!TextUtils.isEmpty(s)) {
-                            list.add(s);
-                        }
-                    }
-                    baseConfig.setMediaList(list);
-                }
-            }
-            if (jobj.has(NTRATE)) {
-                baseConfig.setNtRate(jobj.getInt(NTRATE));
-            }
-        } catch (Exception e) {
-            Log.e(Log.TAG, "parseAttrConfig error : " + e);
-        }
     }
 
     private List<AdPlace> parseAdPlaces(String content) {
@@ -432,7 +326,6 @@ public class AdParser implements IParser {
             if (jobj.has(BANNER_SIZE)) {
                 pidConfig.setBannerSize(jobj.getString(BANNER_SIZE));
             }
-            parseAttrConfig(pidConfig, jobj);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
@@ -497,19 +390,5 @@ public class AdParser implements IParser {
             Log.v(Log.TAG, "parseAdRefs error : " + e);
         }
         return adRefs;
-    }
-
-    @Override
-    public void parsePolicy(String data, BaseConfig baseConfig, IParseExtra parserCallback) {
-        data = getContent(data);
-        try {
-            JSONObject jobj = new JSONObject(data);
-            parseBaseConfig(baseConfig, jobj);
-            if (parserCallback != null) {
-                parserCallback.parse(baseConfig, jobj);
-            }
-        } catch (Exception e) {
-            Log.v(Log.TAG, "parsePolicy error : " + e);
-        }
     }
 }

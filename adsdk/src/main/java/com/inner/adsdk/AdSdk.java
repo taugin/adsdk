@@ -9,14 +9,11 @@ import com.appub.ads.a.BuildConfig;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.constant.Constant;
+import com.inner.adsdk.data.DataManager;
 import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.framework.AdPlaceLoader;
 import com.inner.adsdk.listener.OnAdSdkListener;
-import com.inner.adsdk.listener.OnAdRewardListener;
-import com.inner.adsdk.loader.AdReceiver;
-import com.inner.adsdk.loader.GlobalCacheLoader;
 import com.inner.adsdk.log.Log;
-import com.inner.adsdk.data.DataManager;
 import com.inner.adsdk.stat.StatImpl;
 import com.inner.adsdk.utils.Utils;
 
@@ -83,8 +80,6 @@ public class AdSdk {
         DataManager.get(mContext).init();
         ActivityMonitor.get(mContext).init();
         StatImpl.get().init();
-        AdReceiver.get(mContext).init();
-        GlobalCacheLoader.get(getFinalContext()).init();
     }
 
     /**
@@ -383,22 +378,6 @@ public class AdSdk {
             // mAdLoaders.remove(pidName);
             loader.destroy();
         }
-    }
-
-    public void showRewardVideo() {
-        GlobalCacheLoader.get(getFinalContext()).showReward();
-    }
-
-    public boolean isRewardLoaded() {
-        return GlobalCacheLoader.get(getFinalContext()).isRewardLoaded();
-    }
-
-    public void registerListener(OnAdRewardListener l) {
-        GlobalCacheLoader.get(getFinalContext()).registerListener(l);
-    }
-
-    public void unregisterListener(OnAdRewardListener l) {
-        GlobalCacheLoader.get(getFinalContext()).unregisterListener(l);
     }
 
     private Context getFinalContext() {

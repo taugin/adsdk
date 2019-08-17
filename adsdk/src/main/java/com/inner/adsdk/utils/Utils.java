@@ -3,8 +3,6 @@ package com.inner.adsdk.utils;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.KeyguardManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -14,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
-import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -349,38 +346,6 @@ public class Utils {
     public static String getAndroidId(Context context) {
         String ANDROID_ID = Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         return ANDROID_ID;
-    }
-
-    /**
-     * 顶层Activity判断
-     *
-     * @param context
-     * @return
-     */
-    public static boolean isTopActivy(Context context) {
-        boolean isTop = false;
-        try {
-            String packageName = context.getPackageName();
-            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-            ComponentName cn = ((ActivityManager.RunningTaskInfo) am.getRunningTasks(1).get(0)).topActivity;
-            String currentPackageName = cn.getPackageName();
-            isTop = currentPackageName != null && currentPackageName.equals(packageName);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-        return isTop;
-    }
-
-    public static boolean isScreenOn(Context context) {
-        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        boolean isScreenOn = powerManager.isScreenOn();
-        return isScreenOn;
-    }
-
-    public static boolean isScreenLocked(Context context) {
-        KeyguardManager mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-        boolean isScreenLocked = mKeyguardManager.inKeyguardRestrictedInputMode();
-        return isScreenLocked;
     }
 
     /**

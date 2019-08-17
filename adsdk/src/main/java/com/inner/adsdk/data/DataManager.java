@@ -6,11 +6,9 @@ import android.text.TextUtils;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.AdSwitch;
-import com.inner.adsdk.config.BaseConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.parse.AdParser;
-import com.inner.adsdk.parse.IParseExtra;
 import com.inner.adsdk.parse.IParser;
 import com.inner.adsdk.utils.Utils;
 
@@ -156,20 +154,5 @@ public class DataManager {
             return mDataRequest.getString(key);
         }
         return null;
-    }
-
-    public void parseRemotePolicy(BaseConfig baseConfig, IParseExtra parserCallback) {
-        if (mDataRequest != null && baseConfig != null) {
-            String name = baseConfig.getName();
-            if (TextUtils.isEmpty(name)) {
-                Log.pv(Log.TAG, "can not find cfg name");
-                return;
-            }
-            String data = mDataRequest.getString(name);
-            if (!TextUtils.isEmpty(data)) {
-                baseConfig.clear();
-                mParser.parsePolicy(data, baseConfig, parserCallback);
-            }
-        }
     }
 }

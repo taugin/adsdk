@@ -35,19 +35,11 @@ android {
             signingConfig signingConfigs.config
         }
     }
-    /**
-    flavorDimensions "color"
 
-    productFlavors {
-        google {
-            dimension "color"
-            applicationId "com.inner.adsdk.demo.google"
-        }
-        amazon {
-            dimension "color"
-            applicationId "com.inner.adsdk.demo.amazon"
-        }
-    }*/
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 repositories {
     maven {

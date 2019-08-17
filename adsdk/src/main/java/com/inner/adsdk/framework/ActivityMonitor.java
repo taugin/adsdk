@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.inner.adsdk.config.PidConfig;
-import com.inner.adsdk.policy.CtrChecker;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -24,7 +23,6 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     private AtomicInteger mAtomicInteger = new AtomicInteger(0);
     private AtomicBoolean mAtomicBoolean = new AtomicBoolean();
 
-    private CtrChecker mCtrChecker = new CtrChecker();
     private PidConfig mPidConfg;
 
     public static ActivityMonitor get(Context context) {
@@ -68,11 +66,6 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityCreated(final Activity activity, Bundle savedInstanceState) {
-        if (mCtrChecker != null && mPidConfg != null) {
-            mCtrChecker.checkCTR(activity, mPidConfg);
-            // 置空，防止拦截其他的Activity
-            mPidConfg = null;
-        }
     }
 
     @Override
