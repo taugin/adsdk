@@ -16,13 +16,9 @@ public class Constant {
     public static final String AD_SDK_SPREAD = "spread";
     public static final String AD_SDK_MOPUB = "mopub";
 
-    public static final String AD_SDK_PREFIX = "pref_adsdk_";
+    public static final String AD_SDK_PREFIX = "pref_hauyu_";
 
-    public static final String AD_SDK_SCENE_DISABLED_PREFIX = "pref_adsdk_scene_disabled_";
-
-    public static final String AD_SDK_PUSH_PREFIX = "pref_adsdk_push_";
-
-    public static final String AD_SDK_JSON_VER = "ver";
+    public static final String AD_SDK_SCENE_DISABLED_PREFIX = "pref_hauyu_scene_disabled_";
 
     public static final int    NOSET = -1;
     public static final int    BANNER = 1000;
@@ -59,24 +55,7 @@ public class Constant {
 
     public static final long ONE_DAY_TIME = 24 * 60 * 60 * 1000;
 
-    public static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
-
-    public static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_remote_config_request_time";
-
-    public static final String PREF_LAST_SHOWTIME = "pref_%s_last_showtime";
-    public static final String PREF_TOTAL_SHOWTIMES = "pref_%s_total_showtimes";
-    public static final String PREF_FIRST_SHOWTIME_ONEDAY = "pref_%s_first_showtime_oneday";
-    public static final String PREF_REQUEST_TIME = "pref_%s_request_time";
-    public static final String PREF_CHARGE_MONITOR = "pref_cm_monitor";
-
     // 配置文件中使用的名字++++++
-    public static final String GTPLACE_OUTER_NAME = "gt_outer_place";
-    public static final String ATPLACE_OUTER_NAME = "at_outer_place";
-    public static final String STPLACE_OUTER_NAME = "st_outer_place";
-    public static final String NTPLACE_OUTER_NAME = "nt_outer_place";
-    public static final String LTPLACE_OUTER_NAME = "lt_outer_place";
-    public static final String HTPLACE_OUTER_NAME = "ht_outer_place";
-    public static final String CTPLACE_OUTER_NAME = "ct_outer_place";
     public static final String ADIDS_NAME = "adids";
     public static final String ADSWITCH_NAME = "adswitch";
     public static final String ADREFS_NAME = "adrefs";

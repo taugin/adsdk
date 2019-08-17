@@ -20,6 +20,7 @@ import com.hauyu.adsdk.stat.EventImpl;
 
 public class HtAdLoader extends BaseLoader {
 
+    public static final String HTPLACE_OUTER_NAME = "ht_outer_place";
     private static HtAdLoader sHtAdLoader;
 
     private Context mContext;
@@ -79,8 +80,8 @@ public class HtAdLoader extends BaseLoader {
             }
             Log.iv(Log.TAG, "");
             HtPolicy.get(mContext).setLoading(true);
-            EventImpl.get().reportAdOuterRequest(mContext, HtPolicy.get(mContext).getType(), Constant.HTPLACE_OUTER_NAME);
-            mAdSdk.loadComplexAds(Constant.HTPLACE_OUTER_NAME, generateAdParams(), new SimpleAdSdkListener() {
+            EventImpl.get().reportAdOuterRequest(mContext, HtPolicy.get(mContext).getType(), HTPLACE_OUTER_NAME);
+            mAdSdk.loadComplexAds(HTPLACE_OUTER_NAME, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);

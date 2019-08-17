@@ -11,15 +11,14 @@ import android.os.Handler;
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdSwitch;
-import com.hauyu.adsdk.scconfig.CtConfig;
-import com.hauyu.adsdk.scconfig.LtConfig;
-import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.policy.BsPolicy;
 import com.hauyu.adsdk.policy.CtPolicy;
 import com.hauyu.adsdk.policy.LtPolicy;
+import com.hauyu.adsdk.scconfig.CtConfig;
+import com.hauyu.adsdk.scconfig.LtConfig;
 import com.hauyu.adsdk.scloader.AtAdLoader;
 import com.hauyu.adsdk.scloader.GtAdLoader;
 import com.hauyu.adsdk.scloader.HtAdLoader;
@@ -34,6 +33,7 @@ import java.util.List;
  */
 
 public class AdReceiver {
+    private static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
 
     private static AdReceiver sAdReceiver;
     private static final int MSG_SHOW_LOCKSCREEN = 123456789;
@@ -86,8 +86,8 @@ public class AdReceiver {
      * 记录应用首次启动时间
      */
     private void reportFirstStartUpTime() {
-        if (Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0) <= 0) {
-            Utils.putLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, System.currentTimeMillis());
+        if (Utils.getLong(mContext, PREF_FIRST_STARTUP_TIME, 0) <= 0) {
+            Utils.putLong(mContext, PREF_FIRST_STARTUP_TIME, System.currentTimeMillis());
         }
     }
 
@@ -105,7 +105,7 @@ public class AdReceiver {
      * @return
      */
     public long getFirstStartUpTime() {
-        return Utils.getLong(mContext, Constant.PREF_FIRST_STARTUP_TIME, 0);
+        return Utils.getLong(mContext, PREF_FIRST_STARTUP_TIME, 0);
     }
 
     private void register() {

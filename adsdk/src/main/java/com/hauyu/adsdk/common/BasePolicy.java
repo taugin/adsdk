@@ -24,6 +24,12 @@ import java.util.TimeZone;
  */
 
 public class BasePolicy implements Handler.Callback {
+
+    private static final String PREF_LAST_SHOWTIME = "pref_%s_last_showtime";
+    private static final String PREF_TOTAL_SHOWTIMES = "pref_%s_total_showtimes";
+    private static final String PREF_FIRST_SHOWTIME_ONEDAY = "pref_%s_first_showtime_oneday";
+    private static final String PREF_REQUEST_TIME = "pref_%s_request_time";
+
     protected AttrChecker mAttrChecker;
     protected Context mContext;
     protected BaseConfig mBaseConfig;
@@ -89,7 +95,7 @@ public class BasePolicy implements Handler.Callback {
      * 记录开始请求时间
      */
     public void updateLastFailTime() {
-        Utils.putLong(mContext, getPrefKey(Constant.PREF_REQUEST_TIME), System.currentTimeMillis());
+        Utils.putLong(mContext, getPrefKey(PREF_REQUEST_TIME), System.currentTimeMillis());
     }
 
     /**
@@ -100,7 +106,7 @@ public class BasePolicy implements Handler.Callback {
     public boolean isMatchMinInterval() {
         if (mBaseConfig != null) {
             long now = System.currentTimeMillis();
-            long lastReqTime = Utils.getLong(mContext, getPrefKey(Constant.PREF_REQUEST_TIME), 0);
+            long lastReqTime = Utils.getLong(mContext, getPrefKey(PREF_REQUEST_TIME), 0);
             long leftTime = mBaseConfig.getMinInterval() - (now - lastReqTime);
             if (leftTime > 0) {
                 Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
@@ -152,7 +158,7 @@ public class BasePolicy implements Handler.Callback {
      * 更新ad最后展示时间
      */
     private void updateLastShowTime() {
-        Utils.putLong(mContext, getPrefKey(Constant.PREF_LAST_SHOWTIME), System.currentTimeMillis());
+        Utils.putLong(mContext, getPrefKey(PREF_LAST_SHOWTIME), System.currentTimeMillis());
     }
 
     /**
@@ -161,7 +167,7 @@ public class BasePolicy implements Handler.Callback {
      * @return
      */
     private long getLastShowTime() {
-        return Utils.getLong(mContext, getPrefKey(Constant.PREF_LAST_SHOWTIME), 0);
+        return Utils.getLong(mContext, getPrefKey(PREF_LAST_SHOWTIME), 0);
     }
 
     /**
@@ -182,13 +188,13 @@ public class BasePolicy implements Handler.Callback {
         if (times <= 0) {
             times = 1;
         }
-        Utils.putLong(mContext, getPrefKey(Constant.PREF_TOTAL_SHOWTIMES), times);
+        Utils.putLong(mContext, getPrefKey(PREF_TOTAL_SHOWTIMES), times);
         recordFirstShowTime();
     }
 
     private void resetTotalShowTimes() {
         Log.d(Log.TAG, "reset total show times");
-        Utils.putLong(mContext, getPrefKey(Constant.PREF_TOTAL_SHOWTIMES), 0);
+        Utils.putLong(mContext, getPrefKey(PREF_TOTAL_SHOWTIMES), 0);
     }
 
     /**
@@ -197,14 +203,14 @@ public class BasePolicy implements Handler.Callback {
      * @return
      */
     private long getTotalShowTimes() {
-        return Utils.getLong(mContext, getPrefKey(Constant.PREF_TOTAL_SHOWTIMES), 0);
+        return Utils.getLong(mContext, getPrefKey(PREF_TOTAL_SHOWTIMES), 0);
     }
 
 
     private void recordFirstShowTime() {
         long times = getTotalShowTimes();
         if (times == 1) {
-            Utils.putLong(mContext, getPrefKey(Constant.PREF_FIRST_SHOWTIME_ONEDAY), System.currentTimeMillis());
+            Utils.putLong(mContext, getPrefKey(PREF_FIRST_SHOWTIME_ONEDAY), System.currentTimeMillis());
         }
     }
 
@@ -213,7 +219,7 @@ public class BasePolicy implements Handler.Callback {
      */
     private void resetTotalShowIfNeed() {
         long now = System.currentTimeMillis();
-        long lastDay = Utils.getLong(mContext, getPrefKey(Constant.PREF_FIRST_SHOWTIME_ONEDAY), now);
+        long lastDay = Utils.getLong(mContext, getPrefKey(PREF_FIRST_SHOWTIME_ONEDAY), now);
         Log.iv(Log.TAG, mType + " reset total show now : " + Constant.SDF_1.format(new Date(now)) + " , last : " + Constant.SDF_1.format(new Date(lastDay)));
         if (now - lastDay > Constant.ONE_DAY_TIME) {
             int times = (int) getTotalShowTimes();

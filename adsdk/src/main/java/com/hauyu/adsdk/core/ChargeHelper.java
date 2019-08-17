@@ -19,7 +19,6 @@ import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.policy.BsPolicy;
 import com.hauyu.adsdk.policy.CtPolicy;
@@ -33,6 +32,7 @@ import java.util.TimerTask;
  */
 
 public class ChargeHelper implements View.OnClickListener {
+    public static final String CTPLACE_OUTER_NAME = "ct_outer_place";
     private Activity mActivity;
     private ImageView chargeCancel, chargeMore;
     private GFAPSD.DotProgress speedChargeProgress, continuousChargeProgress;
@@ -108,7 +108,7 @@ public class ChargeHelper implements View.OnClickListener {
 
     private void fillAd() {
         AdParams adParams = getParams();
-        AdSdk.get(mActivity).loadAdView(Constant.CTPLACE_OUTER_NAME, adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mActivity).loadAdView(CTPLACE_OUTER_NAME, adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 if (mActivity != null && !mActivity.isFinishing()) {

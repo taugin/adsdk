@@ -3,9 +3,8 @@ package com.hauyu.adsdk.policy;
 import android.content.Context;
 
 import com.hauyu.adsdk.common.BasePolicy;
-import com.hauyu.adsdk.scconfig.CtConfig;
-import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.scconfig.CtConfig;
 import com.hauyu.adsdk.utils.Utils;
 
 /**
@@ -13,6 +12,8 @@ import com.hauyu.adsdk.utils.Utils;
  */
 
 public class CtPolicy extends BasePolicy {
+
+    private static final String PREF_CHARGE_MONITOR = "pref_cm_monitor";
     private static CtPolicy sCtPolicy;
 
     public static CtPolicy get(Context context) {
@@ -47,7 +48,7 @@ public class CtPolicy extends BasePolicy {
     }
 
     public void disableMonitor() {
-        Utils.putLong(mContext, Constant.PREF_CHARGE_MONITOR, System.currentTimeMillis());
+        Utils.putLong(mContext, PREF_CHARGE_MONITOR, System.currentTimeMillis());
     }
 
     public boolean allowDisableMonitor() {
@@ -60,7 +61,7 @@ public class CtPolicy extends BasePolicy {
     private boolean isDisable() {
         if (mCtConfig != null) {
             long now = System.currentTimeMillis();
-            long dis = Utils.getLong(mContext, Constant.PREF_CHARGE_MONITOR);
+            long dis = Utils.getLong(mContext, PREF_CHARGE_MONITOR);
             long inv = mCtConfig.getDisableInterval();
             return now - dis < inv;
         }

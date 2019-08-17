@@ -82,6 +82,10 @@ import com.hauyu.adsdk.policy.GtPolicy;
 import com.hauyu.adsdk.policy.HtPolicy;
 import com.hauyu.adsdk.policy.LtPolicy;
 import com.hauyu.adsdk.policy.StPolicy;
+import com.hauyu.adsdk.scloader.AtAdLoader;
+import com.hauyu.adsdk.scloader.GtAdLoader;
+import com.hauyu.adsdk.scloader.HtAdLoader;
+import com.hauyu.adsdk.scloader.StAdLoader;
 import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -94,6 +98,7 @@ import java.util.Date;
 
 public class GFAPSD extends Activity {
 
+    private static final String LTPLACE_OUTER_NAME = "lt_outer_place";
     private SpConfig mSpConfig;
     private GestureDetector mGestureDetector;
     private String mPidName;
@@ -441,18 +446,18 @@ public class GFAPSD extends Activity {
             boolean shown = AdSdk.get(this).showComplexAdsWithResult(mPidName, getAdParams(), mSource, mAdType, mAdLayout);
             if (shown) {
                 onAdShowing(mAdLayout);
-                if (TextUtils.equals(Constant.NTPLACE_OUTER_NAME, mPidName)
-                        || TextUtils.equals(Constant.GTPLACE_OUTER_NAME, mPidName)) {
+                if (TextUtils.equals(GtAdLoader.NTPLACE_OUTER_NAME, mPidName)
+                        || TextUtils.equals(GtAdLoader.GTPLACE_OUTER_NAME, mPidName)) {
                     GtPolicy.get(this).reportShowing(true);
-                } else if (TextUtils.equals(Constant.HTPLACE_OUTER_NAME, mPidName)) {
+                } else if (TextUtils.equals(HtAdLoader.HTPLACE_OUTER_NAME, mPidName)) {
                     HtPolicy.get(this).reportShowing(true);
-                } else if (TextUtils.equals(Constant.ATPLACE_OUTER_NAME, mPidName)) {
+                } else if (TextUtils.equals(AtAdLoader.ATPLACE_OUTER_NAME, mPidName)) {
                     AtPolicy.get(this).reportShowing(true);
-                } else if (TextUtils.equals(Constant.STPLACE_OUTER_NAME, mPidName)) {
+                } else if (TextUtils.equals(StAdLoader.STPLACE_OUTER_NAME, mPidName)) {
                     StPolicy.get(this).reportShowing(true);
-                } else if (TextUtils.equals(Constant.CTPLACE_OUTER_NAME, mPidName)) {
+                } else if (TextUtils.equals(ChargeHelper.CTPLACE_OUTER_NAME, mPidName)) {
                     CtPolicy.get(this).reportShowing(true);
-                } else if (TextUtils.equals(Constant.LTPLACE_OUTER_NAME, mPidName)) {
+                } else if (TextUtils.equals(LTPLACE_OUTER_NAME, mPidName)) {
                     LtPolicy.get(this).reportShowing(true);
                 }
             } else {
@@ -1222,7 +1227,7 @@ public class GFAPSD extends Activity {
                     .setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_MEDIUM)
                     .build();
         }
-        AdSdk.get(this).loadAdView(Constant.LTPLACE_OUTER_NAME, params, new SimpleAdSdkListener() {
+        AdSdk.get(this).loadAdView(LTPLACE_OUTER_NAME, params, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 if (!isFinishing()) {

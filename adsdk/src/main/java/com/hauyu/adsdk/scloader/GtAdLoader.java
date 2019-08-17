@@ -21,6 +21,8 @@ import java.util.Random;
  */
 
 public class GtAdLoader extends BaseLoader {
+    public static final String GTPLACE_OUTER_NAME = "gt_outer_place";
+    public static final String NTPLACE_OUTER_NAME = "nt_outer_place";
 
     private static GtAdLoader sGtAdLoader;
 
@@ -149,8 +151,8 @@ public class GtAdLoader extends BaseLoader {
         int nTRate = GtPolicy.get(mContext).getNTRate();
         boolean isNtPid = new Random(System.currentTimeMillis()).nextInt(100) < nTRate;
         if (isNtPid) {
-            return Constant.NTPLACE_OUTER_NAME;
+            return NTPLACE_OUTER_NAME;
         }
-        return Constant.GTPLACE_OUTER_NAME;
+        return GTPLACE_OUTER_NAME;
     }
 }

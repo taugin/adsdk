@@ -27,6 +27,7 @@ import com.hauyu.adsdk.stat.EventImpl;
 
 public class StAdLoader extends BaseLoader implements Handler.Callback {
 
+    public static final String STPLACE_OUTER_NAME = "st_outer_place";
     private static final int LOAD_DELAY = 1000;
     private static final int MSG_ST_LOAD = 1000;
 
@@ -100,8 +101,8 @@ public class StAdLoader extends BaseLoader implements Handler.Callback {
                 return;
             }
             Log.iv(Log.TAG, "");
-            EventImpl.get().reportAdOuterRequest(mContext, StPolicy.get(mContext).getType(), Constant.STPLACE_OUTER_NAME);
-            mAdSdk.loadComplexAds(Constant.STPLACE_OUTER_NAME, new SimpleAdSdkListener() {
+            EventImpl.get().reportAdOuterRequest(mContext, StPolicy.get(mContext).getType(), STPLACE_OUTER_NAME);
+            mAdSdk.loadComplexAds(STPLACE_OUTER_NAME, new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     EventImpl.get().reportAdOuterLoaded(mContext, StPolicy.get(mContext).getType(), pidName);

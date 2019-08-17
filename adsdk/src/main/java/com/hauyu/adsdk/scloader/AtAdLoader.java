@@ -20,7 +20,7 @@ import com.hauyu.adsdk.utils.TaskUtils;
  */
 
 public class AtAdLoader extends BaseLoader implements TaskMonitor.OnTaskMonitorListener {
-
+    public static final String ATPLACE_OUTER_NAME = "at_outer_place";
     private static final int MSG_LOOP = 1;
     private static final int LOOP_DELAY = 500;
 
@@ -72,7 +72,7 @@ public class AtAdLoader extends BaseLoader implements TaskMonitor.OnTaskMonitorL
 
     public void resumeLoader() {
         Log.iv(Log.TAG, "resume loader");
-        if (mAdSdk.isInterstitialLoaded(Constant.ATPLACE_OUTER_NAME)) {
+        if (mAdSdk.isInterstitialLoaded(ATPLACE_OUTER_NAME)) {
             TaskMonitor.get(mContext).startMonitor();
         } else {
             Log.iv(Log.TAG, "miss app usage");
@@ -83,7 +83,7 @@ public class AtAdLoader extends BaseLoader implements TaskMonitor.OnTaskMonitorL
         if (TaskUtils.hasAppUsagePermission(mContext)) {
             updateAtPolicy();
             if (AtPolicy.get(mContext).isAtAllowed()) {
-                mAdSdk.loadInterstitial(Constant.ATPLACE_OUTER_NAME, mAdSdkListener);
+                mAdSdk.loadInterstitial(ATPLACE_OUTER_NAME, mAdSdkListener);
                 TaskMonitor.get(mContext).startMonitor();
             }
         } else {
@@ -97,14 +97,14 @@ public class AtAdLoader extends BaseLoader implements TaskMonitor.OnTaskMonitorL
         updateAtPolicy();
         if (AtPolicy.get(mContext).isAtAllowed() && !AtPolicy.get(mContext).isInWhiteList(pkgname, className)) {
             if (AtPolicy.get(mContext).isShowOnFirstPage()) {
-                if (mAdSdk.isComplexAdsLoaded(Constant.ATPLACE_OUTER_NAME)) {
+                if (mAdSdk.isComplexAdsLoaded(ATPLACE_OUTER_NAME)) {
                     showAds();
                 } else {
-                    mAdSdk.loadComplexAds(Constant.ATPLACE_OUTER_NAME, generateAdParams(), mAdSdkListener);
+                    mAdSdk.loadComplexAds(ATPLACE_OUTER_NAME, generateAdParams(), mAdSdkListener);
                 }
             } else {
-                if (!mAdSdk.isComplexAdsLoaded(Constant.ATPLACE_OUTER_NAME)) {
-                    mAdSdk.loadComplexAds(Constant.ATPLACE_OUTER_NAME, generateAdParams(), mAdSdkListener);
+                if (!mAdSdk.isComplexAdsLoaded(ATPLACE_OUTER_NAME)) {
+                    mAdSdk.loadComplexAds(ATPLACE_OUTER_NAME, generateAdParams(), mAdSdkListener);
                 }
             }
         }
@@ -115,10 +115,10 @@ public class AtAdLoader extends BaseLoader implements TaskMonitor.OnTaskMonitorL
         Log.d(Log.TAG, "activity switch pkgname : " + pkgname + " , oldActivity : " + oldActivity + " , newActivity : " + newActivity);
         updateAtPolicy();
         if (AtPolicy.get(mContext).isAtAllowed() && !AtPolicy.get(mContext).isInWhiteList(pkgname, newActivity)) {
-            if (mAdSdk.isComplexAdsLoaded(Constant.ATPLACE_OUTER_NAME)) {
+            if (mAdSdk.isComplexAdsLoaded(ATPLACE_OUTER_NAME)) {
                 showAds();
             } else {
-                mAdSdk.loadComplexAds(Constant.ATPLACE_OUTER_NAME, generateAdParams(), mAdSdkListener);
+                mAdSdk.loadComplexAds(ATPLACE_OUTER_NAME, generateAdParams(), mAdSdkListener);
             }
         }
     }
