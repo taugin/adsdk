@@ -22,7 +22,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionName "1.9.6-pure" + (isSnapshot ? "-SNAPSHOT" : "")
+        versionName "2.0.0" + (isSnapshot ? "-SNAPSHOT" : "")
         consumerProguardFiles 'proguard-rules.pro'
     }
 
