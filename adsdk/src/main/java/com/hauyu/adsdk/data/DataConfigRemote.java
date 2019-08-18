@@ -125,7 +125,7 @@ public class DataConfigRemote extends BaseRequest {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "get remote config error : " + error);
+            Log.iv(Log.TAG, "get config error : " + error);
         }
         return null;
     }
