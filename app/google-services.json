@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "844351654343",
+    "firebase_url": "https://fir-7251c.firebaseio.com",
+    "project_id": "fir-7251c",
+    "storage_bucket": "fir-7251c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844351654343:android:ed520fef4b6f1a12",
+        "android_client_info": {
+          "package_name": "com.hauyu.adsdk.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844351654343-6v0ls67u8d5uin48fgdfkn52do58qnnq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbGcqt7Bd8GWzda2Z6sqkVZyuUq-HUxKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844351654343-6v0ls67u8d5uin48fgdfkn52do58qnnq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
