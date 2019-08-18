@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.bac.ioc.gsb.scloader.GtAdLoader;
 import com.gekes.fvs.tdsvap.BuildConfig;
 import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.common.BasePolicy;
@@ -19,7 +20,6 @@ import com.hauyu.adsdk.listener.IParseListener;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
-import com.bac.ioc.gsb.scloader.GtAdLoader;
 import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.utils.Utils;
 

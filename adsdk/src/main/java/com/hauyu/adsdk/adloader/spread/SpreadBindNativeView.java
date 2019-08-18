@@ -13,9 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gekes.fvs.tdsvap.R;
+import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.config.PidConfig;
-import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.framework.Params;
 import com.hauyu.adsdk.http.Http;

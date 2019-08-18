@@ -4,15 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
 
+import com.bac.ioc.gsb.scconfig.CtConfig;
+import com.bac.ioc.gsb.scpolicy.BsPolicy;
+import com.bac.ioc.gsb.scpolicy.CtPolicy;
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.common.BaseLoader;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.data.DataManager;
-import com.bac.ioc.gsb.scconfig.CtConfig;
-import com.bac.ioc.gsb.scpolicy.BsPolicy;
-import com.bac.ioc.gsb.scpolicy.CtPolicy;
 import com.hauyu.adsdk.utils.Utils;
 
 /**
