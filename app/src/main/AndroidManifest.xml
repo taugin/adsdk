@@ -31,37 +31,6 @@
                 <action android:name="${applicationId}.action.AFPICKER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LockScreenActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Translucent">
-            <intent-filter>
-                <action android:name="${applicationId}.action.LSPICKER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".LockScreenActivity2"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Translucent">
-            <intent-filter>
-                <action android:name="${applicationId}.action.LSPICKER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".LockScreenActivity3"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Translucent">
-            <intent-filter>
-                <action android:name="${applicationId}.action.LSPICKER" />
-            </intent-filter>
-        </activity>
-
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />

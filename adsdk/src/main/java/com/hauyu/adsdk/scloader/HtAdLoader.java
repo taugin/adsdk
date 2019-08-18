@@ -1,16 +1,19 @@
 package com.hauyu.adsdk.scloader;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.common.BaseLoader;
 import com.hauyu.adsdk.config.AdConfig;
-import com.hauyu.adsdk.scconfig.HtConfig;
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.scconfig.HtConfig;
 import com.hauyu.adsdk.scpolicy.HtPolicy;
 import com.hauyu.adsdk.stat.EventImpl;
 
@@ -22,12 +25,14 @@ public class HtAdLoader extends BaseLoader {
 
     public static final String HTPLACE_OUTER_NAME = "ht_outer_place";
     private static HtAdLoader sHtAdLoader;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     private Context mContext;
     private AdSdk mAdSdk;
 
     private HtAdLoader(Context context) {
         mContext = context.getApplicationContext();
+        AdReceiver.get(context).registerTriggerListener(this);
     }
 
     public static HtAdLoader get(Context context) {
@@ -45,8 +50,8 @@ public class HtAdLoader extends BaseLoader {
         }
     }
 
-    public void init(AdSdk adSdk) {
-        mAdSdk = adSdk;
+    public void init() {
+        mAdSdk = AdSdk.get(mContext);
         if (mAdSdk == null) {
             return;
         }
@@ -59,6 +64,16 @@ public class HtAdLoader extends BaseLoader {
         return mContext;
     }
 
+    @Override
+    public void onHomePressed(Context context) {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fireHome();
+            }
+        }, 500);
+    }
+
     private void updateHtPolicy() {
         AdConfig adConfig = DataManager.get(mContext).getAdConfig();
         HtConfig htConfig = DataManager.get(mContext).getRemoteHtPolicy();
@@ -68,7 +83,7 @@ public class HtAdLoader extends BaseLoader {
         HtPolicy.get(mContext).setPolicy(htConfig);
     }
 
-    public void fireHome() {
+    private void fireHome() {
         if (mAdSdk != null) {
             updateHtPolicy();
             if (!HtPolicy.get(mContext).isHtAllowed()) {

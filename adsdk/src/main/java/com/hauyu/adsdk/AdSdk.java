@@ -20,8 +20,6 @@ import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.scloader.GtAdLoader;
-import com.hauyu.adsdk.scloader.HtAdLoader;
-import com.hauyu.adsdk.scloader.StAdLoader;
 import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -96,9 +94,6 @@ public class AdSdk {
         ActivityMonitor.get(mContext).init();
         EventImpl.get().init();
         AdReceiver.get(mContext).init();
-        GtAdLoader.get(mContext).init(this);
-        StAdLoader.get(mContext).init(this);
-        HtAdLoader.get(mContext).init(this);
     }
 
     /**

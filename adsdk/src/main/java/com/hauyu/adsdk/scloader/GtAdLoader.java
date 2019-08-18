@@ -50,8 +50,8 @@ public class GtAdLoader extends BaseLoader {
         }
     }
 
-    public void init(AdSdk adSdk) {
-        mAdSdk = adSdk;
+    public void init() {
+        mAdSdk = AdSdk.get(mContext);
         if (mAdSdk == null) {
             return;
         }

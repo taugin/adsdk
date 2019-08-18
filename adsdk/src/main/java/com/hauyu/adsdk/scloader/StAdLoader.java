@@ -57,8 +57,8 @@ public class StAdLoader extends BaseLoader implements Handler.Callback {
         mHandler = new Handler(Looper.getMainLooper(), this);
     }
 
-    public void init(AdSdk adSdk) {
-        mAdSdk = adSdk;
+    public void init() {
+        mAdSdk = AdSdk.get(mContext);
         register();
     }
 

@@ -47,7 +47,7 @@
   },
   "adplaces": [
     {
-      "name": "banner_and_native",
+      "name": "lt_outer_place",
       "mode": "seq",
       "as": 1,
       "pids": [

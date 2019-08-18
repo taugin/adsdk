@@ -5,20 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.os.BatteryManager;
-import android.os.Handler;
 
-import com.gekes.fvs.tdsvap.GFAPSD;
-import com.hauyu.adsdk.config.AdConfig;
-import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.listener.OnTriggerListener;
-import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.scpolicy.BsPolicy;
-import com.hauyu.adsdk.scpolicy.CtPolicy;
-import com.hauyu.adsdk.scpolicy.LtPolicy;
-import com.hauyu.adsdk.scconfig.CtConfig;
-import com.hauyu.adsdk.scconfig.LtConfig;
-import com.hauyu.adsdk.scloader.HtAdLoader;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.ArrayList;
@@ -32,16 +20,12 @@ public class AdReceiver {
     private static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
 
     private static AdReceiver sAdReceiver;
-    private static final int MSG_SHOW_LOCKSCREEN = 123456789;
-    private static final int DELAY = 5000;
 
     private Context mContext;
-    private Handler mHandler;
     private List<OnTriggerListener> mTriggerList = new ArrayList<OnTriggerListener>();
 
     private AdReceiver(Context context) {
         mContext = context.getApplicationContext();
-        mHandler = new Handler();
     }
 
     public static AdReceiver get(Context context) {
@@ -134,32 +118,21 @@ public class AdReceiver {
             } else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
                 triggerScreenOff(context);
             } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-                showLockScreen();
                 triggerScreenOn(context);
             } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
-                showLockScreen();
                 triggerUserPresent(context);
             } else if (Intent.ACTION_CLOSE_SYSTEM_DIALOGS.equals(intent.getAction())) {
                 String reason = intent.getStringExtra("reason");
                 if ("homekey".equals(reason) || "recentapps".equals(reason)) {
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            homeKeyPressed();
-                        }
-                    }, 500);
                     triggerHome(context);
                 }
             } else if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())
                     || (getAlarmAction() + "_CONNECT").equals(intent.getAction())) {
-                startCMActivity(context, true);
                 triggerPowerConnect(context, intent);
             } else if (Intent.ACTION_POWER_DISCONNECTED.equals(intent.getAction())
                     || (getAlarmAction() + "_DISCONNECT").equals(intent.getAction())) {
-                startCMActivity(context, false);
                 triggerPowerDisconnect(context, intent);
             } else if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
-                fillBattery(intent);
                 triggerBatteryChange(context, intent);
             } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
                 triggerNetworkChange(context, intent);
@@ -175,98 +148,6 @@ public class AdReceiver {
         } else if (Intent.ACTION_PACKAGE_REPLACED.equals(intent.getAction())) {
             triggerPackageReplaced(context, intent);
         }
-    }
-
-    private void showLockScreen() {
-        if (mHandler != null) {
-            if (!mHandler.hasMessages(MSG_SHOW_LOCKSCREEN)) {
-                showLs();
-                mHandler.sendEmptyMessageDelayed(MSG_SHOW_LOCKSCREEN, DELAY);
-            } else {
-                mHandler.removeMessages(MSG_SHOW_LOCKSCREEN);
-            }
-        }
-    }
-
-    private void showLs() {
-        updateLtPolicy();
-        if (!LtPolicy.get(mContext).isLtAllowed()) {
-            return;
-        }
-        try {
-            Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.LSPICKER");
-            if (intent == null) {
-                intent = new Intent(mContext, GFAPSD.class);
-            }
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            mContext.startActivity(intent);
-            LtPolicy.get(mContext).reportShowing(true);
-        } catch (Exception e) {
-            Log.v(Log.TAG, "error : " + e);
-        }
-    }
-
-    private void updateLtPolicy() {
-        AdConfig adConfig = DataManager.get(mContext).getAdConfig();
-        LtConfig ltConfig = DataManager.get(mContext).getRemoteLtPolicy();
-        if (ltConfig == null && adConfig != null) {
-            ltConfig = adConfig.getLtConfig();
-        }
-        LtPolicy.get(mContext).setPolicy(ltConfig);
-    }
-
-    private void homeKeyPressed() {
-        HtAdLoader.get(mContext).fireHome();
-    }
-
-    private void updateCtPolicy() {
-        AdConfig adConfig = DataManager.get(mContext).getAdConfig();
-        CtConfig ctConfig = DataManager.get(mContext).getRemoteCtPolicy();
-        if (ctConfig == null && adConfig != null) {
-            ctConfig = adConfig.getCtConfig();
-        }
-        CtPolicy.get(mContext).setPolicy(ctConfig);
-    }
-
-    private void startCMActivity(Context context, boolean charging) {
-        updateCtPolicy();
-        if (!CtPolicy.get(mContext).isCtAllowed()) {
-            return;
-        }
-        Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.CMPICKER");
-        if (intent == null) {
-            intent = new Intent(mContext, GFAPSD.class);
-        }
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setFlags(~Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.putExtra(Intent.EXTRA_QUIET_MODE, true);
-        BsPolicy.get().isCharging = charging;
-        try {
-            context.startActivity(intent);
-            CtPolicy.get(mContext).reportShowing(true);
-        } catch (Exception e) {
-        }
-    }
-
-    private void fillBattery(Intent intent) {
-        if (intent == null) {
-            return;
-        }
-        BsPolicy.get().level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 100);
-        BsPolicy.get().scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
-        BsPolicy.get().plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0); // default set as battery
-        BsPolicy.get().health = intent.getIntExtra(BatteryManager.EXTRA_HEALTH,
-                BatteryManager.BATTERY_HEALTH_UNKNOWN);
-        BsPolicy.get().status = intent.getIntExtra(BatteryManager.EXTRA_STATUS,
-                BatteryManager.BATTERY_STATUS_UNKNOWN);
-        BsPolicy.get().temperature = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0);
-        BsPolicy.get().voltage = intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0);
-        BsPolicy.get().present = intent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, true);
-        BsPolicy.get().technology = intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY);
-        BsPolicy.get().timestamp = System.currentTimeMillis();
     }
 
     private void triggerAlarm(Context context) {
