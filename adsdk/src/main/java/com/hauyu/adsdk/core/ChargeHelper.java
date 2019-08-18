@@ -20,8 +20,8 @@ import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
-import com.hauyu.adsdk.scpolicy.BsPolicy;
-import com.hauyu.adsdk.scpolicy.CtPolicy;
+import com.bac.ioc.gsb.scpolicy.BsPolicy;
+import com.bac.ioc.gsb.scpolicy.CtPolicy;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Timer;

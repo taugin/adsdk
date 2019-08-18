@@ -4,12 +4,12 @@ import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
-import com.hauyu.adsdk.scconfig.CtConfig;
-import com.hauyu.adsdk.scconfig.GtConfig;
-import com.hauyu.adsdk.scconfig.HtConfig;
-import com.hauyu.adsdk.scconfig.LtConfig;
+import com.bac.ioc.gsb.scconfig.CtConfig;
+import com.bac.ioc.gsb.scconfig.GtConfig;
+import com.bac.ioc.gsb.scconfig.HtConfig;
+import com.bac.ioc.gsb.scconfig.LtConfig;
 import com.gekes.fvs.tdsvap.SpConfig;
-import com.hauyu.adsdk.scconfig.StConfig;
+import com.bac.ioc.gsb.scconfig.StConfig;
 import com.hauyu.adsdk.listener.IParseListener;
 
 import java.util.List;

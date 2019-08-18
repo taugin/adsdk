@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.scpolicy;
+package com.bac.ioc.gsb.scpolicy;
 
 
 import android.os.BatteryManager;

@@ -2,11 +2,11 @@ package com.hauyu.adsdk.config;
 
 import android.text.TextUtils;
 
-import com.hauyu.adsdk.scconfig.CtConfig;
-import com.hauyu.adsdk.scconfig.GtConfig;
-import com.hauyu.adsdk.scconfig.HtConfig;
-import com.hauyu.adsdk.scconfig.LtConfig;
-import com.hauyu.adsdk.scconfig.StConfig;
+import com.bac.ioc.gsb.scconfig.CtConfig;
+import com.bac.ioc.gsb.scconfig.GtConfig;
+import com.bac.ioc.gsb.scconfig.HtConfig;
+import com.bac.ioc.gsb.scconfig.LtConfig;
+import com.bac.ioc.gsb.scconfig.StConfig;
 
 import java.util.ArrayList;
 import java.util.List;

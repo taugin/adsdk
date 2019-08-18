@@ -19,7 +19,7 @@ import com.hauyu.adsdk.listener.IParseListener;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.scloader.GtAdLoader;
+import com.bac.ioc.gsb.scloader.GtAdLoader;
 import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.utils.Utils;
 

@@ -7,11 +7,11 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.hauyu.adsdk.scloader.CtAdLoader;
-import com.hauyu.adsdk.scloader.GtAdLoader;
-import com.hauyu.adsdk.scloader.HtAdLoader;
-import com.hauyu.adsdk.scloader.LtAdLoader;
-import com.hauyu.adsdk.scloader.StAdLoader;
+import com.bac.ioc.gsb.scloader.CtAdLoader;
+import com.bac.ioc.gsb.scloader.GtAdLoader;
+import com.bac.ioc.gsb.scloader.HtAdLoader;
+import com.bac.ioc.gsb.scloader.LtAdLoader;
+import com.bac.ioc.gsb.scloader.StAdLoader;
 
 /**
  * Created by Administrator on 2019/8/18.

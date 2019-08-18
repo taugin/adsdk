@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.scloader;
+package com.bac.ioc.gsb.scloader;
 
 import android.content.Context;
 import android.os.Handler;
@@ -13,8 +13,8 @@ import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.scconfig.HtConfig;
-import com.hauyu.adsdk.scpolicy.HtPolicy;
+import com.bac.ioc.gsb.scconfig.HtConfig;
+import com.bac.ioc.gsb.scpolicy.HtPolicy;
 import com.hauyu.adsdk.stat.EventImpl;
 
 /**

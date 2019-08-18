@@ -1,4 +1,5 @@
-package com.hauyu.adsdk.scconfig;
+package com.bac.ioc.gsb.scconfig;
+
 
 import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.constant.Constant;
@@ -9,31 +10,26 @@ import java.util.Date;
  * Created by Administrator on 2018/2/9.
  */
 
-public class GtConfig extends BaseConfig {
+public class HtConfig extends BaseConfig {
 
-    public static final String GTPOLICY_NAME = "gt" + CONFIG_SUFFIX;
+    public static final String HTPOLICY_NAME = "ht" + CONFIG_SUFFIX;
 
     @Override
     public String getName() {
-        return GTPOLICY_NAME;
+        return HTPOLICY_NAME;
     }
 
     @Override
     public String toString() {
-        return "gt{" +
+        return "ht{" +
                 "e=" + isEnable() +
                 ", d=" + getUpDelay() +
                 ", i=" + getInterval() +
-                ", mc=" + getMaxCount() +
                 ", mv=" + getMaxVersion() +
-                ", mi=" + getMinInterval() +
+                ", mc=" + getMaxCount() +
                 ", cl=" + getCountryList() +
                 ", al=" + getAttrList() +
                 ", ml=" + getMediaList() +
-                ", so=" + getScreenOrientation() +
-                ", to=" + getTimeOut() +
-                ", sba=" + isShowBottomActivity() +
-                ", ntr=" + getNtr() +
                 ", cit=" + Constant.SDF_1.format(new Date(getConfigInstallTime())) +
                 '}';
     }

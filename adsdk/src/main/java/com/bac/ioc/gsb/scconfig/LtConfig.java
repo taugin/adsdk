@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.scconfig;
+package com.bac.ioc.gsb.scconfig;
 
 
 import com.hauyu.adsdk.common.BaseConfig;
