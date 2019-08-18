@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.policy;
+package com.hauyu.adsdk.core;
 
 import android.app.Activity;
 import android.os.Handler;

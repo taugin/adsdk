@@ -12,7 +12,7 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.policy.GtPolicy;
+import com.hauyu.adsdk.scpolicy.GtPolicy;
 import com.hauyu.adsdk.stat.EventImpl;
 
 import java.util.Random;

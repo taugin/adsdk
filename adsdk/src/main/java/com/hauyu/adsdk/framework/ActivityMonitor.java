@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.config.PidConfig;
-import com.hauyu.adsdk.policy.CtrChecker;
+import com.hauyu.adsdk.core.CtrChecker;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;

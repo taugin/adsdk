@@ -1,53 +1,52 @@
-package com.hauyu.adsdk.policy;
+package com.hauyu.adsdk.scpolicy;
 
 import android.content.Context;
 
 import com.hauyu.adsdk.common.BasePolicy;
-import com.hauyu.adsdk.scconfig.GtConfig;
+import com.hauyu.adsdk.scconfig.StConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
 /**
- * Created by Administrator on 2018/3/19.
+ * Created by Administrator on 2018-8-10.
  */
 
-public class GtPolicy extends BasePolicy {
-    private static GtPolicy sGtPolicy;
+public class StPolicy extends BasePolicy {
+    private static StPolicy sStPolicy;
 
-    public static GtPolicy get(Context context) {
-        synchronized (GtPolicy.class) {
-            if (sGtPolicy == null) {
+    public static StPolicy get(Context context) {
+        synchronized (StPolicy.class) {
+            if (sStPolicy == null) {
                 createInstance(context);
             }
         }
-        return sGtPolicy;
+        return sStPolicy;
     }
 
     private static void createInstance(Context context) {
-        synchronized (GtPolicy.class) {
-            if (sGtPolicy == null) {
-                sGtPolicy = new GtPolicy(context);
+        synchronized (StPolicy.class) {
+            if (sStPolicy == null) {
+                sStPolicy = new StPolicy(context);
             }
         }
     }
 
-    private GtPolicy(Context context) {
-        super(context, "gt");
-        mAttrChecker = new AttrChecker(context);
+    private StPolicy(Context context) {
+        super(context, "st");
     }
 
-    private GtConfig mGtConfig;
+    private StConfig mStConfig;
 
     public void init() {
     }
 
-    public void setPolicy(GtConfig gtConfig) {
-        super.setPolicy(gtConfig);
-        mGtConfig = gtConfig;
+    public void setPolicy(StConfig stConfig) {
+        super.setPolicy(stConfig);
+        mStConfig = stConfig;
     }
 
-    public boolean isGtAllowed() {
-        Log.iv(Log.TAG, "gt : " + mGtConfig);
+    public boolean isStAllowed() {
+        Log.iv(Log.TAG, "stconfig : " + mStConfig);
         if (!checkBaseConfig()) {
             return false;
         }

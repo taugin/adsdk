@@ -11,7 +11,7 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.framework.ActivityMonitor;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.policy.AttrChecker;
+import com.hauyu.adsdk.core.AttrChecker;
 import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -334,8 +334,6 @@ public class BasePolicy implements Handler.Callback {
 
     protected boolean isTopApp() {
         boolean appOnTop = ActivityMonitor.get(mContext).appOnTop();
-        boolean isTopApp = Utils.isTopActivy(mContext);
-        Log.iv(Log.TAG, "appOnTop : " + appOnTop + " , isTopApp : " + isTopApp);
         return appOnTop;
     }
 

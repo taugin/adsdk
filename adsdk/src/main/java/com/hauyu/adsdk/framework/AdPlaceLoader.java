@@ -28,7 +28,7 @@ import com.hauyu.adsdk.core.AdHelper;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.policy.AdPolicy;
+import com.hauyu.adsdk.core.AdPolicy;
 import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.stat.InternalStat;
 import com.hauyu.adsdk.utils.Utils;

@@ -61,11 +61,11 @@ public class AdParser implements IParser {
     @Override
     public AdConfig parseAdConfig(String data) {
         data = getContent(data);
-        AdConfig adconfig = parseAdConfigInternal(data);
+        AdConfig adconfig = parseAdConfigLocked(data);
         return adconfig;
     }
 
-    private AdConfig parseAdConfigInternal(String data) {
+    private AdConfig parseAdConfigLocked(String data) {
         AdConfig adConfig = null;
         try {
             JSONObject jobj = new JSONObject(data);
@@ -82,19 +82,19 @@ public class AdParser implements IParser {
                 adIds = parseAdIds(jobj.getString(ADIDS));
             }
             if (jobj.has(GTCONFIG)) {
-                gtConfig = parseGtPolicyInternal(jobj.getString(GTCONFIG));
+                gtConfig = parseGtPolicyLocked(jobj.getString(GTCONFIG));
             }
             if (jobj.has(STCONFIG)) {
-                stConfig = parseStPolicyInternal(jobj.getString(STCONFIG));
+                stConfig = parseStPolicyLocked(jobj.getString(STCONFIG));
             }
             if (jobj.has(LTCONFIG)) {
-                ltConfig = parseLtPolicyInternal(jobj.getString(LTCONFIG));
+                ltConfig = parseLtPolicyLocked(jobj.getString(LTCONFIG));
             }
             if (jobj.has(HTCONFIG)) {
-                htConfig = parseHtPolicyInternal(jobj.getString(HTCONFIG));
+                htConfig = parseHtPolicyLocked(jobj.getString(HTCONFIG));
             }
             if (jobj.has(CTCONFIG)) {
-                ctConfig = parseCtPolicyInternal(jobj.getString(CTCONFIG));
+                ctConfig = parseCtPolicyLocked(jobj.getString(CTCONFIG));
             }
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
@@ -203,10 +203,10 @@ public class AdParser implements IParser {
     @Override
     public GtConfig parseGtPolicy(String data) {
         data = getContent(data);
-        return parseGtPolicyInternal(data);
+        return parseGtPolicyLocked(data);
     }
 
-    private GtConfig parseGtPolicyInternal(String content) {
+    private GtConfig parseGtPolicyLocked(String content) {
         GtConfig gtConfig = null;
         try {
             JSONObject jobj = new JSONObject(content);
@@ -221,10 +221,10 @@ public class AdParser implements IParser {
     @Override
     public StConfig parseStPolicy(String data) {
         data = getContent(data);
-        return parseStPolicyInternal(data);
+        return parseStPolicyLocked(data);
     }
 
-    private StConfig parseStPolicyInternal(String content) {
+    private StConfig parseStPolicyLocked(String content) {
         StConfig stConfig = null;
         try {
             JSONObject jobj = new JSONObject(content);
@@ -239,10 +239,10 @@ public class AdParser implements IParser {
     @Override
     public LtConfig parseLtPolicy(String data) {
         data = getContent(data);
-        return parseLtPolicyInternal(data);
+        return parseLtPolicyLocked(data);
     }
 
-    private LtConfig parseLtPolicyInternal(String data) {
+    private LtConfig parseLtPolicyLocked(String data) {
         LtConfig ltConfig = null;
         try {
             JSONObject jobj = new JSONObject(data);
@@ -257,10 +257,10 @@ public class AdParser implements IParser {
     @Override
     public HtConfig parseHtPolicy(String data) {
         data = getContent(data);
-        return parseHtPolicyInternal(data);
+        return parseHtPolicyLocked(data);
     }
 
-    private HtConfig parseHtPolicyInternal(String data) {
+    private HtConfig parseHtPolicyLocked(String data) {
         HtConfig htConfig = null;
         try {
             JSONObject jobj = new JSONObject(data);
@@ -275,10 +275,10 @@ public class AdParser implements IParser {
     @Override
     public CtConfig parseCtPolicy(String data) {
         data = getContent(data);
-        return parseCtPolicyInternal(data);
+        return parseCtPolicyLocked(data);
     }
 
-    private CtConfig parseCtPolicyInternal(String data) {
+    private CtConfig parseCtPolicyLocked(String data) {
         CtConfig ctConfig = null;
         try {
             JSONObject jobj = new JSONObject(data);
@@ -668,7 +668,7 @@ public class AdParser implements IParser {
         data = getContent(data);
         try {
             JSONObject jobj = new JSONObject(data);
-            SpConfig spConfig = parseSpConfigInternal(jobj);
+            SpConfig spConfig = parseSpConfigLocked(jobj);
             spreads = new ArrayList<SpConfig>(1);
             spreads.add(spConfig);
         } catch (Exception e) {
@@ -683,7 +683,7 @@ public class AdParser implements IParser {
                     SpConfig spConfig = null;
                     for (int index = 0; index < len; index++) {
                         jobj = jarray.getJSONObject(index);
-                        spConfig = parseSpConfigInternal(jobj);
+                        spConfig = parseSpConfigLocked(jobj);
                         if (spConfig != null) {
                             spreads.add(spConfig);
                         }
@@ -696,7 +696,7 @@ public class AdParser implements IParser {
         return spreads;
     }
 
-    private SpConfig parseSpConfigInternal(JSONObject jobj) {
+    private SpConfig parseSpConfigLocked(JSONObject jobj) {
         SpConfig spConfig = null;
         try {
             if (jobj != null) {

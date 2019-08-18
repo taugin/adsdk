@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.policy;
+package com.hauyu.adsdk.scpolicy;
 
 import android.content.Context;
 
