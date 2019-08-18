@@ -4,7 +4,6 @@ import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
-import com.hauyu.adsdk.scconfig.AtConfig;
 import com.hauyu.adsdk.scconfig.CtConfig;
 import com.hauyu.adsdk.scconfig.GtConfig;
 import com.hauyu.adsdk.scconfig.HtConfig;
@@ -195,8 +194,6 @@ public interface IParser {
     GtConfig parseGtPolicy(String data);
 
     StConfig parseStPolicy(String data);
-
-    AtConfig parseAtPolicy(String data);
 
     Map<String, String> parseAdIds(String data);
 

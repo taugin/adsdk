@@ -40,3 +40,6 @@
 -keep class com.facebook.appevents.AppEventsLogger {*;}
 -dontwarn com.adywind.nativeads.**
 -dontwarn com.mopub.**
+
+#Firebase Analytics
+-keep class com.google.firebase.remoteconfig.FirebaseRemoteConfig{*;}

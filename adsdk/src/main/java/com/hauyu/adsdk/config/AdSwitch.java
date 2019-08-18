@@ -17,10 +17,6 @@ public class AdSwitch {
     private boolean reportFirebase;
     // 上报Facebook
     private boolean reportFacebook;
-    // gt 与 tt 互斥
-    private boolean gtAtExclusive;
-
-    private boolean forbidFromInsights;
 
     public boolean isBlockLoading() {
         return blockLoading;
@@ -68,22 +64,6 @@ public class AdSwitch {
 
     public void setReportFacebook(boolean reportFacebook) {
         this.reportFacebook = reportFacebook;
-    }
-
-    public boolean isGtAtExclusive() {
-        return gtAtExclusive;
-    }
-
-    public void setGtAtExclusive(boolean gtAtExclusive) {
-        this.gtAtExclusive = gtAtExclusive;
-    }
-
-    public boolean isForbidFromInsights() {
-        return forbidFromInsights;
-    }
-
-    public void setForbidFromInsights(boolean forbidFromInsights) {
-        this.forbidFromInsights = forbidFromInsights;
     }
 
     @Override

@@ -6,7 +6,6 @@ import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
-import com.hauyu.adsdk.scconfig.AtConfig;
 import com.hauyu.adsdk.scconfig.CtConfig;
 import com.hauyu.adsdk.scconfig.GtConfig;
 import com.hauyu.adsdk.scconfig.HtConfig;
@@ -73,7 +72,6 @@ public class AdParser implements IParser {
             Map<String, String> adIds = null;
             GtConfig gtConfig = null;
             StConfig stConfig = null;
-            AtConfig atConfig = null;
             LtConfig ltConfig = null;
             HtConfig htConfig = null;
             CtConfig ctConfig = null;
@@ -88,9 +86,6 @@ public class AdParser implements IParser {
             }
             if (jobj.has(STCONFIG)) {
                 stConfig = parseStPolicyInternal(jobj.getString(STCONFIG));
-            }
-            if (jobj.has(ATCONFIG)) {
-                atConfig = parseAtPolicyInternal(jobj.getString(ATCONFIG));
             }
             if (jobj.has(LTCONFIG)) {
                 ltConfig = parseLtPolicyInternal(jobj.getString(LTCONFIG));
@@ -113,7 +108,7 @@ public class AdParser implements IParser {
             if (adPlaces != null || gtConfig != null
                     || adIds != null || adSwitch != null
                     || adrefs != null || stConfig != null
-                    || atConfig != null || ltConfig != null
+                    || ltConfig != null
                     || htConfig != null || ctConfig != null) {
                 adConfig = new AdConfig();
                 adConfig.setAdPlaceList(adPlaces);
@@ -122,7 +117,6 @@ public class AdParser implements IParser {
                 adConfig.setAdSwitch(adSwitch);
                 adConfig.setAdRefs(adrefs);
                 adConfig.setStConfig(stConfig);
-                adConfig.setAtConfig(atConfig);
                 adConfig.setLtConfig(ltConfig);
                 adConfig.setHtConfig(htConfig);
                 adConfig.setCtConfig(ctConfig);
@@ -240,30 +234,6 @@ public class AdParser implements IParser {
             Log.v(Log.TAG, "parseStPolicyInternal error : " + e);
         }
         return stConfig;
-    }
-
-    @Override
-    public AtConfig parseAtPolicy(String data) {
-        data = getContent(data);
-        return parseAtPolicyInternal(data);
-    }
-
-    private AtConfig parseAtPolicyInternal(String content) {
-        AtConfig atConfig = null;
-        try {
-            JSONObject jobj = new JSONObject(content);
-            atConfig = new AtConfig();
-            if (jobj.has(EXCLUDE_PACKAGES)) {
-                atConfig.setExcludes(parseStringList(jobj.getString(EXCLUDE_PACKAGES)));
-            }
-            if (jobj.has(SHOW_ON_FIRST_PAGE)) {
-                atConfig.setShowOnFirstPage(jobj.getInt(SHOW_ON_FIRST_PAGE) == 1);
-            }
-            parseBaseConfig(atConfig, jobj);
-        } catch (Exception e) {
-            Log.v(Log.TAG, "parseAtPolicyInternal error : " + e);
-        }
-        return atConfig;
     }
 
     @Override
@@ -662,12 +632,6 @@ public class AdParser implements IParser {
             }
             if (jobj.has(REPORT_FACEBOOK)) {
                 adSwitch.setReportFacebook(jobj.getInt(REPORT_FACEBOOK) == 1);
-            }
-            if (jobj.has(GT_AT_EXCLUSIVE)) {
-                adSwitch.setGtAtExclusive(jobj.getInt(GT_AT_EXCLUSIVE) == 1);
-            }
-            if (jobj.has(FORBID_FROM_INSIGHTS)) {
-                adSwitch.setForbidFromInsights(jobj.getInt(FORBID_FROM_INSIGHTS) == 1);
             }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdSwitch error : " + e);

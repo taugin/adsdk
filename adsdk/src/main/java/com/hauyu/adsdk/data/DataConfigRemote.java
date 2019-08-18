@@ -1,127 +1,27 @@
 package com.hauyu.adsdk.data;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.BaseRequest;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.lang.reflect.Method;
 import java.util.Locale;
-import java.util.Random;
-import java.util.TimeZone;
 
 /**
  * Created by Administrator on 2018/2/12.
  */
 
 @SuppressWarnings("unchecked")
-public class DataConfigRemote extends BaseRequest implements OnCompleteListener {
-
-    private static final long CACHE_EXPIRETIME = Long.parseLong("900");
-    private static final long REFRESH_INTERVAL = Long.parseLong("900000");
-    private static final String PREF_REFRESH_INTERVAL = "pref_refresh_interval";
-    private static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_data_config_rtime";
-    private static final SimpleDateFormat SDF_LEFT_TIME = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-    private static List<String> REFRESH_INTERVALS;
+public class DataConfigRemote extends BaseRequest {
 
     private Context mContext;
-    private FirebaseRemoteConfig mInstance;
-    private Random mRandom = new Random(System.currentTimeMillis());
-
-    static {
-        REFRESH_INTERVALS = new ArrayList<String>();
-        REFRESH_INTERVALS.add("900000");
-        REFRESH_INTERVALS.add("1200000");
-        REFRESH_INTERVALS.add("1500000");
-        REFRESH_INTERVALS.add("1800000");
-    }
 
     public DataConfigRemote(Context context) {
         mContext = context;
-        ensureFirebase();
-        updateRefreshInterval();
-    }
-
-    @Override
-    public void request() {
-        refresh();
-    }
-
-    @Override
-    public void onComplete(@NonNull Task task) {
-        if (task == null) {
-            Log.e(Log.TAG, "vconfig task == null");
-            return;
-        }
-        if (task.isSuccessful()) {
-            Log.v(Log.TAG, "vconfig complete successfully");
-            mInstance.activateFetched();
-        } else {
-            Log.e(Log.TAG, "error : " + task.getException());
-        }
-    }
-
-    @Override
-    public void refresh() {
-        ensureFirebase();
-        if (mInstance != null) {
-            synchronized (mInstance) {
-                if (isNeedRequest()) {
-                    requestConfigData();
-                }
-            }
-        }
-    }
-
-    private boolean isNeedRequest() {
-        long now = System.currentTimeMillis();
-        long last = Utils.getLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME);
-        boolean needRequest = now - last > getRefreshInterval();
-        long leftTime = getRefreshInterval() - (now - last);
-        if (leftTime > 0) {
-            SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
-            Log.iv(Log.TAG, "vconfig time left : " + SDF_LEFT_TIME.format(new Date(leftTime)));
-        } else {
-            Log.iv(Log.TAG, "vconfig time left : time is not correct");
-        }
-        return needRequest;
-    }
-
-    private void requestConfigData() {
-        try {
-            mInstance.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
-            Utils.putLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
-            updateRefreshInterval();
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-    }
-
-    private void updateRefreshInterval() {
-        long interval;
-        try {
-            String str = REFRESH_INTERVALS.get(mRandom.nextInt(REFRESH_INTERVALS.size()));
-            interval = Long.parseLong(str);
-        } catch (Exception e) {
-            interval = REFRESH_INTERVAL;
-        }
-        Utils.putLong(mContext, PREF_REFRESH_INTERVAL, interval);
-    }
-
-    private long getRefreshInterval() {
-        long interval =  Utils.getLong(mContext, PREF_REFRESH_INTERVAL, REFRESH_INTERVAL);
-        Log.iv(Log.TAG, "interval : " + interval);
-        return interval;
     }
 
     @Override
@@ -129,28 +29,26 @@ public class DataConfigRemote extends BaseRequest implements OnCompleteListener 
         String value = readConfigFromAsset(key);
         Log.iv(Log.TAG, "locale config : " + key + " , value : " + value);
         if (TextUtils.isEmpty(value)) {
-            if (mInstance != null) {
-                String dataWithSuffix = null;
-                String mediaSourceSuffix = getMsSuffix();
-                String attrSuffix = getAfSuffix();
-                String mediaSourceKey = key + mediaSourceSuffix;
-                String attrKey = key + attrSuffix;
-                Log.iv(Log.TAG, "media suffix : " + mediaSourceSuffix + " , attr suffix : " + attrSuffix);
-                // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
-                String mediaData = mInstance.getString(mediaSourceKey);
-                String attrData = mInstance.getString(attrKey);
-                if (!TextUtils.isEmpty(mediaData)) {
-                    dataWithSuffix = mediaData;
-                } else {
-                    dataWithSuffix = attrData;
-                }
-                if (TextUtils.isEmpty(dataWithSuffix)) {
-                    value = mInstance.getString(key);
-                } else {
-                    String source = !TextUtils.isEmpty(mediaData) ? getMediaSource() : getAfStatus();
-                    Log.iv(Log.TAG, "remote config : " + key + "[" + source + "]");
-                    value = dataWithSuffix;
-                }
+            String dataWithSuffix = null;
+            String mediaSourceSuffix = getMsSuffix();
+            String attrSuffix = getAfSuffix();
+            String mediaSourceKey = key + mediaSourceSuffix;
+            String attrKey = key + attrSuffix;
+            Log.iv(Log.TAG, "media suffix : " + mediaSourceSuffix + " , attr suffix : " + attrSuffix);
+            // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
+            String mediaData = getConfigFromFirebase(mediaSourceKey);
+            String attrData = getConfigFromFirebase(attrKey);
+            if (!TextUtils.isEmpty(mediaData)) {
+                dataWithSuffix = mediaData;
+            } else {
+                dataWithSuffix = attrData;
+            }
+            if (TextUtils.isEmpty(dataWithSuffix)) {
+                value = getConfigFromFirebase(key);
+            } else {
+                String source = !TextUtils.isEmpty(mediaData) ? getMediaSource() : getAfStatus();
+                Log.iv(Log.TAG, "remote config : " + key + "[" + source + "]");
+                value = dataWithSuffix;
             }
         }
         return value;
@@ -206,17 +104,29 @@ public class DataConfigRemote extends BaseRequest implements OnCompleteListener 
         return "_" + suffix.toLowerCase(Locale.getDefault());
     }
 
-    private void ensureFirebase() {
-        if (mInstance == null) {
-            try {
-                mInstance = FirebaseRemoteConfig.getInstance();
-            } catch (Exception e) {
-                Log.e(Log.TAG, "error : " + e + "[Should add google-services.json file to root]");
-            }
-        }
-    }
-
     private String readConfigFromAsset(String key) {
         return Utils.readAssets(mContext, key);
+    }
+
+    private String getConfigFromFirebase(String key) {
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.google.firebase.remoteconfig.FirebaseRemoteConfig");
+            Method method = clazz.getMethod("getInstance");
+            Object instance = method.invoke(null);
+            method = clazz.getMethod("getString", String.class);
+            Object value = method.invoke(instance, key);
+            if (value != null) {
+                return (String) value;
+            }
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.v(Log.TAG, "get remote config error : " + error);
+        }
+        return null;
     }
 }

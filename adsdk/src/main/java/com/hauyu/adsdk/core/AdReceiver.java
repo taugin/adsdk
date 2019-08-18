@@ -10,7 +10,6 @@ import android.os.Handler;
 
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.config.AdConfig;
-import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
@@ -19,10 +18,7 @@ import com.hauyu.adsdk.policy.CtPolicy;
 import com.hauyu.adsdk.policy.LtPolicy;
 import com.hauyu.adsdk.scconfig.CtConfig;
 import com.hauyu.adsdk.scconfig.LtConfig;
-import com.hauyu.adsdk.scloader.AtAdLoader;
-import com.hauyu.adsdk.scloader.GtAdLoader;
 import com.hauyu.adsdk.scloader.HtAdLoader;
-import com.hauyu.adsdk.utils.TaskUtils;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.ArrayList;
@@ -134,24 +130,10 @@ public class AdReceiver {
                 return;
             }
             if (getAlarmAction().equals(intent.getAction())) {
-                if (isGtAtExclusive(context)) {
-                    if (TaskUtils.hasAppUsagePermission(context)) {
-                        AtAdLoader.get(context).onFire();
-                    } else {
-                        GtAdLoader.get(context).onFire();
-                    }
-                } else {
-                    GtAdLoader.get(context).onFire();
-                    if (TaskUtils.hasAppUsagePermission(context)) {
-                        AtAdLoader.get(context).onFire();
-                    }
-                }
                 triggerAlarm(context);
             } else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
-                TaskMonitor.get(context).stopMonitor();
                 triggerScreenOff(context);
             } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-                AtAdLoader.get(context).resumeLoader();
                 showLockScreen();
                 triggerScreenOn(context);
             } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
@@ -193,14 +175,6 @@ public class AdReceiver {
         } else if (Intent.ACTION_PACKAGE_REPLACED.equals(intent.getAction())) {
             triggerPackageReplaced(context, intent);
         }
-    }
-
-    private boolean isGtAtExclusive(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isGtAtExclusive();
-        }
-        return false;
     }
 
     private void showLockScreen() {

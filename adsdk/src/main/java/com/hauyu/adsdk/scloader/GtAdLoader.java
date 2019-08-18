@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.common.BaseLoader;
 import com.hauyu.adsdk.config.AdConfig;
+import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.scconfig.GtConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.DataManager;
@@ -31,6 +32,7 @@ public class GtAdLoader extends BaseLoader {
 
     private GtAdLoader(Context context) {
         mContext = context.getApplicationContext();
+        AdReceiver.get(context).registerTriggerListener(this);
     }
 
     public static GtAdLoader get(Context context) {
@@ -62,6 +64,11 @@ public class GtAdLoader extends BaseLoader {
         return mContext;
     }
 
+    @Override
+    public void onAlarm(Context context) {
+        GtAdLoader.get(context).onFire();
+    }
+
     private void updateAdPolicy() {
         AdConfig adConfig = DataManager.get(mContext).getAdConfig();
         GtConfig gtConfig = DataManager.get(mContext).getRemoteGtPolicy();
@@ -72,7 +79,6 @@ public class GtAdLoader extends BaseLoader {
     }
 
     public void onFire() {
-        DataManager.get(mContext).refresh();
         fireOuterAd();
     }
 
@@ -97,7 +103,7 @@ public class GtAdLoader extends BaseLoader {
             mAdSdk.loadComplexAds(outerPidName, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
-                    Log.iv(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.iv(Log.TAG, "loaded place_name : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).setLoading(false);
                     EventImpl.get().reportAdOuterLoaded(mContext, GtPolicy.get(mContext).getType(), pidName);
                     if (GtPolicy.get(mContext).isGtAllowed()) {
@@ -120,7 +126,7 @@ public class GtAdLoader extends BaseLoader {
 
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
-                    Log.iv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.iv(Log.TAG, "dismiss place_name : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).reportShowing(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                             && GtPolicy.get(mContext).isShowBottomActivity()
@@ -132,14 +138,14 @@ public class GtAdLoader extends BaseLoader {
 
                 @Override
                 public void onShow(String pidName, String source, String adType) {
-                    Log.iv(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.iv(Log.TAG, "show place_name : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).reportShowing(true);
                     EventImpl.get().reportAdOuterShowing(mContext, GtPolicy.get(mContext).getType(), pidName);
                 }
 
                 @Override
                 public void onError(String pidName, String source, String adType) {
-                    Log.iv(Log.TAG, "error pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    Log.iv(Log.TAG, "error place_name : " + pidName + " , source : " + source + " , adType : " + adType);
                     GtPolicy.get(mContext).updateLastFailTime();
                     GtPolicy.get(mContext).setLoading(false);
                 }

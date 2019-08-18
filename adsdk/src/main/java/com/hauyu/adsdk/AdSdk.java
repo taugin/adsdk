@@ -19,7 +19,6 @@ import com.hauyu.adsdk.listener.IParseListener;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.scloader.AtAdLoader;
 import com.hauyu.adsdk.scloader.GtAdLoader;
 import com.hauyu.adsdk.scloader.HtAdLoader;
 import com.hauyu.adsdk.scloader.StAdLoader;
@@ -99,7 +98,6 @@ public class AdSdk {
         AdReceiver.get(mContext).init();
         GtAdLoader.get(mContext).init(this);
         StAdLoader.get(mContext).init(this);
-        AtAdLoader.get(mContext).init(this);
         HtAdLoader.get(mContext).init(this);
     }
 

@@ -8,7 +8,6 @@ import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.config.AdConfig;
 import com.hauyu.adsdk.config.AdPlace;
 import com.hauyu.adsdk.config.AdSwitch;
-import com.hauyu.adsdk.scconfig.AtConfig;
 import com.hauyu.adsdk.scconfig.CtConfig;
 import com.hauyu.adsdk.scconfig.GtConfig;
 import com.hauyu.adsdk.scconfig.HtConfig;
@@ -76,12 +75,6 @@ public class DataManager implements Runnable {
         if (mHandler != null) {
             mHandler.removeCallbacks(this);
             mHandler.postDelayed(this, 5000);
-        }
-    }
-
-    public void refresh() {
-        if (mDataRequest != null) {
-            mDataRequest.refresh();
         }
     }
 
@@ -178,15 +171,6 @@ public class DataManager implements Runnable {
         data = checkLastData(data, StConfig.STPOLICY_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseStPolicy(data);
-        }
-        return null;
-    }
-
-    public AtConfig getRemoteAtPolicy() {
-        String data = getString(AtConfig.ATPOLICY_NAME);
-        data = checkLastData(data, AtConfig.ATPOLICY_NAME);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseAtPolicy(data);
         }
         return null;
     }

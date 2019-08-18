@@ -76,13 +76,11 @@ import com.hauyu.adsdk.http.Http;
 import com.hauyu.adsdk.http.OnImageCallback;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.policy.AtPolicy;
 import com.hauyu.adsdk.policy.CtPolicy;
 import com.hauyu.adsdk.policy.GtPolicy;
 import com.hauyu.adsdk.policy.HtPolicy;
 import com.hauyu.adsdk.policy.LtPolicy;
 import com.hauyu.adsdk.policy.StPolicy;
-import com.hauyu.adsdk.scloader.AtAdLoader;
 import com.hauyu.adsdk.scloader.GtAdLoader;
 import com.hauyu.adsdk.scloader.HtAdLoader;
 import com.hauyu.adsdk.scloader.StAdLoader;
@@ -451,8 +449,6 @@ public class GFAPSD extends Activity {
                     GtPolicy.get(this).reportShowing(true);
                 } else if (TextUtils.equals(HtAdLoader.HTPLACE_OUTER_NAME, mPidName)) {
                     HtPolicy.get(this).reportShowing(true);
-                } else if (TextUtils.equals(AtAdLoader.ATPLACE_OUTER_NAME, mPidName)) {
-                    AtPolicy.get(this).reportShowing(true);
                 } else if (TextUtils.equals(StAdLoader.STPLACE_OUTER_NAME, mPidName)) {
                     StPolicy.get(this).reportShowing(true);
                 } else if (TextUtils.equals(ChargeHelper.CTPLACE_OUTER_NAME, mPidName)) {

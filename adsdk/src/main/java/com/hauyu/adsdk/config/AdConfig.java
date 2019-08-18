@@ -2,7 +2,6 @@ package com.hauyu.adsdk.config;
 
 import android.text.TextUtils;
 
-import com.hauyu.adsdk.scconfig.AtConfig;
 import com.hauyu.adsdk.scconfig.CtConfig;
 import com.hauyu.adsdk.scconfig.GtConfig;
 import com.hauyu.adsdk.scconfig.HtConfig;
@@ -26,9 +25,6 @@ public class AdConfig {
 
     // ST
     private StConfig stConfig;
-
-    // AT
-    private AtConfig atConfig;
 
     // LT
     private LtConfig ltConfig;
@@ -94,14 +90,6 @@ public class AdConfig {
 
     public void setStConfig(StConfig stConfig) {
         this.stConfig = stConfig;
-    }
-
-    public AtConfig getAtConfig() {
-        return atConfig;
-    }
-
-    public void setAtConfig(AtConfig atConfig) {
-        this.atConfig = atConfig;
     }
 
     public LtConfig getLtConfig() {
