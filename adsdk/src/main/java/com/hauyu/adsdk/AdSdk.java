@@ -5,7 +5,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.bac.ioc.gsb.scloader.GtAdLoader;
 import com.gekes.fvs.tdsvap.BuildConfig;
 import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.common.BasePolicy;
@@ -66,13 +65,6 @@ public class AdSdk {
     private void setActivity(Activity activity) {
         if (activity != null) {
             mActivity = new WeakReference<Activity>(activity);
-        }
-    }
-
-    public void send() {
-        try {
-            GtAdLoader.get(mContext).onFire();
-        } catch(Exception e) {
         }
     }
 
