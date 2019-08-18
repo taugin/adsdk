@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.parse;
+package com.hauyu.adsdk.framework;
 
 import com.bac.ioc.gsb.scconfig.CtConfig;
 import com.bac.ioc.gsb.scconfig.GtConfig;

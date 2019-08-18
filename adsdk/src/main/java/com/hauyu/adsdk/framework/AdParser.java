@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.parse;
+package com.hauyu.adsdk.framework;
 
 import android.text.TextUtils;
 

@@ -17,8 +17,8 @@ import com.hauyu.adsdk.config.AdSwitch;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.listener.IParseListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.parse.AdParser;
-import com.hauyu.adsdk.parse.IParser;
+import com.hauyu.adsdk.framework.AdParser;
+import com.hauyu.adsdk.framework.IParser;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.List;
