@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.framework;
+package com.hauyu.adsdk.data.parse;
 
 import android.text.TextUtils;
 
@@ -9,10 +9,10 @@ import com.bac.ioc.gsb.scconfig.LtConfig;
 import com.bac.ioc.gsb.scconfig.StConfig;
 import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.common.BaseConfig;
-import com.hauyu.adsdk.config.AdConfig;
-import com.hauyu.adsdk.config.AdPlace;
-import com.hauyu.adsdk.config.AdSwitch;
-import com.hauyu.adsdk.config.PidConfig;
+import com.hauyu.adsdk.data.config.AdConfig;
+import com.hauyu.adsdk.data.config.AdPlace;
+import com.hauyu.adsdk.data.config.AdSwitch;
+import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.Aes;
 import com.hauyu.adsdk.listener.IParseListener;

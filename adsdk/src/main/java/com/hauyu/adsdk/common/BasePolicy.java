@@ -10,7 +10,7 @@ import android.text.TextUtils;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.core.AttrChecker;
-import com.hauyu.adsdk.framework.ActivityMonitor;
+import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.utils.Utils;

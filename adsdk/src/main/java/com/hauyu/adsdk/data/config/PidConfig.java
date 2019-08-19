@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.config;
+package com.hauyu.adsdk.data.config;
 
 import android.text.TextUtils;
 

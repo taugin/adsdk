@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.framework;
+package com.hauyu.adsdk.data.parse;
 
 import com.bac.ioc.gsb.scconfig.CtConfig;
 import com.bac.ioc.gsb.scconfig.GtConfig;
@@ -7,9 +7,9 @@ import com.bac.ioc.gsb.scconfig.LtConfig;
 import com.bac.ioc.gsb.scconfig.StConfig;
 import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.common.BaseConfig;
-import com.hauyu.adsdk.config.AdConfig;
-import com.hauyu.adsdk.config.AdPlace;
-import com.hauyu.adsdk.config.AdSwitch;
+import com.hauyu.adsdk.data.config.AdConfig;
+import com.hauyu.adsdk.data.config.AdPlace;
+import com.hauyu.adsdk.data.config.AdSwitch;
 import com.hauyu.adsdk.listener.IParseListener;
 
 import java.util.List;
@@ -28,8 +28,6 @@ public interface IParser {
     String GTCONFIG = "gtconfig";
     // ST配置
     String STCONFIG = "stconfig";
-    // AT配置
-    String ATCONFIG = "atconfig";
     // LT配置
     String LTCONFIG = "ltconfig";
     // HT配置
@@ -166,14 +164,6 @@ public interface IParser {
     String REPORT_FIREBASE = "rf";
     // 是否上报facebook
     String REPORT_FACEBOOK = "rfb";
-    // 排除的报名
-    String EXCLUDE_PACKAGES = "ep";
-    // gt at exclusive
-    String GT_AT_EXCLUSIVE = "gae";
-    // at show on first page
-    String SHOW_ON_FIRST_PAGE = "sofp";
-    // forbid from insight
-    String FORBID_FROM_INSIGHTS = "ffi";
 
     // banner
     String BANNER = "banner";
@@ -185,7 +175,6 @@ public interface IParser {
     String LINKURL = "linkurl";
     String CTA = "cta";
     String HTML = "html";
-
 
     AdConfig parseAdConfig(String data);
 

@@ -17,7 +17,7 @@ import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.framework.Params;
+import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.log.Log;
 
 import java.util.HashMap;

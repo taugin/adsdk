@@ -1,10 +1,10 @@
-package com.hauyu.adsdk.framework;
+package com.hauyu.adsdk.core.framework;
 
 import android.app.Activity;
 import android.view.ViewGroup;
 
 import com.hauyu.adsdk.AdParams;
-import com.hauyu.adsdk.config.AdPlace;
+import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 
 import java.util.Map;

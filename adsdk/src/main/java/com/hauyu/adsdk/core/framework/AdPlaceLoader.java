@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.framework;
+package com.hauyu.adsdk.core.framework;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,8 +21,8 @@ import com.hauyu.adsdk.adloader.listener.ISdkLoader;
 import com.hauyu.adsdk.adloader.listener.OnAdBaseListener;
 import com.hauyu.adsdk.adloader.mopub.MopubLoader;
 import com.hauyu.adsdk.adloader.spread.SpLoader;
-import com.hauyu.adsdk.config.AdPlace;
-import com.hauyu.adsdk.config.PidConfig;
+import com.hauyu.adsdk.data.config.AdPlace;
+import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AdHelper;
 import com.hauyu.adsdk.core.AdPolicy;

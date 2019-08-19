@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.config;
+package com.hauyu.adsdk.data.config;
 
 /**
  * Created by Administrator on 2018/5/5.

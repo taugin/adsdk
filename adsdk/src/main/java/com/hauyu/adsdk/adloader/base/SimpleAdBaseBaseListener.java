@@ -5,7 +5,7 @@ import com.hauyu.adsdk.adloader.listener.IManagerListener;
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
 import com.hauyu.adsdk.adloader.listener.OnAdBaseListener;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.framework.AdPlaceLoader;
+import com.hauyu.adsdk.core.framework.AdPlaceLoader;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 

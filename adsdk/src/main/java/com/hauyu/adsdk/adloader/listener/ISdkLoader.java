@@ -3,8 +3,8 @@ package com.hauyu.adsdk.adloader.listener;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import com.hauyu.adsdk.config.PidConfig;
-import com.hauyu.adsdk.framework.Params;
+import com.hauyu.adsdk.data.config.PidConfig;
+import com.hauyu.adsdk.core.framework.Params;
 
 /**
  * Created by Administrator on 2018/2/9.

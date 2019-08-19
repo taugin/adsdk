@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.framework;
+package com.hauyu.adsdk.core.framework;
 
 import android.app.Activity;
 import android.app.Application;
@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.hauyu.adsdk.config.PidConfig;
+import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.core.CtrChecker;
 
 import java.util.Set;

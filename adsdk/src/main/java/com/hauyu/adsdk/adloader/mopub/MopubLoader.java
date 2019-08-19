@@ -9,7 +9,7 @@ import android.view.ViewParent;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.framework.Params;
+import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.log.Log;
 import com.mopub.common.MoPub;
 import com.mopub.common.MoPubReward;

@@ -12,7 +12,7 @@ import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.DataManager;
-import com.hauyu.adsdk.framework.Params;
+import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.http.Http;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;

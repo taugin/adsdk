@@ -4,7 +4,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.framework.Params;
+import com.hauyu.adsdk.core.framework.Params;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -3,7 +3,7 @@ package com.hauyu.adsdk.core;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.hauyu.adsdk.config.AdPlace;
+import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
