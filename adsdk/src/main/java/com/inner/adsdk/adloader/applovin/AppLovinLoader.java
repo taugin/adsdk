@@ -18,6 +18,7 @@ import com.applovin.sdk.AppLovinAdSize;
 import com.applovin.sdk.AppLovinAdVideoPlaybackListener;
 import com.applovin.sdk.AppLovinErrorCodes;
 import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.AppLovinSdkSettings;
 import com.inner.adsdk.AdReward;
 import com.inner.adsdk.adloader.base.AbstractSdkLoader;
 import com.inner.adsdk.constant.Constant;
@@ -31,6 +32,8 @@ import java.util.Map;
 
 public class AppLovinLoader extends AbstractSdkLoader {
 
+    private static final String SDK_KEY = "aqULsa4oR7H9uQJrVI4-hGyFMgAc_RwZFPv6-zvQ5AZzbup5At4t806UgH6fi1DzQ74O5zpA8N8kGyqRquIyuO";
+
     private AppLovinAd loadedAd;
     private AppLovinInterstitialAdDialog interstitialAdDialog;
 
@@ -41,6 +44,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     private AppLovinAdView gAppLovinAdView;
 
+    private static AppLovinSdkSettings sAppLovinSdkSettings;
+
     @Override
     public void init(Context context) {
         super.init(context);
@@ -49,6 +54,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     public String getSdkName() {
         return Constant.AD_SDK_APPLOVIN;
+    }
+
+    private AppLovinSdk getInstance() {
+        if (sAppLovinSdkSettings == null) {
+            sAppLovinSdkSettings = new AppLovinSdkSettings(mContext);
+        }
+        return AppLovinSdk.getInstance(SDK_KEY, sAppLovinSdkSettings, mContext);
     }
 
     @Override
@@ -91,7 +103,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
         setBannerSize(adSize);
-        loadingAdView = new AppLovinAdView(AppLovinAdSize.BANNER, mPidConfig.getPid(), mContext);
+        loadingAdView = new AppLovinAdView(getInstance(), AppLovinAdSize.BANNER, mPidConfig.getPid(), mContext);
         loadingAdView.setAdLoadListener(new AppLovinAdLoadListener() {
             @Override
             public void adReceived(AppLovinAd appLovinAd) {
@@ -220,7 +232,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
         if (interstitialAdDialog == null) {
-            interstitialAdDialog = AppLovinInterstitialAd.create(AppLovinSdk.getInstance(mContext), mContext);
+            interstitialAdDialog = AppLovinInterstitialAd.create(getInstance(), mContext);
             interstitialAdDialog.setAdClickListener(new AppLovinAdClickListener() {
                 @Override
                 public void adClicked(AppLovinAd appLovinAd) {
@@ -253,7 +265,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             });
         }
         try {
-            AppLovinSdk.getInstance(mContext).getAdService().loadNextAdForZoneId(mPidConfig.getPid(), new AppLovinAdLoadListener() {
+            getInstance().getAdService().loadNextAdForZoneId(mPidConfig.getPid(), new AppLovinAdLoadListener() {
                 @Override
                 public void adReceived(AppLovinAd appLovinAd) {
                     Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
@@ -345,7 +357,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
         }
         setLoading(true, STATE_REQUEST);
-        incentivizedInterstitial = AppLovinIncentivizedInterstitial.create(mPidConfig.getPid(), AppLovinSdk.getInstance(mContext));
+        incentivizedInterstitial = AppLovinIncentivizedInterstitial.create(mPidConfig.getPid(), getInstance());
         incentivizedInterstitial.preload(new AppLovinAdLoadListener() {
             @Override
             public void adReceived(AppLovinAd appLovinAd) {
