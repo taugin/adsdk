@@ -14,7 +14,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bac.ioc.gsb.scpolicy.BsPolicy;
+import com.bac.ioc.gsb.scloader.CtAdLoader;
 import com.bac.ioc.gsb.scpolicy.CtPolicy;
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.gekes.fvs.tdsvap.R;
@@ -127,13 +127,9 @@ public class ChargeHelper implements View.OnClickListener {
     }
 
     private void update() {
-        BsPolicy bsPolicy = BsPolicy.get();
-        if (bsPolicy == null) {
-            return;
-        }
-        int percent = bsPolicy.getPercent();
+        int percent = CtAdLoader.BatteryInfo.getPercent();
         updateBatteryLevel(percent);
-        if (bsPolicy.isCharging()) {
+        if (CtAdLoader.BatteryInfo.isCharging()) {
             if (percent < 80) {
                 speedBlink.startBlink();
                 continuousBlink.halftrans();
@@ -143,7 +139,7 @@ public class ChargeHelper implements View.OnClickListener {
                 speedText.setEnabled(true);
                 continuousText.setEnabled(false);
                 trickleText.setEnabled(false);
-                int chargingTimeInSecond = bsPolicy.estimateRemainChargingTime();
+                int chargingTimeInSecond = CtAdLoader.BatteryInfo.estimateRemainChargingTime();
                 int hours = chargingTimeInSecond / 3600;
                 int minutes = (chargingTimeInSecond - hours * 3600) / 60;
                 updateTimeInfo(mActivity.getString(R.string.ad_cm_label_charging), hours, minutes);
@@ -156,7 +152,7 @@ public class ChargeHelper implements View.OnClickListener {
                 speedText.setEnabled(false);
                 continuousText.setEnabled(true);
                 trickleText.setEnabled(false);
-                int chargingTimeInSecond = bsPolicy.estimateRemainChargingTime();
+                int chargingTimeInSecond = CtAdLoader.BatteryInfo.estimateRemainChargingTime();
                 int hours = chargingTimeInSecond / 3600;
                 int minutes = (chargingTimeInSecond - hours * 3600) / 60;
                 updateTimeInfo(mActivity.getString(R.string.ad_cm_label_charging), hours, minutes);
@@ -186,7 +182,7 @@ public class ChargeHelper implements View.OnClickListener {
             speedText.setEnabled(false);
             continuousText.setEnabled(false);
             trickleText.setEnabled(false);
-            int timeInMinutes = bsPolicy.estimateRemainBatteryTime();
+            int timeInMinutes = CtAdLoader.BatteryInfo.estimateRemainBatteryTime();
             int hours = timeInMinutes / 60;
             int minutes = timeInMinutes % 60;
             updateTimeInfo(mActivity.getString(R.string.ad_cm_label_standby), hours, minutes);
