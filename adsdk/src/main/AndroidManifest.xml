@@ -53,9 +53,6 @@
             android:launchMode="singleInstance"
             android:noHistory="true" />
 
-        <meta-data
-            android:name="applovin.sdk.key"
-            android:value="aqULsa4oR7H9uQJrVI4-hGyFMgAc_RwZFPv6-zvQ5AZzbup5At4t806UgH6fi1DzQ74O5zpA8N8kGyqRquIyuO" />
         <!-- MoPub's consent dialog -->
         <activity
             android:name="com.mopub.common.privacy.ConsentDialogActivity"
