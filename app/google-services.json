@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:844351654343:android:c97211288a1f6ee6",
+        "mobilesdk_app_id": "1:844351654343:android:ed520fef4b6f1a12",
         "android_client_info": {
-          "package_name": "com.inner.adsdk.demo"
+          "package_name": "com.hauyu.adsdk.demo"
         }
       },
       "oauth_client": [

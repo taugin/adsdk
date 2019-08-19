@@ -5,14 +5,13 @@ import android.content.Intent;
 import android.os.Handler;
 
 import com.bac.ioc.gsb.scconfig.LtConfig;
-import com.bac.ioc.gsb.scpolicy.HtPolicy;
 import com.bac.ioc.gsb.scpolicy.LtPolicy;
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.common.BaseLoader;
-import com.hauyu.adsdk.data.config.AdConfig;
 import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.data.DataManager;
+import com.hauyu.adsdk.data.config.AdConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -55,7 +54,7 @@ public class LtAdLoader extends BaseLoader {
         if (mAdSdk == null) {
             return;
         }
-        HtPolicy.get(mContext).init();
+        LtPolicy.get(mContext).init();
         updateLtPolicy();
     }
     
@@ -92,7 +91,7 @@ public class LtAdLoader extends BaseLoader {
             return;
         }
         try {
-            Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.LSPICKER");
+            Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.LSPICKER", false, false);
             if (intent == null) {
                 intent = new Intent(mContext, GFAPSD.class);
             }

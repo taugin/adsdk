@@ -506,10 +506,14 @@ public class Utils {
     }
 
     public static Intent getIntentByAction(Context context, String action) {
-        return getIntentByAction(context, action, true);
+        return getIntentByAction(context, action, true, true);
     }
 
     public static Intent getIntentByAction(Context context, String action, boolean addNoHistory) {
+        return getIntentByAction(context, action, addNoHistory, true);
+    }
+
+    public static Intent getIntentByAction(Context context, String action, boolean addNoHistory, boolean random) {
         Intent intent = null;
         if (TextUtils.isEmpty(action)) {
             return intent;
@@ -527,7 +531,10 @@ public class Utils {
             }
             if (!activityNames.isEmpty()) {
                 int size = activityNames.size();
-                int index = new Random(System.currentTimeMillis()).nextInt(size);
+                int index = 0;
+                if (random) {
+                    index = new Random(System.currentTimeMillis()).nextInt(size);
+                }
                 String className = activityNames.get(index);
                 boolean isSingleInstance = false;
                 try {
