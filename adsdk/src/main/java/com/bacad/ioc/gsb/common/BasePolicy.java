@@ -32,7 +32,7 @@ public class BasePolicy implements Handler.Callback {
 
     protected AttrChecker mAttrChecker;
     protected Context mContext;
-    protected BaseConfig mBaseConfig;
+    protected BCg mBCg;
     private String mType;
     private boolean mLoading = false;
     private Handler mHandler;
@@ -46,8 +46,8 @@ public class BasePolicy implements Handler.Callback {
         mAttrChecker = new AttrChecker(context);
     }
 
-    protected void setPolicy(BaseConfig baseConfig) {
-        mBaseConfig = baseConfig;
+    protected void setPolicy(BCg BCg) {
+        mBCg = BCg;
     }
 
     @Override
@@ -64,8 +64,8 @@ public class BasePolicy implements Handler.Callback {
 
     private long getTimeout() {
         long timeOut = 0;
-        if (mBaseConfig != null) {
-            timeOut = mBaseConfig.getTimeOut();
+        if (mBCg != null) {
+            timeOut = mBCg.getTimeOut();
         }
         return timeOut;
     }
@@ -104,15 +104,15 @@ public class BasePolicy implements Handler.Callback {
      * @return
      */
     public boolean isMatchMinInterval() {
-        if (mBaseConfig != null) {
+        if (mBCg != null) {
             long now = System.currentTimeMillis();
             long lastReqTime = Utils.getLong(mContext, getPrefKey(PREF_REQUEST_TIME), 0);
-            long leftTime = mBaseConfig.getMinInterval() - (now - lastReqTime);
+            long leftTime = mBCg.getMinInterval() - (now - lastReqTime);
             if (leftTime > 0) {
                 Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
                 Log.iv(Log.TAG, mType + " mi : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
             }
-            return now - lastReqTime >= mBaseConfig.getMinInterval();
+            return now - lastReqTime >= mBCg.getMinInterval();
         }
         return true;
     }
@@ -141,8 +141,8 @@ public class BasePolicy implements Handler.Callback {
      */
     public int getNTRate() {
         int nTRate = 0;
-        if (mBaseConfig != null) {
-            nTRate = mBaseConfig.getNtr();
+        if (mBCg != null) {
+            nTRate = mBCg.getNtr();
         }
         if (nTRate < 0) {
             nTRate = 0;
@@ -240,29 +240,29 @@ public class BasePolicy implements Handler.Callback {
      * @return
      */
     protected boolean isConfigAllow() {
-        if (mBaseConfig != null) {
-            return mBaseConfig.isEnable();
+        if (mBCg != null) {
+            return mBCg.isEnable();
         }
         return false;
     }
 
     protected boolean isAttrAllow() {
-        if (mBaseConfig != null && !mAttrChecker.isAttributionAllow(mBaseConfig.getAttrList())) {
+        if (mBCg != null && !mAttrChecker.isAttributionAllow(mBCg.getAttrList())) {
             Log.iv(Log.TAG, "attr not allowed");
             return false;
         }
 
-        if (mBaseConfig != null && !mAttrChecker.isCountryAllow(mBaseConfig.getCountryList())) {
+        if (mBCg != null && !mAttrChecker.isCountryAllow(mBCg.getCountryList())) {
             Log.iv(Log.TAG, "country not allowed");
             return false;
         }
 
-        if (mBaseConfig != null && !mAttrChecker.isMediaSourceAllow(mBaseConfig.getMediaList())) {
+        if (mBCg != null && !mAttrChecker.isMediaSourceAllow(mBCg.getMediaList())) {
             Log.iv(Log.TAG, "ms not allowed");
             return false;
         }
 
-        if (mBaseConfig != null && !mAttrChecker.isVersionAllow(mBaseConfig.getVerList())) {
+        if (mBCg != null && !mAttrChecker.isVersionAllow(mBCg.getVerList())) {
             Log.iv(Log.TAG, "ver not allowed");
             return false;
         }
@@ -275,10 +275,10 @@ public class BasePolicy implements Handler.Callback {
      * @return
      */
     protected boolean isDelayAllow() {
-        if (mBaseConfig != null && mBaseConfig.getUpDelay() > 0) {
+        if (mBCg != null && mBCg.getUpDelay() > 0) {
             long now = System.currentTimeMillis();
             long firstStartTime = getFirstStartUpTime();
-            return now - firstStartTime > mBaseConfig.getUpDelay();
+            return now - firstStartTime > mBCg.getUpDelay();
         }
         return true;
     }
@@ -289,15 +289,15 @@ public class BasePolicy implements Handler.Callback {
      * @return
      */
     protected boolean isIntervalAllow() {
-        if (mBaseConfig != null && mBaseConfig.getInterval() > 0) {
+        if (mBCg != null && mBCg.getInterval() > 0) {
             long now = System.currentTimeMillis();
             long last = getLastShowTime();
-            long leftTime = mBaseConfig.getInterval() - (now - last);
+            long leftTime = mBCg.getInterval() - (now - last);
             if (leftTime > 0) {
                 Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
                 Log.iv(Log.TAG, mType + " i : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
             }
-            return now - last > mBaseConfig.getInterval();
+            return now - last > mBCg.getInterval();
         }
         return true;
     }
@@ -309,11 +309,11 @@ public class BasePolicy implements Handler.Callback {
      */
     protected boolean isMaxShowAllow() {
         resetTotalShowIfNeed();
-        if (mBaseConfig != null && mBaseConfig.getMaxCount() > 0) {
+        if (mBCg != null && mBCg.getMaxCount() > 0) {
             long times = getTotalShowTimes();
-            Log.d(Log.TAG, "total show times : " + times + " , mc : " + mBaseConfig.getMaxCount());
+            Log.d(Log.TAG, "total show times : " + times + " , mc : " + mBCg.getMaxCount());
             // 此处<=的逻辑会导致最大展示次数多1次
-            return times <= mBaseConfig.getMaxCount();
+            return times <= mBCg.getMaxCount();
         }
         return true;
     }
@@ -324,9 +324,9 @@ public class BasePolicy implements Handler.Callback {
      * @return
      */
     protected boolean isAppVerAllow() {
-        if (mBaseConfig != null && mBaseConfig.getMaxVersion() > 0) {
+        if (mBCg != null && mBCg.getMaxVersion() > 0) {
             int verCode = Utils.getVersionCode(mContext);
-            return verCode <= mBaseConfig.getMaxVersion();
+            return verCode <= mBCg.getMaxVersion();
         }
         return true;
     }
@@ -338,8 +338,8 @@ public class BasePolicy implements Handler.Callback {
     }
 
     protected boolean matchInstallTime() {
-        if (mBaseConfig != null) {
-            long configInstallTime = mBaseConfig.getConfigInstallTime();
+        if (mBCg != null) {
+            long configInstallTime = mBCg.getConfigInstallTime();
             long firstInstallTime = getFirstInstallTime();
             String cit = configInstallTime > 0 ? Constant.SDF_1.format(new Date(configInstallTime)) : "0";
             String fit = firstInstallTime > 0 ? Constant.SDF_1.format(new Date(firstInstallTime)) : "0";
@@ -372,20 +372,20 @@ public class BasePolicy implements Handler.Callback {
     }
 
     public boolean isShowBottomActivity() {
-        if (mBaseConfig != null){
-            return mBaseConfig.isShowBottomActivity();
+        if (mBCg != null){
+            return mBCg.isShowBottomActivity();
         }
         return false;
     }
 
     protected boolean isScreenOrientationAllow() {
-        if (mBaseConfig != null) {
+        if (mBCg != null) {
             int orientation = Configuration.ORIENTATION_UNDEFINED;
             try {
                 orientation = mContext.getResources().getConfiguration().orientation;
             } catch (Exception e) {
             }
-            int configOrientation = mBaseConfig.getScreenOrientation();
+            int configOrientation = mBCg.getScreenOrientation();
             if (configOrientation == 0) {
                 // 不限屏幕方向
                 return true;
@@ -404,15 +404,15 @@ public class BasePolicy implements Handler.Callback {
     }
 
     protected boolean isSceneIntervalAllow() {
-        if (mBaseConfig != null && mBaseConfig.getSceneInterval() > 0) {
+        if (mBCg != null && mBCg.getSceneInterval() > 0) {
             long now = System.currentTimeMillis();
             long last = getLastSceneTime();
-            long leftTime = mBaseConfig.getSceneInterval() - (now - last);
+            long leftTime = mBCg.getSceneInterval() - (now - last);
             if (leftTime > 0) {
                 Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
                 Log.iv(Log.TAG, mType + " si : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
             }
-            return now - last > mBaseConfig.getSceneInterval();
+            return now - last > mBCg.getSceneInterval();
         }
         return true;
     }

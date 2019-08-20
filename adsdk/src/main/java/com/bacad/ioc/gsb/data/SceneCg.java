@@ -15,11 +15,11 @@ import java.util.Locale;
  */
 
 @SuppressWarnings("unchecked")
-public class SceneConfig {
+public class SceneCg {
 
     private Context mContext;
 
-    public SceneConfig(Context context) {
+    public SceneCg(Context context) {
         mContext = context;
     }
 

@@ -1,10 +1,10 @@
 package com.bacad.ioc.gsb.data.parse;
 
-import com.bacad.ioc.gsb.scconfig.CtConfig;
-import com.bacad.ioc.gsb.scconfig.GtConfig;
-import com.bacad.ioc.gsb.scconfig.HtConfig;
-import com.bacad.ioc.gsb.scconfig.LtConfig;
-import com.bacad.ioc.gsb.scconfig.StConfig;
+import com.bacad.ioc.gsb.scconfig.CvCg;
+import com.bacad.ioc.gsb.scconfig.GvCg;
+import com.bacad.ioc.gsb.scconfig.HvCg;
+import com.bacad.ioc.gsb.scconfig.LvCg;
+import com.bacad.ioc.gsb.scconfig.SvCg;
 
 
 /**
@@ -52,13 +52,13 @@ public interface ISceneParser {
     // 场景间隔
     String SCENE_INTERVAL = "si";
 
-    GtConfig parseGtPolicy(String data);
+    GvCg parseGtPolicy(String data);
 
-    StConfig parseStPolicy(String data);
+    SvCg parseStPolicy(String data);
 
-    LtConfig parseLtPolicy(String data);
+    LvCg parseLtPolicy(String data);
 
-    HtConfig parseHtPolicy(String data);
+    HvCg parseHtPolicy(String data);
 
-    CtConfig parseCtPolicy(String data);
+    CvCg parseCtPolicy(String data);
 }

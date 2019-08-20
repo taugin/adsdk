@@ -2,7 +2,7 @@ package com.bacad.ioc.gsb.scpolicy;
 
 import android.content.Context;
 
-import com.bacad.ioc.gsb.scconfig.GtConfig;
+import com.bacad.ioc.gsb.scconfig.GvCg;
 import com.bacad.ioc.gsb.common.BasePolicy;
 import com.hauyu.adsdk.core.AttrChecker;
 import com.hauyu.adsdk.log.Log;
@@ -12,43 +12,43 @@ import com.hauyu.adsdk.utils.Utils;
  * Created by Administrator on 2018/3/19.
  */
 
-public class GtPolicy extends BasePolicy {
-    private static GtPolicy sGtPolicy;
+public class GvPcy extends BasePolicy {
+    private static GvPcy sGvPcy;
 
-    public static GtPolicy get(Context context) {
-        synchronized (GtPolicy.class) {
-            if (sGtPolicy == null) {
+    public static GvPcy get(Context context) {
+        synchronized (GvPcy.class) {
+            if (sGvPcy == null) {
                 createInstance(context);
             }
         }
-        return sGtPolicy;
+        return sGvPcy;
     }
 
     private static void createInstance(Context context) {
-        synchronized (GtPolicy.class) {
-            if (sGtPolicy == null) {
-                sGtPolicy = new GtPolicy(context);
+        synchronized (GvPcy.class) {
+            if (sGvPcy == null) {
+                sGvPcy = new GvPcy(context);
             }
         }
     }
 
-    private GtPolicy(Context context) {
+    private GvPcy(Context context) {
         super(context, "gt");
         mAttrChecker = new AttrChecker(context);
     }
 
-    private GtConfig mGtConfig;
+    private GvCg mGvCg;
 
     public void init() {
     }
 
-    public void setPolicy(GtConfig gtConfig) {
-        super.setPolicy(gtConfig);
-        mGtConfig = gtConfig;
+    public void setPolicy(GvCg gvCg) {
+        super.setPolicy(gvCg);
+        mGvCg = gvCg;
     }
 
     public boolean isGtAllowed() {
-        Log.iv(Log.TAG, "g_value : " + mGtConfig);
+        Log.iv(Log.TAG, "g_value : " + mGvCg);
         if (!checkBaseConfig()) {
             return false;
         }

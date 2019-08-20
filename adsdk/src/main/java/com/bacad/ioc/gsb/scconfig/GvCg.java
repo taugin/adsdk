@@ -1,6 +1,6 @@
 package com.bacad.ioc.gsb.scconfig;
 
-import com.bacad.ioc.gsb.common.BaseConfig;
+import com.bacad.ioc.gsb.common.BCg;
 import com.hauyu.adsdk.constant.Constant;
 
 import java.util.Date;
@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by Administrator on 2018/2/9.
  */
 
-public class GtConfig extends BaseConfig {
+public class GvCg extends BCg {
 
     public static final String GTPOLICY_NAME = "gt" + CONFIG_SUFFIX;
 

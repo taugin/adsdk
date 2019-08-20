@@ -2,7 +2,7 @@ package com.bacad.ioc.gsb.scpolicy;
 
 import android.content.Context;
 
-import com.bacad.ioc.gsb.scconfig.StConfig;
+import com.bacad.ioc.gsb.scconfig.SvCg;
 import com.bacad.ioc.gsb.common.BasePolicy;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
@@ -11,42 +11,42 @@ import com.hauyu.adsdk.utils.Utils;
  * Created by Administrator on 2018-8-10.
  */
 
-public class StPolicy extends BasePolicy {
-    private static StPolicy sStPolicy;
+public class SvPcy extends BasePolicy {
+    private static SvPcy sSvPcy;
 
-    public static StPolicy get(Context context) {
-        synchronized (StPolicy.class) {
-            if (sStPolicy == null) {
+    public static SvPcy get(Context context) {
+        synchronized (SvPcy.class) {
+            if (sSvPcy == null) {
                 createInstance(context);
             }
         }
-        return sStPolicy;
+        return sSvPcy;
     }
 
     private static void createInstance(Context context) {
-        synchronized (StPolicy.class) {
-            if (sStPolicy == null) {
-                sStPolicy = new StPolicy(context);
+        synchronized (SvPcy.class) {
+            if (sSvPcy == null) {
+                sSvPcy = new SvPcy(context);
             }
         }
     }
 
-    private StPolicy(Context context) {
+    private SvPcy(Context context) {
         super(context, "st");
     }
 
-    private StConfig mStConfig;
+    private SvCg mSvCg;
 
     public void init() {
     }
 
-    public void setPolicy(StConfig stConfig) {
-        super.setPolicy(stConfig);
-        mStConfig = stConfig;
+    public void setPolicy(SvCg svCg) {
+        super.setPolicy(svCg);
+        mSvCg = svCg;
     }
 
     public boolean isStAllowed() {
-        Log.iv(Log.TAG, "s_value : " + mStConfig);
+        Log.iv(Log.TAG, "s_value : " + mSvCg);
         if (!checkBaseConfig()) {
             return false;
         }

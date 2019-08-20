@@ -1,13 +1,13 @@
 package com.bacad.ioc.gsb.scconfig;
 
 
-import com.bacad.ioc.gsb.common.BaseConfig;
+import com.bacad.ioc.gsb.common.BCg;
 
 /**
  * Created by Administrator on 2018-8-10.
  */
 
-public class StConfig extends BaseConfig {
+public class SvCg extends BCg {
 
     public static final String STPOLICY_NAME = "st" + CONFIG_SUFFIX;
 

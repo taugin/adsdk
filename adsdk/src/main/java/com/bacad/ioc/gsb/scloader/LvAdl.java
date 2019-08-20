@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 
 import com.bacad.ioc.gsb.data.SceneData;
-import com.bacad.ioc.gsb.scpolicy.LtPolicy;
+import com.bacad.ioc.gsb.scpolicy.LvPcy;
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.AdSdk;
 import com.bacad.ioc.gsb.common.BaseLoader;
@@ -17,32 +17,32 @@ import com.hauyu.adsdk.utils.Utils;
  * Created by Administrator on 2019/8/18.
  */
 
-public class LtAdLoader extends BaseLoader {
+public class LvAdl extends BaseLoader {
 
     private static final int MSG_SHOW_LOCKSCREEN = 123456789;
     private static final int DELAY = 5000;
-    private static LtAdLoader sLtAdLoader;
+    private static LvAdl sLvAdl;
 
     private Context mContext;
     private AdSdk mAdSdk;
     private Handler mHandler = new Handler();
 
-    private LtAdLoader(Context context) {
+    private LvAdl(Context context) {
         mContext = context.getApplicationContext();
         AdReceiver.get(context).registerTriggerListener(this);
     }
 
-    public static LtAdLoader get(Context context) {
-        if (sLtAdLoader == null) {
+    public static LvAdl get(Context context) {
+        if (sLvAdl == null) {
             create(context);
         }
-        return sLtAdLoader;
+        return sLvAdl;
     }
 
     private static void create(Context context) {
-        synchronized (LtAdLoader.class) {
-            if (sLtAdLoader == null) {
-                sLtAdLoader = new LtAdLoader(context);
+        synchronized (LvAdl.class) {
+            if (sLvAdl == null) {
+                sLvAdl = new LvAdl(context);
             }
         }
     }
@@ -52,7 +52,7 @@ public class LtAdLoader extends BaseLoader {
         if (mAdSdk == null) {
             return;
         }
-        LtPolicy.get(mContext).init();
+        LvPcy.get(mContext).init();
         updateLtPolicy();
     }
     
@@ -85,7 +85,7 @@ public class LtAdLoader extends BaseLoader {
 
     private void showLs() {
         updateLtPolicy();
-        if (!LtPolicy.get(mContext).isLtAllowed()) {
+        if (!LvPcy.get(mContext).isLtAllowed()) {
             return;
         }
         try {
@@ -98,13 +98,13 @@ public class LtAdLoader extends BaseLoader {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             mContext.startActivity(intent);
-            LtPolicy.get(mContext).reportShowing(true);
+            LvPcy.get(mContext).reportShowing(true);
         } catch (Exception e) {
             Log.v(Log.TAG, "error : " + e);
         }
     }
 
     private void updateLtPolicy() {
-        LtPolicy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteLtPolicy());
+        LvPcy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteLtPolicy());
     }
 }

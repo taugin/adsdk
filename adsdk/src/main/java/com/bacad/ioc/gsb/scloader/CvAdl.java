@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.BatteryManager;
 
 import com.bacad.ioc.gsb.data.SceneData;
-import com.bacad.ioc.gsb.scpolicy.CtPolicy;
+import com.bacad.ioc.gsb.scpolicy.CvPcy;
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.AdSdk;
 import com.bacad.ioc.gsb.common.BaseLoader;
@@ -19,29 +19,29 @@ import java.lang.reflect.Method;
  * Created by Administrator on 2019/8/18.
  */
 
-public class CtAdLoader extends BaseLoader {
+public class CvAdl extends BaseLoader {
 
-    private static CtAdLoader sCtAdLoader;
+    private static CvAdl sCvAdl;
 
     private Context mContext;
     private AdSdk mAdSdk;
 
-    private CtAdLoader(Context context) {
+    private CvAdl(Context context) {
         mContext = context.getApplicationContext();
         AdReceiver.get(context).registerTriggerListener(this);
     }
 
-    public static CtAdLoader get(Context context) {
-        if (sCtAdLoader == null) {
+    public static CvAdl get(Context context) {
+        if (sCvAdl == null) {
             create(context);
         }
-        return sCtAdLoader;
+        return sCvAdl;
     }
 
     private static void create(Context context) {
-        synchronized (CtAdLoader.class) {
-            if (sCtAdLoader == null) {
-                sCtAdLoader = new CtAdLoader(context);
+        synchronized (CvAdl.class) {
+            if (sCvAdl == null) {
+                sCvAdl = new CvAdl(context);
             }
         }
     }
@@ -51,7 +51,7 @@ public class CtAdLoader extends BaseLoader {
         if (mAdSdk == null) {
             return;
         }
-        CtPolicy.get(mContext).init();
+        CvPcy.get(mContext).init();
         updateCtPolicy();
     }
 
@@ -76,12 +76,12 @@ public class CtAdLoader extends BaseLoader {
     }
 
     private void updateCtPolicy() {
-        CtPolicy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteCtPolicy());
+        CvPcy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteCtPolicy());
     }
 
     private void startCMActivity(Context context, boolean charging) {
         updateCtPolicy();
-        if (!CtPolicy.get(mContext).isCtAllowed()) {
+        if (!CvPcy.get(mContext).isCtAllowed()) {
             return;
         }
         Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.CMPICKER");
@@ -94,7 +94,7 @@ public class CtAdLoader extends BaseLoader {
         BatteryInfo.isCharging = charging;
         try {
             context.startActivity(intent);
-            CtPolicy.get(mContext).reportShowing(true);
+            CvPcy.get(mContext).reportShowing(true);
         } catch (Exception e) {
         }
     }

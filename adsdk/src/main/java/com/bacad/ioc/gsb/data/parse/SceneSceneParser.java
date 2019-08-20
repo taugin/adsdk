@@ -2,12 +2,12 @@ package com.bacad.ioc.gsb.data.parse;
 
 import android.text.TextUtils;
 
-import com.bacad.ioc.gsb.scconfig.CtConfig;
-import com.bacad.ioc.gsb.scconfig.GtConfig;
-import com.bacad.ioc.gsb.scconfig.HtConfig;
-import com.bacad.ioc.gsb.scconfig.LtConfig;
-import com.bacad.ioc.gsb.scconfig.StConfig;
-import com.bacad.ioc.gsb.common.BaseConfig;
+import com.bacad.ioc.gsb.scconfig.CvCg;
+import com.bacad.ioc.gsb.scconfig.GvCg;
+import com.bacad.ioc.gsb.scconfig.HvCg;
+import com.bacad.ioc.gsb.scconfig.LvCg;
+import com.bacad.ioc.gsb.scconfig.SvCg;
+import com.bacad.ioc.gsb.common.BCg;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.Aes;
 import com.hauyu.adsdk.log.Log;
@@ -46,147 +46,147 @@ public class SceneSceneParser implements ISceneParser {
         return Aes.decrypt(Constant.KEY_PASSWORD, content);
     }
 
-    private void parseBaseConfig(BaseConfig baseConfig, JSONObject jobj) {
-        if (baseConfig == null) {
+    private void parseBaseConfig(BCg BCg, JSONObject jobj) {
+        if (BCg == null) {
             return;
         }
         try {
             if (jobj.has(ENABLE)) {
-                baseConfig.setEnable(jobj.getInt(ENABLE) == 1);
+                BCg.setEnable(jobj.getInt(ENABLE) == 1);
             }
             if (jobj.has(UPDELAY)) {
-                baseConfig.setUpDelay(jobj.getLong(UPDELAY));
+                BCg.setUpDelay(jobj.getLong(UPDELAY));
             }
             if (jobj.has(INTERVAL)) {
-                baseConfig.setInterval(jobj.getLong(INTERVAL));
+                BCg.setInterval(jobj.getLong(INTERVAL));
             }
             if (jobj.has(MAX_COUNT)) {
-                baseConfig.setMaxCount(jobj.getInt(MAX_COUNT));
+                BCg.setMaxCount(jobj.getInt(MAX_COUNT));
             }
             if (jobj.has(MAX_VERSION)) {
-                baseConfig.setMaxVersion(jobj.getInt(MAX_VERSION));
+                BCg.setMaxVersion(jobj.getInt(MAX_VERSION));
             }
             if (jobj.has(MIN_INTERVAL)) {
-                baseConfig.setMinInterval(jobj.getLong(MIN_INTERVAL));
+                BCg.setMinInterval(jobj.getLong(MIN_INTERVAL));
             }
             if (jobj.has(SCREEN_ORIENTATION)) {
-                baseConfig.setScreenOrientation(jobj.getInt(SCREEN_ORIENTATION));
+                BCg.setScreenOrientation(jobj.getInt(SCREEN_ORIENTATION));
             }
             if (jobj.has(TIMEOUT)) {
-                baseConfig.setTimeOut(jobj.getLong(TIMEOUT));
+                BCg.setTimeOut(jobj.getLong(TIMEOUT));
             }
             if (jobj.has(CONFIG_INSTALL_TIME)) {
-                baseConfig.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
+                BCg.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
             }
             if (jobj.has(SHOW_BOTTOM_ACTIVITY)) {
-                baseConfig.setShowBottomActivity(jobj.getInt(SHOW_BOTTOM_ACTIVITY) == 1);
+                BCg.setShowBottomActivity(jobj.getInt(SHOW_BOTTOM_ACTIVITY) == 1);
             }
             if (jobj.has(PLACE_NAME_INT)) {
-                baseConfig.setPlaceNameInt(jobj.getString(PLACE_NAME_INT));
+                BCg.setPlaceNameInt(jobj.getString(PLACE_NAME_INT));
             }
             if (jobj.has(PLACE_NAME_ADV)) {
-                baseConfig.setPlaceNameAdv(jobj.getString(PLACE_NAME_ADV));
+                BCg.setPlaceNameAdv(jobj.getString(PLACE_NAME_ADV));
             }
             if (jobj.has(SCENE_INTERVAL)) {
-                baseConfig.setSceneInterval(jobj.getLong(SCENE_INTERVAL));
+                BCg.setSceneInterval(jobj.getLong(SCENE_INTERVAL));
             }
-            parseAttrConfig(baseConfig, jobj);
+            parseAttrConfig(BCg, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseBasePolicyInternal error : " + e);
         }
     }
 
     @Override
-    public GtConfig parseGtPolicy(String data) {
+    public GvCg parseGtPolicy(String data) {
         data = getContent(data);
         return parseGtPolicyLocked(data);
     }
 
-    private GtConfig parseGtPolicyLocked(String content) {
-        GtConfig gtConfig = null;
+    private GvCg parseGtPolicyLocked(String content) {
+        GvCg gvCg = null;
         try {
             JSONObject jobj = new JSONObject(content);
-            gtConfig = new GtConfig();
-            parseBaseConfig(gtConfig, jobj);
+            gvCg = new GvCg();
+            parseBaseConfig(gvCg, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseGtPolicyInternal error : " + e);
         }
-        return gtConfig;
+        return gvCg;
     }
 
     @Override
-    public StConfig parseStPolicy(String data) {
+    public SvCg parseStPolicy(String data) {
         data = getContent(data);
         return parseStPolicyLocked(data);
     }
 
-    private StConfig parseStPolicyLocked(String content) {
-        StConfig stConfig = null;
+    private SvCg parseStPolicyLocked(String content) {
+        SvCg svCg = null;
         try {
             JSONObject jobj = new JSONObject(content);
-            stConfig = new StConfig();
-            parseBaseConfig(stConfig, jobj);
+            svCg = new SvCg();
+            parseBaseConfig(svCg, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseStPolicyInternal error : " + e);
         }
-        return stConfig;
+        return svCg;
     }
 
     @Override
-    public LtConfig parseLtPolicy(String data) {
+    public LvCg parseLtPolicy(String data) {
         data = getContent(data);
         return parseLtPolicyLocked(data);
     }
 
-    private LtConfig parseLtPolicyLocked(String data) {
-        LtConfig ltConfig = null;
+    private LvCg parseLtPolicyLocked(String data) {
+        LvCg lvCg = null;
         try {
             JSONObject jobj = new JSONObject(data);
-            ltConfig = new LtConfig();
-            parseBaseConfig(ltConfig, jobj);
+            lvCg = new LvCg();
+            parseBaseConfig(lvCg, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseLtConfigInternal error : " + e);
         }
-        return ltConfig;
+        return lvCg;
     }
 
     @Override
-    public HtConfig parseHtPolicy(String data) {
+    public HvCg parseHtPolicy(String data) {
         data = getContent(data);
         return parseHtPolicyLocked(data);
     }
 
-    private HtConfig parseHtPolicyLocked(String data) {
-        HtConfig htConfig = null;
+    private HvCg parseHtPolicyLocked(String data) {
+        HvCg hvCg = null;
         try {
             JSONObject jobj = new JSONObject(data);
-            htConfig = new HtConfig();
-            parseBaseConfig(htConfig, jobj);
+            hvCg = new HvCg();
+            parseBaseConfig(hvCg, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseHtConfigInternal error : " + e);
         }
-        return htConfig;
+        return hvCg;
     }
 
     @Override
-    public CtConfig parseCtPolicy(String data) {
+    public CvCg parseCtPolicy(String data) {
         data = getContent(data);
         return parseCtPolicyLocked(data);
     }
 
-    private CtConfig parseCtPolicyLocked(String data) {
-        CtConfig ctConfig = null;
+    private CvCg parseCtPolicyLocked(String data) {
+        CvCg cvCg = null;
         try {
             JSONObject jobj = new JSONObject(data);
-            ctConfig = new CtConfig();
-            parseBaseConfig(ctConfig, jobj);
+            cvCg = new CvCg();
+            parseBaseConfig(cvCg, jobj);
             if (jobj.has(DISABLE_INTERVAL)) {
-                ctConfig.setDisableInterval(jobj.getLong(DISABLE_INTERVAL));
+                cvCg.setDisableInterval(jobj.getLong(DISABLE_INTERVAL));
             }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseCtConfigInternal error : " + e);
         }
-        return ctConfig;
+        return cvCg;
     }
 
     private List<String> parseStringList(String str) {
@@ -210,10 +210,10 @@ public class SceneSceneParser implements ISceneParser {
     /**
      * 解析归因配置
      *
-     * @param baseConfig
+     * @param BCg
      * @param jobj
      */
-    private void parseAttrConfig(BaseConfig baseConfig, JSONObject jobj) {
+    private void parseAttrConfig(BCg BCg, JSONObject jobj) {
         try {
             if (jobj.has(COUNTRY_LIST)) {
                 JSONArray jarray = jobj.getJSONArray(COUNTRY_LIST);
@@ -225,7 +225,7 @@ public class SceneSceneParser implements ISceneParser {
                             list.add(s);
                         }
                     }
-                    baseConfig.setCountryList(list);
+                    BCg.setCountryList(list);
                 }
             }
             if (jobj.has(ATTRS)) {
@@ -238,7 +238,7 @@ public class SceneSceneParser implements ISceneParser {
                             list.add(s);
                         }
                     }
-                    baseConfig.setAttrList(list);
+                    BCg.setAttrList(list);
                 }
             }
             if (jobj.has(MEDIA_SOURCE)) {
@@ -251,7 +251,7 @@ public class SceneSceneParser implements ISceneParser {
                             list.add(s);
                         }
                     }
-                    baseConfig.setMediaList(list);
+                    BCg.setMediaList(list);
                 }
             }
             if (jobj.has(VER_LIST)) {
@@ -264,11 +264,11 @@ public class SceneSceneParser implements ISceneParser {
                             list.add(s);
                         }
                     }
-                    baseConfig.setVerList(list);
+                    BCg.setVerList(list);
                 }
             }
             if (jobj.has(NTRATE)) {
-                baseConfig.setNtr(jobj.getInt(NTRATE));
+                BCg.setNtr(jobj.getInt(NTRATE));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "parseAttrConfig error : " + e);

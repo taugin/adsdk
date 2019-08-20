@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.data.config.AdConfig;
+import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.AdSwitch;
 import com.hauyu.adsdk.data.parse.AdParser;
@@ -55,7 +55,7 @@ public class DataManager implements Runnable {
 
     private IDataRequest mDataRequest;
     private Context mContext;
-    private AdConfig mLocalAdConfig;
+    private PlaceConfig mLocalPlaceConfig;
     private IParser mParser;
     private AdSwitch mAdSwitch;
     private Handler mHandler = new Handler();
@@ -82,7 +82,7 @@ public class DataManager implements Runnable {
         String cfgName = getConfigName();
         String defName = getDefaultName();
         Log.iv(Log.TAG, "cfg : " + cfgName + ".[dat/json] , def : " + defName + ".[dat/json]");
-        if (mLocalAdConfig == null && mParser != null) {
+        if (mLocalPlaceConfig == null && mParser != null) {
             String data = Utils.readAssets(mContext, cfgName + CONFIG_SUFFIX1);
             if (TextUtils.isEmpty(data)) {
                 data = Utils.readAssets(mContext, cfgName + CONFIG_SUFFIX2);
@@ -93,9 +93,9 @@ public class DataManager implements Runnable {
             if (TextUtils.isEmpty(data)) {
                 data = Utils.readAssets(mContext, defName + CONFIG_SUFFIX2);
             }
-            mLocalAdConfig = mParser.parseAdConfig(data);
-            if (mLocalAdConfig != null) {
-                mLocalAdConfig.setAdConfigMd5(Utils.string2MD5(data));
+            mLocalPlaceConfig = mParser.parseAdConfig(data);
+            if (mLocalPlaceConfig != null) {
+                mLocalPlaceConfig.setAdConfigMd5(Utils.string2MD5(data));
                 Log.v(Log.TAG, "locale data has been set success");
             }
         }
@@ -107,21 +107,21 @@ public class DataManager implements Runnable {
         data = getString(DATA_CONFIG);
         data = checkLastData(data, DATA_CONFIG);
         if (!TextUtils.isEmpty(data)
-                && (mLocalAdConfig == null || !TextUtils.equals(mLocalAdConfig.getAdConfigMd5(), Utils.string2MD5(data)))) {
+                && (mLocalPlaceConfig == null || !TextUtils.equals(mLocalPlaceConfig.getAdConfigMd5(), Utils.string2MD5(data)))) {
             if (mParser != null) {
-                mLocalAdConfig = mParser.parseAdConfig(data);
-                if (mLocalAdConfig != null) {
-                    mLocalAdConfig.setAdConfigMd5(Utils.string2MD5(data));
+                mLocalPlaceConfig = mParser.parseAdConfig(data);
+                if (mLocalPlaceConfig != null) {
+                    mLocalPlaceConfig.setAdConfigMd5(Utils.string2MD5(data));
                     Log.iv(Log.TAG, "remote data has been set success");
                 }
             }
         }
     }
 
-    public AdConfig getAdConfig() {
+    public PlaceConfig getAdConfig() {
         parseRemoteData();
         parseLocalData();
-        return mLocalAdConfig;
+        return mLocalPlaceConfig;
     }
 
     private String getConfigName() {
@@ -160,8 +160,8 @@ public class DataManager implements Runnable {
                 Utils.putString(mContext, PREF_ADSWITCH_FLAG, newSwitchMd5);
             }
         }
-        if (mAdSwitch == null && mLocalAdConfig != null) {
-            mAdSwitch = mLocalAdConfig.getAdSwitch();
+        if (mAdSwitch == null && mLocalPlaceConfig != null) {
+            mAdSwitch = mLocalPlaceConfig.getAdSwitch();
         }
         Log.iv(Log.TAG, "ads : " + mAdSwitch);
         return mAdSwitch;

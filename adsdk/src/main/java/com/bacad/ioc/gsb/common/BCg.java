@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Administrator on 2018/7/18.
  */
 
-public abstract class BaseConfig {
+public abstract class BCg {
 
     protected static String CONFIG_SUFFIX = "config";
 
@@ -52,7 +52,7 @@ public abstract class BaseConfig {
         sceneInterval = 300000;
     }
 
-    public BaseConfig() {
+    public BCg() {
         initValue();
     }
 

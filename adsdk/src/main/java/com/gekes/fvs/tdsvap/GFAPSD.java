@@ -67,14 +67,14 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import com.bacad.ioc.gsb.scloader.GtAdLoader;
-import com.bacad.ioc.gsb.scloader.HtAdLoader;
-import com.bacad.ioc.gsb.scloader.StAdLoader;
-import com.bacad.ioc.gsb.scpolicy.CtPolicy;
-import com.bacad.ioc.gsb.scpolicy.GtPolicy;
-import com.bacad.ioc.gsb.scpolicy.HtPolicy;
-import com.bacad.ioc.gsb.scpolicy.LtPolicy;
-import com.bacad.ioc.gsb.scpolicy.StPolicy;
+import com.bacad.ioc.gsb.scloader.GvAdl;
+import com.bacad.ioc.gsb.scloader.HvAdl;
+import com.bacad.ioc.gsb.scloader.SvAdl;
+import com.bacad.ioc.gsb.scpolicy.CvPcy;
+import com.bacad.ioc.gsb.scpolicy.GvPcy;
+import com.bacad.ioc.gsb.scpolicy.HvPcy;
+import com.bacad.ioc.gsb.scpolicy.LvPcy;
+import com.bacad.ioc.gsb.scpolicy.SvPcy;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
@@ -444,17 +444,17 @@ public class GFAPSD extends Activity {
             boolean shown = AdSdk.get(this).showComplexAdsWithResult(mPidName, getAdParams(), mSource, mAdType, mAdLayout);
             if (shown) {
                 onAdShowing(mAdLayout);
-                if (TextUtils.equals(GtAdLoader.NTPLACE_OUTER_NAME, mPidName)
-                        || TextUtils.equals(GtAdLoader.GTPLACE_OUTER_NAME, mPidName)) {
-                    GtPolicy.get(this).reportShowing(true);
-                } else if (TextUtils.equals(HtAdLoader.HTPLACE_OUTER_NAME, mPidName)) {
-                    HtPolicy.get(this).reportShowing(true);
-                } else if (TextUtils.equals(StAdLoader.STPLACE_OUTER_NAME, mPidName)) {
-                    StPolicy.get(this).reportShowing(true);
+                if (TextUtils.equals(GvAdl.NTPLACE_OUTER_NAME, mPidName)
+                        || TextUtils.equals(GvAdl.GTPLACE_OUTER_NAME, mPidName)) {
+                    GvPcy.get(this).reportShowing(true);
+                } else if (TextUtils.equals(HvAdl.HTPLACE_OUTER_NAME, mPidName)) {
+                    HvPcy.get(this).reportShowing(true);
+                } else if (TextUtils.equals(SvAdl.STPLACE_OUTER_NAME, mPidName)) {
+                    SvPcy.get(this).reportShowing(true);
                 } else if (TextUtils.equals(ChargeHelper.CTPLACE_OUTER_NAME, mPidName)) {
-                    CtPolicy.get(this).reportShowing(true);
+                    CvPcy.get(this).reportShowing(true);
                 } else if (TextUtils.equals(LTPLACE_OUTER_NAME, mPidName)) {
-                    LtPolicy.get(this).reportShowing(true);
+                    LvPcy.get(this).reportShowing(true);
                 }
             } else {
                 Log.v(Log.TAG, "can not find loader for GFAPSD");

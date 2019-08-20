@@ -7,11 +7,11 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.bacad.ioc.gsb.scloader.CtAdLoader;
-import com.bacad.ioc.gsb.scloader.GtAdLoader;
-import com.bacad.ioc.gsb.scloader.HtAdLoader;
-import com.bacad.ioc.gsb.scloader.LtAdLoader;
-import com.bacad.ioc.gsb.scloader.StAdLoader;
+import com.bacad.ioc.gsb.scloader.CvAdl;
+import com.bacad.ioc.gsb.scloader.GvAdl;
+import com.bacad.ioc.gsb.scloader.HvAdl;
+import com.bacad.ioc.gsb.scloader.LvAdl;
+import com.bacad.ioc.gsb.scloader.SvAdl;
 
 /**
  * Created by Administrator on 2019/8/18.
@@ -20,11 +20,11 @@ import com.bacad.ioc.gsb.scloader.StAdLoader;
 public class GFAPRO extends ContentProvider {
     @Override
     public boolean onCreate() {
-        GtAdLoader.get(getContext()).init();
-        StAdLoader.get(getContext()).init();
-        HtAdLoader.get(getContext()).init();
-        LtAdLoader.get(getContext()).init();
-        CtAdLoader.get(getContext()).init();
+        GvAdl.get(getContext()).init();
+        SvAdl.get(getContext()).init();
+        HvAdl.get(getContext()).init();
+        LvAdl.get(getContext()).init();
+        CvAdl.get(getContext()).init();
         return false;
     }
 

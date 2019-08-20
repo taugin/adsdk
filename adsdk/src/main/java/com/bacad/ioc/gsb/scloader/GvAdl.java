@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import com.bacad.ioc.gsb.common.BaseLoader;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
-import com.bacad.ioc.gsb.scpolicy.GtPolicy;
+import com.bacad.ioc.gsb.scpolicy.GvPcy;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AdReceiver;
@@ -19,31 +19,31 @@ import java.util.Random;
  * Created by Administrator on 2018/3/19.
  */
 
-public class GtAdLoader extends BaseLoader {
+public class GvAdl extends BaseLoader {
     public static final String GTPLACE_OUTER_NAME = "gt_outer_place";
     public static final String NTPLACE_OUTER_NAME = "nt_outer_place";
 
-    private static GtAdLoader sGtAdLoader;
+    private static GvAdl sGvAdl;
 
     private Context mContext;
     private AdSdk mAdSdk;
 
-    private GtAdLoader(Context context) {
+    private GvAdl(Context context) {
         mContext = context.getApplicationContext();
         AdReceiver.get(context).registerTriggerListener(this);
     }
 
-    public static GtAdLoader get(Context context) {
-        if (sGtAdLoader == null) {
+    public static GvAdl get(Context context) {
+        if (sGvAdl == null) {
             create(context);
         }
-        return sGtAdLoader;
+        return sGvAdl;
     }
 
     private static void create(Context context) {
-        synchronized (GtAdLoader.class) {
-            if (sGtAdLoader == null) {
-                sGtAdLoader = new GtAdLoader(context);
+        synchronized (GvAdl.class) {
+            if (sGvAdl == null) {
+                sGvAdl = new GvAdl(context);
             }
         }
     }
@@ -53,7 +53,7 @@ public class GtAdLoader extends BaseLoader {
         if (mAdSdk == null) {
             return;
         }
-        GtPolicy.get(mContext).init();
+        GvPcy.get(mContext).init();
         updateAdPolicy();
     }
 
@@ -64,11 +64,11 @@ public class GtAdLoader extends BaseLoader {
 
     @Override
     public void onAlarm(Context context) {
-        GtAdLoader.get(context).onFire();
+        GvAdl.get(context).onFire();
     }
 
     private void updateAdPolicy() {
-        GtPolicy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteGtPolicy());
+        GvPcy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteGtPolicy());
     }
 
     public void onFire() {
@@ -78,32 +78,32 @@ public class GtAdLoader extends BaseLoader {
     private void fireOuterAd() {
         if (mAdSdk != null) {
             updateAdPolicy();
-            if (!GtPolicy.get(mContext).isGtAllowed()) {
+            if (!GvPcy.get(mContext).isGtAllowed()) {
                 return;
             }
-            if (!GtPolicy.get(mContext).isMatchMinInterval()) {
+            if (!GvPcy.get(mContext).isMatchMinInterval()) {
                 Log.iv(Log.TAG, "mi not allow");
                 return;
             }
-            if (GtPolicy.get(mContext).isLoading()) {
+            if (GvPcy.get(mContext).isLoading()) {
                 Log.iv(Log.TAG, "gt is loading");
                 return;
             }
             Log.iv(Log.TAG, "");
             String outerPidName = getNextPidName();
-            SceneEventImpl.get().reportAdOuterRequest(mContext, GtPolicy.get(mContext).getType(), outerPidName);
-            GtPolicy.get(mContext).setLoading(true);
+            SceneEventImpl.get().reportAdOuterRequest(mContext, GvPcy.get(mContext).getType(), outerPidName);
+            GvPcy.get(mContext).setLoading(true);
             mAdSdk.loadComplexAds(outerPidName, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "loaded place_name : " + pidName + " , source : " + source + " , adType : " + adType);
-                    GtPolicy.get(mContext).setLoading(false);
-                    SceneEventImpl.get().reportAdOuterLoaded(mContext, GtPolicy.get(mContext).getType(), pidName);
-                    if (GtPolicy.get(mContext).isGtAllowed()) {
+                    GvPcy.get(mContext).setLoading(false);
+                    SceneEventImpl.get().reportAdOuterLoaded(mContext, GvPcy.get(mContext).getType(), pidName);
+                    if (GvPcy.get(mContext).isGtAllowed()) {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
                             AdSdk.get(mContext).showComplexAds(pidName, null);
                         } else {
-                            if (GtPolicy.get(mContext).isShowBottomActivity()
+                            if (GvPcy.get(mContext).isShowBottomActivity()
                                     || Constant.TYPE_BANNER.equals(adType)
                                     || Constant.TYPE_NATIVE.equals(adType)) {
                                 show(pidName, source, adType);
@@ -111,18 +111,18 @@ public class GtAdLoader extends BaseLoader {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }
                         }
-                        SceneEventImpl.get().reportAdOuterCallShow(mContext, GtPolicy.get(mContext).getType(), pidName);
+                        SceneEventImpl.get().reportAdOuterCallShow(mContext, GvPcy.get(mContext).getType(), pidName);
                     } else {
-                        SceneEventImpl.get().reportAdOuterDisallow(mContext, GtPolicy.get(mContext).getType(), pidName);
+                        SceneEventImpl.get().reportAdOuterDisallow(mContext, GvPcy.get(mContext).getType(), pidName);
                     }
                 }
 
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "dismiss place_name : " + pidName + " , source : " + source + " , adType : " + adType);
-                    GtPolicy.get(mContext).reportShowing(false);
+                    GvPcy.get(mContext).reportShowing(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
-                            && GtPolicy.get(mContext).isShowBottomActivity()
+                            && GvPcy.get(mContext).isShowBottomActivity()
                             && !Constant.TYPE_BANNER.equals(adType)
                             && !Constant.TYPE_NATIVE.equals(adType)) {
                         hide();
@@ -132,22 +132,22 @@ public class GtAdLoader extends BaseLoader {
                 @Override
                 public void onShow(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "show place_name : " + pidName + " , source : " + source + " , adType : " + adType);
-                    GtPolicy.get(mContext).reportShowing(true);
-                    SceneEventImpl.get().reportAdOuterShowing(mContext, GtPolicy.get(mContext).getType(), pidName);
+                    GvPcy.get(mContext).reportShowing(true);
+                    SceneEventImpl.get().reportAdOuterShowing(mContext, GvPcy.get(mContext).getType(), pidName);
                 }
 
                 @Override
                 public void onError(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "error place_name : " + pidName + " , source : " + source + " , adType : " + adType);
-                    GtPolicy.get(mContext).updateLastFailTime();
-                    GtPolicy.get(mContext).setLoading(false);
+                    GvPcy.get(mContext).updateLastFailTime();
+                    GvPcy.get(mContext).setLoading(false);
                 }
             });
         }
     }
 
     private String getNextPidName() {
-        int nTRate = GtPolicy.get(mContext).getNTRate();
+        int nTRate = GvPcy.get(mContext).getNTRate();
         boolean isNtPid = new Random(System.currentTimeMillis()).nextInt(100) < nTRate;
         if (isNtPid) {
             return NTPLACE_OUTER_NAME;

@@ -12,7 +12,7 @@ import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.core.framework.AdPlaceLoader;
 import com.hauyu.adsdk.data.DataManager;
-import com.hauyu.adsdk.data.config.AdConfig;
+import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.OnTriggerListener;
@@ -145,7 +145,7 @@ public class AdSdk {
         AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(refPidName);
         // 如果远程无配置，则读取本地或者远程整体广告位配置
         if (adPlace == null) {
-            AdConfig localConfig = DataManager.get(mContext).getAdConfig();
+            PlaceConfig localConfig = DataManager.get(mContext).getAdConfig();
             if (localConfig != null ) {
                 adPlace = localConfig.get(pidName);
             }
@@ -167,7 +167,7 @@ public class AdSdk {
     }
 
     private boolean isRefShare(String pidName) {
-        AdConfig localConfig = DataManager.get(mContext).getAdConfig();
+        PlaceConfig localConfig = DataManager.get(mContext).getAdConfig();
         if (localConfig != null) {
             AdPlace adPlace = localConfig.get(pidName);
             if (adPlace != null) {
@@ -191,7 +191,7 @@ public class AdSdk {
             return adrefPidName;
         }
         Map<String, String> adRefs = DataManager.get(mContext).getRemoteAdRefs();
-        AdConfig localConfig = DataManager.get(mContext).getAdConfig();
+        PlaceConfig localConfig = DataManager.get(mContext).getAdConfig();
         if (adRefs == null && localConfig != null) {
             adRefs = localConfig.getAdRefs();
         }
@@ -214,7 +214,7 @@ public class AdSdk {
     private AdPlaceLoader createAdPlaceLoader(String pidName, AdPlace adPlace) {
         AdPlaceLoader loader = null;
         boolean useRemote = true;
-        AdConfig localConfig = DataManager.get(mContext).getAdConfig();
+        PlaceConfig localConfig = DataManager.get(mContext).getAdConfig();
         if (localConfig != null && adPlace == null) {
             adPlace = localConfig.get(pidName);
             useRemote = false;

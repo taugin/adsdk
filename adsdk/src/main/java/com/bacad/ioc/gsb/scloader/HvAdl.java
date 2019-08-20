@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import com.bacad.ioc.gsb.common.BaseLoader;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
-import com.bacad.ioc.gsb.scpolicy.HtPolicy;
+import com.bacad.ioc.gsb.scpolicy.HvPcy;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AdReceiver;
@@ -19,31 +19,31 @@ import com.hauyu.adsdk.log.Log;
  * Created by Administrator on 2018/3/19.
  */
 
-public class HtAdLoader extends BaseLoader {
+public class HvAdl extends BaseLoader {
 
     public static final String HTPLACE_OUTER_NAME = "ht_outer_place";
-    private static HtAdLoader sHtAdLoader;
+    private static HvAdl sHvAdl;
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
     private Context mContext;
     private AdSdk mAdSdk;
 
-    private HtAdLoader(Context context) {
+    private HvAdl(Context context) {
         mContext = context.getApplicationContext();
         AdReceiver.get(context).registerTriggerListener(this);
     }
 
-    public static HtAdLoader get(Context context) {
-        if (sHtAdLoader == null) {
+    public static HvAdl get(Context context) {
+        if (sHvAdl == null) {
             create(context);
         }
-        return sHtAdLoader;
+        return sHvAdl;
     }
 
     private static void create(Context context) {
-        synchronized (HtAdLoader.class) {
-            if (sHtAdLoader == null) {
-                sHtAdLoader = new HtAdLoader(context);
+        synchronized (HvAdl.class) {
+            if (sHvAdl == null) {
+                sHvAdl = new HvAdl(context);
             }
         }
     }
@@ -53,7 +53,7 @@ public class HtAdLoader extends BaseLoader {
         if (mAdSdk == null) {
             return;
         }
-        HtPolicy.get(mContext).init();
+        HvPcy.get(mContext).init();
         updateHtPolicy();
     }
 
@@ -73,33 +73,33 @@ public class HtAdLoader extends BaseLoader {
     }
 
     private void updateHtPolicy() {
-        HtPolicy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteHtPolicy());
+        HvPcy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteHtPolicy());
     }
 
     private void fireHome() {
         if (mAdSdk != null) {
             updateHtPolicy();
-            if (!HtPolicy.get(mContext).isHtAllowed()) {
+            if (!HvPcy.get(mContext).isHtAllowed()) {
                 return;
             }
-            if (HtPolicy.get(mContext).isLoading()) {
+            if (HvPcy.get(mContext).isLoading()) {
                 Log.iv(Log.TAG, "ht is loading");
                 return;
             }
             Log.iv(Log.TAG, "");
-            HtPolicy.get(mContext).setLoading(true);
-            SceneEventImpl.get().reportAdOuterRequest(mContext, HtPolicy.get(mContext).getType(), HTPLACE_OUTER_NAME);
+            HvPcy.get(mContext).setLoading(true);
+            SceneEventImpl.get().reportAdOuterRequest(mContext, HvPcy.get(mContext).getType(), HTPLACE_OUTER_NAME);
             mAdSdk.loadComplexAds(HTPLACE_OUTER_NAME, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    SceneEventImpl.get().reportAdOuterLoaded(mContext, HtPolicy.get(mContext).getType(), pidName);
-                    HtPolicy.get(mContext).setLoading(false);
-                    if (HtPolicy.get(mContext).isHtAllowed()) {
+                    SceneEventImpl.get().reportAdOuterLoaded(mContext, HvPcy.get(mContext).getType(), pidName);
+                    HvPcy.get(mContext).setLoading(false);
+                    if (HvPcy.get(mContext).isHtAllowed()) {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
                             AdSdk.get(mContext).showComplexAds(pidName, null);
                         } else {
-                            if (HtPolicy.get(mContext).isShowBottomActivity()
+                            if (HvPcy.get(mContext).isShowBottomActivity()
                                     || Constant.TYPE_BANNER.equals(adType)
                                     || Constant.TYPE_NATIVE.equals(adType)) {
                                 show(pidName, source, adType);
@@ -107,18 +107,18 @@ public class HtAdLoader extends BaseLoader {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }
                         }
-                        SceneEventImpl.get().reportAdOuterCallShow(mContext, HtPolicy.get(mContext).getType(), pidName);
+                        SceneEventImpl.get().reportAdOuterCallShow(mContext, HvPcy.get(mContext).getType(), pidName);
                     } else {
-                        SceneEventImpl.get().reportAdOuterDisallow(mContext, HtPolicy.get(mContext).getType(), pidName);
+                        SceneEventImpl.get().reportAdOuterDisallow(mContext, HvPcy.get(mContext).getType(), pidName);
                     }
                 }
 
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    HtPolicy.get(mContext).reportShowing(false);
+                    HvPcy.get(mContext).reportShowing(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
-                            && HtPolicy.get(mContext).isShowBottomActivity()
+                            && HvPcy.get(mContext).isShowBottomActivity()
                             && !Constant.TYPE_BANNER.equals(adType)
                             && !Constant.TYPE_NATIVE.equals(adType)) {
                         hide();
@@ -128,14 +128,14 @@ public class HtAdLoader extends BaseLoader {
                 @Override
                 public void onShow(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    HtPolicy.get(mContext).reportShowing(true);
-                    SceneEventImpl.get().reportAdOuterShowing(mContext, HtPolicy.get(mContext).getType(), pidName);
+                    HvPcy.get(mContext).reportShowing(true);
+                    SceneEventImpl.get().reportAdOuterShowing(mContext, HvPcy.get(mContext).getType(), pidName);
                 }
 
                 @Override
                 public void onError(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "error pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    HtPolicy.get(mContext).setLoading(false);
+                    HvPcy.get(mContext).setLoading(false);
                 }
             });
         }

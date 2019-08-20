@@ -4,11 +4,11 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.bacad.ioc.gsb.data.parse.SceneSceneParser;
-import com.bacad.ioc.gsb.scconfig.CtConfig;
-import com.bacad.ioc.gsb.scconfig.GtConfig;
-import com.bacad.ioc.gsb.scconfig.HtConfig;
-import com.bacad.ioc.gsb.scconfig.LtConfig;
-import com.bacad.ioc.gsb.scconfig.StConfig;
+import com.bacad.ioc.gsb.scconfig.CvCg;
+import com.bacad.ioc.gsb.scconfig.GvCg;
+import com.bacad.ioc.gsb.scconfig.HvCg;
+import com.bacad.ioc.gsb.scconfig.LvCg;
+import com.bacad.ioc.gsb.scconfig.SvCg;
 
 /**
  * Created by Administrator on 2018/2/12.
@@ -38,52 +38,52 @@ public class SceneData {
     private SceneData(Context context) {
         mContext = context;
         mParser = new SceneSceneParser();
-        mSceneConfig = new SceneConfig(mContext);
+        mSceneCg = new SceneCg(mContext);
     }
 
-    private SceneConfig mSceneConfig;
+    private SceneCg mSceneCg;
     private Context mContext;
     private SceneSceneParser mParser;
 
-    public GtConfig getRemoteGtPolicy() {
-        String data = getString(GtConfig.GTPOLICY_NAME);
-        data = checkLastData(data, GtConfig.GTPOLICY_NAME);
+    public GvCg getRemoteGtPolicy() {
+        String data = getString(GvCg.GTPOLICY_NAME);
+        data = checkLastData(data, GvCg.GTPOLICY_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseGtPolicy(data);
         }
         return null;
     }
 
-    public StConfig getRemoteStPolicy() {
-        String data = getString(StConfig.STPOLICY_NAME);
-        data = checkLastData(data, StConfig.STPOLICY_NAME);
+    public SvCg getRemoteStPolicy() {
+        String data = getString(SvCg.STPOLICY_NAME);
+        data = checkLastData(data, SvCg.STPOLICY_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseStPolicy(data);
         }
         return null;
     }
 
-    public LtConfig getRemoteLtPolicy() {
-        String data = getString(LtConfig.LTPOLICY_NAME);
-        data = checkLastData(data, LtConfig.LTPOLICY_NAME);
+    public LvCg getRemoteLtPolicy() {
+        String data = getString(LvCg.LTPOLICY_NAME);
+        data = checkLastData(data, LvCg.LTPOLICY_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseLtPolicy(data);
         }
         return null;
     }
 
-    public HtConfig getRemoteHtPolicy() {
-        String data = getString(HtConfig.HTPOLICY_NAME);
-        data = checkLastData(data, HtConfig.HTPOLICY_NAME);
+    public HvCg getRemoteHtPolicy() {
+        String data = getString(HvCg.HTPOLICY_NAME);
+        data = checkLastData(data, HvCg.HTPOLICY_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseHtPolicy(data);
         }
         return null;
     }
 
-    public CtConfig getRemoteCtPolicy() {
-        String data = getString(CtConfig.CTPOLICY_NAME);
-        data = checkLastData(data, CtConfig.CTPOLICY_NAME);
+    public CvCg getRemoteCtPolicy() {
+        String data = getString(CvCg.CTPOLICY_NAME);
+        data = checkLastData(data, CvCg.CTPOLICY_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseCtPolicy(data);
         }
@@ -91,8 +91,8 @@ public class SceneData {
     }
 
     public String getString(String key) {
-        if (mSceneConfig != null) {
-            return mSceneConfig.getString(key);
+        if (mSceneCg != null) {
+            return mSceneCg.getString(key);
         }
         return null;
     }

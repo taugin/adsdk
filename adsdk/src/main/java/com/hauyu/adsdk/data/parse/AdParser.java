@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.Aes;
-import com.hauyu.adsdk.data.config.AdConfig;
+import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.AdSwitch;
 import com.hauyu.adsdk.data.config.PidConfig;
@@ -52,14 +52,14 @@ public class AdParser implements IParser {
     }
 
     @Override
-    public AdConfig parseAdConfig(String data) {
+    public PlaceConfig parseAdConfig(String data) {
         data = getContent(data);
-        AdConfig adconfig = parseAdConfigLocked(data);
+        PlaceConfig adconfig = parseAdConfigLocked(data);
         return adconfig;
     }
 
-    private AdConfig parseAdConfigLocked(String data) {
-        AdConfig adConfig = null;
+    private PlaceConfig parseAdConfigLocked(String data) {
+        PlaceConfig placeConfig = null;
         try {
             JSONObject jobj = new JSONObject(data);
             List<AdPlace> adPlaces = null;
@@ -77,15 +77,15 @@ public class AdParser implements IParser {
             if (adPlaces != null
                     || adSwitch != null
                     || adrefs != null) {
-                adConfig = new AdConfig();
-                adConfig.setAdPlaceList(adPlaces);
-                adConfig.setAdSwitch(adSwitch);
-                adConfig.setAdRefs(adrefs);
+                placeConfig = new PlaceConfig();
+                placeConfig.setAdPlaceList(adPlaces);
+                placeConfig.setAdSwitch(adSwitch);
+                placeConfig.setAdRefs(adrefs);
             }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdConfigInternal error : " + e);
         }
-        return adConfig;
+        return placeConfig;
     }
 
     private List<String> parseStringList(String str) {

@@ -14,8 +14,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bacad.ioc.gsb.scloader.CtAdLoader;
-import com.bacad.ioc.gsb.scpolicy.CtPolicy;
+import com.bacad.ioc.gsb.scloader.CvAdl;
+import com.bacad.ioc.gsb.scpolicy.CvPcy;
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.AdExtra;
@@ -82,7 +82,7 @@ public class ChargeHelper implements View.OnClickListener {
             }
         }, 500);
 
-        if (CtPolicy.get(mActivity).allowDisableMonitor()) {
+        if (CvPcy.get(mActivity).allowDisableMonitor()) {
             chargeMore.setVisibility(View.VISIBLE);
         } else {
             chargeMore.setVisibility(View.GONE);
@@ -127,9 +127,9 @@ public class ChargeHelper implements View.OnClickListener {
     }
 
     private void update() {
-        int percent = CtAdLoader.BatteryInfo.getPercent();
+        int percent = CvAdl.BatteryInfo.getPercent();
         updateBatteryLevel(percent);
-        if (CtAdLoader.BatteryInfo.isCharging()) {
+        if (CvAdl.BatteryInfo.isCharging()) {
             if (percent < 80) {
                 speedBlink.startBlink();
                 continuousBlink.halftrans();
@@ -139,7 +139,7 @@ public class ChargeHelper implements View.OnClickListener {
                 speedText.setEnabled(true);
                 continuousText.setEnabled(false);
                 trickleText.setEnabled(false);
-                int chargingTimeInSecond = CtAdLoader.BatteryInfo.estimateRemainChargingTime();
+                int chargingTimeInSecond = CvAdl.BatteryInfo.estimateRemainChargingTime();
                 int hours = chargingTimeInSecond / 3600;
                 int minutes = (chargingTimeInSecond - hours * 3600) / 60;
                 updateTimeInfo(mActivity.getString(R.string.ad_cm_label_charging), hours, minutes);
@@ -152,7 +152,7 @@ public class ChargeHelper implements View.OnClickListener {
                 speedText.setEnabled(false);
                 continuousText.setEnabled(true);
                 trickleText.setEnabled(false);
-                int chargingTimeInSecond = CtAdLoader.BatteryInfo.estimateRemainChargingTime();
+                int chargingTimeInSecond = CvAdl.BatteryInfo.estimateRemainChargingTime();
                 int hours = chargingTimeInSecond / 3600;
                 int minutes = (chargingTimeInSecond - hours * 3600) / 60;
                 updateTimeInfo(mActivity.getString(R.string.ad_cm_label_charging), hours, minutes);
@@ -182,7 +182,7 @@ public class ChargeHelper implements View.OnClickListener {
             speedText.setEnabled(false);
             continuousText.setEnabled(false);
             trickleText.setEnabled(false);
-            int timeInMinutes = CtAdLoader.BatteryInfo.estimateRemainBatteryTime();
+            int timeInMinutes = CvAdl.BatteryInfo.estimateRemainBatteryTime();
             int hours = timeInMinutes / 60;
             int minutes = timeInMinutes % 60;
             updateTimeInfo(mActivity.getString(R.string.ad_cm_label_standby), hours, minutes);
@@ -304,7 +304,7 @@ public class ChargeHelper implements View.OnClickListener {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        CtPolicy.get(mActivity).disableMonitor();
+                        CvPcy.get(mActivity).disableMonitor();
                         finishActivityDelay();
                     }
                 });

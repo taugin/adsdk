@@ -1,7 +1,7 @@
 package com.hauyu.adsdk.data.parse;
 
 import com.gekes.fvs.tdsvap.SpConfig;
-import com.hauyu.adsdk.data.config.AdConfig;
+import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.AdSwitch;
 
@@ -120,7 +120,7 @@ public interface IParser {
     String CTA = "cta";
     String HTML = "html";
 
-    AdConfig parseAdConfig(String data);
+    PlaceConfig parseAdConfig(String data);
 
     AdPlace parseAdPlace(String data);
 
