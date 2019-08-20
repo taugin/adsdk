@@ -1410,8 +1410,7 @@ public class GFAPSD extends Activity {
 
         public void setStep(int nextStep) {
             if (nextStep >= stepCount || nextStep < -1) {
-                throw new IllegalArgumentException(
-                        "Step count should be with in [-1" + (stepCount - 1) + "]");
+                return;
             }
             this.step = nextStep;
             postInvalidate();
@@ -1445,6 +1444,8 @@ public class GFAPSD extends Activity {
                 startAlpha = a.getInteger(R.styleable.BlinkImageView_startAlpha, 63);
                 endAlpha = a.getInteger(R.styleable.BlinkImageView_endAlpha, 255);
                 duration = a.getInteger(R.styleable.BlinkImageView_blinkDuration, 800);
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e, e);
             } finally {
                 a.recycle();
             }
