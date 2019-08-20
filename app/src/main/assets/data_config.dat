@@ -47,21 +47,22 @@
   },
   "adplaces": [
     {
-      "name": "lt_outer_place",
-      "mode": "seq",
+      "name": "banner_and_native",
+      "mode": "con",
+      "ai":5000,
       "as": 1,
       "pids": [
         {
           "sdk": "adx",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "fb",
           "type": "native",
           "pid": "YOUR_PLACEMENT_ID",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "fb",
