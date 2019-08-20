@@ -4,21 +4,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.bac.ioc.gsb.scconfig.CtConfig;
-import com.bac.ioc.gsb.scconfig.GtConfig;
-import com.bac.ioc.gsb.scconfig.HtConfig;
-import com.bac.ioc.gsb.scconfig.LtConfig;
-import com.bac.ioc.gsb.scconfig.StConfig;
 import com.gekes.fvs.tdsvap.SpConfig;
-import com.hauyu.adsdk.common.BaseConfig;
+import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.config.AdConfig;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.AdSwitch;
-import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.listener.IParseListener;
-import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.data.parse.AdParser;
 import com.hauyu.adsdk.data.parse.IParser;
+import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.List;
@@ -157,60 +150,6 @@ public class DataManager implements Runnable {
         return null;
     }
 
-    public GtConfig getRemoteGtPolicy() {
-        String data = getString(GtConfig.GTPOLICY_NAME);
-        data = checkLastData(data, GtConfig.GTPOLICY_NAME);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseGtPolicy(data);
-        }
-        return null;
-    }
-
-    public StConfig getRemoteStPolicy() {
-        String data = getString(StConfig.STPOLICY_NAME);
-        data = checkLastData(data, StConfig.STPOLICY_NAME);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseStPolicy(data);
-        }
-        return null;
-    }
-
-    public LtConfig getRemoteLtPolicy() {
-        String data = getString(LtConfig.LTPOLICY_NAME);
-        data = checkLastData(data, LtConfig.LTPOLICY_NAME);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseLtPolicy(data);
-        }
-        return null;
-    }
-
-    public HtConfig getRemoteHtPolicy() {
-        String data = getString(HtConfig.HTPOLICY_NAME);
-        data = checkLastData(data, HtConfig.HTPOLICY_NAME);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseHtPolicy(data);
-        }
-        return null;
-    }
-
-    public CtConfig getRemoteCtPolicy() {
-        String data = getString(CtConfig.CTPOLICY_NAME);
-        data = checkLastData(data, CtConfig.CTPOLICY_NAME);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseCtPolicy(data);
-        }
-        return null;
-    }
-
-    public Map<String, String> getRemoteAdIds() {
-        String data = getString(Constant.ADIDS_NAME);
-        data = checkLastData(data, Constant.ADIDS_NAME);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseAdIds(data);
-        }
-        return null;
-    }
-
     public AdSwitch getAdSwitch() {
         String data = getString(Constant.ADSWITCH_NAME);
         if (!TextUtils.isEmpty(data)) {
@@ -251,21 +190,6 @@ public class DataManager implements Runnable {
             return mDataRequest.getString(key);
         }
         return null;
-    }
-
-    public void parseRemotePolicy(BaseConfig baseConfig, IParseListener parserCallback) {
-        if (baseConfig != null) {
-            String name = baseConfig.getName();
-            if (TextUtils.isEmpty(name)) {
-                Log.iv(Log.TAG, "can not find cfg name");
-                return;
-            }
-            String data = getString(name);
-            data = checkLastData(data, name);
-            if (!TextUtils.isEmpty(data)) {
-                mParser.parsePolicy(data, baseConfig, parserCallback);
-            }
-        }
     }
 
     /**

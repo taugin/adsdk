@@ -53,7 +53,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Runnable, Handler.Callback {
     private List<ISdkLoader> mAdLoaders = new ArrayList<ISdkLoader>();
     private AdPlace mAdPlace;
-    private Map<String, String> mAdIds;
     private Context mContext;
     private OnAdSdkListener mOnAdSdkListener;
     private OnAdSdkListener mOnAdSdkLoadedListener;
@@ -92,11 +91,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     @Override
-    public void setAdIds(Map<String, String> adids) {
-        mAdIds = adids;
-    }
-
-    @Override
     public boolean needReload(AdPlace adPlace) {
         if (mAdPlace != null && adPlace != null) {
             Log.d(Log.TAG, "pidName : " + mAdPlace.getName() + " , usingUnique : " + mAdPlace.getUniqueValue() + " , remoteUnique : " + adPlace.getUniqueValue());
@@ -110,18 +104,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             List<PidConfig> pidList = mAdPlace.getPidsList();
             if (pidList != null && !pidList.isEmpty()) {
                 ISdkLoader loader = null;
-                String adId = null;
                 for (PidConfig config : pidList) {
                     if (config != null) {
-                        if (mAdIds != null && !mAdIds.isEmpty()) {
-                            adId = mAdIds.get(config.getSdk());
-                        }
                         if (config.isAdmob() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new AdmobLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
-                            loader.setAdId(adId);
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
@@ -130,7 +119,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
-                            loader.setAdId(adId);
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
@@ -139,7 +127,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
-                            loader.setAdId(adId);
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
@@ -148,7 +135,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
-                            loader.setAdId(adId);
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
@@ -157,7 +143,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
-                            loader.setAdId(adId);
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
@@ -166,7 +151,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
-                            loader.setAdId(adId);
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }

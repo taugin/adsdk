@@ -1,16 +1,9 @@
 package com.hauyu.adsdk.data.parse;
 
-import com.bac.ioc.gsb.scconfig.CtConfig;
-import com.bac.ioc.gsb.scconfig.GtConfig;
-import com.bac.ioc.gsb.scconfig.HtConfig;
-import com.bac.ioc.gsb.scconfig.LtConfig;
-import com.bac.ioc.gsb.scconfig.StConfig;
 import com.gekes.fvs.tdsvap.SpConfig;
-import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.data.config.AdConfig;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.AdSwitch;
-import com.hauyu.adsdk.listener.IParseListener;
 
 import java.util.List;
 import java.util.Map;
@@ -22,18 +15,6 @@ import java.util.Map;
 
 public interface IParser {
 
-    // 各个广告平台的appid
-    String ADIDS = "adids";
-    // 应用外的配置信息
-    String GTCONFIG = "gtconfig";
-    // ST配置
-    String STCONFIG = "stconfig";
-    // LT配置
-    String LTCONFIG = "ltconfig";
-    // HT配置
-    String HTCONFIG = "htconfig";
-    // CT配置
-    String CTCONFIG = "ctconfig";
     // 广告位汇总
     String ADPLACES = "adplaces";
     // 开光控制配置信息
@@ -115,43 +96,6 @@ public interface IParser {
     // 加载原生个数
     String LOAD_NATIVE_COUNT = "lnc";
 
-    // 启用或禁用GT
-    String ENABLE = "e";
-    // 首次启动后多久允许GT
-    String UPDELAY = "d";
-    // GT的展示间隔
-    String INTERVAL = "i";
-    // 24小时GT的最大展示次数
-    String MAX_COUNT = "mc";
-    // 此配置设置生效的最大应用版本
-    String MAX_VERSION = "mv";
-    // 最小请求间隔，如果为0，则默认1分钟
-    String MIN_INTERVAL = "mi";
-    // 国家列表 !en表示排除的国家，en表示包含的国家
-    String COUNTRY_LIST = "ec";
-    // 归因配置 Organic 或者 Non-organic
-    String ATTRS = "attr";
-    // 媒体列表 !adwords表示排除的媒体，adwords表示包含的媒体
-    String MEDIA_SOURCE = "ms";
-    // 版本列表 !ver表示排除的版本，ver表示包含的版本
-    String VER_LIST = "vl";
-    // 屏幕方向 0 : undefined, 1: portrait, 2 : landscape
-    String SCREEN_ORIENTATION = "so";
-    // native gt 比例
-    String NTRATE = "ntr";
-    // 是否展示底层activity
-    String SHOW_BOTTOM_ACTIVITY = "sba";
-    // 首次安装时间判断
-    String CONFIG_INSTALL_TIME = "cit";
-    // 禁用间隔
-    String DISABLE_INTERVAL = "di";
-    // 插屏广告位名称
-    String PLACE_NAME_INT = "pni";
-    // view广告位名称
-    String PLACE_NAME_ADV = "pna";
-    // 场景间隔
-    String SCENE_INTERVAL = "si";
-
     // 阻止重复加载(如果当前loader正在处于加载中，则不再重新加载)
     String BLOCK_LOADING = "bl";
     // 是否上报错误日志
@@ -180,23 +124,9 @@ public interface IParser {
 
     AdPlace parseAdPlace(String data);
 
-    GtConfig parseGtPolicy(String data);
-
-    StConfig parseStPolicy(String data);
-
-    Map<String, String> parseAdIds(String data);
-
     AdSwitch parseAdSwitch(String data);
 
     Map<String, String> parseAdRefs(String data);
 
     List<SpConfig> parseSpread(String data);
-
-    LtConfig parseLtPolicy(String data);
-
-    HtConfig parseHtPolicy(String data);
-
-    CtConfig parseCtPolicy(String data);
-
-    void parsePolicy(String data, BaseConfig baseConfig, IParseListener parserCallback);
 }

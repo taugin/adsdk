@@ -14,8 +14,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bac.ioc.gsb.scloader.CtAdLoader;
-import com.bac.ioc.gsb.scpolicy.CtPolicy;
+import com.bacad.ioc.gsb.scloader.CtAdLoader;
+import com.bacad.ioc.gsb.scpolicy.CtPolicy;
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.AdExtra;

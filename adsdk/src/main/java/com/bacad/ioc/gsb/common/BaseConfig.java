@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.common;
+package com.bacad.ioc.gsb.common;
 
 import java.util.List;
 

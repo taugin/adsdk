@@ -1,7 +1,7 @@
-package com.bac.ioc.gsb.scconfig;
+package com.bacad.ioc.gsb.scconfig;
 
 
-import com.hauyu.adsdk.common.BaseConfig;
+import com.bacad.ioc.gsb.common.BaseConfig;
 import com.hauyu.adsdk.constant.Constant;
 
 import java.util.Date;
@@ -10,18 +10,18 @@ import java.util.Date;
  * Created by Administrator on 2018/2/9.
  */
 
-public class HtConfig extends BaseConfig {
+public class LtConfig extends BaseConfig {
 
-    public static final String HTPOLICY_NAME = "ht" + CONFIG_SUFFIX;
+    public static final String LTPOLICY_NAME = "lt" + CONFIG_SUFFIX;
 
     @Override
     public String getName() {
-        return HTPOLICY_NAME;
+        return LTPOLICY_NAME;
     }
 
     @Override
     public String toString() {
-        return "ht{" +
+        return "lt{" +
                 "e=" + isEnable() +
                 ", d=" + getUpDelay() +
                 ", i=" + getInterval() +

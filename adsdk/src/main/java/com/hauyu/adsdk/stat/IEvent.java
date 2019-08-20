@@ -90,43 +90,6 @@ public interface IEvent {
     public void reportAdClose(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
 
     /**
-     * GT广告请求
-     * @param context
-     */
-    public void reportAdOuterRequest(Context context, String adOuterType, String pidName);
-
-    /**
-     * GT广告加载成功
-     * @param context
-     */
-    public void reportAdOuterLoaded(Context context, String adOuterType, String pidName);
-
-    /**
-     * GT广告展示
-     * @param context
-     */
-    public void reportAdOuterCallShow(Context context, String adOuterType, String pidName);
-
-    /**
-     * GT广告展示成功
-     * @param context
-     */
-    public void reportAdOuterShowing(Context context, String adOuterType, String pidName);
-
-    /**
-     * GT不允许展示
-     * @param context
-     */
-    public void reportAdOuterDisallow(Context context, String adOuterType, String pidName);
-
-    /**
-     * GT广告展示次数
-     * @param context
-     * @param times
-     */
-    public void reportAdOuterShowTimes(Context context, String adOuterType, int times);
-
-    /**
      * 广告加载成功时间
      * @param context
      * @param value

@@ -1,7 +1,7 @@
-package com.bac.ioc.gsb.scconfig;
+package com.bacad.ioc.gsb.scconfig;
 
 
-import com.hauyu.adsdk.common.BaseConfig;
+import com.bacad.ioc.gsb.common.BaseConfig;
 
 /**
  * Created by Administrator on 2018-8-10.

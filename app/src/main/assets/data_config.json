@@ -1,7 +1,4 @@
 {
-  "stconfig": {
-    "e": 0
-  },
   "adrefs": {
     "st_outer_place": "gt_outer_place",
     "at_outer_place": "gt_outer_place",
@@ -9,47 +6,11 @@
     "ht_outer_place": "gt_outer_place",
     "ct_outer_place": "banner_and_native"
   },
-  "atconfig": {
-    "e": 0,
-    "d": 1800,
-    "i": 60000
-  },
-  "ltconfig": {
-    "e": 0,
-    "d": 3600,
-    "i": 1800,
-    "attr": []
-  },
-  "htconfig": {
-    "e": 0,
-    "d": 3600,
-    "i": 3600,
-    "attr": []
-  },
-  "ctconfig": {
-    "e": 0,
-    "d": 3600,
-    "di": 60000,
-    "attr": []
-  },
-  "gtconfig": {
-    "e": 1,
-    "d": 3600,
-    "i": 1800,
-    "mc": 100,
-    "mv": -1,
-    "attr": [],
-    "ec": [],
-    "ms": [],
-    "so": 1,
-    "ntr": 0,
-    "sba": 1
-  },
   "adplaces": [
     {
       "name": "banner_and_native",
       "mode": "con",
-      "ai":5000,
+      "ai": 5000,
       "as": 1,
       "pids": [
         {
@@ -220,11 +181,12 @@
       "as": 0,
       "pids": [
         {
-                  "sdk": "admob",
-                  "type": "banner",
-                  "pid": "ca-app-pub-3940256099942544/6300978111",
-                  "disable": 0
-                },{
+          "sdk": "admob",
+          "type": "banner",
+          "pid": "ca-app-pub-3940256099942544/6300978111",
+          "disable": 0
+        },
+        {
           "sdk": "spread",
           "type": "interstitial",
           "disable": 1

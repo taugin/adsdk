@@ -1,17 +1,15 @@
-package com.bac.ioc.gsb.scloader;
+package com.bacad.ioc.gsb.scloader;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 
-import com.bac.ioc.gsb.scconfig.LtConfig;
-import com.bac.ioc.gsb.scpolicy.LtPolicy;
+import com.bacad.ioc.gsb.data.SceneData;
+import com.bacad.ioc.gsb.scpolicy.LtPolicy;
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.common.BaseLoader;
+import com.bacad.ioc.gsb.common.BaseLoader;
 import com.hauyu.adsdk.core.AdReceiver;
-import com.hauyu.adsdk.data.DataManager;
-import com.hauyu.adsdk.data.config.AdConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -107,11 +105,6 @@ public class LtAdLoader extends BaseLoader {
     }
 
     private void updateLtPolicy() {
-        AdConfig adConfig = DataManager.get(mContext).getAdConfig();
-        LtConfig ltConfig = DataManager.get(mContext).getRemoteLtPolicy();
-        if (ltConfig == null && adConfig != null) {
-            ltConfig = adConfig.getLtConfig();
-        }
-        LtPolicy.get(mContext).setPolicy(ltConfig);
+        LtPolicy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteLtPolicy());
     }
 }

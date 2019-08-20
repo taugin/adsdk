@@ -1,4 +1,4 @@
-package com.bac.ioc.gsb.scloader;
+package com.bacad.ioc.gsb.scloader;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,17 +9,15 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.bac.ioc.gsb.scconfig.StConfig;
-import com.bac.ioc.gsb.scpolicy.StPolicy;
+import com.bacad.ioc.gsb.common.BaseLoader;
+import com.bacad.ioc.gsb.data.SceneData;
+import com.bacad.ioc.gsb.event.SceneEventImpl;
+import com.bacad.ioc.gsb.scpolicy.StPolicy;
 import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.common.BaseLoader;
-import com.hauyu.adsdk.data.config.AdConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AdReceiver;
-import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.stat.EventImpl;
 
 /**
  * Created by Administrator on 2018/7/19.
@@ -80,12 +78,7 @@ public class StAdLoader extends BaseLoader implements Handler.Callback {
     }
 
     private void updateSTPolicy() {
-        AdConfig adConfig = DataManager.get(mContext).getAdConfig();
-        StConfig stConfig = DataManager.get(mContext).getRemoteStPolicy();
-        if (stConfig == null && adConfig != null) {
-            stConfig = adConfig.getStConfig();
-        }
-        StPolicy.get(mContext).setPolicy(stConfig);
+        StPolicy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteStPolicy());
     }
 
     @Override
@@ -101,11 +94,11 @@ public class StAdLoader extends BaseLoader implements Handler.Callback {
                 return;
             }
             Log.iv(Log.TAG, "");
-            EventImpl.get().reportAdOuterRequest(mContext, StPolicy.get(mContext).getType(), STPLACE_OUTER_NAME);
+            SceneEventImpl.get().reportAdOuterRequest(mContext, StPolicy.get(mContext).getType(), STPLACE_OUTER_NAME);
             mAdSdk.loadComplexAds(STPLACE_OUTER_NAME, new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
-                    EventImpl.get().reportAdOuterLoaded(mContext, StPolicy.get(mContext).getType(), pidName);
+                    SceneEventImpl.get().reportAdOuterLoaded(mContext, StPolicy.get(mContext).getType(), pidName);
                     if (StPolicy.get(mContext).isStAllowed()) {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
                             AdSdk.get(mContext).showComplexAds(pidName, null);
@@ -118,9 +111,9 @@ public class StAdLoader extends BaseLoader implements Handler.Callback {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }
                         }
-                        EventImpl.get().reportAdOuterCallShow(mContext, StPolicy.get(mContext).getType(), pidName);
+                        SceneEventImpl.get().reportAdOuterCallShow(mContext, StPolicy.get(mContext).getType(), pidName);
                     } else {
-                        EventImpl.get().reportAdOuterDisallow(mContext, StPolicy.get(mContext).getType(), pidName);
+                        SceneEventImpl.get().reportAdOuterDisallow(mContext, StPolicy.get(mContext).getType(), pidName);
                     }
                 }
 
@@ -138,7 +131,7 @@ public class StAdLoader extends BaseLoader implements Handler.Callback {
                 @Override
                 public void onShow(String pidName, String source, String adType) {
                     StPolicy.get(mContext).reportShowing(true);
-                    EventImpl.get().reportAdOuterShowing(mContext, StPolicy.get(mContext).getType(), pidName);
+                    SceneEventImpl.get().reportAdOuterShowing(mContext, StPolicy.get(mContext).getType(), pidName);
                 }
             });
         }

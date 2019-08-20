@@ -2,7 +2,6 @@ package com.hauyu.adsdk.data.config;
 
 import android.text.TextUtils;
 
-import com.hauyu.adsdk.common.BaseConfig;
 import com.hauyu.adsdk.constant.Constant;
 
 import java.util.List;
@@ -11,9 +10,7 @@ import java.util.List;
  * Created by Administrator on 2018/2/9.
  */
 
-public class PidConfig extends BaseConfig {
-
-    public static final String PID_CONFIG = "pids";
+public class PidConfig {
 
     private String adPlaceName;
 
@@ -56,11 +53,6 @@ public class PidConfig extends BaseConfig {
     private List<String> clickViews;
 
     private int cnt;
-
-    @Override
-    public String getName() {
-        return PID_CONFIG;
-    }
 
     public String getAdPlaceName() {
         return adPlaceName;
@@ -265,7 +257,7 @@ public class PidConfig extends BaseConfig {
     @Override
     public String toString() {
         return "PidConfig{" +
-                "adPlaceName='" + adPlaceName + '\'' +
+                "placeName='" + adPlaceName + '\'' +
                 ", sdk='" + sdk + '\'' +
                 ", pid='" + pid + '\'' +
                 ", ctr=" + ctr +

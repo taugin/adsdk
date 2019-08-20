@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.common;
+package com.bacad.ioc.gsb.common;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -7,12 +7,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
+import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.core.AttrChecker;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Date;
@@ -231,7 +231,7 @@ public class BasePolicy implements Handler.Callback {
     }
 
     private void reportShowTimesOneday(Context context, int times) {
-        EventImpl.get().reportAdOuterShowTimes(mContext, getType(), times);
+        SceneEventImpl.get().reportAdOuterShowTimes(mContext, getType(), times);
     }
 
     /**

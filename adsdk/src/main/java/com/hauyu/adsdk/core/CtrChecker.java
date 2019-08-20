@@ -49,18 +49,6 @@ public class CtrChecker implements Runnable {
         }
         if (mAttrChecker != null) {
             mAttrChecker.setContext(activity);
-            if (!mAttrChecker.isAttributionAllow(pidConfig.getAttrList())) {
-                Log.v(Log.TAG, "attr not allow");
-                return;
-            }
-            if (!mAttrChecker.isMediaSourceAllow(pidConfig.getMediaList())) {
-                Log.v(Log.TAG, "media source not allow");
-                return;
-            }
-            if (!mAttrChecker.isCountryAllow(pidConfig.getCountryList())) {
-                Log.v(Log.TAG, "country list not allow");
-                return;
-            }
         }
         handleControlCTR(activity, pidConfig);
     }

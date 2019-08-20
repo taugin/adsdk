@@ -1,17 +1,15 @@
-package com.bac.ioc.gsb.scloader;
+package com.bacad.ioc.gsb.scloader;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
 
-import com.bac.ioc.gsb.scconfig.CtConfig;
-import com.bac.ioc.gsb.scpolicy.CtPolicy;
+import com.bacad.ioc.gsb.data.SceneData;
+import com.bacad.ioc.gsb.scpolicy.CtPolicy;
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.common.BaseLoader;
+import com.bacad.ioc.gsb.common.BaseLoader;
 import com.hauyu.adsdk.core.AdReceiver;
-import com.hauyu.adsdk.data.DataManager;
-import com.hauyu.adsdk.data.config.AdConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -78,12 +76,7 @@ public class CtAdLoader extends BaseLoader {
     }
 
     private void updateCtPolicy() {
-        AdConfig adConfig = DataManager.get(mContext).getAdConfig();
-        CtConfig ctConfig = DataManager.get(mContext).getRemoteCtPolicy();
-        if (ctConfig == null && adConfig != null) {
-            ctConfig = adConfig.getCtConfig();
-        }
-        CtPolicy.get(mContext).setPolicy(ctConfig);
+        CtPolicy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteCtPolicy());
     }
 
     private void startCMActivity(Context context, boolean charging) {

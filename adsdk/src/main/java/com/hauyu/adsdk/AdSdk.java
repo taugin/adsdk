@@ -6,16 +6,14 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.gekes.fvs.tdsvap.BuildConfig;
-import com.hauyu.adsdk.common.BaseConfig;
-import com.hauyu.adsdk.common.BasePolicy;
-import com.hauyu.adsdk.data.config.AdConfig;
-import com.hauyu.adsdk.data.config.AdPlace;
+import com.bacad.ioc.gsb.common.BasePolicy;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AdReceiver;
-import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.core.framework.AdPlaceLoader;
-import com.hauyu.adsdk.listener.IParseListener;
+import com.hauyu.adsdk.data.DataManager;
+import com.hauyu.adsdk.data.config.AdConfig;
+import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
@@ -221,15 +219,10 @@ public class AdSdk {
             adPlace = localConfig.get(pidName);
             useRemote = false;
         }
-        Map<String, String> adIds = DataManager.get(mContext).getRemoteAdIds();
-        if (localConfig != null && adIds == null) {
-            adIds = localConfig.getAdIds();
-        }
         Log.v(Log.TAG, "pidName : " + pidName + " , adPlace : " + adPlace);
         if (adPlace != null) {
             loader = new AdPlaceLoader(mContext);
             loader.setAdPlaceConfig(adPlace);
-            loader.setAdIds(adIds);
             loader.init();
         }
         Log.v(Log.TAG, "pidName [" + pidName + "] use remote adplace : " + useRemote);
@@ -447,11 +440,6 @@ public class AdSdk {
             context = mContext;
         }
         return context;
-    }
-
-
-    public void parseConfig(BaseConfig baseConfig, IParseListener iParseListener) {
-        DataManager.get(mContext).parseRemotePolicy(baseConfig, iParseListener);
     }
 
     public void registerTriggerListener(OnTriggerListener l) {

@@ -1,7 +1,6 @@
-package com.bac.ioc.gsb.scconfig;
+package com.bacad.ioc.gsb.scconfig;
 
-
-import com.hauyu.adsdk.common.BaseConfig;
+import com.bacad.ioc.gsb.common.BaseConfig;
 import com.hauyu.adsdk.constant.Constant;
 
 import java.util.Date;
@@ -10,26 +9,31 @@ import java.util.Date;
  * Created by Administrator on 2018/2/9.
  */
 
-public class LtConfig extends BaseConfig {
+public class GtConfig extends BaseConfig {
 
-    public static final String LTPOLICY_NAME = "lt" + CONFIG_SUFFIX;
+    public static final String GTPOLICY_NAME = "gt" + CONFIG_SUFFIX;
 
     @Override
     public String getName() {
-        return LTPOLICY_NAME;
+        return GTPOLICY_NAME;
     }
 
     @Override
     public String toString() {
-        return "lt{" +
+        return "gt{" +
                 "e=" + isEnable() +
                 ", d=" + getUpDelay() +
                 ", i=" + getInterval() +
-                ", mv=" + getMaxVersion() +
                 ", mc=" + getMaxCount() +
+                ", mv=" + getMaxVersion() +
+                ", mi=" + getMinInterval() +
                 ", cl=" + getCountryList() +
                 ", al=" + getAttrList() +
                 ", ml=" + getMediaList() +
+                ", so=" + getScreenOrientation() +
+                ", to=" + getTimeOut() +
+                ", sba=" + isShowBottomActivity() +
+                ", ntr=" + getNtr() +
                 ", cit=" + Constant.SDF_1.format(new Date(getConfigInstallTime())) +
                 '}';
     }
