@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.hauyu.bcsdk.BcSdk;
+import com.sdog.BcSdk;
 
 
 /**

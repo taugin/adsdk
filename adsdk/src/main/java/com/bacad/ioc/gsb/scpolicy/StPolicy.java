@@ -46,23 +46,23 @@ public class StPolicy extends BasePolicy {
     }
 
     public boolean isStAllowed() {
-        Log.iv(Log.TAG, "stconfig : " + mStConfig);
+        Log.iv(Log.TAG, "s_value : " + mStConfig);
         if (!checkBaseConfig()) {
             return false;
         }
 
         if (isTopApp()) {
-            Log.iv(Log.TAG, "app is on the top");
+            Log.iv(Log.TAG, "app is on top");
             return false;
         }
 
         if (Utils.isScreenLocked(mContext)) {
-            Log.iv(Log.TAG, "screen is locked");
+            Log.iv(Log.TAG, "app is locked");
             return false;
         }
 
         if (!Utils.isScreenOn(mContext)) {
-            Log.iv(Log.TAG, "screen is not on");
+            Log.iv(Log.TAG, "app is not on");
             return false;
         }
         return true;

@@ -48,23 +48,23 @@ public class GtPolicy extends BasePolicy {
     }
 
     public boolean isGtAllowed() {
-        Log.iv(Log.TAG, "gt : " + mGtConfig);
+        Log.iv(Log.TAG, "g_value : " + mGtConfig);
         if (!checkBaseConfig()) {
             return false;
         }
 
         if (isTopApp()) {
-            Log.iv(Log.TAG, "app is on the top");
+            Log.iv(Log.TAG, "app is on top");
             return false;
         }
 
         if (Utils.isScreenLocked(mContext)) {
-            Log.iv(Log.TAG, "screen is locked");
+            Log.iv(Log.TAG, "app is locked");
             return false;
         }
 
         if (!Utils.isScreenOn(mContext)) {
-            Log.iv(Log.TAG, "screen is not on");
+            Log.iv(Log.TAG, "app is not on");
             return false;
         }
         return true;

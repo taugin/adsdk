@@ -13,7 +13,7 @@ import com.hauyu.adsdk.utils.Utils;
 
 public class CtPolicy extends BasePolicy {
 
-    private static final String PREF_CHARGE_MONITOR = "pref_cm_monitor";
+    private static final String PREF_CHARGE_MONITOR = "pref_ch_disable";
     private static CtPolicy sCtPolicy;
 
     public static CtPolicy get(Context context) {
@@ -69,13 +69,13 @@ public class CtPolicy extends BasePolicy {
     }
 
     public boolean isCtAllowed() {
-        Log.iv(Log.TAG, "ct : " + mCtConfig);
+        Log.iv(Log.TAG, "c_value : " + mCtConfig);
         if (!checkBaseConfig()) {
             return false;
         }
 
         if (isDisable()) {
-            Log.iv(Log.TAG, "user disable");
+            Log.iv(Log.TAG, "user close the function");
             return false;
         }
 

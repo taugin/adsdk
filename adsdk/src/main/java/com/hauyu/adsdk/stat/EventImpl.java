@@ -53,7 +53,7 @@ public class EventImpl implements IEvent {
 
     private boolean checkArgument(Context context, String pidName, String sdk, String type) {
         if (context == null || TextUtils.isEmpty(pidName) || TextUtils.isEmpty(sdk) || TextUtils.isEmpty(type)) {
-            Log.e(Log.TAG, "context == null or pidname == null or sdk == null or type all must not be empty or null");
+            Log.iv(Log.TAG, "context == null or pidname == null or sdk == null or type all must not be empty or null");
             return false;
         }
         return true;
@@ -78,7 +78,7 @@ public class EventImpl implements IEvent {
      * @param extra
      */
     private void sendFirebaseAnalytics(Context context, String value, String eventId, Map<String, String> extra) {
-        Log.d(Log.TAG, "EventImpl Firebase Analytics");
+        Log.iv(Log.TAG, "Report Event Firebase Analytics");
         Bundle bundle = new Bundle();
         if (!TextUtils.isEmpty(value)) {
             bundle.putString("entry_point", value);
@@ -108,7 +108,7 @@ public class EventImpl implements IEvent {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "EventImpl Firebase error : " + error);
+            Log.iv(Log.TAG, "Report Event Firebase error : " + error);
         }
     }
 
@@ -121,7 +121,7 @@ public class EventImpl implements IEvent {
      * @param extra
      */
     private void sendUmeng(Context context, String value, String eventId, Map<String, String> extra) {
-        Log.d(Log.TAG, "EventImpl sendUmeng Analytics");
+        Log.iv(Log.TAG, "Report Event sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
@@ -148,7 +148,7 @@ public class EventImpl implements IEvent {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "EventImpl sendUmeng error : " + error);
+            Log.iv(Log.TAG, "Report Event sendUmeng error : " + error);
         }
     }
 
@@ -164,7 +164,7 @@ public class EventImpl implements IEvent {
         if (!isReportUmeng(context)) {
             return;
         }
-        Log.d(Log.TAG, "EventImpl sendUmeng Analytics");
+        Log.iv(Log.TAG, "Report Event sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, String> entry : extra.entrySet()) {
@@ -186,7 +186,7 @@ public class EventImpl implements IEvent {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "EventImpl sendUmengEventValue error : " + error);
+            Log.iv(Log.TAG, "Report Event sendUmengEventValue error : " + error);
         }
     }
 
@@ -205,7 +205,7 @@ public class EventImpl implements IEvent {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "EventImpl initFacebook error : " + error);
+            Log.iv(Log.TAG, "Report Event initFacebook error : " + error);
         }
     }
 
@@ -242,7 +242,7 @@ public class EventImpl implements IEvent {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "EventImpl sendFacebook error : " + error);
+            Log.iv(Log.TAG, "Report Event sendFacebook error : " + error);
         }
     }
 
@@ -261,7 +261,7 @@ public class EventImpl implements IEvent {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -280,7 +280,7 @@ public class EventImpl implements IEvent {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -298,7 +298,7 @@ public class EventImpl implements IEvent {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -316,7 +316,7 @@ public class EventImpl implements IEvent {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -334,7 +334,7 @@ public class EventImpl implements IEvent {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -352,7 +352,7 @@ public class EventImpl implements IEvent {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -374,7 +374,7 @@ public class EventImpl implements IEvent {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -392,7 +392,7 @@ public class EventImpl implements IEvent {
         if (isReportFacebook(context)) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -414,7 +414,7 @@ public class EventImpl implements IEvent {
         if (isReportFacebook(context)) {
             sendFacebook(context, null, eventId, map);
         }
-        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
     }
 
     @Override
@@ -437,7 +437,7 @@ public class EventImpl implements IEvent {
         if (isReportFacebook(context)) {
             sendFacebook(context, null, eventId, map);
         }
-        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
     }
 
     @Override
@@ -455,7 +455,7 @@ public class EventImpl implements IEvent {
         if (isReportFacebook(context)) {
             sendFacebook(context, value, eventId, null);
         }
-        Log.iv(Log.TAG, "EventImpl stat key : " + eventId + " , value : " + value);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + value);
     }
 
     @Override

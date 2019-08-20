@@ -45,7 +45,7 @@ public class LtPolicy extends BasePolicy {
     }
 
     public boolean isLtAllowed() {
-        Log.iv(Log.TAG, "lt : " + mLtConfig);
+        Log.iv(Log.TAG, "l_value : " + mLtConfig);
         if (!checkBaseConfig()) {
             return false;
         }

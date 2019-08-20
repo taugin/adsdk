@@ -45,7 +45,7 @@ public class HtPolicy extends BasePolicy {
     }
 
     public boolean isHtAllowed() {
-        Log.iv(Log.TAG, "ht : " + mHtConfig);
+        Log.iv(Log.TAG, "h_value : " + mHtConfig);
         if (!checkBaseConfig()) {
             return false;
         }
