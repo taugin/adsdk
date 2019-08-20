@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.gekes.fvs.tdsvap.GFAPSD;
@@ -21,11 +22,11 @@ import com.hauyu.adsdk.adloader.listener.ISdkLoader;
 import com.hauyu.adsdk.adloader.listener.OnAdBaseListener;
 import com.hauyu.adsdk.adloader.mopub.MopubLoader;
 import com.hauyu.adsdk.adloader.spread.SpLoader;
-import com.hauyu.adsdk.data.config.AdPlace;
-import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AdHelper;
 import com.hauyu.adsdk.core.AdPolicy;
+import com.hauyu.adsdk.data.config.AdPlace;
+import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
@@ -34,6 +35,8 @@ import com.hauyu.adsdk.stat.InternalStat;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -64,7 +67,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private ISdkLoader mCurrentAdLoader;
     private String mOriginPidName;
     private Handler mHandler = new Handler(Looper.getMainLooper());
-    private GFAPSD.MView mMView;
+    private View mDotView;
     private static List<ISdkLoader> sLoadedAdLoaders = new ArrayList<ISdkLoader>();
     private boolean mAdPlaceSeqLoading = false;
     private boolean mQueueRunning = true;
@@ -1069,13 +1072,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 mCurrentAdLoader = loader;
                 loader.showBanner(viewGroup);
                 AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
-                viewGroup.addView(mMView = new GFAPSD.MView(mContext), 0, 0);
+                addDotView(viewGroup);
                 return true;
             } else if (loader.isNativeLoaded() && viewGroup != null) {
                 mCurrentAdLoader = loader;
                 loader.showNative(viewGroup, getParams(loader));
                 AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
-                viewGroup.addView(mMView = new GFAPSD.MView(mContext), 0, 0);
+                addDotView(viewGroup);
                 return true;
             }
         }
@@ -1097,7 +1100,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         if (needCounting) {
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         }
-                        viewGroup.addView(mMView = new GFAPSD.MView(mContext), 0, 0);
+                        addDotView(viewGroup);
                         break;
                     } else if (loader.isNativeLoaded() && viewGroup != null) {
                         mCurrentAdLoader = loader;
@@ -1105,7 +1108,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         if (needCounting) {
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         }
-                        viewGroup.addView(mMView = new GFAPSD.MView(mContext), 0, 0);
+                        addDotView(viewGroup);
                         break;
                     }
                 }
@@ -2014,13 +2017,40 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             return;
         }
 
-        if (mMView == null || !mMView.isViewVisible()) {
+        if (!isDotViewVisible()) {
             Log.v(Log.TAG, "ai not visible");
             return;
         }
         resume();
         showNextAdView();
         autoSwitchAdView();
+    }
+
+    private void addDotView(ViewGroup viewGroup) {
+        try {
+            Class<?> viewClass = Class.forName("com.gekes.fvs.tdsvap.GFAPSD$MView");
+            Constructor c = viewClass.getConstructor(new Class[]{Context.class});
+            mDotView = (View) c.newInstance(new Object[]{mContext});
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
+        if (mDotView != null) {
+            viewGroup.addView(mDotView, 0, 0);
+        }
+    }
+
+    private boolean isDotViewVisible() {
+        boolean isVisible = false;
+        if (mDotView != null) {
+            try {
+                Class<?> viewClass = Class.forName("com.gekes.fvs.tdsvap.GFAPSD$MView");
+                Method m = viewClass.getMethod("isViewVisible");
+                isVisible = (boolean) m.invoke(mDotView);
+            } catch (Exception | Error e) {
+                Log.e(Log.TAG, "error : " + e, e);
+            }
+        }
+        return isVisible;
     }
 
     private static boolean equalsLoader(ISdkLoader l1, ISdkLoader l2) {
