@@ -35,25 +35,25 @@
           "sdk": "mopub",
           "type": "native",
           "pid": "11a17b188668469fb0412708c3d16813",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "mopub",
           "type": "banner",
           "pid": "252412d5e9364a05ab77d9396346d73d",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",

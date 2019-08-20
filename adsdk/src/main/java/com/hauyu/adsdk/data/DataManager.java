@@ -81,7 +81,7 @@ public class DataManager implements Runnable {
     private void parseLocalData() {
         String cfgName = getConfigName();
         String defName = getDefaultName();
-        Log.iv(Log.TAG, "cfg : " + cfgName + ".[dat/json] , def : " + defName + ".[dat/json]");
+        Log.iv(Log.TAG, "name : " + cfgName + "/" + defName);
         if (mLocalPlaceConfig == null && mParser != null) {
             String data = Utils.readAssets(mContext, cfgName + CONFIG_SUFFIX1);
             if (TextUtils.isEmpty(data)) {
