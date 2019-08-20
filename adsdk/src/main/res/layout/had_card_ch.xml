@@ -40,7 +40,7 @@
                         android:layout_toLeftOf="@+id/ad_cm_view_cancel"
                         android:background="@android:drawable/list_selector_background"
                         android:padding="8dp"
-                        android:src="@drawable/had_cm_more" />
+                        android:src="@drawable/had_more" />
 
                     <ImageView
                         android:id="@+id/ad_cm_view_cancel"
@@ -51,7 +51,7 @@
                         android:layout_marginRight="10dp"
                         android:background="@android:drawable/list_selector_background"
                         android:padding="8dp"
-                        android:src="@drawable/had_cm_cancel" />
+                        android:src="@drawable/had_cancel" />
                 </RelativeLayout>
 
                 <TextView
@@ -153,7 +153,7 @@
                             android:layout_height="23dp"
                             android:layout_marginLeft="34dp"
                             android:scaleType="centerInside"
-                            android:src="@drawable/had_cm_speed" />
+                            android:src="@drawable/had_speed" />
 
                         <view
                             android:id="@+id/ad_cm_dot_progress_1"
@@ -169,7 +169,7 @@
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:scaleType="centerInside"
-                            android:src="@drawable/had_cm_continuous" />
+                            android:src="@drawable/had_continuous" />
 
                         <view
                             android:id="@+id/ad_cm_dot_progress_2"
@@ -186,7 +186,7 @@
                             android:layout_height="23dp"
                             android:layout_marginRight="34dp"
                             android:scaleType="centerInside"
-                            android:src="@drawable/had_cm_trickle" />
+                            android:src="@drawable/had_trickle" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

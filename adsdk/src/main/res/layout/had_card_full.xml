@@ -103,7 +103,7 @@
                         android:layout_marginLeft="14dp"
                         android:layout_toRightOf="@+id/native_title"
                         android:layout_weight="0"
-                        android:background="@drawable/had_badge_bg_dark"
+                        android:background="@drawable/had_badge_bg"
                         android:gravity="center"
                         android:paddingBottom="2dp"
                         android:paddingLeft="4dp"
@@ -179,7 +179,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="16dp"
                 android:textColor="@android:color/darker_gray"
-                android:background="@drawable/had_close_button_bg"
+                android:background="@drawable/had_close_bg"
                 android:text="@android:string/cancel" />
 
             <android.support.v7.widget.AppCompatButton
@@ -193,7 +193,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/had_action_button_bg"
+                android:background="@drawable/had_action_bg"
                 android:text="Learn More" />
         </LinearLayout>
     </RelativeLayout>
