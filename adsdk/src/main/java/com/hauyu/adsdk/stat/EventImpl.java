@@ -6,8 +6,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.hauyu.adsdk.data.config.AdSwitch;
 import com.hauyu.adsdk.data.DataManager;
+import com.hauyu.adsdk.data.config.AdSwitch;
 import com.hauyu.adsdk.log.Log;
 
 import java.lang.reflect.Method;

@@ -5,15 +5,15 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.gekes.fvs.tdsvap.BuildConfig;
 import com.bacad.ioc.gsb.common.BasePolicy;
+import com.gekes.fvs.tdsvap.BuildConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.core.framework.AdPlaceLoader;
 import com.hauyu.adsdk.data.DataManager;
-import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.data.config.AdPlace;
+import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;

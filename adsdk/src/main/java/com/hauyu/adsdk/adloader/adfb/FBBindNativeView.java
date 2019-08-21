@@ -16,9 +16,9 @@ import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdLayout;
 import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
-import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
+import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 
 import java.util.ArrayList;

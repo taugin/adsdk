@@ -2,8 +2,8 @@ package com.bacad.ioc.gsb.scpolicy;
 
 import android.content.Context;
 
-import com.bacad.ioc.gsb.scconfig.CvCg;
 import com.bacad.ioc.gsb.common.BasePolicy;
+import com.bacad.ioc.gsb.scconfig.CvCg;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 

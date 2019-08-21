@@ -6,9 +6,9 @@ import android.text.TextUtils;
 
 import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.AdSwitch;
+import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.data.parse.AdParser;
 import com.hauyu.adsdk.data.parse.IParser;
 import com.hauyu.adsdk.log.Log;

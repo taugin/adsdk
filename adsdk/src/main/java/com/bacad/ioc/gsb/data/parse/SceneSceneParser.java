@@ -2,12 +2,12 @@ package com.bacad.ioc.gsb.data.parse;
 
 import android.text.TextUtils;
 
+import com.bacad.ioc.gsb.common.BCg;
 import com.bacad.ioc.gsb.scconfig.CvCg;
 import com.bacad.ioc.gsb.scconfig.GvCg;
 import com.bacad.ioc.gsb.scconfig.HvCg;
 import com.bacad.ioc.gsb.scconfig.LvCg;
 import com.bacad.ioc.gsb.scconfig.SvCg;
-import com.bacad.ioc.gsb.common.BCg;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.Aes;
 import com.hauyu.adsdk.log.Log;

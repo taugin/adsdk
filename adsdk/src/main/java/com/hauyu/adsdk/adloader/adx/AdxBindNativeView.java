@@ -17,9 +17,9 @@ import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
-import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
+import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 
 /**

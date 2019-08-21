@@ -1,9 +1,9 @@
 package com.hauyu.adsdk.data.parse;
 
 import com.gekes.fvs.tdsvap.SpConfig;
-import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.AdSwitch;
+import com.hauyu.adsdk.data.config.PlaceConfig;
 
 import java.util.List;
 import java.util.Map;
