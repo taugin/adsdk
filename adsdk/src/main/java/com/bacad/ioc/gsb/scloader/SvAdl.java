@@ -9,7 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.bacad.ioc.gsb.common.BaseLoader;
+import com.bacad.ioc.gsb.common.Bldr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.scpolicy.SvPcy;
@@ -23,7 +23,7 @@ import com.hauyu.adsdk.log.Log;
  * Created by Administrator on 2018/7/19.
  */
 
-public class SvAdl extends BaseLoader implements Handler.Callback {
+public class SvAdl extends Bldr implements Handler.Callback {
 
     public static final String STPLACE_OUTER_NAME = "st_outer_place";
     private static final int LOAD_DELAY = 1000;

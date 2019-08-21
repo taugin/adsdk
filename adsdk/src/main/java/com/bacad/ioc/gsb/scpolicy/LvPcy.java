@@ -2,7 +2,7 @@ package com.bacad.ioc.gsb.scpolicy;
 
 import android.content.Context;
 
-import com.bacad.ioc.gsb.common.BasePolicy;
+import com.bacad.ioc.gsb.common.BPcy;
 import com.bacad.ioc.gsb.scconfig.LvCg;
 import com.hauyu.adsdk.log.Log;
 
@@ -10,7 +10,7 @@ import com.hauyu.adsdk.log.Log;
  * Created by Administrator on 2018/3/19.
  */
 
-public class LvPcy extends BasePolicy {
+public class LvPcy extends BPcy {
     private static LvPcy sLvPcy;
 
     public static LvPcy get(Context context) {

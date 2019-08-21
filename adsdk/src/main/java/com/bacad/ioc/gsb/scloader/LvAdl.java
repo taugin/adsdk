@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 
-import com.bacad.ioc.gsb.common.BaseLoader;
+import com.bacad.ioc.gsb.common.Bldr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.scpolicy.LvPcy;
 import com.gekes.fvs.tdsvap.GFAPSD;
@@ -17,7 +17,7 @@ import com.hauyu.adsdk.utils.Utils;
  * Created by Administrator on 2019/8/18.
  */
 
-public class LvAdl extends BaseLoader {
+public class LvAdl extends Bldr {
 
     private static final int MSG_SHOW_LOCKSCREEN = 123456789;
     private static final int DELAY = 5000;

@@ -2,7 +2,7 @@ package com.bacad.ioc.gsb.scpolicy;
 
 import android.content.Context;
 
-import com.bacad.ioc.gsb.common.BasePolicy;
+import com.bacad.ioc.gsb.common.BPcy;
 import com.bacad.ioc.gsb.scconfig.GvCg;
 import com.hauyu.adsdk.core.AttrChecker;
 import com.hauyu.adsdk.log.Log;
@@ -12,7 +12,7 @@ import com.hauyu.adsdk.utils.Utils;
  * Created by Administrator on 2018/3/19.
  */
 
-public class GvPcy extends BasePolicy {
+public class GvPcy extends BPcy {
     private static GvPcy sGvPcy;
 
     public static GvPcy get(Context context) {

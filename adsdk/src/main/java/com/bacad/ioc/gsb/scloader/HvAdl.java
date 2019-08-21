@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.bacad.ioc.gsb.common.BaseLoader;
+import com.bacad.ioc.gsb.common.Bldr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.scpolicy.HvPcy;
@@ -19,7 +19,7 @@ import com.hauyu.adsdk.log.Log;
  * Created by Administrator on 2018/3/19.
  */
 
-public class HvAdl extends BaseLoader {
+public class HvAdl extends Bldr {
 
     public static final String HTPLACE_OUTER_NAME = "ht_outer_place";
     private static HvAdl sHvAdl;

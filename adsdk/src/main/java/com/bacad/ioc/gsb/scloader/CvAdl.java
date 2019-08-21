@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
 
-import com.bacad.ioc.gsb.common.BaseLoader;
+import com.bacad.ioc.gsb.common.Bldr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.scpolicy.CvPcy;
 import com.gekes.fvs.tdsvap.GFAPSD;
@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
  * Created by Administrator on 2019/8/18.
  */
 
-public class CvAdl extends BaseLoader {
+public class CvAdl extends Bldr {
 
     private static CvAdl sCvAdl;
 

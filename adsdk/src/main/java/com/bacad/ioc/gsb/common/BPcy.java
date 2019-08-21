@@ -23,7 +23,7 @@ import java.util.TimeZone;
  * Created by Administrator on 2018-11-19.
  */
 
-public class BasePolicy implements Handler.Callback {
+public class BPcy implements Handler.Callback {
 
     private static final String PREF_LAST_SHOWTIME = "pref_%s_last_showtime";
     private static final String PREF_TOTAL_SHOWTIMES = "pref_%s_total_showtimes";
@@ -39,7 +39,7 @@ public class BasePolicy implements Handler.Callback {
     private static final String LAST_SCENE_TIME = "pref_last_scene_time";
     public static final String LAST_SCENE_TYPE = "pref_last_scene_type";
 
-    protected BasePolicy(Context context, String type) {
+    protected BPcy(Context context, String type) {
         mContext = context;
         mType = type;
         mHandler = new Handler(this);

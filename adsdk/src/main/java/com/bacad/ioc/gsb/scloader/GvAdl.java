@@ -3,7 +3,7 @@ package com.bacad.ioc.gsb.scloader;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.bacad.ioc.gsb.common.BaseLoader;
+import com.bacad.ioc.gsb.common.Bldr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.scpolicy.GvPcy;
@@ -19,7 +19,7 @@ import java.util.Random;
  * Created by Administrator on 2018/3/19.
  */
 
-public class GvAdl extends BaseLoader {
+public class GvAdl extends Bldr {
     public static final String GTPLACE_OUTER_NAME = "gt_outer_place";
     public static final String NTPLACE_OUTER_NAME = "nt_outer_place";
 

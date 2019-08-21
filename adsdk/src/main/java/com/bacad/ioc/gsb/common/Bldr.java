@@ -21,7 +21,7 @@ import java.util.Random;
  * Created by Administrator on 2018/12/9.
  */
 
-public abstract class BaseLoader<Config, Policy> implements OnTriggerListener {
+public abstract class Bldr<Config, Policy> implements OnTriggerListener {
 
     private static final int MSG_START_SCENE = 0x10000;
 
@@ -52,7 +52,7 @@ public abstract class BaseLoader<Config, Policy> implements OnTriggerListener {
      */
     public void reportShowing() {
         try {
-            ((BasePolicy) mPolicy).reportShowing(true);
+            ((BPcy) mPolicy).reportShowing(true);
         } catch (Exception e) {
         }
     }
@@ -61,7 +61,7 @@ public abstract class BaseLoader<Config, Policy> implements OnTriggerListener {
      * 调用函数启动场景，避免同时启动多个场景
      */
     public final void startScene(Object ...object) {
-        synchronized (BaseLoader.class) {
+        synchronized (Bldr.class) {
             if (sHandler != null && !sHandler.hasMessages(MSG_START_SCENE)) {
                 sHandler.sendEmptyMessageDelayed(MSG_START_SCENE, getStartInterval());
                 onStartScene(object);

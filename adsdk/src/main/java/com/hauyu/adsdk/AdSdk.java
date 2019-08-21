@@ -5,7 +5,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.bacad.ioc.gsb.common.BasePolicy;
 import com.gekes.fvs.tdsvap.BuildConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AdReceiver;
@@ -522,6 +521,6 @@ public class AdSdk {
      * @return
      */
     public boolean isSceneShown() {
-        return !TextUtils.isEmpty(Utils.getString(mContext, BasePolicy.LAST_SCENE_TYPE));
+        return !TextUtils.isEmpty(Utils.getString(mContext, Constant.LAST_SCENE_TYPE));
     }
 }
