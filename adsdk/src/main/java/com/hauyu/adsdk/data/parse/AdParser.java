@@ -341,9 +341,6 @@ public class AdParser implements IParser {
             content = getContent(content);
             JSONObject jobj = new JSONObject(content);
             adSwitch = new AdSwitch();
-            if (jobj.has(BLOCK_LOADING)) {
-                adSwitch.setBlockLoading(jobj.getInt(BLOCK_LOADING) == 1);
-            }
             if (jobj.has(REPORT_ERROR)) {
                 adSwitch.setReportError(jobj.getInt(REPORT_ERROR) == 1);
             }

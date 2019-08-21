@@ -12,11 +12,9 @@ import android.view.ViewGroup;
 import com.hauyu.adsdk.adloader.listener.IManagerListener;
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
 import com.hauyu.adsdk.adloader.listener.OnAdBaseListener;
-import com.hauyu.adsdk.data.config.AdSwitch;
-import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.core.framework.Params;
+import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.stat.IEvent;
@@ -47,7 +45,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected PidConfig mPidConfig;
     protected Context mContext;
     protected IManagerListener mManagerListener;
-    protected String mAdId;
     private boolean mLoading = false;
     private boolean mLoadedFlag = false;
     private Handler mHandler = null;
@@ -61,15 +58,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     @Override
-    public void init(Context context) {
+    public void init(Context context, PidConfig pidConfig) {
         mContext = context;
+        mPidConfig = pidConfig;
         mStat = EventImpl.get();
         mHandler = new Handler(this);
-    }
-
-    @Override
-    public void setAdId(String adId) {
-        mAdId = adId;
     }
 
     @Override
@@ -85,11 +78,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             return mPidConfig.getAdType();
         }
         return null;
-    }
-
-    @Override
-    public void setPidConfig(PidConfig config) {
-        mPidConfig = config;
     }
 
     @Override
@@ -399,19 +387,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             timeOut = LOADING_TIMEOUT;
         }
         return timeOut;
-    }
-
-    /**
-     * 阻塞正在加载的loader
-     *
-     * @return
-     */
-    protected boolean blockLoading() {
-        AdSwitch adSwitch = DataManager.get(mContext).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isBlockLoading();
-        }
-        return true;
     }
 
     protected void onLoadTimeout() {

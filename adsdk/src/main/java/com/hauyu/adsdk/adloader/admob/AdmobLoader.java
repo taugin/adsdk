@@ -1,5 +1,6 @@
 package com.hauyu.adsdk.adloader.admob;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
+import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 
 import java.util.ArrayList;
@@ -62,10 +64,9 @@ public class AdmobLoader extends AbstractSdkLoader {
     private List<UnifiedNativeAd> nativeAdList = Collections.synchronizedList(new ArrayList<UnifiedNativeAd>());
 
     @Override
-    public void setAdId(String adId) {
-        if (!TextUtils.isEmpty(adId)) {
-            MobileAds.initialize(mContext, adId);
-        } else if (!TextUtils.isEmpty(getAppId())) {
+    public void init(Context context, PidConfig pidConfig) {
+        super.init(context, pidConfig);
+        if (!TextUtils.isEmpty(getAppId())) {
             MobileAds.initialize(mContext, getAppId());
         }
     }
@@ -90,20 +91,11 @@ public class AdmobLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (loadingView != null) {
-                    loadingView.setAdListener(null);
-                    loadingView.destroy();
-                    clearCachedAdTime(loadingView);
-                }
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
         setBannerSize(adSize);
@@ -242,19 +234,11 @@ public class AdmobLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (interstitialAd != null) {
-                    interstitialAd.setAdListener(null);
-                    clearCachedAdTime(interstitialAd);
-                }
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
         interstitialAd = new InterstitialAd(mContext);
@@ -357,19 +341,11 @@ public class AdmobLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (loadingRewardVideo != null) {
-                    loadingRewardVideo.setRewardedVideoAdListener(null);
-                    clearCachedAdTime(loadingRewardVideo);
-                }
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
         loadingRewardVideo = MobileAds.getRewardedVideoAdInstance(mContext);
@@ -526,21 +502,11 @@ public class AdmobLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (loadingBuilder != null) {
-                    loadingBuilder.forAppInstallAd(null).forContentAd(null).withAdListener(null);
-                    if (nativeAd != null) {
-                        clearCachedAdTime(nativeAd);
-                    }
-                }
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         try {
             if (nativeAdList != null && !nativeAdList.isEmpty()) {

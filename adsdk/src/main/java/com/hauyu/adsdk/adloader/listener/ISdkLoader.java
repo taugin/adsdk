@@ -14,9 +14,7 @@ public interface ISdkLoader {
 
     public void setListenerManager(IManagerListener l);
 
-    public void init(Context context);
-
-    public void setAdId(String adId);
+    public void init(Context context, PidConfig pidConfig);
 
     public Context getContext();
 
@@ -24,8 +22,6 @@ public interface ISdkLoader {
     public String getSdkName();
 
     public String getAdType();
-
-    public void setPidConfig(PidConfig config);
 
     public PidConfig getPidConfig();
 

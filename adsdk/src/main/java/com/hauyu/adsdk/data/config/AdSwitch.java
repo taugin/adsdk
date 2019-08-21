@@ -5,8 +5,6 @@ package com.hauyu.adsdk.data.config;
  */
 
 public class AdSwitch {
-    // 阻塞loading
-    private boolean blockLoading;
     // 上报错误日志
     private boolean reportError;
     // 上报加载时间
@@ -17,14 +15,6 @@ public class AdSwitch {
     private boolean reportFirebase;
     // 上报Facebook
     private boolean reportFacebook;
-
-    public boolean isBlockLoading() {
-        return blockLoading;
-    }
-
-    public void setBlockLoading(boolean blockLoading) {
-        this.blockLoading = blockLoading;
-    }
 
     public boolean isReportError() {
         return reportError;
@@ -69,7 +59,6 @@ public class AdSwitch {
     @Override
     public String toString() {
         return "ads{" +
-                "bl=" + blockLoading +
                 ", re=" + reportError +
                 ", rt=" + reportTime +
                 ", ru=" + reportUmeng +

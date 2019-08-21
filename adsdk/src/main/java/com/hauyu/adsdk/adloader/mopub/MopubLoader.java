@@ -1,6 +1,7 @@
 package com.hauyu.adsdk.adloader.mopub;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
+import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 import com.mopub.common.MoPub;
 import com.mopub.common.MoPubReward;
@@ -78,8 +80,8 @@ public class MopubLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void setAdId(String adId) {
-        super.setAdId(adId);
+    public void init(Context context, PidConfig pidConfig) {
+        super.init(context, pidConfig);
         String adUnit = null;
         try {
             adUnit = getPidConfig().getPid();
@@ -110,20 +112,11 @@ public class MopubLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (loadingView != null) {
-                    loadingView.setBannerAdListener(null);
-                    loadingView.destroy();
-                    clearCachedAdTime(loadingView);
-                }
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
         setBannerSize(adSize);
@@ -248,19 +241,11 @@ public class MopubLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (moPubInterstitial != null) {
-                    moPubInterstitial.setInterstitialAdListener(null);
-                    clearCachedAdTime(moPubInterstitial);
-                }
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
         moPubInterstitial = new MoPubInterstitial(mContext, mPidConfig.getPid());
@@ -393,16 +378,11 @@ public class MopubLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                MoPubRewardedVideos.setRewardedVideoListener(null);
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
         MoPubRewardedVideos.setRewardedVideoListener(new MoPubRewardedVideoListener() {
@@ -524,19 +504,11 @@ public class MopubLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (nativeAd != null) {
-                    nativeAd.destroy();
-                    clearCachedAdTime(nativeAd);
-                }
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
         MoPubNative moPubNative = new MoPubNative(mContext, mPidConfig.getPid(), new MoPubNative.MoPubNativeNetworkListener() {

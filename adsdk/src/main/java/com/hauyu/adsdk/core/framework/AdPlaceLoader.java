@@ -108,48 +108,42 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (config != null) {
                         if (config.isAdmob() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new AdmobLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
+                            loader.init(mContext, config);
                             loader.setListenerManager(this);
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isFB() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new FBLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
+                            loader.init(mContext, config);
                             loader.setListenerManager(this);
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isMopub() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new MopubLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
+                            loader.init(mContext, config);
                             loader.setListenerManager(this);
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isAdx() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new AdxLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
+                            loader.init(mContext, config);
                             loader.setListenerManager(this);
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isDfp() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new AdDfpLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
+                            loader.init(mContext, config);
                             loader.setListenerManager(this);
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isSpread() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new SpLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
+                            loader.init(mContext, config);
                             loader.setListenerManager(this);
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);

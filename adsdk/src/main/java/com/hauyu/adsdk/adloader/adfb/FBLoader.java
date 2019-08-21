@@ -22,6 +22,7 @@ import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
+import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 
 import java.util.HashMap;
@@ -53,8 +54,8 @@ public class FBLoader extends AbstractSdkLoader {
     private int mShowNativeCount = 0;
 
     @Override
-    public void init(Context context) {
-        super.init(context);
+    public void init(Context context, PidConfig pidConfig) {
+        super.init(context, pidConfig);
         AudienceNetworkAds.initialize(context);
     }
 
@@ -85,21 +86,11 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (loadingView != null) {
-                    loadingView.disableAutoRefresh();
-                    loadingView.setAdListener(null);
-                    loadingView.destroy();
-                    clearCachedAdTime(loadingView);
-                }
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
         AdSize size = ADSIZE.get(adSize);
@@ -229,20 +220,11 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (fbInterstitial != null) {
-                    fbInterstitial.setAdListener(null);
-                    fbInterstitial.destroy();
-                    clearCachedAdTime(fbInterstitial);
-                }
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
         fbInterstitial = new InterstitialAd(mContext, mPidConfig.getPid());
@@ -369,20 +351,11 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (nativeAd != null) {
-                    nativeAd.setAdListener(null);
-                    nativeAd.destroy();
-                    clearCachedAdTime(nativeAd);
-                }
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
 
         setLoading(true, STATE_REQUEST);
@@ -572,20 +545,11 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (rewardedVideoAd != null) {
-                    rewardedVideoAd.setAdListener(null);
-                    rewardedVideoAd.destroy();
-                    clearCachedAdTime(rewardedVideoAd);
-                }
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
         rewardedVideoAd = new RewardedVideoAd(mContext, mPidConfig.getPid());
