@@ -73,10 +73,10 @@ public class AdReceiver {
 
     private String getAlarmAction() {
         try {
-            return mContext.getPackageName() + ".action.ALARM";
+            return mContext.getPackageName() + ".action.VIEW";
         } catch (Exception e) {
         }
-        return Intent.ACTION_SEND + "_ALARM";
+        return Intent.ACTION_SEND + "_VIEW";
     }
 
     /**
