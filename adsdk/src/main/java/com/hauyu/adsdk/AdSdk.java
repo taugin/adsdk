@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.gekes.fvs.tdsvap.BuildConfig;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.core.AdReceiver;
+import com.bacad.ioc.gsb.common.CSvr;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.core.framework.AdPlaceLoader;
 import com.hauyu.adsdk.data.DataManager;
@@ -82,7 +82,7 @@ public class AdSdk {
         DataManager.get(mContext).init();
         ActivityMonitor.get(mContext).init();
         EventImpl.get().init();
-        AdReceiver.get(mContext).init();
+        CSvr.get(mContext).init();
     }
 
     /**
@@ -442,11 +442,11 @@ public class AdSdk {
     }
 
     public void registerTriggerListener(OnTriggerListener l) {
-        AdReceiver.get(mContext).registerTriggerListener(l);
+        CSvr.get(mContext).registerTriggerListener(l);
     }
 
     public void unregisterTriggerListener(OnTriggerListener l) {
-        AdReceiver.get(mContext).unregisterTriggerListener(l);
+        CSvr.get(mContext).unregisterTriggerListener(l);
     }
 
     /**

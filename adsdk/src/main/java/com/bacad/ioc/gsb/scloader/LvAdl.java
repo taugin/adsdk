@@ -9,7 +9,7 @@ import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.scpolicy.LvPcy;
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.core.AdReceiver;
+import com.bacad.ioc.gsb.common.CSvr;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -29,7 +29,7 @@ public class LvAdl extends Bldr {
 
     private LvAdl(Context context) {
         mContext = context.getApplicationContext();
-        AdReceiver.get(context).registerTriggerListener(this);
+        CSvr.get(context).registerTriggerListener(this);
     }
 
     public static LvAdl get(Context context) {

@@ -9,7 +9,7 @@ import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.scpolicy.GvPcy;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.core.AdReceiver;
+import com.bacad.ioc.gsb.common.CSvr;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 
@@ -30,7 +30,7 @@ public class GvAdl extends Bldr {
 
     private GvAdl(Context context) {
         mContext = context.getApplicationContext();
-        AdReceiver.get(context).registerTriggerListener(this);
+        CSvr.get(context).registerTriggerListener(this);
     }
 
     public static GvAdl get(Context context) {

@@ -9,7 +9,6 @@ import android.text.TextUtils;
 
 import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.core.AdReceiver;
 import com.hauyu.adsdk.core.AttrChecker;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.log.Log;
@@ -176,7 +175,7 @@ public class BPcy implements Handler.Callback {
      * @return
      */
     private long getFirstStartUpTime() {
-        return AdReceiver.get(mContext).getFirstStartUpTime();
+        return CSvr.get(mContext).getFirstStartUpTime();
     }
 
     /**

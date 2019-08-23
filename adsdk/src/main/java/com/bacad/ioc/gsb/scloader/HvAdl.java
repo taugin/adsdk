@@ -11,7 +11,7 @@ import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.scpolicy.HvPcy;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.core.AdReceiver;
+import com.bacad.ioc.gsb.common.CSvr;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 
@@ -30,7 +30,7 @@ public class HvAdl extends Bldr {
 
     private HvAdl(Context context) {
         mContext = context.getApplicationContext();
-        AdReceiver.get(context).registerTriggerListener(this);
+        CSvr.get(context).registerTriggerListener(this);
     }
 
     public static HvAdl get(Context context) {

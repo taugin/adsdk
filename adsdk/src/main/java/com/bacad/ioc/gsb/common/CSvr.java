@@ -1,10 +1,13 @@
-package com.hauyu.adsdk.core;
+package com.bacad.ioc.gsb.common;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.utils.Utils;
@@ -16,29 +19,29 @@ import java.util.List;
  * Created by Administrator on 2018-8-10.
  */
 
-public class AdReceiver {
+public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
 
-    private static AdReceiver sAdReceiver;
+    private static CSvr sCSvr;
 
     private Context mContext;
     private List<OnTriggerListener> mTriggerList = new ArrayList<OnTriggerListener>();
 
-    private AdReceiver(Context context) {
+    private CSvr(Context context) {
         mContext = context.getApplicationContext();
     }
 
-    public static AdReceiver get(Context context) {
-        if (sAdReceiver == null) {
+    public static CSvr get(Context context) {
+        if (sCSvr == null) {
             create(context);
         }
-        return sAdReceiver;
+        return sCSvr;
     }
 
     private static void create(Context context) {
-        synchronized (AdReceiver.class) {
-            if (sAdReceiver == null) {
-                sAdReceiver = new AdReceiver(context);
+        synchronized (CSvr.class) {
+            if (sCSvr == null) {
+                sCSvr = new CSvr(context);
             }
         }
     }
@@ -46,6 +49,7 @@ public class AdReceiver {
     public void init() {
         reportFirstStartUpTime();
         register();
+        PreferenceManager.getDefaultSharedPreferences(mContext).registerOnSharedPreferenceChangeListener(this);
     }
 
     public void registerTriggerListener(OnTriggerListener l) {
@@ -103,6 +107,16 @@ public class AdReceiver {
             filter.addAction(Intent.ACTION_BATTERY_CHANGED);
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             mContext.registerReceiver(mBroadcastReceiver, filter);
+        } catch (Exception e) {
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        try {
+            if (TextUtils.equals(key, Utils.string2MD5(mContext.getPackageName()))) {
+                triggerAlarm(mContext);
+            }
         } catch (Exception e) {
         }
     }

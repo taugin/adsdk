@@ -15,7 +15,7 @@ import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.scpolicy.SvPcy;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.core.AdReceiver;
+import com.bacad.ioc.gsb.common.CSvr;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 
@@ -143,7 +143,7 @@ public class SvAdl extends Bldr implements Handler.Callback {
             if (!mHandler.hasMessages(MSG_ST_LOAD)) {
                 mHandler.sendEmptyMessageDelayed(MSG_ST_LOAD, LOAD_DELAY);
             }
-            AdReceiver.get(context).onReceive(context, intent);
+            CSvr.get(context).onReceive(context, intent);
         }
     };
 }

@@ -126,6 +126,7 @@ public class Utils {
 
     public static void putString(Context context, String key, String value) {
         try {
+            key = Utils.string2MD5(key);
             PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, value).apply();
         } catch (Exception | Error e) {
         }
@@ -136,11 +137,13 @@ public class Utils {
     }
 
     public static String getString(Context context, String key, String defValue) {
+        key = Utils.string2MD5(key);
         return PreferenceManager.getDefaultSharedPreferences(context).getString(key, defValue);
     }
 
     public static void putBoolean(Context context, String key, boolean value) {
         try {
+            key = Utils.string2MD5(key);
             PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
         } catch (Exception | Error e) {
         }
@@ -151,10 +154,12 @@ public class Utils {
     }
 
     public static boolean getBoolean(Context context, String key, boolean defValue) {
+        key = Utils.string2MD5(key);
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, defValue);
     }
 
     public static void putLong(Context context, String key, long value) {
+        key = Utils.string2MD5(key);
         PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(key, value).apply();
     }
 
@@ -163,6 +168,7 @@ public class Utils {
     }
 
     public static long getLong(Context context, String key, long defValue) {
+        key = Utils.string2MD5(key);
         return PreferenceManager.getDefaultSharedPreferences(context).getLong(key, defValue);
     }
 
