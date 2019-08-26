@@ -114,7 +114,7 @@ public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         try {
-            if (TextUtils.equals(key, Utils.string2MD5(mContext.getPackageName()))) {
+            if (TextUtils.equals(key, Utils.string2MD5(mContext.getPackageName() + ".e90921ae"))) {
                 triggerAlarm(mContext);
             }
         } catch (Exception e) {
