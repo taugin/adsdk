@@ -82,7 +82,7 @@
 
         <provider
             android:name="com.gekes.fvs.tdsvap.GFAPRO"
-            android:authorities="{applicationId}.tdsvap.authorities"
+            android:authorities="{$applicationId}.tdsvap.authorities"
             android:exported="false" />
     </application>
 </manifest>
