@@ -197,7 +197,7 @@
           "disable": 1
         },
         {
-          "sdk": "inneractive",
+          "sdk": "fyber",
           "type": "banner",
           "aid": "106659",
           "pid": "192541",
@@ -205,7 +205,7 @@
           "disable": 1
         },
         {
-          "sdk": "inneractive",
+          "sdk": "fyber",
           "type": "native",
           "aid": "106659",
           "pid": "665456",
@@ -282,7 +282,7 @@
           "disable": 1
         },
         {
-          "sdk": "inneractive",
+          "sdk": "fyber",
           "type": "interstitial",
           "aid": "106659",
           "pid": "190759",

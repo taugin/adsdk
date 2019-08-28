@@ -56,7 +56,7 @@ public class AdExtra {
     /**
      * INNERACTIVE SDK 名字
      */
-    public static final String AD_SDK_INNERACTIVE = Constant.AD_SDK_INNERACTIVE;
+    public static final String AD_SDK_FYBER = Constant.AD_SDK_FYBER;
 
     /**
      * DSPMOB SDK 名字

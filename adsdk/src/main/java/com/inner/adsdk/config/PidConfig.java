@@ -269,7 +269,7 @@ public class PidConfig extends BaseConfig {
     }
 
     public boolean isInnerActive() {
-        return TextUtils.equals(Constant.AD_SDK_INNERACTIVE, sdk);
+        return TextUtils.equals(Constant.AD_SDK_FYBER, sdk);
     }
 
     public boolean isDspMob() {

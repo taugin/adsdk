@@ -1,4 +1,4 @@
-package com.inner.adsdk.adloader.inneractive;
+package com.inner.adsdk.adloader.fyber;
 
 import android.text.TextUtils;
 import android.view.View;
@@ -26,9 +26,9 @@ import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
 
-public class InnerActiveLoader extends AbstractSdkLoader {
+public class FyberLoader extends AbstractSdkLoader {
 
-    private final String TAG = "InnerActiveLoader";
+    private final String TAG = "FyberLoader";
 
     private boolean mIsBannerLoaded;
     private InneractiveAdSpot mBannerSpot;
@@ -41,7 +41,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
 
     @Override
     public String getSdkName() {
-        return Constant.AD_SDK_INNERACTIVE;
+        return Constant.AD_SDK_FYBER;
     }
 
     @Override
@@ -328,7 +328,7 @@ public class InnerActiveLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 setLoadedFlag();
                 if (isRewarded) {
-                    getAdListener().onRewardedVideoAdLoaded(InnerActiveLoader.this);
+                    getAdListener().onRewardedVideoAdLoaded(FyberLoader.this);
                 } else {
                     getAdListener().onInterstitialLoaded(this);
                 }
@@ -479,9 +479,9 @@ public class InnerActiveLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     setLoadedFlag();
                     if (isRewarded) {
-                        getAdListener().onRewardedVideoAdLoaded(InnerActiveLoader.this);
+                        getAdListener().onRewardedVideoAdLoaded(FyberLoader.this);
                     } else {
-                        getAdListener().onInterstitialLoaded(InnerActiveLoader.this);
+                        getAdListener().onInterstitialLoaded(FyberLoader.this);
                     }
                 }
             }

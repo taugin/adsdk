@@ -41,7 +41,7 @@ public class AdHelper {
         if (TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk)) {
             return hasApplovinModule();
         }
-        if (TextUtils.equals(Constant.AD_SDK_INNERACTIVE, sdk)) {
+        if (TextUtils.equals(Constant.AD_SDK_FYBER, sdk)) {
             return hasInnerActiveModule();
         }
         if (TextUtils.equals(Constant.AD_SDK_MOPUB, sdk)) {

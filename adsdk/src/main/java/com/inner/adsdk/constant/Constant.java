@@ -18,7 +18,7 @@ public class Constant {
     public static final String AD_SDK_MOPUB = "mopub";
     public static final String AD_SDK_SPREAD = "spread";
     public static final String AD_SDK_INMOBI = "inmobi";
-    public static final String AD_SDK_INNERACTIVE = "inneractive";
+    public static final String AD_SDK_FYBER = "fyber";
     public static final String AD_SDK_DSPMOB = "dspmob";
     public static final String AD_SDK_ADCOLONY = "adcolony";
     public static final String AD_SDK_APPLOVIN_MAX = "applovinmax";

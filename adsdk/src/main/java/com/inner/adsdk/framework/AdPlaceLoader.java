@@ -21,7 +21,7 @@ import com.inner.adsdk.adloader.applovinmax.AppLovinMaxLoader;
 import com.inner.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.inner.adsdk.adloader.dspmob.DspMobLoader;
 import com.inner.adsdk.adloader.inmobi.InmobiLoader;
-import com.inner.adsdk.adloader.inneractive.InnerActiveLoader;
+import com.inner.adsdk.adloader.fyber.FyberLoader;
 import com.inner.adsdk.adloader.listener.IManagerListener;
 import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
@@ -200,7 +200,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isInnerActive() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new InnerActiveLoader();
+                            loader = new FyberLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);
