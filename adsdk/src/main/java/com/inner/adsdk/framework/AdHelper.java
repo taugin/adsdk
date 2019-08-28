@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.adcolony.sdk.AdColony;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.sdk.AppLovinSdk;
-import com.brandio.ads.Placement;
 import com.facebook.ads.InterstitialAd;
 import com.fyber.inneractive.sdk.external.InneractiveAdManager;
 import com.google.android.gms.ads.MobileAds;
@@ -56,9 +55,6 @@ public class AdHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_DSPMOB, sdk)) {
             return hasDspMobModule();
-        }
-        if (TextUtils.equals(Constant.AD_SDK_DISPLAYIO, sdk)) {
-            return hasDisplayIoModule();
         }
         if (TextUtils.equals(Constant.AD_SDK_ADCOLONY, sdk)) {
             return hasAdColonyModule();
@@ -162,16 +158,6 @@ public class AdHelper {
     private static boolean hasDspMobModule() {
         try {
             DspMob.class.getName();
-            return true;
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return false;
-    }
-
-    private static boolean hasDisplayIoModule() {
-        try {
-            Placement.class.getName();
             return true;
         } catch (Exception e) {
         } catch (Error e) {

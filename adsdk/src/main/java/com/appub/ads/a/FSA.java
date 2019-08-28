@@ -326,8 +326,7 @@ public class FSA extends Activity {
      */
     private void registerArgument() {
         if (Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
-                || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType)
-                || Constant.AD_SDK_DISPLAYIO.equals(mSource)) {
+                || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType)) {
             registerBroadcast();
             registerGesture();
         }
@@ -442,14 +441,6 @@ public class FSA extends Activity {
 
     private void showAdViewInternal() {
         if (mAdLayout != null) {
-            AdSdk.get(this).setOnAdSdkListener(mPidName, new SimpleAdSdkListener() {
-                @Override
-                public void onDismiss(String pidName, String source, String adType) {
-                    if (TextUtils.equals(source, Constant.AD_SDK_DISPLAYIO) && !isFinishing()) {
-                        finishActivityWithDelay();
-                    }
-                }
-            }, true);
             boolean shown = AdSdk.get(this).showComplexAdsWithResult(mPidName, getAdParams(), mSource, mAdType, mAdLayout);
             if (shown) {
                 onAdShowing(mAdLayout);

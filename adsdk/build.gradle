@@ -103,7 +103,7 @@ dependencies {
     }
 
     // display io
-    implementation 'com.brandio.ads:sdk:3.2.0'
+    // implementation 'com.brandio.ads:sdk:3.2.0'
 
     // AdColony
     // 会导致同步失败
