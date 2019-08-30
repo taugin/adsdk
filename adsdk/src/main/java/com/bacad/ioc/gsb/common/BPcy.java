@@ -69,6 +69,20 @@ public class BPcy implements Handler.Callback {
         return timeOut;
     }
 
+    public String getPlaceNameAdv() {
+        if (mBCg != null) {
+            return mBCg.getPlaceNameAdv();
+        }
+        return null;
+    }
+
+    public String getPlaceNameInt() {
+        if (mBCg != null) {
+            return mBCg.getPlaceNameInt();
+        }
+        return null;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
     public void setLoading(boolean loading) {
         mLoading = loading;
@@ -370,9 +384,9 @@ public class BPcy implements Handler.Callback {
         return Utils.getString(mContext, LAST_SCENE_TYPE);
     }
 
-    public boolean isShowBottomActivity() {
+    public boolean isShowBottom() {
         if (mBCg != null){
-            return mBCg.isShowBottomActivity();
+            return mBCg.isShowBottom();
         }
         return false;
     }
@@ -428,12 +442,12 @@ public class BPcy implements Handler.Callback {
 
     protected boolean checkBaseConfig() {
         if (!isConfigAllow()) {
-            Log.iv(Log.TAG, "con not allowed");
+            Log.iv(Log.TAG, "disable con");
             return false;
         }
 
         if (isSceneDisabledByUser()) {
-            Log.iv(Log.TAG, "user disabled");
+            Log.iv(Log.TAG, "disable by user");
             return false;
         }
 
@@ -442,37 +456,37 @@ public class BPcy implements Handler.Callback {
         }
 
         if (!isDelayAllow()) {
-            Log.iv(Log.TAG, "d not allowed");
+            Log.iv(Log.TAG, "disable d");
             return false;
         }
 
         if (!isIntervalAllow()) {
-            Log.iv(Log.TAG, "i not allowed");
+            Log.iv(Log.TAG, "disable i");
             return false;
         }
 
         if (!isSceneIntervalAllow()) {
-            Log.iv(Log.TAG, "si not allowed");
+            Log.iv(Log.TAG, "disable si");
             return false;
         }
 
         if (!isMaxShowAllow()) {
-            Log.iv(Log.TAG, "mc not allowed");
+            Log.iv(Log.TAG, "disable mc");
             return false;
         }
 
         if (!isAppVerAllow()) {
-            Log.iv(Log.TAG, "maxver not allowed");
+            Log.iv(Log.TAG, "disable mv");
             return false;
         }
 
         if (!matchInstallTime()) {
-            Log.iv(Log.TAG, "cit not allowed");
+            Log.iv(Log.TAG, "disable cit");
             return false;
         }
 
         if (!isScreenOrientationAllow()) {
-            Log.iv(Log.TAG, "so not allow");
+            Log.iv(Log.TAG, "disable so");
             return false;
         }
         return true;

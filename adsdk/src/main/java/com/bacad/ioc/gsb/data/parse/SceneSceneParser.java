@@ -78,8 +78,8 @@ public class SceneSceneParser implements ISceneParser {
             if (jobj.has(CONFIG_INSTALL_TIME)) {
                 BCg.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
             }
-            if (jobj.has(SHOW_BOTTOM_ACTIVITY)) {
-                BCg.setShowBottomActivity(jobj.getInt(SHOW_BOTTOM_ACTIVITY) == 1);
+            if (jobj.has(SHOW_BOTTOM)) {
+                BCg.setShowBottom(jobj.getInt(SHOW_BOTTOM) == 1);
             }
             if (jobj.has(PLACE_NAME_INT)) {
                 BCg.setPlaceNameInt(jobj.getString(PLACE_NAME_INT));

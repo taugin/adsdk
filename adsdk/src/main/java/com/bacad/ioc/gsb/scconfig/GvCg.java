@@ -20,7 +20,7 @@ public class GvCg extends BCg {
 
     @Override
     public String toString() {
-        return "gt{" +
+        return "gv{" +
                 "e=" + isEnable() +
                 ", d=" + getUpDelay() +
                 ", i=" + getInterval() +
@@ -32,7 +32,7 @@ public class GvCg extends BCg {
                 ", ml=" + getMediaList() +
                 ", so=" + getScreenOrientation() +
                 ", to=" + getTimeOut() +
-                ", sba=" + isShowBottomActivity() +
+                ", sb=" + isShowBottom() +
                 ", ntr=" + getNtr() +
                 ", cit=" + Constant.SDF_1.format(new Date(getConfigInstallTime())) +
                 '}';

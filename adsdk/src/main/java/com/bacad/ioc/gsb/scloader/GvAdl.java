@@ -103,7 +103,7 @@ public class GvAdl extends Bldr {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
                             AdSdk.get(mContext).showComplexAds(pidName, null);
                         } else {
-                            if (GvPcy.get(mContext).isShowBottomActivity()
+                            if (GvPcy.get(mContext).isShowBottom()
                                     || Constant.TYPE_BANNER.equals(adType)
                                     || Constant.TYPE_NATIVE.equals(adType)) {
                                 show(pidName, source, adType);
@@ -122,7 +122,7 @@ public class GvAdl extends Bldr {
                     Log.iv(Log.TAG, "dismiss place_name : " + pidName + " , source : " + source + " , adType : " + adType);
                     GvPcy.get(mContext).reportShowing(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
-                            && GvPcy.get(mContext).isShowBottomActivity()
+                            && GvPcy.get(mContext).isShowBottom()
                             && !Constant.TYPE_BANNER.equals(adType)
                             && !Constant.TYPE_NATIVE.equals(adType)) {
                         hide();

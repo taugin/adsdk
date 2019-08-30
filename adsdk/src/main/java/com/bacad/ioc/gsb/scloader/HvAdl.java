@@ -99,7 +99,7 @@ public class HvAdl extends Bldr {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
                             AdSdk.get(mContext).showComplexAds(pidName, null);
                         } else {
-                            if (HvPcy.get(mContext).isShowBottomActivity()
+                            if (HvPcy.get(mContext).isShowBottom()
                                     || Constant.TYPE_BANNER.equals(adType)
                                     || Constant.TYPE_NATIVE.equals(adType)) {
                                 show(pidName, source, adType);
@@ -118,7 +118,7 @@ public class HvAdl extends Bldr {
                     Log.iv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     HvPcy.get(mContext).reportShowing(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
-                            && HvPcy.get(mContext).isShowBottomActivity()
+                            && HvPcy.get(mContext).isShowBottom()
                             && !Constant.TYPE_BANNER.equals(adType)
                             && !Constant.TYPE_NATIVE.equals(adType)) {
                         hide();

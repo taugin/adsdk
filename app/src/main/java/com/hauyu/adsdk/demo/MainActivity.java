@@ -90,10 +90,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadGtOuter() {
-        if (AdSdk.get(mContext).isInterstitialLoaded("gt_outer_place")) {
-            AdSdk.get(mContext).showInterstitial("gt_outer_place");
+        if (AdSdk.get(mContext).isComplexAdsLoaded("nt_outer_place")) {
+            AdSdk.get(mContext).showComplexAds("nt_outer_place");
         } else {
-            AdSdk.get(mContext).loadInterstitial("gt_outer_place", null);
+            AdSdk.get(mContext).loadComplexAds("nt_outer_place", null);
         }
     }
 

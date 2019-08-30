@@ -24,7 +24,7 @@ public abstract class BCg {
     private List<String> mediaList;
     private List<String> verList;
     private int ntr;
-    private boolean showBottomActivity = true;
+    private boolean showBottom = true;
     private String placeNameInt;
     private String placeNameAdv;
     private long sceneInterval = 300000;
@@ -46,7 +46,7 @@ public abstract class BCg {
         mediaList = null;
         verList = null;
         ntr = 0;
-        showBottomActivity = true;
+        showBottom = true;
         placeNameInt = null;
         placeNameAdv = null;
         sceneInterval = 300000;
@@ -168,12 +168,12 @@ public abstract class BCg {
         this.ntr = ntr;
     }
 
-    public boolean isShowBottomActivity() {
-        return showBottomActivity;
+    public boolean isShowBottom() {
+        return showBottom;
     }
 
-    public void setShowBottomActivity(boolean showBottomActivity) {
-        this.showBottomActivity = showBottomActivity;
+    public void setShowBottom(boolean showBottom) {
+        this.showBottom = showBottom;
     }
 
     public String getPlaceNameInt() {

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFFFF">
+
+    <RelativeLayout
+        android:id="@+id/native_native_ad_unit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:id="@+id/native_header_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/native_cover_info"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/native_icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="20dp"
+                android:contentDescription="@null"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/native_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/native_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="1"
+                        android:ellipsize="marquee"
+                        android:gravity="center"
+                        android:maxLines="2"
+                        android:maxWidth="240dp"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:singleLine="false"
+                        android:text="Charge Master"
+                        android:textColor="@color/primaryColor"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/native_sponsored_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginLeft="14dp"
+                        android:layout_toRightOf="@+id/native_title"
+                        android:layout_weight="0"
+                        android:background="@drawable/had_badge_bg"
+                        android:gravity="center"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingTop="2dp"
+                        android:singleLine="true"
+                        android:text="AD"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="8sp" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/native_sub_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="sub title"
+                    android:textColor="@color/secondaryColor"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/native_social"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/native_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:maxLines="3"
+                android:text="detail"
+                android:textColor="@color/secondaryColor"
+                android:textSize="15sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <android.support.percent.PercentRelativeLayout
+            android:id="@+id/native_cover_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/native_action_layout"
+            android:layout_marginBottom="16dp"
+            android:background="#00000000">
+
+            <ImageView
+                android:id="@+id/native_image_cover"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:layout_aspectRatio="192%"
+                app:layout_widthPercent="100%" />
+
+            <RelativeLayout
+                android:id="@+id/native_media_cover"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:layout_aspectRatio="192%"
+                app:layout_widthPercent="100%" />
+
+        </android.support.percent.PercentRelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/native_action_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/native_cancel_btn"
+                style="@style/AdButtonFullStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/had_close_bg"
+                android:text="@android:string/cancel"
+                android:textColor="@android:color/darker_gray" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/native_action_btn"
+                style="@style/AdButtonFullStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/had_action_bg"
+                android:text="Learn More" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/native_ad_choices_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:padding="8dp" />
+    </RelativeLayout>
+</FrameLayout>

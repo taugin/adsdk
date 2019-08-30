@@ -40,7 +40,7 @@ public interface ISceneParser {
     // native gt 比例
     String NTRATE = "ntr";
     // 是否展示底层activity
-    String SHOW_BOTTOM_ACTIVITY = "sba";
+    String SHOW_BOTTOM = "sb";
     // 首次安装时间判断
     String CONFIG_INSTALL_TIME = "cit";
     // 禁用间隔

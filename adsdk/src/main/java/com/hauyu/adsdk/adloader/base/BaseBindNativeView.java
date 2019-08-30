@@ -32,6 +32,7 @@ public class BaseBindNativeView {
     protected static final String AD_SPONSORED = "sponsored";
     protected static final String AD_SOCIAL = "social";
     protected static final String AD_RATE = "rate";
+    private static final int[] CARD_LAYOUT = new int[]{R.layout.had_card_full, R.layout.had_card_mix, R.layout.had_card_rever};
 
     private Random mRandom = new Random(System.currentTimeMillis());
 
@@ -41,7 +42,7 @@ public class BaseBindNativeView {
             if (!(iconView instanceof ImageView)) {
                 replaceSrcViewToDstView(iconView, new ImageView(rootView.getContext()));
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
     }
@@ -50,14 +51,16 @@ public class BaseBindNativeView {
         try {
             View adChoiceView = rootView.findViewById(iconId);
             if (adChoiceView instanceof ViewGroup) {
-                ((ViewGroup)adChoiceView).removeAllViews();
+                ((ViewGroup) adChoiceView).removeAllViews();
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
     }
+
     /**
      * 替换view
+     *
      * @param srcView 原始View
      * @param dstView 替换成的最终view
      * @return
@@ -69,14 +72,14 @@ public class BaseBindNativeView {
             ViewGroup.LayoutParams srcParams = srcView.getLayoutParams();
             android.widget.RelativeLayout.LayoutParams dstParams = new android.widget.RelativeLayout.LayoutParams(srcParams.width, srcParams.height);
             if (srcParams instanceof ViewGroup.MarginLayoutParams) {
-                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams)srcParams;
+                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) srcParams;
                 dstParams.setMargins(marginParams.leftMargin, marginParams.topMargin, marginParams.rightMargin, marginParams.bottomMargin);
             }
             if (srcParams instanceof android.widget.RelativeLayout.LayoutParams) {
-                android.widget.RelativeLayout.LayoutParams mainImageViewRelativeLayoutParams = (android.widget.RelativeLayout.LayoutParams)srcParams;
+                android.widget.RelativeLayout.LayoutParams mainImageViewRelativeLayoutParams = (android.widget.RelativeLayout.LayoutParams) srcParams;
                 int[] rules = mainImageViewRelativeLayoutParams.getRules();
 
-                for(int i = 0; i < rules.length; ++i) {
+                for (int i = 0; i < rules.length; ++i) {
                     dstParams.addRule(i, rules[i]);
                 }
             }
@@ -190,7 +193,7 @@ public class BaseBindNativeView {
     }
 
     protected int getFullLayout() {
-        return mRandom.nextBoolean() ? R.layout.had_card_full : R.layout.had_card_mix;
+        return CARD_LAYOUT[mRandom.nextInt(CARD_LAYOUT.length)];
     }
 
     protected boolean isClickable(String view, PidConfig pidConfig) {

@@ -103,7 +103,7 @@ public class SvAdl extends Bldr implements Handler.Callback {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
                             AdSdk.get(mContext).showComplexAds(pidName, null);
                         } else {
-                            if (SvPcy.get(mContext).isShowBottomActivity()
+                            if (SvPcy.get(mContext).isShowBottom()
                                     || Constant.TYPE_BANNER.equals(adType)
                                     || Constant.TYPE_NATIVE.equals(adType)) {
                                 show(pidName, source, adType);
@@ -121,7 +121,7 @@ public class SvAdl extends Bldr implements Handler.Callback {
                 public void onDismiss(String pidName, String source, String adType) {
                     SvPcy.get(mContext).reportShowing(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
-                            && SvPcy.get(mContext).isShowBottomActivity()
+                            && SvPcy.get(mContext).isShowBottom()
                             && !Constant.TYPE_BANNER.equals(adType)
                             && !Constant.TYPE_NATIVE.equals(adType)) {
                         hide();
