@@ -40,14 +40,10 @@ public class MopubBindNativeView extends BaseBindNativeView {
         View rootView = mParams.getNativeRootView();
         int cardId = mParams.getNativeCardStyle();
         if (rootView != null) {
-            preSetMediaView(rootView, pidConfig);
             bindNativeViewWithRootView(context, rootView, nativeAd, pidConfig);
-            postSetMediaView(rootView, pidConfig);
         } else if (rootLayout > 0) {
             rootView = LayoutInflater.from(context).inflate(rootLayout, null);
-            preSetMediaView(rootView, pidConfig);
             bindNativeViewWithRootView(context, rootView, nativeAd, pidConfig);
-            postSetMediaView(rootView, pidConfig);
         } else if (cardId > 0) {
             bindNativeWithCard(context, cardId, nativeAd, pidConfig);
         } else {
@@ -68,9 +64,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
             layoutId = getFullLayout();
         }
         View rootView = LayoutInflater.from(context).inflate(layoutId, null);
-        preSetMediaView(rootView, pidConfig);
         bindNativeViewWithTemplate(context, rootView, nativeAd, pidConfig);
-        postSetMediaView(rootView, pidConfig);
     }
 
     /**

@@ -45,15 +45,11 @@ public class FBBindNativeView extends BaseBindNativeView {
         View rootView = mParams.getNativeRootView();
         int cardId = mParams.getNativeCardStyle();
         if (rootView != null) {
-            preSetMediaView(rootView, pidConfig);
             bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
-            postSetMediaView(rootView, pidConfig);
         } else if (rootLayout > 0) {
             if (adContainer != null && adContainer.getContext() != null) {
                 rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
-                preSetMediaView(rootView, pidConfig);
                 bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
-                postSetMediaView(rootView, pidConfig);
             }
         } else if (cardId > 0) {
             bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
@@ -76,9 +72,7 @@ public class FBBindNativeView extends BaseBindNativeView {
         }
         Context context = adContainer.getContext();
         View rootView = LayoutInflater.from(context).inflate(layoutId, null);
-        preSetMediaView(rootView, pidConfig);
         bindNativeViewWithTemplate(adContainer, rootView, nativeAd, pidConfig);
-        postSetMediaView(rootView, pidConfig);
     }
 
     /**

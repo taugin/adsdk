@@ -65,7 +65,6 @@ public class AdxBindNativeView extends BaseBindNativeView {
             throw new AndroidRuntimeException("rootView is null");
         }
         View view = null;
-        preSetMediaView(rootView, pidConfig);
         try {
             view = showUnifiedAdView(rootView, nativeAd, pidConfig);
         } catch (Exception e) {
@@ -78,7 +77,6 @@ public class AdxBindNativeView extends BaseBindNativeView {
             if (adContainer.getVisibility() != View.VISIBLE) {
                 adContainer.setVisibility(View.VISIBLE);
             }
-            postSetMediaView(rootView, pidConfig);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
@@ -112,7 +110,6 @@ public class AdxBindNativeView extends BaseBindNativeView {
         mParams.setAdChoices(R.id.native_ad_choices_container);
         mParams.setAdMediaView(R.id.native_media_cover);
         View view = null;
-        preSetMediaView(rootView, pidConfig);
         try {
             view = showUnifiedAdView(rootView, nativeAd, pidConfig);
         } catch (Exception e) {
@@ -125,7 +122,6 @@ public class AdxBindNativeView extends BaseBindNativeView {
             if (adContainer.getVisibility() != View.VISIBLE) {
                 adContainer.setVisibility(View.VISIBLE);
             }
-            postSetMediaView(rootView, pidConfig);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
