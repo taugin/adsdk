@@ -61,7 +61,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else if (template == Constant.NATIVE_CARD_LARGE) {
             layoutId = R.layout.had_card_large;
         } else if (template == Constant.NATIVE_CARD_FULL) {
-            layoutId = getFullLayout();
+            layoutId = getFullLayout(pidConfig);
         }
         View rootView = LayoutInflater.from(context).inflate(layoutId, null);
         bindNativeViewWithTemplate(context, rootView, nativeAd, pidConfig);

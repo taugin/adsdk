@@ -94,7 +94,7 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
         } else if (cardId == Constant.NATIVE_CARD_LARGE) {
             layoutId = R.layout.had_card_large;
         } else if (cardId == Constant.NATIVE_CARD_FULL) {
-            layoutId = getFullLayout();
+            layoutId = getFullLayout(pidConfig);
         }
         View rootView = LayoutInflater.from(adContainer.getContext()).inflate(layoutId, null);
         if (rootView == null) {

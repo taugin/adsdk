@@ -57,6 +57,10 @@ public interface IParser {
     String SEQ_TIMEOUT = "sto";
     // 队列模式下加载的大小
     String QUEUE_SIZE = "qs";
+    // 全屏布局样式
+    String FULL_LAYOUT = "fl";
+    // cta按钮颜色
+    String CTA_COLOR = "cc";
 
     // 广告平台 fb, admob, adx
     String SDK = "sdk";

@@ -55,6 +55,10 @@ public class AdPlace {
 
     private int queueSize = 2;
 
+    private String layout;
+
+    private List<String> ctaColor;
+
     public String getName() {
         return name;
     }
@@ -240,6 +244,22 @@ public class AdPlace {
 
     public void setQueueSize(int queueSize) {
         this.queueSize = queueSize;
+    }
+
+    public String getLayout() {
+        return layout;
+    }
+
+    public void setLayout(String layout) {
+        this.layout = layout;
+    }
+
+    public List<String> getCtaColor() {
+        return ctaColor;
+    }
+
+    public void setCtaColor(List<String> ctaColor) {
+        this.ctaColor = ctaColor;
     }
 
     @Override

@@ -68,7 +68,7 @@ public class FBBindNativeView extends BaseBindNativeView {
         } else if (template == Constant.NATIVE_CARD_LARGE) {
             layoutId = R.layout.had_card_large;
         } else if (template == Constant.NATIVE_CARD_FULL) {
-            layoutId = getFullLayout();
+            layoutId = getFullLayout(pidConfig);
         }
         Context context = adContainer.getContext();
         View rootView = LayoutInflater.from(context).inflate(layoutId, null);

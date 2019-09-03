@@ -205,7 +205,9 @@
     {
       "name": "nt_outer_place",
       "mode": "con",
-      "as": 0,
+      "as": 1,
+      "fl":"three",
+      "cc":["#FF6600","#4455bb22"],
       "pids": [
         {
           "sdk": "fb",
@@ -216,6 +218,8 @@
         {
           "sdk": "admob",
           "type": "native",
+          "fl":"two",
+          "cc":["#aa006600","#4455bb22"],
           "pid": "ca-app-pub-3940256099942544/2247696110",
           "disable": 0
         },
@@ -223,7 +227,7 @@
           "sdk": "dfp",
           "type": "native",
           "pid": "/6499/example/native",
-          "disable": 1
+          "disable": 0
         }
       ],
       "maxcount": 100,

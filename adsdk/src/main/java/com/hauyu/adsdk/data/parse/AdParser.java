@@ -142,8 +142,14 @@ public class AdParser implements IParser {
             if (jobj.has(PERCENT)) {
                 adPlace.setPercent(jobj.getInt(PERCENT));
             }
+            if (jobj.has(FULL_LAYOUT)) {
+                adPlace.setLayout(jobj.getString(FULL_LAYOUT));
+            }
+            if (jobj.has(CTA_COLOR)) {
+                adPlace.setCtaColor(parseStringList(jobj.getString(CTA_COLOR)));
+            }
             if (jobj.has(PIDS)) {
-                adPlace.setPidsList(parsePidList(jobj.getString(PIDS)));
+                adPlace.setPidsList(parsePidList(adPlace, jobj.getString(PIDS)));
             }
             if (jobj.has(AUTO_SWITCH)) {
                 adPlace.setAutoSwitch(jobj.getInt(AUTO_SWITCH) == 1);
@@ -227,7 +233,7 @@ public class AdParser implements IParser {
         }
     }
 
-    private List<PidConfig> parsePidList(String content) {
+    private List<PidConfig> parsePidList(AdPlace adPlace, String content) {
         List<PidConfig> list = null;
         try {
             JSONArray jarray = new JSONArray(content);
@@ -237,6 +243,15 @@ public class AdParser implements IParser {
                 PidConfig pidConfig = null;
                 for (int index = 0; index < len; index++) {
                     pidConfig = parsePidConfig(jarray.getString(index));
+                    if (adPlace != null && pidConfig != null) {
+                        if (!TextUtils.isEmpty(adPlace.getLayout()) && TextUtils.isEmpty(pidConfig.getLayout())) {
+                            pidConfig.setLayout(adPlace.getLayout());
+                        }
+                        if ((adPlace.getCtaColor() != null && !adPlace.getCtaColor().isEmpty())
+                                && (pidConfig.getCtaColor() == null || pidConfig.getCtaColor().isEmpty())) {
+                            pidConfig.setCtaColor(adPlace.getCtaColor());
+                        }
+                    }
                     list.add(pidConfig);
                 }
             }
@@ -307,6 +322,12 @@ public class AdParser implements IParser {
             }
             if (jobj.has(LOAD_NATIVE_COUNT)) {
                 pidConfig.setCnt(jobj.getInt(LOAD_NATIVE_COUNT));
+            }
+            if (jobj.has(FULL_LAYOUT)) {
+                pidConfig.setLayout(jobj.getString(FULL_LAYOUT));
+            }
+            if (jobj.has(CTA_COLOR)) {
+                pidConfig.setCtaColor(parseStringList(jobj.getString(CTA_COLOR)));
             }
             parseClickViews(pidConfig, jobj);
         } catch (Exception e) {
