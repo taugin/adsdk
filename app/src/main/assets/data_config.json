@@ -127,13 +127,13 @@
           "sdk": "admob",
           "type": "reward",
           "pid": "ca-app-pub-3940256099942544/5224354917",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",
           "type": "reward",
           "pid": "/6499/example/rewarded-video",
-          "disable": 1
+          "disable": 0
         }
       ],
       "maxcount": 100,

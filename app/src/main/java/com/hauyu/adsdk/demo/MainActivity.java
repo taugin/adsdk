@@ -93,7 +93,12 @@ public class MainActivity extends AppCompatActivity {
         if (AdSdk.get(mContext).isComplexAdsLoaded("nt_outer_place")) {
             AdSdk.get(mContext).showComplexAds("nt_outer_place");
         } else {
-            AdSdk.get(mContext).loadComplexAds("nt_outer_place", null);
+            AdSdk.get(mContext).loadComplexAds("nt_outer_place", new SimpleAdSdkListener() {
+                @Override
+                public void onLoaded(String pidName, String source, String adType) {
+                    AdSdk.get(mContext).showComplexAds(pidName);
+                }
+            });
         }
     }
 
@@ -114,17 +119,17 @@ public class MainActivity extends AppCompatActivity {
         builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_MEDIUM_RECTANGLE);
         builder.setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE);
         builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.FB_MEDIUM_RECTANGLE);
-        View view = LayoutInflater.from(this).inflate(layoutId, null);
+        // View view = LayoutInflater.from(this).inflate(layoutId, null);
         // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
-        builder.setAdRootView(AdExtra.AD_SDK_COMMON, view);
-        builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
-        builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
-        builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
-        builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
-        builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
-        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
-        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
-        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+        // builder.setAdRootView(AdExtra.AD_SDK_COMMON, view);
+        // builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
+        // builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
+        // builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
+        // builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
+        // builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
+        // builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
+        // builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+        // builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
         AdParams adParams = builder.build();
         AdSdk.get(mContext).loadComplexAds("ad_complex", adParams, new SimpleAdSdkListener() {
             @Override
