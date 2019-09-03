@@ -2,8 +2,8 @@
 <resources>
     <color name="primaryColor">@android:color/black</color>
     <color name="secondaryColor">@android:color/darker_gray</color>
-    <color name="colorBtnBlue">#FF4286F4</color>
-    <color name="colorBtnBluePressed">#AA4286F4</color>
-    <color name="colorCloseBtnBlue">#FFFFFFFF</color>
-    <color name="colorCloseBtnBluePressed">#AAFFFFFF</color>
+    <color name="colorBtnBlue">#FF4080FF</color>
+    <color name="colorBtnBluePressed">#FF3973E5</color>
+    <color name="colorCloseBtn">#AAEEEEEE</color>
+    <color name="colorCloseBtnPressed">#AACCCCCC</color>
 </resources>

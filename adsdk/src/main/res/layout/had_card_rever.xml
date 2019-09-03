@@ -131,8 +131,10 @@
             android:id="@+id/native_cover_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_above="@+id/native_action_layout"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="28dp"
             android:background="#00000000">
 
             <ImageView
@@ -160,7 +162,7 @@
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/native_cancel_btn"
-                style="@style/AdButtonFullStyle"
+                style="@style/AdButtonFullStyle_Flat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -175,7 +177,7 @@
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/native_action_btn"
-                style="@style/AdButtonFullStyle"
+                style="@style/AdButtonFullStyle_Flat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

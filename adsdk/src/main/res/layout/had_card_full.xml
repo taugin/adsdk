@@ -165,18 +165,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/native_cancel_btn"
-                style="@style/AdButtonFullStyle"
+                style="@style/AdButtonFullStyle_Flat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
                 android:textColor="@android:color/darker_gray"
                 android:background="@drawable/had_close_bg"
@@ -190,9 +189,9 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:layout_marginBottom="16dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/had_action_bg"
                 android:text="Learn More" />
         </LinearLayout>
