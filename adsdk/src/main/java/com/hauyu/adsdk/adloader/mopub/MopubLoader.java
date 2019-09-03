@@ -48,6 +48,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
     private NativeAd gNativeAd;
     private MoPubView gMoPubView;
+    private MopubBindNativeView bindNativeView;
 
     private SdkInitializationListener initSdkListener() {
         return new SdkInitializationListener() {
@@ -534,7 +535,7 @@ public class MopubLoader extends AbstractSdkLoader {
             }
         });
 
-        MopubBindNativeView bindNativeView = new MopubBindNativeView();
+        bindNativeView = new MopubBindNativeView();
         bindNativeView.bindMopubNative(mParams, mContext, moPubNative, mPidConfig);
         moPubNative.makeRequest();
         reportAdRequest();
@@ -624,6 +625,9 @@ public class MopubLoader extends AbstractSdkLoader {
                             view.setVisibility(View.VISIBLE);
                         }
                     }
+                }
+                if (bindNativeView != null) {
+                    bindNativeView.notifyMopubShowing(adView, getPidConfig(), mParams);
                 }
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e);
