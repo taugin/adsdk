@@ -18,8 +18,8 @@ import com.inner.adsdk.adloader.admob.AdmobLoader;
 import com.inner.adsdk.adloader.adx.AdxLoader;
 import com.inner.adsdk.adloader.altamob.AltamobLoader;
 import com.inner.adsdk.adloader.applovin.AppLovinLoader;
-import com.inner.adsdk.adloader.appnext.AppnextLoader;
 import com.inner.adsdk.adloader.applovinmax.AppLovinMaxLoader;
+import com.inner.adsdk.adloader.appnext.AppnextLoader;
 import com.inner.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.inner.adsdk.adloader.cloudmobi.CloudMobiLoader;
 import com.inner.adsdk.adloader.dap.DapLoader;
@@ -33,7 +33,6 @@ import com.inner.adsdk.adloader.listener.OnAdBaseListener;
 import com.inner.adsdk.adloader.mobvista.MobvistaLoader;
 import com.inner.adsdk.adloader.mopub.MopubLoader;
 import com.inner.adsdk.adloader.spread.SpLoader;
-import com.inner.adsdk.adloader.wemob.WemobLoader;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
@@ -144,15 +143,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             }
                         } else if (config.isAdx() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new AdxLoader();
-                            loader.init(mContext);
-                            loader.setPidConfig(config);
-                            loader.setListenerManager(this);
-                            loader.setAdId(adId);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
-                            }
-                        } else if (config.isWemob() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new WemobLoader();
                             loader.init(mContext);
                             loader.setPidConfig(config);
                             loader.setListenerManager(this);

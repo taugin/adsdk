@@ -18,7 +18,6 @@ import com.inner.adsdk.constant.Constant;
 import com.mobi.sdk.ADSDK;
 import com.mopub.mobileads.MoPubInterstitial;
 import com.we.sdk.exchange.DspMob;
-import com.wemob.ads.Sdk;
 
 
 /**
@@ -55,9 +54,6 @@ public class AdHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_MOPUB, sdk)) {
             return hasMopubModule();
-        }
-        if (TextUtils.equals(Constant.AD_SDK_WEMOB, sdk)) {
-            return hasWemobModule();
         }
         if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
             return true;
@@ -172,16 +168,6 @@ public class AdHelper {
     private static boolean hasMopubModule() {
         try {
             MoPubInterstitial.class.getName();
-            return true;
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return false;
-    }
-
-    private static boolean hasWemobModule() {
-        try {
-            Sdk.class.getName();
             return true;
         } catch (Exception e) {
         } catch (Error e) {

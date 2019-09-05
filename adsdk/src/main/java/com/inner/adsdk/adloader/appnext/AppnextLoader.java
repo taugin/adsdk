@@ -547,7 +547,7 @@ public class AppnextLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     AdReward adReward = new AdReward();
                     adReward.setType(Constant.ECPM);
-                    int ecpm = 0;
+                    double ecpm = 0;
                     if (mPidConfig != null) {
                         ecpm = mPidConfig.getEcpm();
                     }
