@@ -13,7 +13,6 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdSdk;
 import com.inner.adsdk.listener.SimpleAdSdkListener;
@@ -58,16 +57,6 @@ public class ListViewForAd extends Activity {
     private void loadAds() {
         AdParams adParams = null;
         AdParams.Builder builder = new AdParams.Builder();
-        builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_banner);
-        builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
-        builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
-        builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
-        builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
-        builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
-        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
-        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
-        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
-        builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
         adParams = builder.build();
         AdSdk.get(this).loadNative(AD_PLACE_NAME, adParams, new SimpleAdSdkListener() {
             @Override

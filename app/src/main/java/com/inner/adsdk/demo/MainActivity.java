@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.inner.adsdk.AdExtra;
 import com.inner.adsdk.AdParams;
 import com.inner.adsdk.AdReward;
 import com.inner.adsdk.AdSdk;
@@ -32,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
             R.layout.ad_common_native_card_large
     };
     private static final int CARDID[] = new int[]{
-            AdExtra.NATIVE_CARD_SMALL,
-            AdExtra.NATIVE_CARD_MEDIUM,
-            AdExtra.NATIVE_CARD_LARGE
+            AdSdk.NATIVE_CARD_SMALL,
+            AdSdk.NATIVE_CARD_MEDIUM,
+            AdSdk.NATIVE_CARD_LARGE
     };
 
     private static final String TAG = "MA";
@@ -104,9 +103,6 @@ public class MainActivity extends AppCompatActivity {
     private void loadBanner() {
         AdParams.Builder builder = new AdParams.Builder();
         //  设置外部布局参数
-        builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
-        builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_MEDIUM_RECTANGLE);
-        builder.setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE);
         AdParams adParams = builder.build();
         AdSdk.get(mContext).loadBanner("banner_test", adParams, new SimpleAdSdkListener() {
             @Override
@@ -122,16 +118,16 @@ public class MainActivity extends AppCompatActivity {
         //  设置外部布局参数
         int layoutId = LAYOUT[new Random().nextInt(LAYOUT.length)];
         View view = LayoutInflater.from(this).inflate(layoutId, null);
-        // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
-        builder.setAdRootView(AdExtra.AD_SDK_COMMON, view);
-        builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
-        builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
-        builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
-        builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
-        builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
-        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
-        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
-        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+        // builder.setAdRootLayout(AdSdk.AD_SDK_COMMON, layoutId);
+        builder.setAdRootView(AdSdk.AD_SDK_COMMON, view);
+        builder.setAdTitle(AdSdk.AD_SDK_COMMON, R.id.common_title);
+        builder.setAdDetail(AdSdk.AD_SDK_COMMON, R.id.common_detail);
+        builder.setAdSubTitle(AdSdk.AD_SDK_COMMON, R.id.common_sub_title);
+        builder.setAdIcon(AdSdk.AD_SDK_COMMON, R.id.common_icon);
+        builder.setAdAction(AdSdk.AD_SDK_COMMON, R.id.common_action_btn);
+        builder.setAdCover(AdSdk.AD_SDK_COMMON, R.id.common_image_cover);
+        builder.setAdChoices(AdSdk.AD_SDK_COMMON, R.id.common_ad_choices_container);
+        builder.setAdMediaView(AdSdk.AD_SDK_COMMON, R.id.common_media_cover);
         AdParams adParams = builder.build();
 
         AdSdk.get(mContext).loadNative("native_test", adParams, new SimpleAdSdkListener() {
@@ -165,12 +161,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onLoaded(String pidName, String adType) {
-            if (AdExtra.AD_TYPE_BANNER.equalsIgnoreCase(adType) || AdExtra.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
+            if (AdSdk.AD_TYPE_BANNER.equalsIgnoreCase(adType) || AdSdk.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
                 // showAdView(pidName);
                 AdSdk.get(getBaseContext()).showNative(pidName, mNativeBannerLayout);
-            } else if (AdExtra.AD_TYPE_INTERSTITIAL.equalsIgnoreCase(adType)) {
+            } else if (AdSdk.AD_TYPE_INTERSTITIAL.equalsIgnoreCase(adType)) {
                 AdSdk.get(getBaseContext()).showInterstitial(pidName);
-            } else if (AdExtra.AD_TYPE_REWARD.equalsIgnoreCase(adType)) {
+            } else if (AdSdk.AD_TYPE_REWARD.equalsIgnoreCase(adType)) {
                 AdSdk.get(getBaseContext()).showInterstitial(pidName);
             }
         }
