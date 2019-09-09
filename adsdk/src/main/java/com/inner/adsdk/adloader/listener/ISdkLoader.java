@@ -3,7 +3,7 @@ package com.inner.adsdk.adloader.listener;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import com.inner.adsdk.config.PidConfig;
+import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.framework.Params;
 
 /**
@@ -14,9 +14,7 @@ public interface ISdkLoader {
 
     public void setListenerManager(IManagerListener l);
 
-    public void init(Context context);
-
-    public void setAdId(String adId);
+    public void init(Context context, AdPlace adPlace);
 
     public Context getContext();
 
@@ -25,9 +23,7 @@ public interface ISdkLoader {
 
     public String getAdType();
 
-    public void setPidConfig(PidConfig config);
-
-    public PidConfig getPidConfig();
+    public AdPlace getAdPlace();
 
     // 加载插屏
     public void loadInterstitial();
@@ -63,8 +59,6 @@ public interface ISdkLoader {
 
     public void destroy();
 
-    public String getAdPlaceName();
-
     public boolean isBannerType();
 
     public boolean isNativeType();
@@ -73,15 +67,7 @@ public interface ISdkLoader {
 
     public boolean isRewardedVideoType();
 
-    public void setLoadedFlag();
-
-    public boolean hasLoadedFlag();
-
-    public boolean useAndClearFlag();
-
-    public boolean allowUseLoader();
-
     public int getBannerSize();
 
-    public int getEcpm();
+    public String getName();
 }

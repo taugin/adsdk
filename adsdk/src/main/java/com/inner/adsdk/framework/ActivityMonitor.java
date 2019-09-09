@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.inner.adsdk.config.PidConfig;
-
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,8 +20,6 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     private static ActivityMonitor sActivityMonitor;
     private AtomicInteger mAtomicInteger = new AtomicInteger(0);
     private AtomicBoolean mAtomicBoolean = new AtomicBoolean();
-
-    private PidConfig mPidConfg;
 
     public static ActivityMonitor get(Context context) {
         synchronized (ActivityMonitor.class) {
@@ -58,10 +54,6 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
         } catch(Exception e) {
         } catch(Error e) {
         }
-    }
-
-    public void setPidConfig(PidConfig pidConfig) {
-        mPidConfg = pidConfig;
     }
 
     @Override

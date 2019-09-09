@@ -69,42 +69,5 @@ public interface IStat {
      */
     public void reportAdError(Context context, String error, String sdk, String type, Map<String, String> extra);
 
-    /**
-     * 广告加载成功时间
-     * @param context
-     * @param value
-     */
-    public void reportAdLoadSuccessTime(Context context, String sdk, String type, int value);
-
-    /**
-     * 广告加载成功时间
-     * @param context
-     * @param value
-     */
-    public void reportAdLoadFailureTime(Context context, String sdk, String type, String error, int value);
-
-    /**
-     * ltv上报展示
-     * @param context
-     * @param sdk
-     * @param pid
-     */
-    public void reportAdShowForLTV(Context context, String sdk, String pid, String ecpm);
-
-    /**
-     * ltv上报展示
-     * @param context
-     * @param sdk
-     * @param pid
-     */
-    public void reportAdImpForLTV(Context context, String sdk, String pid, String ecpm);
-
-    /**
-     * ltv上报点击
-     * @param context
-     * @param sdk
-     * @param pid
-     */
-    public void reportAdClickForLTV(Context context, String sdk, String pid, String ecpm);
-
+    public void setReportOption(boolean umeng, boolean facebook, boolean appsflyer, boolean firebase, boolean reportTime, boolean reportError);
 }

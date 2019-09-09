@@ -2,9 +2,6 @@ package com.inner.adsdk.parse;
 
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
-import com.inner.adsdk.config.AdSwitch;
-
-import java.util.Map;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -57,6 +54,8 @@ public interface IParser {
     String SDK = "sdk";
     // 具体广告平台的广告位ID
     String PID = "pid";
+
+    String LOAD_TIME = "load_time";
     // 控制原生广告的点击区域百分比
     String CTR = "ctr";
     // 广告类型 interstitial, banner, native
@@ -87,30 +86,7 @@ public interface IParser {
     // bannersize
     String BANNER_SIZE = "bs";
 
-    // 阻止重复加载(如果当前loader正在处于加载中，则不再重新加载)
-    String BLOCK_LOADING = "bl";
-    // 是否上报错误日志
-    String REPORT_ERROR = "re";
-    // 是否上报时间
-    String REPORT_TIME = "rt";
-    // 是否上报友盟
-    String REPORT_UMENG = "ru";
-    // 是否上报Appsflyer
-    String REPORT_APPSFLYER = "ra";
-    // 是否上报firebase
-    String REPORT_FIREBASE = "rf";
-    // 是否上报facebook
-    String REPORT_FACEBOOK = "rfb";
-    // gt at exclusive
-    String GT_AT_EXCLUSIVE = "gae";
-
     AdConfig parseAdConfig(String data);
 
     AdPlace parseAdPlace(String data);
-
-    Map<String, String> parseAdIds(String data);
-
-    AdSwitch parseAdSwitch(String data);
-
-    Map<String, String> parseAdRefs(String data);
 }

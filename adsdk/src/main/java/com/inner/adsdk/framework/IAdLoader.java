@@ -7,8 +7,6 @@ import com.inner.adsdk.AdParams;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.listener.OnAdSdkListener;
 
-import java.util.Map;
-
 /**
  * Created by wangchao1 on 2018/5/1.
  */
@@ -19,27 +17,25 @@ public interface IAdLoader {
 
     public void setAdPlaceConfig(AdPlace adPlace);
 
-    public void setOriginPidName(String pidName);
-
     public boolean needReload(AdPlace adPlace);
 
-    public void setAdIds(Map<String, String> adids);
     public void setOnAdSdkListener(OnAdSdkListener l);
 
     public boolean isInterstitialLoaded();
     public void loadInterstitial(Activity activity);
     public void showInterstitial();
 
-    public boolean isAdViewLoaded();
-    public void loadAdView(AdParams adParams);
-    public void showAdView(ViewGroup adContainer, AdParams adParams);
+    public boolean isBannerLoaded();
+    public void loadBanner(AdParams adParams);
+    public void showBanner(ViewGroup adContainer, AdParams adParams);
 
-    public boolean isComplexAdsLoaded();
-    public String getLoadedType();
-    public void loadComplexAds(AdParams adParams);
-    public void showComplexAds(ViewGroup adContainer, AdParams adParams, String source, String adType);
+    public boolean isNativeLoaded();
+    public void loadNative(AdParams adParams);
+    public void showNative(ViewGroup adContainer, AdParams adParams);
 
-    public void showComplexAds();
+    public void loadRewardVideo(Activity activity);
+    public void showRewardVideo();
+    public boolean isRewardVideoLoaded();
 
     public int getAdCount();
     public String getAdMode();

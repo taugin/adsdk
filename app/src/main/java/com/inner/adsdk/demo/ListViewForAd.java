@@ -69,9 +69,9 @@ public class ListViewForAd extends Activity {
         builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
         builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
         adParams = builder.build();
-        AdSdk.get(this).loadAdView(AD_PLACE_NAME, adParams, new SimpleAdSdkListener() {
+        AdSdk.get(this).loadNative(AD_PLACE_NAME, adParams, new SimpleAdSdkListener() {
             @Override
-            public void onLoaded(String pidName, String source, String adType) {
+            public void onLoaded(String pidName, String adType) {
                 mAdAdapter.notifyDataSetChanged();
             }
         });
@@ -98,8 +98,8 @@ public class ListViewForAd extends Activity {
                 View adView = mHashMap.get(String.valueOf(position));
                 Log.v("taugin", "position : " + position + " , adview : " + adView);
                 if (adView == null) {
-                    if (AdSdk.get(getContext()).isAdViewLoaded(AD_PLACE_NAME)) {
-                        AdSdk.get(getContext()).showAdView(AD_PLACE_NAME, adLayout);
+                    if (AdSdk.get(getContext()).isNativeLoaded(AD_PLACE_NAME)) {
+                        AdSdk.get(getContext()).showNative(AD_PLACE_NAME, adLayout);
                         mHashMap.put(String.valueOf(position), adLayout.getChildAt(0));
                     }
                 } else {

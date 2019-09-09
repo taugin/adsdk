@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import com.facebook.ads.AdIconView;
 import com.facebook.ads.MediaView;
 import com.inner.adsdk.adloader.base.BaseBindNativeView;
-import com.inner.adsdk.config.PidConfig;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
@@ -32,7 +31,7 @@ import com.sub.great.good.R;
 public class MopubBindNativeView extends BaseBindNativeView {
     private Params mParams;
 
-    public void bindMopubNative(Params params, Context context, MoPubNative nativeAd, PidConfig pidConfig) {
+    public void bindMopubNative(Params params, Context context, MoPubNative nativeAd) {
         mParams = params;
         if (mParams == null) {
             Log.e(Log.TAG, "bindMopubNative mParams == null###");
@@ -46,22 +45,18 @@ public class MopubBindNativeView extends BaseBindNativeView {
         View rootView = mParams.getNativeRootView();
         int cardId = mParams.getNativeCardStyle();
         if (rootView != null) {
-            preSetMediaView(rootView, pidConfig);
-            bindNativeViewWithRootView(context, rootView, nativeAd, pidConfig);
-            postSetMediaView(rootView, pidConfig);
+            bindNativeViewWithRootView(context, rootView, nativeAd);
         } else if (rootLayout > 0) {
             rootView = LayoutInflater.from(context).inflate(rootLayout, null);
-            preSetMediaView(rootView, pidConfig);
-            bindNativeViewWithRootView(context, rootView, nativeAd, pidConfig);
-            postSetMediaView(rootView, pidConfig);
+            bindNativeViewWithRootView(context, rootView, nativeAd);
         } else if (cardId > 0) {
-            bindNativeWithCard(context, cardId, nativeAd, pidConfig);
+            bindNativeWithCard(context, cardId, nativeAd);
         } else {
             Log.e(Log.TAG, "Can not find mopub native layout###");
         }
     }
 
-    private void bindNativeWithCard(Context context, int template, MoPubNative nativeAd, PidConfig pidConfig) {
+    private void bindNativeWithCard(Context context, int template, MoPubNative nativeAd) {
         int layoutId = R.layout.cpu_card_2;
         if (template == Constant.NATIVE_CARD_SMALL) {
             layoutId = R.layout.cpu_card_0;
@@ -73,9 +68,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
             layoutId = R.layout.cpu_card_3;
         }
         View rootView = LayoutInflater.from(context).inflate(layoutId, null);
-        preSetMediaView(rootView, pidConfig);
-        bindNativeViewWithTemplate(context, rootView, nativeAd, pidConfig);
-        postSetMediaView(rootView, pidConfig);
+        bindNativeViewWithTemplate(context, rootView, nativeAd);
     }
 
     /**
@@ -83,9 +76,8 @@ public class MopubBindNativeView extends BaseBindNativeView {
      *
      * @param rootView
      * @param nativeAd
-     * @param pidConfig
      */
-    private void bindNativeViewWithTemplate(Context context, View rootView, MoPubNative nativeAd, PidConfig pidConfig) {
+    private void bindNativeViewWithTemplate(Context context, View rootView, MoPubNative nativeAd) {
         mParams.setAdTitle(R.id.native_title);
         mParams.setAdSubTitle(R.id.native_sub_title);
         mParams.setAdSocial(R.id.native_social);
@@ -96,7 +88,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         mParams.setAdChoices(R.id.native_ad_choices_container);
         mParams.setAdMediaView(R.id.native_media_cover);
         mParams.setAdRootView(rootView);
-        bindNativeViewWithRootView(context, rootView, nativeAd, pidConfig);
+        bindNativeViewWithRootView(context, rootView, nativeAd);
     }
 
 
@@ -105,19 +97,14 @@ public class MopubBindNativeView extends BaseBindNativeView {
      *
      * @param rootView
      * @param nativeAd
-     * @param pidConfig
      */
-    private void bindNativeViewWithRootView(Context context, View rootView, MoPubNative nativeAd, PidConfig pidConfig) {
+    private void bindNativeViewWithRootView(Context context, View rootView, MoPubNative nativeAd) {
         if (rootView == null) {
             Log.v(Log.TAG, "bindNativeViewWithRootView rootView == null");
             return;
         }
         if (nativeAd == null) {
             Log.v(Log.TAG, "bindNativeViewWithRootView nativeAd == null");
-            return;
-        }
-        if (pidConfig == null) {
-            Log.v(Log.TAG, "bindNativeViewWithRootView pidConfig == null");
             return;
         }
 
@@ -128,7 +115,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
 
         // 恢复icon图标
         try {
-            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+            restoreIconView(rootView, mParams.getAdIcon());
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
@@ -142,7 +129,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
 
         try {
-            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+            restoreIconView(rootView, mParams.getAdIcon());
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
@@ -156,7 +143,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
 
         try {
-            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+            restoreIconView(rootView, mParams.getAdIcon());
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
@@ -170,7 +157,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
 
         try {
-            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+            restoreIconView(rootView, mParams.getAdIcon());
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
@@ -184,7 +171,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
 
         try {
-            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+            restoreIconView(rootView, mParams.getAdIcon());
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

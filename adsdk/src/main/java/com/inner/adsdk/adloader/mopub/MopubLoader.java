@@ -1,6 +1,7 @@
 package com.inner.adsdk.adloader.mopub;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.view.ViewParent;
 
 import com.inner.adsdk.AdReward;
 import com.inner.adsdk.adloader.base.AbstractSdkLoader;
+import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
@@ -81,16 +83,24 @@ public class MopubLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void setAdId(String adId) {
-        super.setAdId(adId);
+    public void init(Context context, AdPlace adPlace) {
+        super.init(context, adPlace);
         String adUnit = null;
         try {
-            adUnit = getPidConfig().getPid();
+            adUnit = mAdPlace.getPid();
         } catch (Exception e) {
         }
         SdkConfiguration sdkConfiguration = new SdkConfiguration.Builder(adUnit)
                 .build();
         MoPub.initializeSdk(mContext, sdkConfiguration, initSdkListener());
+    }
+
+    @Override
+    public String getName() {
+        if (mAdPlace != null) {
+            return mAdPlace.getName();
+        }
+        return null;
     }
 
     @Override
@@ -101,54 +111,45 @@ public class MopubLoader extends AbstractSdkLoader {
     @Override
     public void loadBanner(int adSize) {
         if (!checkPidConfig()) {
-            Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.v(Log.TAG, "config error : " + mAdPlace.getName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
             }
             return;
         }
         if (isBannerLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + mAdPlace.getName() + " - " + getSdkName() + " - " + getAdType());
             notifyAdLoaded(true);
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (loadingView != null) {
-                    loadingView.setBannerAdListener(null);
-                    loadingView.destroy();
-                    clearCachedAdTime(loadingView);
-                }
+            Log.d(Log.TAG, "already loading : " + mAdPlace.getName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
         setBannerSize(adSize);
         loadingView = new MoPubView(mContext);
         loadingView.setAutorefreshEnabled(false);
-        loadingView.setAdUnitId(mPidConfig.getPid());
+        loadingView.setAdUnitId(mAdPlace.getPid());
         loadingView.setBannerAdListener(new MoPubView.BannerAdListener() {
             @Override
             public void onBannerLoaded(MoPubView banner) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "adloaded placename : " + mAdPlace.getName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(loadingView);
                 moPubView = loadingView;
                 if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdLoaded(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                 }
                 notifyAdLoaded(false);
             }
 
             @Override
             public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + mAdPlace.getName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(toSdkError(errorCode));
@@ -162,16 +163,10 @@ public class MopubLoader extends AbstractSdkLoader {
             public void onBannerClicked(MoPubView banner) {
                 Log.v(Log.TAG, "");
                 if (mStat != null) {
-                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
+                    mStat.reportAdClick(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                 }
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
-                }
-                if (isDestroyAfterClick()) {
-                    moPubView = null;
                 }
             }
 
@@ -193,7 +188,7 @@ public class MopubLoader extends AbstractSdkLoader {
         });
         loadingView.loadAd();
         if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            mStat.reportAdRequest(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
         }
         Log.v(Log.TAG, "");
     }
@@ -202,7 +197,7 @@ public class MopubLoader extends AbstractSdkLoader {
     public boolean isBannerLoaded() {
         boolean loaded = moPubView != null && !isCachedAdExpired(moPubView);
         if (loaded) {
-            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - loaded : " + loaded);
         }
         return loaded;
     }
@@ -222,14 +217,8 @@ public class MopubLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             gMoPubView = moPubView;
-            if (!isDestroyAfterClick()) {
-                moPubView = null;
-            }
             if (mStat != null) {
-                mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            }
-            if (mStat != null) {
-                mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
+                mStat.reportAdShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "mopubloader error : " + e);
@@ -251,55 +240,45 @@ public class MopubLoader extends AbstractSdkLoader {
         }
 
         if (!checkPidConfig()) {
-            Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.v(Log.TAG, "config error : " + mAdPlace.getName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
             }
             return;
         }
         if (isInterstitialLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + mAdPlace.getName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
-                setLoadedFlag();
                 getAdListener().onInterstitialLoaded(this);
             }
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (moPubInterstitial != null) {
-                    moPubInterstitial.setInterstitialAdListener(null);
-                    clearCachedAdTime(moPubInterstitial);
-                }
+            Log.d(Log.TAG, "already loading : " + mAdPlace.getName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
-        moPubInterstitial = new MoPubInterstitial(mContext, mPidConfig.getPid());
+        moPubInterstitial = new MoPubInterstitial(mContext, mAdPlace.getPid());
         moPubInterstitial.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
             @Override
             public void onInterstitialLoaded(MoPubInterstitial interstitial) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "adloaded placename : " + mAdPlace.getName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(moPubInterstitial);
                 if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdLoaded(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                 }
                 if (getAdListener() != null) {
-                    setLoadedFlag();
                     getAdListener().onInterstitialLoaded(MopubLoader.this);
                 }
             }
 
             @Override
             public void onInterstitialFailed(MoPubInterstitial interstitial, MoPubErrorCode errorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + mAdPlace.getName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(toSdkError(errorCode));
@@ -313,10 +292,7 @@ public class MopubLoader extends AbstractSdkLoader {
             public void onInterstitialShown(MoPubInterstitial interstitial) {
                 Log.v(Log.TAG, "");
                 if (mStat != null) {
-                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
+                    mStat.reportAdShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -330,10 +306,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     getAdListener().onInterstitialClick();
                 }
                 if (mStat != null) {
-                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
+                    mStat.reportAdClick(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                 }
             }
 
@@ -352,7 +325,7 @@ public class MopubLoader extends AbstractSdkLoader {
         });
         moPubInterstitial.load();
         if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            mStat.reportAdRequest(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
         }
         Log.v(Log.TAG, "");
     }
@@ -364,7 +337,7 @@ public class MopubLoader extends AbstractSdkLoader {
             loaded = moPubInterstitial.isReady() && !isCachedAdExpired(moPubInterstitial);
         }
         if (loaded) {
-            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - loaded : " + loaded);
         }
         return loaded;
     }
@@ -376,10 +349,7 @@ public class MopubLoader extends AbstractSdkLoader {
             clearCachedAdTime(moPubInterstitial);
             moPubInterstitial = null;
             if (mStat != null) {
-                mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-            }
-            if (mStat != null) {
-                mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
+                mStat.reportAdCallShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
             }
             return showed;
         }
@@ -388,9 +358,9 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isRewaredVideoLoaded() {
-        boolean loaded = MoPubRewardedVideos.hasRewardedVideo(getPidConfig().getPid());
+        boolean loaded = MoPubRewardedVideos.hasRewardedVideo(mAdPlace.getPid());
         if (loaded) {
-            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - loaded : " + loaded);
         }
         return loaded;
     }
@@ -411,7 +381,7 @@ public class MopubLoader extends AbstractSdkLoader {
 //      MoPub.onCreate(activity);
 
         if (!checkPidConfig()) {
-            Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.v(Log.TAG, "config error : " + mAdPlace.getName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
             }
@@ -423,43 +393,36 @@ public class MopubLoader extends AbstractSdkLoader {
         MoPub.initializeSdk(activity, sdkConfiguration, initSdkListener());
 
         if (isRewaredVideoLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + mAdPlace.getName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
-                setLoadedFlag();
                 getAdListener().onRewardedVideoAdLoaded(this);
             }
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                MoPubRewardedVideos.setRewardedVideoListener(null);
+            Log.d(Log.TAG, "already loading : " + mAdPlace.getName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
         MoPubRewardedVideos.setRewardedVideoListener(new MoPubRewardedVideoListener() {
             @Override
             public void onRewardedVideoLoadSuccess(@NonNull String adUnitId) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "adloaded placename : " + mAdPlace.getName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdLoaded(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                 }
                 if (getAdListener() != null) {
-                    setLoadedFlag();
                     getAdListener().onRewardedVideoAdLoaded(MopubLoader.this);
                 }
             }
 
             @Override
             public void onRewardedVideoLoadFailure(@NonNull String adUnitId, @NonNull MoPubErrorCode errorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + mAdPlace.getName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(toSdkError(errorCode));
@@ -476,10 +439,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoStarted();
                 }
                 if (mStat != null) {
-                    mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
+                    mStat.reportAdShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                 }
             }
 
@@ -494,10 +454,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoAdClicked();
                 }
                 if (mStat != null) {
-                    mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                }
-                if (mStat != null) {
-                    mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
+                    mStat.reportAdClick(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                 }
             }
 
@@ -518,30 +475,27 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (getAdListener() != null) {
                     AdReward adReward = new AdReward();
                     adReward.setType(Constant.ECPM);
-                    int ecpm = 0;
-                    if (mPidConfig != null) {
-                        ecpm = mPidConfig.getEcpm();
+                    double ecpm = 0;
+                    if (mAdPlace != null) {
+                        ecpm = getEcpm();
                     }
                     adReward.setAmount(String.valueOf(ecpm));
                     getAdListener().onRewarded(adReward);
                 }
             }
         });
-        MoPubRewardedVideos.loadRewardedVideo(getPidConfig().getPid());
+        MoPubRewardedVideos.loadRewardedVideo(mAdPlace.getPid());
         if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            mStat.reportAdRequest(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
         }
         Log.v(Log.TAG, "");
     }
 
     @Override
     public boolean showRewardedVideo() {
-        MoPubRewardedVideos.showRewardedVideo(getPidConfig().getPid());
+        MoPubRewardedVideos.showRewardedVideo(mAdPlace.getPid());
         if (mStat != null) {
-            mStat.reportAdCallShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-        }
-        if (mStat != null) {
-            mStat.reportAdShowForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
+            mStat.reportAdCallShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
         }
         return true;
     }
@@ -553,7 +507,7 @@ public class MopubLoader extends AbstractSdkLoader {
             loaded = !isCachedAdExpired(nativeAd);
         }
         if (loaded) {
-            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - loaded : " + loaded);
         }
         return loaded;
     }
@@ -562,57 +516,42 @@ public class MopubLoader extends AbstractSdkLoader {
     public void loadNative(Params params) {
         mParams = params;
         if (!checkPidConfig()) {
-            Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.v(Log.TAG, "config error : " + mAdPlace.getName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
             }
             return;
         }
-        if (!matchNoFillTime()) {
-            Log.v(Log.TAG, "nofill error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_FILLTIME);
-            }
-            return;
-        }
         if (isNativeLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.d(Log.TAG, "already loaded : " + mAdPlace.getName() + " - " + getSdkName() + " - " + getAdType());
             notifyAdLoaded(true);
             return;
         }
         if (isLoading()) {
-            if (blockLoading()) {
-                Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
-                }
-                return;
-            } else {
-                Log.d(Log.TAG, "clear loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-                if (nativeAd != null) {
-                    nativeAd.destroy();
-                    clearCachedAdTime(nativeAd);
-                }
+            Log.d(Log.TAG, "already loading : " + mAdPlace.getName() + " - " + getSdkName() + " - " + getAdType());
+            if (getAdListener() != null) {
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            return;
         }
         setLoading(true, STATE_REQUEST);
-        MoPubNative moPubNative = new MoPubNative(mContext, mPidConfig.getPid(), new MoPubNative.MoPubNativeNetworkListener() {
+        MoPubNative moPubNative = new MoPubNative(mContext, mAdPlace.getPid(), new MoPubNative.MoPubNativeNetworkListener() {
 
             @Override
             public void onNativeLoad(final NativeAd nAd) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "adloaded placename : " + mAdPlace.getName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 nativeAd = nAd;
                 putCachedAdTime(nativeAd);
                 if (mStat != null) {
-                    mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdLoaded(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                 }
                 notifyAdLoaded(false);
             }
 
             @Override
             public void onNativeFail(NativeErrorCode errorCode) {
-                Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , msg : " + codeToErrorNative(errorCode) + " , pid : " + getPid());
+                Log.e(Log.TAG, "aderror placename : " + mAdPlace.getName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , msg : " + codeToErrorNative(errorCode) + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(toSdkError2(errorCode));
@@ -624,10 +563,10 @@ public class MopubLoader extends AbstractSdkLoader {
         });
 
         MopubBindNativeView bindNativeView = new MopubBindNativeView();
-        bindNativeView.bindMopubNative(mParams, mContext, moPubNative, mPidConfig);
+        bindNativeView.bindMopubNative(mParams, mContext, moPubNative);
         moPubNative.makeRequest();
         if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
+            mStat.reportAdRequest(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
         }
         Log.v(Log.TAG, "");
     }
@@ -637,11 +576,11 @@ public class MopubLoader extends AbstractSdkLoader {
             MoPubAdRenderer render = gNativeAd.getMoPubAdRenderer();
             if (render instanceof MoPubStaticNativeAdRenderer) {
                 if (mStat != null) {
-                    mStat.reportAdShow(mContext, getAdPlaceName() + "_static", getSdkName(), getAdType(), null);
+                    mStat.reportAdShow(mContext, mAdPlace.getName() + "_static", getSdkName(), getAdType(), null);
                 }
             } else if (render instanceof MoPubVideoNativeAdRenderer) {
                 if (mStat != null) {
-                    mStat.reportAdShow(mContext, getAdPlaceName() + "_video", getSdkName(), getAdType(), null);
+                    mStat.reportAdShow(mContext, mAdPlace.getName() + "_video", getSdkName(), getAdType(), null);
                 }
             }
         }
@@ -664,10 +603,7 @@ public class MopubLoader extends AbstractSdkLoader {
                         getAdListener().onAdImpression();
                     }
                     if (mStat != null) {
-                        mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                    }
-                    if (mStat != null) {
-                        mStat.reportAdImpForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
+                        mStat.reportAdShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                     }
                     reportMoPubNativeType();
                 }
@@ -679,13 +615,7 @@ public class MopubLoader extends AbstractSdkLoader {
                         getAdListener().onAdClick();
                     }
                     if (mStat != null) {
-                        mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), null);
-                    }
-                    if (mStat != null) {
-                        mStat.reportAdClickForLTV(mContext, getSdkName(), getPid(), String.valueOf(getEcpm()));
-                    }
-                    if (isDestroyAfterClick()) {
-                        nativeAd = null;
+                        mStat.reportAdClick(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                     }
                 }
             });
@@ -735,9 +665,6 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e);
-            }
-            if (!isDestroyAfterClick()) {
-                nativeAd = null;
             }
         } else {
             Log.e(Log.TAG, "nativeAd is null");

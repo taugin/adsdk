@@ -6,8 +6,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.inner.adsdk.config.AdSwitch;
-import com.inner.adsdk.data.DataManager;
 import com.inner.adsdk.log.Log;
 
 import java.lang.reflect.Method;
@@ -21,12 +19,16 @@ import java.util.Properties;
 
 public class StatImpl implements IStat {
 
-    private static final String ALIAS_PROPERTIES_FILE = "e_alias_pro";
-
     private static StatImpl sStatImpl;
 
     private Properties mEventIdAlias;
     private Object mFacebookObject = null;
+    private boolean mReportUmeng;
+    private boolean mReportFacebook;
+    private boolean mReportAppsflyer;
+    private boolean mReportFirebase;
+    private boolean mReportTime;
+    private boolean mReportError;
 
     public static StatImpl get() {
         synchronized (StatImpl.class) {
@@ -51,31 +53,6 @@ public class StatImpl implements IStat {
     public void init() {
     }
 
-    private String generateEventIdAlias(Context context, String eventId) {
-        if (TextUtils.isEmpty(eventId)) {
-            return eventId;
-        }
-        if (mEventIdAlias == null) {
-            synchronized (this) {
-                if (mEventIdAlias == null) {
-                    try {
-                        mEventIdAlias = new Properties();
-                        mEventIdAlias.load(context.getAssets().open(ALIAS_PROPERTIES_FILE));
-                    } catch (Exception e) {
-                        Log.e(Log.TAG, "error : " + e);
-                    }
-                }
-            }
-        }
-        String aliasEventId = eventId;
-        if (mEventIdAlias != null) {
-            aliasEventId = mEventIdAlias.getProperty(eventId);
-            if (TextUtils.isEmpty(aliasEventId)) {
-                aliasEventId = eventId;
-            }
-        }
-        return aliasEventId;
-    }
 
     private boolean checkArgument(Context context, String pidName, String sdk, String type) {
         if (context == null || TextUtils.isEmpty(pidName) || TextUtils.isEmpty(sdk) || TextUtils.isEmpty(type)) {
@@ -92,7 +69,7 @@ public class StatImpl implements IStat {
         builder.append(type);
         builder.append("_");
         builder.append(sdk);
-        return generateEventIdAlias(context, builder.toString());
+        return builder.toString();
     }
 
     /**
@@ -187,7 +164,7 @@ public class StatImpl implements IStat {
      * @param value
      */
     private void sendUmengEventValue(Context context, String eventId, Map<String, String> extra, int value) {
-        if (!isReportUmeng(context)) {
+        if (!mReportUmeng) {
             return;
         }
         Log.d(Log.TAG, "StatImpl sendUmeng Analytics");
@@ -318,14 +295,14 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId(context, "request", sdk, type);
-        if (isReportFirebase(context)) {
+        if (mReportFirebase) {
             sendFirebaseAnalytics(context, pidName, eventId, extra);
         }
-        if (isReportUmeng(context)) {
+        if (mReportUmeng) {
             sendUmeng(context, pidName, eventId, extra);
         }
         // sendAppsflyer(context, pidName, eventId, extra);
-        if (isReportFacebook(context)) {
+        if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
@@ -337,14 +314,14 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId(context, "loaded", sdk, type);
-        if (isReportFirebase(context)) {
+        if (mReportFirebase) {
             sendFirebaseAnalytics(context, pidName, eventId, extra);
         }
-        if (isReportUmeng(context)) {
+        if (mReportUmeng) {
             sendUmeng(context, pidName, eventId, extra);
         }
         // sendAppsflyer(context, pidName, eventId, extra);
-        if (isReportFacebook(context)) {
+        if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
@@ -356,16 +333,16 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId(context, "callshow", sdk, type);
-        if (isReportFirebase(context)) {
+        if (mReportFirebase) {
             sendFirebaseAnalytics(context, pidName, eventId, extra);
         }
-        if (isReportUmeng(context)) {
+        if (mReportUmeng) {
             sendUmeng(context, pidName, eventId, extra);
         }
-        if (isReportAppsflyer(context)) {
+        if (mReportAppsflyer) {
             sendAppsflyer(context, pidName, eventId, extra);
         }
-        if (isReportFacebook(context)) {
+        if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
@@ -377,16 +354,16 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId(context, "show", sdk, type);
-        if (isReportFirebase(context)) {
+        if (mReportFirebase) {
             sendFirebaseAnalytics(context, pidName, eventId, extra);
         }
-        if (isReportUmeng(context)) {
+        if (mReportUmeng) {
             sendUmeng(context, pidName, eventId, extra);
         }
-        if (isReportAppsflyer(context)) {
+        if (mReportAppsflyer) {
             sendAppsflyer(context, pidName, eventId, extra);
         }
-        if (isReportFacebook(context)) {
+        if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
@@ -398,16 +375,16 @@ public class StatImpl implements IStat {
             return;
         }
         String eventId = generateEventId(context, "click", sdk, type);
-        if (isReportFirebase(context)) {
+        if (mReportFirebase) {
             sendFirebaseAnalytics(context, pidName, eventId, extra);
         }
-        if (isReportUmeng(context)) {
+        if (mReportUmeng) {
             sendUmeng(context, pidName, eventId, extra);
         }
-        if (isReportAppsflyer(context)) {
+        if (mReportAppsflyer) {
             sendAppsflyer(context, pidName, eventId, extra);
         }
-        if (isReportFacebook(context)) {
+        if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
@@ -415,7 +392,7 @@ public class StatImpl implements IStat {
 
     @Override
     public void reportAdError(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
-        if (!isReportError(context)) {
+        if (!mReportError) {
             return;
         }
         if (context == null) {
@@ -423,174 +400,27 @@ public class StatImpl implements IStat {
         }
         String eventId = generateEventId(context, "error", sdk, type);
         extra = addExtraForError(context, extra);
-        if (isReportFirebase(context)) {
+        if (mReportFirebase) {
             sendFirebaseAnalytics(context, pidName, eventId, extra);
         }
-        if (isReportUmeng(context)) {
+        if (mReportUmeng) {
             sendUmeng(context, pidName, eventId, extra);
         }
         // sendAppsflyer(context, pidName, eventId, extra);
-        if (isReportFacebook(context)) {
+        if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
         Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
     }
 
-    private String generateAdOuterKey(String adOuterType, String op) {
-        return "outer_" + adOuterType + "_" + op;
-    }
-
     @Override
-    public void reportAdLoadSuccessTime(Context context, String sdk, String type, int value) {
-        if (!isReportTime(context)) {
-            return;
-        }
-        String eventId = "load_ad_success_time";
-        eventId = generateEventIdAlias(context, eventId);
-        if (!checkArgument(context, eventId, sdk, type)) {
-            return;
-        }
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("sdk", sdk);
-        map.put("type", type);
-        if (isReportUmeng(context)) {
-            sendUmengEventValue(context, eventId, map, value);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, null, eventId, map);
-        }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
-    }
-
-    @Override
-    public void reportAdLoadFailureTime(Context context, String sdk, String type, String error, int value) {
-        if (!isReportTime(context)) {
-            return;
-        }
-        if (!checkArgument(context, error, sdk, type)) {
-            return;
-        }
-        String eventId = "load_ad_failure_time";
-        eventId = generateEventIdAlias(context, eventId);
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("sdk", sdk);
-        map.put("type", type);
-        map.put("error", error);
-        if (isReportUmeng(context)) {
-            sendUmengEventValue(context, eventId, map, value);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, null, eventId, map);
-        }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
-    }
-
-    @Override
-    public void reportAdShowForLTV(Context context, String sdk, String pid, String ecpm) {
-        if (context == null) {
-            return;
-        }
-        String eventId = "s_ad_show";
-        Map<String, String> extra = new HashMap<String, String>();
-        extra.put("sdk_name", sdk);
-        extra.put("pid", pid);
-        extra.put("ecpm", ecpm);
-        sendAppsflyer(context, null, eventId, extra);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, null, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, null, eventId, extra);
-        }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
-    }
-
-    @Override
-    public void reportAdImpForLTV(Context context, String sdk, String pid, String ecpm) {
-        if (context == null) {
-            return;
-        }
-        String eventId = "s_ad_imp";
-        Map<String, String> extra = new HashMap<String, String>();
-        extra.put("sdk_name", sdk);
-        extra.put("pid", pid);
-        extra.put("ecpm", ecpm);
-        sendAppsflyer(context, null, eventId, extra);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, null, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, null, eventId, extra);
-        }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
-    }
-
-    @Override
-    public void reportAdClickForLTV(Context context, String sdk, String pid, String ecpm) {
-        if (context == null) {
-            return;
-        }
-        String eventId = "s_ad_click";
-        Map<String, String> extra = new HashMap<String, String>();
-        extra.put("sdk_name", sdk);
-        extra.put("pid", pid);
-        extra.put("ecpm", ecpm);
-        sendAppsflyer(context, null, eventId, extra);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, null, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, null, eventId, extra);
-        }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , sdk : " + sdk + " , pid : " + pid + " , ec : " + ecpm);
-    }
-
-    private boolean isReportError(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportError();
-        }
-        return true;
-    }
-
-    private boolean isReportTime(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportTime();
-        }
-        return true;
-    }
-
-    private boolean isReportUmeng(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportUmeng();
-        }
-        return true;
-    }
-
-    private boolean isReportFirebase(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportFirebase();
-        }
-        return true;
-    }
-
-    private boolean isReportAppsflyer(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportAppsflyer();
-        }
-        return true;
-    }
-
-    private boolean isReportFacebook(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportFacebook();
-        }
-        return true;
+    public void setReportOption(boolean umeng, boolean facebook, boolean appsflyer, boolean firebase, boolean reportTime, boolean reportError) {
+        mReportUmeng = umeng;
+        mReportFacebook = facebook;
+        mReportAppsflyer = appsflyer;
+        mReportFirebase = firebase;
+        mReportTime = reportTime;
+        mReportError = reportError;
     }
 
     private Map<String, String> addExtraForError(Context context, Map<String, String> extra) {

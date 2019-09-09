@@ -18,11 +18,6 @@ public interface IManagerListener {
     void registerAdBaseListener(ISdkLoader loader, OnAdBaseListener l);
 
     OnAdSdkListener getOnAdSdkListener();
-    OnAdSdkListener getOnAdPlaceLoaderListener();
-    void setLoader(ISdkLoader adLoader);
-    boolean isCurrent(String source, String type, String pidName);
-    boolean hasNotifyLoaded();
-    void notifyAdLoaded();
+    boolean isCurrent(String source, String pidName);
     Activity getActivity();
-    String getOriginPidName();
 }

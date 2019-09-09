@@ -5,15 +5,12 @@ import android.text.TextUtils;
 
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
-import com.inner.adsdk.config.AdSwitch;
-import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.parse.AdParser;
 import com.inner.adsdk.parse.IParser;
 import com.inner.adsdk.utils.Utils;
 
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2018/2/12.
@@ -51,7 +48,6 @@ public class DataManager {
     private Context mContext;
     private AdConfig mLocalAdConfig;
     private IParser mParser;
-    private AdSwitch mAdSwitch;
 
     public void init() {
         parserLocalData();
@@ -105,45 +101,6 @@ public class DataManager {
             String data = mDataRequest.getString(key);
             if (!TextUtils.isEmpty(data)) {
                 return mParser.parseAdPlace(data);
-            }
-        }
-        return null;
-    }
-
-    public Map<String, String> getRemoteAdIds() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.ADIDS_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                return mParser.parseAdIds(data);
-            }
-        }
-        return null;
-    }
-
-    public AdSwitch getAdSwitch() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.ADSWITCH_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                String oldSwitchMd5 = Utils.getString(mContext, PREF_ADSWITCH_MD5);
-                String newSwitchMd5 = Utils.string2MD5(data);
-                if (mAdSwitch == null || !TextUtils.equals(oldSwitchMd5, newSwitchMd5)) {
-                    mAdSwitch = mParser.parseAdSwitch(data);
-                    Utils.putString(mContext, PREF_ADSWITCH_MD5, newSwitchMd5);
-                }
-            }
-            if (mAdSwitch == null && mLocalAdConfig != null) {
-                mAdSwitch = mLocalAdConfig.getAdSwitch();
-            }
-            Log.pv(Log.TAG, "ads : " + mAdSwitch);
-        }
-        return mAdSwitch;
-    }
-
-    public Map<String, String> getRemoteAdRefs() {
-        if (mDataRequest != null) {
-            String data = mDataRequest.getString(Constant.ADREFS_NAME);
-            if (!TextUtils.isEmpty(data)) {
-                return mParser.parseAdRefs(data);
             }
         }
         return null;

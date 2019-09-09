@@ -12,15 +12,12 @@ import android.view.ViewGroup;
 import com.inner.adsdk.adloader.listener.IManagerListener;
 import com.inner.adsdk.adloader.listener.ISdkLoader;
 import com.inner.adsdk.adloader.listener.OnAdBaseListener;
-import com.inner.adsdk.config.AdSwitch;
-import com.inner.adsdk.config.PidConfig;
+import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.constant.Constant;
-import com.inner.adsdk.data.DataManager;
 import com.inner.adsdk.framework.Params;
 import com.inner.adsdk.log.Log;
 import com.inner.adsdk.stat.IStat;
 import com.inner.adsdk.stat.StatImpl;
-import com.inner.adsdk.utils.Utils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,15 +41,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected static final int STATE_TIMTOUT = 4;
 
     private static Map<Object, Long> mCachedTime = new ConcurrentHashMap<Object, Long>();
-    protected PidConfig mPidConfig;
+    protected AdPlace mAdPlace;
     protected Context mContext;
     protected IStat mStat;
     protected IManagerListener mManagerListener;
-    protected String mAdId;
     protected Handler mHandler = null;
 
     private boolean mLoading = false;
-    private boolean mLoadedFlag = false;
     private long mRequestTime = 0;
     private int mBannerSize = Constant.NOSET;
 
@@ -62,15 +57,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     @Override
-    public void init(Context context) {
+    public void init(Context context, AdPlace adPlace) {
         mContext = context;
+        mAdPlace = adPlace;
         mStat = StatImpl.get();
         mHandler = new Handler(this);
-    }
-
-    @Override
-    public void setAdId(String adId) {
-        mAdId = adId;
     }
 
     @Override
@@ -82,20 +73,27 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     public abstract String getSdkName();
 
     public String getAdType() {
-        if (mPidConfig != null) {
-            return mPidConfig.getAdType();
+        if (mAdPlace != null) {
+            return mAdPlace.getType();
         }
         return null;
     }
 
     @Override
-    public void setPidConfig(PidConfig config) {
-        mPidConfig = config;
+    public AdPlace getAdPlace() {
+        return mAdPlace;
     }
 
-    @Override
-    public PidConfig getPidConfig() {
-        return mPidConfig;
+    protected boolean checkPidConfig() {
+        if (mAdPlace == null) {
+            Log.e(Log.TAG, "ad place is null");
+            return false;
+        }
+        if (TextUtils.isEmpty(mAdPlace.getPid())) {
+            Log.e(Log.TAG, "pid is empty");
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -176,87 +174,37 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     public void destroy() {
     }
 
-    @Override
-    public String getAdPlaceName() {
-        String adPlaceName = null;
-        if (mManagerListener != null) {
-            adPlaceName = mManagerListener.getOriginPidName();
-        }
-        if (!TextUtils.isEmpty(adPlaceName)) {
-            return adPlaceName;
-        }
-        if (mPidConfig != null) {
-            return mPidConfig.getAdPlaceName();
-        }
-        return null;
-    }
 
     @Override
     public boolean isBannerType() {
-        if (mPidConfig != null) {
-            return mPidConfig.isBannerType();
+        if (mAdPlace != null) {
+            return TextUtils.equals(Constant.TYPE_BANNER, mAdPlace.getType());
         }
         return false;
     }
 
     @Override
     public boolean isNativeType() {
-        if (mPidConfig != null) {
-            return mPidConfig.isNativeType();
+        if (mAdPlace != null) {
+            return TextUtils.equals(Constant.TYPE_NATIVE, mAdPlace.getType());
         }
         return false;
     }
 
     @Override
     public boolean isInterstitialType() {
-        if (mPidConfig != null) {
-            return mPidConfig.isInterstitialType();
+        if (mAdPlace != null) {
+            return TextUtils.equals(Constant.TYPE_INTERSTITIAL, mAdPlace.getType());
         }
         return false;
     }
 
     @Override
     public boolean isRewardedVideoType() {
-        if (mPidConfig != null) {
-            return mPidConfig.isRewardedVideoType();
+        if (mAdPlace != null) {
+            return TextUtils.equals(Constant.TYPE_REWARD, mAdPlace.getType());
         }
         return false;
-    }
-
-    @Override
-    public void setLoadedFlag() {
-        mLoadedFlag = true;
-        if (mManagerListener != null) {
-            mManagerListener.setLoader(this);
-        }
-    }
-
-    @Override
-    public boolean hasLoadedFlag() {
-        return mLoadedFlag;
-    }
-
-    @Override
-    public boolean useAndClearFlag() {
-        boolean flag = mLoadedFlag;
-        mLoadedFlag = false;
-        return flag;
-    }
-
-    protected boolean checkPidConfig() {
-        if (mPidConfig == null) {
-            Log.e(Log.TAG, "pidconfig is null");
-            return false;
-        }
-        if (!TextUtils.equals(mPidConfig.getSdk(), getSdkName())) {
-            Log.e(Log.TAG, "sdk not equals");
-            return false;
-        }
-        if (TextUtils.isEmpty(mPidConfig.getPid())) {
-            Log.e(Log.TAG, "pid is empty");
-            return false;
-        }
-        return true;
     }
 
     protected OnAdBaseListener getAdListener() {
@@ -272,17 +220,16 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected synchronized void setLoading(boolean loading, int state) {
         mLoading = loading;
-        reportLoadAdTime(state);
         if (mLoading) {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
                 mHandler.sendEmptyMessageDelayed(MSG_LOADING_TIMEOUT, getTimeout());
-                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - send time out message : " + getTimeout());
+                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - send time out message : " + getTimeout());
             }
         } else {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
-                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - remove time out message");
+                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - remove time out message");
             }
         }
     }
@@ -313,58 +260,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
     }
 
-    protected boolean isDestroyAfterClick() {
-        try {
-            return mPidConfig.isDestroyAfterClick();
-        } catch(Exception e) {
-        }
-        return false;
-    }
-
-    @Override
-    public boolean allowUseLoader() {
-        if (mPidConfig != null) {
-            return !mPidConfig.isDisable();
-        }
-        return true;
-    }
-
-
-    /**
-     * 防止多次加载NoFill的广告导致惩罚时间
-     *
-     * @return
-     */
-    protected boolean matchNoFillTime() {
-        return System.currentTimeMillis() - getLastNoFillTime() >= mPidConfig.getNoFill();
-    }
-
-    /**
-     * 更新最后填充
-     */
-    protected void updateLastNoFillTime() {
-        try {
-            String pref = getSdkName() + "_" + mPidConfig.getPid();
-            Utils.putLong(mContext, pref, System.currentTimeMillis());
-            Log.d(Log.TAG, pref + " : " + System.currentTimeMillis());
-        } catch (Exception e) {
-        }
-    }
-
-    /**
-     * 获取最后填充时间
-     *
-     * @return
-     */
-    protected long getLastNoFillTime() {
-        try {
-            String pref = getSdkName() + "_" + mPidConfig.getPid();
-            return Utils.getLong(mContext, pref, 0);
-        } catch (Exception e) {
-        }
-        return 0;
-    }
-
     /**
      * 获取广告最大缓存时间
      *
@@ -372,8 +267,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
      */
     private long getMaxCachedTime() {
         long cacheTime = 0;
-        if (mPidConfig != null) {
-            cacheTime = mPidConfig.getCacheTime();
+        if (mAdPlace != null) {
+            cacheTime = mAdPlace.getCacheTime();
         }
         if (cacheTime <= 0) {
             cacheTime = MAX_CACHED_TIME;
@@ -388,8 +283,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
      */
     private long getTimeout() {
         long timeOut = 0;
-        if (mPidConfig != null) {
-            timeOut = mPidConfig.getTimeOut();
+        if (mAdPlace != null) {
+            timeOut = mAdPlace.getLoadTime();
         }
         if (timeOut <= 0) {
             timeOut = LOADING_TIMEOUT;
@@ -397,21 +292,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return timeOut;
     }
 
-    /**
-     * 阻塞正在加载的loader
-     *
-     * @return
-     */
-    protected boolean blockLoading() {
-        AdSwitch adSwitch = DataManager.get(mContext).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isBlockLoading();
-        }
-        return true;
-    }
-
     protected void onLoadTimeout() {
-        Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - load time out");
+        Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - load time out");
         setLoading(false, STATE_TIMTOUT);
         if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)
                 || TextUtils.equals(getAdType(), Constant.TYPE_REWARD)) {
@@ -439,38 +321,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected String getPid() {
-        if (mPidConfig != null) {
-            return mPidConfig.getPid();
+        if (mAdPlace != null) {
+            return mAdPlace.getPid();
         }
         return null;
-    }
-
-    private void reportLoadAdTime(int state) {
-        if (state == STATE_REQUEST) {
-            mRequestTime = SystemClock.elapsedRealtime();
-        } else if (state == STATE_SUCCESS) {
-            if (mRequestTime > 0) {
-                try {
-                    int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
-                    mStat.reportAdLoadSuccessTime(mContext, getSdkName(), getAdType(), time);
-                } catch (Exception e) {
-                }
-                mRequestTime = 0;
-            }
-        } else {
-            if (mRequestTime > 0) {
-                try {
-                    String error = "STATE_FAILURE";
-                    if (state == STATE_TIMTOUT) {
-                        error = "STATE_TIMTOUT";
-                    }
-                    int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
-                    mStat.reportAdLoadFailureTime(mContext, getSdkName(), getAdType(), error, time);
-                } catch (Exception e) {
-                }
-                mRequestTime = 0;
-            }
-        }
     }
 
     /**
@@ -495,16 +349,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private long getDelayNotifyLoadTime(boolean cached) {
         long delay = 0;
-        if (mPidConfig != null) {
-            delay = mPidConfig.getDelayLoadTime();
-        }
-
-        // 缓存的banner最小延迟为500ms
-        if (cached && TextUtils.equals(getAdType(), Constant.TYPE_BANNER)) {
-            if (delay <= 0) {
-                delay = 500;
-            }
-        }
         return delay;
     }
 
@@ -527,7 +371,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private void notifyAdLoadedByListener() {
         if (getAdListener() != null) {
-            setLoadedFlag();
             getAdListener().onAdLoaded(this);
         }
     }
@@ -544,15 +387,15 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected String getAppId() {
-        if (mPidConfig != null) {
-            return mPidConfig.getAppId();
+        if (mAdPlace != null) {
+            return mAdPlace.getAid();
         }
         return null;
     }
 
     protected String getExtId() {
-        if (mPidConfig != null) {
-            return mPidConfig.getExtId();
+        if (mAdPlace != null) {
+            return mAdPlace.getEid();
         }
         return null;
     }
@@ -566,21 +409,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return mBannerSize;
     }
 
-    @Override
-    public int getEcpm() {
-        if (mPidConfig != null) {
-            return mPidConfig.getEcpm();
-        }
-        return 0;
+    protected double getEcpm() {
+        return 0f;
     }
-
-    @Override
-    public String toString() {
-        return  "pn = " + getAdPlaceName() + " , " +
-                "tp = " + getAdType() + " , " +
-                "sr = " + getSdkName() + " , " +
-                "ba = " + Constant.Banner.valueOf(getBannerSize()) + " , " +
-                "ec = " + getEcpm();
-    }
-
 }
