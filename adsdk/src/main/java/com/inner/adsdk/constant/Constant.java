@@ -9,17 +9,7 @@ import java.util.Locale;
 
 public class Constant {
     public static final String AD_SDK_COMMON = "common";
-    public static final String AD_SDK_ADMOB = "admob";
-    public static final String AD_SDK_FACEBOOK = "fb";
-    public static final String AD_SDK_ADX = "adx";
-    public static final String AD_SDK_WEMOB = "wemob";
-    public static final String AD_SDK_DFP = "dfp";
-    public static final String AD_SDK_APPLOVIN = "applovin";
     public static final String AD_SDK_MOPUB = "mopub";
-    public static final String AD_SDK_INMOBI = "inmobi";
-    public static final String AD_SDK_INNERACTIVE = "inneractive";
-    public static final String AD_SDK_DSPMOB = "dspmob";
-    public static final String AD_SDK_DISPLAYIO = "displayio";
 
     public static final int    NOSET = -1;
     public static final int    BANNER = 1000;
@@ -35,40 +25,18 @@ public class Constant {
     public static final int NATIVE_CARD_LARGE = 3;
     public static final int NATIVE_CARD_FULL = 4;
 
-    public static final String MODE_SEQ = "seq";
-    public static final String MODE_CON = "con";
-    public static final String MODE_RAN = "ran";
-
     public static final String TYPE_BANNER = "banner";
     public static final String TYPE_NATIVE = "native";
     public static final String TYPE_INTERSTITIAL = "interstitial";
     public static final String TYPE_REWARD = "reward";
 
-    public static final String PLACE_TYPE_ADVIEW = "adview";
-    public static final String PLACE_TYPE_INTERSTITIAL = "interstitial";
-    public static final String PLACE_TYPE_REWARD = "reward";
-    public static final String PLACE_TYPE_COMPLEX = "complex";
-
     public static final String ECPM = "ecpm";
-
-    public static final String APPKEY = "appkey";
-
-    public static final String CHANNEL = "channel";
 
     public static final String KEY_PASSWORD = "123456789";
 
-    public static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
-
-    public static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_remote_config_request_time";
-
-    // 配置文件中使用的名字++++++
-    public static final String ADIDS_NAME = "adids";
-    public static final String ADSWITCH_NAME = "adswitch";
-    public static final String ADREFS_NAME = "adrefs";
-    // 配置文件中使用的名字======
-
     public static final String AF_STATUS = "af_status";
     public static final String AF_MEDIA_SOURCE = "af_media_source";
+    public static final String AF_ORGANIC = "Organic";
 
     /**
      * 未知错误

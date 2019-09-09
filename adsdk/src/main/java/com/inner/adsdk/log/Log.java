@@ -60,6 +60,15 @@ public class Log {
         }
     }
 
+    public static void iv(String tag, String message) {
+        tag = checkLogTag(tag);
+        if (isLoggable(tag, VERBOSE) && INTERNAL_LOG_ENABLE) {
+            String extraString = getMethodNameAndLineNumber();
+            tag = privateTag() ? tag : getTag();
+            android.util.Log.v(tag, extraString + message);
+        }
+    }
+
     public static void pv(String tag, String message) {
         tag = checkLogTag(tag);
         if (isLoggable(tag, VERBOSE) && INTERNAL_LOG_ENABLE) {

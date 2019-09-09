@@ -11,7 +11,6 @@ import com.inner.adsdk.log.Log;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Created by Administrator on 2018/3/20.
@@ -21,13 +20,11 @@ public class StatImpl implements IStat {
 
     private static StatImpl sStatImpl;
 
-    private Properties mEventIdAlias;
     private Object mFacebookObject = null;
     private boolean mReportUmeng;
     private boolean mReportFacebook;
     private boolean mReportAppsflyer;
     private boolean mReportFirebase;
-    private boolean mReportTime;
     private boolean mReportError;
 
     public static StatImpl get() {
@@ -328,7 +325,7 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdCallShow(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
+    public void reportAdShow(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -349,7 +346,7 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void reportAdShow(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
+    public void reportAdImp(Context context, String pidName, String sdk, String type, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
@@ -414,12 +411,11 @@ public class StatImpl implements IStat {
     }
 
     @Override
-    public void setReportOption(boolean umeng, boolean facebook, boolean appsflyer, boolean firebase, boolean reportTime, boolean reportError) {
+    public void setReportOption(boolean umeng, boolean facebook, boolean appsflyer, boolean firebase, boolean reportError) {
         mReportUmeng = umeng;
         mReportFacebook = facebook;
         mReportAppsflyer = appsflyer;
         mReportFirebase = firebase;
-        mReportTime = reportTime;
         mReportError = reportError;
     }
 

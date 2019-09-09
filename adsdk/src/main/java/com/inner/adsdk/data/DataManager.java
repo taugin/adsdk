@@ -19,7 +19,6 @@ import java.util.Locale;
 public class DataManager {
 
     private static final String DATA_CONFIG = "data_%s.dat";
-    private static final String PREF_ADSWITCH_MD5 = "pref_adswitch_md5";
     private static DataManager sDataManager;
 
     public static DataManager get(Context context) {
@@ -54,9 +53,6 @@ public class DataManager {
         if (mDataRequest == null) {
             mDataRequest = new RConfig(mContext);
         }
-    }
-
-    public void refresh() {
     }
 
     private void parserLocalData() {

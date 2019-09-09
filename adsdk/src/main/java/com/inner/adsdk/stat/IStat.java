@@ -37,7 +37,7 @@ public interface IStat {
      * @param type
      * @param extra
      */
-    public void reportAdCallShow(Context context, String pidName, String sdk, String type, Map<String, String> extra);
+    public void reportAdShow(Context context, String pidName, String sdk, String type, Map<String, String> extra);
 
     /**
      * 广告展示
@@ -47,7 +47,7 @@ public interface IStat {
      * @param type
      * @param extra
      */
-    public void reportAdShow(Context context, String pidName, String sdk, String type, Map<String, String> extra);
+    public void reportAdImp(Context context, String pidName, String sdk, String type, Map<String, String> extra);
 
     /**
      * 广告点击
@@ -69,5 +69,5 @@ public interface IStat {
      */
     public void reportAdError(Context context, String error, String sdk, String type, Map<String, String> extra);
 
-    public void setReportOption(boolean umeng, boolean facebook, boolean appsflyer, boolean firebase, boolean reportTime, boolean reportError);
+    public void setReportOption(boolean umeng, boolean facebook, boolean appsflyer, boolean firebase, boolean reportError);
 }

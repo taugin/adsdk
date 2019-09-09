@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2018/2/27.
@@ -55,14 +54,11 @@ public class AdParser implements IParser {
         AdConfig adConfig = null;
         try {
             JSONObject jobj = new JSONObject(data);
-            Map<String, String> adIds = null;
             List<AdPlace> adPlaces = null;
-            Map<String, String> adrefs = null;
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
             }
-            if (adPlaces != null || adIds != null
-                    || adrefs != null) {
+            if (adPlaces != null) {
                 adConfig = new AdConfig();
                 adConfig.setAdPlaceList(adPlaces);
             }

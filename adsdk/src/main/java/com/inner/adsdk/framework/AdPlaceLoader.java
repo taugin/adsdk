@@ -275,7 +275,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         if (loader != null) {
             registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getName(),
                     loader.getAdType(), getPidByLoader(loader), this));
-            if (loader.isNativeType()) {
+            if (loader.isBannerType()) {
                 loader.loadNative(getParams(loader));
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getName() + " - " + loader.getSdkName() + " - " + loader.getAdType());

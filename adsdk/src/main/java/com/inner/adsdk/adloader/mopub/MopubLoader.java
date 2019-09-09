@@ -218,7 +218,7 @@ public class MopubLoader extends AbstractSdkLoader {
             }
             gMoPubView = moPubView;
             if (mStat != null) {
-                mStat.reportAdShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
+                mStat.reportAdImp(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "mopubloader error : " + e);
@@ -292,7 +292,7 @@ public class MopubLoader extends AbstractSdkLoader {
             public void onInterstitialShown(MoPubInterstitial interstitial) {
                 Log.v(Log.TAG, "");
                 if (mStat != null) {
-                    mStat.reportAdShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdImp(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                 }
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialShow();
@@ -349,7 +349,7 @@ public class MopubLoader extends AbstractSdkLoader {
             clearCachedAdTime(moPubInterstitial);
             moPubInterstitial = null;
             if (mStat != null) {
-                mStat.reportAdCallShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
+                mStat.reportAdShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
             }
             return showed;
         }
@@ -439,7 +439,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoStarted();
                 }
                 if (mStat != null) {
-                    mStat.reportAdShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
+                    mStat.reportAdImp(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                 }
             }
 
@@ -495,7 +495,7 @@ public class MopubLoader extends AbstractSdkLoader {
     public boolean showRewardedVideo() {
         MoPubRewardedVideos.showRewardedVideo(mAdPlace.getPid());
         if (mStat != null) {
-            mStat.reportAdCallShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
+            mStat.reportAdShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
         }
         return true;
     }
@@ -576,11 +576,11 @@ public class MopubLoader extends AbstractSdkLoader {
             MoPubAdRenderer render = gNativeAd.getMoPubAdRenderer();
             if (render instanceof MoPubStaticNativeAdRenderer) {
                 if (mStat != null) {
-                    mStat.reportAdShow(mContext, mAdPlace.getName() + "_static", getSdkName(), getAdType(), null);
+                    mStat.reportAdImp(mContext, mAdPlace.getName() + "_static", getSdkName(), getAdType(), null);
                 }
             } else if (render instanceof MoPubVideoNativeAdRenderer) {
                 if (mStat != null) {
-                    mStat.reportAdShow(mContext, mAdPlace.getName() + "_video", getSdkName(), getAdType(), null);
+                    mStat.reportAdImp(mContext, mAdPlace.getName() + "_video", getSdkName(), getAdType(), null);
                 }
             }
         }
@@ -603,7 +603,7 @@ public class MopubLoader extends AbstractSdkLoader {
                         getAdListener().onAdImpression();
                     }
                     if (mStat != null) {
-                        mStat.reportAdShow(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
+                        mStat.reportAdImp(mContext, mAdPlace.getName(), getSdkName(), getAdType(), null);
                     }
                     reportMoPubNativeType();
                 }
