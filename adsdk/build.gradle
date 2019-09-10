@@ -22,7 +22,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionName "2.0.0" + (isSnapshot ? "-SNAPSHOT" : "")
+        versionName "1.0.0" + (isSnapshot ? "-SNAPSHOT" : "")
         consumerProguardFiles 'proguard-rules.pro'
     }
 
@@ -99,9 +99,9 @@ uploadArchives {
                 authentication(userName: nexus_user, password: nexus_password)
             }
             pom.version = android.defaultConfig.versionName
-            pom.artifactId = "adsdk"
-            pom.groupId = "com.inner.adsdk"
-            pom.name = "inner-adsdk"
+            pom.artifactId = "mpsdk"
+            pom.groupId = "com.simple.mpsdk"
+            pom.name = "inner-mpsdk"
             pom.packaging = "aar"
         }
         /*
