@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.simple.adsdk.log.Log;
+import com.simple.adsdk.log.LogHelper;
 
 /**
  * Created by Administrator on 2018-12-12.
@@ -19,7 +19,7 @@ public class BaseBindNativeView {
                 replaceSrcViewToDstView(iconView, new ImageView(rootView.getContext()));
             }
         } catch(Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
     }
     /**
@@ -29,7 +29,7 @@ public class BaseBindNativeView {
      * @return
      */
     private void replaceSrcViewToDstView(View srcView, View dstView) {
-        Log.v(Log.TAG, "replace view for correct type");
+        LogHelper.v(LogHelper.TAG, "replace view for correct type");
         if (srcView != null && dstView != null) {
             dstView.setId(srcView.getId());
             ViewGroup.LayoutParams srcParams = srcView.getLayoutParams();

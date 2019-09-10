@@ -15,9 +15,9 @@ import com.simple.adsdk.internallistener.OnAdBaseListener;
 import com.simple.adsdk.config.AdPlace;
 import com.simple.adsdk.constant.Constant;
 import com.simple.adsdk.framework.Params;
-import com.simple.adsdk.log.Log;
-import com.simple.adsdk.stat.IStat;
-import com.simple.adsdk.stat.StatImpl;
+import com.simple.adsdk.log.LogHelper;
+import com.simple.adsdk.stat.IEvent;
+import com.simple.adsdk.stat.EventImpl;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,7 +43,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private static Map<Object, Long> mCachedTime = new ConcurrentHashMap<Object, Long>();
     protected AdPlace mAdPlace;
     protected Context mContext;
-    protected IStat mStat;
+    protected IEvent mStat;
     protected IManagerListener mManagerListener;
     protected Handler mHandler = null;
 
@@ -60,7 +60,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     public void init(Context context, AdPlace adPlace) {
         mContext = context;
         mAdPlace = adPlace;
-        mStat = StatImpl.get();
+        mStat = EventImpl.get();
         mHandler = new Handler(this);
     }
 
@@ -86,11 +86,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected boolean checkPidConfig() {
         if (mAdPlace == null) {
-            Log.e(Log.TAG, "ad place is null");
+            LogHelper.e(LogHelper.TAG, "ad place is null");
             return false;
         }
         if (TextUtils.isEmpty(mAdPlace.getPid())) {
-            Log.e(Log.TAG, "pid is empty");
+            LogHelper.e(LogHelper.TAG, "pid is empty");
             return false;
         }
         return true;
@@ -224,12 +224,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
                 mHandler.sendEmptyMessageDelayed(MSG_LOADING_TIMEOUT, getTimeout());
-                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - send time out message : " + getTimeout());
+                LogHelper.v(LogHelper.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - send time out message : " + getTimeout());
             }
         } else {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
-                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - remove time out message");
+                LogHelper.v(LogHelper.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - remove time out message");
             }
         }
     }
@@ -253,7 +253,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             }
             return SystemClock.elapsedRealtime() - cachedTime > getMaxCachedTime();
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
         return true;
     }
@@ -298,7 +298,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected void onLoadTimeout() {
-        Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - load time out");
+        LogHelper.v(LogHelper.TAG, getSdkName() + " - " + getAdType() + " - " + mAdPlace.getName() + " - load time out");
         setLoading(false, STATE_TIMTOUT);
         if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)
                 || TextUtils.equals(getAdType(), Constant.TYPE_REWARD)) {
@@ -339,7 +339,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
      */
     private void delayNotifyAdLoaded(Runnable runnable, boolean cached) {
         long delay = getDelayNotifyLoadTime(cached);
-        Log.v(Log.TAG, "delay notify loaded time : " + delay);
+        LogHelper.v(LogHelper.TAG, "delay notify loaded time : " + delay);
         if (delay <= 0) {
             if (runnable != null) {
                 runnable.run();

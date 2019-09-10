@@ -17,7 +17,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
-import com.simple.adsdk.log.Log;
+import com.simple.adsdk.log.LogHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,7 +60,7 @@ public class Utils {
         try {
             md5 = MessageDigest.getInstance("MD5");
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            LogHelper.d(LogHelper.TAG, "error : " + e);
             return "";
         }
         byte[] md5Bytes = md5.digest(byteArray);
@@ -83,7 +83,7 @@ public class Utils {
         try {
             return byte2MD5(source.getBytes(encode));
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
         return "";
     }
@@ -171,7 +171,7 @@ public class Utils {
             is.close();
             fos.close();
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            LogHelper.d(LogHelper.TAG, "error : " + e);
         }
     }
 
@@ -189,7 +189,7 @@ public class Utils {
             fis.close();
             return toHexString(md5.digest());
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            LogHelper.d(LogHelper.TAG, "error : " + e);
         }
         return null;
     }
@@ -208,7 +208,7 @@ public class Utils {
             fis.close();
             return toHexString(md5.digest());
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            LogHelper.d(LogHelper.TAG, "error : " + e);
         }
         return null;
     }
@@ -272,7 +272,7 @@ public class Utils {
             is.close();
             return builder.toString();
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
         return null;
     }
@@ -323,7 +323,7 @@ public class Utils {
                 return true;
             }
         } catch (PackageManager.NameNotFoundException e) {
-            // Log.d(Log.TAG, "error : " + e);
+            // LogHelper.d(LogHelper.TAG, "error : " + e);
         }
         return false;
     }
@@ -372,7 +372,7 @@ public class Utils {
         try {
             return getPackageInfo(context).versionCode;
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
         return -1;
     }
@@ -385,7 +385,7 @@ public class Utils {
                     PackageManager.GET_CONFIGURATIONS);
             return pi;
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
         return pi;
     }
@@ -400,7 +400,7 @@ public class Utils {
                 value = appInfo.metaData.get(name).toString();
             }
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            LogHelper.d(LogHelper.TAG, "error : " + e);
         }
         return value;
     }
@@ -494,7 +494,7 @@ public class Utils {
                 intent.setClassName(context.getPackageName(), className);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
         return intent;
     }

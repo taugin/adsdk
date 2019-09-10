@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.simple.adsdk.config.AdConfig;
 import com.simple.adsdk.config.AdPlace;
-import com.simple.adsdk.log.Log;
+import com.simple.adsdk.log.LogHelper;
 import com.simple.adsdk.parser.AdConfigParser;
 import com.simple.adsdk.parser.IConfigParser;
 import com.simple.adsdk.utils.Utils;
@@ -58,7 +58,7 @@ public class DataManager {
     private void parserLocalData() {
         String cfgName = getConfigName();
         String defName = getDefaultName();
-        Log.v(Log.TAG, "cfg : " + cfgName + " , def : " + defName);
+        LogHelper.v(LogHelper.TAG, "cfg : " + cfgName + " , def : " + defName);
         if (mLocalAdConfig == null) {
             String data = Utils.readAssets(mContext, cfgName);
             if (TextUtils.isEmpty(data)) {
@@ -83,7 +83,7 @@ public class DataManager {
             String filename = pkgmd5.substring(0, 8);
             cfgName = "cfg" + filename + ".dat";
         } catch (Exception e) {
-            Log.v(Log.TAG, "error : " + e);
+            LogHelper.v(LogHelper.TAG, "error : " + e);
         }
         return cfgName;
     }

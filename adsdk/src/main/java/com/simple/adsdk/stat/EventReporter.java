@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.simple.adsdk.log.Log;
+import com.simple.adsdk.log.LogHelper;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by Administrator on 2018-12-19.
  */
 
-public class InternalStat {
+public class EventReporter {
     private static Object mFacebookObject = null;
 
     /**
@@ -55,7 +55,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.pv(Log.TAG, "error : " + error);
+            LogHelper.pv(LogHelper.TAG, "error : " + error);
         }
     }
 
@@ -94,7 +94,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.pv(Log.TAG, "error : " + error);
+            LogHelper.pv(LogHelper.TAG, "error : " + error);
         }
     }
 
@@ -133,7 +133,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.pv(Log.TAG, "error : " + error);
+            LogHelper.pv(LogHelper.TAG, "error : " + error);
         }
     }
 
@@ -152,7 +152,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.pv(Log.TAG, "error : " + error);
+            LogHelper.pv(LogHelper.TAG, "error : " + error);
         }
     }
 
@@ -189,7 +189,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.pv(Log.TAG, "error : " + error);
+            LogHelper.pv(LogHelper.TAG, "error : " + error);
         }
     }
 

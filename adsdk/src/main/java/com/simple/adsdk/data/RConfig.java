@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.simple.adsdk.constant.Constant;
-import com.simple.adsdk.log.Log;
+import com.simple.adsdk.log.LogHelper;
 import com.simple.adsdk.utils.Utils;
 
 import java.lang.reflect.Method;
@@ -25,14 +25,14 @@ public class RConfig implements IDataRequest {
     @Override
     public String getString(String key) {
         String value = readConfigFromAsset(key);
-        Log.iv(Log.TAG, "locale config : " + key + " , value : " + value);
+        LogHelper.iv(LogHelper.TAG, "locale config : " + key + " , value : " + value);
         if (TextUtils.isEmpty(value)) {
             String dataWithSuffix = null;
             String mediaSourceSuffix = getMsSuffix();
             String attrSuffix = getAfSuffix();
             String mediaSourceKey = key + mediaSourceSuffix;
             String attrKey = key + attrSuffix;
-            Log.iv(Log.TAG, "media suffix : " + mediaSourceSuffix + " , attr suffix : " + attrSuffix);
+            LogHelper.iv(LogHelper.TAG, "media suffix : " + mediaSourceSuffix + " , attr suffix : " + attrSuffix);
             // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
             String mediaData = getConfigFromFirebase(mediaSourceKey);
             String attrData = getConfigFromFirebase(attrKey);
@@ -45,7 +45,7 @@ public class RConfig implements IDataRequest {
                 value = getConfigFromFirebase(key);
             } else {
                 String source = !TextUtils.isEmpty(mediaData) ? getMediaSource() : getAfStatus();
-                Log.iv(Log.TAG, "remote config : " + key + "[" + source + "]");
+                LogHelper.iv(LogHelper.TAG, "remote config : " + key + "[" + source + "]");
                 value = dataWithSuffix;
             }
         }
@@ -123,7 +123,7 @@ public class RConfig implements IDataRequest {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "get config error : " + error);
+            LogHelper.iv(LogHelper.TAG, "get config error : " + error);
         }
         return null;
     }

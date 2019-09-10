@@ -8,7 +8,7 @@ import java.util.Map;
  * Created by Administrator on 2018/2/9.
  */
 
-public interface IStat {
+public interface IEvent {
     /**
      * 广告请求
      * @param context
@@ -69,5 +69,13 @@ public interface IStat {
      */
     public void reportAdError(Context context, String error, String sdk, String type, Map<String, String> extra);
 
+    /**
+     * 设置开关
+     * @param umeng
+     * @param facebook
+     * @param appsflyer
+     * @param firebase
+     * @param reportError
+     */
     public void setReportOption(boolean umeng, boolean facebook, boolean appsflyer, boolean firebase, boolean reportError);
 }

@@ -13,7 +13,7 @@ import com.facebook.ads.MediaView;
 import com.simple.adsdk.baseloader.BaseBindNativeView;
 import com.simple.adsdk.constant.Constant;
 import com.simple.adsdk.framework.Params;
-import com.simple.adsdk.log.Log;
+import com.simple.adsdk.log.LogHelper;
 import com.simple.adsdk.utils.Utils;
 import com.mopub.nativeads.FacebookAdRenderer;
 import com.mopub.nativeads.GooglePlayServicesAdRenderer;
@@ -34,11 +34,11 @@ public class MopubBindNativeView extends BaseBindNativeView {
     public void bindMopubNative(Params params, Context context, MoPubNative nativeAd) {
         mParams = params;
         if (mParams == null) {
-            Log.e(Log.TAG, "********************mParams is null");
+            LogHelper.e(LogHelper.TAG, "********************mParams is null");
             return;
         }
         if (context == null) {
-            Log.e(Log.TAG, "********************context is null");
+            LogHelper.e(LogHelper.TAG, "********************context is null");
             return;
         }
         int rootLayout = mParams.getNativeRootLayout();
@@ -52,7 +52,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else if (cardId > 0) {
             bindNativeWithCard(context, cardId, nativeAd);
         } else {
-            Log.e(Log.TAG, "********************mopub layout is null");
+            LogHelper.e(LogHelper.TAG, "********************mopub layout is null");
         }
     }
 
@@ -100,16 +100,16 @@ public class MopubBindNativeView extends BaseBindNativeView {
      */
     private void bindNativeViewWithRootView(Context context, View rootView, MoPubNative nativeAd) {
         if (rootView == null) {
-            Log.v(Log.TAG, "********************rootView is null");
+            LogHelper.v(LogHelper.TAG, "********************rootView is null");
             return;
         }
         if (nativeAd == null) {
-            Log.v(Log.TAG, "********************nativeAd is null");
+            LogHelper.v(LogHelper.TAG, "********************nativeAd is null");
             return;
         }
 
         if (mParams == null) {
-            Log.v(Log.TAG, "********************mParams is null");
+            LogHelper.v(LogHelper.TAG, "********************mParams is null");
             return;
         }
 
@@ -117,71 +117,71 @@ public class MopubBindNativeView extends BaseBindNativeView {
         try {
             restoreIconView(rootView, mParams.getAdIcon());
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
 
         try {
             bindVideoRender(context, nativeAd);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            LogHelper.e(LogHelper.TAG, "error : " + e, e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            LogHelper.e(LogHelper.TAG, "error : " + e, e);
         }
 
         try {
             restoreIconView(rootView, mParams.getAdIcon());
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
 
         try {
             bindStaticRender(context, nativeAd);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            LogHelper.e(LogHelper.TAG, "error : " + e, e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            LogHelper.e(LogHelper.TAG, "error : " + e, e);
         }
 
         try {
             restoreIconView(rootView, mParams.getAdIcon());
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
 
         try {
             bindAdMobRender(context, nativeAd);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            LogHelper.e(LogHelper.TAG, "error : " + e, e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            LogHelper.e(LogHelper.TAG, "error : " + e, e);
         }
 
         try {
             restoreIconView(rootView, mParams.getAdIcon());
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
 
         try {
             bindFBRender(context, nativeAd);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            LogHelper.e(LogHelper.TAG, "error : " + e, e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            LogHelper.e(LogHelper.TAG, "error : " + e, e);
         }
 
         try {
             restoreIconView(rootView, mParams.getAdIcon());
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
 
         try {
             bindInmobiRender(context, nativeAd);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            LogHelper.e(LogHelper.TAG, "error : " + e, e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            LogHelper.e(LogHelper.TAG, "error : " + e, e);
         }
     }
 
@@ -192,7 +192,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else if (mParams.getNativeRootLayout() > 0) {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
         } else {
-            Log.e(Log.TAG, "********************bindVideoRender  root layout is null");
+            LogHelper.e(LogHelper.TAG, "********************bindVideoRender  root layout is null");
         }
         MoPubVideoAdRender mopubVideoRender = new MoPubVideoAdRender(getVideoViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(mopubVideoRender);
@@ -229,7 +229,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else if (mParams.getNativeRootLayout() > 0) {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
         } else {
-            Log.e(Log.TAG, "********************bindStaticRender root layout is null");
+            LogHelper.e(LogHelper.TAG, "********************bindStaticRender root layout is null");
         }
         MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(moPubAdRenderer);
@@ -262,7 +262,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else if (mParams.getNativeRootLayout() > 0) {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
         } else {
-            Log.e(Log.TAG, "********************bindAdMobRender root layout is null");
+            LogHelper.e(LogHelper.TAG, "********************bindAdMobRender root layout is null");
         }
         GooglePlayServicesAdRenderer adRender = new GooglePlayServicesAdRenderer(getVideoViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(adRender);
@@ -275,7 +275,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else if (mParams.getNativeRootLayout() > 0) {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
         } else {
-            Log.e(Log.TAG, "********************bindFBRender root layout is null");
+            LogHelper.e(LogHelper.TAG, "********************bindFBRender root layout is null");
         }
 
         ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
@@ -342,7 +342,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else if (mParams.getNativeRootLayout() > 0) {
             layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
         } else {
-            Log.e(Log.TAG, "********************bindInmobiRender root layout is null");
+            LogHelper.e(LogHelper.TAG, "********************bindInmobiRender root layout is null");
         }
         InMobiNativeAdRenderer render = new InMobiNativeAdRenderer(getStaticViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(render);
@@ -352,9 +352,9 @@ public class MopubBindNativeView extends BaseBindNativeView {
         try {
             return new MediaLayout(context);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
         return null;
     }
@@ -363,9 +363,9 @@ public class MopubBindNativeView extends BaseBindNativeView {
         try {
             return new MediaView(context);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
         return null;
     }
@@ -374,9 +374,9 @@ public class MopubBindNativeView extends BaseBindNativeView {
         try {
             return new AdIconView(context);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
         return null;
     }
@@ -385,9 +385,9 @@ public class MopubBindNativeView extends BaseBindNativeView {
         try {
             return new ImageView(context);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
         return null;
     }

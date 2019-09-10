@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Log {
+public class LogHelper {
 
     private static final boolean GLOBAL_TAG = true;
     private static final int VERBOSE = android.util.Log.VERBOSE;
@@ -195,7 +195,7 @@ public class Log {
                 fp.close();
             }
         } catch (Exception e) {
-            android.util.Log.d(Log.TAG, "error : " + e);
+            android.util.Log.d(LogHelper.TAG, "error : " + e);
         }
     }
 }

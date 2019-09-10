@@ -11,8 +11,8 @@ import com.simple.adsdk.constant.Constant;
 import com.simple.adsdk.data.DataManager;
 import com.simple.adsdk.framework.AdPlaceLoader;
 import com.simple.adsdk.listener.OnAdSdkListener;
-import com.simple.adsdk.log.Log;
-import com.simple.adsdk.stat.StatImpl;
+import com.simple.adsdk.log.LogHelper;
+import com.simple.adsdk.stat.EventImpl;
 import com.simple.adsdk.utils.Utils;
 import com.sub.great.good.BuildConfig;
 
@@ -120,9 +120,9 @@ public class AdSdk {
      * 初始化
      */
     public void init() {
-        Log.v(Log.TAG, "simple version : " + getSdkVersion());
+        LogHelper.v(LogHelper.TAG, "simple version : " + getSdkVersion());
         DataManager.get(mContext).init();
-        StatImpl.get().init();
+        EventImpl.get().init();
     }
 
     /**
@@ -149,11 +149,11 @@ public class AdSdk {
     }
 
     private AdPlaceLoader getAdLoader(String pidName, boolean forLoad) {
-        Log.d(Log.TAG, "getAdLoader forLoad : " + forLoad);
+        LogHelper.d(LogHelper.TAG, "getAdLoader forLoad : " + forLoad);
         // 获取引用的pidname
         String refPidName = pidName;
 
-        Log.v(Log.TAG, "pidName : " + pidName + " , refPidName : " + refPidName);
+        LogHelper.v(LogHelper.TAG, "pidName : " + pidName + " , refPidName : " + refPidName);
         boolean useShareObject = false;
         // 如果共享loader对象
         if (!TextUtils.equals(pidName, refPidName)) {
@@ -198,13 +198,13 @@ public class AdSdk {
             adPlace = localConfig.get(pidName);
             useRemote = false;
         }
-        Log.v(Log.TAG, "pidName : " + pidName + " , adPlace : " + adPlace);
+        LogHelper.v(LogHelper.TAG, "pidName : " + pidName + " , adPlace : " + adPlace);
         if (adPlace != null) {
             loader = new AdPlaceLoader(mContext);
             loader.setAdPlaceConfig(adPlace);
             loader.init();
         }
-        Log.v(Log.TAG, "pidName [" + pidName + "] use remote adplace : " + useRemote);
+        LogHelper.v(LogHelper.TAG, "pidName [" + pidName + "] use remote adplace : " + useRemote);
         return loader;
     }
 

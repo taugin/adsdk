@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.simple.adsdk.log.Log;
+import com.simple.adsdk.log.LogHelper;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -16,9 +16,9 @@ import java.util.Map;
  * Created by Administrator on 2018/3/20.
  */
 
-public class StatImpl implements IStat {
+public class EventImpl implements IEvent {
 
-    private static StatImpl sStatImpl;
+    private static EventImpl sStatImpl;
 
     private Object mFacebookObject = null;
     private boolean mReportUmeng;
@@ -27,8 +27,8 @@ public class StatImpl implements IStat {
     private boolean mReportFirebase;
     private boolean mReportError;
 
-    public static StatImpl get() {
-        synchronized (StatImpl.class) {
+    public static EventImpl get() {
+        synchronized (EventImpl.class) {
             if (sStatImpl == null) {
                 createInstance();
             }
@@ -37,14 +37,14 @@ public class StatImpl implements IStat {
     }
 
     private static void createInstance() {
-        synchronized (StatImpl.class) {
+        synchronized (EventImpl.class) {
             if (sStatImpl == null) {
-                sStatImpl = new StatImpl();
+                sStatImpl = new EventImpl();
             }
         }
     }
 
-    private StatImpl() {
+    private EventImpl() {
     }
 
     public void init() {
@@ -53,7 +53,7 @@ public class StatImpl implements IStat {
 
     private boolean checkArgument(Context context, String pidName, String sdk, String type) {
         if (context == null || TextUtils.isEmpty(pidName) || TextUtils.isEmpty(sdk) || TextUtils.isEmpty(type)) {
-            Log.e(Log.TAG, "context or pidname or sdk or type all must not be empty or null");
+            LogHelper.e(LogHelper.TAG, "context or pidname or sdk or type all must not be empty or null");
             return false;
         }
         return true;
@@ -78,7 +78,7 @@ public class StatImpl implements IStat {
      * @param extra
      */
     private void sendFirebaseAnalytics(Context context, String value, String eventId, Map<String, String> extra) {
-        Log.d(Log.TAG, "StatImpl Firebase Analytics");
+        LogHelper.d(LogHelper.TAG, "EventImpl Firebase Analytics");
         Bundle bundle = new Bundle();
         if (!TextUtils.isEmpty(value)) {
             bundle.putString("entry_point", value);
@@ -108,7 +108,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl Firebase error : " + error);
+            LogHelper.v(LogHelper.TAG, "EventImpl Firebase error : " + error);
         }
     }
 
@@ -121,7 +121,7 @@ public class StatImpl implements IStat {
      * @param extra
      */
     private void sendUmeng(Context context, String value, String eventId, Map<String, String> extra) {
-        Log.d(Log.TAG, "StatImpl sendUmeng Analytics");
+        LogHelper.d(LogHelper.TAG, "EventImpl sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
@@ -148,7 +148,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl sendUmeng error : " + error);
+            LogHelper.v(LogHelper.TAG, "EventImpl sendUmeng error : " + error);
         }
     }
 
@@ -164,7 +164,7 @@ public class StatImpl implements IStat {
         if (!mReportUmeng) {
             return;
         }
-        Log.d(Log.TAG, "StatImpl sendUmeng Analytics");
+        LogHelper.d(LogHelper.TAG, "EventImpl sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, String> entry : extra.entrySet()) {
@@ -186,7 +186,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl sendUmengEventValue error : " + error);
+            LogHelper.v(LogHelper.TAG, "EventImpl sendUmengEventValue error : " + error);
         }
     }
 
@@ -199,7 +199,7 @@ public class StatImpl implements IStat {
      * @param extra
      */
     private void sendAppsflyer(Context context, String value, String eventId, Map<String, String> extra) {
-        Log.d(Log.TAG, "StatImpl sendAppsflyer Analytics");
+        LogHelper.d(LogHelper.TAG, "EventImpl sendAppsflyer Analytics");
         Map<String, Object> eventValue = new HashMap<String, Object>();
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
@@ -226,7 +226,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl sendAppsflyer error : " + error);
+            LogHelper.v(LogHelper.TAG, "EventImpl sendAppsflyer error : " + error);
         }
     }
 
@@ -245,7 +245,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl initFacebook error : " + error);
+            LogHelper.v(LogHelper.TAG, "EventImpl initFacebook error : " + error);
         }
     }
 
@@ -282,7 +282,7 @@ public class StatImpl implements IStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.v(Log.TAG, "StatImpl sendFacebook error : " + error);
+            LogHelper.v(LogHelper.TAG, "EventImpl sendFacebook error : " + error);
         }
     }
 
@@ -302,7 +302,7 @@ public class StatImpl implements IStat {
         if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        LogHelper.pv(LogHelper.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -321,7 +321,7 @@ public class StatImpl implements IStat {
         if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        LogHelper.pv(LogHelper.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -342,7 +342,7 @@ public class StatImpl implements IStat {
         if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        LogHelper.pv(LogHelper.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -363,7 +363,7 @@ public class StatImpl implements IStat {
         if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        LogHelper.pv(LogHelper.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -384,7 +384,7 @@ public class StatImpl implements IStat {
         if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        LogHelper.pv(LogHelper.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -407,7 +407,7 @@ public class StatImpl implements IStat {
         if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        Log.pv(Log.TAG, "StatImpl stat key : " + eventId + " , value : " + pidName);
+        LogHelper.pv(LogHelper.TAG, "EventImpl stat key : " + eventId + " , value : " + pidName);
     }
 
     @Override

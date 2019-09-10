@@ -6,7 +6,7 @@ import com.simple.adsdk.config.AdConfig;
 import com.simple.adsdk.config.AdPlace;
 import com.simple.adsdk.constant.Constant;
 import com.simple.adsdk.framework.Aes;
-import com.simple.adsdk.log.Log;
+import com.simple.adsdk.log.LogHelper;
 import com.simple.adsdk.utils.Utils;
 
 import org.json.JSONArray;
@@ -27,7 +27,7 @@ public class AdConfigParser implements IConfigParser {
         try {
             jobj = new JSONObject(content);
         } catch (Exception e) {
-            Log.v(Log.TAG, "error : invalid json object");
+            LogHelper.v(LogHelper.TAG, "error : invalid json object");
         }
         if (jobj != null) {
             return jobj.toString();
@@ -35,7 +35,7 @@ public class AdConfigParser implements IConfigParser {
         try {
             jarray = new JSONArray(content);
         } catch (Exception e) {
-            Log.v(Log.TAG, "error : invalid json array");
+            LogHelper.v(LogHelper.TAG, "error : invalid json array");
         }
         if (jarray != null) {
             return jarray.toString();
@@ -63,7 +63,7 @@ public class AdConfigParser implements IConfigParser {
                 adConfig.setAdPlaceList(adPlaces);
             }
         } catch (Exception e) {
-            Log.v(Log.TAG, "parseAdConfigInternal error : " + e);
+            LogHelper.v(LogHelper.TAG, "parseAdConfigInternal error : " + e);
         }
         return adConfig;
     }
@@ -98,7 +98,7 @@ public class AdConfigParser implements IConfigParser {
                 }
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            LogHelper.e(LogHelper.TAG, "error : " + e);
         }
         return list;
     }
@@ -133,7 +133,7 @@ public class AdConfigParser implements IConfigParser {
             }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
         } catch (Exception e) {
-            Log.v(Log.TAG, "parseAdPlace error : " + e);
+            LogHelper.v(LogHelper.TAG, "parseAdPlace error : " + e);
         }
         return adPlace;
     }
