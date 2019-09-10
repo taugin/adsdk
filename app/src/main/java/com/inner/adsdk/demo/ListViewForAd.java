@@ -57,6 +57,7 @@ public class ListViewForAd extends Activity {
     private void loadAds() {
         AdParams adParams = null;
         AdParams.Builder builder = new AdParams.Builder();
+        builder.setAdCardStyle(AdSdk.NATIVE_CARD_SMALL);
         adParams = builder.build();
         AdSdk.get(this).loadNative(AD_PLACE_NAME, adParams, new SimpleAdSdkListener() {
             @Override

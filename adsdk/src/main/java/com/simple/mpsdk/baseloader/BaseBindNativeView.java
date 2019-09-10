@@ -12,7 +12,7 @@ import com.simple.mpsdk.log.LogHelper;
 
 public class BaseBindNativeView {
 
-    protected void restoreIconView(View rootView, int iconId) {
+    private void restoreIconView(View rootView, int iconId) {
         try {
             View iconView = rootView.findViewById(iconId);
             if (!(iconView instanceof ImageView)) {
@@ -28,7 +28,7 @@ public class BaseBindNativeView {
      * @param dstView 替换成的最终view
      * @return
      */
-    private void replaceSrcViewToDstView(View srcView, View dstView) {
+    protected void replaceSrcViewToDstView(View srcView, View dstView) {
         LogHelper.v(LogHelper.TAG, "replace view for correct type");
         if (srcView != null && dstView != null) {
             dstView.setId(srcView.getId());

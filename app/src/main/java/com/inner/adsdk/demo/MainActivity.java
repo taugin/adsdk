@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadNative() {
         AdParams.Builder builder = new AdParams.Builder();
         //  设置外部布局参数
-        int layoutId = LAYOUT[mIndex++%LAYOUT.length];
+        int layoutId = LAYOUT[3];
         View view = LayoutInflater.from(this).inflate(layoutId, null);
         // builder.setAdRootLayout(layoutId);
         builder.setAdRootView(view);
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setAdMediaView(R.id.common_media_cover);
         AdParams adParams = builder.build();
 
-        AdSdk.get(mContext).loadCommonView("native_test", adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadCommonView("native_demo_test", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String adType) {
                 AdSdk.get(mContext).showCommonView(pidName, mNativeBannerLayout);
