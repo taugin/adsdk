@@ -13,11 +13,11 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.simple.adsdk.AdParams;
-import com.simple.adsdk.AdReward;
-import com.simple.adsdk.AdSdk;
-import com.simple.adsdk.listener.SimpleAdSdkListener;
-import com.simple.adsdk.utils.Utils;
+import com.simple.mpsdk.AdParams;
+import com.simple.mpsdk.RewardItem;
+import com.simple.mpsdk.AdSdk;
+import com.simple.mpsdk.listener.SimpleAdSdkListener;
+import com.simple.mpsdk.utils.Utils;
 
 import java.util.List;
 import java.util.Random;
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onRewarded(String pidName, String adType, AdReward item) {
+        public void onRewarded(String pidName, String adType, RewardItem item) {
             Log.d(TAG, "pidName : " + pidName  + " , adType : " + adType + " , item : " + item);
             runToast(item.toString());
         }
