@@ -13,10 +13,10 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.simple.mpsdk.AdParams;
+import com.simple.mpsdk.MpParams;
 import com.simple.mpsdk.RewardItem;
-import com.simple.mpsdk.AdSdk;
-import com.simple.mpsdk.listener.SimpleAdSdkListener;
+import com.simple.mpsdk.MpSdk;
+import com.simple.mpsdk.listener.SimpleMpSdkListener;
 import com.simple.mpsdk.utils.Utils;
 
 import java.util.List;
@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
             R.layout.ad_common_native_card_large
     };
     private static final int CARDID[] = new int[]{
-            AdSdk.NATIVE_CARD_SMALL,
-            AdSdk.NATIVE_CARD_MEDIUM,
-            AdSdk.NATIVE_CARD_LARGE
+            MpSdk.NATIVE_CARD_SMALL,
+            MpSdk.NATIVE_CARD_MEDIUM,
+            MpSdk.NATIVE_CARD_LARGE
     };
 
     private static final String TAG = "MA";
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = this;
-        AdSdk.get(mContext).init();
+        MpSdk.get(mContext).init();
     }
 
     @Override
@@ -85,38 +85,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadInterstitial() {
-        AdSdk.get(mContext).loadInterstitial("interstitial_test", new SimpleAdSdkListener() {
+        MpSdk.get(mContext).loadInterstitial("interstitial_test", new SimpleMpSdkListener() {
             @Override
             public void onLoaded(String pidName, String adType) {
-                AdSdk.get(mContext).showInterstitial(pidName);
+                MpSdk.get(mContext).showInterstitial(pidName);
             }
         });
     }
 
     private void loadReward() {
-        AdSdk.get(mContext).loadRewardVideo("reward_test", new SimpleAdSdkListener() {
+        MpSdk.get(mContext).loadRewardVideo("reward_test", new SimpleMpSdkListener() {
             @Override
             public void onLoaded(String pidName, String adType) {
-                AdSdk.get(mContext).showRewardVideo(pidName);
+                MpSdk.get(mContext).showRewardVideo(pidName);
             }
         });
     }
 
     private void loadBanner() {
-        AdParams.Builder builder = new AdParams.Builder();
+        MpParams.Builder builder = new MpParams.Builder();
         //  设置外部布局参数
-        AdParams adParams = builder.build();
-        AdSdk.get(mContext).loadCommonView("banner_test", adParams, new SimpleAdSdkListener() {
+        MpParams mpParams = builder.build();
+        MpSdk.get(mContext).loadCommonView("banner_test", mpParams, new SimpleMpSdkListener() {
             @Override
             public void onLoaded(String pidName, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , adType : " + adType);
-                AdSdk.get(mContext).showCommonView(pidName, mNativeBannerLayout);
+                MpSdk.get(mContext).showCommonView(pidName, mNativeBannerLayout);
             }
         });
     }
 
     private void loadNative() {
-        AdParams.Builder builder = new AdParams.Builder();
+        MpParams.Builder builder = new MpParams.Builder();
         //  设置外部布局参数
         int layoutId = LAYOUT[1/*mRandom.nextInt(LAYOUT.length)*/];
         View view = LayoutInflater.from(this).inflate(layoutId, null);
@@ -130,12 +130,12 @@ public class MainActivity extends AppCompatActivity {
         builder.setAdCover(R.id.common_image_cover);
         builder.setAdChoices(R.id.common_ad_choices_container);
         builder.setAdMediaView(R.id.common_media_cover);
-        AdParams adParams = builder.build();
+        MpParams mpParams = builder.build();
 
-        AdSdk.get(mContext).loadCommonView("native_demo_test", adParams, new SimpleAdSdkListener() {
+        MpSdk.get(mContext).loadCommonView("native_demo_test", mpParams, new SimpleMpSdkListener() {
             @Override
             public void onLoaded(String pidName, String adType) {
-                AdSdk.get(mContext).showCommonView(pidName, mNativeBannerLayout);
+                MpSdk.get(mContext).showCommonView(pidName, mNativeBannerLayout);
             }
         });
     }
@@ -159,17 +159,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private SimpleAdSdkListener mSimpleAdsdkListener = new SimpleAdSdkListener() {
+    private SimpleMpSdkListener mSimpleAdsdkListener = new SimpleMpSdkListener() {
 
         @Override
         public void onLoaded(String pidName, String adType) {
-            if (AdSdk.AD_TYPE_BANNER.equalsIgnoreCase(adType) || AdSdk.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
+            if (MpSdk.AD_TYPE_BANNER.equalsIgnoreCase(adType) || MpSdk.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
                 // showAdView(pidName);
-                AdSdk.get(getBaseContext()).showCommonView(pidName, mNativeBannerLayout);
-            } else if (AdSdk.AD_TYPE_INTERSTITIAL.equalsIgnoreCase(adType)) {
-                AdSdk.get(getBaseContext()).showInterstitial(pidName);
-            } else if (AdSdk.AD_TYPE_REWARD.equalsIgnoreCase(adType)) {
-                AdSdk.get(getBaseContext()).showInterstitial(pidName);
+                MpSdk.get(getBaseContext()).showCommonView(pidName, mNativeBannerLayout);
+            } else if (MpSdk.AD_TYPE_INTERSTITIAL.equalsIgnoreCase(adType)) {
+                MpSdk.get(getBaseContext()).showInterstitial(pidName);
+            } else if (MpSdk.AD_TYPE_REWARD.equalsIgnoreCase(adType)) {
+                MpSdk.get(getBaseContext()).showInterstitial(pidName);
             }
         }
 

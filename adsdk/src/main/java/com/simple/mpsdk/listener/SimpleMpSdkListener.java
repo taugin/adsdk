@@ -6,7 +6,7 @@ import com.simple.mpsdk.RewardItem;
  * Created by Administrator on 2018/2/11.
  */
 
-public class SimpleAdSdkListener implements OnAdSdkListener {
+public class SimpleMpSdkListener implements OnMpSdkListener {
     @Override
     public void onLoaded(String pidName, String adType) {
     }

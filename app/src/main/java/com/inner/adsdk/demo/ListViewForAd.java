@@ -13,9 +13,9 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.simple.mpsdk.AdParams;
-import com.simple.mpsdk.AdSdk;
-import com.simple.mpsdk.listener.SimpleAdSdkListener;
+import com.simple.mpsdk.MpParams;
+import com.simple.mpsdk.MpSdk;
+import com.simple.mpsdk.listener.SimpleMpSdkListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,11 +55,11 @@ public class ListViewForAd extends Activity {
     }
 
     private void loadAds() {
-        AdParams adParams = null;
-        AdParams.Builder builder = new AdParams.Builder();
-        builder.setAdCardStyle(AdSdk.NATIVE_CARD_SMALL);
-        adParams = builder.build();
-        AdSdk.get(this).loadNative(AD_PLACE_NAME, adParams, new SimpleAdSdkListener() {
+        MpParams mpParams = null;
+        MpParams.Builder builder = new MpParams.Builder();
+        builder.setAdCardStyle(MpSdk.NATIVE_CARD_SMALL);
+        mpParams = builder.build();
+        MpSdk.get(this).loadNative(AD_PLACE_NAME, mpParams, new SimpleMpSdkListener() {
             @Override
             public void onLoaded(String pidName, String adType) {
                 mAdAdapter.notifyDataSetChanged();
@@ -88,8 +88,8 @@ public class ListViewForAd extends Activity {
                 View adView = mHashMap.get(String.valueOf(position));
                 Log.v("taugin", "position : " + position + " , adview : " + adView);
                 if (adView == null) {
-                    if (AdSdk.get(getContext()).isNativeLoaded(AD_PLACE_NAME)) {
-                        AdSdk.get(getContext()).showNative(AD_PLACE_NAME, adLayout);
+                    if (MpSdk.get(getContext()).isNativeLoaded(AD_PLACE_NAME)) {
+                        MpSdk.get(getContext()).showNative(AD_PLACE_NAME, adLayout);
                         mHashMap.put(String.valueOf(position), adLayout.getChildAt(0));
                     }
                 } else {

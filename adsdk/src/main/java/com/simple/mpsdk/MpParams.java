@@ -8,11 +8,11 @@ import com.simple.mpsdk.framework.Params;
  * Created by Administrator on 2018/4/3.
  */
 
-public class AdParams {
+public class MpParams {
 
     private Params mAdParams;
 
-    private AdParams(Params params) {
+    private MpParams(Params params) {
         this.mAdParams = params;
     }
 
@@ -96,8 +96,8 @@ public class AdParams {
             return this;
         }
 
-        public AdParams build() {
-            return new AdParams(mAdParam);
+        public MpParams build() {
+            return new MpParams(mAdParam);
         }
     }
 }

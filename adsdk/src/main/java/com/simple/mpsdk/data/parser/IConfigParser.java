@@ -1,7 +1,7 @@
 package com.simple.mpsdk.data.parser;
 
-import com.simple.mpsdk.config.AdConfig;
-import com.simple.mpsdk.config.AdPlace;
+import com.simple.mpsdk.config.MpConfig;
+import com.simple.mpsdk.config.MpPlace;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -25,7 +25,7 @@ public interface IConfigParser {
     // ext id
     String EXTID = "eid";
 
-    AdConfig parseAdConfig(String data);
+    MpConfig parseAdConfig(String data);
 
-    AdPlace parseAdPlace(String data);
+    MpPlace parseAdPlace(String data);
 }

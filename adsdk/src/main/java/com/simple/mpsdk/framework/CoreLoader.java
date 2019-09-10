@@ -5,14 +5,14 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.simple.mpsdk.AdParams;
-import com.simple.mpsdk.baseloader.SimpleAdBaseBaseListener;
-import com.simple.mpsdk.config.AdPlace;
+import com.simple.mpsdk.MpParams;
+import com.simple.mpsdk.mopubloader.SimpleMpBaseBaseListener;
+import com.simple.mpsdk.config.MpPlace;
 import com.simple.mpsdk.constant.Constant;
 import com.simple.mpsdk.internallistener.IManagerListener;
 import com.simple.mpsdk.internallistener.ISdkLoader;
-import com.simple.mpsdk.internallistener.OnAdBaseListener;
-import com.simple.mpsdk.listener.OnAdSdkListener;
+import com.simple.mpsdk.internallistener.OnMpBaseListener;
+import com.simple.mpsdk.listener.OnMpSdkListener;
 import com.simple.mpsdk.log.LogHelper;
 import com.simple.mpsdk.mopubloader.MopubLoader;
 
@@ -24,18 +24,18 @@ import java.util.concurrent.ConcurrentHashMap;
  * 每个广告位对应一个AdPlaceLoader对象
  */
 
-public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
-    private AdPlace mAdPlace;
+public class CoreLoader extends AbCoreLoader implements IManagerListener {
+    private MpPlace mMpPlace;
     private Context mContext;
-    private OnAdSdkListener mOnAdSdkListener;
-    private AdParams mAdParams;
+    private OnMpSdkListener mOnMpSdkListener;
+    private MpParams mMpParams;
     // banner和native的listener集合
-    private Map<ISdkLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<ISdkLoader, OnAdBaseListener>();
+    private Map<ISdkLoader, OnMpBaseListener> mAdViewListener = new ConcurrentHashMap<ISdkLoader, OnMpBaseListener>();
     private WeakReference<Activity> mActivity;
     private WeakReference<ViewGroup> mAdContainer;
     private ISdkLoader mCurrentAdLoader;
 
-    public AdPlaceLoader(Context context) {
+    public CoreLoader(Context context) {
         mContext = context;
     }
 
@@ -45,23 +45,23 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     }
 
     @Override
-    public void setAdPlaceConfig(AdPlace adPlace) {
-        mAdPlace = adPlace;
+    public void setAdPlaceConfig(MpPlace mpPlace) {
+        mMpPlace = mpPlace;
     }
 
     @Override
-    public boolean needReload(AdPlace adPlace) {
-        if (mAdPlace != null && adPlace != null) {
-            LogHelper.d(LogHelper.TAG, "pidName : " + mAdPlace.getName() + " , usingUnique : " + mAdPlace.getUniqueValue() + " , remoteUnique : " + adPlace.getUniqueValue());
-            return !TextUtils.equals(mAdPlace.getUniqueValue(), adPlace.getUniqueValue());
+    public boolean needReload(MpPlace mpPlace) {
+        if (mMpPlace != null && mpPlace != null) {
+            LogHelper.d(LogHelper.TAG, "pidName : " + mMpPlace.getName() + " , usingUnique : " + mMpPlace.getUniqueValue() + " , remoteUnique : " + mpPlace.getUniqueValue());
+            return !TextUtils.equals(mMpPlace.getUniqueValue(), mpPlace.getUniqueValue());
         }
         return false;
     }
 
     private void generateLoaders() {
-        if (mAdPlace != null) {
+        if (mMpPlace != null) {
             ISdkLoader loader = new MopubLoader();
-            loader.init(mContext, mAdPlace);
+            loader.init(mContext, mMpPlace);
             loader.setListenerManager(this);
             mCurrentAdLoader = loader;
         }
@@ -70,8 +70,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     private Params getParams(ISdkLoader loader) {
         Params params = null;
         try {
-            if (mAdParams != null) {
-                params = mAdParams.getParams();
+            if (mMpParams != null) {
+                params = mMpParams.getParams();
             }
             if (params == null) {
                 params = new Params();
@@ -110,8 +110,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      * @param l
      */
     @Override
-    public void setOnAdSdkListener(OnAdSdkListener l) {
-        mOnAdSdkListener = l;
+    public void setOnAdSdkListener(OnMpSdkListener l) {
+        mOnMpSdkListener = l;
     }
 
     @Override
@@ -130,9 +130,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      */
     @Override
     public void loadInterstitial(Activity activity) {
-        if (mAdPlace == null) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(null, null);
+        if (mMpPlace == null) {
+            if (mOnMpSdkListener != null) {
+                mOnMpSdkListener.onError(null, null);
             }
             return;
         }
@@ -145,7 +145,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     private void loadInterstitialLocked() {
         ISdkLoader loader = mCurrentAdLoader;
         if (loader != null) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getName(),
+            registerAdBaseListener(loader, new SimpleMpBaseBaseListener(loader.getName(),
                     loader.getAdType(), getPidByLoader(loader), this));
             if (loader.isInterstitialType()) {
                 loader.loadInterstitial();
@@ -192,9 +192,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      */
     @Override
     public void loadRewardVideo(Activity activity) {
-        if (mAdPlace == null) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(null, null);
+        if (mMpPlace == null) {
+            if (mOnMpSdkListener != null) {
+                mOnMpSdkListener.onError(null, null);
             }
             return;
         }
@@ -207,7 +207,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     private void loadRewardVideoLocked() {
         ISdkLoader loader = mCurrentAdLoader;
         if (loader != null) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getName(),
+            registerAdBaseListener(loader, new SimpleMpBaseBaseListener(loader.getName(),
                     loader.getAdType(), getPidByLoader(loader), this));
             if (loader.isRewardedVideoType()) {
                 loader.loadRewardedVideo();
@@ -251,14 +251,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     /**
      * 加载banner和native广告
      *
-     * @param adParams
+     * @param mpParams
      */
     @Override
-    public void loadBanner(AdParams adParams) {
-        mAdParams = adParams;
-        if (mAdPlace == null) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(null, null);
+    public void loadBanner(MpParams mpParams) {
+        mMpParams = mpParams;
+        if (mMpPlace == null) {
+            if (mOnMpSdkListener != null) {
+                mOnMpSdkListener.onError(null, null);
             }
             return;
         }
@@ -268,7 +268,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     private void loadBannerLocked() {
         ISdkLoader loader = mCurrentAdLoader;
         if (loader != null) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getName(),
+            registerAdBaseListener(loader, new SimpleMpBaseBaseListener(loader.getName(),
                     loader.getAdType(), getPidByLoader(loader), this));
             if (loader.isBannerType()) {
                 loader.loadBanner(getBannerSize(loader));
@@ -282,13 +282,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      * 展示广告(banner or native)
      *
      * @param adContainer
-     * @param adParams
+     * @param mpParams
      */
     @Override
-    public void showBanner(ViewGroup adContainer, AdParams adParams) {
+    public void showBanner(ViewGroup adContainer, MpParams mpParams) {
         LogHelper.d(LogHelper.TAG, "show banner");
-        if (adParams != null) {
-            mAdParams = adParams;
+        if (mpParams != null) {
+            mMpParams = mpParams;
         }
         mAdContainer = new WeakReference<ViewGroup>(adContainer);
         showBannerInternal(true);
@@ -322,14 +322,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     /**
      * 加载banner和native广告
      *
-     * @param adParams
+     * @param mpParams
      */
     @Override
-    public void loadNative(AdParams adParams) {
-        mAdParams = adParams;
-        if (mAdPlace == null) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(null, null);
+    public void loadNative(MpParams mpParams) {
+        mMpParams = mpParams;
+        if (mMpPlace == null) {
+            if (mOnMpSdkListener != null) {
+                mOnMpSdkListener.onError(null, null);
             }
             return;
         }
@@ -339,7 +339,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     private void loadNativeLocked() {
         ISdkLoader loader = mCurrentAdLoader;
         if (loader != null) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getName(),
+            registerAdBaseListener(loader, new SimpleMpBaseBaseListener(loader.getName(),
                     loader.getAdType(), getPidByLoader(loader), this));
             if (loader.isNativeType()) {
                 loader.loadNative(getParams(loader));
@@ -353,13 +353,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      * 展示广告(banner or native)
      *
      * @param adContainer
-     * @param adParams
+     * @param mpParams
      */
     @Override
-    public void showNative(ViewGroup adContainer, AdParams adParams) {
+    public void showNative(ViewGroup adContainer, MpParams mpParams) {
         LogHelper.d(LogHelper.TAG, "show native");
-        if (adParams != null) {
-            mAdParams = adParams;
+        if (mpParams != null) {
+            mMpParams = mpParams;
         }
         mAdContainer = new WeakReference<ViewGroup>(adContainer);
         showNativeInternal(true);
@@ -393,14 +393,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     /**
      * 加载banner和native广告
      *
-     * @param adParams
+     * @param mpParams
      */
     @Override
-    public void loadCommonView(AdParams adParams) {
-        mAdParams = adParams;
-        if (mAdPlace == null) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(null, null);
+    public void loadCommonView(MpParams mpParams) {
+        mMpParams = mpParams;
+        if (mMpPlace == null) {
+            if (mOnMpSdkListener != null) {
+                mOnMpSdkListener.onError(null, null);
             }
             return;
         }
@@ -410,7 +410,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     private void loadCommonViewLocked() {
         ISdkLoader loader = mCurrentAdLoader;
         if (loader != null) {
-            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getName(),
+            registerAdBaseListener(loader, new SimpleMpBaseBaseListener(loader.getName(),
                     loader.getAdType(), getPidByLoader(loader), this));
             if (loader.isNativeType()) {
                 loader.loadNative(getParams(loader));
@@ -426,13 +426,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      * 展示广告(banner or native)
      *
      * @param adContainer
-     * @param adParams
+     * @param mpParams
      */
     @Override
-    public void showCommonView(ViewGroup adContainer, AdParams adParams) {
+    public void showCommonView(ViewGroup adContainer, MpParams mpParams) {
         LogHelper.d(LogHelper.TAG, "show common view");
-        if (adParams != null) {
-            mAdParams = adParams;
+        if (mpParams != null) {
+            mMpParams = mpParams;
         }
         mAdContainer = new WeakReference<ViewGroup>(adContainer);
         showCommonViewInternal(true);
@@ -478,15 +478,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     }
 
     @Override
-    public synchronized void registerAdBaseListener(ISdkLoader loader, OnAdBaseListener l) {
+    public synchronized void registerAdBaseListener(ISdkLoader loader, OnMpBaseListener l) {
         if (mAdViewListener != null) {
             mAdViewListener.put(loader, l);
         }
     }
 
     @Override
-    public synchronized OnAdBaseListener getAdBaseListener(ISdkLoader loader) {
-        OnAdBaseListener listener = null;
+    public synchronized OnMpBaseListener getAdBaseListener(ISdkLoader loader) {
+        OnMpBaseListener listener = null;
         if (mAdViewListener != null) {
             listener = mAdViewListener.get(loader);
         }
@@ -494,8 +494,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     }
 
     @Override
-    public OnAdSdkListener getOnAdSdkListener() {
-        return mOnAdSdkListener;
+    public OnMpSdkListener getOnAdSdkListener() {
+        return mOnMpSdkListener;
     }
 
     @Override

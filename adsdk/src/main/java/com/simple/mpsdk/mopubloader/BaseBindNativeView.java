@@ -1,4 +1,4 @@
-package com.simple.mpsdk.baseloader;
+package com.simple.mpsdk.mopubloader;
 
 import android.view.View;
 import android.view.ViewGroup;

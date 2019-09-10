@@ -1,4 +1,4 @@
-package com.simple.mpsdk.framework;
+package com.simple.mpsdk.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,7 +8,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class Aes {
+public class AesUtils {
     private static void appendHex(StringBuffer paramStringBuffer, byte paramByte) {
         paramStringBuffer.append(
                 "0123456789ABCDEF".charAt(0xF & paramByte >> 4)).append(

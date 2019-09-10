@@ -3,8 +3,8 @@ package com.simple.mpsdk.data;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.simple.mpsdk.config.AdConfig;
-import com.simple.mpsdk.config.AdPlace;
+import com.simple.mpsdk.config.MpConfig;
+import com.simple.mpsdk.config.MpPlace;
 import com.simple.mpsdk.log.LogHelper;
 import com.simple.mpsdk.data.parser.AdConfigParser;
 import com.simple.mpsdk.data.parser.IConfigParser;
@@ -45,7 +45,7 @@ public class DataConfig {
 
     private RConfig mDataRequest;
     private Context mContext;
-    private AdConfig mLocalAdConfig;
+    private MpConfig mLocalMpConfig;
     private IConfigParser mParser;
 
     public void init() {
@@ -59,20 +59,20 @@ public class DataConfig {
         String cfgName = getConfigName();
         String defName = getDefaultName();
         LogHelper.v(LogHelper.TAG, "cfg : " + cfgName + " , def : " + defName);
-        if (mLocalAdConfig == null) {
+        if (mLocalMpConfig == null) {
             String data = Utils.readAssets(mContext, cfgName);
             if (TextUtils.isEmpty(data)) {
                 data = Utils.readAssets(mContext, defName);
             }
-            mLocalAdConfig = mParser.parseAdConfig(data);
+            mLocalMpConfig = mParser.parseAdConfig(data);
         }
     }
 
-    public AdConfig getAdConfig() {
-        if (mLocalAdConfig == null) {
+    public MpConfig getAdConfig() {
+        if (mLocalMpConfig == null) {
             parserLocalData();
         }
-        return mLocalAdConfig;
+        return mLocalMpConfig;
     }
 
     private String getConfigName() {
@@ -92,7 +92,7 @@ public class DataConfig {
         return String.format(Locale.getDefault(), DATA_CONFIG, "mp");
     }
 
-    public AdPlace getRemoteAdPlace(String key) {
+    public MpPlace getRemoteAdPlace(String key) {
         if (mDataRequest != null) {
             String data = mDataRequest.getString(key);
             if (!TextUtils.isEmpty(data)) {

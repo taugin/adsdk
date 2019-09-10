@@ -6,7 +6,7 @@ import com.simple.mpsdk.RewardItem;
  * Listener for ad sdk
  */
 
-public interface OnAdBaseListener {
+public interface OnMpBaseListener {
     /**
      * banner or native loaded
      */

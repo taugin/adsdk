@@ -3,30 +3,30 @@ package com.simple.mpsdk.framework;
 import android.app.Activity;
 import android.view.ViewGroup;
 
-import com.simple.mpsdk.AdParams;
-import com.simple.mpsdk.config.AdPlace;
-import com.simple.mpsdk.listener.OnAdSdkListener;
+import com.simple.mpsdk.MpParams;
+import com.simple.mpsdk.config.MpPlace;
+import com.simple.mpsdk.listener.OnMpSdkListener;
 
 /**
  * Created by wangchao1 on 2018/5/1.
  */
 
-public class AdBaseLoader implements IAdLoader {
+public class AbCoreLoader implements ICoreLoader {
     @Override
     public void init() {
     }
 
     @Override
-    public void setAdPlaceConfig(AdPlace adPlace) {
+    public void setAdPlaceConfig(MpPlace mpPlace) {
     }
 
     @Override
-    public boolean needReload(AdPlace adPlace) {
+    public boolean needReload(MpPlace mpPlace) {
         return false;
     }
 
     @Override
-    public void setOnAdSdkListener(OnAdSdkListener l) {
+    public void setOnAdSdkListener(OnMpSdkListener l) {
     }
 
     @Override
@@ -48,12 +48,12 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void loadBanner(AdParams adParams) {
+    public void loadBanner(MpParams mpParams) {
 
     }
 
     @Override
-    public void showBanner(ViewGroup adContainer, AdParams adParams) {
+    public void showBanner(ViewGroup adContainer, MpParams mpParams) {
 
     }
 
@@ -63,12 +63,12 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void loadNative(AdParams adParams) {
+    public void loadNative(MpParams mpParams) {
 
     }
 
     @Override
-    public void showNative(ViewGroup adContainer, AdParams adParams) {
+    public void showNative(ViewGroup adContainer, MpParams mpParams) {
 
     }
 
@@ -78,12 +78,12 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void loadCommonView(AdParams adParams) {
+    public void loadCommonView(MpParams mpParams) {
 
     }
 
     @Override
-    public void showCommonView(ViewGroup adContainer, AdParams adParams) {
+    public void showCommonView(ViewGroup adContainer, MpParams mpParams) {
 
     }
 

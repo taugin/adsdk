@@ -4,7 +4,7 @@ package com.simple.mpsdk.config;
  * Created by Administrator on 2018/2/9.
  */
 
-public class AdPlace {
+public class MpPlace {
 
     private String name;
 

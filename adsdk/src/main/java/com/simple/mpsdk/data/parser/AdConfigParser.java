@@ -2,10 +2,10 @@ package com.simple.mpsdk.data.parser;
 
 import android.text.TextUtils;
 
-import com.simple.mpsdk.config.AdConfig;
-import com.simple.mpsdk.config.AdPlace;
+import com.simple.mpsdk.config.MpConfig;
+import com.simple.mpsdk.config.MpPlace;
 import com.simple.mpsdk.constant.Constant;
-import com.simple.mpsdk.framework.Aes;
+import com.simple.mpsdk.utils.AesUtils;
 import com.simple.mpsdk.log.LogHelper;
 import com.simple.mpsdk.utils.Utils;
 
@@ -40,32 +40,32 @@ public class AdConfigParser implements IConfigParser {
         if (jarray != null) {
             return jarray.toString();
         }
-        return Aes.decrypt(Constant.KEY_PASSWORD, content);
+        return AesUtils.decrypt(Constant.KEY_PASSWORD, content);
     }
 
     @Override
-    public AdConfig parseAdConfig(String data) {
+    public MpConfig parseAdConfig(String data) {
         data = getContent(data);
-        AdConfig adconfig = parseAdConfigInternal(data);
+        MpConfig adconfig = parseAdConfigInternal(data);
         return adconfig;
     }
 
-    private AdConfig parseAdConfigInternal(String data) {
-        AdConfig adConfig = null;
+    private MpConfig parseAdConfigInternal(String data) {
+        MpConfig mpConfig = null;
         try {
             JSONObject jobj = new JSONObject(data);
-            List<AdPlace> adPlaces = null;
+            List<MpPlace> mpPlaces = null;
             if (jobj.has(ADPLACES)) {
-                adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
+                mpPlaces = parseAdPlaces(jobj.getString(ADPLACES));
             }
-            if (adPlaces != null) {
-                adConfig = new AdConfig();
-                adConfig.setAdPlaceList(adPlaces);
+            if (mpPlaces != null) {
+                mpConfig = new MpConfig();
+                mpConfig.setMpPlaceList(mpPlaces);
             }
         } catch (Exception e) {
             LogHelper.v(LogHelper.TAG, "parseAdConfigInternal error : " + e);
         }
-        return adConfig;
+        return mpConfig;
     }
 
     private List<String> parseStringList(String str) {
@@ -86,13 +86,13 @@ public class AdConfigParser implements IConfigParser {
         return list;
     }
 
-    private List<AdPlace> parseAdPlaces(String content) {
-        List<AdPlace> list = null;
+    private List<MpPlace> parseAdPlaces(String content) {
+        List<MpPlace> list = null;
         try {
             JSONArray jarray = new JSONArray(content);
             int len = jarray.length();
             if (len > 0) {
-                list = new ArrayList<AdPlace>(len);
+                list = new ArrayList<MpPlace>(len);
                 for (int index = 0; index < len; index++) {
                     list.add(parseAdPlace(jarray.getString(index)));
                 }
@@ -104,38 +104,38 @@ public class AdConfigParser implements IConfigParser {
     }
 
     @Override
-    public AdPlace parseAdPlace(String content) {
-        AdPlace adPlace = null;
+    public MpPlace parseAdPlace(String content) {
+        MpPlace mpPlace = null;
         try {
             content = getContent(content);
             JSONObject jobj = new JSONObject(content);
-            adPlace = new AdPlace();
+            mpPlace = new MpPlace();
             if (jobj.has(NAME)) {
-                adPlace.setName(jobj.getString(NAME));
+                mpPlace.setName(jobj.getString(NAME));
             }
             if (jobj.has(TYPE)) {
-                adPlace.setType(jobj.getString(TYPE));
+                mpPlace.setType(jobj.getString(TYPE));
             }
             if (jobj.has(PID)) {
-                adPlace.setPid(jobj.getString(PID));
+                mpPlace.setPid(jobj.getString(PID));
             }
             if (jobj.has(CACHE_TIME)) {
-                adPlace.setCacheTime(jobj.getLong(CACHE_TIME));
+                mpPlace.setCacheTime(jobj.getLong(CACHE_TIME));
             }
             if (jobj.has(LOAD_TIME)) {
-                adPlace.setLoadTime(jobj.getLong(CACHE_TIME));
+                mpPlace.setLoadTime(jobj.getLong(CACHE_TIME));
             }
             if (jobj.has(APPID)) {
-                adPlace.setAid(jobj.getString(APPID));
+                mpPlace.setAid(jobj.getString(APPID));
             }
             if (jobj.has(EXTID)) {
-                adPlace.setEid(jobj.getString(EXTID));
+                mpPlace.setEid(jobj.getString(EXTID));
             }
-            adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
+            mpPlace.setUniqueValue(Utils.string2MD5(content.trim()));
         } catch (Exception e) {
             LogHelper.v(LogHelper.TAG, "parseAdPlace error : " + e);
         }
-        return adPlace;
+        return mpPlace;
     }
 
 }

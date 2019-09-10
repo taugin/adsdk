@@ -8,16 +8,16 @@ import java.util.List;
  * Created by Administrator on 2018/2/9.
  */
 
-public class AdConfig {
+public class MpConfig {
 
-    private List<AdPlace> adPlaceList;
+    private List<MpPlace> mpPlaceList;
 
-    public List<AdPlace> getAdPlaceList() {
-        return adPlaceList;
+    public List<MpPlace> getMpPlaceList() {
+        return mpPlaceList;
     }
 
-    public void setAdPlaceList(List<AdPlace> adPlaceList) {
-        this.adPlaceList = adPlaceList;
+    public void setMpPlaceList(List<MpPlace> mpPlaceList) {
+        this.mpPlaceList = mpPlaceList;
     }
 
     /**
@@ -26,11 +26,11 @@ public class AdConfig {
      * @param name
      * @return
      */
-    public AdPlace get(String name) {
-        if (adPlaceList == null || adPlaceList.isEmpty() || TextUtils.isEmpty(name)) {
+    public MpPlace get(String name) {
+        if (mpPlaceList == null || mpPlaceList.isEmpty() || TextUtils.isEmpty(name)) {
             return null;
         }
-        for (AdPlace config : adPlaceList) {
+        for (MpPlace config : mpPlaceList) {
             if (config != null && name.equals(config.getName())) {
                 return config;
             }
@@ -41,7 +41,7 @@ public class AdConfig {
     @Override
     public String toString() {
         return "adc{" +
-                ", list=" + adPlaceList +
+                ", list=" + mpPlaceList +
                 '}';
     }
 }
