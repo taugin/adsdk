@@ -23,12 +23,12 @@ android {
         minSdkVersion 16
         targetSdkVersion 26
         versionName "1.0.0" + (isSnapshot ? "-SNAPSHOT" : "")
-        consumerProguardFiles 'proguard-rules.pro'
+        consumerProguardFiles 'proguard-rules-adsdk.pro'
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
