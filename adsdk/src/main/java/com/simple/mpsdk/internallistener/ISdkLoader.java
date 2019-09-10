@@ -3,7 +3,7 @@ package com.simple.mpsdk.internallistener;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import com.simple.mpsdk.config.AdPlace;
+import com.simple.mpsdk.config.MpPlace;
 import com.simple.mpsdk.framework.Params;
 
 /**
@@ -14,7 +14,7 @@ public interface ISdkLoader {
 
     public void setListenerManager(IManagerListener l);
 
-    public void init(Context context, AdPlace adPlace);
+    public void init(Context context, MpPlace mpPlace);
 
     public Context getContext();
 
@@ -23,7 +23,7 @@ public interface ISdkLoader {
 
     public String getAdType();
 
-    public AdPlace getAdPlace();
+    public MpPlace getAdPlace();
 
     // 加载插屏
     public void loadInterstitial();

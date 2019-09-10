@@ -19,7 +19,6 @@ import com.mopub.nativeads.MediaViewBinder;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.ViewBinder;
 import com.mp.md.simple.R;
-import com.simple.mpsdk.baseloader.BaseBindNativeView;
 import com.simple.mpsdk.constant.Constant;
 import com.simple.mpsdk.framework.Params;
 import com.simple.mpsdk.log.LogHelper;

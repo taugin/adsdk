@@ -2,7 +2,7 @@ package com.simple.mpsdk.internallistener;
 
 import android.app.Activity;
 
-import com.simple.mpsdk.listener.OnAdSdkListener;
+import com.simple.mpsdk.listener.OnMpSdkListener;
 
 /**
  * Created by Administrator on 2018/2/27.
@@ -14,10 +14,10 @@ public interface IManagerListener {
      * @param loader
      * @return
      */
-    OnAdBaseListener getAdBaseListener(ISdkLoader loader);
-    void registerAdBaseListener(ISdkLoader loader, OnAdBaseListener l);
+    OnMpBaseListener getAdBaseListener(ISdkLoader loader);
+    void registerAdBaseListener(ISdkLoader loader, OnMpBaseListener l);
 
-    OnAdSdkListener getOnAdSdkListener();
+    OnMpSdkListener getOnAdSdkListener();
     boolean isCurrent(String source, String pidName);
     Activity getActivity();
 }

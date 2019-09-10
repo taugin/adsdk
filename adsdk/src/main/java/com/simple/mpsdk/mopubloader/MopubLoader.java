@@ -30,8 +30,7 @@ import com.mopub.nativeads.MoPubVideoNativeAdRenderer;
 import com.mopub.nativeads.NativeAd;
 import com.mopub.nativeads.NativeErrorCode;
 import com.simple.mpsdk.RewardItem;
-import com.simple.mpsdk.baseloader.AbstractSdkLoader;
-import com.simple.mpsdk.config.AdPlace;
+import com.simple.mpsdk.config.MpPlace;
 import com.simple.mpsdk.constant.Constant;
 import com.simple.mpsdk.framework.Params;
 import com.simple.mpsdk.log.LogHelper;
@@ -85,11 +84,11 @@ public class MopubLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void init(Context context, AdPlace adPlace) {
-        super.init(context, adPlace);
+    public void init(Context context, MpPlace mpPlace) {
+        super.init(context, mpPlace);
         String adUnit = null;
         try {
-            adUnit = mAdPlace.getPid();
+            adUnit = mMpPlace.getPid();
         } catch (Exception e) {
         }
         SdkConfiguration sdkConfiguration = new SdkConfiguration.Builder(adUnit)
@@ -99,8 +98,8 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public String getName() {
-        if (mAdPlace != null) {
-            return mAdPlace.getName();
+        if (mMpPlace != null) {
+            return mMpPlace.getName();
         }
         return null;
     }
@@ -135,7 +134,7 @@ public class MopubLoader extends AbstractSdkLoader {
         setBannerSize(adSize);
         loadingView = new MoPubView(mContext);
         loadingView.setAutorefreshEnabled(false);
-        loadingView.setAdUnitId(mAdPlace.getPid());
+        loadingView.setAdUnitId(mMpPlace.getPid());
         loadingView.setBannerAdListener(new MoPubView.BannerAdListener() {
             @Override
             public void onBannerLoaded(MoPubView banner) {
@@ -263,7 +262,7 @@ public class MopubLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        moPubInterstitial = new MoPubInterstitial(mContext, mAdPlace.getPid());
+        moPubInterstitial = new MoPubInterstitial(mContext, mMpPlace.getPid());
         moPubInterstitial.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
             @Override
             public void onInterstitialLoaded(MoPubInterstitial interstitial) {
@@ -360,7 +359,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isRewaredVideoLoaded() {
-        boolean loaded = MoPubRewardedVideos.hasRewardedVideo(mAdPlace.getPid());
+        boolean loaded = MoPubRewardedVideos.hasRewardedVideo(mMpPlace.getPid());
         if (loaded) {
             LogHelper.d(LogHelper.TAG, getSdkName() + " - " + getAdType() + " - " + getName() + " - loaded : " + loaded);
         }
@@ -478,7 +477,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     RewardItem rewardItem = new RewardItem();
                     rewardItem.setType(Constant.ECPM);
                     double ecpm = 0;
-                    if (mAdPlace != null) {
+                    if (mMpPlace != null) {
                         ecpm = getEcpm();
                     }
                     rewardItem.setAmount(String.valueOf(ecpm));
@@ -486,7 +485,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
             }
         });
-        MoPubRewardedVideos.loadRewardedVideo(mAdPlace.getPid());
+        MoPubRewardedVideos.loadRewardedVideo(mMpPlace.getPid());
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getName(), getSdkName(), getAdType(), null);
         }
@@ -495,7 +494,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showRewardedVideo() {
-        MoPubRewardedVideos.showRewardedVideo(mAdPlace.getPid());
+        MoPubRewardedVideos.showRewardedVideo(mMpPlace.getPid());
         if (mStat != null) {
             mStat.reportAdShow(mContext, getName(), getSdkName(), getAdType(), null);
         }
@@ -537,7 +536,7 @@ public class MopubLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        MoPubNative moPubNative = new MoPubNative(mContext, mAdPlace.getPid(), new MoPubNative.MoPubNativeNetworkListener() {
+        MoPubNative moPubNative = new MoPubNative(mContext, mMpPlace.getPid(), new MoPubNative.MoPubNativeNetworkListener() {
 
             @Override
             public void onNativeLoad(final NativeAd nAd) {
