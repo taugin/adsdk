@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class ListViewForAd extends Activity {
 
-    private static final String AD_PLACE_NAME = "banner_and_native";
+    private static final String AD_PLACE_NAME = "native_test";
     private ListView mListView;
     private Map<String, View> mHashMap = null;
     private AdAdapter mAdAdapter;
