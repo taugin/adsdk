@@ -10,11 +10,11 @@ import com.simple.mpsdk.config.AdPlace;
 public interface IConfigParser {
 
     // 广告位汇总
-    String ADPLACES = "adplaces";
+    String ADPLACES = "placements";
     // 自定义广告位名称
     String NAME = "name";
     // 具体广告平台的广告位ID
-    String PID = "pid";
+    String PID = "place_id";
 
     String LOAD_TIME = "load_time";
     // 广告类型 interstitial, banner, native

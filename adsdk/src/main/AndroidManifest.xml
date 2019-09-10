@@ -16,33 +16,33 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:excludeFromRecents="true"
-            android:icon="@drawable/cad_co0_bg"
-            android:label=""
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Translucent" />
+        <!--<activity-->
+            <!--android:name="com.google.android.gms.ads.AdActivity"-->
+            <!--android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"-->
+            <!--android:excludeFromRecents="true"-->
+            <!--android:icon="@drawable/cad_co0_bg"-->
+            <!--android:label=""-->
+            <!--android:launchMode="singleInstance"-->
+            <!--android:theme="@android:style/Theme.Translucent" />-->
         <!-- applovin -->
-        <activity
-            android:name="com.applovin.adview.AppLovinInterstitialActivity"
-            android:configChanges="orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:icon="@drawable/cad_co0_bg"
-            android:label=""
-            android:launchMode="singleInstance" />
-        <activity
-            android:name="com.applovin.adview.AppLovinConfirmationActivity"
-            android:configChanges="orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:icon="@drawable/cad_co0_bg"
-            android:label=""
-            android:launchMode="singleInstance" />
+        <!--<activity-->
+            <!--android:name="com.applovin.adview.AppLovinInterstitialActivity"-->
+            <!--android:configChanges="orientation|screenSize"-->
+            <!--android:excludeFromRecents="true"-->
+            <!--android:icon="@drawable/cad_co0_bg"-->
+            <!--android:label=""-->
+            <!--android:launchMode="singleInstance" />-->
+        <!--<activity-->
+            <!--android:name="com.applovin.adview.AppLovinConfirmationActivity"-->
+            <!--android:configChanges="orientation|screenSize"-->
+            <!--android:excludeFromRecents="true"-->
+            <!--android:icon="@drawable/cad_co0_bg"-->
+            <!--android:label=""-->
+            <!--android:launchMode="singleInstance" />-->
 
-        <meta-data
-            android:name="applovin.sdk.key"
-            android:value="aqULsa4oR7H9uQJrVI4-hGyFMgAc_RwZFPv6-zvQ5AZzbup5At4t806UgH6fi1DzQ74O5zpA8N8kGyqRquIyuO" />
+        <!--<meta-data-->
+            <!--android:name="applovin.sdk.key"-->
+            <!--android:value="aqULsa4oR7H9uQJrVI4-hGyFMgAc_RwZFPv6-zvQ5AZzbup5At4t806UgH6fi1DzQ74O5zpA8N8kGyqRquIyuO" />-->
         <!-- MoPub's consent dialog -->
         <activity
             android:name="com.mopub.common.privacy.ConsentDialogActivity"

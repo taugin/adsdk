@@ -18,7 +18,7 @@ import java.util.Locale;
 
 public class DataConfig {
 
-    private static final String DATA_CONFIG = "data_%s.dat";
+    private static final String DATA_CONFIG = "app_%s_data.cfg";
     private static DataConfig sDataConfig;
 
     public static DataConfig get(Context context) {
@@ -81,7 +81,7 @@ public class DataConfig {
             String pkgmd5 = Utils.string2MD5(mContext.getPackageName());
             pkgmd5 = pkgmd5.toLowerCase(Locale.getDefault());
             String filename = pkgmd5.substring(0, 8);
-            cfgName = "cfg" + filename + ".dat";
+            cfgName = "mp" + filename + ".cfg";
         } catch (Exception e) {
             LogHelper.v(LogHelper.TAG, "error : " + e);
         }
@@ -89,7 +89,7 @@ public class DataConfig {
     }
 
     private String getDefaultName() {
-        return String.format(Locale.getDefault(), DATA_CONFIG, "config");
+        return String.format(Locale.getDefault(), DATA_CONFIG, "mp");
     }
 
     public AdPlace getRemoteAdPlace(String key) {

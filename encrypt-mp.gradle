@@ -99,12 +99,8 @@ project.afterEvaluate {
     }
 }
 
-def getSuffix1() {
-    return ".dat"
-}
-
-def getSuffix2() {
-    return ".json"
+def getSuffix() {
+    return ".cfg"
 }
 
 def isWindows() {
@@ -175,8 +171,9 @@ def getAssetsOutDir(flavor) {
 def adFileGenerate(flavor) {
     def appId = getApplicationId(flavor)
     def pkgnameMd5 = Aes.string2MD5(appId)
-    def adConfigName = "cfg" + pkgnameMd5.substring(0, 8) + ".[dat/json]"
+    def adConfigName = "mp" + pkgnameMd5.substring(0, 8) + getSuffix()
     println "generateAdFileName : " + adConfigName
+    println "generateOriginName : " + "app_mp_data.cfg"
 }
 
 /**
@@ -187,23 +184,15 @@ def adFileGenerate(flavor) {
  */
 def getAdConfigFile(assetsDir, appId) {
     def pkgnameMd5 = Aes.string2MD5(appId)
-    def adConfigName = "cfg" + pkgnameMd5.substring(0, 8)
-    def adDefaultName = "data_config"
-    def adConfigFile1 = new File(assetsDir, adConfigName + getSuffix1())
-    def adConfigFile2 = new File(assetsDir, adConfigName + getSuffix2())
-    def adDefaultFile1 = new File(assetsDir, adDefaultName + getSuffix1())
-    def adDefaultFile2 = new File(assetsDir, adDefaultName + getSuffix2())
+    def adConfigName = "mp" + pkgnameMd5.substring(0, 8)
+    def adDefaultName = "app_mp_data"
+    def adConfigFile1 = new File(assetsDir, adConfigName + getSuffix())
+    def adDefaultFile1 = new File(assetsDir, adDefaultName + getSuffix())
     if (adConfigFile1.exists()) {
         return adConfigFile1.getAbsolutePath()
     }
-    if (adConfigFile2.exists()) {
-        return adConfigFile2.getAbsolutePath()
-    }
     if (adDefaultFile1.exists()) {
         return adDefaultFile1.getAbsolutePath()
-    }
-    if (adDefaultFile2.exists()) {
-        return adDefaultFile2.getAbsolutePath()
     }
     return null
 }
@@ -309,7 +298,7 @@ def encryptAssetsFiles(flavor) {
             def adFile = new File(adFilePath)
             def filePath = adFile.getParent()
             def fileName = adFile.getName()
-            fileName = fileName.replaceAll(getSuffix2(), getSuffix1())
+            fileName = fileName.replaceAll(getSuffix2(), getSuffix())
             def newAdFile = new File(filePath, fileName)
             println ":${project.name}:renameAdFile     [${newAdFile}]"
             if (newAdFile.exists()) {

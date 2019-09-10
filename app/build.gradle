@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply from: '../encrypt.gradle'
+apply from: '../encrypt-mp.gradle'
 
 def useProject = true;
 ext {
