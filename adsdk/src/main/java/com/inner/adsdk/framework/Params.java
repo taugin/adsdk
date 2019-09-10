@@ -2,9 +2,6 @@ package com.inner.adsdk.framework;
 
 import android.view.View;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by Administrator on 2018/4/3.
  */
@@ -14,7 +11,6 @@ public class Params {
     private View mNativeRootView;
     private int  mNativeRootLayout;
     private int mNativeCardStyle;
-    private Map<String, Integer> mBannerSize = new HashMap<String, Integer>();
     private int adTitle;
     private int adSubTitle;
     private int adIcon;
@@ -51,14 +47,6 @@ public class Params {
 
     public int getNativeCardStyle() {
         return mNativeCardStyle;
-    }
-
-    public void setBannerSize(String sdk, int size) {
-        mBannerSize.put(sdk, size);
-    }
-
-    public Map<String, Integer> getBannerSize() {
-        return mBannerSize;
     }
 
     public int getAdTitle() {

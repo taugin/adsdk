@@ -243,14 +243,19 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected boolean isCachedAdExpired(Object object) {
         try {
-            long cachedTime = mCachedTime.get(object);
+            Long obj = mCachedTime.get(object);
+            long cachedTime = 0;
+            if (obj != null) {
+                cachedTime = obj.longValue();
+            }
             if (cachedTime <= 0) {
                 return true;
             }
             return SystemClock.elapsedRealtime() - cachedTime > getMaxCachedTime();
         } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
-        return false;
+        return true;
     }
 
     protected void clearCachedAdTime(Object object) {

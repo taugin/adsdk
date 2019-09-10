@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MA";
     private Context mContext;
     private RelativeLayout mNativeBannerLayout;
+    private Random mRandom = new Random(System.currentTimeMillis());
+    private int mIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,18 +118,18 @@ public class MainActivity extends AppCompatActivity {
     private void loadNative() {
         AdParams.Builder builder = new AdParams.Builder();
         //  设置外部布局参数
-        int layoutId = LAYOUT[new Random().nextInt(LAYOUT.length)];
+        int layoutId = LAYOUT[mIndex++%LAYOUT.length];
         View view = LayoutInflater.from(this).inflate(layoutId, null);
-        // builder.setAdRootLayout(AdSdk.AD_SDK_COMMON, layoutId);
-        builder.setAdRootView(AdSdk.AD_SDK_COMMON, view);
-        builder.setAdTitle(AdSdk.AD_SDK_COMMON, R.id.common_title);
-        builder.setAdDetail(AdSdk.AD_SDK_COMMON, R.id.common_detail);
-        builder.setAdSubTitle(AdSdk.AD_SDK_COMMON, R.id.common_sub_title);
-        builder.setAdIcon(AdSdk.AD_SDK_COMMON, R.id.common_icon);
-        builder.setAdAction(AdSdk.AD_SDK_COMMON, R.id.common_action_btn);
-        builder.setAdCover(AdSdk.AD_SDK_COMMON, R.id.common_image_cover);
-        builder.setAdChoices(AdSdk.AD_SDK_COMMON, R.id.common_ad_choices_container);
-        builder.setAdMediaView(AdSdk.AD_SDK_COMMON, R.id.common_media_cover);
+        // builder.setAdRootLayout(layoutId);
+        builder.setAdRootView(view);
+        builder.setAdTitle(R.id.common_title);
+        builder.setAdDetail(R.id.common_detail);
+        builder.setAdSubTitle(R.id.common_sub_title);
+        builder.setAdIcon(R.id.common_icon);
+        builder.setAdAction(R.id.common_action_btn);
+        builder.setAdCover(R.id.common_image_cover);
+        builder.setAdChoices(R.id.common_ad_choices_container);
+        builder.setAdMediaView(R.id.common_media_cover);
         AdParams adParams = builder.build();
 
         AdSdk.get(mContext).loadNative("native_test", adParams, new SimpleAdSdkListener() {

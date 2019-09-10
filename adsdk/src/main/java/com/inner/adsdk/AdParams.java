@@ -1,13 +1,8 @@
 package com.inner.adsdk;
 
-import android.text.TextUtils;
 import android.view.View;
 
-import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2018/4/3.
@@ -15,166 +10,94 @@ import java.util.Map;
 
 public class AdParams {
 
-    private Map<String, Params> mAdParams;
+    private Params mAdParams;
 
-    private AdParams(Map<String, Params> params) {
+    private AdParams(Params params) {
         this.mAdParams = params;
-        fillCommonIfNeed();
     }
 
-    public Params getParams(String sdk) {
-        if (mAdParams != null && !TextUtils.isEmpty(sdk)) {
-            return mAdParams.get(sdk);
-        }
-        return null;
-    }
-
-    private void fillCommonIfNeed() {
-        if (mAdParams == null || mAdParams.isEmpty()) {
-            return;
-        }
-        Params commonParams = mAdParams.get(Constant.AD_SDK_COMMON);
-        if (!isNativeParamsSet(commonParams)) {
-            return;
-        }
-        String sdk = null;
-        Params params = null;
-        for (Map.Entry<String, Params> entry : mAdParams.entrySet()) {
-            if (entry != null) {
-                sdk = entry.getKey();
-                params = entry.getValue();
-                if (Constant.AD_SDK_COMMON.equals(sdk) || isNativeParamsSet(params)) {
-                    continue;
-                }
-                fillCommonParams(params, commonParams);
-            }
-        }
-    }
-
-    private boolean isNativeParamsSet(Params params) {
-        if (params == null) {
-            return false;
-        }
-        if (params.getNativeRootLayout() <= 0
-                && params.getNativeRootView() == null
-                && params.getNativeCardStyle() <= 0) {
-            // 未设置commonsdk参数
-            return false;
-        }
-        return true;
-    }
-
-    private void fillCommonParams(Params sdkParams, Params commonParams) {
-        if (sdkParams == null || commonParams == null) {
-            return;
-        }
-        sdkParams.setAdCardStyle(commonParams.getNativeCardStyle());
-        sdkParams.setAdRootLayout(commonParams.getNativeRootLayout());
-        sdkParams.setAdRootView(commonParams.getNativeRootView());
-        sdkParams.setAdTitle(commonParams.getAdTitle());
-        sdkParams.setAdSubTitle(commonParams.getAdSubTitle());
-        sdkParams.setAdSocial(commonParams.getAdSocial());
-        sdkParams.setAdDetail(commonParams.getAdDetail());
-        sdkParams.setAdIcon(commonParams.getAdIcon());
-        sdkParams.setAdAction(commonParams.getAdAction());
-        sdkParams.setAdCover(commonParams.getAdCover());
-        sdkParams.setAdChoices(commonParams.getAdChoices());
-        sdkParams.setAdMediaView(commonParams.getAdMediaView());
-        sdkParams.setAdSponsored(commonParams.getAdSponsored());
+    public Params getParams() {
+        return mAdParams;
     }
 
     public static class Builder {
-        private Map<String, Params> mAdParams = null;
+        private Params mAdParam = null;
 
         public Builder() {
-            mAdParams = new HashMap<String, Params>();
+            mAdParam = new Params();
         }
 
-        private Params getParams(String sdk) {
-            Params params = null;
-            if (mAdParams == null) {
-                mAdParams = new HashMap<String, Params>();
-            }
-            params = mAdParams.get(sdk);
-            if (params == null) {
-                params = new Params();
-                mAdParams.put(sdk, params);
-            }
-            return params;
+        private Params getParams() {
+            return mAdParam;
         }
 
-        public Builder setAdCardStyle(String sdk, int cardStyle) {
-            getParams(sdk).setAdCardStyle(cardStyle);
+        public Builder setAdCardStyle(int cardStyle) {
+            getParams().setAdCardStyle(cardStyle);
             return this;
         }
 
-        public Builder setBannerSize(String sdk, int size) {
-            getParams(sdk).setBannerSize(sdk, size);
+        public Builder setAdRootView(View view) {
+            getParams().setAdRootView(view);
             return this;
         }
 
-        public Builder setAdRootView(String sdk, View view) {
-            getParams(sdk).setAdRootView(view);
+        public Builder setAdRootLayout(int layout) {
+            getParams().setAdRootLayout(layout);
             return this;
         }
 
-        public Builder setAdRootLayout(String sdk, int layout) {
-            getParams(sdk).setAdRootLayout(layout);
+        public Builder setAdTitle(int adTitle) {
+            getParams().setAdTitle(adTitle);
             return this;
         }
 
-        public Builder setAdTitle(String sdk, int adTitle) {
-            getParams(sdk).setAdTitle(adTitle);
+        public Builder setAdSubTitle(int adSubTitle) {
+            getParams().setAdSubTitle(adSubTitle);
             return this;
         }
 
-        public Builder setAdSubTitle(String sdk, int adSubTitle) {
-            getParams(sdk).setAdSubTitle(adSubTitle);
+        public Builder setAdIcon(int adIcon) {
+            getParams().setAdIcon(adIcon);
             return this;
         }
 
-        public Builder setAdIcon(String sdk, int adIcon) {
-            getParams(sdk).setAdIcon(adIcon);
+        public Builder setAdCover(int adCover) {
+            getParams().setAdCover(adCover);
             return this;
         }
 
-        public Builder setAdCover(String sdk, int adCover) {
-            getParams(sdk).setAdCover(adCover);
+        public Builder setAdMediaView(int adView) {
+            getParams().setAdMediaView(adView);
             return this;
         }
 
-        public Builder setAdMediaView(String sdk, int adView) {
-            getParams(sdk).setAdMediaView(adView);
+        public Builder setAdDetail(int adDetail) {
+            getParams().setAdDetail(adDetail);
             return this;
         }
 
-        public Builder setAdDetail(String sdk, int adDetail) {
-            getParams(sdk).setAdDetail(adDetail);
+        public Builder setAdAction(int adAction) {
+            getParams().setAdAction(adAction);
             return this;
         }
 
-        public Builder setAdAction(String sdk, int adAction) {
-            getParams(sdk).setAdAction(adAction);
+        public Builder setAdChoices(int adChoices) {
+            getParams().setAdChoices(adChoices);
             return this;
         }
 
-        public Builder setAdChoices(String sdk, int adChoices) {
-            getParams(sdk).setAdChoices(adChoices);
+        public Builder setAdSponsored(int adSponsored) {
+            getParams().setAdSponsored(adSponsored);
             return this;
         }
 
-        public Builder setAdSponsored(String sdk, int adSponsored) {
-            getParams(sdk).setAdSponsored(adSponsored);
-            return this;
-        }
-
-        public Builder setAdSocial(String sdk, int adSocial) {
-            getParams(sdk).setAdSocial(adSocial);
+        public Builder setAdSocial(int adSocial) {
+            getParams().setAdSocial(adSocial);
             return this;
         }
 
         public AdParams build() {
-            return new AdParams(mAdParams);
+            return new AdParams(mAdParam);
         }
     }
 }
