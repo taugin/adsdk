@@ -1,4 +1,4 @@
-package com.inner.adsdk.parse;
+package com.inner.adsdk.parser;
 
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
@@ -7,7 +7,7 @@ import com.inner.adsdk.config.AdPlace;
  * Created by Administrator on 2018/2/9.
  */
 
-public interface IParser {
+public interface IConfigParser {
 
     // 广告位汇总
     String ADPLACES = "adplaces";

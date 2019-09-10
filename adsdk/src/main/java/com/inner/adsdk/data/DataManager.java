@@ -6,8 +6,8 @@ import android.text.TextUtils;
 import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.log.Log;
-import com.inner.adsdk.parse.AdParser;
-import com.inner.adsdk.parse.IParser;
+import com.inner.adsdk.parser.AdConfigParser;
+import com.inner.adsdk.parser.IConfigParser;
 import com.inner.adsdk.utils.Utils;
 
 import java.util.Locale;
@@ -40,13 +40,13 @@ public class DataManager {
 
     private DataManager(Context context) {
         mContext = context;
-        mParser = new AdParser();
+        mParser = new AdConfigParser();
     }
 
     private IDataRequest mDataRequest;
     private Context mContext;
     private AdConfig mLocalAdConfig;
-    private IParser mParser;
+    private IConfigParser mParser;
 
     public void init() {
         parserLocalData();

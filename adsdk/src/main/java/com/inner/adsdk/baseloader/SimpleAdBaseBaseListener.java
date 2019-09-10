@@ -1,9 +1,9 @@
-package com.inner.adsdk.adloader.base;
+package com.inner.adsdk.baseloader;
 
 import com.inner.adsdk.AdReward;
-import com.inner.adsdk.adloader.listener.IManagerListener;
-import com.inner.adsdk.adloader.listener.ISdkLoader;
-import com.inner.adsdk.adloader.listener.OnAdBaseListener;
+import com.inner.adsdk.internallistener.IManagerListener;
+import com.inner.adsdk.internallistener.ISdkLoader;
+import com.inner.adsdk.internallistener.OnAdBaseListener;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.listener.OnAdSdkListener;
 

@@ -9,7 +9,6 @@ import com.inner.adsdk.config.AdConfig;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.data.DataManager;
-import com.inner.adsdk.framework.ActivityMonitor;
 import com.inner.adsdk.framework.AdPlaceLoader;
 import com.inner.adsdk.listener.OnAdSdkListener;
 import com.inner.adsdk.log.Log;
@@ -121,9 +120,8 @@ public class AdSdk {
      * 初始化
      */
     public void init() {
-        Log.v(Log.TAG, "adver : " + getSdkVersion());
+        Log.v(Log.TAG, "simple version : " + getSdkVersion());
         DataManager.get(mContext).init();
-        ActivityMonitor.get(mContext).init();
         StatImpl.get().init();
     }
 

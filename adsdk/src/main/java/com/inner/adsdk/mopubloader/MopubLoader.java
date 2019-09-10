@@ -1,4 +1,4 @@
-package com.inner.adsdk.adloader.mopub;
+package com.inner.adsdk.mopubloader;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.inner.adsdk.AdReward;
-import com.inner.adsdk.adloader.base.AbstractSdkLoader;
+import com.inner.adsdk.baseloader.AbstractSdkLoader;
 import com.inner.adsdk.config.AdPlace;
 import com.inner.adsdk.constant.Constant;
 import com.inner.adsdk.framework.Params;

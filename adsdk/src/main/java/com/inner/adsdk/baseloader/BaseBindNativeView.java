@@ -1,4 +1,4 @@
-package com.inner.adsdk.adloader.base;
+package com.inner.adsdk.baseloader;
 
 import android.view.View;
 import android.view.ViewGroup;

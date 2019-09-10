@@ -21,7 +21,7 @@ public class Log {
     private static final int WARN = android.util.Log.WARN;
     private static final boolean INTERNAL_LOG_ENABLE;
 
-    public static final String TAG = "adlib";
+    public static final String TAG = "simple";
     public static final boolean DB = BuildConfig.DEBUG;
 
     static {

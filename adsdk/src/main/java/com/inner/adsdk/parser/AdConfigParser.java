@@ -1,4 +1,4 @@
-package com.inner.adsdk.parse;
+package com.inner.adsdk.parser;
 
 import android.text.TextUtils;
 
@@ -19,7 +19,7 @@ import java.util.List;
  * Created by Administrator on 2018/2/27.
  */
 
-public class AdParser implements IParser {
+public class AdConfigParser implements IConfigParser {
 
     private String getContent(String content) {
         JSONObject jobj = null;
@@ -27,7 +27,7 @@ public class AdParser implements IParser {
         try {
             jobj = new JSONObject(content);
         } catch (Exception e) {
-            Log.v(Log.TAG, "error : not a json object");
+            Log.v(Log.TAG, "error : invalid json object");
         }
         if (jobj != null) {
             return jobj.toString();
@@ -35,7 +35,7 @@ public class AdParser implements IParser {
         try {
             jarray = new JSONArray(content);
         } catch (Exception e) {
-            Log.v(Log.TAG, "error : not a json array");
+            Log.v(Log.TAG, "error : invalid json array");
         }
         if (jarray != null) {
             return jarray.toString();

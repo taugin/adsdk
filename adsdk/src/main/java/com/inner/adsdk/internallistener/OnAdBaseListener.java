@@ -1,4 +1,4 @@
-package com.inner.adsdk.adloader.listener;
+package com.inner.adsdk.internallistener;
 
 import com.inner.adsdk.AdReward;
 
