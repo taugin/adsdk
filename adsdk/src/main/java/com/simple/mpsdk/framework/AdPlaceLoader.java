@@ -92,6 +92,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
         return null;
     }
 
+    private int getBannerSize(ISdkLoader loader) {
+        return 0;
+    }
+
     @Override
     public Activity getActivity() {
         if (mActivity != null && mActivity.get() != null && !mActivity.get().isFinishing()) {
@@ -156,7 +160,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      */
     @Override
     public void showInterstitial() {
-        LogHelper.d(LogHelper.TAG, "showInterstitial");
+        LogHelper.d(LogHelper.TAG, "show interstitial");
         showInterstitialInternal();
     }
 
@@ -218,7 +222,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      */
     @Override
     public void showRewardVideo() {
-        LogHelper.d(LogHelper.TAG, "showInterstitial");
+        LogHelper.d(LogHelper.TAG, "show reward video");
         showRewardVideoInternal();
     }
 
@@ -267,7 +271,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
             registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getName(),
                     loader.getAdType(), getPidByLoader(loader), this));
             if (loader.isBannerType()) {
-                loader.loadBanner(0);
+                loader.loadBanner(getBannerSize(loader));
             } else {
                 LogHelper.d(LogHelper.TAG, "not supported ad type : " + loader.getName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
             }
@@ -282,7 +286,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      */
     @Override
     public void showBanner(ViewGroup adContainer, AdParams adParams) {
-        LogHelper.d(LogHelper.TAG, "showAdView");
+        LogHelper.d(LogHelper.TAG, "show banner");
         if (adParams != null) {
             mAdParams = adParams;
         }
@@ -291,7 +295,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     }
 
     private void showBannerInternal(boolean needCounting) {
-        LogHelper.d(LogHelper.TAG, "showAdViewInternal");
+        LogHelper.d(LogHelper.TAG, "show banner internal");
         ISdkLoader loader = mCurrentAdLoader;
         if (loader != null) {
             ViewGroup viewGroup = null;
@@ -353,7 +357,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
      */
     @Override
     public void showNative(ViewGroup adContainer, AdParams adParams) {
-        LogHelper.d(LogHelper.TAG, "showAdView");
+        LogHelper.d(LogHelper.TAG, "show native");
         if (adParams != null) {
             mAdParams = adParams;
         }
@@ -362,7 +366,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
     }
 
     private void showNativeInternal(boolean needCounting) {
-        LogHelper.d(LogHelper.TAG, "showAdViewInternal");
+        LogHelper.d(LogHelper.TAG, "show native internal");
         ISdkLoader loader = mCurrentAdLoader;
         if (loader != null) {
             ViewGroup viewGroup = null;
@@ -371,6 +375,81 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener {
             }
             if (loader.isNativeLoaded() && viewGroup != null) {
                 loader.showNative(viewGroup, getParams(loader));
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    @Override
+    public boolean isCommonViewLoaded() {
+        ISdkLoader loader = mCurrentAdLoader;
+        if (loader != null && (loader.isNativeLoaded() || loader.isBannerLoaded())) {
+            LogHelper.v(LogHelper.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 加载banner和native广告
+     *
+     * @param adParams
+     */
+    @Override
+    public void loadCommonView(AdParams adParams) {
+        mAdParams = adParams;
+        if (mAdPlace == null) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(null, null);
+            }
+            return;
+        }
+        loadCommonViewLocked();
+    }
+
+    private void loadCommonViewLocked() {
+        ISdkLoader loader = mCurrentAdLoader;
+        if (loader != null) {
+            registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getName(),
+                    loader.getAdType(), getPidByLoader(loader), this));
+            if (loader.isNativeType()) {
+                loader.loadNative(getParams(loader));
+            } else if (loader.isBannerType()) {
+                loader.loadBanner(getBannerSize(loader));
+            } else {
+                LogHelper.d(LogHelper.TAG, "not supported ad type : " + loader.getName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+            }
+        }
+    }
+
+    /**
+     * 展示广告(banner or native)
+     *
+     * @param adContainer
+     * @param adParams
+     */
+    @Override
+    public void showCommonView(ViewGroup adContainer, AdParams adParams) {
+        LogHelper.d(LogHelper.TAG, "show common view");
+        if (adParams != null) {
+            mAdParams = adParams;
+        }
+        mAdContainer = new WeakReference<ViewGroup>(adContainer);
+        showCommonViewInternal(true);
+    }
+
+    private void showCommonViewInternal(boolean needCounting) {
+        LogHelper.d(LogHelper.TAG, "show common view internal");
+        ISdkLoader loader = mCurrentAdLoader;
+        if (loader != null) {
+            ViewGroup viewGroup = null;
+            if (mAdContainer != null) {
+                viewGroup = mAdContainer.get();
+            }
+            if (loader.isNativeLoaded() && viewGroup != null) {
+                loader.showNative(viewGroup, getParams(loader));
+            } else if (loader.isBannerLoaded() && viewGroup != null) {
+                loader.showBanner(viewGroup);
             }
         }
     }

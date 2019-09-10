@@ -325,6 +325,47 @@ public class AdSdk {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////
+    public boolean isCommonViewLoaded(String pidName) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            return loader.isCommonViewLoaded();
+        }
+        return false;
+    }
+
+    public void loadCommonView(String pidName, OnAdSdkListener l) {
+        loadCommonView(pidName, new AdParams.Builder().build(), l);
+    }
+
+    public void loadCommonView(String pidName, AdParams adParams) {
+        loadCommonView(pidName, adParams, null);
+    }
+
+    public void loadCommonView(String pidName, AdParams adParams, OnAdSdkListener l) {
+        AdPlaceLoader loader = getAdLoader(pidName, true);
+        if (loader != null) {
+            loader.setOnAdSdkListener(l);
+            loader.loadCommonView(adParams);
+        } else {
+            if (l != null) {
+                l.onError(pidName, null);
+            }
+        }
+    }
+
+    public void showCommonView(String pidName, ViewGroup adContainer) {
+        showCommonView(pidName, null, adContainer);
+    }
+
+    public void showCommonView(String pidName, AdParams adParams, ViewGroup adContainer) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            loader.showCommonView(adContainer, adParams);
+        }
+    }
+    /////////////////////////////////////////////////////////////////////////
+
     public boolean isRewardVideoLoaded(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {

@@ -73,6 +73,21 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public boolean isCommonViewLoaded() {
+        return false;
+    }
+
+    @Override
+    public void loadCommonView(AdParams adParams) {
+
+    }
+
+    @Override
+    public void showCommonView(ViewGroup adContainer, AdParams adParams) {
+
+    }
+
+    @Override
     public void loadRewardVideo(Activity activity) {
     }
 

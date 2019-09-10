@@ -106,11 +106,11 @@ public class MainActivity extends AppCompatActivity {
         AdParams.Builder builder = new AdParams.Builder();
         //  设置外部布局参数
         AdParams adParams = builder.build();
-        AdSdk.get(mContext).loadBanner("banner_test", adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadCommonView("banner_test", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , adType : " + adType);
-                AdSdk.get(mContext).showBanner(pidName, mNativeBannerLayout);
+                AdSdk.get(mContext).showCommonView(pidName, mNativeBannerLayout);
             }
         });
     }
@@ -132,10 +132,10 @@ public class MainActivity extends AppCompatActivity {
         builder.setAdMediaView(R.id.common_media_cover);
         AdParams adParams = builder.build();
 
-        AdSdk.get(mContext).loadNative("native_test", adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadCommonView("native_test", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String adType) {
-                AdSdk.get(mContext).showNative(pidName, mNativeBannerLayout);
+                AdSdk.get(mContext).showCommonView(pidName, mNativeBannerLayout);
             }
         });
     }
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         public void onLoaded(String pidName, String adType) {
             if (AdSdk.AD_TYPE_BANNER.equalsIgnoreCase(adType) || AdSdk.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
                 // showAdView(pidName);
-                AdSdk.get(getBaseContext()).showNative(pidName, mNativeBannerLayout);
+                AdSdk.get(getBaseContext()).showCommonView(pidName, mNativeBannerLayout);
             } else if (AdSdk.AD_TYPE_INTERSTITIAL.equalsIgnoreCase(adType)) {
                 AdSdk.get(getBaseContext()).showInterstitial(pidName);
             } else if (AdSdk.AD_TYPE_REWARD.equalsIgnoreCase(adType)) {

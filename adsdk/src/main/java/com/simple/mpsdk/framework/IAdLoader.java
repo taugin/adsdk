@@ -33,6 +33,10 @@ public interface IAdLoader {
     public void loadNative(AdParams adParams);
     public void showNative(ViewGroup adContainer, AdParams adParams);
 
+    public boolean isCommonViewLoaded();
+    public void loadCommonView(AdParams adParams);
+    public void showCommonView(ViewGroup adContainer, AdParams adParams);
+
     public void loadRewardVideo(Activity activity);
     public void showRewardVideo();
     public boolean isRewardVideoLoaded();
