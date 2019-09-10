@@ -24,6 +24,7 @@ public class BaseBindNativeView {
             return view.getId();
         }
         if (view instanceof ViewGroup) {
+            boolean findView = false;
             ViewGroup iconLayout = (ViewGroup) view;
             if (iconLayout != null) {
                 int count = iconLayout.getChildCount();
@@ -32,6 +33,11 @@ public class BaseBindNativeView {
                     if (v instanceof ImageView) {
                         return v.getId();
                     }
+                }
+                if (!findView) {
+                    ImageView imageView = new ImageView(iconLayout.getContext());
+                    imageView.setId(newIconId);
+                    iconLayout.addView(imageView);
                 }
             }
         }

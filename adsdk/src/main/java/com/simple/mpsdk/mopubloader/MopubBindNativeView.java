@@ -1,6 +1,7 @@
 package com.simple.mpsdk.mopubloader;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -163,12 +164,12 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else {
             LogHelper.e(LogHelper.TAG, "********************bindVideoRender  root layout is null");
         }
-        int realIconId = convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
-        MoPubVideoAdRender mopubVideoRender = new MoPubVideoAdRender(getVideoViewBinder(context, layout, realIconId), layout);
+        MoPubVideoAdRender mopubVideoRender = new MoPubVideoAdRender(getVideoViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(mopubVideoRender);
     }
 
-    private MediaViewBinder getVideoViewBinder(Context context, View layout, int realIconId) {
+    private MediaViewBinder getVideoViewBinder(Context context, View layout) {
+        int realIconId = convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
         ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
         MediaLayout mediaLayout = createMediaLayout(context);
         mediaLayout.setId(getMediaLayoutId());
@@ -201,12 +202,12 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else {
             LogHelper.e(LogHelper.TAG, "********************bindStaticRender root layout is null");
         }
-        int realIconId = convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
-        MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout, realIconId), layout);
+        MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(moPubAdRenderer);
     }
 
-    private ViewBinder getStaticViewBinder(Context context, View layout, int realIconId) {
+    private ViewBinder getStaticViewBinder(Context context, View layout) {
+        int realIconId = convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
         ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
         adChoiceLayout.setVisibility(View.VISIBLE);
         ImageView imageView = createImageView(context);
@@ -235,8 +236,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else {
             LogHelper.e(LogHelper.TAG, "********************bindAdMobRender root layout is null");
         }
-        int realIconId = convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
-        GooglePlayServicesAdRenderer adRender = new GooglePlayServicesAdRenderer(getVideoViewBinder(context, layout, realIconId), layout);
+        GooglePlayServicesAdRenderer adRender = new GooglePlayServicesAdRenderer(getVideoViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(adRender);
     }
 
@@ -265,6 +265,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         adChoiceLayout.setVisibility(View.VISIBLE);
         RelativeLayout adChoiceRelativeLayout = new RelativeLayout(layout.getContext());
         adChoiceRelativeLayout.setId(getRelativeLayoutId());
+        adChoiceRelativeLayout.setBackgroundColor(Color.parseColor("#88FFFFFF"));
         adChoiceLayout.addView(adChoiceRelativeLayout);
 
         AdIconView iconView = createAdIconView(context);
@@ -329,8 +330,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else {
             LogHelper.e(LogHelper.TAG, "********************bindInmobiRender root layout is null");
         }
-        int realIconId = convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
-        InMobiNativeAdRenderer render = new InMobiNativeAdRenderer(getStaticViewBinder(context, layout, realIconId), layout);
+        InMobiNativeAdRenderer render = new InMobiNativeAdRenderer(getStaticViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(render);
     }
 

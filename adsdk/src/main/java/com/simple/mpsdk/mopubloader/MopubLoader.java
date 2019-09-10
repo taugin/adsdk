@@ -633,10 +633,11 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
-                if (nativeAd.getMoPubAdRenderer() instanceof MoPubVideoNativeAdRenderer
-                        || nativeAd.getMoPubAdRenderer() instanceof GooglePlayServicesAdRenderer
-                        || nativeAd.getMoPubAdRenderer() instanceof FacebookAdRenderer
-                        || nativeAd.getMoPubAdRenderer() instanceof InMobiNativeAdRenderer) {
+                MoPubAdRenderer moPubAdRenderer = nativeAd.getMoPubAdRenderer();
+                if (moPubAdRenderer instanceof MoPubVideoNativeAdRenderer
+                        || moPubAdRenderer instanceof GooglePlayServicesAdRenderer
+                        || moPubAdRenderer instanceof FacebookAdRenderer
+                        || moPubAdRenderer instanceof InMobiNativeAdRenderer) {
                     if (mParams.getAdMediaView() > 0) {
                         View view = adView.findViewById(mParams.getAdMediaView());
                         if (view != null) {
@@ -649,7 +650,7 @@ public class MopubLoader extends AbstractSdkLoader {
                             view.setVisibility(View.GONE);
                         }
                     }
-                } else if (nativeAd.getMoPubAdRenderer() instanceof MoPubStaticNativeAdRenderer) {
+                } else if (moPubAdRenderer instanceof MoPubStaticNativeAdRenderer) {
                     if (mParams.getAdMediaView() > 0) {
                         View view = adView.findViewById(mParams.getAdMediaView());
                         if (view != null) {
