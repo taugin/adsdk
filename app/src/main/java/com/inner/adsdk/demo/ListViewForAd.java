@@ -13,9 +13,9 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.inner.adsdk.AdParams;
-import com.inner.adsdk.AdSdk;
-import com.inner.adsdk.listener.SimpleAdSdkListener;
+import com.simple.adsdk.AdParams;
+import com.simple.adsdk.AdSdk;
+import com.simple.adsdk.listener.SimpleAdSdkListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;

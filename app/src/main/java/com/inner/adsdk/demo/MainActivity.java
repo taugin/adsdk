@@ -13,11 +13,11 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.inner.adsdk.AdParams;
-import com.inner.adsdk.AdReward;
-import com.inner.adsdk.AdSdk;
-import com.inner.adsdk.listener.SimpleAdSdkListener;
-import com.inner.adsdk.utils.Utils;
+import com.simple.adsdk.AdParams;
+import com.simple.adsdk.AdReward;
+import com.simple.adsdk.AdSdk;
+import com.simple.adsdk.listener.SimpleAdSdkListener;
+import com.simple.adsdk.utils.Utils;
 
 import java.util.List;
 import java.util.Random;
