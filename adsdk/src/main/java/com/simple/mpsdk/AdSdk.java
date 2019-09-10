@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.mp.md.simple.BuildConfig;
 import com.simple.mpsdk.config.AdConfig;
 import com.simple.mpsdk.config.AdPlace;
 import com.simple.mpsdk.constant.Constant;
@@ -14,7 +15,6 @@ import com.simple.mpsdk.listener.OnAdSdkListener;
 import com.simple.mpsdk.log.LogHelper;
 import com.simple.mpsdk.stat.ReportImpl;
 import com.simple.mpsdk.utils.Utils;
-import com.sub.great.good.BuildConfig;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;

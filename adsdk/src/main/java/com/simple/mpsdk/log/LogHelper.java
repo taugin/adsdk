@@ -3,7 +3,7 @@ package com.simple.mpsdk.log;
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
-import com.sub.great.good.BuildConfig;
+import com.mp.md.simple.BuildConfig;
 
 import java.io.File;
 import java.io.FileWriter;

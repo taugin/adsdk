@@ -10,11 +10,6 @@ import android.widget.RelativeLayout;
 
 import com.facebook.ads.AdIconView;
 import com.facebook.ads.MediaView;
-import com.simple.mpsdk.baseloader.BaseBindNativeView;
-import com.simple.mpsdk.constant.Constant;
-import com.simple.mpsdk.framework.Params;
-import com.simple.mpsdk.log.LogHelper;
-import com.simple.mpsdk.utils.Utils;
 import com.mopub.nativeads.FacebookAdRenderer;
 import com.mopub.nativeads.GooglePlayServicesAdRenderer;
 import com.mopub.nativeads.InMobiNativeAdRenderer;
@@ -22,7 +17,12 @@ import com.mopub.nativeads.MediaLayout;
 import com.mopub.nativeads.MediaViewBinder;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.ViewBinder;
-import com.sub.great.good.R;
+import com.mp.md.simple.R;
+import com.simple.mpsdk.baseloader.BaseBindNativeView;
+import com.simple.mpsdk.constant.Constant;
+import com.simple.mpsdk.framework.Params;
+import com.simple.mpsdk.log.LogHelper;
+import com.simple.mpsdk.utils.Utils;
 
 /**
  * Created by Administrator on 2018/2/11.

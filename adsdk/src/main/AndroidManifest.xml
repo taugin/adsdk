@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.sub.great.good">
+    package="com.mp.md.simple">
 
     <uses-sdk android:minSdkVersion="9" />
 
