@@ -176,6 +176,8 @@ public class MopubBindNativeView extends BaseBindNativeView {
 
         ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
         adChoiceLayout.setVisibility(View.VISIBLE);
+        int padding = Utils.dp2px(context, 4);
+        adChoiceLayout.setPadding(padding, padding, padding, padding);
         ImageView imageView = createImageView(context);
         imageView.setId(getImageViewId());
         int size = Utils.dp2px(context, 20);
@@ -208,6 +210,8 @@ public class MopubBindNativeView extends BaseBindNativeView {
     private ViewBinder getStaticViewBinder(Context context, View layout) {
         int realIconId = convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
         ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
+        int padding = Utils.dp2px(context, 4);
+        adChoiceLayout.setPadding(padding, padding, padding, padding);
         adChoiceLayout.setVisibility(View.VISIBLE);
         ImageView imageView = createImageView(context);
         imageView.setId(getImageViewId());
@@ -262,6 +266,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
 
         ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
         adChoiceLayout.setVisibility(View.VISIBLE);
+        adChoiceLayout.setPadding(0, 0, 0, 0);
         RelativeLayout adChoiceRelativeLayout = new RelativeLayout(layout.getContext());
         adChoiceRelativeLayout.setId(getRelativeLayoutId());
         adChoiceRelativeLayout.setBackgroundColor(Color.parseColor("#88FFFFFF"));
@@ -278,7 +283,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
 
         FacebookAdRenderer.FacebookViewBinder binder =
-                new FacebookAdRenderer.FacebookViewBinder.Builder(mParams.getNativeRootLayout())
+                new FacebookAdRenderer.FacebookViewBinder.Builder(mParams.getNativeRootLayout()/*布局文件没有被使用*/)
                         .titleId(mParams.getAdTitle())
                         .textId(mParams.getAdDetail())
                         .advertiserNameId(mParams.getAdSponsored())
@@ -288,7 +293,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
                         .adChoicesRelativeLayoutId(adChoiceRelativeLayout.getId())
                         .build();
 
-        FacebookAdRenderer render = new FacebookAdRenderer(binder, layout);
+        MopubFacebookAdRenderer render = new MopubFacebookAdRenderer(binder, layout);
         nativeAd.registerAdRenderer(render);
     }
 

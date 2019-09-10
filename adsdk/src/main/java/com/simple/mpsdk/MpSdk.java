@@ -139,39 +139,39 @@ public class MpSdk {
         return DataConfig.get(mContext).getString(key);
     }
 
-    private CoreLoader getAdLoader(String pidName) {
-        return getAdLoader(pidName, false);
+    private CoreLoader getAdLoader(String placeName) {
+        return getAdLoader(placeName, false);
     }
 
-    private CoreLoader getAdLoader(String pidName, boolean forLoad) {
-        LogHelper.d(LogHelper.TAG, "getAdLoader forLoad : " + forLoad);
-        // 获取引用的pidname
-        String refPidName = pidName;
+    private CoreLoader getAdLoader(String placeName, boolean forLoad) {
+        LogHelper.d(LogHelper.TAG, "get mp loader is for load : " + forLoad);
+        // 获取引用的place name
+        String refPlaceName = placeName;
 
-        LogHelper.v(LogHelper.TAG, "pidName : " + pidName + " , refPidName : " + refPidName);
+        LogHelper.v(LogHelper.TAG, "placeName : " + placeName + " , refPlaceName : " + refPlaceName);
         boolean useShareObject = false;
         // 如果共享loader对象
-        if (!TextUtils.equals(pidName, refPidName)) {
+        if (!TextUtils.equals(placeName, refPlaceName)) {
             useShareObject = true;
         }
         if (useShareObject) {
             // 将共享对象赋值给新的场景
-            if (mAdLoaders.containsKey(refPidName) && !mAdLoaders.containsKey(pidName)) {
-                mAdLoaders.put(pidName, mAdLoaders.get(refPidName));
+            if (mAdLoaders.containsKey(refPlaceName) && !mAdLoaders.containsKey(placeName)) {
+                mAdLoaders.put(placeName, mAdLoaders.get(refPlaceName));
             }
         }
-        CoreLoader loader = mAdLoaders.get(pidName);
+        CoreLoader loader = mAdLoaders.get(placeName);
         if (!forLoad) {
             return loader;
         }
-        MpPlace mpPlace = DataConfig.get(mContext).getRemoteAdPlace(refPidName);
+        MpPlace mpPlace = DataConfig.get(mContext).getRemoteAdPlace(refPlaceName);
         // loader为null，或者AdPlace内容有变化，则重新加载loader
         if (loader == null || loader.needReload(mpPlace)) {
-            loader = createAdPlaceLoader(refPidName, mpPlace);
+            loader = createAdPlaceLoader(refPlaceName, mpPlace);
             if (loader != null) {
-                mAdLoaders.put(pidName, loader);
-                if (useShareObject && !mAdLoaders.containsKey(refPidName)) {
-                    mAdLoaders.put(refPidName, loader);
+                mAdLoaders.put(placeName, loader);
+                if (useShareObject && !mAdLoaders.containsKey(refPlaceName)) {
+                    mAdLoaders.put(refPlaceName, loader);
                 }
             }
         }
@@ -181,50 +181,50 @@ public class MpSdk {
     /**
      * 如果adPlace和adIds为空，则使用本地的adPlace和adIds
      *
-     * @param pidName
+     * @param placeName
      * @param mpPlace
      * @return
      */
-    private CoreLoader createAdPlaceLoader(String pidName, MpPlace mpPlace) {
+    private CoreLoader createAdPlaceLoader(String placeName, MpPlace mpPlace) {
         CoreLoader loader = null;
         boolean useRemote = true;
         MpConfig localConfig = DataConfig.get(mContext).getAdConfig();
         if (localConfig != null && mpPlace == null) {
-            mpPlace = localConfig.get(pidName);
+            mpPlace = localConfig.get(placeName);
             useRemote = false;
         }
-        LogHelper.v(LogHelper.TAG, "pidName : " + pidName + " , mpPlace : " + mpPlace);
+        LogHelper.v(LogHelper.TAG, "placeName : " + placeName + " , mpPlace : " + mpPlace);
         if (mpPlace != null) {
             loader = new CoreLoader(mContext);
             loader.setAdPlaceConfig(mpPlace);
             loader.init();
         }
-        LogHelper.v(LogHelper.TAG, "pidName [" + pidName + "] use remote adplace : " + useRemote);
+        LogHelper.v(LogHelper.TAG, "placeName [" + placeName + "] use remote adplace : " + useRemote);
         return loader;
     }
 
-    public boolean isInterstitialLoaded(String pidName) {
-        CoreLoader loader = getAdLoader(pidName);
+    public boolean isInterstitialLoaded(String placeName) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             return loader.isInterstitialLoaded();
         }
         return false;
     }
 
-    public void loadInterstitial(String pidName) {
-        loadInterstitial(null, pidName);
+    public void loadInterstitial(String placeName) {
+        loadInterstitial(null, placeName);
     }
 
-    public void loadInterstitial(String pidName, OnMpSdkListener l) {
-        loadInterstitial(null, pidName, l);
+    public void loadInterstitial(String placeName, OnMpSdkListener l) {
+        loadInterstitial(null, placeName, l);
     }
 
-    public void loadInterstitial(Activity activity, String pidName) {
-        loadInterstitial(activity, pidName, null);
+    public void loadInterstitial(Activity activity, String placeName) {
+        loadInterstitial(activity, placeName, null);
     }
 
-    public void loadInterstitial(Activity activity, String pidName, OnMpSdkListener l) {
-        CoreLoader loader = getAdLoader(pidName, true);
+    public void loadInterstitial(Activity activity, String placeName, OnMpSdkListener l) {
+        CoreLoader loader = getAdLoader(placeName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             if (activity == null) {
@@ -235,159 +235,159 @@ public class MpSdk {
             loader.loadInterstitial(activity);
         } else {
             if (l != null) {
-                l.onError(pidName, null);
+                l.onError(placeName, null);
             }
         }
     }
 
-    public void showInterstitial(String pidName) {
-        CoreLoader loader = getAdLoader(pidName);
+    public void showInterstitial(String placeName) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             loader.showInterstitial();
         }
     }
 
-    public boolean isBannerLoaded(String pidName) {
-        CoreLoader loader = getAdLoader(pidName);
+    public boolean isBannerLoaded(String placeName) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             return loader.isBannerLoaded();
         }
         return false;
     }
 
-    public void loadBanner(String pidName, OnMpSdkListener l) {
-        loadBanner(pidName, new MpParams.Builder().build(), l);
+    public void loadBanner(String placeName, OnMpSdkListener l) {
+        loadBanner(placeName, new MpParams.Builder().build(), l);
     }
 
-    public void loadBanner(String pidName, MpParams mpParams) {
-        loadBanner(pidName, mpParams, null);
+    public void loadBanner(String placeName, MpParams mpParams) {
+        loadBanner(placeName, mpParams, null);
     }
 
-    public void loadBanner(String pidName, MpParams mpParams, OnMpSdkListener l) {
-        CoreLoader loader = getAdLoader(pidName, true);
+    public void loadBanner(String placeName, MpParams mpParams, OnMpSdkListener l) {
+        CoreLoader loader = getAdLoader(placeName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             loader.loadBanner(mpParams);
         } else {
             if (l != null) {
-                l.onError(pidName, null);
+                l.onError(placeName, null);
             }
         }
     }
 
-    public void showBanner(String pidName, ViewGroup adContainer) {
-        showBanner(pidName, null, adContainer);
+    public void showBanner(String placeName, ViewGroup adContainer) {
+        showBanner(placeName, null, adContainer);
     }
 
-    public void showBanner(String pidName, MpParams mpParams, ViewGroup adContainer) {
-        CoreLoader loader = getAdLoader(pidName);
+    public void showBanner(String placeName, MpParams mpParams, ViewGroup adContainer) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             loader.showBanner(adContainer, mpParams);
         }
     }
     ///////////////////////////////////////////////////////////////////////
-    public boolean isNativeLoaded(String pidName) {
-        CoreLoader loader = getAdLoader(pidName);
+    public boolean isNativeLoaded(String placeName) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             return loader.isNativeLoaded();
         }
         return false;
     }
 
-    public void loadNative(String pidName, OnMpSdkListener l) {
-        loadNative(pidName, new MpParams.Builder().build(), l);
+    public void loadNative(String placeName, OnMpSdkListener l) {
+        loadNative(placeName, new MpParams.Builder().build(), l);
     }
 
-    public void loadNative(String pidName, MpParams mpParams) {
-        loadNative(pidName, mpParams, null);
+    public void loadNative(String placeName, MpParams mpParams) {
+        loadNative(placeName, mpParams, null);
     }
 
-    public void loadNative(String pidName, MpParams mpParams, OnMpSdkListener l) {
-        CoreLoader loader = getAdLoader(pidName, true);
+    public void loadNative(String placeName, MpParams mpParams, OnMpSdkListener l) {
+        CoreLoader loader = getAdLoader(placeName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             loader.loadNative(mpParams);
         } else {
             if (l != null) {
-                l.onError(pidName, null);
+                l.onError(placeName, null);
             }
         }
     }
 
-    public void showNative(String pidName, ViewGroup adContainer) {
-        showNative(pidName, null, adContainer);
+    public void showNative(String placeName, ViewGroup adContainer) {
+        showNative(placeName, null, adContainer);
     }
 
-    public void showNative(String pidName, MpParams mpParams, ViewGroup adContainer) {
-        CoreLoader loader = getAdLoader(pidName);
+    public void showNative(String placeName, MpParams mpParams, ViewGroup adContainer) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             loader.showNative(adContainer, mpParams);
         }
     }
 
     ///////////////////////////////////////////////////////////////////////
-    public boolean isCommonViewLoaded(String pidName) {
-        CoreLoader loader = getAdLoader(pidName);
+    public boolean isCommonViewLoaded(String placeName) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             return loader.isCommonViewLoaded();
         }
         return false;
     }
 
-    public void loadCommonView(String pidName, OnMpSdkListener l) {
-        loadCommonView(pidName, new MpParams.Builder().build(), l);
+    public void loadCommonView(String placeName, OnMpSdkListener l) {
+        loadCommonView(placeName, new MpParams.Builder().build(), l);
     }
 
-    public void loadCommonView(String pidName, MpParams mpParams) {
-        loadCommonView(pidName, mpParams, null);
+    public void loadCommonView(String placeName, MpParams mpParams) {
+        loadCommonView(placeName, mpParams, null);
     }
 
-    public void loadCommonView(String pidName, MpParams mpParams, OnMpSdkListener l) {
-        CoreLoader loader = getAdLoader(pidName, true);
+    public void loadCommonView(String placeName, MpParams mpParams, OnMpSdkListener l) {
+        CoreLoader loader = getAdLoader(placeName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             loader.loadCommonView(mpParams);
         } else {
             if (l != null) {
-                l.onError(pidName, null);
+                l.onError(placeName, null);
             }
         }
     }
 
-    public void showCommonView(String pidName, ViewGroup adContainer) {
-        showCommonView(pidName, null, adContainer);
+    public void showCommonView(String placeName, ViewGroup adContainer) {
+        showCommonView(placeName, null, adContainer);
     }
 
-    public void showCommonView(String pidName, MpParams mpParams, ViewGroup adContainer) {
-        CoreLoader loader = getAdLoader(pidName);
+    public void showCommonView(String placeName, MpParams mpParams, ViewGroup adContainer) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             loader.showCommonView(adContainer, mpParams);
         }
     }
     /////////////////////////////////////////////////////////////////////////
 
-    public boolean isRewardVideoLoaded(String pidName) {
-        CoreLoader loader = getAdLoader(pidName);
+    public boolean isRewardVideoLoaded(String placeName) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             return loader.isRewardVideoLoaded();
         }
         return false;
     }
 
-    public void loadRewardVideo(String pidName) {
-        loadRewardVideo(null, pidName);
+    public void loadRewardVideo(String placeName) {
+        loadRewardVideo(null, placeName);
     }
 
-    public void loadRewardVideo(String pidName, OnMpSdkListener l) {
-        loadRewardVideo(null, pidName, l);
+    public void loadRewardVideo(String placeName, OnMpSdkListener l) {
+        loadRewardVideo(null, placeName, l);
     }
 
-    public void loadRewardVideo(Activity activity, String pidName) {
-        loadRewardVideo(activity, pidName, null);
+    public void loadRewardVideo(Activity activity, String placeName) {
+        loadRewardVideo(activity, placeName, null);
     }
 
-    public void loadRewardVideo(Activity activity, String pidName, OnMpSdkListener l) {
-        CoreLoader loader = getAdLoader(pidName, true);
+    public void loadRewardVideo(Activity activity, String placeName, OnMpSdkListener l) {
+        CoreLoader loader = getAdLoader(placeName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             if (activity == null) {
@@ -398,34 +398,34 @@ public class MpSdk {
             loader.loadRewardVideo(activity);
         } else {
             if (l != null) {
-                l.onError(pidName, null);
+                l.onError(placeName, null);
             }
         }
     }
 
-    public void showRewardVideo(String pidName) {
-        CoreLoader loader = getAdLoader(pidName);
+    public void showRewardVideo(String placeName) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             loader.showRewardVideo();
         }
     }
 
-    public void resume(String pidName) {
-        CoreLoader loader = getAdLoader(pidName);
+    public void resume(String placeName) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             loader.resume();
         }
     }
 
-    public void pause(String pidName) {
-        CoreLoader loader = getAdLoader(pidName);
+    public void pause(String placeName) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             loader.pause();
         }
     }
 
-    public void destroy(String pidName) {
-        CoreLoader loader = getAdLoader(pidName);
+    public void destroy(String placeName) {
+        CoreLoader loader = getAdLoader(placeName);
         if (loader != null) {
             loader.destroy();
         }

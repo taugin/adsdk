@@ -40,7 +40,7 @@ public class MpConfig {
 
     @Override
     public String toString() {
-        return "adc{" +
+        return "mp config{" +
                 ", list=" + mpPlaceList +
                 '}';
     }

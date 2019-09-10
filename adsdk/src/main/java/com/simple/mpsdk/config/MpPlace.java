@@ -88,7 +88,7 @@ public class MpPlace {
 
     @Override
     public String toString() {
-        return "adp{" +
+        return "mp place{" +
                 "name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", pid='" + pid + '\'' +

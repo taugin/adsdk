@@ -41,7 +41,7 @@ import java.util.Set;
  * Created by Administrator on 2018/6/28.
  */
 
-public class MopubLoader extends AbstractSdkLoader {
+public class MopubLoader extends BaseMopubLoader {
 
     private MoPubInterstitial moPubInterstitial;
     private MoPubView loadingView;

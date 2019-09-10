@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Administrator on 2018/2/9.
  */
 
-public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
+public abstract class BaseMopubLoader implements ISdkLoader, Handler.Callback {
 
     // 广告的最大默认缓存时间
     protected static final long MAX_CACHED_TIME = 30 * 60 * 1000;
@@ -86,11 +86,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected boolean checkPlaceConfig() {
         if (mMpPlace == null) {
-            LogHelper.e(LogHelper.TAG, "ad place is null");
+            LogHelper.e(LogHelper.TAG, "mp place is null");
             return false;
         }
         if (TextUtils.isEmpty(mMpPlace.getPid())) {
-            LogHelper.e(LogHelper.TAG, "pid is empty");
+            LogHelper.e(LogHelper.TAG, "placement id is empty");
             return false;
         }
         return true;
@@ -224,12 +224,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
                 mHandler.sendEmptyMessageDelayed(MSG_LOADING_TIMEOUT, getTimeout());
-                LogHelper.v(LogHelper.TAG, getSdkName() + " - " + getAdType() + " - " + mMpPlace.getName() + " - send time out message : " + getTimeout());
+                LogHelper.v(LogHelper.TAG, getSdkName() + " - " + getAdType() + " - " + mMpPlace.getName() + " - set timeout : " + getTimeout());
             }
         } else {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
-                LogHelper.v(LogHelper.TAG, getSdkName() + " - " + getAdType() + " - " + mMpPlace.getName() + " - remove time out message");
+                LogHelper.v(LogHelper.TAG, getSdkName() + " - " + getAdType() + " - " + mMpPlace.getName() + " - unset timeout");
             }
         }
     }
