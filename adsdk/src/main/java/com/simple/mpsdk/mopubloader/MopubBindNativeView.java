@@ -275,7 +275,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
         ViewGroup viewGroup = layout.findViewById(mParams.getAdIcon());
         if (viewGroup != null) {
-            viewGroup.addView(iconView);
+            viewGroup.addView(iconView, -1, -1);
         }
 
         FacebookAdRenderer.FacebookViewBinder binder =

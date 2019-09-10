@@ -19,7 +19,7 @@ public class BaseBindNativeView {
             RelativeLayout relativeLayout = new RelativeLayout(layout.getContext());
             relativeLayout.setId(iconId);
             replaceSrcViewToDstView(view, relativeLayout);
-            relativeLayout.addView(view);
+            relativeLayout.addView(view, -1, -1);
             view.setId(newIconId);
             return view.getId();
         }
@@ -37,7 +37,7 @@ public class BaseBindNativeView {
                 if (!findView) {
                     ImageView imageView = new ImageView(iconLayout.getContext());
                     imageView.setId(newIconId);
-                    iconLayout.addView(imageView);
+                    iconLayout.addView(imageView, -1, -1);
                 }
             }
         }

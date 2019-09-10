@@ -2,17 +2,13 @@ package com.simple.mpsdk.mopubloader;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.ImageView;
 
-import com.simple.mpsdk.RewardItem;
-import com.simple.mpsdk.baseloader.AbstractSdkLoader;
-import com.simple.mpsdk.config.AdPlace;
-import com.simple.mpsdk.constant.Constant;
-import com.simple.mpsdk.framework.Params;
-import com.simple.mpsdk.log.LogHelper;
 import com.mopub.common.MoPub;
 import com.mopub.common.MoPubReward;
 import com.mopub.common.SdkConfiguration;
@@ -33,6 +29,12 @@ import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
 import com.mopub.nativeads.MoPubVideoNativeAdRenderer;
 import com.mopub.nativeads.NativeAd;
 import com.mopub.nativeads.NativeErrorCode;
+import com.simple.mpsdk.RewardItem;
+import com.simple.mpsdk.baseloader.AbstractSdkLoader;
+import com.simple.mpsdk.config.AdPlace;
+import com.simple.mpsdk.constant.Constant;
+import com.simple.mpsdk.framework.Params;
+import com.simple.mpsdk.log.LogHelper;
 
 import java.util.Set;
 
@@ -664,11 +666,47 @@ public class MopubLoader extends AbstractSdkLoader {
                         }
                     }
                 }
+                showIconView(adView, mParams.getAdIcon());
             } catch (Exception e) {
                 LogHelper.e(LogHelper.TAG, "error : " + e);
             }
         } else {
             LogHelper.e(LogHelper.TAG, "nativeAd is null");
+        }
+    }
+
+    private void showIconView(View adView, int iconId) {
+        try {
+            if (mParams.getAdIcon() > 0) {
+                View view = adView.findViewById(iconId);
+                if (view instanceof ImageView) {
+                    ImageView imageView = (ImageView) view;
+                    Drawable drawable = imageView.getDrawable();
+                    if (drawable != null) {
+                        imageView.setVisibility(View.VISIBLE);
+                    }
+                } else if (view instanceof ViewGroup) {
+                    ImageView imageView = null;
+                    ViewGroup iconLayout = (ViewGroup) view;
+                    if (iconLayout != null) {
+                        int count = iconLayout.getChildCount();
+                        for (int index = 0; index < count; index++) {
+                            View v = iconLayout.getChildAt(index);
+                            if (v instanceof ImageView) {
+                                imageView = (ImageView) v;
+                                break;
+                            }
+                        }
+                        if (imageView != null) {
+                            Drawable drawable = imageView.getDrawable();
+                            if (drawable != null) {
+                                imageView.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
         }
     }
 
