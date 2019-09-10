@@ -3,6 +3,7 @@ package com.simple.mpsdk.baseloader;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.simple.mpsdk.log.LogHelper;
 
@@ -11,6 +12,31 @@ import com.simple.mpsdk.log.LogHelper;
  */
 
 public class BaseBindNativeView {
+
+    protected int convertImageViewToViewGroup(View layout, int iconId, int newIconId) {
+        View view = layout.findViewById(iconId);
+        if (view instanceof ImageView) {
+            RelativeLayout relativeLayout = new RelativeLayout(layout.getContext());
+            relativeLayout.setId(iconId);
+            replaceSrcViewToDstView(view, relativeLayout);
+            relativeLayout.addView(view);
+            view.setId(newIconId);
+            return view.getId();
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup iconLayout = (ViewGroup) view;
+            if (iconLayout != null) {
+                int count = iconLayout.getChildCount();
+                for (int index = 0; index < count; index++) {
+                    View v = iconLayout.getChildAt(index);
+                    if (v instanceof ImageView) {
+                        return v.getId();
+                    }
+                }
+            }
+        }
+        return 0;
+    }
 
     private void restoreIconView(View rootView, int iconId) {
         try {
@@ -28,7 +54,7 @@ public class BaseBindNativeView {
      * @param dstView 替换成的最终view
      * @return
      */
-    protected void replaceSrcViewToDstView(View srcView, View dstView) {
+    private void replaceSrcViewToDstView(View srcView, View dstView) {
         LogHelper.v(LogHelper.TAG, "replace view for correct type");
         if (srcView != null && dstView != null) {
             dstView.setId(srcView.getId());

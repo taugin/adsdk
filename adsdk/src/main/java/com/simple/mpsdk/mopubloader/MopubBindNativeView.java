@@ -154,31 +154,6 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
     }
 
-    private int convertImageViewToViewGroup(View layout) {
-        View view = layout.findViewById(mParams.getAdIcon());
-        if (view instanceof ImageView) {
-            RelativeLayout relativeLayout = new RelativeLayout(layout.getContext());
-            relativeLayout.setId(mParams.getAdIcon());
-            replaceSrcViewToDstView(view, relativeLayout);
-            relativeLayout.addView(view);
-            view.setId(getIconViewId());
-            return view.getId();
-        }
-        if (view instanceof ViewGroup) {
-            ViewGroup iconLayout = (ViewGroup) view;
-            if (iconLayout != null) {
-                int count = iconLayout.getChildCount();
-                for (int index = 0; index < count; index++) {
-                    View v = iconLayout.getChildAt(index);
-                    if (v instanceof ImageView) {
-                        return v.getId();
-                    }
-                }
-            }
-        }
-        return 0;
-    }
-
     private void bindVideoRender(Context context, MoPubNative nativeAd) {
         View layout = null;
         if (mParams.getNativeRootView() != null) {
@@ -188,7 +163,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else {
             LogHelper.e(LogHelper.TAG, "********************bindVideoRender  root layout is null");
         }
-        int realIconId = convertImageViewToViewGroup(layout);
+        int realIconId = convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
         MoPubVideoAdRender mopubVideoRender = new MoPubVideoAdRender(getVideoViewBinder(context, layout, realIconId), layout);
         nativeAd.registerAdRenderer(mopubVideoRender);
     }
@@ -226,7 +201,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else {
             LogHelper.e(LogHelper.TAG, "********************bindStaticRender root layout is null");
         }
-        int realIconId = convertImageViewToViewGroup(layout);
+        int realIconId = convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
         MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout, realIconId), layout);
         nativeAd.registerAdRenderer(moPubAdRenderer);
     }
@@ -260,7 +235,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else {
             LogHelper.e(LogHelper.TAG, "********************bindAdMobRender root layout is null");
         }
-        int realIconId = convertImageViewToViewGroup(layout);
+        int realIconId = convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
         GooglePlayServicesAdRenderer adRender = new GooglePlayServicesAdRenderer(getVideoViewBinder(context, layout, realIconId), layout);
         nativeAd.registerAdRenderer(adRender);
     }
@@ -275,7 +250,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
             LogHelper.e(LogHelper.TAG, "********************bindFBRender root layout is null");
         }
 
-        convertImageViewToViewGroup(layout);
+        convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
         int adIconViewId = 0;
         int mediaViewId = 0;
         ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
@@ -354,7 +329,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else {
             LogHelper.e(LogHelper.TAG, "********************bindInmobiRender root layout is null");
         }
-        int realIconId = convertImageViewToViewGroup(layout);
+        int realIconId = convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
         InMobiNativeAdRenderer render = new InMobiNativeAdRenderer(getStaticViewBinder(context, layout, realIconId), layout);
         nativeAd.registerAdRenderer(render);
     }
