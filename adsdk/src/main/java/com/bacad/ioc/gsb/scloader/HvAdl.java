@@ -102,7 +102,7 @@ public class HvAdl extends Bldr {
                             if (HvPcy.get(mContext).isShowBottom()
                                     || Constant.TYPE_BANNER.equals(adType)
                                     || Constant.TYPE_NATIVE.equals(adType)) {
-                                show(pidName, source, adType);
+                                show(pidName, source, adType, HvPcy.get(mContext).getType());
                             } else {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }

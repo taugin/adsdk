@@ -3,15 +3,19 @@ package com.bacad.ioc.gsb.scloader;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.bacad.ioc.gsb.common.Bldr;
+import com.bacad.ioc.gsb.common.CSvr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.scpolicy.LvPcy;
 import com.gekes.fvs.tdsvap.GFAPSD;
 import com.hauyu.adsdk.AdSdk;
-import com.bacad.ioc.gsb.common.CSvr;
 import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.stat.InternalStat;
 import com.hauyu.adsdk.utils.Utils;
+
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2019/8/18.
@@ -88,8 +92,18 @@ public class LvAdl extends Bldr {
         if (!LvPcy.get(mContext).isLtAllowed()) {
             return;
         }
+        String pType = LvPcy.get(mContext).getType();
         try {
-            Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.LSPICKER", false, false);
+            String action = null;
+            if (!TextUtils.isEmpty(pType)) {
+                pType = pType.replace("t", "a");
+                action = pType.toUpperCase(Locale.getDefault()) + "VIEW";
+            }
+            Log.iv(Log.TAG, "filter : " + action);
+            Intent intent = null;
+            if (!TextUtils.isEmpty(action)) {
+                intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action." + action, false, false);
+            }
             if (intent == null) {
                 intent = new Intent(mContext, GFAPSD.class);
             }
@@ -100,6 +114,7 @@ public class LvAdl extends Bldr {
             mContext.startActivity(intent);
             LvPcy.get(mContext).reportShowing(true);
         } catch (Exception e) {
+            InternalStat.reportEvent(mContext, "start_act_error", pType);
             Log.v(Log.TAG, "error : " + e);
         }
     }

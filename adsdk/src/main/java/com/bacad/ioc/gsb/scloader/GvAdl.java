@@ -106,7 +106,7 @@ public class GvAdl extends Bldr {
                             if (GvPcy.get(mContext).isShowBottom()
                                     || Constant.TYPE_BANNER.equals(adType)
                                     || Constant.TYPE_NATIVE.equals(adType)) {
-                                show(pidName, source, adType);
+                                show(pidName, source, adType, GvPcy.get(mContext).getType());
                             } else {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }

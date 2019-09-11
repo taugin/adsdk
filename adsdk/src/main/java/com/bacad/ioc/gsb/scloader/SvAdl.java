@@ -106,7 +106,7 @@ public class SvAdl extends Bldr implements Handler.Callback {
                             if (SvPcy.get(mContext).isShowBottom()
                                     || Constant.TYPE_BANNER.equals(adType)
                                     || Constant.TYPE_NATIVE.equals(adType)) {
-                                show(pidName, source, adType);
+                                show(pidName, source, adType, SvPcy.get(mContext).getType());
                             } else {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }

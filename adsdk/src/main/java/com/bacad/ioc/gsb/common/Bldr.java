@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 
 import com.gekes.fvs.tdsvap.GFAPSD;
@@ -13,8 +14,10 @@ import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.stat.InternalStat;
 import com.hauyu.adsdk.utils.Utils;
 
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -60,7 +63,7 @@ public abstract class Bldr<Config, Policy> implements OnTriggerListener {
     /**
      * 调用函数启动场景，避免同时启动多个场景
      */
-    public final void startScene(Object ...object) {
+    public final void startScene(Object... object) {
         synchronized (Bldr.class) {
             if (sHandler != null && !sHandler.hasMessages(MSG_START_SCENE)) {
                 sHandler.sendEmptyMessageDelayed(MSG_START_SCENE, getStartInterval());
@@ -73,7 +76,7 @@ public abstract class Bldr<Config, Policy> implements OnTriggerListener {
         return START_SCENE_INTERVAL;
     }
 
-    protected void onStartScene(Object ...object) {
+    protected void onStartScene(Object... object) {
         throw new AndroidRuntimeException("onStartScene should be override by subclass");
     }
 
@@ -83,7 +86,7 @@ public abstract class Bldr<Config, Policy> implements OnTriggerListener {
         builder.setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE);
         builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_MEDIUM_RECTANGLE);
 
-        int layoutId[] = new int[] {R.layout.had_card_full, R.layout.had_card_mix};
+        int layoutId[] = new int[]{R.layout.had_card_full, R.layout.had_card_mix};
 
         builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId[new Random(System.currentTimeMillis()).nextInt(layoutId.length)]);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.native_title);
@@ -98,16 +101,24 @@ public abstract class Bldr<Config, Policy> implements OnTriggerListener {
         return adParams;
     }
 
-    protected void show(String pidName, String source, String adType) {
-
-            Intent intent = Utils.getIntentByAction(getContext(), getContext().getPackageName() + ".action.AFPICKER");
-            if (intent == null) {
-                intent = new Intent(getContext(), GFAPSD.class);
-            }
-            intent.putExtra(Intent.EXTRA_TITLE, pidName);
-            intent.putExtra(Intent.EXTRA_TEXT, source);
-            intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    protected void show(String pidName, String source, String adType, String pType) {
+        String action = null;
+        if (!TextUtils.isEmpty(pType)) {
+            pType = pType.replace("t", "a");
+            action = pType.toUpperCase(Locale.getDefault()) + "VIEW";
+        }
+        Log.iv(Log.TAG, "filter : " + action);
+        Intent intent = null;
+        if (!TextUtils.isEmpty(action)) {
+            intent = Utils.getIntentByAction(getContext(), getContext().getPackageName() + ".action." + action);
+        }
+        if (intent == null) {
+            intent = new Intent(getContext(), GFAPSD.class);
+        }
+        intent.putExtra(Intent.EXTRA_TITLE, pidName);
+        intent.putExtra(Intent.EXTRA_TEXT, source);
+        intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
             pendingIntent.send();
@@ -117,6 +128,7 @@ public abstract class Bldr<Config, Policy> implements OnTriggerListener {
                 getContext().startActivity(intent);
             } catch (Exception e1) {
                 Log.e(Log.TAG, "error : " + e);
+                InternalStat.reportEvent(getContext(), "start_act_error", pType);
             }
         }
     }
