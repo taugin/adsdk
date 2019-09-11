@@ -113,6 +113,7 @@ public class LvAdl extends Bldr {
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             mContext.startActivity(intent);
             LvPcy.get(mContext).reportShowing(true);
+            InternalStat.reportEvent(getContext(), "start_act_success", pType);
         } catch (Exception e) {
             InternalStat.reportEvent(mContext, "start_act_error", pType);
             Log.v(Log.TAG, "error : " + e);

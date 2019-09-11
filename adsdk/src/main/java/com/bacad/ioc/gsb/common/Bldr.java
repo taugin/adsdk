@@ -122,12 +122,14 @@ public abstract class Bldr<Config, Policy> implements OnTriggerListener {
         try {
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
             pendingIntent.send();
+            InternalStat.reportEvent(getContext(), "start_act_success", pType);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
             try {
                 getContext().startActivity(intent);
+                InternalStat.reportEvent(getContext(), "start_act_success", pType);
             } catch (Exception e1) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.e(Log.TAG, "error : " + e1);
                 InternalStat.reportEvent(getContext(), "start_act_error", pType);
             }
         }

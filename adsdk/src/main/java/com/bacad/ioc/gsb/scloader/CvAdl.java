@@ -108,6 +108,7 @@ public class CvAdl extends Bldr {
         try {
             context.startActivity(intent);
             CvPcy.get(mContext).reportShowing(true);
+            InternalStat.reportEvent(getContext(), "start_act_success", pType);
         } catch (Exception e) {
             InternalStat.reportEvent(mContext, "start_act_error", pType);
         }
