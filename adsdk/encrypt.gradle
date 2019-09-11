@@ -54,7 +54,7 @@ project.afterEvaluate {
                 String adFileGenerate = String.format("adFileGenerate%s", productFlavor)
                 project.tasks.create(adFileGenerate, {
                     doLast {
-                        adFileGenerate(Flavor.name)
+                        adFileGenerateByUser(Flavor.name)
                     }
                 })
             }
@@ -85,7 +85,7 @@ project.afterEvaluate {
 
         project.tasks.create("adFileGenerate", {
             doLast {
-                adFileGenerate(null)
+                adFileGenerateByUser(null)
             }
         })
     }
@@ -164,7 +164,7 @@ def getAssetsOutDir(flavor) {
  * @param flavor
  * @return
  */
-def adFileGenerate(flavor) {
+def adFileGenerateByUser(flavor) {
     def appId = getApplicationId(flavor)
     def pkgnameMd5 = Aes.string2MD5(appId)
     def adConfigName = "cfg" + pkgnameMd5.substring(0, 8) + ".[dat/json]"
