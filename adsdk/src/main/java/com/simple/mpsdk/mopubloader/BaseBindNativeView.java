@@ -58,10 +58,9 @@ public class BaseBindNativeView {
      * 替换view
      * @param srcView 原始View
      * @param dstView 替换成的最终view
-     * @return
      */
     private void replaceSrcViewToDstView(View srcView, View dstView) {
-        LogHelper.v(LogHelper.TAG, "replace view");
+        LogHelper.iv(LogHelper.TAG, "replace view");
         if (srcView != null && dstView != null) {
             dstView.setId(srcView.getId());
             ViewGroup.LayoutParams srcParams = srcView.getLayoutParams();
