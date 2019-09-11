@@ -169,10 +169,14 @@ public class MopubBindNativeView extends BaseBindNativeView {
 
     private MediaViewBinder getVideoViewBinder(Context context, View layout) {
         int realIconId = convertImageViewToViewGroup(layout, mParams.getAdIcon(), getIconViewId());
+        int mediaLayoutId = 0;
         ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
-        MediaLayout mediaLayout = createMediaLayout(context);
-        mediaLayout.setId(getMediaLayoutId());
-        coverLayout.addView(mediaLayout);
+        if (coverLayout != null) {
+            MediaLayout mediaLayout = createMediaLayout(context);
+            mediaLayout.setId(getMediaLayoutId());
+            coverLayout.addView(mediaLayout);
+            mediaLayoutId = mediaLayout.getId();
+        }
 
         ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
         adChoiceLayout.setVisibility(View.VISIBLE);
@@ -184,7 +188,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         adChoiceLayout.addView(imageView, size, size);
 
         MediaViewBinder videoViewBinder = new MediaViewBinder.Builder(mParams.getNativeRootLayout())
-                .mediaLayoutId(mediaLayout.getId())
+                .mediaLayoutId(mediaLayoutId)
                 .iconImageId(realIconId)
                 .titleId(mParams.getAdTitle())
                 .textId(mParams.getAdDetail())
@@ -257,11 +261,13 @@ public class MopubBindNativeView extends BaseBindNativeView {
         int adIconViewId = 0;
         int mediaViewId = 0;
         ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
-        MediaView mediaView = createMediaView(context);
-        if (mediaView != null) {
-            mediaView.setId(getMediaViewId());
-            coverLayout.addView(mediaView);
-            mediaViewId = mediaView.getId();
+        if (coverLayout != null) {
+            MediaView mediaView = createMediaView(context);
+            if (mediaView != null) {
+                mediaView.setId(getMediaViewId());
+                coverLayout.addView(mediaView);
+                mediaViewId = mediaView.getId();
+            }
         }
 
         ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
