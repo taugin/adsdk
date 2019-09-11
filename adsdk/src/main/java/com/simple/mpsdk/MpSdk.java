@@ -139,11 +139,11 @@ public class MpSdk {
         return DataConfig.get(mContext).getString(key);
     }
 
-    private CoreLoader getAdLoader(String placeName) {
-        return getAdLoader(placeName, false);
+    private CoreLoader getMpLoader(String placeName) {
+        return getMpLoader(placeName, false);
     }
 
-    private CoreLoader getAdLoader(String placeName, boolean forLoad) {
+    private CoreLoader getMpLoader(String placeName, boolean forLoad) {
         LogHelper.d(LogHelper.TAG, "get mp loader is for load : " + forLoad);
         // 获取引用的place name
         String refPlaceName = placeName;
@@ -204,7 +204,7 @@ public class MpSdk {
     }
 
     public boolean isInterstitialLoaded(String placeName) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             return loader.isInterstitialLoaded();
         }
@@ -224,7 +224,7 @@ public class MpSdk {
     }
 
     public void loadInterstitial(Activity activity, String placeName, OnMpSdkListener l) {
-        CoreLoader loader = getAdLoader(placeName, true);
+        CoreLoader loader = getMpLoader(placeName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             if (activity == null) {
@@ -241,14 +241,14 @@ public class MpSdk {
     }
 
     public void showInterstitial(String placeName) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             loader.showInterstitial();
         }
     }
 
     public boolean isBannerLoaded(String placeName) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             return loader.isBannerLoaded();
         }
@@ -264,7 +264,7 @@ public class MpSdk {
     }
 
     public void loadBanner(String placeName, MpParams mpParams, OnMpSdkListener l) {
-        CoreLoader loader = getAdLoader(placeName, true);
+        CoreLoader loader = getMpLoader(placeName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             loader.loadBanner(mpParams);
@@ -280,14 +280,14 @@ public class MpSdk {
     }
 
     public void showBanner(String placeName, MpParams mpParams, ViewGroup adContainer) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             loader.showBanner(adContainer, mpParams);
         }
     }
     ///////////////////////////////////////////////////////////////////////
     public boolean isNativeLoaded(String placeName) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             return loader.isNativeLoaded();
         }
@@ -303,7 +303,7 @@ public class MpSdk {
     }
 
     public void loadNative(String placeName, MpParams mpParams, OnMpSdkListener l) {
-        CoreLoader loader = getAdLoader(placeName, true);
+        CoreLoader loader = getMpLoader(placeName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             loader.loadNative(mpParams);
@@ -319,7 +319,7 @@ public class MpSdk {
     }
 
     public void showNative(String placeName, MpParams mpParams, ViewGroup adContainer) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             loader.showNative(adContainer, mpParams);
         }
@@ -327,7 +327,7 @@ public class MpSdk {
 
     ///////////////////////////////////////////////////////////////////////
     public boolean isCommonViewLoaded(String placeName) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             return loader.isCommonViewLoaded();
         }
@@ -343,7 +343,7 @@ public class MpSdk {
     }
 
     public void loadCommonView(String placeName, MpParams mpParams, OnMpSdkListener l) {
-        CoreLoader loader = getAdLoader(placeName, true);
+        CoreLoader loader = getMpLoader(placeName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             loader.loadCommonView(mpParams);
@@ -359,7 +359,7 @@ public class MpSdk {
     }
 
     public void showCommonView(String placeName, MpParams mpParams, ViewGroup adContainer) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             loader.showCommonView(adContainer, mpParams);
         }
@@ -367,7 +367,7 @@ public class MpSdk {
     /////////////////////////////////////////////////////////////////////////
 
     public boolean isRewardVideoLoaded(String placeName) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             return loader.isRewardVideoLoaded();
         }
@@ -387,7 +387,7 @@ public class MpSdk {
     }
 
     public void loadRewardVideo(Activity activity, String placeName, OnMpSdkListener l) {
-        CoreLoader loader = getAdLoader(placeName, true);
+        CoreLoader loader = getMpLoader(placeName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l);
             if (activity == null) {
@@ -404,28 +404,28 @@ public class MpSdk {
     }
 
     public void showRewardVideo(String placeName) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             loader.showRewardVideo();
         }
     }
 
     public void resume(String placeName) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             loader.resume();
         }
     }
 
     public void pause(String placeName) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             loader.pause();
         }
     }
 
     public void destroy(String placeName) {
-        CoreLoader loader = getAdLoader(placeName);
+        CoreLoader loader = getMpLoader(placeName);
         if (loader != null) {
             loader.destroy();
         }

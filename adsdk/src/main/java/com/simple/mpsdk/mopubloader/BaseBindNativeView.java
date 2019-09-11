@@ -61,7 +61,7 @@ public class BaseBindNativeView {
      * @return
      */
     private void replaceSrcViewToDstView(View srcView, View dstView) {
-        LogHelper.v(LogHelper.TAG, "replace view for correct type");
+        LogHelper.v(LogHelper.TAG, "replace view");
         if (srcView != null && dstView != null) {
             dstView.setId(srcView.getId());
             ViewGroup.LayoutParams srcParams = srcView.getLayoutParams();
