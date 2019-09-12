@@ -53,11 +53,6 @@ dependencies {
     implementation 'com.github.megatronking.stringfog:xor:1.0.0'
     implementation 'com.android.support:appcompat-v7:25.2.0'
     implementation 'com.android.support:percent:25.2.0'
-    implementation('com.facebook.android:audience-network-sdk:5.4.0') {
-        exclude group: 'com.google.android.gms'
-    }
-    implementation 'com.google.android.gms:play-services-ads:15.0.1'
-    implementation 'com.applovin:applovin-sdk:8.1.4'
 
     // MoPub
     implementation('com.mopub:mopub-sdk:5.7.1@aar') {
@@ -68,24 +63,35 @@ dependencies {
         exclude module: 'mopub-sdk-interstitial' // use below com.mopub:mopub-sdk-interstitial:5.4.0-webeye@aar'
     }
     implementation 'com.mopub:mopub-sdk-interstitial:5.7.1-webeye@aar'
+
+    // admob
     implementation 'com.mopub.mediation:admob:15.0.1.0-webeye2'
+    implementation 'com.google.android.gms:play-services-ads:15.0.1'
+
+    // facebook
+    implementation('com.facebook.android:audience-network-sdk:5.4.0') {
+        exclude group: 'com.google.android.gms'
+    }
     // implementation 'com.mopub.mediation:facebookaudiencenetwork:5.1.0.1-webeye@aar'
     implementation 'com.mopub.mediation:facebookaudiencenetwork:5.4.0.0'
+
+    // applovin
+    implementation 'com.applovin:applovin-sdk:8.1.4'
     implementation 'com.mopub.mediation:applovin:8.1.4.0'
-    implementation 'com.mopub.mediation:inmobi:1.0.5'
-    implementation 'com.mopub.mediation:inneractive:7.1.7.0-webeye'
 
     //inmobi
     implementation 'com.inmobi.monetization:inmobi-ads:7.2.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.mopub.mediation:inmobi:1.0.5'
 
     // Inner-Active
     implementation 'com.inneractive:ia-mraid-kit:7.2.1'
     implementation 'com.inneractive:ia-native-kit:7.2.1'
     implementation 'com.inneractive:ia-sdk-core:7.2.1'
     implementation 'com.inneractive:ia-video-kit:7.2.1'
+    implementation 'com.mopub.mediation:inneractive:7.1.7.0-webeye'
     // required resources
     implementation 'com.google.code.gson:gson:2.8.1'
 }
