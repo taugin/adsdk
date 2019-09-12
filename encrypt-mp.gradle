@@ -66,7 +66,8 @@ project.afterEvaluate {
                     }
                 })
             }
-            def aTask = project.tasks.findByName("assembleRelease");
+            String assembleTaskName = String.format("assemble%sRelease", productFlavor)
+            def aTask = project.tasks.findByName(assembleTaskName);
             if (aTask != null) {
                 aTask.doLast {
                     openReleaseDir(flavor.name)
@@ -281,10 +282,6 @@ def encryptAssetsFiles(flavor) {
     def signFile = generateSignMd5(flavor, assetDir)
     def adFilePath = getAdConfigFile(assetDir, appId);
     def mainTree = getEncryptFileTree(assetDir)
-    // println "flavor     : " + flavor
-    // println "appId      : " + appId
-    // println "secret     : " + secret
-    // println "assetDir   : " + assetDir
     if (Aes.isJson(adFilePath)) {
         try {
             Aes.encryptFile(adFilePath, secret)
@@ -292,22 +289,6 @@ def encryptAssetsFiles(flavor) {
         } catch (Exception e) {
             e.printStackTrace()
         }
-    }
-    try {
-        if (adFilePath != null && adFilePath.endsWith(getSuffix2())) {
-            def adFile = new File(adFilePath)
-            def filePath = adFile.getParent()
-            def fileName = adFile.getName()
-            fileName = fileName.replaceAll(getSuffix2(), getSuffix())
-            def newAdFile = new File(filePath, fileName)
-            println ":${project.name}:renameAdFile     [${newAdFile}]"
-            if (newAdFile.exists()) {
-                newAdFile.delete()
-            }
-            adFile.renameTo(newAdFile)
-        }
-    } catch (Exception e) {
-        e.printStackTrace()
     }
     if (mainTree != null) {
         mainTree.each { File file ->
