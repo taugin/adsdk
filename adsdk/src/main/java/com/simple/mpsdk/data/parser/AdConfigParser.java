@@ -63,7 +63,7 @@ public class AdConfigParser implements IConfigParser {
                 mpConfig.setMpPlaceList(mpPlaces);
             }
         } catch (Exception e) {
-            LogHelper.v(LogHelper.TAG, "parseAdConfigInternal error : " + e);
+            LogHelper.v(LogHelper.TAG, "parse mp config error : " + e);
         }
         return mpConfig;
     }
@@ -133,7 +133,7 @@ public class AdConfigParser implements IConfigParser {
             }
             mpPlace.setUniqueValue(Utils.string2MD5(content.trim()));
         } catch (Exception e) {
-            LogHelper.v(LogHelper.TAG, "parseAdPlace error : " + e);
+            LogHelper.v(LogHelper.TAG, "parse mp place error : " + e);
         }
         return mpPlace;
     }

@@ -110,9 +110,9 @@ public class ReportImpl implements IReport {
         LogHelper.d(LogHelper.TAG, "ReportImpl Firebase Analytics");
         Bundle bundle = new Bundle();
         if (!TextUtils.isEmpty(value)) {
-            bundle.putString("entry_point", value);
+            bundle.putString("param", value);
         } else {
-            bundle.putString("entry_point", eventId);
+            bundle.putString("param", eventId);
         }
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, String> entry : extra.entrySet()) {
@@ -153,9 +153,9 @@ public class ReportImpl implements IReport {
         LogHelper.d(LogHelper.TAG, "ReportImpl sendUmeng Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
-            map.put("entry_point", value);
+            map.put("param", value);
         } else {
-            map.put("entry_point", eventId);
+            map.put("param", eventId);
         }
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, String> entry : extra.entrySet()) {
@@ -231,7 +231,7 @@ public class ReportImpl implements IReport {
         LogHelper.d(LogHelper.TAG, "ReportImpl sendAppsflyer Analytics");
         Map<String, Object> eventValue = new HashMap<String, Object>();
         if (!TextUtils.isEmpty(value)) {
-            eventValue.put("entry_point", value);
+            eventValue.put("param", value);
         }
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, String> entry : extra.entrySet()) {
@@ -286,9 +286,9 @@ public class ReportImpl implements IReport {
         Bundle bundle = new Bundle();
 
         if (!TextUtils.isEmpty(value)) {
-            bundle.putString("entry_point", value);
+            bundle.putString("param", value);
         } else {
-            bundle.putString("entry_point", eventId);
+            bundle.putString("param", eventId);
         }
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, String> entry : extra.entrySet()) {
@@ -332,7 +332,7 @@ public class ReportImpl implements IReport {
         if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        LogHelper.pv(LogHelper.TAG, "ReportImpl stat key : " + eventId + " , value : " + pidName);
+        LogHelper.pv(LogHelper.TAG, "ReportImpl eventId : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -351,7 +351,7 @@ public class ReportImpl implements IReport {
         if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        LogHelper.pv(LogHelper.TAG, "ReportImpl stat key : " + eventId + " , value : " + pidName);
+        LogHelper.pv(LogHelper.TAG, "ReportImpl eventId : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -372,7 +372,7 @@ public class ReportImpl implements IReport {
         if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        LogHelper.pv(LogHelper.TAG, "ReportImpl stat key : " + eventId + " , value : " + pidName);
+        LogHelper.pv(LogHelper.TAG, "ReportImpl eventId : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -393,7 +393,7 @@ public class ReportImpl implements IReport {
         if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        LogHelper.pv(LogHelper.TAG, "ReportImpl stat key : " + eventId + " , value : " + pidName);
+        LogHelper.pv(LogHelper.TAG, "ReportImpl eventId : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -414,7 +414,7 @@ public class ReportImpl implements IReport {
         if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        LogHelper.pv(LogHelper.TAG, "ReportImpl stat key : " + eventId + " , value : " + pidName);
+        LogHelper.pv(LogHelper.TAG, "ReportImpl eventId : " + eventId + " , value : " + pidName);
     }
 
     @Override
@@ -437,7 +437,7 @@ public class ReportImpl implements IReport {
         if (mReportFacebook) {
             sendFacebook(context, pidName, eventId, extra);
         }
-        LogHelper.pv(LogHelper.TAG, "ReportImpl stat key : " + eventId + " , value : " + pidName);
+        LogHelper.pv(LogHelper.TAG, "ReportImpl eventId : " + eventId + " , value : " + pidName);
     }
 
     @Override
