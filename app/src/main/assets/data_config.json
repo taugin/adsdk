@@ -10,7 +10,6 @@
     {
       "name": "banner_and_native",
       "mode": "con",
-      "ai": 5000,
       "as": 1,
       "cc":["#FF6600","#4455bb22"],
       "pids": [
@@ -42,13 +41,13 @@
           "sdk": "mopub",
           "type": "banner",
           "pid": "252412d5e9364a05ab77d9396346d73d",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
@@ -66,7 +65,7 @@
           "sdk": "dfp",
           "type": "banner",
           "pid": "/6253334/dfp_example_ad",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,
