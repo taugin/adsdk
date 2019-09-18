@@ -170,6 +170,11 @@ public class AdExtra {
     public static final int NATIVE_CARD_FULL = Constant.NATIVE_CARD_FULL;
 
     /**
+     * 原生广告模板值
+     */
+    public static final int NATIVE_CARD_TINY = Constant.NATIVE_CARD_TINY;
+
+    /**
      * BANNER类型
      */
     public static final String AD_TYPE_BANNER = Constant.TYPE_BANNER;

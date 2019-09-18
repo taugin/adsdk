@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -143,25 +142,26 @@ public class MainActivity extends AppCompatActivity {
     private void loadAdViewCommon() {
         AdParams.Builder builder = new AdParams.Builder();
         //  设置外部布局参数
-        int layoutId = LAYOUT[new Random().nextInt(LAYOUT.length)];
-        if (layoutId == R.layout.ad_common_native_card_small) {
-            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
-        } else {
-            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
-        }
-        builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.FB_MEDIUM_RECTANGLE);
-        View view = LayoutInflater.from(this).inflate(layoutId, null);
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, CARDID[new Random().nextInt(CARDID.length)]);
-        // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
-        // builder.setAdRootView(AdExtra.AD_SDK_COMMON, view);
-        builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
-        builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
-        builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
-        builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
-        builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
-        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
-        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
-        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+//        int layoutId = LAYOUT[new Random().nextInt(LAYOUT.length)];
+//        if (layoutId == R.layout.ad_common_native_card_small) {
+//            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
+//        } else {
+//            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
+//        }
+//        builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.FB_MEDIUM_RECTANGLE);
+//        View view = LayoutInflater.from(this).inflate(layoutId, null);
+//        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, CARDID[new Random().nextInt(CARDID.length)]);
+//        // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
+//        // builder.setAdRootView(AdExtra.AD_SDK_COMMON, view);
+//        builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
+//        builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
+//        builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
+//        builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
+//        builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
+//        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
+//        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+//        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_TINY);
         AdParams adParams = builder.build();
 
         AdSdk.get(mContext).loadAdView("banner_and_native", adParams, mSimpleAdsdkListener);

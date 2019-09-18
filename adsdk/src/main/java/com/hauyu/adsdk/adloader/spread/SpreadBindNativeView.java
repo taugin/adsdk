@@ -95,6 +95,8 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             layoutId = R.layout.had_card_large;
         } else if (cardId == Constant.NATIVE_CARD_FULL) {
             layoutId = getFullLayout(pidConfig);
+        } else if (cardId == Constant.NATIVE_CARD_TINY) {
+            layoutId = R.layout.had_card_tiny;
         }
         View rootView = LayoutInflater.from(adContainer.getContext()).inflate(layoutId, null);
         if (rootView == null) {
