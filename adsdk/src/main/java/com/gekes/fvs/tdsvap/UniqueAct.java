@@ -87,7 +87,7 @@ import java.util.Date;
  * Created by Administrator on 2018-10-16.
  */
 
-public class GFAPSD extends Activity {
+public class UniqueAct extends Activity {
 
     private SpConfig mSpConfig;
     private GestureDetector mGestureDetector;
@@ -450,7 +450,7 @@ public class GFAPSD extends Activity {
                     Log.iv(Log.TAG, "error : " + e);
                 }
             } else {
-                Log.v(Log.TAG, "can not find loader for GFAPSD");
+                Log.v(Log.TAG, "can not find loader for UniqueAct");
                 finishActivityWithDelay();
             }
         }

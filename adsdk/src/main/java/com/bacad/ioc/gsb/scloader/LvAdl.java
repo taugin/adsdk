@@ -10,7 +10,7 @@ import com.bacad.ioc.gsb.common.Bldr;
 import com.bacad.ioc.gsb.common.CSvr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.scpolicy.LvPcy;
-import com.gekes.fvs.tdsvap.GFAPSD;
+import com.gekes.fvs.tdsvap.UniqueAct;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.InternalStat;
@@ -111,7 +111,7 @@ public class LvAdl extends Bldr {
                 intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action." + action, false, false);
             }
             if (intent == null) {
-                intent = new Intent(mContext, GFAPSD.class);
+                intent = new Intent(mContext, UniqueAct.class);
             }
             intent.putExtra(Intent.EXTRA_TITLE, placeName);
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);

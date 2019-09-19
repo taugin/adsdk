@@ -148,7 +148,7 @@
 
                         <view
                             android:id="@+id/ad_cm_speed_indicator"
-                            class="com.gekes.fvs.tdsvap.GFAPSD$BlinkImageView"
+                            class="com.gekes.fvs.tdsvap.UniqueAct$BlinkImageView"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="34dp"
@@ -157,7 +157,7 @@
 
                         <view
                             android:id="@+id/ad_cm_dot_progress_1"
-                            class="com.gekes.fvs.tdsvap.GFAPSD$DotProgress"
+                            class="com.gekes.fvs.tdsvap.UniqueAct$DotProgress"
                             android:layout_width="0dp"
                             android:layout_height="23dp"
                             android:layout_weight="1"
@@ -165,7 +165,7 @@
 
                         <view
                             android:id="@+id/ad_cm_continuous_indicator"
-                            class="com.gekes.fvs.tdsvap.GFAPSD$BlinkImageView"
+                            class="com.gekes.fvs.tdsvap.UniqueAct$BlinkImageView"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:scaleType="centerInside"
@@ -173,7 +173,7 @@
 
                         <view
                             android:id="@+id/ad_cm_dot_progress_2"
-                            class="com.gekes.fvs.tdsvap.GFAPSD$DotProgress"
+                            class="com.gekes.fvs.tdsvap.UniqueAct$DotProgress"
                             android:layout_width="0dp"
                             android:layout_height="23dp"
                             android:layout_weight="1"
@@ -181,7 +181,7 @@
 
                         <view
                             android:id="@+id/ad_cm_trickle_indicator"
-                            class="com.gekes.fvs.tdsvap.GFAPSD$BlinkImageView"
+                            class="com.gekes.fvs.tdsvap.UniqueAct$BlinkImageView"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginRight="34dp"

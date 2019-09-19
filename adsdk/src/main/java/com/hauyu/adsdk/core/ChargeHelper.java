@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.bacad.ioc.gsb.scloader.CvAdl;
 import com.bacad.ioc.gsb.scpolicy.CvPcy;
-import com.gekes.fvs.tdsvap.GFAPSD;
+import com.gekes.fvs.tdsvap.UniqueAct;
 import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
@@ -35,8 +35,8 @@ public class ChargeHelper implements View.OnClickListener {
     public static final String CTPLACE_OUTER_NAME = "ct_outer_place";
     private Activity mActivity;
     private ImageView chargeCancel, chargeMore;
-    private GFAPSD.DotProgress speedChargeProgress, continuousChargeProgress;
-    private GFAPSD.BlinkImageView speedBlink, continuousBlink, trickleBlink;
+    private UniqueAct.DotProgress speedChargeProgress, continuousChargeProgress;
+    private UniqueAct.BlinkImageView speedBlink, continuousBlink, trickleBlink;
     private TextView speedText, continuousText, trickleText;
     private TextView timeInfo, batteryLevel;
     private Timer timer;
@@ -92,7 +92,7 @@ public class ChargeHelper implements View.OnClickListener {
     private AdParams getParams() {
         AdParams adParams = null;
         try {
-            adParams = ((GFAPSD)mActivity).getCtParams();
+            adParams = ((UniqueAct)mActivity).getCtParams();
         } catch (Exception | Error e) {
         }
         if (adParams == null) {
@@ -121,7 +121,7 @@ public class ChargeHelper implements View.OnClickListener {
 
     private void onCtShowing(View containerView) {
         try {
-            ((GFAPSD)mActivity).onCtShowing(containerView);
+            ((UniqueAct)mActivity).onCtShowing(containerView);
         } catch (Exception | Error e) {
         }
     }

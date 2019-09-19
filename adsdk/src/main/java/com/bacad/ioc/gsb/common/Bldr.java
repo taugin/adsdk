@@ -8,7 +8,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 
-import com.gekes.fvs.tdsvap.GFAPSD;
+import com.gekes.fvs.tdsvap.UniqueAct;
 import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
@@ -131,7 +131,7 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
             intent = Utils.getIntentByAction(getContext(), getContext().getPackageName() + ".action." + action);
         }
         if (intent == null) {
-            intent = new Intent(getContext(), GFAPSD.class);
+            intent = new Intent(getContext(), UniqueAct.class);
         }
         intent.putExtra(Intent.EXTRA_TITLE, pidName);
         intent.putExtra(Intent.EXTRA_TEXT, source);
