@@ -46,9 +46,9 @@ public interface ISceneParser {
     // 禁用间隔
     String DISABLE_INTERVAL = "di";
     // 插屏广告位名称
-    String PLACE_NAME_INT = "pni";
+    String PLACE_NAME_INT = "adi";
     // view广告位名称
-    String PLACE_NAME_ADV = "pna";
+    String PLACE_NAME_ADV = "adv";
     // 场景间隔
     String SCENE_INTERVAL = "si";
 

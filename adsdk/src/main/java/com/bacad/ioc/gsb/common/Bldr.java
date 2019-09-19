@@ -24,13 +24,11 @@ import java.util.Random;
  * Created by Administrator on 2018/12/9.
  */
 
-public abstract class Bldr<Config, Policy> implements OnTriggerListener {
+public abstract class Bldr<Policy> implements OnTriggerListener {
 
     private static final int MSG_START_SCENE = 0x10000;
 
     private static final int START_SCENE_INTERVAL = 10 * 1000;
-
-    protected Config mConfig;
 
     protected Policy mPolicy;
 
@@ -38,16 +36,8 @@ public abstract class Bldr<Config, Policy> implements OnTriggerListener {
 
     protected abstract Context getContext();
 
-    public Config getConfig() {
-        return null;
-    }
-
-    public Config createConfig() {
-        return null;
-    }
-
-    public Policy createPolicy() {
-        return null;
+    protected Bldr(Policy policy) {
+        mPolicy = policy;
     }
 
     /**
@@ -57,7 +47,35 @@ public abstract class Bldr<Config, Policy> implements OnTriggerListener {
         try {
             ((BPcy) mPolicy).reportShowing(true);
         } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
         }
+    }
+
+    public String getPlaceNameAdv() {
+        try {
+            return ((BPcy) mPolicy).getPlaceNameAdv();
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    public String getPlaceNameInt() {
+        try {
+            return ((BPcy) mPolicy).getPlaceNameInt();
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    protected String getType() {
+        try {
+            return ((BPcy) mPolicy).getType();
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return null;
     }
 
     /**
@@ -104,8 +122,8 @@ public abstract class Bldr<Config, Policy> implements OnTriggerListener {
     protected void show(String pidName, String source, String adType, String pType) {
         String action = null;
         if (!TextUtils.isEmpty(pType)) {
-            pType = pType.replace("t", "a");
-            action = pType.toUpperCase(Locale.getDefault()) + "VIEW";
+            String actType = pType.replace("t", "a");
+            action = actType.toUpperCase(Locale.getDefault()) + "VIEW";
         }
         Log.iv(Log.TAG, "filter : " + action);
         Intent intent = null;
@@ -118,9 +136,10 @@ public abstract class Bldr<Config, Policy> implements OnTriggerListener {
         intent.putExtra(Intent.EXTRA_TITLE, pidName);
         intent.putExtra(Intent.EXTRA_TEXT, source);
         intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
+        intent.putExtra(Intent.EXTRA_REPLACING, pType);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-            PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             pendingIntent.send();
             InternalStat.reportEvent(getContext(), "start_act_success", pType);
         } catch (Exception e) {

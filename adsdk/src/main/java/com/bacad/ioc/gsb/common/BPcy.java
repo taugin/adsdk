@@ -15,7 +15,9 @@ import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -38,7 +40,19 @@ public class BPcy implements Handler.Callback {
     private static final String LAST_SCENE_TIME = "pref_last_scene_time";
     public static final String LAST_SCENE_TYPE = "pref_last_scene_type";
 
+    private static Map<String, BPcy> sPcyMap = new HashMap<String, BPcy>();
+
+    public static BPcy getPcyByType(String type) {
+        try {
+            return sPcyMap.get(type);
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
     protected BPcy(Context context, String type) {
+        sPcyMap.put(type, this);
         mContext = context;
         mType = type;
         mHandler = new Handler(this);

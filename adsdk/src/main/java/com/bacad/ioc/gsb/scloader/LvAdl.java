@@ -1,5 +1,6 @@
 package com.bacad.ioc.gsb.scloader;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -32,6 +33,7 @@ public class LvAdl extends Bldr {
     private Handler mHandler = new Handler();
 
     private LvAdl(Context context) {
+        super(LvPcy.get(context));
         mContext = context.getApplicationContext();
         CSvr.get(context).registerTriggerListener(this);
     }
@@ -92,12 +94,16 @@ public class LvAdl extends Bldr {
         if (!LvPcy.get(mContext).isLtAllowed()) {
             return;
         }
+        String placeName = getPlaceNameAdv();
+        if (TextUtils.isEmpty(placeName)) {
+            return;
+        }
         String pType = LvPcy.get(mContext).getType();
         try {
             String action = null;
             if (!TextUtils.isEmpty(pType)) {
-                pType = pType.replace("t", "a");
-                action = pType.toUpperCase(Locale.getDefault()) + "VIEW";
+                String actType = pType.replace("t", "a");
+                action = actType.toUpperCase(Locale.getDefault()) + "VIEW";
             }
             Log.iv(Log.TAG, "filter : " + action);
             Intent intent = null;
@@ -107,13 +113,25 @@ public class LvAdl extends Bldr {
             if (intent == null) {
                 intent = new Intent(mContext, GFAPSD.class);
             }
+            intent.putExtra(Intent.EXTRA_TITLE, placeName);
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            mContext.startActivity(intent);
-            LvPcy.get(mContext).reportShowing(true);
-            InternalStat.reportEvent(getContext(), "start_act_success", pType);
+            intent.putExtra(Intent.EXTRA_REPLACING, pType);
+            try {
+                PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                pendingIntent.send();
+                InternalStat.reportEvent(getContext(), "start_act_success", pType);
+            } catch (Exception e) {
+                try {
+                    mContext.startActivity(intent);
+                    LvPcy.get(mContext).reportShowing(true);
+                    InternalStat.reportEvent(getContext(), "start_act_success", pType);
+                } catch (Exception e1) {
+                    InternalStat.reportEvent(mContext, "start_act_error", pType);
+                }
+            }
         } catch (Exception e) {
             InternalStat.reportEvent(mContext, "start_act_error", pType);
             Log.v(Log.TAG, "error : " + e);

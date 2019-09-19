@@ -10,12 +10,12 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.bacad.ioc.gsb.common.Bldr;
+import com.bacad.ioc.gsb.common.CSvr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.scpolicy.SvPcy;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.constant.Constant;
-import com.bacad.ioc.gsb.common.CSvr;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 
@@ -25,7 +25,6 @@ import com.hauyu.adsdk.log.Log;
 
 public class SvAdl extends Bldr implements Handler.Callback {
 
-    public static final String STPLACE_OUTER_NAME = "st_outer_place";
     private static final int LOAD_DELAY = 1000;
     private static final int MSG_ST_LOAD = 1000;
 
@@ -51,6 +50,7 @@ public class SvAdl extends Bldr implements Handler.Callback {
     private Handler mHandler = null;
 
     private SvAdl(Context context) {
+        super(SvPcy.get(context));
         mContext = context.getApplicationContext();
         mHandler = new Handler(Looper.getMainLooper(), this);
     }
@@ -93,9 +93,14 @@ public class SvAdl extends Bldr implements Handler.Callback {
             if (!SvPcy.get(mContext).isStAllowed()) {
                 return;
             }
+            String placeName = getPlaceNameAdv();
+            if (TextUtils.isEmpty(placeName)) {
+                Log.iv(Log.TAG, getType() + " not found place name");
+                return;
+            }
             Log.iv(Log.TAG, "");
-            SceneEventImpl.get().reportAdOuterRequest(mContext, SvPcy.get(mContext).getType(), STPLACE_OUTER_NAME);
-            mAdSdk.loadComplexAds(STPLACE_OUTER_NAME, new SimpleAdSdkListener() {
+            SceneEventImpl.get().reportAdOuterRequest(mContext, SvPcy.get(mContext).getType(), placeName);
+            mAdSdk.loadComplexAds(placeName, new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     SceneEventImpl.get().reportAdOuterLoaded(mContext, SvPcy.get(mContext).getType(), pidName);

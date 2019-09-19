@@ -6,12 +6,12 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.bacad.ioc.gsb.common.Bldr;
+import com.bacad.ioc.gsb.common.CSvr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.scpolicy.HvPcy;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.constant.Constant;
-import com.bacad.ioc.gsb.common.CSvr;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 
@@ -21,7 +21,6 @@ import com.hauyu.adsdk.log.Log;
 
 public class HvAdl extends Bldr {
 
-    public static final String HTPLACE_OUTER_NAME = "ht_outer_place";
     private static HvAdl sHvAdl;
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
@@ -29,6 +28,7 @@ public class HvAdl extends Bldr {
     private AdSdk mAdSdk;
 
     private HvAdl(Context context) {
+        super(HvPcy.get(context));
         mContext = context.getApplicationContext();
         CSvr.get(context).registerTriggerListener(this);
     }
@@ -82,14 +82,19 @@ public class HvAdl extends Bldr {
             if (!HvPcy.get(mContext).isHtAllowed()) {
                 return;
             }
+            String placeName = getPlaceNameAdv();
+            if (TextUtils.isEmpty(placeName)) {
+                Log.iv(Log.TAG, getType() + " not found place name");
+                return;
+            }
             if (HvPcy.get(mContext).isLoading()) {
-                Log.iv(Log.TAG, "ht is loading");
+                Log.iv(Log.TAG, getType() + " is loading");
                 return;
             }
             Log.iv(Log.TAG, "");
             HvPcy.get(mContext).setLoading(true);
-            SceneEventImpl.get().reportAdOuterRequest(mContext, HvPcy.get(mContext).getType(), HTPLACE_OUTER_NAME);
-            mAdSdk.loadComplexAds(HTPLACE_OUTER_NAME, generateAdParams(), new SimpleAdSdkListener() {
+            SceneEventImpl.get().reportAdOuterRequest(mContext, HvPcy.get(mContext).getType(), placeName);
+            mAdSdk.loadComplexAds(placeName, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);

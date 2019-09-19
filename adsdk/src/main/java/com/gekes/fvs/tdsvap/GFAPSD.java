@@ -67,14 +67,7 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import com.bacad.ioc.gsb.scloader.GvAdl;
-import com.bacad.ioc.gsb.scloader.HvAdl;
-import com.bacad.ioc.gsb.scloader.SvAdl;
-import com.bacad.ioc.gsb.scpolicy.CvPcy;
-import com.bacad.ioc.gsb.scpolicy.GvPcy;
-import com.bacad.ioc.gsb.scpolicy.HvPcy;
-import com.bacad.ioc.gsb.scpolicy.LvPcy;
-import com.bacad.ioc.gsb.scpolicy.SvPcy;
+import com.bacad.ioc.gsb.common.BPcy;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
@@ -96,13 +89,13 @@ import java.util.Date;
 
 public class GFAPSD extends Activity {
 
-    private static final String LTPLACE_OUTER_NAME = "lt_outer_place";
     private SpConfig mSpConfig;
     private GestureDetector mGestureDetector;
     private String mPidName;
     private String mSource;
     private String mAdType;
     private String mAction;
+    private String mSceneType;
     private Handler mHandler = null;
     private boolean mInLockView;
     private ViewGroup mLockAdLayout;
@@ -321,6 +314,7 @@ public class GFAPSD extends Activity {
             mSpConfig = (SpConfig) intent.getSerializableExtra(Intent.EXTRA_STREAM);
             mInLockView = intent.getBooleanExtra(Intent.EXTRA_LOCAL_ONLY, false);
             mInChargeView = intent.getBooleanExtra(Intent.EXTRA_QUIET_MODE, false);
+            mSceneType = intent.getStringExtra(Intent.EXTRA_REPLACING);
             mAction = intent.getAction();
         }
     }
@@ -448,17 +442,12 @@ public class GFAPSD extends Activity {
             boolean shown = AdSdk.get(this).showComplexAdsWithResult(mPidName, getAdParams(), mSource, mAdType, mAdLayout);
             if (shown) {
                 onAdShowing(mAdLayout);
-                if (TextUtils.equals(GvAdl.NTPLACE_OUTER_NAME, mPidName)
-                        || TextUtils.equals(GvAdl.GTPLACE_OUTER_NAME, mPidName)) {
-                    GvPcy.get(this).reportShowing(true);
-                } else if (TextUtils.equals(HvAdl.HTPLACE_OUTER_NAME, mPidName)) {
-                    HvPcy.get(this).reportShowing(true);
-                } else if (TextUtils.equals(SvAdl.STPLACE_OUTER_NAME, mPidName)) {
-                    SvPcy.get(this).reportShowing(true);
-                } else if (TextUtils.equals(ChargeHelper.CTPLACE_OUTER_NAME, mPidName)) {
-                    CvPcy.get(this).reportShowing(true);
-                } else if (TextUtils.equals(LTPLACE_OUTER_NAME, mPidName)) {
-                    LvPcy.get(this).reportShowing(true);
+                try {
+                    BPcy bPcy = BPcy.getPcyByType(mSceneType);
+                    Log.v(Log.TAG, "report showing type : " + bPcy.getType());
+                    bPcy.reportShowing(true);
+                } catch (Exception e) {
+                    Log.iv(Log.TAG, "error : " + e);
                 }
             } else {
                 Log.v(Log.TAG, "can not find loader for GFAPSD");
@@ -1227,7 +1216,7 @@ public class GFAPSD extends Activity {
                     .setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_MEDIUM)
                     .build();
         }
-        AdSdk.get(this).loadAdView(LTPLACE_OUTER_NAME, params, new SimpleAdSdkListener() {
+        AdSdk.get(this).loadAdView(mPidName, params, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 if (!isFinishing()) {

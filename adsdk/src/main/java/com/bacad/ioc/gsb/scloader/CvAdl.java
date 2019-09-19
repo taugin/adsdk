@@ -1,5 +1,6 @@
 package com.bacad.ioc.gsb.scloader;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
@@ -30,6 +31,7 @@ public class CvAdl extends Bldr {
     private AdSdk mAdSdk;
 
     private CvAdl(Context context) {
+        super(CvPcy.get(context));
         mContext = context.getApplicationContext();
         CSvr.get(context).registerTriggerListener(this);
     }
@@ -87,11 +89,16 @@ public class CvAdl extends Bldr {
         if (!CvPcy.get(mContext).isCtAllowed()) {
             return;
         }
+        String placeName = getPlaceNameAdv();
+        if (TextUtils.isEmpty(placeName)) {
+            Log.iv(Log.TAG, getType() + " not found place name");
+            return;
+        }
         String pType = CvPcy.get(mContext).getType();
         String action = null;
         if (!TextUtils.isEmpty(pType)) {
-            pType = pType.replace("t", "a");
-            action = pType.toUpperCase(Locale.getDefault()) + "VIEW";
+            String actType = pType.replace("t", "a");
+            action = actType.toUpperCase(Locale.getDefault()) + "VIEW";
         }
         Log.iv(Log.TAG, "filter : " + action);
         Intent intent = null;
@@ -101,16 +108,24 @@ public class CvAdl extends Bldr {
         if (intent == null) {
             intent = new Intent(mContext, GFAPSD.class);
         }
+        intent.putExtra(Intent.EXTRA_TITLE, placeName);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setFlags(~Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.putExtra(Intent.EXTRA_QUIET_MODE, true);
+        intent.putExtra(Intent.EXTRA_REPLACING, pType);
         BatteryInfo.isCharging = charging;
         try {
-            context.startActivity(intent);
-            CvPcy.get(mContext).reportShowing(true);
+            PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent.send();
             InternalStat.reportEvent(getContext(), "start_act_success", pType);
         } catch (Exception e) {
-            InternalStat.reportEvent(mContext, "start_act_error", pType);
+            try {
+                context.startActivity(intent);
+                CvPcy.get(mContext).reportShowing(true);
+                InternalStat.reportEvent(getContext(), "start_act_success", pType);
+            } catch (Exception e1) {
+                InternalStat.reportEvent(mContext, "start_act_error", pType);
+            }
         }
     }
 

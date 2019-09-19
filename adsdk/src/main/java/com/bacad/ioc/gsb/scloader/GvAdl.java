@@ -4,31 +4,26 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.bacad.ioc.gsb.common.Bldr;
+import com.bacad.ioc.gsb.common.CSvr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.scpolicy.GvPcy;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.constant.Constant;
-import com.bacad.ioc.gsb.common.CSvr;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
-
-import java.util.Random;
 
 /**
  * Created by Administrator on 2018/3/19.
  */
 
 public class GvAdl extends Bldr {
-    public static final String GTPLACE_OUTER_NAME = "gt_outer_place";
-    public static final String NTPLACE_OUTER_NAME = "nt_outer_place";
-
     private static GvAdl sGvAdl;
-
     private Context mContext;
     private AdSdk mAdSdk;
 
     private GvAdl(Context context) {
+        super(GvPcy.get(context));
         mContext = context.getApplicationContext();
         CSvr.get(context).registerTriggerListener(this);
     }
@@ -81,19 +76,23 @@ public class GvAdl extends Bldr {
             if (!GvPcy.get(mContext).isGtAllowed()) {
                 return;
             }
+            String placeName = getPlaceNameAdv();
+            if (TextUtils.isEmpty(placeName)) {
+                Log.iv(Log.TAG, getType() + " not found place name");
+                return;
+            }
             if (!GvPcy.get(mContext).isMatchMinInterval()) {
                 Log.iv(Log.TAG, "mi not allow");
                 return;
             }
             if (GvPcy.get(mContext).isLoading()) {
-                Log.iv(Log.TAG, "gt is loading");
+                Log.iv(Log.TAG, getType() + " is loading");
                 return;
             }
             Log.iv(Log.TAG, "");
-            String outerPidName = getNextPidName();
-            SceneEventImpl.get().reportAdOuterRequest(mContext, GvPcy.get(mContext).getType(), outerPidName);
+            SceneEventImpl.get().reportAdOuterRequest(mContext, GvPcy.get(mContext).getType(), placeName);
             GvPcy.get(mContext).setLoading(true);
-            mAdSdk.loadComplexAds(outerPidName, generateAdParams(), new SimpleAdSdkListener() {
+            mAdSdk.loadComplexAds(placeName, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "loaded place_name : " + pidName + " , source : " + source + " , adType : " + adType);
@@ -144,14 +143,5 @@ public class GvAdl extends Bldr {
                 }
             });
         }
-    }
-
-    private String getNextPidName() {
-        int nTRate = GvPcy.get(mContext).getNTRate();
-        boolean isNtPid = new Random(System.currentTimeMillis()).nextInt(100) < nTRate;
-        if (isNtPid) {
-            return NTPLACE_OUTER_NAME;
-        }
-        return GTPLACE_OUTER_NAME;
     }
 }
