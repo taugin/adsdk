@@ -116,6 +116,10 @@ public class GFAPSD extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        try {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        } catch (Exception e) {
+        }
         mInLockView = false;
         mInChargeView = false;
         parseIntent();
