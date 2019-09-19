@@ -151,8 +151,8 @@ public class BPcy implements Handler.Callback {
      */
     public void reportShowing(boolean showing) {
         if (showing) {
-            updateLastShowTime();
             reportTotalShowTimes();
+            updateLastShowTime();
             reportLastScene();
         }
     }
@@ -210,12 +210,16 @@ public class BPcy implements Handler.Callback {
      * 记录ad展示次数
      */
     private void reportTotalShowTimes() {
-        long times = getTotalShowTimes();
-        times += 1;
-        if (times <= 0) {
-            times = 1;
+        long now = System.currentTimeMillis();
+        long last = getLastShowTime();
+        if (now - last > 10000) {
+            long times = getTotalShowTimes();
+            times += 1;
+            if (times <= 0) {
+                times = 1;
+            }
+            Utils.putLong(mContext, getPrefKey(PREF_TOTAL_SHOWTIMES), times);
         }
-        Utils.putLong(mContext, getPrefKey(PREF_TOTAL_SHOWTIMES), times);
         recordFirstShowTime();
     }
 
