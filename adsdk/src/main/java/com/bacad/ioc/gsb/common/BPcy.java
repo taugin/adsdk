@@ -161,24 +161,6 @@ public class BPcy implements Handler.Callback {
         Utils.putLong(mContext, LAST_SCENE_TIME, System.currentTimeMillis());
         Utils.putString(mContext, LAST_SCENE_TYPE, getType());
     }
-
-    /**
-     * 获取原生配置比率
-     * @return
-     */
-    public int getNTRate() {
-        int nTRate = 0;
-        if (mBCg != null) {
-            nTRate = mBCg.getNtr();
-        }
-        if (nTRate < 0) {
-            nTRate = 0;
-        }
-        if (nTRate > 100) {
-            nTRate = 100;
-        }
-        return nTRate;
-    }
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     /**

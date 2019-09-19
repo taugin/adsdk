@@ -267,9 +267,6 @@ public class SceneSceneParser implements ISceneParser {
                     BCg.setVerList(list);
                 }
             }
-            if (jobj.has(NTRATE)) {
-                BCg.setNtr(jobj.getInt(NTRATE));
-            }
         } catch (Exception e) {
             Log.e(Log.TAG, "parseAttrConfig error : " + e);
         }

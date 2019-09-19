@@ -37,8 +37,6 @@ public interface ISceneParser {
     String VER_LIST = "vl";
     // 屏幕方向 0 : undefined, 1: portrait, 2 : landscape
     String SCREEN_ORIENTATION = "so";
-    // native gt 比例
-    String NTRATE = "ntr";
     // 是否展示底层activity
     String SHOW_BOTTOM = "sb";
     // 首次安装时间判断

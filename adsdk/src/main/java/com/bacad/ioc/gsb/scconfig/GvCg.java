@@ -1,9 +1,6 @@
 package com.bacad.ioc.gsb.scconfig;
 
 import com.bacad.ioc.gsb.common.BCg;
-import com.hauyu.adsdk.constant.Constant;
-
-import java.util.Date;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -33,8 +30,6 @@ public class GvCg extends BCg {
                 ", so=" + getScreenOrientation() +
                 ", to=" + getTimeOut() +
                 ", sb=" + isShowBottom() +
-                ", ntr=" + getNtr() +
-                ", cit=" + Constant.SDF_1.format(new Date(getConfigInstallTime())) +
                 '}';
     }
 }

@@ -23,7 +23,6 @@ public abstract class BCg {
     private List<String> attrList;
     private List<String> mediaList;
     private List<String> verList;
-    private int ntr;
     private boolean showBottom = true;
     private String placeNameInt;
     private String placeNameAdv;
@@ -45,7 +44,6 @@ public abstract class BCg {
         attrList = null;
         mediaList = null;
         verList = null;
-        ntr = 0;
         showBottom = true;
         placeNameInt = null;
         placeNameAdv = null;
@@ -158,14 +156,6 @@ public abstract class BCg {
 
     public void setVerList(List<String> verList) {
         this.verList = verList;
-    }
-
-    public int getNtr() {
-        return ntr;
-    }
-
-    public void setNtr(int ntr) {
-        this.ntr = ntr;
     }
 
     public boolean isShowBottom() {
