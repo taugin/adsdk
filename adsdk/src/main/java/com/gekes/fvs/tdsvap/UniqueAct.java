@@ -135,7 +135,7 @@ public class UniqueAct extends Activity {
         try {
             super.setRequestedOrientation(requestedOrientation);
         } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.e(Log.TAG, "error : " + e);
         }
     }
 
