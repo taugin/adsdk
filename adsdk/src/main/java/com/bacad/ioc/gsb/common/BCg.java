@@ -16,7 +16,8 @@ public abstract class BCg {
     private int maxCount;
     private int maxVersion;
     private long minInterval;
-    private int screenOrientation;
+    // 默认竖屏方向展示
+    private int screenOrientation = 1;
     private long configInstallTime;
     private long timeOut = 300000;
     private List<String> countryList;
