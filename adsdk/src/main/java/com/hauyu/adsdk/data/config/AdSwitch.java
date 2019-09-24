@@ -6,15 +6,15 @@ package com.hauyu.adsdk.data.config;
 
 public class AdSwitch {
     // 上报错误日志
-    private boolean reportError;
+    private boolean reportError = true;
     // 上报加载时间
-    private boolean reportTime;
+    private boolean reportTime = true;
     // 上报友盟
-    private boolean reportUmeng;
+    private boolean reportUmeng = true;
     // 上报Firebase
-    private boolean reportFirebase;
+    private boolean reportFirebase = true;
     // 上报Facebook
-    private boolean reportFacebook;
+    private boolean reportFacebook = true;
 
     public boolean isReportError() {
         return reportError;
