@@ -22,7 +22,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 26
-        versionName "1.0.0" + (isSnapshot ? "-SNAPSHOT" : "")
+        versionName "1.0.1" + (isSnapshot ? "-SNAPSHOT" : "")
         consumerProguardFiles 'proguard-rules-adsdk.pro'
     }
 
@@ -75,9 +75,9 @@ dependencies {
     // implementation 'com.mopub.mediation:facebookaudiencenetwork:5.1.0.1-webeye@aar'
     implementation 'com.mopub.mediation:facebookaudiencenetwork:5.4.0.0'
 
-    // applovin
-    implementation 'com.applovin:applovin-sdk:8.1.4'
-    implementation 'com.mopub.mediation:applovin:8.1.4.0'
+    // AppLovin
+    implementation 'com.applovin:applovin-sdk:9.9.1'
+    implementation 'com.mopub.mediation:applovin:9.9.1.0'
 
     //inmobi
     implementation 'com.inmobi.monetization:inmobi-ads:7.2.1'
