@@ -49,6 +49,8 @@ public interface ISceneParser {
     String PLACE_NAME_ADV = "adv";
     // 场景间隔
     String SCENE_INTERVAL = "si";
+    // 延迟关闭时间
+    String DELAY_CLOSE = "dc";
 
     GvCg parseGtPolicy(String data);
 

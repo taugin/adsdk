@@ -90,6 +90,9 @@ public class SceneSceneParser implements ISceneParser {
             if (jobj.has(SCENE_INTERVAL)) {
                 BCg.setSceneInterval(jobj.getLong(SCENE_INTERVAL));
             }
+            if (jobj.has(DELAY_CLOSE)) {
+                BCg.setDelayClose(jobj.getLong(DELAY_CLOSE));
+            }
             parseAttrConfig(BCg, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseBasePolicyInternal error : " + e);

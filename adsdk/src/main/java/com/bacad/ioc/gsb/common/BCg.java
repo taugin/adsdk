@@ -28,6 +28,7 @@ public abstract class BCg {
     private String placeNameInt;
     private String placeNameAdv;
     private long sceneInterval = 300000;
+    private long delayClose = 0;
 
     public abstract String getName();
 
@@ -49,6 +50,7 @@ public abstract class BCg {
         placeNameInt = null;
         placeNameAdv = null;
         sceneInterval = 300000;
+        delayClose = 0;
     }
 
     public BCg() {
@@ -189,6 +191,14 @@ public abstract class BCg {
 
     public void setSceneInterval(long sceneInterval) {
         this.sceneInterval = sceneInterval;
+    }
+
+    public long getDelayClose() {
+        return delayClose;
+    }
+
+    public void setDelayClose(long delayClose) {
+        this.delayClose = delayClose;
     }
 
     public void clear() {

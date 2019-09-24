@@ -75,6 +75,13 @@ public class BPcy implements Handler.Callback {
         return mType;
     }
 
+    public long getDelayClose() {
+        if (mBCg != null) {
+            return mBCg.getDelayClose();
+        }
+        return 0;
+    }
+
     private long getTimeout() {
         long timeOut = 0;
         if (mBCg != null) {

@@ -53,6 +53,7 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.BounceInterpolator;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -104,6 +105,7 @@ public class UniqueAct extends Activity {
     private ViewGroup mAdLayout;
     private ImageView mCloseView;
     private TextView mSponsoredView;
+    private long mDelayClose;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -316,6 +318,7 @@ public class UniqueAct extends Activity {
             mInChargeView = intent.getBooleanExtra(Intent.EXTRA_QUIET_MODE, false);
             mSceneType = intent.getStringExtra(Intent.EXTRA_REPLACING);
             mAction = intent.getAction();
+            mDelayClose = intent.getLongExtra(Intent.ACTION_TIME_TICK, 0);
         }
     }
 
@@ -401,6 +404,17 @@ public class UniqueAct extends Activity {
         rootLayout.addView(mCloseView, params);
         if (isAutoShowAdView()) {
             showAdViewInternal();
+        }
+        animateCloseView();
+    }
+
+    private void animateCloseView() {
+        if (mDelayClose > 0 && mDelayClose <= 5000) {
+            mCloseView.clearAnimation();
+            AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1f);
+            alphaAnimation.setDuration(mDelayClose);
+            alphaAnimation.setFillAfter(true);
+            mCloseView.startAnimation(alphaAnimation);
         }
     }
 

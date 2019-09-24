@@ -78,6 +78,15 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
         return null;
     }
 
+    protected long getDelayClose() {
+        try {
+            return ((BPcy) mPolicy).getDelayClose();
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return 0;
+    }
+
     /**
      * 调用函数启动场景，避免同时启动多个场景
      */
@@ -133,6 +142,7 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
         if (intent == null) {
             intent = new Intent(getContext(), UniqueAct.class);
         }
+        intent.putExtra(Intent.ACTION_TIME_TICK, getDelayClose());
         intent.putExtra(Intent.EXTRA_TITLE, pidName);
         intent.putExtra(Intent.EXTRA_TEXT, source);
         intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
