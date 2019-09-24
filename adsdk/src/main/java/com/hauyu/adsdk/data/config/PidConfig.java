@@ -46,8 +46,6 @@ public class PidConfig {
 
     private String extId;
 
-    private double aspectRatio;
-
     private String bannerSize;
 
     private List<String> clickViews;
@@ -184,14 +182,6 @@ public class PidConfig {
 
     public void setExtId(String extId) {
         this.extId = extId;
-    }
-
-    public double getAspectRatio() {
-        return aspectRatio;
-    }
-
-    public void setAspectRatio(double aspectRatio) {
-        this.aspectRatio = aspectRatio;
     }
 
     public String getBannerSize() {

@@ -38,8 +38,6 @@ public class AdPlace {
 
     private boolean refShare;
 
-    private boolean globalCache;
-
     /**
      * 瀑布流请求间隔
      */
@@ -188,14 +186,6 @@ public class AdPlace {
 
     public void setRefShare(boolean refShare) {
         this.refShare = refShare;
-    }
-
-    public boolean isGlobalCache() {
-        return globalCache;
-    }
-
-    public void setGlobalCache(boolean globalCache) {
-        this.globalCache = globalCache;
     }
 
     public long getWaterfallInt() {

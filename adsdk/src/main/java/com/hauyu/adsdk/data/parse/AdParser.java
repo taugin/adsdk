@@ -160,20 +160,17 @@ public class AdParser implements IParser {
             if (jobj.has(LOAD_ONLY_ONCE)) {
                 adPlace.setLoadOnlyOnce(jobj.getBoolean(LOAD_ONLY_ONCE));
             }
-            if (jobj.has(ECPMSORT)) {
-                adPlace.setEcpmSort(jobj.getInt(ECPMSORT));
+            if (jobj.has(ECPM_SORT)) {
+                adPlace.setEcpmSort(jobj.getInt(ECPM_SORT));
             }
-            if (jobj.has(NEED_CACHE)) {
-                adPlace.setNeedCache(jobj.getInt(NEED_CACHE) == 1);
+            if (jobj.has(PLACE_CACHE)) {
+                adPlace.setNeedCache(jobj.getInt(PLACE_CACHE) == 1);
             }
             if (jobj.has(DELAY_NOTIFY_TIME)) {
                 adPlace.setDelayNotifyTime(jobj.getLong(DELAY_NOTIFY_TIME));
             }
             if (jobj.has(REF_SHARE)) {
                 adPlace.setRefShare(jobj.getInt(REF_SHARE) == 1);
-            }
-            if (jobj.has(GLOBAL_CACHE)) {
-                adPlace.setGlobalCache(jobj.getInt(GLOBAL_CACHE) == 1);
             }
             if (jobj.has(WATERFALL_INTERVAL)) {
                 adPlace.setWaterfallInt(jobj.getLong(WATERFALL_INTERVAL));
@@ -196,7 +193,7 @@ public class AdParser implements IParser {
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
             sortPidList(adPlace);
         } catch (Exception e) {
-            Log.v(Log.TAG, "parseAdPlace error : " + e);
+            Log.iv(Log.TAG, "parseAdPlace error : " + e);
         }
         return adPlace;
     }
@@ -313,9 +310,6 @@ public class AdParser implements IParser {
             }
             if (jobj.has(EXTID)) {
                 pidConfig.setExtId(jobj.getString(EXTID));
-            }
-            if (jobj.has(ASPECT_RATIO)) {
-                pidConfig.setAspectRatio(jobj.getDouble(ASPECT_RATIO));
             }
             if (jobj.has(BANNER_SIZE)) {
                 pidConfig.setBannerSize(jobj.getString(BANNER_SIZE));

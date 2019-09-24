@@ -36,19 +36,17 @@ public interface IParser {
     // 展示的百分比
     String PERCENT = "percent";
     // ECPM排序, 1 desc, 0, none, -1, asc
-    String ECPMSORT = "es";
+    String ECPM_SORT = "es";
     // 具体广告位配置
     String PIDS = "pids";
-    // 场景缓存
-    String NEED_CACHE = "nc";
+    // 场景缓存, 避免多次加载
+    String PLACE_CACHE = "pc";
     // 延迟通知加载成功的时间
     String DELAY_NOTIFY_TIME = "dnt";
     // 是否共享广告场景的广告
     String REF_SHARE = "rs";
-    // 是否全局缓存
-    String GLOBAL_CACHE = "gc";
-    // waterfall 请求间隔
-    String WATERFALL_INTERVAL = "int";
+    // waterfall 请求间隔, line item失败到下个line item请求的间隔
+    String WATERFALL_INTERVAL = "wfi";
     // 优先高ecpm
     String HIGH_ECPM = "he";
     // 场景类型
@@ -57,7 +55,7 @@ public interface IParser {
     String SEQ_TIMEOUT = "sto";
     // 队列模式下加载的大小
     String QUEUE_SIZE = "qs";
-    // 全屏布局样式
+    // 全屏布局样式 针对GT全屏模式下的布局样式
     String FULL_LAYOUT = "fl";
     // cta按钮颜色
     String CTA_COLOR = "cc";
@@ -91,8 +89,6 @@ public interface IParser {
     String APPID = "aid";
     // ext id
     String EXTID = "eid";
-    // Mediaview 比例
-    String ASPECT_RATIO = "ar";
     // bannersize
     String BANNER_SIZE = "bs";
     // 可点击原生视图
@@ -100,8 +96,6 @@ public interface IParser {
     // 加载原生个数
     String LOAD_NATIVE_COUNT = "lnc";
 
-    // 阻止重复加载(如果当前loader正在处于加载中，则不再重新加载)
-    String BLOCK_LOADING = "bl";
     // 是否上报错误日志
     String REPORT_ERROR = "re";
     // 是否上报时间
@@ -111,7 +105,7 @@ public interface IParser {
     // 是否上报firebase
     String REPORT_FIREBASE = "rf";
     // 是否上报facebook
-    String REPORT_FACEBOOK = "rfb";
+    String REPORT_FACEBOOK = "rb";
 
     // banner
     String BANNER = "banner";
