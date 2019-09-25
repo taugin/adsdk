@@ -11,7 +11,10 @@
       "name": "banner_and_native",
       "mode": "con",
       "as": 1,
-      "cc":["#FF6600","#4455bb22"],
+      "cc": [
+        "#FF6600",
+        "#4455bb22"
+      ],
       "pids": [
         {
           "sdk": "adx",
@@ -182,14 +185,9 @@
       "pids": [
         {
           "sdk": "admob",
-          "type": "banner",
-          "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
-        },
-        {
-          "sdk": "spread",
           "type": "interstitial",
-          "disable": 1
+          "pid": "ca-app-pub-3940256099942544/1033173712",
+          "disable": 0
         },
         {
           "sdk": "mopub",
@@ -206,20 +204,26 @@
       "name": "nt_outer_place",
       "mode": "con",
       "as": 1,
-      "fl":"three",
-      "cc":["#FF6600","#4455bb22"],
+      "fl": "three",
+      "cc": [
+        "#FF6600",
+        "#4455bb22"
+      ],
       "pids": [
         {
           "sdk": "fb",
           "type": "native",
           "pid": "YOUR_PLACEMENT_ID",
-          "disable":0
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "native",
-          "fl":"two",
-          "cc":["#aa006600","#4455bb22"],
+          "fl": "two",
+          "cc": [
+            "#aa006600",
+            "#4455bb22"
+          ],
           "pid": "ca-app-pub-3940256099942544/2247696110",
           "disable": 0
         },

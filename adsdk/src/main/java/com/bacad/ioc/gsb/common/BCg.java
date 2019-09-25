@@ -25,8 +25,8 @@ public abstract class BCg {
     private List<String> mediaList;
     private List<String> verList;
     private boolean showBottom = true;
-    private String placeNameInt;
-    private String placeNameAdv;
+    private String adExtra;
+    private String adMain;
     private long sceneInterval = 300000;
     private long delayClose = 0;
 
@@ -47,8 +47,8 @@ public abstract class BCg {
         mediaList = null;
         verList = null;
         showBottom = true;
-        placeNameInt = null;
-        placeNameAdv = null;
+        adExtra = null;
+        adMain = null;
         sceneInterval = 300000;
         delayClose = 0;
     }
@@ -169,20 +169,20 @@ public abstract class BCg {
         this.showBottom = showBottom;
     }
 
-    public String getPlaceNameInt() {
-        return placeNameInt;
+    public String getAdExtra() {
+        return adExtra;
     }
 
-    public void setPlaceNameInt(String placeNameInt) {
-        this.placeNameInt = placeNameInt;
+    public void setAdExtra(String adExtra) {
+        this.adExtra = adExtra;
     }
 
-    public String getPlaceNameAdv() {
-        return placeNameAdv;
+    public String getAdMain() {
+        return adMain;
     }
 
-    public void setPlaceNameAdv(String placeNameAdv) {
-        this.placeNameAdv = placeNameAdv;
+    public void setAdMain(String adMain) {
+        this.adMain = adMain;
     }
 
     public long getSceneInterval() {

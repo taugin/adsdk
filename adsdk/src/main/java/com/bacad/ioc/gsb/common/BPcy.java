@@ -92,14 +92,14 @@ public class BPcy implements Handler.Callback {
 
     public String getPlaceNameAdv() {
         if (mBCg != null) {
-            return mBCg.getPlaceNameAdv();
+            return mBCg.getAdMain();
         }
         return null;
     }
 
     public String getPlaceNameInt() {
         if (mBCg != null) {
-            return mBCg.getPlaceNameInt();
+            return mBCg.getAdExtra();
         }
         return null;
     }

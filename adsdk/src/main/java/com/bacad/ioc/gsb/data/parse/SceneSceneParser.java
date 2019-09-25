@@ -81,11 +81,11 @@ public class SceneSceneParser implements ISceneParser {
             if (jobj.has(SHOW_BOTTOM)) {
                 BCg.setShowBottom(jobj.getInt(SHOW_BOTTOM) == 1);
             }
-            if (jobj.has(PLACE_NAME_INT)) {
-                BCg.setPlaceNameInt(jobj.getString(PLACE_NAME_INT));
+            if (jobj.has(AD_EXTRA)) {
+                BCg.setAdExtra(jobj.getString(AD_EXTRA));
             }
-            if (jobj.has(PLACE_NAME_ADV)) {
-                BCg.setPlaceNameAdv(jobj.getString(PLACE_NAME_ADV));
+            if (jobj.has(AD_MAIN)) {
+                BCg.setAdMain(jobj.getString(AD_MAIN));
             }
             if (jobj.has(SCENE_INTERVAL)) {
                 BCg.setSceneInterval(jobj.getLong(SCENE_INTERVAL));
