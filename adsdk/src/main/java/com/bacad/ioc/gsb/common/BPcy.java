@@ -1,7 +1,6 @@
 package com.bacad.ioc.gsb.common;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Message;
@@ -357,32 +356,6 @@ public class BPcy implements Handler.Callback {
         return appOnTop;
     }
 
-    protected boolean matchInstallTime() {
-        if (mBCg != null) {
-            long configInstallTime = mBCg.getConfigInstallTime();
-            long firstInstallTime = getFirstInstallTime();
-            String cit = configInstallTime > 0 ? Constant.SDF_1.format(new Date(configInstallTime)) : "0";
-            String fit = firstInstallTime > 0 ? Constant.SDF_1.format(new Date(firstInstallTime)) : "0";
-            Log.iv(Log.TAG, "cit : " + cit + " , fit : " + fit);
-            if (configInstallTime <= 0 || firstInstallTime <= 0) {
-                return true;
-            }
-            return firstInstallTime <= configInstallTime;
-        }
-        return true;
-    }
-
-    private long getFirstInstallTime() {
-        long firstInstallTime = 0;
-        try {
-            PackageInfo packageInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-            firstInstallTime = packageInfo.firstInstallTime;
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return firstInstallTime;
-    }
-
     public long getLastSceneTime() {
         return Utils.getLong(mContext, LAST_SCENE_TIME);
     }
@@ -484,11 +457,6 @@ public class BPcy implements Handler.Callback {
 
         if (!isAppVerAllow()) {
             Log.iv(Log.TAG, "disable mv");
-            return false;
-        }
-
-        if (!matchInstallTime()) {
-            Log.iv(Log.TAG, "disable cit");
             return false;
         }
 

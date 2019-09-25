@@ -75,9 +75,6 @@ public class SceneSceneParser implements ISceneParser {
             if (jobj.has(TIMEOUT)) {
                 BCg.setTimeOut(jobj.getLong(TIMEOUT));
             }
-            if (jobj.has(CONFIG_INSTALL_TIME)) {
-                BCg.setConfigInstallTime(jobj.getLong(CONFIG_INSTALL_TIME));
-            }
             if (jobj.has(SHOW_BOTTOM)) {
                 BCg.setShowBottom(jobj.getInt(SHOW_BOTTOM) == 1);
             }

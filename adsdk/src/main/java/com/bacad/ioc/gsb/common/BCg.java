@@ -18,7 +18,6 @@ public abstract class BCg {
     private long minInterval;
     // 默认竖屏方向展示
     private int screenOrientation = 1;
-    private long configInstallTime;
     private long timeOut = 300000;
     private List<String> countryList;
     private List<String> attrList;
@@ -40,7 +39,6 @@ public abstract class BCg {
         maxVersion = 0;
         minInterval = 0;
         screenOrientation = 0;
-        configInstallTime = 0;
         timeOut = 300000;
         countryList = null;
         attrList = null;
@@ -111,14 +109,6 @@ public abstract class BCg {
 
     public void setScreenOrientation(int screenOrientation) {
         this.screenOrientation = screenOrientation;
-    }
-
-    public long getConfigInstallTime() {
-        return configInstallTime;
-    }
-
-    public void setConfigInstallTime(long configInstallTime) {
-        this.configInstallTime = configInstallTime;
     }
 
     public long getTimeOut() {

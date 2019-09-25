@@ -5,9 +5,9 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.bacad.ioc.gsb.common.CSvr;
 import com.gekes.fvs.tdsvap.BuildConfig;
 import com.hauyu.adsdk.constant.Constant;
-import com.bacad.ioc.gsb.common.CSvr;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.core.framework.AdPlaceLoader;
 import com.hauyu.adsdk.data.DataManager;

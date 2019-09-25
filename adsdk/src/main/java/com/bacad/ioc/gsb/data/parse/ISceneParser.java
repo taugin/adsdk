@@ -39,8 +39,6 @@ public interface ISceneParser {
     String SCREEN_ORIENTATION = "so";
     // 是否展示底层activity
     String SHOW_BOTTOM = "sb";
-    // 首次安装时间判断
-    String CONFIG_INSTALL_TIME = "cit";
     // 禁用间隔
     String DISABLE_INTERVAL = "di";
     // 插屏广告位名称
