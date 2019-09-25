@@ -53,8 +53,9 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -106,6 +107,7 @@ public class UniqueAct extends Activity {
     private ImageView mCloseView;
     private TextView mSponsoredView;
     private long mDelayClose;
+    private boolean mCanClose = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -158,7 +160,9 @@ public class UniqueAct extends Activity {
                 closeView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        finishActivityWithDelay();
+                        if (mCanClose) {
+                            finishActivityWithDelay();
+                        }
                     }
                 });
             }
@@ -405,16 +409,36 @@ public class UniqueAct extends Activity {
         if (isAutoShowAdView()) {
             showAdViewInternal();
         }
-        animateCloseView();
     }
 
     private void animateCloseView() {
         if (mDelayClose > 0 && mDelayClose <= 5000) {
+            mCanClose = false;
             mCloseView.clearAnimation();
-            AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1f);
-            alphaAnimation.setDuration(mDelayClose);
-            alphaAnimation.setFillAfter(true);
-            mCloseView.startAnimation(alphaAnimation);
+            mCloseView.setVisibility(View.INVISIBLE);
+            ScaleAnimation scaleAnimation = new ScaleAnimation(
+                    0, 1f, 0, 1f,
+                    Animation.RELATIVE_TO_SELF, .5f,
+                    Animation.RELATIVE_TO_SELF, .5f);
+            scaleAnimation.setAnimationListener(new Animation.AnimationListener(){
+
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mCanClose = true;
+                    mCloseView.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+            scaleAnimation.setDuration(mDelayClose);
+            scaleAnimation.setFillAfter(true);
+            mCloseView.startAnimation(scaleAnimation);
         }
     }
 
@@ -463,6 +487,7 @@ public class UniqueAct extends Activity {
                 } catch (Exception e) {
                     Log.iv(Log.TAG, "error : " + e);
                 }
+                animateCloseView();
             } else {
                 Log.v(Log.TAG, "can not find loader for UniqueAct");
                 finishActivityWithDelay();
@@ -535,14 +560,16 @@ public class UniqueAct extends Activity {
         if (isLockView()) {
             return;
         }
-        try {
-            super.onBackPressed();
-        } catch (Exception e) {
-        }
-        if ((Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
-                || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType))
-                && !Constant.AD_SDK_SPREAD.equals(mSource)) {
-            EventImpl.get().reportFinishFSA(this, "close_fsa_byuser", "backpressed");
+        if (mCanClose) {
+            try {
+                super.onBackPressed();
+            } catch (Exception e) {
+            }
+            if ((Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
+                    || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType))
+                    && !Constant.AD_SDK_SPREAD.equals(mSource)) {
+                EventImpl.get().reportFinishFSA(this, "close_fsa_byuser", "backpressed");
+            }
         }
     }
 
