@@ -112,14 +112,14 @@ public class UniqueAct extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mInLockView = false;
+        mInChargeView = false;
+        parseIntent();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         try {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         } catch (Exception e) {
         }
-        mInLockView = false;
-        mInChargeView = false;
-        parseIntent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             setFinishOnTouchOutside(false);
         }
