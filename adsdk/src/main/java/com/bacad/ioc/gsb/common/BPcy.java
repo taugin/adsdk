@@ -212,7 +212,7 @@ public class BPcy implements Handler.Callback {
     }
 
     private void resetTotalShowTimes() {
-        Log.d(Log.TAG, "reset total show times");
+        Log.iv(Log.TAG, "reset total show times");
         Utils.putLong(mContext, getPrefKey(PREF_TOTAL_SHOWTIMES), 0);
     }
 
@@ -267,22 +267,22 @@ public class BPcy implements Handler.Callback {
 
     protected boolean isAttrAllow() {
         if (mBCg != null && !mAttrChecker.isAttributionAllow(mBCg.getAttrList())) {
-            Log.iv(Log.TAG, "attr not allowed");
+            Log.iv(Log.TAG, "attr dis");
             return false;
         }
 
         if (mBCg != null && !mAttrChecker.isCountryAllow(mBCg.getCountryList())) {
-            Log.iv(Log.TAG, "country not allowed");
+            Log.iv(Log.TAG, "country dis");
             return false;
         }
 
         if (mBCg != null && !mAttrChecker.isMediaSourceAllow(mBCg.getMediaList())) {
-            Log.iv(Log.TAG, "ms not allowed");
+            Log.iv(Log.TAG, "ms dis");
             return false;
         }
 
         if (mBCg != null && !mAttrChecker.isVersionAllow(mBCg.getVerList())) {
-            Log.iv(Log.TAG, "ver not allowed");
+            Log.iv(Log.TAG, "ver dis");
             return false;
         }
         return true;
@@ -416,18 +416,18 @@ public class BPcy implements Handler.Callback {
      */
     protected boolean isSceneDisabledByUser() {
         boolean userDisabled = Utils.getBoolean(mContext, Constant.AD_SDK_SCENE_DISABLED_PREFIX + mType, false);
-        Log.iv(Log.TAG, "user disabled : " + userDisabled);
+        Log.iv(Log.TAG, "user dis : " + userDisabled);
         return userDisabled;
     }
 
     protected boolean checkBaseConfig() {
         if (!isConfigAllow()) {
-            Log.iv(Log.TAG, "disable con");
+            Log.iv(Log.TAG, "dis con");
             return false;
         }
 
         if (isSceneDisabledByUser()) {
-            Log.iv(Log.TAG, "disable by user");
+            Log.iv(Log.TAG, "dis by user");
             return false;
         }
 
@@ -436,32 +436,32 @@ public class BPcy implements Handler.Callback {
         }
 
         if (!isDelayAllow()) {
-            Log.iv(Log.TAG, "disable d");
+            Log.iv(Log.TAG, "dis d");
             return false;
         }
 
         if (!isIntervalAllow()) {
-            Log.iv(Log.TAG, "disable i");
+            Log.iv(Log.TAG, "dis i");
             return false;
         }
 
         if (!isSceneIntervalAllow()) {
-            Log.iv(Log.TAG, "disable si");
+            Log.iv(Log.TAG, "dis si");
             return false;
         }
 
         if (!isMaxShowAllow()) {
-            Log.iv(Log.TAG, "disable mc");
+            Log.iv(Log.TAG, "dis mc");
             return false;
         }
 
         if (!isAppVerAllow()) {
-            Log.iv(Log.TAG, "disable mv");
+            Log.iv(Log.TAG, "dis mv");
             return false;
         }
 
         if (!isScreenOrientationAllow()) {
-            Log.iv(Log.TAG, "disable so");
+            Log.iv(Log.TAG, "dis so");
             return false;
         }
         return true;
