@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 
 import com.gekes.fvs.tdsvap.R;
-import com.gekes.fvs.tdsvap.SunAct;
+import com.gekes.fvs.tdsvap.UniqueAct;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.listener.OnTriggerListener;
@@ -140,7 +140,7 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
             intent = Utils.getIntentByAction(getContext(), getContext().getPackageName() + ".action." + action);
         }
         if (intent == null) {
-            intent = new Intent(getContext(), SunAct.class);
+            intent = new Intent(getContext(), UniqueAct.class);
         }
         intent.putExtra(Intent.ACTION_TIME_TICK, getDelayClose());
         intent.putExtra(Intent.EXTRA_TITLE, pidName);

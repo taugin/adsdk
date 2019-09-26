@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.bacad.ioc.gsb.scloader.CvAdl;
 import com.bacad.ioc.gsb.scpolicy.CvPcy;
 import com.gekes.fvs.tdsvap.R;
-import com.gekes.fvs.tdsvap.SunAct;
+import com.gekes.fvs.tdsvap.UniqueAct;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
@@ -34,8 +34,8 @@ import java.util.TimerTask;
 public class Cher implements View.OnClickListener {
     private Activity mActivity;
     private ImageView chargeCancel, chargeMore;
-    private SunAct.DotProgress speedChargeProgress, continuousChargeProgress;
-    private SunAct.BlinkImageView speedBlink, continuousBlink, trickleBlink;
+    private UniqueAct.DotProgress speedChargeProgress, continuousChargeProgress;
+    private UniqueAct.BlinkImageView speedBlink, continuousBlink, trickleBlink;
     private TextView speedText, continuousText, trickleText;
     private TextView timeInfo, batteryLevel;
     private Timer timer;
@@ -91,7 +91,7 @@ public class Cher implements View.OnClickListener {
     private AdParams getParams() {
         AdParams adParams = null;
         try {
-            adParams = ((SunAct)mActivity).getCtParams();
+            adParams = ((UniqueAct)mActivity).getCtParams();
         } catch (Exception | Error e) {
         }
         if (adParams == null) {
@@ -120,7 +120,7 @@ public class Cher implements View.OnClickListener {
 
     private void onCtShowing(View containerView) {
         try {
-            ((SunAct)mActivity).onCtShowing(containerView);
+            ((UniqueAct)mActivity).onCtShowing(containerView);
         } catch (Exception | Error e) {
         }
     }

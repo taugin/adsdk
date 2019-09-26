@@ -72,7 +72,7 @@
             android:icon="@drawable/had_tr_bg"
             android:label="" />
         <activity
-            android:name="com.gekes.fvs.tdsvap.SunAct"
+            android:name="com.gekes.fvs.tdsvap.UniqueAct"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:excludeFromRecents="true"
             android:icon="@drawable/had_tr_bg"
@@ -81,7 +81,7 @@
             android:theme="@android:style/Theme.Translucent" />
 
         <provider
-            android:name="com.gekes.fvs.tdsvap.SunPro"
+            android:name="com.gekes.fvs.tdsvap.UniquePro"
             android:authorities="${applicationId}.tdsvap.authorities"
             android:exported="false" />
     </application>

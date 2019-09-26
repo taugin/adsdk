@@ -17,7 +17,7 @@ import com.bacad.ioc.gsb.scloader.SvAdl;
  * Created by Administrator on 2019/8/18.
  */
 
-public class SunPro extends ContentProvider {
+public class UniquePro extends ContentProvider {
     @Override
     public boolean onCreate() {
         GvAdl.get(getContext()).init();
