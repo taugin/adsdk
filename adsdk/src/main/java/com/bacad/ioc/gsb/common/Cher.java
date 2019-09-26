@@ -141,7 +141,7 @@ public class Cher implements View.OnClickListener {
                 int chargingTimeInSecond = CvAdl.BatteryInfo.estimateRemainChargingTime();
                 int hours = chargingTimeInSecond / 3600;
                 int minutes = (chargingTimeInSecond - hours * 3600) / 60;
-                updateTimeInfo(mActivity.getString(R.string.ad_cm_label_charging), hours, minutes);
+                updateTimeInfo(mActivity.getString(R.string.had_cm_label_charging), hours, minutes);
             } else if (percent >= 80 && percent < 100) {
                 speedBlink.stopBlink();
                 speedBlink.solid();
@@ -154,7 +154,7 @@ public class Cher implements View.OnClickListener {
                 int chargingTimeInSecond = CvAdl.BatteryInfo.estimateRemainChargingTime();
                 int hours = chargingTimeInSecond / 3600;
                 int minutes = (chargingTimeInSecond - hours * 3600) / 60;
-                updateTimeInfo(mActivity.getString(R.string.ad_cm_label_charging), hours, minutes);
+                updateTimeInfo(mActivity.getString(R.string.had_cm_label_charging), hours, minutes);
             } else {
                 speedBlink.stopBlink();
                 speedBlink.solid();
@@ -166,7 +166,7 @@ public class Cher implements View.OnClickListener {
                 trickleBlink.stopBlink();
                 trickleBlink.solid();
                 trickleText.setEnabled(true);
-                updateTimeInfo(mActivity.getString(R.string.ad_cm_complete));
+                updateTimeInfo(mActivity.getString(R.string.had_cm_complete));
             }
             updateProgress(percent);
         } else {
@@ -184,7 +184,7 @@ public class Cher implements View.OnClickListener {
             int timeInMinutes = CvAdl.BatteryInfo.estimateRemainBatteryTime();
             int hours = timeInMinutes / 60;
             int minutes = timeInMinutes % 60;
-            updateTimeInfo(mActivity.getString(R.string.ad_cm_label_standby), hours, minutes);
+            updateTimeInfo(mActivity.getString(R.string.had_cm_label_standby), hours, minutes);
         }
     }
 
@@ -247,7 +247,7 @@ public class Cher implements View.OnClickListener {
                     Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
             start = sb.length();
-            sb.append(mActivity.getResources().getString(R.string.ad_cm_span_h));
+            sb.append(mActivity.getResources().getString(R.string.had_cm_span_h));
             sb.setSpan(hourLabelSpan, start, sb.length(),
                     Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         }
@@ -258,7 +258,7 @@ public class Cher implements View.OnClickListener {
                 Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
         start = sb.length();
-        sb.append(mActivity.getResources().getString(R.string.ad_cm_span_m));
+        sb.append(mActivity.getResources().getString(R.string.had_cm_span_m));
         sb.setSpan(minLabelSpan, start, sb.length(),
                 Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         timeInfo.setText(sb);
@@ -296,10 +296,10 @@ public class Cher implements View.OnClickListener {
 
     private void showDialog() {
         final AlertDialog.Builder normalDialog = new AlertDialog.Builder(mActivity);
-        normalDialog.setTitle(R.string.ad_cm_dialog_title);
-        normalDialog.setMessage(R.string.ad_cm_dialog_message);
-        normalDialog.setPositiveButton(R.string.ad_cm_dialog_cancel, null);
-        normalDialog.setNegativeButton(R.string.ad_cm_dialog_disable,
+        normalDialog.setTitle(R.string.had_cm_dialog_title);
+        normalDialog.setMessage(R.string.had_cm_dialog_message);
+        normalDialog.setPositiveButton(R.string.had_cm_dialog_cancel, null);
+        normalDialog.setNegativeButton(R.string.had_cm_dialog_disable,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

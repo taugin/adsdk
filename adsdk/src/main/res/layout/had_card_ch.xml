@@ -97,7 +97,7 @@
                                 style="@style/AdCMStageTextStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/ad_cm_speed" />
+                                android:text="@string/had_cm_speed" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -115,7 +115,7 @@
                                 style="@style/AdCMStageTextStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/ad_cm_continuous" />
+                                android:text="@string/had_cm_continuous" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -135,7 +135,7 @@
                                 style="@style/AdCMStageTextStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/ad_cm_trickle" />
+                                android:text="@string/had_cm_trickle" />
                         </LinearLayout>
                     </RelativeLayout>
 

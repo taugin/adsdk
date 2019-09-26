@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ad_cm_speed">SPEED</string>
-    <string name="ad_cm_continuous">CONTINUOUS</string>
-    <string name="ad_cm_trickle">PROTECTED</string>
-    <string name="ad_cm_label_charging">FULL CHARGE LEFT:&#160;</string>
-    <string name="ad_cm_label_standby">STANDBY LEFT:&#160;</string>
-    <string name="ad_cm_label_trickle">TRICKLE LEFT:&#160;</string>
-    <string name="ad_cm_complete">Charging Complete</string>
-    <string name="ad_cm_span_h">H&#160;</string>
-    <string name="ad_cm_span_m">Min</string>
-    <string name="ad_cm_monitor_toogle">Charging Monitor</string>
+    <string name="had_cm_speed">SPEED</string>
+    <string name="had_cm_continuous">CONTINUOUS</string>
+    <string name="had_cm_trickle">PROTECTED</string>
+    <string name="had_cm_label_charging">FULL CHARGE LEFT:&#160;</string>
+    <string name="had_cm_label_standby">STANDBY LEFT:&#160;</string>
+    <string name="had_cm_label_trickle">TRICKLE LEFT:&#160;</string>
+    <string name="had_cm_complete">Charging Complete</string>
+    <string name="had_cm_span_h">H&#160;</string>
+    <string name="had_cm_span_m">Min</string>
+    <string name="had_cm_monitor_toogle">Charging Monitor</string>
 
-    <string name="ad_cm_dialog_title">Disable Battery Master</string>
-    <string name="ad_cm_dialog_message">Your battery will not be protected,Are you sure to disable it</string>
+    <string name="had_cm_dialog_title">Disable Battery Master</string>
+    <string name="had_cm_dialog_message">Your battery will not be protected,Are you sure to disable it</string>
 
-    <string name="ad_cm_dialog_disable">Disable</string>
-    <string name="ad_cm_dialog_cancel">Not now</string>
+    <string name="had_cm_dialog_disable">Disable</string>
+    <string name="had_cm_dialog_cancel">Not now</string>
 
-    <string name="ad_slide_unlock">"&gt;&gt; Slide To Unlock &lt;&lt;"</string>
+    <string name="had_slide_unlock">"&gt;&gt; Slide To Unlock &lt;&lt;"</string>
 </resources>

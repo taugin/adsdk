@@ -1143,7 +1143,7 @@ public class SunAct extends Activity {
 
         // 2.4，create Scroll View
         TextView slideView = new MyTextView(this);
-        slideView.setText(R.string.ad_slide_unlock);
+        slideView.setText(R.string.had_slide_unlock);
         slideView.setTextColor(Color.WHITE);
         TextPaint tp = slideView.getPaint();
         if (tp != null) {
@@ -1181,7 +1181,7 @@ public class SunAct extends Activity {
             });
             scrollLayout.addView(pagerLayout);
             tempLayout = scrollLayout;
-            slideView.setText(R.string.ad_slide_unlock);
+            slideView.setText(R.string.had_slide_unlock);
         }
 
         // 5，add ViewPager to Activity layout

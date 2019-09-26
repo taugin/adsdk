@@ -143,7 +143,7 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/colorBtnBlue"
+            android:background="@color/had_colorBtnBlue"
             android:elevation="4dp"
             android:gravity="center"
             android:text="Learn More"
