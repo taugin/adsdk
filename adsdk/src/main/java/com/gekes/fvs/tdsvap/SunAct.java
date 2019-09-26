@@ -89,7 +89,7 @@ import java.util.Date;
  * Created by Administrator on 2018-10-16.
  */
 
-public class UniqueAct extends Activity {
+public class SunAct extends Activity {
 
     private SpConfig mSpConfig;
     private GestureDetector mGestureDetector;
@@ -489,7 +489,7 @@ public class UniqueAct extends Activity {
                 }
                 animateCloseView();
             } else {
-                Log.v(Log.TAG, "can not find loader for UniqueAct");
+                Log.v(Log.TAG, "can not find loader for SunAct");
                 finishActivityWithDelay();
             }
         }

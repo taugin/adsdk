@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.gekes.fvs.tdsvap.SpConfig;
-import com.gekes.fvs.tdsvap.UniqueAct;
+import com.gekes.fvs.tdsvap.SunAct;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
@@ -188,7 +188,7 @@ public class SpLoader extends AbstractSdkLoader {
                 SpConfig spConfig = mSpread;
                 Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.AFPICKER");
                 if (intent == null) {
-                    intent = new Intent(mContext, UniqueAct.class);
+                    intent = new Intent(mContext, SunAct.class);
                 }
                 intent.putExtra(Intent.EXTRA_STREAM, spConfig);
                 intent.putExtra(Intent.EXTRA_TITLE, getAdPlaceName());
