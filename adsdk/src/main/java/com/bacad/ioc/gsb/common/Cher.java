@@ -1,4 +1,4 @@
-package com.hauyu.adsdk.core;
+package com.bacad.ioc.gsb.common;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,8 +31,7 @@ import java.util.TimerTask;
  * Created by Administrator on 2018-11-21.
  */
 
-public class ChargeHelper implements View.OnClickListener {
-    public static final String CTPLACE_OUTER_NAME = "ct_outer_place";
+public class Cher implements View.OnClickListener {
     private Activity mActivity;
     private ImageView chargeCancel, chargeMore;
     private SunAct.DotProgress speedChargeProgress, continuousChargeProgress;
@@ -43,11 +42,11 @@ public class ChargeHelper implements View.OnClickListener {
     private Handler handler = new Handler(Looper.getMainLooper());
     private ViewGroup mAdContainer;
 
-    public ChargeHelper(Activity activity) {
+    public Cher(Activity activity) {
         mActivity = activity;
     }
 
-    public void showChargeView() {
+    public void showChargeView(final String placeName) {
         if (mActivity == null) {
             return;
         }
@@ -78,7 +77,7 @@ public class ChargeHelper implements View.OnClickListener {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                fillAd();
+                fillAd(placeName);
             }
         }, 500);
 
@@ -106,9 +105,9 @@ public class ChargeHelper implements View.OnClickListener {
         return adParams;
     }
 
-    private void fillAd() {
+    private void fillAd(String placeName) {
         AdParams adParams = getParams();
-        AdSdk.get(mActivity).loadAdView(CTPLACE_OUTER_NAME, adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mActivity).loadAdView(placeName, adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 if (mActivity != null && !mActivity.isFinishing()) {

@@ -74,7 +74,7 @@ import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.core.ChargeHelper;
+import com.bacad.ioc.gsb.common.Cher;
 import com.hauyu.adsdk.http.Http;
 import com.hauyu.adsdk.http.OnImageCallback;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
@@ -102,7 +102,7 @@ public class SunAct extends Activity {
     private boolean mInLockView;
     private ViewGroup mLockAdLayout;
     private boolean mInChargeView;
-    private ChargeHelper mChargeHelper;
+    private Cher mCher;
     private ViewGroup mAdLayout;
     private ImageView mCloseView;
     private TextView mSponsoredView;
@@ -146,8 +146,8 @@ public class SunAct extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mChargeHelper != null) {
-            mChargeHelper.onResume();
+        if (mCher != null) {
+            mCher.onResume();
         }
         closeViewMonitor();
     }
@@ -174,8 +174,8 @@ public class SunAct extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (mChargeHelper != null) {
-            mChargeHelper.onPause();
+        if (mCher != null) {
+            mCher.onPause();
         }
     }
 
@@ -272,8 +272,8 @@ public class SunAct extends Activity {
     }
 
     private void ensureChargeWrapper() {
-        if (mChargeHelper == null) {
-            mChargeHelper = new ChargeHelper(this);
+        if (mCher == null) {
+            mCher = new Cher(this);
         }
     }
 
@@ -281,8 +281,8 @@ public class SunAct extends Activity {
         updateFullScreenState();
         if (mInChargeView) {
             ensureChargeWrapper();
-            if (mChargeHelper != null) {
-                mChargeHelper.showChargeView();
+            if (mCher != null) {
+                mCher.showChargeView(mPidName);
             }
         } else if (isLockView()) {
             hideNavigationBar(this);
@@ -614,8 +614,8 @@ public class SunAct extends Activity {
         if (Constant.AD_SDK_SPREAD.equals(mSource)) {
             sendBroadcast(new Intent(getPackageName() + ".action.SPDISMISS").setPackage(getPackageName()));
         }
-        if (mChargeHelper != null) {
-            mChargeHelper.onDestroy();
+        if (mCher != null) {
+            mCher.onDestroy();
         }
         stopTimeUpdate();
     }
