@@ -13,7 +13,6 @@ import com.bacad.ioc.gsb.scpolicy.CvPcy;
 import com.gekes.fvs.tdsvap.UniqueAct;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.stat.InternalStat;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.lang.reflect.Method;
@@ -117,14 +116,11 @@ public class CvAdl extends Bldr {
         try {
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             pendingIntent.send();
-            InternalStat.reportEvent(getContext(), "start_act_success", pType);
         } catch (Exception e) {
             try {
                 context.startActivity(intent);
                 CvPcy.get(mContext).reportShowing(true);
-                InternalStat.reportEvent(getContext(), "start_act_success", pType);
             } catch (Exception e1) {
-                InternalStat.reportEvent(mContext, "start_act_error", pType);
             }
         }
     }

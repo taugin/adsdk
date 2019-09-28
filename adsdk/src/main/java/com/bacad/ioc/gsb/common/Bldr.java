@@ -14,7 +14,6 @@ import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.stat.InternalStat;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Locale;
@@ -151,15 +150,12 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
         try {
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             pendingIntent.send();
-            InternalStat.reportEvent(getContext(), "start_act_success", pType);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
             try {
                 getContext().startActivity(intent);
-                InternalStat.reportEvent(getContext(), "start_act_success", pType);
             } catch (Exception e1) {
                 Log.e(Log.TAG, "error : " + e1);
-                InternalStat.reportEvent(getContext(), "start_act_error", pType);
             }
         }
     }

@@ -13,7 +13,6 @@ import com.bacad.ioc.gsb.scpolicy.LvPcy;
 import com.gekes.fvs.tdsvap.UniqueAct;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.stat.InternalStat;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Locale;
@@ -122,18 +121,14 @@ public class LvAdl extends Bldr {
             try {
                 PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 pendingIntent.send();
-                InternalStat.reportEvent(getContext(), "start_act_success", pType);
             } catch (Exception e) {
                 try {
                     mContext.startActivity(intent);
                     LvPcy.get(mContext).reportShowing(true);
-                    InternalStat.reportEvent(getContext(), "start_act_success", pType);
                 } catch (Exception e1) {
-                    InternalStat.reportEvent(mContext, "start_act_error", pType);
                 }
             }
         } catch (Exception e) {
-            InternalStat.reportEvent(mContext, "start_act_error", pType);
             Log.v(Log.TAG, "error : " + e);
         }
     }
