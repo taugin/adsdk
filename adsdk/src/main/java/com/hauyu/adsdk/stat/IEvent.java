@@ -109,7 +109,7 @@ public interface IEvent {
      * @param key
      * @param value
      */
-    public void reportFinishFSA(Context context, String key, String value);
+    public void reportKVEvent(Context context, String key, String value);
 
     /**
      * 顺序请求

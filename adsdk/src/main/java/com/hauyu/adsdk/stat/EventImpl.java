@@ -441,7 +441,7 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportFinishFSA(Context context, String key, String value) {
+    public void reportKVEvent(Context context, String key, String value) {
         if (context == null) {
             return;
         }

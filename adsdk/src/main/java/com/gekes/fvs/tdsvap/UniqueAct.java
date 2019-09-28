@@ -70,11 +70,11 @@ import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.bacad.ioc.gsb.common.BPcy;
+import com.bacad.ioc.gsb.common.Cher;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.constant.Constant;
-import com.bacad.ioc.gsb.common.Cher;
 import com.hauyu.adsdk.http.Http;
 import com.hauyu.adsdk.http.OnImageCallback;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
@@ -323,6 +323,9 @@ public class UniqueAct extends Activity {
             mSceneType = intent.getStringExtra(Intent.EXTRA_REPLACING);
             mAction = intent.getAction();
             mDelayClose = intent.getLongExtra(Intent.ACTION_TIME_TICK, 0);
+            if (!TextUtils.isEmpty(mSceneType)) {
+                EventImpl.get().reportKVEvent(getBaseContext(), "show_scene_adv", mSceneType);
+            }
         }
     }
 
@@ -527,7 +530,7 @@ public class UniqueAct extends Activity {
             @Override
             public boolean onDown(MotionEvent e) {
                 finishActivityWithDelay();
-                EventImpl.get().reportFinishFSA(getBaseContext(), "close_fsa_byuser", "touch");
+                EventImpl.get().reportKVEvent(getBaseContext(), "close_fsa_byuser", "touch");
                 return super.onDown(e);
             }
         });
@@ -568,7 +571,7 @@ public class UniqueAct extends Activity {
             if ((Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
                     || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType))
                     && !Constant.AD_SDK_SPREAD.equals(mSource)) {
-                EventImpl.get().reportFinishFSA(this, "close_fsa_byuser", "backpressed");
+                EventImpl.get().reportKVEvent(this, "close_fsa_byuser", "backpressed");
             }
         }
     }
