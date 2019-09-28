@@ -131,7 +131,7 @@ public class HvAdl extends Bldr {
                 }
 
                 @Override
-                public void onShow(String pidName, String source, String adType) {
+                public void onImp(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     HvPcy.get(mContext).reportShowing(true);
                     SceneEventImpl.get().reportAdOuterShowing(mContext, HvPcy.get(mContext).getType(), pidName);

@@ -134,7 +134,7 @@ public class SvAdl extends Bldr implements Handler.Callback {
                 }
 
                 @Override
-                public void onShow(String pidName, String source, String adType) {
+                public void onImp(String pidName, String source, String adType) {
                     SvPcy.get(mContext).reportShowing(true);
                     SceneEventImpl.get().reportAdOuterShowing(mContext, SvPcy.get(mContext).getType(), pidName);
                 }

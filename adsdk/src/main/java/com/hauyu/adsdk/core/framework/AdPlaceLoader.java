@@ -923,16 +923,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 }
 
                 @Override
-                public void onAdImpression() {
-                    super.onAdImpression();
-                    if (!isAdViewReachToCoreCount()) {
-                        loadAdViewQueue();
-                    }
-                }
-
-                @Override
-                public void onAdShow() {
-                    super.onAdShow();
+                public void onAdImp() {
+                    super.onAdImp();
                     if (!isAdViewReachToCoreCount()) {
                         loadAdViewQueue();
                     }
@@ -1423,16 +1415,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 }
 
                 @Override
-                public void onAdShow() {
-                    super.onAdShow();
-                    if (!isComplexAdsReachToLoadCount()) {
-                        loadComplexAdsQueue();
-                    }
-                }
-
-                @Override
-                public void onAdImpression() {
-                    super.onAdImpression();
+                public void onAdImp() {
+                    super.onAdImp();
                     if (!isComplexAdsReachToLoadCount()) {
                         loadComplexAdsQueue();
                     }

@@ -37,7 +37,7 @@ public interface IEvent {
      * @param type
      * @param extra
      */
-    public void reportAdCallShow(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
+    public void reportAdShow(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
 
     /**
      * 广告展示
@@ -47,7 +47,7 @@ public interface IEvent {
      * @param type
      * @param extra
      */
-    public void reportAdShow(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
+    public void reportAdImp(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
 
     /**
      * 广告点击

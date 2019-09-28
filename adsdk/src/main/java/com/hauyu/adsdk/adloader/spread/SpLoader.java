@@ -39,18 +39,18 @@ public class SpLoader extends AbstractSdkLoader {
     public void loadNative(Params params) {
         mSpread = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
         if (checkArgs(mSpread)) {
+            reportAdLoaded();
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onAdLoaded(SpLoader.this);
             }
-            reportAdLoaded();
             loadIcon(mSpread.getIcon());
             loadBanner(mSpread.getBanner());
         } else {
+            reportAdError(String.valueOf("ERROR_LOAD"));
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
             }
-            reportAdError(String.valueOf("ERROR_LOAD"));
         }
     }
 
@@ -74,13 +74,13 @@ public class SpLoader extends AbstractSdkLoader {
             mParams = params;
         }
         if (mSpread != null) {
+            reportAdImp();
             SpConfig spConfig = mSpread;
             SpreadBindNativeView spreadBindNativeView = new SpreadBindNativeView();
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spConfig);
-        }
-        reportAdShow();
-        if (getAdListener() != null) {
-            getAdListener().onAdShow();
+            if (getAdListener() != null) {
+                getAdListener().onAdImp();
+            }
         }
     }
 
@@ -88,18 +88,18 @@ public class SpLoader extends AbstractSdkLoader {
     public void loadInterstitial() {
         mSpread = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
         if (checkArgs(mSpread)) {
+            reportAdLoaded();
             if (getAdListener() != null) {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded(this);
             }
-            reportAdLoaded();
             loadIcon(mSpread.getIcon());
             loadBanner(mSpread.getBanner());
         } else {
+            reportAdError(String.valueOf("ERROR_LOAD"));
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
             }
-            reportAdError(String.valueOf("ERROR_LOAD"));
         }
     }
 
@@ -196,7 +196,7 @@ public class SpLoader extends AbstractSdkLoader {
                 intent.putExtra(Intent.EXTRA_TEMPLATE, getAdType());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
-                reportAdCallShow();
+                reportAdShow();
                 registerDismiss();
             }
         } catch (Exception e) {
@@ -231,14 +231,20 @@ public class SpLoader extends AbstractSdkLoader {
             }
             if (TextUtils.equals(context.getPackageName() + ".action.SPDISMISS", intent.getAction())) {
                 unregisterDismiss();
+                reportAdClose();
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
-                reportAdClose();
             } else if (TextUtils.equals(context.getPackageName() + ".action.SPCLICK", intent.getAction())) {
                 reportAdClick();
+                if (getAdListener() != null) {
+                    getAdListener().onAdClick();
+                }
             } else if (TextUtils.equals(context.getPackageName() + ".action.SPSHOW", intent.getAction())) {
-                reportAdShow();
+                reportAdImp();
+                if (getAdListener() != null) {
+                    getAdListener().onAdImp();
+                }
             }
         }
     };

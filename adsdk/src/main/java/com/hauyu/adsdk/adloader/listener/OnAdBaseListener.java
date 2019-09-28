@@ -13,9 +13,9 @@ public interface OnAdBaseListener {
     public void onAdLoaded(ISdkLoader loader);
 
     /**
-     * banner or native show
+     * banner or native impression
      */
-    public void onAdShow();
+    public void onAdImp();
 
     /**
      * banner or native click
@@ -33,11 +33,6 @@ public interface OnAdBaseListener {
     public void onAdFailed(int error);
 
     /**
-     * banner or native impression
-     */
-    public void onAdImpression();
-
-    /**
      * banner or native opened
      */
     public void onAdOpened();
@@ -48,9 +43,9 @@ public interface OnAdBaseListener {
     public void onInterstitialLoaded(ISdkLoader loader);
 
     /**
-     * interstitial show
+     * interstitial impression
      */
-    public void onInterstitialShow();
+    public void onInterstitialImp();
 
     /**
      * interstitial click
@@ -88,9 +83,9 @@ public interface OnAdBaseListener {
     public void onRewardedVideoAdLoaded(ISdkLoader loader);
 
     /**
-     * reward show
+     * reward opened
      */
-    public void onRewardedVideoAdShowed();
+    public void onRewardedVideoAdOpened();
 
     /**
      * reward complete

@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onShow(String pidName, String source, String adType) {
+        public void onImp(String pidName, String source, String adType) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
 

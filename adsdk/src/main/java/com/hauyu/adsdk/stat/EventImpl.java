@@ -284,11 +284,11 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdCallShow(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdShow(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
-        String eventId = generateEventId(context, "callshow", sdk, type);
+        String eventId = generateEventId(context, "show", sdk, type);
         if (isReportFirebase(context)) {
             sendFirebaseAnalytics(context, pidName, eventId, extra);
         }
@@ -302,11 +302,11 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdShow(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdImp(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!checkArgument(context, pidName, sdk, type)) {
             return;
         }
-        String eventId = generateEventId(context, "show", sdk, type);
+        String eventId = generateEventId(context, "imp", sdk, type);
         if (isReportFirebase(context)) {
             sendFirebaseAnalytics(context, pidName, eventId, extra);
         }

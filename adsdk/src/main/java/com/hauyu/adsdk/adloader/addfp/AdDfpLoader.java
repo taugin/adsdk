@@ -106,20 +106,20 @@ public class AdDfpLoader extends AbstractSdkLoader {
             @Override
             public void onAdClosed() {
                 Log.v(Log.TAG, "");
+                reportAdClose();
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
-                reportAdClose();
             }
 
             @Override
             public void onAdFailedToLoad(int i) {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
+                reportAdError(codeToError(i));
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(toSdkError(i));
                 }
-                reportAdError(codeToError(i));
             }
 
             @Override
@@ -143,9 +143,9 @@ public class AdDfpLoader extends AbstractSdkLoader {
             public void onAdLoaded() {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
+                reportAdLoaded();
                 putCachedAdTime(loadingView);
                 bannerView = loadingView;
-                reportAdLoaded();
                 notifyAdLoaded(false);
             }
 
@@ -157,14 +157,15 @@ public class AdDfpLoader extends AbstractSdkLoader {
             @Override
             public void onAdImpression() {
                 Log.v(Log.TAG, "");
+                reportAdImp();
                 if (getAdListener() != null) {
-                    getAdListener().onAdShow();
+                    getAdListener().onAdImp();
                 }
             }
         });
-        loadingView.loadAd(new PublisherAdRequest.Builder().build());
-        reportAdRequest();
         Log.v(Log.TAG, "");
+        reportAdRequest();
+        loadingView.loadAd(new PublisherAdRequest.Builder().build());
     }
 
     @Override
@@ -244,37 +245,37 @@ public class AdDfpLoader extends AbstractSdkLoader {
             public void onAdClosed() {
                 Log.v(Log.TAG, "");
                 interstitialAd = null;
+                reportAdClose();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialDismiss();
                 }
-                reportAdClose();
             }
 
             @Override
             public void onAdFailedToLoad(int i) {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
+                reportAdError(codeToError(i));
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(toSdkError(i));
                 }
-                reportAdError(codeToError(i));
             }
 
             @Override
             public void onAdLeftApplication() {
                 Log.v(Log.TAG, "");
+                reportAdClick();
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialClick();
                 }
-                reportAdClick();
             }
 
             @Override
             public void onAdOpened() {
                 Log.v(Log.TAG, "");
-                reportAdShow();
+                reportAdImp();
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialShow();
+                    getAdListener().onInterstitialImp();
                 }
             }
 
@@ -300,9 +301,9 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
             }
         });
-        interstitialAd.loadAd(new PublisherAdRequest.Builder().build());
-        reportAdRequest();
         Log.v(Log.TAG, "");
+        reportAdRequest();
+        interstitialAd.loadAd(new PublisherAdRequest.Builder().build());
     }
 
     @Override
@@ -310,7 +311,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
         if (interstitialAd != null && interstitialAd.isLoaded()) {
             interstitialAd.show();
             clearCachedAdTime(interstitialAd);
-            reportAdCallShow();
+            reportAdShow();
             return true;
         }
         return false;
@@ -360,8 +361,8 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 nativeAd = unifiedNativeAd;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
-                notifyAdLoaded(false);
                 reportAdLoaded();
+                notifyAdLoaded(false);
             }
         }).withAdListener(new AdListener() {
             @Override
@@ -372,10 +373,10 @@ public class AdDfpLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked() {
                 Log.v(Log.TAG, "");
+                reportAdClick();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
-                reportAdClick();
                 if (isDestroyAfterClick()) {
                     nativeAd = null;
                 }
@@ -389,10 +390,10 @@ public class AdDfpLoader extends AbstractSdkLoader {
             @Override
             public void onAdImpression() {
                 Log.v(Log.TAG, "");
+                reportAdImp();
                 if (getAdListener() != null) {
-                    getAdListener().onAdImpression();
+                    getAdListener().onAdImp();
                 }
-                reportAdShow();
             }
 
             @Override
@@ -402,18 +403,18 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     updateLastNoFillTime();
                 }
                 setLoading(false, STATE_FAILURE);
+                reportAdError(codeToError(errorCode));
                 if (getAdListener() != null) {
                     getAdListener().onAdFailed(toSdkError(errorCode));
                 }
-                reportAdError(codeToError(errorCode));
             }
 
             @Override
             public void onAdClosed() {
+                reportAdClose();
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
-                reportAdClose();
             }
         });
 
@@ -424,11 +425,11 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 .build();
         loadingBuilder.withNativeAdOptions(nativeAdOptions);
         AdLoader adLoader = loadingBuilder.build();
+        Log.v(Log.TAG, "");
+        reportAdRequest();
         if (adLoader != null) {
             adLoader.loadAd(new PublisherAdRequest.Builder().build());
         }
-        reportAdRequest();
-        Log.v(Log.TAG, "");
     }
 
     @Override
@@ -441,6 +442,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
         clearCachedAdTime(nativeAd);
         adDfpBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
         gNativeAd = nativeAd;
+        reportAdShow();
         if (!isDestroyAfterClick()) {
             nativeAd = null;
         }
@@ -490,19 +492,19 @@ public class AdDfpLoader extends AbstractSdkLoader {
             public void onRewardedVideoAdFailedToLoad(int i) {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
+                reportAdError(codeToError(i));
                 if (getAdListener() != null) {
                     getAdListener().onInterstitialError(toSdkError(i));
                 }
-                reportAdError(codeToError(i));
             }
 
             @Override
             public void onRewardedVideoAdOpened() {
                 Log.v(Log.TAG, "");
+                reportAdImp();
                 if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdShowed();
+                    getAdListener().onRewardedVideoAdOpened();
                 }
-                reportAdShow();
             }
 
             @Override
@@ -516,15 +518,16 @@ public class AdDfpLoader extends AbstractSdkLoader {
             @Override
             public void onRewardedVideoAdClosed() {
                 Log.v(Log.TAG, "");
+                reportAdClose();
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClosed();
                 }
-                reportAdClose();
             }
 
             @Override
             public void onRewarded(RewardItem rewardItem) {
                 Log.v(Log.TAG, "");
+                reportAdReward();
                 if (getAdListener() != null) {
                     AdReward item = new AdReward();
                     if (rewardItem != null) {
@@ -533,16 +536,15 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     }
                     getAdListener().onRewarded(item);
                 }
-                reportAdReward();
             }
 
             @Override
             public void onRewardedVideoAdLeftApplication() {
                 Log.v(Log.TAG, "");
+                reportAdClick();
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClicked();
                 }
-                reportAdClick();
             }
 
             @Override
@@ -553,9 +555,9 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 }
             }
         });
-        loadingRewardVideo.loadAd(mPidConfig.getPid(), new PublisherAdRequest.Builder().build());
-        reportAdRequest();
         Log.v(Log.TAG, "");
+        reportAdRequest();
+        loadingRewardVideo.loadAd(mPidConfig.getPid(), new PublisherAdRequest.Builder().build());
     }
 
     @Override
@@ -576,7 +578,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
             loadedRewardVideo.show();
             clearCachedAdTime(loadedRewardVideo);
             loadedRewardVideo = null;
-            reportAdCallShow();
+            reportAdShow();
             return true;
         }
         return false;
