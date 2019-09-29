@@ -99,11 +99,11 @@ public class SvAdl extends Bldr implements Handler.Callback {
                 return;
             }
             Log.iv(Log.TAG, "");
-            SceneEventImpl.get().reportAdOuterRequest(mContext, SvPcy.get(mContext).getType(), placeName);
+            SceneEventImpl.get().reportAdSceneRequest(mContext, SvPcy.get(mContext).getType(), placeName);
             mAdSdk.loadComplexAds(placeName, new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
-                    SceneEventImpl.get().reportAdOuterLoaded(mContext, SvPcy.get(mContext).getType(), pidName);
+                    SceneEventImpl.get().reportAdSceneLoaded(mContext, SvPcy.get(mContext).getType(), pidName);
                     if (SvPcy.get(mContext).isStAllowed()) {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
                             AdSdk.get(mContext).showComplexAds(pidName, null);
@@ -116,9 +116,9 @@ public class SvAdl extends Bldr implements Handler.Callback {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }
                         }
-                        SceneEventImpl.get().reportAdOuterCallShow(mContext, SvPcy.get(mContext).getType(), pidName);
+                        SceneEventImpl.get().reportAdSceneShow(mContext, SvPcy.get(mContext).getType(), pidName);
                     } else {
-                        SceneEventImpl.get().reportAdOuterDisallow(mContext, SvPcy.get(mContext).getType(), pidName);
+                        SceneEventImpl.get().reportAdSceneDisallow(mContext, SvPcy.get(mContext).getType(), pidName);
                     }
                 }
 
@@ -136,7 +136,7 @@ public class SvAdl extends Bldr implements Handler.Callback {
                 @Override
                 public void onImp(String pidName, String source, String adType) {
                     SvPcy.get(mContext).reportShowing(true);
-                    SceneEventImpl.get().reportAdOuterShowing(mContext, SvPcy.get(mContext).getType(), pidName);
+                    SceneEventImpl.get().reportAdSceneImp(mContext, SvPcy.get(mContext).getType(), pidName);
                 }
             });
         }

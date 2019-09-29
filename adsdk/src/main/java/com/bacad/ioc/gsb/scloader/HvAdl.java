@@ -93,12 +93,12 @@ public class HvAdl extends Bldr {
             }
             Log.iv(Log.TAG, "");
             HvPcy.get(mContext).setLoading(true);
-            SceneEventImpl.get().reportAdOuterRequest(mContext, HvPcy.get(mContext).getType(), placeName);
+            SceneEventImpl.get().reportAdSceneRequest(mContext, HvPcy.get(mContext).getType(), placeName);
             mAdSdk.loadComplexAds(placeName, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    SceneEventImpl.get().reportAdOuterLoaded(mContext, HvPcy.get(mContext).getType(), pidName);
+                    SceneEventImpl.get().reportAdSceneLoaded(mContext, HvPcy.get(mContext).getType(), pidName);
                     HvPcy.get(mContext).setLoading(false);
                     if (HvPcy.get(mContext).isHtAllowed()) {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
@@ -112,9 +112,9 @@ public class HvAdl extends Bldr {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }
                         }
-                        SceneEventImpl.get().reportAdOuterCallShow(mContext, HvPcy.get(mContext).getType(), pidName);
+                        SceneEventImpl.get().reportAdSceneShow(mContext, HvPcy.get(mContext).getType(), pidName);
                     } else {
-                        SceneEventImpl.get().reportAdOuterDisallow(mContext, HvPcy.get(mContext).getType(), pidName);
+                        SceneEventImpl.get().reportAdSceneDisallow(mContext, HvPcy.get(mContext).getType(), pidName);
                     }
                 }
 
@@ -134,7 +134,7 @@ public class HvAdl extends Bldr {
                 public void onImp(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     HvPcy.get(mContext).reportShowing(true);
-                    SceneEventImpl.get().reportAdOuterShowing(mContext, HvPcy.get(mContext).getType(), pidName);
+                    SceneEventImpl.get().reportAdSceneImp(mContext, HvPcy.get(mContext).getType(), pidName);
                 }
 
                 @Override

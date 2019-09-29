@@ -90,14 +90,14 @@ public class GvAdl extends Bldr {
                 return;
             }
             Log.iv(Log.TAG, "");
-            SceneEventImpl.get().reportAdOuterRequest(mContext, GvPcy.get(mContext).getType(), placeName);
+            SceneEventImpl.get().reportAdSceneRequest(mContext, GvPcy.get(mContext).getType(), placeName);
             GvPcy.get(mContext).setLoading(true);
             mAdSdk.loadComplexAds(placeName, generateAdParams(), new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "loaded place_name : " + pidName + " , source : " + source + " , adType : " + adType);
                     GvPcy.get(mContext).setLoading(false);
-                    SceneEventImpl.get().reportAdOuterLoaded(mContext, GvPcy.get(mContext).getType(), pidName);
+                    SceneEventImpl.get().reportAdSceneLoaded(mContext, GvPcy.get(mContext).getType(), pidName);
                     if (GvPcy.get(mContext).isGtAllowed()) {
                         if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
                             AdSdk.get(mContext).showComplexAds(pidName, null);
@@ -110,9 +110,9 @@ public class GvAdl extends Bldr {
                                 AdSdk.get(mContext).showComplexAds(pidName, null);
                             }
                         }
-                        SceneEventImpl.get().reportAdOuterCallShow(mContext, GvPcy.get(mContext).getType(), pidName);
+                        SceneEventImpl.get().reportAdSceneShow(mContext, GvPcy.get(mContext).getType(), pidName);
                     } else {
-                        SceneEventImpl.get().reportAdOuterDisallow(mContext, GvPcy.get(mContext).getType(), pidName);
+                        SceneEventImpl.get().reportAdSceneDisallow(mContext, GvPcy.get(mContext).getType(), pidName);
                     }
                 }
 
@@ -132,7 +132,7 @@ public class GvAdl extends Bldr {
                 public void onImp(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "show place_name : " + pidName + " , source : " + source + " , adType : " + adType);
                     GvPcy.get(mContext).reportShowing(true);
-                    SceneEventImpl.get().reportAdOuterShowing(mContext, GvPcy.get(mContext).getType(), pidName);
+                    SceneEventImpl.get().reportAdSceneImp(mContext, GvPcy.get(mContext).getType(), pidName);
                 }
 
                 @Override

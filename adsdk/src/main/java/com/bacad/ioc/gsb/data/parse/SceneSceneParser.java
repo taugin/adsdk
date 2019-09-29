@@ -3,6 +3,7 @@ package com.bacad.ioc.gsb.data.parse;
 import android.text.TextUtils;
 
 import com.bacad.ioc.gsb.common.BCg;
+import com.bacad.ioc.gsb.common.ScFl;
 import com.bacad.ioc.gsb.scconfig.CvCg;
 import com.bacad.ioc.gsb.scconfig.GvCg;
 import com.bacad.ioc.gsb.scconfig.HvCg;
@@ -270,5 +271,27 @@ public class SceneSceneParser implements ISceneParser {
         } catch (Exception e) {
             Log.e(Log.TAG, "parseAttrConfig error : " + e);
         }
+    }
+
+    @Override
+    public ScFl parseSceneFlag(String content) {
+        ScFl scFl = null;
+        try {
+            content = getContent(content);
+            JSONObject jobj = new JSONObject(content);
+            scFl = new ScFl();
+            if (jobj.has(REPORT_UMENG)) {
+                scFl.setReportUmeng(jobj.getInt(REPORT_UMENG) == 1);
+            }
+            if (jobj.has(REPORT_FIREBASE)) {
+                scFl.setReportFirebase(jobj.getInt(REPORT_FIREBASE) == 1);
+            }
+            if (jobj.has(REPORT_FACEBOOK)) {
+                scFl.setReportFacebook(jobj.getInt(REPORT_FACEBOOK) == 1);
+            }
+        } catch (Exception e) {
+            Log.v(Log.TAG, "parseScFl error : " + e);
+        }
+        return scFl;
     }
 }

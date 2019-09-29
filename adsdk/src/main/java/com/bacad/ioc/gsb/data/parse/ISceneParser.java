@@ -1,5 +1,6 @@
 package com.bacad.ioc.gsb.data.parse;
 
+import com.bacad.ioc.gsb.common.ScFl;
 import com.bacad.ioc.gsb.scconfig.CvCg;
 import com.bacad.ioc.gsb.scconfig.GvCg;
 import com.bacad.ioc.gsb.scconfig.HvCg;
@@ -50,6 +51,13 @@ public interface ISceneParser {
     // 延迟关闭时间
     String DELAY_CLOSE = "dc";
 
+    // 是否上报友盟
+    String REPORT_UMENG = "ru";
+    // 是否上报firebase
+    String REPORT_FIREBASE = "rf";
+    // 是否上报facebook
+    String REPORT_FACEBOOK = "rb";
+
     GvCg parseGtPolicy(String data);
 
     SvCg parseStPolicy(String data);
@@ -59,4 +67,6 @@ public interface ISceneParser {
     HvCg parseHtPolicy(String data);
 
     CvCg parseCtPolicy(String data);
+
+    ScFl parseSceneFlag(String data);
 }

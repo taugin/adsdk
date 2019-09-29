@@ -1,13 +1,11 @@
 package com.bacad.ioc.gsb.event;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.hauyu.adsdk.data.DataManager;
-import com.hauyu.adsdk.data.config.AdSwitch;
+import com.bacad.ioc.gsb.common.ScFl;
+import com.bacad.ioc.gsb.data.SceneData;
 import com.hauyu.adsdk.log.Log;
 
 import java.lang.reflect.Method;
@@ -49,24 +47,6 @@ public class SceneEventImpl implements IEvent {
 
     private String generateEventIdAlias(Context context, String eventId) {
         return eventId;
-    }
-
-    private boolean checkArgument(Context context, String pidName, String sdk, String type) {
-        if (context == null || TextUtils.isEmpty(pidName) || TextUtils.isEmpty(sdk) || TextUtils.isEmpty(type)) {
-            Log.e(Log.TAG, "context == null or pidname == null or sdk == null or type all must not be empty or null");
-            return false;
-        }
-        return true;
-    }
-
-    private String generateEventId(Context context, String action, String sdk, String type) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(action);
-        builder.append("_");
-        builder.append(type);
-        builder.append("_");
-        builder.append(sdk);
-        return generateEventIdAlias(context, builder.toString());
     }
 
     /**
@@ -246,16 +226,16 @@ public class SceneEventImpl implements IEvent {
         }
     }
 
-    private String generateAdOuterKey(String adOuterType, String op) {
-        return "outer_" + adOuterType + "_" + op;
+    private String generateAdSceneKey(String adSceneType, String op) {
+        return "scene_" + adSceneType + "_" + op;
     }
 
     @Override
-    public void reportAdOuterRequest(Context context, String adOuterType, String pidName) {
+    public void reportAdSceneRequest(Context context, String adSceneType, String pidName) {
         if (context == null) {
             return;
         }
-        String eventId = generateAdOuterKey(adOuterType, "request");
+        String eventId = generateAdSceneKey(adSceneType, "request");
         eventId = generateEventIdAlias(context, eventId);
         if (isReportFirebase(context)) {
             sendFirebaseAnalytics(context, pidName, eventId, null);
@@ -270,11 +250,11 @@ public class SceneEventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdOuterLoaded(Context context, String adOuterType, String pidName) {
+    public void reportAdSceneLoaded(Context context, String adSceneType, String pidName) {
         if (context == null) {
             return;
         }
-        String eventId = generateAdOuterKey(adOuterType, "loaded");
+        String eventId = generateAdSceneKey(adSceneType, "loaded");
         eventId = generateEventIdAlias(context, eventId);
         if (isReportFirebase(context)) {
             sendFirebaseAnalytics(context, pidName, eventId, null);
@@ -289,11 +269,11 @@ public class SceneEventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdOuterCallShow(Context context, String adOuterType, String pidName) {
+    public void reportAdSceneShow(Context context, String adSceneType, String pidName) {
         if (context == null) {
             return;
         }
-        String eventId = generateAdOuterKey(adOuterType, "callshow");
+        String eventId = generateAdSceneKey(adSceneType, "show");
         eventId = generateEventIdAlias(context, eventId);
         if (isReportFirebase(context)) {
             sendFirebaseAnalytics(context, pidName, eventId, null);
@@ -308,11 +288,11 @@ public class SceneEventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdOuterShowing(Context context, String adOuterType, String pidName) {
+    public void reportAdSceneImp(Context context, String adSceneType, String pidName) {
         if (context == null) {
             return;
         }
-        String eventId = generateAdOuterKey(adOuterType, "showing");
+        String eventId = generateAdSceneKey(adSceneType, "imp");
         eventId = generateEventIdAlias(context, eventId);
         if (isReportFirebase(context)) {
             sendFirebaseAnalytics(context, pidName, eventId, null);
@@ -327,11 +307,11 @@ public class SceneEventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdOuterDisallow(Context context, String adOuterType, String pidName) {
+    public void reportAdSceneDisallow(Context context, String adSceneType, String pidName) {
         if (context == null) {
             return;
         }
-        String eventId = generateAdOuterKey(adOuterType, "disallow");
+        String eventId = generateAdSceneKey(adSceneType, "disallow");
         eventId = generateEventIdAlias(context, eventId);
         if (isReportFirebase(context)) {
             sendFirebaseAnalytics(context, pidName, eventId, null);
@@ -346,11 +326,11 @@ public class SceneEventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdOuterShowTimes(Context context, String adOuterType, int times) {
+    public void reportAdSceneShowTimes(Context context, String adSceneType, int times) {
         if (context == null) {
             return;
         }
-        String eventId = generateAdOuterKey(adOuterType, "showtimes");
+        String eventId = generateAdSceneKey(adSceneType, "showtimes");
         eventId = generateEventIdAlias(context, eventId);
         String value = String.valueOf(times);
         if (isReportFirebase(context)) {
@@ -365,76 +345,27 @@ public class SceneEventImpl implements IEvent {
         Log.iv(Log.TAG, "SceneEventImpl stat key : " + eventId + ", times : " + times);
     }
 
-    private boolean isReportError(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportError();
-        }
-        return true;
-    }
-
-    private boolean isReportTime(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportTime();
-        }
-        return true;
-    }
-
     private boolean isReportUmeng(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportUmeng();
+        ScFl ScFl = SceneData.get(context).getScFl();
+        if (ScFl != null) {
+            return ScFl.isReportUmeng();
         }
         return true;
     }
 
     private boolean isReportFirebase(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportFirebase();
+        ScFl ScFl = SceneData.get(context).getScFl();
+        if (ScFl != null) {
+            return ScFl.isReportFirebase();
         }
         return true;
     }
 
     private boolean isReportFacebook(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportFacebook();
+        ScFl ScFl = SceneData.get(context).getScFl();
+        if (ScFl != null) {
+            return ScFl.isReportFacebook();
         }
         return true;
-    }
-
-    private Map<String, String> addExtraForError(Context context, Map<String, String> extra) {
-        try {
-            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-            StringBuilder builder = new StringBuilder();
-            boolean isConnected = false;
-            String networkType = null;
-            String subworkType = null;
-            if (networkInfo != null) {
-                isConnected = networkInfo.isAvailable();
-                networkType = networkInfo.getTypeName();
-                subworkType = networkInfo.getSubtypeName();
-            }
-            builder.append(isConnected ? "Y" : "N");
-            if (!TextUtils.isEmpty(networkType)) {
-                builder.append("[");
-                builder.append(networkType);
-                if (!TextUtils.isEmpty(subworkType)) {
-                    builder.append("-");
-                    builder.append(subworkType);
-                }
-                builder.append("]");
-            }
-            if (extra == null) {
-                extra = new HashMap<String, String>();
-            }
-            extra.put("network", builder.toString());
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return extra;
     }
 }

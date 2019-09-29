@@ -250,7 +250,7 @@ public class BPcy implements Handler.Callback {
     }
 
     private void reportShowTimesOneday(Context context, int times) {
-        SceneEventImpl.get().reportAdOuterShowTimes(mContext, getType(), times);
+        SceneEventImpl.get().reportAdSceneShowTimes(mContext, getType(), times);
     }
 
     /**

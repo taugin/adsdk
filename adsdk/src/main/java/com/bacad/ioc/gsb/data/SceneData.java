@@ -3,12 +3,14 @@ package com.bacad.ioc.gsb.data;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.bacad.ioc.gsb.common.ScFl;
 import com.bacad.ioc.gsb.data.parse.SceneSceneParser;
 import com.bacad.ioc.gsb.scconfig.CvCg;
 import com.bacad.ioc.gsb.scconfig.GvCg;
 import com.bacad.ioc.gsb.scconfig.HvCg;
 import com.bacad.ioc.gsb.scconfig.LvCg;
 import com.bacad.ioc.gsb.scconfig.SvCg;
+import com.hauyu.adsdk.utils.Utils;
 
 /**
  * Created by Administrator on 2018/2/12.
@@ -17,6 +19,7 @@ import com.bacad.ioc.gsb.scconfig.SvCg;
 public class SceneData {
 
     private static SceneData sSceneData;
+    private static final String PREF_SCENE_FLAG = "pref_scene_flag";
 
     public static SceneData get(Context context) {
         synchronized (SceneData.class) {
@@ -44,6 +47,7 @@ public class SceneData {
     private SceneCg mSceneCg;
     private Context mContext;
     private SceneSceneParser mParser;
+    private ScFl mScFl;
 
     public GvCg getRemoteGtPolicy() {
         String data = getString(GvCg.GTPOLICY_NAME);
@@ -106,5 +110,18 @@ public class SceneData {
      */
     private String checkLastData(String data, String key) {
         return data;
+    }
+
+    public ScFl getScFl() {
+        String data = getString(ScFl.SCFL_NAME);
+        if (!TextUtils.isEmpty(data)) {
+            String oldSwitchMd5 = Utils.getString(mContext, PREF_SCENE_FLAG);
+            String newSwitchMd5 = Utils.string2MD5(data);
+            if (mScFl == null || !TextUtils.equals(oldSwitchMd5, newSwitchMd5)) {
+                mScFl = mParser.parseSceneFlag(data);
+                Utils.putString(mContext, PREF_SCENE_FLAG, newSwitchMd5);
+            }
+        }
+        return mScFl;
     }
 }
