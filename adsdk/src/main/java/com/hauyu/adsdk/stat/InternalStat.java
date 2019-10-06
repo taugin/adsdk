@@ -98,6 +98,22 @@ public class InternalStat {
         }
     }
 
+    private static void sendUmengError(Context context, Throwable throwable) {
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
+            Method method = clazz.getDeclaredMethod("reportError", Context.class, Throwable.class);
+            method.invoke(null, context, throwable);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.iv(Log.TAG, "error : " + error);
+        }
+    }
+
     /**
      * 发送appsflyer统计事件
      *
@@ -210,5 +226,9 @@ public class InternalStat {
         sendAppsflyer(context, value, key, map);
         sendFirebaseAnalytics(context, value, key, map);
         sendFacebook(context, value, key, map);
+    }
+
+    public static void reportError(Context context, Throwable e) {
+        sendUmengError(context, e);
     }
 }

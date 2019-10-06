@@ -21,6 +21,7 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.stat.InternalStat;
 
 /**
  * Created by Administrator on 2018/4/26.
@@ -69,6 +70,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             view = showUnifiedAdView(rootView, nativeAd, pidConfig);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
+            InternalStat.reportError(adContainer.getContext(), e);
         }
         try {
             adContainer.removeAllViews();
@@ -79,6 +81,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
+            InternalStat.reportError(adContainer.getContext(), e);
         }
     }
 
