@@ -19,6 +19,7 @@ import com.mopub.nativeads.MediaViewBinder;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.ViewBinder;
 import com.mp.md.simple.R;
+import com.simple.mpsdk.config.MpPlace;
 import com.simple.mpsdk.constant.Constant;
 import com.simple.mpsdk.framework.Params;
 import com.simple.mpsdk.log.LogHelper;
@@ -30,9 +31,11 @@ import com.simple.mpsdk.utils.Utils;
 
 public class MopubBindNativeView extends BaseBindNativeView {
     private Params mParams;
+    private MpPlace mMpPlace;
 
-    public void bindMopubNative(Params params, Context context, MoPubNative nativeAd) {
+    public void bindMopubNative(Params params, Context context, MoPubNative nativeAd, MpPlace mpPlace) {
         mParams = params;
+        mMpPlace = mpPlace;
         if (mParams == null) {
             LogHelper.e(LogHelper.TAG, "********************mParams is null");
             return;
@@ -137,12 +140,17 @@ public class MopubBindNativeView extends BaseBindNativeView {
             LogHelper.e(LogHelper.TAG, "error : " + e, e);
         }
 
-        try {
-            bindFBRender(context, nativeAd);
-        } catch (Exception e) {
-            LogHelper.e(LogHelper.TAG, "error : " + e, e);
-        } catch (Error e) {
-            LogHelper.e(LogHelper.TAG, "error : " + e, e);
+        if (mMpPlace != null && mMpPlace.isRenderFacebook()) {
+            LogHelper.iv(LogHelper.TAG, "enable render facebook native");
+            try {
+                bindFBRender(context, nativeAd);
+            } catch (Exception e) {
+                LogHelper.e(LogHelper.TAG, "error : " + e, e);
+            } catch (Error e) {
+                LogHelper.e(LogHelper.TAG, "error : " + e, e);
+            }
+        } else {
+            LogHelper.iv(LogHelper.TAG, "disable render facebook native");
         }
 
         try {

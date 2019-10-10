@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setAdMediaView(R.id.common_media_cover);
         MpParams mpParams = builder.build();
 
-        MpSdk.get(mContext).loadCommonView("native_demo_test", mpParams, new SimpleMpSdkListener() {
+        MpSdk.get(mContext).loadCommonView("native_test", mpParams, new SimpleMpSdkListener() {
             @Override
             public void onLoaded(String pidName, String adType) {
                 MpSdk.get(mContext).showCommonView(pidName, mNativeBannerLayout);

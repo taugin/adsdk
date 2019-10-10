@@ -22,6 +22,8 @@ public class MpPlace {
 
     private String uniqueValue;
 
+    private boolean renderFacebook = true;
+
     public String getName() {
         return name;
     }
@@ -84,6 +86,14 @@ public class MpPlace {
 
     public void setUniqueValue(String uniqueValue) {
         this.uniqueValue = uniqueValue;
+    }
+
+    public boolean isRenderFacebook() {
+        return renderFacebook;
+    }
+
+    public void setRenderFacebook(boolean renderFacebook) {
+        this.renderFacebook = renderFacebook;
     }
 
     @Override

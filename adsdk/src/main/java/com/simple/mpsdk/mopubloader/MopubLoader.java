@@ -564,7 +564,7 @@ public class MopubLoader extends BaseMopubLoader {
         });
 
         MopubBindNativeView bindNativeView = new MopubBindNativeView();
-        bindNativeView.bindMopubNative(mParams, mContext, moPubNative);
+        bindNativeView.bindMopubNative(mParams, mContext, moPubNative, mMpPlace);
         moPubNative.makeRequest();
         if (mStat != null) {
             mStat.reportAdRequest(mContext, getName(), getSdkName(), getAdType(), null);

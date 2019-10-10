@@ -24,6 +24,8 @@ public interface IConfigParser {
     String APPID = "aid";
     // ext id
     String EXTID = "eid";
+    // Render FB native
+    String RENDER_FACEBOOK = "rf";
 
     MpConfig parseAdConfig(String data);
 

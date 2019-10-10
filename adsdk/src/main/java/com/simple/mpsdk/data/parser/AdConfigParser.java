@@ -131,6 +131,9 @@ public class AdConfigParser implements IConfigParser {
             if (jobj.has(EXTID)) {
                 mpPlace.setEid(jobj.getString(EXTID));
             }
+            if (jobj.has(RENDER_FACEBOOK)) {
+                mpPlace.setRenderFacebook(jobj.getInt(RENDER_FACEBOOK) == 1);
+            }
             mpPlace.setUniqueValue(Utils.string2MD5(content.trim()));
         } catch (Exception e) {
             LogHelper.v(LogHelper.TAG, "parse mp place error : " + e);
