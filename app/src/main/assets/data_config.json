@@ -209,11 +209,13 @@
         "#FF6600",
         "#4455bb22"
       ],
+      "cv":["cta"],
       "pids": [
         {
           "sdk": "fb",
           "type": "native",
           "pid": "YOUR_PLACEMENT_ID",
+          "cv":["title"],
           "disable": 0
         },
         {

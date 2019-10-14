@@ -57,6 +57,8 @@ public class AdPlace {
 
     private List<String> ctaColor;
 
+    private List<String> clickViews;
+
     public String getName() {
         return name;
     }
@@ -250,6 +252,14 @@ public class AdPlace {
 
     public void setCtaColor(List<String> ctaColor) {
         this.ctaColor = ctaColor;
+    }
+
+    public List<String> getClickViews() {
+        return clickViews;
+    }
+
+    public void setClickViews(List<String> clickViews) {
+        this.clickViews = clickViews;
     }
 
     @Override

@@ -148,6 +148,9 @@ public class AdParser implements IParser {
             if (jobj.has(CTA_COLOR)) {
                 adPlace.setCtaColor(parseStringList(jobj.getString(CTA_COLOR)));
             }
+            if (jobj.has(CLICK_VIEWS)) {
+                adPlace.setClickViews(parseStringList(jobj.getString(CLICK_VIEWS)));
+            }
             if (jobj.has(PIDS)) {
                 adPlace.setPidsList(parsePidList(adPlace, jobj.getString(PIDS)));
             }
@@ -248,6 +251,10 @@ public class AdParser implements IParser {
                                 && (pidConfig.getCtaColor() == null || pidConfig.getCtaColor().isEmpty())) {
                             pidConfig.setCtaColor(adPlace.getCtaColor());
                         }
+                        if ((adPlace.getClickViews() != null && !adPlace.getClickViews().isEmpty())
+                                && (pidConfig.getClickViews() == null || pidConfig.getClickViews().isEmpty())) {
+                            pidConfig.setClickViews(adPlace.getClickViews());
+                        }
                     }
                     list.add(pidConfig);
                 }
@@ -323,30 +330,13 @@ public class AdParser implements IParser {
             if (jobj.has(CTA_COLOR)) {
                 pidConfig.setCtaColor(parseStringList(jobj.getString(CTA_COLOR)));
             }
-            parseClickViews(pidConfig, jobj);
+            if (jobj.has(CLICK_VIEWS)) {
+                pidConfig.setClickViews(parseStringList(jobj.getString(CLICK_VIEWS)));
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
         return pidConfig;
-    }
-
-    private void parseClickViews(PidConfig pidConfig, JSONObject jobj) {
-        try {
-            if (jobj.has(CLICK_VIEWS)) {
-                JSONArray jarray = jobj.getJSONArray(CLICK_VIEWS);
-                if (jarray != null && jarray.length() > 0) {
-                    List<String> list = new ArrayList<String>(jarray.length());
-                    for (int index = 0; index < jarray.length(); index++) {
-                        String s = jarray.getString(index);
-                        if (!TextUtils.isEmpty(s)) {
-                            list.add(s);
-                        }
-                    }
-                    pidConfig.setClickViews(list);
-                }
-            }
-        } catch (Exception e) {
-        }
     }
 
     @Override
