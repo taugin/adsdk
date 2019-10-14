@@ -89,7 +89,7 @@ import java.util.Date;
  * Created by Administrator on 2018-10-16.
  */
 
-public class SunAct extends Activity {
+public class SunAct extends Activity implements IAdvance {
 
     private SpConfig mSpConfig;
     private GestureDetector mGestureDetector;
@@ -179,32 +179,40 @@ public class SunAct extends Activity {
         }
     }
 
-    protected void onAdShowing(View containerView) {
+    @Override
+    public void onAdShowing(View containerView) {
     }
 
-    protected AdParams getAdParams() {
+    @Override
+    public AdParams getAdParams() {
         return null;
     }
 
-    protected View getRootLayout(Context context, String adType) {
+    @Override
+    public View getRootLayout(Context context, String adType) {
         return null;
     }
 
-    protected int getAdLayoutId(String adType) {
+    @Override
+    public int getAdLayoutId(String adType) {
         return 0;
     }
 
-    protected void onLtShowing(View containerView) {
+    @Override
+    public void onLvShowing(View containerView) {
     }
 
-    protected AdParams getLtParams() {
+    @Override
+    public AdParams getLvParams() {
         return null;
     }
 
-    public void onCtShowing(View containerView) {
+    @Override
+    public void onCvShowing(View containerView) {
     }
 
-    public AdParams getCtParams() {
+    @Override
+    public AdParams getCvParams() {
         return null;
     }
 
@@ -492,7 +500,7 @@ public class SunAct extends Activity {
                 }
                 animateCloseView();
             } else {
-                Log.v(Log.TAG, "can not find loader for SunAct");
+                Log.v(Log.TAG, "can not find loader for " + getLocalClassName());
                 finishActivityWithDelay();
             }
         }
@@ -1252,7 +1260,7 @@ public class SunAct extends Activity {
     }
 
     private void showLockViewAd() {
-        AdParams params = getLtParams();
+        AdParams params = getLvParams();
         if (params == null) {
             params = new AdParams.Builder()
                     .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
@@ -1264,8 +1272,8 @@ public class SunAct extends Activity {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 if (!isFinishing()) {
-                    AdSdk.get(getBaseContext()).showAdView(pidName, getLtParams(), mLockAdLayout);
-                    onLtShowing(mLockAdLayout);
+                    AdSdk.get(getBaseContext()).showAdView(pidName, getLvParams(), mLockAdLayout);
+                    onLvShowing(mLockAdLayout);
                 }
             }
 
@@ -1412,7 +1420,7 @@ public class SunAct extends Activity {
         }
     }
 
-    public static class DotProgress extends View {
+    public static class DotProgress extends View implements IAdvance.Dot{
         private Paint emptyPaint;
         private Paint filledPaint;
         private boolean init = false;
@@ -1445,6 +1453,7 @@ public class SunAct extends Activity {
             filledPaint.setARGB(filledAlpha, baseColorR, baseColorG, baseColorB);
         }
 
+        @Override
         public void setStep(int nextStep) {
             if (nextStep >= stepCount || nextStep < -1) {
                 return;
@@ -1467,7 +1476,7 @@ public class SunAct extends Activity {
         }
     }
 
-    public static class BlinkImageView extends AppCompatImageView implements ValueAnimator.AnimatorUpdateListener {
+    public static class BlinkImageView extends AppCompatImageView implements ValueAnimator.AnimatorUpdateListener, IAdvance.Blank {
         private int startAlpha, endAlpha, duration;
         private boolean isBlinking = false;
 
@@ -1489,6 +1498,7 @@ public class SunAct extends Activity {
             setAlpha(startAlpha / 256f);
         }
 
+        @Override
         public void startBlink() {
             if (!isBlinking) {
                 colorAnimation = ValueAnimator.ofObject(new IntEvaluator(), startAlpha, endAlpha);
@@ -1502,6 +1512,7 @@ public class SunAct extends Activity {
             }
         }
 
+        @Override
         public void stopBlink() {
             if (isBlinking) {
                 colorAnimation.removeUpdateListener(this);
@@ -1511,10 +1522,12 @@ public class SunAct extends Activity {
             }
         }
 
+        @Override
         public void solid() {
             setAlpha(1.0f);
         }
 
+        @Override
         public void halftrans() {
             setAlpha(startAlpha / 256f);
         }

@@ -1,6 +1,7 @@
 package com.bacad.ioc.gsb.scloader;
 
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
@@ -10,7 +11,7 @@ import com.bacad.ioc.gsb.common.Bldr;
 import com.bacad.ioc.gsb.common.CSvr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.scpolicy.CvPcy;
-import com.gekes.fvs.tdsvap.SunAct;
+import com.gekes.fvs.tdsvap.IAdvance;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
@@ -105,7 +106,9 @@ public class CvAdl extends Bldr {
             intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action." + action);
         }
         if (intent == null) {
-            intent = new Intent(mContext, SunAct.class);
+            intent = new Intent();
+            ComponentName cmp = new ComponentName(mContext, IAdvance.ACT_NAME);
+            intent.setComponent(cmp);
         }
         intent.putExtra(Intent.EXTRA_TITLE, placeName);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

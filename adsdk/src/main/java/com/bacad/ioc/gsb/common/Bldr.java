@@ -1,6 +1,7 @@
 package com.bacad.ioc.gsb.common;
 
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -8,8 +9,8 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 
+import com.gekes.fvs.tdsvap.IAdvance;
 import com.gekes.fvs.tdsvap.R;
-import com.gekes.fvs.tdsvap.SunAct;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.listener.OnTriggerListener;
@@ -139,7 +140,9 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
             intent = Utils.getIntentByAction(getContext(), getContext().getPackageName() + ".action." + action);
         }
         if (intent == null) {
-            intent = new Intent(getContext(), SunAct.class);
+            intent = new Intent();
+            ComponentName cmp = new ComponentName(getContext(), IAdvance.ACT_NAME);
+            intent.setComponent(cmp);
         }
         intent.putExtra(Intent.ACTION_TIME_TICK, getDelayClose());
         intent.putExtra(Intent.EXTRA_TITLE, pidName);
