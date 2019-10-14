@@ -14,7 +14,12 @@ stringfog {
     // 指定需加密的代码包路径，可配置多个，未指定将默认全部加密。
     // fogPackages = ['com.xxx.xxx']
 }
-
+/**
+ * 版本号与Activity和Provider之间的对应关系
+ * versionName   ===> SunAct.java, SunPro.java
+ * versionName.1 ===> FulInvAct.java, FulInvPro.java
+ * versionName.2 ===> UniqueAct.java, UniquePro.java
+ */
 android {
     compileSdkVersion 26
     defaultConfig {

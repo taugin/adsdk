@@ -10,7 +10,7 @@ import com.bacad.ioc.gsb.common.Bldr;
 import com.bacad.ioc.gsb.common.CSvr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.scpolicy.CvPcy;
-import com.gekes.fvs.tdsvap.UniqueAct;
+import com.gekes.fvs.tdsvap.SunAct;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
@@ -105,7 +105,7 @@ public class CvAdl extends Bldr {
             intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action." + action);
         }
         if (intent == null) {
-            intent = new Intent(mContext, UniqueAct.class);
+            intent = new Intent(mContext, SunAct.class);
         }
         intent.putExtra(Intent.EXTRA_TITLE, placeName);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

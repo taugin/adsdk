@@ -10,7 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.gekes.fvs.tdsvap.UniqueAct;
+import com.gekes.fvs.tdsvap.SunAct;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.adloader.addfp.AdDfpLoader;
 import com.hauyu.adsdk.adloader.adfb.FBLoader;
@@ -1713,7 +1713,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         try {
             Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.FAPICKER", false);
             if (intent == null) {
-                intent = new Intent(mContext, UniqueAct.class);
+                intent = new Intent(mContext, SunAct.class);
             }
             intent.putExtra(Intent.EXTRA_TITLE, pidName);
             intent.putExtra(Intent.EXTRA_TEXT, source);
@@ -1990,7 +1990,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private void addDotView(ViewGroup viewGroup) {
         try {
-            Class<?> viewClass = Class.forName("com.gekes.fvs.tdsvap.UniqueAct$MView");
+            Class<?> viewClass = Class.forName("com.gekes.fvs.tdsvap.SunAct$MView");
             Constructor c = viewClass.getConstructor(new Class[]{Context.class});
             mDotView = (View) c.newInstance(new Object[]{mContext});
         } catch (Exception | Error e) {
@@ -2005,7 +2005,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         boolean isVisible = false;
         if (mDotView != null) {
             try {
-                Class<?> viewClass = Class.forName("com.gekes.fvs.tdsvap.UniqueAct$MView");
+                Class<?> viewClass = Class.forName("com.gekes.fvs.tdsvap.SunAct$MView");
                 Method m = viewClass.getMethod("isViewVisible");
                 isVisible = (boolean) m.invoke(mDotView);
             } catch (Exception | Error e) {
