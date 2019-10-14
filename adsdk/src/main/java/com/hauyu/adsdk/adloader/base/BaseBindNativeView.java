@@ -5,6 +5,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -112,6 +113,15 @@ public class BaseBindNativeView {
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
+        // 获取 color
+        if (normalColor == Color.TRANSPARENT || pressedColor == Color.TRANSPARENT) {
+            try {
+                normalColor = Color.parseColor(pidConfig.getAdPlace().getCtaColor().get(0));
+                pressedColor = Color.parseColor(pidConfig.getAdPlace().getCtaColor().get(1));
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e);
+            }
+        }
         if (normalColor != Color.TRANSPARENT && pressedColor != Color.TRANSPARENT && ctaView != null) {
             setBackgroundByConfig(ctaView, normalColor, pressedColor);
         }
@@ -140,11 +150,20 @@ public class BaseBindNativeView {
         if (pidConfig == null) {
             return CARD_LAYOUT[mRandom.nextInt(CARD_LAYOUT.length)];
         }
-        if (LAYOUT_FULL.equalsIgnoreCase(pidConfig.getLayout())) {
+        String layoutFlag = pidConfig.getLayout();
+        // 获取 layout flag
+        if (TextUtils.isEmpty(layoutFlag)) {
+            try {
+                layoutFlag = pidConfig.getAdPlace().getLayout();
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e);
+            }
+        }
+        if (LAYOUT_FULL.equalsIgnoreCase(layoutFlag)) {
             return R.layout.had_card_full;
-        } else if (LAYOUT_MIX.equalsIgnoreCase(pidConfig.getLayout())) {
+        } else if (LAYOUT_MIX.equalsIgnoreCase(layoutFlag)) {
             return R.layout.had_card_mix;
-        } else if (LAYOUT_REVER.equalsIgnoreCase(pidConfig.getLayout())) {
+        } else if (LAYOUT_REVER.equalsIgnoreCase(layoutFlag)) {
             return R.layout.had_card_rever;
         }
         return CARD_LAYOUT[mRandom.nextInt(CARD_LAYOUT.length)];
@@ -155,6 +174,13 @@ public class BaseBindNativeView {
             return false;
         }
         List<String> clickViews = pidConfig.getClickViews();
+        // 获取clickviews
+        if (clickViews == null || clickViews.isEmpty()) {
+            try {
+                clickViews = pidConfig.getAdPlace().getClickViews();
+            } catch (Exception e) {
+            }
+        }
         if (clickViews == null || clickViews.isEmpty()) {
             return true;
         }

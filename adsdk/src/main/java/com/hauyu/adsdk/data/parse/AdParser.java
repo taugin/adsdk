@@ -243,6 +243,8 @@ public class AdParser implements IParser {
                 PidConfig pidConfig = null;
                 for (int index = 0; index < len; index++) {
                     pidConfig = parsePidConfig(jarray.getString(index));
+                    pidConfig.setAdPlace(adPlace);
+                    /*
                     if (adPlace != null && pidConfig != null) {
                         if (!TextUtils.isEmpty(adPlace.getLayout()) && TextUtils.isEmpty(pidConfig.getLayout())) {
                             pidConfig.setLayout(adPlace.getLayout());
@@ -255,7 +257,7 @@ public class AdParser implements IParser {
                                 && (pidConfig.getClickViews() == null || pidConfig.getClickViews().isEmpty())) {
                             pidConfig.setClickViews(adPlace.getClickViews());
                         }
-                    }
+                    }*/
                     list.add(pidConfig);
                 }
             }

@@ -215,17 +215,16 @@
           "sdk": "fb",
           "type": "native",
           "pid": "YOUR_PLACEMENT_ID",
-          "cv":["title"],
+          "cc": [
+            "#FF6600aa",
+            "#4455bb22"
+          ],
           "disable": 0
         },
         {
           "sdk": "admob",
           "type": "native",
           "fl": "two",
-          "cc": [
-            "#aa006600",
-            "#4455bb22"
-          ],
           "pid": "ca-app-pub-3940256099942544/2247696110",
           "disable": 0
         },

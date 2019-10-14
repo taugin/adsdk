@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 
 import com.gekes.fvs.tdsvap.IAdvance;
-import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.listener.OnTriggerListener;
@@ -18,7 +17,6 @@ import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Locale;
-import java.util.Random;
 
 /**
  * Created by Administrator on 2018/12/9.
@@ -109,21 +107,8 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
 
     protected AdParams generateAdParams() {
         AdParams.Builder builder = new AdParams.Builder();
-        builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
-        builder.setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE);
-        builder.setBannerSize(AdExtra.AD_SDK_ADX, AdExtra.ADX_MEDIUM_RECTANGLE);
-
-        int layoutId[] = new int[]{R.layout.had_card_full, R.layout.had_card_mix};
-
-        builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId[new Random(System.currentTimeMillis()).nextInt(layoutId.length)]);
-        builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.native_title);
-        builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.native_detail);
-        builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.native_sub_title);
-        builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.native_icon);
-        builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.native_action_btn);
-        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.native_image_cover);
-        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.native_ad_choices_container);
-        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.native_media_cover);
+        builder.setBannerSize(AdExtra.AD_SDK_COMMON, AdExtra.COMMON_MEDIUM_RECTANGLE);
+        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_FULL);
         AdParams adParams = builder.build();
         return adParams;
     }

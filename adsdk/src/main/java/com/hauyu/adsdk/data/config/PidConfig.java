@@ -56,6 +56,8 @@ public class PidConfig {
 
     private List<String> ctaColor;
 
+    private AdPlace adPlace;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -222,6 +224,14 @@ public class PidConfig {
 
     public void setCtaColor(List<String> ctaColor) {
         this.ctaColor = ctaColor;
+    }
+
+    public AdPlace getAdPlace() {
+        return adPlace;
+    }
+
+    public void setAdPlace(AdPlace adPlace) {
+        this.adPlace = adPlace;
     }
 
     public boolean isAdmob() {
