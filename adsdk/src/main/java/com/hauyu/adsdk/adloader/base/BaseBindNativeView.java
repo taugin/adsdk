@@ -208,6 +208,9 @@ public class BaseBindNativeView {
         if (view != null) {
             view.setOnClickListener(null);
         }
+        if (view instanceof ImageView) {
+            ((ImageView)view).setImageDrawable(null);
+        }
         view = rootView.findViewById(params.getAdSocial());
         if (view != null) {
             view.setOnClickListener(null);
@@ -227,6 +230,9 @@ public class BaseBindNativeView {
         view = rootView.findViewById(params.getAdMediaView());
         if (view != null) {
             view.setOnClickListener(null);
+        }
+        if (view instanceof ViewGroup) {
+            ((ViewGroup)view).removeAllViews();
         }
     }
 }
