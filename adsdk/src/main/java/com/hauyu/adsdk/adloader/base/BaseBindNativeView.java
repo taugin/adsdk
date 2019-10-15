@@ -111,7 +111,7 @@ public class BaseBindNativeView {
             normalColor = Color.parseColor(pidConfig.getCtaColor().get(0));
             pressedColor = Color.parseColor(pidConfig.getCtaColor().get(1));
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         // 获取 color
         if (normalColor == Color.TRANSPARENT || pressedColor == Color.TRANSPARENT) {
@@ -119,7 +119,7 @@ public class BaseBindNativeView {
                 normalColor = Color.parseColor(pidConfig.getAdPlace().getCtaColor().get(0));
                 pressedColor = Color.parseColor(pidConfig.getAdPlace().getCtaColor().get(1));
             } catch (Exception e) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.iv(Log.TAG, "error : " + e);
             }
         }
         if (normalColor != Color.TRANSPARENT && pressedColor != Color.TRANSPARENT && ctaView != null) {
