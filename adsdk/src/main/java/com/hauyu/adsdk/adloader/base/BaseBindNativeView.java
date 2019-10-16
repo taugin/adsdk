@@ -111,7 +111,7 @@ public class BaseBindNativeView {
             normalColor = Color.parseColor(pidConfig.getCtaColor().get(0));
             pressedColor = Color.parseColor(pidConfig.getCtaColor().get(1));
         } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "cc error : " + e);
         }
         // 获取 color
         if (normalColor == Color.TRANSPARENT || pressedColor == Color.TRANSPARENT) {
@@ -119,7 +119,7 @@ public class BaseBindNativeView {
                 normalColor = Color.parseColor(pidConfig.getAdPlace().getCtaColor().get(0));
                 pressedColor = Color.parseColor(pidConfig.getAdPlace().getCtaColor().get(1));
             } catch (Exception e) {
-                Log.iv(Log.TAG, "error : " + e);
+                Log.iv(Log.TAG, "cc error : " + e);
             }
         }
         if (normalColor != Color.TRANSPARENT && pressedColor != Color.TRANSPARENT && ctaView != null) {
@@ -142,7 +142,7 @@ public class BaseBindNativeView {
             drawable.addState(new int[]{android.R.attr.state_enabled}, shapeNormal);
             view.setBackground(drawable);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.e(Log.TAG, "set bg error : " + e);
         }
     }
 
@@ -156,7 +156,7 @@ public class BaseBindNativeView {
             try {
                 layoutFlag = pidConfig.getAdPlace().getLayout();
             } catch (Exception e) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.e(Log.TAG, "fl error : " + e);
             }
         }
         if (LAYOUT_FULL.equalsIgnoreCase(layoutFlag)) {
