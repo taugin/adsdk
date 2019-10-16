@@ -1769,7 +1769,7 @@ public class SunAct extends Activity implements IAdvance {
                 }
                 if (mOrientation == VERTICAL) {
                     if (mScroller != null) {
-                        mScroller.fling(0, mClipRect.bottom, 0, (int) velocityY / 3,
+                        mScroller.fling(0, mClipRect.bottom, 0, (int) (velocityY / 2.5f),
                                 0, 0, 0, mClipRect.bottom);
                         mClipRect.bottom = mScroller.getFinalY();
                         if (velocityY > 0 && mClipRect.bottom < getHeight() / 2) {
@@ -1780,7 +1780,7 @@ public class SunAct extends Activity implements IAdvance {
                     return true;
                 } else if (mOrientation == HORIZONTAL) {
                     if (mScroller != null) {
-                        mScroller.fling(mClipRect.left, 0, (int) (velocityX / 3), 0,
+                        mScroller.fling(mClipRect.left, 0, (int) (velocityX / 2.5f), 0,
                                 0, mClipRect.right, 0, 0);
                         mClipRect.left = mScroller.getFinalX();
                         if (velocityX < 0 && mClipRect.left > getWidth() / 2) {
