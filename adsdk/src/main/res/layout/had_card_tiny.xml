@@ -110,6 +110,7 @@
                     android:background="@drawable/had_action_bg"
                     android:ellipsize="end"
                     android:gravity="center"
+                    android:layout_marginRight="30dp"
                     android:lines="1"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
