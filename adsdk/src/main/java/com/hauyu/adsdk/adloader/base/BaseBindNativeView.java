@@ -51,7 +51,7 @@ public class BaseBindNativeView {
                 replaceSrcViewToDstView(iconView, new ImageView(rootView.getContext()));
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "restore icon view error : " + e);
         }
     }
 
@@ -62,7 +62,7 @@ public class BaseBindNativeView {
                 ((ViewGroup) adChoiceView).removeAllViews();
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "restore ad choice view error : " + e);
         }
     }
 
@@ -74,7 +74,7 @@ public class BaseBindNativeView {
      * @return
      */
     private void replaceSrcViewToDstView(View srcView, View dstView) {
-        Log.v(Log.TAG, "replace view for correct type");
+        Log.iv(Log.TAG, "replace view for correct type");
         if (srcView != null && dstView != null) {
             dstView.setId(srcView.getId());
             ViewGroup.LayoutParams srcParams = srcView.getLayoutParams();
@@ -142,7 +142,7 @@ public class BaseBindNativeView {
             drawable.addState(new int[]{android.R.attr.state_enabled}, shapeNormal);
             view.setBackground(drawable);
         } catch (Exception e) {
-            Log.e(Log.TAG, "set bg error : " + e);
+            Log.iv(Log.TAG, "set bg error : " + e);
         }
     }
 
@@ -156,7 +156,7 @@ public class BaseBindNativeView {
             try {
                 layoutFlag = pidConfig.getAdPlace().getLayout();
             } catch (Exception e) {
-                Log.e(Log.TAG, "fl error : " + e);
+                Log.iv(Log.TAG, "fl error : " + e);
             }
         }
         if (LAYOUT_FULL.equalsIgnoreCase(layoutFlag)) {
