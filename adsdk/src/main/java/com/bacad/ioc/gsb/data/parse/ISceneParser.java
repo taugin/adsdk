@@ -50,6 +50,8 @@ public interface ISceneParser {
     String SCENE_INTERVAL = "si";
     // 延迟关闭时间
     String DELAY_CLOSE = "dc";
+    // 排除AndroidQ弹出应用外广告
+    String EXCLUDE_ANDROID_Q = "eq";
 
     // 是否上报友盟
     String REPORT_UMENG = "ru";

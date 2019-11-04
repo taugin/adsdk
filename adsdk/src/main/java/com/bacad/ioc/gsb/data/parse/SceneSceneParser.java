@@ -47,51 +47,54 @@ public class SceneSceneParser implements ISceneParser {
         return Aes.decrypt(Constant.KEY_PASSWORD, content);
     }
 
-    private void parseBaseConfig(BCg BCg, JSONObject jobj) {
-        if (BCg == null) {
+    private void parseBaseConfig(BCg bCg, JSONObject jobj) {
+        if (bCg == null) {
             return;
         }
         try {
             if (jobj.has(ENABLE)) {
-                BCg.setEnable(jobj.getInt(ENABLE) == 1);
+                bCg.setEnable(jobj.getInt(ENABLE) == 1);
             }
             if (jobj.has(UPDELAY)) {
-                BCg.setUpDelay(jobj.getLong(UPDELAY));
+                bCg.setUpDelay(jobj.getLong(UPDELAY));
             }
             if (jobj.has(INTERVAL)) {
-                BCg.setInterval(jobj.getLong(INTERVAL));
+                bCg.setInterval(jobj.getLong(INTERVAL));
             }
             if (jobj.has(MAX_COUNT)) {
-                BCg.setMaxCount(jobj.getInt(MAX_COUNT));
+                bCg.setMaxCount(jobj.getInt(MAX_COUNT));
             }
             if (jobj.has(MAX_VERSION)) {
-                BCg.setMaxVersion(jobj.getInt(MAX_VERSION));
+                bCg.setMaxVersion(jobj.getInt(MAX_VERSION));
             }
             if (jobj.has(MIN_INTERVAL)) {
-                BCg.setMinInterval(jobj.getLong(MIN_INTERVAL));
+                bCg.setMinInterval(jobj.getLong(MIN_INTERVAL));
             }
             if (jobj.has(SCREEN_ORIENTATION)) {
-                BCg.setScreenOrientation(jobj.getInt(SCREEN_ORIENTATION));
+                bCg.setScreenOrientation(jobj.getInt(SCREEN_ORIENTATION));
             }
             if (jobj.has(TIMEOUT)) {
-                BCg.setTimeOut(jobj.getLong(TIMEOUT));
+                bCg.setTimeOut(jobj.getLong(TIMEOUT));
             }
             if (jobj.has(SHOW_BOTTOM)) {
-                BCg.setShowBottom(jobj.getInt(SHOW_BOTTOM) == 1);
+                bCg.setShowBottom(jobj.getInt(SHOW_BOTTOM) == 1);
             }
             if (jobj.has(AD_EXTRA)) {
-                BCg.setAdExtra(jobj.getString(AD_EXTRA));
+                bCg.setAdExtra(jobj.getString(AD_EXTRA));
             }
             if (jobj.has(AD_MAIN)) {
-                BCg.setAdMain(jobj.getString(AD_MAIN));
+                bCg.setAdMain(jobj.getString(AD_MAIN));
             }
             if (jobj.has(SCENE_INTERVAL)) {
-                BCg.setSceneInterval(jobj.getLong(SCENE_INTERVAL));
+                bCg.setSceneInterval(jobj.getLong(SCENE_INTERVAL));
             }
             if (jobj.has(DELAY_CLOSE)) {
-                BCg.setDelayClose(jobj.getLong(DELAY_CLOSE));
+                bCg.setDelayClose(jobj.getLong(DELAY_CLOSE));
             }
-            parseAttrConfig(BCg, jobj);
+            if (jobj.has(EXCLUDE_ANDROID_Q)) {
+                bCg.setExcludeAndroidQ(jobj.getInt(EXCLUDE_ANDROID_Q) == 1);
+            }
+            parseAttrConfig(bCg, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseBasePolicyInternal error : " + e);
         }

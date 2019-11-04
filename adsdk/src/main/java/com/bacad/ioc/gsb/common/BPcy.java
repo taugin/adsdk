@@ -2,6 +2,7 @@ package com.bacad.ioc.gsb.common;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -420,9 +421,26 @@ public class BPcy implements Handler.Callback {
         return userDisabled;
     }
 
+    /**
+     * 是否排除AndroidQ弹出广告
+     * @return
+     */
+    protected boolean isExcludeAndroidQ() {
+        if (mBCg != null && mBCg.isExcludeAndroidQ()) {
+            Log.iv(Log.TAG, "osv : " + Build.VERSION.SDK_INT);
+            return Build.VERSION.SDK_INT >= 29;
+        }
+        return false;
+    }
+
     protected boolean checkBaseConfig() {
         if (!isConfigAllow()) {
             Log.iv(Log.TAG, "dis con");
+            return false;
+        }
+
+        if (isExcludeAndroidQ()) {
+            Log.iv(Log.TAG, "exclude " + Build.VERSION.SDK_INT);
             return false;
         }
 

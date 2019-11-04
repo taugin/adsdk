@@ -28,6 +28,7 @@ public abstract class BCg {
     private String adMain;
     private long sceneInterval = 300000;
     private long delayClose = 0;
+    private boolean excludeAndroidQ = true;
 
     public abstract String getName();
 
@@ -49,6 +50,7 @@ public abstract class BCg {
         adMain = null;
         sceneInterval = 300000;
         delayClose = 0;
+        excludeAndroidQ = true;
     }
 
     public BCg() {
@@ -189,6 +191,14 @@ public abstract class BCg {
 
     public void setDelayClose(long delayClose) {
         this.delayClose = delayClose;
+    }
+
+    public boolean isExcludeAndroidQ() {
+        return excludeAndroidQ;
+    }
+
+    public void setExcludeAndroidQ(boolean excludeAndroidQ) {
+        this.excludeAndroidQ = excludeAndroidQ;
     }
 
     public void clear() {

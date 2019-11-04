@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.listener.OnTriggerListener;
+import com.hauyu.adsdk.stat.InternalStat;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener 
         reportFirstStartUpTime();
         register();
         PreferenceManager.getDefaultSharedPreferences(mContext).registerOnSharedPreferenceChangeListener(this);
+        reportAndroidOSVersion();
     }
 
     public void registerTriggerListener(OnTriggerListener l) {
@@ -281,6 +284,17 @@ public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener 
                     l.onNetworkChange(context, intent);
                 }
             }
+        }
+    }
+
+    private void reportAndroidOSVersion() {
+        try {
+            if (Utils.getBoolean(mContext, "osv_android_q_reported") == false) {
+                Utils.putBoolean(mContext, "osv_android_q_reported", true);
+                String osv = Build.VERSION.SDK_INT >= 29 ? "osv_above_android_q" : "osv_below_android_q";
+                InternalStat.reportEvent(mContext, osv);
+            }
+        } catch (Exception e) {
         }
     }
 }
