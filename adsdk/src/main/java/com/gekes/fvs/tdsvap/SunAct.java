@@ -268,6 +268,13 @@ public class SunAct extends Activity implements IAdvance {
                     WindowManager.LayoutParams attributes = window.getAttributes();
                     window.setAttributes(attributes);
                     window.setStatusBarColor(Color.TRANSPARENT);
+                    try {
+                        if (isLockView()) {
+                            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        }
+                    } catch (Exception | Error e) {
+                    }
                 } else {
                     Window window = getWindow();
                     WindowManager.LayoutParams attributes = window.getAttributes();

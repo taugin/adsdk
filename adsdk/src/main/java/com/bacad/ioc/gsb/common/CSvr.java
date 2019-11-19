@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
@@ -23,11 +25,14 @@ import java.util.List;
 
 public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
+    private static final int MSG_TRIGGER_HOME_KEY = 100000;
+    private static final int DELAY_TRIGGER_HOME_KEY = 5000;
 
     private static CSvr sCSvr;
 
     private Context mContext;
     private List<OnTriggerListener> mTriggerList = new ArrayList<OnTriggerListener>();
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     private CSvr(Context context) {
         mContext = context.getApplicationContext();
@@ -178,10 +183,13 @@ public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener 
     }
 
     private void triggerHome(Context context) {
-        if (mTriggerList != null && !mTriggerList.isEmpty()) {
-            for (OnTriggerListener l : mTriggerList) {
-                if (l != null) {
-                    l.onHomePressed(context);
+        if (!mHandler.hasMessages(MSG_TRIGGER_HOME_KEY)) {
+            mHandler.sendEmptyMessageDelayed(MSG_TRIGGER_HOME_KEY, DELAY_TRIGGER_HOME_KEY);
+            if (mTriggerList != null && !mTriggerList.isEmpty()) {
+                for (OnTriggerListener l : mTriggerList) {
+                    if (l != null) {
+                        l.onHomePressed(context);
+                    }
                 }
             }
         }
