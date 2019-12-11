@@ -19,6 +19,11 @@ import com.mopub.nativeads.MediaViewBinder;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.ViewBinder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Administrator on 2018/2/11.
  */
@@ -241,5 +246,49 @@ public class MopubBindNativeView extends BaseBindNativeView {
 
     public void notifyMopubShowing(View view, PidConfig pidConfig, Params params) {
         onAdViewShown(view, pidConfig, params);
+    }
+
+    public void updateClickView(View view, PidConfig pidConfig, Params params) {
+        if (view == null || pidConfig == null || params == null) {
+            return;
+        }
+        try {
+            List<String> clickViews = getClickViews(pidConfig);
+            if (clickViews == null || clickViews.isEmpty()) {
+                return;
+            }
+            Map<String, View> viewMap = new HashMap<String, View>();
+            viewMap.put(AD_ICON, view.findViewById(mParams.getAdIcon()));
+            viewMap.put(AD_TITLE, view.findViewById(mParams.getAdTitle()));
+            viewMap.put(AD_SUBTITLE, view.findViewById(mParams.getAdSubTitle()));
+            viewMap.put(AD_DETAIL, view.findViewById(mParams.getAdDetail()));
+            viewMap.put(AD_CTA, view.findViewById(mParams.getAdAction()));
+            viewMap.put(AD_MEDIA, view.findViewById(mParams.getAdMediaView()));
+            viewMap.put(AD_COVER, view.findViewById(mParams.getAdCover()));
+            viewMap.put(AD_CHOICES, view.findViewById(mParams.getAdChoices()));
+            viewMap.put(AD_SPONSORED, view.findViewById(mParams.getAdSponsored()));
+            viewMap.put(AD_SOCIAL, view.findViewById(mParams.getAdSocial()));
+            List<View> clickElements = new ArrayList<View>(clickViews.size());
+            for (String text : clickViews) {
+                clickElements.add(viewMap.get(text));
+            }
+            updateClickViewInternal(view, clickElements);
+        } catch (Exception e) {
+        }
+    }
+
+    private void updateClickViewInternal(View view, List<View> enableClickView) {
+        if (view == null) {
+            return;
+        }
+        if (view instanceof ViewGroup) {
+            int size = ((ViewGroup) view).getChildCount();
+            for (int index = 0; index < size; index++) {
+                updateClickViewInternal(((ViewGroup) view).getChildAt(index), enableClickView);
+            }
+        }
+        if (!enableClickView.contains(view)) {
+            view.setOnClickListener(null);
+        }
     }
 }

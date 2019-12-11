@@ -185,14 +185,7 @@ public class BaseBindNativeView {
         if (pidConfig == null) {
             return false;
         }
-        List<String> clickViews = pidConfig.getClickViews();
-        // 获取clickviews
-        if (clickViews == null || clickViews.isEmpty()) {
-            try {
-                clickViews = pidConfig.getAdPlace().getClickViews();
-            } catch (Exception e) {
-            }
-        }
+        List<String> clickViews = getClickViews(pidConfig);
         if (clickViews == null || clickViews.isEmpty()) {
             return true;
         }
@@ -246,5 +239,17 @@ public class BaseBindNativeView {
         if (view instanceof ViewGroup) {
             ((ViewGroup)view).removeAllViews();
         }
+    }
+
+    protected List<String> getClickViews(PidConfig pidConfig) {
+        List<String> clickViews = pidConfig.getClickViews();
+        // 获取clickviews
+        if (clickViews == null || clickViews.isEmpty()) {
+            try {
+                clickViews = pidConfig.getAdPlace().getClickViews();
+            } catch (Exception e) {
+            }
+        }
+        return clickViews;
     }
 }

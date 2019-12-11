@@ -629,6 +629,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
                 if (bindNativeView != null) {
                     bindNativeView.notifyMopubShowing(adView, getPidConfig(), mParams);
+                    bindNativeView.updateClickView(adView, getPidConfig(), mParams);
                 }
                 reportAdShow();
             } catch (Exception e) {
