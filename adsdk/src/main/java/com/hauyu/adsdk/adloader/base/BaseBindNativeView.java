@@ -40,6 +40,10 @@ public class BaseBindNativeView {
     private static final String LAYOUT_FULL = "one";
     private static final String LAYOUT_MIX = "two";
     private static final String LAYOUT_REVER = "three";
+    private static final String LAYOUT_LARGE = "large";
+    private static final String LAYOUT_SMALL = "small";
+    private static final String LAYOUT_TINY = "tiny";
+    private static final String LAYOUT_MEDIUM = "medium";
     private static final int[] CARD_LAYOUT = new int[]{R.layout.had_card_full, R.layout.had_card_mix, R.layout.had_card_rever};
 
     private Random mRandom = new Random(System.currentTimeMillis());
@@ -165,6 +169,14 @@ public class BaseBindNativeView {
             return R.layout.had_card_mix;
         } else if (LAYOUT_REVER.equalsIgnoreCase(layoutFlag)) {
             return R.layout.had_card_rever;
+        } else if (LAYOUT_LARGE.equalsIgnoreCase(layoutFlag)) {
+            return R.layout.had_card_large;
+        } else if (LAYOUT_SMALL.equalsIgnoreCase(layoutFlag)) {
+            return R.layout.had_card_small;
+        } else if (LAYOUT_TINY.equalsIgnoreCase(layoutFlag)) {
+            return R.layout.had_card_tiny;
+        } else if (LAYOUT_MEDIUM.equalsIgnoreCase(layoutFlag)) {
+            return R.layout.had_card_medium;
         }
         return CARD_LAYOUT[mRandom.nextInt(CARD_LAYOUT.length)];
     }
