@@ -272,23 +272,24 @@ public class MopubBindNativeView extends BaseBindNativeView {
             for (String text : clickViews) {
                 clickElements.add(viewMap.get(text));
             }
-            updateClickViewInternal(view, clickElements);
+            traversalView(view, clickElements);
         } catch (Exception e) {
         }
     }
 
-    private void updateClickViewInternal(View view, List<View> enableClickView) {
+    private void traversalView(View view, List<View> enableClickView) {
         if (view == null) {
             return;
         }
-        if (view instanceof ViewGroup) {
-            int size = ((ViewGroup) view).getChildCount();
-            for (int index = 0; index < size; index++) {
-                updateClickViewInternal(((ViewGroup) view).getChildAt(index), enableClickView);
-            }
-        }
         if (!enableClickView.contains(view)) {
             view.setOnClickListener(null);
+            view.setClickable(false);
+            if (view instanceof ViewGroup) {
+                int size = ((ViewGroup) view).getChildCount();
+                for (int index = 0; index < size; index++) {
+                    traversalView(((ViewGroup) view).getChildAt(index), enableClickView);
+                }
+            }
         }
     }
 }
