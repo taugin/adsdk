@@ -56,11 +56,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -675,13 +670,7 @@ public class SunAct extends Activity implements IAdvance {
             return;
         }
         try {
-
-            if (TextUtils.equals(SpConfig.TYPE_URL, mSpConfig.getType())
-                    || TextUtils.equals(SpConfig.TYPE_HTML, mSpConfig.getType())) {
-                showWebViewLayout();
-            } else {
-                showAppLayout();
-            }
+            showAppLayout();
             sendBroadcast(new Intent(getPackageName() + ".action.SPSHOW").setPackage(getPackageName()));
         } catch (Exception e) {
             Log.v(Log.TAG, "error : " + e);
@@ -836,112 +825,6 @@ public class SunAct extends Activity implements IAdvance {
         }
     }
 
-    /**
-     * 展示webview类型的推广
-     */
-    private void showWebViewLayout() {
-        try {
-            RelativeLayout rootLayout = new RelativeLayout(this);
-            rootLayout.setBackgroundColor(Color.WHITE);
-            super.setContentView(rootLayout);
-            RelativeLayout adLayout = new RelativeLayout(this);
-            adLayout.setGravity(Gravity.CENTER);
-            rootLayout.addView(adLayout, -1, -1);
-
-            ImageView imageView = generateCloseView();
-            int size = Utils.dp2px(this, 24);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
-            int margin = dp2px(this, 8);
-            params.setMargins(margin, margin, margin, margin);
-            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finishActivityWithDelay();
-                }
-            });
-            rootLayout.addView(imageView, params);
-
-            // 添加webview对象
-            WebView webview = new WebView(this);
-            webview.getSettings().setJavaScriptEnabled(true);
-            webview.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-
-            params = new RelativeLayout.LayoutParams(-1, -1);
-            adLayout.addView(webview, params);
-
-            if (TextUtils.equals(SpConfig.TYPE_URL, mSpConfig.getType())) {
-                showUrlContent(webview, mSpConfig.getLinkUrl());
-            } else if (TextUtils.equals(SpConfig.TYPE_HTML, mSpConfig.getType())) {
-                showHtml(webview, mSpConfig.getHtml());
-            }
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-    }
-
-    private void showUrlContent(WebView webView, String url) {
-        if (webView == null || TextUtils.isEmpty(url)) {
-            return;
-        }
-        try {
-            webView.setWebChromeClient(new WebChromeClient() {
-                @Override
-                public void onConsoleMessage(String message, int lineNumber, String sourceID) {
-                    Log.v(Log.TAG, "message : " + message);
-                }
-            });
-            webView.setWebViewClient(new WebViewClient() {
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    } catch (Exception e) {
-                        Log.e(Log.TAG, "error : " + e);
-                    }
-                    return true;
-                }
-
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                    try {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
-                    } catch (Exception e) {
-                        Log.e(Log.TAG, "error : " + e);
-                    }
-                    return true;
-                }
-            });
-            webView.loadUrl(url);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error " + e);
-        }
-    }
-
-    private void showHtml(final WebView webView, String html) {
-        if (webView == null) {
-            return;
-        }
-        try {
-            webView.setWebChromeClient(new WebChromeClient() {
-                @Override
-                public void onConsoleMessage(String message, int lineNumber, String sourceID) {
-                    Log.v(Log.TAG, "message : " + message);
-                }
-            });
-            webView.loadData(html, "text/html", "utf-8");
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error " + e);
-        }
-    }
-
     private void loadAndShowImage(final ImageView imageView, String url) {
         try {
             Http.get(imageView.getContext()).loadImage(url, null, new OnImageCallback() {
@@ -1004,32 +887,13 @@ public class SunAct extends Activity implements IAdvance {
         if (mSpConfig == null) {
             return false;
         }
-        if (TextUtils.isEmpty(mSpConfig.getType()) || TextUtils.equals(SpConfig.TYPE_APP, mSpConfig.getType())) {
-            if (TextUtils.isEmpty(mSpConfig.getBanner())
-                    || TextUtils.isEmpty(mSpConfig.getIcon())
-                    || TextUtils.isEmpty(mSpConfig.getTitle())
-                    || TextUtils.isEmpty(mSpConfig.getPkgname())
-                    || TextUtils.isEmpty(mSpConfig.getDetail())
-                    || TextUtils.isEmpty(mSpConfig.getCta())) {
-                return false;
-            }
-        } else if (TextUtils.equals(SpConfig.TYPE_URL, mSpConfig.getType())) {
-            if (TextUtils.isEmpty(mSpConfig.getLinkUrl())) {
-                return false;
-            }
-        } else if (TextUtils.equals(SpConfig.TYPE_HTML, mSpConfig.getType())) {
-            if (TextUtils.isEmpty(mSpConfig.getHtml())) {
-                return false;
-            }
-        } else {
-            if (TextUtils.isEmpty(mSpConfig.getBanner())
-                    || TextUtils.isEmpty(mSpConfig.getIcon())
-                    || TextUtils.isEmpty(mSpConfig.getTitle())
-                    || TextUtils.isEmpty(mSpConfig.getPkgname())
-                    || TextUtils.isEmpty(mSpConfig.getDetail())
-                    || TextUtils.isEmpty(mSpConfig.getCta())) {
-                return false;
-            }
+        if (TextUtils.isEmpty(mSpConfig.getBanner())
+                || TextUtils.isEmpty(mSpConfig.getIcon())
+                || TextUtils.isEmpty(mSpConfig.getTitle())
+                || TextUtils.isEmpty(mSpConfig.getPkgname())
+                || TextUtils.isEmpty(mSpConfig.getDetail())
+                || TextUtils.isEmpty(mSpConfig.getCta())) {
+            return false;
         }
         return true;
     }

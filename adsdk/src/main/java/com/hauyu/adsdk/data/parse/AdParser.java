@@ -455,14 +455,8 @@ public class AdParser implements IParser {
                 if (jobj.has(CTA)) {
                     spConfig.setCta(jobj.getString(CTA));
                 }
-                if (jobj.has(TYPE)) {
-                    spConfig.setType(jobj.getString(TYPE));
-                }
                 if (jobj.has(DISABLE)) {
                     spConfig.setDisable(jobj.getInt(DISABLE) == 1);
-                }
-                if (jobj.has(HTML)) {
-                    spConfig.setHtml(jobj.getString(HTML));
                 }
             }
         } catch (Exception e) {

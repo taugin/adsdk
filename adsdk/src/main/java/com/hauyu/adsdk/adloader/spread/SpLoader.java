@@ -138,32 +138,13 @@ public class SpLoader extends AbstractSdkLoader {
         if (spConfig == null) {
             return false;
         }
-        if (TextUtils.isEmpty(spConfig.getType()) || TextUtils.equals(SpConfig.TYPE_APP, spConfig.getType())) {
-            if (TextUtils.isEmpty(spConfig.getBanner())
-                    || TextUtils.isEmpty(spConfig.getIcon())
-                    || TextUtils.isEmpty(spConfig.getTitle())
-                    || TextUtils.isEmpty(spConfig.getPkgname())
-                    || TextUtils.isEmpty(spConfig.getDetail())
-                    || TextUtils.isEmpty(spConfig.getCta())) {
-                return false;
-            }
-        } else if (TextUtils.equals(SpConfig.TYPE_URL, spConfig.getType())) {
-            if (TextUtils.isEmpty(spConfig.getLinkUrl())) {
-                return false;
-            }
-        } else if (TextUtils.equals(SpConfig.TYPE_HTML, spConfig.getType())) {
-            if (TextUtils.isEmpty(spConfig.getHtml())) {
-                return false;
-            }
-        } else {
-            if (TextUtils.isEmpty(spConfig.getBanner())
-                    || TextUtils.isEmpty(spConfig.getIcon())
-                    || TextUtils.isEmpty(spConfig.getTitle())
-                    || TextUtils.isEmpty(spConfig.getPkgname())
-                    || TextUtils.isEmpty(spConfig.getDetail())
-                    || TextUtils.isEmpty(spConfig.getCta())) {
-                return false;
-            }
+        if (TextUtils.isEmpty(spConfig.getBanner())
+                || TextUtils.isEmpty(spConfig.getIcon())
+                || TextUtils.isEmpty(spConfig.getTitle())
+                || TextUtils.isEmpty(spConfig.getPkgname())
+                || TextUtils.isEmpty(spConfig.getDetail())
+                || TextUtils.isEmpty(spConfig.getCta())) {
+            return false;
         }
         return true;
     }

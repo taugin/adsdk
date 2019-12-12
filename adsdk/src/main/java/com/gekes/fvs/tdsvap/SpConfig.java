@@ -10,10 +10,6 @@ public class SpConfig implements Serializable {
 
     public static final String ADSPREAD_NAME = "sp" + "config";
 
-    public static final String TYPE_APP = "app";
-    public static final String TYPE_URL = "url";
-    public static final String TYPE_HTML = "html";
-
     private String banner;
     private String icon;
     private String title;
@@ -22,8 +18,6 @@ public class SpConfig implements Serializable {
     private String detail;
     private String linkUrl;
     private String cta;
-    private String type;
-    private String html;
     private boolean disable;
 
     public String getBanner() {
@@ -88,22 +82,6 @@ public class SpConfig implements Serializable {
 
     public void setCta(String cta) {
         this.cta = cta;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getHtml() {
-        return html;
-    }
-
-    public void setHtml(String html) {
-        this.html = html;
     }
 
     public boolean isDisable() {
