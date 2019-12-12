@@ -2,7 +2,7 @@ package com.hauyu.adsdk.data.parse;
 
 import android.text.TextUtils;
 
-import com.virst.vack.cafe.SpConfig;
+import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.Aes;
 import com.hauyu.adsdk.data.config.AdPlace;

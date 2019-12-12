@@ -8,8 +8,8 @@ import android.content.IntentFilter;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.virst.vack.cafe.IAct;
-import com.virst.vack.cafe.SpConfig;
+import com.gekes.fvs.tdsvap.IAdvance;
+import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
@@ -190,7 +190,7 @@ public class SpLoader extends AbstractSdkLoader {
                 Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.AFPICKER");
                 if (intent == null) {
                     intent = new Intent();
-                    ComponentName cmp = new ComponentName(mContext, IAct.ACT_NAME);
+                    ComponentName cmp = new ComponentName(mContext, IAdvance.ACT_NAME);
                     intent.setComponent(cmp);
                 }
                 intent.putExtra(Intent.EXTRA_STREAM, spConfig);

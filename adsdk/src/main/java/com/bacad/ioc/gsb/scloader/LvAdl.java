@@ -11,7 +11,7 @@ import com.bacad.ioc.gsb.common.Bldr;
 import com.bacad.ioc.gsb.common.CSvr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.scpolicy.LvPcy;
-import com.virst.vack.cafe.IAct;
+import com.gekes.fvs.tdsvap.IAdvance;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
@@ -112,7 +112,7 @@ public class LvAdl extends Bldr {
             }
             if (intent == null) {
                 intent = new Intent();
-                ComponentName cmp = new ComponentName(mContext, IAct.ACT_NAME);
+                ComponentName cmp = new ComponentName(mContext, IAdvance.ACT_NAME);
                 intent.setComponent(cmp);
             }
             intent.putExtra(Intent.EXTRA_TITLE, placeName);

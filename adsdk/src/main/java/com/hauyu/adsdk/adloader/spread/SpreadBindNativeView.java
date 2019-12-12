@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.virst.vack.cafe.R;
-import com.virst.vack.cafe.SpConfig;
+import com.gekes.fvs.tdsvap.R;
+import com.gekes.fvs.tdsvap.SpConfig;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
