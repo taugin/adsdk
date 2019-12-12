@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.gekes.fvs.tdsvap.SpConfig;
+import com.virst.vack.cafe.SpConfig;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.AdSwitch;

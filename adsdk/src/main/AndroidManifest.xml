@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gekes.fvs.tdsvap">
+    package="com.virst.vack.cafe">
 
     <uses-sdk android:minSdkVersion="9" />
 
@@ -72,7 +72,7 @@
             android:icon="@drawable/had_tr_bg"
             android:label="" />
         <activity
-            android:name="com.gekes.fvs.tdsvap.SunAct"
+            android:name="com.virst.vack.cafe.SunAct"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:excludeFromRecents="true"
             android:icon="@drawable/had_tr_bg"
@@ -81,7 +81,7 @@
             android:theme="@android:style/Theme.Translucent" />
 
         <provider
-            android:name="com.gekes.fvs.tdsvap.SunPro"
+            android:name="com.virst.vack.cafe.SunPro"
             android:authorities="${applicationId}.tdsvap.authorities"
             android:exported="false" />
     </application>

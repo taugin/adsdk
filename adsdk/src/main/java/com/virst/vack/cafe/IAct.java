@@ -1,4 +1,4 @@
-package com.gekes.fvs.tdsvap;
+package com.virst.vack.cafe;
 
 import android.content.Context;
 import android.view.View;
@@ -9,10 +9,10 @@ import com.hauyu.adsdk.AdParams;
  * Created by Administrator on 2019-10-14.
  */
 
-public interface IAdvance {
+public interface IAct {
 
-    String ACT_NAME = "com.gekes.fvs.tdsvap.SunAct";
-    String ACT_VIEW_NAME = "com.gekes.fvs.tdsvap.SunAct$MView";
+    String ACT_NAME = "com.virst.vack.cafe.SunAct";
+    String ACT_VIEW_NAME = "com.virst.vack.cafe.SunAct$MView";
 
     void onAdShowing(View containerView);
 

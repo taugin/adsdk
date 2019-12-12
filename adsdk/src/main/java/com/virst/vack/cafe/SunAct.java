@@ -1,4 +1,4 @@
-package com.gekes.fvs.tdsvap;
+package com.virst.vack.cafe;
 
 import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
@@ -89,7 +89,7 @@ import java.util.Date;
  * Created by Administrator on 2018-10-16.
  */
 
-public class SunAct extends Activity implements IAdvance {
+public class SunAct extends Activity implements IAct {
 
     private SpConfig mSpConfig;
     private GestureDetector mGestureDetector;
@@ -1427,7 +1427,7 @@ public class SunAct extends Activity implements IAdvance {
         }
     }
 
-    public static class DotProgress extends View implements IAdvance.Dot{
+    public static class DotProgress extends View implements IAct.Dot{
         private Paint emptyPaint;
         private Paint filledPaint;
         private boolean init = false;
@@ -1483,7 +1483,7 @@ public class SunAct extends Activity implements IAdvance {
         }
     }
 
-    public static class BlinkImageView extends AppCompatImageView implements ValueAnimator.AnimatorUpdateListener, IAdvance.Blank {
+    public static class BlinkImageView extends AppCompatImageView implements ValueAnimator.AnimatorUpdateListener, IAct.Blank {
         private int startAlpha, endAlpha, duration;
         private boolean isBlinking = false;
 

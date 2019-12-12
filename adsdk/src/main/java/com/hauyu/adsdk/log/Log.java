@@ -3,7 +3,7 @@ package com.hauyu.adsdk.log;
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
-import com.gekes.fvs.tdsvap.BuildConfig;
+import com.virst.vack.cafe.BuildConfig;
 
 import java.io.File;
 import java.io.FileWriter;

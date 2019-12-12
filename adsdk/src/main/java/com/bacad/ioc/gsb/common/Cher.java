@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.bacad.ioc.gsb.scloader.CvAdl;
 import com.bacad.ioc.gsb.scpolicy.CvPcy;
-import com.gekes.fvs.tdsvap.IAdvance;
-import com.gekes.fvs.tdsvap.R;
+import com.virst.vack.cafe.IAct;
+import com.virst.vack.cafe.R;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
@@ -34,8 +34,8 @@ import java.util.TimerTask;
 public class Cher implements View.OnClickListener {
     private Activity mActivity;
     private ImageView chargeCancel, chargeMore;
-    private IAdvance.Dot speedChargeProgress, continuousChargeProgress;
-    private IAdvance.Blank speedBlink, continuousBlink, trickleBlink;
+    private IAct.Dot speedChargeProgress, continuousChargeProgress;
+    private IAct.Blank speedBlink, continuousBlink, trickleBlink;
     private TextView speedText, continuousText, trickleText;
     private TextView timeInfo, batteryLevel;
     private Timer timer;
@@ -91,7 +91,7 @@ public class Cher implements View.OnClickListener {
     private AdParams getParams() {
         AdParams adParams = null;
         try {
-            adParams = ((IAdvance)mActivity).getCvParams();
+            adParams = ((IAct)mActivity).getCvParams();
         } catch (Exception | Error e) {
         }
         if (adParams == null) {
@@ -120,7 +120,7 @@ public class Cher implements View.OnClickListener {
 
     private void onCtShowing(View containerView) {
         try {
-            ((IAdvance)mActivity).onCvShowing(containerView);
+            ((IAct)mActivity).onCvShowing(containerView);
         } catch (Exception | Error e) {
         }
     }
