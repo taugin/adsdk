@@ -188,7 +188,12 @@ public class FBBindNativeView extends BaseBindNativeView {
 
             // Add adChoices icon
             if (adChoiceContainer != null) {
+                View view = adChoiceContainer.findViewWithTag(pidConfig.getSdk());
+                if (view != null) {
+                    adChoiceContainer.removeView(view);
+                }
                 AdOptionsView adOptionsView = new AdOptionsView(rootView.getContext(), nativeAd, adView);
+                adOptionsView.setTag(pidConfig.getSdk());
                 adChoiceContainer.addView(adOptionsView, 0);
                 adChoiceContainer.setPadding(0, 0, 0, 0);
                 adChoiceContainer.setBackgroundColor(Color.parseColor("#88FFFFFF"));

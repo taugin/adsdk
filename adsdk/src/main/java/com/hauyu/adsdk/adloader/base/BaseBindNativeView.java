@@ -64,7 +64,10 @@ public class BaseBindNativeView {
         try {
             View adChoiceView = rootView.findViewById(iconId);
             if (adChoiceView instanceof ViewGroup) {
-                ((ViewGroup) adChoiceView).removeAllViews();
+                int count = ((ViewGroup) adChoiceView).getChildCount();
+                for (int index = 0; index < count; index++) {
+                    ((ViewGroup) adChoiceView).getChildAt(index).setVisibility(View.GONE);
+                }
             }
         } catch (Exception e) {
             Log.iv(Log.TAG, "restore ad choice view error : " + e);
@@ -193,17 +196,12 @@ public class BaseBindNativeView {
         return clickViews.contains(view);
     }
 
-    protected void restoreAdViewContent(Params params, View rootView) {
-        restoreAdViewContent(params, rootView, true);
-    }
-
     /**
      * 恢复视图的初始状态，由于mopub是在加载native的时候绑定的view，因此，在做展示的时候，不能修改视图结构，所以不能移除任何view
      * @param params
      * @param rootView
-     * @param remove
      */
-    protected void restoreAdViewContent(Params params, View rootView, boolean remove) {
+    protected void restoreAdViewContent(Params params, View rootView) {
         if (params == null || rootView == null) {
             return;
         }
@@ -268,20 +266,13 @@ public class BaseBindNativeView {
         if (view != null) {
             view.setOnClickListener(null);
         }
-        if (remove) {
-            if (view instanceof ViewGroup) {
-                ((ViewGroup) view).removeAllViews();
-            }
-        }
 
         view = rootView.findViewById(params.getAdMediaView());
         if (view != null) {
             view.setOnClickListener(null);
         }
-        if (remove) {
-            if (view instanceof ViewGroup) {
-                ((ViewGroup) view).removeAllViews();
-            }
+        if (view instanceof ViewGroup) {
+            ((ViewGroup) view).removeAllViews();
         }
     }
 

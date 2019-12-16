@@ -43,8 +43,6 @@ public class MopubLoader extends AbstractSdkLoader {
     private MoPubView loadingView;
     private MoPubView moPubView;
     private NativeAd nativeAd;
-    private Params mParams;
-
 
     private NativeAd gNativeAd;
     private MoPubView gMoPubView;
@@ -487,7 +485,6 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public void loadNative(Params params) {
-        mParams = params;
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
@@ -539,7 +536,7 @@ public class MopubLoader extends AbstractSdkLoader {
         });
 
         bindNativeView = new MopubBindNativeView();
-        bindNativeView.bindMopubNative(mParams, mContext, moPubNative, mPidConfig);
+        bindNativeView.bindMopubNative(params, mContext, moPubNative, mPidConfig);
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         moPubNative.makeRequest();
@@ -559,9 +556,6 @@ public class MopubLoader extends AbstractSdkLoader {
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
-        if (params != null) {
-            mParams = params;
-        }
         gNativeAd = nativeAd;
         if (nativeAd != null) {
             clearCachedAdTime(nativeAd);
@@ -605,36 +599,11 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
-                if (nativeAd.getMoPubAdRenderer() instanceof MoPubVideoNativeAdRenderer) {
-                    if (mParams.getAdMediaView() > 0) {
-                        View view = adView.findViewById(mParams.getAdMediaView());
-                        if (view != null) {
-                            view.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    if (mParams.getAdCover() > 0) {
-                        View view = adView.findViewById(mParams.getAdCover());
-                        if (view != null) {
-                            view.setVisibility(View.GONE);
-                        }
-                    }
-                } else if (nativeAd.getMoPubAdRenderer() instanceof MoPubStaticNativeAdRenderer) {
-                    if (mParams.getAdMediaView() > 0) {
-                        View view = adView.findViewById(mParams.getAdMediaView());
-                        if (view != null) {
-                            view.setVisibility(View.GONE);
-                        }
-                    }
-                    if (mParams.getAdCover() > 0) {
-                        View view = adView.findViewById(mParams.getAdCover());
-                        if (view != null) {
-                            view.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }
+                boolean staticRender = nativeAd.getMoPubAdRenderer() instanceof MoPubStaticNativeAdRenderer;
                 if (bindNativeView != null) {
-                    bindNativeView.notifyMopubShowing(adView, getPidConfig(), mParams);
-                    bindNativeView.updateClickView(adView, getPidConfig(), mParams);
+                    bindNativeView.notifyMopubShowing(adView, getPidConfig());
+                    bindNativeView.updateClickView(adView, getPidConfig());
+                    bindNativeView.updateMediaView(staticRender, adView);
                 }
                 reportAdShow();
             } catch (Exception e) {

@@ -128,20 +128,15 @@ public class MopubBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e);
         }
 
-        /**
-         * 默认adchoiceview不可见
-         */
-        restoreAdChoiceView(rootView, mParams.getAdChoices());
-
         try {
-            bindVideoRender(context, nativeAd);
+            bindVideoRender(context, nativeAd, pidConfig);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         } catch (Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
         try {
-            bindStaticRender(context, nativeAd);
+            bindStaticRender(context, nativeAd, pidConfig);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         } catch (Error e) {
@@ -149,7 +144,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
     }
 
-    private void bindVideoRender(Context context, MoPubNative nativeAd) {
+    private void bindVideoRender(Context context, MoPubNative nativeAd, PidConfig pidConfig) {
         View layout = null;
         if (mParams.getNativeRootView() != null) {
             layout = mParams.getNativeRootView();
@@ -158,11 +153,11 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else {
             Log.e(Log.TAG, "bindVideoRender  root layout == 0x0");
         }
-        MoPubVideoAdRender mopubVideoRender = new MoPubVideoAdRender(getVideoViewBinder(context, layout), layout);
+        MoPubVideoAdRender mopubVideoRender = new MoPubVideoAdRender(getVideoViewBinder(context, layout, pidConfig), layout);
         nativeAd.registerAdRenderer(mopubVideoRender);
     }
 
-    private MediaViewBinder getVideoViewBinder(Context context, View layout) {
+    private MediaViewBinder getVideoViewBinder(Context context, View layout, PidConfig pidConfig) {
         ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
         MediaLayout mediaLayout = createMediaLayout(context);
         mediaLayout.setId(getMediaLayoutId());
@@ -171,6 +166,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
         adChoiceLayout.setVisibility(View.VISIBLE);
         ImageView imageView = new ImageView(context);
+        imageView.setTag(pidConfig.getSdk());
         imageView.setId(getImageViewId());
         int size = Utils.dp2px(context, 20);
         adChoiceLayout.addView(imageView, size, size);
@@ -186,7 +182,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         return videoViewBinder;
     }
 
-    private void bindStaticRender(Context context, MoPubNative nativeAd) {
+    private void bindStaticRender(Context context, MoPubNative nativeAd, PidConfig pidConfig) {
         View layout = null;
         if (mParams.getNativeRootView() != null) {
             layout = mParams.getNativeRootView();
@@ -195,14 +191,15 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } else {
             Log.e(Log.TAG, "bindStaticRender  root layout == 0x0");
         }
-        MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout), layout);
+        MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout, pidConfig), layout);
         nativeAd.registerAdRenderer(moPubAdRenderer);
     }
 
-    private ViewBinder getStaticViewBinder(Context context, View layout) {
+    private ViewBinder getStaticViewBinder(Context context, View layout, PidConfig pidConfig) {
         ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
         adChoiceLayout.setVisibility(View.VISIBLE);
         ImageView imageView = new ImageView(context);
+        imageView.setTag(pidConfig.getSdk());
         imageView.setId(getImageViewId());
         int size = Utils.dp2px(context, 20);
         adChoiceLayout.addView(imageView, size, size);
@@ -244,12 +241,12 @@ public class MopubBindNativeView extends BaseBindNativeView {
         return 0x1000002;
     }
 
-    public void notifyMopubShowing(View view, PidConfig pidConfig, Params params) {
-        onAdViewShown(view, pidConfig, params);
+    public void notifyMopubShowing(View view, PidConfig pidConfig) {
+        onAdViewShown(view, pidConfig, mParams);
     }
 
-    public void updateClickView(View view, PidConfig pidConfig, Params params) {
-        if (view == null || pidConfig == null || params == null) {
+    public void updateClickView(View view, PidConfig pidConfig) {
+        if (view == null || pidConfig == null || mParams == null) {
             return;
         }
         try {
@@ -293,7 +290,38 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
     }
 
-    public void restoreAdViewContent(View rootView) {
-        restoreAdViewContent(mParams, rootView, false);
+    public void updateMediaView(boolean staticRender, View adView) {
+        if (staticRender) {
+            if (mParams.getAdMediaView() > 0) {
+                View view = adView.findViewById(mParams.getAdMediaView());
+                if (view != null) {
+                    view.setVisibility(View.GONE);
+                }
+            }
+            if (mParams.getAdCover() > 0) {
+                View view = adView.findViewById(mParams.getAdCover());
+                if (view != null) {
+                    view.setVisibility(View.VISIBLE);
+                }
+            }
+        } else {
+            if (mParams.getAdMediaView() > 0) {
+                View view = adView.findViewById(mParams.getAdMediaView());
+                if (view != null) {
+                    view.setVisibility(View.VISIBLE);
+                }
+            }
+            if (mParams.getAdCover() > 0) {
+                View view = adView.findViewById(mParams.getAdCover());
+                if (view != null) {
+                    view.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    public void restoreAdViewContent(View adView) {
+        restoreAdChoiceView(adView, mParams.getAdChoices());
+        restoreAdViewContent(mParams, adView);
     }
 }
