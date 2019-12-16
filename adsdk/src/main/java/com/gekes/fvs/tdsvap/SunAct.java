@@ -1134,9 +1134,8 @@ public class SunAct extends Activity implements IAdvance {
         AdParams params = getLvParams();
         if (params == null) {
             params = new AdParams.Builder()
-                    .setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE)
-                    .setBannerSize(AdExtra.AD_SDK_DFP, AdExtra.DFP_MEDIUM_RECTANGLE)
-                    .setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_MEDIUM)
+                    .setBannerSize(AdExtra.AD_SDK_COMMON, AdExtra.COMMON_MEDIUM_RECTANGLE)
+                    .setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_SMALL)
                     .build();
         }
         AdSdk.get(this).loadAdView(mPidName, params, new SimpleAdSdkListener() {

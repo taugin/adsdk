@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hauyu.adsdk.log.Log;
 import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
 import com.mopub.nativeads.StaticNativeAd;
 import com.mopub.nativeads.ViewBinder;
@@ -38,6 +37,5 @@ public class MoPubStaticAdRender extends MoPubStaticNativeAdRenderer {
     @Override
     public void renderAdView(@NonNull View view, @NonNull StaticNativeAd staticNativeAd) {
         super.renderAdView(view, staticNativeAd);
-        Log.v(Log.TAG, "printInterfaceLog privacy through url : " + staticNativeAd.getPrivacyInformationIconClickThroughUrl());
     }
 }
