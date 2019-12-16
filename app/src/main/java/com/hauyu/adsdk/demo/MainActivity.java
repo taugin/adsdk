@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 //        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
 //        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
 //        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_TINY);
+        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_MEDIUM);
         AdParams adParams = builder.build();
 
         AdSdk.get(mContext).loadAdView("banner_and_native", adParams, mSimpleAdsdkListener);
