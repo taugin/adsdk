@@ -157,7 +157,7 @@ public class AdxLoader extends AbstractSdkLoader {
                 }
             }
         });
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         loadingView.loadAd(new AdRequest.Builder().build());
     }
@@ -173,7 +173,7 @@ public class AdxLoader extends AbstractSdkLoader {
 
     @Override
     public void showBanner(ViewGroup viewGroup) {
-        Log.v(Log.TAG, "adxloader");
+        printInterfaceLog(ACTION_SHOW);
         try {
             clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
@@ -295,13 +295,14 @@ public class AdxLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
             }
         });
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         interstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     @Override
     public boolean showInterstitial() {
+        printInterfaceLog(ACTION_SHOW);
         if (interstitialAd != null && interstitialAd.isLoaded()) {
             interstitialAd.show();
             clearCachedAdTime(interstitialAd);
@@ -419,7 +420,7 @@ public class AdxLoader extends AbstractSdkLoader {
                 .build();
         loadingBuilder.withNativeAdOptions(nativeAdOptions);
         AdLoader adLoader = loadingBuilder.build();
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         if (adLoader != null) {
             adLoader.loadAd(new AdRequest.Builder().build());
@@ -428,7 +429,7 @@ public class AdxLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
-        Log.v(Log.TAG, "showNative - adx");
+        printInterfaceLog(ACTION_SHOW);
         if (params != null) {
             mParams = params;
         }

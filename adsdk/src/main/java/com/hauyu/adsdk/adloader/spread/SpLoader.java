@@ -45,6 +45,7 @@ public class SpLoader extends AbstractSdkLoader {
                 setLoadedFlag();
                 getAdListener().onAdLoaded(SpLoader.this);
             }
+            printInterfaceLog(ACTION_LOAD);
             loadIcon(mSpread.getIcon());
             loadBanner(mSpread.getBanner());
         } else {
@@ -70,7 +71,7 @@ public class SpLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
-        Log.v(Log.TAG, "showNative - spread");
+        printInterfaceLog(ACTION_SHOW);
         if (params != null) {
             mParams = params;
         }
@@ -94,6 +95,7 @@ public class SpLoader extends AbstractSdkLoader {
                 setLoadedFlag();
                 getAdListener().onInterstitialLoaded(this);
             }
+            printInterfaceLog(ACTION_LOAD);
             loadIcon(mSpread.getIcon());
             loadBanner(mSpread.getBanner());
         } else {
@@ -156,6 +158,7 @@ public class SpLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showInterstitial() {
+        printInterfaceLog(ACTION_SHOW);
         if (mSpread != null) {
             show();
             mSpread = null;

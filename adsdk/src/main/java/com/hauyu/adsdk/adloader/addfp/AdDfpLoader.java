@@ -163,7 +163,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 }
             }
         });
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         loadingView.loadAd(new PublisherAdRequest.Builder().build());
     }
@@ -179,7 +179,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
     @Override
     public void showBanner(ViewGroup viewGroup) {
-        Log.v(Log.TAG, "dfploader");
+        printInterfaceLog(ACTION_SHOW);
         try {
             clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
@@ -301,13 +301,14 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
             }
         });
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         interstitialAd.loadAd(new PublisherAdRequest.Builder().build());
     }
 
     @Override
     public boolean showInterstitial() {
+        printInterfaceLog(ACTION_SHOW);
         if (interstitialAd != null && interstitialAd.isLoaded()) {
             interstitialAd.show();
             clearCachedAdTime(interstitialAd);
@@ -425,7 +426,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 .build();
         loadingBuilder.withNativeAdOptions(nativeAdOptions);
         AdLoader adLoader = loadingBuilder.build();
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         if (adLoader != null) {
             adLoader.loadAd(new PublisherAdRequest.Builder().build());
@@ -434,7 +435,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
-        Log.v(Log.TAG, "showNative - dfp");
+        printInterfaceLog(ACTION_SHOW);
         if (params != null) {
             mParams = params;
         }
@@ -555,7 +556,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 }
             }
         });
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         loadingRewardVideo.loadAd(mPidConfig.getPid(), new PublisherAdRequest.Builder().build());
     }
@@ -574,6 +575,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showRewardedVideo() {
+        printInterfaceLog(ACTION_SHOW);
         if (loadedRewardVideo != null && loadedRewardVideo.isLoaded()) {
             loadedRewardVideo.show();
             clearCachedAdTime(loadedRewardVideo);

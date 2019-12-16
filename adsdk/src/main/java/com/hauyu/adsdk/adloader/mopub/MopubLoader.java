@@ -175,7 +175,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
             }
         });
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         loadingView.loadAd();
     }
@@ -191,7 +191,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public void showBanner(ViewGroup viewGroup) {
-        Log.v(Log.TAG, "mopubloader");
+        printInterfaceLog(ACTION_SHOW);
         try {
             clearCachedAdTime(moPubView);
             viewGroup.removeAllViews();
@@ -306,7 +306,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
             }
         });
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         moPubInterstitial.load();
     }
@@ -325,6 +325,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showInterstitial() {
+        printInterfaceLog(ACTION_SHOW);
         if (moPubInterstitial != null && moPubInterstitial.isReady()) {
             boolean showed = moPubInterstitial.show();
             clearCachedAdTime(moPubInterstitial);
@@ -459,13 +460,14 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
             }
         });
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         MoPubRewardedVideos.loadRewardedVideo(getPidConfig().getPid());
     }
 
     @Override
     public boolean showRewardedVideo() {
+        printInterfaceLog(ACTION_SHOW);
         MoPubRewardedVideos.showRewardedVideo(getPidConfig().getPid());
         reportAdShow();
         return true;
@@ -538,7 +540,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
         bindNativeView = new MopubBindNativeView();
         bindNativeView.bindMopubNative(mParams, mContext, moPubNative, mPidConfig);
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         moPubNative.makeRequest();
     }
@@ -556,7 +558,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
-        Log.v(Log.TAG, "showNative - mopub");
+        printInterfaceLog(ACTION_SHOW);
         if (params != null) {
             mParams = params;
         }

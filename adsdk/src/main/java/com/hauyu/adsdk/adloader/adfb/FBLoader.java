@@ -146,7 +146,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
             }
         });
-        Log.d(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         loadingView.loadAd();
     }
@@ -162,7 +162,7 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     public void showBanner(ViewGroup viewGroup) {
-        Log.v(Log.TAG, "fbloader");
+        printInterfaceLog(ACTION_SHOW);
         try {
             clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
@@ -294,13 +294,14 @@ public class FBLoader extends AbstractSdkLoader {
             }
         });
 
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         fbInterstitial.loadAd();
     }
 
     @Override
     public boolean showInterstitial() {
+        printInterfaceLog(ACTION_SHOW);
         if (fbInterstitial != null && fbInterstitial.isAdLoaded()) {
             fbInterstitial.show();
             clearCachedAdTime(fbInterstitial);
@@ -360,7 +361,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         // 一次加载多个FB广告
         if (isLoadMultipleNative()) {
             mShowNativeCount = 0;
@@ -492,7 +493,7 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
-        Log.v(Log.TAG, "showNative - fb");
+        printInterfaceLog(ACTION_SHOW);
         if (params != null) {
             mParams = params;
         }
@@ -635,7 +636,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
             }
         });
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         rewardedVideoAd.loadAd();
     }
@@ -654,6 +655,7 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showRewardedVideo() {
+        printInterfaceLog(ACTION_SHOW);
         if (rewardedVideoAd != null && rewardedVideoAd.isAdLoaded() && !rewardedVideoAd.isAdInvalidated()) {
             rewardedVideoAd.show();
             clearCachedAdTime(rewardedVideoAd);

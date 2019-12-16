@@ -167,7 +167,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
             }
         });
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         loadingView.loadAd(new AdRequest.Builder().build());
     }
@@ -183,7 +183,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public void showBanner(ViewGroup viewGroup) {
-        Log.v(Log.TAG, "admobloader");
+        printInterfaceLog(ACTION_SHOW);
         try {
             clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
@@ -308,13 +308,14 @@ public class AdmobLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
             }
         });
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         interstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     @Override
     public boolean showInterstitial() {
+        printInterfaceLog(ACTION_SHOW);
         if (interstitialAd != null && interstitialAd.isLoaded()) {
             interstitialAd.show();
             clearCachedAdTime(interstitialAd);
@@ -431,7 +432,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
             }
         });
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         loadingRewardVideo.loadAd(mPidConfig.getPid(), new AdRequest.Builder().build());
     }
@@ -450,6 +451,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showRewardedVideo() {
+        printInterfaceLog(ACTION_SHOW);
         if (loadedRewardVideo != null && loadedRewardVideo.isLoaded()) {
             loadedRewardVideo.show();
             clearCachedAdTime(loadedRewardVideo);
@@ -595,7 +597,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 .build();
         loadingBuilder.withNativeAdOptions(nativeAdOptions);
         AdLoader adLoader = loadingBuilder.build();
-        Log.v(Log.TAG, "");
+        printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         if (adLoader != null) {
             if (isLoadMultipleNative()) {
@@ -608,7 +610,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
-        Log.v(Log.TAG, "showNative - admob");
+        printInterfaceLog(ACTION_SHOW);
         if (params != null) {
             mParams = params;
         }

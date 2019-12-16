@@ -29,6 +29,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
 
+    protected static final String ACTION_LOAD = "load";
+
+    protected static final String ACTION_SHOW = "show";
     // 广告的最大默认缓存时间
     protected static final long MAX_CACHED_TIME = 30 * 60 * 1000;
     // 加载未返回的超时消息
@@ -244,6 +247,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             return false;
         }
         return true;
+    }
+
+    protected void printInterfaceLog(String action) {
+        Log.iv(Log.TAG, action + " | " + getSdkName() + " | " + getAdType() + " | " + getAdPlaceName() + " | " + getPid());
     }
 
     protected OnAdBaseListener getAdListener() {
