@@ -24,11 +24,6 @@ public class AdExtra {
     public static final String AD_SDK_FACEBOOK = Constant.AD_SDK_FACEBOOK;
 
     /**
-     * ADX SDK 名字
-     */
-    public static final String AD_SDK_ADX = Constant.AD_SDK_ADX;
-
-    /**
      * DFP SDK 名字
      */
     public static final String AD_SDK_DFP = Constant.AD_SDK_DFP;

@@ -153,7 +153,7 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
 
         adView.addView(rootView);
 
-        clearClickListener(mParams, rootView);
+        restoreAdViewContent(mParams, rootView);
 
         View titleView = rootView.findViewById(mParams.getAdTitle());
         View adCoverView = adView.findViewById(mParams.getAdCover());

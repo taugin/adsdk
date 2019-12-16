@@ -17,12 +17,6 @@
       ],
       "pids": [
         {
-          "sdk": "adx",
-          "type": "native",
-          "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
-        },
-        {
           "sdk": "fb",
           "type": "native",
           "pid": "YOUR_PLACEMENT_ID",
@@ -80,13 +74,6 @@
       "pids": [
         {
           "sdk": "admob",
-          "type": "interstitial",
-          "pid": "ca-app-pub-3940256099942544/1033173712",
-          "ctr": 5,
-          "disable": 1
-        },
-        {
-          "sdk": "adx",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
@@ -209,7 +196,9 @@
         "#FF6600",
         "#4455bb22"
       ],
-      "cv":["cta"],
+      "cv": [
+        "cta"
+      ],
       "pids": [
         {
           "sdk": "fb",

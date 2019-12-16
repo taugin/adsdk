@@ -21,9 +21,6 @@ public class AdHelper {
         if (TextUtils.equals(Constant.AD_SDK_ADMOB, sdk)) {
             return hasAdmobModule();
         }
-        if (TextUtils.equals(Constant.AD_SDK_ADX, sdk)) {
-            return hasAdxModule();
-        }
         if (TextUtils.equals(Constant.AD_SDK_FACEBOOK, sdk)) {
             return hasFBModule();
         }
@@ -47,16 +44,6 @@ public class AdHelper {
     }
 
     private static boolean hasAdmobModule() {
-        try {
-            MobileAds.class.getName();
-            return true;
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-        return false;
-    }
-
-    private static boolean hasAdxModule() {
         try {
             MobileAds.class.getName();
             return true;

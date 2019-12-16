@@ -16,7 +16,6 @@ import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.adloader.addfp.AdDfpLoader;
 import com.hauyu.adsdk.adloader.adfb.FBLoader;
 import com.hauyu.adsdk.adloader.admob.AdmobLoader;
-import com.hauyu.adsdk.adloader.adx.AdxLoader;
 import com.hauyu.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.hauyu.adsdk.adloader.listener.IManagerListener;
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
@@ -128,13 +127,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             if (loader.allowUseLoader()) {
                                 mAdLoaders.add(loader);
                             }
-                        } else if (config.isAdx() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new AdxLoader();
-                            loader.init(mContext, config);
-                            loader.setListenerManager(this);
-                            if (loader.allowUseLoader()) {
-                                mAdLoaders.add(loader);
-                            }
                         } else if (config.isDfp() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new AdDfpLoader();
                             loader.init(mContext, config);
@@ -169,7 +161,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 params = new Params();
                 params.setAdCardStyle(Constant.NATIVE_CARD_FULL);
                 params.setBannerSize(Constant.AD_SDK_ADMOB, Constant.MEDIUM_RECTANGLE);
-                params.setBannerSize(Constant.AD_SDK_ADX, Constant.MEDIUM_RECTANGLE);
                 params.setBannerSize(Constant.AD_SDK_DFP, Constant.MEDIUM_RECTANGLE);
                 Log.v(Log.TAG, "use default ad params");
             }

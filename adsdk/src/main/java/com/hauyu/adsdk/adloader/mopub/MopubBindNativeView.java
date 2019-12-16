@@ -292,4 +292,8 @@ public class MopubBindNativeView extends BaseBindNativeView {
             }
         }
     }
+
+    public void restoreAdViewContent(View rootView) {
+        restoreAdViewContent(mParams, rootView, false);
+    }
 }
