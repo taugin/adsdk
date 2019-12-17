@@ -56,7 +56,7 @@ public class FBBindNativeView extends BaseBindNativeView {
         } else {
             Log.e(Log.TAG, "Can not find fb native layout###");
         }
-        onAdViewShown(adContainer, pidConfig, mParams);
+        updateCtaButtonBackground(adContainer, pidConfig, mParams);
     }
 
     private void bindNativeWithCard(ViewGroup adContainer, int template, NativeAd nativeAd, PidConfig pidConfig) {

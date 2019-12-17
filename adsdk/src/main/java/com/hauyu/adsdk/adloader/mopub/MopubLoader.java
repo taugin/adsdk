@@ -601,9 +601,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
                 boolean staticRender = nativeAd.getMoPubAdRenderer() instanceof MoPubStaticNativeAdRenderer;
                 if (bindNativeView != null) {
-                    bindNativeView.notifyMopubShowing(adView, getPidConfig());
-                    bindNativeView.updateClickView(adView, getPidConfig());
-                    bindNativeView.updateMediaView(staticRender, adView);
+                    bindNativeView.notifyAdViewShowing(adView, getPidConfig(), staticRender);
                 }
                 reportAdShow();
             } catch (Exception e) {

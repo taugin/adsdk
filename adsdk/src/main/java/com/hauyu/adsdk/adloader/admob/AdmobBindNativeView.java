@@ -54,7 +54,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
         } else {
             Log.e(Log.TAG, "Can not find admob native layout###");
         }
-        onAdViewShown(adContainer, pidConfig, mParams);
+        updateCtaButtonBackground(adContainer, pidConfig, mParams);
     }
 
     private void bindNativeViewWithRootView(ViewGroup adContainer, View rootView, UnifiedNativeAd nativeAd, PidConfig pidConfig) {

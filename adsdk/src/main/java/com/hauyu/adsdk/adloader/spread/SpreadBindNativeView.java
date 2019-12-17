@@ -54,7 +54,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         } else {
             Log.e(Log.TAG, "Can not find spread native layout###");
         }
-        onAdViewShown(adContainer, pidConfig, mParams);
+        updateCtaButtonBackground(adContainer, pidConfig, mParams);
     }
 
     private void bindNativeViewWithRootView(ViewGroup adContainer, View rootView, PidConfig pidConfig, SpConfig spConfig) {

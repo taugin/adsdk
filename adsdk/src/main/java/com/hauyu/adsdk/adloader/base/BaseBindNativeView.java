@@ -108,7 +108,7 @@ public class BaseBindNativeView {
         }
     }
 
-    protected void onAdViewShown(View view, PidConfig pidConfig, Params params) {
+    protected void updateCtaButtonBackground(View view, PidConfig pidConfig, Params params) {
         if (pidConfig == null || view == null || params == null) {
             return;
         }
