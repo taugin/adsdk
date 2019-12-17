@@ -118,6 +118,12 @@
       "mode": "con",
       "pids": [
         {
+          "sdk": "fb",
+          "type": "reward",
+          "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
+          "disable": 0
+        },
+        {
           "sdk": "admob",
           "type": "reward",
           "pid": "ca-app-pub-3940256099942544/5224354917",
