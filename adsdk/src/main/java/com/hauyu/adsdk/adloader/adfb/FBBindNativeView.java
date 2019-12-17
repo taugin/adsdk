@@ -14,9 +14,7 @@ import com.facebook.ads.AdOptionsView;
 import com.facebook.ads.MediaView;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdLayout;
-import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
-import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
@@ -42,72 +40,29 @@ public class FBBindNativeView extends BaseBindNativeView {
             return;
         }
         int rootLayout = mParams.getNativeRootLayout();
-        View rootView = mParams.getNativeRootView();
-        int cardId = mParams.getNativeCardStyle();
-        if (rootView != null) {
-            bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
-        } else if (rootLayout > 0) {
-            if (adContainer != null && adContainer.getContext() != null) {
-                rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
-                bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
-            }
-        } else if (cardId > 0) {
-            bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
+        if (rootLayout <= 0 && mParams.getNativeCardStyle() > 0) {
+            rootLayout = getAdViewLayout(mParams.getNativeCardStyle(), pidConfig);
+            bindParamsViewId(mParams);
+        }
+
+        if (rootLayout > 0) {
+            bindNativeViewWithRootView(adContainer, rootLayout, nativeAd, pidConfig);
         } else {
-            Log.e(Log.TAG, "Can not find fb native layout###");
+            Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
         }
         updateCtaButtonBackground(adContainer, pidConfig, mParams);
     }
 
-    private void bindNativeWithCard(ViewGroup adContainer, int template, NativeAd nativeAd, PidConfig pidConfig) {
-        int layoutId = R.layout.had_card_large;
-        if (template == Constant.NATIVE_CARD_SMALL) {
-            layoutId = R.layout.had_card_small;
-        } else if (template == Constant.NATIVE_CARD_MEDIUM) {
-            layoutId = R.layout.had_card_medium;
-        } else if (template == Constant.NATIVE_CARD_LARGE) {
-            layoutId = R.layout.had_card_large;
-        } else if (template == Constant.NATIVE_CARD_FULL) {
-            layoutId = getFullLayout(pidConfig);
-        } else if (template == Constant.NATIVE_CARD_TINY) {
-            layoutId = R.layout.had_card_tiny;
-        }
-        Context context = adContainer.getContext();
-        View rootView = LayoutInflater.from(context).inflate(layoutId, null);
-        bindNativeViewWithTemplate(adContainer, rootView, nativeAd, pidConfig);
-    }
-
-    /**
-     * 使用模板显示原生广告
-     *
-     * @param rootView
-     * @param nativeAd
-     * @param pidConfig
-     */
-    private void bindNativeViewWithTemplate(ViewGroup adContainer, View rootView, NativeAd nativeAd, PidConfig pidConfig) {
-        mParams.setAdTitle(R.id.native_title);
-        mParams.setAdSubTitle(R.id.native_sub_title);
-        mParams.setAdSocial(R.id.native_social);
-        mParams.setAdDetail(R.id.native_detail);
-        mParams.setAdIcon(R.id.native_icon);
-        mParams.setAdAction(R.id.native_action_btn);
-        mParams.setAdCover(R.id.native_image_cover);
-        mParams.setAdChoices(R.id.native_ad_choices_container);
-        mParams.setAdMediaView(R.id.native_media_cover);
-        bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
-    }
-
-
     /**
      * 外部传入ViewRoot
      *
-     * @param rootView
+     * @param rootLayout
      * @param nativeAd
      * @param pidConfig
      */
-    private void bindNativeViewWithRootView(ViewGroup adContainer, View rootView, NativeAd nativeAd, PidConfig pidConfig) {
-        if (rootView == null) {
-            Log.v(Log.TAG, "bindNativeViewWithRootView rootView == null");
+    private void bindNativeViewWithRootView(ViewGroup adContainer, int rootLayout, NativeAd nativeAd, PidConfig pidConfig) {
+        if (rootLayout <= 0) {
+            Log.v(Log.TAG, "bindNativeViewWithRootView rootLayout == 0x0");
             return;
         }
         if (nativeAd == null || !nativeAd.isAdLoaded()) {
@@ -124,11 +79,12 @@ public class FBBindNativeView extends BaseBindNativeView {
             return;
         }
         // 恢复icon图标
-        try {
-            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
+        View rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
+//        try {
+//            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
+//        } catch (Exception e) {
+//            Log.e(Log.TAG, "error : " + e);
+//        }
 
         NativeAdLayout adView = new NativeAdLayout(rootView.getContext());
         try {
@@ -141,7 +97,7 @@ public class FBBindNativeView extends BaseBindNativeView {
 
         adView.addView(rootView);
 
-        restoreAdViewContent(mParams, rootView);
+        cleanAdViewContent(mParams, rootView);
 
         TextView titleView = rootView.findViewById(mParams.getAdTitle());
         TextView subTitleView = rootView.findViewById(mParams.getAdSubTitle());

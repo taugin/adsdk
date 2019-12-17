@@ -1,7 +1,6 @@
 package com.hauyu.adsdk;
 
 import android.text.TextUtils;
-import android.view.View;
 
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
@@ -56,7 +55,6 @@ public class AdParams {
             return false;
         }
         if (params.getNativeRootLayout() <= 0
-                && params.getNativeRootView() == null
                 && params.getNativeCardStyle() <= 0) {
             // 未设置commonsdk参数
             return false;
@@ -70,7 +68,6 @@ public class AdParams {
         }
         sdkParams.setAdCardStyle(commonParams.getNativeCardStyle());
         sdkParams.setAdRootLayout(commonParams.getNativeRootLayout());
-        sdkParams.setAdRootView(commonParams.getNativeRootView());
         sdkParams.setAdTitle(commonParams.getAdTitle());
         sdkParams.setAdSubTitle(commonParams.getAdSubTitle());
         sdkParams.setAdSocial(commonParams.getAdSocial());
@@ -110,11 +107,6 @@ public class AdParams {
 
         public Builder setBannerSize(String sdk, int size) {
             getParams(sdk).setBannerSize(sdk, size);
-            return this;
-        }
-
-        public Builder setAdRootView(String sdk, View view) {
-            getParams(sdk).setAdRootView(view);
             return this;
         }
 

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gekes.fvs.tdsvap.R;
+import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
@@ -49,7 +50,7 @@ public class BaseBindNativeView {
 
     private Random mRandom = new Random(System.currentTimeMillis());
 
-    protected void restoreIconView(View rootView, String source, int iconId) {
+    private void restoreIconView(View rootView, String source, int iconId) {
         try {
             View iconView = rootView.findViewById(iconId);
             if (!(iconView instanceof ImageView)) {
@@ -60,7 +61,7 @@ public class BaseBindNativeView {
         }
     }
 
-    protected void restoreAdChoiceView(View rootView, int iconId) {
+    private void restoreAdChoiceView(View rootView, int iconId) {
         try {
             View adChoiceView = rootView.findViewById(iconId);
             if (adChoiceView instanceof ViewGroup) {
@@ -201,7 +202,7 @@ public class BaseBindNativeView {
      * @param params
      * @param rootView
      */
-    protected void restoreAdViewContent(Params params, View rootView) {
+    protected void cleanAdViewContent(Params params, View rootView) {
         if (params == null || rootView == null) {
             return;
         }
@@ -286,5 +287,36 @@ public class BaseBindNativeView {
             }
         }
         return clickViews;
+    }
+
+    protected int getAdViewLayout(int template, PidConfig pidConfig) {
+        int layoutId = R.layout.had_card_large;
+        if (template == Constant.NATIVE_CARD_SMALL) {
+            layoutId = R.layout.had_card_small;
+        } else if (template == Constant.NATIVE_CARD_MEDIUM) {
+            layoutId = R.layout.had_card_medium;
+        } else if (template == Constant.NATIVE_CARD_LARGE) {
+            layoutId = R.layout.had_card_large;
+        } else if (template == Constant.NATIVE_CARD_FULL) {
+            layoutId = getFullLayout(pidConfig);
+        } else if (template == Constant.NATIVE_CARD_TINY) {
+            layoutId = R.layout.had_card_tiny;
+        }
+        return layoutId;
+    }
+
+    protected void bindParamsViewId(Params params) {
+        if (params == null) {
+            return;
+        }
+        params.setAdTitle(R.id.native_title);
+        params.setAdSubTitle(R.id.native_sub_title);
+        params.setAdSocial(R.id.native_social);
+        params.setAdDetail(R.id.native_detail);
+        params.setAdIcon(R.id.native_icon);
+        params.setAdAction(R.id.native_action_btn);
+        params.setAdCover(R.id.native_image_cover);
+        params.setAdChoices(R.id.native_ad_choices_container);
+        params.setAdMediaView(R.id.native_media_cover);
     }
 }

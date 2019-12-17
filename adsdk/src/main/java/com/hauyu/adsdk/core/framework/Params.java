@@ -1,7 +1,5 @@
 package com.hauyu.adsdk.core.framework;
 
-import android.view.View;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +9,7 @@ import java.util.Map;
 
 public class Params {
 
-    private View mNativeRootView;
-    private int  mNativeRootLayout;
+    private int mNativeRootLayout;
     private int mNativeCardStyle;
     private Map<String, Integer> mBannerSize = new HashMap<String, Integer>();
     private int adTitle;
@@ -27,14 +24,6 @@ public class Params {
     private int adSocial;
 
     public Params() {
-    }
-
-    public void setAdRootView(View view) {
-        mNativeRootView = view;
-    }
-
-    public View getNativeRootView() {
-        return mNativeRootView;
     }
 
     public void setAdRootLayout(int layout) {

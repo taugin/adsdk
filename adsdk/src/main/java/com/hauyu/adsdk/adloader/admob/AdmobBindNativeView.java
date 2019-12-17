@@ -11,13 +11,11 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.gekes.fvs.tdsvap.R;
 import com.google.android.gms.ads.formats.MediaView;
 import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
-import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
@@ -40,79 +38,29 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             return;
         }
         int rootLayout = mParams.getNativeRootLayout();
-        View rootView = mParams.getNativeRootView();
-        int cardId = mParams.getNativeCardStyle();
-        if (rootView != null) {
-            bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
-        } else if (rootLayout > 0) {
-            if (adContainer != null && adContainer.getContext() != null) {
-                rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
-                bindNativeViewWithRootView(adContainer, rootView, nativeAd, pidConfig);
-            }
-        } else if (cardId > 0) {
-            bindNativeWithCard(adContainer, cardId, nativeAd, pidConfig);
+        if (rootLayout <= 0 && mParams.getNativeCardStyle() > 0) {
+            rootLayout = getAdViewLayout(mParams.getNativeCardStyle(), pidConfig);
+            bindParamsViewId(mParams);
+        }
+
+        if (rootLayout > 0) {
+            bindNativeViewWithRootView(adContainer, rootLayout, nativeAd, pidConfig);
         } else {
-            Log.e(Log.TAG, "Can not find admob native layout###");
+            Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
         }
         updateCtaButtonBackground(adContainer, pidConfig, mParams);
     }
 
-    private void bindNativeViewWithRootView(ViewGroup adContainer, View rootView, UnifiedNativeAd nativeAd, PidConfig pidConfig) {
+    private void bindNativeViewWithRootView(ViewGroup adContainer, int rootLayout, UnifiedNativeAd nativeAd, PidConfig pidConfig) {
         if (adContainer == null) {
             throw new AndroidRuntimeException("adContainer is null");
         }
-        if (rootView == null) {
-            throw new AndroidRuntimeException("rootView is null");
+        if (rootLayout <= 0) {
+            throw new AndroidRuntimeException("rootLayout is 0x0");
         }
         View view = null;
         try {
-            view = showUnifiedAdView(rootView, nativeAd, pidConfig);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        }
-        try {
-            adContainer.removeAllViews();
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -2);
-            adContainer.addView(view, params);
-            if (adContainer.getVisibility() != View.VISIBLE) {
-                adContainer.setVisibility(View.VISIBLE);
-            }
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        }
-    }
-
-    private void bindNativeWithCard(ViewGroup adContainer, int cardId, UnifiedNativeAd nativeAd, PidConfig pidConfig) {
-        if (adContainer == null) {
-            throw new AndroidRuntimeException("adContainer is null");
-        }
-        int layoutId = R.layout.had_card_small;
-        if (cardId == Constant.NATIVE_CARD_SMALL) {
-            layoutId = R.layout.had_card_small;
-        } else if (cardId == Constant.NATIVE_CARD_MEDIUM) {
-            layoutId = R.layout.had_card_medium;
-        } else if (cardId == Constant.NATIVE_CARD_LARGE) {
-            layoutId = R.layout.had_card_large;
-        } else if (cardId == Constant.NATIVE_CARD_FULL) {
-            layoutId = getFullLayout(pidConfig);
-        } else if (cardId == Constant.NATIVE_CARD_TINY) {
-            layoutId = R.layout.had_card_tiny;
-        }
-        View rootView = LayoutInflater.from(adContainer.getContext()).inflate(layoutId, null);
-        if (rootView == null) {
-            throw new AndroidRuntimeException("rootView is null");
-        }
-        mParams.setAdTitle(R.id.native_title);
-        mParams.setAdSubTitle(R.id.native_sub_title);
-        mParams.setAdSocial(R.id.native_social);
-        mParams.setAdDetail(R.id.native_detail);
-        mParams.setAdIcon(R.id.native_icon);
-        mParams.setAdAction(R.id.native_action_btn);
-        mParams.setAdCover(R.id.native_image_cover);
-        mParams.setAdChoices(R.id.native_ad_choices_container);
-        mParams.setAdMediaView(R.id.native_media_cover);
-        View view = null;
-        try {
+            View rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
             view = showUnifiedAdView(rootView, nativeAd, pidConfig);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
@@ -139,21 +87,9 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e);
         }
 
-        // 恢复icon图标
-        try {
-            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
-        } catch(Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-
-        /**
-         * 默认adchoiceview不可见
-         */
-        restoreAdChoiceView(rootView, mParams.getAdChoices());
-
         adView.addView(rootView);
 
-        restoreAdViewContent(mParams, rootView);
+        cleanAdViewContent(mParams, rootView);
 
         View titleView = rootView.findViewById(mParams.getAdTitle());
         View adCoverView = adView.findViewById(mParams.getAdCover());

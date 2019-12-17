@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
-import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
@@ -45,69 +43,29 @@ public class MopubBindNativeView extends BaseBindNativeView {
             return;
         }
         int rootLayout = mParams.getNativeRootLayout();
-        View rootView = mParams.getNativeRootView();
-        int cardId = mParams.getNativeCardStyle();
-        if (rootView != null) {
-            bindNativeViewWithRootView(context, rootView, nativeAd, pidConfig);
-        } else if (rootLayout > 0) {
-            rootView = LayoutInflater.from(context).inflate(rootLayout, null);
-            bindNativeViewWithRootView(context, rootView, nativeAd, pidConfig);
-        } else if (cardId > 0) {
-            bindNativeWithCard(context, cardId, nativeAd, pidConfig);
+        if (rootLayout <= 0 && mParams.getNativeCardStyle() > 0) {
+            rootLayout = getAdViewLayout(mParams.getNativeCardStyle(), pidConfig);
+            bindParamsViewId(mParams);
+        }
+
+        if (rootLayout > 0) {
+            bindNativeViewWithRootView(context, rootLayout, nativeAd, pidConfig);
         } else {
-            Log.e(Log.TAG, "Can not find mopub native layout###");
+            Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
         }
-    }
-
-    private void bindNativeWithCard(Context context, int template, MoPubNative nativeAd, PidConfig pidConfig) {
-        int layoutId = R.layout.had_card_large;
-        if (template == Constant.NATIVE_CARD_SMALL) {
-            layoutId = R.layout.had_card_small;
-        } else if (template == Constant.NATIVE_CARD_MEDIUM) {
-            layoutId = R.layout.had_card_medium;
-        } else if (template == Constant.NATIVE_CARD_LARGE) {
-            layoutId = R.layout.had_card_large;
-        } else if (template == Constant.NATIVE_CARD_FULL) {
-            layoutId = getFullLayout(pidConfig);
-        } else if (template == Constant.NATIVE_CARD_TINY) {
-            layoutId = R.layout.had_card_tiny;
-        }
-        View rootView = LayoutInflater.from(context).inflate(layoutId, null);
-        bindNativeViewWithTemplate(context, rootView, nativeAd, pidConfig);
-    }
-
-    /**
-     * 使用模板显示原生广告
-     *
-     * @param rootView
-     * @param nativeAd
-     * @param pidConfig
-     */
-    private void bindNativeViewWithTemplate(Context context, View rootView, MoPubNative nativeAd, PidConfig pidConfig) {
-        mParams.setAdTitle(R.id.native_title);
-        mParams.setAdSubTitle(R.id.native_sub_title);
-        mParams.setAdSocial(R.id.native_social);
-        mParams.setAdDetail(R.id.native_detail);
-        mParams.setAdIcon(R.id.native_icon);
-        mParams.setAdAction(R.id.native_action_btn);
-        mParams.setAdCover(R.id.native_image_cover);
-        mParams.setAdChoices(R.id.native_ad_choices_container);
-        mParams.setAdMediaView(R.id.native_media_cover);
-        mParams.setAdRootView(rootView);
-        bindNativeViewWithRootView(context, rootView, nativeAd, pidConfig);
     }
 
 
     /**
      * 外部传入ViewRoot
      *
-     * @param rootView
+     * @param rootLayout
      * @param nativeAd
      * @param pidConfig
      */
-    private void bindNativeViewWithRootView(Context context, View rootView, MoPubNative nativeAd, PidConfig pidConfig) {
-        if (rootView == null) {
-            Log.v(Log.TAG, "bindNativeViewWithRootView rootView == null");
+    private void bindNativeViewWithRootView(Context context, int rootLayout, MoPubNative nativeAd, PidConfig pidConfig) {
+        if (rootLayout <= 0) {
+            Log.v(Log.TAG, "bindNativeViewWithRootView rootLayout == 0x0");
             return;
         }
         if (nativeAd == null) {
@@ -124,22 +82,18 @@ public class MopubBindNativeView extends BaseBindNativeView {
             return;
         }
 
-        // 恢复icon图标
+        View rootView = null;
         try {
-            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
-        } catch(Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-
-        try {
-            bindVideoRender(context, nativeAd, pidConfig);
+            rootView = LayoutInflater.from(context).inflate(rootLayout, null);
+            bindVideoRender(context, nativeAd, pidConfig, rootView);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         } catch (Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
         try {
-            bindStaticRender(context, nativeAd, pidConfig);
+            rootView = LayoutInflater.from(context).inflate(rootLayout, null);
+            bindStaticRender(context, nativeAd, pidConfig, rootView);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         } catch (Error e) {
@@ -147,15 +101,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
     }
 
-    private void bindVideoRender(Context context, MoPubNative nativeAd, PidConfig pidConfig) {
-        View layout = null;
-        if (mParams.getNativeRootView() != null) {
-            layout = mParams.getNativeRootView();
-        } else if (mParams.getNativeRootLayout() > 0) {
-            layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
-        } else {
-            Log.e(Log.TAG, "bindVideoRender  root layout == 0x0");
-        }
+    private void bindVideoRender(Context context, MoPubNative nativeAd, PidConfig pidConfig, View layout) {
         MoPubVideoAdRender mopubVideoRender = new MoPubVideoAdRender(getVideoViewBinder(context, layout, pidConfig), layout);
         nativeAd.registerAdRenderer(mopubVideoRender);
     }
@@ -185,15 +131,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         return videoViewBinder;
     }
 
-    private void bindStaticRender(Context context, MoPubNative nativeAd, PidConfig pidConfig) {
-        View layout = null;
-        if (mParams.getNativeRootView() != null) {
-            layout = mParams.getNativeRootView();
-        } else if (mParams.getNativeRootLayout() > 0) {
-            layout = LayoutInflater.from(context).inflate(mParams.getNativeRootLayout(), null);
-        } else {
-            Log.e(Log.TAG, "bindStaticRender  root layout == 0x0");
-        }
+    private void bindStaticRender(Context context, MoPubNative nativeAd, PidConfig pidConfig, View layout) {
         MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout, pidConfig), layout);
         nativeAd.registerAdRenderer(moPubAdRenderer);
     }
@@ -296,9 +234,8 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
     }
 
-    public void restoreAdViewContent(View adView) {
-        restoreAdChoiceView(adView, mParams.getAdChoices());
-        restoreAdViewContent(mParams, adView);
+    public void cleanAdViewContent(View adView) {
+        cleanAdViewContent(mParams, adView);
     }
 
     private void updateAdViewVisibility(boolean staticRender, View adView) {

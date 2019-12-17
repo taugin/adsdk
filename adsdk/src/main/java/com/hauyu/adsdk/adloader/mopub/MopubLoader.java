@@ -586,7 +586,7 @@ public class MopubLoader extends AbstractSdkLoader {
             try {
                 View adView = nativeAd.createAdView(mContext, viewGroup);
                 if (bindNativeView != null) {
-                    bindNativeView.restoreAdViewContent(adView);
+                    bindNativeView.cleanAdViewContent(adView);
                 }
                 nativeAd.prepare(adView);
                 nativeAd.renderAdView(adView);
