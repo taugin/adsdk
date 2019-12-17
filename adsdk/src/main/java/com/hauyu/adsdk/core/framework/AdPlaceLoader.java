@@ -1909,7 +1909,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             Log.v(Log.TAG, "place is null");
             return false;
         }
-        if (!mAdPlace.isNeedCache()) {
+        if (!mAdPlace.isPlaceCache()) {
             Log.v(Log.TAG, "place no need cache");
             return false;
         }

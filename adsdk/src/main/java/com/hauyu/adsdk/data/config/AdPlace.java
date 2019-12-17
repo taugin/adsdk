@@ -32,7 +32,7 @@ public class AdPlace {
 
     private int ecpmSort;
 
-    private boolean needCache;
+    private boolean placeCache;
 
     private long delayNotifyTime;
 
@@ -53,7 +53,7 @@ public class AdPlace {
 
     private int queueSize = 2;
 
-    private String layout;
+    private String fullLayout;
 
     private List<String> ctaColor;
 
@@ -166,12 +166,12 @@ public class AdPlace {
         return TextUtils.equals(Constant.MODE_QUE, getMode());
     }
 
-    public boolean isNeedCache() {
-        return needCache;
+    public boolean isPlaceCache() {
+        return placeCache;
     }
 
-    public void setNeedCache(boolean needCache) {
-        this.needCache = needCache;
+    public void setPlaceCache(boolean placeCache) {
+        this.placeCache = placeCache;
     }
 
     public long getDelayNotifyTime() {
@@ -238,12 +238,12 @@ public class AdPlace {
         this.queueSize = queueSize;
     }
 
-    public String getLayout() {
-        return layout;
+    public String getFullLayout() {
+        return fullLayout;
     }
 
-    public void setLayout(String layout) {
-        this.layout = layout;
+    public void setFullLayout(String fullLayout) {
+        this.fullLayout = fullLayout;
     }
 
     public List<String> getCtaColor() {

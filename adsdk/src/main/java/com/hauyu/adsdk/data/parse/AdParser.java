@@ -143,7 +143,7 @@ public class AdParser implements IParser {
                 adPlace.setPercent(jobj.getInt(PERCENT));
             }
             if (jobj.has(FULL_LAYOUT)) {
-                adPlace.setLayout(jobj.getString(FULL_LAYOUT));
+                adPlace.setFullLayout(jobj.getString(FULL_LAYOUT));
             }
             if (jobj.has(CTA_COLOR)) {
                 adPlace.setCtaColor(parseStringList(jobj.getString(CTA_COLOR)));
@@ -167,7 +167,7 @@ public class AdParser implements IParser {
                 adPlace.setEcpmSort(jobj.getInt(ECPM_SORT));
             }
             if (jobj.has(PLACE_CACHE)) {
-                adPlace.setNeedCache(jobj.getInt(PLACE_CACHE) == 1);
+                adPlace.setPlaceCache(jobj.getInt(PLACE_CACHE) == 1);
             }
             if (jobj.has(DELAY_NOTIFY_TIME)) {
                 adPlace.setDelayNotifyTime(jobj.getLong(DELAY_NOTIFY_TIME));
@@ -246,8 +246,8 @@ public class AdParser implements IParser {
                     pidConfig.setAdPlace(adPlace);
                     /*
                     if (adPlace != null && pidConfig != null) {
-                        if (!TextUtils.isEmpty(adPlace.getLayout()) && TextUtils.isEmpty(pidConfig.getLayout())) {
-                            pidConfig.setLayout(adPlace.getLayout());
+                        if (!TextUtils.isEmpty(adPlace.getFullLayout()) && TextUtils.isEmpty(pidConfig.getFullLayout())) {
+                            pidConfig.setFullLayout(adPlace.getFullLayout());
                         }
                         if ((adPlace.getCtaColor() != null && !adPlace.getCtaColor().isEmpty())
                                 && (pidConfig.getCtaColor() == null || pidConfig.getCtaColor().isEmpty())) {

@@ -106,7 +106,7 @@ public class BaseBindNativeView {
         // 获取 layout flag
         if (TextUtils.isEmpty(layoutFlag)) {
             try {
-                layoutFlag = pidConfig.getAdPlace().getLayout();
+                layoutFlag = pidConfig.getAdPlace().getFullLayout();
             } catch (Exception e) {
                 Log.iv(Log.TAG, "fl error : " + e);
             }
