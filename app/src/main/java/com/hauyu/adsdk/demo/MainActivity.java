@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 //        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
 //        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
         int styles[] = new int[]{AdExtra.NATIVE_CARD_FULL, AdExtra.NATIVE_CARD_SMALL, AdExtra.NATIVE_CARD_MEDIUM, AdExtra.NATIVE_CARD_TINY, AdExtra.NATIVE_CARD_LARGE};
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_SMALL);
+        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, styles[new Random(System.currentTimeMillis()).nextInt(styles.length)]);
         AdParams adParams = builder.build();
         AdSdk.get(mContext).loadComplexAds("banner_and_native", adParams, new SimpleAdSdkListener() {
             @Override
