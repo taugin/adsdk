@@ -585,9 +585,6 @@ public class MopubLoader extends AbstractSdkLoader {
 
             try {
                 View adView = nativeAd.createAdView(mContext, viewGroup);
-                if (bindNativeView != null) {
-                    bindNativeView.cleanAdViewContent(adView);
-                }
                 nativeAd.prepare(adView);
                 nativeAd.renderAdView(adView);
                 ViewParent parent = adView.getParent();
@@ -605,7 +602,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
                 reportAdShow();
             } catch (Exception e) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.e(Log.TAG, "error : " + e, e);
             }
             if (!isDestroyAfterClick()) {
                 nativeAd = null;

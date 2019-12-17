@@ -41,6 +41,12 @@
           "disable": 1
         },
         {
+          "sdk": "mopub",
+          "type": "native",
+          "pid": "02a2d288d2674ad09f3241d46a44356e",
+          "disable": 0
+        },
+        {
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
@@ -154,7 +160,11 @@
           "sdk": "mopub",
           "type": "native",
           "pid": "11a17b188668469fb0412708c3d16813",
-          "cv":["cta", "title", "cover"],
+          "cv": [
+            "cta",
+            "title",
+            "cover"
+          ],
           "disable": 0
         },
         {

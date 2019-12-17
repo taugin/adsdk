@@ -89,8 +89,6 @@ public class AdmobBindNativeView extends BaseBindNativeView {
 
         adView.addView(rootView);
 
-        cleanAdViewContent(mParams, rootView);
-
         View titleView = rootView.findViewById(mParams.getAdTitle());
         View adCoverView = adView.findViewById(mParams.getAdCover());
         // 由于admob没有subTitle的接口，因此将使用subTitle或者detailView

@@ -7,9 +7,6 @@ import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.constant.Constant;
@@ -136,86 +133,6 @@ public class BaseBindNativeView {
             return true;
         }
         return clickViews.contains(view);
-    }
-
-    /**
-     * 恢复视图的初始状态，由于mopub是在加载native的时候绑定的view，因此，在做展示的时候，不能修改视图结构，所以不能移除任何view
-     * @param params
-     * @param rootView
-     */
-    protected void cleanAdViewContent(Params params, View rootView) {
-        if (params == null || rootView == null) {
-            return;
-        }
-        View view;
-        view = rootView.findViewById(params.getAdTitle());
-        if (view != null) {
-            view.setOnClickListener(null);
-        }
-        if (view instanceof TextView) {
-            ((TextView) view).setText(null);
-        }
-
-        view = rootView.findViewById(params.getAdSubTitle());
-        if (view != null) {
-            view.setOnClickListener(null);
-        }
-        if (view instanceof TextView) {
-            ((TextView) view).setText(null);
-        }
-
-        view = rootView.findViewById(params.getAdIcon());
-        if (view != null) {
-            view.setOnClickListener(null);
-        }
-        if (view instanceof ImageView) {
-            ((ImageView) view).setImageDrawable(null);
-        }
-
-        view = rootView.findViewById(params.getAdCover());
-        if (view != null) {
-            view.setOnClickListener(null);
-        }
-        if (view instanceof ImageView) {
-            ((ImageView) view).setImageDrawable(null);
-        }
-
-        view = rootView.findViewById(params.getAdSocial());
-        if (view != null) {
-            view.setOnClickListener(null);
-        }
-        if (view instanceof TextView) {
-            ((TextView) view).setText(null);
-        }
-
-        view = rootView.findViewById(params.getAdDetail());
-        if (view != null) {
-            view.setOnClickListener(null);
-        }
-        if (view instanceof TextView) {
-            ((TextView) view).setText(null);
-        }
-
-        view = rootView.findViewById(params.getAdAction());
-        if (view != null) {
-            view.setOnClickListener(null);
-        }
-        if (view instanceof TextView) {
-            ((TextView) view).setText(null);
-        }
-
-        view = rootView.findViewById(params.getAdChoices());
-        if (view != null) {
-            view.setOnClickListener(null);
-        }
-
-        view = rootView.findViewById(params.getAdMediaView());
-        if (view != null) {
-            view.setOnClickListener(null);
-        }
-        if (view instanceof ViewGroup) {
-            ((ViewGroup) view).removeAllViews();
-        }
     }
 
     protected List<String> getClickViews(PidConfig pidConfig) {

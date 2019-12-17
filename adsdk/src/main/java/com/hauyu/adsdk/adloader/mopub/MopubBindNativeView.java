@@ -232,10 +232,6 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
     }
 
-    public void cleanAdViewContent(View adView) {
-        cleanAdViewContent(mParams, adView);
-    }
-
     private void updateAdViewVisibility(boolean staticRender, View adView) {
         updateIconView(adView);
         updateDetailView(adView);
