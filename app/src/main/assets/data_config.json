@@ -154,6 +154,7 @@
           "sdk": "mopub",
           "type": "native",
           "pid": "11a17b188668469fb0412708c3d16813",
+          "cv":["cta", "title", "cover"],
           "disable": 0
         },
         {

@@ -274,6 +274,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
             for (String text : clickViews) {
                 clickElements.add(viewMap.get(text));
             }
+            clickElements.add(viewMap.get(AD_CHOICES));
             traversalView(view, clickElements);
         } catch (Exception e) {
         }
