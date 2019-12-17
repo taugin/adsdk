@@ -85,7 +85,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         View rootView = null;
         try {
             rootView = LayoutInflater.from(context).inflate(rootLayout, null);
-            bindVideoRender(context, nativeAd, pidConfig, rootView);
+            bindVideoRender(context, nativeAd, rootView);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         } catch (Error e) {
@@ -93,7 +93,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
         try {
             rootView = LayoutInflater.from(context).inflate(rootLayout, null);
-            bindStaticRender(context, nativeAd, pidConfig, rootView);
+            bindStaticRender(context, nativeAd, rootView);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         } catch (Error e) {
@@ -101,12 +101,12 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
     }
 
-    private void bindVideoRender(Context context, MoPubNative nativeAd, PidConfig pidConfig, View layout) {
-        MoPubVideoAdRender mopubVideoRender = new MoPubVideoAdRender(getVideoViewBinder(context, layout, pidConfig), layout);
+    private void bindVideoRender(Context context, MoPubNative nativeAd, View layout) {
+        MoPubVideoAdRender mopubVideoRender = new MoPubVideoAdRender(getVideoViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(mopubVideoRender);
     }
 
-    private MediaViewBinder getVideoViewBinder(Context context, View layout, PidConfig pidConfig) {
+    private MediaViewBinder getVideoViewBinder(Context context, View layout) {
         ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
         MediaLayout mediaLayout = createMediaLayout(context);
         mediaLayout.setId(getMediaLayoutId());
@@ -115,7 +115,6 @@ public class MopubBindNativeView extends BaseBindNativeView {
         ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
         adChoiceLayout.setVisibility(View.VISIBLE);
         ImageView imageView = new ImageView(context);
-        imageView.setTag(pidConfig.getSdk());
         imageView.setId(getImageViewId());
         int size = Utils.dp2px(context, 20);
         adChoiceLayout.addView(imageView, size, size);
@@ -131,16 +130,15 @@ public class MopubBindNativeView extends BaseBindNativeView {
         return videoViewBinder;
     }
 
-    private void bindStaticRender(Context context, MoPubNative nativeAd, PidConfig pidConfig, View layout) {
-        MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout, pidConfig), layout);
+    private void bindStaticRender(Context context, MoPubNative nativeAd, View layout) {
+        MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(moPubAdRenderer);
     }
 
-    private ViewBinder getStaticViewBinder(Context context, View layout, PidConfig pidConfig) {
+    private ViewBinder getStaticViewBinder(Context context, View layout) {
         ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
         adChoiceLayout.setVisibility(View.VISIBLE);
         ImageView imageView = new ImageView(context);
-        imageView.setTag(pidConfig.getSdk());
         imageView.setId(getImageViewId());
         int size = Utils.dp2px(context, 20);
         adChoiceLayout.addView(imageView, size, size);

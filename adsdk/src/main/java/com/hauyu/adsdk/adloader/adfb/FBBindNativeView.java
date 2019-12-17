@@ -80,11 +80,6 @@ public class FBBindNativeView extends BaseBindNativeView {
         }
         // 恢复icon图标
         View rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
-//        try {
-//            restoreIconView(rootView, pidConfig.getSdk(), mParams.getAdIcon());
-//        } catch (Exception e) {
-//            Log.e(Log.TAG, "error : " + e);
-//        }
 
         NativeAdLayout adView = new NativeAdLayout(rootView.getContext());
         try {
@@ -144,12 +139,7 @@ public class FBBindNativeView extends BaseBindNativeView {
 
             // Add adChoices icon
             if (adChoiceContainer != null) {
-                View view = adChoiceContainer.findViewWithTag(pidConfig.getSdk());
-                if (view != null) {
-                    adChoiceContainer.removeView(view);
-                }
                 AdOptionsView adOptionsView = new AdOptionsView(rootView.getContext(), nativeAd, adView);
-                adOptionsView.setTag(pidConfig.getSdk());
                 adChoiceContainer.addView(adOptionsView, 0);
                 adChoiceContainer.setPadding(0, 0, 0, 0);
                 adChoiceContainer.setBackgroundColor(Color.parseColor("#88FFFFFF"));
