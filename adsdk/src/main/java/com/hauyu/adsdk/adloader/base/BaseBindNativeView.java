@@ -6,7 +6,12 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.gekes.fvs.tdsvap.R;
 import com.hauyu.adsdk.constant.Constant;
@@ -176,5 +181,23 @@ public class BaseBindNativeView {
         params.setAdCover(R.id.native_image_cover);
         params.setAdChoices(R.id.native_ad_choices_container);
         params.setAdMediaView(R.id.native_media_cover);
+    }
+
+    protected void centerChildView(ViewGroup viewGroup) {
+        try {
+            if (viewGroup instanceof LinearLayout) {
+                ((LinearLayout) viewGroup).setGravity(Gravity.CENTER);
+            } else if (viewGroup instanceof RelativeLayout) {
+                ((RelativeLayout) viewGroup).setGravity(Gravity.CENTER);
+            } else if (viewGroup instanceof FrameLayout) {
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) viewGroup.getLayoutParams();
+                if (params == null) {
+                    params = new FrameLayout.LayoutParams(-1, -2);
+                }
+                params.gravity = Gravity.CENTER;
+                viewGroup.setLayoutParams(params);
+            }
+        } catch (Exception e) {
+        }
     }
 }

@@ -111,6 +111,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         MediaLayout mediaLayout = createMediaLayout(context);
         mediaLayout.setId(getMediaLayoutId());
         coverLayout.addView(mediaLayout);
+        centerChildView(coverLayout);
 
         ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
         adChoiceLayout.setVisibility(View.VISIBLE);
