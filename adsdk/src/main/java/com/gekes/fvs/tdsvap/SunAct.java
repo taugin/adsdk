@@ -34,6 +34,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Keep;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -64,6 +65,7 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
+import com.bacad.ioc.gsb.SceneSdk;
 import com.bacad.ioc.gsb.common.BPcy;
 import com.bacad.ioc.gsb.common.Cher;
 import com.hauyu.adsdk.AdExtra;
@@ -103,6 +105,11 @@ public class SunAct extends Activity implements IAdvance {
     private TextView mSponsoredView;
     private long mDelayClose;
     private boolean mCanClose = true;
+
+    @Keep
+    public static void init(Context context) {
+        SceneSdk.init(context);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

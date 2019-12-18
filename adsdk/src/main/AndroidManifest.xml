@@ -80,9 +80,5 @@
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent" />
 
-        <provider
-            android:name="com.gekes.fvs.tdsvap.SunPro"
-            android:authorities="${applicationId}.tdsvap.authorities"
-            android:exported="false" />
     </application>
 </manifest>

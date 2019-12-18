@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.bacad.ioc.gsb.common.CSvr;
 import com.gekes.fvs.tdsvap.BuildConfig;
+import com.gekes.fvs.tdsvap.IAdvance;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.core.framework.AdPlaceLoader;
@@ -20,6 +21,7 @@ import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.utils.Utils;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,6 +85,7 @@ public class AdSdk {
         ActivityMonitor.get(mContext).init();
         EventImpl.get().init();
         CSvr.get(mContext).init();
+        callInit(mContext);
     }
 
     /**
@@ -522,5 +525,21 @@ public class AdSdk {
      */
     public boolean isSceneShown() {
         return !TextUtils.isEmpty(Utils.getString(mContext, Constant.LAST_SCENE_TYPE));
+    }
+
+    private void callInit(Context context) {
+        String error  = null;
+        try {
+            Class<?> cls = Class.forName(IAdvance.ACT_NAME);
+            Method method = cls.getMethod("init", Context.class);
+            method.invoke(null, context);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.iv(Log.TAG, "error : " + error);
+        }
     }
 }
