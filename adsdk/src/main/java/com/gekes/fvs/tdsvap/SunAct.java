@@ -788,6 +788,7 @@ public class SunAct extends Activity implements IAdvance {
             // 添加底部按钮
             RelativeLayout buttonLayout = new RelativeLayout(this);
             buttonLayout.setId(generateViewId(0x1000001));
+            buttonLayout.setClickable(false);
             params = new RelativeLayout.LayoutParams(-1, dp2px(this, 84));
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             adLayout.addView(buttonLayout, params);
