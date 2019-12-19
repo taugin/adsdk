@@ -59,6 +59,10 @@ public interface IParser {
     String FULL_LAYOUT = "fl";
     // cta按钮颜色
     String CTA_COLOR = "cc";
+    // 场景加载失败，自动重试
+    String RETRY = "retry";
+    // 最大重试次数
+    String RETRY_TIME = "rt";
 
     // 广告平台 fb, admob, adx
     String SDK = "sdk";

@@ -193,6 +193,12 @@ public class AdParser implements IParser {
             if (jobj.has(QUEUE_SIZE)) {
                 adPlace.setQueueSize(jobj.getInt(QUEUE_SIZE));
             }
+            if (jobj.has(RETRY)) {
+                adPlace.setRetry(jobj.getInt(RETRY) == 1);
+            }
+            if (jobj.has(RETRY_TIME)) {
+                adPlace.setRetryTimes(jobj.getInt(RETRY_TIME));
+            }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
             sortPidList(adPlace);
         } catch (Exception e) {

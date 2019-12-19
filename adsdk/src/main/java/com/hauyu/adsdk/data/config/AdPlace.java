@@ -59,6 +59,10 @@ public class AdPlace {
 
     private List<String> clickViews;
 
+    private boolean retry;
+
+    private int retryTimes = 3;
+
     public String getName() {
         return name;
     }
@@ -260,6 +264,22 @@ public class AdPlace {
 
     public void setClickViews(List<String> clickViews) {
         this.clickViews = clickViews;
+    }
+
+    public boolean isRetry() {
+        return retry;
+    }
+
+    public void setRetry(boolean retry) {
+        this.retry = retry;
+    }
+
+    public int getRetryTimes() {
+        return retryTimes;
+    }
+
+    public void setRetryTimes(int retryTimes) {
+        this.retryTimes = retryTimes;
     }
 
     @Override

@@ -44,6 +44,7 @@ public interface IAdLoader {
     public int getAdCount();
     public String getAdMode();
     public boolean isLoading();
+    public boolean isPlaceError();
     public void resume();
     public void pause();
 

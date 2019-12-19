@@ -70,6 +70,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private static List<ISdkLoader> sLoadedAdLoaders = new ArrayList<ISdkLoader>();
     private boolean mAdPlaceSeqLoading = false;
     private boolean mQueueRunning = true;
+    private String mPlaceType = null;
+    private int mErrorTimes = 0;
+    private int mRetryTimes = 0;
 
     public AdPlaceLoader(Context context) {
         mContext = context;
@@ -357,7 +360,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (processAdPlaceCache()) {
             return;
         }
+        setPlaceType(Constant.PLACE_TYPE_INTERSTITIAL);
+        loadInterstitialInternal();
+    }
 
+    private void loadInterstitialInternal() {
+        resetPlaceErrorTimes();
         if (mAdPlace.isConcurrent()) {
             loadInterstitialConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -756,6 +764,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (processAdPlaceCache()) {
             return;
         }
+        setPlaceType(Constant.PLACE_TYPE_ADVIEW);
+        loadAdViewInternal();
+    }
+
+    private void loadAdViewInternal() {
+        resetPlaceErrorTimes();
         if (mAdPlace.isConcurrent()) {
             loadAdViewConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -1185,7 +1199,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (processAdPlaceCache()) {
             return;
         }
+        setPlaceType(Constant.PLACE_TYPE_COMPLEX);
+        loadComplexAdsInternal();
+    }
 
+    private void loadComplexAdsInternal() {
+        resetPlaceErrorTimes();
         if (mAdPlace.isConcurrent()) {
             loadComplexAdsConcurrent();
         } else if (mAdPlace.isSequence()) {
@@ -1853,6 +1872,58 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
     }
 
+    private void setPlaceType(String placeType) {
+        mPlaceType = placeType;
+        mRetryTimes = 0;
+    }
+
+    private synchronized void calcPlaceError() {
+        mErrorTimes++;
+        boolean isPlaceError = isPlaceError();
+        boolean isRetry = mAdPlace.isRetry();
+        boolean isAllowRetry = isAllowRetry();
+        if (isPlaceError && isRetry && isAllowRetry) {
+            startRetry();
+        } else {
+            Log.iv(Log.TAG, "isPlaceError : " + isPlaceError + " , isRetry : " + isRetry + " , isAllowRetry : " + isAllowRetry);
+        }
+    }
+
+    private boolean isAllowRetry() {
+        return mRetryTimes++ < mAdPlace.getRetryTimes();
+    }
+
+    private void startRetry() {
+        if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_ADVIEW)) {
+            loadAdViewInternal();
+        } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_INTERSTITIAL)) {
+            loadInterstitialInternal();
+        } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_COMPLEX)) {
+            loadComplexAdsInternal();
+        } else {
+            Log.iv(Log.TAG, "load place type error");
+        }
+    }
+
+    @Override
+    public boolean isPlaceError() {
+        boolean placeError = false;
+        if (TextUtils.equals(getAdMode(), Constant.MODE_CON)) {
+            placeError = mAdLoaders.size() == mErrorTimes;
+        } else if (TextUtils.equals(getAdMode(), Constant.MODE_SEQ)) {
+            placeError = mErrorTimes == 1;
+        } else if (TextUtils.equals(getAdMode(), Constant.MODE_RAN)) {
+            placeError = mErrorTimes == 1;
+        } else {
+            Log.iv(Log.TAG, "load mode error");
+        }
+        return placeError;
+    }
+
+    private synchronized void resetPlaceErrorTimes() {
+        mErrorTimes = 0;
+    }
+
     /**
      * AdPlaceLoader类使用的监听器
      */
@@ -1863,8 +1934,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onLoaded(String pidName, String source, String adType) {
-            super.onLoaded(pidName, source, adType);
+        public void onError(String pidName, String source, String adType) {
+            calcPlaceError();
         }
 
         @Override

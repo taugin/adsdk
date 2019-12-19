@@ -412,6 +412,14 @@ public class AdSdk {
         return false;
     }
 
+    public boolean isPlaceError(String pidName) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            return loader.isPlaceError();
+        }
+        return false;
+    }
+
     public void resume(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
