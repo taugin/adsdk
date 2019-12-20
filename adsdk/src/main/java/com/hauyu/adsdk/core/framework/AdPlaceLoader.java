@@ -1874,26 +1874,32 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private void setPlaceType(String placeType) {
         mPlaceType = placeType;
-        mRetryTimes = 0;
     }
 
-    private synchronized void calcPlaceError() {
+    private synchronized void startRetryIfNeed() {
         mErrorTimes++;
-        boolean isPlaceError = isPlaceError();
+        Log.iv(Log.TAG, "record error times " + mErrorTimes);
         boolean isRetry = mAdPlace.isRetry();
-        boolean isAllowRetry = isAllowRetry();
-        if (isPlaceError && isRetry && isAllowRetry) {
+        boolean isAdError = isAdError();
+        boolean isRetryTimesAllow = isRetryTimesAllow();
+        Log.iv(Log.TAG, "retry : " + isRetry + " , adError : " + isAdError + " , allowRetry : " + isRetryTimesAllow);
+        if (isRetry && isAdError && isRetryTimesAllow) {
+            mRetryTimes++;
             startRetry();
         } else {
-            Log.iv(Log.TAG, "isPlaceError : " + isPlaceError + " , isRetry : " + isRetry + " , isAllowRetry : " + isAllowRetry);
+            if (!isRetryTimesAllow && isAdError) {
+                mRetryTimes = 0;
+                Log.iv(Log.TAG, "reset retry times " + mRetryTimes);
+            }
         }
     }
 
-    private boolean isAllowRetry() {
-        return mRetryTimes++ < mAdPlace.getRetryTimes();
+    private boolean isRetryTimesAllow() {
+        return mRetryTimes < mAdPlace.getRetryTimes();
     }
 
     private void startRetry() {
+        Log.iv(Log.TAG, "start retry " + mPlaceType + " " + mRetryTimes);
         if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_ADVIEW)) {
             loadAdViewInternal();
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_INTERSTITIAL)) {
@@ -1901,12 +1907,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_COMPLEX)) {
             loadComplexAdsInternal();
         } else {
-            Log.iv(Log.TAG, "load place type error");
+            Log.iv(Log.TAG, "can not match place type");
         }
     }
 
-    @Override
-    public boolean isPlaceError() {
+    public boolean isAdError() {
         boolean placeError = false;
         if (TextUtils.equals(getAdMode(), Constant.MODE_CON)) {
             placeError = mAdLoaders.size() == mErrorTimes;
@@ -1915,7 +1920,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         } else if (TextUtils.equals(getAdMode(), Constant.MODE_RAN)) {
             placeError = mErrorTimes == 1;
         } else {
-            Log.iv(Log.TAG, "load mode error");
+            Log.iv(Log.TAG, "can not match mode");
         }
         return placeError;
     }
@@ -1935,7 +1940,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         @Override
         public void onError(String pidName, String source, String adType) {
-            calcPlaceError();
+            startRetryIfNeed();
         }
 
         @Override

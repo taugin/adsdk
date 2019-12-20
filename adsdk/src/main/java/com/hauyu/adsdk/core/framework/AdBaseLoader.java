@@ -105,6 +105,11 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public boolean isPlaceError() {
+        return false;
+    }
+
+    @Override
     public void resume() {
     }
 

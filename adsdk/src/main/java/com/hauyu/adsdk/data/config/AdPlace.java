@@ -61,7 +61,7 @@ public class AdPlace {
 
     private boolean retry;
 
-    private int retryTimes = 3;
+    private int retryTimes = 2;
 
     public String getName() {
         return name;

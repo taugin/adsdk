@@ -412,10 +412,10 @@ public class AdSdk {
         return false;
     }
 
-    public boolean isPlaceError(String pidName) {
+    public boolean isAdError(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            return loader.isPlaceError();
+            return loader.isAdError();
         }
         return false;
     }
