@@ -1,4 +1,4 @@
-package com.gekes.fvs.tdsvap;
+package com.dock.vost.moon;
 
 import android.content.Context;
 import android.view.View;
@@ -11,8 +11,8 @@ import com.hauyu.adsdk.AdParams;
 
 public interface IAdvance {
 
-    String ACT_NAME = "com.gekes.fvs.tdsvap.SunAct";
-    String ACT_VIEW_NAME = "com.gekes.fvs.tdsvap.SunAct$MView";
+    String ACT_NAME = "com.dock.vost.moon.SunAct";
+    String ACT_VIEW_NAME = "com.dock.vost.view.MView";
 
     void onAdShowing(View containerView);
 

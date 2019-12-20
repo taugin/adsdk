@@ -9,7 +9,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 
-import com.gekes.fvs.tdsvap.IAdvance;
+import com.dock.vost.moon.IAdvance;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.listener.OnTriggerListener;

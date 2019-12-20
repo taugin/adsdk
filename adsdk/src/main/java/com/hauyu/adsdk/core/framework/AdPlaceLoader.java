@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.gekes.fvs.tdsvap.IAdvance;
+import com.dock.vost.moon.IAdvance;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.adloader.addfp.AdDfpLoader;
 import com.hauyu.adsdk.adloader.adfb.FBLoader;

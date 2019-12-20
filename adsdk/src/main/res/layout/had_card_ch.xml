@@ -146,42 +146,38 @@
                         android:layout_alignTop="@+id/ad_cm_stage_hint"
                         android:orientation="horizontal">
 
-                        <view
+                        <com.dock.vost.view.BlinkImageView
                             android:id="@+id/ad_cm_speed_indicator"
-                            class="com.gekes.fvs.tdsvap.SunAct$BlinkImageView"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="34dp"
                             android:scaleType="centerInside"
                             android:src="@drawable/had_speed" />
 
-                        <view
+                        <com.dock.vost.view.DotProgress
                             android:id="@+id/ad_cm_dot_progress_1"
-                            class="com.gekes.fvs.tdsvap.SunAct$DotProgress"
                             android:layout_width="0dp"
                             android:layout_height="23dp"
                             android:layout_weight="1"
                             app:dotRadius="1.5dp" />
 
-                        <view
+                        <com.dock.vost.view.BlinkImageView
                             android:id="@+id/ad_cm_continuous_indicator"
-                            class="com.gekes.fvs.tdsvap.SunAct$BlinkImageView"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:scaleType="centerInside"
                             android:src="@drawable/had_continuous" />
 
-                        <view
+                        <com.dock.vost.view.DotProgress
                             android:id="@+id/ad_cm_dot_progress_2"
-                            class="com.gekes.fvs.tdsvap.SunAct$DotProgress"
+                            class="com.dock.vost.moon.SunAct$DotProgress"
                             android:layout_width="0dp"
                             android:layout_height="23dp"
                             android:layout_weight="1"
                             app:dotRadius="1.5dp" />
 
-                        <view
+                        <com.dock.vost.view.BlinkImageView
                             android:id="@+id/ad_cm_trickle_indicator"
-                            class="com.gekes.fvs.tdsvap.SunAct$BlinkImageView"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginRight="34dp"

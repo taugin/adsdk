@@ -6,8 +6,8 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.bacad.ioc.gsb.common.CSvr;
-import com.gekes.fvs.tdsvap.BuildConfig;
-import com.gekes.fvs.tdsvap.IAdvance;
+import com.dock.vost.moon.BuildConfig;
+import com.dock.vost.moon.IAdvance;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.core.framework.AdPlaceLoader;
