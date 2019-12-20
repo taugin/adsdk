@@ -49,7 +49,7 @@ public class DotView extends View implements IAdvance.Dot{
     }
 
     @Override
-    public void setDotLength(int nextStep) {
+    public void setMaxWidth(int nextStep) {
         if (nextStep >= stepCount || nextStep < -1) {
             return;
         }

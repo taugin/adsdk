@@ -174,8 +174,8 @@ public class Cher implements View.OnClickListener {
             continuousBlink.setBackground();
             trickleBlink.stop();
             trickleBlink.setBackground();
-            speedChargeProgress.setDotLength(-1);
-            continuousChargeProgress.setDotLength(-1);
+            speedChargeProgress.setMaxWidth(-1);
+            continuousChargeProgress.setMaxWidth(-1);
             speedText.setEnabled(false);
             continuousText.setEnabled(false);
             trickleText.setEnabled(false);
@@ -189,21 +189,21 @@ public class Cher implements View.OnClickListener {
     private void updateProgress(int percent) {
         if (percent < 80) {
             if (0 <= percent && percent < 27) {
-                speedChargeProgress.setDotLength(0);
+                speedChargeProgress.setMaxWidth(0);
             } else if (27 <= percent && percent < 54) {
-                speedChargeProgress.setDotLength(1);
+                speedChargeProgress.setMaxWidth(1);
             } else {
-                speedChargeProgress.setDotLength(2);
+                speedChargeProgress.setMaxWidth(2);
             }
-            continuousChargeProgress.setDotLength(-1);
+            continuousChargeProgress.setMaxWidth(-1);
         } else {
-            speedChargeProgress.setDotLength(2);
+            speedChargeProgress.setMaxWidth(2);
             if (80 <= percent && percent < 87) {
-                continuousChargeProgress.setDotLength(0);
+                continuousChargeProgress.setMaxWidth(0);
             } else if (87 <= percent && percent < 94) {
-                continuousChargeProgress.setDotLength(1);
+                continuousChargeProgress.setMaxWidth(1);
             } else {
-                continuousChargeProgress.setDotLength(2);
+                continuousChargeProgress.setMaxWidth(2);
             }
         }
     }

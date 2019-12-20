@@ -31,7 +31,7 @@ public interface IAdvance {
     AdParams getCvParams();
 
     interface Dot {
-        void setDotLength(int step);
+        void setMaxWidth(int step);
     }
 
     interface Blank {
