@@ -1888,10 +1888,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             startRetry();
         } else {
             if (!isRetryTimesAllow && isAdError) {
-                mRetryTimes = 0;
-                Log.iv(Log.TAG, "reset retry times " + mRetryTimes);
+                resetRetryTimes();
             }
         }
+    }
+
+    private synchronized void resetRetryTimes() {
+        mRetryTimes = 0;
+        Log.iv(Log.TAG, "reset retry times " + mRetryTimes);
     }
 
     private boolean isRetryTimesAllow() {
@@ -1936,6 +1940,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         public void onLoaded(ISdkLoader loader) {
             putSdkLoader(mContext, loader);
+        }
+
+        @Override
+        public void onLoaded(String pidName, String source, String adType) {
+            resetRetryTimes();
         }
 
         @Override
