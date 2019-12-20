@@ -31,13 +31,13 @@ public interface IAdvance {
     AdParams getCvParams();
 
     interface Dot {
-        void setStep(int step);
+        void setDotLength(int step);
     }
 
     interface Blank {
-        void startBlink();
-        void stopBlink();
-        void solid();
-        void halftrans();
+        void start();
+        void stop();
+        void setAlpha();
+        void setBackground();
     }
 }

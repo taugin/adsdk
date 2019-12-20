@@ -19,7 +19,7 @@ public class MView extends View {
         super(context);
     }
 
-    public boolean isViewVisible() {
+    public boolean isVisible() {
         return !mViewDetached && mViewVisible;
     }
 

@@ -2090,7 +2090,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mDotView != null) {
             try {
                 Class<?> viewClass = Class.forName(IAdvance.ACT_VIEW_NAME);
-                Method m = viewClass.getMethod("isViewVisible");
+                Method m = viewClass.getMethod("isVisible");
                 isVisible = (boolean) m.invoke(mDotView);
             } catch (Exception | Error e) {
                 Log.e(Log.TAG, "error : " + e, e);

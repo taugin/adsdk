@@ -128,11 +128,11 @@ public class Cher implements View.OnClickListener {
         updateBatteryLevel(percent);
         if (CvAdl.BatteryInfo.isCharging()) {
             if (percent < 80) {
-                speedBlink.startBlink();
-                continuousBlink.halftrans();
-                continuousBlink.stopBlink();
-                trickleBlink.halftrans();
-                trickleBlink.stopBlink();
+                speedBlink.start();
+                continuousBlink.setBackground();
+                continuousBlink.stop();
+                trickleBlink.setBackground();
+                trickleBlink.stop();
                 speedText.setEnabled(true);
                 continuousText.setEnabled(false);
                 trickleText.setEnabled(false);
@@ -141,11 +141,11 @@ public class Cher implements View.OnClickListener {
                 int minutes = (chargingTimeInSecond - hours * 3600) / 60;
                 updateTimeInfo(mActivity.getString(R.string.had_cm_label_charging), hours, minutes);
             } else if (percent >= 80 && percent < 100) {
-                speedBlink.stopBlink();
-                speedBlink.solid();
-                continuousBlink.startBlink();
-                trickleBlink.stopBlink();
-                trickleBlink.halftrans();
+                speedBlink.stop();
+                speedBlink.setAlpha();
+                continuousBlink.start();
+                trickleBlink.stop();
+                trickleBlink.setBackground();
                 speedText.setEnabled(false);
                 continuousText.setEnabled(true);
                 trickleText.setEnabled(false);
@@ -154,28 +154,28 @@ public class Cher implements View.OnClickListener {
                 int minutes = (chargingTimeInSecond - hours * 3600) / 60;
                 updateTimeInfo(mActivity.getString(R.string.had_cm_label_charging), hours, minutes);
             } else {
-                speedBlink.stopBlink();
-                speedBlink.solid();
-                continuousBlink.stopBlink();
-                continuousBlink.solid();
+                speedBlink.stop();
+                speedBlink.setAlpha();
+                continuousBlink.stop();
+                continuousBlink.setAlpha();
                 speedText.setEnabled(false);
                 continuousText.setEnabled(false);
 
-                trickleBlink.stopBlink();
-                trickleBlink.solid();
+                trickleBlink.stop();
+                trickleBlink.setAlpha();
                 trickleText.setEnabled(true);
                 updateTimeInfo(mActivity.getString(R.string.had_cm_complete));
             }
             updateProgress(percent);
         } else {
-            speedBlink.stopBlink();
-            speedBlink.halftrans();
-            continuousBlink.stopBlink();
-            continuousBlink.halftrans();
-            trickleBlink.stopBlink();
-            trickleBlink.halftrans();
-            speedChargeProgress.setStep(-1);
-            continuousChargeProgress.setStep(-1);
+            speedBlink.stop();
+            speedBlink.setBackground();
+            continuousBlink.stop();
+            continuousBlink.setBackground();
+            trickleBlink.stop();
+            trickleBlink.setBackground();
+            speedChargeProgress.setDotLength(-1);
+            continuousChargeProgress.setDotLength(-1);
             speedText.setEnabled(false);
             continuousText.setEnabled(false);
             trickleText.setEnabled(false);
@@ -189,21 +189,21 @@ public class Cher implements View.OnClickListener {
     private void updateProgress(int percent) {
         if (percent < 80) {
             if (0 <= percent && percent < 27) {
-                speedChargeProgress.setStep(0);
+                speedChargeProgress.setDotLength(0);
             } else if (27 <= percent && percent < 54) {
-                speedChargeProgress.setStep(1);
+                speedChargeProgress.setDotLength(1);
             } else {
-                speedChargeProgress.setStep(2);
+                speedChargeProgress.setDotLength(2);
             }
-            continuousChargeProgress.setStep(-1);
+            continuousChargeProgress.setDotLength(-1);
         } else {
-            speedChargeProgress.setStep(2);
+            speedChargeProgress.setDotLength(2);
             if (80 <= percent && percent < 87) {
-                continuousChargeProgress.setStep(0);
+                continuousChargeProgress.setDotLength(0);
             } else if (87 <= percent && percent < 94) {
-                continuousChargeProgress.setStep(1);
+                continuousChargeProgress.setDotLength(1);
             } else {
-                continuousChargeProgress.setStep(2);
+                continuousChargeProgress.setDotLength(2);
             }
         }
     }
