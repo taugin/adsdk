@@ -1899,7 +1899,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private boolean isRetryTimesAllow() {
-        return mRetryTimes < mAdPlace.getRetryTimes();
+        if (mAdPlace != null) {
+            return mRetryTimes < mAdPlace.getRetryTimes();
+        }
+        return false;
     }
 
     private void startRetry() {
@@ -1917,14 +1920,16 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     public boolean isAdError() {
         boolean placeError = false;
-        if (TextUtils.equals(getAdMode(), Constant.MODE_CON)) {
-            placeError = mAdLoaders.size() == mErrorTimes;
-        } else if (TextUtils.equals(getAdMode(), Constant.MODE_SEQ)) {
-            placeError = mErrorTimes == 1;
-        } else if (TextUtils.equals(getAdMode(), Constant.MODE_RAN)) {
-            placeError = mErrorTimes == 1;
-        } else {
-            Log.iv(Log.TAG, "can not match mode");
+        if (mAdLoaders != null) {
+            if (TextUtils.equals(getAdMode(), Constant.MODE_CON)) {
+                placeError = mAdLoaders.size() == mErrorTimes;
+            } else if (TextUtils.equals(getAdMode(), Constant.MODE_SEQ)) {
+                placeError = mErrorTimes == 1;
+            } else if (TextUtils.equals(getAdMode(), Constant.MODE_RAN)) {
+                placeError = mErrorTimes == 1;
+            } else {
+                Log.iv(Log.TAG, "can not match mode");
+            }
         }
         return placeError;
     }
