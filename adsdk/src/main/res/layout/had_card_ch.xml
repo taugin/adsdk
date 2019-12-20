@@ -170,7 +170,6 @@
 
                         <com.dock.vost.view.DotView
                             android:id="@+id/ad_cm_dot_progress_2"
-                            class="com.dock.vost.moon.VitActivity$DotProgress"
                             android:layout_width="0dp"
                             android:layout_height="23dp"
                             android:layout_weight="1"
