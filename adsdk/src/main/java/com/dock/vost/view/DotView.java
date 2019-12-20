@@ -15,7 +15,7 @@ import com.dock.vost.moon.R;
  * Created by Administrator on 2019-12-20.
  */
 
-public class DotProgress extends View implements IAdvance.Dot{
+public class DotView extends View implements IAdvance.Dot{
     private Paint emptyPaint;
     private Paint filledPaint;
     private boolean init = false;
@@ -24,17 +24,17 @@ public class DotProgress extends View implements IAdvance.Dot{
     private float margin;
     private final int stepCount;
 
-    public DotProgress(Context context, AttributeSet attrs) {
+    public DotView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs, R.styleable.DotProgress, 0, 0);
+                attrs, R.styleable.DotView, 0, 0);
         int baseColor, emptyAlpha, filledAlpha;
         try {
-            emptyAlpha = a.getInteger(R.styleable.DotProgress_emptyAlpha, 63);
-            filledAlpha = a.getInteger(R.styleable.DotProgress_filledAlpha, 159);
-            stepCount = a.getInteger(R.styleable.DotProgress_stepCount, 3);
-            baseColor = a.getColor(R.styleable.DotProgress_dotBaseColor, Color.WHITE);
-            dotRadius = a.getDimensionPixelSize(R.styleable.DotProgress_dotRadius,
+            emptyAlpha = a.getInteger(R.styleable.DotView_emptyAlpha, 63);
+            filledAlpha = a.getInteger(R.styleable.DotView_filledAlpha, 159);
+            stepCount = a.getInteger(R.styleable.DotView_stepCount, 3);
+            baseColor = a.getColor(R.styleable.DotView_dotBaseColor, Color.WHITE);
+            dotRadius = a.getDimensionPixelSize(R.styleable.DotView_dotRadius,
                     (int) (getResources().getDisplayMetrics().density * 3));
         } finally {
             a.recycle();

@@ -67,7 +67,7 @@ import java.util.Date;
  * Created by Administrator on 2018-10-16.
  */
 
-public class SunAct extends Activity implements IAdvance {
+public class VitActivity extends Activity implements IAdvance {
 
     private SpConfig mSpConfig;
     private GestureDetector mGestureDetector;

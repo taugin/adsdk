@@ -16,20 +16,20 @@ import com.hauyu.adsdk.log.Log;
  * Created by Administrator on 2019-12-20.
  */
 
-public class BlinkImageView extends AppCompatImageView implements ValueAnimator.AnimatorUpdateListener, IAdvance.Blank {
+public class BlinkView extends AppCompatImageView implements ValueAnimator.AnimatorUpdateListener, IAdvance.Blank {
     private int startAlpha, endAlpha, duration;
     private boolean isBlinking = false;
 
     ValueAnimator colorAnimation;
 
-    public BlinkImageView(Context context, AttributeSet attrs) {
+    public BlinkView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs, R.styleable.BlinkImageView, 0, 0);
+                attrs, R.styleable.BlinkView, 0, 0);
         try {
-            startAlpha = a.getInteger(R.styleable.BlinkImageView_startAlpha, 63);
-            endAlpha = a.getInteger(R.styleable.BlinkImageView_endAlpha, 255);
-            duration = a.getInteger(R.styleable.BlinkImageView_blinkDuration, 800);
+            startAlpha = a.getInteger(R.styleable.BlinkView_startAlpha, 63);
+            endAlpha = a.getInteger(R.styleable.BlinkView_endAlpha, 255);
+            duration = a.getInteger(R.styleable.BlinkView_blinkDuration, 800);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         } finally {

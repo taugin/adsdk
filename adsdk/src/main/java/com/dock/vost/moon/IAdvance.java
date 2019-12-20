@@ -11,7 +11,7 @@ import com.hauyu.adsdk.AdParams;
 
 public interface IAdvance {
 
-    String ACT_NAME = "com.dock.vost.moon.SunAct";
+    String ACT_NAME = "com.dock.vost.moon.VitActivity";
     String ACT_VIEW_NAME = "com.dock.vost.view.MView";
 
     void onAdShowing(View containerView);

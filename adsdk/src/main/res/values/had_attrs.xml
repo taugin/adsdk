@@ -9,13 +9,13 @@
     <attr name="cardPreventCornerOverlap" format="boolean"/>
     <attr name="cardUseCompatPadding" format="boolean"/>
 
-    <declare-styleable name="BlinkImageView">
+    <declare-styleable name="BlinkView">
         <attr name="startAlpha" format="integer" />
         <attr name="endAlpha" format="integer" />
         <attr name="baseColor" format="color" />
         <attr name="blinkDuration" format="integer" />
     </declare-styleable>
-    <declare-styleable name="DotProgress">
+    <declare-styleable name="DotView">
         <attr name="stepCount" format="integer" />
         <attr name="emptyAlpha" format="integer" />
         <attr name="dotBaseColor" format="color" />
