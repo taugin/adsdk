@@ -16,9 +16,9 @@ stringfog {
 }
 /**
  * 版本号与Activity和Provider之间的对应关系
- * versionName   ===> Sun-Act.java
- * versionName.1 ===> Ful-InvAct.java
- * versionName.2 ===> Uni-queAct.java
+ * versionName   ===> Vit-Activity.java
+ * versionName.1 ===> Sec-Activity.java
+ * versionName.2 ===> Tri-Activity.java
  */
 android {
     compileSdkVersion 26
