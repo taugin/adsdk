@@ -94,6 +94,9 @@ public class SceneSceneParser implements ISceneParser {
             if (jobj.has(EXCLUDE_ANDROID_Q)) {
                 bCg.setExcludeAndroidQ(jobj.getInt(EXCLUDE_ANDROID_Q) == 1);
             }
+            if (jobj.has(USE_REAL_TIME)) {
+                bCg.setUseRealTime(jobj.getInt(USE_REAL_TIME) == 1);
+            }
             parseAttrConfig(bCg, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseBasePolicyInternal error : " + e);

@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
@@ -25,6 +26,7 @@ import java.util.List;
 
 public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String PREF_FIRST_STARTUP_TIME = "pref_first_startup_time";
+    private static final String PREF_FIRST_STARTUP_TIME2 = "pref_first_startup_time2";
     private static final int MSG_TRIGGER_HOME_KEY = 100000;
     private static final int DELAY_TRIGGER_HOME_KEY = 5000;
 
@@ -80,6 +82,7 @@ public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener 
     private void reportFirstStartUpTime() {
         if (Utils.getLong(mContext, PREF_FIRST_STARTUP_TIME, 0) <= 0) {
             Utils.putLong(mContext, PREF_FIRST_STARTUP_TIME, System.currentTimeMillis());
+            Utils.putLong(mContext, PREF_FIRST_STARTUP_TIME2, SystemClock.elapsedRealtime());
         }
     }
 
@@ -98,6 +101,10 @@ public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener 
      */
     public long getFirstStartUpTime() {
         return Utils.getLong(mContext, PREF_FIRST_STARTUP_TIME, 0);
+    }
+
+    public long getFirstStartUpTime2() {
+        return Utils.getLong(mContext, PREF_FIRST_STARTUP_TIME2, 0);
     }
 
     private void register() {

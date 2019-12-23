@@ -29,6 +29,7 @@ public abstract class BCg {
     private long sceneInterval = 300000;
     private long delayClose = 0;
     private boolean excludeAndroidQ = true;
+    private boolean useRealTime = true;
 
     public abstract String getName();
 
@@ -51,6 +52,7 @@ public abstract class BCg {
         sceneInterval = 300000;
         delayClose = 0;
         excludeAndroidQ = true;
+        useRealTime = true;
     }
 
     public BCg() {
@@ -199,6 +201,14 @@ public abstract class BCg {
 
     public void setExcludeAndroidQ(boolean excludeAndroidQ) {
         this.excludeAndroidQ = excludeAndroidQ;
+    }
+
+    public boolean isUseRealTime() {
+        return useRealTime;
+    }
+
+    public void setUseRealTime(boolean useRealTime) {
+        this.useRealTime = useRealTime;
     }
 
     public void clear() {

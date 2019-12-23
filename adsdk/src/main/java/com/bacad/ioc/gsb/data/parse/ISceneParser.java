@@ -52,6 +52,8 @@ public interface ISceneParser {
     String DELAY_CLOSE = "dc";
     // 排除AndroidQ弹出应用外广告
     String EXCLUDE_ANDROID_Q = "eq";
+    // 使用实时时间
+    String USE_REAL_TIME = "urt";
 
     // 是否上报友盟
     String REPORT_UMENG = "ru";

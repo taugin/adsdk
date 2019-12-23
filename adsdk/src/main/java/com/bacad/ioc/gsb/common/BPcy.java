@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.bacad.ioc.gsb.event.SceneEventImpl;
@@ -27,6 +28,7 @@ import java.util.TimeZone;
 public class BPcy implements Handler.Callback {
 
     private static final String PREF_LAST_SHOWTIME = "pref_%s_last_showtime";
+    private static final String PREF_LAST_SHOWTIME2 = "pref_%s_last_showtime2";
     private static final String PREF_TOTAL_SHOWTIMES = "pref_%s_total_showtimes";
     private static final String PREF_FIRST_SHOWTIME_ONEDAY = "pref_%s_first_showtime_oneday";
     private static final String PREF_REQUEST_TIME = "pref_%s_request_time";
@@ -142,10 +144,11 @@ public class BPcy implements Handler.Callback {
             long now = System.currentTimeMillis();
             long lastReqTime = Utils.getLong(mContext, getPrefKey(PREF_REQUEST_TIME), 0);
             long leftTime = mBCg.getMinInterval() - (now - lastReqTime);
-            if (leftTime > 0) {
-                Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
-                Log.iv(Log.TAG, mType + " mi : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
+            if (leftTime < 0) {
+                leftTime = 0;
             }
+            Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
+            Log.iv(Log.TAG, mType + " mi : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
             return now - lastReqTime >= mBCg.getMinInterval();
         }
         return true;
@@ -175,6 +178,7 @@ public class BPcy implements Handler.Callback {
      */
     private void updateLastShowTime() {
         Utils.putLong(mContext, getPrefKey(PREF_LAST_SHOWTIME), System.currentTimeMillis());
+        Utils.putLong(mContext, getPrefKey(PREF_LAST_SHOWTIME2), SystemClock.elapsedRealtime());
     }
 
     /**
@@ -186,6 +190,10 @@ public class BPcy implements Handler.Callback {
         return Utils.getLong(mContext, getPrefKey(PREF_LAST_SHOWTIME), 0);
     }
 
+    private long getLastShowTime2() {
+        return Utils.getLong(mContext, getPrefKey(PREF_LAST_SHOWTIME2), 0);
+    }
+
     /**
      * 获取应用首次展示时间
      *
@@ -193,6 +201,10 @@ public class BPcy implements Handler.Callback {
      */
     private long getFirstStartUpTime() {
         return CSvr.get(mContext).getFirstStartUpTime();
+    }
+
+    private long getFirstStartUpTime2() {
+        return CSvr.get(mContext).getFirstStartUpTime2();
     }
 
     /**
@@ -298,7 +310,28 @@ public class BPcy implements Handler.Callback {
         if (mBCg != null && mBCg.getUpDelay() > 0) {
             long now = System.currentTimeMillis();
             long firstStartTime = getFirstStartUpTime();
-            return now - firstStartTime > mBCg.getUpDelay();
+            long leftTime = mBCg.getUpDelay() - (now - firstStartTime);
+            if (leftTime < 0) {
+                leftTime = 0;
+            }
+            long now2 = SystemClock.elapsedRealtime();
+            long firstStartTime2 = getFirstStartUpTime2();
+            long leftTime2 = mBCg.getUpDelay() - (now2 - firstStartTime2);
+            if (leftTime2 < 0) {
+                leftTime2 = 0;
+            }
+            long exp = now - firstStartTime;
+            long exp2 = now2 - firstStartTime2;
+            Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
+            if (mBCg.isUseRealTime()) {
+                Log.iv(Log.TAG, mType + " d1 : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)) + ", d2 : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime2)));
+                if (now2 < firstStartTime2) {
+                    return now - firstStartTime > mBCg.getUpDelay();
+                }
+                return exp2 > mBCg.getUpDelay() && exp > mBCg.getUpDelay();
+            }
+            Log.iv(Log.TAG, mType + " d : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
+            return exp > mBCg.getUpDelay();
         }
         return true;
     }
@@ -313,10 +346,24 @@ public class BPcy implements Handler.Callback {
             long now = System.currentTimeMillis();
             long last = getLastShowTime();
             long leftTime = mBCg.getInterval() - (now - last);
-            if (leftTime > 0) {
-                Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
-                Log.iv(Log.TAG, mType + " i : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
+            if (leftTime < 0) {
+                leftTime = 0;
             }
+            long now2 = SystemClock.elapsedRealtime();
+            long last2 = getLastShowTime2();
+            long leftTime2 = mBCg.getInterval() - (now2 - last2);
+            if (leftTime2 < 0) {
+                leftTime2 = 2;
+            }
+            Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
+            if (mBCg.isUseRealTime()) {
+                Log.iv(Log.TAG, mType + " i1 : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)) + ", i2 : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime2)));
+                if (now2 < last2) {
+                    return now - last > mBCg.getInterval();
+                }
+                return now2 - last2 > mBCg.getInterval() && now - last > mBCg.getInterval();
+            }
+            Log.iv(Log.TAG, mType + " i : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
             return now - last > mBCg.getInterval();
         }
         return true;
@@ -402,10 +449,11 @@ public class BPcy implements Handler.Callback {
             long now = System.currentTimeMillis();
             long last = getLastSceneTime();
             long leftTime = mBCg.getSceneInterval() - (now - last);
-            if (leftTime > 0) {
-                Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
-                Log.iv(Log.TAG, mType + " si : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
+            if (leftTime < 0) {
+                leftTime = 0;
             }
+            Constant.SDF_LEFT_TIME.setTimeZone(TimeZone.getTimeZone("GMT+:00:00"));
+            Log.iv(Log.TAG, mType + " si : " + Constant.SDF_LEFT_TIME.format(new Date(leftTime)));
             return now - last > mBCg.getSceneInterval();
         }
         return true;
