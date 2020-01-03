@@ -89,14 +89,14 @@
           "type": "interstitial",
           "pid": "YOUR_PLACEMENT_ID",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
           "ctr": 5,
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",
@@ -121,19 +121,25 @@
         {
           "sdk": "fb",
           "type": "reward",
-          "pid": "1VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "disable": 0
+          "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
+          "disable": 1
         },
         {
           "sdk": "fb",
           "type": "reward",
-          "pid": "2VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "disable": 0
+          "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
+          "disable": 1
         },
         {
           "sdk": "dfp",
           "type": "reward",
-          "pid": "/6499/example/rewarded-vide1",
+          "pid": "/6499/example/rewarded-video",
+          "disable": 1
+        },
+        {
+          "sdk": "mopub",
+          "type": "reward",
+          "pid": "920b6145fb1546cf8b5cf2ac34638bb7",
           "disable": 0
         }
       ],

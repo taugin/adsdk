@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
-        mContext = this;
+        mContext = getApplicationContext();
         AdSdk.get(mContext).init();
     }
 
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (v.getId() == R.id.native_common) {
             loadAdViewCommon();
         } else if (v.getId() == R.id.reward_video) {
-            AdSdk.get(this).loadInterstitial("reward_video", mSimpleAdsdkListener);
+            AdSdk.get(mContext).loadInterstitial("reward_video", mSimpleAdsdkListener);
         }
     }
 

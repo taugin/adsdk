@@ -1,11 +1,14 @@
 package com.hauyu.adsdk.adloader.mopub;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.WindowManager;
 
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
@@ -22,6 +25,7 @@ import com.mopub.common.privacy.PersonalInfoManager;
 import com.mopub.mobileads.MoPubErrorCode;
 import com.mopub.mobileads.MoPubInterstitial;
 import com.mopub.mobileads.MoPubRewardedVideoListener;
+import com.mopub.mobileads.MoPubRewardedVideoManager;
 import com.mopub.mobileads.MoPubRewardedVideos;
 import com.mopub.mobileads.MoPubView;
 import com.mopub.nativeads.MoPubAdRenderer;
@@ -31,6 +35,7 @@ import com.mopub.nativeads.MoPubVideoNativeAdRenderer;
 import com.mopub.nativeads.NativeAd;
 import com.mopub.nativeads.NativeErrorCode;
 
+import java.lang.reflect.Field;
 import java.util.Set;
 
 /**
@@ -217,7 +222,18 @@ public class MopubLoader extends AbstractSdkLoader {
         if (mManagerListener != null) {
             activity = mManagerListener.getActivity();
         }
-        if (activity == null && false) {
+
+        try {
+            if (activity == null) {
+                activity = createFakeActivity((Application) mContext.getApplicationContext());
+            }
+            if (activity != null) {
+                Log.iv(Log.TAG, "mopub interstitial use fake activity");
+            }
+        } catch (Exception e) {
+        }
+
+        if (activity == null) {
             Log.v(Log.TAG, "mopub interstitial need an activity context");
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_CONTEXT);
@@ -248,7 +264,11 @@ public class MopubLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        moPubInterstitial = new MoPubInterstitial(mContext, mPidConfig.getPid());
+        Context context = activity;
+        if (context == null) {
+            context = mContext;
+        }
+        moPubInterstitial = new MoPubInterstitial(context, mPidConfig.getPid());
         moPubInterstitial.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
             @Override
             public void onInterstitialLoaded(MoPubInterstitial interstitial) {
@@ -349,6 +369,17 @@ public class MopubLoader extends AbstractSdkLoader {
         if (mManagerListener != null) {
             activity = mManagerListener.getActivity();
         }
+
+        try {
+            if (activity == null) {
+                activity = createFakeActivity((Application) mContext.getApplicationContext());
+            }
+            if (activity != null) {
+                Log.iv(Log.TAG, "mopub reward use fake activity");
+            }
+        } catch (Exception e) {
+        }
+
         if (activity == null) {
             Log.v(Log.TAG, "mopub reward need an activity context");
             if (getAdListener() != null) {
@@ -369,6 +400,7 @@ public class MopubLoader extends AbstractSdkLoader {
         SdkConfiguration sdkConfiguration = new SdkConfiguration.Builder(getPid())
                 .build();
         MoPub.initializeSdk(activity, sdkConfiguration, initSdkListener());
+        MoPubRewardedVideoManager.updateActivity(activity);
 
         if (isRewaredVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
@@ -697,5 +729,50 @@ public class MopubLoader extends AbstractSdkLoader {
             return Constant.AD_ERROR_SERVER;
         }
         return Constant.AD_ERROR_UNKNOWN;
+    }
+
+    public static Activity createFakeActivity(final Application application) {
+        Activity activity = new Activity() {
+            @Override
+            public boolean isFinishing() {
+                return false;
+            }
+
+            @Override
+            public void startActivity(Intent intent) {
+                try {
+                    application.startActivity(intent);
+                } catch (Exception | Error e) {
+                }
+            }
+
+            @Override
+            public Context getApplicationContext() {
+                try {
+                    return application.getApplicationContext();
+                } catch (Exception | Error e) {
+                }
+                return super.getApplicationContext();
+            }
+        };
+        try {
+            Class ContextWrapperClass = Class.forName("android.content.ContextWrapper");
+            Field mBase = ContextWrapperClass.getDeclaredField("mBase");
+            mBase.setAccessible(true);
+            mBase.set(activity, application.getBaseContext());
+
+            Class ActivityClass = Class.forName("android.app.Activity");
+            Field mApplication = ActivityClass.getDeclaredField("mApplication");
+            mApplication.setAccessible(true);
+            mApplication.set(activity, application);
+
+            WindowManager wm = (WindowManager) application.getBaseContext().getSystemService(Context.WINDOW_SERVICE);
+            Field mWindowManager = ActivityClass.getDeclaredField("mWindowManager");
+            mWindowManager.setAccessible(true);
+            mWindowManager.set(activity, wm);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return activity;
     }
 }
