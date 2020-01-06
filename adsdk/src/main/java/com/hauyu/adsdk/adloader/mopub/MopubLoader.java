@@ -770,8 +770,8 @@ public class MopubLoader extends AbstractSdkLoader {
             Field mWindowManager = ActivityClass.getDeclaredField("mWindowManager");
             mWindowManager.setAccessible(true);
             mWindowManager.set(activity, wm);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
         }
         return activity;
     }
