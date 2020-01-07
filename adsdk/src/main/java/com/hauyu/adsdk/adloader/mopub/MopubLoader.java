@@ -223,14 +223,14 @@ public class MopubLoader extends AbstractSdkLoader {
             activity = mManagerListener.getActivity();
         }
 
-        try {
-            if (activity == null) {
+        if (activity == null) {
+            try {
                 activity = createFakeActivity((Application) mContext.getApplicationContext());
+                if (activity != null) {
+                    Log.iv(Log.TAG, "mopub interstitial use fake activity");
+                }
+            } catch (Exception e) {
             }
-            if (activity != null) {
-                Log.iv(Log.TAG, "mopub interstitial use fake activity");
-            }
-        } catch (Exception e) {
         }
 
         if (activity == null) {
@@ -370,14 +370,14 @@ public class MopubLoader extends AbstractSdkLoader {
             activity = mManagerListener.getActivity();
         }
 
-        try {
-            if (activity == null) {
+        if (activity == null) {
+            try {
                 activity = createFakeActivity((Application) mContext.getApplicationContext());
+                if (activity != null) {
+                    Log.iv(Log.TAG, "mopub reward use fake activity");
+                }
+            } catch (Exception e) {
             }
-            if (activity != null) {
-                Log.iv(Log.TAG, "mopub reward use fake activity");
-            }
-        } catch (Exception e) {
         }
 
         if (activity == null) {
