@@ -163,11 +163,12 @@ public class VitActivity extends Activity implements IAdvance {
     }
 
     @Override
-    public void onAdShowing(View containerView) {
+    public void onSceneShowing(String adType, View containerView) {
+        Log.v(Log.TAG, "adType : " + adType);
     }
 
     @Override
-    public AdParams getAdParams() {
+    public AdParams getAdParams(String adType) {
         return null;
     }
 
@@ -179,24 +180,6 @@ public class VitActivity extends Activity implements IAdvance {
     @Override
     public int getAdLayoutId(String adType) {
         return 0;
-    }
-
-    @Override
-    public void onLvShowing(View containerView) {
-    }
-
-    @Override
-    public AdParams getLvParams() {
-        return null;
-    }
-
-    @Override
-    public void onCvShowing(View containerView) {
-    }
-
-    @Override
-    public AdParams getCvParams() {
-        return null;
     }
 
     @Override
@@ -478,13 +461,13 @@ public class VitActivity extends Activity implements IAdvance {
 
     private void showAdViewInternal() {
         if (mAdLayout != null) {
-            boolean shown = AdSdk.get(this).showComplexAdsWithResult(mPidName, getAdParams(), mSource, mAdType, mAdLayout);
+            boolean shown = AdSdk.get(this).showComplexAdsWithResult(mPidName, getAdParams(mSceneType), mSource, mAdType, mAdLayout);
             if (shown) {
-                onAdShowing(mAdLayout);
+                onSceneShowing(mSceneType, mAdLayout);
                 try {
                     BPcy bPcy = BPcy.getPcyByType(mSceneType);
-                    Log.v(Log.TAG, "report showing type : " + bPcy.getType());
-                    bPcy.reportShowing(true);
+                    Log.v(Log.TAG, "report impression type : " + mSceneType);
+                    bPcy.reportImpression(true);
                 } catch (Exception e) {
                     Log.iv(Log.TAG, "error : " + e);
                 }
@@ -1120,7 +1103,7 @@ public class VitActivity extends Activity implements IAdvance {
     }
 
     private void showLockViewAd() {
-        AdParams params = getLvParams();
+        AdParams params = getAdParams(mSceneType);
         if (params == null) {
             params = new AdParams.Builder()
                     .setBannerSize(AdExtra.AD_SDK_COMMON, AdExtra.COMMON_MEDIUM_RECTANGLE)
@@ -1131,8 +1114,8 @@ public class VitActivity extends Activity implements IAdvance {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 if (!isFinishing()) {
-                    AdSdk.get(getBaseContext()).showAdView(pidName, getLvParams(), mLockAdLayout);
-                    onLvShowing(mLockAdLayout);
+                    AdSdk.get(getBaseContext()).showAdView(pidName, getAdParams(mSceneType), mLockAdLayout);
+                    onSceneShowing(mSceneType, mLockAdLayout);
                 }
             }
 

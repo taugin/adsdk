@@ -14,29 +14,21 @@ public interface IAdvance {
     String ACT_NAME = "com.dock.vost.moon.VitActivity";
     String ACT_VIEW_NAME = "com.dock.vost.view.MView";
 
-    void onAdShowing(View containerView);
+    void onSceneShowing(String adType, View containerView);
 
-    AdParams getAdParams();
+    AdParams getAdParams(String adType);
 
     View getRootLayout(Context context, String adType);
 
     int getAdLayoutId(String adType);
-
-    void onLvShowing(View containerView);
-
-    AdParams getLvParams();
-
-    void onCvShowing(View containerView);
-
-    AdParams getCvParams();
 
     interface Dot {
         void setMaxWidth(int step);
     }
 
     interface Blank {
-        void start();
-        void stop();
+        void startProcess();
+        void stopProcess();
         void setAlpha();
         void setBackground();
     }

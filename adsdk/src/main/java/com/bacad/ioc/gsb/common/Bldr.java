@@ -43,7 +43,7 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
      */
     public void reportShowing() {
         try {
-            ((BPcy) mPolicy).reportShowing(true);
+            ((BPcy) mPolicy).reportImpression(true);
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }

@@ -159,7 +159,7 @@ public class BPcy implements Handler.Callback {
      *
      * @param showing
      */
-    public void reportShowing(boolean showing) {
+    public void reportImpression(boolean showing) {
         if (showing) {
             reportTotalShowTimes();
             updateLastShowTime();

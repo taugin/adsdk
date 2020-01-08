@@ -122,7 +122,7 @@ public class CvAdl extends Bldr {
         } catch (Exception e) {
             try {
                 context.startActivity(intent);
-                CvPcy.get(mContext).reportShowing(true);
+                CvPcy.get(mContext).reportImpression(true);
             } catch (Exception e1) {
             }
         }

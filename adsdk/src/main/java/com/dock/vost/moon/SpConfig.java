@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class SpConfig implements Serializable {
 
-    public static final String ADSPREAD_NAME = "sp" + "config";
+    public static final String AD_SPREAD_NAME = "sp" + "config";
 
     private String banner;
     private String icon;

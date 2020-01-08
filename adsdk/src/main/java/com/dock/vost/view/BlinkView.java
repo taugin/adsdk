@@ -39,7 +39,7 @@ public class BlinkView extends AppCompatImageView implements ValueAnimator.Anima
     }
 
     @Override
-    public void start() {
+    public void startProcess() {
         if (!isBlinking) {
             colorAnimation = ValueAnimator.ofObject(new IntEvaluator(), startAlpha, endAlpha);
             colorAnimation.setRepeatMode(ValueAnimator.REVERSE);
@@ -53,7 +53,7 @@ public class BlinkView extends AppCompatImageView implements ValueAnimator.Anima
     }
 
     @Override
-    public void stop() {
+    public void stopProcess() {
         if (isBlinking) {
             colorAnimation.removeUpdateListener(this);
             colorAnimation.end();

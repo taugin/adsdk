@@ -127,7 +127,7 @@ public class LvAdl extends Bldr {
             } catch (Exception e) {
                 try {
                     mContext.startActivity(intent);
-                    LvPcy.get(mContext).reportShowing(true);
+                    LvPcy.get(mContext).reportImpression(true);
                 } catch (Exception e1) {
                 }
             }

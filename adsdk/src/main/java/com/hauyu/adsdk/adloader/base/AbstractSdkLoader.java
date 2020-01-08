@@ -235,7 +235,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected boolean checkPidConfig() {
         if (mPidConfig == null) {
-            Log.e(Log.TAG, "pidconfig is null");
+            Log.e(Log.TAG, "pid config is null");
             return false;
         }
         if (!TextUtils.equals(mPidConfig.getSdk(), getSdkName())) {

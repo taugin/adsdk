@@ -91,7 +91,7 @@ public class Cher implements View.OnClickListener {
     private AdParams getParams() {
         AdParams adParams = null;
         try {
-            adParams = ((IAdvance)mActivity).getCvParams();
+            adParams = ((IAdvance)mActivity).getAdParams(CvPcy.get(mActivity).getType());
         } catch (Exception | Error e) {
         }
         if (adParams == null) {
@@ -118,7 +118,7 @@ public class Cher implements View.OnClickListener {
 
     private void onCtShowing(View containerView) {
         try {
-            ((IAdvance)mActivity).onCvShowing(containerView);
+            ((IAdvance)mActivity).onSceneShowing(CvPcy.get(mActivity).getType(), containerView);
         } catch (Exception | Error e) {
         }
     }
@@ -128,11 +128,11 @@ public class Cher implements View.OnClickListener {
         updateBatteryLevel(percent);
         if (CvAdl.BatteryInfo.isCharging()) {
             if (percent < 80) {
-                speedBlink.start();
+                speedBlink.startProcess();
                 continuousBlink.setBackground();
-                continuousBlink.stop();
+                continuousBlink.stopProcess();
                 trickleBlink.setBackground();
-                trickleBlink.stop();
+                trickleBlink.stopProcess();
                 speedText.setEnabled(true);
                 continuousText.setEnabled(false);
                 trickleText.setEnabled(false);
@@ -141,10 +141,10 @@ public class Cher implements View.OnClickListener {
                 int minutes = (chargingTimeInSecond - hours * 3600) / 60;
                 updateTimeInfo(mActivity.getString(R.string.had_cm_label_charging), hours, minutes);
             } else if (percent >= 80 && percent < 100) {
-                speedBlink.stop();
+                speedBlink.stopProcess();
                 speedBlink.setAlpha();
-                continuousBlink.start();
-                trickleBlink.stop();
+                continuousBlink.startProcess();
+                trickleBlink.stopProcess();
                 trickleBlink.setBackground();
                 speedText.setEnabled(false);
                 continuousText.setEnabled(true);
@@ -154,25 +154,25 @@ public class Cher implements View.OnClickListener {
                 int minutes = (chargingTimeInSecond - hours * 3600) / 60;
                 updateTimeInfo(mActivity.getString(R.string.had_cm_label_charging), hours, minutes);
             } else {
-                speedBlink.stop();
+                speedBlink.stopProcess();
                 speedBlink.setAlpha();
-                continuousBlink.stop();
+                continuousBlink.stopProcess();
                 continuousBlink.setAlpha();
                 speedText.setEnabled(false);
                 continuousText.setEnabled(false);
 
-                trickleBlink.stop();
+                trickleBlink.stopProcess();
                 trickleBlink.setAlpha();
                 trickleText.setEnabled(true);
                 updateTimeInfo(mActivity.getString(R.string.had_cm_complete));
             }
             updateProgress(percent);
         } else {
-            speedBlink.stop();
+            speedBlink.stopProcess();
             speedBlink.setBackground();
-            continuousBlink.stop();
+            continuousBlink.stopProcess();
             continuousBlink.setBackground();
-            trickleBlink.stop();
+            trickleBlink.stopProcess();
             trickleBlink.setBackground();
             speedChargeProgress.setMaxWidth(-1);
             continuousChargeProgress.setMaxWidth(-1);

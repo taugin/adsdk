@@ -119,7 +119,7 @@ public class GvAdl extends Bldr {
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "dismiss place_name : " + pidName + " , source : " + source + " , adType : " + adType);
-                    GvPcy.get(mContext).reportShowing(false);
+                    GvPcy.get(mContext).reportImpression(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                             && GvPcy.get(mContext).isShowBottom()
                             && !Constant.TYPE_BANNER.equals(adType)
@@ -131,7 +131,7 @@ public class GvAdl extends Bldr {
                 @Override
                 public void onImp(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "show place_name : " + pidName + " , source : " + source + " , adType : " + adType);
-                    GvPcy.get(mContext).reportShowing(true);
+                    GvPcy.get(mContext).reportImpression(true);
                     SceneEventImpl.get().reportAdSceneImp(mContext, GvPcy.get(mContext).getType(), pidName);
                 }
 

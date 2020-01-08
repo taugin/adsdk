@@ -121,7 +121,7 @@ public class HvAdl extends Bldr {
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    HvPcy.get(mContext).reportShowing(false);
+                    HvPcy.get(mContext).reportImpression(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                             && HvPcy.get(mContext).isShowBottom()
                             && !Constant.TYPE_BANNER.equals(adType)
@@ -133,7 +133,7 @@ public class HvAdl extends Bldr {
                 @Override
                 public void onImp(String pidName, String source, String adType) {
                     Log.iv(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                    HvPcy.get(mContext).reportShowing(true);
+                    HvPcy.get(mContext).reportImpression(true);
                     SceneEventImpl.get().reportAdSceneImp(mContext, HvPcy.get(mContext).getType(), pidName);
                 }
 

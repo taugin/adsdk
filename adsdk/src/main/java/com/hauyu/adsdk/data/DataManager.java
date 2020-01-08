@@ -177,8 +177,8 @@ public class DataManager implements Runnable {
     }
 
     public List<SpConfig> getRemoteSpread() {
-        String data = getString(SpConfig.ADSPREAD_NAME);
-        data = checkLastData(data, SpConfig.ADSPREAD_NAME);
+        String data = getString(SpConfig.AD_SPREAD_NAME);
+        data = checkLastData(data, SpConfig.AD_SPREAD_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseSpread(data);
         }

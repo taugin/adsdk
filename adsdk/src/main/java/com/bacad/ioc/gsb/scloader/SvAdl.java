@@ -124,7 +124,7 @@ public class SvAdl extends Bldr implements Handler.Callback {
 
                 @Override
                 public void onDismiss(String pidName, String source, String adType) {
-                    SvPcy.get(mContext).reportShowing(false);
+                    SvPcy.get(mContext).reportImpression(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                             && SvPcy.get(mContext).isShowBottom()
                             && !Constant.TYPE_BANNER.equals(adType)
@@ -135,7 +135,7 @@ public class SvAdl extends Bldr implements Handler.Callback {
 
                 @Override
                 public void onImp(String pidName, String source, String adType) {
-                    SvPcy.get(mContext).reportShowing(true);
+                    SvPcy.get(mContext).reportImpression(true);
                     SceneEventImpl.get().reportAdSceneImp(mContext, SvPcy.get(mContext).getType(), pidName);
                 }
             });
