@@ -1,4 +1,4 @@
-package com.dock.vost.moon;
+package com.dock.vist.sun;
 
 import android.content.Context;
 import android.view.View;
@@ -11,8 +11,8 @@ import com.hauyu.adsdk.AdParams;
 
 public interface IAdvance {
 
-    String ACT_NAME = "com.dock.vost.moon.VitActivity";
-    String ACT_VIEW_NAME = "com.dock.vost.view.MView";
+    String ACT_NAME = "com.dock.vist.sun.VitActivity";
+    String ACT_VIEW_NAME = "com.dock.vist.view.MView";
 
     void onSceneShowing(String adType, View containerView);
 

@@ -11,7 +11,7 @@ import com.bacad.ioc.gsb.common.Bldr;
 import com.bacad.ioc.gsb.common.CSvr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.scpolicy.LvPcy;
-import com.dock.vost.moon.IAdvance;
+import com.dock.vist.sun.IAdvance;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;

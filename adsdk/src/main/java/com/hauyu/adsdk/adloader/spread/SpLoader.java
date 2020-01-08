@@ -8,8 +8,8 @@ import android.content.IntentFilter;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.dock.vost.moon.IAdvance;
-import com.dock.vost.moon.SpConfig;
+import com.dock.vist.sun.IAdvance;
+import com.dock.vist.sun.SpConfig;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;

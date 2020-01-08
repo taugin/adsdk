@@ -1,4 +1,4 @@
-package com.dock.vost.view;
+package com.dock.vist.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

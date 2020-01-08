@@ -1,6 +1,6 @@
 package com.hauyu.adsdk.data.parse;
 
-import com.dock.vost.moon.SpConfig;
+import com.dock.vist.sun.SpConfig;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.AdSwitch;
 import com.hauyu.adsdk.data.config.PlaceConfig;

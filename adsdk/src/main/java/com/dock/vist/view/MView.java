@@ -1,4 +1,4 @@
-package com.dock.vost.view;
+package com.dock.vist.view;
 
 /**
  * Created by Administrator on 2019-12-20.

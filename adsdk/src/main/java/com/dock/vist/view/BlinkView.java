@@ -1,4 +1,4 @@
-package com.dock.vost.view;
+package com.dock.vist.view;
 
 import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
@@ -8,8 +8,8 @@ import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.dock.vost.moon.IAdvance;
-import com.dock.vost.moon.R;
+import com.dock.vist.sun.IAdvance;
+import com.dock.vist.sun.R;
 import com.hauyu.adsdk.log.Log;
 
 /**

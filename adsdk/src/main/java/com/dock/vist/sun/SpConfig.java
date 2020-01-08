@@ -1,4 +1,4 @@
-package com.dock.vost.moon;
+package com.dock.vist.sun;
 
 import java.io.Serializable;
 

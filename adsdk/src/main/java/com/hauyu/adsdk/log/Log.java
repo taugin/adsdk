@@ -3,7 +3,7 @@ package com.hauyu.adsdk.log;
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
-import com.dock.vost.moon.BuildConfig;
+import com.dock.vist.sun.BuildConfig;
 
 import java.io.File;
 import java.io.FileWriter;

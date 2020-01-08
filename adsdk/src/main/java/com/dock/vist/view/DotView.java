@@ -1,4 +1,4 @@
-package com.dock.vost.view;
+package com.dock.vist.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,8 +8,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.dock.vost.moon.IAdvance;
-import com.dock.vost.moon.R;
+import com.dock.vist.sun.IAdvance;
+import com.dock.vist.sun.R;
 
 /**
  * Created by Administrator on 2019-12-20.
