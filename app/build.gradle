@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
-
+apply from: '../adsdk/encrypt.gradle'
+ext {
+    openRelease = true
+}
 def useProject = true;
 
 android {
