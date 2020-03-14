@@ -13,6 +13,7 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import com.bacad.ioc.gsb.checker.IpChecker;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.stat.InternalStat;
 import com.hauyu.adsdk.utils.Utils;
@@ -60,6 +61,7 @@ public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener 
         register();
         PreferenceManager.getDefaultSharedPreferences(mContext).registerOnSharedPreferenceChangeListener(this);
         reportAndroidOSVersion();
+        updateIpAddr();
     }
 
     public void registerTriggerListener(OnTriggerListener l) {
@@ -165,6 +167,7 @@ public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener 
                 triggerBatteryChange(context, intent);
             } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
                 triggerNetworkChange(context, intent);
+                updateIpAddr();
             }
         }
     };
@@ -311,5 +314,9 @@ public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener 
             }
         } catch (Exception e) {
         }
+    }
+
+    private void updateIpAddr() {
+        IpChecker.get(mContext).check();
     }
 }

@@ -97,7 +97,7 @@ public class SceneSceneParser implements ISceneParser {
             if (jobj.has(USE_REAL_TIME)) {
                 bCg.setUseRealTime(jobj.getInt(USE_REAL_TIME) == 1);
             }
-            parseAttrConfig(bCg, jobj);
+            parseFieldList(bCg, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseBasePolicyInternal error : " + e);
         }
@@ -217,10 +217,10 @@ public class SceneSceneParser implements ISceneParser {
     /**
      * 解析归因配置
      *
-     * @param BCg
+     * @param bCg
      * @param jobj
      */
-    private void parseAttrConfig(BCg BCg, JSONObject jobj) {
+    private void parseFieldList(BCg bCg, JSONObject jobj) {
         try {
             if (jobj.has(COUNTRY_LIST)) {
                 JSONArray jarray = jobj.getJSONArray(COUNTRY_LIST);
@@ -232,7 +232,7 @@ public class SceneSceneParser implements ISceneParser {
                             list.add(s);
                         }
                     }
-                    BCg.setCountryList(list);
+                    bCg.setCountryList(list);
                 }
             }
             if (jobj.has(ATTRS)) {
@@ -245,7 +245,7 @@ public class SceneSceneParser implements ISceneParser {
                             list.add(s);
                         }
                     }
-                    BCg.setAttrList(list);
+                    bCg.setAttrList(list);
                 }
             }
             if (jobj.has(MEDIA_SOURCE)) {
@@ -258,7 +258,7 @@ public class SceneSceneParser implements ISceneParser {
                             list.add(s);
                         }
                     }
-                    BCg.setMediaList(list);
+                    bCg.setMediaList(list);
                 }
             }
             if (jobj.has(VER_LIST)) {
@@ -271,7 +271,20 @@ public class SceneSceneParser implements ISceneParser {
                             list.add(s);
                         }
                     }
-                    BCg.setVerList(list);
+                    bCg.setVerList(list);
+                }
+            }
+            if (jobj.has(EX_IPS)) {
+                JSONArray jarray = jobj.getJSONArray(EX_IPS);
+                if (jarray != null && jarray.length() > 0) {
+                    List<String> list = new ArrayList<String>(jarray.length());
+                    for (int index = 0; index < jarray.length(); index++) {
+                        String s = jarray.getString(index);
+                        if (!TextUtils.isEmpty(s)) {
+                            list.add(s);
+                        }
+                    }
+                    bCg.setExIps(list);
                 }
             }
         } catch (Exception e) {

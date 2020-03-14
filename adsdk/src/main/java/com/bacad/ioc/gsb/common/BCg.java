@@ -30,6 +30,7 @@ public abstract class BCg {
     private long delayClose = 0;
     private boolean excludeAndroidQ = true;
     private boolean useRealTime = true;
+    private List<String> exIps;
 
     public abstract String getName();
 
@@ -53,6 +54,7 @@ public abstract class BCg {
         delayClose = 0;
         excludeAndroidQ = true;
         useRealTime = true;
+        exIps = null;
     }
 
     public BCg() {
@@ -209,6 +211,14 @@ public abstract class BCg {
 
     public void setUseRealTime(boolean useRealTime) {
         this.useRealTime = useRealTime;
+    }
+
+    public List<String> getExIps() {
+        return exIps;
+    }
+
+    public void setExIps(List<String> exIps) {
+        this.exIps = exIps;
     }
 
     public void clear() {

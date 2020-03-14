@@ -8,6 +8,7 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
+import com.bacad.ioc.gsb.checker.IpChecker;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AttrChecker;
@@ -17,6 +18,7 @@ import com.hauyu.adsdk.utils.Utils;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -481,6 +483,18 @@ public class BPcy implements Handler.Callback {
         return false;
     }
 
+    protected boolean isExcludeIp() {
+        if (mBCg != null) {
+            List<String> list = mBCg.getExIps();
+            Log.iv(Log.TAG, "list : " + list);
+            String curIp = IpChecker.get(mContext).getIpAddr();
+            if (list != null && !list.isEmpty() && list.contains(curIp)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     protected boolean checkBaseConfig() {
         if (!isConfigAllow()) {
             Log.iv(Log.TAG, "dis con");
@@ -488,7 +502,12 @@ public class BPcy implements Handler.Callback {
         }
 
         if (isExcludeAndroidQ()) {
-            Log.iv(Log.TAG, "exclude " + Build.VERSION.SDK_INT);
+            Log.iv(Log.TAG, "exc " + Build.VERSION.SDK_INT);
+            return false;
+        }
+
+        if (isExcludeIp()) {
+            Log.iv(Log.TAG, "exc " + IpChecker.get(mContext).getIpAddr());
             return false;
         }
 

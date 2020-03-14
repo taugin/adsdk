@@ -54,6 +54,8 @@ public interface ISceneParser {
     String EXCLUDE_ANDROID_Q = "eq";
     // 使用实时时间
     String USE_REAL_TIME = "urt";
+    // 排除的ip列表
+    String EX_IPS = "exips";
 
     // 是否上报友盟
     String REPORT_UMENG = "ru";
