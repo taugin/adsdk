@@ -26,12 +26,14 @@ public class IpChecker {
     private static final int MSG_REQUEST_ONGOING = 0x100861;
     private static final String IP_CHECK_URL1 = "http://ip-api.com/json/";
     private static final String IP_CHECK_URL2 = "http://whois.pconline.com.cn/ipJson.jsp?json=true";
+    private static final String IP_CHECK_URL3 = "http://pv.sohu.com/cityjson?ie=utf-8";
     private static final String PREF_CURRENT_IPADDR = "pref_current_ipaddr";
     private static final Map<String, IpParser> sParserMap = new LinkedHashMap<String, IpParser>();
 
     static {
         sParserMap.put(IP_CHECK_URL1, new Parser1());
         sParserMap.put(IP_CHECK_URL2, new Parser2());
+        sParserMap.put(IP_CHECK_URL3, new Parser3());
     }
 
     private static IpChecker sIpChecker;
@@ -88,7 +90,6 @@ public class IpChecker {
         if (TextUtils.isEmpty(addr) || ipParser == null) {
             return;
         }
-        Log.iv(Log.TAG, "addr : " + addr);
         Http.get(mContext).request(addr, null, new OnStringCallback() {
             @Override
             public void onSuccess(String content) {
@@ -150,6 +151,25 @@ public class IpChecker {
                 JSONObject jobj = new JSONObject(content);
                 if (jobj.has("ip")) {
                     return jobj.getString("ip");
+                }
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e);
+            }
+            return null;
+        }
+    }
+
+    private static class Parser3 implements IpParser {
+        @Override
+        public String parse(String content) {
+            try {
+                int index = content.indexOf("=");
+                int length = content.length();
+                content = content.substring(index + 1, length - 1);
+                content = content.trim();
+                JSONObject jobj = new JSONObject(content);
+                if (jobj.has("cip")) {
+                    return jobj.getString("cip");
                 }
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e);

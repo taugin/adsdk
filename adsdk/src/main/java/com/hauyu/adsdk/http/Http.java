@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -42,6 +43,7 @@ public class Http {
     };
     private static final ExecutorService sService = Executors.newFixedThreadPool(2, sFactory);
     private static final Map<String, Request> sDownloadMap = new HashMap<String, Request>();
+    private static final String DEFAULT_CONTENT_CHARSET = "ISO-8859-1";
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private Context mContext;
@@ -88,8 +90,10 @@ public class Http {
             @Override
             public void run() {
                 Response response = null;
-                response = readDataFromCache(r);
-                Log.iv(Log.TAG, "read data from cache : " + (response != null));
+                if (r.isCache()) {
+                    response = readDataFromCache(r);
+                    Log.iv(Log.TAG, "read data from cache : " + (response != null));
+                }
                 if (response == null) {
                     try {
                         UrlHttp urlHttp = new UrlHttp();
@@ -179,7 +183,15 @@ public class Http {
                 deliverFailure(request, response.getStatusCode(), response.getError());
             }
         } else if (callback instanceof OnStringCallback) {
-            String content = new String(response.getContent());
+            Map<String, String> header = response.getHeader();
+            String charset = parseCharset(header, DEFAULT_CONTENT_CHARSET);
+            Log.iv(Log.TAG, "charset : " + charset);
+            String content = null;
+            try {
+                content = new String(response.getContent(), charset);
+            } catch (UnsupportedEncodingException e) {
+                Log.e(Log.TAG, "error : " + e);
+            }
             deliverStringSuccess(content, (OnStringCallback) callback);
         }
         if (request.isCache() && !response.isCache()) {
@@ -249,5 +261,22 @@ public class Http {
         r.setUrl(url);
         r.setCache(true);
         requestHttpInternal(r, header);
+    }
+
+
+    public static String parseCharset(Map<String, String> headers, String defaultCharset) {
+        String contentType = (String)headers.get("Content-Type");
+        if(contentType != null) {
+            String[] params = contentType.split(";");
+
+            for(int i = 1; i < params.length; ++i) {
+                String[] pair = params[i].trim().split("=");
+                if(pair.length == 2 && pair[0].equals("charset")) {
+                    return pair[1];
+                }
+            }
+        }
+
+        return defaultCharset;
     }
 }

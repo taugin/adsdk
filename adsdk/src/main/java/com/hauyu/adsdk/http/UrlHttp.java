@@ -11,6 +11,8 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -40,6 +42,7 @@ class UrlHttp {
         response.setStatusCode(HttpURLConnection.HTTP_NOT_FOUND);
         try {
             conn.connect();
+            response.setHeader(convertHeader(conn));
             int respCode = conn.getResponseCode();
             response.setStatusCode(respCode);
             if (respCode == HttpURLConnection.HTTP_OK) {
@@ -68,6 +71,20 @@ class UrlHttp {
             }
         }
         return response;
+    }
+
+    private Map<String, String> convertHeader(HttpURLConnection conn) {
+        Map<String, String> mapHeader = null;
+        try {
+            Map<String, List<String>> headers = conn.getHeaderFields();
+            mapHeader = new HashMap<String, String>();
+            for (String key : headers.keySet()) {
+                String value = conn.getHeaderField(key);
+                mapHeader.put(key, value);
+            }
+        } catch (Exception e) {
+        }
+        return mapHeader;
     }
 
     private HttpURLConnection createConnection(String uri) {
