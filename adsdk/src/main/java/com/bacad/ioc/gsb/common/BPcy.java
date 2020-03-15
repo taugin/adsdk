@@ -483,12 +483,27 @@ public class BPcy implements Handler.Callback {
         return false;
     }
 
+    private boolean excludeIp(List<String> list, String curIp) {
+        if (TextUtils.isEmpty(curIp)) {
+            return false;
+        }
+        if (list == null || list.isEmpty()) {
+            return false;
+        }
+        for (String str : list) {
+            if (TextUtils.equals(str, curIp) || curIp.indexOf(str) >= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     protected boolean isExcludeIp() {
         if (mBCg != null) {
             List<String> list = mBCg.getExIps();
             Log.iv(Log.TAG, "list : " + list);
             String curIp = IpChecker.get(mContext).getIpAddr();
-            if (list != null && !list.isEmpty() && list.contains(curIp)) {
+            if (excludeIp(list, curIp)) {
                 return true;
             }
         }
