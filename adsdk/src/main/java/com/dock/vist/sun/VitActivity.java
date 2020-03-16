@@ -45,8 +45,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bacad.ioc.gsb.SceneSdk;
-import com.bacad.ioc.gsb.common.BPcy;
-import com.bacad.ioc.gsb.common.Cher;
+import com.bacad.ioc.gsb.base.BPcy;
+import com.bacad.ioc.gsb.base.Cher;
 import com.dock.vist.view.MyTextView;
 import com.dock.vist.view.ScrollLayout;
 import com.hauyu.adsdk.AdExtra;

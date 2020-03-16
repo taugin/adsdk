@@ -1,6 +1,6 @@
 package com.bacad.ioc.gsb.data.parse;
 
-import com.bacad.ioc.gsb.common.ScFl;
+import com.bacad.ioc.gsb.base.ScFl;
 import com.bacad.ioc.gsb.scconfig.CvCg;
 import com.bacad.ioc.gsb.scconfig.GvCg;
 import com.bacad.ioc.gsb.scconfig.HvCg;

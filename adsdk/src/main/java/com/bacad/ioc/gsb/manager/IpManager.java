@@ -1,4 +1,4 @@
-package com.bacad.ioc.gsb.checker;
+package com.bacad.ioc.gsb.manager;
 
 import android.content.Context;
 import android.os.Handler;
@@ -20,7 +20,7 @@ import java.util.Set;
  * Created by Administrator on 2020-3-14.
  */
 
-public class IpChecker {
+public class IpManager {
 
     private final Context mContext;
     private static final int MSG_REQUEST_ONGOING = 0x100861;
@@ -36,26 +36,26 @@ public class IpChecker {
         sParserMap.put(IP_CHECK_URL3, new Parser3());
     }
 
-    private static IpChecker sIpChecker;
-    public static IpChecker get(Context context) {
-        synchronized (IpChecker.class) {
-            if (sIpChecker == null) {
+    private static IpManager sIpManager;
+    public static IpManager get(Context context) {
+        synchronized (IpManager.class) {
+            if (sIpManager == null) {
                 createInstance(context);
             }
         }
-        return sIpChecker;
+        return sIpManager;
     }
 
     private static void createInstance(Context context) {
-        synchronized (IpChecker.class) {
-            if (sIpChecker == null) {
-                sIpChecker = new IpChecker(context);
+        synchronized (IpManager.class) {
+            if (sIpManager == null) {
+                sIpManager = new IpManager(context);
             }
         }
     }
 
     private Handler mHandler = new Handler();
-    private IpChecker(Context context) {
+    private IpManager(Context context) {
         mContext = context;
     }
 

@@ -2,7 +2,7 @@ package com.bacad.ioc.gsb.scpolicy;
 
 import android.content.Context;
 
-import com.bacad.ioc.gsb.common.BPcy;
+import com.bacad.ioc.gsb.base.BPcy;
 import com.bacad.ioc.gsb.scconfig.GvCg;
 import com.hauyu.adsdk.core.AttrChecker;
 import com.hauyu.adsdk.log.Log;

@@ -9,8 +9,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.bacad.ioc.gsb.common.Bldr;
-import com.bacad.ioc.gsb.common.CSvr;
+import com.bacad.ioc.gsb.base.Bldr;
+import com.bacad.ioc.gsb.base.CSvr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.scpolicy.SvPcy;

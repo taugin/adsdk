@@ -1,4 +1,4 @@
-package com.bacad.ioc.gsb.common;
+package com.bacad.ioc.gsb.base;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -8,7 +8,7 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
-import com.bacad.ioc.gsb.checker.IpChecker;
+import com.bacad.ioc.gsb.manager.IpManager;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AttrChecker;
@@ -502,7 +502,7 @@ public class BPcy implements Handler.Callback {
         if (mBCg != null) {
             List<String> list = mBCg.getExIps();
             Log.iv(Log.TAG, "list : " + list);
-            String curIp = IpChecker.get(mContext).getIpAddr();
+            String curIp = IpManager.get(mContext).getIpAddr();
             if (excludeIp(list, curIp)) {
                 return true;
             }
@@ -522,7 +522,7 @@ public class BPcy implements Handler.Callback {
         }
 
         if (isExcludeIp()) {
-            Log.iv(Log.TAG, "exc " + IpChecker.get(mContext).getIpAddr());
+            Log.iv(Log.TAG, "exc " + IpManager.get(mContext).getIpAddr());
             return false;
         }
 

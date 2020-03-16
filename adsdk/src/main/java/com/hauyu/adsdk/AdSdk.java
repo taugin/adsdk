@@ -5,7 +5,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.bacad.ioc.gsb.common.CSvr;
+import com.bacad.ioc.gsb.base.CSvr;
 import com.dock.vist.sun.BuildConfig;
 import com.dock.vist.sun.IAdvance;
 import com.hauyu.adsdk.constant.Constant;
@@ -84,7 +84,6 @@ public class AdSdk {
         DataManager.get(mContext).init();
         ActivityMonitor.get(mContext).init();
         EventImpl.get().init();
-        CSvr.get(mContext).init();
         callInit(mContext);
     }
 

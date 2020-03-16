@@ -1,4 +1,4 @@
-package com.bacad.ioc.gsb.common;
+package com.bacad.ioc.gsb.base;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,7 +13,7 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.bacad.ioc.gsb.checker.IpChecker;
+import com.bacad.ioc.gsb.manager.IpManager;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.stat.InternalStat;
 import com.hauyu.adsdk.utils.Utils;
@@ -317,6 +317,6 @@ public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener 
     }
 
     private void updateIpAddr() {
-        IpChecker.get(mContext).check();
+        IpManager.get(mContext).check();
     }
 }

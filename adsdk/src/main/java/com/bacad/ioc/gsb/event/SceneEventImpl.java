@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.bacad.ioc.gsb.common.ScFl;
+import com.bacad.ioc.gsb.base.ScFl;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.hauyu.adsdk.log.Log;
 

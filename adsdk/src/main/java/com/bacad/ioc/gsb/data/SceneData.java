@@ -3,7 +3,7 @@ package com.bacad.ioc.gsb.data;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.bacad.ioc.gsb.common.ScFl;
+import com.bacad.ioc.gsb.base.ScFl;
 import com.bacad.ioc.gsb.data.parse.SceneSceneParser;
 import com.bacad.ioc.gsb.scconfig.CvCg;
 import com.bacad.ioc.gsb.scconfig.GvCg;

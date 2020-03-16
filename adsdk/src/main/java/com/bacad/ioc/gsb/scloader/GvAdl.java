@@ -3,8 +3,8 @@ package com.bacad.ioc.gsb.scloader;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.bacad.ioc.gsb.common.Bldr;
-import com.bacad.ioc.gsb.common.CSvr;
+import com.bacad.ioc.gsb.base.Bldr;
+import com.bacad.ioc.gsb.base.CSvr;
 import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.scpolicy.GvPcy;
