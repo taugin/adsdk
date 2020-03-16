@@ -3,13 +3,12 @@ package com.hauyu.adsdk.adloader.mopub;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.WindowManager;
 
+import com.dock.vist.sun.VitActivity;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
@@ -35,7 +34,6 @@ import com.mopub.nativeads.MoPubVideoNativeAdRenderer;
 import com.mopub.nativeads.NativeAd;
 import com.mopub.nativeads.NativeErrorCode;
 
-import java.lang.reflect.Field;
 import java.util.Set;
 
 /**
@@ -225,7 +223,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
         if (activity == null) {
             try {
-                activity = createFakeActivity((Application) mContext.getApplicationContext());
+                activity = VitActivity.createFakeActivity((Application) mContext.getApplicationContext());
                 if (activity != null) {
                     Log.iv(Log.TAG, "mopub interstitial use fake activity");
                 }
@@ -372,7 +370,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
         if (activity == null) {
             try {
-                activity = createFakeActivity((Application) mContext.getApplicationContext());
+                activity = VitActivity.createFakeActivity((Application) mContext.getApplicationContext());
                 if (activity != null) {
                     Log.iv(Log.TAG, "mopub reward use fake activity");
                 }
@@ -731,48 +729,4 @@ public class MopubLoader extends AbstractSdkLoader {
         return Constant.AD_ERROR_UNKNOWN;
     }
 
-    public static Activity createFakeActivity(final Application application) {
-        Activity activity = new Activity() {
-            @Override
-            public boolean isFinishing() {
-                return false;
-            }
-
-            @Override
-            public void startActivity(Intent intent) {
-                try {
-                    application.startActivity(intent);
-                } catch (Exception | Error e) {
-                }
-            }
-
-            @Override
-            public Context getApplicationContext() {
-                try {
-                    return application.getApplicationContext();
-                } catch (Exception | Error e) {
-                }
-                return super.getApplicationContext();
-            }
-        };
-        try {
-            Class ContextWrapperClass = Class.forName("android.content.ContextWrapper");
-            Field mBase = ContextWrapperClass.getDeclaredField("mBase");
-            mBase.setAccessible(true);
-            mBase.set(activity, application.getBaseContext());
-
-            Class ActivityClass = Class.forName("android.app.Activity");
-            Field mApplication = ActivityClass.getDeclaredField("mApplication");
-            mApplication.setAccessible(true);
-            mApplication.set(activity, application);
-
-            WindowManager wm = (WindowManager) application.getBaseContext().getSystemService(Context.WINDOW_SERVICE);
-            Field mWindowManager = ActivityClass.getDeclaredField("mWindowManager");
-            mWindowManager.setAccessible(true);
-            mWindowManager.set(activity, wm);
-        } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        }
-        return activity;
-    }
 }
