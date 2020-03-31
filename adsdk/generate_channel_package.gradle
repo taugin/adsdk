@@ -1,0 +1,260 @@
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
+
+ext {
+    channel_list = ["oppo", "huawei", "vivo"]
+}
+
+/**
+ * 首字母转大写
+ * @param s
+ * @return
+ */
+def toUpperCaseFirstOne(String s) {
+    if (s == null) {
+        return null
+    }
+    if (Character.isUpperCase(s.charAt(0))) {
+        return s;
+    }
+    return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
+}
+
+project.afterEvaluate {
+    if (project.android.productFlavors.size() > 0) {// 如果有产品风味
+        project.android.productFlavors.each { flavor ->
+            def productFlavor = toUpperCaseFirstOne(flavor.name)
+            String adFileGenerate = String.format("asFlavorMultiChannel%s", productFlavor)
+            project.tasks.create(adFileGenerate, {
+                doLast {
+                    generateMultiPackageChannel(flavor.name)
+                }
+            })
+        }
+    } else { // 无产品风味
+        project.tasks.create("asFlavorMultiChannel", {
+            doLast {
+                generateMultiPackageChannel(null)
+            }
+        })
+    }
+}
+
+/**
+ * 获取apk的绝对路径
+ * @param flavorName
+ * @return
+ */
+def getPackageName(flavorName) {
+    def packagePath = null
+    android.applicationVariants.all { variant ->
+        def flavor = variant.productFlavors[0].name
+        def buildType = variant.buildType.name
+        if (buildType == "release" && flavorName == flavor) {
+            variant.outputs.all { output ->
+                packagePath = output.outputFile.getCanonicalPath()
+            }
+        }
+    }
+    def tmpFile = new File(packagePath)
+    def parentFile = tmpFile.getParentFile()
+    def listFiles = parentFile.listFiles()
+    def list = new ArrayList<File>()
+    listFiles.each {
+        if (it.getAbsolutePath().endsWith(".apk")) {
+            list.add(it)
+        }
+    }
+    list.sort(new Comparator<File>() {
+
+        @Override
+        int compare(File o1, File o2) {
+            return o1.lastModified() - o2.lastModified()
+        }
+    })
+    packagePath = list.get(0).getAbsolutePath()
+    return packagePath
+}
+
+/**
+ * 获取签名信息
+ * @param flavor
+ * @return
+ */
+def getSignConfig(flavor) {
+    def signConfig = null
+    if (flavor == null) {
+        try {
+            signConfig = project.android.buildTypes.release.signingConfig
+        } catch (Exception e) {
+        }
+    } else {
+        try {
+            signConfig = project.android.productFlavors[flavor].signingConfig
+        } catch (Exception e) {
+        }
+        if (signConfig == null) {
+            try {
+                signConfig = project.android.buildTypes.release.signingConfig
+            } catch (Exception e) {
+            }
+        }
+    }
+    return signConfig
+}
+
+def generateNewApkFileByChannel(outputPath, channel) {
+    File tmpFile = new File(outputPath)
+    def parentFile = tmpFile.getParent()
+    def fileName = tmpFile.getName()
+    def name = fileName.substring(0, fileName.lastIndexOf("."));
+    def suffix = fileName.substring(fileName.lastIndexOf("."));
+    def newName = name + "_" + channel
+    def newFile = newName + suffix
+    def newOutFile = new File(parentFile, newFile)
+//    println "oldFile : " + outputPath
+//    println "newFile : " + newOutFile
+    return newOutFile
+}
+
+
+// 4MB buffer
+
+/**
+ * copy input to output stream - available in several StreamUtils or Streams classes
+ */
+def copy(InputStream input, OutputStream output) throws IOException {
+    int bytesRead;
+    def BUFFER = new byte[4096 * 1024];
+    while ((bytesRead = input.read(BUFFER)) != -1) {
+        output.write(BUFFER, 0, bytesRead);
+    }
+}
+
+def appendChannelInfo(channel, src, dst, relativePath) {
+    ZipFile war;
+    ZipOutputStream append;
+    try {
+        war = new ZipFile(src);
+        append = new ZipOutputStream(new FileOutputStream(dst));
+        // first, copy contents from existing war
+        Enumeration<? extends ZipEntry> entries = war.entries();
+        while (entries.hasMoreElements()) {
+            ZipEntry e = entries.nextElement();
+            ZipEntry zipEntry = new ZipEntry(e)
+            append.putNextEntry(zipEntry);
+            if (!e.isDirectory()) {
+                copy(war.getInputStream(e), append);
+            }
+            append.closeEntry();
+        }
+
+        // now append some extra content
+        ZipEntry e = new ZipEntry(relativePath);
+        System.out.println("append: " + e.getName());
+        append.putNextEntry(e);
+        append.write(channel.getBytes());
+        append.closeEntry();
+
+        // close
+        war.close();
+        append.close();
+    } catch (Exception e) {
+        e.printStackTrace()
+    } finally {
+        if (war != null) {
+            war.close()
+        }
+        if (append != null) {
+            append.close()
+        }
+    }
+}
+
+def appendChannelInfo2(channel, src, File dst, relativePath) {
+    ZipOutputStream zos = null;
+    try {
+        if (dst.exists()) {
+            dst.delete()
+        }
+        dst.createNewFile()
+        zos = new ZipOutputStream(new FileOutputStream(dst))
+        // copy apkfiles
+        ZipFile zipFile = new ZipFile(src)
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        while (entries.hasMoreElements()) {
+            ZipEntry zipEntry = entries.nextElement()
+            if (zipEntry.getName().startsWith("META-INF/")) {
+                continue
+            }
+            ZipEntry copyZipEntry = new ZipEntry(zipEntry.getName());
+            zos.putNextEntry(copyZipEntry);
+            if (!zipEntry.isDirectory()) {
+                InputStream input = zipFile.getInputStream(zipEntry);
+                int len;
+                byte[] buffer = new byte[8 * 1024];
+                while ((len = input.read(buffer)) != -1) {
+                    zos.write(buffer, 0, len);
+                }
+            }
+            zos.closeEntry();
+        }
+        // add channel file
+        ZipEntry emptyChannelFile = new ZipEntry(relativePath);
+        zos.putNextEntry(emptyChannelFile);
+        zos.write(channel.getBytes())
+        zos.closeEntry();
+    } catch (Exception e) {
+        e.printStackTrace()
+    } finally {
+        try {
+            if (zos != null) {
+                zos.close()
+            }
+        } catch (Exception e1) {
+        }
+
+    }
+}
+
+/**
+ * 写入渠道信息
+ * @param outputPath
+ * @param channelList
+ */
+def writeChannelInfoToFile(outputPath, channelList, signInfo) {
+    channelList.each {
+        println "channel : " + it
+        def newOutFile = generateNewApkFileByChannel(outputPath, it)
+        println "newOutFile : " + newOutFile
+        appendChannelInfo2(it, outputPath, newOutFile, "assets/store_channel")
+        signPackageFile(newOutFile, signInfo)
+    }
+}
+
+def signPackageFile(apkFile, signConfig) {
+    println "signConfig : " + signConfig
+    def cmdString2 = String.format("jarsigner -digestalg SHA1 -sigalg MD5withRSA -keystore %s -storepass %s -keypass %s -signedjar %s %s %s",
+            signConfig.storeFile, signConfig.storePassword, signConfig.keyPassword, apkFile, apkFile, signConfig.keyAlias)
+    cmdString2.execute()
+}
+
+def generateMultiPackageChannel(flavorName) {
+    if (ext.channel_list == null || ext.channel_list.isEmpty()) {
+        println "channel_list is null"
+        return
+    }
+    println "flavorName : " + flavorName
+    def outputPath = getPackageName(flavorName)
+    println "outputPath : " + outputPath
+    if (!new File(outputPath).exists()) {
+        println "outputPath : " + outputPath + " not exist"
+        return
+    }
+    def channelList = channel_list
+    println "channelList : " + channelList
+    def signInfo = getSignConfig(flavorName)
+    println "signInfo : " + signInfo
+    writeChannelInfoToFile(outputPath, channelList, signInfo)
+}
