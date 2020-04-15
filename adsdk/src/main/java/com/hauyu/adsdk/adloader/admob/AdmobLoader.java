@@ -330,7 +330,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
+                getAdListener().onRewardedVideoError(Constant.AD_ERROR_CONFIG);
             }
             return;
         }
@@ -345,7 +345,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
+                getAdListener().onRewardedVideoError(Constant.AD_ERROR_LOADING);
             }
             return;
         }
@@ -371,7 +371,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(i));
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(toSdkError(i));
+                    getAdListener().onRewardedVideoError(toSdkError(i));
                 }
             }
 

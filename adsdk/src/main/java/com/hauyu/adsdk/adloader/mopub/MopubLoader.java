@@ -381,7 +381,7 @@ public class MopubLoader extends AbstractSdkLoader {
         if (activity == null) {
             Log.v(Log.TAG, "mopub reward need an activity context");
             if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_CONTEXT);
+                getAdListener().onRewardedVideoError(Constant.AD_ERROR_CONTEXT);
             }
             return;
         }
@@ -390,7 +390,7 @@ public class MopubLoader extends AbstractSdkLoader {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
+                getAdListener().onRewardedVideoError(Constant.AD_ERROR_CONFIG);
             }
             return;
         }
@@ -411,7 +411,7 @@ public class MopubLoader extends AbstractSdkLoader {
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
+                getAdListener().onRewardedVideoError(Constant.AD_ERROR_LOADING);
             }
             return;
         }
@@ -434,7 +434,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(errorCode));
                 if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(toSdkError(errorCode));
+                    getAdListener().onRewardedVideoError(toSdkError(errorCode));
                 }
             }
 

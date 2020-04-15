@@ -83,6 +83,11 @@ public interface OnAdBaseListener {
     public void onRewardedVideoAdLoaded(ISdkLoader loader);
 
     /**
+     * interstitial or reward video error
+     */
+    public void onRewardedVideoError(int error);
+
+    /**
      * reward opened
      */
     public void onRewardedVideoAdOpened();

@@ -370,6 +370,40 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
+    public void onRewardedVideoError(int error) {
+        /**
+         * 错误回调不需要判断是否是当前loader
+         */
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
+        if (adSdkListener != null) {
+            if (error == Constant.AD_ERROR_LOADING) {
+                adSdkListener.onLoading(placeName, source, adType);
+            } else {
+                adSdkListener.onError(placeName, source, adType);
+                adSdkListener.onError(placeName, source, adType, error);
+            }
+        }
+        if (adSdkLoadedListener != null) {
+            if (error == Constant.AD_ERROR_LOADING) {
+                adSdkLoadedListener.onLoading(placeName, source, adType);
+            } else {
+                adSdkLoadedListener.onError(placeName, source, adType);
+                adSdkLoadedListener.onError(placeName, source, adType, error);
+            }
+        }
+        if (placeLoaderListener != null) {
+            if (error == Constant.AD_ERROR_LOADING) {
+                placeLoaderListener.onLoading(placeName, source, adType);
+            } else {
+                placeLoaderListener.onError(placeName, source, adType);
+                placeLoaderListener.onError(placeName, source, adType, error);
+            }
+        }
+    }
+
+    @Override
     public void onRewardedVideoAdOpened() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();
