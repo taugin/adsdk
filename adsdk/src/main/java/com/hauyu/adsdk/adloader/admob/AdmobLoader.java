@@ -334,7 +334,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
             return;
         }
-        if (isRewaredVideoLoaded()) {
+        if (isRewardedVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
@@ -438,8 +438,8 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean isRewaredVideoLoaded() {
-        boolean loaded = super.isRewaredVideoLoaded();
+    public boolean isRewardedVideoLoaded() {
+        boolean loaded = super.isRewardedVideoLoaded();
         if (loadedRewardVideo != null) {
             loaded = loadedRewardVideo.isLoaded() && !isCachedAdExpired(loadedRewardVideo);
         }

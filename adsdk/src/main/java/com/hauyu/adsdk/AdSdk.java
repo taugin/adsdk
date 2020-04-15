@@ -274,6 +274,52 @@ public class AdSdk {
         }
     }
 
+
+
+    public boolean isRewardedVideoLoaded(String pidName) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            return loader.isRewardedVideoLoaded();
+        }
+        return false;
+    }
+
+    public void loadRewardedVideo(String pidName) {
+        loadRewardedVideo(null, pidName);
+    }
+
+    public void loadRewardedVideo(String pidName, OnAdSdkListener l) {
+        loadRewardedVideo(null, pidName, l);
+    }
+
+    public void loadRewardedVideo(Activity activity, String pidName) {
+        loadRewardedVideo(activity, pidName, null);
+    }
+
+    public void loadRewardedVideo(Activity activity, String pidName, OnAdSdkListener l) {
+        AdPlaceLoader loader = getAdLoader(pidName, true);
+        if (loader != null) {
+            loader.setOnAdSdkListener(l, false);
+            if (activity == null) {
+                if (mActivity != null && mActivity.get() != null && !mActivity.get().isFinishing()) {
+                    activity = mActivity.get();
+                }
+            }
+            loader.loadRewardedVideo(activity);
+        } else {
+            if (l != null) {
+                l.onError(pidName, null, null);
+            }
+        }
+    }
+
+    public void showRewardedVideo(String pidName) {
+        AdPlaceLoader loader = getAdLoader(pidName);
+        if (loader != null) {
+            loader.showRewardedVideo();
+        }
+    }
+
     public boolean isAdViewLoaded(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {

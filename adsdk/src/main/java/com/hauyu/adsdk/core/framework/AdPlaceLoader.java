@@ -308,7 +308,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                         return true;
                     }
-                    if (loader.isRewardedVideoType() && loader.isRewaredVideoLoaded()) {
+                    if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
                         Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                         return true;
                     }
@@ -389,9 +389,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             }
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null && loader.allowUseLoader()) {
-                    if (loader.isRewardedVideoType()) {
-                        loader.loadRewardedVideo();
-                    } else if (loader.isInterstitialType()) {
+                    if (loader.isInterstitialType()) {
                         loader.loadInterstitial();
                     } else {
                         Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
@@ -425,9 +423,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (loader != null && loader.allowUseLoader()) {
                 registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                         loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this));
-                if (loader.isRewardedVideoType()) {
-                    loader.loadRewardedVideo();
-                } else if (loader.isInterstitialType()) {
+                if (loader.isInterstitialType()) {
                     loader.loadInterstitial();
                 } else {
                     Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
@@ -456,37 +452,17 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 }
 
                 @Override
-                public void onRewardedVideoError(int error) {
-                    if (iterator.hasNext()) {
-                        Log.iv(Log.TAG, "load next rewardvideo");
-                        loadInterstitialSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
-                    } else {
-                        setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onRewardedVideoError(error);
-                    }
-                }
-
-                @Override
                 public void onInterstitialLoaded(ISdkLoader loader) {
                     setAdPlaceSeqLoading(false, SeqState.LOADED);
                     super.onInterstitialLoaded(loader);
                 }
-
-                @Override
-                public void onRewardedVideoAdLoaded(ISdkLoader loader) {
-                    setAdPlaceSeqLoading(false, SeqState.LOADED);
-                    super.onRewardedVideoAdLoaded(loader);
-                }
             };
             registerAdBaseListener(loader, simpleAdBaseBaseListener);
-            if (loader.isRewardedVideoType()) {
-                loader.loadRewardedVideo();
-            } else if (loader.isInterstitialType()) {
+            if (loader.isInterstitialType()) {
                 loader.loadInterstitial();
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 simpleAdBaseBaseListener.onInterstitialError(Constant.AD_ERROR_CONFIG);
-                simpleAdBaseBaseListener.onRewardedVideoError(Constant.AD_ERROR_CONFIG);
             }
         }
     }
@@ -552,14 +528,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 }
 
                 @Override
-                public void onRewardedVideoAdClosed() {
-                    super.onRewardedVideoAdClosed();
-                    if (!isInterstitialReachToCoreCount()) {
-                        loadInterstitialQueue();
-                    }
-                }
-
-                @Override
                 public void onInterstitialError(int error) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next interstitial in que");
@@ -567,17 +535,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     } else {
                         setAdPlaceSeqLoading(false, SeqState.ERROR);
                         super.onInterstitialError(error);
-                    }
-                }
-
-                @Override
-                public void onRewardedVideoError(int error) {
-                    if (iterator.hasNext()) {
-                        Log.iv(Log.TAG, "load next rewardvideo in que");
-                        loadInterstitialQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
-                    } else {
-                        setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onRewardedVideoError(error);
                     }
                 }
 
@@ -591,27 +548,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         loadInterstitialQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
                     }
                 }
-
-                @Override
-                public void onRewardedVideoAdLoaded(ISdkLoader loader) {
-                    if (isInterstitialReachToCoreCount()) {
-                        setAdPlaceSeqLoading(false, SeqState.LOADED);
-                        super.onRewardedVideoAdLoaded(loader);
-                    } else {
-                        Log.iv(Log.TAG, "load for core interstitial");
-                        loadInterstitialQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
-                    }
-                }
             };
             registerAdBaseListener(loader, simpleAdBaseBaseListener);
             if (loader.isInterstitialType()) {
                 loader.loadInterstitial();
-            } else if (loader.isRewardedVideoType()) {
-                loader.loadRewardedVideo();
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 simpleAdBaseBaseListener.onInterstitialError(Constant.AD_ERROR_CONFIG);
-                simpleAdBaseBaseListener.onRewardedVideoError(Constant.AD_ERROR_CONFIG);
             }
         }
     }
@@ -631,8 +574,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         int loadCount = 0;
         for (ISdkLoader loader : mAdLoaders) {
             if (loader != null
-                    && (loader.isInterstitialLoaded()
-                    || loader.isRewaredVideoLoaded())) {
+                    && loader.isInterstitialLoaded()) {
                 loadCount++;
             }
         }
@@ -667,8 +609,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mAdPlace != null && mAdPlace.isHighEcpm()) {
             if (TextUtils.equals(mAdPlace.getPlaceType(), Constant.PLACE_TYPE_INTERSTITIAL)) {
                 shown = showHighEcpmInterstitial();
-            } else if (TextUtils.equals(mAdPlace.getPlaceType(), Constant.PLACE_TYPE_REWARD)) {
-                shown = showHighEcpmReward();
             }
         }
         if (!shown) {
@@ -693,10 +633,338 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return false;
     }
 
+    private void showInterstitialInternal() {
+        if (mAdLoaders != null) {
+            for (ISdkLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
+                        ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
+                        if (loader.showInterstitial()) {
+                            mCurrentAdLoader = loader;
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public boolean isRewardedVideoLoaded() {
+        if (mAdLoaders != null) {
+            for (ISdkLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
+                        Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 加载插屏
+     */
+    @Override
+    public void loadRewardedVideo(Activity activity) {
+        if (mAdPlace == null) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(null, null, null);
+            }
+            return;
+        }
+        if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+            return;
+        }
+
+        List<PidConfig> pidList = mAdPlace.getPidsList();
+        if (pidList == null || pidList.isEmpty()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+            return;
+        }
+
+        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+            return;
+        }
+
+        if (activity != null) {
+            mActivity = new WeakReference<Activity>(activity);
+        }
+        mCurrentAdLoader = null;
+        mHasNotifyLoaded = false;
+        // 处理场景缓存
+        if (processAdPlaceCache()) {
+            return;
+        }
+        setPlaceType(Constant.PLACE_TYPE_REWARDEDVIDEO);
+        loadRewardedVideoInternal();
+    }
+
+    private void loadRewardedVideoInternal() {
+        resetPlaceErrorTimes();
+        if (mAdPlace.isConcurrent()) {
+            loadRewardedVideoConcurrent();
+        } else if (mAdPlace.isSequence()) {
+            loadRewardedVideoSequence();
+        } else if (mAdPlace.isRandom()) {
+            loadRewardedVideoRandom();
+        } else if (mAdPlace.isQueue()) {
+            loadRewardedVideoQueue();
+        } else {
+            loadRewardedVideoConcurrent();
+        }
+    }
+
+    private void loadRewardedVideoConcurrent() {
+        if (mAdLoaders != null) {
+            for (ISdkLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                            loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this));
+                }
+            }
+            for (ISdkLoader loader : mAdLoaders) {
+                if (loader != null && loader.allowUseLoader()) {
+                    if (loader.isRewardedVideoType()) {
+                        loader.loadRewardedVideo();
+                    } else {
+                        Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                    }
+                }
+            }
+        }
+    }
+
+    private void loadRewardedVideoSequence() {
+        if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
+            // 使用迭代器处理
+            if (!isAdPlaceSeqLoading()) {
+                setAdPlaceSeqLoading(true, SeqState.REQUEST);
+                final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
+                loadRewardedVideoSequenceInternal(iterator);
+            } else {
+                Log.iv(Log.TAG, mAdPlace.getName() + " seq is loading ...");
+            }
+        } else {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+        }
+    }
+
+    private void loadRewardedVideoRandom() {
+        if (mAdLoaders != null) {
+            int pos = new Random().nextInt(mAdLoaders.size());
+            ISdkLoader loader = mAdLoaders.get(pos);
+            if (loader != null && loader.allowUseLoader()) {
+                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                        loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this));
+                if (loader.isRewardedVideoType()) {
+                    loader.loadRewardedVideo();
+                } else {
+                    Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                }
+            }
+        }
+    }
+
+    private void loadRewardedVideoSequenceInternal(final Iterator<ISdkLoader> iterator) {
+        if (iterator == null || !iterator.hasNext()) {
+            return;
+        }
+        ISdkLoader loader = iterator.next();
+        if (loader != null && loader.allowUseLoader()) {
+            SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                    loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
+
+                @Override
+                public void onRewardedVideoError(int error) {
+                    if (iterator.hasNext()) {
+                        Log.iv(Log.TAG, "load next rewardedvideo");
+                        loadRewardedVideoSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                    } else {
+                        setAdPlaceSeqLoading(false, SeqState.ERROR);
+                        super.onRewardedVideoError(error);
+                    }
+                }
+
+                @Override
+                public void onRewardedVideoAdLoaded(ISdkLoader loader) {
+                    setAdPlaceSeqLoading(false, SeqState.LOADED);
+                    super.onRewardedVideoAdLoaded(loader);
+                }
+            };
+            registerAdBaseListener(loader, simpleAdBaseBaseListener);
+            if (loader.isRewardedVideoType()) {
+                loader.loadRewardedVideo();
+            } else {
+                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                simpleAdBaseBaseListener.onRewardedVideoError(Constant.AD_ERROR_CONFIG);
+            }
+        }
+    }
+
+    private void loadRewardedVideoSequenceInternalWithDelay(final Iterator<ISdkLoader> iterator, long delay) {
+        if (delay <= 0 || mHandler == null) {
+            loadRewardedVideoSequenceInternal(iterator);
+        } else {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loadRewardedVideoSequenceInternal(iterator);
+                }
+            }, delay);
+        }
+    }
+
+    /**
+     * 使用que模式进行加载，核心，加载够指定个数
+     */
+    private void loadRewardedVideoQueue() {
+        if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
+            if (!isRewardedVideoReachToCoreCount()) {
+                if (!isAdPlaceSeqLoading()) {
+                    setAdPlaceSeqLoading(true, SeqState.REQUEST);
+                    final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
+                    loadRewardedVideoQueueInternal(iterator);
+                } else {
+                    Log.iv(Log.TAG, mAdPlace.getName() + " que is loading ...");
+                }
+            } else {
+                Log.iv(Log.TAG, mAdPlace.getName() + " has enough ...");
+            }
+        } else {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
+        }
+    }
+
+    private void loadRewardedVideoQueueInternal(final Iterator<ISdkLoader> iterator) {
+        if (iterator == null || !iterator.hasNext()) {
+            return;
+        }
+        ISdkLoader loader = iterator.next();
+        if (loader != null && loader.allowUseLoader()) {
+            SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                    loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
+
+                @Override
+                public void onRewardedVideoAdClosed() {
+                    super.onRewardedVideoAdClosed();
+                    if (!isRewardedVideoReachToCoreCount()) {
+                        loadRewardedVideoQueue();
+                    }
+                }
+
+                @Override
+                public void onRewardedVideoError(int error) {
+                    if (iterator.hasNext()) {
+                        Log.iv(Log.TAG, "load next rewardedvideo in que");
+                        loadRewardedVideoQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                    } else {
+                        setAdPlaceSeqLoading(false, SeqState.ERROR);
+                        super.onRewardedVideoError(error);
+                    }
+                }
+
+                @Override
+                public void onRewardedVideoAdLoaded(ISdkLoader loader) {
+                    if (isRewardedVideoReachToCoreCount()) {
+                        setAdPlaceSeqLoading(false, SeqState.LOADED);
+                        super.onRewardedVideoAdLoaded(loader);
+                    } else {
+                        Log.iv(Log.TAG, "load for core rewardedvideo");
+                        loadRewardedVideoQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                    }
+                }
+            };
+            registerAdBaseListener(loader, simpleAdBaseBaseListener);
+            if (loader.isRewardedVideoType()) {
+                loader.loadRewardedVideo();
+            } else {
+                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                simpleAdBaseBaseListener.onRewardedVideoError(Constant.AD_ERROR_CONFIG);
+            }
+        }
+    }
+
+    /**
+     * 判断是否加载够指定成功数
+     *
+     * @return
+     */
+    private boolean isRewardedVideoReachToCoreCount() {
+        if (!mQueueRunning) {
+            return true;
+        }
+        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
+            return true;
+        }
+        int loadCount = 0;
+        for (ISdkLoader loader : mAdLoaders) {
+            if (loader != null
+                    && loader.isRewardedVideoLoaded()) {
+                loadCount++;
+            }
+        }
+        Log.v(Log.TAG, "queue core count : " + loadCount);
+
+        if (mAdLoaders.size() < mAdPlace.getQueueSize()) {
+            return loadCount >= mAdLoaders.size();
+        }
+        return loadCount >= mAdPlace.getQueueSize();
+    }
+
+    private void loadRewardedVideoQueueInternalWithDelay(final Iterator<ISdkLoader> iterator, long delay) {
+        if (delay <= 0 || mHandler == null) {
+            loadRewardedVideoQueueInternal(iterator);
+        } else {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loadRewardedVideoQueueInternal(iterator);
+                }
+            }, delay);
+        }
+    }
+
+    /**
+     * 展示插屏
+     */
+    @Override
+    public void showRewardedVideo() {
+        Log.d(Log.TAG, "showRewardedVideo");
+        boolean shown = false;
+        if (mAdPlace != null && mAdPlace.isHighEcpm()) {
+            if (TextUtils.equals(mAdPlace.getPlaceType(), Constant.PLACE_TYPE_REWARDEDVIDEO)) {
+                shown = showHighEcpmReward();
+            }
+        }
+        if (!shown) {
+            showRewardedVideoInternal();
+        } else {
+            Log.iv(Log.TAG, "show he high rewardedvideo");
+        }
+    }
+
     private boolean showHighEcpmReward() {
         ISdkLoader loader = getRewardSdkLoader();
         if (loader != null) {
-            if (loader.isRewardedVideoType() && loader.isRewaredVideoLoaded()) {
+            if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
                 ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
                 if (loader.showRewardedVideo()) {
                     mCurrentAdLoader = loader;
@@ -708,20 +976,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return false;
     }
 
-    private void showInterstitialInternal() {
+    private void showRewardedVideoInternal() {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    if (loader.isRewardedVideoType() && loader.isRewaredVideoLoaded()) {
+                    if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
                         ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
                         if (loader.showRewardedVideo()) {
-                            mCurrentAdLoader = loader;
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
-                            break;
-                        }
-                    } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
-                        ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
-                        if (loader.showInterstitial()) {
                             mCurrentAdLoader = loader;
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                             break;
@@ -1132,7 +1393,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         && (loader.isBannerLoaded()
                         || loader.isNativeLoaded()
                         || loader.isInterstitialLoaded()
-                        || loader.isRewaredVideoLoaded())) {
+                        || loader.isRewardedVideoLoaded())) {
                     Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                     return true;
                 }
@@ -1154,7 +1415,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     boolean loaded = loader.isBannerLoaded()
                             || loader.isNativeLoaded()
                             || loader.isInterstitialLoaded()
-                            || loader.isRewaredVideoLoaded();
+                            || loader.isRewardedVideoLoaded();
                     if (loaded) {
                         return loader.getAdType();
                     }
@@ -1171,7 +1432,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     boolean loaded = loader.isBannerLoaded()
                             || loader.isNativeLoaded()
                             || loader.isInterstitialLoaded()
-                            || loader.isRewaredVideoLoaded();
+                            || loader.isRewardedVideoLoaded();
                     if (loaded) {
                         return loader.getSdkName();
                     }
@@ -1557,7 +1818,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     && (loader.isBannerLoaded()
                     || loader.isNativeLoaded()
                     || loader.isInterstitialLoaded()
-                    || loader.isRewaredVideoLoaded())) {
+                    || loader.isRewardedVideoLoaded())) {
                 loadCount++;
             }
         }
@@ -1643,7 +1904,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         mCurrentAdLoader = loader;
                         AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                         return true;
-                    } else if (loader.isRewaredVideoLoaded()) {
+                    } else if (loader.isRewardedVideoLoaded()) {
                         ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
                         loader.showRewardedVideo();
                         mCurrentAdLoader = loader;
@@ -1715,7 +1976,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                     return true;
                 }
-            } else if (loader.isRewardedVideoType() && loader.isRewaredVideoLoaded()) {
+            } else if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
                 ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
                 if (loader.showRewardedVideo()) {
                     mCurrentAdLoader = loader;
@@ -1737,7 +1998,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null && loader.hasLoadedFlag()) {
-                    if (loader.isRewardedVideoType() && loader.isRewaredVideoLoaded()) {
+                    if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
                         ActivityMonitor.get(mContext).setPidConfig(loader.getPidConfig());
                         loader.useAndClearFlag();
                         if (loader.showRewardedVideo()) {
@@ -1957,6 +2218,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             loadAdViewInternal();
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_INTERSTITIAL)) {
             loadInterstitialInternal();
+        } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_REWARDEDVIDEO)) {
+            loadRewardedVideoInternal();
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_COMPLEX)) {
             loadComplexAdsInternal();
         } else {
@@ -2220,7 +2483,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                                 && !l.isBannerLoaded()
                                 && !l.isNativeLoaded()
                                 && !l.isInterstitialLoaded()
-                                && !l.isRewaredVideoLoaded()) {
+                                && !l.isRewardedVideoLoaded()) {
                             sLoadedAdLoaders.remove(index);
                         }
                     }
@@ -2266,7 +2529,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (sLoadedAdLoaders != null) {
             synchronized (sLoadedAdLoaders) {
                 for (ISdkLoader loader : sLoadedAdLoaders) {
-                    if (loader != null && loader.isRewaredVideoLoaded()
+                    if (loader != null && loader.isRewardedVideoLoaded()
                             && TextUtils.equals(loader.getAdType(), Constant.TYPE_REWARD)) {
                         return loader;
                     }
@@ -2288,7 +2551,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             return loader;
                         } else if (loader.isInterstitialLoaded() && TextUtils.equals(loader.getAdType(), Constant.TYPE_INTERSTITIAL)) {
                             return loader;
-                        } else if (loader.isRewaredVideoLoaded() && TextUtils.equals(loader.getAdType(), Constant.TYPE_REWARD)) {
+                        } else if (loader.isRewardedVideoLoaded() && TextUtils.equals(loader.getAdType(), Constant.TYPE_REWARD)) {
                             return loader;
                         }
                     }
@@ -2307,7 +2570,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             && (loader.isBannerLoaded()
                             || loader.isNativeLoaded()
                             || loader.isInterstitialLoaded()
-                            || loader.isRewaredVideoLoaded())) {
+                            || loader.isRewardedVideoLoaded())) {
                         size++;
                     }
                 }

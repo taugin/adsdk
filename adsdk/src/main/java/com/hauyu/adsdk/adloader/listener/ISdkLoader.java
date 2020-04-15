@@ -51,7 +51,7 @@ public interface ISdkLoader {
 
     public boolean isNativeLoaded();
 
-    public boolean isRewaredVideoLoaded();
+    public boolean isRewardedVideoLoaded();
 
     public void resume();
 

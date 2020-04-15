@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (v.getId() == R.id.native_common) {
             loadAdViewCommon();
         } else if (v.getId() == R.id.reward_video) {
-            AdSdk.get(mContext).loadInterstitial("reward_video", mSimpleAdsdkListener);
+            AdSdk.get(mContext).loadRewardedVideo("reward_video", mSimpleAdsdkListener);
         }
     }
 
@@ -111,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadAdComplex() {
+        if (AdSdk.get(mContext).isComplexAdsLoaded("ad_complex")) {
+            AdSdk.get(mContext).showComplexAds("ad_complex");
+            return;
+        }
         AdParams.Builder builder = new AdParams.Builder();
         //  设置外部布局参数
 //        int layoutId = LAYOUT[new Random(System.currentTimeMillis()).nextInt(LAYOUT.length)];
@@ -131,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         int styles[] = new int[]{AdExtra.NATIVE_CARD_FULL, AdExtra.NATIVE_CARD_SMALL, AdExtra.NATIVE_CARD_MEDIUM, AdExtra.NATIVE_CARD_TINY, AdExtra.NATIVE_CARD_LARGE};
         builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, styles[new Random(System.currentTimeMillis()).nextInt(styles.length)]);
         AdParams adParams = builder.build();
-        AdSdk.get(mContext).loadComplexAds("banner_and_native", adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadComplexAds("ad_complex", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
@@ -221,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (AdExtra.AD_TYPE_INTERSTITIAL.equalsIgnoreCase(adType)) {
                 AdSdk.get(getBaseContext()).showInterstitial(pidName);
             } else if (AdExtra.AD_TYPE_REWARD.equalsIgnoreCase(adType)) {
-                AdSdk.get(getBaseContext()).showInterstitial(pidName);
+                AdSdk.get(getBaseContext()).showRewardedVideo(pidName);
             }
         }
 

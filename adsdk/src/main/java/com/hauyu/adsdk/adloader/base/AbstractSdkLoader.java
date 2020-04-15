@@ -150,7 +150,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     @Override
-    public boolean isRewaredVideoLoaded() {
+    public boolean isRewardedVideoLoaded() {
         return false;
     }
 

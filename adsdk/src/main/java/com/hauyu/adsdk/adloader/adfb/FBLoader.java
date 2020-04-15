@@ -540,7 +540,7 @@ public class FBLoader extends AbstractSdkLoader {
             }
             return;
         }
-        if (isRewaredVideoLoaded()) {
+        if (isRewardedVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
@@ -642,8 +642,8 @@ public class FBLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean isRewaredVideoLoaded() {
-        boolean loaded = super.isRewaredVideoLoaded();
+    public boolean isRewardedVideoLoaded() {
+        boolean loaded = super.isRewardedVideoLoaded();
         if (rewardedVideoAd != null) {
             loaded = rewardedVideoAd.isAdLoaded() && !rewardedVideoAd.isAdInvalidated()/* && !isCachedAdExpired(rewardedVideoAd)*/;
         }

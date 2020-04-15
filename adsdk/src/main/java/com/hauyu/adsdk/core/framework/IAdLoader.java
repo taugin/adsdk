@@ -30,6 +30,10 @@ public interface IAdLoader {
     public void loadInterstitial(Activity activity);
     public void showInterstitial();
 
+    public boolean isRewardedVideoLoaded();
+    public void loadRewardedVideo(Activity activity);
+    public void showRewardedVideo();
+
     public boolean isAdViewLoaded();
     public void loadAdView(AdParams adParams);
     public void showAdView(ViewGroup adContainer, AdParams adParams);

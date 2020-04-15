@@ -353,7 +353,7 @@ public class MopubLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean isRewaredVideoLoaded() {
+    public boolean isRewardedVideoLoaded() {
         boolean loaded = MoPubRewardedVideos.hasRewardedVideo(getPidConfig().getPid());
         if (loaded) {
             Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
@@ -400,7 +400,7 @@ public class MopubLoader extends AbstractSdkLoader {
         MoPub.initializeSdk(activity, sdkConfiguration, initSdkListener());
         MoPubRewardedVideoManager.updateActivity(activity);
 
-        if (isRewaredVideoLoaded()) {
+        if (isRewardedVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
                 setLoadedFlag();
