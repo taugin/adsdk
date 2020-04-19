@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.dock.vist.sun.SpConfig;
+import com.dock.vist.sun.SpreadCfg;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.AdSwitch;
@@ -176,9 +176,9 @@ public class DataManager implements Runnable {
         return null;
     }
 
-    public List<SpConfig> getRemoteSpread() {
-        String data = getString(SpConfig.AD_SPREAD_NAME);
-        data = checkLastData(data, SpConfig.AD_SPREAD_NAME);
+    public List<SpreadCfg> getRemoteSpread() {
+        String data = getString(SpreadCfg.AD_SPREAD_NAME);
+        data = checkLastData(data, SpreadCfg.AD_SPREAD_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseSpread(data);
         }

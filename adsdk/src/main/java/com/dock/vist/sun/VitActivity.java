@@ -71,7 +71,7 @@ import java.util.Date;
 
 public class VitActivity extends Activity implements IAdvance {
 
-    private SpConfig mSpConfig;
+    private SpreadCfg mSpreadCfg;
     private GestureDetector mGestureDetector;
     private String mPidName;
     private String mSource;
@@ -165,7 +165,7 @@ public class VitActivity extends Activity implements IAdvance {
     }
 
     @Override
-    public void onSceneShowing(String adType, View containerView) {
+    public void onSceneImp(String adType, View containerView) {
         Log.v(Log.TAG, "adType : " + adType);
     }
 
@@ -270,7 +270,7 @@ public class VitActivity extends Activity implements IAdvance {
         } else if (isLockView()) {
             hideNavigationBar(this);
             showLockScreenView();
-        } else if (mSpConfig != null) {
+        } else if (mSpreadCfg != null) {
             showSpread();
         } else if (!TextUtils.isEmpty(mPidName)) {
             registerArgument();
@@ -300,7 +300,7 @@ public class VitActivity extends Activity implements IAdvance {
             mPidName = intent.getStringExtra(Intent.EXTRA_TITLE);
             mSource = intent.getStringExtra(Intent.EXTRA_TEXT);
             mAdType = intent.getStringExtra(Intent.EXTRA_TEMPLATE);
-            mSpConfig = (SpConfig) intent.getSerializableExtra(Intent.EXTRA_STREAM);
+            mSpreadCfg = (SpreadCfg) intent.getSerializableExtra(Intent.EXTRA_STREAM);
             mInLockView = intent.getBooleanExtra(Intent.EXTRA_LOCAL_ONLY, false);
             mInChargeView = intent.getBooleanExtra(Intent.EXTRA_QUIET_MODE, false);
             mSceneType = intent.getStringExtra(Intent.EXTRA_REPLACING);
@@ -465,7 +465,7 @@ public class VitActivity extends Activity implements IAdvance {
         if (mAdLayout != null) {
             boolean shown = AdSdk.get(this).showComplexAdsWithResult(mPidName, getAdParams(mSceneType), mSource, mAdType, mAdLayout);
             if (shown) {
-                onSceneShowing(mSceneType, mAdLayout);
+                onSceneImp(mSceneType, mAdLayout);
                 try {
                     BPcy bPcy = BPcy.getPcyByType(mSceneType);
                     Log.v(Log.TAG, "report impression type : " + mSceneType);
@@ -657,7 +657,7 @@ public class VitActivity extends Activity implements IAdvance {
     private void showAppLayout() {
         try {
             SpClick spClick = new SpClick();
-            spClick.setSpConfig(mSpConfig);
+            spClick.setSpConfig(mSpreadCfg);
             RelativeLayout rootLayout = new RelativeLayout(this);
             rootLayout.setBackgroundColor(Color.WHITE);
             super.setContentView(rootLayout);
@@ -723,13 +723,13 @@ public class VitActivity extends Activity implements IAdvance {
 
             ImageView mediaView = new ImageView(this);
             mediaView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            loadAndShowImage(mediaView, mSpConfig.getBanner());
+            loadAndShowImage(mediaView, mSpreadCfg.getBanner());
             mediaLayout.addView(mediaView, -1, -2);
             mediaView.setOnClickListener(spClick);
 
             ImageView iconView = new ImageView(this);
             iconView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            loadAndShowImage(iconView, mSpConfig.getIcon());
+            loadAndShowImage(iconView, mSpreadCfg.getIcon());
             iconLayout.addView(iconView, -2, -2);
             iconView.setOnClickListener(spClick);
 
@@ -737,7 +737,7 @@ public class VitActivity extends Activity implements IAdvance {
             titleView.setGravity(Gravity.CENTER);
             titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             titleView.setTextColor(Color.BLACK);
-            titleView.setText(mSpConfig.getTitle());
+            titleView.setText(mSpreadCfg.getTitle());
             titleView.setMaxLines(2);
             titleView.setEllipsize(TextUtils.TruncateAt.END);
             lp = new LinearLayout.LayoutParams(-2, -2);
@@ -749,7 +749,7 @@ public class VitActivity extends Activity implements IAdvance {
             descView.setGravity(Gravity.CENTER);
             descView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             descView.setTextColor(Color.GRAY);
-            descView.setText(mSpConfig.getDetail());
+            descView.setText(mSpreadCfg.getDetail());
             descView.setMaxLines(2);
             descView.setEllipsize(TextUtils.TruncateAt.END);
             lp = new LinearLayout.LayoutParams(-2, -2);
@@ -791,7 +791,7 @@ public class VitActivity extends Activity implements IAdvance {
             button.setTypeface(button.getTypeface(), Typeface.BOLD);
             button.setSingleLine();
             button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            button.setText(mSpConfig.getCta());
+            button.setText(mSpreadCfg.getCta());
             button.setOnClickListener(spClick);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
@@ -820,10 +820,10 @@ public class VitActivity extends Activity implements IAdvance {
 
     private static class SpClick implements View.OnClickListener {
 
-        private SpConfig mSpConfig;
+        private SpreadCfg mSpreadCfg;
 
-        public void setSpConfig(SpConfig spConfig) {
-            mSpConfig = spConfig;
+        public void setSpConfig(SpreadCfg spreadCfg) {
+            mSpreadCfg = spreadCfg;
         }
 
         @Override
@@ -831,9 +831,9 @@ public class VitActivity extends Activity implements IAdvance {
             if (v == null) {
                 return;
             }
-            String url = mSpConfig.getLinkUrl();
+            String url = mSpreadCfg.getLinkUrl();
             if (TextUtils.isEmpty(url)) {
-                url = "market://details?id=" + mSpConfig.getPkgname();
+                url = "market://details?id=" + mSpreadCfg.getPkgname();
             }
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -858,15 +858,15 @@ public class VitActivity extends Activity implements IAdvance {
     }
 
     private boolean checkArgs() {
-        if (mSpConfig == null) {
+        if (mSpreadCfg == null) {
             return false;
         }
-        if (TextUtils.isEmpty(mSpConfig.getBanner())
-                || TextUtils.isEmpty(mSpConfig.getIcon())
-                || TextUtils.isEmpty(mSpConfig.getTitle())
-                || TextUtils.isEmpty(mSpConfig.getPkgname())
-                || TextUtils.isEmpty(mSpConfig.getDetail())
-                || TextUtils.isEmpty(mSpConfig.getCta())) {
+        if (TextUtils.isEmpty(mSpreadCfg.getBanner())
+                || TextUtils.isEmpty(mSpreadCfg.getIcon())
+                || TextUtils.isEmpty(mSpreadCfg.getTitle())
+                || TextUtils.isEmpty(mSpreadCfg.getPkgname())
+                || TextUtils.isEmpty(mSpreadCfg.getDetail())
+                || TextUtils.isEmpty(mSpreadCfg.getCta())) {
             return false;
         }
         return true;
@@ -1117,7 +1117,7 @@ public class VitActivity extends Activity implements IAdvance {
             public void onLoaded(String pidName, String source, String adType) {
                 if (!isFinishing()) {
                     AdSdk.get(getBaseContext()).showAdView(pidName, getAdParams(mSceneType), mLockAdLayout);
-                    onSceneShowing(mSceneType, mLockAdLayout);
+                    onSceneImp(mSceneType, mLockAdLayout);
                 }
             }
 

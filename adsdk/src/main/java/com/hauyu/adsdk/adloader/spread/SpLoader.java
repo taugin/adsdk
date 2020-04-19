@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.dock.vist.sun.IAdvance;
-import com.dock.vist.sun.SpConfig;
+import com.dock.vist.sun.SpreadCfg;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class SpLoader extends AbstractSdkLoader {
 
-    private SpConfig mSpread;
+    private SpreadCfg mSpread;
     private Params mParams;
 
     @Override
@@ -77,9 +77,9 @@ public class SpLoader extends AbstractSdkLoader {
         }
         if (mSpread != null) {
             reportAdImp();
-            SpConfig spConfig = mSpread;
+            SpreadCfg spreadCfg = mSpread;
             SpreadBindNativeView spreadBindNativeView = new SpreadBindNativeView();
-            spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spConfig);
+            spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadCfg);
             if (getAdListener() != null) {
                 getAdListener().onAdImp();
             }
@@ -112,12 +112,12 @@ public class SpLoader extends AbstractSdkLoader {
      * @param spList
      * @return
      */
-    private SpConfig checkSpConfig(List<SpConfig> spList) {
+    private SpreadCfg checkSpConfig(List<SpreadCfg> spList) {
         if (spList == null || spList.isEmpty()) {
             return null;
         }
-        List<SpConfig> availableSp = new ArrayList<SpConfig>();
-        for (SpConfig config : spList) {
+        List<SpreadCfg> availableSp = new ArrayList<SpreadCfg>();
+        for (SpreadCfg config : spList) {
             // 参数有效，并且未安装
             if (checkArgs(config) && !Utils.isInstalled(mContext, config.getPkgname()) && !config.isDisable()) {
                 availableSp.add(config);
@@ -133,19 +133,19 @@ public class SpLoader extends AbstractSdkLoader {
     /**
      * 检查参数合法性
      *
-     * @param spConfig
+     * @param spreadCfg
      * @return
      */
-    private boolean checkArgs(SpConfig spConfig) {
-        if (spConfig == null) {
+    private boolean checkArgs(SpreadCfg spreadCfg) {
+        if (spreadCfg == null) {
             return false;
         }
-        if (TextUtils.isEmpty(spConfig.getBanner())
-                || TextUtils.isEmpty(spConfig.getIcon())
-                || TextUtils.isEmpty(spConfig.getTitle())
-                || TextUtils.isEmpty(spConfig.getPkgname())
-                || TextUtils.isEmpty(spConfig.getDetail())
-                || TextUtils.isEmpty(spConfig.getCta())) {
+        if (TextUtils.isEmpty(spreadCfg.getBanner())
+                || TextUtils.isEmpty(spreadCfg.getIcon())
+                || TextUtils.isEmpty(spreadCfg.getTitle())
+                || TextUtils.isEmpty(spreadCfg.getPkgname())
+                || TextUtils.isEmpty(spreadCfg.getDetail())
+                || TextUtils.isEmpty(spreadCfg.getCta())) {
             return false;
         }
         return true;
@@ -170,14 +170,14 @@ public class SpLoader extends AbstractSdkLoader {
     private void show() {
         try {
             if (mSpread != null) {
-                SpConfig spConfig = mSpread;
+                SpreadCfg spreadCfg = mSpread;
                 Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.AFPICKER");
                 if (intent == null) {
                     intent = new Intent();
                     ComponentName cmp = new ComponentName(mContext, IAdvance.ACT_NAME);
                     intent.setComponent(cmp);
                 }
-                intent.putExtra(Intent.EXTRA_STREAM, spConfig);
+                intent.putExtra(Intent.EXTRA_STREAM, spreadCfg);
                 intent.putExtra(Intent.EXTRA_TITLE, getAdPlaceName());
                 intent.putExtra(Intent.EXTRA_TEXT, getSdkName());
                 intent.putExtra(Intent.EXTRA_TEMPLATE, getAdType());

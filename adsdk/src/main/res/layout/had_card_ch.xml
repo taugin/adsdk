@@ -154,7 +154,7 @@
                             android:scaleType="centerInside"
                             android:src="@drawable/had_speed" />
 
-                        <com.dock.vist.view.DotView
+                        <com.dock.vist.view.DView
                             android:id="@+id/ad_cm_dot_progress_1"
                             android:layout_width="0dp"
                             android:layout_height="23dp"
@@ -168,7 +168,7 @@
                             android:scaleType="centerInside"
                             android:src="@drawable/had_continuous" />
 
-                        <com.dock.vist.view.DotView
+                        <com.dock.vist.view.DView
                             android:id="@+id/ad_cm_dot_progress_2"
                             android:layout_width="0dp"
                             android:layout_height="23dp"

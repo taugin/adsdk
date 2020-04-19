@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dock.vist.sun.SpConfig;
+import com.dock.vist.sun.SpreadCfg;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
@@ -27,7 +27,7 @@ import com.hauyu.adsdk.log.Log;
 public class SpreadBindNativeView extends BaseBindNativeView {
     private Params mParams;
 
-    public void bindNative(Params params, ViewGroup adContainer, PidConfig pidConfig, SpConfig spConfig) {
+    public void bindNative(Params params, ViewGroup adContainer, PidConfig pidConfig, SpreadCfg spreadCfg) {
         mParams = params;
         if (mParams == null) {
             Log.e(Log.TAG, "bindNative mParams == null###");
@@ -44,14 +44,14 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         }
 
         if (rootLayout > 0) {
-            bindNativeViewWithRootView(adContainer, rootLayout, pidConfig, spConfig);
+            bindNativeViewWithRootView(adContainer, rootLayout, pidConfig, spreadCfg);
         } else {
             Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
         }
         updateCtaButtonBackground(adContainer, pidConfig, mParams);
     }
 
-    private void bindNativeViewWithRootView(ViewGroup adContainer, int rootLayout, PidConfig pidConfig, SpConfig spConfig) {
+    private void bindNativeViewWithRootView(ViewGroup adContainer, int rootLayout, PidConfig pidConfig, SpreadCfg spreadCfg) {
         if (adContainer == null) {
             throw new AndroidRuntimeException("adContainer is null");
         }
@@ -61,7 +61,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         View view = null;
         try {
             View rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
-            view = showUnifiedAdView(rootView, pidConfig, spConfig);
+            view = showUnifiedAdView(rootView, pidConfig, spreadCfg);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
@@ -77,9 +77,9 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         }
     }
 
-    private View showUnifiedAdView(View rootView, PidConfig pidConfig, final SpConfig spConfig) throws Exception {
+    private View showUnifiedAdView(View rootView, PidConfig pidConfig, final SpreadCfg spreadCfg) throws Exception {
         ClickClass clickClass = new ClickClass();
-        clickClass.setSpConfig(spConfig);
+        clickClass.setSpConfig(spreadCfg);
         try {
             if (rootView.getParent() != null) {
                 ((ViewGroup) rootView.getParent()).removeView(rootView);
@@ -97,39 +97,39 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         final View adIconView = rootView.findViewById(mParams.getAdIcon());
 
         // 设置广告元素内容
-        if (!TextUtils.isEmpty(spConfig.getTitle())) {
+        if (!TextUtils.isEmpty(spreadCfg.getTitle())) {
             if (titleView instanceof TextView) {
-                ((TextView) titleView).setText(spConfig.getTitle());
+                ((TextView) titleView).setText(spreadCfg.getTitle());
                 titleView.setVisibility(View.VISIBLE);
                 titleView.setOnClickListener(clickClass);
             }
         }
 
-        if (!TextUtils.isEmpty(spConfig.getSubTitle())) {
+        if (!TextUtils.isEmpty(spreadCfg.getSubTitle())) {
             if (subTitleView instanceof TextView) {
-                ((TextView) subTitleView).setText(spConfig.getSubTitle());
+                ((TextView) subTitleView).setText(spreadCfg.getSubTitle());
                 subTitleView.setVisibility(View.VISIBLE);
                 subTitleView.setOnClickListener(clickClass);
             }
         }
 
-        if (!TextUtils.isEmpty(spConfig.getDetail())) {
+        if (!TextUtils.isEmpty(spreadCfg.getDetail())) {
             if (detailView instanceof TextView) {
-                ((TextView) detailView).setText(spConfig.getDetail());
+                ((TextView) detailView).setText(spreadCfg.getDetail());
                 detailView.setVisibility(View.VISIBLE);
                 detailView.setOnClickListener(clickClass);
             }
         }
 
-        if (!TextUtils.isEmpty(spConfig.getCta())) {
+        if (!TextUtils.isEmpty(spreadCfg.getCta())) {
             if (ctaView instanceof TextView) {
-                ((TextView) ctaView).setText(spConfig.getCta());
+                ((TextView) ctaView).setText(spreadCfg.getCta());
                 ctaView.setVisibility(View.VISIBLE);
                 ctaView.setOnClickListener(clickClass);
             }
         }
 
-        String iconUrl = spConfig.getIcon();
+        String iconUrl = spreadCfg.getIcon();
         if (iconUrl != null) {
             if (adIconView instanceof ImageView) {
                 loadAndShowImage((ImageView) adIconView, iconUrl);
@@ -142,7 +142,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         ImageView mediaView = new ImageView(mediaViewLayout.getContext());
         if (mediaViewLayout != null && mediaView != null) {
             mediaView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            loadAndShowImage(mediaView, spConfig.getBanner());
+            loadAndShowImage(mediaView, spreadCfg.getBanner());
             mediaViewLayout.addView(mediaView, -1, -1);
             mediaViewLayout.setVisibility(View.VISIBLE);
             mediaView.setOnClickListener(clickClass);
@@ -171,18 +171,18 @@ public class SpreadBindNativeView extends BaseBindNativeView {
     }
 
     private class ClickClass implements View.OnClickListener {
-        private SpConfig mSpConfig;
+        private SpreadCfg mSpreadCfg;
 
-        public void setSpConfig(SpConfig spConfig) {
-            mSpConfig = spConfig;
+        public void setSpConfig(SpreadCfg spreadCfg) {
+            mSpreadCfg = spreadCfg;
         }
 
         @Override
         public void onClick(View v) {
-            if (mSpConfig != null) {
-                String url = mSpConfig.getLinkUrl();
+            if (mSpreadCfg != null) {
+                String url = mSpreadCfg.getLinkUrl();
                 if (TextUtils.isEmpty(url)) {
-                    url = "market://details?id=" + mSpConfig.getPkgname();
+                    url = "market://details?id=" + mSpreadCfg.getPkgname();
                 }
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

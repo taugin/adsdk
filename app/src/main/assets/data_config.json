@@ -115,7 +115,7 @@
     },
     {
       "name": "reward_video",
-      "mode": "ran",
+      "mode": "con",
       "retry":1,
       "pids": [
         {

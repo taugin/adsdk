@@ -16,7 +16,7 @@ import com.hauyu.adsdk.log.Log;
  * Created by Administrator on 2019-12-20.
  */
 
-public class BlinkView extends AppCompatImageView implements ValueAnimator.AnimatorUpdateListener, IAdvance.Blank {
+public class BlinkView extends AppCompatImageView implements ValueAnimator.AnimatorUpdateListener, IAdvance.IBlank {
     private int startAlpha, endAlpha, duration;
     private boolean isBlinking = false;
 
@@ -39,7 +39,7 @@ public class BlinkView extends AppCompatImageView implements ValueAnimator.Anima
     }
 
     @Override
-    public void startProcess() {
+    public void begin() {
         if (!isBlinking) {
             colorAnimation = ValueAnimator.ofObject(new IntEvaluator(), startAlpha, endAlpha);
             colorAnimation.setRepeatMode(ValueAnimator.REVERSE);
@@ -53,7 +53,7 @@ public class BlinkView extends AppCompatImageView implements ValueAnimator.Anima
     }
 
     @Override
-    public void stopProcess() {
+    public void end() {
         if (isBlinking) {
             colorAnimation.removeUpdateListener(this);
             colorAnimation.end();
@@ -63,12 +63,12 @@ public class BlinkView extends AppCompatImageView implements ValueAnimator.Anima
     }
 
     @Override
-    public void setAlpha() {
+    public void updateTransparent() {
         setAlpha(1.0f);
     }
 
     @Override
-    public void setBackground() {
+    public void setBg() {
         setAlpha(startAlpha / 256f);
     }
 

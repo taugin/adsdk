@@ -14,7 +14,7 @@ public interface IAdvance {
     String ACT_NAME = "com.dock.vist.sun.VitActivity";
     String ACT_VIEW_NAME = "com.dock.vist.view.MView";
 
-    void onSceneShowing(String adType, View containerView);
+    void onSceneImp(String adType, View containerView);
 
     AdParams getAdParams(String adType);
 
@@ -26,10 +26,10 @@ public interface IAdvance {
         void setMaxWidth(int step);
     }
 
-    interface Blank {
-        void startProcess();
-        void stopProcess();
-        void setAlpha();
-        void setBackground();
+    interface IBlank {
+        void begin();
+        void end();
+        void updateTransparent();
+        void setBg();
     }
 }

@@ -2,7 +2,7 @@ package com.hauyu.adsdk.data.parse;
 
 import android.text.TextUtils;
 
-import com.dock.vist.sun.SpConfig;
+import com.dock.vist.sun.SpreadCfg;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.Aes;
 import com.hauyu.adsdk.data.config.AdPlace;
@@ -399,14 +399,14 @@ public class AdParser implements IParser {
     }
 
     @Override
-    public List<SpConfig> parseSpread(String data) {
-        List<SpConfig> spreads = null;
+    public List<SpreadCfg> parseSpread(String data) {
+        List<SpreadCfg> spreads = null;
         data = getContent(data);
         try {
             JSONObject jobj = new JSONObject(data);
-            SpConfig spConfig = parseSpConfigLocked(jobj);
-            spreads = new ArrayList<SpConfig>(1);
-            spreads.add(spConfig);
+            SpreadCfg spreadCfg = parseSpConfigLocked(jobj);
+            spreads = new ArrayList<SpreadCfg>(1);
+            spreads.add(spreadCfg);
         } catch (Exception e) {
         }
         if (spreads == null || spreads.isEmpty()) {
@@ -414,14 +414,14 @@ public class AdParser implements IParser {
                 JSONArray jarray = new JSONArray(data);
                 int len = jarray.length();
                 if (len > 0) {
-                    spreads = new ArrayList<SpConfig>(len);
+                    spreads = new ArrayList<SpreadCfg>(len);
                     JSONObject jobj = null;
-                    SpConfig spConfig = null;
+                    SpreadCfg spreadCfg = null;
                     for (int index = 0; index < len; index++) {
                         jobj = jarray.getJSONObject(index);
-                        spConfig = parseSpConfigLocked(jobj);
-                        if (spConfig != null) {
-                            spreads.add(spConfig);
+                        spreadCfg = parseSpConfigLocked(jobj);
+                        if (spreadCfg != null) {
+                            spreads.add(spreadCfg);
                         }
                     }
                 }
@@ -432,42 +432,42 @@ public class AdParser implements IParser {
         return spreads;
     }
 
-    private SpConfig parseSpConfigLocked(JSONObject jobj) {
-        SpConfig spConfig = null;
+    private SpreadCfg parseSpConfigLocked(JSONObject jobj) {
+        SpreadCfg spreadCfg = null;
         try {
             if (jobj != null) {
-                spConfig = new SpConfig();
+                spreadCfg = new SpreadCfg();
                 if (jobj.has(BANNER)) {
-                    spConfig.setBanner(jobj.getString(BANNER));
+                    spreadCfg.setBanner(jobj.getString(BANNER));
                 }
                 if (jobj.has(ICON)) {
-                    spConfig.setIcon(jobj.getString(ICON));
+                    spreadCfg.setIcon(jobj.getString(ICON));
                 }
                 if (jobj.has(TITLE)) {
-                    spConfig.setTitle(jobj.getString(TITLE));
+                    spreadCfg.setTitle(jobj.getString(TITLE));
                 }
                 if (jobj.has(PKGNAME)) {
-                    spConfig.setPkgname(jobj.getString(PKGNAME));
+                    spreadCfg.setPkgname(jobj.getString(PKGNAME));
                 }
                 if (jobj.has(SUBTITLE)) {
-                    spConfig.setSubTitle(jobj.getString(SUBTITLE));
+                    spreadCfg.setSubTitle(jobj.getString(SUBTITLE));
                 }
                 if (jobj.has(DETAIL)) {
-                    spConfig.setDetail(jobj.getString(DETAIL));
+                    spreadCfg.setDetail(jobj.getString(DETAIL));
                 }
                 if (jobj.has(LINKURL)) {
-                    spConfig.setLinkUrl(jobj.getString(LINKURL));
+                    spreadCfg.setLinkUrl(jobj.getString(LINKURL));
                 }
                 if (jobj.has(CTA)) {
-                    spConfig.setCta(jobj.getString(CTA));
+                    spreadCfg.setCta(jobj.getString(CTA));
                 }
                 if (jobj.has(DISABLE)) {
-                    spConfig.setDisable(jobj.getInt(DISABLE) == 1);
+                    spreadCfg.setDisable(jobj.getInt(DISABLE) == 1);
                 }
             }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseSpConfig error : " + e);
         }
-        return spConfig;
+        return spreadCfg;
     }
 }

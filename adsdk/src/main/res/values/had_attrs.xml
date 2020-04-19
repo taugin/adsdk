@@ -15,7 +15,7 @@
         <attr name="baseColor" format="color" />
         <attr name="blinkDuration" format="integer" />
     </declare-styleable>
-    <declare-styleable name="DotView">
+    <declare-styleable name="DView">
         <attr name="stepCount" format="integer" />
         <attr name="emptyAlpha" format="integer" />
         <attr name="dotBaseColor" format="color" />
