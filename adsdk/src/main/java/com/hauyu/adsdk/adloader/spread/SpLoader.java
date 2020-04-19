@@ -30,7 +30,7 @@ import java.util.Random;
 
 public class SpLoader extends AbstractSdkLoader {
 
-    private static final int MOCK_LOADING_TIME = 500;
+    private static final int MOCK_LOADING_TIME = 200;
     private SpreadCfg mSpread;
     private Params mParams;
     private Handler mHandler = new Handler(Looper.getMainLooper());
