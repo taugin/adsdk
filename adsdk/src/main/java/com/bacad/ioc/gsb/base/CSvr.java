@@ -13,6 +13,7 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import com.bacad.ioc.gsb.data.SceneData;
 import com.bacad.ioc.gsb.manager.IpManager;
 import com.hauyu.adsdk.listener.OnTriggerListener;
 import com.hauyu.adsdk.stat.InternalStat;
@@ -317,6 +318,8 @@ public class CSvr implements SharedPreferences.OnSharedPreferenceChangeListener 
     }
 
     private void updateIpAddr() {
-        IpManager.get(mContext).check();
+        if (TextUtils.equals(SceneData.get(mContext).getString("enable_ip_check"), "true")) {
+            IpManager.get(mContext).check();
+        }
     }
 }
