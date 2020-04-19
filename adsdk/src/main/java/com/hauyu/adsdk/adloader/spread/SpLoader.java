@@ -5,6 +5,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
@@ -28,8 +30,10 @@ import java.util.Random;
 
 public class SpLoader extends AbstractSdkLoader {
 
+    private static final int MOCK_LOADING_TIME = 500;
     private SpreadCfg mSpread;
     private Params mParams;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public String getSdkName() {
@@ -38,16 +42,41 @@ public class SpLoader extends AbstractSdkLoader {
 
     @Override
     public void loadNative(Params params) {
-        mSpread = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
-        if (checkArgs(mSpread)) {
-            reportAdLoaded();
+        if (mPidConfig == null) {
+            Log.e(Log.TAG, "pid config is null");
+        }
+        if (!TextUtils.equals(mPidConfig.getSdk(), getSdkName())) {
+            Log.e(Log.TAG, "sdk not equals");
+        }
+        if (isNativeLoaded()) {
+            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            notifyAdLoaded(true);
+            return;
+        }
+        if (isLoading()) {
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
-                setLoadedFlag();
-                getAdListener().onAdLoaded(SpLoader.this);
+                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            return;
+        }
+        final SpreadCfg spreadCfg = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
+        if (checkArgs(spreadCfg)) {
+            setLoading(true, STATE_REQUEST);
             printInterfaceLog(ACTION_LOAD);
-            loadIcon(mSpread.getIcon());
-            loadBanner(mSpread.getBanner());
+            loadIcon(spreadCfg.getIcon());
+            loadBanner(spreadCfg.getBanner());
+            if (mHandler != null) {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSpread = spreadCfg;
+                        setLoading(false, STATE_SUCCESS);
+                        reportAdLoaded();
+                        notifyAdLoaded(false);
+                    }
+                }, MOCK_LOADING_TIME);
+            }
         } else {
             reportAdError(String.valueOf("ERROR_LOAD"));
             if (getAdListener() != null) {
@@ -83,21 +112,47 @@ public class SpLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onAdImp();
             }
+            mSpread = null;
         }
     }
 
     @Override
     public void loadInterstitial() {
-        mSpread = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
-        if (checkArgs(mSpread)) {
-            reportAdLoaded();
+        if (mPidConfig == null) {
+            Log.e(Log.TAG, "pid config is null");
+        }
+        if (!TextUtils.equals(mPidConfig.getSdk(), getSdkName())) {
+            Log.e(Log.TAG, "sdk not equals");
+        }
+        if (isInterstitialLoaded()) {
+            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            notifyAdLoaded(true);
+            return;
+        }
+        if (isLoading()) {
+            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             if (getAdListener() != null) {
-                setLoadedFlag();
-                getAdListener().onInterstitialLoaded(this);
+                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
             }
+            return;
+        }
+        final SpreadCfg spreadCfg = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
+        if (checkArgs(spreadCfg)) {
+            setLoading(true, STATE_REQUEST);
             printInterfaceLog(ACTION_LOAD);
-            loadIcon(mSpread.getIcon());
-            loadBanner(mSpread.getBanner());
+            loadIcon(spreadCfg.getIcon());
+            loadBanner(spreadCfg.getBanner());
+            if (mHandler != null) {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSpread = spreadCfg;
+                        setLoading(false, STATE_SUCCESS);
+                        reportAdLoaded();
+                        notifyAdLoaded(false);
+                    }
+                }, MOCK_LOADING_TIME);
+            }
         } else {
             reportAdError(String.valueOf("ERROR_LOAD"));
             if (getAdListener() != null) {
