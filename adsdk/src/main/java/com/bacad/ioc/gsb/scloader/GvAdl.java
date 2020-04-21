@@ -99,16 +99,12 @@ public class GvAdl extends Bldr {
                     GvPcy.get(mContext).setLoading(false);
                     SceneEventImpl.get().reportAdSceneLoaded(mContext, GvPcy.get(mContext).getType(), pidName);
                     if (GvPcy.get(mContext).isGtAllowed()) {
-                        if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
-                            AdSdk.get(mContext).showComplexAds(pidName, null);
+                        if (GvPcy.get(mContext).isShowBottom()
+                                || Constant.TYPE_BANNER.equals(adType)
+                                || Constant.TYPE_NATIVE.equals(adType)) {
+                            show(pidName, source, adType, GvPcy.get(mContext).getType());
                         } else {
-                            if (GvPcy.get(mContext).isShowBottom()
-                                    || Constant.TYPE_BANNER.equals(adType)
-                                    || Constant.TYPE_NATIVE.equals(adType)) {
-                                show(pidName, source, adType, GvPcy.get(mContext).getType());
-                            } else {
-                                AdSdk.get(mContext).showComplexAds(pidName, null);
-                            }
+                            AdSdk.get(mContext).showComplexAds(pidName, null);
                         }
                         SceneEventImpl.get().reportAdSceneShow(mContext, GvPcy.get(mContext).getType(), pidName);
                     } else {

@@ -105,16 +105,12 @@ public class SvAdl extends Bldr implements Handler.Callback {
                 public void onLoaded(String pidName, String source, String adType) {
                     SceneEventImpl.get().reportAdSceneLoaded(mContext, SvPcy.get(mContext).getType(), pidName);
                     if (SvPcy.get(mContext).isStAllowed()) {
-                        if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
-                            AdSdk.get(mContext).showComplexAds(pidName, null);
+                        if (SvPcy.get(mContext).isShowBottom()
+                                || Constant.TYPE_BANNER.equals(adType)
+                                || Constant.TYPE_NATIVE.equals(adType)) {
+                            show(pidName, source, adType, SvPcy.get(mContext).getType());
                         } else {
-                            if (SvPcy.get(mContext).isShowBottom()
-                                    || Constant.TYPE_BANNER.equals(adType)
-                                    || Constant.TYPE_NATIVE.equals(adType)) {
-                                show(pidName, source, adType, SvPcy.get(mContext).getType());
-                            } else {
-                                AdSdk.get(mContext).showComplexAds(pidName, null);
-                            }
+                            AdSdk.get(mContext).showComplexAds(pidName, null);
                         }
                         SceneEventImpl.get().reportAdSceneShow(mContext, SvPcy.get(mContext).getType(), pidName);
                     } else {

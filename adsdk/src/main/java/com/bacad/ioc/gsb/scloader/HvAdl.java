@@ -101,16 +101,12 @@ public class HvAdl extends Bldr {
                     SceneEventImpl.get().reportAdSceneLoaded(mContext, HvPcy.get(mContext).getType(), pidName);
                     HvPcy.get(mContext).setLoading(false);
                     if (HvPcy.get(mContext).isHtAllowed()) {
-                        if (TextUtils.equals(source, Constant.AD_SDK_SPREAD)) {
-                            AdSdk.get(mContext).showComplexAds(pidName, null);
+                        if (HvPcy.get(mContext).isShowBottom()
+                                || Constant.TYPE_BANNER.equals(adType)
+                                || Constant.TYPE_NATIVE.equals(adType)) {
+                            show(pidName, source, adType, HvPcy.get(mContext).getType());
                         } else {
-                            if (HvPcy.get(mContext).isShowBottom()
-                                    || Constant.TYPE_BANNER.equals(adType)
-                                    || Constant.TYPE_NATIVE.equals(adType)) {
-                                show(pidName, source, adType, HvPcy.get(mContext).getType());
-                            } else {
-                                AdSdk.get(mContext).showComplexAds(pidName, null);
-                            }
+                            AdSdk.get(mContext).showComplexAds(pidName, null);
                         }
                         SceneEventImpl.get().reportAdSceneShow(mContext, HvPcy.get(mContext).getType(), pidName);
                     } else {

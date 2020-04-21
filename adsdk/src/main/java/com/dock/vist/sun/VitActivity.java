@@ -328,7 +328,8 @@ public class VitActivity extends Activity implements IAdvance {
      */
     private void show() {
         if (Constant.TYPE_NATIVE.equalsIgnoreCase(mAdType)
-                || Constant.TYPE_BANNER.equalsIgnoreCase(mAdType)) {
+                || Constant.TYPE_BANNER.equalsIgnoreCase(mAdType)
+                || Constant.AD_SDK_SPREAD.equalsIgnoreCase(mSource)) {
             showNAd();
         } else if (Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
                 || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType)) {
