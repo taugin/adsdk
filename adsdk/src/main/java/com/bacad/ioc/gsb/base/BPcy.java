@@ -113,16 +113,19 @@ public class BPcy implements Handler.Callback {
         if (fatMap == null) {
             return null;
         }
-        Log.v(Log.TAG, "fatMap : " + fatMap);
+        String admByFat = null;
+        Log.iv(Log.TAG, "fatmap : " + fatMap);
         long firstActiveTime = CSvr.get(mContext).getFirstStartUpTime();
         Set<Long> keySet = fatMap.keySet();
         for (Long key : keySet) {
-            Log.v(Log.TAG, "fatkey : " + key);
-            if (firstActiveTime > key) {
-                return fatMap.get(key);
+            boolean useFatAdm = firstActiveTime > key;
+            Log.iv(Log.TAG, "fatcur : " + Constant.SDF_1.format(new Date(firstActiveTime)) + " , fatkey : " + Constant.SDF_1.format(new Date(key)) + " , usefatadm : " + useFatAdm);
+            if (useFatAdm) {
+                admByFat = fatMap.get(key);
+                break;
             }
         }
-        return null;
+        return admByFat;
     }
 
     private String getAdmByVer() {
@@ -130,16 +133,18 @@ public class BPcy implements Handler.Callback {
         if (verMap == null) {
             return null;
         }
-        Log.v(Log.TAG, "vermap : " + verMap);
+        String admByVer = null;
+        Log.iv(Log.TAG, "vermap : " + verMap);
         String verName = Utils.getVersionName(mContext);
         Set<String> keySet = verMap.keySet();
         for (String key : keySet) {
-            Log.v(Log.TAG, "verkey : " + key);
+            Log.iv(Log.TAG, "verkey : " + key + " , vername : " + verName);
             if (TextUtils.equals(verName, key)) {
-                return verMap.get(key);
+                admByVer = verMap.get(key);
+                break;
             }
         }
-        return null;
+        return admByVer;
     }
 
     private String getDefaultAdMain() {
