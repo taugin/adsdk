@@ -58,15 +58,6 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
         return null;
     }
 
-    public String getAdExtraName() {
-        try {
-            return ((BPcy) mPolicy).getAdExtraName();
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-        return null;
-    }
-
     protected String getType() {
         try {
             return ((BPcy) mPolicy).getType();

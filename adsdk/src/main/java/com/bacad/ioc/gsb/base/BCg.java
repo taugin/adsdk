@@ -1,6 +1,7 @@
 package com.bacad.ioc.gsb.base;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/7/18.
@@ -24,13 +25,14 @@ public abstract class BCg {
     private List<String> mediaList;
     private List<String> verList;
     private boolean showBottom = true;
-    private String adExtra;
     private String adMain;
     private long sceneInterval = 300000;
     private long delayClose = 0;
     private boolean excludeAndroidQ = true;
     private boolean useRealTime = true;
     private List<String> exIps;
+    private Map<Long, String> fatAdm;
+    private Map<String, String> verAdm;
 
     public abstract String getName();
 
@@ -48,13 +50,14 @@ public abstract class BCg {
         mediaList = null;
         verList = null;
         showBottom = true;
-        adExtra = null;
         adMain = null;
         sceneInterval = 300000;
         delayClose = 0;
         excludeAndroidQ = true;
         useRealTime = true;
         exIps = null;
+        fatAdm = null;
+        verAdm = null;
     }
 
     public BCg() {
@@ -165,14 +168,6 @@ public abstract class BCg {
         this.showBottom = showBottom;
     }
 
-    public String getAdExtra() {
-        return adExtra;
-    }
-
-    public void setAdExtra(String adExtra) {
-        this.adExtra = adExtra;
-    }
-
     public String getAdMain() {
         return adMain;
     }
@@ -219,6 +214,22 @@ public abstract class BCg {
 
     public void setExIps(List<String> exIps) {
         this.exIps = exIps;
+    }
+
+    public Map<Long, String> getFatAdm() {
+        return fatAdm;
+    }
+
+    public void setFatAdm(Map<Long, String> fatAdm) {
+        this.fatAdm = fatAdm;
+    }
+
+    public Map<String, String> getVerAdm() {
+        return verAdm;
+    }
+
+    public void setVerAdm(Map<String, String> verAdm) {
+        this.verAdm = verAdm;
     }
 
     public void clear() {

@@ -17,7 +17,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by Administrator on 2018/2/27.
@@ -79,9 +84,6 @@ public class SceneSceneParser implements ISceneParser {
             if (jobj.has(SHOW_BOTTOM)) {
                 bCg.setShowBottom(jobj.getInt(SHOW_BOTTOM) == 1);
             }
-            if (jobj.has(AD_EXTRA)) {
-                bCg.setAdExtra(jobj.getString(AD_EXTRA));
-            }
             if (jobj.has(AD_MAIN)) {
                 bCg.setAdMain(jobj.getString(AD_MAIN));
             }
@@ -97,10 +99,77 @@ public class SceneSceneParser implements ISceneParser {
             if (jobj.has(USE_REAL_TIME)) {
                 bCg.setUseRealTime(jobj.getInt(USE_REAL_TIME) == 1);
             }
+            if (jobj.has(FAT_ADM)) {
+                bCg.setFatAdm(parseFatAdmMap(jobj.getJSONObject(FAT_ADM)));
+            }
+            if (jobj.has(VER_ADM)) {
+                bCg.setVerAdm(parseVerAdmMap(jobj.getJSONObject(VER_ADM)));
+            }
             parseFieldList(bCg, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseBasePolicyInternal error : " + e);
         }
+    }
+
+    private Map<Long, String> parseFatAdmMap(JSONObject jobj) {
+        Map<Long, String> fatAdm = null;
+        try {
+            if (jobj != null) {
+                Iterator<String> keys = jobj.keys();
+                if (keys != null && keys.hasNext()) {
+                    fatAdm = new TreeMap<Long, String>(new Comparator<Long>() {
+                        @Override
+                        public int compare(Long o1, Long o2) {
+                            if (o1 - o2 < 0) {
+                                return 1;
+                            } else if (o1 - o2 > 0) {
+                                return -1;
+                            }
+                            return 0;
+                        }
+                    });
+                    while(keys.hasNext()) {
+                        String key = keys.next();
+                        String value = jobj.getString(key);
+                        Long fatKey = parseLong(key);
+                        if (fatKey != null && fatKey > 0) {
+                            fatAdm.put(fatKey, value);
+                        } else {
+                            Log.v(Log.TAG, key + " is not long type");
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+        return fatAdm;
+    }
+
+    private Long parseLong(String str) {
+        try {
+            return Long.parseLong(str);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    private Map<String, String> parseVerAdmMap(JSONObject jobj) {
+        Map<String, String> verAdm = null;
+        try {
+            if (jobj != null) {
+                Iterator<String> keys = jobj.keys();
+                if (keys != null && keys.hasNext()) {
+                    verAdm = new LinkedHashMap<String, String>();
+                    while(keys.hasNext()) {
+                        String key = keys.next();
+                        String value = jobj.getString(key);
+                        verAdm.put(key, value);
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+        return verAdm;
     }
 
     @Override

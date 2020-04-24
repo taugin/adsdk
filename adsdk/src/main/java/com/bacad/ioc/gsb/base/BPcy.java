@@ -8,8 +8,8 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
-import com.bacad.ioc.gsb.manager.IpManager;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
+import com.bacad.ioc.gsb.manager.IpManager;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.AttrChecker;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 /**
@@ -95,15 +96,55 @@ public class BPcy implements Handler.Callback {
     }
 
     public String getAdMainName() {
-        if (mBCg != null) {
-            return mBCg.getAdMain();
+        String adMainName = null;
+        adMainName = getAdmByFat();
+        if (!TextUtils.isEmpty(adMainName)) {
+            return adMainName;
+        }
+        adMainName = getAdmByVer();
+        if (!TextUtils.isEmpty(adMainName)) {
+            return adMainName;
+        }
+        return getDefaultAdMain();
+    }
+
+    private String getAdmByFat() {
+        Map<Long, String> fatMap = mBCg.getFatAdm();
+        if (fatMap == null) {
+            return null;
+        }
+        Log.v(Log.TAG, "fatMap : " + fatMap);
+        long firstActiveTime = CSvr.get(mContext).getFirstStartUpTime();
+        Set<Long> keySet = fatMap.keySet();
+        for (Long key : keySet) {
+            Log.v(Log.TAG, "fatkey : " + key);
+            if (firstActiveTime > key) {
+                return fatMap.get(key);
+            }
         }
         return null;
     }
 
-    public String getAdExtraName() {
+    private String getAdmByVer() {
+        Map<String, String> verMap = mBCg.getVerAdm();
+        if (verMap == null) {
+            return null;
+        }
+        Log.v(Log.TAG, "vermap : " + verMap);
+        String verName = Utils.getVersionName(mContext);
+        Set<String> keySet = verMap.keySet();
+        for (String key : keySet) {
+            Log.v(Log.TAG, "verkey : " + key);
+            if (TextUtils.equals(verName, key)) {
+                return verMap.get(key);
+            }
+        }
+        return null;
+    }
+
+    private String getDefaultAdMain() {
         if (mBCg != null) {
-            return mBCg.getAdExtra();
+            return mBCg.getAdMain();
         }
         return null;
     }

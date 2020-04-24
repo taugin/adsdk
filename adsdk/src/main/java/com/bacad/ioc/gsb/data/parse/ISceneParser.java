@@ -42,8 +42,6 @@ public interface ISceneParser {
     String SHOW_BOTTOM = "sb";
     // 禁用间隔
     String DISABLE_INTERVAL = "di";
-    // 插屏广告位名称
-    String AD_EXTRA = "ade";
     // view广告位名称
     String AD_MAIN = "adm";
     // 场景间隔
@@ -56,6 +54,10 @@ public interface ISceneParser {
     String USE_REAL_TIME = "urt";
     // 排除的ip列表
     String EX_IPS = "exips";
+    // 激活时间列表
+    String FAT_ADM = "fatadm";
+    // 版本列表
+    String VER_ADM = "veradm";
 
     // 是否上报友盟
     String REPORT_UMENG = "ru";
