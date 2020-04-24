@@ -82,7 +82,7 @@ public class HvAdl extends Bldr {
             if (!HvPcy.get(mContext).isHtAllowed()) {
                 return;
             }
-            String placeName = getPlaceNameAdv();
+            String placeName = getAdMainName();
             if (TextUtils.isEmpty(placeName)) {
                 Log.iv(Log.TAG, getType() + " not found place name");
                 return;

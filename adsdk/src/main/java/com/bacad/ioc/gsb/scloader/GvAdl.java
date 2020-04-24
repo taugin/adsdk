@@ -76,7 +76,7 @@ public class GvAdl extends Bldr {
             if (!GvPcy.get(mContext).isGtAllowed()) {
                 return;
             }
-            String placeName = getPlaceNameAdv();
+            String placeName = getAdMainName();
             if (TextUtils.isEmpty(placeName)) {
                 Log.iv(Log.TAG, getType() + " not found place name");
                 return;

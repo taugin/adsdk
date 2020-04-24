@@ -93,7 +93,7 @@ public class SvAdl extends Bldr implements Handler.Callback {
             if (!SvPcy.get(mContext).isStAllowed()) {
                 return;
             }
-            String placeName = getPlaceNameAdv();
+            String placeName = getAdMainName();
             if (TextUtils.isEmpty(placeName)) {
                 Log.iv(Log.TAG, getType() + " not found place name");
                 return;

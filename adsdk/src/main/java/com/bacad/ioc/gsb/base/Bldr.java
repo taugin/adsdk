@@ -49,18 +49,18 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
         }
     }
 
-    public String getPlaceNameAdv() {
+    public String getAdMainName() {
         try {
-            return ((BPcy) mPolicy).getPlaceNameAdv();
+            return ((BPcy) mPolicy).getAdMainName();
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }
         return null;
     }
 
-    public String getPlaceNameInt() {
+    public String getAdExtraName() {
         try {
-            return ((BPcy) mPolicy).getPlaceNameInt();
+            return ((BPcy) mPolicy).getAdExtraName();
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }

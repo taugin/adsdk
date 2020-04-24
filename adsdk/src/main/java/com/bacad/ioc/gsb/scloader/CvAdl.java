@@ -89,7 +89,7 @@ public class CvAdl extends Bldr {
         if (!CvPcy.get(mContext).isCtAllowed()) {
             return;
         }
-        String placeName = getPlaceNameAdv();
+        String placeName = getAdMainName();
         if (TextUtils.isEmpty(placeName)) {
             Log.iv(Log.TAG, getType() + " not found place name");
             return;

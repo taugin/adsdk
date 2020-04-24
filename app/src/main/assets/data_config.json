@@ -9,14 +9,14 @@
   "adplaces": [
     {
       "name": "banner_and_native",
-      "mode": "con",
+      "mode": "seq",
       "cc": [
         "#FF660000",
         "#4455bb22"
       ],
       "pids": [
         {
-          "sdk": "fb",
+          "sdk": "spread",
           "type": "native",
           "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
           "disable": 0
@@ -148,13 +148,13 @@
     },
     {
       "name": "ad_complex",
-      "mode": "con",
+      "mode": "seq",
       "pids": [
         {
-          "sdk": "dfp",
-          "type": "banner",
+          "sdk": "spread",
+          "type": "interstitial",
           "pid": "/6253334/dfp_example_ad",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",

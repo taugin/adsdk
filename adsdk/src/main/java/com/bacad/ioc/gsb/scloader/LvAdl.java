@@ -94,7 +94,7 @@ public class LvAdl extends Bldr {
         if (!LvPcy.get(mContext).isLtAllowed()) {
             return;
         }
-        String placeName = getPlaceNameAdv();
+        String placeName = getAdMainName();
         if (TextUtils.isEmpty(placeName)) {
             return;
         }
