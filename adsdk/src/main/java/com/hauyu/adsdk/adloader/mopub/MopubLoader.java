@@ -576,9 +576,9 @@ public class MopubLoader extends AbstractSdkLoader {
         if (gNativeAd != null) {
             MoPubAdRenderer render = gNativeAd.getMoPubAdRenderer();
             if (render instanceof MoPubStaticNativeAdRenderer) {
-                reportAdImpWithPlaceName(getAdPlaceName() + "_static");
+                reportAdImpWithMediaType("_static");
             } else if (render instanceof MoPubVideoNativeAdRenderer) {
-                reportAdImpWithPlaceName(getAdPlaceName() + "_video");
+                reportAdImpWithMediaType("_video");
             }
         }
     }

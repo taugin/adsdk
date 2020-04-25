@@ -601,9 +601,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
     }
 
-    protected void reportAdImpWithPlaceName(String placeName) {
+    protected void reportAdImpWithMediaType(String mediaType) {
         if (mStat != null) {
-            mStat.reportAdImp(mContext, placeName, getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), null);
+            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName() + mediaType, getAdType(), getPid(), String.valueOf(getEcpm()), null);
         }
     }
 
