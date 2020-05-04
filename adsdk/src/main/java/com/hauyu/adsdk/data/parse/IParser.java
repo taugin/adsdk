@@ -99,6 +99,8 @@ public interface IParser {
     String CLICK_VIEWS = "cv";
     // 加载原生个数
     String LOAD_NATIVE_COUNT = "lnc";
+    // 使用activity上下文
+    String ACTIVITY_CONTEXT = "ac";
 
     // 是否上报错误日志
     String REPORT_ERROR = "re";

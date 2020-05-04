@@ -58,6 +58,8 @@ public class PidConfig {
 
     private AdPlace adPlace;
 
+    private boolean activityContext;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -232,6 +234,14 @@ public class PidConfig {
 
     public void setAdPlace(AdPlace adPlace) {
         this.adPlace = adPlace;
+    }
+
+    public boolean isActivityContext() {
+        return activityContext;
+    }
+
+    public void setActivityContext(boolean activityContext) {
+        this.activityContext = activityContext;
     }
 
     public boolean isAdmob() {

@@ -1,14 +1,12 @@
 package com.hauyu.adsdk.adloader.mopub;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.dock.vist.sun.VitActivity;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
@@ -122,7 +120,16 @@ public class MopubLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
         setBannerSize(adSize);
-        loadingView = new MoPubView(mContext);
+        boolean activityContext = false;
+        try {
+            activityContext = getPidConfig().isActivityContext();
+        } catch (Exception e) {
+        }
+        Context context = activityContext ? getActivity() : mContext;
+        if (context == null) {
+            context = mContext;
+        }
+        loadingView = new MoPubView(context);
         loadingView.setAutorefreshEnabled(false);
         loadingView.setAdUnitId(mPidConfig.getPid());
         loadingView.setBannerAdListener(new MoPubView.BannerAdListener() {
@@ -216,20 +223,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public void loadInterstitial() {
-        Activity activity = null;
-        if (mManagerListener != null) {
-            activity = mManagerListener.getActivity();
-        }
-
-        if (activity == null) {
-            try {
-                activity = VitActivity.createFakeActivity((Application) mContext.getApplicationContext());
-                if (activity != null) {
-                    Log.iv(Log.TAG, "mopub interstitial use fake activity");
-                }
-            } catch (Exception e) {
-            }
-        }
+        Activity activity = getActivity();
 
         if (activity == null) {
             Log.v(Log.TAG, "mopub interstitial need an activity context");
@@ -363,21 +357,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public void loadRewardedVideo() {
-        Activity activity = null;
-        if (mManagerListener != null) {
-            activity = mManagerListener.getActivity();
-        }
-
-        if (activity == null) {
-            try {
-                activity = VitActivity.createFakeActivity((Application) mContext.getApplicationContext());
-                if (activity != null) {
-                    Log.iv(Log.TAG, "mopub reward use fake activity");
-                }
-            } catch (Exception e) {
-            }
-        }
-
+        Activity activity = getActivity();
         if (activity == null) {
             Log.v(Log.TAG, "mopub reward need an activity context");
             if (getAdListener() != null) {

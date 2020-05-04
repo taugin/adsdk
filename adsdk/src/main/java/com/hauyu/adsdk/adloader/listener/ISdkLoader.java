@@ -1,5 +1,6 @@
 package com.hauyu.adsdk.adloader.listener;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.ViewGroup;
 
@@ -18,6 +19,7 @@ public interface ISdkLoader {
 
     public Context getContext();
 
+    public Activity getActivity();
     // 获取loader名称
     public String getSdkName();
 

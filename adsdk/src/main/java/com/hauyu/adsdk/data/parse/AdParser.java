@@ -341,6 +341,9 @@ public class AdParser implements IParser {
             if (jobj.has(CLICK_VIEWS)) {
                 pidConfig.setClickViews(parseStringList(jobj.getString(CLICK_VIEWS)));
             }
+            if (jobj.has(ACTIVITY_CONTEXT)) {
+                pidConfig.setActivityContext(jobj.getInt(ACTIVITY_CONTEXT) == 1);
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

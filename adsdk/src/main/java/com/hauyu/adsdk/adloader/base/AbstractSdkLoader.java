@@ -1,5 +1,7 @@
 package com.hauyu.adsdk.adloader.base;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -9,6 +11,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.dock.vist.sun.VitActivity;
 import com.hauyu.adsdk.adloader.listener.IManagerListener;
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
 import com.hauyu.adsdk.adloader.listener.OnAdBaseListener;
@@ -71,6 +74,24 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     @Override
     public Context getContext() {
         return mContext;
+    }
+
+    @Override
+    public Activity getActivity() {
+        Activity activity = null;
+        if (mManagerListener != null) {
+            activity = mManagerListener.getActivity();
+        }
+        if (activity == null) {
+            try {
+                activity = VitActivity.createFakeActivity((Application) mContext.getApplicationContext());
+                if (activity != null) {
+                    Log.iv(Log.TAG, "mopub " + getAdType() + " use fk activity");
+                }
+            } catch (Exception e) {
+            }
+        }
+        return activity;
     }
 
     @Override
