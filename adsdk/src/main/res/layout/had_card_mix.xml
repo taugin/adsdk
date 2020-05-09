@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.percent.PercentRelativeLayout
+        <androidx.percentlayout.widget.PercentRelativeLayout
             android:id="@+id/native_cover_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 android:layout_alignParentTop="true"
                 android:padding="8dp" />
 
-        </android.support.percent.PercentRelativeLayout>
+        </androidx.percentlayout.widget.PercentRelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -175,7 +175,7 @@
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.AppCompatButton
+                <Button
                     android:id="@+id/native_action_btn"
                     style="@style/AdButtonFullStyle_Flat"
                     android:layout_width="match_parent"
@@ -189,7 +189,7 @@
                     android:background="@drawable/had_action_bg"
                     android:text="Learn More" />
 
-                <android.support.v7.widget.AppCompatButton
+                <Button
                     android:id="@+id/native_cancel_btn"
                     style="@style/AdButtonFullStyle_Flat"
                     android:layout_width="match_parent"

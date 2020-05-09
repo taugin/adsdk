@@ -2,7 +2,6 @@ package com.hauyu.adsdk.adloader.mopub;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -33,6 +32,8 @@ import com.mopub.nativeads.NativeAd;
 import com.mopub.nativeads.NativeErrorCode;
 
 import java.util.Set;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Administrator on 2018/6/28.

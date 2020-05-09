@@ -6,11 +6,11 @@ ext {
 def useProject = true;
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.hauyu.adsdk.demo"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -44,8 +44,7 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:multidex:1.0.0'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.hauyu:bcsdk:+'
+    implementation 'com.hauyu:bcsdk:2.10.4-SNAPSHOT-1'
     if (useProject) {
         implementation project(":adsdk")
     } else {

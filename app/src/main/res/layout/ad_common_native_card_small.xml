@@ -106,7 +106,7 @@
                     android:layout_marginBottom="@dimen/dp_4"
                     android:layout_marginTop="@dimen/dp_6">
 
-                    <android.support.v7.widget.AppCompatButton
+                    <Button
                         android:id="@+id/common_action_btn"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_30"

@@ -127,7 +127,7 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-        <android.support.percent.PercentRelativeLayout
+        <androidx.percentlayout.widget.PercentRelativeLayout
             android:id="@+id/native_cover_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                 app:layout_aspectRatio="192%"
                 app:layout_widthPercent="100%" />
 
-        </android.support.percent.PercentRelativeLayout>
+        </androidx.percentlayout.widget.PercentRelativeLayout>
 
         <LinearLayout
             android:id="@+id/native_action_layout"
@@ -160,7 +160,7 @@
             android:layout_alignParentBottom="true"
             android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatButton
+            <Button
                 android:id="@+id/native_cancel_btn"
                 style="@style/AdButtonFullStyle_Flat"
                 android:layout_width="match_parent"
@@ -175,7 +175,7 @@
                 android:text="@android:string/cancel"
                 android:textColor="@android:color/darker_gray" />
 
-            <android.support.v7.widget.AppCompatButton
+            <Button
                 android:id="@+id/native_action_btn"
                 style="@style/AdButtonFullStyle_Flat"
                 android:layout_width="match_parent"

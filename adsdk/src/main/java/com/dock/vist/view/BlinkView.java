@@ -4,9 +4,9 @@ import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ImageView;
 
 import com.dock.vist.sun.IAdvance;
 import com.dock.vist.sun.R;
@@ -16,7 +16,7 @@ import com.hauyu.adsdk.log.Log;
  * Created by Administrator on 2019-12-20.
  */
 
-public class BlinkView extends AppCompatImageView implements ValueAnimator.AnimatorUpdateListener, IAdvance.IBlank {
+public class BlinkView extends ImageView implements ValueAnimator.AnimatorUpdateListener, IAdvance.IBlank {
     private int startAlpha, endAlpha, duration;
     private boolean isBlinking = false;
 

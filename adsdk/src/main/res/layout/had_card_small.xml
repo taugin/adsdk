@@ -12,7 +12,7 @@
         android:background="@android:color/white"
         android:orientation="vertical">
 
-        <android.support.percent.PercentRelativeLayout
+        <androidx.percentlayout.widget.PercentRelativeLayout
             android:id="@+id/native_cover_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:layout_alignParentTop="true"
                 android:padding="8dp" />
 
-        </android.support.percent.PercentRelativeLayout>
+        </androidx.percentlayout.widget.PercentRelativeLayout>
 
         <RelativeLayout
             android:id="@+id/native_header_info"
@@ -139,7 +139,7 @@
                 </FrameLayout>
             </LinearLayout>
 
-            <android.support.v7.widget.AppCompatButton
+            <Button
                 android:id="@+id/native_action_btn"
                 style="@style/AdButtonStyle"
                 android:layout_width="wrap_content"
