@@ -257,11 +257,7 @@ public class MopubLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        Context context = activity;
-        if (context == null) {
-            context = mContext;
-        }
-        moPubInterstitial = new MoPubInterstitial(context, mPidConfig.getPid());
+        moPubInterstitial = new MoPubInterstitial(activity, mPidConfig.getPid());
         moPubInterstitial.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
             @Override
             public void onInterstitialLoaded(MoPubInterstitial interstitial) {
