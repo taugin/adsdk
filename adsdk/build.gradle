@@ -23,7 +23,7 @@ stringfog {
 android {
     compileSdkVersion 28
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 28
         versionName "2.10.5"
         consumerProguardFiles 'proguard-rules-adsdk.pro'
