@@ -26,12 +26,13 @@ static def getConfigKey() {
  * versionName.1 ===> Sec-Activity.java
  * versionName.2 ===> Tri-Activity.java
  */
+def isSnapshot = true
 android {
     compileSdkVersion 28
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
-        versionName "3.0.0"
+        versionName "3.0.0" + (isSnapshot ? "-SNAPSHOT" : "")
         consumerProguardFiles 'proguard-rules-adsdk.pro'
     }
 
@@ -71,7 +72,13 @@ apply plugin: 'maven'
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: uri(rootProject.ext.publishUri))
+            def url_release = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
+            def url_snapshot = "https://repo.rdc.aliyun.com/repository/130320-snapshot-FOUUZY/"
+            def username = "CP751G"
+            def password = "TaMWu1x2fG"
+            repository(url: isSnapshot ? url_snapshot : url_release) {
+                authentication(userName: username, password: password)
+            }
             pom.version = android.defaultConfig.versionName
             pom.artifactId = "adsdk"
             pom.groupId = "com.hauyu"

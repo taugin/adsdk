@@ -49,7 +49,7 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:multidex:1.0.0'
-    implementation 'com.hauyu:bcsdk:2.10.4-SNAPSHOT-1'
+    implementation 'com.hauyu:bcsdk:+'
     if (useProject) {
         implementation project(":adsdk")
     } else {
