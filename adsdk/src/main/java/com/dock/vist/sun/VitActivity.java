@@ -881,7 +881,7 @@ public class VitActivity extends Activity implements IAdvance {
     }
 
     protected int getBackgroundColor() {
-        return Color.BLACK;
+        return Color.parseColor("#FF4080FF");
     }
 
     private boolean isLockView() {
@@ -961,6 +961,7 @@ public class VitActivity extends Activity implements IAdvance {
                 WallpaperManager wm = WallpaperManager.getInstance(this);
                 drawable = wm.getDrawable();
             } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e);
             }
         }
         if (drawable == null) {
