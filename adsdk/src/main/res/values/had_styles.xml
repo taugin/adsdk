@@ -8,38 +8,42 @@
         <item name="cardUseCompatPadding">true</item>
     </style>
 
-    <style name="AdButtonStyle">
-        <item name="android:layout_alignParentRight">true</item>
+    <style name="AdButtonBaseStyle">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/had_action_bg</item>
+        <item name="android:minWidth">84dp</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="AdButtonLargeStyle">
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_height">36dp</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:textStyle">bold</item>
+    <style name="AdButtonStyle" parent="AdButtonBaseStyle">
         <item name="android:background">@drawable/had_action_bg</item>
-        <item name="android:textColor">@android:color/white</item>
     </style>
-    <style name="AdButtonFullStyle">
-        <item name="android:layout_height">36dp</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:textStyle">bold</item>
+
+    <style name="AdButtonTinyStyle" parent="AdButtonBaseStyle">
         <item name="android:background">@drawable/had_green_bg</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_height">30dp</item>
     </style>
-    <style name="AdButtonFullStyle_Flat">
-        <item name="android:layout_height">36dp</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:textStyle">bold</item>
+
+    <style name="AdButtonSmallStyle" parent="AdButtonBaseStyle">
+        <item name="android:background">@drawable/had_action_bg</item>
+    </style>
+    <style name="AdButtonMediumStyle" parent="AdButtonBaseStyle">
+        <item name="android:background">@drawable/had_action_bg</item>
+    </style>
+    <style name="AdButtonLargeStyle" parent="AdButtonBaseStyle">
+        <item name="android:background">@drawable/had_action_bg</item>
+    </style>
+
+    <style name="AdButtonFullStyle" parent="AdButtonBaseStyle">
         <item name="android:background">@drawable/had_green_bg</item>
-        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AdButtonFullStyle_Flat" parent="AdButtonBaseStyle">
+        <item name="android:background">@drawable/had_green_bg</item>
     </style>
 
     <!--for lock screen-->

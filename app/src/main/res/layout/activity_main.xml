@@ -12,28 +12,68 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/app_usage"
+                android:id="@+id/tiny"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="tiny"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="tiny" />
+
+            <Button
+                android:id="@+id/small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:tag="small"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="small" />
+
+            <Button
+                android:id="@+id/medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:tag="medium"
+                android:onClick="onClick"
+                android:text="medium" />
+
+            <Button
+                android:id="@+id/large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
+                android:tag="large"
                 android:onClick="onClick"
-                android:text="APPUSAGE权限" />
+                android:text="large" />
 
             <Button
-                android:id="@+id/gt_outer"
+                android:id="@+id/full"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 android:layout_weight="1"
+                android:tag="full"
                 android:onClick="onClick"
-
-                android:text="GT测试" />
+                android:text="full" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/gt_outer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="GT测试" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -21,6 +21,8 @@
             <ImageView
                 android:id="@+id/native_image_cover"
                 android:contentDescription="@null"
+                android:layout_height="0dp"
+                android:layout_width="0dp"
                 android:scaleType="fitXY"
                 app:layout_aspectRatio="192%"
                 app:layout_widthPercent="100%" />
@@ -28,14 +30,16 @@
             <RelativeLayout
                 android:id="@+id/native_media_cover"
                 android:contentDescription="@null"
+                android:layout_height="0dp"
+                android:layout_width="0dp"
                 android:visibility="gone"
                 app:layout_aspectRatio="192%"
                 app:layout_widthPercent="100%" />
 
             <RelativeLayout
                 android:id="@+id/native_ad_choices_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_width="0dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:padding="8dp" />
@@ -141,9 +145,9 @@
 
             <Button
                 android:id="@+id/native_action_btn"
-                style="@style/AdButtonStyle"
+                style="@style/AdButtonSmallStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_alignParentRight="true"
                 android:layout_marginLeft="16dp"
                 android:text="Learn More" />
         </RelativeLayout>

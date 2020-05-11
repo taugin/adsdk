@@ -8,8 +8,22 @@
   },
   "adplaces": [
     {
+      "name": "for_layout",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "fb",
+          "type": "native",
+          "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
+          "disable": 0
+        }
+      ],
+      "maxcount": 100,
+      "percent": 100
+    },
+    {
       "name": "banner_and_native",
-      "mode": "seq",
+      "mode": "con",
       "cc": [
         "#FF660000",
         "#4455bb22"
@@ -17,6 +31,12 @@
       "pids": [
         {
           "sdk": "spread",
+          "type": "native",
+          "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
+          "disable": 0
+        },
+        {
+          "sdk": "fb",
           "type": "native",
           "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
           "disable": 0
@@ -89,14 +109,14 @@
           "type": "interstitial",
           "pid": "YOUR_PLACEMENT_ID",
           "ctr": 5,
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "mopub",
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
@@ -116,7 +136,7 @@
     {
       "name": "reward_video",
       "mode": "con",
-      "retry":1,
+      "retry": 1,
       "pids": [
         {
           "sdk": "fb",

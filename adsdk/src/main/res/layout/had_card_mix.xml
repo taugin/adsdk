@@ -19,6 +19,8 @@
 
             <ImageView
                 android:id="@+id/native_image_cover"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
                 app:layout_aspectRatio="192%"
@@ -26,6 +28,8 @@
 
             <RelativeLayout
                 android:id="@+id/native_media_cover"
+                android:layout_height="0dp"
+                android:layout_width="0dp"
                 android:contentDescription="@null"
                 android:visibility="gone"
                 app:layout_aspectRatio="192%"
@@ -33,8 +37,8 @@
 
             <RelativeLayout
                 android:id="@+id/native_ad_choices_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_width="0dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:padding="8dp" />
@@ -179,7 +183,6 @@
                     android:id="@+id/native_action_btn"
                     style="@style/AdButtonFullStyle_Flat"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="16dp"
                     android:layout_marginLeft="16dp"
@@ -193,7 +196,6 @@
                     android:id="@+id/native_cancel_btn"
                     style="@style/AdButtonFullStyle_Flat"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="16dp"
                     android:layout_marginLeft="8dp"

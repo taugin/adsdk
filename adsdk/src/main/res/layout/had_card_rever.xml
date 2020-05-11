@@ -139,12 +139,16 @@
 
             <ImageView
                 android:id="@+id/native_image_cover"
+                android:layout_height="0dp"
+                android:layout_width="0dp"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
                 app:layout_aspectRatio="192%"
                 app:layout_widthPercent="100%" />
 
             <RelativeLayout
+                android:layout_height="0dp"
+                android:layout_width="0dp"
                 android:id="@+id/native_media_cover"
                 android:contentDescription="@null"
                 android:visibility="gone"
@@ -164,7 +168,6 @@
                 android:id="@+id/native_cancel_btn"
                 style="@style/AdButtonFullStyle_Flat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
@@ -179,7 +182,6 @@
                 android:id="@+id/native_action_btn"
                 style="@style/AdButtonFullStyle_Flat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="8dp"

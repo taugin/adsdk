@@ -5,10 +5,8 @@ import android.app.Dialog;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,7 +20,9 @@ import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.utils.Utils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class MainActivity extends Activity {
@@ -31,11 +31,15 @@ public class MainActivity extends Activity {
             R.layout.ad_common_native_card_small,
             R.layout.ad_common_native_card_medium
     };
-    private static final int CARDID[] = new int[]{
-            AdExtra.NATIVE_CARD_SMALL,
-            AdExtra.NATIVE_CARD_MEDIUM,
-            AdExtra.NATIVE_CARD_LARGE
-    };
+    private static final Map<String, Integer> LAYOUT_MAP;
+    static {
+        LAYOUT_MAP = new HashMap<>();
+        LAYOUT_MAP.put("tiny", AdExtra.NATIVE_CARD_TINY);
+        LAYOUT_MAP.put("small", AdExtra.NATIVE_CARD_SMALL);
+        LAYOUT_MAP.put("medium", AdExtra.NATIVE_CARD_MEDIUM);
+        LAYOUT_MAP.put("large", AdExtra.NATIVE_CARD_LARGE);
+        LAYOUT_MAP.put("full", AdExtra.NATIVE_CARD_FULL);
+    }
 
     private static final String TAG = "MA";
     private Context mContext;
@@ -65,17 +69,8 @@ public class MainActivity extends Activity {
     }
 
     public void onClick(View v) {
-        if (v.getId() == R.id.app_usage) {
-            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-            startActivity(intent);
-        } else if (v.getId() == R.id.gt_outer) {
+        if (v.getId() == R.id.gt_outer) {
             loadGtOuter();
-//            if (!hasEnable()) {
-//                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-//                startActivity(intent);
-//            } else {
-//                AtAdLoader.get(this).onFire();
-//            }
         } else if (v.getId() == R.id.interstitial) {
             loadInterstitial();
         } else if (v.getId() == R.id.complex) {
@@ -84,7 +79,24 @@ public class MainActivity extends Activity {
             loadAdViewCommon();
         } else if (v.getId() == R.id.reward_video) {
             AdSdk.get(mContext).loadRewardedVideo("reward_video", mSimpleAdsdkListener);
+        } else {
+            String tag = (String) v.getTag();
+            loadAdViewByLayout(tag);
         }
+    }
+
+    private void loadAdViewByLayout(String tag) {
+        int layout = LAYOUT_MAP.get(tag);
+        AdParams.Builder builder = new AdParams.Builder();
+        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layout);
+        AdParams adParams = builder.build();
+        AdSdk.get(mContext).loadComplexAds("for_layout", adParams, new SimpleAdSdkListener() {
+            @Override
+            public void onLoaded(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                AdSdk.get(mContext).showComplexAds(pidName);
+            }
+        });
     }
 
     private void loadGtOuter() {
@@ -110,8 +122,8 @@ public class MainActivity extends Activity {
     }
 
     private void loadAdComplex() {
-        if (AdSdk.get(mContext).isComplexAdsLoaded("ad_complex")) {
-            AdSdk.get(mContext).showComplexAds("ad_complex");
+        if (AdSdk.get(mContext).isComplexAdsLoaded("banner_and_native")) {
+            AdSdk.get(mContext).showComplexAds("banner_and_native");
             return;
         }
         AdParams.Builder builder = new AdParams.Builder();
@@ -134,7 +146,7 @@ public class MainActivity extends Activity {
         int styles[] = new int[]{AdExtra.NATIVE_CARD_FULL, AdExtra.NATIVE_CARD_SMALL, AdExtra.NATIVE_CARD_MEDIUM, AdExtra.NATIVE_CARD_TINY, AdExtra.NATIVE_CARD_LARGE};
         builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, styles[new Random(System.currentTimeMillis()).nextInt(styles.length)]);
         AdParams adParams = builder.build();
-        AdSdk.get(mContext).loadComplexAds("ad_complex", adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadComplexAds("banner_and_native", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
