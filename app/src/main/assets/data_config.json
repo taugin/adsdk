@@ -107,7 +107,7 @@
         {
           "sdk": "fb",
           "type": "interstitial",
-          "pid": "YOUR_PLACEMENT_ID",
+          "pid": "VID_HD_16_9_15S_APP_INSTALL#YOUR_PLACEMENT_ID",
           "ctr": 5,
           "disable": 0
         },
