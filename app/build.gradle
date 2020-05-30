@@ -43,13 +43,13 @@ android {
 
     publishNonDefault true //注意，这里的配置是为了去除gradle对library module默认只编译release buildType的限制
     productFlavors {
+        version0 {
+            dimension "version"
+        }
         version1 {
             dimension "version"
         }
         version2 {
-            dimension "version"
-        }
-        version3 {
             dimension "version"
         }
     }
@@ -60,6 +60,7 @@ repositories {
         url rootProject.ext.publishUri
     }
 }
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:multidex:1.0.0'

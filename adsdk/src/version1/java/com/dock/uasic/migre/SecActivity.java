@@ -1,4 +1,4 @@
-package com.cabes.uasic.migre;
+package com.dock.uasic.migre;
 
 import android.app.Activity;
 import android.app.WallpaperManager;

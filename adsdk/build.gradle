@@ -21,12 +21,7 @@ static def getConfigKey() {
     def formattedDate = date.format('yyyyMMdd')
     return String.valueOf(("admodule-" + formattedDate).hashCode())
 }
-/**
- * 版本号与Activity和Provider之间的对应关系
- * versionName   ===> Vit-Activity.java
- * versionName.1 ===> Sec-Activity.java
- * versionName.2 ===> Tri-Activity.java
- */
+
 def isSnapshot = true
 def baseVersion = '3.0.0'
 android {
@@ -53,6 +48,11 @@ android {
     }
     publishNonDefault true //注意，这里的配置是为了去除gradle对library module默认只编译release buildType的限制
     productFlavors {
+        version0 {
+            dimension "version"
+            versionName baseVersion + (isSnapshot ? "-SNAPSHOT" : "")
+            resValue "string", "version_name", versionName
+        }
         version1 {
             dimension "version"
             versionName baseVersion + ".1" + (isSnapshot ? "-SNAPSHOT" : "")
@@ -61,11 +61,6 @@ android {
         version2 {
             dimension "version"
             versionName baseVersion + ".2" + (isSnapshot ? "-SNAPSHOT" : "")
-            resValue "string", "version_name", versionName
-        }
-        version3 {
-            dimension "version"
-            versionName baseVersion + ".3" + (isSnapshot ? "-SNAPSHOT" : "")
             resValue "string", "version_name", versionName
         }
     }
@@ -155,12 +150,14 @@ afterEvaluate {
             }
         }
         repositories {
+            def url_release = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
+            def url_snapshot = "https://repo.rdc.aliyun.com/repository/130320-snapshot-FOUUZY/"
             maven {
-                url rootProject.ext.publishUri
-//            credentials {
-//                username = 'admin'
-//                password = 'admin123'
-//            }
+                url isSnapshot ? url_snapshot : url_release
+                credentials {
+                    username = "CP751G"
+                    password = "TaMWu1x2fG"
+                }
             }
         }
     }
