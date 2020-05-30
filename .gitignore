@@ -8,3 +8,7 @@
 /captures
 .externalNativeBuild
 /.idea/
+*.html
+package-list
+*.js
+*.css

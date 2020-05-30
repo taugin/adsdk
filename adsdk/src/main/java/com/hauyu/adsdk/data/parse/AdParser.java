@@ -2,7 +2,7 @@ package com.hauyu.adsdk.data.parse;
 
 import android.text.TextUtils;
 
-import com.dock.vist.sun.SpreadCfg;
+import com.earch.sunny.picfg.SpreadCfg;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.Aes;
 import com.hauyu.adsdk.data.config.AdPlace;

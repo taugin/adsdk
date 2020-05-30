@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dock.vist.sun.IAdvance;
+import com.earch.sunny.picfg.IAdvance;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.adloader.addfp.AdDfpLoader;
 import com.hauyu.adsdk.adloader.adfb.FBLoader;
@@ -2032,7 +2032,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.FAPICKER", false);
             if (intent == null) {
                 intent = new Intent();
-                ComponentName cmp = new ComponentName(mContext, IAdvance.ACT_NAME);
+                ComponentName cmp = new ComponentName(mContext, Utils.getActivityNameByAction(mContext, mContext.getPackageName() + ".action.MATCH_DOING"));
                 intent.setComponent(cmp);
             }
             intent.putExtra(Intent.EXTRA_TITLE, pidName);

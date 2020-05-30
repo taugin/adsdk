@@ -146,7 +146,7 @@
                         android:layout_alignTop="@+id/ad_cm_stage_hint"
                         android:orientation="horizontal">
 
-                        <com.dock.vist.view.BlinkView
+                        <com.earch.sunny.view.BlinkView
                             android:id="@+id/ad_cm_speed_indicator"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
@@ -154,28 +154,28 @@
                             android:scaleType="centerInside"
                             android:src="@drawable/had_speed" />
 
-                        <com.dock.vist.view.DView
+                        <com.earch.sunny.view.DView
                             android:id="@+id/ad_cm_dot_progress_1"
                             android:layout_width="0dp"
                             android:layout_height="23dp"
                             android:layout_weight="1"
                             app:dotRadius="1.5dp" />
 
-                        <com.dock.vist.view.BlinkView
+                        <com.earch.sunny.view.BlinkView
                             android:id="@+id/ad_cm_continuous_indicator"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:scaleType="centerInside"
                             android:src="@drawable/had_continuous" />
 
-                        <com.dock.vist.view.DView
+                        <com.earch.sunny.view.DView
                             android:id="@+id/ad_cm_dot_progress_2"
                             android:layout_width="0dp"
                             android:layout_height="23dp"
                             android:layout_weight="1"
                             app:dotRadius="1.5dp" />
 
-                        <com.dock.vist.view.BlinkView
+                        <com.earch.sunny.view.BlinkView
                             android:id="@+id/ad_cm_trickle_indicator"
                             android:layout_width="23dp"
                             android:layout_height="23dp"

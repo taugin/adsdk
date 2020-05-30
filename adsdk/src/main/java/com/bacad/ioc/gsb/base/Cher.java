@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.bacad.ioc.gsb.scloader.CvAdl;
 import com.bacad.ioc.gsb.scpolicy.CvPcy;
-import com.dock.vist.sun.IAdvance;
-import com.dock.vist.sun.R;
+import com.earch.sunny.R;
+import com.earch.sunny.picfg.IAdvance;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;

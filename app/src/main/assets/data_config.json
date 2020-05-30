@@ -102,7 +102,7 @@
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "fb",
@@ -116,13 +116,13 @@
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
           "ctr": 5,
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",
           "type": "interstitial",
           "pid": "/6499/example/interstitial",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "spread",

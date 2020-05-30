@@ -1,4 +1,4 @@
-package com.dock.vist.view;
+package com.earch.sunny.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,8 +8,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.dock.vist.sun.IAdvance;
-import com.dock.vist.sun.R;
+import com.earch.sunny.R;
+import com.earch.sunny.picfg.IAdvance;
 
 /**
  * Created by Administrator on 2019-12-20.

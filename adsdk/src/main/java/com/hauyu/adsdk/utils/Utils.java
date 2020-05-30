@@ -580,4 +580,33 @@ public class Utils {
             throws NoSuchMethodException, ClassNotFoundException {
         return Class.forName(packageName).getMethod(methodName, parameterTypes);
     }
+
+    public static String getActivityNameByAction(Context context, String action) {
+        String actName = null;
+        if (TextUtils.isEmpty(action)) {
+            return actName;
+        }
+        try {
+            Intent queryIntent = new Intent(action);
+            queryIntent.setPackage(context.getPackageName());
+            List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(queryIntent, 0);
+            if (list != null && !list.isEmpty()) {
+                ResolveInfo info = list.get(0);
+                actName = info.activityInfo.name;
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        Log.v(Log.TAG, "actName : " + actName);
+        return actName;
+    }
+
+    public static String getStringById(Context context, String strName) {
+        try {
+            int id = context.getResources().getIdentifier(strName, "string", context.getPackageName());
+            return context.getResources().getString(id);
+        } catch (Exception e) {
+        }
+        return null;
+    }
 }

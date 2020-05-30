@@ -1,4 +1,4 @@
-package com.dock.vist.view;
+package com.earch.sunny.view;
 
 import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
@@ -8,8 +8,8 @@ import android.util.AttributeSet;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
-import com.dock.vist.sun.IAdvance;
-import com.dock.vist.sun.R;
+import com.earch.sunny.R;
+import com.earch.sunny.picfg.IAdvance;
 import com.hauyu.adsdk.log.Log;
 
 /**

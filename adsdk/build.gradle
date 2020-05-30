@@ -15,6 +15,7 @@ stringfog {
     // 指定需加密的代码包路径，可配置多个，未指定将默认全部加密。
     // fogPackages = ['com.xxx.xxx']
 }
+
 static def getConfigKey() {
     def date = new Date()
     def formattedDate = date.format('yyyyMMdd')
@@ -27,13 +28,15 @@ static def getConfigKey() {
  * versionName.2 ===> Tri-Activity.java
  */
 def isSnapshot = true
+def baseVersion = '3.0.0'
 android {
     compileSdkVersion 28
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
-        versionName "3.0.0" + (isSnapshot ? "-SNAPSHOT" : "")
+        versionName baseVersion + (isSnapshot ? "-SNAPSHOT" : "")
         consumerProguardFiles 'proguard-rules-adsdk.pro'
+        flavorDimensions "version"
     }
 
     buildTypes {
@@ -47,6 +50,28 @@ android {
         variant.outputs.each { output ->
             println("output : " + output.toString())
         }
+    }
+    publishNonDefault true //注意，这里的配置是为了去除gradle对library module默认只编译release buildType的限制
+    productFlavors {
+        version1 {
+            dimension "version"
+            versionName baseVersion + ".1" + (isSnapshot ? "-SNAPSHOT" : "")
+            resValue "string", "version_name", versionName
+        }
+        version2 {
+            dimension "version"
+            versionName baseVersion + ".2" + (isSnapshot ? "-SNAPSHOT" : "")
+            resValue "string", "version_name", versionName
+        }
+        version3 {
+            dimension "version"
+            versionName baseVersion + ".3" + (isSnapshot ? "-SNAPSHOT" : "")
+            resValue "string", "version_name", versionName
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -68,6 +93,7 @@ dependencies {
 }
 
 // 发布aar
+/*
 apply plugin: 'maven'
 uploadArchives {
     repositories {
@@ -83,6 +109,59 @@ uploadArchives {
             pom.artifactId = "adsdk"
             pom.groupId = "com.hauyu"
             pom.packaging = "aar"
+        }
+
+    }
+}
+*/
+
+apply plugin: 'maven-publish'
+afterEvaluate {
+    publishing {
+        publications {
+            android.libraryVariants.all { variant ->
+                if (variant.name.contains("Release")) {
+                    "maven${variant.name.capitalize()}Aar"(MavenPublication) {
+                        def taskName = "bundle${variant.name.capitalize()}Aar"
+                        println "taskName : " + taskName
+                        artifact tasks.findByName(taskName)
+                        groupId 'com.hauyu'
+                        artifactId 'adsdk'
+                        version variant.productFlavors[0].versionName
+                        pom.withXml {
+                            def dependenciesNode = asNode().appendNode('dependencies')
+                            configurations.implementation.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
+                                if (dp.version != "unspecified") { // 过滤项目内library引用
+                                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                                    dependencyNode.appendNode('groupId', dp.group)
+                                    dependencyNode.appendNode('artifactId', dp.name)
+                                    dependencyNode.appendNode('version', dp.version)
+
+                                    // for exclusions
+                                    if (dp.excludeRules.size() > 0) {
+                                        def exclusions = dependencyNode.appendNode('exclusions')
+                                        dp.excludeRules.each { ExcludeRule ex ->
+                                            def exclusion = exclusions.appendNode('exclusion')
+                                            exclusion.appendNode('groupId', ex.group != null ? ex.group : "*")
+                                            exclusion.appendNode('artifactId', ex.module)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        repositories {
+            maven {
+                url rootProject.ext.publishUri
+//            credentials {
+//                username = 'admin'
+//                password = 'admin123'
+//            }
+            }
         }
     }
 }

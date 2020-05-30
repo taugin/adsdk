@@ -1,6 +1,6 @@
 package com.hauyu.adsdk.data.parse;
 
-import com.dock.vist.sun.SpreadCfg;
+import com.earch.sunny.picfg.SpreadCfg;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.AdSwitch;
 import com.hauyu.adsdk.data.config.PlaceConfig;

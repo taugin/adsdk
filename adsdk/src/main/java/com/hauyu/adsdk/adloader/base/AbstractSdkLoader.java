@@ -11,7 +11,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.dock.vist.sun.VitActivity;
+import com.earch.sunny.picfg.ActView;
 import com.hauyu.adsdk.adloader.listener.IManagerListener;
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
 import com.hauyu.adsdk.adloader.listener.OnAdBaseListener;
@@ -84,7 +84,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         if (activity == null) {
             try {
-                activity = VitActivity.createFakeActivity((Application) mContext.getApplicationContext());
+                activity = ActView.createFakeActivity((Application) mContext.getApplicationContext());
                 if (activity != null) {
                     Log.iv(Log.TAG, "mopub " + getAdType() + " use fk activity");
                 }

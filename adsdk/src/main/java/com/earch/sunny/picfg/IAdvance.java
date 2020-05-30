@@ -1,4 +1,4 @@
-package com.dock.vist.sun;
+package com.earch.sunny.picfg;
 
 import android.content.Context;
 import android.view.View;
@@ -11,8 +11,7 @@ import com.hauyu.adsdk.AdParams;
 
 public interface IAdvance {
 
-    String ACT_NAME = "com.dock.vist.sun.VitActivity";
-    String ACT_VIEW_NAME = "com.dock.vist.view.MView";
+    String ACT_VIEW_NAME = "com.earch.sunny.view.MView";
 
     void onSceneImp(String adType, View containerView);
 

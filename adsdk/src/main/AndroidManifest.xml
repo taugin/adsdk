@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dock.vist.sun">
+    package="com.earch.sunny">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -69,14 +69,6 @@
             android:excludeFromRecents="true"
             android:icon="@drawable/had_tr_bg"
             android:label="" />
-        <activity
-            android:name="com.dock.vist.sun.VitActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:excludeFromRecents="true"
-            android:icon="@drawable/had_tr_bg"
-            android:label=""
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Translucent" />
 
     </application>
 </manifest>

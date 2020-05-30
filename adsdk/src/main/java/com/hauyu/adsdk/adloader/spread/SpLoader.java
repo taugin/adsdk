@@ -10,8 +10,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.dock.vist.sun.IAdvance;
-import com.dock.vist.sun.SpreadCfg;
+import com.earch.sunny.picfg.SpreadCfg;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
@@ -229,7 +228,7 @@ public class SpLoader extends AbstractSdkLoader {
                 Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.AFPICKER");
                 if (intent == null) {
                     intent = new Intent();
-                    ComponentName cmp = new ComponentName(mContext, IAdvance.ACT_NAME);
+                    ComponentName cmp = new ComponentName(mContext, Utils.getActivityNameByAction(getContext(), getContext().getPackageName() + ".action.MATCH_DOING"));
                     intent.setComponent(cmp);
                 }
                 intent.putExtra(Intent.EXTRA_STREAM, spreadCfg);

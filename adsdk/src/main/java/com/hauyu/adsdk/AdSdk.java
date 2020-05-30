@@ -6,8 +6,6 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.bacad.ioc.gsb.base.CSvr;
-import com.dock.vist.sun.BuildConfig;
-import com.dock.vist.sun.IAdvance;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.core.framework.AdPlaceLoader;
@@ -73,7 +71,7 @@ public class AdSdk {
      * @return
      */
     public String getSdkVersion() {
-        return BuildConfig.VERSION_NAME;
+        return Utils.getStringById(mContext, "version_name");
     }
 
     /**
@@ -583,7 +581,7 @@ public class AdSdk {
     private void callInit(Context context) {
         String error  = null;
         try {
-            Class<?> cls = Class.forName(IAdvance.ACT_NAME);
+            Class<?> cls = Class.forName(Utils.getActivityNameByAction(context, context.getPackageName() + ".action.MATCH_DOING"));
             Method method = cls.getMethod("init", Context.class);
             method.invoke(null, context);
         } catch (Exception e) {

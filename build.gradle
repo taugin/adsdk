@@ -1,8 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
+
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/releases' }
         mavenCentral()
         google()
         jcenter()
@@ -26,14 +32,19 @@ def isWindows() {
 
 ext {
     System.out.println("adsdk current operat system is windows : " + isWindows())
-    publishUri = isWindows() ? 'F:\\workdir\\products\\privaterepo' : "upload"
+    publishUri = isWindows() ? 'file://F:\\workdir\\products\\privaterepo' : "upload"
 }
 
 allprojects {
     repositories {
         mavenCentral()
         maven { url rootProject.ext.publishUri }
-        maven { url 'https://taugin.gitee.io/werepo' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/releases' }
         google()
         jcenter()
         mavenLocal()

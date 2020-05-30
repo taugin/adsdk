@@ -9,7 +9,6 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 
-import com.dock.vist.sun.IAdvance;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.listener.OnTriggerListener;
@@ -117,7 +116,7 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
         }
         if (intent == null) {
             intent = new Intent();
-            ComponentName cmp = new ComponentName(getContext(), IAdvance.ACT_NAME);
+            ComponentName cmp = new ComponentName(getContext(), Utils.getActivityNameByAction(getContext(), getContext().getPackageName() + ".action.MATCH_DOING"));
             intent.setComponent(cmp);
         }
         intent.putExtra(Intent.ACTION_TIME_TICK, getDelayClose());
