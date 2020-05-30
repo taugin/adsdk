@@ -15,7 +15,7 @@
           "sdk": "fb",
           "type": "native",
           "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "mopub",
@@ -27,7 +27,7 @@
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
+          "disable": 0
         }
       ],
       "maxcount": 100,
