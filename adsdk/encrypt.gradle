@@ -170,6 +170,7 @@ def getAssetsOutDir(flavor) {
     def mergeAssetsDir2 = String.format("intermediates/merged_assets/%srelease/out", flavorNoSlash, flavorNoSlash)
     outAssetsDir = new File(project.getBuildDir(), outAssetsDir)
     mergeAssetsDir = new File(project.getBuildDir(), mergeAssetsDir)
+    mergeAssetsDir2 = new File(project.getBuildDir(), mergeAssetsDir2)
     if (outAssetsDir.exists()) {
         return outAssetsDir
     }
