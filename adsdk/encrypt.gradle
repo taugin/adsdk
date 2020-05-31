@@ -167,13 +167,17 @@ def getAssetsOutDir(flavor) {
     def flavorNoSlash = productFlaver == null ? "" : productFlaver;
     def outAssetsDir = String.format("intermediates/assets/%s/release", flavorNoSlash)
     def mergeAssetsDir = String.format("intermediates/merged_assets/%srelease/merge%sReleaseAssets/out", flavorNoSlash, flavorNoSlash)
+    def mergeAssetsDir2 = String.format("intermediates/merged_assets/%srelease/out", flavorNoSlash, flavorNoSlash)
     outAssetsDir = new File(project.getBuildDir(), outAssetsDir)
     mergeAssetsDir = new File(project.getBuildDir(), mergeAssetsDir)
     if (outAssetsDir.exists()) {
-        return outAssetsDir;
+        return outAssetsDir
     }
     if (mergeAssetsDir.exists()) {
-        return mergeAssetsDir;
+        return mergeAssetsDir
+    }
+    if (mergeAssetsDir2.exists()) {
+        return mergeAssetsDir2
     }
     return null
 }
