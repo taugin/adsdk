@@ -31,6 +31,8 @@ import com.mopub.nativeads.MoPubVideoNativeAdRenderer;
 import com.mopub.nativeads.NativeAd;
 import com.mopub.nativeads.NativeErrorCode;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
@@ -40,6 +42,16 @@ import androidx.annotation.NonNull;
  */
 
 public class MopubLoader extends AbstractSdkLoader {
+
+    protected static final Map<Integer, MoPubView.MoPubAdSize> ADSIZE = new HashMap<>();
+
+    static {
+        ADSIZE.put(Constant.BANNER, MoPubView.MoPubAdSize.HEIGHT_50);
+        ADSIZE.put(Constant.LARGE_BANNER, MoPubView.MoPubAdSize.HEIGHT_90);
+        ADSIZE.put(Constant.MEDIUM_RECTANGLE, MoPubView.MoPubAdSize.HEIGHT_250);
+        ADSIZE.put(Constant.FULL_BANNER, MoPubView.MoPubAdSize.HEIGHT_280);
+        ADSIZE.put(Constant.SMART_BANNER, MoPubView.MoPubAdSize.MATCH_VIEW);
+    }
 
     private MoPubInterstitial moPubInterstitial;
     private MoPubView loadingView;
@@ -130,9 +142,15 @@ public class MopubLoader extends AbstractSdkLoader {
         if (context == null) {
             context = mContext;
         }
+        setBannerSize(adSize);
+        MoPubView.MoPubAdSize size = ADSIZE.get(adSize);
+        if (size == null) {
+            size = MoPubView.MoPubAdSize.HEIGHT_50;
+        }
         loadingView = new MoPubView(context);
         loadingView.setAutorefreshEnabled(false);
         loadingView.setAdUnitId(mPidConfig.getPid());
+        loadingView.setAdSize(size);
         loadingView.setBannerAdListener(new MoPubView.BannerAdListener() {
             @Override
             public void onBannerLoaded(MoPubView banner) {
