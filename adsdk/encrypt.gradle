@@ -48,6 +48,20 @@ try {
             }
             repo.maven {
                 r ->
+                    r.url = "https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/"
+                    r.credentials.username = "5ef3647994513bd170c627be"
+                    r.credentials.password = "xcgJSde4Zuo4"
+
+            }
+            repo.maven {
+                r ->
+                    r.url = "https://packages.aliyun.com/maven/repository/2017289-snapshot-sJZcRc/"
+                    r.credentials.username = "5ef3647994513bd170c627be"
+                    r.credentials.password = "xcgJSde4Zuo4"
+
+            }
+            repo.maven {
+                r ->
                     r.url = "https://taugin.gitee.io/werepo"
             }
     }

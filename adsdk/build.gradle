@@ -150,6 +150,18 @@ afterEvaluate {
             }
         }
         repositories {
+            def url_release = "https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/"
+            def url_snapshot = "https://packages.aliyun.com/maven/repository/2017289-snapshot-sJZcRc/"
+            maven {
+                url isSnapshot ? url_snapshot : url_release
+                credentials {
+                    username = "5ef3647994513bd170c627be"
+                    password = "xcgJSde4Zuo4"
+                }
+            }
+        }
+        /*
+        repositories2 {
             def url_release = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
             def url_snapshot = "https://repo.rdc.aliyun.com/repository/130320-snapshot-FOUUZY/"
             maven {
@@ -159,6 +171,6 @@ afterEvaluate {
                     password = "TaMWu1x2fG"
                 }
             }
-        }
+        }*/
     }
 }
