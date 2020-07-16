@@ -1021,14 +1021,16 @@ public class TriActivity extends Activity implements IAdvance {
 
         View tempLayout = null;
         // 3，create ViewPager, set ViewPager Adapter
-        try {
-            ViewPager viewPager = createViewPager();
-            LsViewPagerAdapter adapter = new LsViewPagerAdapter(pagerLayout);
-            viewPager.setAdapter(adapter);
-            viewPager.setCurrentItem(1);
-            tempLayout = viewPager;
-        } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e);
+        if (false) {
+            try {
+                ViewPager viewPager = createViewPager();
+                LsViewPagerAdapter adapter = new LsViewPagerAdapter(pagerLayout);
+                viewPager.setAdapter(adapter);
+                viewPager.setCurrentItem(1);
+                tempLayout = viewPager;
+            } catch (Exception | Error e) {
+                Log.e(Log.TAG, "error : " + e);
+            }
         }
 
         if (tempLayout == null) {
