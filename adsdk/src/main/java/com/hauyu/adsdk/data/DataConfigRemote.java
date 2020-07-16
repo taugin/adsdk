@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.core.BaseRequest;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -16,16 +15,37 @@ import java.util.Locale;
  */
 
 @SuppressWarnings("unchecked")
-public class DataConfigRemote extends BaseRequest {
+public class DataConfigRemote {
 
     private Context mContext;
+    private static DataConfigRemote sDataConfigRemote;
 
-    public DataConfigRemote(Context context) {
+    public static DataConfigRemote get(Context context) {
+        synchronized (DataConfigRemote.class) {
+            if (sDataConfigRemote == null) {
+                createInstance(context);
+            }
+            if (sDataConfigRemote != null) {
+                sDataConfigRemote.mContext = context;
+            }
+        }
+        return sDataConfigRemote;
+    }
+
+    private static void createInstance(Context context) {
+        synchronized (DataConfigRemote.class) {
+            if (sDataConfigRemote == null) {
+                sDataConfigRemote = new DataConfigRemote(context);
+            }
+        }
+    }
+
+    private DataConfigRemote(Context context) {
         mContext = context;
     }
 
-    @Override
     public String getString(String key) {
+        VRemoteConfig.get(mContext).updateRemoteConfig();
         String value = readConfigFromAsset(key);
         Log.iv(Log.TAG, "locale config : " + key + " , value : " + value);
         if (TextUtils.isEmpty(value)) {

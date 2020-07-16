@@ -1,7 +1,6 @@
 package com.hauyu.adsdk.data;
 
 import android.content.Context;
-import android.os.Handler;
 import android.text.TextUtils;
 
 import com.earch.sunny.picfg.SpreadCfg;
@@ -22,7 +21,7 @@ import java.util.Map;
  * Created by Administrator on 2018/2/12.
  */
 
-public class DataManager implements Runnable {
+public class DataManager {
 
     private static final String DATA_CONFIG_FORMAT = "data_%s";
     private static final String DATA_CONFIG = "cfg_data_config";
@@ -53,29 +52,13 @@ public class DataManager implements Runnable {
         mParser = new AdParser();
     }
 
-    private IDataRequest mDataRequest;
     private Context mContext;
     private PlaceConfig mLocalPlaceConfig;
     private IParser mParser;
     private AdSwitch mAdSwitch;
-    private Handler mHandler = new Handler();
 
     public void init() {
         parseLocalData();
-        if (mDataRequest == null) {
-            mDataRequest = new DataConfigRemote(mContext);
-        }
-        if (mHandler != null) {
-            mHandler.removeCallbacks(this);
-            mHandler.postDelayed(this, 5000);
-        }
-    }
-
-    @Override
-    public void run() {
-        if (mDataRequest != null) {
-            mDataRequest.request();
-        }
     }
 
     private void parseLocalData() {
@@ -186,10 +169,7 @@ public class DataManager implements Runnable {
     }
 
     public String getString(String key) {
-        if (mDataRequest != null) {
-            return mDataRequest.getString(key);
-        }
-        return null;
+        return DataConfigRemote.get(mContext).getString(key);
     }
 
     /**
