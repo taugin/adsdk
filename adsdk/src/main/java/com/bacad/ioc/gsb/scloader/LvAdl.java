@@ -63,7 +63,7 @@ public class LvAdl extends Bldr {
         LvPcy.get(mContext).init();
         updateLtPolicy();
     }
-    
+
     @Override
     protected Context getContext() {
         return mContext;
@@ -134,6 +134,9 @@ public class LvAdl extends Bldr {
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
             intent.putExtra(Intent.EXTRA_REPLACING, pType);
             try {
                 PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -216,7 +219,7 @@ public class LvAdl extends Bldr {
             });
         }
     }
-    
+
     private void updateLtPolicy() {
         LvPcy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteLtPolicy());
     }

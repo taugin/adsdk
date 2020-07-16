@@ -241,6 +241,8 @@ public class TriActivity extends Activity implements IAdvance {
                         if (isLockView()) {
                             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
                             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+                            window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
                         }
                     } catch (Exception | Error e) {
                     }
@@ -881,7 +883,7 @@ public class TriActivity extends Activity implements IAdvance {
     }
 
     protected int getBackgroundColor() {
-        return Color.parseColor("#FF4080FF");
+        return Color.parseColor("#FF699CFF");
     }
 
     private boolean isLockView() {
