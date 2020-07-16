@@ -220,6 +220,9 @@ public class SceneSceneParser implements ISceneParser {
             JSONObject jobj = new JSONObject(data);
             lvCg = new LvCg();
             parseBaseConfig(lvCg, jobj);
+            if (jobj.has(LT_TYPE)) {
+                lvCg.setLtType(parseStringList(jobj.getString(LT_TYPE)));
+            }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseLtConfigInternal error : " + e);
         }

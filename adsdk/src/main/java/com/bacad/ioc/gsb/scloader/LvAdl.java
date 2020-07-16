@@ -10,8 +10,11 @@ import android.text.TextUtils;
 import com.bacad.ioc.gsb.base.Bldr;
 import com.bacad.ioc.gsb.base.CSvr;
 import com.bacad.ioc.gsb.data.SceneData;
+import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.scpolicy.LvPcy;
 import com.hauyu.adsdk.AdSdk;
+import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -79,7 +82,7 @@ public class LvAdl extends Bldr {
     private void showLockScreen() {
         if (mHandler != null) {
             if (!mHandler.hasMessages(MSG_SHOW_LOCKSCREEN)) {
-                showLs();
+                showForScreenOn();
                 mHandler.sendEmptyMessageDelayed(MSG_SHOW_LOCKSCREEN, DELAY);
             } else {
                 mHandler.removeMessages(MSG_SHOW_LOCKSCREEN);
@@ -87,8 +90,20 @@ public class LvAdl extends Bldr {
         }
     }
 
+    private void showForScreenOn() {
+        LvPcy lvPcy = LvPcy.get(mContext);
+        if (lvPcy != null) {
+            if (lvPcy.isFullScreen()) {
+                fireFullScreen();
+            } else if (lvPcy.isLockScreen()) {
+                fireLockScreen();
+            } else {
+                fireLockScreen();
+            }
+        }
+    }
 
-    private void showLs() {
+    private void fireLockScreen() {
         updateLtPolicy();
         if (!LvPcy.get(mContext).isLtAllowed()) {
             return;
@@ -123,6 +138,7 @@ public class LvAdl extends Bldr {
             try {
                 PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 pendingIntent.send();
+                LvPcy.get(mContext).reportImpression(true);
             } catch (Exception e) {
                 try {
                     mContext.startActivity(intent);
@@ -135,6 +151,72 @@ public class LvAdl extends Bldr {
         }
     }
 
+    private void fireFullScreen() {
+        if (mAdSdk != null) {
+            updateLtPolicy();
+            if (!LvPcy.get(mContext).isLtAllowed()) {
+                return;
+            }
+            String placeName = getAdMainName();
+            if (TextUtils.isEmpty(placeName)) {
+                Log.iv(Log.TAG, getType() + " not found place name");
+                return;
+            }
+            if (LvPcy.get(mContext).isLoading()) {
+                Log.iv(Log.TAG, getType() + " is loading");
+                return;
+            }
+            Log.iv(Log.TAG, "");
+            LvPcy.get(mContext).setLoading(true);
+            SceneEventImpl.get().reportAdSceneRequest(mContext, LvPcy.get(mContext).getType(), placeName);
+            mAdSdk.loadComplexAds(placeName, generateAdParams(), new SimpleAdSdkListener() {
+                @Override
+                public void onLoaded(String pidName, String source, String adType) {
+                    Log.iv(Log.TAG, "loaded pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    SceneEventImpl.get().reportAdSceneLoaded(mContext, LvPcy.get(mContext).getType(), pidName);
+                    LvPcy.get(mContext).setLoading(false);
+                    if (LvPcy.get(mContext).isLtAllowed()) {
+                        if (LvPcy.get(mContext).isShowBottom()
+                                || Constant.TYPE_BANNER.equals(adType)
+                                || Constant.TYPE_NATIVE.equals(adType)) {
+                            show(pidName, source, adType, LvPcy.get(mContext).getType());
+                        } else {
+                            AdSdk.get(mContext).showComplexAds(pidName, null);
+                        }
+                        SceneEventImpl.get().reportAdSceneShow(mContext, LvPcy.get(mContext).getType(), pidName);
+                    } else {
+                        SceneEventImpl.get().reportAdSceneDisallow(mContext, LvPcy.get(mContext).getType(), pidName);
+                    }
+                }
+
+                @Override
+                public void onDismiss(String pidName, String source, String adType) {
+                    Log.iv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    LvPcy.get(mContext).reportImpression(false);
+                    if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
+                            && LvPcy.get(mContext).isShowBottom()
+                            && !Constant.TYPE_BANNER.equals(adType)
+                            && !Constant.TYPE_NATIVE.equals(adType)) {
+                        hide();
+                    }
+                }
+
+                @Override
+                public void onImp(String pidName, String source, String adType) {
+                    Log.iv(Log.TAG, "show pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    LvPcy.get(mContext).reportImpression(true);
+                    SceneEventImpl.get().reportAdSceneImp(mContext, LvPcy.get(mContext).getType(), pidName);
+                }
+
+                @Override
+                public void onError(String pidName, String source, String adType) {
+                    Log.iv(Log.TAG, "error pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                    LvPcy.get(mContext).setLoading(false);
+                }
+            });
+        }
+    }
+    
     private void updateLtPolicy() {
         LvPcy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteLtPolicy());
     }

@@ -41,7 +41,7 @@ public class BPcy implements Handler.Callback {
     protected BCg mBCg;
     private String mType;
     private boolean mLoading = false;
-    private Handler mHandler;
+    protected Handler mHandler;
     private static final String LAST_SCENE_TIME = "pref_last_scene_time";
     public static final String LAST_SCENE_TYPE = "pref_last_scene_type";
 

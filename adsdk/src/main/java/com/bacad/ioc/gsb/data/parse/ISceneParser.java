@@ -58,6 +58,8 @@ public interface ISceneParser {
     String FAT_ADM = "fatadm";
     // 版本列表
     String VER_ADM = "veradm";
+    // 解锁显示类型
+    String LT_TYPE = "lt";
 
     // 是否上报友盟
     String REPORT_UMENG = "ru";
