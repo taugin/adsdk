@@ -54,7 +54,7 @@ public class Cher implements View.OnClickListener {
             mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                     | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         }
-        mActivity.setContentView(R.layout.had_card_ch);
+        mActivity.setContentView(R.layout.had_layout_ch);
         chargeCancel = mActivity.findViewById(R.id.ad_cm_view_cancel);
         chargeCancel.setOnClickListener(this);
         chargeMore = mActivity.findViewById(R.id.ad_cm_view_more);

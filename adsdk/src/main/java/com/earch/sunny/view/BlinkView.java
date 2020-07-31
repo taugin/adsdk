@@ -2,6 +2,7 @@ package com.earch.sunny.view;
 
 import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -16,6 +17,7 @@ import com.hauyu.adsdk.log.Log;
  * Created by Administrator on 2019-12-20.
  */
 
+@SuppressLint("AppCompatCustomView")
 public class BlinkView extends ImageView implements ValueAnimator.AnimatorUpdateListener, IAdvance.IBlank {
     private int startAlpha, endAlpha, duration;
     private boolean isBlinking = false;
