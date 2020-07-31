@@ -56,7 +56,7 @@ public interface IParser {
     // 队列模式下加载的大小
     String QUEUE_SIZE = "qs";
     // 全屏布局样式 针对GT全屏模式下的布局样式
-    String FULL_LAYOUT = "fl";
+    String NATIVE_LAYOUT = "nl";
     // cta按钮颜色
     String CTA_COLOR = "cc";
     // 场景加载失败，自动重试

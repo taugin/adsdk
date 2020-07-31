@@ -41,7 +41,7 @@ public class FBBindNativeView extends BaseBindNativeView {
         }
         int rootLayout = mParams.getNativeRootLayout();
         if (rootLayout <= 0 && mParams.getNativeCardStyle() > 0) {
-            rootLayout = getAdViewLayout(mParams.getNativeCardStyle(), pidConfig);
+            rootLayout = getAdViewLayout(adContainer.getContext(), mParams.getNativeCardStyle(), pidConfig);
             bindParamsViewId(mParams);
         }
 

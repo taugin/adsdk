@@ -1,5 +1,6 @@
 package com.hauyu.adsdk.adloader.base;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.drawable.ShapeDrawable;
@@ -41,16 +42,24 @@ public class BaseBindNativeView {
     protected static final String AD_SOCIAL = "social";
     protected static final String AD_RATE = "rate";
 
-    private static final String LAYOUT_FULL = "one";
-    private static final String LAYOUT_MIX = "two";
-    private static final String LAYOUT_REVER = "three";
-    private static final String LAYOUT_LARGE = "large";
-    private static final String LAYOUT_SMALL = "small";
-    private static final String LAYOUT_TINY = "tiny";
-    private static final String LAYOUT_MEDIUM = "medium";
-    private static final int[] CARD_LAYOUT = new int[]{R.layout.had_card_full, R.layout.had_card_mix, R.layout.had_card_rever};
+    private static final String LAYOUT_PREFIX = "had_card_";
+    private static final int[] FULL_CARD_LAYOUT = new int[]{
+            R.layout.had_card_full,
+            R.layout.had_card_mix,
+            R.layout.had_card_rever};
+    private static final int[] ALL_CARD_LAYOUT = new int[]{
+            R.layout.had_card_tiny,
+            R.layout.had_card_small,
+            R.layout.had_card_medium,
+            R.layout.had_card_large,
+            R.layout.had_card_full,
+            R.layout.had_card_mix,
+            R.layout.had_card_rever};
 
     private Random mRandom = new Random(System.currentTimeMillis());
+
+    public BaseBindNativeView() {
+    }
 
     protected void updateCtaButtonBackground(View view, PidConfig pidConfig, Params params) {
         if (pidConfig == null || view == null || params == null) {
@@ -98,35 +107,41 @@ public class BaseBindNativeView {
         }
     }
 
-    protected int getFullLayout(PidConfig pidConfig) {
-        if (pidConfig == null) {
-            return CARD_LAYOUT[mRandom.nextInt(CARD_LAYOUT.length)];
-        }
-        String layoutFlag = pidConfig.getLayout();
-        // 获取 layout flag
-        if (TextUtils.isEmpty(layoutFlag)) {
-            try {
-                layoutFlag = pidConfig.getAdPlace().getFullLayout();
-            } catch (Exception e) {
-                Log.iv(Log.TAG, "fl error : " + e);
+    protected int getFullLayout(Context context, PidConfig pidConfig) {
+        return FULL_CARD_LAYOUT[mRandom.nextInt(FULL_CARD_LAYOUT.length)];
+    }
+
+    protected int getNativeLayout(Context context, PidConfig pidConfig) {
+        if (pidConfig != null && context != null) {
+            String layoutFlag = pidConfig.getNativeLayout();
+            // 获取 layout flag
+            if (TextUtils.isEmpty(layoutFlag)) {
+                try {
+                    layoutFlag = pidConfig.getAdPlace().getNativeLayout();
+                } catch (Exception e) {
+                    Log.iv(Log.TAG, "nl error : " + e);
+                }
+            }
+            if (!TextUtils.isEmpty(layoutFlag)) {
+                String idName = LAYOUT_PREFIX + layoutFlag;
+                int layoutId = getNativeLayoutId(context, idName);
+                for (int lId : ALL_CARD_LAYOUT) {
+                    if (layoutId == lId) {
+                        return layoutId;
+                    }
+                }
             }
         }
-        if (LAYOUT_FULL.equalsIgnoreCase(layoutFlag)) {
-            return R.layout.had_card_full;
-        } else if (LAYOUT_MIX.equalsIgnoreCase(layoutFlag)) {
-            return R.layout.had_card_mix;
-        } else if (LAYOUT_REVER.equalsIgnoreCase(layoutFlag)) {
-            return R.layout.had_card_rever;
-        } else if (LAYOUT_LARGE.equalsIgnoreCase(layoutFlag)) {
-            return R.layout.had_card_large;
-        } else if (LAYOUT_SMALL.equalsIgnoreCase(layoutFlag)) {
-            return R.layout.had_card_small;
-        } else if (LAYOUT_TINY.equalsIgnoreCase(layoutFlag)) {
-            return R.layout.had_card_tiny;
-        } else if (LAYOUT_MEDIUM.equalsIgnoreCase(layoutFlag)) {
-            return R.layout.had_card_medium;
+        return 0;
+    }
+
+    private int getNativeLayoutId(Context context, String idName) {
+        try {
+            return context.getResources().getIdentifier(idName, "layout", context.getPackageName());
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
-        return CARD_LAYOUT[mRandom.nextInt(CARD_LAYOUT.length)];
+        return 0;
     }
 
     protected boolean isClickable(String view, PidConfig pidConfig) {
@@ -152,18 +167,22 @@ public class BaseBindNativeView {
         return clickViews;
     }
 
-    protected int getAdViewLayout(int template, PidConfig pidConfig) {
-        int layoutId = R.layout.had_card_large;
-        if (template == Constant.NATIVE_CARD_SMALL) {
-            layoutId = R.layout.had_card_small;
-        } else if (template == Constant.NATIVE_CARD_MEDIUM) {
-            layoutId = R.layout.had_card_medium;
-        } else if (template == Constant.NATIVE_CARD_LARGE) {
-            layoutId = R.layout.had_card_large;
-        } else if (template == Constant.NATIVE_CARD_FULL) {
-            layoutId = getFullLayout(pidConfig);
-        } else if (template == Constant.NATIVE_CARD_TINY) {
-            layoutId = R.layout.had_card_tiny;
+    protected int getAdViewLayout(Context context, int template, PidConfig pidConfig) {
+        int layoutId = getNativeLayout(context, pidConfig);
+        if (layoutId == 0) {
+            if (template == Constant.NATIVE_CARD_SMALL) {
+                layoutId = R.layout.had_card_small;
+            } else if (template == Constant.NATIVE_CARD_MEDIUM) {
+                layoutId = R.layout.had_card_medium;
+            } else if (template == Constant.NATIVE_CARD_LARGE) {
+                layoutId = R.layout.had_card_large;
+            } else if (template == Constant.NATIVE_CARD_FULL) {
+                layoutId = getFullLayout(context, pidConfig);
+            } else if (template == Constant.NATIVE_CARD_TINY) {
+                layoutId = R.layout.had_card_tiny;
+            } else {
+                layoutId = R.layout.had_card_large;
+            }
         }
         return layoutId;
     }

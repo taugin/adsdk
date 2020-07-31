@@ -142,8 +142,8 @@ public class AdParser implements IParser {
             if (jobj.has(PERCENT)) {
                 adPlace.setPercent(jobj.getInt(PERCENT));
             }
-            if (jobj.has(FULL_LAYOUT)) {
-                adPlace.setFullLayout(jobj.getString(FULL_LAYOUT));
+            if (jobj.has(NATIVE_LAYOUT)) {
+                adPlace.setNativeLayout(jobj.getString(NATIVE_LAYOUT));
             }
             if (jobj.has(CTA_COLOR)) {
                 adPlace.setCtaColor(parseStringList(jobj.getString(CTA_COLOR)));
@@ -332,8 +332,8 @@ public class AdParser implements IParser {
             if (jobj.has(LOAD_NATIVE_COUNT)) {
                 pidConfig.setCnt(jobj.getInt(LOAD_NATIVE_COUNT));
             }
-            if (jobj.has(FULL_LAYOUT)) {
-                pidConfig.setLayout(jobj.getString(FULL_LAYOUT));
+            if (jobj.has(NATIVE_LAYOUT)) {
+                pidConfig.setNativeLayout(jobj.getString(NATIVE_LAYOUT));
             }
             if (jobj.has(CTA_COLOR)) {
                 pidConfig.setCtaColor(parseStringList(jobj.getString(CTA_COLOR)));

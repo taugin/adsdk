@@ -40,6 +40,7 @@
         "#FF660000",
         "#4455bb22"
       ],
+      "nl": "tiny",
       "pids": [
         {
           "sdk": "spread",
@@ -57,7 +58,7 @@
           "sdk": "fb",
           "type": "banner",
           "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
@@ -69,7 +70,7 @@
           "sdk": "mopub",
           "type": "banner",
           "pid": "252412d5e9364a05ab77d9396346d73d",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
@@ -81,7 +82,7 @@
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
@@ -247,7 +248,7 @@
       "name": "nt_outer_place",
       "mode": "con",
       "as": 1,
-      "fl": "three",
+      "nl": "three",
       "cc": [
         "#FF6600",
         "#4455bb22"
@@ -269,7 +270,7 @@
         {
           "sdk": "admob",
           "type": "native",
-          "fl": "two",
+          "nl": "two",
           "pid": "ca-app-pub-3940256099942544/2247696110",
           "disable": 0
         },

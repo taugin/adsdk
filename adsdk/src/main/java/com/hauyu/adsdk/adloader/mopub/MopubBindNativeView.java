@@ -44,7 +44,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
         int rootLayout = mParams.getNativeRootLayout();
         if (rootLayout <= 0 && mParams.getNativeCardStyle() > 0) {
-            rootLayout = getAdViewLayout(mParams.getNativeCardStyle(), pidConfig);
+            rootLayout = getAdViewLayout(context, mParams.getNativeCardStyle(), pidConfig);
             bindParamsViewId(mParams);
         }
 

@@ -53,7 +53,7 @@ public class AdPlace {
 
     private int queueSize = 2;
 
-    private String fullLayout;
+    private String nativeLayout;
 
     private List<String> ctaColor;
 
@@ -242,12 +242,12 @@ public class AdPlace {
         this.queueSize = queueSize;
     }
 
-    public String getFullLayout() {
-        return fullLayout;
+    public String getNativeLayout() {
+        return nativeLayout;
     }
 
-    public void setFullLayout(String fullLayout) {
-        this.fullLayout = fullLayout;
+    public void setNativeLayout(String nativeLayout) {
+        this.nativeLayout = nativeLayout;
     }
 
     public List<String> getCtaColor() {
