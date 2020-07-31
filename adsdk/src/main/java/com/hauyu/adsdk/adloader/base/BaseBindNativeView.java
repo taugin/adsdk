@@ -43,10 +43,13 @@ public class BaseBindNativeView {
     protected static final String AD_RATE = "rate";
 
     private static final String LAYOUT_PREFIX = "had_card_";
+
     private static final int[] FULL_CARD_LAYOUT = new int[]{
             R.layout.had_card_full,
             R.layout.had_card_mix,
-            R.layout.had_card_rever};
+            R.layout.had_card_rever
+    };
+
     private static final int[] ALL_CARD_LAYOUT = new int[]{
             R.layout.had_card_tiny,
             R.layout.had_card_small,
@@ -54,7 +57,9 @@ public class BaseBindNativeView {
             R.layout.had_card_large,
             R.layout.had_card_full,
             R.layout.had_card_mix,
-            R.layout.had_card_rever};
+            R.layout.had_card_rever,
+            R.layout.had_card_head
+    };
 
     private Random mRandom = new Random(System.currentTimeMillis());
 
