@@ -35,8 +35,6 @@ public interface IParser {
     String MAXCOUNT = "maxcount";
     // 展示的百分比
     String PERCENT = "percent";
-    // ECPM排序, 1 desc, 0, none, -1, asc
-    String ECPM_SORT = "es";
     // 具体广告位配置
     String PIDS = "pids";
     // 场景缓存, 避免多次加载

@@ -30,8 +30,6 @@ public class AdPlace {
 
     private boolean loadOnlyOnce = true;
 
-    private int ecpmSort;
-
     private boolean placeCache;
 
     private long delayNotifyTime;
@@ -144,14 +142,6 @@ public class AdPlace {
 
     public void setLoadOnlyOnce(boolean loadOnlyOnce) {
         this.loadOnlyOnce = loadOnlyOnce;
-    }
-
-    public int getEcpmSort() {
-        return ecpmSort;
-    }
-
-    public void setEcpmSort(int ecpmSort) {
-        this.ecpmSort = ecpmSort;
     }
 
     public boolean isSequence() {

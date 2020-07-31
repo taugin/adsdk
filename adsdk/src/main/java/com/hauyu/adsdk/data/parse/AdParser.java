@@ -16,8 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -163,9 +161,6 @@ public class AdParser implements IParser {
             if (jobj.has(LOAD_ONLY_ONCE)) {
                 adPlace.setLoadOnlyOnce(jobj.getBoolean(LOAD_ONLY_ONCE));
             }
-            if (jobj.has(ECPM_SORT)) {
-                adPlace.setEcpmSort(jobj.getInt(ECPM_SORT));
-            }
             if (jobj.has(PLACE_CACHE)) {
                 adPlace.setPlaceCache(jobj.getInt(PLACE_CACHE) == 1);
             }
@@ -200,43 +195,10 @@ public class AdParser implements IParser {
                 adPlace.setRetryTimes(jobj.getInt(RETRY_TIME));
             }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
-            sortPidList(adPlace);
         } catch (Exception e) {
             Log.iv(Log.TAG, "parseAdPlace error : " + e);
         }
         return adPlace;
-    }
-
-    private void sortPidList(AdPlace adPlace) {
-        if (adPlace == null) {
-            return;
-        }
-        int ecpmSort = adPlace.getEcpmSort();
-        List<PidConfig> list = adPlace.getPidsList();
-        if (ecpmSort == 0 || list == null || list.isEmpty()) {
-            return;
-        }
-        if (ecpmSort > 0) {
-            Collections.sort(list, new Comparator<PidConfig>() {
-                @Override
-                public int compare(PidConfig o1, PidConfig o2) {
-                    if (o1 != null && o2 != null) {
-                        return Double.compare(o2.getEcpm(), o1.getEcpm());
-                    }
-                    return 0;
-                }
-            });
-        } else {
-            Collections.sort(list, new Comparator<PidConfig>() {
-                @Override
-                public int compare(PidConfig o1, PidConfig o2) {
-                    if (o1 != null && o2 != null) {
-                        return Double.compare(o1.getEcpm(), o2.getEcpm());
-                    }
-                    return 0;
-                }
-            });
-        }
     }
 
     private List<PidConfig> parsePidList(AdPlace adPlace, String content) {
@@ -250,20 +212,6 @@ public class AdParser implements IParser {
                 for (int index = 0; index < len; index++) {
                     pidConfig = parsePidConfig(jarray.getString(index));
                     pidConfig.setAdPlace(adPlace);
-                    /*
-                    if (adPlace != null && pidConfig != null) {
-                        if (!TextUtils.isEmpty(adPlace.getFullLayout()) && TextUtils.isEmpty(pidConfig.getFullLayout())) {
-                            pidConfig.setFullLayout(adPlace.getFullLayout());
-                        }
-                        if ((adPlace.getCtaColor() != null && !adPlace.getCtaColor().isEmpty())
-                                && (pidConfig.getCtaColor() == null || pidConfig.getCtaColor().isEmpty())) {
-                            pidConfig.setCtaColor(adPlace.getCtaColor());
-                        }
-                        if ((adPlace.getClickViews() != null && !adPlace.getClickViews().isEmpty())
-                                && (pidConfig.getClickViews() == null || pidConfig.getClickViews().isEmpty())) {
-                            pidConfig.setClickViews(adPlace.getClickViews());
-                        }
-                    }*/
                     list.add(pidConfig);
                 }
             }
