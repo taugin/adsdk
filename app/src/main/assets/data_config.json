@@ -40,7 +40,7 @@
         "#FF660000",
         "#4455bb22"
       ],
-      "nl": "head",
+      "nl": ["head", "tiny", "large"],
       "pids": [
         {
           "sdk": "spread",
@@ -320,7 +320,7 @@
       "name": "nt_outer_place",
       "mode": "con",
       "as": 1,
-      "nl": "three",
+      "nl": ["head"],
       "cc": [
         "#FF6600",
         "#4455bb22"
@@ -342,7 +342,7 @@
         {
           "sdk": "admob",
           "type": "native",
-          "nl": "two",
+          "nl": ["large"],
           "pid": "ca-app-pub-3940256099942544/2247696110",
           "disable": 0
         },

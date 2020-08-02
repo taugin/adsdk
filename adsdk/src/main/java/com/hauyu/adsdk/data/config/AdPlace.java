@@ -51,7 +51,7 @@ public class AdPlace {
 
     private int queueSize = 2;
 
-    private String nativeLayout;
+    private List<String> nativeLayout;
 
     private List<String> ctaColor;
 
@@ -232,11 +232,11 @@ public class AdPlace {
         this.queueSize = queueSize;
     }
 
-    public String getNativeLayout() {
+    public List<String> getNativeLayout() {
         return nativeLayout;
     }
 
-    public void setNativeLayout(String nativeLayout) {
+    public void setNativeLayout(List<String> nativeLayout) {
         this.nativeLayout = nativeLayout;
     }
 

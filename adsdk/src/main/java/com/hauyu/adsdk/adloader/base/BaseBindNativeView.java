@@ -21,7 +21,9 @@ import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -42,24 +44,18 @@ public class BaseBindNativeView {
     protected static final String AD_SOCIAL = "social";
     protected static final String AD_RATE = "rate";
 
-    private static final String LAYOUT_PREFIX = "had_card_";
-
-    private static final int[] FULL_CARD_LAYOUT = new int[]{
-            R.layout.had_card_full,
-            R.layout.had_card_mix,
-            R.layout.had_card_rever
-    };
-
-    private static final int[] ALL_CARD_LAYOUT = new int[]{
-            R.layout.had_card_tiny,
-            R.layout.had_card_small,
-            R.layout.had_card_medium,
-            R.layout.had_card_large,
-            R.layout.had_card_full,
-            R.layout.had_card_mix,
-            R.layout.had_card_rever,
-            R.layout.had_card_head
-    };
+    private static final Map<String, Integer> LAYOUT_MAPS;
+    static {
+        LAYOUT_MAPS = new HashMap<String, Integer>();
+        LAYOUT_MAPS.put("tiny", R.layout.had_card_tiny);
+        LAYOUT_MAPS.put("small", R.layout.had_card_small);
+        LAYOUT_MAPS.put("medium", R.layout.had_card_medium);
+        LAYOUT_MAPS.put("large", R.layout.had_card_large);
+        LAYOUT_MAPS.put("full", R.layout.had_card_full);
+        LAYOUT_MAPS.put("mix", R.layout.had_card_mix);
+        LAYOUT_MAPS.put("rever", R.layout.had_card_rever);
+        LAYOUT_MAPS.put("head", R.layout.had_card_head);
+    }
 
     private Random mRandom = new Random(System.currentTimeMillis());
 
@@ -112,39 +108,27 @@ public class BaseBindNativeView {
         }
     }
 
-    protected int getFullLayout(Context context, PidConfig pidConfig) {
-        return FULL_CARD_LAYOUT[mRandom.nextInt(FULL_CARD_LAYOUT.length)];
-    }
-
     protected int getNativeLayout(Context context, PidConfig pidConfig) {
         if (pidConfig != null && context != null) {
-            String layoutFlag = pidConfig.getNativeLayout();
+            List<String> layoutFlag = pidConfig.getNativeLayout();
             // 获取 layout flag
-            if (TextUtils.isEmpty(layoutFlag)) {
+            if (layoutFlag == null || layoutFlag.isEmpty()) {
                 try {
                     layoutFlag = pidConfig.getAdPlace().getNativeLayout();
                 } catch (Exception e) {
                     Log.iv(Log.TAG, "nl error : " + e);
                 }
             }
-            if (!TextUtils.isEmpty(layoutFlag)) {
-                String idName = LAYOUT_PREFIX + layoutFlag;
-                int layoutId = getNativeLayoutId(context, idName);
-                for (int lId : ALL_CARD_LAYOUT) {
-                    if (layoutId == lId) {
-                        return layoutId;
+            if (layoutFlag != null && !layoutFlag.isEmpty()) {
+                String layout = layoutFlag.get(mRandom.nextInt(layoutFlag.size()));
+                if (!TextUtils.isEmpty(layout)) {
+                    Log.v(Log.TAG, "layout flag : " + layout);
+                    Integer nativeLayout = LAYOUT_MAPS.get(layout);
+                    if (nativeLayout != null) {
+                        return nativeLayout.intValue();
                     }
                 }
             }
-        }
-        return 0;
-    }
-
-    private int getNativeLayoutId(Context context, String idName) {
-        try {
-            return context.getResources().getIdentifier(idName, "layout", context.getPackageName());
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
         }
         return 0;
     }
@@ -182,7 +166,7 @@ public class BaseBindNativeView {
             } else if (template == Constant.NATIVE_CARD_LARGE) {
                 layoutId = R.layout.had_card_large;
             } else if (template == Constant.NATIVE_CARD_FULL) {
-                layoutId = getFullLayout(context, pidConfig);
+                layoutId = R.layout.had_card_full;
             } else if (template == Constant.NATIVE_CARD_TINY) {
                 layoutId = R.layout.had_card_tiny;
             } else {

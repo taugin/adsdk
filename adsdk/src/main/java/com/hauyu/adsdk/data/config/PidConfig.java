@@ -52,7 +52,7 @@ public class PidConfig {
 
     private int cnt;
 
-    private String nativeLayout;
+    private List<String> nativeLayout;
 
     private List<String> ctaColor;
 
@@ -212,11 +212,11 @@ public class PidConfig {
         this.cnt = cnt;
     }
 
-    public String getNativeLayout() {
+    public List<String> getNativeLayout() {
         return nativeLayout;
     }
 
-    public void setNativeLayout(String nativeLayout) {
+    public void setNativeLayout(List<String> nativeLayout) {
         this.nativeLayout = nativeLayout;
     }
 
