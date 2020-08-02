@@ -83,8 +83,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/icon_layout"
-            android:padding="2dp"
-            android:background="#00000000">
+            android:background="#00000000"
+            android:padding="2dp">
 
             <ImageView
                 android:id="@+id/native_image_cover"
@@ -103,14 +103,6 @@
                 android:visibility="gone"
                 app:layout_aspectRatio="192%"
                 app:layout_widthPercent="100%" />
-
-            <RelativeLayout
-                android:id="@+id/native_ad_choices_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:padding="8dp" />
 
         </androidx.percentlayout.widget.PercentRelativeLayout>
 
@@ -223,5 +215,13 @@
 
             </LinearLayout>
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/native_ad_choices_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:padding="8dp" />
     </RelativeLayout>
 </FrameLayout>

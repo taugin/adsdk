@@ -40,7 +40,7 @@
         "#FF660000",
         "#4455bb22"
       ],
-      "nl": ["head", "tiny", "large"],
+      "nl": ["head"],
       "pids": [
         {
           "sdk": "spread",
