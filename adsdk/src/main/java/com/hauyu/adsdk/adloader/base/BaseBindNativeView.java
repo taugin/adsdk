@@ -53,7 +53,7 @@ public class BaseBindNativeView {
         LAYOUT_MAPS.put("large", R.layout.had_card_large);
         LAYOUT_MAPS.put("full", R.layout.had_card_full);
         LAYOUT_MAPS.put("mix", R.layout.had_card_mix);
-        LAYOUT_MAPS.put("rever", R.layout.had_card_rever);
+        LAYOUT_MAPS.put("foot", R.layout.had_card_foot);
         LAYOUT_MAPS.put("head", R.layout.had_card_head);
     }
 
