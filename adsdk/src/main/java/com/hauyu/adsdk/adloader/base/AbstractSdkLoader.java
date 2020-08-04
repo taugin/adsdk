@@ -23,6 +23,7 @@ import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.stat.IEvent;
 import com.hauyu.adsdk.utils.Utils;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -642,7 +643,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void reportAdError(String error) {
         if (mStat != null) {
-            mStat.reportAdError(mContext, error, getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), null);
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("error", error);
+            mStat.reportAdError(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), map);
         }
     }
 

@@ -252,15 +252,8 @@ public class EventImpl implements IEvent {
             return;
         }
         String eventId = generateEventId(context, "request", sdk, type);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, pidName, eventId, extra);
-        }
-        if (isReportUmeng(context)) {
-            sendUmeng(context, pidName, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, pidName, eventId, extra);
-        }
+        reportEvent(context, pidName, eventId, extra);
+        reportEvent(context, pidName, "e_ad_request", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
@@ -270,16 +263,8 @@ public class EventImpl implements IEvent {
             return;
         }
         String eventId = generateEventId(context, "loaded", sdk, type);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, pidName, eventId, extra);
-        }
-        if (isReportUmeng(context)) {
-            sendUmeng(context, pidName, eventId, extra);
-        }
-        // sendAppsflyer(context, pidName, eventId, extra);
-        if (isReportFacebook(context)) {
-            sendFacebook(context, pidName, eventId, extra);
-        }
+        reportEvent(context, pidName, eventId, extra);
+        reportEvent(context, pidName, "e_ad_loaded", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
@@ -289,15 +274,8 @@ public class EventImpl implements IEvent {
             return;
         }
         String eventId = generateEventId(context, "show", sdk, type);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, pidName, eventId, extra);
-        }
-        if (isReportUmeng(context)) {
-            sendUmeng(context, pidName, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, pidName, eventId, extra);
-        }
+        reportEvent(context, pidName, eventId, extra);
+        reportEvent(context, pidName, "e_ad_show", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
@@ -307,15 +285,8 @@ public class EventImpl implements IEvent {
             return;
         }
         String eventId = generateEventId(context, "imp", sdk, type);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, pidName, eventId, extra);
-        }
-        if (isReportUmeng(context)) {
-            sendUmeng(context, pidName, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, pidName, eventId, extra);
-        }
+        reportEvent(context, pidName, eventId, extra);
+        reportEvent(context, pidName, "e_ad_imp", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
@@ -325,15 +296,8 @@ public class EventImpl implements IEvent {
             return;
         }
         String eventId = generateEventId(context, "click", sdk, type);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, pidName, eventId, extra);
-        }
-        if (isReportUmeng(context)) {
-            sendUmeng(context, pidName, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, pidName, eventId, extra);
-        }
+        reportEvent(context, pidName, eventId, extra);
+        reportEvent(context, pidName, "e_ad_click", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
@@ -343,15 +307,8 @@ public class EventImpl implements IEvent {
             return;
         }
         String eventId = generateEventId(context, "receive", sdk, type);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, pidName, eventId, extra);
-        }
-        if (isReportUmeng(context)) {
-            sendUmeng(context, pidName, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, pidName, eventId, extra);
-        }
+        reportEvent(context, pidName, eventId, extra);
+        reportEvent(context, pidName, "e_ad_reward", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
@@ -365,16 +322,9 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "error", sdk, type);
         extra = addExtraForError(context, extra);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, pidName, eventId, extra);
-        }
-        if (isReportUmeng(context)) {
-            sendUmeng(context, pidName, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, pidName, eventId, extra);
-        }
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
+        reportEvent(context, pidName, eventId, extra);
+        reportEvent(context, pidName, "e_ad_error", extra);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
     }
 
     @Override
@@ -383,15 +333,8 @@ public class EventImpl implements IEvent {
             return;
         }
         String eventId = generateEventId(context, "close", sdk, type);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, pidName, eventId, extra);
-        }
-        if (isReportUmeng(context)) {
-            sendUmeng(context, pidName, eventId, extra);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, pidName, eventId, extra);
-        }
+        reportEvent(context, pidName, eventId, extra);
+        reportEvent(context, pidName, "e_ad_close", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName);
     }
 
@@ -411,9 +354,7 @@ public class EventImpl implements IEvent {
         if (isReportUmeng(context)) {
             sendUmengEventValue(context, eventId, map, value);
         }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, null, eventId, map);
-        }
+        reportEvent(context, null, eventId, map);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
     }
 
@@ -434,28 +375,18 @@ public class EventImpl implements IEvent {
         if (isReportUmeng(context)) {
             sendUmengEventValue(context, eventId, map, value);
         }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, null, eventId, map);
-        }
+        reportEvent(context, null, eventId, map);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
     }
 
     @Override
-    public void reportKVEvent(Context context, String key, String value) {
+    public void reportKVEvent(Context context, String key, String value, Map<String, String> extra) {
         if (context == null) {
             return;
         }
         String eventId = generateEventIdAlias(context, key);
-        if (isReportFirebase(context)) {
-            sendFirebaseAnalytics(context, value, eventId, null);
-        }
-        if (isReportUmeng(context)) {
-            sendUmeng(context, value, eventId, null);
-        }
-        if (isReportFacebook(context)) {
-            sendFacebook(context, value, eventId, null);
-        }
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + value);
+        reportEvent(context, value, eventId, extra);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + value + " , extra : " + extra);
     }
 
     @Override
@@ -478,12 +409,17 @@ public class EventImpl implements IEvent {
         return true;
     }
 
+    /**
+     * 默认不再上报成功和失败时间
+     * @param context
+     * @return
+     */
     private boolean isReportTime(Context context) {
         AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
         if (adSwitch != null) {
             return adSwitch.isReportTime();
         }
-        return true;
+        return false;
     }
 
     private boolean isReportUmeng(Context context) {
@@ -541,5 +477,17 @@ public class EventImpl implements IEvent {
         } catch (Error e) {
         }
         return extra;
+    }
+
+    private void reportEvent(Context context, String value, String eventId, Map<String, String> extra) {
+        if (isReportFirebase(context)) {
+            sendFirebaseAnalytics(context, value, eventId, extra);
+        }
+        if (isReportUmeng(context)) {
+            sendUmeng(context, value, eventId, extra);
+        }
+        if (isReportFacebook(context)) {
+            sendFacebook(context, value, eventId, extra);
+        }
     }
 }
