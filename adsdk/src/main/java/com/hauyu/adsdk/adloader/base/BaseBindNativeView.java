@@ -43,6 +43,10 @@ public class BaseBindNativeView {
     protected static final String AD_SPONSORED = "sponsored";
     protected static final String AD_SOCIAL = "social";
     protected static final String AD_RATE = "rate";
+    protected static final String AD_ADVERTISER = "advertiser";
+    protected static final String AD_PRICE = "price";
+    protected static final String AD_STORE = "store";
+    protected static final String AD_VIDEO = "video";
 
     private static final Map<String, Integer> LAYOUT_MAPS;
     static {
@@ -59,7 +63,14 @@ public class BaseBindNativeView {
 
     private Random mRandom = new Random(System.currentTimeMillis());
 
-    public BaseBindNativeView() {
+    private Map<String, String> mAdvMap = new HashMap<>();
+
+    public Map<String, String> getAdvMap() {
+        return mAdvMap;
+    }
+
+    protected void putValue(String key, String value) {
+        mAdvMap.put(key, value);
     }
 
     protected void updateCtaButtonBackground(View view, PidConfig pidConfig, Params params) {

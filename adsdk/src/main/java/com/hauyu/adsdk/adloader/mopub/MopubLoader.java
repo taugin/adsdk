@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.NonNull;
+
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
+import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
@@ -35,8 +38,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
-
 /**
  * Created by Administrator on 2018/6/28.
  */
@@ -60,7 +61,11 @@ public class MopubLoader extends AbstractSdkLoader {
 
     private NativeAd gNativeAd;
     private MoPubView gMoPubView;
-    private MopubBindNativeView bindNativeView;
+    private MopubBindNativeView bindNativeView = new MopubBindNativeView();
+
+    protected BaseBindNativeView getBaseBindNativeView() {
+        return bindNativeView;
+    }
 
     private SdkInitializationListener initSdkListener() {
         return new SdkInitializationListener() {
@@ -560,7 +565,6 @@ public class MopubLoader extends AbstractSdkLoader {
             }
         });
 
-        bindNativeView = new MopubBindNativeView();
         bindNativeView.bindMopubNative(params, mContext, moPubNative, mPidConfig);
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
@@ -624,6 +628,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 boolean staticRender = nativeAd.getMoPubAdRenderer() instanceof MoPubStaticNativeAdRenderer;
                 if (bindNativeView != null) {
                     bindNativeView.notifyAdViewShowing(adView, getPidConfig(), staticRender);
+                    bindNativeView.putAdvertiserInfo(nativeAd);
                 }
                 reportAdShow();
             } catch (Exception e) {

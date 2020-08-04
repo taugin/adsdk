@@ -21,6 +21,7 @@ import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
+import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
@@ -62,6 +63,11 @@ public class AdmobLoader extends AbstractSdkLoader {
     private AdView gBannerView;
     private UnifiedNativeAd gNativeAd;
     private List<UnifiedNativeAd> nativeAdList = Collections.synchronizedList(new ArrayList<UnifiedNativeAd>());
+    private AdmobBindNativeView admobBindNativeView = new AdmobBindNativeView();
+
+    protected BaseBindNativeView getBaseBindNativeView() {
+        return admobBindNativeView;
+    }
 
     @Override
     public void init(Context context, PidConfig pidConfig) {
@@ -620,7 +626,6 @@ public class AdmobLoader extends AbstractSdkLoader {
             } catch (Exception e) {
             }
         }
-        AdmobBindNativeView admobBindNativeView = new AdmobBindNativeView();
         clearCachedAdTime(nativeAd);
         admobBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
         gNativeAd = nativeAd;

@@ -613,13 +613,35 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void reportAdShow() {
         if (mStat != null) {
+            BaseBindNativeView baseBindNativeView = getBaseBindNativeView();
+            Map<String, String> extra = null;
+            if (baseBindNativeView != null) {
+                extra = baseBindNativeView.getAdvMap();
+            }
+            if (extra != null) {
+                Log.v(Log.TAG, "extra : " + extra);
+            }
             mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), null);
+            if (extra != null) {
+                extra.clear();
+            }
         }
     }
 
     protected void reportAdImp() {
         if (mStat != null) {
+            BaseBindNativeView baseBindNativeView = getBaseBindNativeView();
+            Map<String, String> extra = null;
+            if (baseBindNativeView != null) {
+                extra = baseBindNativeView.getAdvMap();
+            }
+            if (extra != null) {
+                Log.v(Log.TAG, "extra : " + extra);
+            }
             mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), null);
+            if (extra != null) {
+                extra.clear();
+            }
         }
     }
 
@@ -653,5 +675,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (mStat != null) {
             mStat.reportAdClose(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), null);
         }
+    }
+
+    protected BaseBindNativeView getBaseBindNativeView() {
+        return null;
     }
 }

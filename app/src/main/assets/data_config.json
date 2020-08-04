@@ -94,7 +94,7 @@
           "sdk": "dfp",
           "type": "native",
           "pid": "/6499/example/native",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",

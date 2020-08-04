@@ -20,6 +20,9 @@ import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Administrator on 2018/4/26.
  */
@@ -186,6 +189,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
         }
         Log.iv(Log.TAG, "clickable view : " + pidConfig.getClickViews());
         adView.setNativeAd(nativeAd);
+        putAdvertiserInfo(nativeAd);
         return adView;
     }
 
@@ -199,5 +203,53 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e);
         }
         return null;
+    }
+
+    private void putAdvertiserInfo(UnifiedNativeAd nativeAd) {
+        try {
+            putValue(AD_TITLE, nativeAd.getHeadline());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_DETAIL, nativeAd.getBody());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_ADVERTISER, nativeAd.getAdvertiser());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_PRICE, nativeAd.getPrice());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_STORE, nativeAd.getStore());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_CHOICES, nativeAd.getAdChoicesInfo().getText().toString());
+        } catch (Exception e) {
+        }
+        try {
+            List<String> images = new ArrayList<>();
+            List<NativeAd.Image> list = nativeAd.getImages();
+            for (NativeAd.Image image : list) {
+                images.add(image.getUri().toString());
+            }
+            putValue(AD_MEDIA, images.toString());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_CTA, nativeAd.getCallToAction());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_ICON, nativeAd.getIcon().getUri().toString());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_RATE, nativeAd.getStarRating().toString());
+        } catch (Exception e) {
+        }
     }
 }

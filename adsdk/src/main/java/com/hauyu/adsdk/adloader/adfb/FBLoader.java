@@ -20,6 +20,7 @@ import com.facebook.ads.RewardedVideoAd;
 import com.facebook.ads.RewardedVideoAdListener;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
+import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
@@ -52,6 +53,11 @@ public class FBLoader extends AbstractSdkLoader {
     private AdView gBannerView;
     private NativeAdsManager nativeAdsManager;
     private int mShowNativeCount = 0;
+    private FBBindNativeView fbBindNativeView = new FBBindNativeView();
+
+    protected BaseBindNativeView getBaseBindNativeView() {
+        return fbBindNativeView;
+    }
 
     @Override
     public void init(Context context, PidConfig pidConfig) {
@@ -504,7 +510,6 @@ public class FBLoader extends AbstractSdkLoader {
                 int uniqueCount = nativeAdsManager.getUniqueNativeAdCount();
                 if (nAd != null) {
                     setFBNativeAfterLoadListener(nAd);
-                    FBBindNativeView fbBindNativeView = new FBBindNativeView();
                     fbBindNativeView.bindFBNative(mParams, viewGroup, nAd, mPidConfig);
                     mShowNativeCount++;
                 }
@@ -513,7 +518,6 @@ public class FBLoader extends AbstractSdkLoader {
                 }
             }
         } else {
-            FBBindNativeView fbBindNativeView = new FBBindNativeView();
             clearCachedAdTime(nativeAd);
             fbBindNativeView.bindFBNative(mParams, viewGroup, nativeAd, mPidConfig);
             gNativeAd = nativeAd;

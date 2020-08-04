@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.earch.sunny.picfg.SpreadCfg;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
+import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.DataManager;
@@ -33,6 +34,11 @@ public class SpLoader extends AbstractSdkLoader {
     private SpreadCfg mSpread;
     private Params mParams;
     private Handler mHandler = new Handler(Looper.getMainLooper());
+    private SpreadBindNativeView spreadBindNativeView = new SpreadBindNativeView();
+
+    protected BaseBindNativeView getBaseBindNativeView() {
+        return spreadBindNativeView;
+    }
 
     @Override
     public String getSdkName() {
@@ -104,14 +110,13 @@ public class SpLoader extends AbstractSdkLoader {
             mParams = params;
         }
         if (mSpread != null) {
-            reportAdImp();
             SpreadCfg spreadCfg = mSpread;
-            SpreadBindNativeView spreadBindNativeView = new SpreadBindNativeView();
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadCfg);
             if (getAdListener() != null) {
                 getAdListener().onAdImp();
             }
             mSpread = null;
+            reportAdImp();
         }
     }
 

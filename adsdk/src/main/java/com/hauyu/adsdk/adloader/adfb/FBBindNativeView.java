@@ -144,12 +144,12 @@ public class FBBindNativeView extends BaseBindNativeView {
             }
 
             if (titleView != null) {
-                titleView.setText(nativeAd.getAdvertiserName());
+                titleView.setText(nativeAd.getAdHeadline());
                 if (isClickable(AD_TITLE, pidConfig)) {
                     actionView.add(titleView);
                 }
 
-                if (!TextUtils.isEmpty(nativeAd.getAdvertiserName())) {
+                if (!TextUtils.isEmpty(nativeAd.getAdHeadline())) {
                     titleView.setVisibility(View.VISIBLE);
                 }
             }
@@ -199,6 +199,7 @@ public class FBBindNativeView extends BaseBindNativeView {
             if (adContainer.getVisibility() != View.VISIBLE) {
                 adContainer.setVisibility(View.VISIBLE);
             }
+            putAdvertiserInfo(nativeAd);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
@@ -245,5 +246,40 @@ public class FBBindNativeView extends BaseBindNativeView {
             }
         }
         return iconView;
+    }
+
+    private void putAdvertiserInfo(NativeAd nativeAd) {
+        try {
+            putValue(AD_TITLE, nativeAd.getAdHeadline());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_DETAIL, nativeAd.getAdBodyText());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_ADVERTISER, nativeAd.getAdvertiserName());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_CHOICES, nativeAd.getAdChoicesText());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_COVER, nativeAd.getAdCoverImage().getUrl());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_CTA, nativeAd.getAdCallToAction());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_ICON, nativeAd.getAdIcon().getUrl());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_RATE, nativeAd.getAdStarRating().toString());
+        } catch (Exception e) {
+        }
     }
 }

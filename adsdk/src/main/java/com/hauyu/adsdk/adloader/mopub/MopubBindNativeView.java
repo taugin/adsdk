@@ -18,12 +18,16 @@ import com.hauyu.adsdk.utils.Utils;
 import com.mopub.nativeads.MediaLayout;
 import com.mopub.nativeads.MediaViewBinder;
 import com.mopub.nativeads.MoPubNative;
+import com.mopub.nativeads.StaticNativeAd;
+import com.mopub.nativeads.VideoNativeAd;
 import com.mopub.nativeads.ViewBinder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Administrator on 2018/2/11.
@@ -315,6 +319,100 @@ public class MopubBindNativeView extends BaseBindNativeView {
                 if (view != null) {
                     view.setVisibility(View.GONE);
                 }
+            }
+        }
+    }
+
+    public void putAdvertiserInfo(com.mopub.nativeads.NativeAd nativeAd) {
+        try {
+            if (nativeAd.getBaseNativeAd() instanceof StaticNativeAd) {
+
+                StaticNativeAd staticNativeAd = (StaticNativeAd) nativeAd.getBaseNativeAd();
+                putStaticInfo(staticNativeAd);
+            }
+        } catch (Exception e) {
+        }
+        try {
+            if (nativeAd.getBaseNativeAd() instanceof VideoNativeAd) {
+                VideoNativeAd videoNativeAd = (VideoNativeAd) nativeAd.getBaseNativeAd();
+                putVideoInfo(videoNativeAd);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private void putStaticInfo(StaticNativeAd staticNativeAd) {
+        if (staticNativeAd != null) {
+            try {
+                putValue(AD_TITLE, staticNativeAd.getTitle());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_DETAIL, staticNativeAd.getText());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_SPONSORED, staticNativeAd.getSponsored());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_MEDIA, staticNativeAd.getMainImageUrl());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_CTA, staticNativeAd.getCallToAction());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_ICON, staticNativeAd.getIconImageUrl());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_RATE, staticNativeAd.getStarRating().toString());
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    private void putVideoInfo(VideoNativeAd videoNativeAd) {
+        if (videoNativeAd != null) {
+            try {
+                putValue(AD_TITLE, videoNativeAd.getTitle());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_DETAIL, videoNativeAd.getText());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_SPONSORED, videoNativeAd.getSponsored());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_MEDIA, videoNativeAd.getMainImageUrl());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_CTA, videoNativeAd.getCallToAction());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_ICON, videoNativeAd.getIconImageUrl());
+            } catch (Exception e) {
+            }
+            try {
+                String vastVideo = videoNativeAd.getVastVideo();
+                String urlRegex = "https?://(.*)?\\.mp4";
+                Pattern pattern = Pattern.compile(urlRegex);
+                Matcher matcher = pattern.matcher(vastVideo);
+                List<String> list = new ArrayList<>();
+                while(matcher.find()) {
+                    list.add(matcher.group());
+                }
+                if (list != null) {
+                    putValue(AD_VIDEO, list.size() == 1 ? list.get(0) : list.toString());
+                }
+            } catch (Exception e) {
             }
         }
     }

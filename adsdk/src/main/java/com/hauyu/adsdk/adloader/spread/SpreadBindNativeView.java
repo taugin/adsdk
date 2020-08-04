@@ -147,7 +147,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             mediaViewLayout.setVisibility(View.VISIBLE);
             mediaView.setOnClickListener(clickClass);
         }
-
+        putAdvertiserInfo(spreadCfg);
         return rootView;
     }
 
@@ -192,6 +192,33 @@ public class SpreadBindNativeView extends BaseBindNativeView {
                     Log.v(Log.TAG, "error : " + e);
                 }
             }
+        }
+    }
+
+    private void putAdvertiserInfo(SpreadCfg spreadCfg) {
+        try {
+            putValue(AD_TITLE, spreadCfg.getTitle());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_SUBTITLE, spreadCfg.getSubTitle());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_DETAIL, spreadCfg.getDetail());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_COVER, spreadCfg.getBanner());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_CTA, spreadCfg.getCta());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_ICON, spreadCfg.getIcon());
+        } catch (Exception e) {
         }
     }
 }
