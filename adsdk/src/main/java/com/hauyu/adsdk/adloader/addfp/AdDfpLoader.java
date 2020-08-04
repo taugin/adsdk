@@ -163,7 +163,6 @@ public class AdDfpLoader extends AbstractSdkLoader {
             @Override
             public void onAdImpression() {
                 Log.v(Log.TAG, "");
-                reportAdImp();
                 if (getAdListener() != null) {
                     getAdListener().onAdImp();
                 }
@@ -202,6 +201,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 bannerView = null;
             }
             reportAdShow();
+            reportAdImp();
         } catch (Exception e) {
             Log.e(Log.TAG, "dfploader error : " + e);
         }

@@ -192,7 +192,6 @@ public class MopubLoader extends AbstractSdkLoader {
             @Override
             public void onBannerExpanded(MoPubView banner) {
                 Log.v(Log.TAG, "");
-                reportAdImp();
                 if (getAdListener() != null) {
                     getAdListener().onAdImp();
                 }
@@ -240,6 +239,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 moPubView = null;
             }
             reportAdShow();
+            reportAdImp();
         } catch (Exception e) {
             Log.e(Log.TAG, "mopubloader error : " + e);
         }
