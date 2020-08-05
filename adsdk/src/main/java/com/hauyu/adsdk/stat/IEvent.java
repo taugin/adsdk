@@ -94,14 +94,14 @@ public interface IEvent {
      * @param context
      * @param value
      */
-    public void reportAdLoadSuccessTime(Context context, String sdk, String type, int value);
+    public void reportAdLoadSuccessTime(Context context, String pidName, String sdk, String type, int value);
 
     /**
      * 广告加载成功时间
      * @param context
      * @param value
      */
-    public void reportAdLoadFailureTime(Context context, String sdk, String type, String error, int value);
+    public void reportAdLoadFailureTime(Context context, String pidName, String sdk, String type, String error, int value);
 
     /**
      * 上报FSA结束事件

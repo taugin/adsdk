@@ -461,7 +461,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             if (mRequestTime > 0) {
                 try {
                     int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
-                    mStat.reportAdLoadSuccessTime(mContext, getSdkName(), getAdType(), time);
+                    mStat.reportAdLoadSuccessTime(mContext, getAdPlaceName(), getSdkName(), getAdType(), time);
                 } catch (Exception e) {
                 }
                 mRequestTime = 0;
@@ -474,7 +474,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                         error = "STATE_TIMTOUT";
                     }
                     int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
-                    mStat.reportAdLoadFailureTime(mContext, getSdkName(), getAdType(), error, time);
+                    mStat.reportAdLoadFailureTime(mContext, getAdPlaceName(), getSdkName(), getAdType(), error, time);
                 } catch (Exception e) {
                 }
                 mRequestTime = 0;

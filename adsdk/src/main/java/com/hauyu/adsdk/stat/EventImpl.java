@@ -347,7 +347,7 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdLoadSuccessTime(Context context, String sdk, String type, int value) {
+    public void reportAdLoadSuccessTime(Context context, String pidName, String sdk, String type, int value) {
         if (!isReportTime(context)) {
             return;
         }
@@ -357,6 +357,7 @@ public class EventImpl implements IEvent {
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
+        map.put("name", pidName);
         map.put("sdk", sdk);
         map.put("type", type);
         if (isReportUmeng(context)) {
@@ -367,7 +368,7 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdLoadFailureTime(Context context, String sdk, String type, String error, int value) {
+    public void reportAdLoadFailureTime(Context context, String pidName, String sdk, String type, String error, int value) {
         if (!isReportTime(context)) {
             return;
         }
@@ -377,6 +378,7 @@ public class EventImpl implements IEvent {
         String eventId = "load_ad_failure_time";
         eventId = generateEventIdAlias(context, eventId);
         Map<String, String> map = new HashMap<String, String>();
+        map.put("name", pidName);
         map.put("sdk", sdk);
         map.put("type", type);
         map.put("error", error);
