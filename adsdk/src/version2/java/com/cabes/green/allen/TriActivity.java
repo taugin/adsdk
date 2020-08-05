@@ -310,7 +310,7 @@ public class TriActivity extends Activity implements IAdvance {
             mAction = intent.getAction();
             mDelayClose = intent.getLongExtra(Intent.ACTION_TIME_TICK, 0);
             if (!TextUtils.isEmpty(mSceneType)) {
-                EventImpl.get().reportKVEvent(getBaseContext(), "show_scene_adv", mSceneType);
+                EventImpl.get().reportKVEvent(getBaseContext(), "show_scene_adv", mSceneType, null);
             }
         }
     }
@@ -517,7 +517,7 @@ public class TriActivity extends Activity implements IAdvance {
             @Override
             public boolean onDown(MotionEvent e) {
                 finishActivityWithDelay();
-                EventImpl.get().reportKVEvent(getBaseContext(), "close_fsa_byuser", "touch");
+                EventImpl.get().reportKVEvent(getBaseContext(), "close_fsa_byuser", "touch", null);
                 return super.onDown(e);
             }
         });
@@ -558,7 +558,7 @@ public class TriActivity extends Activity implements IAdvance {
             if ((Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
                     || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType))
                     && !Constant.AD_SDK_SPREAD.equals(mSource)) {
-                EventImpl.get().reportKVEvent(this, "close_fsa_byuser", "backpressed");
+                EventImpl.get().reportKVEvent(this, "close_fsa_byuser", "backpressed", null);
             }
         }
     }
