@@ -500,9 +500,6 @@ public class EventImpl implements IEvent {
     }
 
     private Map<String, String> addExtra(Map<String, String> extra, String sdk, String type, String pid, String ecpm) {
-        if (true) {
-            return extra;
-        }
         if (extra == null) {
             extra = new HashMap<String, String>();
         }

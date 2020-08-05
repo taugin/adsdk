@@ -613,18 +613,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void reportAdShow() {
         if (mStat != null) {
-            BaseBindNativeView baseBindNativeView = getBaseBindNativeView();
-            Map<String, String> extra = null;
-            if (baseBindNativeView != null) {
-                extra = baseBindNativeView.getAdvMap();
-            }
-            if (extra != null && !extra.isEmpty()) {
-                Log.v(Log.TAG, "extra : " + extra);
-            }
             mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), null);
-            if (extra != null) {
-                extra.clear();
-            }
         }
     }
 
