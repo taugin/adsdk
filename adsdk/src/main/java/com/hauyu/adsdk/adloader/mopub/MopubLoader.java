@@ -575,9 +575,9 @@ public class MopubLoader extends AbstractSdkLoader {
         if (gNativeAd != null) {
             MoPubAdRenderer render = gNativeAd.getMoPubAdRenderer();
             if (render instanceof MoPubStaticNativeAdRenderer) {
-                reportAdImpWithMediaType("_static");
+                reportAdImp("static");
             } else if (render instanceof MoPubVideoNativeAdRenderer) {
-                reportAdImpWithMediaType("_video");
+                reportAdImp("video");
             }
         }
     }
@@ -592,11 +592,10 @@ public class MopubLoader extends AbstractSdkLoader {
                 @Override
                 public void onImpression(View view) {
                     Log.v(Log.TAG, "");
-                    reportAdImp();
+                    reportMoPubNativeType();
                     if (getAdListener() != null) {
                         getAdListener().onAdImp();
                     }
-                    reportMoPubNativeType();
                 }
 
                 @Override

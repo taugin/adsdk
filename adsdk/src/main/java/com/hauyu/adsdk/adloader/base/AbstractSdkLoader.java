@@ -618,6 +618,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected void reportAdImp() {
+        reportAdImp(null);
+    }
+
+    protected void reportAdImp(String render) {
         if (mStat != null) {
             BaseBindNativeView baseBindNativeView = getBaseBindNativeView();
             Map<String, String> extra = null;
@@ -627,16 +631,15 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             if (extra != null && !extra.isEmpty()) {
                 Log.v(Log.TAG, "extra : " + extra);
             }
-            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), null);
+            Map<String, String> mediaTypeExtra = null;
+            if (!TextUtils.isEmpty(render)) {
+                mediaTypeExtra = new HashMap<String, String>();
+                mediaTypeExtra.put("render", render);
+            }
+            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), mediaTypeExtra);
             if (extra != null) {
                 extra.clear();
             }
-        }
-    }
-
-    protected void reportAdImpWithMediaType(String mediaType) {
-        if (mStat != null) {
-            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName() + mediaType, getAdType(), getPid(), String.valueOf(getEcpm()), null);
         }
     }
 
