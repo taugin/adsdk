@@ -70,7 +70,10 @@ public class MainActivity extends Activity {
 
     public void onClick(View v) {
         if (v.getId() == R.id.gt_outer) {
-            loadGtOuter();
+            // loadGtOuter();
+            if (AdSdk.get(this).isComplexAdsLoaded()) {
+                AdSdk.get(this).showComplexAds();
+            }
         } else if (v.getId() == R.id.interstitial) {
             loadInterstitial();
         } else if (v.getId() == R.id.complex) {

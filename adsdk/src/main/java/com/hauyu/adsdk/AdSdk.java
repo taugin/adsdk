@@ -145,7 +145,7 @@ public class AdSdk {
         // 如果远程无配置，则读取本地或者远程整体广告位配置
         if (adPlace == null) {
             PlaceConfig localConfig = DataManager.get(mContext).getAdConfig();
-            if (localConfig != null ) {
+            if (localConfig != null) {
                 adPlace = localConfig.get(pidName);
             }
         }
@@ -271,7 +271,6 @@ public class AdSdk {
             loader.showInterstitial();
         }
     }
-
 
 
     public boolean isRewardedVideoLoaded(String pidName) {
@@ -415,8 +414,39 @@ public class AdSdk {
         }
     }
 
+    public boolean isComplexAdsLoaded() {
+        try {
+            for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
+                AdPlaceLoader adPlaceLoader = entry.getValue();
+                if (adPlaceLoader.isComplexAdsLoaded()) {
+                    Log.v(Log.TAG, "place name : " + entry.getKey() + " is loaded");
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return false;
+    }
+
+    public void showComplexAds() {
+        try {
+            for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
+                AdPlaceLoader adPlaceLoader = entry.getValue();
+                if (adPlaceLoader.isComplexAdsLoaded()) {
+                    Log.v(Log.TAG, "place name : " + entry.getKey() + " is called to show");
+                    adPlaceLoader.showComplexAds();
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+    }
+
     /**
      * 独立是设置监听器接口
+     *
      * @param pidName
      * @param l
      */
@@ -505,6 +535,7 @@ public class AdSdk {
 
     /**
      * 动态设置广告场景的别名
+     *
      * @param srcAdPlace
      * @param dstAdPlace
      */
@@ -517,6 +548,7 @@ public class AdSdk {
 
     /**
      * 清除广告位别名
+     *
      * @param srcAdPlace
      */
     public void clearAdPlaceAlias(String srcAdPlace) {
@@ -535,6 +567,7 @@ public class AdSdk {
 
     /**
      * 读取广告场景的别名
+     *
      * @param srcAdPlace
      * @return
      */
@@ -554,6 +587,7 @@ public class AdSdk {
 
     /**
      * 用户禁止场景弹出
+     *
      * @param scene
      * @param disable true 禁止场景弹出，false 允许场景弹出
      */
@@ -563,6 +597,7 @@ public class AdSdk {
 
     /**
      * 查询当前场景是否被用户禁止弹出
+     *
      * @param scene
      * @return
      */
@@ -572,6 +607,7 @@ public class AdSdk {
 
     /**
      * 判断是否有场景广告展示过
+     *
      * @return
      */
     public boolean isSceneShown() {
@@ -579,7 +615,7 @@ public class AdSdk {
     }
 
     private void callInit(Context context) {
-        String error  = null;
+        String error = null;
         try {
             Class<?> cls = Class.forName(Utils.getActivityNameByAction(context, context.getPackageName() + ".action.MATCH_DOING"));
             Method method = cls.getMethod("init", Context.class);

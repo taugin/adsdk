@@ -73,7 +73,7 @@
             android:layout_marginLeft="2dp"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:text="GT测试" />
+            android:text="全局Complex广告展示" />
 
         <LinearLayout
             android:layout_width="match_parent"

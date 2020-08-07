@@ -180,7 +180,7 @@
     },
     {
       "name": "interstitial",
-      "mode": "seq",
+      "mode": "con",
       "pids": [
         {
           "sdk": "admob",
@@ -212,7 +212,7 @@
         {
           "sdk": "spread",
           "type": "interstitial",
-          "disable": 1
+          "disable": 0
         }
       ],
       "maxcount": 100,
