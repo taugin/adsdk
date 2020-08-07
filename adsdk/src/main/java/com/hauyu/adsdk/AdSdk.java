@@ -419,7 +419,7 @@ public class AdSdk {
             for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
                 AdPlaceLoader adPlaceLoader = entry.getValue();
                 if (adPlaceLoader.isComplexAdsLoaded()) {
-                    Log.v(Log.TAG, "place name : " + entry.getKey() + " is loaded");
+                    Log.v(Log.TAG, "place name [" + entry.getKey() + "] is loaded");
                     return true;
                 }
             }
@@ -434,7 +434,7 @@ public class AdSdk {
             for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
                 AdPlaceLoader adPlaceLoader = entry.getValue();
                 if (adPlaceLoader.isComplexAdsLoaded()) {
-                    Log.v(Log.TAG, "place name : " + entry.getKey() + " is called to show");
+                    Log.v(Log.TAG, "place name [" + entry.getKey() + "] is called to show");
                     adPlaceLoader.showComplexAds();
                     break;
                 }
