@@ -275,16 +275,17 @@ public class AdPlace {
     @Override
     public String toString() {
         return "AdPlace{" +
-                "name='" + name + '\'' +
-                ", mode='" + mode + '\'' +
+                "name=" + name +
+                ", mode=" + mode +
                 ", list=" + pidsList +
                 ", mc=" + maxCount +
                 ", p=" + percent +
                 ", as=" + autoSwitch +
                 ", ai=" + autoInterval +
                 ", bs=" + bannerSize +
-                ", uv='" + uniqueValue + '\'' +
+                ", uv=" + uniqueValue +
                 ", loo=" + loadOnlyOnce +
+                ", nl=" + nativeLayout +
                 '}';
     }
 }

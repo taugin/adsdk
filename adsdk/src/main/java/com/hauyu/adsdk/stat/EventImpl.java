@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.data.DataManager;
-import com.hauyu.adsdk.data.config.AdSwitch;
 import com.hauyu.adsdk.log.Log;
 
 import java.lang.reflect.Method;
@@ -411,12 +410,22 @@ public class EventImpl implements IEvent {
     public void reportAdPlaceSeqError(Context context, String pidName) {
     }
 
-    private boolean isReportError(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportError();
+    private boolean parseReport(String value, boolean defaultValue) {
+        if (!TextUtils.isEmpty(value)) {
+            try {
+                return Boolean.parseBoolean(value);
+            } catch (Exception e) {
+                Log.e(Log.TAG, "parseReport error : " + e);
+            }
         }
-        return true;
+        return defaultValue;
+    }
+
+    private boolean isReportError(Context context) {
+        String value = DataManager.get(context).getString("report_error");
+        boolean result = parseReport(value, false);
+        Log.v(Log.TAG, "is report error : " + result);
+        return result;
     }
 
     /**
@@ -425,35 +434,31 @@ public class EventImpl implements IEvent {
      * @return
      */
     private boolean isReportTime(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportTime();
-        }
-        return false;
+        String value = DataManager.get(context).getString("report_time");
+        boolean result = parseReport(value, false);
+        Log.v(Log.TAG, "is report time : " + result);
+        return result;
     }
 
     private boolean isReportUmeng(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportUmeng();
-        }
-        return true;
+        String value = DataManager.get(context).getString("report_umeng");
+        boolean result = parseReport(value, true);
+        Log.v(Log.TAG, "is report umeng : " + result);
+        return result;
     }
 
     private boolean isReportFirebase(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportFirebase();
-        }
-        return true;
+        String value = DataManager.get(context).getString("report_firebase");
+        boolean result = parseReport(value, true);
+        Log.v(Log.TAG, "is report firebase : " + result);
+        return result;
     }
 
     private boolean isReportFacebook(Context context) {
-        AdSwitch adSwitch = DataManager.get(context).getAdSwitch();
-        if (adSwitch != null) {
-            return adSwitch.isReportFacebook();
-        }
-        return true;
+        String value = DataManager.get(context).getString("report_facebook");
+        boolean result = parseReport(value, true);
+        Log.v(Log.TAG, "is report facebook : " + result);
+        return result;
     }
 
     private Map<String, String> addExtraForError(Context context, Map<String, String> extra) {

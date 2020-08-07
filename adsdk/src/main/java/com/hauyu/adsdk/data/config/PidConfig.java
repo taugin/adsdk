@@ -283,13 +283,18 @@ public class PidConfig {
     @Override
     public String toString() {
         return "PidConfig{" +
-                "placeName='" + adPlaceName + '\'' +
-                ", sdk='" + sdk + '\'' +
-                ", pid='" + pid + '\'' +
+                "name=" + adPlaceName +
+                ", sdk=" + sdk +
+                ", pid=" + pid +
                 ", ctr=" + ctr +
-                ", adType='" + adType + '\'' +
-                ", ecpm='" + ecpm + '\'' +
-                ", dac='" + destroyAfterClick + '\'' +
+                ", type=" + adType +
+                ", ecpm=" + ecpm +
+                ", nl=" + nativeLayout +
+                ", aid=" + appId +
+                ", eid=" + extId +
+                ", ac=" + activityContext +
+                ", bs=" + bannerSize +
+                ", dis=" + disable +
                 '}';
     }
 }

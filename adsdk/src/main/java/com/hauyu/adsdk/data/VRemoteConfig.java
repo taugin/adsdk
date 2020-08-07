@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -134,6 +135,7 @@ public class VRemoteConfig implements OnCompleteListener {
             if (mInstance != null) {
                 mInstance.fetchAndActivate();
             }
+            Utils.putLong(mContext, Constant.PREF_REMOTE_CONFIG_UPDATE_TIME, System.currentTimeMillis());
         } else {
             Log.e(Log.TAG, "error : " + task.getException());
         }

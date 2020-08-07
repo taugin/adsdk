@@ -2,7 +2,6 @@ package com.hauyu.adsdk.data.parse;
 
 import com.earch.sunny.picfg.SpreadCfg;
 import com.hauyu.adsdk.data.config.AdPlace;
-import com.hauyu.adsdk.data.config.AdSwitch;
 import com.hauyu.adsdk.data.config.PlaceConfig;
 
 import java.util.List;
@@ -100,17 +99,6 @@ public interface IParser {
     // 使用activity上下文
     String ACTIVITY_CONTEXT = "ac";
 
-    // 是否上报错误日志
-    String REPORT_ERROR = "re";
-    // 是否上报时间
-    String REPORT_TIME = "rt";
-    // 是否上报友盟
-    String REPORT_UMENG = "ru";
-    // 是否上报firebase
-    String REPORT_FIREBASE = "rf";
-    // 是否上报facebook
-    String REPORT_FACEBOOK = "rb";
-
     // banner
     String BANNER = "banner";
     String ICON = "icon";
@@ -124,8 +112,6 @@ public interface IParser {
     PlaceConfig parseAdConfig(String data);
 
     AdPlace parseAdPlace(String data);
-
-    AdSwitch parseAdSwitch(String data);
 
     Map<String, String> parseAdRefs(String data);
 

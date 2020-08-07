@@ -58,14 +58,13 @@ public class Constant {
     public static final long ONE_DAY_TIME = 24 * 60 * 60 * 1000;
 
     // 配置文件中使用的名字++++++
-    public static final String ADIDS_NAME = "adids";
-    public static final String ADSWITCH_NAME = "adswitch";
     public static final String ADREFS_NAME = "adrefs";
     // 配置文件中使用的名字======
 
     public static final String AF_STATUS = "af_status";
     public static final String AF_MEDIA_SOURCE = "af_media_source";
     public static final String AF_ORGANIC = "Organic";
+    public static final String PREF_REMOTE_CONFIG_UPDATE_TIME = "pref_remote_config_update_time";
 
     /**
      * 未知错误

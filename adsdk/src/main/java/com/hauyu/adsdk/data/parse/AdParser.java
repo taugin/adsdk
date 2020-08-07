@@ -6,7 +6,6 @@ import com.earch.sunny.picfg.SpreadCfg;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.Aes;
 import com.hauyu.adsdk.data.config.AdPlace;
-import com.hauyu.adsdk.data.config.AdSwitch;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.log.Log;
@@ -61,23 +60,17 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(data);
             List<AdPlace> adPlaces = null;
-            AdSwitch adSwitch = null;
             Map<String, String> adrefs = null;
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
-            }
-            if (jobj.has(ADSWITCH)) {
-                adSwitch = parseAdSwitch(jobj.getString(ADSWITCH));
             }
             if (jobj.has(ADREFS)) {
                 adrefs = parseAdRefs(jobj.getString(ADREFS));
             }
             if (adPlaces != null
-                    || adSwitch != null
                     || adrefs != null) {
                 placeConfig = new PlaceConfig();
                 placeConfig.setAdPlaceList(adPlaces);
-                placeConfig.setAdSwitch(adSwitch);
                 placeConfig.setAdRefs(adrefs);
             }
         } catch (Exception e) {
@@ -296,34 +289,6 @@ public class AdParser implements IParser {
             Log.e(Log.TAG, "error : " + e);
         }
         return pidConfig;
-    }
-
-    @Override
-    public AdSwitch parseAdSwitch(String content) {
-        AdSwitch adSwitch = null;
-        try {
-            content = getContent(content);
-            JSONObject jobj = new JSONObject(content);
-            adSwitch = new AdSwitch();
-            if (jobj.has(REPORT_ERROR)) {
-                adSwitch.setReportError(jobj.getInt(REPORT_ERROR) == 1);
-            }
-            if (jobj.has(REPORT_TIME)) {
-                adSwitch.setReportTime(jobj.getInt(REPORT_TIME) == 1);
-            }
-            if (jobj.has(REPORT_UMENG)) {
-                adSwitch.setReportUmeng(jobj.getInt(REPORT_UMENG) == 1);
-            }
-            if (jobj.has(REPORT_FIREBASE)) {
-                adSwitch.setReportFirebase(jobj.getInt(REPORT_FIREBASE) == 1);
-            }
-            if (jobj.has(REPORT_FACEBOOK)) {
-                adSwitch.setReportFacebook(jobj.getInt(REPORT_FACEBOOK) == 1);
-            }
-        } catch (Exception e) {
-            Log.v(Log.TAG, "parseAdSwitch error : " + e);
-        }
-        return adSwitch;
     }
 
     @Override

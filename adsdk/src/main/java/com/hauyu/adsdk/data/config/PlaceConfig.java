@@ -15,8 +15,6 @@ public class PlaceConfig {
     // 广告配置
     private List<AdPlace> adPlaceList;
 
-    private AdSwitch adSwitch;
-
     private Map<String, String> adRefs; // 广告场景相互引用
 
     private String adConfigMd5;
@@ -27,14 +25,6 @@ public class PlaceConfig {
 
     public void setAdPlaceList(List<AdPlace> adPlaceList) {
         this.adPlaceList = adPlaceList;
-    }
-
-    public AdSwitch getAdSwitch() {
-        return adSwitch;
-    }
-
-    public void setAdSwitch(AdSwitch adSwitch) {
-        this.adSwitch = adSwitch;
     }
 
     public Map<String, String> getAdRefs() {

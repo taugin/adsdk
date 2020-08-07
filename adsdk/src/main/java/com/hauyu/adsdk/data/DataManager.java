@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.earch.sunny.picfg.SpreadCfg;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.config.AdPlace;
-import com.hauyu.adsdk.data.config.AdSwitch;
 import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.data.parse.AdParser;
 import com.hauyu.adsdk.data.parse.IParser;
@@ -25,7 +24,6 @@ public class DataManager {
 
     private static final String DATA_CONFIG_FORMAT = "data_%s";
     private static final String DATA_CONFIG = "cfg_data_config";
-    private static final String PREF_ADSWITCH_FLAG = "pref_adswitch_flag";
     private static final String CONFIG_SUFFIX1 = ".dat";
     private static final String CONFIG_SUFFIX2 = ".json";
     private static DataManager sDataManager;
@@ -55,7 +53,6 @@ public class DataManager {
     private Context mContext;
     private PlaceConfig mLocalPlaceConfig;
     private IParser mParser;
-    private AdSwitch mAdSwitch;
 
     public void init() {
         parseLocalData();
@@ -131,23 +128,6 @@ public class DataManager {
             return mParser.parseAdPlace(data);
         }
         return null;
-    }
-
-    public AdSwitch getAdSwitch() {
-        String data = getString(Constant.ADSWITCH_NAME);
-        if (!TextUtils.isEmpty(data)) {
-            String oldSwitchMd5 = Utils.getString(mContext, PREF_ADSWITCH_FLAG);
-            String newSwitchMd5 = Utils.string2MD5(data);
-            if (mAdSwitch == null || !TextUtils.equals(oldSwitchMd5, newSwitchMd5)) {
-                mAdSwitch = mParser.parseAdSwitch(data);
-                Utils.putString(mContext, PREF_ADSWITCH_FLAG, newSwitchMd5);
-            }
-        }
-        if (mAdSwitch == null && mLocalPlaceConfig != null) {
-            mAdSwitch = mLocalPlaceConfig.getAdSwitch();
-        }
-        Log.iv(Log.TAG, "ads : " + mAdSwitch);
-        return mAdSwitch;
     }
 
     public Map<String, String> getRemoteAdRefs() {
