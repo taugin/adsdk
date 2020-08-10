@@ -19,6 +19,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Base64;
 
 import com.hauyu.adsdk.log.Log;
 
@@ -160,6 +161,7 @@ public class Utils {
     }
 
     public static void putLong(Context context, String key, long value) {
+        Log.v(Log.TAG, "key : " + key);
         key = encryptSpKey(context, key);
         PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(key, value).apply();
     }
@@ -177,7 +179,7 @@ public class Utils {
         if (isContainKey(context, key)) {
             return key;
         }
-        return Utils.string2MD5(key);
+        return Base64.encodeToString(key.getBytes(), Base64.DEFAULT);
     }
 
     private static boolean isContainKey(Context context, String key) {
