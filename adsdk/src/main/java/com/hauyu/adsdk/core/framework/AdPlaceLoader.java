@@ -11,6 +11,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.earch.sunny.picfg.IAdvance;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.adloader.addfp.AdDfpLoader;
@@ -2651,5 +2653,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     enum SeqState {
         REQUEST, LOADED, ERROR
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return getPlaceName();
     }
 }

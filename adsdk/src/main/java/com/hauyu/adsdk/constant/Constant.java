@@ -1,6 +1,8 @@
 package com.hauyu.adsdk.constant;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -21,14 +23,14 @@ public class Constant {
 
     public static final String LAST_SCENE_TYPE = "pref_last_scene_type";
 
-    public static final int    NOSET = -1;
-    public static final int    BANNER = 1000;
-    public static final int    FULL_BANNER = 1001;
-    public static final int    LARGE_BANNER = 1002;
-    public static final int    LEADERBOARD = 1003;
-    public static final int    MEDIUM_RECTANGLE = 1004;
-    public static final int    WIDE_SKYSCRAPER = 1005;
-    public static final int    SMART_BANNER = 1006;
+    public static final int NOSET = -1;
+    public static final int BANNER = 1000;
+    public static final int FULL_BANNER = 1001;
+    public static final int LARGE_BANNER = 1002;
+    public static final int LEADERBOARD = 1003;
+    public static final int MEDIUM_RECTANGLE = 1004;
+    public static final int WIDE_SKYSCRAPER = 1005;
+    public static final int SMART_BANNER = 1006;
 
     public static final int NATIVE_CARD_SMALL = 1;
     public static final int NATIVE_CARD_MEDIUM = 2;
@@ -59,6 +61,8 @@ public class Constant {
 
     // 配置文件中使用的名字++++++
     public static final String ADREFS_NAME = "adrefs";
+    public static final String COMPLEX_NAMES = "complex_names";
+    public static final List<String> DEFAULT_COMPLEX_ORDER = Arrays.asList(new String[]{Constant.TYPE_INTERSTITIAL, Constant.TYPE_NATIVE, Constant.TYPE_BANNER, Constant.TYPE_REWARD});
     // 配置文件中使用的名字======
 
     public static final String AF_STATUS = "af_status";

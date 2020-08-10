@@ -18,6 +18,8 @@ import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.utils.Utils;
 
+import org.json.JSONArray;
+
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -34,13 +36,6 @@ import java.util.Map;
 public class AdSdk {
 
     private static AdSdk sAdSdk;
-    private static final Map<String, Integer> flagMap = new HashMap<String, Integer>();
-    static {
-        flagMap.put(Constant.TYPE_INTERSTITIAL, 1);
-        flagMap.put(Constant.TYPE_NATIVE, 2);
-        flagMap.put(Constant.TYPE_BANNER, 3);
-        flagMap.put(Constant.TYPE_REWARD, 4);
-    }
 
     private Context mContext;
     private Map<String, AdPlaceLoader> mAdLoaders = new HashMap<String, AdPlaceLoader>();
@@ -427,11 +422,22 @@ public class AdSdk {
 
     public boolean isComplexAdsLoaded() {
         try {
-            for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
-                AdPlaceLoader adPlaceLoader = entry.getValue();
-                if (adPlaceLoader.isComplexAdsLoaded()) {
-                    Log.v(Log.TAG, "place name [" + entry.getKey() + "] is loaded");
-                    return true;
+            List<String> cpxOrderList = parseStringList(DataManager.get(mContext).getString(Constant.COMPLEX_NAMES));
+            if (cpxOrderList != null && !cpxOrderList.isEmpty()) {
+                for (String name : cpxOrderList) {
+                    AdPlaceLoader adPlaceLoader = mAdLoaders.get(name);
+                    if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
+                        Log.v(Log.TAG, "place name [" + name + "] is loaded");
+                        return true;
+                    }
+                }
+            } else {
+                for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
+                    AdPlaceLoader adPlaceLoader = entry.getValue();
+                    if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
+                        Log.v(Log.TAG, "place name [" + entry.getKey() + "] is loaded");
+                        return true;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -442,28 +448,47 @@ public class AdSdk {
 
     public void showComplexAds() {
         try {
+            List<String> cpxOrderList = parseStringList(DataManager.get(mContext).getString(Constant.COMPLEX_NAMES));
             List<AdPlaceLoader> list = new ArrayList<AdPlaceLoader>();
-            for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
-                AdPlaceLoader adPlaceLoader = entry.getValue();
-                if (adPlaceLoader.isComplexAdsLoaded()) {
-                    list.add(adPlaceLoader);
+            if (cpxOrderList != null && !cpxOrderList.isEmpty()) {
+                for (String name : cpxOrderList) {
+                    AdPlaceLoader adPlaceLoader = mAdLoaders.get(name);
+                    if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
+                        list.add(adPlaceLoader);
+                    }
+                }
+            } else {
+                for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
+                    AdPlaceLoader adPlaceLoader = entry.getValue();
+                    if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
+                        list.add(adPlaceLoader);
+                    }
                 }
             }
+            Log.v(Log.TAG, "cpxOrderList : " + cpxOrderList);
             if (list != null && !list.isEmpty()) {
-                Collections.sort(list, new Comparator<AdPlaceLoader>() {
-                    @Override
-                    public int compare(AdPlaceLoader adPlaceLoader, AdPlaceLoader t1) {
-                        try {
-                            if (adPlaceLoader != null && t1 != null) {
-                                String type1 = adPlaceLoader.getLoadedType();
-                                String type2 = t1.getLoadedType();
-                                return flagMap.get(type1).compareTo(flagMap.get(type2));
+                if (cpxOrderList == null || cpxOrderList.isEmpty()) {
+                    List<String> finalCpxOrderList = Constant.DEFAULT_COMPLEX_ORDER;
+                    Collections.sort(list, new Comparator<AdPlaceLoader>() {
+                        @Override
+                        public int compare(AdPlaceLoader adPlaceLoader, AdPlaceLoader t1) {
+                            try {
+                                if (adPlaceLoader != null && t1 != null) {
+                                    String type1 = adPlaceLoader.getLoadedType();
+                                    String type2 = t1.getLoadedType();
+                                    int index1 = finalCpxOrderList.indexOf(type1);
+                                    int index2 = finalCpxOrderList.indexOf(type2);
+                                    Integer integerType1 = Integer.valueOf(index1);
+                                    Integer integerType2 = Integer.valueOf(index2);
+                                    return integerType1.compareTo(integerType2);
+                                }
+                            } catch (Exception e) {
                             }
-                        } catch (Exception e) {
+                            return 0;
                         }
-                        return 0;
-                    }
-                });
+                    });
+                }
+                Log.v(Log.TAG, "list : " + list);
                 for (AdPlaceLoader loader : list) {
                     if (loader != null && loader.isComplexAdsLoaded()) {
                         Log.v(Log.TAG, "place name [" + loader.getPlaceName() + "] is called to show");
@@ -661,5 +686,23 @@ public class AdSdk {
         if (!TextUtils.isEmpty(error)) {
             Log.iv(Log.TAG, "error : " + error);
         }
+    }
+
+    private List<String> parseStringList(String str) {
+        List<String> list = null;
+        try {
+            JSONArray jarray = new JSONArray(str);
+            if (jarray != null && jarray.length() > 0) {
+                list = new ArrayList<String>(jarray.length());
+                for (int index = 0; index < jarray.length(); index++) {
+                    String s = jarray.getString(index);
+                    if (!TextUtils.isEmpty(s)) {
+                        list.add(s);
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
 }
