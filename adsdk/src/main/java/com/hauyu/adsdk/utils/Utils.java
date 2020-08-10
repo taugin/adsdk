@@ -161,7 +161,6 @@ public class Utils {
     }
 
     public static void putLong(Context context, String key, long value) {
-        Log.v(Log.TAG, "key : " + key);
         key = encryptSpKey(context, key);
         PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(key, value).apply();
     }
