@@ -7,8 +7,6 @@ import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 
-import java.util.Map;
-
 /**
  * Created by wangchao1 on 2018/5/1.
  */
@@ -27,7 +25,8 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void setAdIds(Map<String, String> adids) {
+    public String getPlaceName() {
+        return null;
     }
 
     @Override

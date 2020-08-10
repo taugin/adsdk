@@ -7,8 +7,6 @@ import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.listener.OnAdSdkListener;
 
-import java.util.Map;
-
 /**
  * Created by wangchao1 on 2018/5/1.
  */
@@ -23,7 +21,8 @@ public interface IAdLoader {
 
     public boolean needReload(AdPlace adPlace);
 
-    public void setAdIds(Map<String, String> adids);
+    public String getPlaceName();
+
     public void setOnAdSdkListener(OnAdSdkListener l, boolean loaded);
 
     public boolean isInterstitialLoaded();

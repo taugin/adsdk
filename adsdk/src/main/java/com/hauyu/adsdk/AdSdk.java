@@ -20,7 +20,11 @@ import com.hauyu.adsdk.utils.Utils;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +34,13 @@ import java.util.Map;
 public class AdSdk {
 
     private static AdSdk sAdSdk;
+    private static final Map<String, Integer> flagMap = new HashMap<String, Integer>();
+    static {
+        flagMap.put(Constant.TYPE_INTERSTITIAL, 1);
+        flagMap.put(Constant.TYPE_NATIVE, 2);
+        flagMap.put(Constant.TYPE_BANNER, 3);
+        flagMap.put(Constant.TYPE_REWARD, 4);
+    }
 
     private Context mContext;
     private Map<String, AdPlaceLoader> mAdLoaders = new HashMap<String, AdPlaceLoader>();
@@ -431,12 +442,34 @@ public class AdSdk {
 
     public void showComplexAds() {
         try {
+            List<AdPlaceLoader> list = new ArrayList<AdPlaceLoader>();
             for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
                 AdPlaceLoader adPlaceLoader = entry.getValue();
                 if (adPlaceLoader.isComplexAdsLoaded()) {
-                    Log.v(Log.TAG, "place name [" + entry.getKey() + "] is called to show");
-                    adPlaceLoader.showComplexAds();
-                    break;
+                    list.add(adPlaceLoader);
+                }
+            }
+            if (list != null && !list.isEmpty()) {
+                Collections.sort(list, new Comparator<AdPlaceLoader>() {
+                    @Override
+                    public int compare(AdPlaceLoader adPlaceLoader, AdPlaceLoader t1) {
+                        try {
+                            if (adPlaceLoader != null && t1 != null) {
+                                String type1 = adPlaceLoader.getLoadedType();
+                                String type2 = t1.getLoadedType();
+                                return flagMap.get(type1).compareTo(flagMap.get(type2));
+                            }
+                        } catch (Exception e) {
+                        }
+                        return 0;
+                    }
+                });
+                for (AdPlaceLoader loader : list) {
+                    if (loader != null && loader.isComplexAdsLoaded()) {
+                        Log.v(Log.TAG, "place name [" + loader.getPlaceName() + "] is called to show");
+                        loader.showComplexAds();
+                        break;
+                    }
                 }
             }
         } catch (Exception e) {

@@ -102,6 +102,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return false;
     }
 
+    @Override
+    public String getPlaceName() {
+        if (mAdPlace != null) {
+            return mAdPlace.getName();
+        }
+        return super.getPlaceName();
+    }
+
     private void generateLoaders() {
         if (mAdPlace != null) {
             List<PidConfig> pidList = mAdPlace.getPidsList();
