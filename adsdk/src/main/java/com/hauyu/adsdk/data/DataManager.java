@@ -55,6 +55,7 @@ public class DataManager {
     private IParser mParser;
 
     public void init() {
+        VRemoteConfig.get(mContext).init();
         parseLocalData();
     }
 

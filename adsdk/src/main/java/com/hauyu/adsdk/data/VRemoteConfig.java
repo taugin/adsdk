@@ -1,6 +1,9 @@
 package com.hauyu.adsdk.data;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 
 import androidx.annotation.NonNull;
 
@@ -23,17 +26,20 @@ import java.util.TimeZone;
  * Created by Administrator on 2018/2/12.
  */
 
-public class VRemoteConfig implements OnCompleteListener {
+public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
 
     private static final int CACHE_EXPIRETIME = 15 * 60;
     private static final int REFRESH_INTERVAL = CACHE_EXPIRETIME * 1000;
     private static final String PREF_REFRESH_INTERVAL = "pref_refresh_interval";
     private static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_data_config_rtime";
     private static final SimpleDateFormat SDF_LEFT_TIME = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    private static final int MSG_UPDATE_REMOTE_CONFIG = 0x12345678;
+    private static final int DELAY_UPDATE_REMOTE_CONFIG = 2000;
     private static List<String> REFRESH_INTERVALS;
     private Context mContext;
     private FirebaseRemoteConfig mInstance;
     private Random mRandom = new Random(System.currentTimeMillis());
+    private Handler mHandler = new Handler(Looper.getMainLooper(), this);
 
     private static VRemoteConfig sVRemoteConfig;
 
@@ -65,14 +71,34 @@ public class VRemoteConfig implements OnCompleteListener {
         }
     }
 
-    public VRemoteConfig(Context context) {
+    private VRemoteConfig(Context context) {
         mContext = context;
+    }
+
+    public void init() {
         updateRefreshInterval();
         ensureFirebase();
+        updateRemoteConfig();
     }
 
     public void updateRemoteConfig() {
-        requestInternal();
+        if (mHandler != null) {
+            if (mHandler.hasMessages(MSG_UPDATE_REMOTE_CONFIG)) {
+                mHandler.removeMessages(MSG_UPDATE_REMOTE_CONFIG);
+            }
+            mHandler.sendEmptyMessageDelayed(MSG_UPDATE_REMOTE_CONFIG, DELAY_UPDATE_REMOTE_CONFIG);
+        } else {
+            requestInternal();
+        }
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (msg != null && msg.what == MSG_UPDATE_REMOTE_CONFIG) {
+            requestInternal();
+            return true;
+        }
+        return false;
     }
 
     private void requestInternal() {
