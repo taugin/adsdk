@@ -422,9 +422,9 @@ public class AdSdk {
 
     public boolean isComplexAdsLoaded() {
         try {
-            List<String> cpxOrderList = parseStringList(DataManager.get(mContext).getString(Constant.COMPLEX_NAMES));
-            if (cpxOrderList != null && !cpxOrderList.isEmpty()) {
-                for (String name : cpxOrderList) {
+            List<String> cpxNames = parseStringList(DataManager.get(mContext).getString(Constant.COMPLEX_NAMES));
+            if (cpxNames != null && !cpxNames.isEmpty()) {
+                for (String name : cpxNames) {
                     AdPlaceLoader adPlaceLoader = mAdLoaders.get(name);
                     if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
                         Log.v(Log.TAG, "place name [" + name + "] is loaded");
@@ -448,10 +448,10 @@ public class AdSdk {
 
     public void showComplexAds() {
         try {
-            List<String> cpxOrderList = parseStringList(DataManager.get(mContext).getString(Constant.COMPLEX_NAMES));
+            List<String> cpxNames = parseStringList(DataManager.get(mContext).getString(Constant.COMPLEX_NAMES));
             List<AdPlaceLoader> list = new ArrayList<AdPlaceLoader>();
-            if (cpxOrderList != null && !cpxOrderList.isEmpty()) {
-                for (String name : cpxOrderList) {
+            if (cpxNames != null && !cpxNames.isEmpty()) {
+                for (String name : cpxNames) {
                     AdPlaceLoader adPlaceLoader = mAdLoaders.get(name);
                     if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
                         list.add(adPlaceLoader);
@@ -465,9 +465,8 @@ public class AdSdk {
                     }
                 }
             }
-            Log.v(Log.TAG, "cpxOrderList : " + cpxOrderList);
             if (list != null && !list.isEmpty()) {
-                if (cpxOrderList == null || cpxOrderList.isEmpty()) {
+                if (cpxNames == null || cpxNames.isEmpty()) {
                     List<String> finalCpxOrderList = Constant.DEFAULT_COMPLEX_ORDER;
                     Collections.sort(list, new Comparator<AdPlaceLoader>() {
                         @Override
@@ -488,7 +487,6 @@ public class AdSdk {
                         }
                     });
                 }
-                Log.v(Log.TAG, "list : " + list);
                 for (AdPlaceLoader loader : list) {
                     if (loader != null && loader.isComplexAdsLoaded()) {
                         Log.v(Log.TAG, "place name [" + loader.getPlaceName() + "] is called to show");
