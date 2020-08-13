@@ -62,7 +62,7 @@ public class EventImpl implements IEvent {
         }
     }
 
-    private boolean isNewUser() {
+    private String getUserFlag() {
         try {
             Calendar calendar = Calendar.getInstance();
             int nowYear = calendar.get(Calendar.YEAR);
@@ -74,12 +74,45 @@ public class EventImpl implements IEvent {
             int activeYear = calendar.get(Calendar.YEAR);
             int activeMonth = calendar.get(Calendar.MONTH) + 1;
             int activeDay = calendar.get(Calendar.DAY_OF_MONTH);
-            Log.v(Log.TAG, String.format("now : %d-%02d-%02d , active : %d-%02d-%02d", nowYear, nowMonth, nowDay, activeYear, activeMonth, activeDay));
-            return nowYear == activeYear && nowMonth == activeMonth && nowDay == activeDay;
+
+            calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, nowYear);
+            calendar.set(Calendar.MONTH, nowMonth);
+            calendar.set(Calendar.DAY_OF_MONTH, nowDay);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            long nowTime = calendar.getTimeInMillis();
+
+            calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, activeYear);
+            calendar.set(Calendar.MONTH, activeMonth);
+            calendar.set(Calendar.DAY_OF_MONTH, activeDay);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            long activeTime = calendar.getTimeInMillis();
+            // return nowYear == activeYear && nowMonth == activeMonth && nowDay == activeDay;
+            try {
+                Log.v(Log.TAG, String.format("now : %d-%02d-%02d , active : %d-%02d-%02d, nowTime : %d , activeTime : %d", nowYear, nowMonth, nowDay, activeYear, activeMonth, activeDay, nowTime, activeTime));
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e);
+            }
+            if (nowTime < activeTime) {
+                return "error";
+            }
+            if (nowTime == activeTime) {
+                return "true";
+            }
+            if (nowTime > activeTime) {
+                return "false";
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
-        return false;
+        return "error";
     }
 
     private String generateEventIdAlias(Context context, String eventId) {
@@ -551,7 +584,7 @@ public class EventImpl implements IEvent {
         extra.put("type", type);
         extra.put("pid", pid);
         extra.put("ecpm", ecpm);
-        extra.put("new_user", isNewUser() ? "true" : "false");
+        extra.put("new_user", getUserFlag());
         return extra;
     }
 }
