@@ -68,33 +68,24 @@ public class EventImpl implements IEvent {
             int nowYear = calendar.get(Calendar.YEAR);
             int nowMonth = calendar.get(Calendar.MONTH) + 1;
             int nowDay = calendar.get(Calendar.DAY_OF_MONTH);
-            long userActiveTime = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
-            calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(userActiveTime);
-            int activeYear = calendar.get(Calendar.YEAR);
-            int activeMonth = calendar.get(Calendar.MONTH) + 1;
-            int activeDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-            calendar = Calendar.getInstance();
-            calendar.set(Calendar.YEAR, nowYear);
-            calendar.set(Calendar.MONTH, nowMonth);
-            calendar.set(Calendar.DAY_OF_MONTH, nowDay);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
             long nowTime = calendar.getTimeInMillis();
 
+            long userActiveTime = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
             calendar = Calendar.getInstance();
-            calendar.set(Calendar.YEAR, activeYear);
-            calendar.set(Calendar.MONTH, activeMonth);
-            calendar.set(Calendar.DAY_OF_MONTH, activeDay);
+            calendar.setTimeInMillis(userActiveTime);
+            int activeYear = calendar.get(Calendar.YEAR);
+            int activeMonth = calendar.get(Calendar.MONTH) + 1;
+            int activeDay = calendar.get(Calendar.DAY_OF_MONTH);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
             long activeTime = calendar.getTimeInMillis();
-            // return nowYear == activeYear && nowMonth == activeMonth && nowDay == activeDay;
+
             try {
                 Log.v(Log.TAG, String.format("now : %d-%02d-%02d , active : %d-%02d-%02d, nowTime : %d , activeTime : %d", nowYear, nowMonth, nowDay, activeYear, activeMonth, activeDay, nowTime, activeTime));
             } catch (Exception e) {
