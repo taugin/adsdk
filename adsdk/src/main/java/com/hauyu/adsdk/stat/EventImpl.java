@@ -6,10 +6,13 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.utils.Utils;
 
 import java.lang.reflect.Method;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,10 +43,43 @@ public class EventImpl implements IEvent {
         }
     }
 
+    private Context mContext;
     private EventImpl() {
     }
 
-    public void init() {
+    public void init(Context context) {
+        mContext = context;
+        recordActiveTime();
+    }
+
+    private void recordActiveTime() {
+        try {
+            long time = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
+            if (time <= 0) {
+                Utils.putLong(mContext, Constant.PREF_USER_ACTIVE_TIME, System.currentTimeMillis());
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private boolean isNewUser() {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            int nowYear = calendar.get(Calendar.YEAR);
+            int nowMonth = calendar.get(Calendar.MONTH) + 1;
+            int nowDay = calendar.get(Calendar.DAY_OF_MONTH);
+            long userActiveTime = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
+            calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(userActiveTime);
+            int activeYear = calendar.get(Calendar.YEAR);
+            int activeMonth = calendar.get(Calendar.MONTH) + 1;
+            int activeDay = calendar.get(Calendar.DAY_OF_MONTH);
+            Log.v(Log.TAG, String.format("now : %d-%02d-%02d , active : %d-%02d-%02d", nowYear, nowMonth, nowDay, activeYear, activeMonth, activeDay));
+            return nowYear == activeYear && nowMonth == activeMonth && nowDay == activeDay;
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return false;
     }
 
     private String generateEventIdAlias(Context context, String eventId) {
@@ -515,6 +551,7 @@ public class EventImpl implements IEvent {
         extra.put("type", type);
         extra.put("pid", pid);
         extra.put("ecpm", ecpm);
+        extra.put("new_user", isNewUser() ? "true" : "false");
         return extra;
     }
 }

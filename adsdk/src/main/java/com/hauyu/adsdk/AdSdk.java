@@ -87,7 +87,7 @@ public class AdSdk {
         Log.v(Log.TAG, "sdk version : " + getSdkVersion());
         DataManager.get(mContext).init();
         ActivityMonitor.get(mContext).init();
-        EventImpl.get().init();
+        EventImpl.get().init(mContext);
         callInit(mContext);
     }
 
