@@ -153,8 +153,9 @@
         {
           "sdk": "admob",
           "type": "banner",
+          "bs": "MEDIUM_RECTANGLE",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
