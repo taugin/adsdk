@@ -1777,6 +1777,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 placeError = mErrorTimes == 1;
             } else if (TextUtils.equals(getAdMode(), Constant.MODE_RAN)) {
                 placeError = mErrorTimes == 1;
+            } else if (TextUtils.equals(getAdMode(), Constant.MODE_QUE)) {
+                placeError = mErrorTimes == 1;
             } else {
                 Log.iv(Log.TAG, "can not match mode");
             }
