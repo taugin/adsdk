@@ -492,15 +492,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void loadInterstitialQueue() {
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
             if (!isInterstitialReachToCoreCount()) {
-                if (!isAdPlaceSeqLoading()) {
-                    setAdPlaceSeqLoading(true, SeqState.REQUEST);
-                    final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
-                    loadInterstitialQueueInternal(iterator);
-                } else {
-                    Log.iv(Log.TAG, mAdPlace.getName() + " que is loading ...");
-                }
+                final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
+                loadInterstitialQueueInternal(iterator);
             } else {
                 Log.iv(Log.TAG, mAdPlace.getName() + " has enough ...");
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onLoaded(mAdPlace.getName(), null, null);
+                }
             }
         } else {
             if (mOnAdSdkListener != null) {
@@ -511,6 +509,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private void loadInterstitialQueueInternal(final Iterator<ISdkLoader> iterator) {
         if (iterator == null || !iterator.hasNext()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
             return;
         }
         ISdkLoader loader = iterator.next();
@@ -546,9 +547,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
                 @Override
                 public void onInterstitialLoaded(ISdkLoader loader) {
+                    super.onInterstitialLoaded(loader);
                     if (isInterstitialReachToCoreCount()) {
                         setAdPlaceSeqLoading(false, SeqState.LOADED);
-                        super.onInterstitialLoaded(loader);
                     } else {
                         Log.iv(Log.TAG, "load for core interstitial");
                         loadInterstitialQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
@@ -817,15 +818,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void loadRewardedVideoQueue() {
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
             if (!isRewardedVideoReachToCoreCount()) {
-                if (!isAdPlaceSeqLoading()) {
-                    setAdPlaceSeqLoading(true, SeqState.REQUEST);
-                    final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
-                    loadRewardedVideoQueueInternal(iterator);
-                } else {
-                    Log.iv(Log.TAG, mAdPlace.getName() + " que is loading ...");
-                }
+                final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
+                loadRewardedVideoQueueInternal(iterator);
             } else {
                 Log.iv(Log.TAG, mAdPlace.getName() + " has enough ...");
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onLoaded(mAdPlace.getName(), null, null);
+                }
             }
         } else {
             if (mOnAdSdkListener != null) {
@@ -836,6 +835,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private void loadRewardedVideoQueueInternal(final Iterator<ISdkLoader> iterator) {
         if (iterator == null || !iterator.hasNext()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
             return;
         }
         ISdkLoader loader = iterator.next();
@@ -864,9 +866,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
                 @Override
                 public void onRewardedVideoAdLoaded(ISdkLoader loader) {
+                    super.onRewardedVideoAdLoaded(loader);
                     if (isRewardedVideoReachToCoreCount()) {
                         setAdPlaceSeqLoading(false, SeqState.LOADED);
-                        super.onRewardedVideoAdLoaded(loader);
                     } else {
                         Log.iv(Log.TAG, "load for core rewardedvideo");
                         loadRewardedVideoQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
@@ -1136,15 +1138,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void loadAdViewQueue() {
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
             if (!isAdViewReachToCoreCount()) {
-                if (!isAdPlaceSeqLoading()) {
-                    setAdPlaceSeqLoading(true, SeqState.REQUEST);
-                    final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
-                    loadAdViewQueueInternal(iterator);
-                } else {
-                    Log.iv(Log.TAG, mAdPlace.getName() + " que is loading ...");
-                }
+                final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
+                loadAdViewQueueInternal(iterator);
             } else {
                 Log.iv(Log.TAG, mAdPlace.getName() + " has enough ...");
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onLoaded(mAdPlace.getName(), null, null);
+                }
             }
         } else {
             if (mOnAdSdkListener != null) {
@@ -1155,6 +1155,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private void loadAdViewQueueInternal(final Iterator<ISdkLoader> iterator) {
         if (iterator == null || !iterator.hasNext()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
             return;
         }
         ISdkLoader loader = iterator.next();
@@ -1190,9 +1193,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
                 @Override
                 public void onAdLoaded(ISdkLoader loader) {
+                    super.onAdLoaded(loader);
                     if (isAdViewReachToCoreCount()) {
                         setAdPlaceSeqLoading(false, SeqState.LOADED);
-                        super.onAdLoaded(loader);
                     } else {
                         Log.iv(Log.TAG, "load for core AdView");
                         loadAdViewQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
@@ -1585,15 +1588,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void loadComplexAdsQueue() {
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
             if (!isComplexAdsReachToLoadCount()) {
-                if (!isAdPlaceSeqLoading()) {
-                    setAdPlaceSeqLoading(true, SeqState.REQUEST);
-                    final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
-                    loadComplexAdsQueueInternal(iterator);
-                } else {
-                    Log.iv(Log.TAG, mAdPlace.getName() + " que is loading ...");
-                }
+                final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
+                loadComplexAdsQueueInternal(iterator);
             } else {
                 Log.iv(Log.TAG, mAdPlace.getName() + " has enough ...");
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onLoaded(mAdPlace.getName(), null, null);
+                }
             }
         } else {
             if (mOnAdSdkListener != null) {
@@ -1604,6 +1605,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private void loadComplexAdsQueueInternal(final Iterator<ISdkLoader> iterator) {
         if (iterator == null || !iterator.hasNext()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null);
+            }
             return;
         }
         ISdkLoader loader = iterator.next();
@@ -1677,9 +1681,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
                 @Override
                 public void onAdLoaded(ISdkLoader loader) {
+                    super.onAdLoaded(loader);
                     if (isComplexAdsReachToLoadCount()) {
                         setAdPlaceSeqLoading(false, SeqState.LOADED);
-                        super.onAdLoaded(loader);
                     } else {
                         Log.iv(Log.TAG, "load for core");
                         loadComplexAdsQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
@@ -1688,9 +1692,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
                 @Override
                 public void onInterstitialLoaded(ISdkLoader loader) {
+                    super.onInterstitialLoaded(loader);
                     if (isComplexAdsReachToLoadCount()) {
                         setAdPlaceSeqLoading(false, SeqState.LOADED);
-                        super.onInterstitialLoaded(loader);
                     } else {
                         Log.iv(Log.TAG, "load for core");
                         loadComplexAdsQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
@@ -1699,9 +1703,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
                 @Override
                 public void onRewardedVideoAdLoaded(ISdkLoader loader) {
+                    super.onRewardedVideoAdLoaded(loader);
                     if (isComplexAdsReachToLoadCount()) {
                         setAdPlaceSeqLoading(false, SeqState.LOADED);
-                        super.onRewardedVideoAdLoaded(loader);
                     } else {
                         Log.iv(Log.TAG, "load for core");
                         loadComplexAdsQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
@@ -2318,7 +2322,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mAdPlace != null) {
             return mAdPlace.getSeqTimeout();
         }
-        return 0;
+        return 120000;
     }
 
     @Override

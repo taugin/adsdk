@@ -1,5 +1,7 @@
 package com.hauyu.adsdk.adloader.base;
 
+import android.text.TextUtils;
+
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.listener.IManagerListener;
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
@@ -60,6 +62,13 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         return null;
     }
 
+    private String getAdMode() {
+        if (listener != null) {
+            return listener.getAdMode();
+        }
+        return null;
+    }
+
     private OnAdSdkListener getOnAdPlaceLoaderListener() {
         if (listener != null) {
             return listener.getOnAdPlaceLoaderListener();
@@ -80,7 +89,9 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         } catch (Exception e) {
         }
 
-        if (hasNotifyLoaded()) {
+        String adMode = getAdMode();
+        Log.v(Log.TAG, "ad mode : " + adMode);
+        if (hasNotifyLoaded() && !TextUtils.equals(adMode, Constant.MODE_QUE)) {
             Log.v(Log.TAG, "has notify loaded ******************");
             return;
         }
@@ -193,8 +204,9 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
             }
         } catch (Exception e) {
         }
-
-        if (hasNotifyLoaded()) {
+        String adMode = getAdMode();
+        Log.v(Log.TAG, "ad mode : " + adMode);
+        if (hasNotifyLoaded() && !TextUtils.equals(adMode, Constant.MODE_QUE)) {
             Log.v(Log.TAG, "has notify loaded ++++++++++++++++++");
             return;
         }
@@ -352,7 +364,9 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         } catch (Exception e) {
         }
 
-        if (hasNotifyLoaded()) {
+        String adMode = getAdMode();
+        Log.v(Log.TAG, "ad mode : " + adMode);
+        if (hasNotifyLoaded() && !TextUtils.equals(adMode, Constant.MODE_QUE)) {
             Log.v(Log.TAG, "has notify loaded ------------------");
             return;
         }

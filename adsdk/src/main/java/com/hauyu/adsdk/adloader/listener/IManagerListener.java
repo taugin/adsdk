@@ -25,4 +25,5 @@ public interface IManagerListener {
     void notifyAdLoaded();
     Activity getActivity();
     String getOriginPidName();
+    String getAdMode();
 }
