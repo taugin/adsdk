@@ -32,6 +32,7 @@ public class MainActivity extends Activity {
             R.layout.ad_common_native_card_medium
     };
     private static final Map<String, Integer> LAYOUT_MAP;
+
     static {
         LAYOUT_MAP = new HashMap<>();
         LAYOUT_MAP.put("tiny", AdExtra.NATIVE_CARD_TINY);
@@ -81,7 +82,11 @@ public class MainActivity extends Activity {
         } else if (v.getId() == R.id.native_common) {
             loadAdViewCommon();
         } else if (v.getId() == R.id.reward_video) {
-            AdSdk.get(mContext).loadRewardedVideo("reward_video", mSimpleAdsdkListener);
+            if (AdSdk.get(mContext).isRewardedVideoLoaded("reward_video")) {
+                AdSdk.get(mContext).showRewardedVideo("reward_video");
+            } else {
+                AdSdk.get(mContext).loadRewardedVideo("reward_video");
+            }
         } else {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag);
@@ -216,7 +221,7 @@ public class MainActivity extends Activity {
 
         @Override
         public void onLoaded(String pidName, String source, String adType) {
-            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
             if (AdExtra.AD_TYPE_BANNER.equalsIgnoreCase(adType) || AdExtra.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
                 // showAdView(pidName);
                 AdSdk.get(getBaseContext()).showAdView(pidName, mNativeBannerLayout);
