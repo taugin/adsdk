@@ -72,15 +72,16 @@ android {
 
 dependencies {
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
-    implementation('com.facebook.android:audience-network-sdk:5.8.0')
+    implementation 'com.facebook.android:audience-network-sdk:5.8.0'
     // MoPub
-    implementation('com.mopub:mopub-sdk:5.12.0@aar') {
+    implementation('com.mopub:mopub-sdk:5.13.1@aar') {
         transitive = true
         exclude module: 'libAvid-mopub' // To exclude AVID
         exclude module: 'moat-mobile-app-kit'
         exclude group: 'androidx.fragment'
         exclude group: 'androidx.core'
     }
+    implementation 'com.mopub.volley:mopub-volley:2.1.0'
     // admob
     implementation 'com.google.android.gms:play-services-ads:18.0.0'
     // stringfog
