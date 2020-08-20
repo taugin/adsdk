@@ -43,10 +43,6 @@ public class AdPlace {
 
     private String bannerSize;
 
-    private boolean highEcpm;
-
-    private String placeType;
-
     private long seqTimeout = 300000;
 
     private int queueSize = 2;
@@ -198,22 +194,6 @@ public class AdPlace {
 
     public void setBannerSize(String bannerSize) {
         this.bannerSize = bannerSize;
-    }
-
-    public boolean isHighEcpm() {
-        return highEcpm;
-    }
-
-    public void setHighEcpm(boolean highEcpm) {
-        this.highEcpm = highEcpm;
-    }
-
-    public String getPlaceType() {
-        return placeType;
-    }
-
-    public void setPlaceType(String placeType) {
-        this.placeType = placeType;
     }
 
     public long getSeqTimeout() {

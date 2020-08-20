@@ -169,12 +169,6 @@ public class AdParser implements IParser {
             if (jobj.has(BANNER_SIZE)) {
                 adPlace.setBannerSize(jobj.getString(BANNER_SIZE));
             }
-            if (jobj.has(HIGH_ECPM)) {
-                adPlace.setHighEcpm(jobj.getInt(HIGH_ECPM) == 1);
-            }
-            if (jobj.has(PLACE_TYPE)) {
-                adPlace.setPlaceType(jobj.getString(PLACE_TYPE));
-            }
             if (jobj.has(SEQ_TIMEOUT)) {
                 adPlace.setSeqTimeout(jobj.getLong(SEQ_TIMEOUT));
             }

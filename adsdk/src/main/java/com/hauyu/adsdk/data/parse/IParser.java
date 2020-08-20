@@ -44,10 +44,6 @@ public interface IParser {
     String REF_SHARE = "rs";
     // waterfall 请求间隔, line item失败到下个line item请求的间隔
     String WATERFALL_INTERVAL = "wfi";
-    // 优先高ecpm
-    String HIGH_ECPM = "he";
-    // 场景类型
-    String PLACE_TYPE = "pt";
     // 顺序加载超时值
     String SEQ_TIMEOUT = "sto";
     // 队列模式下加载的大小
