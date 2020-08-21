@@ -45,6 +45,7 @@ public interface IAdLoader {
     public boolean showComplexAds();
 
     public int getAdCount();
+    public int getLoadedAdCount();
     public String getAdMode();
     public boolean isLoading();
     public boolean isPlaceError();

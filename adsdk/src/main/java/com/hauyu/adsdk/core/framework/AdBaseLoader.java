@@ -107,6 +107,11 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public int getLoadedAdCount() {
+        return 0;
+    }
+
+    @Override
     public String getAdMode() {
         return null;
     }

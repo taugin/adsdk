@@ -1590,6 +1590,22 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     @Override
+    public int getLoadedAdCount() {
+        int loadedAdCount = 0;
+        if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
+            for (ISdkLoader loader : mAdLoaders) {
+                if ((loader.isBannerLoaded()
+                        || loader.isNativeLoaded()
+                        || loader.isInterstitialLoaded()
+                        || loader.isRewardedVideoLoaded())) {
+                    loadedAdCount++;
+                }
+            }
+        }
+        return loadedAdCount;
+    }
+
+    @Override
     public String getAdMode() {
         if (mAdPlace != null) {
             return mAdPlace.getMode();
