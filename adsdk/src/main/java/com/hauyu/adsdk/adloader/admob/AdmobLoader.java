@@ -449,8 +449,8 @@ public class AdmobLoader extends AbstractSdkLoader {
                     }
                 }
             });
-            clearCachedAdTime(loadingRewardedAd);
-            loadingRewardedAd = null;
+            clearCachedAdTime(rewardedAd);
+            rewardedAd = null;
             reportAdShow();
             return true;
         }

@@ -22,8 +22,10 @@ public class ActView {
             @Override
             public void startActivity(Intent intent) {
                 try {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     application.startActivity(intent);
                 } catch (Exception | Error e) {
+                    Log.e(Log.TAG, "error : " + e);
                 }
             }
 
@@ -32,6 +34,7 @@ public class ActView {
                 try {
                     return application.getApplicationContext();
                 } catch (Exception | Error e) {
+                    Log.e(Log.TAG, "error : " + e);
                 }
                 return super.getApplicationContext();
             }
