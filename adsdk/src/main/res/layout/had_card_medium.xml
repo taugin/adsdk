@@ -153,7 +153,7 @@
             android:textSize="15sp"
             android:visibility="gone" />
 
-        <Button
+        <TextView
             android:id="@+id/native_action_btn"
             style="@style/AdButtonMediumStyle"
             android:layout_width="match_parent"

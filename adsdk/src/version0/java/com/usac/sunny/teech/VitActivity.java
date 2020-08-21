@@ -113,12 +113,6 @@ public class VitActivity extends Activity implements IAdvance {
         }
         mHandler = new Handler();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        try {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
         updateDataAndView();
     }
 
@@ -227,11 +221,7 @@ public class VitActivity extends Activity implements IAdvance {
         try {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            if (isLockView() || mInChargeView) {
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            } else {
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            }
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -245,6 +235,8 @@ public class VitActivity extends Activity implements IAdvance {
                             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                             window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
                             window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+                            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+                            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
                         }
                     } catch (Exception | Error e) {
                     }

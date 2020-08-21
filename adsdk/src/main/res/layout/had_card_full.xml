@@ -171,7 +171,7 @@
             android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
-            <Button
+            <TextView
                 android:id="@+id/native_cancel_btn"
                 style="@style/AdButtonFullStyle"
                 android:layout_width="match_parent"
@@ -184,7 +184,7 @@
                 android:background="@drawable/had_close_bg"
                 android:text="@android:string/cancel" />
 
-            <Button
+            <TextView
                 android:id="@+id/native_action_btn"
                 style="@style/AdButtonFullStyle"
                 android:layout_width="match_parent"

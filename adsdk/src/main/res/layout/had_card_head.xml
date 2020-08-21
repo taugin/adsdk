@@ -186,7 +186,7 @@
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
 
-                <Button
+                <TextView
                     android:id="@+id/native_action_btn"
                     style="@style/AdButtonFullStyle_Flat"
                     android:layout_width="match_parent"
@@ -199,7 +199,7 @@
                     android:background="@drawable/had_action_bg"
                     android:text="Learn More" />
 
-                <Button
+                <TextView
                     android:id="@+id/native_cancel_btn"
                     style="@style/AdButtonFullStyle_Flat"
                     android:layout_width="match_parent"
