@@ -85,7 +85,13 @@ public class MainActivity extends Activity {
             if (AdSdk.get(mContext).isRewardedVideoLoaded("reward_video")) {
                 AdSdk.get(mContext).showRewardedVideo("reward_video");
             } else {
-                AdSdk.get(mContext).loadRewardedVideo("reward_video");
+                AdSdk.get(mContext).loadRewardedVideo("reward_video", new SimpleAdSdkListener() {
+                    @Override
+                    public void onRewarded(String pidName, String source, String adType, AdReward item) {
+                        Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , item : " + item);
+                        runToast(item.toString());
+                    }
+                });
             }
         } else {
             String tag = (String) v.getTag();
