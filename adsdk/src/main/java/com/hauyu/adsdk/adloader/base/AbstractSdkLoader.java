@@ -87,7 +87,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             try {
                 activity = ActView.createFakeActivity((Application) mContext.getApplicationContext());
                 if (activity != null) {
-                    Log.iv(Log.TAG, "mopub " + getAdType() + " use fk activity");
+                    Log.iv(Log.TAG, getSdkName() + " " + getAdType() + " use fk activity");
                 }
             } catch (Exception e) {
             }

@@ -1,10 +1,13 @@
 package com.hauyu.adsdk.adloader.addfp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -17,9 +20,10 @@ import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
@@ -54,8 +58,9 @@ public class AdDfpLoader extends AbstractSdkLoader {
     private Params mParams;
     private PublisherAdView loadingView;
     private AdLoader.Builder loadingBuilder;
-    private RewardedVideoAd loadingRewardVideo;
-    private RewardedVideoAd loadedRewardVideo;
+
+    private RewardedAd loadingRewardedAd;
+    private RewardedAd rewardedAd;
 
     private PublisherAdView gBannerView;
     private UnifiedNativeAd gNativeAd;
@@ -479,14 +484,17 @@ public class AdDfpLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        loadingRewardVideo = MobileAds.getRewardedVideoAdInstance(mContext);
-        loadingRewardVideo.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+
+        loadingRewardedAd = new RewardedAd(mContext, mPidConfig.getPid());
+        printInterfaceLog(ACTION_LOAD);
+        reportAdRequest();
+        loadingRewardedAd.loadAd(new PublisherAdRequest.Builder().build(), new RewardedAdLoadCallback() {
             @Override
-            public void onRewardedVideoAdLoaded() {
+            public void onRewardedAdLoaded() {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
-                loadedRewardVideo = loadingRewardVideo;
-                putCachedAdTime(loadedRewardVideo);
+                rewardedAd = loadingRewardedAd;
+                putCachedAdTime(loadingRewardedAd);
                 reportAdLoaded();
                 if (getAdListener() != null) {
                     setLoadedFlag();
@@ -495,7 +503,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onRewardedVideoAdFailedToLoad(int i) {
+            public void onRewardedAdFailedToLoad(int i) {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(i));
@@ -503,74 +511,14 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoError(toSdkError(i));
                 }
             }
-
-            @Override
-            public void onRewardedVideoAdOpened() {
-                Log.v(Log.TAG, "");
-                reportAdImp();
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdOpened();
-                }
-            }
-
-            @Override
-            public void onRewardedVideoStarted() {
-                Log.v(Log.TAG, "");
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoStarted();
-                }
-            }
-
-            @Override
-            public void onRewardedVideoAdClosed() {
-                Log.v(Log.TAG, "");
-                reportAdClose();
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdClosed();
-                }
-            }
-
-            @Override
-            public void onRewarded(RewardItem rewardItem) {
-                Log.v(Log.TAG, "");
-                reportAdReward();
-                if (getAdListener() != null) {
-                    AdReward item = new AdReward();
-                    if (rewardItem != null) {
-                        item.setAmount(String.valueOf(rewardItem.getAmount()));
-                        item.setType(rewardItem.getType());
-                    }
-                    getAdListener().onRewarded(item);
-                }
-            }
-
-            @Override
-            public void onRewardedVideoAdLeftApplication() {
-                Log.v(Log.TAG, "");
-                reportAdClick();
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdClicked();
-                }
-            }
-
-            @Override
-            public void onRewardedVideoCompleted() {
-                Log.v(Log.TAG, "");
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoCompleted();
-                }
-            }
         });
-        printInterfaceLog(ACTION_LOAD);
-        reportAdRequest();
-        loadingRewardVideo.loadAd(mPidConfig.getPid(), new PublisherAdRequest.Builder().build());
     }
 
     @Override
     public boolean isRewardedVideoLoaded() {
         boolean loaded = super.isRewardedVideoLoaded();
-        if (loadedRewardVideo != null) {
-            loaded = loadedRewardVideo.isLoaded() && !isCachedAdExpired(loadedRewardVideo);
+        if (rewardedAd != null) {
+            loaded = rewardedAd.isLoaded() && !isCachedAdExpired(rewardedAd);
         }
         if (loaded) {
             Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
@@ -581,10 +529,51 @@ public class AdDfpLoader extends AbstractSdkLoader {
     @Override
     public boolean showRewardedVideo() {
         printInterfaceLog(ACTION_SHOW);
-        if (loadedRewardVideo != null && loadedRewardVideo.isLoaded()) {
-            loadedRewardVideo.show();
-            clearCachedAdTime(loadedRewardVideo);
-            loadedRewardVideo = null;
+        if (rewardedAd != null && rewardedAd.isLoaded()) {
+            Activity activity = getActivity();
+            rewardedAd.show(activity, new RewardedAdCallback() {
+                @Override
+                public void onRewardedAdOpened() {
+                    Log.v(Log.TAG, "");
+                    reportAdImp();
+                    if (getAdListener() != null) {
+                        getAdListener().onRewardedVideoAdOpened();
+                    }
+                }
+
+                @Override
+                public void onRewardedAdClosed() {
+                    Log.v(Log.TAG, "");
+                    reportAdClose();
+                    if (getAdListener() != null) {
+                        getAdListener().onRewardedVideoAdClosed();
+                    }
+                }
+
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                    Log.v(Log.TAG, "");
+                    reportAdReward();
+                    if (getAdListener() != null) {
+                        AdReward item = new AdReward();
+                        if (rewardItem != null) {
+                            item.setAmount(String.valueOf(rewardItem.getAmount()));
+                            item.setType(rewardItem.getType());
+                        }
+                        getAdListener().onRewarded(item);
+                    }
+                }
+
+                @Override
+                public void onRewardedAdFailedToShow(int i) {
+                    Log.v(Log.TAG, "");
+                    if (getAdListener() != null) {
+                        getAdListener().onRewardedVideoError(toSdkError(i));
+                    }
+                }
+            });
+            clearCachedAdTime(loadingRewardedAd);
+            loadingRewardedAd = null;
             reportAdShow();
             return true;
         }
