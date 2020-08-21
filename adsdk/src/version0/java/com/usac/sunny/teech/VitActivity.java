@@ -1,5 +1,6 @@
 package com.usac.sunny.teech;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
@@ -95,6 +96,7 @@ public class VitActivity extends Activity implements IAdvance {
         SceneSdk.init(context);
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
