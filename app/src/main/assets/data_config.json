@@ -35,14 +35,14 @@
     },
     {
       "name": "banner_and_native",
-      "mode": "que",
+      "mode": "con",
       "bs": 2,
       "cc": [
         "#FF660000",
         "#4455bb22"
       ],
       "nl": [
-        "head"
+        "tiny"
       ],
       "pids": [
         {
