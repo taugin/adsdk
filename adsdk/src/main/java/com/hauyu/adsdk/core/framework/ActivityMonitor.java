@@ -7,11 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.hauyu.adsdk.core.CtrChecker;
-import com.hauyu.adsdk.data.config.PidConfig;
+import com.hauyu.adsdk.log.Log;
 
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -22,10 +20,6 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     private static ActivityMonitor sActivityMonitor;
     private AtomicInteger mAtomicInteger = new AtomicInteger(0);
-    private AtomicBoolean mAtomicBoolean = new AtomicBoolean();
-
-    private CtrChecker mCtrChecker = new CtrChecker();
-    private PidConfig mPidConfg;
 
     public static ActivityMonitor get(Context context) {
         synchronized (ActivityMonitor.class) {
@@ -57,22 +51,13 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
             if (mContext instanceof Application) {
                 ((Application) mContext).registerActivityLifecycleCallbacks(this);
             }
-        } catch(Exception e) {
-        } catch(Error e) {
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e);
         }
-    }
-
-    public void setPidConfig(PidConfig pidConfig) {
-        mPidConfg = pidConfig;
     }
 
     @Override
     public void onActivityCreated(final Activity activity, Bundle savedInstanceState) {
-        if (mCtrChecker != null && mPidConfg != null) {
-            mCtrChecker.checkCTR(activity, mPidConfg);
-            // 置空，防止拦截其他的Activity
-            mPidConfg = null;
-        }
     }
 
     @Override
@@ -84,16 +69,10 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityResumed(Activity activity) {
-        if (mAtomicBoolean != null) {
-            mAtomicBoolean.set(true);
-        }
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
-        if (mAtomicBoolean != null) {
-            mAtomicBoolean.set(false);
-        }
     }
 
     @Override
@@ -114,13 +93,6 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     public boolean appOnTop() {
         if (mAtomicInteger != null) {
             return mAtomicInteger.get() > 0;
-        }
-        return false;
-    }
-
-    public boolean appOnTopForReward() {
-        if (mAtomicBoolean != null) {
-            return mAtomicBoolean.get();
         }
         return false;
     }
