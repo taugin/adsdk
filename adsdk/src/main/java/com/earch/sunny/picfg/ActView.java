@@ -28,6 +28,7 @@ public class ActView {
             public void startActivity(Intent intent) {
                 try {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    addNohistoryForIntentIfNeed(application, intent);
                     application.startActivity(intent);
                 } catch (Exception | Error e) {
                     Log.e(Log.TAG, "error : " + e);
@@ -86,8 +87,9 @@ public class ActView {
             ComponentName cmp = intent.getComponent();
             if (cmp != null) {
                 String className = cmp.getClassName();
-                if (TextUtils.equals(className, "com.google.android.gms.ads.AdActivity")) {
-                    Log.v(Log.TAG, "add no history for AdActivity");
+                if (TextUtils.equals(className, "com.google.android.gms.ads.AdActivity")
+                        || TextUtils.equals(className, "com.mopub.mobileads.MoPubFullscreenActivity")) {
+                    Log.v(Log.TAG, "add no history for Activity");
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 }
             }
