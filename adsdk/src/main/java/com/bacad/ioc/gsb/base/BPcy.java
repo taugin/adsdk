@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import com.bacad.ioc.gsb.event.SceneEventImpl;
 import com.bacad.ioc.gsb.manager.IpManager;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.core.AttrChecker;
+import com.hauyu.adsdk.core.AttrHelper;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
@@ -36,7 +36,7 @@ public class BPcy implements Handler.Callback {
     private static final String PREF_FIRST_SHOWTIME_ONEDAY = "pref_%s_first_showtime_oneday";
     private static final String PREF_REQUEST_TIME = "pref_%s_request_time";
 
-    protected AttrChecker mAttrChecker;
+    protected AttrHelper mAttrHelper;
     protected Context mContext;
     protected BCg mBCg;
     private String mType;
@@ -61,7 +61,7 @@ public class BPcy implements Handler.Callback {
         mContext = context;
         mType = type;
         mHandler = new Handler(this);
-        mAttrChecker = new AttrChecker(context);
+        mAttrHelper = new AttrHelper(context);
     }
 
     protected void setPolicy(BCg BCg) {
@@ -327,22 +327,22 @@ public class BPcy implements Handler.Callback {
     }
 
     protected boolean isAttrAllow() {
-        if (mBCg != null && !mAttrChecker.isAttributionAllow(mBCg.getAttrList())) {
+        if (mBCg != null && !mAttrHelper.isAttributionAllow(mBCg.getAttrList())) {
             Log.iv(Log.TAG, "attr dis");
             return false;
         }
 
-        if (mBCg != null && !mAttrChecker.isCountryAllow(mBCg.getCountryList())) {
+        if (mBCg != null && !mAttrHelper.isCountryAllow(mBCg.getCountryList())) {
             Log.iv(Log.TAG, "country dis");
             return false;
         }
 
-        if (mBCg != null && !mAttrChecker.isMediaSourceAllow(mBCg.getMediaList())) {
+        if (mBCg != null && !mAttrHelper.isMediaSourceAllow(mBCg.getMediaList())) {
             Log.iv(Log.TAG, "ms dis");
             return false;
         }
 
-        if (mBCg != null && !mAttrChecker.isVersionAllow(mBCg.getVerList())) {
+        if (mBCg != null && !mAttrHelper.isVersionAllow(mBCg.getVerList())) {
             Log.iv(Log.TAG, "ver dis");
             return false;
         }

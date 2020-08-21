@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.earch.sunny.picfg.SpreadCfg;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.core.Aes;
+import com.hauyu.adsdk.utils.AesUtils;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.data.config.PlaceConfig;
@@ -45,7 +45,7 @@ public class AdParser implements IParser {
         if (jarray != null) {
             return jarray.toString();
         }
-        return Aes.decrypt(Constant.KEY_PASSWORD, content);
+        return AesUtils.decrypt(Constant.KEY_PASSWORD, content);
     }
 
     @Override

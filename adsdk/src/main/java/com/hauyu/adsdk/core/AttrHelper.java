@@ -13,14 +13,11 @@ import java.util.List;
  * Created by Administrator on 2018/7/18.
  */
 
-public class AttrChecker {
+public class AttrHelper {
 
     private Context mContext;
 
-    public AttrChecker() {
-    }
-
-    public AttrChecker(Context context) {
+    public AttrHelper(Context context) {
         mContext = context;
     }
 

@@ -225,7 +225,7 @@
     },
     {
       "name": "reward_video",
-      "mode": "que",
+      "mode": "con",
       "retry": 1,
       "qs": 2,
       "pids": [

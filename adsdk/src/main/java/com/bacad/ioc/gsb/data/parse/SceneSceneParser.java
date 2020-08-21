@@ -10,7 +10,7 @@ import com.bacad.ioc.gsb.scconfig.HvCg;
 import com.bacad.ioc.gsb.scconfig.LvCg;
 import com.bacad.ioc.gsb.scconfig.SvCg;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.core.Aes;
+import com.hauyu.adsdk.utils.AesUtils;
 import com.hauyu.adsdk.log.Log;
 
 import org.json.JSONArray;
@@ -49,7 +49,7 @@ public class SceneSceneParser implements ISceneParser {
         if (jarray != null) {
             return jarray.toString();
         }
-        return Aes.decrypt(Constant.KEY_PASSWORD, content);
+        return AesUtils.decrypt(Constant.KEY_PASSWORD, content);
     }
 
     private void parseBaseConfig(BCg bCg, JSONObject jobj) {

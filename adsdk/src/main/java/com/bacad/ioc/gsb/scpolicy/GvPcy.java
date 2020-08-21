@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.bacad.ioc.gsb.base.BPcy;
 import com.bacad.ioc.gsb.scconfig.GvCg;
-import com.hauyu.adsdk.core.AttrChecker;
+import com.hauyu.adsdk.core.AttrHelper;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -34,7 +34,7 @@ public class GvPcy extends BPcy {
 
     private GvPcy(Context context) {
         super(context, "gt");
-        mAttrChecker = new AttrChecker(context);
+        mAttrHelper = new AttrHelper(context);
     }
 
     private GvCg mGvCg;
