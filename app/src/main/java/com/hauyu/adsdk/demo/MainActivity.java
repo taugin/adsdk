@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.AdSdk;
+import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -45,15 +47,21 @@ public class MainActivity extends Activity {
     private static final String TAG = "MA";
     private Context mContext;
     private RelativeLayout mNativeBannerLayout;
+    private Button mRewardButton;
+    private int mRewardShowTimes = 0;
+    private int mRewardGetTimes = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mRewardButton = findViewById(R.id.reward_video_queue);
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = getApplicationContext();
         AdSdk.get(mContext).init();
+        updateRewardButton();
+        mRewardButton.post(mUpdateRewardButton);
     }
 
     private boolean hasEnable() {
@@ -93,6 +101,8 @@ public class MainActivity extends Activity {
                     }
                 });
             }
+        } else if (v.getId() == R.id.reward_video_queue) {
+            AdSdk.get(mContext).showRewardedVideo("reward_video");
         } else {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag);
@@ -279,4 +289,52 @@ public class MainActivity extends Activity {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
     };
+
+    private Runnable mUpdateRewardButton = new Runnable() {
+        @Override
+        public void run() {
+            loadRewardIfNeed();
+            updateRewardButton();
+            mRewardButton.postDelayed(this, 5000);
+        }
+    };
+
+    private void loadRewardIfNeed() {
+        if (!AdSdk.get(this).isRewardedVideoLoaded("reward_video") && ActivityMonitor.get(this).appOnTop()) {
+            AdSdk.get(this).loadRewardedVideo("reward_video", mRewardListener);
+        }
+    }
+
+    private SimpleAdSdkListener mRewardListener = new SimpleAdSdkListener() {
+        @Override
+        public void onLoaded(String pidName, String source, String adType) {
+            updateRewardButton();
+        }
+
+        @Override
+        public void onImp(String pidName, String source, String adType) {
+            super.onImp(pidName, source, adType);
+            mRewardShowTimes++;
+            updateRewardButton();
+        }
+
+        @Override
+        public void onRewarded(String pidName, String source, String adType, AdReward item) {
+            super.onRewarded(pidName, source, adType, item);
+            mRewardGetTimes++;
+            updateRewardButton();
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRewardButton.removeCallbacks(mUpdateRewardButton);
+    }
+
+    private void updateRewardButton() {
+        int loadedAdCount = AdSdk.get(this).getLoadedAdCount("reward_video");
+        mRewardButton.setText("已加载激励视频数 : " + loadedAdCount + " (" + mRewardGetTimes + "/" + mRewardShowTimes + ")");
+        mRewardButton.setEnabled(loadedAdCount > 0);
+    }
 }

@@ -225,7 +225,7 @@
     },
     {
       "name": "reward_video",
-      "mode": "con",
+      "mode": "que",
       "retry": 1,
       "qs": 2,
       "pids": [
@@ -233,7 +233,7 @@
           "sdk": "fb",
           "type": "reward",
           "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",

@@ -18,10 +18,10 @@
                 android:id="@+id/tiny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:tag="tiny"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
+                android:tag="tiny"
                 android:text="tiny" />
 
             <Button
@@ -29,9 +29,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
-                android:tag="small"
                 android:layout_weight="1"
                 android:onClick="onClick"
+                android:tag="small"
                 android:text="small" />
 
             <Button
@@ -39,10 +39,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
-                android:singleLine="true"
                 android:layout_weight="1"
-                android:tag="medium"
                 android:onClick="onClick"
+                android:singleLine="true"
+                android:tag="medium"
                 android:text="medium" />
 
             <Button
@@ -51,8 +51,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
-                android:tag="large"
                 android:onClick="onClick"
+                android:tag="large"
                 android:text="large" />
 
             <Button
@@ -61,8 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
-                android:tag="full"
                 android:onClick="onClick"
+                android:tag="full"
                 android:text="full" />
         </LinearLayout>
 
@@ -124,6 +124,14 @@
                 android:onClick="onClick"
                 android:text="NATIVE通用布局" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/reward_video_queue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClick"
+            android:text="已加载激励视频数 : 0" />
 
         <RelativeLayout
             android:id="@+id/native_banner_layout"
