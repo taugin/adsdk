@@ -1,5 +1,6 @@
 package com.cabes.green.allen;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;

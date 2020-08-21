@@ -1,5 +1,6 @@
 package com.dock.uasic.migre;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
