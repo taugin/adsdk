@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.bacad.ioc.gsb.base.CSvr;
+import com.earch.sunny.picfg.ActView;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.core.framework.AdPlaceLoader;
@@ -42,7 +43,7 @@ public class AdSdk {
     private WeakReference<Activity> mActivity;
 
     private AdSdk(Context context) {
-        mContext = context.getApplicationContext();
+        mContext = ActView.createWrapperContext(context.getApplicationContext());
     }
 
     public static AdSdk get(Context context) {

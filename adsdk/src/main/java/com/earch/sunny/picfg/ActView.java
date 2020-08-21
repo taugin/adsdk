@@ -2,10 +2,15 @@ package com.earch.sunny.picfg;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.WindowManager;
 
+import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.log.Log;
 
 import java.lang.reflect.Field;
@@ -58,5 +63,34 @@ public class ActView {
             Log.e(Log.TAG, "error : " + e, e);
         }
         return activity;
+    }
+
+    public static Context createWrapperContext(final Context context) {
+        return new ContextWrapper(context) {
+            @Override
+            public void startActivity(Intent intent) {
+                addNohistoryForIntentIfNeed(context, intent);
+                super.startActivity(intent);
+            }
+
+            @Override
+            public void startActivity(Intent intent, Bundle options) {
+                addNohistoryForIntentIfNeed(context, intent);
+                super.startActivity(intent, options);
+            }
+        };
+    }
+
+    private static void addNohistoryForIntentIfNeed(Context context, Intent intent) {
+        if (!ActivityMonitor.get(context).appOnTop() && intent != null) {
+            ComponentName cmp = intent.getComponent();
+            if (cmp != null) {
+                String className = cmp.getClassName();
+                if (TextUtils.equals(className, "com.google.android.gms.ads.AdActivity")) {
+                    Log.v(Log.TAG, "add no history for AdActivity");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                }
+            }
+        }
     }
 }
