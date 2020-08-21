@@ -443,6 +443,9 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 reportAdImp();
                 if (getAdListener() != null) {
+                    getAdListener().onRewardedVideoAdOpened();
+                }
+                if (getAdListener() != null) {
                     getAdListener().onRewardedVideoStarted();
                 }
             }

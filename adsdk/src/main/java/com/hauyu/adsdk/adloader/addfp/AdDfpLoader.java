@@ -539,6 +539,9 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     if (getAdListener() != null) {
                         getAdListener().onRewardedVideoAdOpened();
                     }
+                    if (getAdListener() != null) {
+                        getAdListener().onRewardedVideoStarted();
+                    }
                 }
 
                 @Override
@@ -548,6 +551,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     if (getAdListener() != null) {
                         getAdListener().onRewardedVideoAdClosed();
                     }
+                    rewardedAd = null;
                 }
 
                 @Override
@@ -562,6 +566,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                         }
                         getAdListener().onRewarded(item);
                     }
+                    rewardedAd = null;
                 }
 
                 @Override
@@ -570,10 +575,10 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     if (getAdListener() != null) {
                         getAdListener().onRewardedVideoError(toSdkError(i));
                     }
+                    rewardedAd = null;
                 }
             });
             clearCachedAdTime(rewardedAd);
-            rewardedAd = null;
             reportAdShow();
             return true;
         }
