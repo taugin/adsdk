@@ -39,11 +39,13 @@ public class AdSdk {
     private static AdSdk sAdSdk;
 
     private Context mContext;
+    private Context mOriginContext;
     private Map<String, AdPlaceLoader> mAdLoaders = new HashMap<String, AdPlaceLoader>();
     private WeakReference<Activity> mActivity;
 
     private AdSdk(Context context) {
-        mContext = ActView.createWrapperContext(context.getApplicationContext());
+        mOriginContext = context.getApplicationContext();
+        mContext = ActView.createWrapperContext(mOriginContext);
     }
 
     public static AdSdk get(Context context) {
@@ -87,7 +89,7 @@ public class AdSdk {
     public void init() {
         Log.v(Log.TAG, "sdk version : " + getSdkVersion());
         DataManager.get(mContext).init();
-        ActivityMonitor.get(mContext).init();
+        ActivityMonitor.get(mOriginContext).init();
         EventImpl.get().init(mContext);
         callInit(mContext);
     }
