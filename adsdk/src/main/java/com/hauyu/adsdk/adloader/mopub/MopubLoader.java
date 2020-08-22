@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.annotation.NonNull;
-
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
@@ -37,6 +35,8 @@ import com.mopub.nativeads.NativeErrorCode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Administrator on 2018/6/28.
@@ -369,10 +369,11 @@ public class MopubLoader extends AbstractSdkLoader {
     @Override
     public boolean isRewardedVideoLoaded() {
         boolean loaded = MoPubRewardedVideos.hasRewardedVideo(getPidConfig().getPid());
-        if (loaded) {
-            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+        boolean finalLoaded = loaded || isRewardPlaying();
+        if (finalLoaded) {
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded + " , playing : " + isRewardPlaying());
         }
-        return loaded;
+        return finalLoaded;
     }
 
     @Override
@@ -441,6 +442,7 @@ public class MopubLoader extends AbstractSdkLoader {
             @Override
             public void onRewardedVideoStarted(@NonNull String adUnitId) {
                 Log.v(Log.TAG, "");
+                setRewardPlaying(true);
                 reportAdImp();
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdOpened();
@@ -466,6 +468,7 @@ public class MopubLoader extends AbstractSdkLoader {
             @Override
             public void onRewardedVideoClosed(@NonNull String adUnitId) {
                 Log.v(Log.TAG, "");
+                setRewardPlaying(false);
                 reportAdClose();
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClosed();

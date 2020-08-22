@@ -43,6 +43,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     // 加载未返回的超时时间5分钟
     protected static final int LOADING_TIMEOUT = 60 * 1000;
 
+    // 加载未返回的超时消息
+    protected static final int MSG_PLAYING_TIMEOUT = 1001;
+    // 加载未返回的超时时间5分钟
+    protected static final int PLAYING_TIMEOUT = 60 * 1000;
+
     protected static final int STATE_REQUEST = 1;
     protected static final int STATE_SUCCESS = 2;
     protected static final int STATE_FAILURE = 3;
@@ -58,6 +63,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private long mRequestTime = 0;
     private int mBannerSize = Constant.NOSET;
     private IEvent mStat;
+    private boolean mRewardVideoPlaying = false;
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -299,6 +305,26 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
                 Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - remove time out message");
+            }
+        }
+    }
+
+    protected synchronized boolean isRewardPlaying() {
+        return mRewardVideoPlaying;
+    }
+
+    protected synchronized void setRewardPlaying(boolean playing) {
+        mRewardVideoPlaying = playing;
+        if (mRewardVideoPlaying) {
+            if (mHandler != null) {
+                mHandler.removeMessages(MSG_PLAYING_TIMEOUT);
+                mHandler.sendEmptyMessageDelayed(MSG_PLAYING_TIMEOUT, PLAYING_TIMEOUT);
+                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - reward playing : " + getTimeout());
+            }
+        } else {
+            if (mHandler != null) {
+                mHandler.removeMessages(MSG_PLAYING_TIMEOUT);
+                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - reward dismiss");
             }
         }
     }

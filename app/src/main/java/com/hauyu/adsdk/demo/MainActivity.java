@@ -326,6 +326,12 @@ public class MainActivity extends Activity {
             mRewardGetTimes++;
             updateRewardButton();
         }
+
+        @Override
+        public void onDismiss(String pidName, String source, String adType) {
+            super.onDismiss(pidName, source, adType);
+            updateRewardButton();
+        }
     };
 
     @Override

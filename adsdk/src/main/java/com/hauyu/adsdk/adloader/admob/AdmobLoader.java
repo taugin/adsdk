@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -35,6 +33,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -397,10 +397,11 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (rewardedAd != null) {
             loaded = rewardedAd.isLoaded() && !isCachedAdExpired(rewardedAd);
         }
-        if (loaded) {
-            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+        boolean finalLoaded = loaded || isRewardPlaying();
+        if (finalLoaded) {
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded + " , playing : " + isRewardPlaying());
         }
-        return loaded;
+        return finalLoaded;
     }
 
     @Override
@@ -412,6 +413,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onRewardedAdOpened() {
                     Log.v(Log.TAG, "");
+                    setRewardPlaying(true);
                     reportAdImp();
                     if (getAdListener() != null) {
                         getAdListener().onRewardedVideoAdOpened();
@@ -424,6 +426,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onRewardedAdClosed() {
                     Log.v(Log.TAG, "");
+                    setRewardPlaying(false);
                     reportAdClose();
                     if (getAdListener() != null) {
                         getAdListener().onRewardedVideoAdClosed();

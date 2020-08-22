@@ -585,6 +585,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onLoggingImpression(Ad ad) {
                 Log.v(Log.TAG, "");
+                setRewardPlaying(true);
                 reportAdImp();
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdOpened();
@@ -594,6 +595,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onRewardedVideoClosed() {
                 Log.v(Log.TAG, "");
+                setRewardPlaying(false);
                 reportAdClose();
                 if (getAdListener() != null) {
                     getAdListener().onRewardedVideoAdClosed();
@@ -651,10 +653,11 @@ public class FBLoader extends AbstractSdkLoader {
         if (rewardedVideoAd != null) {
             loaded = rewardedVideoAd.isAdLoaded() && !rewardedVideoAd.isAdInvalidated()/* && !isCachedAdExpired(rewardedVideoAd)*/;
         }
-        if (loaded) {
-            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+        boolean finalLoaded = loaded || isRewardPlaying();
+        if (finalLoaded) {
+            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded + " , playing : " + isRewardPlaying());
         }
-        return loaded;
+        return finalLoaded;
     }
 
     @Override
