@@ -57,7 +57,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void loadRewardedVideo(Activity activity) {
+    public void loadRewardedVideo(Activity activity, boolean auto) {
     }
 
     @Override

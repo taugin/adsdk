@@ -2,6 +2,8 @@ package com.hauyu.adsdk;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
@@ -42,6 +44,13 @@ public class AdSdk {
     private Context mOriginContext;
     private Map<String, AdPlaceLoader> mAdLoaders = new HashMap<String, AdPlaceLoader>();
     private WeakReference<Activity> mActivity;
+    // 激励视频自动加载回调
+    private OnAdSdkListener mAutoRewardListener;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+    // 激励视频自动加载间隔
+    private long mRewardLoadInterval = 5000;
+    // 激励视频场景名称
+    private String mRewardPidName = null;
 
     private AdSdk(Context context) {
         mOriginContext = context.getApplicationContext();
@@ -311,7 +320,7 @@ public class AdSdk {
                     activity = mActivity.get();
                 }
             }
-            loader.loadRewardedVideo(activity);
+            loader.loadRewardedVideo(activity, false);
         } else {
             if (l != null) {
                 l.onError(pidName, null, null);
@@ -713,5 +722,56 @@ public class AdSdk {
         } catch (Exception e) {
         }
         return list;
+    }
+
+    private Runnable mRewardLoadRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (!AdSdk.get(mContext).isRewardedVideoLoaded(mRewardPidName)
+                    && ActivityMonitor.get(mContext).appOnTop()
+                    && Utils.isScreenOn(mContext)) {
+                loadRewardAuto();
+            } else {
+                setAutoRewardListener(mRewardPidName, mAutoRewardListener);
+            }
+            if (mAutoRewardListener != null) {
+                mAutoRewardListener.onUpdate(mRewardPidName, null, Constant.TYPE_REWARD);
+            }
+            if (mHandler != null) {
+                mHandler.postDelayed(this, mRewardLoadInterval);
+            }
+        }
+    };
+
+    public void setAutoRewardListener(String pidName, OnAdSdkListener l) {
+        mAutoRewardListener = l;
+        setOnAdSdkListener(pidName, l);
+    }
+
+    private void loadRewardAuto() {
+        AdPlaceLoader loader = getAdLoader(mRewardPidName, true);
+        if (loader != null) {
+            loader.setOnAdSdkListener(mAutoRewardListener, false);
+            loader.loadRewardedVideo(null, false);
+        } else {
+            if (mAutoRewardListener != null) {
+                mAutoRewardListener.onError(mRewardPidName, null, null);
+            }
+        }
+    }
+
+    public void startAutoReward(String pidName, long interval, long firstDelay) {
+        mRewardPidName = pidName;
+        mRewardLoadInterval = interval;
+        if (mHandler != null) {
+            mHandler.removeCallbacks(mRewardLoadRunnable);
+            mHandler.postDelayed(mRewardLoadRunnable, firstDelay);
+        }
+    }
+
+    public void stopAutoReward() {
+        if (mHandler != null) {
+            mHandler.removeCallbacks(mRewardLoadRunnable);
+        }
     }
 }

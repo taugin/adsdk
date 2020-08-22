@@ -11,8 +11,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-
 import com.earch.sunny.picfg.IAdvance;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.adloader.addfp.AdDfpLoader;
@@ -45,6 +43,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
+import androidx.annotation.NonNull;
+
 /**
  * 每个广告位对应一个AdPlaceLoader对象
  */
@@ -71,6 +71,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private String mPlaceType = null;
     private int mErrorTimes = 0;
     private int mRetryTimes = 0;
+    private boolean mAutoLoad = false;
 
     public AdPlaceLoader(Context context) {
         mContext = context;
@@ -654,7 +655,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      * 加载插屏
      */
     @Override
-    public void loadRewardedVideo(Activity activity) {
+    public void loadRewardedVideo(Activity activity, boolean auto) {
         if (mAdPlace == null) {
             if (mOnAdSdkListener != null) {
                 mOnAdSdkListener.onError(null, null, null);
@@ -693,21 +694,26 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             return;
         }
         setPlaceType(Constant.PLACE_TYPE_REWARDEDVIDEO);
-        loadRewardedVideoInternal();
+        loadRewardedVideoInternal(auto);
     }
 
-    private void loadRewardedVideoInternal() {
+    private void loadRewardedVideoInternal(boolean auto) {
+        mAutoLoad = auto;
         resetPlaceErrorTimes();
-        if (mAdPlace.isConcurrent()) {
-            loadRewardedVideoConcurrent();
-        } else if (mAdPlace.isSequence()) {
-            loadRewardedVideoSequence();
-        } else if (mAdPlace.isRandom()) {
-            loadRewardedVideoRandom();
-        } else if (mAdPlace.isQueue()) {
+        if (auto) {
             loadRewardedVideoQueue();
         } else {
-            loadRewardedVideoConcurrent();
+            if (mAdPlace.isConcurrent()) {
+                loadRewardedVideoConcurrent();
+            } else if (mAdPlace.isSequence()) {
+                loadRewardedVideoSequence();
+            } else if (mAdPlace.isRandom()) {
+                loadRewardedVideoRandom();
+            } else if (mAdPlace.isQueue()) {
+                loadRewardedVideoQueue();
+            } else {
+                loadRewardedVideoConcurrent();
+            }
         }
     }
 
@@ -1770,7 +1776,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_INTERSTITIAL)) {
             loadInterstitialInternal();
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_REWARDEDVIDEO)) {
-            loadRewardedVideoInternal();
+            loadRewardedVideoInternal(mAutoLoad);
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_COMPLEX)) {
             loadComplexAdsInternal();
         } else {
