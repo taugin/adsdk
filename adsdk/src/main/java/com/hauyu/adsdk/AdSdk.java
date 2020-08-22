@@ -774,9 +774,6 @@ public class AdSdk {
         if (mHandler != null) {
             mHandler.removeCallbacks(mRewardLoadRunnable);
         }
-        AdPlaceLoader loader = getAdLoader(mRewardPidName);
-        if (loader != null) {
-            loader.setQueueRunning(false);
-        }
+        setQueueRunning(mRewardPidName, false);
     }
 }
