@@ -300,7 +300,9 @@ public class MainActivity extends Activity {
     };
 
     private void loadRewardIfNeed() {
-        if (!AdSdk.get(this).isRewardedVideoLoaded("reward_video") && ActivityMonitor.get(this).appOnTop()) {
+        if (!AdSdk.get(this).isRewardedVideoLoaded("reward_video")
+                && ActivityMonitor.get(this).appOnTop()
+                && Utils.isScreenOn(this)) {
             AdSdk.get(this).loadRewardedVideo("reward_video", mRewardListener);
         } else {
             AdSdk.get(this).setOnAdSdkListener("reward_video", mRewardListener);
