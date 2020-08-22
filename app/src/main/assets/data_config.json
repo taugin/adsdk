@@ -239,13 +239,13 @@
           "sdk": "dfp",
           "type": "reward",
           "pid": "/6499/example/rewarded-video",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "reward",
           "pid": "920b6145fb1546cf8b5cf2ac34638bb7",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "fb",

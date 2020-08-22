@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.hauyu.adsdk.AdSdk;
 import com.verk.BcSdk;
 
 
@@ -16,6 +17,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         BcSdk.init(this);
+        AdSdk.get(this).init();
     }
 
     @Override

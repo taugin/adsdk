@@ -125,6 +125,20 @@
                 android:text="NATIVE通用布局" />
         </LinearLayout>
 
+        <Switch
+            style="@android:style/Widget.DeviceDefault.Button"
+            android:id="@+id/auto_reward"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:checked="false"
+            android:track="@android:color/transparent"
+            android:thumb="@android:color/transparent"
+            android:showText="true"
+            android:textOff="开启自动加载激励视频"
+            android:textOn="关闭自动加载激励视频" />
+
         <Button
             android:id="@+id/reward_video_queue"
             android:layout_width="wrap_content"

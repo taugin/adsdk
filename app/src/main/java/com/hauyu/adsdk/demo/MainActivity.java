@@ -11,14 +11,15 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -27,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
 
     private static final int LAYOUT[] = new int[]{
             R.layout.ad_common_native_card_small,
@@ -55,13 +56,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Switch switchView = findViewById(R.id.auto_reward);
+        switchView.setOnCheckedChangeListener(this);
         mRewardButton = findViewById(R.id.reward_video_queue);
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = getApplicationContext();
-        AdSdk.get(mContext).init();
-        updateRewardButton();
-        mRewardButton.post(mUpdateRewardButton);
     }
 
     private boolean hasEnable() {
@@ -290,25 +290,6 @@ public class MainActivity extends Activity {
         }
     };
 
-    private Runnable mUpdateRewardButton = new Runnable() {
-        @Override
-        public void run() {
-            loadRewardIfNeed();
-            updateRewardButton();
-            mRewardButton.postDelayed(this, 5000);
-        }
-    };
-
-    private void loadRewardIfNeed() {
-        if (!AdSdk.get(this).isRewardedVideoLoaded("reward_video")
-                && ActivityMonitor.get(this).appOnTop()
-                && Utils.isScreenOn(this)) {
-            AdSdk.get(this).loadRewardedVideo("reward_video", mRewardListener);
-        } else {
-            AdSdk.get(this).setOnAdSdkListener("reward_video", mRewardListener);
-        }
-    }
-
     private SimpleAdSdkListener mRewardListener = new SimpleAdSdkListener() {
         @Override
         public void onLoaded(String pidName, String source, String adType) {
@@ -334,17 +315,36 @@ public class MainActivity extends Activity {
             super.onDismiss(pidName, source, adType);
             updateRewardButton();
         }
+
+        @Override
+        public void onUpdate(String pidName, String source, String adType) {
+            super.onUpdate(pidName, source, adType);
+            updateRewardButton();
+        }
     };
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mRewardButton.removeCallbacks(mUpdateRewardButton);
+        AdSdk.get(this).stopAutoReward();
     }
 
     private void updateRewardButton() {
         int loadedAdCount = AdSdk.get(this).getLoadedAdCount("reward_video");
+        Log.v(Log.TAG, "loadedAdCount : " + loadedAdCount);
         mRewardButton.setText("已加载激励视频数 : " + loadedAdCount + " (" + mRewardGetTimes + "/" + mRewardShowTimes + ")");
         mRewardButton.setEnabled(loadedAdCount > 0);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (buttonView.getId() == R.id.auto_reward) {
+            if (isChecked) {
+                AdSdk.get(mContext).setAutoRewardListener("reward_video", mRewardListener);
+                AdSdk.get(mContext).startAutoReward("reward_video", 5000, 0);
+            } else {
+                AdSdk.get(this).stopAutoReward();
+            }
+        }
     }
 }
