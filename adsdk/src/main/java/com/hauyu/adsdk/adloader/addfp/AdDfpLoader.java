@@ -494,7 +494,8 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 rewardedAd = loadingRewardedAd;
-                putCachedAdTime(loadingRewardedAd);
+                loadingRewardedAd = null;
+                putCachedAdTime(rewardedAd);
                 reportAdLoaded();
                 if (getAdListener() != null) {
                     setLoadedFlag();

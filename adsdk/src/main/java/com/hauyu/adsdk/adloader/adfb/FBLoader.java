@@ -48,6 +48,7 @@ public class FBLoader extends AbstractSdkLoader {
     private Params mParams;
     private AdView loadingView;
     private RewardedVideoAd rewardedVideoAd;
+    private RewardedVideoAd loadingRewardedVideoAd;
 
     private NativeAd gNativeAd;
     private AdView gBannerView;
@@ -560,8 +561,8 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        rewardedVideoAd = new RewardedVideoAd(mContext, mPidConfig.getPid());
-        rewardedVideoAd.setAdListener(new RewardedVideoAdListener() {
+        loadingRewardedVideoAd = new RewardedVideoAd(mContext, mPidConfig.getPid());
+        loadingRewardedVideoAd.setAdListener(new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoCompleted() {
                 Log.v(Log.TAG, "");
@@ -625,6 +626,8 @@ public class FBLoader extends AbstractSdkLoader {
             public void onAdLoaded(Ad ad) {
                 Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
+                rewardedVideoAd = loadingRewardedVideoAd;
+                loadingRewardedVideoAd = null;
                 putCachedAdTime(rewardedVideoAd);
                 reportAdLoaded();
                 if (getAdListener() != null) {
@@ -644,7 +647,7 @@ public class FBLoader extends AbstractSdkLoader {
         });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
-        rewardedVideoAd.loadAd();
+        loadingRewardedVideoAd.loadAd();
     }
 
     @Override
