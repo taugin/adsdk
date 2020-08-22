@@ -751,6 +751,7 @@ public class AdSdk {
     private void loadRewardAuto() {
         AdPlaceLoader loader = getAdLoader(mRewardPidName, true);
         if (loader != null) {
+            loader.setQueueRunning(true);
             loader.setOnAdSdkListener(mAutoRewardListener, false);
             loader.loadRewardedVideo(null, false);
         } else {
@@ -772,6 +773,10 @@ public class AdSdk {
     public void stopAutoReward() {
         if (mHandler != null) {
             mHandler.removeCallbacks(mRewardLoadRunnable);
+        }
+        AdPlaceLoader loader = getAdLoader(mRewardPidName);
+        if (loader != null) {
+            loader.setQueueRunning(false);
         }
     }
 }
