@@ -27,8 +27,7 @@ public class ActView {
             @Override
             public void startActivity(Intent intent) {
                 try {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    addNohistoryForIntentIfNeed(application, intent);
+                    configIntent(application, intent);
                     application.startActivity(intent);
                 } catch (Exception | Error e) {
                     Log.e(Log.TAG, "error : " + e);
@@ -67,30 +66,41 @@ public class ActView {
     }
 
     public static Context createWrapperContext(final Context context) {
-        return new ContextWrapper(context) {
-            @Override
-            public void startActivity(Intent intent) {
-                addNohistoryForIntentIfNeed(context, intent);
-                super.startActivity(intent);
-            }
-
-            @Override
-            public void startActivity(Intent intent, Bundle options) {
-                addNohistoryForIntentIfNeed(context, intent);
-                super.startActivity(intent, options);
-            }
-        };
+        AppContext appContext = new AppContext(context);
+        return appContext;
     }
 
-    private static void addNohistoryForIntentIfNeed(Context context, Intent intent) {
-        if (!ActivityMonitor.get(context).appOnTop() && intent != null) {
-            ComponentName cmp = intent.getComponent();
-            if (cmp != null) {
-                String className = cmp.getClassName();
-                if (TextUtils.equals(className, "com.google.android.gms.ads.AdActivity")
-                        || TextUtils.equals(className, "com.mopub.mobileads.MoPubFullscreenActivity")) {
-                    Log.v(Log.TAG, "add no history for Activity");
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+    private static class AppContext extends ContextWrapper {
+
+        public AppContext(Context base) {
+            super(base);
+        }
+
+        @Override
+        public void startActivity(Intent intent) {
+            configIntent(getBaseContext(), intent);
+            super.startActivity(intent);
+        }
+
+        @Override
+        public void startActivity(Intent intent, Bundle options) {
+            configIntent(getBaseContext(), intent);
+            super.startActivity(intent, options);
+        }
+    }
+
+    private static void configIntent(Context context, Intent intent) {
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (!ActivityMonitor.get(context).appOnTop()) {
+                ComponentName cmp = intent.getComponent();
+                if (cmp != null) {
+                    String className = cmp.getClassName();
+                    if (TextUtils.equals(className, "com.google.android.gms.ads.AdActivity")
+                            || TextUtils.equals(className, "com.mopub.mobileads.MoPubFullscreenActivity")) {
+                        Log.v(Log.TAG, "add no history for Activity");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    }
                 }
             }
         }
