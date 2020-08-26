@@ -99,7 +99,7 @@ public class LvPcy extends BPcy {
             }
             builder.deleteCharAt(builder.lastIndexOf(","));
             String newLtType = builder.toString();
-            Log.v(Log.TAG, "newLtType : " + newLtType);
+            Log.v(Log.TAG, "now lt type : " + newLtType);
             Utils.putString(mContext, PREF_LAST_LT_TYPE, newLtType);
         }
     }
@@ -107,7 +107,7 @@ public class LvPcy extends BPcy {
     public String getLtType() {
         initLtTypeIfChanged();
         String lastLtType = Utils.getString(mContext, PREF_LAST_LT_TYPE, null);
-        Log.v(Log.TAG, "lt type : " + lastLtType);
+        Log.v(Log.TAG, "last lt type : " + lastLtType);
         if (TextUtils.isEmpty(lastLtType)) {
             return LT_TYPE_LOCKSCREEN;
         }
