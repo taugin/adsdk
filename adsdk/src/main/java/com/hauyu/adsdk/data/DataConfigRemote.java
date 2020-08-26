@@ -47,7 +47,7 @@ import java.util.Locale;
     public String getString(String key) {
         VRemoteConfig.get(mContext).updateRemoteConfig();
         String value = readConfigFromAsset(key);
-        Log.iv(Log.TAG, "locale config : " + key + " , value : " + value);
+        Log.iv(Log.TAG, "locale config | " + key + " : " + value);
         if (TextUtils.isEmpty(value)) {
             String dataWithSuffix = null;
             String mediaSourceSuffix = getMsSuffix();
@@ -131,12 +131,12 @@ import java.util.Locale;
     private String getRemoteConfig(String key) {
         String remoteValue = getConfigFromUmeng(key);
         if (!TextUtils.isEmpty(remoteValue)) {
-            Log.iv(Log.TAG, "umeng config : " + remoteValue);
+            Log.iv(Log.TAG, "umeng config | " + key + " : " + remoteValue);
             return remoteValue;
         }
         remoteValue = getConfigFromFirebase(key);
         if (!TextUtils.isEmpty(remoteValue)) {
-            Log.iv(Log.TAG, "firebase config : " + remoteValue);
+            Log.iv(Log.TAG, "firebase config | " + key + " : " + remoteValue);
             return remoteValue;
         }
         return null;
@@ -159,7 +159,7 @@ import java.util.Locale;
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "get config error : " + error);
+            Log.iv(Log.TAG, "firebase error : " + error);
         }
         return null;
     }
@@ -181,7 +181,7 @@ import java.util.Locale;
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "get config error : " + error);
+            Log.iv(Log.TAG, "umeng error : " + error);
         }
         return null;
     }
