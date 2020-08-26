@@ -36,15 +36,15 @@ public class SceneCg {
             String attrKey = key + attrSuffix;
             Log.iv(Log.TAG, "media suffix : " + mediaSourceSuffix + " , attr suffix : " + attrSuffix);
             // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
-            String mediaData = getConfigFromFirebase(mediaSourceKey);
-            String attrData = getConfigFromFirebase(attrKey);
+            String mediaData = getRemoteConfig(mediaSourceKey);
+            String attrData = getRemoteConfig(attrKey);
             if (!TextUtils.isEmpty(mediaData)) {
                 dataWithSuffix = mediaData;
             } else {
                 dataWithSuffix = attrData;
             }
             if (TextUtils.isEmpty(dataWithSuffix)) {
-                value = getConfigFromFirebase(key);
+                value = getRemoteConfig(key);
             } else {
                 String source = !TextUtils.isEmpty(mediaData) ? getMediaSource() : getAfStatus();
                 Log.iv(Log.TAG, "remote config : " + key + "[" + source + "]");
@@ -108,6 +108,20 @@ public class SceneCg {
         return Utils.readAssets(mContext, key);
     }
 
+    private String getRemoteConfig(String key) {
+        String remoteValue = getConfigFromUmeng(key);
+        if (!TextUtils.isEmpty(remoteValue)) {
+            Log.iv(Log.TAG, "fetch remote config from umeng");
+            return remoteValue;
+        }
+        remoteValue = getConfigFromFirebase(key);
+        if (!TextUtils.isEmpty(remoteValue)) {
+            Log.iv(Log.TAG, "fetch remote config from firebase");
+            return remoteValue;
+        }
+        return null;
+    }
+
     private String getConfigFromFirebase(String key) {
         String error = null;
         try {
@@ -115,6 +129,28 @@ public class SceneCg {
             Method method = clazz.getMethod("getInstance");
             Object instance = method.invoke(null);
             method = clazz.getMethod("getString", String.class);
+            Object value = method.invoke(instance, key);
+            if (value != null) {
+                return (String) value;
+            }
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.iv(Log.TAG, "get config error : " + error);
+        }
+        return null;
+    }
+
+    private String getConfigFromUmeng(String key) {
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.umeng.cconfig.UMRemoteConfig");
+            Method method = clazz.getMethod("getInstance");
+            Object instance = method.invoke(null);
+            method = clazz.getMethod("getConfigValue", String.class);
             Object value = method.invoke(instance, key);
             if (value != null) {
                 return (String) value;

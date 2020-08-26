@@ -27,8 +27,15 @@
 -keep class * extends android.app.Activity {public *; protected *;}
 
 #umeng
--keep class com.umeng.commonsdk.** {*;}
--keep class com.umeng.analytics.** {*;}
+-keep class com.umeng.** {*;}
+-keep class com.uc.** {*;}
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
 
 #appsflyer Analytics
 -keep class com.appsflyer.** {*;}

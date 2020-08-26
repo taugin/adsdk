@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
@@ -14,6 +15,7 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -107,6 +109,7 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
             synchronized (mInstance) {
                 if (isNeedRequest()) {
                     requestDataConfig();
+                    activeFetchConfig();
                 }
             }
         }
@@ -174,6 +177,24 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e + "[miss google-services.json file]");
             }
+        }
+    }
+
+    private void activeFetchConfig() {
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.umeng.cconfig.UMRemoteConfig");
+            Method method = clazz.getMethod("getInstance");
+            Object instance = method.invoke(null);
+            method = clazz.getMethod("activeFetchConfig");
+            method.invoke(instance);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.iv(Log.TAG, "act config error : " + error);
         }
     }
 }
