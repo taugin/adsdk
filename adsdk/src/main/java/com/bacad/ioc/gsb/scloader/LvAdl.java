@@ -93,9 +93,10 @@ public class LvAdl extends Bldr {
     private void showForScreenOn() {
         LvPcy lvPcy = LvPcy.get(mContext);
         if (lvPcy != null) {
-            if (lvPcy.isFullScreen()) {
+            String ltType = lvPcy.getLtType();
+            if (lvPcy.isFullScreen(ltType)) {
                 fireFullScreen();
-            } else if (lvPcy.isLockScreen()) {
+            } else if (lvPcy.isLockScreen(ltType)) {
                 fireLockScreen();
             } else {
                 fireLockScreen();

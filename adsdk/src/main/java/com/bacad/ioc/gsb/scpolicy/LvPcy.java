@@ -78,12 +78,12 @@ public class LvPcy extends BPcy {
         }
     }
 
-    public boolean isLockScreen() {
-        return TextUtils.equals(getLtType(), LT_TYPE_LOCKSCREEN);
+    public boolean isLockScreen(String ltType) {
+        return TextUtils.equals(ltType, LT_TYPE_LOCKSCREEN);
     }
 
-    public boolean isFullScreen() {
-        return TextUtils.equals(getLtType(), LT_TYPE_FULLSCREEN);
+    public boolean isFullScreen(String ltType) {
+        return TextUtils.equals(ltType, LT_TYPE_FULLSCREEN);
     }
 
     public void updateLastType() {
@@ -104,10 +104,10 @@ public class LvPcy extends BPcy {
         }
     }
 
-    private String getLtType() {
+    public String getLtType() {
         initLtTypeIfChanged();
         String lastLtType = Utils.getString(mContext, PREF_LAST_LT_TYPE, null);
-        Log.v(Log.TAG, "lastLtType : " + lastLtType);
+        Log.v(Log.TAG, "lt type : " + lastLtType);
         if (TextUtils.isEmpty(lastLtType)) {
             return LT_TYPE_LOCKSCREEN;
         }
