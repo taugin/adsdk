@@ -5,6 +5,10 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.hauyu.adsdk.AdSdk;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.cconfig.RemoteConfigSettings;
+import com.umeng.cconfig.UMRemoteConfig;
+import com.umeng.commonsdk.UMConfigure;
 import com.verk.BcSdk;
 
 
@@ -16,6 +20,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initUmeng();
         BcSdk.init(this);
         AdSdk.get(this).init();
     }
@@ -24,5 +29,12 @@ public class App extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(base);
+    }
+
+    private void initUmeng() {
+        UMConfigure.init(this, "5f44faa1f9d1496ef418b17c", "umeng", UMConfigure.DEVICE_TYPE_PHONE, null);
+        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+        UMRemoteConfig.getInstance().setConfigSettings(new RemoteConfigSettings.Builder().setAutoUpdateModeEnabled(true).build());
+        UMRemoteConfig.getInstance().init(this);
     }
 }

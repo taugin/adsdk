@@ -67,7 +67,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/gt_outer"
+            android:id="@+id/show_complex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"

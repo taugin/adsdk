@@ -78,7 +78,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
     }
 
     public void onClick(View v) {
-        if (v.getId() == R.id.gt_outer) {
+        if (v.getId() == R.id.show_complex) {
             // loadGtOuter();
             if (AdSdk.get(this).isComplexAdsLoaded()) {
                 AdSdk.get(this).showComplexAds();
