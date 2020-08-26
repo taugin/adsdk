@@ -27,7 +27,7 @@ public class SceneCg {
     public String getString(String key) {
         VRemoteConfig.get(mContext).updateRemoteConfig();
         String value = readConfigFromAsset(key);
-        Log.iv(Log.TAG, "locale config : " + key + " , value : " + value);
+        Log.iv(Log.TAG, "locale config | " + key + " : " + value);
         if (TextUtils.isEmpty(value)) {
             String dataWithSuffix = null;
             String mediaSourceSuffix = getMsSuffix();
@@ -111,12 +111,12 @@ public class SceneCg {
     private String getRemoteConfig(String key) {
         String remoteValue = getConfigFromUmeng(key);
         if (!TextUtils.isEmpty(remoteValue)) {
-            Log.iv(Log.TAG, "fetch remote config from umeng");
+            Log.iv(Log.TAG, "umeng config | " + key + " : " + remoteValue);
             return remoteValue;
         }
         remoteValue = getConfigFromFirebase(key);
         if (!TextUtils.isEmpty(remoteValue)) {
-            Log.iv(Log.TAG, "fetch remote config from firebase");
+            Log.iv(Log.TAG, "firebase config | " + key + " : " + remoteValue);
             return remoteValue;
         }
         return null;
