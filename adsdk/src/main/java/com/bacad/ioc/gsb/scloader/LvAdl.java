@@ -26,8 +26,8 @@ import java.util.Locale;
 
 public class LvAdl extends Bldr {
 
-    private static final int MSG_SHOW_LOCKSCREEN = 123456789;
-    private static final int DELAY = 5000;
+    private static final int MSG_SHOW_LOCKSCREEN = 0x365675;
+    private static final int DELAY = 8000;
     private static LvAdl sLvAdl;
 
     private Context mContext;
@@ -82,10 +82,8 @@ public class LvAdl extends Bldr {
     private void showLockScreen() {
         if (mHandler != null) {
             if (!mHandler.hasMessages(MSG_SHOW_LOCKSCREEN)) {
-                showForScreenOn();
                 mHandler.sendEmptyMessageDelayed(MSG_SHOW_LOCKSCREEN, DELAY);
-            } else {
-                mHandler.removeMessages(MSG_SHOW_LOCKSCREEN);
+                showForScreenOn();
             }
         }
     }
