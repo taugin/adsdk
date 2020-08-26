@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.data.VRemoteConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
 
@@ -24,6 +25,7 @@ public class SceneCg {
     }
 
     public String getString(String key) {
+        VRemoteConfig.get(mContext).updateRemoteConfig();
         String value = readConfigFromAsset(key);
         Log.iv(Log.TAG, "locale config : " + key + " , value : " + value);
         if (TextUtils.isEmpty(value)) {
