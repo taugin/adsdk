@@ -227,7 +227,13 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
         } catch (Exception e) {
         }
         try {
-            putValue(AD_CHOICES, nativeAd.getAdChoicesInfo().getText().toString());
+            List<String> images = new ArrayList<>();
+            List<NativeAd.Image> list = nativeAd.getAdChoicesInfo().getImages();
+            for (NativeAd.Image image : list) {
+                images.add(image.getUri().toString());
+            }
+            String choiceStr = nativeAd.getAdChoicesInfo().getText().toString();
+            putValue(AD_CHOICES,  choiceStr + "-" + images.toString());
         } catch (Exception e) {
         }
         try {
