@@ -356,6 +356,10 @@ public class MopubBindNativeView extends BaseBindNativeView {
             } catch (Exception e) {
             }
             try {
+                putValue(AD_CHOICES, staticNativeAd.getPrivacyInformationIconImageUrl());
+            } catch (Exception e) {
+            }
+            try {
                 putValue(AD_MEDIA, staticNativeAd.getMainImageUrl());
             } catch (Exception e) {
             }
@@ -386,6 +390,10 @@ public class MopubBindNativeView extends BaseBindNativeView {
             }
             try {
                 putValue(AD_SPONSORED, videoNativeAd.getSponsored());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_CHOICES, videoNativeAd.getPrivacyInformationIconImageUrl());
             } catch (Exception e) {
             }
             try {
