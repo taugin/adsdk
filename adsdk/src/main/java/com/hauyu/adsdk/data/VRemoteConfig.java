@@ -175,7 +175,7 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
             try {
                 mInstance = FirebaseRemoteConfig.getInstance();
             } catch (Exception e) {
-                Log.e(Log.TAG, "error : Miss google-services.json");
+                Log.e(Log.TAG, "error : miss google-services.json");
             }
         }
     }

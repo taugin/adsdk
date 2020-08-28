@@ -684,7 +684,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void reportAdError(String error) {
         if (mStat != null) {
             Map<String, String> map = new HashMap<String, String>();
-            map.put("error", error);
+            map.put("error", "[" + getSdkName() + "]" + error);
             mStat.reportAdError(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), map);
         }
     }
