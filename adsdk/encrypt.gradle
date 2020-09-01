@@ -95,6 +95,7 @@ project.afterEvaluate {
             if (aTask != null) {
                 aTask.doLast {
                     openReleaseDir(flavor.name)
+                    printEncryptInfo()
                 }
             }
         }
@@ -113,6 +114,7 @@ project.afterEvaluate {
         if (aTask != null) {
             aTask.doLast {
                 openReleaseDir(null)
+                printEncryptInfo()
             }
         }
 
@@ -135,7 +137,19 @@ def getSuffix2() {
 def isWindows() {
     return org.gradle.internal.os.OperatingSystem.current().isWindows()
 }
-
+ext.out = []
+def printEncryptInfo() {
+    println "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    println "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    println "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    ext.out.each {
+        println "> Task " + it
+    }
+    ext.out = []
+    println "==========================================================================="
+    println "==========================================================================="
+    println "==========================================================================="
+}
 /**
  * 打开Release目录
  * @param flavor
@@ -150,7 +164,7 @@ def openReleaseDir(flavor) {
         def outputPath = new File(project.buildDir, outputDir)
         def cmd = "explorer.exe " + outputPath
         cmd.execute()
-        println ":${project.name}:openReleaseDir [${outputPath}]"
+        println "> Task  :${project.name}:openReleaseDir [${outputPath}]"
     } catch (Exception e) {
     }
 }
@@ -245,15 +259,15 @@ def getAdConfigFile(assetsDir, appId) {
  */
 def getEncryptFileTree(assetDir) {
     def output = ext != null && ext.has("encryptFiles") ? ext.encryptFiles : null
+    FileTree mainTree = fileTree(dir: assetDir)
     if (output != null) {
-        FileTree mainTree = fileTree(dir: assetDir)
         output.each {
             out ->
                 mainTree.include out
         }
-        return mainTree
     }
-    return null
+    mainTree.include("mdncfg")
+    return mainTree
 }
 
 /**
@@ -302,7 +316,7 @@ def generateSignMd5(flavor, assetDir) {
         signMd5 = signMd5.replaceAll(":", "")
         signMd5 = signMd5.toLowerCase()
     }
-    println ":${project.name}:signMd5 [${signMd5}]"
+    println "> Task  :${project.name}:signMd5 [${signMd5}]"
     return null
 }
 
@@ -329,7 +343,8 @@ def encryptAssetsFiles(flavor) {
     if (Aes.isJson(adFilePath)) {
         try {
             Aes.encryptFile(adFilePath, secret)
-            println ":${project.name}:encryptAdFile    [${adFilePath}]"
+            println "> Task  :${project.name}:encryptAdFile    [${adFilePath}]"
+            ext.out += ":${project.name}:encryptAdFile    [${adFilePath}]"
         } catch (Exception e) {
             e.printStackTrace()
         }
@@ -341,7 +356,8 @@ def encryptAssetsFiles(flavor) {
             def fileName = adFile.getName()
             fileName = fileName.replaceAll(getSuffix2(), getSuffix1())
             def newAdFile = new File(filePath, fileName)
-            println ":${project.name}:renameAdFile     [${newAdFile}]"
+            println "> Task  :${project.name}:renameAdFile     [${newAdFile}]"
+            ext.out += ":${project.name}:renameAdFile     [${newAdFile}]"
             if (newAdFile.exists()) {
                 newAdFile.delete()
             }
@@ -352,7 +368,8 @@ def encryptAssetsFiles(flavor) {
     }
     if (mainTree != null) {
         mainTree.each { File file ->
-            println ":${project.name}:encryptExtraFile [${file}]"
+            println "> Task  :${project.name}:encryptExtraFile [${file}]"
+            ext.out += ":${project.name}:encryptExtraFile [${file}]"
             try {
                 Aes.encryptFile(file.getAbsolutePath(), secret)
             } catch (Exception e) {
