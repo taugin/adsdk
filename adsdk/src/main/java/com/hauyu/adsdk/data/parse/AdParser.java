@@ -4,11 +4,11 @@ import android.text.TextUtils;
 
 import com.earch.sunny.picfg.SpreadCfg;
 import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.utils.AesUtils;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.log.Log;
+import com.hauyu.adsdk.utils.AesUtils;
 import com.hauyu.adsdk.utils.Utils;
 
 import org.json.JSONArray;
@@ -379,5 +379,43 @@ public class AdParser implements IParser {
             Log.v(Log.TAG, "parseSpConfig error : " + e);
         }
         return spreadCfg;
+    }
+
+    @Override
+    public Map<String, Map<String, String>> parseMediationConfig(String data) {
+        Map<String, Map<String, String>> config = null;
+        data = getContent(data);
+        try {
+            JSONObject jobj = new JSONObject(data);
+            int size = jobj.length();
+            if (size > 0) {
+                config = new HashMap<String, Map<String, String>>();
+                Iterator<String> keys = jobj.keys();
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    String valueObj = jobj.getString(key);
+                    config.put(key, jsonToMap(valueObj));
+                }
+            }
+        } catch (Exception e) {
+            Log.v(Log.TAG, "parseMediationConfig error : " + e);
+        }
+        return config;
+    }
+
+    private Map<String, String> jsonToMap(String data) {
+        Map<String, String> map = null;
+        try {
+            JSONObject jobj = new JSONObject(data);
+            map = new HashMap<String, String>();
+            Iterator<String> keys = jobj.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                map.put(key, jobj.getString(key));
+            }
+        } catch (Exception e) {
+            Log.v(Log.TAG, "jsonToMap error : " + e);
+        }
+        return map;
     }
 }

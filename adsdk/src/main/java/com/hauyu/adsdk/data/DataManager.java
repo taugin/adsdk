@@ -149,6 +149,15 @@ public class DataManager {
         return null;
     }
 
+    public Map<String, Map<String, String>> getMediationConfig() {
+        String data = getString(Constant.AD_MEDIATION_CONFIG);
+        data = checkLastData(data, Constant.AD_MEDIATION_CONFIG);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseMediationConfig(data);
+        }
+        return null;
+    }
+
     public String getString(String key) {
         return DataConfigRemote.get(mContext).getString(key);
     }

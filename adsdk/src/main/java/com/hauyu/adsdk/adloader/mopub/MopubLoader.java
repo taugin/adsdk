@@ -2,21 +2,26 @@ package com.hauyu.adsdk.adloader.mopub;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
+import androidx.annotation.NonNull;
 
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
+import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 import com.mopub.common.MoPub;
 import com.mopub.common.MoPubReward;
 import com.mopub.common.SdkConfiguration;
 import com.mopub.common.SdkInitializationListener;
+import com.mopub.common.logging.MoPubLog;
 import com.mopub.common.privacy.ConsentDialogListener;
 import com.mopub.common.privacy.PersonalInfoManager;
 import com.mopub.mobileads.MoPubErrorCode;
@@ -35,8 +40,6 @@ import com.mopub.nativeads.NativeErrorCode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import androidx.annotation.NonNull;
 
 /**
  * Created by Administrator on 2018/6/28.
@@ -105,8 +108,23 @@ public class MopubLoader extends AbstractSdkLoader {
             adUnit = getPidConfig().getPid();
         } catch (Exception e) {
         }
-        SdkConfiguration sdkConfiguration = new SdkConfiguration.Builder(adUnit)
-                .build();
+        SdkConfiguration.Builder builder = new SdkConfiguration.Builder(adUnit);
+        try {
+            Map<String, Map<String, String>> config = DataManager.get(mContext).getMediationConfig();
+            Log.iv(Log.TAG, "config : " + config);
+            if (config != null && !config.isEmpty()) {
+                for (Map.Entry<String, Map<String, String>> entry : config.entrySet()) {
+                    builder.withMediatedNetworkConfiguration(entry.getKey(), entry.getValue());
+                }
+            }
+            String debugLevel = DataManager.get(mContext).getString(Constant.AD_MEDIATION_DEBUG);
+            if (TextUtils.equals(debugLevel, "true")) {
+                builder.withLogLevel(MoPubLog.LogLevel.DEBUG);
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        SdkConfiguration sdkConfiguration = builder.build();
         MoPub.initializeSdk(mContext, sdkConfiguration, initSdkListener());
     }
 

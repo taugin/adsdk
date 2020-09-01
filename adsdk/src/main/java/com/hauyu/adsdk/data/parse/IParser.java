@@ -111,5 +111,7 @@ public interface IParser {
 
     Map<String, String> parseAdRefs(String data);
 
+    Map<String, Map<String, String>> parseMediationConfig(String data);
+
     List<SpreadCfg> parseSpread(String data);
 }
