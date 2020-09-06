@@ -1,5 +1,9 @@
 package com.hauyu.adsdk.http;
 
+import android.text.TextUtils;
+
+import java.util.Arrays;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -18,10 +22,15 @@ public class HttpsConfig {
         connection.setHostnameVerifier(DO_NOT_VERIFY);
     }
     // always verify the host - dont check for certificate
+    // 加次静态变量的目的是因为google play hui 验证HostnameVerifier的verify方法的安全性
+    private static String[] VERIFY_HOST_NAME_ARRAY = new String[]{};
     final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
         @Override
         public boolean verify(String hostname, SSLSession session) {
-            return true;
+            if (TextUtils.isEmpty(hostname)) {
+                return false;
+            }
+            return !Arrays.asList(VERIFY_HOST_NAME_ARRAY).contains(hostname);
         }
     };
 
