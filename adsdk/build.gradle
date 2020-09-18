@@ -76,8 +76,6 @@ dependencies {
     // MoPub
     implementation('com.mopub:mopub-sdk:5.13.1@aar') {
         transitive = true
-        exclude module: 'libAvid-mopub' // To exclude AVID
-        exclude module: 'moat-mobile-app-kit'
         exclude group: 'androidx.fragment'
         exclude group: 'androidx.core'
     }
