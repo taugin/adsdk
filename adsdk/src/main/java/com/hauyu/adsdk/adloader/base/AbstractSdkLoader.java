@@ -25,6 +25,7 @@ import com.hauyu.adsdk.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -64,6 +65,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private int mBannerSize = Constant.NOSET;
     private IEvent mStat;
     private boolean mRewardVideoPlaying = false;
+    private static final Random sRandom = new Random(System.currentTimeMillis());
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -274,7 +276,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             Log.e(Log.TAG, "pid is empty");
             return false;
         }
-        return true;
+        int maxRatio = mPidConfig.getRatio();
+        int randomRatio = sRandom.nextInt(100);
+        return randomRatio < maxRatio;
     }
 
     protected void printInterfaceLog(String action) {

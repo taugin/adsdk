@@ -94,6 +94,8 @@ public interface IParser {
     String LOAD_NATIVE_COUNT = "lnc";
     // 使用activity上下文
     String ACTIVITY_CONTEXT = "ac";
+    // 展示比例
+    String RATIO = "ratio";
 
     // banner
     String BANNER = "banner";

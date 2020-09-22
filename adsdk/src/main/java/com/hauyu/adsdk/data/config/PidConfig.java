@@ -60,6 +60,8 @@ public class PidConfig {
 
     private boolean activityContext;
 
+    private int ratio = 100;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -242,6 +244,14 @@ public class PidConfig {
 
     public void setActivityContext(boolean activityContext) {
         this.activityContext = activityContext;
+    }
+
+    public int getRatio() {
+        return ratio;
+    }
+
+    public void setRatio(int ratio) {
+        this.ratio = ratio;
     }
 
     public boolean isAdmob() {

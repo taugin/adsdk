@@ -279,6 +279,9 @@ public class AdParser implements IParser {
             if (jobj.has(ACTIVITY_CONTEXT)) {
                 pidConfig.setActivityContext(jobj.getInt(ACTIVITY_CONTEXT) == 1);
             }
+            if (jobj.has(RATIO)) {
+                pidConfig.setRatio(jobj.getInt(RATIO));
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
