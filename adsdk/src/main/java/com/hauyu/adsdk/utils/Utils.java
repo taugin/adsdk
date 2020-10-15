@@ -403,8 +403,12 @@ public class Utils {
     }
 
     public static String getAndroidId(Context context) {
-        String ANDROID_ID = Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-        return ANDROID_ID;
+        try {
+            String ANDROID_ID = Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+            return ANDROID_ID;
+        } catch (Exception e) {
+        }
+        return "";
     }
 
     /**
@@ -428,15 +432,23 @@ public class Utils {
     }
 
     public static boolean isScreenOn(Context context) {
-        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        boolean isScreenOn = powerManager.isScreenOn();
-        return isScreenOn;
+        try {
+            PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            boolean isScreenOn = powerManager.isScreenOn();
+            return isScreenOn;
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     public static boolean isScreenLocked(Context context) {
-        KeyguardManager mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-        boolean isScreenLocked = mKeyguardManager.inKeyguardRestrictedInputMode();
-        return isScreenLocked;
+        try {
+            KeyguardManager mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+            boolean isScreenLocked = mKeyguardManager.inKeyguardRestrictedInputMode();
+            return isScreenLocked;
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     /**
