@@ -26,8 +26,7 @@ public class SceneCg {
 
     public String getString(String key) {
         VRemoteConfig.get(mContext).updateRemoteConfig();
-        String value = readConfigFromAsset(key);
-        Log.iv(Log.TAG, "locale config | " + key + " : " + value);
+        String value = readConfigFromLocal(key);
         if (TextUtils.isEmpty(value)) {
             String dataWithSuffix = null;
             String mediaSourceSuffix = getMsSuffix();
@@ -104,8 +103,8 @@ public class SceneCg {
         return "_" + suffix.toLowerCase(Locale.getDefault());
     }
 
-    private String readConfigFromAsset(String key) {
-        return Utils.readAssets(mContext, key);
+    private String readConfigFromLocal(String key) {
+        return Utils.readConfig(mContext, key);
     }
 
     private String getRemoteConfig(String key) {

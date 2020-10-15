@@ -316,6 +316,26 @@ public class Utils {
         return null;
     }
 
+    public static String readConfig(Context context, String configName) {
+        String localConfig = null;
+        localConfig = readAssets(context, configName);
+        if (!TextUtils.isEmpty(localConfig)) {
+            Log.iv(Log.TAG, "assets config | [" + configName + "]" + " : " + localConfig);
+            return localConfig;
+        }
+        try {
+            String localConfigFile = new File(context.getExternalFilesDir("config"), configName).getAbsolutePath();
+            Log.iv(Log.TAG, "config locale : " + localConfigFile);
+            localConfig = readLocal(localConfigFile);
+        } catch (Exception e) {
+        }
+        if (!TextUtils.isEmpty(localConfig)) {
+            Log.iv(Log.TAG, "sdcard config | [" + configName + "]" + " : " + localConfig);
+            return localConfig;
+        }
+        return null;
+    }
+
     public static String readAssets(Context context, String filePath) {
         try {
             InputStream is = context.getAssets().open(filePath);
@@ -478,6 +498,7 @@ public class Utils {
 
     /**
      * 获取国家代码
+     *
      * @param context
      * @return
      */
@@ -491,6 +512,7 @@ public class Utils {
 
     /**
      * 从SIM卡或网络获取国家代码
+     *
      * @param context
      * @return
      */
@@ -510,6 +532,7 @@ public class Utils {
 
     /**
      * 从locale获取国家代码
+     *
      * @param context
      * @return
      */
@@ -562,7 +585,7 @@ public class Utils {
                 boolean isSingleInstance = false;
                 try {
                     isSingleInstance = singleInstance.get(index);
-                } catch(Exception e) {
+                } catch (Exception e) {
                 }
                 intent = new Intent(action);
                 intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);

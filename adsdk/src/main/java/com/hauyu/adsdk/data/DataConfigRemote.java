@@ -47,7 +47,6 @@ import java.util.Locale;
     public String getString(String key) {
         VRemoteConfig.get(mContext).updateRemoteConfig();
         String value = readConfigFromAsset(key);
-        Log.iv(Log.TAG, "locale config | " + key + " : " + value);
         if (TextUtils.isEmpty(value)) {
             String dataWithSuffix = null;
             String mediaSourceSuffix = getMsSuffix();
@@ -125,7 +124,7 @@ import java.util.Locale;
     }
 
     private String readConfigFromAsset(String key) {
-        return Utils.readAssets(mContext, key);
+        return Utils.readConfig(mContext, key);
     }
 
     private String getRemoteConfig(String key) {

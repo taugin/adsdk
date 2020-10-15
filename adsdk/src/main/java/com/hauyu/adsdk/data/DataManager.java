@@ -64,15 +64,15 @@ public class DataManager {
         String defName = getDefaultName();
         Log.iv(Log.TAG, "name : " + cfgName + "/" + defName);
         if (mLocalPlaceConfig == null && mParser != null) {
-            String data = Utils.readAssets(mContext, cfgName + CONFIG_SUFFIX1);
+            String data = Utils.readConfig(mContext, cfgName + CONFIG_SUFFIX1);
             if (TextUtils.isEmpty(data)) {
-                data = Utils.readAssets(mContext, cfgName + CONFIG_SUFFIX2);
+                data = Utils.readConfig(mContext, cfgName + CONFIG_SUFFIX2);
             }
             if (TextUtils.isEmpty(data)) {
-                data = Utils.readAssets(mContext, defName + CONFIG_SUFFIX1);
+                data = Utils.readConfig(mContext, defName + CONFIG_SUFFIX1);
             }
             if (TextUtils.isEmpty(data)) {
-                data = Utils.readAssets(mContext, defName + CONFIG_SUFFIX2);
+                data = Utils.readConfig(mContext, defName + CONFIG_SUFFIX2);
             }
             mLocalPlaceConfig = mParser.parseAdConfig(data);
             if (mLocalPlaceConfig != null) {
