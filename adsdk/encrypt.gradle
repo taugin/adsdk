@@ -34,6 +34,14 @@ try {
             }
             repo.maven {
                 r ->
+                    r.url = "https://maven.aliyun.com/repository/google"
+            }
+            repo.maven {
+                r ->
+                    r.url = "https://maven.aliyun.com/repository/central"
+            }
+            repo.maven {
+                r ->
                     r.url = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
                     r.credentials.username = "CP751G"
                     r.credentials.password = "TaMWu1x2fG"
@@ -63,6 +71,29 @@ try {
             repo.maven {
                 r ->
                     r.url = "https://taugin.gitee.io/werepo"
+            }
+    }
+    project.rootProject.buildscript.repositories.each {
+        repo ->
+            repo.maven {
+                r ->
+                    r.url = "https://repo1.maven.org/maven2/"
+            }
+            repo.maven {
+                r ->
+                    r.url = "http://jcenter.bintray.com/"
+            }
+            repo.maven {
+                r ->
+                    r.url = "https://maven.aliyun.com/repository/public"
+            }
+            repo.maven {
+                r ->
+                    r.url = "https://maven.aliyun.com/repository/google"
+            }
+            repo.maven {
+                r ->
+                    r.url = "https://maven.aliyun.com/repository/central"
             }
     }
 } catch (Exception e) {
