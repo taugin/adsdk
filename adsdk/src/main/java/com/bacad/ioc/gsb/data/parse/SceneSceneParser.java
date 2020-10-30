@@ -93,8 +93,8 @@ public class SceneSceneParser implements ISceneParser {
             if (jobj.has(DELAY_CLOSE)) {
                 bCg.setDelayClose(jobj.getLong(DELAY_CLOSE));
             }
-            if (jobj.has(EXCLUDE_ANDROID_Q)) {
-                bCg.setExcludeAndroidQ(jobj.getInt(EXCLUDE_ANDROID_Q) == 1);
+            if (jobj.has(OS_VER)) {
+                bCg.setOsVer(parseIntegerList(jobj.getString(OS_VER)));
             }
             if (jobj.has(USE_REAL_TIME)) {
                 bCg.setUseRealTime(jobj.getInt(USE_REAL_TIME) == 1);
@@ -277,6 +277,24 @@ public class SceneSceneParser implements ISceneParser {
                 for (int index = 0; index < jarray.length(); index++) {
                     String s = jarray.getString(index);
                     if (!TextUtils.isEmpty(s)) {
+                        list.add(s);
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    private List<Integer> parseIntegerList(String str) {
+        List<Integer> list = null;
+        try {
+            JSONArray jarray = new JSONArray(str);
+            if (jarray != null && jarray.length() > 0) {
+                list = new ArrayList<Integer>(jarray.length());
+                for (int index = 0; index < jarray.length(); index++) {
+                    Integer s = jarray.getInt(index);
+                    if (s != null) {
                         list.add(s);
                     }
                 }

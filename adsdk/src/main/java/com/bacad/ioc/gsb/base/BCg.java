@@ -1,5 +1,8 @@
 package com.bacad.ioc.gsb.base;
 
+import android.os.Build;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +31,7 @@ public abstract class BCg {
     private String adMain;
     private long sceneInterval = 300000;
     private long delayClose = 0;
-    private boolean excludeAndroidQ = true;
+    private List<Integer> osVer = Arrays.asList(new Integer[]{0, Build.VERSION_CODES.P});
     private boolean useRealTime = true;
     private List<String> exIps;
     private Map<Long, String> fatAdm;
@@ -53,7 +56,7 @@ public abstract class BCg {
         adMain = null;
         sceneInterval = 300000;
         delayClose = 0;
-        excludeAndroidQ = true;
+        osVer = Arrays.asList(new Integer[]{0, Build.VERSION_CODES.P});
         useRealTime = true;
         exIps = null;
         fatAdm = null;
@@ -192,12 +195,12 @@ public abstract class BCg {
         this.delayClose = delayClose;
     }
 
-    public boolean isExcludeAndroidQ() {
-        return excludeAndroidQ;
+    public List<Integer> getOsVer() {
+        return osVer;
     }
 
-    public void setExcludeAndroidQ(boolean excludeAndroidQ) {
-        this.excludeAndroidQ = excludeAndroidQ;
+    public void setOsVer(List<Integer> osVer) {
+        this.osVer = osVer;
     }
 
     public boolean isUseRealTime() {

@@ -517,18 +517,6 @@ public class BPcy implements Handler.Callback {
         return userDisabled;
     }
 
-    /**
-     * 是否排除AndroidQ弹出广告
-     * @return
-     */
-    protected boolean isExcludeAndroidQ() {
-        if (mBCg != null && mBCg.isExcludeAndroidQ()) {
-            Log.iv(Log.TAG, "osv : " + Build.VERSION.SDK_INT);
-            return Build.VERSION.SDK_INT >= 29;
-        }
-        return false;
-    }
-
     private boolean excludeIp(List<String> list, String curIp) {
         if (TextUtils.isEmpty(curIp)) {
             return false;
@@ -556,19 +544,40 @@ public class BPcy implements Handler.Callback {
         return false;
     }
 
+    protected boolean matchOsVersion() {
+        boolean result = true;
+        if (mBCg != null) {
+            List<Integer> osVer = mBCg.getOsVer();
+            if (osVer != null && !osVer.isEmpty()) {
+                int minOsVer = 0;
+                int maxOsVer = Integer.MAX_VALUE;
+                if (osVer.size() == 1) {
+                    minOsVer = osVer.get(0);
+                } else {
+                    minOsVer = osVer.get(0);
+                    maxOsVer = osVer.get(1);
+                }
+                result = Build.VERSION.SDK_INT >= minOsVer && Build.VERSION.SDK_INT <= maxOsVer;
+                if (!result) {
+                    Log.iv(Log.TAG, "os ver error cur : " + Build.VERSION.SDK_INT + " , min : " + minOsVer + " , max : " + maxOsVer);
+                }
+            }
+        }
+        return result;
+    }
+
     protected boolean checkBaseConfig() {
         if (!isConfigAllow()) {
             Log.iv(Log.TAG, "dis con");
             return false;
         }
 
-        if (isExcludeAndroidQ()) {
-            Log.iv(Log.TAG, "exc " + Build.VERSION.SDK_INT);
+        if (!matchOsVersion()) {
             return false;
         }
 
         if (isExcludeIp()) {
-            Log.iv(Log.TAG, "exc " + IpManager.get(mContext).getIpAddr());
+            Log.iv(Log.TAG, "ip : " + IpManager.get(mContext).getIpAddr());
             return false;
         }
 
