@@ -1,14 +1,22 @@
 package com.bacad.ioc.gsb.base;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
+import android.widget.RemoteViews;
 
+import com.earch.sunny.R;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.listener.OnTriggerListener;
@@ -126,12 +134,12 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
         intent.putExtra(Intent.EXTRA_REPLACING, pType);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-            PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            pendingIntent.send();
+            getContext().startActivity(intent);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
             try {
-                getContext().startActivity(intent);
+                PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                pendingIntent.send();
             } catch (Exception e1) {
                 Log.e(Log.TAG, "error : " + e1);
             }
@@ -194,5 +202,49 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
 
     @Override
     public void onNetworkChange(Context context, Intent intent) {
+    }
+
+    private static final String NOTIFICATION_CHANNEL = "10010";
+    private void createNotificationChannel(NotificationManager notificationManager) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && notificationManager.getNotificationChannel(NOTIFICATION_CHANNEL) == null) {
+                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL, "Default Channel", NotificationManager.IMPORTANCE_HIGH);
+                notificationChannel.setLockscreenVisibility(-1);
+                notificationChannel.enableLights(false);
+                notificationChannel.enableVibration(false);
+                notificationChannel.setShowBadge(false);
+                notificationChannel.setSound((Uri) null, (AudioAttributes) null);
+                notificationChannel.setBypassDnd(true);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+    }
+
+    protected void userFullIntent(final Context context, Intent intent) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                Notification notification = new Notification.Builder(context, NOTIFICATION_CHANNEL)
+                        .setSmallIcon(R.drawable.had_cancel)
+                        .setFullScreenIntent(pendingIntent, true)
+                        .setCustomHeadsUpContentView(new RemoteViews(context.getPackageName(), R.layout.had_no_layout)).build();
+                final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                createNotificationChannel(notificationManager);
+                notificationManager.cancel(R.drawable.had_cancel);
+                notificationManager.notify(R.drawable.had_cancel, notification);
+                sHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            notificationManager.cancel(R.drawable.had_cancel);
+                        } catch (Exception e) {
+                        }
+                    }
+                }, 500);
+            }
+        } catch (Exception e) {
+        }
     }
 }

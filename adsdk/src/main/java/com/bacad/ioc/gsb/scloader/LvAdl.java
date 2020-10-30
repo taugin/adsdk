@@ -1,5 +1,6 @@
 package com.bacad.ioc.gsb.scloader;
 
+import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -71,21 +72,28 @@ public class LvAdl extends Bldr {
 
     @Override
     public void onScreenOn(Context context) {
-        showLockScreen();
+        if (!isKeyguardSecure()) {
+            showLockScreen();
+        }
     }
 
     @Override
     public void onUserPresent(Context context) {
-        showLockScreen();
+        if (isKeyguardSecure()) {
+            showLockScreen();
+        }
     }
 
     private void showLockScreen() {
+        /*
         if (mHandler != null) {
             if (!mHandler.hasMessages(MSG_SHOW_LOCKSCREEN)) {
                 mHandler.sendEmptyMessageDelayed(MSG_SHOW_LOCKSCREEN, DELAY);
                 showForScreenOn();
             }
         }
+        */
+        showForScreenOn();
     }
 
     private void showForScreenOn() {
@@ -137,6 +145,7 @@ public class LvAdl extends Bldr {
             intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
             intent.putExtra(Intent.EXTRA_REPLACING, pType);
+            userFullIntent(getContext(), intent);
             try {
                 PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 pendingIntent.send();
@@ -221,5 +230,14 @@ public class LvAdl extends Bldr {
 
     private void updateLtPolicy() {
         LvPcy.get(mContext).setPolicy(SceneData.get(mContext).getRemoteLtPolicy());
+    }
+
+    private boolean isKeyguardSecure() {
+        try {
+            KeyguardManager keyguardManager = (KeyguardManager) mContext.getSystemService(Context.KEYGUARD_SERVICE);
+            return keyguardManager.isKeyguardSecure();
+        } catch (Exception e) {
+        }
+        return false;
     }
 }

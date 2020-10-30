@@ -2,6 +2,7 @@ package com.usac.sunny.teech;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -265,6 +266,7 @@ public class VitActivity extends Activity implements IAdvance {
                 mCher.showChargeView(mPidName);
             }
         } else if (isLockView()) {
+            disableSystemLS();
             hideNavigationBar(this);
             showLockScreenView();
         } else if (mSpreadCfg != null) {
@@ -280,6 +282,10 @@ public class VitActivity extends Activity implements IAdvance {
     private void disableSystemLS() {
         try {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Activity.KEYGUARD_SERVICE);
+                keyguardManager.requestDismissKeyguard(this, (KeyguardManager.KeyguardDismissCallback) null);
+            }
         } catch (Exception e) {
         }
     }
@@ -588,6 +594,7 @@ public class VitActivity extends Activity implements IAdvance {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        cleanSystemLS();
         if (Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
                 || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType)) {
             unregister();
@@ -961,9 +968,9 @@ public class VitActivity extends Activity implements IAdvance {
             }
         }
         if (drawable == null) {
-            pagerLayout.setBackgroundColor(getBackgroundColor());
+            layout.setBackgroundColor(getBackgroundColor());
         } else {
-            pagerLayout.setBackground(drawable);
+            layout.setBackground(drawable);
         }
 
         // 2.1，create TimeView
