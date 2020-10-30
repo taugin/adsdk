@@ -105,6 +105,9 @@ public class SceneSceneParser implements ISceneParser {
             if (jobj.has(VER_ADM)) {
                 bCg.setVerAdm(parseVerAdmMap(jobj.getJSONObject(VER_ADM)));
             }
+            if (jobj.has(USE_FULL_INTENT)) {
+                bCg.setUseFullIntent(jobj.getInt(USE_FULL_INTENT) == 1);
+            }
             parseFieldList(bCg, jobj);
         } catch (Exception e) {
             Log.v(Log.TAG, "parseBasePolicyInternal error : " + e);

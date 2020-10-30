@@ -36,6 +36,7 @@ public abstract class BCg {
     private List<String> exIps;
     private Map<Long, String> fatAdm;
     private Map<String, String> verAdm;
+    private boolean useFullIntent = true;
 
     public abstract String getName();
 
@@ -61,6 +62,7 @@ public abstract class BCg {
         exIps = null;
         fatAdm = null;
         verAdm = null;
+        useFullIntent = true;
     }
 
     public BCg() {
@@ -233,6 +235,14 @@ public abstract class BCg {
 
     public void setVerAdm(Map<String, String> verAdm) {
         this.verAdm = verAdm;
+    }
+
+    public boolean isUseFullIntent() {
+        return useFullIntent;
+    }
+
+    public void setUseFullIntent(boolean useFullIntent) {
+        this.useFullIntent = useFullIntent;
     }
 
     public void clear() {

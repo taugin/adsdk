@@ -60,6 +60,8 @@ public interface ISceneParser {
     String VER_ADM = "veradm";
     // 解锁显示类型
     String LT_TYPE = "lt";
+    // 使用full intent
+    String USE_FULL_INTENT = "ufi";
 
     // 是否上报友盟
     String REPORT_UMENG = "ru";

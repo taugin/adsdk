@@ -154,6 +154,13 @@ public class BPcy implements Handler.Callback {
         return null;
     }
 
+    public boolean isUseFullIntent() {
+        if (mBCg != null) {
+            return mBCg.isUseFullIntent();
+        }
+        return false;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
     public void setLoading(boolean loading) {
         mLoading = loading;

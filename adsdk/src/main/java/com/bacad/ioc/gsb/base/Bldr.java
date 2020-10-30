@@ -111,6 +111,15 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
         return adParams;
     }
 
+    private boolean isUseFullIntent() {
+        try {
+            return ((BPcy) mPolicy).isUseFullIntent();
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return false;
+    }
+
     protected void show(String pidName, String source, String adType, String pType) {
         String action = null;
         if (!TextUtils.isEmpty(pType)) {
@@ -133,6 +142,9 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
         intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
         intent.putExtra(Intent.EXTRA_REPLACING, pType);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (isUseFullIntent()) {
+            userFullIntent(getContext(), intent);
+        }
         try {
             getContext().startActivity(intent);
         } catch (Exception e) {
