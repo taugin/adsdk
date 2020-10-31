@@ -50,6 +50,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.bacad.ioc.gsb.SceneSdk;
 import com.bacad.ioc.gsb.base.BPcy;
 import com.bacad.ioc.gsb.base.Cher;
+import com.bacad.ioc.gsb.scpolicy.LvPcy;
 import com.earch.sunny.picfg.IAdvance;
 import com.earch.sunny.picfg.SpreadCfg;
 import com.earch.sunny.view.MyTextView;
@@ -269,6 +270,7 @@ public class SecActivity extends Activity implements IAdvance {
             disableSystemLS();
             hideNavigationBar(this);
             showLockScreenView();
+            LvPcy.get(this).reportImpression(true);
         } else if (mSpreadCfg != null) {
             showSpread();
         } else if (!TextUtils.isEmpty(mPidName)) {
