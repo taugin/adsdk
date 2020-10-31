@@ -149,11 +149,9 @@ public class LvAdl extends Bldr {
             try {
                 PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 pendingIntent.send();
-                LvPcy.get(mContext).reportImpression(true);
             } catch (Exception e) {
                 try {
                     mContext.startActivity(intent);
-                    LvPcy.get(mContext).reportImpression(true);
                 } catch (Exception e1) {
                 }
             }

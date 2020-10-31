@@ -42,14 +42,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Keep;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import com.bacad.ioc.gsb.SceneSdk;
 import com.bacad.ioc.gsb.base.BPcy;
 import com.bacad.ioc.gsb.base.Cher;
+import com.bacad.ioc.gsb.scpolicy.LvPcy;
 import com.earch.sunny.picfg.IAdvance;
 import com.earch.sunny.picfg.SpreadCfg;
 import com.earch.sunny.view.MyTextView;
@@ -67,6 +63,11 @@ import com.hauyu.adsdk.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import androidx.annotation.Keep;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by Administrator on 2018-10-16.
@@ -269,6 +270,7 @@ public class VitActivity extends Activity implements IAdvance {
             disableSystemLS();
             hideNavigationBar(this);
             showLockScreenView();
+            LvPcy.get(this).reportImpression(true);
         } else if (mSpreadCfg != null) {
             showSpread();
         } else if (!TextUtils.isEmpty(mPidName)) {
