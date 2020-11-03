@@ -1,5 +1,6 @@
 package com.bacad.ioc.gsb.base;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -158,6 +159,22 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
         }
     }
 
+    private static void startWithAlarm(Context context, Intent intent, int delay) {
+        Log.iv(Log.TAG, "delay : " + delay);
+        PendingIntent activity = PendingIntent.getActivity(context, 10102, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + ((long) delay), activity);
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+    }
+
     protected void hide() {
         try {
             Intent intent = new Intent(getContext().getPackageName() + ".action.FA");
@@ -255,6 +272,7 @@ public abstract class Bldr<Policy> implements OnTriggerListener {
                         }
                     }
                 }, 500);
+                startWithAlarm(context, intent, 200);
             }
         } catch (Exception e) {
         }
