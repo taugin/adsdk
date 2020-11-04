@@ -42,6 +42,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Keep;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.bacad.ioc.gsb.SceneSdk;
 import com.bacad.ioc.gsb.base.BPcy;
 import com.bacad.ioc.gsb.base.Cher;
@@ -64,17 +69,14 @@ import com.hauyu.adsdk.utils.Utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import androidx.annotation.Keep;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 /**
  * Created by Administrator on 2018-10-16.
  */
 
 public class VitActivity extends Activity implements IAdvance {
 
+    private static final int MSG_ACTIVITY_DUP_CREATE = 0x10025;
+    private static final int DELAY_ACTIVITY_DUP_CREATE = 2000;
     private SpreadCfg mSpreadCfg;
     private GestureDetector mGestureDetector;
     private String mPidName;
@@ -260,6 +262,13 @@ public class VitActivity extends Activity implements IAdvance {
     }
 
     private void updateDataAndView() {
+        if (mHandler != null) {
+            if (mHandler.hasMessages(MSG_ACTIVITY_DUP_CREATE)) {
+                Log.iv(Log.TAG, "activity is showing");
+                return;
+            }
+            mHandler.sendEmptyMessageDelayed(MSG_ACTIVITY_DUP_CREATE, DELAY_ACTIVITY_DUP_CREATE);
+        }
         updateFullScreenState();
         if (mInChargeView) {
             ensureChargeWrapper();

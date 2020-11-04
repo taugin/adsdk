@@ -75,6 +75,8 @@ import androidx.viewpager.widget.ViewPager;
 
 public class TriActivity extends Activity implements IAdvance {
 
+    private static final int MSG_ACTIVITY_DUP_CREATE = 0x10025;
+    private static final int DELAY_ACTIVITY_DUP_CREATE = 2000;
     private SpreadCfg mSpreadCfg;
     private GestureDetector mGestureDetector;
     private String mPidName;
@@ -260,6 +262,13 @@ public class TriActivity extends Activity implements IAdvance {
     }
 
     private void updateDataAndView() {
+        if (mHandler != null) {
+            if (mHandler.hasMessages(MSG_ACTIVITY_DUP_CREATE)) {
+                Log.iv(Log.TAG, "activity is showing");
+                return;
+            }
+            mHandler.sendEmptyMessageDelayed(MSG_ACTIVITY_DUP_CREATE, DELAY_ACTIVITY_DUP_CREATE);
+        }
         updateFullScreenState();
         if (mInChargeView) {
             ensureChargeWrapper();
