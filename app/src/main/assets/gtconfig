@@ -1,6 +1,6 @@
 {
-  "e": 0,
-  "adm": "banner_and_native",
+  "e": 1,
+  "adm": "nt_outer_place",
   "si": 0,
   "mc": 100,
   "ntr": 100,
@@ -16,5 +16,6 @@
     "2": "adm2",
     "3": "adm3",
     "4": "adm4"
-  }
+  },
+  "osver":[29, 100]
 }

@@ -76,7 +76,7 @@ import java.util.Date;
 public class VitActivity extends Activity implements IAdvance {
 
     private static final int MSG_ACTIVITY_DUP_CREATE = 0x10025;
-    private static final int DELAY_ACTIVITY_DUP_CREATE = 2000;
+    private static final int DELAY_ACTIVITY_DUP_CREATE = 10000;
     private SpreadCfg mSpreadCfg;
     private GestureDetector mGestureDetector;
     private String mPidName;
@@ -262,6 +262,7 @@ public class VitActivity extends Activity implements IAdvance {
     }
 
     private void updateDataAndView() {
+        Log.iv(Log.TAG, "update data and view");
         if (mHandler != null) {
             if (mHandler.hasMessages(MSG_ACTIVITY_DUP_CREATE)) {
                 Log.iv(Log.TAG, "activity is showing");
