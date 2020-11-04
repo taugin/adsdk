@@ -42,6 +42,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Keep;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.bacad.ioc.gsb.SceneSdk;
 import com.bacad.ioc.gsb.base.BPcy;
 import com.bacad.ioc.gsb.base.Cher;
@@ -63,11 +68,6 @@ import com.hauyu.adsdk.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import androidx.annotation.Keep;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by Administrator on 2018-10-16.
