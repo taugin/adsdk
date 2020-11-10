@@ -1076,9 +1076,9 @@ public class TriActivity extends Activity implements IAdvance {
     private void startTimeUpdate() {
         updateTime();
 
+        stopTimeUpdate();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
-
         mTimeReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -1088,8 +1088,11 @@ public class TriActivity extends Activity implements IAdvance {
                 }
             }
         };
-
-        registerReceiver(mTimeReceiver, filter);
+        try {
+            registerReceiver(mTimeReceiver, filter);
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
     }
 
     private void updateTime() {
