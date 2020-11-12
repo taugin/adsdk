@@ -551,6 +551,14 @@ def parseChannelConfig(flavorObj, outputFile) {
     } else {
         channels_files = android.defaultConfig.ext["app_channels_files"] = [:]
     }
+    try {
+        if (channels == null || channels.isEmpty()) {
+            System.err.println ":${project.name}:parseChannelConfig [" + flavorName + "] Pack Channels is Empty : " + channels
+            return
+        }
+    } catch(Exception e) {
+        return
+    }
     channels_files["base_package"] = outputFile.getAbsolutePath()
     channels.each {
         def tmpFile = appName + "_" + flavorName + "_" + it + "_v" + versionName + "_" + versionCode +
