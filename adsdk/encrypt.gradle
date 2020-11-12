@@ -1,6 +1,8 @@
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.security.MessageDigest
 /**
  * 首字母转大写
@@ -125,6 +127,7 @@ project.afterEvaluate {
             def aTask = project.tasks.findByName(assembleTaskName);
             if (aTask != null) {
                 aTask.doLast {
+                    generateMultipleChannel(flavor)
                     openReleaseDir(flavor.name)
                     printEncryptInfo()
                 }
@@ -144,6 +147,7 @@ project.afterEvaluate {
         def aTask = project.tasks.findByName("assembleRelease");
         if (aTask != null) {
             aTask.doLast {
+                generateMultipleChannel(null)
                 openReleaseDir(null)
                 printEncryptInfo()
             }
@@ -154,6 +158,15 @@ project.afterEvaluate {
                 adFileGenerateByUser(null)
             }
         })
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (variant != null && variant.buildType.name == 'release') {
+                def flavorObj = variant.productFlavors[0]
+                parseChannelConfig(flavorObj, outputFile)
+            }
+        }
     }
 }
 
@@ -409,7 +422,179 @@ def encryptAssetsFiles(flavor) {
         }
     }
 }
+////////////////////////////////////////////////////////////////////////////
+def generateMultipleChannel(flavor) {
+    def flavorName = "official"
+    def channels = android.defaultConfig.ext.has("app_channels") ? android.defaultConfig.ext.app_channels : null
+    def channels_files = null
+    if (flavor != null) {
+        flavorName = flavor.name
+        if (flavor.ext != null && flavor.ext.has("app_channels") && flavor.ext.app_channels != null) {
+            channels = flavor.ext.app_channels
+        }
+        if (flavor.ext != null && flavor.ext.has("app_channels_files") && flavor.ext.app_channels_files != null) {
+            channels_files = flavor.ext.app_channels_files
+        }
+    } else {
+        channels_files = android.defaultConfig.ext.has("app_channels_files") ? android.defaultConfig.ext.app_channels_files : null
+    }
+    if (channels == null || channels.isEmpty()) {
+        println ":${project.name}:generateMultipleChannel [" + flavorName + "] Channel Config is Empty"
+        return
+    }
+    if (channels_files == null || channels_files.isEmpty()) {
+        println ":${project.name}:generateMultipleChannel [" + flavorName + "] Channel Files is Empty"
+        return
+    }
+    def aaptFile = getAaptFile()
+    println ":${project.name}:appendChannelFile [" + flavorName + "] AaptFile : " + aaptFile
+    if (!new File(aaptFile).exists()) {
+        println ":${project.name}:appendChannelFile [" + flavorName + "] AaptFile is not exist"
+        return
+    }
+    // 循环检测源文件是否存在，检测时间为5s内
+    def startTime = System.currentTimeMillis()
+    for (; ;) {
+        File baseApk = new File(channels_files["official"])
+        def exist = baseApk.exists();
+        if (!exist && System.currentTimeMillis() <= startTime + 5000) {
+            sleep(1000)
+        } else {
+            break;
+        }
+    }
+    File sourceFile = new File(channels_files["official"])
+    if (!sourceFile.exists()) {
+        println ":${project.name}:generateMultipleChannel [" + flavorName + "] Base Package is not exist"
+        return
+    }
+    String releaseDir = new File(channels_files["official"]).getParent()
+    File tempAssets = new File(releaseDir, "assets")
+    if (!tempAssets.exists()) {
+        tempAssets.mkdirs()
+    }
+    File channelFile = new File(tempAssets, "product_channel_cfg")
+    println ":${project.name}:generateMultipleChannel [" + flavorName + "] All Channels : " + channels
+    println ":${project.name}:generateMultipleChannel [" + flavorName + "] All Channels Files : " + channels_files
+    channels.each {
+        appendChannelFile(channels_files["official"], it, channels_files[it], channelFile, flavorName, aaptFile)
+    }
+    println ":${project.name}:generateMultipleChannel [" + flavorName + "] Delete Channel File : " + channelFile
+    channelFile.delete()
+    tempAssets.delete()
+}
 
+def appendChannelFile(baseApk, channel, channelApk, channelFile, flavorName, aaptFile) {
+    println ":${project.name}:appendChannelFile [" + flavorName + "] Base Apk : " + baseApk
+    println ":${project.name}:appendChannelFile [" + flavorName + "] Channel : " + channel
+    println ":${project.name}:appendChannelFile [" + flavorName + "] Channel Apk : " + channelApk
+    FileWriter writer = new FileWriter(channelFile, false)
+    writer.write(channel)
+    writer.close()
+    Files.copy(Paths.get(baseApk), Paths.get(channelApk))
+    def appendFileToApk = aaptFile + " a -v " + channelApk + " " + "assets/product_channel_cfg"
+    def cwd = new File(baseApk).getParentFile()
+    println ":${project.name}:appendChannelFile [" + flavorName + "] cmd : " + appendFileToApk
+    println ":${project.name}:appendChannelFile [" + flavorName + "] cwd : " + cwd
+    try {
+        appendFileToApk.execute(null, cwd)
+        sleep(2000)
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+}
+
+def parseChannelConfig(flavorObj, outputFile) {
+    def flavorName = "official"
+    def versionName = android.defaultConfig.versionName
+    def versionCode = android.defaultConfig.versionCode
+    def appName = android.defaultConfig.ext.has("app_name") ? android.defaultConfig.ext.app_name : project.getRootProject().getName()
+    def channels = android.defaultConfig.ext.has("app_channels") ? android.defaultConfig.ext.app_channels : null
+    def channels_files = null
+    if (flavorObj != null) {
+        flavorName = flavorObj.name
+        if (flavorObj.versionName != null) {
+            versionName = flavorObj.versionName
+        }
+        if (flavorObj.versionCode != null) {
+            versionCode = flavorObj.versionCode
+        }
+        if (flavorObj.ext != null && flavorObj.ext.has("app_name") && flavorObj.ext.app_name != null) {
+            appName = flavorObj.ext.app_name
+        }
+        if (flavorObj.ext != null && flavorObj.ext.has("app_channels") && flavorObj.ext.app_channels != null) {
+            channels = flavorObj.ext.app_channels
+        }
+        channels_files = flavorObj.ext["app_channels_files"] = [:]
+    } else {
+        channels_files = android.defaultConfig.ext["app_channels_files"] = [:]
+    }
+    channels_files["official"] = outputFile.getAbsolutePath()
+    channels.each {
+        def tmpFile = appName + "_" + flavorName + "_" + it + "_v" + versionName + "_" + versionCode +
+                '_release' + "_" + getDate() + '.apk'
+        def releaseDir = outputFile.getParentFile().getAbsolutePath()
+        channels_files[it] = new File(releaseDir, tmpFile).getAbsolutePath()
+    }
+    println ":${project.name}:parseChannelConfig [" + flavorName + "] All Channels : " + channels
+    println ":${project.name}:parseChannelConfig [" + flavorName + "] All Channels Files : " + channels_files
+    /*
+    ////////////////////////////////////////////////////////////////////////////
+    String releaseDir = new File(channels_files["official"]).getParent()
+    File tempAssets = new File(releaseDir, "assets")
+    if (!tempAssets.exists()) {
+        tempAssets.mkdirs()
+    }
+    File channelFile = new File(tempAssets, "product_channel_cfg")
+    channels.each {
+        appendChannelFile(channels_files["official"], it, channels_files[it], channelFile)
+    }
+    channelFile.delete()
+    tempAssets.delete()
+    ////////////////////////////////////////////////////////////////////////////
+     */
+}
+
+def getAaptFile() {
+    def sdkDir = null
+    try {
+        Properties properties = new Properties()
+        InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream();
+        properties.load(inputStream)
+        //读取文件
+        sdkDir = properties.getProperty('sdk.dir')
+    } catch (Exception e) {
+    }
+    if (sdkDir == null) {
+        sdkDir = System.getenv("ANDROID_SDK_ROOT")
+    }
+    def exe = ""
+    if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+        exe = ".exe"
+    }
+    println ":${project.name}:getAaptFile sdkDir : " + sdkDir
+    def compileSdkVersion = android.compileSdkVersion
+    if (compileSdkVersion != null) {
+        compileSdkVersion = compileSdkVersion.replaceAll("android-", "");
+    }
+    def buildToolDir = sdkDir + File.separator + "build-tools"
+    def buildToolVersionDir = android.buildToolsVersion
+    if (buildToolVersionDir == null) {
+        def buildToolDirs = new File(buildToolDir).list(new FilenameFilter() {
+            @Override
+            boolean accept(File dir, String name) {
+                return name.startsWith(String.valueOf(compileSdkVersion))
+            }
+        })
+        if (buildToolDirs != null && buildToolDirs.length > 0) {
+            buildToolVersionDir = buildToolDirs[0]
+        }
+    }
+    def aaptFile = buildToolDir + File.separator + buildToolVersionDir + File.separator + "aapt" + exe
+    println ":${project.name}:getAaptFile aaptFile : " + aaptFile
+    return aaptFile
+}
+////////////////////////////////////////////////////////////////////////////
 class Aes {
     private static void appendHex(StringBuffer paramStringBuffer, byte paramByte) {
         paramStringBuffer.append(
