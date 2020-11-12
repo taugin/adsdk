@@ -630,7 +630,7 @@ def deleteSignInfo(flavor, apkFile, aaptFile) {
     def signInfoList = getSignInfoList(apkFile)
     println ":${project.name}:deleteSignInfo [" + flavor + "] signInfoList : " + signInfoList
     if (signInfoList == null || signInfoList.isEmpty()) {
-        System.err.println ":${project.name}:deleteSignInfo [" + flavor + "] Old Sign File is Null"
+        println ":${project.name}:deleteSignInfo [" + flavor + "] Sign File Deleted"
         return false
     }
     signInfoList.each {
