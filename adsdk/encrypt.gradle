@@ -1,8 +1,6 @@
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.security.MessageDigest
 /**
  * 首字母转大写
@@ -315,27 +313,6 @@ def getEncryptFileTree(assetDir) {
 }
 
 /**
- * 获取签名信息
- * @param flavor
- * @return
- */
-def getSignConfig(flavor) {
-    def signConfig = null
-    if (flavor == null) {
-        try {
-            signConfig = project.android.buildTypes.release.signingConfig
-        } catch (Exception e) {
-        }
-    } else {
-        try {
-            signConfig = project.android.productFlavors[flavor].signingConfig
-        } catch (Exception e) {
-        }
-    }
-    return signConfig
-}
-
-/**
  * 生成签名的md5文件，一边验证是否被重打包
  * @param assetDir
  */
@@ -423,9 +400,24 @@ def encryptAssetsFiles(flavor) {
     }
 }
 ////////////////////////////////////////////////////////////////////////////
+/**
+ * 获取当前时间
+ * @return
+ */
+static def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmm')
+    return formattedDate
+}
+/**
+ * 生成多渠道包
+ * @param flavor
+ * @return
+ */
 def generateMultipleChannel(flavor) {
     def flavorName = "official"
     def channels = android.defaultConfig.ext.has("app_channels") ? android.defaultConfig.ext.app_channels : null
+    def channelFileName = android.defaultConfig.ext.has("channel_file_name") ? android.defaultConfig.ext.channel_file_name : null
     def channels_files = null
     if (flavor != null) {
         flavorName = flavor.name
@@ -435,27 +427,35 @@ def generateMultipleChannel(flavor) {
         if (flavor.ext != null && flavor.ext.has("app_channels_files") && flavor.ext.app_channels_files != null) {
             channels_files = flavor.ext.app_channels_files
         }
+        if (flavor.ext != null && flavor.ext.has("channel_file_name") && flavor.ext.channel_file_name != null) {
+            channelFileName = flavor.ext.channel_file_name
+        }
     } else {
         channels_files = android.defaultConfig.ext.has("app_channels_files") ? android.defaultConfig.ext.app_channels_files : null
     }
     if (channels == null || channels.isEmpty()) {
-        println ":${project.name}:generateMultipleChannel [" + flavorName + "] Channel Config is Empty"
+        System.err.println ":${project.name}:generateMultipleChannel [" + flavorName + "] Channel Config is Empty"
         return
     }
     if (channels_files == null || channels_files.isEmpty()) {
-        println ":${project.name}:generateMultipleChannel [" + flavorName + "] Channel Files is Empty"
+        System.err.println ":${project.name}:generateMultipleChannel [" + flavorName + "] Channel Files is Empty"
         return
     }
     def aaptFile = getAaptFile()
     println ":${project.name}:appendChannelFile [" + flavorName + "] AaptFile : " + aaptFile
     if (!new File(aaptFile).exists()) {
-        println ":${project.name}:appendChannelFile [" + flavorName + "] AaptFile is not exist"
+        System.err.println ":${project.name}:appendChannelFile [" + flavorName + "] AaptFile is not exist"
         return
     }
     // 循环检测源文件是否存在，检测时间为5s内
+    def basePackage = channels_files["base_package"]
+    if (basePackage == null) {
+        System.err.println ":${project.name}:appendChannelFile [" + flavorName + "] Base Package is Null"
+        return
+    }
     def startTime = System.currentTimeMillis()
     for (; ;) {
-        File baseApk = new File(channels_files["official"])
+        File baseApk = new File(basePackage)
         def exist = baseApk.exists();
         if (!exist && System.currentTimeMillis() <= startTime + 5000) {
             sleep(1000)
@@ -463,36 +463,52 @@ def generateMultipleChannel(flavor) {
             break;
         }
     }
-    File sourceFile = new File(channels_files["official"])
+    File sourceFile = new File(basePackage)
     if (!sourceFile.exists()) {
-        println ":${project.name}:generateMultipleChannel [" + flavorName + "] Base Package is not exist"
+        System.err.println ":${project.name}:generateMultipleChannel [" + flavorName + "] Base Package is not exist"
         return
     }
-    String releaseDir = new File(channels_files["official"]).getParent()
+    String releaseDir = new File(basePackage).getParent()
     File tempAssets = new File(releaseDir, "assets")
     if (!tempAssets.exists()) {
         tempAssets.mkdirs()
     }
-    File channelFile = new File(tempAssets, "product_channel_cfg")
+    if (channelFileName == null) {
+        channelFileName = "product_channel_cfg"
+    }
+    File channelFile = new File(tempAssets, channelFileName)
     println ":${project.name}:generateMultipleChannel [" + flavorName + "] All Channels : " + channels
     println ":${project.name}:generateMultipleChannel [" + flavorName + "] All Channels Files : " + channels_files
     channels.each {
-        appendChannelFile(channels_files["official"], it, channels_files[it], channelFile, flavorName, aaptFile)
+        appendChannelFile(basePackage, it, channels_files[it], channelFile, flavorName, aaptFile, channelFileName)
+        if (deleteOldSign(flavorName, channels_files[it])) {
+            signChannelPackage(flavorName, channels_files[it])
+        }
     }
     println ":${project.name}:generateMultipleChannel [" + flavorName + "] Delete Channel File : " + channelFile
     channelFile.delete()
     tempAssets.delete()
 }
 
-def appendChannelFile(baseApk, channel, channelApk, channelFile, flavorName, aaptFile) {
+/**
+ * 增加渠道文件到assets目录，渠道文件名称为assets/product_channel_cfg
+ * @param baseApk
+ * @param channel
+ * @param channelApk
+ * @param channelFile
+ * @param flavorName
+ * @param aaptFile
+ * @return
+ */
+def appendChannelFile(baseApk, channel, channelApk, channelFile, flavorName, aaptFile, channelFileName) {
     println ":${project.name}:appendChannelFile [" + flavorName + "] Base Apk : " + baseApk
     println ":${project.name}:appendChannelFile [" + flavorName + "] Channel : " + channel
     println ":${project.name}:appendChannelFile [" + flavorName + "] Channel Apk : " + channelApk
     FileWriter writer = new FileWriter(channelFile, false)
     writer.write(channel)
     writer.close()
-    Files.copy(Paths.get(baseApk), Paths.get(channelApk))
-    def appendFileToApk = aaptFile + " a -v " + channelApk + " " + "assets/product_channel_cfg"
+    java.nio.file.Files.copy(java.nio.file.Paths.get(baseApk), java.nio.file.Paths.get(channelApk))
+    def appendFileToApk = aaptFile + " a -v " + channelApk + " " + "assets/" + channelFileName
     def cwd = new File(baseApk).getParentFile()
     println ":${project.name}:appendChannelFile [" + flavorName + "] cmd : " + appendFileToApk
     println ":${project.name}:appendChannelFile [" + flavorName + "] cwd : " + cwd
@@ -504,6 +520,12 @@ def appendChannelFile(baseApk, channel, channelApk, channelFile, flavorName, aap
     }
 }
 
+/**
+ * 解析渠道配置信息
+ * @param flavorObj
+ * @param outputFile
+ * @return
+ */
 def parseChannelConfig(flavorObj, outputFile) {
     def flavorName = "official"
     def versionName = android.defaultConfig.versionName
@@ -529,7 +551,7 @@ def parseChannelConfig(flavorObj, outputFile) {
     } else {
         channels_files = android.defaultConfig.ext["app_channels_files"] = [:]
     }
-    channels_files["official"] = outputFile.getAbsolutePath()
+    channels_files["base_package"] = outputFile.getAbsolutePath()
     channels.each {
         def tmpFile = appName + "_" + flavorName + "_" + it + "_v" + versionName + "_" + versionCode +
                 '_release' + "_" + getDate() + '.apk'
@@ -555,6 +577,159 @@ def parseChannelConfig(flavorObj, outputFile) {
      */
 }
 
+/**
+ * 删除旧的签名
+ * @param flavor
+ * @param apkFile
+ * @return
+ */
+def deleteOldSign(flavor, apkFile) {
+    def aaptFile = getAaptFile()
+    println ":${project.name}:appendChannelFile [" + flavor + "] AaptFile : " + aaptFile
+    if (!new File(aaptFile).exists()) {
+        System.err.println ":${project.name}:appendChannelFile [" + flavor + "] AaptFile is not exist"
+        return false
+    }
+    def oldSignFileList = getOldApkSignFile(apkFile)
+    println ":${project.name}:deleteOldSign [" + flavor + "] oldSignFileList : " + oldSignFileList
+    if (oldSignFileList == null || oldSignFileList.isEmpty()) {
+        System.err.println ":${project.name}:deleteOldSign [" + flavor + "] Old Sign File is Null"
+        return false
+    }
+    oldSignFileList.each {
+        def cmdList = aaptFile + " r -v " + apkFile + " " + it
+        println ":${project.name}:deleteOldSign [" + flavor + "] Delete Sign File : " + cmdList
+        cmdList.execute()
+        sleep(500)
+    }
+    return true
+}
+
+/**
+ * 获取旧的签名文件
+ * @param apkFile
+ * @return
+ */
+def getOldApkSignFile(apkFile) {
+    def metaInfoList = []
+    java.io.InputStream is = new java.io.BufferedInputStream(new java.io.FileInputStream(apkFile))
+    java.util.zip.ZipInputStream zin = new java.util.zip.ZipInputStream(is)
+    java.util.zip.ZipEntry ze = null
+    while ((ze = zin.getNextEntry()) != null) {
+        def name = ze.getName()
+        if (name != null && name.startsWith("META-INF")) {
+            if (name.endsWith(".MF") || name.endsWith(".SF") || name.endsWith(".RSA")) {
+                metaInfoList.add(name)
+            }
+        }
+    }
+    zin.closeEntry()
+    zin.close()
+    return metaInfoList
+}
+
+/**
+ * 对渠道包签名
+ * @param flavor
+ * @param apkFile
+ * @return
+ */
+def signChannelPackage(flavor, apkFile) {
+    def signConfig = getSignConfig(flavor)
+    if (signConfig == null) {
+        System.err.println ":${project.name}:signChannelPackage [" + flavor + "] signConfig is Null"
+        return
+    }
+    def jarSignerFile = getJarsigner(flavor)
+    println ":${project.name}:signChannelPackage [" + flavor + "] jarSignerFile : " + jarSignerFile
+    if (jarSignerFile == null) {
+        System.err.println ":${project.name}:signChannelPackage [" + flavor + "] jarSignerFile is Null"
+        return
+    }
+    if (signConfig != null
+            && signConfig.hasProperty("storeFile")
+            && signConfig.hasProperty("storePassword")
+            && signConfig.hasProperty("keyAlias")
+            && signConfig.hasProperty("keyPassword")) {
+
+        println ":${project.name}:signChannelPackage [" + flavor + "] Sign Apk : " + apkFile
+        def cmdlist = []
+        cmdlist.add(jarSignerFile)
+
+        cmdlist.add("-digestalg")
+        cmdlist.add("SHA1")
+        cmdlist.add("-sigalg")
+        cmdlist.add("MD5withRSA")
+        // cmdlist.add("-tsa https://timestamp.geotrust.com/tsa")
+        cmdlist.add("-keystore")
+        cmdlist.add(signConfig.storeFile)
+        cmdlist.add("-storepass")
+        cmdlist.add(signConfig.storePassword)
+        cmdlist.add("-keypass")
+        cmdlist.add(signConfig.keyPassword)
+        cmdlist.add("-signedjar")
+        cmdlist.add(apkFile)
+        cmdlist.add(apkFile)
+        cmdlist.add(signConfig.keyAlias)
+
+        def cmdString = cmdlist.join(" ")
+        println ":${project.name}:signChannelPackage [" + flavor + "] Sign Apk Cmd : " + cmdString
+        cmdString.execute()
+    }
+}
+
+/**
+ * 获取Jarsigner文件路径
+ * @param flavor
+ * @return
+ */
+def getJarsigner(flavor) {
+    def jarSignerFile = null
+    try {
+        def cmdString = "where jarsigner"
+        def result = cmdString.execute().text.trim()
+        if (result != null && result.length() > 0) {
+            BufferedReader br = new BufferedReader(new StringReader(result))
+            def tmpFile = br.readLine()
+            br.close()
+            println ":${project.name}:getJarsigner [" + flavor + "] jarSignerFile : " + tmpFile
+            File f = new File(tmpFile)
+            if (f.exists()) {
+                jarSignerFile = tmpFile
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+    return jarSignerFile
+}
+
+/**
+ * 获取签名信息
+ * @param flavor
+ * @return
+ */
+def getSignConfig(flavor) {
+    def signConfig = null
+    if (flavor != null) {
+        try {
+            signConfig = project.android.productFlavors[flavor].signingConfig
+        } catch (Exception e) {
+        }
+    }
+    if (signConfig == null) {
+        try {
+            signConfig = project.android.buildTypes.release.signingConfig
+        } catch (Exception e) {
+        }
+    }
+    return signConfig
+}
+
+/**
+ * 获取aapt文件路径
+ * @return
+ */
 def getAaptFile() {
     def sdkDir = null
     try {

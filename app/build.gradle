@@ -15,6 +15,10 @@ android {
         versionName "1.0"
         multiDexEnabled true
         flavorDimensions "version"
+        ext {
+            app_channels = ['oppo', 'vivo', 'baidu', '360', 'wandoujia', '91']
+            channel_file_name = 'custom_channel_file'
+        }
     }
 
     signingConfigs {
@@ -85,4 +89,22 @@ configurations.all {
     // resolutionStrategy.force 'com.google.firebase:firebase-analytics:15.0.2'
 }
 
+afterEvaluate {
+    tasks.findAll { task ->
+        if (task != null && task.name != null
+                && task.name.toLowerCase().contains("version1")
+                && task.name.toLowerCase().contains("release")) {
+            task.onlyIf {
+                return false
+            }
+        }
+        if (task != null && task.name != null
+                && task.name.toLowerCase().contains("version2")
+                && task.name.toLowerCase().contains("release")) {
+            task.onlyIf {
+                return false
+            }
+        }
+    }
+}
 // apply plugin: 'com.google.gms.google-services'

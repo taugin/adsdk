@@ -20,3 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -dontwarn android.support.**
+-dontwarn com.**
+-dontwarn android.**
