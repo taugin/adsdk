@@ -481,9 +481,7 @@ def generateMultipleChannel(flavor) {
     println ":${project.name}:generateMultipleChannel [" + flavorName + "] All Channels Files : " + channels_files
     channels.each {
         appendChannelFile(basePackage, it, channels_files[it], channelFile, flavorName, aaptFile, channelFileName)
-        if (deleteOldSign(flavorName, channels_files[it])) {
-            signChannelPackage(flavorName, channels_files[it])
-        }
+        signChannelFile(flavorName, channels_files[it])
     }
     println ":${project.name}:generateMultipleChannel [" + flavorName + "] Delete Channel File : " + channelFile
     channelFile.delete()
@@ -553,7 +551,7 @@ def parseChannelConfig(flavorObj, outputFile) {
     }
     try {
         if (channels == null || channels.isEmpty()) {
-            System.err.println ":${project.name}:parseChannelConfig [" + flavorName + "] Pack Channels is Empty : " + channels
+            System.err.println ":${project.name}:parseChannelConfig [" + flavorName + "] Pack Channels is Empty"
             return
         }
     } catch(Exception e) {
@@ -586,27 +584,58 @@ def parseChannelConfig(flavorObj, outputFile) {
 }
 
 /**
- * 删除旧的签名
+ * 为渠道包签名
  * @param flavor
  * @param apkFile
  * @return
  */
-def deleteOldSign(flavor, apkFile) {
+def signChannelFile(flavor, apkFile) {
     def aaptFile = getAaptFile()
     println ":${project.name}:appendChannelFile [" + flavor + "] AaptFile : " + aaptFile
     if (!new File(aaptFile).exists()) {
         System.err.println ":${project.name}:appendChannelFile [" + flavor + "] AaptFile is not exist"
         return false
     }
-    def oldSignFileList = getOldApkSignFile(apkFile)
-    println ":${project.name}:deleteOldSign [" + flavor + "] oldSignFileList : " + oldSignFileList
-    if (oldSignFileList == null || oldSignFileList.isEmpty()) {
-        System.err.println ":${project.name}:deleteOldSign [" + flavor + "] Old Sign File is Null"
+
+    def signConfig = getSignConfig(flavor)
+    if (signConfig == null) {
+        System.err.println ":${project.name}:signChannelPackage [" + flavor + "] signConfig is Null"
+        return
+    }
+    if (!signConfig.hasProperty("storeFile")
+            || !signConfig.hasProperty("storePassword")
+            || !signConfig.hasProperty("keyAlias")
+            || !signConfig.hasProperty("keyPassword")) {
+        System.err.println ":${project.name}:signChannelPackage [" + flavor + "] signConfig is not completion"
+        return
+    }
+    def jarSignerFile = getJarsigner(flavor)
+    println ":${project.name}:signChannelPackage [" + flavor + "] jarSignerFile : " + jarSignerFile
+    if (jarSignerFile == null) {
+        System.err.println ":${project.name}:signChannelPackage [" + flavor + "] jarSignerFile is Null"
+        return
+    }
+    if (deleteSignInfo(flavor, apkFile, aaptFile)) {
+        signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile)
+    }
+}
+
+/**
+ * 删除旧的签名
+ * @param flavor
+ * @param apkFile
+ * @return
+ */
+def deleteSignInfo(flavor, apkFile, aaptFile) {
+    def signInfoList = getSignInfoList(apkFile)
+    println ":${project.name}:deleteSignInfo [" + flavor + "] signInfoList : " + signInfoList
+    if (signInfoList == null || signInfoList.isEmpty()) {
+        System.err.println ":${project.name}:deleteSignInfo [" + flavor + "] Old Sign File is Null"
         return false
     }
-    oldSignFileList.each {
+    signInfoList.each {
         def cmdList = aaptFile + " r -v " + apkFile + " " + it
-        println ":${project.name}:deleteOldSign [" + flavor + "] Delete Sign File : " + cmdList
+        println ":${project.name}:deleteSignInfo [" + flavor + "] Delete Sign File : " + cmdList
         cmdList.execute()
         sleep(500)
     }
@@ -618,8 +647,8 @@ def deleteOldSign(flavor, apkFile) {
  * @param apkFile
  * @return
  */
-def getOldApkSignFile(apkFile) {
-    def metaInfoList = []
+def getSignInfoList(apkFile) {
+    def signInfoList = []
     java.io.InputStream is = new java.io.BufferedInputStream(new java.io.FileInputStream(apkFile))
     java.util.zip.ZipInputStream zin = new java.util.zip.ZipInputStream(is)
     java.util.zip.ZipEntry ze = null
@@ -627,13 +656,13 @@ def getOldApkSignFile(apkFile) {
         def name = ze.getName()
         if (name != null && name.startsWith("META-INF")) {
             if (name.endsWith(".MF") || name.endsWith(".SF") || name.endsWith(".RSA")) {
-                metaInfoList.add(name)
+                signInfoList.add(name)
             }
         }
     }
     zin.closeEntry()
     zin.close()
-    return metaInfoList
+    return signInfoList
 }
 
 /**
@@ -642,24 +671,12 @@ def getOldApkSignFile(apkFile) {
  * @param apkFile
  * @return
  */
-def signChannelPackage(flavor, apkFile) {
-    def signConfig = getSignConfig(flavor)
-    if (signConfig == null) {
-        System.err.println ":${project.name}:signChannelPackage [" + flavor + "] signConfig is Null"
-        return
-    }
-    def jarSignerFile = getJarsigner(flavor)
-    println ":${project.name}:signChannelPackage [" + flavor + "] jarSignerFile : " + jarSignerFile
-    if (jarSignerFile == null) {
-        System.err.println ":${project.name}:signChannelPackage [" + flavor + "] jarSignerFile is Null"
-        return
-    }
+def signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile) {
     if (signConfig != null
             && signConfig.hasProperty("storeFile")
             && signConfig.hasProperty("storePassword")
             && signConfig.hasProperty("keyAlias")
             && signConfig.hasProperty("keyPassword")) {
-
         println ":${project.name}:signChannelPackage [" + flavor + "] Sign Apk : " + apkFile
         def cmdlist = []
         cmdlist.add(jarSignerFile)

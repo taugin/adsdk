@@ -15,10 +15,6 @@ android {
         versionName "1.0"
         multiDexEnabled true
         flavorDimensions "version"
-        ext {
-            app_channels = ['oppo', 'vivo', 'baidu', '360', 'wandoujia', '91']
-            channel_file_name = 'custom_channel_file'
-        }
     }
 
     signingConfigs {
