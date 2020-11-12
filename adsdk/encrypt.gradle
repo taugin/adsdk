@@ -443,7 +443,7 @@ def generateMultipleChannel(flavor) {
     }
     def aaptFile = getAaptFile()
     println ":${project.name}:appendChannelFile [" + flavorName + "] AaptFile : " + aaptFile
-    if (!new File(aaptFile).exists()) {
+    if (aaptFile == null || !new File(aaptFile).exists()) {
         System.err.println ":${project.name}:appendChannelFile [" + flavorName + "] AaptFile is not exist"
         return
     }
@@ -592,9 +592,9 @@ def parseChannelConfig(flavorObj, outputFile) {
 def signChannelFile(flavor, apkFile) {
     def aaptFile = getAaptFile()
     println ":${project.name}:appendChannelFile [" + flavor + "] AaptFile : " + aaptFile
-    if (!new File(aaptFile).exists()) {
+    if (aaptFile == null || !new File(aaptFile).exists()) {
         System.err.println ":${project.name}:appendChannelFile [" + flavor + "] AaptFile is not exist"
-        return false
+        return
     }
 
     def signConfig = getSignConfig(flavor)
@@ -711,7 +711,10 @@ def signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile) {
 def getJarSigner(flavor) {
     def jarSignerFile = null
     try {
-        def cmdString = "where jarsigner"
+        def cmdString = "which jarsigner"
+        if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+            cmdString = "where jarsigner"
+        }
         def result = cmdString.execute().text.trim()
         if (result != null && result.length() > 0) {
             BufferedReader br = new BufferedReader(new StringReader(result))
@@ -767,6 +770,12 @@ def getAaptFile() {
     }
     if (sdkDir == null) {
         sdkDir = System.getenv("ANDROID_SDK_ROOT")
+    }
+    if (sdkDir == null) {
+        return null
+    }
+    if (!new File(sdkDir).exists()) {
+        return null
     }
     def exe = ""
     if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
