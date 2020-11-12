@@ -609,7 +609,7 @@ def signChannelFile(flavor, apkFile) {
         System.err.println ":${project.name}:signChannelPackage [" + flavor + "] signConfig is not completion"
         return
     }
-    def jarSignerFile = getJarsigner(flavor)
+    def jarSignerFile = getJarSigner(flavor)
     println ":${project.name}:signChannelPackage [" + flavor + "] jarSignerFile : " + jarSignerFile
     if (jarSignerFile == null) {
         System.err.println ":${project.name}:signChannelPackage [" + flavor + "] jarSignerFile is Null"
@@ -708,7 +708,7 @@ def signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile) {
  * @param flavor
  * @return
  */
-def getJarsigner(flavor) {
+def getJarSigner(flavor) {
     def jarSignerFile = null
     try {
         def cmdString = "where jarsigner"
