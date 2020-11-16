@@ -1,0 +1,470 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+static def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmm')
+    return formattedDate
+}
+
+afterEvaluate {
+    tasks.findAll { task ->
+        if (task != null && task.name != null
+                && task.name.toLowerCase().contains("localdev")
+                && task.name.toLowerCase().contains("release")) {
+            task.onlyIf {
+                return false
+            }
+        }
+    }
+
+// Windows
+    if (project.android.productFlavors.size() > 0) {// 如果有产品风味
+        project.android.productFlavors.each { flavor ->
+            def productFlavor = toUpperCaseFirstOne(flavor.name)
+            String assembleTaskName = String.format("assemble%sRelease", productFlavor)
+            def aTask = project.tasks.findByName(assembleTaskName);
+            if (aTask != null) {
+                aTask.doLast {
+                    generateMultipleChannel(flavor)
+                    openReleaseDir(flavor.name)
+                }
+            }
+        }
+    } else {
+        def aTask = project.tasks.findByName("assembleRelease");
+        if (aTask != null) {
+            aTask.doLast {
+                generateMultipleChannel(null)
+                openReleaseDir(null)
+            }
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (variant != null && variant.buildType.name == 'release') {
+                def flavorObj = variant.productFlavors[0]
+                parseChannelConfig(flavorObj, outputFile)
+            }
+        }
+    }
+}
+
+/**
+ * 生成多渠道包
+ * @param flavor
+ * @return
+ */
+def generateMultipleChannel(flavor) {
+    def flavorName = "official"
+    def channels = android.defaultConfig.ext.has("app_channels") ? android.defaultConfig.ext.app_channels : null
+    def channelFileName = android.defaultConfig.ext.has("channel_file_name") ? android.defaultConfig.ext.channel_file_name : null
+    def channels_files = null
+    if (flavor != null) {
+        flavorName = flavor.name
+        if (flavor.ext != null && flavor.ext.has("app_channels") && flavor.ext.app_channels != null) {
+            channels = flavor.ext.app_channels
+        }
+        if (flavor.ext != null && flavor.ext.has("app_channels_files") && flavor.ext.app_channels_files != null) {
+            channels_files = flavor.ext.app_channels_files
+        }
+        if (flavor.ext != null && flavor.ext.has("channel_file_name") && flavor.ext.channel_file_name != null) {
+            channelFileName = flavor.ext.channel_file_name
+        }
+    } else {
+        channels_files = android.defaultConfig.ext.has("app_channels_files") ? android.defaultConfig.ext.app_channels_files : null
+    }
+    if (channels == null || channels.isEmpty()) {
+        System.err.println ":${project.name}:generateMultipleChannel [" + flavorName + "] Channel Config is Empty"
+        return
+    }
+    if (channels_files == null || channels_files.isEmpty()) {
+        System.err.println ":${project.name}:generateMultipleChannel [" + flavorName + "] Channel Files is Empty"
+        return
+    }
+    def aaptFile = getAaptFile()
+    println ":${project.name}:appendChannelFile [" + flavorName + "] AaptFile : " + aaptFile
+    if (aaptFile == null || !new File(aaptFile).exists()) {
+        System.err.println ":${project.name}:appendChannelFile [" + flavorName + "] AaptFile is not exist"
+        return
+    }
+    // 循环检测源文件是否存在，检测时间为5s内
+    def basePackage = channels_files["base_package"]
+    if (basePackage == null) {
+        System.err.println ":${project.name}:appendChannelFile [" + flavorName + "] Base Package is Null"
+        return
+    }
+    def startTime = System.currentTimeMillis()
+    for (; ;) {
+        File baseApk = new File(basePackage)
+        def exist = baseApk.exists();
+        if (!exist && System.currentTimeMillis() <= startTime + 5000) {
+            sleep(1000)
+        } else {
+            break;
+        }
+    }
+    File sourceFile = new File(basePackage)
+    if (!sourceFile.exists()) {
+        System.err.println ":${project.name}:generateMultipleChannel [" + flavorName + "] Base Package is not exist"
+        return
+    }
+    String releaseDir = new File(basePackage).getParent()
+    File tempAssets = new File(releaseDir, "assets")
+    if (!tempAssets.exists()) {
+        tempAssets.mkdirs()
+    }
+    if (channelFileName == null) {
+        channelFileName = "product_channel_cfg"
+    }
+    File channelFile = new File(tempAssets, channelFileName)
+    println ":${project.name}:generateMultipleChannel [" + flavorName + "] All Channels : " + channels
+    println ":${project.name}:generateMultipleChannel [" + flavorName + "] All Channels Files : " + channels_files
+    channels.each {
+        appendChannelFile(basePackage, it, channels_files[it], channelFile, flavorName, aaptFile, channelFileName)
+        signChannelFile(flavorName, channels_files[it])
+    }
+    println ":${project.name}:generateMultipleChannel [" + flavorName + "] Delete Channel File : " + channelFile
+    channelFile.delete()
+    tempAssets.delete()
+}
+
+/**
+ * 增加渠道文件到assets目录，渠道文件名称为assets/product_channel_cfg
+ * @param baseApk
+ * @param channel
+ * @param channelApk
+ * @param channelFile
+ * @param flavorName
+ * @param aaptFile
+ * @return
+ */
+def appendChannelFile(baseApk, channel, channelApk, channelFile, flavorName, aaptFile, channelFileName) {
+    println ":${project.name}:appendChannelFile [" + flavorName + "] Base Apk : " + baseApk
+    println ":${project.name}:appendChannelFile [" + flavorName + "] Channel : " + channel
+    println ":${project.name}:appendChannelFile [" + flavorName + "] Channel Apk : " + channelApk
+    FileWriter writer = new FileWriter(channelFile, false)
+    writer.write(channel)
+    writer.close()
+    Files.copy(Paths.get(baseApk), Paths.get(channelApk))
+    def appendFileToApk = aaptFile + " a -v " + channelApk + " " + "assets/" + channelFileName
+    def cwd = new File(baseApk).getParentFile()
+    println ":${project.name}:appendChannelFile [" + flavorName + "] cmd : " + appendFileToApk
+    println ":${project.name}:appendChannelFile [" + flavorName + "] cwd : " + cwd
+    try {
+        appendFileToApk.execute(null, cwd)
+        sleep(2000)
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+}
+
+/**
+ * 解析渠道配置信息
+ * @param flavorObj
+ * @param outputFile
+ * @return
+ */
+def parseChannelConfig(flavorObj, outputFile) {
+    def flavorName = "official"
+    def versionName = android.defaultConfig.versionName
+    def versionCode = android.defaultConfig.versionCode
+    def appName = android.defaultConfig.ext.has("app_name") ? android.defaultConfig.ext.app_name : project.getRootProject().getName()
+    def channels = android.defaultConfig.ext.has("app_channels") ? android.defaultConfig.ext.app_channels : []
+    def channels_files = null
+    if (flavorObj != null) {
+        flavorName = flavorObj.name
+        if (flavorObj.versionName != null) {
+            versionName = flavorObj.versionName
+        }
+        if (flavorObj.versionCode != null) {
+            versionCode = flavorObj.versionCode
+        }
+        if (flavorObj.ext != null && flavorObj.ext.has("app_name") && flavorObj.ext.app_name != null) {
+            appName = flavorObj.ext.app_name
+        }
+        if (flavorObj.ext != null && flavorObj.ext.has("app_channels") && flavorObj.ext.app_channels != null) {
+            channels = flavorObj.ext.app_channels
+        }
+        channels_files = flavorObj.ext["app_channels_files"] = [:]
+    } else {
+        channels_files = android.defaultConfig.ext["app_channels_files"] = [:]
+    }
+    try {
+        if (channels == null || channels.isEmpty()) {
+            System.err.println ":${project.name}:parseChannelConfig [" + flavorName + "] Pack Channels is Empty : " + channels
+            return
+        }
+    } catch (Exception e) {
+        return
+    }
+    channels_files["base_package"] = outputFile.getAbsolutePath()
+    channels.each {
+        def tmpFile = appName + "_" + flavorName + "_" + it + "_v" + versionName + "_" + versionCode +
+                '_release' + "_" + getDate() + '.apk'
+        def releaseDir = outputFile.getParentFile().getAbsolutePath()
+        channels_files[it] = new File(releaseDir, tmpFile).getAbsolutePath()
+    }
+    println ":${project.name}:parseChannelConfig [" + flavorName + "] Pack Channels : " + channels
+    println ":${project.name}:parseChannelConfig [" + flavorName + "] Pack Channels Files : " + channels_files
+    /*
+    ////////////////////////////////////////////////////////////////////////////
+    String releaseDir = new File(channels_files["official"]).getParent()
+    File tempAssets = new File(releaseDir, "assets")
+    if (!tempAssets.exists()) {
+        tempAssets.mkdirs()
+    }
+    File channelFile = new File(tempAssets, "product_channel_cfg")
+    channels.each {
+        appendChannelFile(channels_files["official"], it, channels_files[it], channelFile)
+    }
+    channelFile.delete()
+    tempAssets.delete()
+    ////////////////////////////////////////////////////////////////////////////
+     */
+}
+
+/**
+ * 为渠道包签名
+ * @param flavor
+ * @param apkFile
+ * @return
+ */
+def signChannelFile(flavor, apkFile) {
+    def aaptFile = getAaptFile()
+    println ":${project.name}:appendChannelFile [" + flavor + "] AaptFile : " + aaptFile
+    if (aaptFile == null || !new File(aaptFile).exists()) {
+        System.err.println ":${project.name}:appendChannelFile [" + flavor + "] AaptFile is not exist"
+        return
+    }
+
+    def signConfig = getSignConfig(flavor)
+    if (signConfig == null) {
+        System.err.println ":${project.name}:signChannelPackage [" + flavor + "] signConfig is Null"
+        return
+    }
+    if (!signConfig.hasProperty("storeFile")
+            || !signConfig.hasProperty("storePassword")
+            || !signConfig.hasProperty("keyAlias")
+            || !signConfig.hasProperty("keyPassword")) {
+        System.err.println ":${project.name}:signChannelPackage [" + flavor + "] signConfig is not completion"
+        return
+    }
+    def jarSignerFile = getJarSigner(flavor)
+    println ":${project.name}:signChannelPackage [" + flavor + "] jarSignerFile : " + jarSignerFile
+    if (jarSignerFile == null) {
+        System.err.println ":${project.name}:signChannelPackage [" + flavor + "] jarSignerFile is Null"
+        return
+    }
+    if (deleteSignInfo(flavor, apkFile, aaptFile)) {
+        signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile)
+    }
+}
+
+/**
+ * 删除旧的签名
+ * @param flavor
+ * @param apkFile
+ * @return
+ */
+def deleteSignInfo(flavor, apkFile, aaptFile) {
+    def signInfoList = getSignInfoList(apkFile)
+    println ":${project.name}:deleteSignInfo [" + flavor + "] signInfoList : " + signInfoList
+    if (signInfoList == null || signInfoList.isEmpty()) {
+        println ":${project.name}:deleteSignInfo [" + flavor + "] Sign File Deleted"
+        return true
+    }
+    signInfoList.each {
+        def cmdList = aaptFile + " r -v " + apkFile + " " + it
+        println ":${project.name}:deleteSignInfo [" + flavor + "] Delete Sign File : " + cmdList
+        cmdList.execute()
+        sleep(500)
+    }
+    return true
+}
+
+/**
+ * 获取旧的签名文件
+ * @param apkFile
+ * @return
+ */
+def getSignInfoList(apkFile) {
+    def signInfoList = []
+    java.io.InputStream is = new java.io.BufferedInputStream(new java.io.FileInputStream(apkFile))
+    java.util.zip.ZipInputStream zin = new java.util.zip.ZipInputStream(is)
+    java.util.zip.ZipEntry ze = null
+    while ((ze = zin.getNextEntry()) != null) {
+        def name = ze.getName()
+        if (name != null && name.startsWith("META-INF")) {
+            if (name.endsWith(".MF") || name.endsWith(".SF") || name.endsWith(".RSA")) {
+                signInfoList.add(name)
+            }
+        }
+    }
+    zin.closeEntry()
+    zin.close()
+    return signInfoList
+}
+
+/**
+ * 对渠道包签名
+ * @param flavor
+ * @param apkFile
+ * @return
+ */
+def signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile) {
+    if (signConfig != null
+            && signConfig.hasProperty("storeFile")
+            && signConfig.hasProperty("storePassword")
+            && signConfig.hasProperty("keyAlias")
+            && signConfig.hasProperty("keyPassword")) {
+        println ":${project.name}:signChannelPackage [" + flavor + "] Sign Apk : " + apkFile
+        def cmdlist = []
+        cmdlist.add(jarSignerFile)
+
+        cmdlist.add("-digestalg")
+        cmdlist.add("SHA1")
+        cmdlist.add("-sigalg")
+        cmdlist.add("MD5withRSA")
+        // cmdlist.add("-tsa https://timestamp.geotrust.com/tsa")
+        cmdlist.add("-keystore")
+        cmdlist.add(signConfig.storeFile)
+        cmdlist.add("-storepass")
+        cmdlist.add(signConfig.storePassword)
+        cmdlist.add("-keypass")
+        cmdlist.add(signConfig.keyPassword)
+        cmdlist.add("-signedjar")
+        cmdlist.add(apkFile)
+        cmdlist.add(apkFile)
+        cmdlist.add(signConfig.keyAlias)
+
+        def cmdString = cmdlist.join(" ")
+        println ":${project.name}:signChannelPackage [" + flavor + "] Sign Apk Cmd : " + cmdString
+        cmdString.execute()
+    }
+}
+
+/**
+ * 获取Jarsigner文件路径
+ * @param flavor
+ * @return
+ */
+def getJarSigner(flavor) {
+    def jarSignerFile = null
+    try {
+        def cmdString = "which jarsigner"
+        if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+            cmdString = "where jarsigner"
+        }
+        def result = cmdString.execute().text.trim()
+        if (result != null && result.length() > 0) {
+            BufferedReader br = new BufferedReader(new StringReader(result))
+            def tmpFile = br.readLine()
+            br.close()
+            println ":${project.name}:getJarsigner [" + flavor + "] jarSignerFile : " + tmpFile
+            File f = new File(tmpFile)
+            if (f.exists()) {
+                jarSignerFile = tmpFile
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+    return jarSignerFile
+}
+
+/**
+ * 获取签名信息
+ * @param flavor
+ * @return
+ */
+def getSignConfig(flavor) {
+    def signConfig = null
+    if (flavor != null) {
+        try {
+            signConfig = project.android.productFlavors[flavor].signingConfig
+        } catch (Exception e) {
+        }
+    }
+    if (signConfig == null) {
+        try {
+            signConfig = project.android.buildTypes.release.signingConfig
+        } catch (Exception e) {
+        }
+    }
+    return signConfig
+}
+
+/**
+ * 获取aapt文件路径
+ * @return
+ */
+def getAaptFile() {
+    def sdkDir = null
+    try {
+        Properties properties = new Properties()
+        InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream();
+        properties.load(inputStream)
+        //读取文件
+        sdkDir = properties.getProperty('sdk.dir')
+    } catch (Exception e) {
+    }
+    if (sdkDir == null) {
+        sdkDir = System.getenv("ANDROID_SDK_ROOT")
+    }
+    if (sdkDir == null) {
+        return null
+    }
+    if (!new File(sdkDir).exists()) {
+        return null
+    }
+    def exe = ""
+    if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+        exe = ".exe"
+    }
+    println ":${project.name}:getAaptFile sdkDir : " + sdkDir
+    def compileSdkVersion = android.compileSdkVersion
+    if (compileSdkVersion != null) {
+        compileSdkVersion = compileSdkVersion.replaceAll("android-", "");
+    }
+    def buildToolDir = sdkDir + File.separator + "build-tools"
+    def buildToolVersionDir = android.buildToolsVersion
+    if (buildToolVersionDir == null) {
+        def buildToolDirs = new File(buildToolDir).list(new FilenameFilter() {
+            @Override
+            boolean accept(File dir, String name) {
+                return name.startsWith(String.valueOf(compileSdkVersion))
+            }
+        })
+        if (buildToolDirs != null && buildToolDirs.length > 0) {
+            buildToolVersionDir = buildToolDirs[0]
+        }
+    }
+    def aaptFile = buildToolDir + File.separator + buildToolVersionDir + File.separator + "aapt" + exe
+    println ":${project.name}:getAaptFile aaptFile : " + aaptFile
+    return aaptFile
+}
+
+def toUpperCaseFirstOne(String s) {
+    if (s == null) {
+        return null
+    }
+    if (Character.isUpperCase(s.charAt(0))) {
+        return s;
+    }
+    return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
+}
+
+def openReleaseDir(flavor) {
+    if (!org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+        return
+    }
+    try {
+        def outputDir = String.format("outputs/apk/%srelease", ((flavor != null && flavor.trim().length() > 0) ? flavor + "/" : ""))
+        def outputPath = new File(project.buildDir, outputDir)
+        def cmd = "explorer.exe " + outputPath
+        cmd.execute()
+        println ":${project.name}:openReleaseDir [${outputPath}]"
+    } catch (Exception e) {
+    }
+}
