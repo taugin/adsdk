@@ -308,14 +308,15 @@ def getEncryptFileTree(assetDir) {
  */
 def getSignConfig(flavor) {
     def signConfig = null
-    if (flavor == null) {
-        try {
-            signConfig = project.android.buildTypes.release.signingConfig
-        } catch (Exception e) {
-        }
-    } else {
+    if (flavor != null) {
         try {
             signConfig = project.android.productFlavors[flavor].signingConfig
+        } catch (Exception e) {
+        }
+    }
+    if (signConfig == null) {
+        try {
+            signConfig = project.android.buildTypes.release.signingConfig
         } catch (Exception e) {
         }
     }
