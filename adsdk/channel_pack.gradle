@@ -83,7 +83,6 @@ def generateMultipleChannel(flavor) {
         return
     }
     def aaptFile = getAaptFile()
-    println ":${project.name}:appendChannelFile [" + flavorName + "] AaptFile : " + aaptFile
     if (aaptFile == null || !new File(aaptFile).exists()) {
         System.err.println ":${project.name}:appendChannelFile [" + flavorName + "] AaptFile is not exist"
         return
@@ -232,7 +231,6 @@ def parseChannelConfig(flavorObj, outputFile) {
  */
 def signChannelFile(flavor, apkFile) {
     def aaptFile = getAaptFile()
-    println ":${project.name}:appendChannelFile [" + flavor + "] AaptFile : " + aaptFile
     if (aaptFile == null || !new File(aaptFile).exists()) {
         System.err.println ":${project.name}:appendChannelFile [" + flavor + "] AaptFile is not exist"
         return
@@ -268,7 +266,7 @@ def signChannelFile(flavor, apkFile) {
  * @return
  */
 def deleteSignInfo(flavor, apkFile, aaptFile) {
-    def signInfoList = getSignInfoList(apkFile)
+    def signInfoList = getSignInfoListByAapt(apkFile, flavor)
     println ":${project.name}:deleteSignInfo [" + flavor + "] signInfoList : " + signInfoList
     if (signInfoList == null || signInfoList.isEmpty()) {
         println ":${project.name}:deleteSignInfo [" + flavor + "] Sign File Deleted"
@@ -303,6 +301,31 @@ def getSignInfoList(apkFile) {
     }
     zin.closeEntry()
     zin.close()
+    return signInfoList
+}
+
+/**
+ * 获取旧的签名文件
+ * @param apkFile
+ * @return
+ */
+def getSignInfoListByAapt(apkFile, flavor) {
+    def aaptFile = getAaptFile()
+    if (aaptFile == null || !new File(aaptFile).exists()) {
+        System.err.println ":${project.name}:getSignInfoListByAapt [" + flavor + "] AaptFile is not exist"
+        return
+    }
+    def cmdString = aaptFile + " l -a " + apkFile
+    println ":${project.name}:getSignInfoListByAapt [" + flavor + "] cmdString : " + cmdString
+    def result = cmdString.execute().text
+    BufferedReader br = new BufferedReader(new StringReader(result))
+    def signInfoList = []
+    def line = null
+    while((line = br.readLine()) != null) {
+        if (line.startsWith("META-INF") && (line.endsWith(".MF") || line.endsWith(".SF") || line.endsWith(".RSA"))) {
+            signInfoList.add(line)
+        }
+    }
     return signInfoList
 }
 
@@ -409,20 +432,35 @@ def getAaptFile() {
         sdkDir = properties.getProperty('sdk.dir')
     } catch (Exception e) {
     }
-    if (sdkDir == null) {
+    if (sdkDir == null || !new File(sdkDir).exists()) {
+        if (sdkDir == null) {
+            println ":${project.name}:getAaptFile sdkDir == null, Use ANDROID_SDK_ROOT"
+        } else {
+            println ":${project.name}:getAaptFile sdkDir is not exist, Use ANDROID_SDK_ROOT"
+        }
         sdkDir = System.getenv("ANDROID_SDK_ROOT")
     }
+    if (sdkDir == null || !new File(sdkDir).exists()) {
+        if (sdkDir == null) {
+            println ":${project.name}:getAaptFile sdkDir == null, Use ANDROID_HOME"
+        } else {
+            println ":${project.name}:getAaptFile sdkDir is not exist, Use ANDROID_HOME"
+        }
+        sdkDir = System.getenv("ANDROID_HOME")
+    }
+    println ":${project.name}:getAaptFile sdkDir : " + sdkDir
     if (sdkDir == null) {
+        println ":${project.name}:getAaptFile sdkDir == null"
         return null
     }
     if (!new File(sdkDir).exists()) {
+        println ":${project.name}:getAaptFile sdkDir is not exist"
         return null
     }
     def exe = ""
     if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
         exe = ".exe"
     }
-    println ":${project.name}:getAaptFile sdkDir : " + sdkDir
     def compileSdkVersion = android.compileSdkVersion
     if (compileSdkVersion != null) {
         compileSdkVersion = compileSdkVersion.replaceAll("android-", "");
