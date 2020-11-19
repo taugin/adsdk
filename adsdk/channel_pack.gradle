@@ -1,5 +1,10 @@
+import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.security.MessageDigest
+
 static def getDate() {
     def date = new Date()
     def formattedDate = date.format('yyyyMMddHHmm')
@@ -7,16 +12,6 @@ static def getDate() {
 }
 
 afterEvaluate {
-    tasks.findAll { task ->
-        if (task != null && task.name != null
-                && task.name.toLowerCase().contains("localdev")
-                && task.name.toLowerCase().contains("release")) {
-            task.onlyIf {
-                return false
-            }
-        }
-    }
-
 // Windows
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
@@ -45,6 +40,8 @@ afterEvaluate {
             if (variant != null && variant.buildType.name == 'release') {
                 def flavorObj = variant.productFlavors[0]
                 parseChannelConfig(flavorObj, outputFile)
+                def channelFileName = getChannelFileName(flavorObj != null ? flavorObj.name : null)
+                println "channelFileName : " + channelFileName
             }
         }
     }
@@ -126,6 +123,41 @@ def generateMultipleChannel(flavor) {
     println ":${project.name}:generateMultipleChannel [" + flavorName + "] Delete Channel File : " + channelFile
     channelFile.delete()
     tempAssets.delete()
+}
+
+/**
+ * 获取applicationId
+ * @param flavor
+ * @return
+ */
+def getApplicationId(flavor) {
+    if (flavor == null || flavor.trim().length() == 0) {
+        return project.android.defaultConfig.applicationId
+    }
+    def productFlavor = project.android.productFlavors[flavor]
+    if (productFlavor.applicationId == null) {
+        return project.android.defaultConfig.applicationId
+    }
+    return productFlavor.applicationId
+}
+
+def getChannelFileName(flavor) {
+    def appId = getApplicationId(flavor)
+    println ":${project.name}:getChannelFileName [" + flavor + "] Package Name : " + appId
+    if (appId == null || appId.trim().length() == 0) {
+        return null
+    }
+    def pkgMd5 = AesManager.string2MD5(appId)
+    println ":${project.name}:getChannelFileName [" + flavor + "] Package MD5 : " + pkgMd5
+    if (pkgMd5 == null || pkgMd5.trim().length() == 0) {
+        return null
+    }
+    if (pkgMd5.length() < 8) {
+        return null
+    }
+    pkgMd5 = pkgMd5.toLowerCase(Locale.default)
+    def fileName = pkgMd5.substring(0, 8)
+    return fileName + ".cnl"
 }
 
 /**
@@ -504,5 +536,252 @@ def openReleaseDir(flavor) {
         cmd.execute()
         println ":${project.name}:openReleaseDir [${outputPath}]"
     } catch (Exception e) {
+    }
+}
+
+class AesManager {
+    private static void appendHex(StringBuffer paramStringBuffer, byte paramByte) {
+        paramStringBuffer.append(
+                "0123456789ABCDEF".charAt(0xF & paramByte >> 4)).append(
+                "0123456789ABCDEF".charAt(paramByte & 0xF));
+    }
+
+    static String decrypt(String key, String content) {
+        try {
+            String str = new String(decrypt(getRawKey(key.getBytes()),
+                    toByte(content)));
+            return str;
+        } catch (Exception localException) {
+            System.out.println("decrypt error: " + localException);
+        }
+        return null;
+    }
+
+    static byte[] decrypt(byte[] key,
+                          byte[] content) throws Exception {
+        SecretKeySpec localSecretKeySpec = new SecretKeySpec(key,
+                "AES");
+        Cipher localCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        localCipher.init(2, localSecretKeySpec, new IvParameterSpec(
+                new byte[localCipher.getBlockSize()]));
+        return localCipher.doFinal(content);
+    }
+
+    static String decryptRaw(String seed, byte[] content) {
+        try {
+            String str = new String(
+                    decrypt(getRawKey(seed.getBytes()), content));
+            return str;
+        } catch (Exception localException) {
+            System.out.println("decrypt raw error: " + localException);
+        }
+        return null;
+    }
+
+    static String encryptPublic(String key, String content) {
+        try {
+            byte[] result = encrypt(getRawKey(key.getBytes()),
+                    content.getBytes());
+            return toHex(result);
+        } catch (Exception localException) {
+        }
+        return null;
+    }
+
+    private static byte[] encrypt(byte[] key,
+                                  byte[] content) throws Exception {
+        SecretKeySpec localSecretKeySpec = new SecretKeySpec(key,
+                "AES");
+        Cipher localCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        localCipher.init(1, localSecretKeySpec, new IvParameterSpec(
+                new byte[localCipher.getBlockSize()]));
+        return localCipher.doFinal(content);
+    }
+
+    static byte[] encryptRaw(String key, String content) {
+        try {
+            byte[] arrayOfByte = encrypt(getRawKey(key.getBytes()),
+                    content.getBytes());
+            return arrayOfByte;
+        } catch (Exception localException) {
+            System.out.println("encrypt raw error: " + localException);
+        }
+        return null;
+    }
+
+    static String fromHex(String content) {
+        return new String(toByte(content));
+    }
+
+    private static byte[] getRawKey(byte[] key) throws Exception {
+        byte[] arrayOfByte = new byte[16];
+        if (key == null)
+            throw new IllegalArgumentException("seed == null");
+        if (key.length == 0)
+            throw new IllegalArgumentException("seed.length == 0");
+        if (key.length < 16) {
+            int i = 0;
+            while (i < arrayOfByte.length) {
+                if (i < key.length) {
+                    arrayOfByte[i] = key[i];
+                } else {
+                    arrayOfByte[i] = 0;
+                }
+                i++;
+            }
+        }
+        return arrayOfByte;
+    }
+
+    static byte[] toByte(String content) {
+        int i = content.length() / 2;
+        byte[] arrayOfByte = new byte[i];
+        for (int j = 0; j < i; j++)
+            arrayOfByte[j] = Integer.valueOf(
+                    content.substring(j * 2, 2 + j * 2), 16).byteValue();
+        return arrayOfByte;
+    }
+
+    static String toHex(String content) {
+        return toHex(content.getBytes());
+    }
+
+    static String toHex(byte[] content) {
+        if (content == null)
+            return "";
+        StringBuffer localStringBuffer = new StringBuffer(
+                2 * content.length);
+        for (int i = 0; i < content.length; i++)
+            appendHex(localStringBuffer, content[i]);
+        return localStringBuffer.toString();
+    }
+
+    private static String readFromFile(File f) {
+        if (!f.exists()) {
+            return null;
+        }
+        StringBuilder builder = new StringBuilder();
+        try {
+            byte[] buf = new byte[4096];
+            int read = 0;
+            FileInputStream fis = new FileInputStream(f);
+            while ((read = fis.read(buf)) > 0) {
+                builder.append(new String(buf, 0, read));
+            }
+            fis.close();
+            return builder.toString();
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    private static void writeToFile(File f, String out) {
+        try {
+            if (f.exists()) {
+                f.delete();
+            }
+            f.createNewFile();
+            FileOutputStream fos = new FileOutputStream(f);
+            fos.write(out.getBytes());
+            fos.close();
+        } catch (Exception e) {
+        }
+    }
+
+    private static void usage() {
+        String usage = "java -jar aes.jar <-k rawkey> [-e/-d] [-i input] [-o output] [-s str]";
+        System.out.println(usage);
+    }
+
+    private static boolean isEmpty(String str) {
+        if (str == null || str.trim().equals("")) {
+            return true;
+        }
+        return false;
+    }
+
+    static String readFromStream(InputStream is) {
+        if (is == null) {
+            return null;
+        }
+        try {
+            StringBuilder builder = new StringBuilder();
+            int read = 0;
+            byte[] buf = new byte[1024];
+            while ((read = is.read(buf)) > 0) {
+                builder.append(new String(buf, 0, read));
+            }
+            is.close();
+            return builder.toString();
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
+        return null;
+    }
+
+    static String readLocal(String filePath) {
+        try {
+            InputStream is = new FileInputStream(filePath);
+            return readFromStream(is);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    static boolean isJson(String file) {
+        try {
+            String s = readLocal(file)
+            if (s != null) {
+                s = s.trim()
+            }
+            if (s.startsWith("[") || s.startsWith("{")) {
+                return true
+            }
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
+        return false
+    }
+
+    static void encryptFile(String originFile, String secret) {
+        try {
+            String encrypt = encryptPublic(secret, readFromFile(new File(originFile))); //加密
+            writeToFile(new File(originFile), encrypt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    static String byte2MD5(byte[] byteArray) {
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+        byte[] md5Bytes = md5.digest(byteArray);
+        StringBuffer hexValue = new StringBuffer();
+        for (int i = 0; i < md5Bytes.length; i++) {
+            int val = md5Bytes[i] & 0xff;
+            if (val < 16) {
+                hexValue.append("0");
+            }
+            hexValue.append(Integer.toHexString(val));
+        }
+        return hexValue.toString();
+    }
+
+    static String string2MD5(String source) {
+        return string2MD5(source, "utf-8");
+    }
+
+    static String string2MD5(String source, String encode) {
+        try {
+            return byte2MD5(source.getBytes(encode));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
