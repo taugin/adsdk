@@ -20,7 +20,7 @@ afterEvaluate {
             def aTask = project.tasks.findByName(assembleTaskName);
             if (aTask != null) {
                 aTask.doLast {
-                    generateMultipleChannel(flavor)
+                    generateMulChannel(flavor)
                     openReleaseDir(flavor.name)
                 }
             }
@@ -29,7 +29,7 @@ afterEvaluate {
         def aTask = project.tasks.findByName("assembleRelease");
         if (aTask != null) {
             aTask.doLast {
-                generateMultipleChannel(null)
+                generateMulChannel(null)
                 openReleaseDir(null)
             }
         }
@@ -41,7 +41,7 @@ afterEvaluate {
                 def flavorObj = variant.productFlavors[0]
                 parseChannelConfig(flavorObj, outputFile)
                 def channelFileName = getChannelFileName(flavorObj != null ? flavorObj.name : null)
-                println "channelFileName : " + channelFileName
+                println ":${project.name}:applicationVariants [" + flavorObj != null ? flavorObj.name : "Default" + "] ChannelFileName : " + channelFileName
             }
         }
     }
@@ -52,7 +52,7 @@ afterEvaluate {
  * @param flavor
  * @return
  */
-def generateMultipleChannel(flavor) {
+def generateMulChannel(flavor) {
     def flavorName = "official"
     def channels = android.defaultConfig.ext.has("app_channels") ? android.defaultConfig.ext.app_channels : null
     def channelFileName = android.defaultConfig.ext.has("channel_file_name") ? android.defaultConfig.ext.channel_file_name : null
@@ -72,22 +72,22 @@ def generateMultipleChannel(flavor) {
         channels_files = android.defaultConfig.ext.has("app_channels_files") ? android.defaultConfig.ext.app_channels_files : null
     }
     if (channels == null || channels.isEmpty()) {
-        System.err.println ":${project.name}:generateMultipleChannel [" + flavorName + "] Channel Config is Empty"
+        System.err.println ":${project.name}:generateMulChannel [" + flavorName + "] Channel Config is Empty"
         return
     }
     if (channels_files == null || channels_files.isEmpty()) {
-        System.err.println ":${project.name}:generateMultipleChannel [" + flavorName + "] Channel Files is Empty"
+        System.err.println ":${project.name}:generateMulChannel [" + flavorName + "] Channel Files is Empty"
         return
     }
     def aaptFile = getAaptFile()
     if (aaptFile == null || !new File(aaptFile).exists()) {
-        System.err.println ":${project.name}:appendChannelFile [" + flavorName + "] AaptFile is not exist"
+        System.err.println ":${project.name}:generateMulChannel [" + flavorName + "] AaptFile is not exist"
         return
     }
     // 循环检测源文件是否存在，检测时间为5s内
     def basePackage = channels_files["base_package"]
     if (basePackage == null) {
-        System.err.println ":${project.name}:appendChannelFile [" + flavorName + "] Base Package is Null"
+        System.err.println ":${project.name}:generateMulChannel [" + flavorName + "] Base Package is Null"
         return
     }
     def startTime = System.currentTimeMillis()
@@ -102,7 +102,7 @@ def generateMultipleChannel(flavor) {
     }
     File sourceFile = new File(basePackage)
     if (!sourceFile.exists()) {
-        System.err.println ":${project.name}:generateMultipleChannel [" + flavorName + "] Base Package is not exist"
+        System.err.println ":${project.name}:generateMulChannel [" + flavorName + "] Base Package is not exist"
         return
     }
     String releaseDir = new File(basePackage).getParent()
@@ -114,13 +114,13 @@ def generateMultipleChannel(flavor) {
         channelFileName = "product_channel_cfg"
     }
     File channelFile = new File(tempAssets, channelFileName)
-    println ":${project.name}:generateMultipleChannel [" + flavorName + "] All Channels : " + channels
-    println ":${project.name}:generateMultipleChannel [" + flavorName + "] All Channels Files : " + channels_files
+    println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel " + channels
+    println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel ***********************************************************"
     channels.each {
-        appendChannelFile(basePackage, it, channels_files[it], channelFile, flavorName, aaptFile, channelFileName)
-        signChannelFile(flavorName, channels_files[it])
+        appendChannelsFile(basePackage, it, channels_files[it], channelFile, flavorName, aaptFile, channelFileName)
+        signChannelFile(flavorName, channels_files[it], aaptFile)
+        println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel ***********************************************************\n"
     }
-    println ":${project.name}:generateMultipleChannel [" + flavorName + "] Delete Channel File : " + channelFile
     channelFile.delete()
     tempAssets.delete()
 }
@@ -170,18 +170,17 @@ def getChannelFileName(flavor) {
  * @param aaptFile
  * @return
  */
-def appendChannelFile(baseApk, channel, channelApk, channelFile, flavorName, aaptFile, channelFileName) {
-    println ":${project.name}:appendChannelFile [" + flavorName + "] Base Apk : " + baseApk
-    println ":${project.name}:appendChannelFile [" + flavorName + "] Channel : " + channel
-    println ":${project.name}:appendChannelFile [" + flavorName + "] Channel Apk : " + channelApk
+def appendChannelsFile(baseApk, channel, channelApk, channelFile, flavorName, aaptFile, channelFileName) {
+    println ":${project.name}:appendChannelsFile [" + flavorName + "] BaseApk [" + baseApk + "]"
+    println ":${project.name}:appendChannelsFile [" + flavorName + "] Channel [" + channel + "] : " + new File(channelApk).getName()
     FileWriter writer = new FileWriter(channelFile, false)
     writer.write(channel)
     writer.close()
     Files.copy(Paths.get(baseApk), Paths.get(channelApk))
     def appendFileToApk = aaptFile + " a -v " + channelApk + " " + "assets/" + channelFileName
     def cwd = new File(baseApk).getParentFile()
-    println ":${project.name}:appendChannelFile [" + flavorName + "] cmd : " + appendFileToApk
-    println ":${project.name}:appendChannelFile [" + flavorName + "] cwd : " + cwd
+    println ":${project.name}:appendChannelsFile [" + flavorName + "] Command [" + appendFileToApk + "]"
+    println ":${project.name}:appendChannelsFile [" + flavorName + "] Current [" + cwd + "]"
     try {
         appendFileToApk.execute(null, cwd)
         sleep(2000)
@@ -223,21 +222,23 @@ def parseChannelConfig(flavorObj, outputFile) {
     }
     try {
         if (channels == null || channels.isEmpty()) {
-            System.err.println ":${project.name}:parseChannelConfig [" + flavorName + "] Pack Channels is Empty : " + channels
+            System.err.println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel " + channels
             return
         }
     } catch (Exception e) {
         return
     }
+    println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel " + channels
     channels_files["base_package"] = outputFile.getAbsolutePath()
+    println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel ========================================"
     channels.each {
         def tmpFile = appName + "_" + flavorName + "_" + it + "_v" + versionName + "_" + versionCode +
                 '_release' + "_" + getDate() + '.apk'
         def releaseDir = outputFile.getParentFile().getAbsolutePath()
         channels_files[it] = new File(releaseDir, tmpFile).getAbsolutePath()
+        println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel [" + it + "] : " + new File(channels_files[it]).getName()
     }
-    println ":${project.name}:parseChannelConfig [" + flavorName + "] Pack Channels : " + channels
-    println ":${project.name}:parseChannelConfig [" + flavorName + "] Pack Channels Files : " + channels_files
+    println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel ========================================"
     /*
     ////////////////////////////////////////////////////////////////////////////
     String releaseDir = new File(channels_files["official"]).getParent()
@@ -261,13 +262,7 @@ def parseChannelConfig(flavorObj, outputFile) {
  * @param apkFile
  * @return
  */
-def signChannelFile(flavor, apkFile) {
-    def aaptFile = getAaptFile()
-    if (aaptFile == null || !new File(aaptFile).exists()) {
-        System.err.println ":${project.name}:appendChannelFile [" + flavor + "] AaptFile is not exist"
-        return
-    }
-
+def signChannelFile(flavor, apkFile, aaptFile) {
     def signConfig = getSignConfig(flavor)
     if (signConfig == null) {
         System.err.println ":${project.name}:signChannelPackage [" + flavor + "] signConfig is Null"
@@ -281,12 +276,11 @@ def signChannelFile(flavor, apkFile) {
         return
     }
     def jarSignerFile = getJarSigner(flavor)
-    println ":${project.name}:signChannelPackage [" + flavor + "] jarSignerFile : " + jarSignerFile
     if (jarSignerFile == null) {
         System.err.println ":${project.name}:signChannelPackage [" + flavor + "] jarSignerFile is Null"
         return
     }
-    if (deleteSignInfo(flavor, apkFile, aaptFile)) {
+    if (deleteApkSignInfo(flavor, apkFile, aaptFile)) {
         signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile)
     }
 }
@@ -297,16 +291,15 @@ def signChannelFile(flavor, apkFile) {
  * @param apkFile
  * @return
  */
-def deleteSignInfo(flavor, apkFile, aaptFile) {
-    def signInfoList = getSignInfoListByAapt(apkFile, flavor)
-    println ":${project.name}:deleteSignInfo [" + flavor + "] signInfoList : " + signInfoList
+def deleteApkSignInfo(flavor, apkFile, aaptFile) {
+    def signInfoList = getSignListByAapt(apkFile, flavor, aaptFile)
+        println ":${project.name}:deleteApkSignInfo [" + flavor + "] SignDef " + signInfoList
     if (signInfoList == null || signInfoList.isEmpty()) {
-        println ":${project.name}:deleteSignInfo [" + flavor + "] Sign File Deleted"
         return true
     }
     signInfoList.each {
         def cmdList = aaptFile + " r -v " + apkFile + " " + it
-        println ":${project.name}:deleteSignInfo [" + flavor + "] Delete Sign File : " + cmdList
+        println ":${project.name}:deleteApkSignInfo [" + flavor + "] Command [" + cmdList + "]"
         cmdList.execute()
         sleep(500)
     }
@@ -341,14 +334,9 @@ def getSignInfoList(apkFile) {
  * @param apkFile
  * @return
  */
-def getSignInfoListByAapt(apkFile, flavor) {
-    def aaptFile = getAaptFile()
-    if (aaptFile == null || !new File(aaptFile).exists()) {
-        System.err.println ":${project.name}:getSignInfoListByAapt [" + flavor + "] AaptFile is not exist"
-        return
-    }
+def getSignListByAapt(apkFile, flavor, aaptFile) {
     def cmdString = aaptFile + " l -a " + apkFile
-    println ":${project.name}:getSignInfoListByAapt [" + flavor + "] cmdString : " + cmdString
+    println ":${project.name}:getSignListByAapt [" + flavor + "] Command [" + cmdString + "]"
     def result = cmdString.execute().text
     BufferedReader br = new BufferedReader(new StringReader(result))
     def signInfoList = []
@@ -373,7 +361,7 @@ def signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile) {
             && signConfig.hasProperty("storePassword")
             && signConfig.hasProperty("keyAlias")
             && signConfig.hasProperty("keyPassword")) {
-        println ":${project.name}:signChannelPackage [" + flavor + "] Sign Apk : " + apkFile
+        println ":${project.name}:signChannelPackage [" + flavor + "] ApkFile [" + apkFile + "]"
         def cmdlist = []
         cmdlist.add(jarSignerFile)
 
@@ -394,7 +382,7 @@ def signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile) {
         cmdlist.add(signConfig.keyAlias)
 
         def cmdString = cmdlist.join(" ")
-        println ":${project.name}:signChannelPackage [" + flavor + "] Sign Apk Cmd : " + cmdString
+        println ":${project.name}:signChannelPackage [" + flavor + "] Command [" + cmdString + "]"
         cmdString.execute()
     }
 }
@@ -416,7 +404,7 @@ def getJarSigner(flavor) {
             BufferedReader br = new BufferedReader(new StringReader(result))
             def tmpFile = br.readLine()
             br.close()
-            println ":${project.name}:getJarsigner [" + flavor + "] jarSignerFile : " + tmpFile
+            println ":${project.name}:getJarSignerFile [" + flavor + "] jarSignerFile [" + tmpFile + "]"
             File f = new File(tmpFile)
             if (f.exists()) {
                 jarSignerFile = tmpFile
