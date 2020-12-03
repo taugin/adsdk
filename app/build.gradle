@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply from: '../adsdk/encrypt.gradle'
+apply from: '../adsdk/channel_pack.gradle'
 ext {
     openRelease = true
 }

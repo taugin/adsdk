@@ -5,6 +5,8 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
 
 static def getDate() {
     def date = new Date()
@@ -315,26 +317,27 @@ def deleteApkSignInfo(flavor, apkFile, aaptFile) {
 }
 
 /**
- * 获取旧的签名文件
+ * 读取apk中指定文件的内容
  * @param apkFile
+ * @param filePath
  * @return
  */
-def getSignInfoList(apkFile) {
-    def signInfoList = []
-    java.io.InputStream is = new java.io.BufferedInputStream(new java.io.FileInputStream(apkFile))
-    java.util.zip.ZipInputStream zin = new java.util.zip.ZipInputStream(is)
-    java.util.zip.ZipEntry ze = null
-    while ((ze = zin.getNextEntry()) != null) {
-        def name = ze.getName()
-        if (name != null && name.startsWith("META-INF")) {
-            if (name.endsWith(".MF") || name.endsWith(".SF") || name.endsWith(".RSA")) {
-                signInfoList.add(name)
-            }
+def readContentFromApk(apkFile, filePath) {
+    try {
+        ZipFile zipFile = new ZipFile(apkFile)
+        ZipEntry zipEntry = zipFile.getEntry(filePath)
+        InputStream is = zipFile.getInputStream(zipEntry)
+        StringBuilder builder = new StringBuilder();
+        int read = 0;
+        byte[] buf = new byte[1024];
+        while ((read = is.read(buf)) > 0) {
+            builder.append(new String(buf, 0, read));
         }
+        is.close();
+        return builder.toString();
+    } catch (Exception e) {
     }
-    zin.closeEntry()
-    zin.close()
-    return signInfoList
+    return null
 }
 
 /**
