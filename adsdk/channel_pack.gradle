@@ -4,6 +4,7 @@ import javax.crypto.spec.SecretKeySpec
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.security.MessageDigest
+import java.util.concurrent.TimeUnit
 
 static def getDate() {
     def date = new Date()
@@ -293,15 +294,22 @@ def signChannelFile(flavor, apkFile, aaptFile) {
  */
 def deleteApkSignInfo(flavor, apkFile, aaptFile) {
     def signInfoList = getSignListByAapt(apkFile, flavor, aaptFile)
-        println ":${project.name}:deleteApkSignInfo [" + flavor + "] SignDef " + signInfoList
+    println ":${project.name}:deleteApkSignInfo [" + flavor + "] SignDef " + signInfoList
     if (signInfoList == null || signInfoList.isEmpty()) {
         return true
     }
     signInfoList.each {
         def cmdList = aaptFile + " r -v " + apkFile + " " + it
         println ":${project.name}:deleteApkSignInfo [" + flavor + "] Command [" + cmdList + "]"
-        cmdList.execute()
-        sleep(500)
+        try {
+            def startTime = System.currentTimeMillis()
+            Process p = cmdList.execute()
+            p.waitFor(20, TimeUnit.SECONDS)
+            def endTime =  System.currentTimeMillis()
+            def signTime = (endTime - startTime) / 1000
+            println ":${project.name}:signChannelPackage [" + flavor + "] Command [Delete Sign Info Use Time " + signTime + "s]"
+        } catch (Exception e) {
+        }
     }
     return true
 }
@@ -383,7 +391,15 @@ def signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile) {
 
         def cmdString = cmdlist.join(" ")
         println ":${project.name}:signChannelPackage [" + flavor + "] Command [" + cmdString + "]"
-        cmdString.execute()
+        try {
+            def startTime =  System.currentTimeMillis()
+            Process p = cmdString.execute()
+            p.waitFor(20, TimeUnit.SECONDS)
+            def endTime =  System.currentTimeMillis()
+            def signTime = (endTime - startTime) / 1000
+            println ":${project.name}:signChannelPackage [" + flavor + "] Command [Sign Apk Use Time " + signTime + "s]"
+        } catch (Exception e) {
+        }
     }
 }
 
