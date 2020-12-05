@@ -80,10 +80,14 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
     public void init() {
         updateRefreshInterval();
         ensureFirebase();
-        updateRemoteConfig();
+        updateRemoteConfig(true);
     }
 
-    public void updateRemoteConfig() {
+    public void updateRemoteConfig(boolean init) {
+        if (init) {
+            requestInternal();
+            return;
+        }
         if (mHandler != null) {
             if (mHandler.hasMessages(MSG_UPDATE_REMOTE_CONFIG)) {
                 mHandler.removeMessages(MSG_UPDATE_REMOTE_CONFIG);

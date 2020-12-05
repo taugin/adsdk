@@ -25,7 +25,7 @@ public class SceneCg {
     }
 
     public String getString(String key) {
-        VRemoteConfig.get(mContext).updateRemoteConfig();
+        VRemoteConfig.get(mContext).updateRemoteConfig(false);
         String value = readConfigFromLocal(key);
         if (TextUtils.isEmpty(value)) {
             String dataWithSuffix = null;
