@@ -50,18 +50,18 @@ android {
     productFlavors {
         version0 {
             dimension "version"
-            versionName baseVersion + (isSnapshot ? "-SNAPSHOT" : "")
-            resValue "string", "version_name", versionName
+            versionCode 0
+            resValue "string", "version_name", android.defaultConfig.versionName + "." + versionCode
         }
         version1 {
             dimension "version"
-            versionName baseVersion + ".1" + (isSnapshot ? "-SNAPSHOT" : "")
-            resValue "string", "version_name", versionName
+            versionCode 1
+            resValue "string", "version_name", android.defaultConfig.versionName + "." + versionCode
         }
         version2 {
             dimension "version"
-            versionName baseVersion + ".2" + (isSnapshot ? "-SNAPSHOT" : "")
-            resValue "string", "version_name", versionName
+            versionCode 2
+            resValue "string", "version_name", android.defaultConfig.versionName + "." + versionCode
         }
     }
     compileOptions {
@@ -123,8 +123,8 @@ afterEvaluate {
                         println "taskName : " + taskName
                         artifact tasks.findByName(taskName)
                         groupId 'com.hauyu'
-                        artifactId 'adsdk'
-                        version variant.productFlavors[0].versionName
+                        artifactId 'adsdk' + variant.productFlavors[0].versionCode
+                        version android.defaultConfig.versionName
                         pom.withXml {
                             def dependenciesNode = asNode().appendNode('dependencies')
                             configurations.implementation.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
