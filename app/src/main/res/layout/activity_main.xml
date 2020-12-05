@@ -124,7 +124,13 @@
                 android:onClick="onClick"
                 android:text="NATIVE通用布局" />
         </LinearLayout>
-
+        <Button
+            android:id="@+id/spread_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:onClick="onClick"
+            android:text="展示Spread" />
         <Switch
             style="@android:style/Widget.DeviceDefault.Button"
             android:id="@+id/auto_reward"

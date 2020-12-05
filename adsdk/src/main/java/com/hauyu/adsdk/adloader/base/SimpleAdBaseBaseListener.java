@@ -108,6 +108,22 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
+    public void onAdShow() {
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        OnAdSdkListener adSdkListener = getOnAdSdkListener();
+        OnAdSdkListener adSdkLoadedListener = getOnAdSdkListener(true);
+        if (adSdkListener != null && isCurrent()) {
+            adSdkListener.onShow(placeName, source, adType);
+        }
+        if (adSdkLoadedListener != null && isCurrent()) {
+            adSdkLoadedListener.onShow(placeName, source, adType);
+        }
+        if (placeLoaderListener != null && isCurrent()) {
+            placeLoaderListener.onShow(placeName, source, adType);
+        }
+    }
+
+    @Override
     public void onAdImp() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         OnAdSdkListener adSdkListener = getOnAdSdkListener();

@@ -103,6 +103,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             }
         } else if (v.getId() == R.id.reward_video_queue) {
             AdSdk.get(mContext).showRewardedVideo("reward_video");
+        } else if (v.getId() == R.id.spread_button) {
+            showSpread();
         } else {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag);
@@ -159,6 +161,12 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             public void onLoaded(String pidName, String source, String adType) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 AdSdk.get(mContext).showComplexAds(pidName);
+            }
+
+            @Override
+            public void onDismiss(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                super.onDismiss(pidName, source, adType);
             }
         });
     }
@@ -346,5 +354,20 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
                 AdSdk.get(this).stopAutoReward();
             }
         }
+    }
+
+    private void showSpread() {
+        AdSdk.get(this).loadComplexAds("show_spread", new SimpleAdSdkListener() {
+            @Override
+            public void onLoaded(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+                AdSdk.get(getApplicationContext()).showComplexAds(pidName);
+            }
+
+            @Override
+            public void onDismiss(String pidName, String source, String adType) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            }
+        });
     }
 }

@@ -25,6 +25,8 @@ public interface IAdLoader {
 
     public void setOnAdSdkListener(OnAdSdkListener l, boolean loaded);
 
+    public OnAdSdkListener getOnAdSdkListener();
+
     public boolean isInterstitialLoaded();
     public void loadInterstitial(Activity activity);
     public void showInterstitial();

@@ -13,6 +13,11 @@ public interface OnAdBaseListener {
     public void onAdLoaded(ISdkLoader loader);
 
     /**
+     * ad show
+     */
+    public void onAdShow();
+
+    /**
      * banner or native impression
      */
     public void onAdImp();

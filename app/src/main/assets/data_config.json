@@ -376,6 +376,28 @@
       ],
       "maxcount": 100,
       "percent": 100
+    },
+    {
+      "name": "show_spread",
+      "mode": "con",
+      "bs": 2,
+      "cc": [
+        "#FF660000",
+        "#4455bb22"
+      ],
+      "nl": [
+        "tiny"
+      ],
+      "pids": [
+        {
+          "sdk": "spread",
+          "type": "native",
+          "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
+          "disable": 0
+        }
+      ],
+      "maxcount": 100,
+      "percent": 100
     }
   ]
 }

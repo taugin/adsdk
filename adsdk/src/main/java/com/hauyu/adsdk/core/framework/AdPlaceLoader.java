@@ -11,6 +11,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.earch.sunny.picfg.IAdvance;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.adloader.addfp.AdDfpLoader;
@@ -42,8 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-
-import androidx.annotation.NonNull;
 
 /**
  * 每个广告位对应一个AdPlaceLoader对象
@@ -304,6 +304,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         } else {
             mOnAdSdkListener = l;
         }
+    }
+
+    @Override
+    public OnAdSdkListener getOnAdSdkListener() {
+        if (mOnAdSdkLoadedListener != null) {
+            return mOnAdSdkLoadedListener;
+        }
+
+        if (mOnAdSdkListener != null) {
+            return mOnAdSdkListener;
+        }
+
+        return super.getOnAdSdkListener();
     }
 
     @Override

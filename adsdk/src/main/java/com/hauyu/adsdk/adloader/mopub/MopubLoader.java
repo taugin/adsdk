@@ -258,6 +258,9 @@ public class MopubLoader extends AbstractSdkLoader {
             }
             reportAdShow();
             reportAdImp();
+            if (getAdListener() != null) {
+                getAdListener().onAdShow();
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "mopubloader error : " + e);
         }
@@ -379,6 +382,9 @@ public class MopubLoader extends AbstractSdkLoader {
             clearCachedAdTime(moPubInterstitial);
             moPubInterstitial = null;
             reportAdShow();
+            if (getAdListener() != null) {
+                getAdListener().onAdShow();
+            }
             return showed;
         }
         return false;
@@ -522,6 +528,9 @@ public class MopubLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         MoPubRewardedVideos.showRewardedVideo(getPidConfig().getPid());
         reportAdShow();
+        if (getAdListener() != null) {
+            getAdListener().onAdShow();
+        }
         return true;
     }
 
@@ -654,6 +663,9 @@ public class MopubLoader extends AbstractSdkLoader {
                     bindNativeView.putAdvertiserInfo(nativeAd);
                 }
                 reportAdShow();
+                if (getAdListener() != null) {
+                    getAdListener().onAdShow();
+                }
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e, e);
             }

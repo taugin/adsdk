@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -33,8 +35,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -211,6 +211,9 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
             reportAdShow();
             reportAdImp();
+            if (getAdListener() != null) {
+                getAdListener().onAdShow();
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "admobloader error : " + e);
         }
@@ -331,6 +334,9 @@ public class AdmobLoader extends AbstractSdkLoader {
             interstitialAd.show();
             clearCachedAdTime(interstitialAd);
             reportAdShow();
+            if (getAdListener() != null) {
+                getAdListener().onAdShow();
+            }
             return true;
         }
         return false;
@@ -461,6 +467,9 @@ public class AdmobLoader extends AbstractSdkLoader {
             });
             clearCachedAdTime(rewardedAd);
             reportAdShow();
+            if (getAdListener() != null) {
+                getAdListener().onAdShow();
+            }
             return true;
         }
         return false;
@@ -628,6 +637,9 @@ public class AdmobLoader extends AbstractSdkLoader {
         admobBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
         gNativeAd = nativeAd;
         reportAdShow();
+        if (getAdListener() != null) {
+            getAdListener().onAdShow();
+        }
         if (!isDestroyAfterClick()) {
             nativeAd = null;
         }

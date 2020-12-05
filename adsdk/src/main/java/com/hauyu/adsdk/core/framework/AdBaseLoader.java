@@ -39,6 +39,11 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public OnAdSdkListener getOnAdSdkListener() {
+        return null;
+    }
+
+    @Override
     public boolean isInterstitialLoaded() {
         return false;
     }

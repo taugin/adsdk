@@ -16,6 +16,10 @@ public class SimpleAdSdkListener implements OnAdSdkListener {
     }
 
     @Override
+    public void onShow(String pidName, String source, String adType) {
+    }
+
+    @Override
     public void onImp(String pidName, String source, String adType) {
     }
 

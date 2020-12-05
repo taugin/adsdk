@@ -29,7 +29,6 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -58,9 +57,11 @@ import com.earch.sunny.view.ScrollLayout;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdSdk;
+import com.hauyu.adsdk.adloader.spread.SpLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.http.Http;
 import com.hauyu.adsdk.http.OnImageCallback;
+import com.hauyu.adsdk.listener.OnAdSdkListener;
 import com.hauyu.adsdk.listener.SimpleAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.EventImpl;
@@ -284,7 +285,6 @@ public class VitActivity extends Activity implements IAdvance {
         } else if (mSpreadCfg != null) {
             showSpread();
         } else if (!TextUtils.isEmpty(mPidName)) {
-            registerArgument();
             show();
         } else {
             finishActivityWithDelay(10);
@@ -328,17 +328,6 @@ public class VitActivity extends Activity implements IAdvance {
     }
 
     /**
-     * 注册相关参数
-     */
-    private void registerArgument() {
-        if (Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
-                || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType)) {
-            registerBroadcast();
-            registerGesture();
-        }
-    }
-
-    /**
      * 展示广告
      */
     private void show() {
@@ -346,31 +335,8 @@ public class VitActivity extends Activity implements IAdvance {
                 || Constant.TYPE_BANNER.equalsIgnoreCase(mAdType)
                 || Constant.AD_SDK_SPREAD.equalsIgnoreCase(mSource)) {
             showNAd();
-        } else if (Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
-                || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType)) {
-            // 当前action为PICKER并且存在RESOLVE的action，则弹出 C activity
-            Intent intent = Utils.getIntentByAction(this, getPackageName() + ".action.AFRESOLVE");
-            if (TextUtils.equals(mAction, getPackageName() + ".action.AFPICKER") && intent != null) {
-                showCActivity(intent);
-            } else {
-                showGAd();
-            }
         } else {
             finishActivityWithDelay();
-        }
-    }
-
-    private void showCActivity(Intent intent) {
-        Log.v(Log.TAG, "show c activity");
-        try {
-            intent.putExtra(Intent.EXTRA_TITLE, mPidName);
-            intent.putExtra(Intent.EXTRA_TEXT, mSource);
-            intent.putExtra(Intent.EXTRA_TEMPLATE, mAdType);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finishActivityWithDelay();
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
         }
     }
 
@@ -524,39 +490,6 @@ public class VitActivity extends Activity implements IAdvance {
         return imageView;
     }
 
-    private void registerGesture() {
-        mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent e) {
-                finishActivityWithDelay();
-                EventImpl.get().reportKVEvent(getBaseContext(), "close_fsa_byuser", "touch", null);
-                return super.onDown(e);
-            }
-        });
-    }
-
-    /**
-     * 展示插屏广告
-     */
-    private void showGAd() {
-        if (!TextUtils.isEmpty(mPidName)) {
-            boolean shown = AdSdk.get(this).showComplexAdsWithResult(mPidName, null, mSource, mAdType, null);
-            if (!shown) {
-                finishActivityWithDelay();
-            }
-        } else {
-            finishActivityWithDelay();
-        }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (mGestureDetector != null && mGestureDetector.onTouchEvent(event)) {
-            return true;
-        }
-        return super.onTouchEvent(event);
-    }
-
     @Override
     public void onBackPressed() {
         if (isLockView()) {
@@ -566,11 +499,6 @@ public class VitActivity extends Activity implements IAdvance {
             try {
                 super.onBackPressed();
             } catch (Exception e) {
-            }
-            if ((Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
-                    || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType))
-                    && !Constant.AD_SDK_SPREAD.equals(mSource)) {
-                EventImpl.get().reportKVEvent(this, "close_fsa_byuser", "backpressed", null);
             }
         }
     }
@@ -607,47 +535,22 @@ public class VitActivity extends Activity implements IAdvance {
     protected void onDestroy() {
         super.onDestroy();
         cleanSystemLS();
-        if (Constant.TYPE_INTERSTITIAL.equalsIgnoreCase(mAdType)
-                || Constant.TYPE_REWARD.equalsIgnoreCase(mAdType)) {
-            unregister();
-        } else {
-            AdSdk.get(this).destroy(mPidName);
-        }
+        AdSdk.get(this).destroy(mPidName);
 
         if (Constant.AD_SDK_SPREAD.equals(mSource)) {
-            sendBroadcast(new Intent(getPackageName() + ".action.SPDISMISS").setPackage(getPackageName()));
+            SpLoader.reportDismiss(this);
         }
         if (mCher != null) {
             mCher.onDestroy();
         }
         stopTimeUpdate();
-    }
-
-    private void registerBroadcast() {
-        IntentFilter filter = new IntentFilter(getPackageName() + ".action.FA");
-        try {
-            registerReceiver(mBroadcastReceiver, filter);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e);
+        if (mAdLayout != null) {
+            OnAdSdkListener l = AdSdk.get(this).getOnAdSdkListener(mPidName);
+            if (l != null) {
+                l.onDismiss(mPidName, mSource, mAdType);
+            }
         }
     }
-
-    private void unregister() {
-        try {
-            unregisterReceiver(mBroadcastReceiver);
-        } catch (Exception e) {
-        } catch (Error e) {
-        }
-    }
-
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            finishActivityWithDelay();
-        }
-    };
 
     /////////////////////////////////////////////////////////////////////////////
 
@@ -661,7 +564,8 @@ public class VitActivity extends Activity implements IAdvance {
         }
         try {
             showAppLayout();
-            sendBroadcast(new Intent(getPackageName() + ".action.SPSHOW").setPackage(getPackageName()));
+            SpLoader.reportShow(this);
+            SpLoader.reportImp(this);
         } catch (Exception e) {
             Log.v(Log.TAG, "error : " + e);
             finish();
@@ -860,10 +764,7 @@ public class VitActivity extends Activity implements IAdvance {
             } catch (Exception e) {
                 Log.v(Log.TAG, "error : " + e);
             }
-            try {
-                context.sendBroadcast(new Intent(context.getPackageName() + ".action.SPCLICK").setPackage(context.getPackageName()));
-            } catch (Exception e) {
-            }
+            SpLoader.reportClick(context);
         }
     }
 

@@ -1,8 +1,6 @@
 package com.hauyu.adsdk.adloader.spread;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 import android.view.LayoutInflater;
@@ -26,6 +24,11 @@ import com.hauyu.adsdk.log.Log;
 
 public class SpreadBindNativeView extends BaseBindNativeView {
     private Params mParams;
+    private SpLoader.ClickClass mClickClass;
+
+    public void setClickListener(SpLoader.ClickClass clickListener) {
+        mClickClass = clickListener;
+    }
 
     public void bindNative(Params params, ViewGroup adContainer, PidConfig pidConfig, SpreadCfg spreadCfg) {
         mParams = params;
@@ -78,8 +81,6 @@ public class SpreadBindNativeView extends BaseBindNativeView {
     }
 
     private View showUnifiedAdView(View rootView, PidConfig pidConfig, final SpreadCfg spreadCfg) throws Exception {
-        ClickClass clickClass = new ClickClass();
-        clickClass.setSpConfig(spreadCfg);
         try {
             if (rootView.getParent() != null) {
                 ((ViewGroup) rootView.getParent()).removeView(rootView);
@@ -101,7 +102,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             if (titleView instanceof TextView) {
                 ((TextView) titleView).setText(spreadCfg.getTitle());
                 titleView.setVisibility(View.VISIBLE);
-                titleView.setOnClickListener(clickClass);
+                titleView.setOnClickListener(mClickClass);
             }
         }
 
@@ -109,7 +110,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             if (subTitleView instanceof TextView) {
                 ((TextView) subTitleView).setText(spreadCfg.getSubTitle());
                 subTitleView.setVisibility(View.VISIBLE);
-                subTitleView.setOnClickListener(clickClass);
+                subTitleView.setOnClickListener(mClickClass);
             }
         }
 
@@ -117,7 +118,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             if (detailView instanceof TextView) {
                 ((TextView) detailView).setText(spreadCfg.getDetail());
                 detailView.setVisibility(View.VISIBLE);
-                detailView.setOnClickListener(clickClass);
+                detailView.setOnClickListener(mClickClass);
             }
         }
 
@@ -125,7 +126,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             if (ctaView instanceof TextView) {
                 ((TextView) ctaView).setText(spreadCfg.getCta());
                 ctaView.setVisibility(View.VISIBLE);
-                ctaView.setOnClickListener(clickClass);
+                ctaView.setOnClickListener(mClickClass);
             }
         }
 
@@ -134,7 +135,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             if (adIconView instanceof ImageView) {
                 loadAndShowImage((ImageView) adIconView, iconUrl);
                 adIconView.setVisibility(View.VISIBLE);
-                adIconView.setOnClickListener(clickClass);
+                adIconView.setOnClickListener(mClickClass);
             }
         }
 
@@ -145,7 +146,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             loadAndShowImage(mediaView, spreadCfg.getBanner());
             mediaViewLayout.addView(mediaView, -1, -1);
             mediaViewLayout.setVisibility(View.VISIBLE);
-            mediaView.setOnClickListener(clickClass);
+            mediaView.setOnClickListener(mClickClass);
         }
         putAdvertiserInfo(spreadCfg);
         return rootView;
@@ -167,31 +168,6 @@ public class SpreadBindNativeView extends BaseBindNativeView {
                 }
             });
         } catch (Exception e) {
-        }
-    }
-
-    private class ClickClass implements View.OnClickListener {
-        private SpreadCfg mSpreadCfg;
-
-        public void setSpConfig(SpreadCfg spreadCfg) {
-            mSpreadCfg = spreadCfg;
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (mSpreadCfg != null) {
-                String url = mSpreadCfg.getLinkUrl();
-                if (TextUtils.isEmpty(url)) {
-                    url = "market://details?id=" + mSpreadCfg.getPkgname();
-                }
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    v.getContext().startActivity(intent);
-                } catch (Exception e) {
-                    Log.v(Log.TAG, "error : " + e);
-                }
-            }
         }
     }
 

@@ -5,9 +5,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.earch.sunny.picfg.SpreadCfg;
@@ -111,6 +113,7 @@ public class SpLoader extends AbstractSdkLoader {
         }
         if (mSpread != null) {
             SpreadCfg spreadCfg = mSpread;
+            spreadBindNativeView.setClickListener(new ClickClass(spreadCfg));
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadCfg);
             if (getAdListener() != null) {
                 getAdListener().onAdImp();
@@ -219,14 +222,14 @@ public class SpLoader extends AbstractSdkLoader {
     public boolean showInterstitial() {
         printInterfaceLog(ACTION_SHOW);
         if (mSpread != null) {
-            show();
+            showInterstitialInternal();
             mSpread = null;
             return true;
         }
         return false;
     }
 
-    private void show() {
+    private void showInterstitialInternal() {
         try {
             if (mSpread != null) {
                 SpreadCfg spreadCfg = mSpread;
@@ -243,26 +246,86 @@ public class SpLoader extends AbstractSdkLoader {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
                 reportAdShow();
-                registerDismiss();
+                registerEvent();
+                if (getAdListener() != null) {
+                    getAdListener().onAdShow();
+                }
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
     }
 
-    private void registerDismiss() {
-        unregisterDismiss();
+    private void registerEvent() {
+        unregisterEvent();
         try {
             IntentFilter filter = new IntentFilter();
-            filter.addAction(mContext.getPackageName() + ".action.SPDISMISS");
-            filter.addAction(mContext.getPackageName() + ".action.SPCLICK");
-            filter.addAction(mContext.getPackageName() + ".action.SPSHOW");
+            filter.addAction(getClickAction(mContext));
+            filter.addAction(getShowAction(mContext));
+            filter.addAction(getDismissAction(mContext));
+            filter.addAction(getImpAction(mContext));
             mContext.registerReceiver(mBroadcastReceiver, filter);
         } catch (Exception e) {
         }
     }
 
-    private void unregisterDismiss() {
+    private static String getClickAction(Context context) {
+        if (context == null) {
+            return "com.hauyu.adsdk.action.SP_CLICK";
+        }
+        return context.getPackageName() + ".action.SP_CLICK";
+    }
+
+    private static String getShowAction(Context context) {
+        if (context == null) {
+            return "com.hauyu.adsdk.action.SP_SHOW";
+        }
+        return context.getPackageName() + ".action.SP_SHOW";
+    }
+
+    private static String getImpAction(Context context) {
+        if (context == null) {
+            return "com.hauyu.adsdk.action.SP_IMP";
+        }
+        return context.getPackageName() + ".action.SP_IMP";
+    }
+
+    private static String getDismissAction(Context context) {
+        if (context == null) {
+            return "com.hauyu.adsdk.action.SP_DISMISS";
+        }
+        return context.getPackageName() + ".action.SP_DISMISS";
+    }
+
+    public static void reportShow(Context context) {
+        try {
+            context.sendBroadcast(new Intent(SpLoader.getShowAction(context)).setPackage(context.getPackageName()));
+        } catch (Exception e) {
+        }
+    }
+
+    public static void reportImp(Context context) {
+        try {
+            context.sendBroadcast(new Intent(SpLoader.getImpAction(context)).setPackage(context.getPackageName()));
+        } catch (Exception e) {
+        }
+    }
+
+    public static void reportClick(Context context) {
+        try {
+            context.sendBroadcast(new Intent(SpLoader.getClickAction(context)).setPackage(context.getPackageName()));
+        } catch (Exception e) {
+        }
+    }
+
+    public static void reportDismiss(Context context) {
+        try {
+            context.sendBroadcast(new Intent(SpLoader.getDismissAction(context)).setPackage(context.getPackageName()));
+        } catch (Exception e) {
+        }
+    }
+
+    private void unregisterEvent() {
         try {
             mContext.unregisterReceiver(mBroadcastReceiver);
         } catch (Exception e) {
@@ -275,18 +338,23 @@ public class SpLoader extends AbstractSdkLoader {
             if (context == null || intent == null) {
                 return;
             }
-            if (TextUtils.equals(context.getPackageName() + ".action.SPDISMISS", intent.getAction())) {
-                unregisterDismiss();
+            if (TextUtils.equals(getDismissAction(context), intent.getAction())) {
+                unregisterEvent();
                 reportAdClose();
                 if (getAdListener() != null) {
                     getAdListener().onAdDismiss();
                 }
-            } else if (TextUtils.equals(context.getPackageName() + ".action.SPCLICK", intent.getAction())) {
+            } else if (TextUtils.equals(getClickAction(context), intent.getAction())) {
                 reportAdClick();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
                 }
-            } else if (TextUtils.equals(context.getPackageName() + ".action.SPSHOW", intent.getAction())) {
+            } else if (TextUtils.equals(getShowAction(context), intent.getAction())) {
+                reportAdShow();
+                if (getAdListener() != null) {
+                    getAdListener().onAdShow();
+                }
+            } else if (TextUtils.equals(getImpAction(context), intent.getAction())) {
                 reportAdImp();
                 if (getAdListener() != null) {
                     getAdListener().onAdImp();
@@ -294,4 +362,33 @@ public class SpLoader extends AbstractSdkLoader {
             }
         }
     };
+
+    public class ClickClass implements View.OnClickListener {
+        private SpreadCfg mSpreadCfg;
+
+        public ClickClass(SpreadCfg spreadCfg) {
+            mSpreadCfg = spreadCfg;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mSpreadCfg != null) {
+                String url = mSpreadCfg.getLinkUrl();
+                if (TextUtils.isEmpty(url)) {
+                    url = "market://details?id=" + mSpreadCfg.getPkgname();
+                }
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    v.getContext().startActivity(intent);
+                } catch (Exception e) {
+                    Log.v(Log.TAG, "error : " + e);
+                }
+                reportAdClick();
+                if (getAdListener() != null) {
+                    getAdListener().onAdClick();
+                }
+            }
+        }
+    }
 }
