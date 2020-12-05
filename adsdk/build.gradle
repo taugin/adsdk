@@ -123,7 +123,7 @@ afterEvaluate {
                         println "taskName : " + taskName
                         artifact tasks.findByName(taskName)
                         groupId 'com.hauyu'
-                        artifactId 'adsdk' + variant.productFlavors[0].versionCode
+                        artifactId 'adsdk' + (variant.productFlavors[0].versionCode == 0 ? "" : variant.productFlavors[0].versionCode)
                         version android.defaultConfig.versionName
                         pom.withXml {
                             def dependenciesNode = asNode().appendNode('dependencies')
