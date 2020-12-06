@@ -27,7 +27,6 @@ import android.os.Handler;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.TypedValue;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,11 +78,9 @@ public class TriActivity extends Activity implements IAdvance {
     private static final int MSG_ACTIVITY_DUP_CREATE = 0x10025;
     private static final int DELAY_ACTIVITY_DUP_CREATE = 10000;
     private SpreadCfg mSpreadCfg;
-    private GestureDetector mGestureDetector;
     private String mPidName;
     private String mSource;
     private String mAdType;
-    private String mAction;
     private String mSceneType;
     private Handler mHandler = null;
     private boolean mInLockView;
@@ -319,7 +316,6 @@ public class TriActivity extends Activity implements IAdvance {
             mInLockView = intent.getBooleanExtra(Intent.EXTRA_LOCAL_ONLY, false);
             mInChargeView = intent.getBooleanExtra(Intent.EXTRA_QUIET_MODE, false);
             mSceneType = intent.getStringExtra(Intent.EXTRA_REPLACING);
-            mAction = intent.getAction();
             mDelayClose = intent.getLongExtra(Intent.ACTION_TIME_TICK, 0);
             if (!TextUtils.isEmpty(mSceneType)) {
                 EventImpl.get().reportKVEvent(getBaseContext(), "show_scene_adv", mSceneType, null);
@@ -334,7 +330,7 @@ public class TriActivity extends Activity implements IAdvance {
         if (Constant.TYPE_NATIVE.equalsIgnoreCase(mAdType)
                 || Constant.TYPE_BANNER.equalsIgnoreCase(mAdType)
                 || Constant.AD_SDK_SPREAD.equalsIgnoreCase(mSource)) {
-            showNAd();
+            showNativeAd();
         } else {
             finishActivityWithDelay();
         }
@@ -343,7 +339,7 @@ public class TriActivity extends Activity implements IAdvance {
     /**
      * 展示原生广告
      */
-    private void showNAd() {
+    private void showNativeAd() {
         RelativeLayout rootLayout = new RelativeLayout(this);
         rootLayout.setBackgroundColor(Color.WHITE);
         super.setContentView(rootLayout);
