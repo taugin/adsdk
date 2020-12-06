@@ -106,7 +106,7 @@ public class FBLoader extends AbstractSdkLoader {
             size = AdSize.BANNER_HEIGHT_50;
         }
         loadingView = new AdView(mContext, mPidConfig.getPid(), size);
-        loadingView.setAdListener(new AdListener() {
+        AdListener adListener = new AdListener() {
             @Override
             public void onError(Ad ad, AdError adError) {
                 if (adError != null) {
@@ -152,10 +152,11 @@ public class FBLoader extends AbstractSdkLoader {
                     getAdListener().onAdImp();
                 }
             }
-        });
+        };
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
-        loadingView.loadAd();
+        AdView.AdViewLoadConfig adViewLoadConfig = loadingView.buildLoadAdConfig().withAdListener(adListener).build();
+        loadingView.loadAd(adViewLoadConfig);
     }
 
     @Override
@@ -236,7 +237,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
         fbInterstitial = new InterstitialAd(mContext, mPidConfig.getPid());
-        fbInterstitial.setAdListener(new InterstitialAdListener() {
+        InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
             @Override
             public void onInterstitialDisplayed(Ad ad) {
                 Log.v(Log.TAG, "");
@@ -299,11 +300,12 @@ public class FBLoader extends AbstractSdkLoader {
             public void onLoggingImpression(Ad ad) {
                 Log.v(Log.TAG, "");
             }
-        });
+        };
 
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
-        fbInterstitial.loadAd();
+        InterstitialAd.InterstitialLoadAdConfig loadConfig = fbInterstitial.buildLoadAdConfig().withAdListener(interstitialAdListener).build();
+        fbInterstitial.loadAd(loadConfig);
     }
 
     @Override
@@ -321,15 +323,8 @@ public class FBLoader extends AbstractSdkLoader {
     @Override
     public boolean isNativeLoaded() {
         boolean loaded = false;
-        if (isLoadMultipleNative()) {
-            if (nativeAdsManager != null) {
-                int uniqueAdCount = nativeAdsManager.getUniqueNativeAdCount();
-                loaded = nativeAdsManager.isLoaded() && mShowNativeCount < uniqueAdCount && !isCachedAdExpired(nativeAdsManager);
-            }
-        } else {
-            if (nativeAd != null) {
-                loaded = nativeAd.isAdLoaded() && !isCachedAdExpired(nativeAd);
-            }
+        if (nativeAd != null) {
+            loaded = nativeAd.isAdLoaded() && !isCachedAdExpired(nativeAd);
         }
         if (loaded) {
             Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
@@ -369,133 +364,60 @@ public class FBLoader extends AbstractSdkLoader {
 
         setLoading(true, STATE_REQUEST);
         printInterfaceLog(ACTION_LOAD);
-        // 一次加载多个FB广告
-        if (isLoadMultipleNative()) {
-            mShowNativeCount = 0;
-            nativeAdsManager = new NativeAdsManager(mContext, mPidConfig.getPid(), mPidConfig.getCnt());
-            nativeAdsManager.setListener(new NativeAdsManager.Listener() {
-                @Override
-                public void onAdsLoaded() {
-                    Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , cnt : " + (nativeAdsManager != null ? nativeAdsManager.getUniqueNativeAdCount() : 0));
-                    setLoading(false, STATE_SUCCESS);
-                    putCachedAdTime(nativeAdsManager);
-                    reportAdLoaded();
-                    notifyAdLoaded(false);
-                }
-
-                @Override
-                public void onAdError(AdError adError) {
-                    if (adError != null) {
-                        Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
-                        if (adError.getErrorCode() == AdError.NO_FILL_ERROR_CODE) {
-                            updateLastNoFillTime();
-                        }
-                    }
-                    setLoading(false, STATE_FAILURE);
-                    reportAdError(getError(adError));
-                    if (getAdListener() != null) {
-                        getAdListener().onAdFailed(toSdkError(adError));
-                    }
-                }
-            });
-            reportAdRequest();
-            nativeAdsManager.loadAds(NativeAd.MediaCacheFlag.ALL);
-        } else {
-            nativeAd = new NativeAd(mContext, mPidConfig.getPid());
-            nativeAd.setAdListener(new NativeAdListener() {
-                @Override
-                public void onMediaDownloaded(Ad ad) {
-                }
-
-                @Override
-                public void onError(Ad ad, AdError adError) {
-                    if (adError != null) {
-                        Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
-                        if (adError.getErrorCode() == AdError.NO_FILL_ERROR_CODE) {
-                            updateLastNoFillTime();
-                        }
-                    }
-                    setLoading(false, STATE_FAILURE);
-                    reportAdError(getError(adError));
-                    if (getAdListener() != null) {
-                        getAdListener().onAdFailed(toSdkError(adError));
-                    }
-                }
-
-                @Override
-                public void onAdLoaded(Ad ad) {
-                    Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
-                    setLoading(false, STATE_SUCCESS);
-                    putCachedAdTime(nativeAd);
-                    reportAdLoaded();
-                    notifyAdLoaded(false);
-                }
-
-                @Override
-                public void onAdClicked(Ad ad) {
-                    Log.v(Log.TAG, "");
-                    reportAdClick();
-                    if (getAdListener() != null) {
-                        getAdListener().onAdClick();
-                    }
-                    if (isDestroyAfterClick()) {
-                        nativeAd = null;
-                    }
-                }
-
-                @Override
-                public void onLoggingImpression(Ad ad) {
-                    Log.v(Log.TAG, "");
-                    reportAdImp();
-                    if (getAdListener() != null) {
-                        getAdListener().onAdImp();
-                    }
-                }
-            });
-            reportAdRequest();
-            nativeAd.loadAd(NativeAd.MediaCacheFlag.ALL);
-        }
-    }
-
-    /**
-     * 设置FB广告监听器，多个native被加载，在展示的时候设置监听器
-     * @param nAd
-     */
-    private void setFBNativeAfterLoadListener(final NativeAd nAd) {
-        if (nAd == null) {
-            return;
-        }
-        nAd.setAdListener(new NativeAdListener() {
+        nativeAd = new NativeAd(mContext, mPidConfig.getPid());
+        NativeAdListener nativeAdListener = new NativeAdListener() {
             @Override
             public void onMediaDownloaded(Ad ad) {
             }
 
             @Override
             public void onError(Ad ad, AdError adError) {
+                if (adError != null) {
+                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
+                    if (adError.getErrorCode() == AdError.NO_FILL_ERROR_CODE) {
+                        updateLastNoFillTime();
+                    }
+                }
+                setLoading(false, STATE_FAILURE);
+                reportAdError(getError(adError));
+                if (getAdListener() != null) {
+                    getAdListener().onAdFailed(toSdkError(adError));
+                }
             }
 
             @Override
             public void onAdLoaded(Ad ad) {
+                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                setLoading(false, STATE_SUCCESS);
+                putCachedAdTime(nativeAd);
+                reportAdLoaded();
+                notifyAdLoaded(false);
             }
 
             @Override
             public void onAdClicked(Ad ad) {
-                Log.v(Log.TAG, "multiple native click");
+                Log.v(Log.TAG, "");
                 reportAdClick();
                 if (getAdListener() != null) {
                     getAdListener().onAdClick();
+                }
+                if (isDestroyAfterClick()) {
+                    nativeAd = null;
                 }
             }
 
             @Override
             public void onLoggingImpression(Ad ad) {
-                Log.v(Log.TAG, "multiple native click");
+                Log.v(Log.TAG, "");
                 reportAdImp();
                 if (getAdListener() != null) {
                     getAdListener().onAdImp();
                 }
             }
-        });
+        };
+        reportAdRequest();
+        NativeAd.NativeLoadAdConfig loadAdConfig = nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build();
+        nativeAd.loadAd(loadAdConfig);
     }
 
     @Override
@@ -504,27 +426,11 @@ public class FBLoader extends AbstractSdkLoader {
         if (params != null) {
             mParams = params;
         }
-        // 多个FB Native被加载
-        if (isLoadMultipleNative()) {
-            if (nativeAdsManager != null) {
-                NativeAd nAd = nativeAdsManager.nextNativeAd();
-                int uniqueCount = nativeAdsManager.getUniqueNativeAdCount();
-                if (nAd != null) {
-                    setFBNativeAfterLoadListener(nAd);
-                    fbBindNativeView.bindFBNative(mParams, viewGroup, nAd, mPidConfig);
-                    mShowNativeCount++;
-                }
-                if (mShowNativeCount >= uniqueCount) {
-                    clearCachedAdTime(nativeAdsManager);
-                }
-            }
-        } else {
-            clearCachedAdTime(nativeAd);
-            fbBindNativeView.bindFBNative(mParams, viewGroup, nativeAd, mPidConfig);
-            gNativeAd = nativeAd;
-            if (!isDestroyAfterClick()) {
-                nativeAd = null;
-            }
+        clearCachedAdTime(nativeAd);
+        fbBindNativeView.bindFBNative(mParams, viewGroup, nativeAd, mPidConfig);
+        gNativeAd = nativeAd;
+        if (!isDestroyAfterClick()) {
+            nativeAd = null;
         }
         reportAdShow();
     }
@@ -562,7 +468,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
         loadingRewardedVideoAd = new RewardedVideoAd(mContext, mPidConfig.getPid());
-        loadingRewardedVideoAd.setAdListener(new RewardedVideoAdListener() {
+        RewardedVideoAdListener rewardedVideoAdListener = new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoCompleted() {
                 Log.v(Log.TAG, "");
@@ -644,10 +550,11 @@ public class FBLoader extends AbstractSdkLoader {
                     getAdListener().onRewardedVideoAdClicked();
                 }
             }
-        });
+        };
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
-        loadingRewardedVideoAd.loadAd();
+        RewardedVideoAd.RewardedVideoLoadAdConfig loadAdConfig = loadingRewardedVideoAd.buildLoadAdConfig().withAdListener(rewardedVideoAdListener).build();
+        loadingRewardedVideoAd.loadAd(loadAdConfig);
     }
 
     @Override
