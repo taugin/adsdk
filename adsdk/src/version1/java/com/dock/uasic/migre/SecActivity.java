@@ -1043,16 +1043,6 @@ public class SecActivity extends Activity implements IAdvance {
 
             @Override
             public void onClick(String pidName, String source, String adType) {
-                if (mHandler != null) {
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            fa();
-                        }
-                    }, 500);
-                } else {
-                    fa();
-                }
             }
         });
     }
