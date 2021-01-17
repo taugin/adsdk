@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.annotation.NonNull;
-
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
@@ -30,16 +28,16 @@ import com.mopub.mobileads.MoPubRewardedVideoListener;
 import com.mopub.mobileads.MoPubRewardedVideoManager;
 import com.mopub.mobileads.MoPubRewardedVideos;
 import com.mopub.mobileads.MoPubView;
-import com.mopub.nativeads.MoPubAdRenderer;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
-import com.mopub.nativeads.MoPubVideoNativeAdRenderer;
 import com.mopub.nativeads.NativeAd;
 import com.mopub.nativeads.NativeErrorCode;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Administrator on 2018/6/28.
@@ -604,17 +602,6 @@ public class MopubLoader extends AbstractSdkLoader {
         moPubNative.makeRequest();
     }
 
-    private void reportMoPubNativeType() {
-        if (gNativeAd != null) {
-            MoPubAdRenderer render = gNativeAd.getMoPubAdRenderer();
-            if (render instanceof MoPubStaticNativeAdRenderer) {
-                reportAdImp("static");
-            } else if (render instanceof MoPubVideoNativeAdRenderer) {
-                reportAdImp("video");
-            }
-        }
-    }
-
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
@@ -625,7 +612,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 @Override
                 public void onImpression(View view) {
                     Log.v(Log.TAG, "");
-                    reportMoPubNativeType();
+                    reportAdImp();
                     if (getAdListener() != null) {
                         getAdListener().onAdImp();
                     }

@@ -15,19 +15,14 @@ import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.Utils;
-import com.mopub.nativeads.MediaLayout;
-import com.mopub.nativeads.MediaViewBinder;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.StaticNativeAd;
-import com.mopub.nativeads.VideoNativeAd;
 import com.mopub.nativeads.ViewBinder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Administrator on 2018/2/11.
@@ -89,50 +84,12 @@ public class MopubBindNativeView extends BaseBindNativeView {
         View rootView = null;
         try {
             rootView = LayoutInflater.from(context).inflate(rootLayout, null);
-            bindVideoRender(context, nativeAd, rootView);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        }
-        try {
-            rootView = LayoutInflater.from(context).inflate(rootLayout, null);
             bindStaticRender(context, nativeAd, rootView);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         } catch (Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
-    }
-
-    private void bindVideoRender(Context context, MoPubNative nativeAd, View layout) {
-        MoPubVideoAdRender mopubVideoRender = new MoPubVideoAdRender(getVideoViewBinder(context, layout), layout);
-        nativeAd.registerAdRenderer(mopubVideoRender);
-    }
-
-    private MediaViewBinder getVideoViewBinder(Context context, View layout) {
-        ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
-        MediaLayout mediaLayout = createMediaLayout(context);
-        mediaLayout.setId(getMediaLayoutId());
-        coverLayout.addView(mediaLayout);
-        centerChildView(coverLayout);
-
-        ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
-        adChoiceLayout.setVisibility(View.VISIBLE);
-        ImageView imageView = new ImageView(context);
-        imageView.setId(getImageViewId());
-        int size = Utils.dp2px(context, 20);
-        adChoiceLayout.addView(imageView, size, size);
-
-        MediaViewBinder videoViewBinder = new MediaViewBinder.Builder(mParams.getNativeRootLayout())
-                .mediaLayoutId(mediaLayout.getId())
-                .iconImageId(mParams.getAdIcon())
-                .titleId(mParams.getAdTitle())
-                .textId(mParams.getAdDetail())
-                .callToActionId(mParams.getAdAction())
-                .privacyInformationIconImageId(imageView.getId())
-                .build();
-        return videoViewBinder;
     }
 
     private void bindStaticRender(Context context, MoPubNative nativeAd, View layout) {
@@ -157,25 +114,6 @@ public class MopubBindNativeView extends BaseBindNativeView {
                 .privacyInformationIconImageId(imageView.getId())
                 .build();
         return viewBinder;
-    }
-
-
-    private MediaLayout createMediaLayout(Context context) {
-        try {
-            return new MediaLayout(context);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-        return null;
-    }
-
-    private int getMediaLayoutId() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return View.generateViewId();
-        }
-        return 0x1000001;
     }
 
     private int getImageViewId() {
@@ -326,16 +264,8 @@ public class MopubBindNativeView extends BaseBindNativeView {
     public void putAdvertiserInfo(com.mopub.nativeads.NativeAd nativeAd) {
         try {
             if (nativeAd.getBaseNativeAd() instanceof StaticNativeAd) {
-
                 StaticNativeAd staticNativeAd = (StaticNativeAd) nativeAd.getBaseNativeAd();
                 putStaticInfo(staticNativeAd);
-            }
-        } catch (Exception e) {
-        }
-        try {
-            if (nativeAd.getBaseNativeAd() instanceof VideoNativeAd) {
-                VideoNativeAd videoNativeAd = (VideoNativeAd) nativeAd.getBaseNativeAd();
-                putVideoInfo(videoNativeAd);
             }
         } catch (Exception e) {
         }
@@ -373,53 +303,6 @@ public class MopubBindNativeView extends BaseBindNativeView {
             }
             try {
                 putValue(AD_RATE, staticNativeAd.getStarRating().toString());
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    private void putVideoInfo(VideoNativeAd videoNativeAd) {
-        if (videoNativeAd != null) {
-            try {
-                putValue(AD_TITLE, videoNativeAd.getTitle());
-            } catch (Exception e) {
-            }
-            try {
-                putValue(AD_DETAIL, videoNativeAd.getText());
-            } catch (Exception e) {
-            }
-            try {
-                putValue(AD_SPONSORED, videoNativeAd.getSponsored());
-            } catch (Exception e) {
-            }
-            try {
-                putValue(AD_CHOICES, videoNativeAd.getPrivacyInformationIconImageUrl());
-            } catch (Exception e) {
-            }
-            try {
-                putValue(AD_MEDIA, videoNativeAd.getMainImageUrl());
-            } catch (Exception e) {
-            }
-            try {
-                putValue(AD_CTA, videoNativeAd.getCallToAction());
-            } catch (Exception e) {
-            }
-            try {
-                putValue(AD_ICON, videoNativeAd.getIconImageUrl());
-            } catch (Exception e) {
-            }
-            try {
-                String vastVideo = videoNativeAd.getVastVideo();
-                String urlRegex = "https?://(.*)?\\.mp4";
-                Pattern pattern = Pattern.compile(urlRegex);
-                Matcher matcher = pattern.matcher(vastVideo);
-                List<String> list = new ArrayList<>();
-                while(matcher.find()) {
-                    list.add(matcher.group());
-                }
-                if (list != null) {
-                    putValue(AD_VIDEO, list.size() == 1 ? list.get(0) : list.toString());
-                }
             } catch (Exception e) {
             }
         }
