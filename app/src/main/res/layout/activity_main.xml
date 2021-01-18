@@ -124,6 +124,7 @@
                 android:onClick="onClick"
                 android:text="NATIVE通用布局" />
         </LinearLayout>
+
         <Button
             android:id="@+id/spread_button"
             android:layout_width="match_parent"
@@ -131,19 +132,28 @@
             android:layout_marginLeft="2dp"
             android:onClick="onClick"
             android:text="展示Spread" />
+
+        <Button
+            android:id="@+id/show_ads_in_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:onClick="onClick"
+            android:text="列表展示广告" />
+
         <Switch
-            style="@android:style/Widget.DeviceDefault.Button"
             android:id="@+id/auto_reward"
+            style="@android:style/Widget.DeviceDefault.Button"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:gravity="center"
             android:checked="false"
-            android:track="@android:color/transparent"
-            android:thumb="@android:color/transparent"
+            android:gravity="center"
             android:showText="true"
             android:textOff="开启自动加载激励视频"
-            android:textOn="关闭自动加载激励视频" />
+            android:textOn="关闭自动加载激励视频"
+            android:thumb="@android:color/transparent"
+            android:track="@android:color/transparent" />
 
         <Button
             android:id="@+id/reward_video_queue"

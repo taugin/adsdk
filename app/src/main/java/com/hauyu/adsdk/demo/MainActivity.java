@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -105,6 +106,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             AdSdk.get(mContext).showRewardedVideo("reward_video");
         } else if (v.getId() == R.id.spread_button) {
             showSpread();
+        } else if (v.getId() == R.id.show_ads_in_list) {
+            startActivity(new Intent(this, ListViewForAd.class));
         } else {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag);
