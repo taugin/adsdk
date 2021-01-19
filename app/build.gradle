@@ -58,7 +58,7 @@ dependencies {
     // implementation 'com.hauyu:alive:3.0.6-SNAPSHOT'
     if (useProject) {
         implementation project(":adsdk")
-        // implementation project(":adscene")
+        implementation project(":adscene")
     } else {
         implementation 'com.hauyu:adsdk:+'
     }

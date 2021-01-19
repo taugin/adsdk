@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.rabbit.adsdk.AdSdk;
+import com.scene.crazy.SceneSdk;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.cconfig.RemoteConfigSettings;
 import com.umeng.cconfig.UMRemoteConfig;
@@ -21,7 +22,7 @@ public class App extends Application {
         super.onCreate();
         initUmeng();
         AdSdk.get(this).init();
-        //SceneSdk.init(this);
+        SceneSdk.init(this);
     }
 
     @Override
