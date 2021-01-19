@@ -1,0 +1,43 @@
+<resources>
+    <style name="RabButtonBaseStyle">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:minWidth">84dp</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="RabButtonStyle" parent="RabButtonBaseStyle">
+        <item name="android:background">@drawable/rab_action_bg</item>
+    </style>
+
+    <style name="RabButtonTinyStyle" parent="RabButtonBaseStyle">
+        <item name="android:background">@drawable/rab_green_bg</item>
+        <item name="android:layout_height">30dp</item>
+    </style>
+
+    <style name="RabButtonSmallStyle" parent="RabButtonBaseStyle">
+        <item name="android:background">@drawable/rab_action_bg</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+    <style name="RabButtonMediumStyle" parent="RabButtonBaseStyle">
+        <item name="android:background">@drawable/rab_action_bg</item>
+    </style>
+    <style name="RabButtonLargeStyle" parent="RabButtonBaseStyle">
+        <item name="android:background">@drawable/rab_action_bg</item>
+    </style>
+
+    <style name="RabButtonFullStyle" parent="RabButtonBaseStyle">
+        <item name="android:background">@drawable/rab_green_bg</item>
+    </style>
+
+    <style name="RabButtonFullStyle_Flat" parent="RabButtonBaseStyle">
+        <item name="android:background">@drawable/rab_green_bg</item>
+    </style>
+</resources>

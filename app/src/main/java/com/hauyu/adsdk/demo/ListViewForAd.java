@@ -11,12 +11,10 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.hauyu.adsdk.AdExtra;
-import com.hauyu.adsdk.AdParams;
-import com.hauyu.adsdk.AdSdk;
+import com.rabbit.adsdk.AdExtra;
+import com.rabbit.adsdk.AdParams;
+import com.rabbit.adsdk.AdSdk;
 
 import java.util.ArrayList;
 
@@ -32,7 +30,7 @@ public class ListViewForAd extends Activity {
     private AdParams adParams;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mListView = new ListView(this);
         setContentView(mListView);
@@ -61,13 +59,12 @@ public class ListViewForAd extends Activity {
 
     private class AdAdapter extends ArrayAdapter<Item> {
 
-        public AdAdapter(@NonNull Context context) {
+        public AdAdapter(Context context) {
             super(context, 0, new ArrayList<Item>());
         }
 
-        @NonNull
         @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             Item item = getItem(position);
             if (item.type == 0) {
                 FrameLayout adLayout = null;

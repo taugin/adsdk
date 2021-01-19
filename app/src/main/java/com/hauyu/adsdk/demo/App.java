@@ -4,12 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.hauyu.adsdk.AdSdk;
+import com.rabbit.adsdk.AdSdk;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.cconfig.RemoteConfigSettings;
 import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.commonsdk.UMConfigure;
-import com.verk.BcSdk;
 
 
 /**
@@ -21,7 +20,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         initUmeng();
-        BcSdk.init(this);
         AdSdk.get(this).init();
     }
 

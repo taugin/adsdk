@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFEEE9E7">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/rab_body_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/icon_layout"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp">
+
+            <ImageView
+                android:id="@+id/rab_native_icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="@null"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/rab_native_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="2dp"
+                    android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:maxWidth="240dp"
+                    android:maxLines="2"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:singleLine="false"
+                    android:text="Charge Master"
+                    android:textColor="@color/rab_primaryColor"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/rab_native_sponsored_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginLeft="14dp"
+                    android:layout_toRightOf="@+id/rab_native_title"
+                    android:layout_weight="0"
+                    android:background="@drawable/rab_badge_bg"
+                    android:gravity="center"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="4dp"
+                    android:paddingBottom="2dp"
+                    android:singleLine="true"
+                    android:text="AD"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="8sp" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <androidx.percentlayout.widget.PercentRelativeLayout
+            android:id="@+id/rab_native_cover_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/icon_layout"
+            android:background="#00000000"
+            android:padding="2dp">
+
+            <ImageView
+                android:id="@+id/rab_native_image_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:layout_aspectRatio="192%"
+                app:layout_widthPercent="100%" />
+
+            <RelativeLayout
+                android:id="@+id/rab_native_media_cover"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:layout_aspectRatio="192%"
+                app:layout_widthPercent="100%" />
+
+        </androidx.percentlayout.widget.PercentRelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rab_native_cover_info"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:id="@+id/rab_native_header_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/rab_native_action_layout"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/rab_native_sub_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="marquee"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="sub title"
+                        android:textColor="@color/rab_secondaryColor"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/rab_native_social"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="marquee"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/rab_native_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:ellipsize="marquee"
+                    android:gravity="center"
+                    android:maxLines="3"
+                    android:text="detail"
+                    android:textColor="@color/rab_secondaryColor"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/rab_native_action_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/rab_native_action_btn"
+                    style="@style/RabButtonFullStyle_Flat"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rab_action_bg"
+                    android:text="Learn More" />
+
+                <TextView
+                    android:id="@+id/rab_native_cancel_btn"
+                    style="@style/RabButtonFullStyle_Flat"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rab_close_bg"
+                    android:tag="native_cancel_button"
+                    android:text="@android:string/cancel"
+                    android:textColor="@android:color/darker_gray" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rab_native_ad_choices_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:padding="8dp" />
+    </RelativeLayout>
+</FrameLayout>

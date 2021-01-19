@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <androidx.percentlayout.widget.PercentRelativeLayout
+            android:id="@+id/rab_native_cover_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#33000000">
+
+            <ImageView
+                android:id="@+id/rab_native_image_cover"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                app:layout_aspectRatio="192%"
+                app:layout_widthPercent="100%" />
+
+            <RelativeLayout
+                android:id="@+id/rab_native_media_cover"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:layout_aspectRatio="192%"
+                app:layout_widthPercent="100%" />
+
+            <RelativeLayout
+                android:id="@+id/rab_native_ad_choices_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:padding="8dp" />
+
+        </androidx.percentlayout.widget.PercentRelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rab_native_header_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="4dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/rab_native_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:contentDescription="@null"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/rab_native_icon"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left">
+
+                    <TextView
+                        android:id="@+id/rab_native_sponsored_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:background="@drawable/rab_badge_bg"
+                        android:gravity="center"
+                        android:paddingLeft="4dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="4dp"
+                        android:paddingBottom="2dp"
+                        android:text="AD"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="8sp" />
+
+                    <TextView
+                        android:id="@+id/rab_native_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/rab_native_sponsored_label"
+                        android:ellipsize="marquee"
+                        android:gravity="left|top"
+                        android:singleLine="true"
+                        android:text="Charge Master"
+                        android:textColor="@color/rab_primaryColor"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/rab_native_sub_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:gravity="left|top"
+                    android:singleLine="true"
+                    android:text="sub title"
+                    android:textColor="@color/rab_secondaryColor"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/rab_native_social"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:gravity="left|top"
+                    android:singleLine="true"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/rab_native_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:ellipsize="marquee"
+            android:gravity="left|center_vertical"
+            android:maxLines="3"
+            android:text="detail"
+            android:textColor="@color/rab_secondaryColor"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/rab_native_action_btn"
+            style="@style/RabButtonMediumStyle"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Learn More" />
+    </LinearLayout>
+</FrameLayout>

@@ -6,7 +6,7 @@ stringfog {
 //    def random = ["a", "b", "c", "d", "e", "f", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 //    Collections.shuffle(random)
 //    key random.join()
-    key "abmodule-" + getConfigKey()
+    key getConfigKey()
     println "fogkey : " + key
     // 开关
     enable true
@@ -19,7 +19,7 @@ stringfog {
 static def getConfigKey() {
     def date = new Date()
     def formattedDate = date.format('yyyyMMdd')
-    return String.valueOf(("admodule-" + formattedDate).hashCode())
+    return String.valueOf(("adsdk-" + formattedDate).hashCode())
 }
 
 def isSnapshot = true
@@ -31,7 +31,6 @@ android {
         targetSdkVersion 29
         versionName baseVersion + (isSnapshot ? "-SNAPSHOT" : "")
         consumerProguardFiles 'proguard-rules-adsdk.pro'
-        flavorDimensions "version"
     }
 
     buildTypes {
@@ -44,24 +43,6 @@ android {
     libraryVariants.all { variant ->
         variant.outputs.each { output ->
             println("output : " + output.toString())
-        }
-    }
-    publishNonDefault true //注意，这里的配置是为了去除gradle对library module默认只编译release buildType的限制
-    productFlavors {
-        version0 {
-            dimension "version"
-            versionCode 0
-            resValue "string", "version_name", android.defaultConfig.versionName + "." + versionCode
-        }
-        version1 {
-            dimension "version"
-            versionCode 1
-            resValue "string", "version_name", android.defaultConfig.versionName + "." + versionCode
-        }
-        version2 {
-            dimension "version"
-            versionCode 2
-            resValue "string", "version_name", android.defaultConfig.versionName + "." + versionCode
         }
     }
     compileOptions {
@@ -90,28 +71,27 @@ dependencies {
 }
 
 // 发布aar
-/*
 apply plugin: 'maven'
 uploadArchives {
     repositories {
         mavenDeployer {
-            def url_release = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
-            def url_snapshot = "https://repo.rdc.aliyun.com/repository/130320-snapshot-FOUUZY/"
-            def username = "CP751G"
-            def password = "TaMWu1x2fG"
+            def url_release = "https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/"
+            def url_snapshot = "https://packages.aliyun.com/maven/repository/2017289-snapshot-sJZcRc/"
+            def username = "5ef3647994513bd170c627be"
+            def password = "xcgJSde4Zuo4"
             repository(url: isSnapshot ? url_snapshot : url_release) {
                 authentication(userName: username, password: password)
             }
             pom.version = android.defaultConfig.versionName
             pom.artifactId = "adsdk"
-            pom.groupId = "com.hauyu"
+            pom.groupId = "com.rabbit"
             pom.packaging = "aar"
         }
 
     }
 }
-*/
 
+/*
 apply plugin: 'maven-publish'
 afterEvaluate {
     publishing {
@@ -162,17 +142,17 @@ afterEvaluate {
                 }
             }
         }
-        /*
-        repositories2 {
-            def url_release = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
-            def url_snapshot = "https://repo.rdc.aliyun.com/repository/130320-snapshot-FOUUZY/"
-            maven {
-                url isSnapshot ? url_snapshot : url_release
-                credentials {
-                    username = "CP751G"
-                    password = "TaMWu1x2fG"
-                }
-            }
-        }*/
+//        repositories2 {
+//            def url_release = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
+//            def url_snapshot = "https://repo.rdc.aliyun.com/repository/130320-snapshot-FOUUZY/"
+//            maven {
+//                url isSnapshot ? url_snapshot : url_release
+//                credentials {
+//                    username = "CP751G"
+//                    password = "TaMWu1x2fG"
+//                }
+//            }
+//        }
     }
 }
+*/

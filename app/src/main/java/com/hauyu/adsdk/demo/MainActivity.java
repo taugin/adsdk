@@ -17,12 +17,12 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.hauyu.adsdk.AdExtra;
-import com.hauyu.adsdk.AdParams;
-import com.hauyu.adsdk.AdReward;
-import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.listener.SimpleAdSdkListener;
-import com.hauyu.adsdk.utils.Utils;
+import com.rabbit.adsdk.AdExtra;
+import com.rabbit.adsdk.AdParams;
+import com.rabbit.adsdk.AdReward;
+import com.rabbit.adsdk.AdSdk;
+import com.rabbit.adsdk.listener.SimpleAdSdkListener;
+import com.rabbit.adsdk.utils.Utils;
 
 import java.util.HashMap;
 import java.util.List;
