@@ -113,7 +113,7 @@ public class GvAdl extends Bldr {
                 }
 
                 @Override
-                public void onDismiss(String pidName, String source, String adType) {
+                public void onDismiss(String pidName, String source, String adType, boolean onDestroy) {
                     Log.iv(Log.TAG, "dismiss place_name : " + pidName + " , source : " + source + " , adType : " + adType);
                     GvPcy.get(mContext).reportImpression(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)

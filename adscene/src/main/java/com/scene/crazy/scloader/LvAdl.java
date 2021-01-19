@@ -199,7 +199,7 @@ public class LvAdl extends Bldr {
                 }
 
                 @Override
-                public void onDismiss(String pidName, String source, String adType) {
+                public void onDismiss(String pidName, String source, String adType, boolean onDestroy) {
                     Log.iv(Log.TAG, "dismiss pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                     LvPcy.get(mContext).reportImpression(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)

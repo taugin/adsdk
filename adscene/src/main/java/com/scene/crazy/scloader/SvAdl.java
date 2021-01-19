@@ -119,7 +119,7 @@ public class SvAdl extends Bldr implements Handler.Callback {
                 }
 
                 @Override
-                public void onDismiss(String pidName, String source, String adType) {
+                public void onDismiss(String pidName, String source, String adType, boolean onDestroy) {
                     SvPcy.get(mContext).reportImpression(false);
                     if (!TextUtils.equals(source, Constant.AD_SDK_SPREAD)
                             && SvPcy.get(mContext).isShowBottom()

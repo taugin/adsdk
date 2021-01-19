@@ -500,7 +500,7 @@ public class ScActivity extends Activity implements IAdvance {
         if (mAdLayout != null) {
             OnAdSdkListener l = AdSdk.get(this).getOnAdSdkListener(mPidName);
             if (l != null) {
-                l.onDismiss(mPidName, mSource, mAdType);
+                l.onDismiss(mPidName, mSource, mAdType, true);
             }
         }
     }

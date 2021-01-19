@@ -44,7 +44,7 @@ afterEvaluate {
                 def flavorObj = variant.productFlavors[0]
                 parseChannelConfig(flavorObj, outputFile)
                 def channelFileName = getChannelFileName(flavorObj != null ? flavorObj.name : null)
-                println ":${project.name}:applicationVariants [" + flavorObj != null ? flavorObj.name : "Default" + "] ChannelFileName : " + channelFileName
+                println ":${project.name}:applicationVariants [" + (flavorObj != null ? flavorObj.name : "Default") + "] ChannelFileName : " + channelFileName
             }
         }
     }
@@ -235,7 +235,7 @@ def parseChannelConfig(flavorObj, outputFile) {
     channels_files["base_package"] = outputFile.getAbsolutePath()
     println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel ========================================"
     channels.each {
-        def tmpFile = appName + "_" + flavorName + "_" + it + "_v" + versionName + "_" + versionCode +
+        def tmpFile = appName + "_" + it + "_v" + versionName + "_" + versionCode +
                 '_release' + "_" + getDate() + '.apk'
         def releaseDir = outputFile.getParentFile().getAbsolutePath()
         channels_files[it] = new File(releaseDir, tmpFile).getAbsolutePath()
