@@ -1,0 +1,44 @@
+<resources>
+    <!--for lock screen-->
+    <style name="ScCMStageTextStyle" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@drawable/sc_text_selector</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="ScCMCompleteStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ScCMTimeStyle" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="ScCMUnitStyle" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ScCMStageLabelStyle">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">#7fffffff</item>
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+
+    <style name="ScCMBatteryPercentNum">
+        <item name="android:textSize">60sp</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:gravity">center_vertical|right</item>
+    </style>
+
+    <style name="ScCMBatteryPercent">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:gravity">top|left</item>
+    </style>
+</resources>

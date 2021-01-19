@@ -1,0 +1,23 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.earch.sunny">
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
+    <application>
+        <activity
+            android:name="com.earch.sunny.picfg.ScActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:excludeFromRecents="true"
+            android:icon="@drawable/sc_tr_bg"
+            android:label=""
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Translucent">
+            <intent-filter>
+                <action android:name="${applicationId}.action.MATCH_DOING" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

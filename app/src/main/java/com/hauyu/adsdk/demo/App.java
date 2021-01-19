@@ -21,6 +21,7 @@ public class App extends Application {
         super.onCreate();
         initUmeng();
         AdSdk.get(this).init();
+        //SceneSdk.init(this);
     }
 
     @Override

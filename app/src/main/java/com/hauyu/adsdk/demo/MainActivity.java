@@ -125,6 +125,11 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 AdSdk.get(mContext).showComplexAds(pidName);
             }
+
+            @Override
+            public void onDismiss(String pidName, String source, String adType, boolean onDestroy) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , onDestroy : " + onDestroy);
+            }
         });
     }
 
@@ -167,9 +172,9 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             }
 
             @Override
-            public void onDismiss(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                super.onDismiss(pidName, source, adType);
+            public void onDismiss(String pidName, String source, String adType, boolean onDestroy) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , onDestroy : " + onDestroy);
+                super.onDismiss(pidName, source, adType, onDestroy);
             }
         });
     }
@@ -275,8 +280,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         }
 
         @Override
-        public void onDismiss(String pidName, String source, String adType) {
-            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+        public void onDismiss(String pidName, String source, String adType, boolean onDestroy) {
+            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , onDestroy : " + onDestroy);
         }
 
         @Override
@@ -322,8 +327,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         }
 
         @Override
-        public void onDismiss(String pidName, String source, String adType) {
-            super.onDismiss(pidName, source, adType);
+        public void onDismiss(String pidName, String source, String adType, boolean onDestroy) {
+            super.onDismiss(pidName, source, adType, onDestroy);
             updateRewardButton();
         }
 
@@ -368,8 +373,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             }
 
             @Override
-            public void onDismiss(String pidName, String source, String adType) {
-                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+            public void onDismiss(String pidName, String source, String adType, boolean onDestroy) {
+                Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , onDestroy : " + onDestroy);
             }
         });
     }

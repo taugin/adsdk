@@ -142,7 +142,7 @@
             android:id="@+id/common_action_btn"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/had_colorBtnBlue"
+            android:background="@color/rab_colorBtnBlue"
             android:elevation="4dp"
             android:gravity="center"
             android:text="Learn More"

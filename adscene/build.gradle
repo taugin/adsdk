@@ -1,0 +1,146 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'stringfog'
+stringfog {
+    // 这是加解密 key，可以自由定义。
+//    def random = ["a", "b", "c", "d", "e", "f", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+//    Collections.shuffle(random)
+//    key random.join()
+    key getConfigKey()
+    println "fogkey : " + key
+    // 开关
+    enable true
+    // 加解密库的实现类路径，需和上面配置的加解密算法库一致。
+    implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
+    // 指定需加密的代码包路径，可配置多个，未指定将默认全部加密。
+    // fogPackages = ['com.xxx.xxx']
+}
+
+static def getConfigKey() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd')
+    return String.valueOf(("adscene-" + formattedDate).hashCode())
+}
+
+def isSnapshot = true
+def baseVersion = '3.1.3'
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionName baseVersion + (isSnapshot ? "-SNAPSHOT" : "")
+        consumerProguardFiles 'proguard-rules-adsdk.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    libraryVariants.all { variant ->
+        variant.outputs.each { output ->
+            println("output : " + output.toString())
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    // stringfog
+    implementation 'com.github.megatronking.stringfog:xor:1.1.0'
+    implementation project(":adsdk")
+}
+
+// 发布aar
+/*
+apply plugin: 'maven'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            def url_release = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
+            def url_snapshot = "https://repo.rdc.aliyun.com/repository/130320-snapshot-FOUUZY/"
+            def username = "CP751G"
+            def password = "TaMWu1x2fG"
+            repository(url: isSnapshot ? url_snapshot : url_release) {
+                authentication(userName: username, password: password)
+            }
+            pom.version = android.defaultConfig.versionName
+            pom.artifactId = "adsdk"
+            pom.groupId = "com.hauyu"
+            pom.packaging = "aar"
+        }
+
+    }
+}
+*/
+
+apply plugin: 'maven-publish'
+afterEvaluate {
+    publishing {
+        publications {
+            android.libraryVariants.all { variant ->
+                if (variant.name.contains("Release")) {
+                    "maven${variant.name.capitalize()}Aar"(MavenPublication) {
+                        def taskName = "bundle${variant.name.capitalize()}Aar"
+                        println "taskName : " + taskName
+                        artifact tasks.findByName(taskName)
+                        groupId 'com.hauyu'
+                        artifactId 'adsdk' + (variant.productFlavors[0].versionCode == 0 ? "" : variant.productFlavors[0].versionCode)
+                        version android.defaultConfig.versionName
+                        pom.withXml {
+                            def dependenciesNode = asNode().appendNode('dependencies')
+                            configurations.implementation.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
+                                if (dp.version != "unspecified") { // 过滤项目内library引用
+                                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                                    dependencyNode.appendNode('groupId', dp.group)
+                                    dependencyNode.appendNode('artifactId', dp.name)
+                                    dependencyNode.appendNode('version', dp.version)
+
+                                    // for exclusions
+                                    if (dp.excludeRules.size() > 0) {
+                                        def exclusions = dependencyNode.appendNode('exclusions')
+                                        dp.excludeRules.each { ExcludeRule ex ->
+                                            def exclusion = exclusions.appendNode('exclusion')
+                                            exclusion.appendNode('groupId', ex.group != null ? ex.group : "*")
+                                            exclusion.appendNode('artifactId', ex.module)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        repositories {
+            def url_release = "https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/"
+            def url_snapshot = "https://packages.aliyun.com/maven/repository/2017289-snapshot-sJZcRc/"
+            maven {
+                url isSnapshot ? url_snapshot : url_release
+                credentials {
+                    username = "5ef3647994513bd170c627be"
+                    password = "xcgJSde4Zuo4"
+                }
+            }
+        }
+        /*
+        repositories2 {
+            def url_release = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
+            def url_snapshot = "https://repo.rdc.aliyun.com/repository/130320-snapshot-FOUUZY/"
+            maven {
+                url isSnapshot ? url_snapshot : url_release
+                credentials {
+                    username = "CP751G"
+                    password = "TaMWu1x2fG"
+                }
+            }
+        }*/
+    }
+}
