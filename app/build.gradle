@@ -54,11 +54,8 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:multidex:1.0.0'
-    // implementation 'com.hauyu:bcsdk:3.0.6-SNAPSHOT'
-    // implementation 'com.hauyu:alive:3.0.6-SNAPSHOT'
     if (useProject) {
         implementation project(":adsdk")
-        implementation project(":adscene")
     } else {
         implementation 'com.hauyu:adsdk:+'
     }
