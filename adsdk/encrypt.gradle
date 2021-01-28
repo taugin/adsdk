@@ -113,13 +113,6 @@ project.afterEvaluate {
                     }
                 })
                 rTask.dependsOn encryptTaskName
-
-                String adFileGenerate = String.format("adFileGenerate%s", productFlavor)
-                project.tasks.create(adFileGenerate, {
-                    doLast {
-                        adFileGenerateByUser(Flavor.name)
-                    }
-                })
             }
             String assembleTaskName = String.format("assemble%sRelease", productFlavor)
             def aTask = project.tasks.findByName(assembleTaskName);
@@ -129,6 +122,13 @@ project.afterEvaluate {
                     printEncryptInfo()
                 }
             }
+
+            String adFileGenerate = String.format("adFileGenerate%s", productFlavor)
+            project.tasks.create(adFileGenerate, {
+                doLast {
+                    adFileGenerateByUser(Flavor.name)
+                }
+            })
         }
     } else { // 无产品风味
         def rTask = project.tasks.findByName("transformResourcesWithMergeJavaResForRelease")
