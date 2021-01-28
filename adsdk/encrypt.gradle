@@ -103,7 +103,8 @@ try {
 project.afterEvaluate {
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
-            def rTask = project.tasks.findByName(String.format("package%sRelease", toUpperCaseFirstOne(flavor.name)))
+            def productFlavor = toUpperCaseFirstOne(flavor.name)
+            def rTask = project.tasks.findByName(String.format("package%sRelease", productFlavor))
             if (rTask != null) {
                 rTask.doFirst {
                     encryptAssetsFiles(flavor.name)
