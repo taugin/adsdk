@@ -216,24 +216,29 @@ def getApplicationId(flavor) {
  * @return
  */
 def getAssetsOutDir(flavor) {
-    def productFlaver = toUpperCaseFirstOne(flavor)
-    def flavorNoSlash = productFlaver == null ? "" : productFlaver;
+    def productFlavor = toUpperCaseFirstOne(flavor)
+    def flavorNoSlash = productFlavor == null ? "" : productFlavor
+    def assetsOutDirList = []
+    def finalAssetsDir = null
     def outAssetsDir = String.format("intermediates/assets/%s/release", flavorNoSlash)
-    def mergeAssetsDir = String.format("intermediates/merged_assets/%srelease/merge%sReleaseAssets/out", flavorNoSlash, flavorNoSlash)
-    def mergeAssetsDir2 = String.format("intermediates/merged_assets/%srelease/out", flavorNoSlash, flavorNoSlash)
-    outAssetsDir = new File(project.getBuildDir(), outAssetsDir)
-    mergeAssetsDir = new File(project.getBuildDir(), mergeAssetsDir)
-    mergeAssetsDir2 = new File(project.getBuildDir(), mergeAssetsDir2)
-    if (outAssetsDir.exists()) {
-        return outAssetsDir
+    assetsOutDirList.add(new File(project.getBuildDir(), outAssetsDir))
+    outAssetsDir = String.format("intermediates/merged_assets/%srelease/merge%sReleaseAssets/out", flavorNoSlash, flavorNoSlash)
+    assetsOutDirList.add(new File(project.getBuildDir(), outAssetsDir))
+    outAssetsDir = String.format("intermediates/merged_assets/%srelease/out", flavorNoSlash, flavorNoSlash)
+    assetsOutDirList.add(new File(project.getBuildDir(), outAssetsDir))
+
+    for (dir in assetsOutDirList) {
+        if (dir.exists()) {
+            finalAssetsDir = dir
+            break;
+        } else {
+            System.err.println "[WARNING...] Dir is not exists : [" + dir + "]"
+        }
     }
-    if (mergeAssetsDir.exists()) {
-        return mergeAssetsDir
+    if (finalAssetsDir != null) {
+        System.out.println "[VERBOSE...] Dir is exists : [" + dir + "]"
     }
-    if (mergeAssetsDir2.exists()) {
-        return mergeAssetsDir2
-    }
-    return null
+    return finalAssetsDir
 }
 
 /**
