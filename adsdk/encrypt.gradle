@@ -2,6 +2,7 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import java.security.MessageDigest
+
 /**
  * 首字母转大写
  * @param s
@@ -103,16 +104,11 @@ project.afterEvaluate {
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
             def productFlavor = toUpperCaseFirstOne(flavor.name)
-            String taskName = String.format("transformResourcesWithMergeJavaResFor%sRelease", productFlavor)
-            def rTask = project.tasks.findByName(taskName)
+            def rTask = project.tasks.findByName(String.format("package%sRelease", productFlavor))
             if (rTask != null) {
-                String encryptTaskName = String.format("encrypt%sRelease", productFlavor)
-                project.tasks.create(encryptTaskName, {
-                    doLast {
-                        encryptAssetsFiles(flavor.name)
-                    }
-                })
-                rTask.dependsOn encryptTaskName
+                rTask.doFirst {
+                    encryptAssetsFiles(productFlavor)
+                }
             }
             String assembleTaskName = String.format("assemble%sRelease", productFlavor)
             def aTask = project.tasks.findByName(assembleTaskName);
@@ -131,15 +127,11 @@ project.afterEvaluate {
             })
         }
     } else { // 无产品风味
-        def rTask = project.tasks.findByName("transformResourcesWithMergeJavaResForRelease")
+        def rTask = project.tasks.findByName("packageRelease")
         if (rTask != null) {
-            String encryptRelease = "encryptRelease"
-            project.tasks.create(encryptRelease, {
-                doLast {
-                    encryptAssetsFiles(null)
-                }
-            })
-            rTask.dependsOn encryptRelease
+            rTask.doFirst {
+                encryptAssetsFiles(null)
+            }
         }
         def aTask = project.tasks.findByName("assembleRelease");
         if (aTask != null) {
@@ -168,7 +160,9 @@ def getSuffix2() {
 def isWindows() {
     return org.gradle.internal.os.OperatingSystem.current().isWindows()
 }
+
 ext.out = []
+
 def printEncryptInfo() {
     println "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     println "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
@@ -381,22 +375,24 @@ def encryptAssetsFiles(flavor) {
             e.printStackTrace()
         }
     }
-    try {
-        if (adFilePath != null && adFilePath.endsWith(getSuffix2())) {
-            def adFile = new File(adFilePath)
-            def filePath = adFile.getParent()
-            def fileName = adFile.getName()
-            fileName = fileName.replaceAll(getSuffix2(), getSuffix1())
-            def newAdFile = new File(filePath, fileName)
-            println "> Task  :${project.name}:renameAdFile     [${newAdFile}]"
-            ext.out += ":${project.name}:renameAdFile     [${newAdFile}]"
-            if (newAdFile.exists()) {
-                newAdFile.delete()
+    if (false) {
+        try {
+            if (adFilePath != null && adFilePath.endsWith(getSuffix2())) {
+                def adFile = new File(adFilePath)
+                def filePath = adFile.getParent()
+                def fileName = adFile.getName()
+                fileName = fileName.replaceAll(getSuffix2(), getSuffix1())
+                def newAdFile = new File(filePath, fileName)
+                println "> Task  :${project.name}:renameAdFile     [${newAdFile}]"
+                ext.out += ":${project.name}:renameAdFile     [${newAdFile}]"
+                if (newAdFile.exists()) {
+                    newAdFile.delete()
+                }
+                adFile.renameTo(newAdFile)
             }
-            adFile.renameTo(newAdFile)
+        } catch (Exception e) {
+            e.printStackTrace()
         }
-    } catch (Exception e) {
-        e.printStackTrace()
     }
     if (mainTree != null) {
         mainTree.each { File file ->
