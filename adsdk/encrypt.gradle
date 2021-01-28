@@ -236,7 +236,7 @@ def getAssetsOutDir(flavor) {
         }
     }
     if (finalAssetsDir != null) {
-        System.out.println "[VERBOSE...] Dir is exists : [" + dir + "]"
+        System.out.println "[VERBOSE...] Dir is exists : [" + finalAssetsDir + "]"
     }
     return finalAssetsDir
 }
