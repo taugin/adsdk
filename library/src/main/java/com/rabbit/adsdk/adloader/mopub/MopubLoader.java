@@ -7,14 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.rabbit.adsdk.AdReward;
-import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
-import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
-import com.rabbit.adsdk.constant.Constant;
-import com.rabbit.adsdk.core.framework.Params;
-import com.rabbit.adsdk.data.DataManager;
-import com.rabbit.adsdk.data.config.PidConfig;
-import com.rabbit.adsdk.log.Log;
+import androidx.annotation.NonNull;
+
 import com.mopub.common.MoPub;
 import com.mopub.common.MoPubReward;
 import com.mopub.common.SdkConfiguration;
@@ -32,12 +26,18 @@ import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
 import com.mopub.nativeads.NativeAd;
 import com.mopub.nativeads.NativeErrorCode;
+import com.rabbit.adsdk.AdReward;
+import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
+import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
+import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.framework.Params;
+import com.rabbit.adsdk.data.DataManager;
+import com.rabbit.adsdk.data.config.PidConfig;
+import com.rabbit.adsdk.log.Log;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import androidx.annotation.NonNull;
 
 /**
  * Created by Administrator on 2018/6/28.

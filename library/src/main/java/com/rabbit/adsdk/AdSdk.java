@@ -87,7 +87,7 @@ public class AdSdk {
      * @return
      */
     public String getSdkVersion() {
-        return Utils.getStringById(mContext, "version_name");
+        return Utils.getStringById(mContext, "adsdk_version_name");
     }
 
     /**

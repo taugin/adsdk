@@ -16,8 +16,6 @@ public interface IParser {
 
     // 广告位汇总
     String ADPLACES = "adplaces";
-    // 开光控制配置信息
-    String ADSWITCH = "adswitch";
     // 广告位引用影射表
     String ADREFS = "adrefs";
     // 自定义广告位名称

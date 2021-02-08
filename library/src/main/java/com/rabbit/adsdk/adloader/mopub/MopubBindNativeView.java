@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mopub.nativeads.MoPubNative;
+import com.mopub.nativeads.StaticNativeAd;
+import com.mopub.nativeads.ViewBinder;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
-import com.mopub.nativeads.MoPubNative;
-import com.mopub.nativeads.StaticNativeAd;
-import com.mopub.nativeads.ViewBinder;
 
 import java.util.ArrayList;
 import java.util.HashMap;

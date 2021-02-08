@@ -4,8 +4,9 @@ import android.text.TextUtils;
 
 import com.facebook.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-import com.rabbit.adsdk.constant.Constant;
 import com.mopub.mobileads.MoPubInterstitial;
+import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.log.Log;
 
 /**
  * Created by Administrator on 2018-10-25.
@@ -27,9 +28,6 @@ public class AdHelper {
         if (TextUtils.equals(Constant.AD_SDK_MOPUB, sdk)) {
             return hasMopubModule();
         }
-        if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
-            return true;
-        }
         return false;
     }
 
@@ -37,8 +35,8 @@ public class AdHelper {
         try {
             MobileAds.class.getName();
             return true;
-        } catch (Exception e) {
-        } catch (Error e) {
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
         }
         return false;
     }
@@ -47,8 +45,8 @@ public class AdHelper {
         try {
             MobileAds.class.getName();
             return true;
-        } catch (Exception e) {
-        } catch (Error e) {
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
         }
         return false;
     }
@@ -57,8 +55,8 @@ public class AdHelper {
         try {
             InterstitialAd.class.getName();
             return true;
-        } catch (Exception e) {
-        } catch (Error e) {
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
         }
         return false;
     }
@@ -67,8 +65,8 @@ public class AdHelper {
         try {
             MoPubInterstitial.class.getName();
             return true;
-        } catch (Exception e) {
-        } catch (Error e) {
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
         }
         return false;
     }
