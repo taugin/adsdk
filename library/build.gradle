@@ -22,8 +22,8 @@ static def getConfigKey() {
     return String.valueOf(("adsdk-" + formattedDate).hashCode())
 }
 
-def isSnapshot = false
-def baseVersion = '4.0.1'
+def isSnapshot = true
+def baseVersion = '4.0.3'
 android {
     compileSdkVersion 29
     defaultConfig {
