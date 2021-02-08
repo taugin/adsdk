@@ -22,8 +22,8 @@ static def getConfigKey() {
     return String.valueOf(("adsdk-" + formattedDate).hashCode())
 }
 
-def isSnapshot = true
-def baseVersion = '4.0.2'
+def isSnapshot = false
+def baseVersion = '4.0.1'
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -63,11 +63,11 @@ dependencies {
     }
     implementation 'com.mopub.volley:mopub-volley:2.1.0'
     // admob
-    implementation 'com.google.android.gms:play-services-ads:18.0.0'
+    implementation 'com.google.android.gms:play-services-ads:19.6.0'
     // stringfog
     implementation 'com.github.megatronking.stringfog:xor:1.1.0'
     // firebase
-    implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation 'com.google.firebase:firebase-core:18.0.2'
     implementation 'com.google.firebase:firebase-config:18.0.0'
 }
 

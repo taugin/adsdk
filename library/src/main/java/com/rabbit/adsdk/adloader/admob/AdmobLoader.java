@@ -2,7 +2,7 @@ package com.rabbit.adsdk.adloader.admob;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -19,6 +19,8 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
@@ -43,17 +45,7 @@ import java.util.Map;
 public class AdmobLoader extends AbstractSdkLoader {
 
     protected static final Map<Integer, AdSize> ADSIZE = new HashMap<>();
-
-    static {
-        ADSIZE.put(Constant.BANNER, AdSize.BANNER);
-        ADSIZE.put(Constant.FULL_BANNER, AdSize.FULL_BANNER);
-        ADSIZE.put(Constant.LARGE_BANNER, AdSize.LARGE_BANNER);
-        ADSIZE.put(Constant.LEADERBOARD, AdSize.LEADERBOARD);
-        ADSIZE.put(Constant.MEDIUM_RECTANGLE, AdSize.MEDIUM_RECTANGLE);
-        ADSIZE.put(Constant.WIDE_SKYSCRAPER, AdSize.WIDE_SKYSCRAPER);
-        ADSIZE.put(Constant.SMART_BANNER, AdSize.SMART_BANNER);
-    }
-
+    private static boolean sAdmobInited = false;
     private AdView bannerView;
     private AdView loadingView;
     private InterstitialAd interstitialAd;
@@ -68,6 +60,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     private AdView gBannerView;
     private UnifiedNativeAd gNativeAd;
     private List<UnifiedNativeAd> nativeAdList = Collections.synchronizedList(new ArrayList<UnifiedNativeAd>());
+
     private AdmobBindNativeView admobBindNativeView = new AdmobBindNativeView();
 
     protected BaseBindNativeView getBaseBindNativeView() {
@@ -77,14 +70,44 @@ public class AdmobLoader extends AbstractSdkLoader {
     @Override
     public void init(Context context, PidConfig pidConfig) {
         super.init(context, pidConfig);
-        if (!TextUtils.isEmpty(getAppId())) {
-            MobileAds.initialize(mContext, getAppId());
+        initBannerSize();
+        if (!sAdmobInited) {
+            MobileAds.initialize(mContext, new OnInitializationCompleteListener() {
+                @Override
+                public void onInitializationComplete(InitializationStatus initializationStatus) {
+                    Log.iv(Log.TAG, "admob init successfully");
+                }
+            });
+            sAdmobInited = true;
         }
     }
 
     @Override
     public String getSdkName() {
         return Constant.AD_SDK_ADMOB;
+    }
+
+    private void initBannerSize() {
+        ADSIZE.put(Constant.BANNER, AdSize.BANNER);
+        ADSIZE.put(Constant.FULL_BANNER, AdSize.FULL_BANNER);
+        ADSIZE.put(Constant.LARGE_BANNER, AdSize.LARGE_BANNER);
+        ADSIZE.put(Constant.LEADERBOARD, AdSize.LEADERBOARD);
+        ADSIZE.put(Constant.MEDIUM_RECTANGLE, AdSize.MEDIUM_RECTANGLE);
+        ADSIZE.put(Constant.WIDE_SKYSCRAPER, AdSize.WIDE_SKYSCRAPER);
+        ADSIZE.put(Constant.SMART_BANNER, AdSize.SMART_BANNER);
+        ADSIZE.put(Constant.ADAPTIVE_BANNER, getAdSize());
+    }
+
+    private AdSize getAdSize() {
+        try {
+            DisplayMetrics outMetrics = mContext.getResources().getDisplayMetrics();
+            float widthPixels = outMetrics.widthPixels;
+            float density = outMetrics.density;
+            int adWidth = (int) (widthPixels / density);
+            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(mContext, adWidth);
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     @Override
@@ -114,6 +137,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (size == null) {
             size = AdSize.BANNER;
         }
+        Log.iv(Log.TAG, "admob banner size : " + size);
         loadingView = new AdView(mContext);
         loadingView.setAdUnitId(mPidConfig.getPid());
         loadingView.setAdSize(size);

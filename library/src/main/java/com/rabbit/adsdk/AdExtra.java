@@ -63,40 +63,10 @@ public class AdExtra {
      */
     public static final int ADMOB_SMART_BANNER = Constant.SMART_BANNER;
 
-    /**
-     * ADX banner尺寸 320 x 50
+   /**
+     * ADMOB banner尺寸 smart_banner
      */
-    public static final int ADX_BANNER = Constant.BANNER;
-
-    /**
-     * ADX banner尺寸 468 x 60
-     */
-    public static final int ADX_FULL_BANNER = Constant.FULL_BANNER;
-
-    /**
-     * ADX banner尺寸 320 x 100
-     */
-    public static final int ADX_LARGE_BANNER = Constant.LARGE_BANNER;
-
-    /**
-     * ADX banner尺寸 728 x 90
-     */
-    public static final int ADX_LEADERBOARD = Constant.LEADERBOARD;
-
-    /**
-     * ADX banner尺寸 300 x 250
-     */
-    public static final int ADX_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
-
-    /**
-     * ADX banner尺寸 160 x 600
-     */
-    public static final int ADX_WIDE_SKYSCRAPER = Constant.WIDE_SKYSCRAPER;
-
-    /**
-     * ADX banner尺寸 smart_banner
-     */
-    public static final int ADX_SMART_BANNER = Constant.SMART_BANNER;
+    public static final int ADMOB_ADAPTIVE_BANNER = Constant.ADAPTIVE_BANNER;
 
     /**
      * FB banner尺寸 w x 50
@@ -214,4 +184,5 @@ public class AdExtra {
     public static final int COMMON_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
     public static final int COMMON_WIDE_SKYSCRAPER = Constant.WIDE_SKYSCRAPER;
     public static final int COMMON_SMART_BANNER = Constant.SMART_BANNER;
+    public static final int COMMON_ADAPTIVE_BANNER = Constant.ADAPTIVE_BANNER;
 }

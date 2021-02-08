@@ -183,11 +183,12 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         AdParams.Builder builder = new AdParams.Builder();
         //  设置外部布局参数
         int layoutId = LAYOUT[new Random().nextInt(LAYOUT.length)];
-        if (layoutId == R.layout.ad_common_native_card_small) {
-            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
-        } else {
-            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
-        }
+//        if (layoutId == R.layout.ad_common_native_card_small) {
+//            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
+//        } else {
+//            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
+//        }
+        builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.COMMON_ADAPTIVE_BANNER);
         builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.FB_MEDIUM_RECTANGLE);
         builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);

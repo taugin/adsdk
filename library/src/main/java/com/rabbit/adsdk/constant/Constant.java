@@ -31,6 +31,7 @@ public class Constant {
     public static final int MEDIUM_RECTANGLE = 1004;
     public static final int WIDE_SKYSCRAPER = 1005;
     public static final int SMART_BANNER = 1006;
+    public static final int ADAPTIVE_BANNER = 1007;
 
     public static final int NATIVE_CARD_SMALL = 1;
     public static final int NATIVE_CARD_MEDIUM = 2;

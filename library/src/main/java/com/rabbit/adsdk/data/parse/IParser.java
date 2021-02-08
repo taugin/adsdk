@@ -55,7 +55,7 @@ public interface IParser {
     // 最大重试次数
     String RETRY_TIME = "rt";
 
-    // 广告平台 fb, admob, adx
+    // 广告平台 fb, admob
     String SDK = "sdk";
     // 具体广告平台的广告位ID
     String PID = "pid";
