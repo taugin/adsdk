@@ -159,7 +159,8 @@ public class Constant {
         LEADERBOARD(Constant.LEADERBOARD),
         MEDIUM_RECTANGLE(Constant.MEDIUM_RECTANGLE),
         WIDE_SKYSCRAPER(Constant.WIDE_SKYSCRAPER),
-        SMART_BANNER(Constant.SMART_BANNER);
+        SMART_BANNER(Constant.SMART_BANNER),
+        ADAPTIVE_BANNER(Constant.ADAPTIVE_BANNER);
 
         private int value = 0;
 
@@ -185,6 +186,8 @@ public class Constant {
                     return WIDE_SKYSCRAPER;
                 case Constant.SMART_BANNER:
                     return SMART_BANNER;
+                case Constant.ADAPTIVE_BANNER:
+                    return ADAPTIVE_BANNER;
                 default:
                     return NOSET;
             }
