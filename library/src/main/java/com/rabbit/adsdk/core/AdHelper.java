@@ -28,6 +28,9 @@ public class AdHelper {
         if (TextUtils.equals(Constant.AD_SDK_MOPUB, sdk)) {
             return hasMopubModule();
         }
+        if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
+            return true;
+        }
         return false;
     }
 
