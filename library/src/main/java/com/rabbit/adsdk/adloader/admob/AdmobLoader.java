@@ -105,7 +105,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             float density = outMetrics.density;
             int adWidth = (int) (widthPixels / density);
             return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(mContext, adWidth);
-        } catch (Exception e) {
+        } catch (Exception | Error e) {
         }
         return null;
     }
