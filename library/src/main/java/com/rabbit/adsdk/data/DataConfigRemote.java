@@ -46,28 +46,17 @@ import java.util.Locale;
 
     public String getString(String key) {
         VRemoteConfig.get(mContext).updateRemoteConfig(false);
-        String value = readConfigFromAsset(key);
-        if (TextUtils.isEmpty(value)) {
-            String dataWithSuffix = null;
-            String mediaSourceSuffix = getMsSuffix();
-            String attrSuffix = getAfSuffix();
-            String mediaSourceKey = key + mediaSourceSuffix;
-            String attrKey = key + attrSuffix;
-            Log.iv(Log.TAG, "media suffix : " + mediaSourceSuffix + " , attr suffix : " + attrSuffix);
-            // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
-            String mediaData = getRemoteConfig(mediaSourceKey);
-            String attrData = getRemoteConfig(attrKey);
-            if (!TextUtils.isEmpty(mediaData)) {
-                dataWithSuffix = mediaData;
-            } else {
-                dataWithSuffix = attrData;
+        boolean isLocalPriority = isLocalPriority();
+        String value = null;
+        if (isLocalPriority) {
+            value = readConfigFromLocal(key);
+            if (TextUtils.isEmpty(value)) {
+                value = readConfigFromRemote(key);
             }
-            if (TextUtils.isEmpty(dataWithSuffix)) {
-                value = getRemoteConfig(key);
-            } else {
-                String source = !TextUtils.isEmpty(mediaData) ? getMediaSource() : getAfStatus();
-                Log.iv(Log.TAG, "remote config : " + key + "[" + source + "]");
-                value = dataWithSuffix;
+        } else {
+            value = readConfigFromRemote(key);
+            if (TextUtils.isEmpty(value)) {
+                value = readConfigFromLocal(key);
             }
         }
         return value;
@@ -123,8 +112,43 @@ import java.util.Locale;
         return "_" + suffix.toLowerCase(Locale.getDefault());
     }
 
-    private String readConfigFromAsset(String key) {
+    private String readConfigFromLocal(String key) {
         return Utils.readConfig(mContext, key);
+    }
+
+    private String readConfigFromRemote(String key) {
+        String value = null;
+        String dataWithSuffix = null;
+        String mediaSourceSuffix = getMsSuffix();
+        String attrSuffix = getAfSuffix();
+        String mediaSourceKey = key + mediaSourceSuffix;
+        String attrKey = key + attrSuffix;
+        Log.iv(Log.TAG, "media suffix : " + mediaSourceSuffix + " , attr suffix : " + attrSuffix);
+        // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
+        String mediaData = getRemoteConfig(mediaSourceKey);
+        String attrData = getRemoteConfig(attrKey);
+        if (!TextUtils.isEmpty(mediaData)) {
+            dataWithSuffix = mediaData;
+        } else {
+            dataWithSuffix = attrData;
+        }
+        if (TextUtils.isEmpty(dataWithSuffix)) {
+            value = getRemoteConfig(key);
+        } else {
+            String source = !TextUtils.isEmpty(mediaData) ? getMediaSource() : getAfStatus();
+            Log.iv(Log.TAG, "remote config : " + key + "[" + source + "]");
+            value = dataWithSuffix;
+        }
+        return value;
+    }
+
+    private boolean isLocalPriority() {
+        try {
+            return TextUtils.equals(Utils.readConfig(mContext, "local_priority"), "true");
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return false;
     }
 
     private String getRemoteConfig(String key) {
