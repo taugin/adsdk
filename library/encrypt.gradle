@@ -2,6 +2,7 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import java.security.MessageDigest
+import java.util.concurrent.TimeUnit
 
 /**
  * 首字母转大写
@@ -119,12 +120,13 @@ project.afterEvaluate {
                 }
             }
 
-            String adFileGenerate = String.format("adFileGenerate%s", productFlavor)
-            project.tasks.create(adFileGenerate, {
+            String generateAdFile = String.format("generateAdFile%s", productFlavor)
+            def generateAdFileTask = project.tasks.create(generateAdFile, {
                 doLast {
-                    adFileGenerateByUser(Flavor.name)
+                    generateAdFileByUser(Flavor.name)
                 }
             })
+            generateAdFileTask.setGroup("adsdk")
         }
     } else { // 无产品风味
         def rTask = project.tasks.findByName("packageRelease")
@@ -141,12 +143,32 @@ project.afterEvaluate {
             }
         }
 
-        project.tasks.create("adFileGenerate", {
+        def generateAdFileTask = project.tasks.create("generateAdFile", {
             doLast {
-                adFileGenerateByUser(null)
+                generateAdFileByUser(null)
             }
         })
+        generateAdFileTask.setGroup("adsdk")
     }
+    def setHauYuLogVerboseTask = project.tasks.create("setHauYuLogVerbose", {
+        doLast {
+            setHauYuLogVerbose()
+        }
+    })
+    setHauYuLogVerboseTask.setGroup("adsdk")
+
+    def addDebugFileTask = project.tasks.create("addDebugFile", {
+        doLast {
+            addDebugFile()
+        }
+    })
+    addDebugFileTask.setGroup("adsdk")
+    def delDebugFileTask = project.tasks.create("delDebugFile", {
+        doLast {
+            delDebugFile()
+        }
+    })
+    delDebugFileTask.setGroup("adsdk")
 }
 
 def getSuffix1() {
@@ -159,6 +181,51 @@ def getSuffix2() {
 
 def isWindows() {
     return org.gradle.internal.os.OperatingSystem.current().isWindows()
+}
+
+def printOutput(Process p) {
+    println("+++++++++++++++++++++++++++++++++++++++++++")
+    try {
+        def line = null
+        BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()))
+        while ((line = br.readLine()) != null) {
+            println(line)
+        }
+        br.close()
+    } catch (Exception e) {
+        System.err.println("error : " + e)
+    }
+    println("-------------------------------------------")
+}
+
+def setHauYuLogVerbose() {
+    def cmdString = "adb shell setprop log.tag.hauyu V"
+    def process = cmdString.execute()
+    process.waitFor(10, TimeUnit.SECONDS)
+    cmdString = "adb shell getprop log.tag.hauyu"
+    process = cmdString.execute()
+    process.waitFor(10, TimeUnit.SECONDS)
+    printOutput(process)
+}
+
+def addDebugFile() {
+    def cmdString = "adb shell touch /sdcard/Download/.debug"
+    def process = cmdString.execute()
+    process.waitFor(10, TimeUnit.SECONDS)
+    cmdString = "adb shell ls -al /sdcard/Download/.debug"
+    process = cmdString.execute()
+    process.waitFor(10, TimeUnit.SECONDS)
+    printOutput(process)
+}
+
+def delDebugFile() {
+    def cmdString = "adb shell rm /sdcard/Download/.debug"
+    def process = cmdString.execute()
+    process.waitFor(10, TimeUnit.SECONDS)
+    cmdString = "adb shell ls -al /sdcard/Download/.debug"
+    process = cmdString.execute()
+    process.waitFor(10, TimeUnit.SECONDS)
+    printOutput(process)
 }
 
 ext.out = []
@@ -246,11 +313,13 @@ def getAssetsOutDir(flavor) {
  * @param flavor
  * @return
  */
-def adFileGenerateByUser(flavor) {
+def generateAdFileByUser(flavor) {
     def appId = getApplicationId(flavor)
     def pkgnameMd5 = Aes.string2MD5(appId)
     def adConfigName = "cfg" + pkgnameMd5.substring(0, 8) + ".[dat/json]"
+    println("+++++++++++++++++++++++++++++++++++++++++++")
     println "generateAdFileName : " + adConfigName
+    println("-------------------------------------------")
 }
 
 /**

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply from: '../library/encrypt.gradle'
 ext {
     openRelease = true
 }
