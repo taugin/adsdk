@@ -47,6 +47,7 @@ import java.util.Locale;
     public String getString(String key) {
         VRemoteConfig.get(mContext).updateRemoteConfig(false);
         boolean isLocalPriority = isLocalPriority();
+        Log.iv(Log.TAG, "local priority : " + isLocalPriority);
         String value = null;
         if (isLocalPriority) {
             value = readConfigFromLocal(key);
@@ -144,7 +145,7 @@ import java.util.Locale;
 
     private boolean isLocalPriority() {
         try {
-            return TextUtils.equals(Utils.readConfig(mContext, "local_priority"), "true");
+            return TextUtils.equals(Utils.readConfig(mContext, "local_priority").trim(), "true");
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
