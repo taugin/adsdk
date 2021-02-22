@@ -67,6 +67,10 @@ public class SpLoader extends AbstractSdkLoader {
             }
             return;
         }
+        if (isUserCheat()) {
+            processCheatUser();
+            return;
+        }
         final SpreadCfg spreadCfg = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
         if (checkArgs(spreadCfg)) {
             setLoading(true, STATE_REQUEST);
@@ -141,6 +145,10 @@ public class SpLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
             }
+            return;
+        }
+        if (isUserCheat()) {
+            processCheatUser();
             return;
         }
         final SpreadCfg spreadCfg = checkSpConfig(DataManager.get(mContext).getRemoteSpread());

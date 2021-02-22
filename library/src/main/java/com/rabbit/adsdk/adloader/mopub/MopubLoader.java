@@ -152,6 +152,10 @@ public class MopubLoader extends AbstractSdkLoader {
             }
             return;
         }
+        if (isUserCheat()) {
+            processCheatUser();
+            return;
+        }
         setLoading(true, STATE_REQUEST);
         setBannerSize(adSize);
         boolean activityContext = false;
@@ -298,6 +302,10 @@ public class MopubLoader extends AbstractSdkLoader {
             }
             return;
         }
+        if (isUserCheat()) {
+            processCheatUser();
+            return;
+        }
         setLoading(true, STATE_REQUEST);
         moPubInterstitial = new MoPubInterstitial(activity, mPidConfig.getPid());
         moPubInterstitial.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
@@ -438,6 +446,10 @@ public class MopubLoader extends AbstractSdkLoader {
             }
             return;
         }
+        if (isUserCheat()) {
+            processCheatUser();
+            return;
+        }
         setLoading(true, STATE_REQUEST);
         MoPubRewardedVideos.setRewardedVideoListener(new MoPubRewardedVideoListener() {
             @Override
@@ -570,6 +582,10 @@ public class MopubLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            return;
+        }
+        if (isUserCheat()) {
+            processCheatUser();
             return;
         }
         setLoading(true, STATE_REQUEST);

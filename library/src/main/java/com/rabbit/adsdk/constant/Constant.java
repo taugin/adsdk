@@ -147,6 +147,11 @@ public class Constant {
      */
     public static final int AD_ERROR_INVALID_PID = 15;
 
+    /**
+     * 被判断为作弊用户
+     */
+    public static final int AD_ERROR_CHEAT = 16;
+
     public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
 
     public static final SimpleDateFormat SDF_LEFT_TIME = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());

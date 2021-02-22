@@ -15,6 +15,7 @@ import com.rabbit.adsdk.adloader.listener.IManagerListener;
 import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
 import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.framework.CheatManager;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
@@ -279,6 +280,17 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         int maxRatio = mPidConfig.getRatio();
         int randomRatio = sRandom.nextInt(100);
         return randomRatio < maxRatio;
+    }
+
+    protected void processCheatUser() {
+        Log.d(Log.TAG, "cheat user : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+        if (getAdListener() != null) {
+            getAdListener().onAdFailed(Constant.AD_ERROR_CHEAT);
+        }
+    }
+
+    protected boolean isUserCheat() {
+        return CheatManager.get(mContext).isUserCheat(getSdkName(), getAdType());
     }
 
     protected void printInterfaceLog(String action) {

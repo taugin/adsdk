@@ -104,6 +104,10 @@ public class AdDfpLoader extends AbstractSdkLoader {
             }
             return;
         }
+        if (isUserCheat()) {
+            processCheatUser();
+            return;
+        }
         setLoading(true, STATE_REQUEST);
         setBannerSize(adSize);
         AdSize size = ADSIZE.get(adSize);
@@ -251,6 +255,10 @@ public class AdDfpLoader extends AbstractSdkLoader {
             }
             return;
         }
+        if (isUserCheat()) {
+            processCheatUser();
+            return;
+        }
         setLoading(true, STATE_REQUEST);
         interstitialAd = new PublisherInterstitialAd(mContext);
         interstitialAd.setAdUnitId(mPidConfig.getPid());
@@ -368,6 +376,10 @@ public class AdDfpLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
             }
+            return;
+        }
+        if (isUserCheat()) {
+            processCheatUser();
             return;
         }
         setLoading(true, STATE_REQUEST);
@@ -490,6 +502,10 @@ public class AdDfpLoader extends AbstractSdkLoader {
             if (getAdListener() != null) {
                 getAdListener().onRewardedVideoError(Constant.AD_ERROR_LOADING);
             }
+            return;
+        }
+        if (isUserCheat()) {
+            processCheatUser();
             return;
         }
         setLoading(true, STATE_REQUEST);

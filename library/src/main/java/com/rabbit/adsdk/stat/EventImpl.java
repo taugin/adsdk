@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.framework.CheatManager;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
@@ -44,6 +45,7 @@ public class EventImpl implements IEvent {
     }
 
     private Context mContext;
+
     private EventImpl() {
     }
 
@@ -351,6 +353,7 @@ public class EventImpl implements IEvent {
         reportEvent(context, pidName, eventId, extra);
         reportEvent(context, pidName, "e_ad_imp", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
+        CheatManager.get(context).recordAdImp(sdk, type);
     }
 
     @Override
@@ -363,6 +366,7 @@ public class EventImpl implements IEvent {
         reportEvent(context, pidName, eventId, extra);
         reportEvent(context, pidName, "e_ad_click", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
+        CheatManager.get(context).recordAdClick(sdk, type);
     }
 
     @Override
@@ -490,6 +494,7 @@ public class EventImpl implements IEvent {
 
     /**
      * 默认不再上报成功和失败时间
+     *
      * @param context
      * @return
      */
