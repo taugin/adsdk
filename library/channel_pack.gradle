@@ -193,7 +193,7 @@ def appendChannelsFile(baseApk, channel, channelApk, releaseDir, flavorName, aap
     // 添加渠道文件到assets目录
     def appendFileToApk = aaptFile + " a -v " + channelApk + " " + "assets/" + channelFileName
     def cwd = new File(baseApk).getParentFile()
-    println ":${project.name}:appendChannelsFile [" + flavorName + "] Command [" + appendFileToApk + "]"
+    println ":${project.name}:appendChannelsFile [" + flavorName + "] Command [" + optimizeCommand(appendFileToApk) + "]"
     println ":${project.name}:appendChannelsFile [" + flavorName + "] Current [" + cwd + "]"
     try {
         Process p = appendFileToApk.execute(null, cwd)
@@ -219,7 +219,7 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
     copyFileFromApk(baseApk, "AndroidManifest.xml", xmlFile.getAbsolutePath())
     // 删除原来meta-data
     def deleteMetaData = "java -jar " + aXMLEditorJarFile + " -tag -r meta-data " + channelKey + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + deleteMetaData + "]"
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + optimizeCommand(deleteMetaData) + "]"
     try {
         Process p = deleteMetaData.execute()
         p.waitFor(20, TimeUnit.SECONDS)
@@ -235,7 +235,7 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
     fileWriter.write(channelInfo)
     fileWriter.close()
     def appendMetaData = "java -jar " + aXMLEditorJarFile + " -tag -i " + tempMetaDataFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + appendMetaData + "]"
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + optimizeCommand(appendMetaData) + "]"
     try {
         Process p = appendMetaData.execute()
         p.waitFor(20, TimeUnit.SECONDS)
@@ -246,7 +246,7 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
 
     // 删除AndroidManifest.xml文件
     def deleteFileToApk = aaptFile + " r -v " + channelApk + " " + xmlFile.getName()
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + deleteFileToApk + "]"
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + optimizeCommand(deleteFileToApk) + "]"
     try {
         Process p = deleteFileToApk.execute()
         p.waitFor(20, TimeUnit.SECONDS)
@@ -257,7 +257,7 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
     // 添加AndroidManifest.xml到apk文件
     def appendFileToApk = aaptFile + " a -v " + channelApk + " " + xmlFile.getName()
     def cwd = new File(baseApk).getParentFile()
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + appendFileToApk + "]"
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + optimizeCommand(appendFileToApk) + "]"
     println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Current [" + cwd + "]"
     try {
         Process p = appendFileToApk.execute(null, cwd)
@@ -377,7 +377,7 @@ def deleteApkSignInfo(flavor, apkFile, aaptFile) {
     }
     signInfoList.each {
         def cmdList = aaptFile + " r -v " + apkFile + " " + it
-        println ":${project.name}:deleteApkSignInfo [" + flavor + "] Command [" + cmdList + "]"
+        println ":${project.name}:deleteApkSignInfo [" + flavor + "] Command [" + optimizeCommand(cmdList) + "]"
         try {
             def startTime = System.currentTimeMillis()
             Process p = cmdList.execute()
@@ -447,7 +447,7 @@ def copyFileFromApk(apkFile, String filePath, String outputFile) {
  */
 def getSignListByAapt(apkFile, flavor, aaptFile) {
     def cmdString = aaptFile + " l -a " + apkFile
-    println ":${project.name}:getSignListByAapt [" + flavor + "] Command [" + cmdString + "]"
+    println ":${project.name}:getSignListByAapt [" + flavor + "] Command [" + optimizeCommand(cmdString) + "]"
     def result = cmdString.execute().text
     BufferedReader br = new BufferedReader(new StringReader(result))
     def signInfoList = []
@@ -493,7 +493,7 @@ def signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile) {
         cmdlist.add(signConfig.keyAlias)
 
         def cmdString = cmdlist.join(" ")
-        println ":${project.name}:signChannelPackage [" + flavor + "] Command [" + cmdString + "]"
+        println ":${project.name}:signChannelPackage [" + flavor + "] Command [" + optimizeCommand(cmdString) + "]"
         try {
             def startTime = System.currentTimeMillis()
             Process p = cmdString.execute()
@@ -555,6 +555,29 @@ def getSignConfig(flavor) {
         }
     }
     return signConfig
+}
+
+def optimizeCommand(cmdString) {
+    if (android.defaultConfig.ext.has("debug") && android.defaultConfig.ext["debug"]) {
+        return cmdString
+    }
+    try {
+        List<String> list = Arrays.asList(cmdString.split(" "))
+        List<String> list2 = new ArrayList<String>(list.size())
+        for (int index = 0; index < list.size(); index++) {
+            String s = list.get(index)
+            File file = new File(s)
+            if (file.exists()) {
+                list2.add(file.getName())
+            } else {
+                list2.add(s)
+            }
+        }
+        return list2.join(" ")
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+    return cmdString
 }
 
 /**
