@@ -14,6 +14,7 @@ static def getDate() {
     return formattedDate
 }
 
+@groovy.transform.Field Map<String, Map<String, String>> channelFileMap = new HashMap<String, Map<String, String>>()
 afterEvaluate {
 // Windows
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
@@ -60,15 +61,10 @@ def generateMulChannel(flavor) {
     def channels = android.defaultConfig.ext.has("app_channels") ? android.defaultConfig.ext.app_channels : null
     def channelFileName = android.defaultConfig.ext.has("channel_file_name") ? android.defaultConfig.ext.channel_file_name : null
     def channelKey = android.defaultConfig.ext.has("channel_key") ? android.defaultConfig.ext.channel_key : null
-    def channels_files = null
     if (flavor != null) {
         flavorName = flavor.name
         if (flavor.ext != null && flavor.ext.has("app_channels") && flavor.ext.app_channels != null) {
             channels = flavor.ext.app_channels
-        }
-        // app_channels_files 不是配置字段，是用于临时存储
-        if (flavor.ext != null && flavor.ext.has("app_channels_files") && flavor.ext.app_channels_files != null) {
-            channels_files = flavor.ext.app_channels_files
         }
         if (flavor.ext != null && flavor.ext.has("channel_file_name") && flavor.ext.channel_file_name != null) {
             channelFileName = flavor.ext.channel_file_name
@@ -76,14 +72,12 @@ def generateMulChannel(flavor) {
         if (flavor.ext != null && flavor.ext.has("channel_key") && flavor.ext.channel_key != null) {
             channelKey = flavor.ext.channel_key
         }
-    } else {
-        // app_channels_files 不是配置字段，是用于临时存储
-        channels_files = android.defaultConfig.ext.has("app_channels_files") ? android.defaultConfig.ext.app_channels_files : null
     }
     if (channels == null || channels.isEmpty()) {
         System.err.println ":${project.name}:generateMulChannel [" + flavorName + "] Channel Config is Empty"
         return
     }
+    def channels_files = channelFileMap[flavorName]
     if (channels_files == null || channels_files.isEmpty()) {
         System.err.println ":${project.name}:generateMulChannel [" + flavorName + "] Channel Files is Empty"
         return
@@ -287,7 +281,6 @@ def parseChannelConfig(flavorObj, outputFile) {
     def versionCode = android.defaultConfig.versionCode
     def appName = android.defaultConfig.ext.has("app_name") ? android.defaultConfig.ext.app_name : project.getRootProject().getName()
     def channels = android.defaultConfig.ext.has("app_channels") ? android.defaultConfig.ext.app_channels : []
-    def channels_files = null
     if (flavorObj != null) {
         flavorName = flavorObj.name
         if (flavorObj.versionName != null) {
@@ -302,11 +295,6 @@ def parseChannelConfig(flavorObj, outputFile) {
         if (flavorObj.ext != null && flavorObj.ext.has("app_channels") && flavorObj.ext.app_channels != null) {
             channels = flavorObj.ext.app_channels
         }
-        // app_channels_files 不是配置字段，是用于临时存储
-        channels_files = flavorObj.ext["app_channels_files"] = [:]
-    } else {
-        // app_channels_files 不是配置字段，是用于临时存储
-        channels_files = android.defaultConfig.ext["app_channels_files"] = [:]
     }
     try {
         if (channels == null || channels.isEmpty()) {
@@ -316,6 +304,8 @@ def parseChannelConfig(flavorObj, outputFile) {
     } catch (Exception e) {
         return
     }
+    channelFileMap.put(flavorName, new HashMap<String, String>())
+    def channels_files = channelFileMap[flavorName]
     println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel " + channels
     channels_files["base_package"] = outputFile.getAbsolutePath()
     println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel ========================================"
