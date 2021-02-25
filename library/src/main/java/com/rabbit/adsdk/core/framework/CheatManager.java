@@ -4,7 +4,9 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.rabbit.adsdk.AdSdk;
+import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 
 import org.json.JSONObject;
@@ -60,14 +62,17 @@ public class CheatManager {
                 int minImp = 0;
                 int maxCtr = 0;
                 try {
+                    JSONObject cheatJobj = null;
                     JSONObject jobj = new JSONObject(cheatConfigString);
                     String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
                     if (jobj.has(keyConfig)) {
-                        JSONObject cheatJobj = jobj.getJSONObject(keyConfig);
-                        if (cheatJobj != null) {
-                            minImp = cheatJobj.getInt("min_imp");
-                            maxCtr = cheatJobj.getInt("max_ctr");
-                        }
+                        cheatJobj = jobj.getJSONObject(keyConfig);
+                    } else if (jobj.has(sdk)) {
+                        cheatJobj = jobj.getJSONObject(sdk);
+                    }
+                    if (cheatJobj != null) {
+                        minImp = cheatJobj.getInt("min_imp");
+                        maxCtr = cheatJobj.getInt("max_ctr");
                     }
                 } catch (Exception e) {
                     Log.e(Log.TAG, "error : " + e);
@@ -110,6 +115,9 @@ public class CheatManager {
         long nowDate = getTodayTime();
         long lastDate = Utils.getLong(mContext, prefDateKey, 0);
         if (nowDate > lastDate) {
+            if (lastDate > 0 && isReportClkImp(mContext)) {
+                report(sdk, placeName);
+            }
             Utils.putLong(mContext, prefDateKey, nowDate);
             Log.iv(Log.TAG, String.format(Locale.getDefault(), "%s %s reset count data", sdk, placeName));
             String prefImp = String.format(PREF_AD_IMP_COUNT, sdk, placeName);
@@ -126,6 +134,33 @@ public class CheatManager {
         long clickCount = Utils.getLong(mContext, prefKey, 0);
         String logInfo = String.format(Locale.getDefault(), "%s %s clk/imp : %d/%d", sdk, placeName, clickCount, impCount);
         Log.iv(Log.TAG, logInfo);
+    }
+
+    private boolean parseReport(String value, boolean defaultValue) {
+        if (!TextUtils.isEmpty(value)) {
+            try {
+                return Boolean.parseBoolean(value);
+            } catch (Exception e) {
+                Log.e(Log.TAG, "parseReport error : " + e);
+            }
+        }
+        return defaultValue;
+    }
+
+    private boolean isReportClkImp(Context context) {
+        String value = DataManager.get(context).getString("report_clk_imp");
+        boolean result = parseReport(value, false);
+        Log.v(Log.TAG, "is report clk imp : " + result);
+        return result;
+    }
+
+    private void report(String sdk, String placeName) {
+        String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, placeName);
+        long impCount = Utils.getLong(mContext, prefKey, 0);
+        prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, placeName);
+        long clickCount = Utils.getLong(mContext, prefKey, 0);
+        String clkImpInfo = String.format(Locale.getDefault(), "%s_%s_clk_imp_%d_%d", sdk, placeName, clickCount, impCount);
+        InternalStat.reportEvent(mContext, "clk_imp_info", clkImpInfo);
     }
 
     /**
