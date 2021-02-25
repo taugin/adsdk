@@ -185,8 +185,8 @@ def appendChannelsFile(baseApk, channel, channelApk, releaseDir, flavorName, aap
     println ":${project.name}:appendChannelsFile [" + flavorName + "] Command [" + appendFileToApk + "]"
     println ":${project.name}:appendChannelsFile [" + flavorName + "] Current [" + cwd + "]"
     try {
-        appendFileToApk.execute(null, cwd)
-        sleep(2000)
+        Process p = appendFileToApk.execute(null, cwd)
+        p.waitFor(20, TimeUnit.SECONDS)
     } catch (Exception e) {
         e.printStackTrace()
     }
