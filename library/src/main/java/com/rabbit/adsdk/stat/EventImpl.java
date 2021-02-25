@@ -353,7 +353,7 @@ public class EventImpl implements IEvent {
         reportEvent(context, pidName, eventId, extra);
         reportEvent(context, pidName, "e_ad_imp", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
-        CheatManager.get(context).recordAdImp(sdk, type);
+        CheatManager.get(context).recordAdImp(sdk, pidName);
     }
 
     @Override
@@ -366,7 +366,7 @@ public class EventImpl implements IEvent {
         reportEvent(context, pidName, eventId, extra);
         reportEvent(context, pidName, "e_ad_click", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
-        CheatManager.get(context).recordAdClick(sdk, type);
+        CheatManager.get(context).recordAdClick(sdk, pidName);
     }
 
     @Override

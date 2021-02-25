@@ -1,0 +1,6 @@
+{
+  "admob_banner_and_native": {
+    "min_imp": 10,
+    "max_ctr": 70
+  }
+}

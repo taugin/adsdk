@@ -290,7 +290,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected boolean isUserCheat() {
-        return CheatManager.get(mContext).isUserCheat(getSdkName(), getAdType());
+        return CheatManager.get(mContext).isUserCheat(getSdkName(), getAdPlaceName());
     }
 
     protected void printInterfaceLog(String action) {

@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import com.rabbit.adsdk.AdSdk;
 import com.rabbit.adsdk.log.Log;
-import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 
 import org.json.JSONObject;
@@ -46,31 +45,38 @@ public class CheatManager {
      * 判断是否允许加载
      *
      * @param sdk
-     * @param type
+     * @param placeName
      * @return
      */
-    public boolean isUserCheat(String sdk, String type) {
+    public boolean isUserCheat(String sdk, String placeName) {
         try {
-            String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, type);
+            String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, placeName);
             long impCount = Utils.getLong(mContext, prefKey, 0);
-            prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, type);
+            prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, placeName);
             long clickCount = Utils.getLong(mContext, prefKey, 0);
-            String cheatConfigKey = String.format(Locale.getDefault(), "%s_%s_cheat_config", sdk, type);
+            String cheatConfigKey = "user_cheat_config";
             String cheatConfigString = AdSdk.get(mContext).getString(cheatConfigKey);
             if (!TextUtils.isEmpty(cheatConfigString)) {
                 int minImp = 0;
-                int maxClickRate = 0;
+                int maxCtr = 0;
                 try {
                     JSONObject jobj = new JSONObject(cheatConfigString);
-                    minImp = jobj.getInt("min_imp");
-                    maxClickRate = jobj.getInt("max_click_rate");
+                    String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
+                    if (jobj.has(keyConfig)) {
+                        JSONObject cheatJobj = jobj.getJSONObject(keyConfig);
+                        if (cheatJobj != null) {
+                            minImp = cheatJobj.getInt("min_imp");
+                            maxCtr = cheatJobj.getInt("max_ctr");
+                        }
+                    }
                 } catch (Exception e) {
+                    Log.e(Log.TAG, "error : " + e);
                 }
-                if (minImp > 0 && maxClickRate > 0 && impCount >= minImp) {
-                    int clickRate = Math.round(clickCount / (float) impCount * 100);
-                    boolean isUserCheat = clickRate > maxClickRate;
+                if (minImp > 0 && maxCtr > 0 && impCount >= minImp) {
+                    int ctr = Math.round(clickCount / (float) impCount * 100);
+                    boolean isUserCheat = ctr > maxCtr;
                     if (isUserCheat) {
-                        String cheatLog = String.format(Locale.getDefault(), "cheat info : min imp : %d, max click rate : %d, imp count : %d, click count : %d, click rate : %d", minImp, maxClickRate, impCount, clickCount, clickRate);
+                        String cheatLog = String.format(Locale.getDefault(), "cheat info : min imp : %d, max ctr : %d, imp count : %d, click count : %d, ctr : %d", minImp, maxCtr, impCount, clickCount, ctr);
                         Log.iv(Log.TAG, cheatLog);
                     }
                     return isUserCheat;
@@ -81,44 +87,44 @@ public class CheatManager {
         return false;
     }
 
-    public void recordAdImp(String sdk, String type) {
-        resetCount(sdk, type);
-        String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, type);
+    public void recordAdImp(String sdk, String placeName) {
+        resetCount(sdk, placeName);
+        String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, placeName);
         Log.iv(Log.TAG, "prefKey : " + prefKey);
         long count = Utils.getLong(mContext, prefKey, 0);
         Utils.putLong(mContext, prefKey, count + 1);
-        printLog(sdk, type);
+        printLog(sdk, placeName);
     }
 
-    public void recordAdClick(String sdk, String type) {
-        String prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, type);
+    public void recordAdClick(String sdk, String placeName) {
+        String prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, placeName);
         Log.iv(Log.TAG, "prefKey : " + prefKey);
         long count = Utils.getLong(mContext, prefKey, 0);
         Utils.putLong(mContext, prefKey, count + 1);
-        printLog(sdk, type);
+        printLog(sdk, placeName);
     }
 
-    private void resetCount(String sdk, String type) {
-        String prefDateKey = String.format(Locale.getDefault(), PREF_AD_COUNT_DATE, sdk, type);
+    private void resetCount(String sdk, String placeName) {
+        String prefDateKey = String.format(Locale.getDefault(), PREF_AD_COUNT_DATE, sdk, placeName);
         Log.iv(Log.TAG, "prefKey : " + prefDateKey);
         long nowDate = getTodayTime();
         long lastDate = Utils.getLong(mContext, prefDateKey, 0);
         if (nowDate > lastDate) {
             Utils.putLong(mContext, prefDateKey, nowDate);
-            Log.iv(Log.TAG, String.format(Locale.getDefault(), "%s %s reset count data", sdk, type));
-            String prefImp = String.format(PREF_AD_IMP_COUNT, sdk, type);
+            Log.iv(Log.TAG, String.format(Locale.getDefault(), "%s %s reset count data", sdk, placeName));
+            String prefImp = String.format(PREF_AD_IMP_COUNT, sdk, placeName);
             Utils.putLong(mContext, prefImp, 0);
-            String prefClk = String.format(PREF_AD_CLK_COUNT, sdk, type);
+            String prefClk = String.format(PREF_AD_CLK_COUNT, sdk, placeName);
             Utils.putLong(mContext, prefClk, 0);
         }
     }
 
-    private void printLog(String sdk, String type) {
-        String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, type);
+    private void printLog(String sdk, String placeName) {
+        String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, placeName);
         long impCount = Utils.getLong(mContext, prefKey, 0);
-        prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, type);
+        prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, placeName);
         long clickCount = Utils.getLong(mContext, prefKey, 0);
-        String logInfo = String.format(Locale.getDefault(), "%s %s clk/imp : %d/%d", sdk, type, clickCount, impCount);
+        String logInfo = String.format(Locale.getDefault(), "%s %s clk/imp : %d/%d", sdk, placeName, clickCount, impCount);
         Log.iv(Log.TAG, logInfo);
     }
 
