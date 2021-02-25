@@ -16,6 +16,7 @@ android {
         multiDexEnabled true
         ext {
             app_channels = ['vivo', 'oppo']
+            channel_key = "MY_LEBIAN"
         }
     }
 

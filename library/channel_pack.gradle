@@ -59,19 +59,25 @@ def generateMulChannel(flavor) {
     def flavorName = "official"
     def channels = android.defaultConfig.ext.has("app_channels") ? android.defaultConfig.ext.app_channels : null
     def channelFileName = android.defaultConfig.ext.has("channel_file_name") ? android.defaultConfig.ext.channel_file_name : null
+    def channelKey = android.defaultConfig.ext.has("channel_key") ? android.defaultConfig.ext.channel_key : null
     def channels_files = null
     if (flavor != null) {
         flavorName = flavor.name
         if (flavor.ext != null && flavor.ext.has("app_channels") && flavor.ext.app_channels != null) {
             channels = flavor.ext.app_channels
         }
+        // app_channels_files 不是配置字段，是用于临时存储
         if (flavor.ext != null && flavor.ext.has("app_channels_files") && flavor.ext.app_channels_files != null) {
             channels_files = flavor.ext.app_channels_files
         }
         if (flavor.ext != null && flavor.ext.has("channel_file_name") && flavor.ext.channel_file_name != null) {
             channelFileName = flavor.ext.channel_file_name
         }
+        if (flavor.ext != null && flavor.ext.has("channel_key") && flavor.ext.channel_key != null) {
+            channelKey = flavor.ext.channel_key
+        }
     } else {
+        // app_channels_files 不是配置字段，是用于临时存储
         channels_files = android.defaultConfig.ext.has("app_channels_files") ? android.defaultConfig.ext.app_channels_files : null
     }
     if (channels == null || channels.isEmpty()) {
@@ -112,7 +118,11 @@ def generateMulChannel(flavor) {
     println ":${project.name}:generateMulChannel [" + flavorName + "] Channel " + channels
     println ":${project.name}:generateMulChannel [" + flavorName + "] Channel ***********************************************************"
     channels.each {
+        copyChannelApkFile(basePackage, channels_files[it])
         appendChannelsFile(basePackage, it, channels_files[it], releaseDir, flavorName, aaptFile, channelFileName)
+        if (channelKey != null && channelKey.trim().length() > 0) {
+            appendMetaDataToAXml(basePackage, it, channels_files[it], releaseDir, flavorName, channelKey)
+        }
         signChannelFile(flavorName, channels_files[it], aaptFile)
         println ":${project.name}:generateMulChannel [" + flavorName + "] Channel ***********************************************************\n"
     }
@@ -153,6 +163,10 @@ def getChannelFileName(flavor) {
     return fileName + ".cnl"
 }
 
+def copyChannelApkFile(baseApk, channelApk) {
+    Files.copy(Paths.get(baseApk), Paths.get(channelApk))
+}
+
 /**
  * 增加渠道文件到assets目录，渠道文件名称为assets/product_channel_cfg
  * @param baseApk
@@ -167,6 +181,7 @@ def appendChannelsFile(baseApk, channel, channelApk, releaseDir, flavorName, aap
     println ":${project.name}:appendChannelsFile [" + flavorName + "] BaseApk [" + baseApk + "]"
     println ":${project.name}:appendChannelsFile [" + flavorName + "] Channel [" + channel + "] : " + new File(channelApk).getName()
 
+    // 创建渠道文件
     File tempAssets = new File(releaseDir, "assets")
     if (!tempAssets.exists()) {
         tempAssets.mkdirs()
@@ -176,10 +191,12 @@ def appendChannelsFile(baseApk, channel, channelApk, releaseDir, flavorName, aap
     }
     File channelFile = new File(tempAssets, channelFileName)
 
+    // 给渠道文件写入渠道号
     FileWriter writer = new FileWriter(channelFile, false)
     writer.write(channel)
     writer.close()
-    Files.copy(Paths.get(baseApk), Paths.get(channelApk))
+
+    // 添加渠道文件到assets目录
     def appendFileToApk = aaptFile + " a -v " + channelApk + " " + "assets/" + channelFileName
     def cwd = new File(baseApk).getParentFile()
     println ":${project.name}:appendChannelsFile [" + flavorName + "] Command [" + appendFileToApk + "]"
@@ -190,8 +207,72 @@ def appendChannelsFile(baseApk, channel, channelApk, releaseDir, flavorName, aap
     } catch (Exception e) {
         e.printStackTrace()
     }
+    // 删除临时渠道文件
     channelFile.delete()
     tempAssets.delete()
+}
+
+def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, channelKey) {
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] BaseApk [" + baseApk + "]"
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Channel [" + channel + "] : " + new File(channelApk).getName()
+    def aXMLEditorJarFile = getAXMLEditorJarFile()
+    if (aXMLEditorJarFile == null || !new File(aXMLEditorJarFile).exists()) {
+        System.err.println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] AXMLEditor.jar [" + aXMLEditorJarFile + "] is not exists"
+        return
+    }
+    File xmlFile = new File(releaseDir, "AndroidManifest.xml")
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Copy [" + xmlFile.getAbsolutePath() + "]"
+    copyFileFromApk(baseApk, "AndroidManifest.xml", xmlFile.getAbsolutePath())
+    // 删除原来meta-data
+    def deleteMetaData = "java -jar " + aXMLEditorJarFile + " -tag -r meta-data " + channelKey + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + deleteMetaData + "]"
+    try {
+        Process p = deleteMetaData.execute()
+        p.waitFor(20, TimeUnit.SECONDS)
+        println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Delete Meta Data"
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+    // 增加新的meta-data
+    def tempMetaDataFile = new File(releaseDir, "meta-data-channal.xml")
+    FileWriter fileWriter = new FileWriter(tempMetaDataFile, false)
+    String channelInfo = String.format(Locale.getDefault(), "<meta-data android:name=\"%s\" android:value=\"%s\"/>", channelKey, channel)
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] MetaData [" + channelInfo + "]"
+    fileWriter.write(channelInfo)
+    fileWriter.close()
+    def appendMetaData = "java -jar " + aXMLEditorJarFile + " -tag -i " + tempMetaDataFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + appendMetaData + "]"
+    try {
+        Process p = appendMetaData.execute()
+        p.waitFor(20, TimeUnit.SECONDS)
+        println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Append Meta Data"
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+
+    // 删除AndroidManifest.xml文件
+    def deleteFileToApk = aaptFile + " r -v " + channelApk + " " + xmlFile.getName()
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + deleteFileToApk + "]"
+    try {
+        Process p = deleteFileToApk.execute()
+        p.waitFor(20, TimeUnit.SECONDS)
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+
+    // 添加AndroidManifest.xml到apk文件
+    def appendFileToApk = aaptFile + " a -v " + channelApk + " " + xmlFile.getName()
+    def cwd = new File(baseApk).getParentFile()
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + appendFileToApk + "]"
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Current [" + cwd + "]"
+    try {
+        Process p = appendFileToApk.execute(null, cwd)
+        p.waitFor(20, TimeUnit.SECONDS)
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+    tempMetaDataFile.delete()
+    xmlFile.delete()
 }
 
 /**
@@ -221,8 +302,10 @@ def parseChannelConfig(flavorObj, outputFile) {
         if (flavorObj.ext != null && flavorObj.ext.has("app_channels") && flavorObj.ext.app_channels != null) {
             channels = flavorObj.ext.app_channels
         }
+        // app_channels_files 不是配置字段，是用于临时存储
         channels_files = flavorObj.ext["app_channels_files"] = [:]
     } else {
+        // app_channels_files 不是配置字段，是用于临时存储
         channels_files = android.defaultConfig.ext["app_channels_files"] = [:]
     }
     try {
@@ -309,7 +392,7 @@ def deleteApkSignInfo(flavor, apkFile, aaptFile) {
             def startTime = System.currentTimeMillis()
             Process p = cmdList.execute()
             p.waitFor(20, TimeUnit.SECONDS)
-            def endTime =  System.currentTimeMillis()
+            def endTime = System.currentTimeMillis()
             def signTime = (endTime - startTime) / 1000
             println ":${project.name}:signChannelPackage [" + flavor + "] Command [Delete Sign Info Use Time " + signTime + "s]"
         } catch (Exception e) {
@@ -349,7 +432,22 @@ def readContentFromApk(apkFile, filePath) {
  * @param outputFile
  */
 def copyFileFromApk(apkFile, String filePath, String outputFile) {
-
+    try {
+        ZipFile zipFile = new ZipFile(apkFile)
+        ZipEntry zipEntry = zipFile.getEntry(filePath)
+        InputStream is = zipFile.getInputStream(zipEntry)
+        FileOutputStream fos = new FileOutputStream(outputFile)
+        int read = 0;
+        byte[] buf = new byte[1024];
+        while ((read = is.read(buf)) > 0) {
+            fos.write(buf)
+        }
+        fos.close()
+        is.close();
+        return true
+    } catch (Exception e) {
+    }
+    return false
 }
 
 /**
@@ -364,7 +462,7 @@ def getSignListByAapt(apkFile, flavor, aaptFile) {
     BufferedReader br = new BufferedReader(new StringReader(result))
     def signInfoList = []
     def line = null
-    while((line = br.readLine()) != null) {
+    while ((line = br.readLine()) != null) {
         if (line.startsWith("META-INF") && (line.endsWith(".MF") || line.endsWith(".SF") || line.endsWith(".RSA"))) {
             signInfoList.add(line)
         }
@@ -407,10 +505,10 @@ def signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile) {
         def cmdString = cmdlist.join(" ")
         println ":${project.name}:signChannelPackage [" + flavor + "] Command [" + cmdString + "]"
         try {
-            def startTime =  System.currentTimeMillis()
+            def startTime = System.currentTimeMillis()
             Process p = cmdString.execute()
             p.waitFor(20, TimeUnit.SECONDS)
-            def endTime =  System.currentTimeMillis()
+            def endTime = System.currentTimeMillis()
             def signTime = (endTime - startTime) / 1000
             println ":${project.name}:signChannelPackage [" + flavor + "] Command [Sign Apk Use Time " + signTime + "s]"
         } catch (Exception e) {
@@ -532,6 +630,12 @@ def getAaptFile() {
     def aaptFile = buildToolDir + File.separator + buildToolVersionDir + File.separator + "aapt" + exe
     println ":${project.name}:getAaptFile aaptFile : " + aaptFile
     return aaptFile
+}
+
+def getAXMLEditorJarFile() {
+    def rootDir = getRootDir()
+    def aXmlEditJarFile = new File(rootDir, "AXMLEditor.jar")
+    return aXmlEditJarFile.getAbsolutePath()
 }
 
 def toUpperCaseFirstOne(String s) {
