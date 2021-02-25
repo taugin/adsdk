@@ -109,23 +109,13 @@ def generateMulChannel(flavor) {
         return
     }
     String releaseDir = new File(basePackage).getParent()
-    File tempAssets = new File(releaseDir, "assets")
-    if (!tempAssets.exists()) {
-        tempAssets.mkdirs()
-    }
-    if (channelFileName == null) {
-        channelFileName = "product_channel_cfg"
-    }
-    File channelFile = new File(tempAssets, channelFileName)
-    println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel " + channels
-    println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel ***********************************************************"
+    println ":${project.name}:generateMulChannel [" + flavorName + "] Channel " + channels
+    println ":${project.name}:generateMulChannel [" + flavorName + "] Channel ***********************************************************"
     channels.each {
-        appendChannelsFile(basePackage, it, channels_files[it], channelFile, flavorName, aaptFile, channelFileName)
+        appendChannelsFile(basePackage, it, channels_files[it], releaseDir, flavorName, aaptFile, channelFileName)
         signChannelFile(flavorName, channels_files[it], aaptFile)
-        println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel ***********************************************************\n"
+        println ":${project.name}:generateMulChannel [" + flavorName + "] Channel ***********************************************************\n"
     }
-    channelFile.delete()
-    tempAssets.delete()
 }
 
 /**
@@ -168,14 +158,24 @@ def getChannelFileName(flavor) {
  * @param baseApk
  * @param channel
  * @param channelApk
- * @param channelFile
+ * @param releaseDir
  * @param flavorName
  * @param aaptFile
  * @return
  */
-def appendChannelsFile(baseApk, channel, channelApk, channelFile, flavorName, aaptFile, channelFileName) {
+def appendChannelsFile(baseApk, channel, channelApk, releaseDir, flavorName, aaptFile, channelFileName) {
     println ":${project.name}:appendChannelsFile [" + flavorName + "] BaseApk [" + baseApk + "]"
     println ":${project.name}:appendChannelsFile [" + flavorName + "] Channel [" + channel + "] : " + new File(channelApk).getName()
+
+    File tempAssets = new File(releaseDir, "assets")
+    if (!tempAssets.exists()) {
+        tempAssets.mkdirs()
+    }
+    if (channelFileName == null) {
+        channelFileName = "product_channel_cfg"
+    }
+    File channelFile = new File(tempAssets, channelFileName)
+
     FileWriter writer = new FileWriter(channelFile, false)
     writer.write(channel)
     writer.close()
@@ -190,6 +190,8 @@ def appendChannelsFile(baseApk, channel, channelApk, channelFile, flavorName, aa
     } catch (Exception e) {
         e.printStackTrace()
     }
+    channelFile.delete()
+    tempAssets.delete()
 }
 
 /**
@@ -338,6 +340,16 @@ def readContentFromApk(apkFile, filePath) {
     } catch (Exception e) {
     }
     return null
+}
+
+/**
+ * 从apk中copy文件
+ * @param apkFile
+ * @param filePath
+ * @param outputFile
+ */
+def copyFileFromApk(apkFile, String filePath, String outputFile) {
+
 }
 
 /**
