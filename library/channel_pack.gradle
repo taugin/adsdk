@@ -202,6 +202,7 @@ def appendChannelsFile(baseApk, channel, channelApk, releaseDir, flavorName, aap
     try {
         Process p = appendFileToApk.execute(null, cwd)
         p.waitFor(20, TimeUnit.SECONDS)
+        p.destroy();
     } catch (Exception e) {
         e.printStackTrace()
     }
@@ -231,6 +232,7 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
     try {
         Process p = deleteMetaData.execute()
         p.waitFor(20, TimeUnit.SECONDS)
+        p.destroy();
         println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Delete Meta Data"
     } catch (Exception e) {
         e.printStackTrace()
@@ -247,6 +249,7 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
     try {
         Process p = appendMetaData.execute()
         p.waitFor(20, TimeUnit.SECONDS)
+        p.destroy();
         println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Append Meta Data"
     } catch (Exception e) {
         e.printStackTrace()
@@ -258,6 +261,7 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
     try {
         Process p = deleteFileToApk.execute()
         p.waitFor(20, TimeUnit.SECONDS)
+        p.destroy();
     } catch (Exception e) {
         e.printStackTrace()
     }
@@ -270,6 +274,7 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
     try {
         Process p = appendFileToApk.execute(null, cwd)
         p.waitFor(20, TimeUnit.SECONDS)
+        p.destroy();
     } catch (Exception e) {
         e.printStackTrace()
     }
@@ -390,6 +395,7 @@ def deleteApkSignInfo(flavor, apkFile, aaptFile) {
             def startTime = System.currentTimeMillis()
             Process p = cmdList.execute()
             p.waitFor(20, TimeUnit.SECONDS)
+            p.destroy();
             def endTime = System.currentTimeMillis()
             def signTime = (endTime - startTime) / 1000
             println ":${project.name}:signChannelPackage [" + flavor + "] Command [Delete Sign Info Use Time " + signTime + "s]"
@@ -509,6 +515,7 @@ def signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile) {
             def startTime = System.currentTimeMillis()
             Process p = cmdString.execute()
             p.waitFor(20, TimeUnit.SECONDS)
+            p.destroy();
             def endTime = System.currentTimeMillis()
             def signTime = (endTime - startTime) / 1000
             println ":${project.name}:signChannelPackage [" + flavor + "] Command [Sign Apk Use Time " + signTime + "s]"
@@ -702,8 +709,9 @@ def openReleaseDir(flavor) {
         def outputDir = String.format("outputs/apk/%srelease", ((flavor != null && flavor.trim().length() > 0) ? flavor + "/" : ""))
         def outputPath = new File(project.buildDir, outputDir)
         def cmd = "explorer.exe " + outputPath
-        cmd.execute()
+        Process p = cmd.execute()
         println ":${project.name}:openReleaseDir [${outputPath}]"
+        p.destroy();
     } catch (Exception e) {
     }
 }
