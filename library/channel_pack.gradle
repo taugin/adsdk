@@ -158,6 +158,10 @@ def getChannelFileName(flavor) {
 }
 
 def copyChannelApkFile(baseApk, channelApk) {
+    File channelApkFile = new File(channelApk)
+    if (channelApkFile.exists()) {
+        channelApkFile.delete()
+    }
     Files.copy(Paths.get(baseApk), Paths.get(channelApk))
 }
 
