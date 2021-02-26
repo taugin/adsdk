@@ -209,11 +209,15 @@ def appendChannelsFile(baseApk, channel, channelApk, releaseDir, flavorName, aap
 def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, channelKey) {
     println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] BaseApk [" + baseApk + "]"
     println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Channel [" + channel + "] : " + new File(channelApk).getName()
-    def aXMLEditorJarFile = getAXMLEditorJarFile()
+    def aXMLEditorJarFile = getAXMLEditJarFile2(flavorName)
+    if (aXMLEditorJarFile == null || !new File(aXMLEditorJarFile).exists()) {
+        aXMLEditorJarFile = getAXMLEditJarFile(flavorName)
+    }
     if (aXMLEditorJarFile == null || !new File(aXMLEditorJarFile).exists()) {
         System.err.println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] AXMLEditor.jar [" + aXMLEditorJarFile + "] is not exists"
         return
     }
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] AXMLEditor [" + aXMLEditorJarFile + "]"
     File xmlFile = new File(releaseDir, "AndroidManifest.xml")
     println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Copy [" + xmlFile.getAbsolutePath() + "]"
     copyFileFromApk(baseApk, flavorName, "AndroidManifest.xml", xmlFile.getAbsolutePath())
@@ -651,10 +655,24 @@ def getAaptFile() {
     return aaptFile
 }
 
-def getAXMLEditorJarFile() {
+def getAXMLEditJarFile(flavorName) {
     def rootDir = getRootDir()
     def aXmlEditJarFile = new File(rootDir, "AXMLEditor.jar")
+    if (!aXmlEditJarFile.exists()) {
+        System.err.println ":${project.name}:getAXMLEditorJarFile [" + flavorName + "] Should AXMLEditor.jar in [" + rootDir + "]"
+    }
     return aXmlEditJarFile.getAbsolutePath()
+}
+
+def getAXMLEditJarFile2(flavorName) {
+    def aXmlEditJarFile = project.rootProject.buildscript.configurations.classpath*.toURI().find {
+        URI uri -> new File(uri).name == 'axmleditor-1.0.0.jar'
+    }
+    if (aXmlEditJarFile == null || !new File(aXmlEditJarFile).exists()) {
+        System.err.println ":${project.name}:getAXMLEditorJarFile [" + flavorName + "] Should add dependencies [classpath 'cn.wjdiankong:axmleditor:1.0.0'] in buildscript.dependencies"
+        return null
+    }
+    return new File(aXmlEditJarFile).getAbsolutePath()
 }
 
 def toUpperCaseFirstOne(String s) {

@@ -54,6 +54,7 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support:multidex:1.0.1'
     if (useProject) {
         implementation project(":library")
     } else {
