@@ -216,7 +216,7 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
     }
     File xmlFile = new File(releaseDir, "AndroidManifest.xml")
     println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Copy [" + xmlFile.getAbsolutePath() + "]"
-    copyFileFromApk(baseApk, "AndroidManifest.xml", xmlFile.getAbsolutePath())
+    copyFileFromApk(baseApk, flavorName, "AndroidManifest.xml", xmlFile.getAbsolutePath())
     // 删除原来meta-data
     def deleteMetaData = "java -jar " + aXMLEditorJarFile + " -tag -r meta-data " + channelKey + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
     println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + optimizeCommand(deleteMetaData) + "]"
@@ -421,7 +421,8 @@ def readContentFromApk(apkFile, filePath) {
  * @param filePath
  * @param outputFile
  */
-def copyFileFromApk(apkFile, String filePath, String outputFile) {
+def copyFileFromApk(apkFile, flavor, String filePath, String outputFile) {
+    println ":${project.name}:copyFileFromApk [" + flavor + "] From [" + filePath + "] to " + "[" + outputFile + "]"
     try {
         ZipFile zipFile = new ZipFile(apkFile)
         ZipEntry zipEntry = zipFile.getEntry(filePath)
@@ -430,12 +431,13 @@ def copyFileFromApk(apkFile, String filePath, String outputFile) {
         int read = 0;
         byte[] buf = new byte[1024];
         while ((read = is.read(buf)) > 0) {
-            fos.write(buf)
+            fos.write(buf, 0, read)
         }
         fos.close()
         is.close();
         return true
     } catch (Exception e) {
+        e.printStackTrace()
     }
     return false
 }
