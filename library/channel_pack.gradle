@@ -669,14 +669,19 @@ def getAXMLEditJarFile(flavorName) {
 }
 
 def getAXMLEditJarFile2(flavorName) {
-    def aXmlEditJarFile = project.rootProject.buildscript.configurations.classpath*.toURI().find {
-        URI uri -> new File(uri).name == 'axmleditor-1.0.0.jar'
+    try {
+        def aXmlEditJarFile = project.rootProject.buildscript.configurations.classpath*.toURI().find {
+            URI uri -> new File(uri).name == 'axmleditor-1.0.0.jar'
+        }
+        if (aXmlEditJarFile == null || !new File(aXmlEditJarFile).exists()) {
+            System.err.println ":${project.name}:getAXMLEditorJarFile [" + flavorName + "] Should add dependencies [classpath 'cn.wjdiankong:axmleditor:1.0.0'] in buildscript.dependencies"
+            return null
+        }
+        return new File(aXmlEditJarFile).getAbsolutePath()
+    } catch (Exception e) {
+        e.printStackTrace()
     }
-    if (aXmlEditJarFile == null || !new File(aXmlEditJarFile).exists()) {
-        System.err.println ":${project.name}:getAXMLEditorJarFile [" + flavorName + "] Should add dependencies [classpath 'cn.wjdiankong:axmleditor:1.0.0'] in buildscript.dependencies"
-        return null
-    }
-    return new File(aXmlEditJarFile).getAbsolutePath()
+    return null
 }
 
 def toUpperCaseFirstOne(String s) {
