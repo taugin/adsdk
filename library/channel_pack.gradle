@@ -45,7 +45,7 @@ afterEvaluate {
                 def flavorObj = variant.productFlavors[0]
                 parseChannelConfig(flavorObj, outputFile)
                 def channelFileName = getChannelFileName(flavorObj != null ? flavorObj.name : null)
-                println ":${project.name}:applicationVariants [" + (flavorObj != null ? flavorObj.name : "Default") + "] ChannelFileName : " + channelFileName
+                println ":${project.name}:applicationVariant [" + (flavorObj != null ? flavorObj.name : "official") + "] ChannelFileName : " + channelFileName
             }
         }
     }
@@ -140,12 +140,12 @@ def getApplicationId(flavor) {
 
 def getChannelFileName(flavor) {
     def appId = getApplicationId(flavor)
-    println ":${project.name}:getChannelFileName [" + flavor + "] Package Name : " + appId
+    println ":${project.name}:getChannelFileName [" + (flavor != null ? flavor.name : "official") + "] Package Name : " + appId
     if (appId == null || appId.trim().length() == 0) {
         return null
     }
     def pkgMd5 = AesManager.string2MD5(appId)
-    println ":${project.name}:getChannelFileName [" + flavor + "] Package MD5 : " + pkgMd5
+    println ":${project.name}:getChannelFileName [" + (flavor != null ? flavor.name : "official") + "] Package MD5 : " + pkgMd5
     if (pkgMd5 == null || pkgMd5.trim().length() == 0) {
         return null
     }
