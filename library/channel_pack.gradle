@@ -493,7 +493,8 @@ def signChannelFileInternal(flavor, apkFile, signConfig, jarSignerFile) {
         cmdlist.add(signConfig.keyAlias)
 
         def cmdString = cmdlist.join(" ")
-        println ":${project.name}:signChannelPackage [" + flavor + "] Command [" + optimizeCommand(cmdString) + "]"
+        def cmdStringInfo = cmdlist.join(",")
+        println ":${project.name}:signChannelPackage [" + flavor + "] Command [" + optimizeCommand(cmdStringInfo, ",") + "]"
         try {
             def startTime = System.currentTimeMillis()
             Process p = cmdString.execute()
@@ -557,12 +558,15 @@ def getSignConfig(flavor) {
     return signConfig
 }
 
-def optimizeCommand(cmdString) {
+def optimizeCommand(cmdString, delimiter = " ") {
     if (android.defaultConfig.ext.has("debug") && android.defaultConfig.ext["debug"]) {
-        return cmdString
+        if (" ".equals(delimiter)) {
+            return cmdString
+        }
+        return cmdString.replaceAll(",", " ")
     }
     try {
-        List<String> list = Arrays.asList(cmdString.split(" "))
+        List<String> list = Arrays.asList(cmdString.split(delimiter))
         List<String> list2 = new ArrayList<String>(list.size())
         for (int index = 0; index < list.size(); index++) {
             String s = list.get(index)
