@@ -103,6 +103,12 @@ public class FBLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         AdSize size = ADSIZE.get(adSize);
         setBannerSize(adSize);
@@ -243,6 +249,12 @@ public class FBLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         fbInterstitial = new InterstitialAd(mContext, mPidConfig.getPid());
         InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
@@ -374,6 +386,11 @@ public class FBLoader extends AbstractSdkLoader {
             return;
         }
 
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         printInterfaceLog(ACTION_LOAD);
         nativeAd = new NativeAd(mContext, mPidConfig.getPid());
@@ -482,6 +499,12 @@ public class FBLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         loadingRewardedVideoAd = new RewardedVideoAd(mContext, mPidConfig.getPid());
         RewardedVideoAdListener rewardedVideoAdListener = new RewardedVideoAdListener() {

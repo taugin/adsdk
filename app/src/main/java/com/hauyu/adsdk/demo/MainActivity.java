@@ -21,6 +21,7 @@ import com.rabbit.adsdk.AdExtra;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.AdSdk;
+import com.rabbit.adsdk.listener.AdLoaderFilter;
 import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.utils.Utils;
 
@@ -63,6 +64,12 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = getApplicationContext();
+        AdSdk.get(this).setAdLoaderFilter(new AdLoaderFilter() {
+            @Override
+            public boolean doFilter(String pidName, String sdk, String type) {
+                return false;
+            }
+        });
     }
 
     private boolean hasEnable() {

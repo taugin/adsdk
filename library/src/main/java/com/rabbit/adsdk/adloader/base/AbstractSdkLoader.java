@@ -11,6 +11,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.rabbit.adsdk.adloader.core.AdLoaderManager;
 import com.rabbit.adsdk.adloader.listener.IManagerListener;
 import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
@@ -18,6 +19,7 @@ import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.CheatManager;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
+import com.rabbit.adsdk.listener.AdLoaderFilter;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.stat.IEvent;
@@ -295,6 +297,25 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void printInterfaceLog(String action) {
         Log.iv(Log.TAG, action + " | " + getSdkName() + " | " + getAdType() + " | " + getAdPlaceName() + " | " + getPid());
+    }
+
+    /**
+     * 通过placename， sdk， type过滤此广告是否需要加载
+     * @return
+     */
+    protected boolean isFilter() {
+        AdLoaderFilter adLoaderFilter = AdLoaderManager.get(mContext).getAdLoaderFilter();
+        if (adLoaderFilter != null) {
+            return adLoaderFilter.doFilter(getAdPlaceName(), getSdkName(), getAdType());
+        }
+        return false;
+    }
+
+    protected void processAdLoaderFilter() {
+        Log.iv(Log.TAG, "loader is filter : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+        if (getAdListener() != null) {
+            getAdListener().onAdFailed(Constant.AD_ERROR_FILTERED);
+        }
     }
 
     protected OnAdBaseListener getAdListener() {

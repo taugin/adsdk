@@ -135,6 +135,12 @@ public class AdmobLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         setBannerSize(adSize);
         AdSize size = ADSIZE.get(adSize);
@@ -287,6 +293,12 @@ public class AdmobLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         interstitialAd = new InterstitialAd(mContext);
         interstitialAd.setAdUnitId(mPidConfig.getPid());
@@ -402,6 +414,12 @@ public class AdmobLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
 
         loadingRewardedAd = new RewardedAd(mContext, mPidConfig.getPid());
@@ -564,6 +582,12 @@ public class AdmobLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         try {
             if (nativeAdList != null && !nativeAdList.isEmpty()) {
                 nativeAdList.clear();

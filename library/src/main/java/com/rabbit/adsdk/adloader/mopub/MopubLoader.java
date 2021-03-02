@@ -156,6 +156,12 @@ public class MopubLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         setBannerSize(adSize);
         boolean activityContext = false;
@@ -306,6 +312,12 @@ public class MopubLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         moPubInterstitial = new MoPubInterstitial(activity, mPidConfig.getPid());
         moPubInterstitial.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
@@ -450,6 +462,12 @@ public class MopubLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         MoPubRewardedVideos.setRewardedVideoListener(new MoPubRewardedVideoListener() {
             @Override
@@ -588,6 +606,12 @@ public class MopubLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         MoPubNative moPubNative = new MoPubNative(mContext, mPidConfig.getPid(), new MoPubNative.MoPubNativeNetworkListener() {
 

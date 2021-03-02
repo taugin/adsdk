@@ -108,6 +108,12 @@ public class AdDfpLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         setBannerSize(adSize);
         AdSize size = ADSIZE.get(adSize);
@@ -259,6 +265,12 @@ public class AdDfpLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         interstitialAd = new PublisherInterstitialAd(mContext);
         interstitialAd.setAdUnitId(mPidConfig.getPid());
@@ -382,6 +394,12 @@ public class AdDfpLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
         loadingBuilder = new AdLoader.Builder(mContext, mPidConfig.getPid());
         loadingBuilder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
@@ -508,6 +526,12 @@ public class AdDfpLoader extends AbstractSdkLoader {
             processCheatUser();
             return;
         }
+
+        if (isFilter()) {
+            processAdLoaderFilter();
+            return;
+        }
+
         setLoading(true, STATE_REQUEST);
 
         loadingRewardedAd = new RewardedAd(mContext, mPidConfig.getPid());

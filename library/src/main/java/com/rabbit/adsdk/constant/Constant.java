@@ -152,6 +152,11 @@ public class Constant {
      */
     public static final int AD_ERROR_CHEAT = 16;
 
+    /**
+     * 判断adloader是否被过滤
+     */
+    public static final int AD_ERROR_FILTERED = 17;
+
     public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
 
     public static final SimpleDateFormat SDF_LEFT_TIME = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
