@@ -145,7 +145,11 @@ import java.util.Locale;
 
     private boolean isLocalPriority() {
         try {
-            return TextUtils.equals(Utils.readConfig(mContext, "local_priority").trim(), "true");
+            String localPriority = Utils.readConfig(mContext, "local_priority");
+            if (localPriority != null) {
+                localPriority = localPriority.trim();
+            }
+            return TextUtils.equals(localPriority, "true");
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
