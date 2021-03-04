@@ -112,12 +112,23 @@ public class MopubLoader extends AbstractSdkLoader {
             Log.iv(Log.TAG, "config : " + config);
             if (config != null && !config.isEmpty()) {
                 for (Map.Entry<String, Map<String, String>> entry : config.entrySet()) {
-                    builder.withMediatedNetworkConfiguration(entry.getKey(), entry.getValue());
+                    String key = entry.getKey();
+                    if (!TextUtils.isEmpty(key) && !TextUtils.equals(key, "common_config")) {
+                        builder.withMediatedNetworkConfiguration(entry.getKey(), entry.getValue());
+                    }
                 }
-            }
-            String debugLevel = DataManager.get(mContext).getString(Constant.AD_MEDIATION_DEBUG);
-            if (TextUtils.equals(debugLevel, "true")) {
-                builder.withLogLevel(MoPubLog.LogLevel.DEBUG);
+                Map<String, String> commonConfig = config.get("common_config");
+                if (commonConfig != null) {
+                    String logLevel = commonConfig.get("log_level");
+                    Log.iv(Log.TAG, "log_level : " + logLevel);
+                    if (TextUtils.equals(logLevel, "debug")) {
+                        builder.withLogLevel(MoPubLog.LogLevel.DEBUG);
+                    } else if (TextUtils.equals(logLevel, "info")) {
+                        builder.withLogLevel(MoPubLog.LogLevel.INFO);
+                    } else if (TextUtils.equals(logLevel, "none")) {
+                        builder.withLogLevel(MoPubLog.LogLevel.NONE);
+                    }
+                }
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
