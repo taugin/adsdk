@@ -19,6 +19,7 @@ import com.rabbit.adsdk.listener.OnAdSdkListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.utils.Utils;
+import com.rabbit.sunny.BuildConfig;
 import com.rabbit.sunny.MView;
 
 import org.json.JSONArray;
@@ -89,7 +90,7 @@ public class AdSdk {
      * @return
      */
     public String getSdkVersion() {
-        return Utils.getStringById(mContext, "adsdk_version_name");
+        return BuildConfig.VERSION_NAME;
     }
 
     /**
