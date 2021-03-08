@@ -67,13 +67,9 @@ public class SpLoader extends AbstractSdkLoader {
             }
             return;
         }
-        if (isUserCheat()) {
-            processCheatUser();
-            return;
-        }
 
-        if (isFilter()) {
-            processAdLoaderFilter();
+        // 检测通用配置是否符合
+        if (!checkCommonConfig()) {
             return;
         }
 
@@ -153,13 +149,9 @@ public class SpLoader extends AbstractSdkLoader {
             }
             return;
         }
-        if (isUserCheat()) {
-            processCheatUser();
-            return;
-        }
 
-        if (isFilter()) {
-            processAdLoaderFilter();
+        // 检测通用配置是否符合
+        if (!checkCommonConfig()) {
             return;
         }
 

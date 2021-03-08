@@ -279,19 +279,42 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             Log.e(Log.TAG, "pid is empty");
             return false;
         }
-        int maxRatio = mPidConfig.getRatio();
-        int randomRatio = sRandom.nextInt(100);
-        return randomRatio < maxRatio;
+        return true;
     }
 
-    protected void processCheatUser() {
+    /**
+     * 检测通用配置
+     * @return
+     */
+    protected boolean checkCommonConfig() {
+        // 检测作弊用户
+        if (isUserCheat()) {
+            processCheatUser();
+            return false;
+        }
+
+        // 检测adLoader是否被过滤
+        if (isAdFilter()) {
+            processAdLoaderFilter();
+            return false;
+        }
+
+        // 是否满足展示比率
+        if (!isImpByRatio()) {
+            processImpByRatio();
+            return false;
+        }
+        return true;
+    }
+
+    private void processCheatUser() {
         Log.d(Log.TAG, "cheat user : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
         if (getAdListener() != null) {
             getAdListener().onAdFailed(Constant.AD_ERROR_CHEAT);
         }
     }
 
-    protected boolean isUserCheat() {
+    private boolean isUserCheat() {
         return CheatManager.get(mContext).isUserCheat(getSdkName(), getAdPlaceName());
     }
 
@@ -303,7 +326,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
      * 通过placename， sdk， type过滤此广告是否需要加载
      * @return
      */
-    protected boolean isFilter() {
+    private boolean isAdFilter() {
         AdLoaderFilter adLoaderFilter = AdLoaderManager.get(mContext).getAdLoaderFilter();
         if (adLoaderFilter != null) {
             return adLoaderFilter.doFilter(getAdPlaceName(), getSdkName(), getAdType());
@@ -311,10 +334,24 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return false;
     }
 
-    protected void processAdLoaderFilter() {
+    private void processAdLoaderFilter() {
         Log.iv(Log.TAG, "loader is filter : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
         if (getAdListener() != null) {
             getAdListener().onAdFailed(Constant.AD_ERROR_FILTERED);
+        }
+    }
+
+    private boolean isImpByRatio() {
+        int maxRatio = mPidConfig.getRatio();
+        int randomRatio = sRandom.nextInt(100);
+        Log.iv(Log.TAG, "random ratio : " + randomRatio + " , max ratio : " + maxRatio);
+        return randomRatio < maxRatio;
+    }
+
+    private void processImpByRatio() {
+        Log.iv(Log.TAG, "loader not ratio : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+        if (getAdListener() != null) {
+            getAdListener().onAdFailed(Constant.AD_ERROR_RATIO);
         }
     }
 
