@@ -56,7 +56,7 @@ public class CheatManager {
             long impCount = Utils.getLong(mContext, prefKey, 0);
             prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, placeName);
             long clickCount = Utils.getLong(mContext, prefKey, 0);
-            String cheatConfigKey = "user_cheat_config";
+            String cheatConfigKey = "cheat_config";
             String cheatConfigString = AdSdk.get(mContext).getString(cheatConfigKey);
             if (!TextUtils.isEmpty(cheatConfigString)) {
                 int minImp = 0;
