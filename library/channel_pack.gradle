@@ -61,6 +61,7 @@ def generateMulChannel(flavor) {
     def channels = android.defaultConfig.ext.has("app_channels") ? android.defaultConfig.ext.app_channels : null
     def channelFileName = android.defaultConfig.ext.has("channel_file_name") ? android.defaultConfig.ext.channel_file_name : null
     def channelKey = android.defaultConfig.ext.has("channel_key") ? android.defaultConfig.ext.channel_key : null
+    def channelCfg = android.defaultConfig.ext.has("channel_cfg") ? android.defaultConfig.ext.channel_cfg : null
     if (flavor != null) {
         flavorName = flavor.name
         if (flavor.ext != null && flavor.ext.has("app_channels") && flavor.ext.app_channels != null) {
@@ -71,6 +72,9 @@ def generateMulChannel(flavor) {
         }
         if (flavor.ext != null && flavor.ext.has("channel_key") && flavor.ext.channel_key != null) {
             channelKey = flavor.ext.channel_key
+        }
+        if (flavor.ext != null && flavor.ext.has("channel_cfg") && flavor.ext.channel_cfg != null) {
+            channelCfg = flavor.ext.channel_cfg
         }
     }
     if (channels == null || channels.isEmpty()) {
@@ -114,7 +118,7 @@ def generateMulChannel(flavor) {
     channels.each {
         copyChannelApkFile(basePackage, channels_files[it])
         appendChannelsFile(basePackage, it, channels_files[it], releaseDir, flavorName, aaptFile, channelFileName)
-        if (channelKey != null && channelKey.trim().length() > 0) {
+        if ((channelKey instanceof String && channelKey.trim().length() > 0) || (channelKey instanceof List && channelKey.size() > 0)) {
             appendMetaDataToAXml(basePackage, it, channels_files[it], releaseDir, flavorName, channelKey)
         }
         signChannelFile(flavorName, channels_files[it], aaptFile)
@@ -222,27 +226,39 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
         System.err.println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] AXMLEditor.jar [" + aXMLEditorJarFile + "] is not exists"
         return
     }
+
+    def allChannelKeys = []
+    if (channelKey instanceof List) {
+        allChannelKeys.addAll(channelKey)
+    } else if (channelKey instanceof String) {
+        allChannelKeys.add(channelKey)
+    }
+
     println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] AXMLEditor [" + aXMLEditorJarFile + "]"
     File xmlFile = new File(releaseDir, "AndroidManifest.xml")
     println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Copy [" + xmlFile.getAbsolutePath() + "]"
     copyFileFromApk(baseApk, flavorName, "AndroidManifest.xml", xmlFile.getAbsolutePath())
     // 删除原来meta-data
-    def deleteMetaData = "java -jar " + aXMLEditorJarFile + " -tag -r meta-data " + channelKey + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + optimizeCommand(deleteMetaData) + "]"
-    try {
-        Process p = deleteMetaData.execute()
-        p.waitFor(20, TimeUnit.SECONDS)
-        p.destroy();
-        println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Delete Meta Data"
-    } catch (Exception e) {
-        e.printStackTrace()
+    allChannelKeys.each {
+        def deleteMetaData = "java -jar " + aXMLEditorJarFile + " -tag -r meta-data " + it + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
+        println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + optimizeCommand(deleteMetaData) + "]"
+        try {
+            Process p = deleteMetaData.execute()
+            p.waitFor(20, TimeUnit.SECONDS)
+            p.destroy();
+            println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Delete Meta Data"
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
     }
     // 增加新的meta-data
-    def tempMetaDataFile = new File(releaseDir, "meta-data-channal.xml")
+    def tempMetaDataFile = new File(releaseDir, "meta-data-channel.xml")
     FileWriter fileWriter = new FileWriter(tempMetaDataFile, false)
-    String channelInfo = String.format(Locale.getDefault(), "<meta-data android:name=\"%s\" android:value=\"%s\"/>", channelKey, channel)
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] MetaData [" + channelInfo + "]"
-    fileWriter.write(channelInfo)
+    allChannelKeys.each {
+        String channelInfo = String.format(Locale.getDefault(), "<meta-data android:name=\"%s\" android:value=\"%s\"/>", it, channel)
+        println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] MetaData [" + channelInfo + "]"
+        fileWriter.write(channelInfo)
+    }
     fileWriter.close()
     def appendMetaData = "java -jar " + aXMLEditorJarFile + " -tag -i " + tempMetaDataFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
     println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + optimizeCommand(appendMetaData) + "]"
