@@ -156,3 +156,28 @@ afterEvaluate {
     }
 }
 */
+
+apply plugin: 'maven-publish'
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'cn.wjdiankong'
+            artifactId 'axmleditor'
+            version '1.0.1'
+            artifact 'D:\\github\\tools\\lib\\AXMLEditor2.jar'
+        }
+    }
+    repositories {
+        def url_release = "https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/"
+        def url_snapshot = "https://packages.aliyun.com/maven/repository/2017289-snapshot-sJZcRc/"
+        def username1 = "5ef3647994513bd170c627be"
+        def password1 = "xcgJSde4Zuo4"
+        maven {
+            url url_release
+            credentials {
+                username = username1
+                password = password1
+            }
+        }
+    }
+}
