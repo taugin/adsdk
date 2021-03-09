@@ -434,7 +434,11 @@ def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, 
             } catch (Exception e) {
                 e.printStackTrace()
             }
+        } else {
+            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Do Not Find Label ResId : [" + label + "]"
         }
+    } else {
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] No Need Modify Label ResId"
     }
     // 修改icon属性
     if (icon != null && icon.trim().length() > 0) {
@@ -479,7 +483,11 @@ def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, 
             } catch (Exception e) {
                 e.printStackTrace()
             }
+        } else {
+            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Do Not Find Icon ResId : [" + icon + "]"
         }
+    } else {
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] No Need Modify Icon ResId"
     }
     println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] >>>>>>>>> Modify Application Attribution Complete <<<<<<<<<\n"
 }
@@ -639,7 +647,7 @@ def readContentFromApk(apkFile, filePath) {
  * @param outputFile
  */
 def copyManifestFromApk(apkFile, flavorName, String filePath, String outputFile, channel) {
-    println ":${project.name}:copyManifestFromApk [" + flavorName + "][" + channel + "] From [" + filePath + "] to " + "[" + outputFile + "]"
+    println ":${project.name}  :copyManifestFromApk [" + flavorName + "][" + channel + "] From [" + filePath + "] to " + "[" + outputFile + "]"
     try {
         ZipFile zipFile = new ZipFile(apkFile)
         ZipEntry zipEntry = zipFile.getEntry(filePath)
