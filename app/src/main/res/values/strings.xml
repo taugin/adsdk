@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">AdSdkDemo</string>
-    <string name="app_name2">AdSdkDemo2</string>
+    <string name="app_name_vivo">AdSdkVivo</string>
+    <string name="app_name_oppo">AdSdkOppo</string>
 </resources>
