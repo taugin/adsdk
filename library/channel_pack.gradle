@@ -392,143 +392,15 @@ def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, 
     def label = map["label"]
     def icon = map["icon"]
     def roundIcon = map["roundIcon"]
-    modifyLabelResource(label, channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile)
-    modifyIconResource(icon, channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile)
-    modifyRoundIconResource(roundIcon, channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile)
+    modifyAttrResource(label, "label", channel, channelApk, flavorName, aaptFile, xmlFile, aXMLEditorJarFile)
+    modifyAttrResource(icon, "icon", channel, channelApk, flavorName, aaptFile, xmlFile, aXMLEditorJarFile)
+    modifyAttrResource(roundIcon, "roundIcon", channel, channelApk, flavorName, aaptFile, xmlFile, aXMLEditorJarFile)
     println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] >>>>>>>>> Modify Application Attribution Complete <<<<<<<<<\n"
 }
 
 /**
- * 修改label资源
- * @param label
- * @param channel
- * @param channelApk
- * @param flavorName
- * @param aaptFile
- * @param channelCfg
- * @param xmlFile
- * @param aXMLEditorJarFile
- * @return
- */
-def modifyLabelResource(label, channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile) {
-    // 修改label属性
-    if (label != null && label.trim().length() > 0 && label.startsWith("string/")) {
-        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Modify Label Res [" + label + "]"
-        // 查询label对应的16进制
-        def aaptFile2 = aaptFile.replace("aapt", "aapt2")
-        if (!new File(aaptFile2).exists()) {
-            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
-            return
-        }
-        def cmd = aaptFile2 + " d resources " + channelApk
-        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(cmd) + "]"
-        def labelResId = null
-        try {
-            def result = cmd.execute().text.trim()
-            BufferedReader br = new BufferedReader(new StringReader(result))
-            def line = null
-            while((line = br.readLine()) != null) {
-                if (line.endsWith(label)) {
-                    line = line.trim()
-                    def split = line.split("\\s+| ")
-                    println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Split " + split + ""
-                    labelResId = split[1]
-                    break;
-                }
-            }
-            br.close()
-        } catch(Exception e) {
-            e.printStackTrace()
-        }
-        if (labelResId != null && labelResId.trim().length() > 0) {
-            labelResId = labelResId.toUpperCase()
-            labelResId = labelResId.replace("0X", "@")
-            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] LabelResId [" + labelResId + "]"
-            def modifyLabelString = "java -jar " + aXMLEditorJarFile + " -attr -m application package label " + labelResId + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
-            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(modifyLabelString) + "]"
-            try {
-                Process p = modifyLabelString.execute()
-                p.waitFor(20, TimeUnit.SECONDS)
-                p.destroy();
-                println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Modify Application Label"
-            } catch (Exception e) {
-                e.printStackTrace()
-            }
-        } else {
-            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Do Not Find Label ResId : [" + label + "]"
-        }
-    } else {
-        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] No Need Modify Label ResId"
-    }
-}
-
-/**
- * 修改icon资源
- * @param icon
- * @param channel
- * @param channelApk
- * @param flavorName
- * @param aaptFile
- * @param channelCfg
- * @param xmlFile
- * @param aXMLEditorJarFile
- * @return
- */
-def modifyIconResource(icon, channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile) {
-    // 修改icon属性
-    if (icon != null && icon.trim().length() > 0) {
-        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Modify Icon Res [" + icon + "]"
-        // 查询icon对应的16进制
-        def aaptFile2 = aaptFile.replace("aapt", "aapt2")
-        if (!new File(aaptFile2).exists()) {
-            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
-            return
-        }
-        def cmd = aaptFile2 + " d resources " + channelApk
-        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(cmd) + "]"
-        def iconResId = null
-        try {
-            def result = cmd.execute().text.trim()
-            BufferedReader br = new BufferedReader(new StringReader(result))
-            def line = null
-            while((line = br.readLine()) != null) {
-                if (line.endsWith(icon)) {
-                    line = line.trim()
-                    def split = line.split("\\s+| ")
-                    println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Split " + split + ""
-                    iconResId = split[1]
-                    break;
-                }
-            }
-            br.close()
-        } catch(Exception e) {
-            e.printStackTrace()
-        }
-        if (iconResId != null && iconResId.trim().length() > 0) {
-            iconResId = iconResId.toUpperCase()
-            iconResId = iconResId.replace("0X", "@")
-            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] IconResId [" + iconResId + "]"
-            def modifyIconString = "java -jar " + aXMLEditorJarFile + " -attr -m application package icon " + iconResId + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
-            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(modifyIconString) + "]"
-            try {
-                Process p = modifyIconString.execute()
-                p.waitFor(20, TimeUnit.SECONDS)
-                p.destroy();
-                println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Modify Application Icon"
-            } catch (Exception e) {
-                e.printStackTrace()
-            }
-        } else {
-            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Do Not Find Icon ResId : [" + icon + "]"
-        }
-    } else {
-        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] No Need Modify Icon ResId"
-    }
-}
-
-/**
  * 修改roundIcon资源
- * @param roundIcon
+ * @param attrValue
  * @param channel
  * @param channelApk
  * @param flavorName
@@ -538,29 +410,30 @@ def modifyIconResource(icon, channel, channelApk, flavorName, aaptFile, channelC
  * @param aXMLEditorJarFile
  * @return
  */
-def modifyRoundIconResource(roundIcon, channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile) {
+def modifyAttrResource(attrValue, attrName, channel, channelApk, flavorName, aaptFile, xmlFile, aXMLEditorJarFile) {
+    println "\n:${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] >>>>>>>>> Modify Attribution Resource Start <<<<<<<<<"
     // 修改icon属性
-    if (roundIcon != null && roundIcon.trim().length() > 0) {
-        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Modify RoundIcon Res [" + roundIcon + "]"
+    if (attrValue != null && attrValue.trim().length() > 0) {
+        println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Modify " + attrName + " Resource [" + attrValue + "]"
         // 查询icon对应的16进制
         def aaptFile2 = aaptFile.replace("aapt", "aapt2")
         if (!new File(aaptFile2).exists()) {
-            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
+            println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
             return
         }
         def cmd = aaptFile2 + " d resources " + channelApk
-        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(cmd) + "]"
-        def roundIconResId = null
+        println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(cmd) + "]"
+        def attrResourceId = null
         try {
             def result = cmd.execute().text.trim()
             BufferedReader br = new BufferedReader(new StringReader(result))
             def line = null
             while((line = br.readLine()) != null) {
-                if (line.endsWith(roundIcon)) {
+                if (line.endsWith(attrValue)) {
                     line = line.trim()
                     def split = line.split("\\s+| ")
-                    println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Split " + split + ""
-                    roundIconResId = split[1]
+                    println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Split " + split + ""
+                    attrResourceId = split[1]
                     break;
                 }
             }
@@ -568,26 +441,27 @@ def modifyRoundIconResource(roundIcon, channel, channelApk, flavorName, aaptFile
         } catch(Exception e) {
             e.printStackTrace()
         }
-        if (roundIconResId != null && roundIconResId.trim().length() > 0) {
-            roundIconResId = roundIconResId.toUpperCase()
-            roundIconResId = roundIconResId.replace("0X", "@")
-            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] RoundIconResId [" + roundIconResId + "]"
-            def modifyIconString = "java -jar " + aXMLEditorJarFile + " -attr -m application package roundIcon " + roundIconResId + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
-            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(modifyIconString) + "]"
+        if (attrResourceId != null && attrResourceId.trim().length() > 0) {
+            attrResourceId = attrResourceId.toUpperCase()
+            attrResourceId = attrResourceId.replace("0X", "@")
+            println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] " + attrName + " [" + attrResourceId + "]"
+            def modifyIconString = "java -jar " + aXMLEditorJarFile + " -attr -m application package " + attrName + " " + attrResourceId + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
+            println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(modifyIconString) + "]"
             try {
                 Process p = modifyIconString.execute()
                 p.waitFor(20, TimeUnit.SECONDS)
                 p.destroy();
-                println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Modify Application RoundIcon"
+                println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Modify Application " + attrName
             } catch (Exception e) {
                 e.printStackTrace()
             }
         } else {
-            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Do Not Find RoundIcon ResId : [" + roundIcon + "]"
+            println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Do Not Find " + attrName + " ResId : [" + attrValue + "]"
         }
     } else {
-        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] No Need Modify RoundIcon ResId"
+        println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] No Need Modify " + attrName + "Resource Id"
     }
+    println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] >>>>>>>>> Modify Attribution Resource End <<<<<<<<<\n"
 }
 
 /**
