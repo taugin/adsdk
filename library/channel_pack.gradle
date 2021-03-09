@@ -391,6 +391,26 @@ def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, 
     }
     def label = map["label"]
     def icon = map["icon"]
+    def roundIcon = map["roundIcon"]
+    modifyLabelResource(label, channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile)
+    modifyIconResource(icon, channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile)
+    modifyRoundIconResource(roundIcon, channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile)
+    println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] >>>>>>>>> Modify Application Attribution Complete <<<<<<<<<\n"
+}
+
+/**
+ * 修改label资源
+ * @param label
+ * @param channel
+ * @param channelApk
+ * @param flavorName
+ * @param aaptFile
+ * @param channelCfg
+ * @param xmlFile
+ * @param aXMLEditorJarFile
+ * @return
+ */
+def modifyLabelResource(label, channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile) {
     // 修改label属性
     if (label != null && label.trim().length() > 0 && label.startsWith("string/")) {
         println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Modify Label Res [" + label + "]"
@@ -440,6 +460,21 @@ def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, 
     } else {
         println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] No Need Modify Label ResId"
     }
+}
+
+/**
+ * 修改icon资源
+ * @param icon
+ * @param channel
+ * @param channelApk
+ * @param flavorName
+ * @param aaptFile
+ * @param channelCfg
+ * @param xmlFile
+ * @param aXMLEditorJarFile
+ * @return
+ */
+def modifyIconResource(icon, channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile) {
     // 修改icon属性
     if (icon != null && icon.trim().length() > 0) {
         println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Modify Icon Res [" + icon + "]"
@@ -489,7 +524,70 @@ def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, 
     } else {
         println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] No Need Modify Icon ResId"
     }
-    println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] >>>>>>>>> Modify Application Attribution Complete <<<<<<<<<\n"
+}
+
+/**
+ * 修改roundIcon资源
+ * @param roundIcon
+ * @param channel
+ * @param channelApk
+ * @param flavorName
+ * @param aaptFile
+ * @param channelCfg
+ * @param xmlFile
+ * @param aXMLEditorJarFile
+ * @return
+ */
+def modifyRoundIconResource(roundIcon, channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile) {
+    // 修改icon属性
+    if (roundIcon != null && roundIcon.trim().length() > 0) {
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Modify RoundIcon Res [" + roundIcon + "]"
+        // 查询icon对应的16进制
+        def aaptFile2 = aaptFile.replace("aapt", "aapt2")
+        if (!new File(aaptFile2).exists()) {
+            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
+            return
+        }
+        def cmd = aaptFile2 + " d resources " + channelApk
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(cmd) + "]"
+        def roundIconResId = null
+        try {
+            def result = cmd.execute().text.trim()
+            BufferedReader br = new BufferedReader(new StringReader(result))
+            def line = null
+            while((line = br.readLine()) != null) {
+                if (line.endsWith(roundIcon)) {
+                    line = line.trim()
+                    def split = line.split("\\s+| ")
+                    println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Split " + split + ""
+                    roundIconResId = split[1]
+                    break;
+                }
+            }
+            br.close()
+        } catch(Exception e) {
+            e.printStackTrace()
+        }
+        if (roundIconResId != null && roundIconResId.trim().length() > 0) {
+            roundIconResId = roundIconResId.toUpperCase()
+            roundIconResId = roundIconResId.replace("0X", "@")
+            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] RoundIconResId [" + roundIconResId + "]"
+            def modifyIconString = "java -jar " + aXMLEditorJarFile + " -attr -m application package roundIcon " + roundIconResId + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
+            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(modifyIconString) + "]"
+            try {
+                Process p = modifyIconString.execute()
+                p.waitFor(20, TimeUnit.SECONDS)
+                p.destroy();
+                println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Modify Application RoundIcon"
+            } catch (Exception e) {
+                e.printStackTrace()
+            }
+        } else {
+            println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Do Not Find RoundIcon ResId : [" + roundIcon + "]"
+        }
+    } else {
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] No Need Modify RoundIcon ResId"
+    }
 }
 
 /**
