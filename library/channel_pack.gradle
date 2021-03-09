@@ -145,7 +145,7 @@ def generateMulChannel(flavor) {
     String releaseDir = new File(basePackage).getParent()
     println ":${project.name}:generateMulChannel [" + flavorName + "] Channel " + channels
     println "**************************************************************************************************************************************"
-    println ":${project.name}:generateMulChannel [" + flavorName + "] Channel >>>>>>>>> Start Generate Multiple Channel ApkFile Start <<<<<<<<<"
+    println ":${project.name}:generateMulChannel [" + flavorName + "] Channel >>>>>>>>> Generate Multiple Channel ApkFile Start <<<<<<<<<"
     channels.each {
         copyChannelApkFile(basePackage, channels_files[it])
         appendChannelsFile(basePackage, it, channels_files[it], releaseDir, flavorName, aaptFile, channelFileName)
@@ -153,7 +153,7 @@ def generateMulChannel(flavor) {
         signChannelApkFile(flavorName, channels_files[it], aaptFile, it)
         println ":${project.name}:generateMulChannel [" + flavorName + "][" + it + "] ***********************************************************\n"
     }
-    println ":${project.name}:generateMulChannel [" + flavorName + "] Channel >>>>>>>>> Start Generate Multiple Channel ApkFile Complete <<<<<<<<<"
+    println ":${project.name}:generateMulChannel [" + flavorName + "] Channel >>>>>>>>> Generate Multiple Channel ApkFile Complete <<<<<<<<<"
     println "**************************************************************************************************************************************"
 }
 
@@ -398,7 +398,7 @@ def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, 
     def icon = map["icon"]
     // 修改label属性
     if (label != null && label.trim().length() > 0 && label.startsWith("string/")) {
-        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Label [" + label + "]"
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Modify Label Res [" + label + "]"
         // 查询label对应的16进制
         def aaptFile2 = aaptFile.replace("aapt", "aapt2")
         if (!new File(aaptFile2).exists()) {
@@ -443,7 +443,7 @@ def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, 
     }
     // 修改icon属性
     if (icon != null && icon.trim().length() > 0) {
-        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Icon [" + icon + "]"
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] Modify Icon Res [" + icon + "]"
         // 查询icon对应的16进制
         def aaptFile2 = aaptFile.replace("aapt", "aapt2")
         if (!new File(aaptFile2).exists()) {
@@ -563,19 +563,19 @@ def signChannelApkFile(flavorName, apkFile, aaptFile, channel) {
     println "\n:${project.name}:signChannelApkFile [" + flavorName + "][" + channel + "] >>>>>>>>> Sign Channel File Start <<<<<<<<<"
     def signConfig = getSignConfig(flavorName)
     if (signConfig == null) {
-        System.err.println ":${project.name}:signChannelPackage [" + flavorName + "][" + channel + "] signConfig is Null"
+        System.err.println ":${project.name}:signChannelApkFile [" + flavorName + "][" + channel + "] signConfig is Null"
         return
     }
     if (!signConfig.hasProperty("storeFile")
             || !signConfig.hasProperty("storePassword")
             || !signConfig.hasProperty("keyAlias")
             || !signConfig.hasProperty("keyPassword")) {
-        System.err.println ":${project.name}:signChannelPackage [" + flavorName + "][" + channel + "] signConfig is not completion"
+        System.err.println ":${project.name}:signChannelApkFile [" + flavorName + "][" + channel + "] signConfig is not completion"
         return
     }
     def jarSignerFile = getJarSigner(flavorName, channel)
     if (jarSignerFile == null) {
-        System.err.println ":${project.name}:signChannelPackage [" + flavorName + "][" + channel + "] jarSignerFile is Null"
+        System.err.println ":${project.name}:signChannelApkFile [" + flavorName + "][" + channel + "] jarSignerFile is Null"
         return
     }
     if (deleteApkSignInfo(flavorName, apkFile, aaptFile, channel)) {
@@ -606,7 +606,7 @@ def deleteApkSignInfo(flavorName, apkFile, aaptFile, channel) {
             p.destroy();
             def endTime = System.currentTimeMillis()
             def signTime = (endTime - startTime) / 1000
-            println ":${project.name} :signChannelPackage [" + flavorName + "][" + channel + "] Command [Delete Sign Info Use Time " + signTime + "s]"
+            println ":${project.name} :deleteApkSignInfo [" + flavorName + "][" + channel + "] Command [Delete Sign Info Use Time " + signTime + "s]"
         } catch (Exception e) {
         }
     }
