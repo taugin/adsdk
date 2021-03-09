@@ -118,9 +118,7 @@ def generateMulChannel(flavor) {
     channels.each {
         copyChannelApkFile(basePackage, channels_files[it])
         appendChannelsFile(basePackage, it, channels_files[it], releaseDir, flavorName, aaptFile, channelFileName)
-        if ((channelKey instanceof String && channelKey.trim().length() > 0) || (channelKey instanceof List && channelKey.size() > 0)) {
-            appendMetaDataToAXml(basePackage, it, channels_files[it], releaseDir, flavorName, channelKey, aaptFile, channelCfg)
-        }
+        modifyAndroidManifest(basePackage, it, channels_files[it], releaseDir, flavorName, channelKey, aaptFile, channelCfg)
         signChannelFile(flavorName, channels_files[it], aaptFile)
         println ":${project.name}:generateMulChannel [" + flavorName + "] Channel ***********************************************************\n"
     }
@@ -215,17 +213,86 @@ def appendChannelsFile(baseApk, channel, channelApk, releaseDir, flavorName, aap
     tempAssets.delete()
 }
 
-def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, channelKey, aaptFile, channelCfg) {
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] BaseApk [" + baseApk + "]"
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Channel [" + channel + "] : " + new File(channelApk).getName()
-    def aXMLEditorJarFile = getAXMLEditJarFile2(flavorName)
-    if (aXMLEditorJarFile == null || !new File(aXMLEditorJarFile).exists()) {
-        aXMLEditorJarFile = getAXMLEditJarFile(flavorName)
+/**
+ * 修改AndroidManifest文件
+ * @param baseApk
+ * @param channel
+ * @param channelApk
+ * @param releaseDir
+ * @param flavorName
+ * @param channelKey
+ * @param aaptFile
+ * @param channelCfg
+ * @return
+ */
+def modifyAndroidManifest(baseApk, channel, channelApk, releaseDir, flavorName, channelKey, aaptFile, channelCfg) {
+    if (needModifyAndroidManifest(channelKey, channelCfg)) {
+        println ":${project.name}:modifyAndroidManifest [" + flavorName + "] BaseApk [" + baseApk + "]"
+        println ":${project.name}:modifyAndroidManifest [" + flavorName + "] Channel [" + channel + "] : " + new File(channelApk).getName()
+        def aXMLEditorJarFile = getAXMLEditJarFile2(flavorName)
+        if (aXMLEditorJarFile == null || !new File(aXMLEditorJarFile).exists()) {
+            aXMLEditorJarFile = getAXMLEditJarFile(flavorName)
+        }
+        if (aXMLEditorJarFile == null || !new File(aXMLEditorJarFile).exists()) {
+            System.err.println ":${project.name}:modifyAndroidManifest [" + flavorName + "] AXMLEditor.jar [" + aXMLEditorJarFile + "] is not exists"
+            return
+        }
+
+        println ":${project.name}:modifyAndroidManifest [" + flavorName + "] AXMLEditor [" + aXMLEditorJarFile + "]"
+        File xmlFile = new File(releaseDir, "AndroidManifest.xml")
+        println ":${project.name}:modifyAndroidManifest [" + flavorName + "] Copy [" + xmlFile.getAbsolutePath() + "]"
+        // 把AndroidManifest文件从apk中复制出来
+        copyFileFromApk(baseApk, flavorName, "AndroidManifest.xml", xmlFile.getAbsolutePath())
+
+        /////////////////////////////////////////////////////////
+        if ((channelKey instanceof String && channelKey.trim().length() > 0) || (channelKey instanceof List && channelKey.size() > 0)) {
+            appendMetaDataToAXml(channel, releaseDir, flavorName, channelKey, xmlFile, aXMLEditorJarFile)
+        }
+        // 修改label和icon
+        if (channelCfg instanceof Map && !channelCfg.isEmpty()) {
+            modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile)
+        }
+        /////////////////////////////////////////////////////////
+
+        // 删除AndroidManifest.xml文件
+        def deleteFileToApk = aaptFile + " r -v " + channelApk + " " + xmlFile.getName()
+        println ":${project.name}:modifyAndroidManifest [" + flavorName + "] Command [" + optimizeCommand(deleteFileToApk) + "]"
+        try {
+            Process p = deleteFileToApk.execute()
+            p.waitFor(20, TimeUnit.SECONDS)
+            p.destroy();
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
+
+        // 添加AndroidManifest.xml到apk文件
+        def appendFileToApk = aaptFile + " a -v " + channelApk + " " + xmlFile.getName()
+        def cwd = new File(baseApk).getParentFile()
+        println ":${project.name}:modifyAndroidManifest [" + flavorName + "] Command [" + optimizeCommand(appendFileToApk) + "]"
+        println ":${project.name}:modifyAndroidManifest [" + flavorName + "] Current [" + cwd + "]"
+        try {
+            Process p = appendFileToApk.execute(null, cwd)
+            p.waitFor(20, TimeUnit.SECONDS)
+            p.destroy();
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
+        xmlFile.delete()
+        println ":${project.name}:modifyAndroidManifest [" + flavorName + "] >>>>>>>>> Modify AndroidManifest Complete <<<<<<<<<"
     }
-    if (aXMLEditorJarFile == null || !new File(aXMLEditorJarFile).exists()) {
-        System.err.println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] AXMLEditor.jar [" + aXMLEditorJarFile + "] is not exists"
-        return
+}
+
+def needModifyAndroidManifest(channelKey, channelCfg) {
+    if ((channelKey instanceof String && channelKey.trim().length() > 0) || (channelKey instanceof List && channelKey.size() > 0)) {
+        return true
     }
+    if (channelCfg instanceof Map && !channelCfg.isEmpty()) {
+        return true
+    }
+    return false
+}
+
+def appendMetaDataToAXml(channel, releaseDir, flavorName, channelKey, xmlFile, aXMLEditorJarFile) {
 
     def allChannelKeys = []
     if (channelKey instanceof List) {
@@ -233,11 +300,6 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
     } else if (channelKey instanceof String) {
         allChannelKeys.add(channelKey)
     }
-
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] AXMLEditor [" + aXMLEditorJarFile + "]"
-    File xmlFile = new File(releaseDir, "AndroidManifest.xml")
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Copy [" + xmlFile.getAbsolutePath() + "]"
-    copyFileFromApk(baseApk, flavorName, "AndroidManifest.xml", xmlFile.getAbsolutePath())
     // 删除原来meta-data
     allChannelKeys.each {
         def deleteMetaData = "java -jar " + aXMLEditorJarFile + " -tag -r meta-data " + it + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
@@ -270,37 +332,8 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
     } catch (Exception e) {
         e.printStackTrace()
     }
-
-    // 修改label和icon
-    if (channelCfg instanceof Map) {
-        modifyApplicationAttribution(baseApk, channel, channelApk, releaseDir, flavorName, aaptFile, channelCfg, xmlFile)
-    }
-
-    // 删除AndroidManifest.xml文件
-    def deleteFileToApk = aaptFile + " r -v " + channelApk + " " + xmlFile.getName()
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + optimizeCommand(deleteFileToApk) + "]"
-    try {
-        Process p = deleteFileToApk.execute()
-        p.waitFor(20, TimeUnit.SECONDS)
-        p.destroy();
-    } catch (Exception e) {
-        e.printStackTrace()
-    }
-
-    // 添加AndroidManifest.xml到apk文件
-    def appendFileToApk = aaptFile + " a -v " + channelApk + " " + xmlFile.getName()
-    def cwd = new File(baseApk).getParentFile()
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Command [" + optimizeCommand(appendFileToApk) + "]"
-    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] Current [" + cwd + "]"
-    try {
-        Process p = appendFileToApk.execute(null, cwd)
-        p.waitFor(20, TimeUnit.SECONDS)
-        p.destroy();
-    } catch (Exception e) {
-        e.printStackTrace()
-    }
     tempMetaDataFile.delete()
-    xmlFile.delete()
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "] >>>>>>>>> Append MetaData to AndroidManifest Complete <<<<<<<<<"
 }
 
 /**
@@ -315,37 +348,29 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
  * @param xmlFile
  * @return
  */
-def modifyApplicationAttribution(baseApk, channel, channelApk, releaseDir, flavorName, aaptFile, channelCfg, xmlFile) {
-    println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] BaseApk [" + baseApk + "]"
-    println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Channel [" + channel + "] : " + new File(channelApk).getName()
-    def aXMLEditorJarFile = getAXMLEditJarFile2(flavorName)
-    if (aXMLEditorJarFile == null || !new File(aXMLEditorJarFile).exists()) {
-        aXMLEditorJarFile = getAXMLEditJarFile(flavorName)
-    }
-    if (aXMLEditorJarFile == null || !new File(aXMLEditorJarFile).exists()) {
-        System.err.println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] AXMLEditor.jar [" + aXMLEditorJarFile + "] is not exists"
-        return
-    }
+def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile) {
     if (channelCfg == null) {
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "] ChannelCfg is Empty"
         return
     }
     def map = channelCfg[channel]
     if (map == null) {
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "] ChannelMap is Empty"
         return
     }
     def label = map["label"]
     def icon = map["icon"]
     // 修改label属性
     if (label != null && label.trim().length() > 0 && label.startsWith("string/")) {
-        println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Label [" + label + "]"
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "] Label [" + label + "]"
         // 查询label对应的16进制
         def aaptFile2 = aaptFile.replace("aapt", "aapt2")
         if (!new File(aaptFile2).exists()) {
-            println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
+            println ":${project.name}:modifyAppAttribution [" + flavorName + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
             return
         }
         def cmd = aaptFile2 + " d resources " + channelApk
-        println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Command [" + optimizeCommand(cmd) + "]"
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "] Command [" + optimizeCommand(cmd) + "]"
         def labelResId = null
         try {
             def result = cmd.execute().text.trim()
@@ -355,7 +380,7 @@ def modifyApplicationAttribution(baseApk, channel, channelApk, releaseDir, flavo
                 if (line.endsWith(label)) {
                     line = line.trim()
                     def split = line.split("\\s+| ")
-                    println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] split " + split + ""
+                    println ":${project.name}:modifyAppAttribution [" + flavorName + "] Split " + split + ""
                     labelResId = split[1]
                     break;
                 }
@@ -367,15 +392,14 @@ def modifyApplicationAttribution(baseApk, channel, channelApk, releaseDir, flavo
         if (labelResId != null && labelResId.trim().length() > 0) {
             labelResId = labelResId.toUpperCase()
             labelResId = labelResId.replace("0X", "@")
-            println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] labelResId [" + labelResId + "]"
+            println ":${project.name}:modifyAppAttribution [" + flavorName + "] LabelResId [" + labelResId + "]"
             def modifyLabelString = "java -jar " + aXMLEditorJarFile + " -attr -m application package label " + labelResId + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
-            // println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Command [" + optimizeCommand(modifyLabelString) + "]"
-            println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Command [" + modifyLabelString + "]"
+            println ":${project.name}:modifyAppAttribution [" + flavorName + "] Command [" + optimizeCommand(modifyLabelString) + "]"
             try {
                 Process p = modifyLabelString.execute()
                 p.waitFor(20, TimeUnit.SECONDS)
                 p.destroy();
-                println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Modify Application Label"
+                println ":${project.name}:modifyAppAttribution [" + flavorName + "] Modify Application Label"
             } catch (Exception e) {
                 e.printStackTrace()
             }
@@ -383,15 +407,15 @@ def modifyApplicationAttribution(baseApk, channel, channelApk, releaseDir, flavo
     }
     // 修改icon属性
     if (icon != null && icon.trim().length() > 0) {
-        println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Icon [" + icon + "]"
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "] Icon [" + icon + "]"
         // 查询icon对应的16进制
         def aaptFile2 = aaptFile.replace("aapt", "aapt2")
         if (!new File(aaptFile2).exists()) {
-            println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
+            println ":${project.name}:modifyAppAttribution [" + flavorName + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
             return
         }
         def cmd = aaptFile2 + " d resources " + channelApk
-        println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Command [" + optimizeCommand(cmd) + "]"
+        println ":${project.name}:modifyAppAttribution [" + flavorName + "] Command [" + optimizeCommand(cmd) + "]"
         def iconResId = null
         try {
             def result = cmd.execute().text.trim()
@@ -401,7 +425,7 @@ def modifyApplicationAttribution(baseApk, channel, channelApk, releaseDir, flavo
                 if (line.endsWith(icon)) {
                     line = line.trim()
                     def split = line.split("\\s+| ")
-                    println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] split " + split + ""
+                    println ":${project.name}:modifyAppAttribution [" + flavorName + "] Split " + split + ""
                     iconResId = split[1]
                     break;
                 }
@@ -413,20 +437,20 @@ def modifyApplicationAttribution(baseApk, channel, channelApk, releaseDir, flavo
         if (iconResId != null && iconResId.trim().length() > 0) {
             iconResId = iconResId.toUpperCase()
             iconResId = iconResId.replace("0X", "@")
-            println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] iconResId [" + iconResId + "]"
+            println ":${project.name}:modifyAppAttribution [" + flavorName + "] IconResId [" + iconResId + "]"
             def modifyIconString = "java -jar " + aXMLEditorJarFile + " -attr -m application package icon " + iconResId + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
-            // println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Command [" + optimizeCommand(modifyIconString) + "]"
-            println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Command [" + modifyIconString + "]"
+            println ":${project.name}:modifyAppAttribution [" + flavorName + "] Command [" + optimizeCommand(modifyIconString) + "]"
             try {
                 Process p = modifyIconString.execute()
                 p.waitFor(20, TimeUnit.SECONDS)
                 p.destroy();
-                println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Modify Application Icon"
+                println ":${project.name}:modifyAppAttribution [" + flavorName + "] Modify Application Icon"
             } catch (Exception e) {
                 e.printStackTrace()
             }
         }
     }
+    println ":${project.name}:modifyAppAttribution [" + flavorName + "] >>>>>>>>> Modify Application Attribution Complete <<<<<<<<<"
 }
 
 /**
