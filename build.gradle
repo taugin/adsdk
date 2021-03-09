@@ -9,13 +9,6 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/releases' }
-        maven {
-            url 'https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/'
-            credentials {
-                username "5ef3647994513bd170c627be"
-                password "xcgJSde4Zuo4"
-            }
-        }
         mavenCentral()
         google()
         jcenter()
@@ -27,8 +20,6 @@ buildscript {
         classpath 'com.github.megatronking.stringfog:gradle-plugin:2.2.1'
         // 选用加解密算法库，默认实现了 xor 和 aes-cbc 两种简单算法，也可以使用自己的加解密库。
         classpath 'com.github.megatronking.stringfog:xor:1.1.0'
-        classpath 'cn.wjdiankong:axmleditor:1.0.2'
-
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -54,6 +45,13 @@ allprojects {
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/releases' }
         maven { url 'https://dl.bintray.com/umsdk/release' }
+        maven {
+            url 'https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/'
+            credentials {
+                username "5ef3647994513bd170c627be"
+                password "xcgJSde4Zuo4"
+            }
+        }
         google()
         jcenter()
         mavenLocal()

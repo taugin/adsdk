@@ -14,8 +14,38 @@ static def getDate() {
     return formattedDate
 }
 
-@groovy.transform.Field Map<String, Map<String, String>> channelFileMap = new HashMap<String, Map<String, String>>()
+@groovy.transform.Field
+Map<String, Map<String, String>> channelFileMap = new HashMap<String, Map<String, String>>()
+
+def axmlGroupId = "cn.wjdiankong"
+def axmlArtifactId = "axmleditor"
+def axmlVersion = "1.0.2"
+def axmlImplementation = axmlGroupId + ":" + axmlArtifactId + ":" + axmlVersion
+
+def getAxmlGroupId() {
+    return "cn.wjdiankong"
+}
+
+def getAxmlArtifactId() {
+    return "axmleditor"
+}
+
+def getAxmlVersion() {
+    return "1.0.2"
+}
+
+def getAxmlImplementation() {
+    return getAxmlGroupId() + ":" + getAxmlArtifactId() + ":" + getAxmlVersion()
+}
+
+def getAxmlFileName() {
+    return getAxmlArtifactId() + "-" + getAxmlVersion() + ".jar"
+}
+
 afterEvaluate {
+    project.configurations.releaseImplementation.setCanBeResolved(true)
+    project.configurations.api.setCanBeResolved(true)
+    project.dependencies.add("releaseImplementation", "cn.wjdiankong:axmleditor:1.0.2")
 // Windows
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
@@ -846,11 +876,12 @@ def getAXMLEditJarFile(flavorName) {
 
 def getAXMLEditJarFile2(flavorName) {
     try {
-        def aXmlEditJarFile = project.rootProject.buildscript.configurations.classpath*.toURI().find {
-            URI uri -> new File(uri).name == 'axmleditor-1.0.2.jar'
+        def aXmlEditJarFile = project.configurations.releaseImplementation*.toURI().find {
+            URI uri ->
+                new File(uri).name == getAxmlFileName()
         }
         if (aXmlEditJarFile == null || !new File(aXmlEditJarFile).exists()) {
-            System.err.println ":${project.name}:getAXMLEditorJarFile [" + flavorName + "] Should add dependencies [classpath 'cn.wjdiankong:axmleditor:1.0.2'] in buildscript.dependencies"
+            System.err.println ":${project.name}:getAXMLEditorJarFile [" + flavorName + "] Should add dependencies [releaseImplementation '" + getAxmlImplementation() + "] in app.dependencies"
             return null
         }
         return new File(aXmlEditJarFile).getAbsolutePath()
