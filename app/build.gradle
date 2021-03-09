@@ -17,9 +17,9 @@ android {
         ext {
             app_channels = ['vivo', 'oppo']
             channel_key = ["MY_LEBIAN", "MY_CUSTOM_CHANNEL_KEY"]
-            channel_cfg = [
-                    "vivo": ["label": "string/app_name2", "icon":"drawable/ic_launcher"]
-            ]
+//            channel_cfg = [
+//                    "vivo": ["label": "string/app_name2", "icon":"drawable/ad_sponsored_icon"]
+//            ]
         }
     }
 

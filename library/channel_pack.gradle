@@ -272,9 +272,9 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
     }
 
     // 修改label和icon
-//    if (channelCfg instanceof Map) {
-//        modifyApplicationAttribution(baseApk, channel, channelApk, releaseDir, flavorName, aaptFile, channelCfg, xmlFile)
-//    }
+    if (channelCfg instanceof Map) {
+        modifyApplicationAttribution(baseApk, channel, channelApk, releaseDir, flavorName, aaptFile, channelCfg, xmlFile)
+    }
 
     // 删除AndroidManifest.xml文件
     def deleteFileToApk = aaptFile + " r -v " + channelApk + " " + xmlFile.getName()
@@ -303,6 +303,18 @@ def appendMetaDataToAXml(baseApk, channel, channelApk, releaseDir, flavorName, c
     xmlFile.delete()
 }
 
+/**
+ * 修改APP的label和icon，修改方式为查找资源对应的id，然后再AndroidManifest里面进行二进制替换
+ * @param baseApk
+ * @param channel
+ * @param channelApk
+ * @param releaseDir
+ * @param flavorName
+ * @param aaptFile
+ * @param channelCfg
+ * @param xmlFile
+ * @return
+ */
 def modifyApplicationAttribution(baseApk, channel, channelApk, releaseDir, flavorName, aaptFile, channelCfg, xmlFile) {
     println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] BaseApk [" + baseApk + "]"
     println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Channel [" + channel + "] : " + new File(channelApk).getName()
@@ -327,8 +339,12 @@ def modifyApplicationAttribution(baseApk, channel, channelApk, releaseDir, flavo
     if (label != null && label.trim().length() > 0 && label.startsWith("string/")) {
         println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Label [" + label + "]"
         // 查询label对应的16进制
-        aaptFile = aaptFile.replace("aapt", "aapt2")
-        def cmd = aaptFile + " d resources " + channelApk
+        def aaptFile2 = aaptFile.replace("aapt", "aapt2")
+        if (!new File(aaptFile2).exists()) {
+            println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
+            return
+        }
+        def cmd = aaptFile2 + " d resources " + channelApk
         println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Command [" + optimizeCommand(cmd) + "]"
         def labelResId = null
         try {
@@ -367,7 +383,49 @@ def modifyApplicationAttribution(baseApk, channel, channelApk, releaseDir, flavo
     }
     // 修改icon属性
     if (icon != null && icon.trim().length() > 0) {
-        println "=============================icon : " + icon
+        println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Icon [" + icon + "]"
+        // 查询icon对应的16进制
+        def aaptFile2 = aaptFile.replace("aapt", "aapt2")
+        if (!new File(aaptFile2).exists()) {
+            println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
+            return
+        }
+        def cmd = aaptFile2 + " d resources " + channelApk
+        println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Command [" + optimizeCommand(cmd) + "]"
+        def iconResId = null
+        try {
+            def result = cmd.execute().text.trim()
+            BufferedReader br = new BufferedReader(new StringReader(result))
+            def line = null
+            while((line = br.readLine()) != null) {
+                if (line.endsWith(icon)) {
+                    line = line.trim()
+                    def split = line.split("\\s+| ")
+                    println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] split " + split + ""
+                    iconResId = split[1]
+                    break;
+                }
+            }
+            br.close()
+        } catch(Exception e) {
+            e.printStackTrace()
+        }
+        if (iconResId != null && iconResId.trim().length() > 0) {
+            iconResId = iconResId.toUpperCase()
+            iconResId = iconResId.replace("0X", "@")
+            println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] iconResId [" + iconResId + "]"
+            def modifyIconString = "java -jar " + aXMLEditorJarFile + " -attr -m application package icon " + iconResId + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
+            // println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Command [" + optimizeCommand(modifyIconString) + "]"
+            println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Command [" + modifyIconString + "]"
+            try {
+                Process p = modifyIconString.execute()
+                p.waitFor(20, TimeUnit.SECONDS)
+                p.destroy();
+                println ":${project.name}:modifyApplicationAttribution [" + flavorName + "] Modify Application Icon"
+            } catch (Exception e) {
+                e.printStackTrace()
+            }
+        }
     }
 }
 
@@ -767,10 +825,10 @@ def getAXMLEditJarFile(flavorName) {
 def getAXMLEditJarFile2(flavorName) {
     try {
         def aXmlEditJarFile = project.rootProject.buildscript.configurations.classpath*.toURI().find {
-            URI uri -> new File(uri).name == 'axmleditor-1.0.0.jar'
+            URI uri -> new File(uri).name == 'axmleditor-1.0.1.jar'
         }
         if (aXmlEditJarFile == null || !new File(aXmlEditJarFile).exists()) {
-            System.err.println ":${project.name}:getAXMLEditorJarFile [" + flavorName + "] Should add dependencies [classpath 'cn.wjdiankong:axmleditor:1.0.0'] in buildscript.dependencies"
+            System.err.println ":${project.name}:getAXMLEditorJarFile [" + flavorName + "] Should add dependencies [classpath 'cn.wjdiankong:axmleditor:1.0.1'] in buildscript.dependencies"
             return null
         }
         return new File(aXmlEditJarFile).getAbsolutePath()
