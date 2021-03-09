@@ -18,8 +18,8 @@ android {
             app_channels = ['vivo', 'oppo']
             channel_key = ["MY_LEBIAN", "MY_CUSTOM_CHANNEL_KEY"]
             channel_cfg = [
-                    "oppo": ["label": "string/app_name_oppo", "icon":"drawable/short_cut_icon"],
-                    "vivo": ["label": "string/app_name_vivo", "icon":"drawable/sysclear_short_cut_icon"]
+                    "oppo": ["label": "string/app_name_oppo", "icon":"drawable/short_cut_icon", "app_name":"AdsdkVivo"],
+                    "vivo": ["label": "string/app_name_vivo", "icon":"drawable/sysclear_short_cut_icon", "app_name":"AdsdkOppo"]
             ]
         }
     }

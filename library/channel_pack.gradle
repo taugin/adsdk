@@ -465,6 +465,7 @@ def parseChannelConfig(flavorObj, outputFile) {
     def versionCode = android.defaultConfig.versionCode
     def appName = android.defaultConfig.ext.has("app_name") ? android.defaultConfig.ext.app_name : project.getRootProject().getName()
     def channels = android.defaultConfig.ext.has("app_channels") ? android.defaultConfig.ext.app_channels : []
+    def channelCfg = android.defaultConfig.ext.has("channel_cfg") ? android.defaultConfig.ext.channel_cfg : null
     if (flavorObj != null) {
         flavorName = flavorObj.name
         if (flavorObj.versionName != null) {
@@ -478,6 +479,9 @@ def parseChannelConfig(flavorObj, outputFile) {
         }
         if (flavorObj.ext != null && flavorObj.ext.has("app_channels") && flavorObj.ext.app_channels != null) {
             channels = flavorObj.ext.app_channels
+        }
+        if (flavorObj.ext != null && flavorObj.ext.has("channel_cfg") && flavorObj.ext.channel_cfg != null) {
+            channelCfg = flavorObj.ext.channel_cfg
         }
     }
     try {
@@ -494,6 +498,15 @@ def parseChannelConfig(flavorObj, outputFile) {
     channels_files["base_package"] = outputFile.getAbsolutePath()
     println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel ========================================"
     channels.each {
+        if (channelCfg instanceof Map && !channelCfg.isEmpty()) {
+            Map map = channelCfg.get(it)
+            if (map != null && map.containsKey("app_name")) {
+                def app_name = map.get("app_name")
+                if (app_name != null && app_name.trim().length() > 0) {
+                    appName = app_name
+                }
+            }
+        }
         def tmpFile = appName + "_" + it + "_v" + versionName + "_" + versionCode +
                 '_release' + "_" + getDate() + '.apk'
         def releaseDir = outputFile.getParentFile().getAbsolutePath()
@@ -501,21 +514,6 @@ def parseChannelConfig(flavorObj, outputFile) {
         println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel [" + it + "] : " + new File(channels_files[it]).getName()
     }
     println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel ========================================"
-    /*
-    ////////////////////////////////////////////////////////////////////////////
-    String releaseDir = new File(channels_files["official"]).getParent()
-    File tempAssets = new File(releaseDir, "assets")
-    if (!tempAssets.exists()) {
-        tempAssets.mkdirs()
-    }
-    File channelFile = new File(tempAssets, "product_channel_cfg")
-    channels.each {
-        appendChannelFile(channels_files["official"], it, channels_files[it], channelFile)
-    }
-    channelFile.delete()
-    tempAssets.delete()
-    ////////////////////////////////////////////////////////////////////////////
-     */
 }
 
 /**
