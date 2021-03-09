@@ -17,11 +17,6 @@ static def getDate() {
 @groovy.transform.Field
 Map<String, Map<String, String>> channelFileMap = new HashMap<String, Map<String, String>>()
 
-def axmlGroupId = "cn.wjdiankong"
-def axmlArtifactId = "axmleditor"
-def axmlVersion = "1.0.2"
-def axmlImplementation = axmlGroupId + ":" + axmlArtifactId + ":" + axmlVersion
-
 def getAxmlGroupId() {
     return "cn.wjdiankong"
 }
@@ -45,7 +40,7 @@ def getAxmlFileName() {
 afterEvaluate {
     project.configurations.releaseImplementation.setCanBeResolved(true)
     project.configurations.api.setCanBeResolved(true)
-    project.dependencies.add("releaseImplementation", "cn.wjdiankong:axmleditor:1.0.2")
+    project.dependencies.add("releaseImplementation", getAxmlImplementation())
 // Windows
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
