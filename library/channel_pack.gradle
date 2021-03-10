@@ -168,6 +168,11 @@ def getApplicationId(flavor) {
     return productFlavor.applicationId
 }
 
+/**
+ * 获取存放channel的文件名称，生成方式为包名的MD5取前八位
+ * @param flavor
+ * @return
+ */
 def getChannelFileName(flavor) {
     def appId = getApplicationId(flavor)
     println ":${project.name}:getChannelFileName [" + (flavor != null ? flavor : "official") + "] Package Name : " + appId
@@ -187,6 +192,12 @@ def getChannelFileName(flavor) {
     return fileName + ".cnl"
 }
 
+/**
+ * 复制渠道apk文件
+ * @param baseApk
+ * @param channelApk
+ * @return
+ */
 def copyChannelApkFile(baseApk, channelApk) {
     File channelApkFile = new File(channelApk)
     if (channelApkFile.exists()) {
@@ -203,6 +214,7 @@ def copyChannelApkFile(baseApk, channelApk) {
  * @param releaseDir
  * @param flavorName
  * @param aaptFile
+ * @param channelFileName
  * @return
  */
 def appendChannelsFile(baseApk, channel, channelApk, releaseDir, flavorName, aaptFile, channelFileName) {
@@ -313,6 +325,13 @@ def modifyAndroidManifest(baseApk, channel, channelApk, releaseDir, flavorName, 
     println ":${project.name}:modifyAndroidManifest [" + flavorName + "][" + channel + "] >>>>>>>>> Modify AndroidManifest Complete <<<<<<<<<\n"
 }
 
+/**
+ * 判断是否需要修改AndroidManifest
+ * @param channelKey
+ * @param channelCfg
+ * @param channel
+ * @return
+ */
 def needModifyAndroidManifest(channelKey, channelCfg, channel) {
     if ((channelKey instanceof String && channelKey.trim().length() > 0) || (channelKey instanceof List && channelKey.size() > 0)) {
         return true
@@ -323,6 +342,16 @@ def needModifyAndroidManifest(channelKey, channelCfg, channel) {
     return false
 }
 
+/**
+ * 增加meta-data数据到AndroidManifest文件
+ * @param channel
+ * @param releaseDir
+ * @param flavorName
+ * @param channelKey
+ * @param xmlFile
+ * @param aXMLEditorJarFile
+ * @return
+ */
 def appendMetaDataToAXml(channel, releaseDir, flavorName, channelKey, xmlFile, aXMLEditorJarFile) {
     println "\n:${project.name}:appendMetaDataToAXml [" + flavorName + "][" + channel + "] >>>>>>>>> Append MetaData to AndroidManifest Start <<<<<<<<<"
     def allChannelKeys = []
@@ -369,14 +398,13 @@ def appendMetaDataToAXml(channel, releaseDir, flavorName, channelKey, xmlFile, a
 
 /**
  * 修改APP属性，修改方式为查找资源对应的id，然后再AndroidManifest里面进行二进制替换
- * @param baseApk
  * @param channel
  * @param channelApk
- * @param releaseDir
  * @param flavorName
  * @param aaptFile
  * @param channelCfg
  * @param xmlFile
+ * @param aXMLEditorJarFile
  * @return
  */
 def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, xmlFile, aXMLEditorJarFile) {
@@ -399,11 +427,11 @@ def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, 
 /**
  * 修改资源属性值
  * @param attrValue
+ * @param attrName
  * @param channel
  * @param channelApk
  * @param flavorName
  * @param aaptFile
- * @param channelCfg
  * @param xmlFile
  * @param aXMLEditorJarFile
  * @return
@@ -533,6 +561,8 @@ def parseChannelConfig(flavorObj, outputFile) {
  * 为渠道包签名
  * @param flavorName
  * @param apkFile
+ * @param aaptFile
+ * @param channel
  * @return
  */
 def signChannelApkFile(flavorName, apkFile, aaptFile, channel) {
@@ -564,6 +594,8 @@ def signChannelApkFile(flavorName, apkFile, aaptFile, channel) {
  * 删除旧的签名
  * @param flavorName
  * @param apkFile
+ * @param aaptFile
+ * @param channel
  * @return
  */
 def deleteApkSignInfo(flavorName, apkFile, aaptFile, channel) {
@@ -613,6 +645,11 @@ def readContentFromApk(apkFile, filePath) {
     return null
 }
 
+/**
+ * 处理进程输出
+ * @param p
+ * @return
+ */
 def printOutput(Process p) {
     println("+++++++++++++++++++++++++++++++++++++++++++")
     try {
@@ -641,8 +678,11 @@ def printOutput(Process p) {
 /**
  * 从apk中copy文件
  * @param apkFile
+ * @param flavorName
  * @param filePath
  * @param outputFile
+ * @param channel
+ * @return
  */
 def copyManifestFromApk(apkFile, flavorName, String filePath, String outputFile, channel) {
     println ":${project.name}  :copyManifestFromApk [" + flavorName + "][" + channel + "] FromXml [" + filePath + "] to " + "[" + outputFile + "]"
@@ -668,6 +708,9 @@ def copyManifestFromApk(apkFile, flavorName, String filePath, String outputFile,
 /**
  * 获取旧的签名文件
  * @param apkFile
+ * @param flavorName
+ * @param aaptFile
+ * @param channel
  * @return
  */
 def getSignListByAapt(apkFile, flavorName, aaptFile, channel) {
@@ -689,6 +732,9 @@ def getSignListByAapt(apkFile, flavorName, aaptFile, channel) {
  * 对渠道包签名
  * @param flavorName
  * @param apkFile
+ * @param signConfig
+ * @param jarSignerFile
+ * @param channel
  * @return
  */
 def signChannelFileInternal(flavorName, apkFile, signConfig, jarSignerFile, channel) {
@@ -736,6 +782,7 @@ def signChannelFileInternal(flavorName, apkFile, signConfig, jarSignerFile, chan
 /**
  * 获取Jarsigner文件路径
  * @param flavorName
+ * @param channel
  * @return
  */
 def getJarSigner(flavorName, channel) {
@@ -784,6 +831,12 @@ def getSignConfig(flavor) {
     return signConfig
 }
 
+/**
+ * 优化日志输出
+ * @param cmdString
+ * @param delimiter
+ * @return
+ */
 def optimizeCommand(cmdString, delimiter = " ") {
     if (android.defaultConfig.ext.has("debug") && android.defaultConfig.ext["debug"]) {
         if (" ".equals(delimiter)) {
@@ -875,6 +928,12 @@ def getAaptFile() {
     return aaptFile
 }
 
+/**
+ * 获取axmleditor文件路径
+ * @param flavorName
+ * @param channel
+ * @return
+ */
 def getAXMLEditJarFile(flavorName, channel) {
     def rootDir = getRootDir()
     def aXmlEditJarFile = new File(rootDir, "AXMLEditor.jar")
@@ -884,6 +943,12 @@ def getAXMLEditJarFile(flavorName, channel) {
     return aXmlEditJarFile.getAbsolutePath()
 }
 
+/**
+ * 获取axmleditor文件路径
+ * @param flavorName
+ * @param channel
+ * @return
+ */
 def getAXMLEditJarFile2(flavorName, channel) {
     try {
         def aXmlEditJarFile = project.configurations.releaseImplementation*.toURI().find {
@@ -901,6 +966,11 @@ def getAXMLEditJarFile2(flavorName, channel) {
     return null
 }
 
+/**
+ * 首字母转大写
+ * @param s
+ * @return
+ */
 def toUpperCaseFirstOne(String s) {
     if (s == null) {
         return null
@@ -911,6 +981,11 @@ def toUpperCaseFirstOne(String s) {
     return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
 }
 
+/**
+ * 打开输出目录
+ * @param flavor
+ * @return
+ */
 def openReleaseDir(flavor) {
     if (!org.gradle.internal.os.OperatingSystem.current().isWindows()) {
         return
