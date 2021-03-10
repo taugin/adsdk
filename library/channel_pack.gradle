@@ -368,7 +368,7 @@ def appendMetaDataToAXml(channel, releaseDir, flavorName, channelKey, xmlFile, a
 }
 
 /**
- * 修改APP的label和icon，修改方式为查找资源对应的id，然后再AndroidManifest里面进行二进制替换
+ * 修改APP属性，修改方式为查找资源对应的id，然后再AndroidManifest里面进行二进制替换
  * @param baseApk
  * @param channel
  * @param channelApk
@@ -397,7 +397,7 @@ def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, 
 }
 
 /**
- * 修改roundIcon资源
+ * 修改资源属性值
  * @param attrValue
  * @param channel
  * @param channelApk
