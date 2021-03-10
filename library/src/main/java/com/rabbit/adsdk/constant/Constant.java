@@ -74,6 +74,10 @@ public class Constant {
     public static final String PREF_REMOTE_CONFIG_UPDATE_TIME = "pref_remote_config_update_time";
 
     /**
+     * ADLOADER错误
+     */
+    public static final int AD_ERROR_ADLOADER = -1;
+    /**
      * 未知错误
      */
     public static final int AD_ERROR_UNKNOWN = 0;

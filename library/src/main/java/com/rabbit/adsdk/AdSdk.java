@@ -279,7 +279,7 @@ public class AdSdk {
             loader.loadInterstitial(activity);
         } else {
             if (l != null) {
-                l.onError(pidName, null, null);
+                l.onError(pidName, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }
@@ -324,7 +324,7 @@ public class AdSdk {
             loader.loadRewardedVideo(activity, false);
         } else {
             if (l != null) {
-                l.onError(pidName, null, null);
+                l.onError(pidName, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }
@@ -359,7 +359,7 @@ public class AdSdk {
             loader.loadAdView(adParams);
         } else {
             if (l != null) {
-                l.onError(pidName, null, null);
+                l.onError(pidName, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }
@@ -398,7 +398,7 @@ public class AdSdk {
             loader.loadComplexAds(adParams);
         } else {
             if (l != null) {
-                l.onError(pidName, null, null);
+                l.onError(pidName, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }
@@ -757,7 +757,7 @@ public class AdSdk {
             loader.loadRewardedVideo(null, false);
         } else {
             if (mAutoRewardListener != null) {
-                mAutoRewardListener.onError(mRewardPidName, null, null);
+                mAutoRewardListener.onError(mRewardPidName, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }

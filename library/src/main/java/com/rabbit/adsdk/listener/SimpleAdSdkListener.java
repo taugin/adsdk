@@ -32,10 +32,6 @@ public class SimpleAdSdkListener implements OnAdSdkListener {
     }
 
     @Override
-    public void onError(String pidName, String source, String adType) {
-    }
-
-    @Override
     public void onError(String pidName, String source, String adType, int errorCode) {
     }
 

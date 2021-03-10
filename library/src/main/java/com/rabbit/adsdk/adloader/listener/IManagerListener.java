@@ -17,7 +17,6 @@ public interface IManagerListener {
     OnAdBaseListener getAdBaseListener(ISdkLoader loader);
     void registerAdBaseListener(ISdkLoader loader, OnAdBaseListener l);
 
-    OnAdSdkListener getOnAdSdkListener(boolean loaded);
     OnAdSdkListener getOnAdPlaceLoaderListener();
     void setLoader(ISdkLoader adLoader);
     boolean isCurrent(String source, String type, String pidName);

@@ -293,8 +293,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         }
 
         @Override
-        public void onError(String pidName, String source, String adType) {
-            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
+        public void onError(String pidName, String source, String adType, int error) {
+            Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , error : " + error);
         }
 
         @Override

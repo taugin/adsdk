@@ -13,7 +13,6 @@ public interface OnAdSdkListener {
     public void onImp(String pidName, String source, String adType);
     public void onClick(String pidName, String source, String adType);
     public void onDismiss(String pidName, String source, String adType, boolean onDestroy);
-    public void onError(String pidName, String source, String adType);
     public void onError(String pidName, String source, String adType, int errorCode);
     public void onRewarded(String pidName, String source, String adType, AdReward item);
     public void onCompleted(String pidName, String source, String adType);
