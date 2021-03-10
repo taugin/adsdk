@@ -38,9 +38,9 @@ def getAxmlFileName() {
 }
 
 afterEvaluate {
-    project.configurations.releaseImplementation.setCanBeResolved(true)
+    project.configurations.provided.setCanBeResolved(true)
     project.configurations.api.setCanBeResolved(true)
-    project.dependencies.add("releaseImplementation", getAxmlImplementation())
+    project.dependencies.add("provided", getAxmlImplementation())
 // Windows
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
@@ -951,12 +951,12 @@ def getAXMLEditJarFile(flavorName, channel) {
  */
 def getAXMLEditJarFile2(flavorName, channel) {
     try {
-        def aXmlEditJarFile = project.configurations.releaseImplementation*.toURI().find {
+        def aXmlEditJarFile = project.configurations.provided*.toURI().find {
             URI uri ->
                 new File(uri).name == getAxmlFileName()
         }
         if (aXmlEditJarFile == null || !new File(aXmlEditJarFile).exists()) {
-            System.err.println ":${project.name}:getAXMLEditorJarFile [" + flavorName + "][" + channel + "] Should add dependencies [releaseImplementation '" + getAxmlImplementation() + "] in app.dependencies"
+            System.err.println ":${project.name}:getAXMLEditorJarFile [" + flavorName + "][" + channel + "] Should add dependencies [provided '" + getAxmlImplementation() + "] in app.dependencies"
             return null
         }
         return new File(aXmlEditJarFile).getAbsolutePath()
