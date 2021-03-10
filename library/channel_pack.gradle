@@ -70,7 +70,7 @@ afterEvaluate {
                 def flavorObj = variant.productFlavors[0]
                 parseChannelConfig(flavorObj, outputFile)
                 def channelFileName = getChannelFileName(flavorObj != null ? flavorObj.name : null)
-                println ":${project.name}:applicationVariant [" + (flavorObj != null ? flavorObj.name : "official") + "] ChannelFileName : " + channelFileName
+                println ":${project.name}:applicationVariant [" + (flavorObj != null ? flavorObj.name : "official") + "] Channel FileName : " + channelFileName
             }
         }
     }
@@ -269,9 +269,9 @@ def modifyAndroidManifest(baseApk, channel, channelApk, releaseDir, flavorName, 
             return
         }
 
-        println ":${project.name}:modifyAndroidManifest [" + flavorName + "][" + channel + "] AXMLEditor [" + aXMLEditorJarFile + "]"
+        println ":${project.name}:modifyAndroidManifest [" + flavorName + "][" + channel + "] AXMLJar [" + aXMLEditorJarFile + "]"
         File xmlFile = new File(releaseDir, "AndroidManifest.xml")
-        println ":${project.name}:modifyAndroidManifest [" + flavorName + "][" + channel + "] Copy [" + xmlFile.getAbsolutePath() + "]"
+        println ":${project.name}:modifyAndroidManifest [" + flavorName + "][" + channel + "] CopyXml [" + xmlFile.getAbsolutePath() + "]"
         // 把AndroidManifest文件从apk中复制出来
         copyManifestFromApk(baseApk, flavorName, "AndroidManifest.xml", xmlFile.getAbsolutePath(), channel)
 
@@ -334,12 +334,12 @@ def appendMetaDataToAXml(channel, releaseDir, flavorName, channelKey, xmlFile, a
     // 删除原来meta-data
     allChannelKeys.each {
         def deleteMetaData = "java -jar " + aXMLEditorJarFile + " -tag -r meta-data " + it + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
+        println ":${project.name}:appendMetaDataToAXml [" + flavorName + "][" + channel + "] Delete Meta Data"
         println ":${project.name}:appendMetaDataToAXml [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(deleteMetaData) + "]"
         try {
             Process p = deleteMetaData.execute()
             p.waitFor(20, TimeUnit.SECONDS)
             p.destroy();
-            println ":${project.name}:appendMetaDataToAXml [" + flavorName + "][" + channel + "] Delete Meta Data"
         } catch (Exception e) {
             e.printStackTrace()
         }
@@ -354,12 +354,12 @@ def appendMetaDataToAXml(channel, releaseDir, flavorName, channelKey, xmlFile, a
     }
     fileWriter.close()
     def appendMetaData = "java -jar " + aXMLEditorJarFile + " -tag -i " + tempMetaDataFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
+    println ":${project.name}:appendMetaDataToAXml [" + flavorName + "][" + channel + "] Append Meta Data"
     println ":${project.name}:appendMetaDataToAXml [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(appendMetaData) + "]"
     try {
         Process p = appendMetaData.execute()
         p.waitFor(20, TimeUnit.SECONDS)
         p.destroy();
-        println ":${project.name}:appendMetaDataToAXml [" + flavorName + "][" + channel + "] Append Meta Data"
     } catch (Exception e) {
         e.printStackTrace()
     }
@@ -389,13 +389,11 @@ def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, 
         println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] ChannelMap is Empty"
         return
     }
-    def label = map["label"]
-    def icon = map["icon"]
-    def roundIcon = map["roundIcon"]
-    modifyAttrResource(label, "label", channel, channelApk, flavorName, aaptFile, xmlFile, aXMLEditorJarFile)
-    modifyAttrResource(icon, "icon", channel, channelApk, flavorName, aaptFile, xmlFile, aXMLEditorJarFile)
-    modifyAttrResource(roundIcon, "roundIcon", channel, channelApk, flavorName, aaptFile, xmlFile, aXMLEditorJarFile)
-    println ":${project.name}:modifyAppAttribution [" + flavorName + "][" + channel + "] >>>>>>>>> Modify Application Attribution Complete <<<<<<<<<\n"
+    def attrNames = ["label", "icon", "roundIcon", "theme"]
+    attrNames.each {
+        def attrValue = map[it]
+        modifyAppAttrResource(attrValue, it, channel, channelApk, flavorName, aaptFile, xmlFile, aXMLEditorJarFile)
+    }
 }
 
 /**
@@ -410,29 +408,32 @@ def modifyAppAttribution(channel, channelApk, flavorName, aaptFile, channelCfg, 
  * @param aXMLEditorJarFile
  * @return
  */
-def modifyAttrResource(attrValue, attrName, channel, channelApk, flavorName, aaptFile, xmlFile, aXMLEditorJarFile) {
-    println "\n:${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] >>>>>>>>> Modify Attribution Resource Start <<<<<<<<<"
-    // 修改icon属性
+def modifyAppAttrResource(attrValue, attrName, channel, channelApk, flavorName, aaptFile, xmlFile, aXMLEditorJarFile) {
+    println "\n:${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] >>>>>>>>> Modify Attribution Resource Start <<<<<<<<<"
     if (attrValue != null && attrValue.trim().length() > 0) {
-        println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Modify " + attrName + " Resource [" + attrValue + "]"
-        // 查询icon对应的16进制
+        if (attrValue.startsWith("@")) {
+            attrValue = attrValue.substring(1)
+        }
+        println ":${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] Modify " + attrName + " Resource [" + attrValue + "]"
+        // 查询资源对应的16进制
         def aaptFile2 = aaptFile.replace("aapt", "aapt2")
         if (!new File(aaptFile2).exists()) {
-            println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
+            println ":${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] Aapt2 Is Not Exists [" + aaptFile2 + "]"
             return
         }
         def cmd = aaptFile2 + " d resources " + channelApk
-        println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(cmd) + "]"
+        println ":${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(cmd) + "]"
         def attrResourceId = null
         try {
             def result = cmd.execute().text.trim()
             BufferedReader br = new BufferedReader(new StringReader(result))
             def line = null
             while((line = br.readLine()) != null) {
-                if (line.endsWith(attrValue)) {
-                    line = line.trim()
+                line = line.trim()
+                if (line.startsWith("resource") && line.endsWith(attrValue)) {
+                    println ":${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] Resource [" + line + "]"
                     def split = line.split("\\s+| ")
-                    println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Split " + split + ""
+                    println ":${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] SplitRes " + split
                     attrResourceId = split[1]
                     break;
                 }
@@ -444,24 +445,24 @@ def modifyAttrResource(attrValue, attrName, channel, channelApk, flavorName, aap
         if (attrResourceId != null && attrResourceId.trim().length() > 0) {
             attrResourceId = attrResourceId.toUpperCase()
             attrResourceId = attrResourceId.replace("0X", "@")
-            println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] " + attrName + " [" + attrResourceId + "]"
+            println ":${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] AttrName [" + attrName + "] , AttrValue [" + attrResourceId + "]"
             def modifyIconString = "java -jar " + aXMLEditorJarFile + " -attr -m application package " + attrName + " " + attrResourceId + " " + xmlFile.getAbsolutePath() + " " + xmlFile.getAbsolutePath()
-            println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(modifyIconString) + "]"
+            println ":${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(modifyIconString) + "]"
             try {
                 Process p = modifyIconString.execute()
                 p.waitFor(20, TimeUnit.SECONDS)
                 p.destroy();
-                println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Modify Application " + attrName
+                println ":${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] Modify Application [" + attrName + "]"
             } catch (Exception e) {
                 e.printStackTrace()
             }
         } else {
-            println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] Do Not Find " + attrName + " ResId : [" + attrValue + "]"
+            println ":${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] Do Not Find [" + attrName + "] ResId : [" + attrValue + "]"
         }
     } else {
-        println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] No Need Modify " + attrName + "Resource Id"
+        println ":${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] No Need Modify [" + attrName + "] Attr"
     }
-    println ":${project.name}:modifyAttrResource [" + flavorName + "][" + channel + "] >>>>>>>>> Modify Attribution Resource End <<<<<<<<<\n"
+    println ":${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] >>>>>>>>> Modify Attribution Resource End <<<<<<<<<\n"
 }
 
 /**
@@ -612,6 +613,31 @@ def readContentFromApk(apkFile, filePath) {
     return null
 }
 
+def printOutput(Process p) {
+    println("+++++++++++++++++++++++++++++++++++++++++++")
+    try {
+        def line = null
+        BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream(), "gbk"))
+        while ((line = br.readLine()) != null) {
+            println(line)
+        }
+        br.close()
+    } catch (Exception e) {
+        System.err.println("error : " + e)
+    }
+    try {
+        def line = null
+        BufferedReader br = new BufferedReader(new InputStreamReader(p.getErrorStream(), "gbk"))
+        while ((line = br.readLine()) != null) {
+            System.err.println(line)
+        }
+        br.close()
+    } catch (Exception e) {
+        System.err.println("error : " + e)
+    }
+    println("-------------------------------------------")
+}
+
 /**
  * 从apk中copy文件
  * @param apkFile
@@ -619,7 +645,7 @@ def readContentFromApk(apkFile, filePath) {
  * @param outputFile
  */
 def copyManifestFromApk(apkFile, flavorName, String filePath, String outputFile, channel) {
-    println ":${project.name}  :copyManifestFromApk [" + flavorName + "][" + channel + "] From [" + filePath + "] to " + "[" + outputFile + "]"
+    println ":${project.name}  :copyManifestFromApk [" + flavorName + "][" + channel + "] FromXml [" + filePath + "] to " + "[" + outputFile + "]"
     try {
         ZipFile zipFile = new ZipFile(apkFile)
         ZipEntry zipEntry = zipFile.getEntry(filePath)
@@ -893,10 +919,10 @@ def openReleaseDir(flavor) {
         def outputDir = String.format("outputs/apk/%srelease", ((flavor != null && flavor.trim().length() > 0) ? flavor + "/" : ""))
         def outputPath = new File(project.buildDir, outputDir)
         def cmd = "explorer.exe " + outputPath
-        Process p = cmd.execute()
         println ":${project.name}:openReleaseDir [${outputPath}]"
-        p.destroy();
+        cmd.execute()
     } catch (Exception e) {
+        e.printStackTrace()
     }
 }
 
