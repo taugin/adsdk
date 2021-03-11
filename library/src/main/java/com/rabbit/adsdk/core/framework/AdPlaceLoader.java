@@ -1855,13 +1855,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onError(String pidName, String source, String adType, int errorCode) {
+        public void onError(String pidName, String source, String adType, int error) {
             startRetryIfNeed(pidName, source, adType);
             if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onError(pidName, source, adType, errorCode);
+                mOnAdSdkLoadedListener.onError(pidName, source, adType, error);
             }
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(pidName, source, adType, errorCode);
+                mOnAdSdkListener.onError(pidName, source, adType, error);
             }
         }
 
@@ -1923,7 +1923,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onDismiss(String pidName, String source, String adType, boolean onDestroy) {
+        public void onDismiss(String pidName, String source, String adType, boolean complexAds) {
             if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
                 Log.d(Log.TAG, "adplaceloader pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)
@@ -1932,10 +1932,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 }
             }
             if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onDismiss(pidName, source, adType, onDestroy);
+                mOnAdSdkLoadedListener.onDismiss(pidName, source, adType, complexAds);
             }
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onDismiss(pidName, source, adType, onDestroy);
+                mOnAdSdkListener.onDismiss(pidName, source, adType, complexAds);
             }
         }
     }

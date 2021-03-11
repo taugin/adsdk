@@ -28,11 +28,11 @@ public class SimpleAdSdkListener implements OnAdSdkListener {
     }
 
     @Override
-    public void onDismiss(String pidName, String source, String adType, boolean onDestroy) {
+    public void onDismiss(String pidName, String source, String adType, boolean complexAds) {
     }
 
     @Override
-    public void onError(String pidName, String source, String adType, int errorCode) {
+    public void onError(String pidName, String source, String adType, int error) {
     }
 
     @Override
