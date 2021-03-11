@@ -1743,8 +1743,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private synchronized void startRetryIfNeed(String pidName, String source, String adType) {
-        mErrorTimes++;
-        Log.iv(Log.TAG, "pidName : " + pidName + " , record error times " + mErrorTimes);
         boolean isRetry = mAdPlace.isRetry();
         boolean isAdError = isAdError();
         boolean isRetryTimesAllow = isRetryTimesAllow();
@@ -1757,6 +1755,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 resetRetryTimes(pidName, source, adType);
             }
         }
+    }
+
+    private synchronized void recordErrorTimes(String pidName, String source, String adType) {
+        mErrorTimes++;
+        Log.iv(Log.TAG, "pidName : " + pidName + " , record error times " + mErrorTimes);
     }
 
     private synchronized void resetRetryTimes(String pidName, String source, String adType) {
@@ -1856,7 +1859,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         @Override
         public void onError(String pidName, String source, String adType, int error) {
-            startRetryIfNeed(pidName, source, adType);
+            recordErrorTimes(pidName, source, adType);
             if (mOnAdSdkLoadedListener != null) {
                 mOnAdSdkLoadedListener.onError(pidName, source, adType, error);
             }
@@ -1873,6 +1876,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (mOnAdSdkListener != null) {
                 mOnAdSdkListener.onRewarded(pidName, source, adType, item);
             }
+            startRetryIfNeed(pidName, source, adType);
         }
 
         @Override
