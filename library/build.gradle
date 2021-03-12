@@ -163,7 +163,7 @@ publishing {
         maven(MavenPublication) {
             groupId 'cn.wjdiankong'
             artifactId 'axmleditor'
-            version '1.0.2'
+            version '1.0.3'
             artifact 'D:\\github\\tools\\lib\\AXMLEditor.jar'
         }
     }
