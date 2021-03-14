@@ -25,7 +25,7 @@ public class InternalStat {
      * @param eventId
      * @param extra
      */
-    private static void sendFirebaseAnalytics(Context context, String value, String eventId, Map<String, String> extra) {
+    protected static void sendFirebaseAnalytics(Context context, String value, String eventId, Map<String, String> extra) {
         Bundle bundle = new Bundle();
         if (!TextUtils.isEmpty(value)) {
             bundle.putString("entry_point", value);
@@ -67,7 +67,7 @@ public class InternalStat {
      * @param eventId
      * @param extra
      */
-    private static void sendUmeng(Context context, String value, String eventId, Map<String, String> extra) {
+    protected static void sendUmeng(Context context, String value, String eventId, Map<String, String> extra) {
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
@@ -95,6 +95,41 @@ public class InternalStat {
         }
         if (!TextUtils.isEmpty(error)) {
             Log.iv(Log.TAG, "error : " + error);
+        }
+    }
+
+    /**
+     * 发送友盟计算事件
+     *
+     * @param context
+     * @param eventId
+     * @param extra
+     * @param value
+     */
+    protected static void sendUmengEventValue(Context context, String eventId, Map<String, String> extra, int value) {
+        Log.iv(Log.TAG, "Report Event sendUmeng Analytics");
+        HashMap<String, String> map = new HashMap<String, String>();
+        if (extra != null && !extra.isEmpty()) {
+            for (Map.Entry<String, String> entry : extra.entrySet()) {
+                if (entry != null) {
+                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
+                        map.put(entry.getKey(), entry.getValue());
+                    }
+                }
+            }
+        }
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
+            Method method = clazz.getDeclaredMethod("onEventValue", Context.class, String.class, Map.class, int.class);
+            method.invoke(null, context, eventId, map, value);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.iv(Log.TAG, "Report Event sendUmengEventValue error : " + error);
         }
     }
 
@@ -172,7 +207,7 @@ public class InternalStat {
         }
     }
 
-    private static void sendFacebook(Context context, String value, String eventId, Map<String, String> extra) {
+    protected static void sendFacebook(Context context, String value, String eventId, Map<String, String> extra) {
         initFacebook(context);
         if (mFacebookObject == null) {
             return;
@@ -209,6 +244,43 @@ public class InternalStat {
         }
     }
 
+    /**
+     * 发送appsflyer统计事件
+     *
+     * @param context
+     * @param value
+     * @param eventId
+     * @param extra
+     */
+    protected static void sendFlurry(Context context, String value, String eventId, Map<String, String> extra) {
+        Map<String, Object> eventValue = new HashMap<String, Object>();
+        if (!TextUtils.isEmpty(value)) {
+            eventValue.put("entry_point", value);
+        }
+        if (extra != null && !extra.isEmpty()) {
+            for (Map.Entry<String, String> entry : extra.entrySet()) {
+                if (entry != null) {
+                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
+                        eventValue.put(entry.getKey(), entry.getValue());
+                    }
+                }
+            }
+        }
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.flurry.android.FlurryAgent");
+            Method method = clazz.getDeclaredMethod("logEvent", String.class, Map.class);
+            method.invoke(null, eventId, eventValue);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.iv(Log.TAG, "Report Event sendFlurry error : " + error);
+        }
+    }
+
     public static void reportEvent(Context context, String key) {
         reportEvent(context, key, null, null);
     }
@@ -226,6 +298,7 @@ public class InternalStat {
         sendAppsflyer(context, value, key, map);
         sendFirebaseAnalytics(context, value, key, map);
         sendFacebook(context, value, key, map);
+        sendFlurry(context, value, key, map);
     }
 
     public static void reportError(Context context, Throwable e) {

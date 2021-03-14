@@ -50,3 +50,4 @@
 
 #Firebase Analytics
 -keep class com.google.firebase.remoteconfig.FirebaseRemoteConfig{*;}
+-keep class com.flurry.** {*;}
