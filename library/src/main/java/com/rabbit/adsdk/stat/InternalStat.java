@@ -245,7 +245,7 @@ public class InternalStat {
     }
 
     /**
-     * 发送appsflyer统计事件
+     * 发送flurry统计事件
      *
      * @param context
      * @param value
