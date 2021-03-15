@@ -675,9 +675,9 @@ class Aes {
             String s = readLocal(file)
             if (s != null) {
                 s = s.trim()
-            }
-            if (s.startsWith("[") || s.startsWith("{")) {
-                return true
+                if (s.startsWith("[") || s.startsWith("{")) {
+                    return true
+                }
             }
         } catch (Exception e) {
             e.printStackTrace()
