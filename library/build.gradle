@@ -63,6 +63,8 @@ dependencies {
     implementation 'com.mopub.volley:mopub-volley:2.1.0'
     // admob
     implementation 'com.google.android.gms:play-services-ads:19.6.0'
+    // applovin
+    implementation 'com.applovin:applovin-sdk:10.0.1'
     // stringfog
     implementation 'com.github.megatronking.stringfog:xor:1.1.0'
     // firebase

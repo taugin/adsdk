@@ -62,6 +62,8 @@ public class PidConfig {
 
     private int ratio = 100;
 
+    private boolean isMax = false;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -254,6 +256,14 @@ public class PidConfig {
         this.ratio = ratio;
     }
 
+    public boolean isMax() {
+        return isMax;
+    }
+
+    public void setMax(boolean max) {
+        isMax = max;
+    }
+
     public boolean isAdmob() {
         return TextUtils.equals(Constant.AD_SDK_ADMOB, sdk);
     }
@@ -268,6 +278,10 @@ public class PidConfig {
 
     public boolean isDfp() {
         return TextUtils.equals(Constant.AD_SDK_DFP, sdk);
+    }
+
+    public boolean isApplovin() {
+        return TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk);
     }
 
     public boolean isSpread() {

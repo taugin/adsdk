@@ -85,7 +85,7 @@
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
@@ -104,6 +104,14 @@
           "type": "banner",
           "pid": "/6253334/dfp_example_ad",
           "disable": 1
+        },
+        {
+          "sdk": "applovin",
+          "type": "banner",
+          "ismax": 1,
+          "bs": "MEDIUM_RECTANGLE",
+          "pid": "a9eeb2d3ee33003c",
+          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -192,31 +200,39 @@
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "fb",
           "type": "interstitial",
           "pid": "VID_HD_16_9_15S_APP_INSTALL#YOUR_PLACEMENT_ID",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
           "ctr": 5,
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
           "type": "interstitial",
           "pid": "/6499/example/interstitial",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "spread",
           "type": "interstitial",
+          "disable": 1
+        },
+        {
+          "sdk": "applovin",
+          "ismax": 1,
+          "type": "interstitial",
+          "bs": "MEDIUM_RECTANGLE",
+          "pid": "2787a9b587529f8f",
           "disable": 0
         }
       ],
@@ -233,7 +249,7 @@
           "sdk": "admob",
           "type": "reward",
           "pid": "ca-app-pub-3940256099942544/5224354917",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "dfp",
@@ -251,6 +267,13 @@
           "sdk": "fb",
           "type": "reward",
           "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
+          "disable": 1
+        },
+        {
+          "sdk": "applovin",
+          "ismax": 1,
+          "type": "reward",
+          "pid": "b1f3b51e98603fbf",
           "disable": 0
         }
       ],

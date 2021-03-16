@@ -158,7 +158,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdLoaded() {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 reportAdLoaded();
                 putCachedAdTime(loadingView);
@@ -307,7 +307,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdLoaded() {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
                 reportAdLoaded();
@@ -393,7 +393,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
         loadingBuilder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
             @Override
             public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 nativeAd = unifiedNativeAd;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
@@ -524,7 +524,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
         loadingRewardedAd.loadAd(new PublisherAdRequest.Builder().build(), new RewardedAdLoadCallback() {
             @Override
             public void onRewardedAdLoaded() {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 rewardedAd = loadingRewardedAd;
                 loadingRewardedAd = null;

@@ -1,7 +1,9 @@
 package com.rabbit.adsdk.core;
 
+import android.content.Context;
 import android.text.TextUtils;
 
+import com.applovin.sdk.AppLovinSdk;
 import com.facebook.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.mopub.mobileads.MoPubInterstitial;
@@ -27,6 +29,9 @@ public class AdHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_MOPUB, sdk)) {
             return hasMopubModule();
+        }
+        if (TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk)) {
+            return hasApplovinModule();
         }
         if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
             return true;
@@ -67,6 +72,16 @@ public class AdHelper {
     private static boolean hasMopubModule() {
         try {
             MoPubInterstitial.class.getName();
+            return true;
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
+        return false;
+    }
+
+    private static boolean hasApplovinModule() {
+        try {
+            AppLovinSdk.class.getName();
             return true;
         } catch (Exception | Error e) {
             Log.e(Log.TAG, "error : " + e, e);

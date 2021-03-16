@@ -16,6 +16,7 @@ public class Constant {
     public static final String AD_SDK_DFP = "dfp";
     public static final String AD_SDK_SPREAD = "spread";
     public static final String AD_SDK_MOPUB = "mopub";
+    public static final String AD_SDK_APPLOVIN = "applovin";
 
     public static final String AD_SDK_PREFIX = "pref_hauyu_";
 

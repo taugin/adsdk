@@ -192,7 +192,7 @@ public class MopubLoader extends AbstractSdkLoader {
         loadingView.setBannerAdListener(new MoPubView.BannerAdListener() {
             @Override
             public void onBannerLoaded(MoPubView banner) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(loadingView);
                 moPubView = loadingView;
@@ -326,7 +326,7 @@ public class MopubLoader extends AbstractSdkLoader {
         moPubInterstitial.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
             @Override
             public void onInterstitialLoaded(MoPubInterstitial interstitial) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(moPubInterstitial);
                 reportAdLoaded();
@@ -471,7 +471,7 @@ public class MopubLoader extends AbstractSdkLoader {
         MoPubRewardedVideos.setRewardedVideoListener(new MoPubRewardedVideoListener() {
             @Override
             public void onRewardedVideoLoadSuccess(@NonNull String adUnitId) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 reportAdLoaded();
                 if (getAdListener() != null) {
@@ -612,7 +612,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onNativeLoad(final NativeAd nAd) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 reportAdLoaded();
                 setLoading(false, STATE_SUCCESS);
                 nativeAd = nAd;

@@ -282,6 +282,9 @@ public class AdParser implements IParser {
             if (jobj.has(RATIO)) {
                 pidConfig.setRatio(jobj.getInt(RATIO));
             }
+            if (jobj.has(ISMAX)) {
+                pidConfig.setMax(jobj.getInt(ISMAX) == 1);
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

@@ -187,6 +187,14 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return false;
     }
 
+    protected boolean isApplovinMax() {
+        PidConfig pidConfig = getPidConfig();
+        if (pidConfig != null) {
+            return pidConfig.isMax();
+        }
+        return false;
+    }
+
     @Override
     public void resume() {
     }

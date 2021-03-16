@@ -130,7 +130,7 @@ public class FBLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdLoaded(Ad ad) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 bannerView = loadingView;
                 putCachedAdTime(loadingView);
@@ -289,7 +289,7 @@ public class FBLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdLoaded(Ad ad) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(fbInterstitial);
                 reportAdLoaded();
@@ -404,7 +404,7 @@ public class FBLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdLoaded(Ad ad) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
                 reportAdLoaded();
@@ -553,7 +553,7 @@ public class FBLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdLoaded(Ad ad) {
-                Log.v(Log.TAG, "adloaded placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 rewardedVideoAd = loadingRewardedVideoAd;
                 loadingRewardedVideoAd = null;

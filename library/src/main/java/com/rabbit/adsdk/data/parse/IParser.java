@@ -94,6 +94,8 @@ public interface IParser {
     String ACTIVITY_CONTEXT = "ac";
     // 展示比例
     String RATIO = "ratio";
+    // 是否applovin max
+    String ISMAX = "ismax";
 
     // banner
     String BANNER = "banner";

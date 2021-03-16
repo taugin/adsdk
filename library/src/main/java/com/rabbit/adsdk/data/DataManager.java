@@ -3,6 +3,7 @@ package com.rabbit.adsdk.data;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PlaceConfig;
@@ -57,6 +58,7 @@ public class DataManager {
     public void init() {
         VRemoteConfig.get(mContext).init();
         parseLocalData();
+        printGoogleAdvertisingId();
     }
 
     private void parseLocalData() {
@@ -171,5 +173,21 @@ public class DataManager {
      */
     private String checkLastData(String data, String key) {
         return data;
+    }
+
+    private void printGoogleAdvertisingId() {
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    AdvertisingIdClient.Info info = AdvertisingIdClient.getAdvertisingIdInfo(mContext);
+                    String gaid = info.getId();
+                    boolean isLimited = info.isLimitAdTrackingEnabled();
+                    Log.iv(Log.TAG, "google advertising id (gaid) : " + gaid + " , is limit ad tracking : " + isLimited);
+                } catch (Exception e) {
+                    Log.e(Log.TAG, "error : " + e);
+                }
+            }
+        }.start();
     }
 }

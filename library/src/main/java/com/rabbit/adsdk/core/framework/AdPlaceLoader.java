@@ -17,6 +17,7 @@ import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.addfp.AdDfpLoader;
 import com.rabbit.adsdk.adloader.adfb.FBLoader;
 import com.rabbit.adsdk.adloader.admob.AdmobLoader;
+import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.rabbit.adsdk.adloader.listener.IManagerListener;
 import com.rabbit.adsdk.adloader.listener.ISdkLoader;
@@ -29,7 +30,6 @@ import com.rabbit.adsdk.core.AdPolicy;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.listener.OnAdSdkListener;
-import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.sunny.IAdvance;
@@ -139,6 +139,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             }
                         } else if (config.isDfp() && AdHelper.isModuleLoaded(config.getSdk())) {
                             loader = new AdDfpLoader();
+                            loader.init(mContext, config);
+                            loader.setListenerManager(this);
+                            if (loader.allowUseLoader()) {
+                                mAdLoaders.add(loader);
+                            }
+                        } else if (config.isApplovin() && AdHelper.isModuleLoaded(config.getSdk())) {
+                            loader = new AppLovinLoader();
                             loader.init(mContext, config);
                             loader.setListenerManager(this);
                             if (loader.allowUseLoader()) {
