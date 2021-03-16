@@ -108,7 +108,7 @@
         {
           "sdk": "applovin",
           "type": "banner",
-          "ismax": 1,
+          "ismax": 0,
           "bs": "MEDIUM_RECTANGLE",
           "pid": "a9eeb2d3ee33003c",
           "disable": 0
@@ -229,7 +229,7 @@
         },
         {
           "sdk": "applovin",
-          "ismax": 1,
+          "ismax": 0,
           "type": "interstitial",
           "bs": "MEDIUM_RECTANGLE",
           "pid": "2787a9b587529f8f",
@@ -271,7 +271,7 @@
         },
         {
           "sdk": "applovin",
-          "ismax": 1,
+          "ismax": 0,
           "type": "reward",
           "pid": "b1f3b51e98603fbf",
           "disable": 0
