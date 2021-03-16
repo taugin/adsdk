@@ -51,3 +51,7 @@
 #Firebase Analytics
 -keep class com.google.firebase.remoteconfig.FirebaseRemoteConfig{*;}
 -keep class com.flurry.** {*;}
+
+# 保留applovin下的所有类及其内部类
+-keep class com.applovin.** {*;}
+-dontwarn com.applovin.**

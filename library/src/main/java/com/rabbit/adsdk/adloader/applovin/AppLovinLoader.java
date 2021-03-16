@@ -39,7 +39,6 @@ import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -411,6 +410,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
         setLoading(true, STATE_REQUEST);
         if (interstitialAdDialog == null) {
             interstitialAdDialog = AppLovinInterstitialAd.create(appLovinSdk, activity);
+        }
+        if (interstitialAdDialog != null) {
             interstitialAdDialog.setAdClickListener(new AppLovinAdClickListener() {
                 @Override
                 public void adClicked(AppLovinAd appLovinAd) {
