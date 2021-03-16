@@ -100,7 +100,23 @@ try {
     }
 } catch (Exception e) {
 }
+class Global {
+    static Map<String, String> variantMap = new HashMap<String, String>()
+    static Map<String, String> providerMap = new HashMap<String, String>()
+}
 
+android.applicationVariants.all { variant ->
+    if (variant.buildType.name == 'release') {
+        String key = null;
+        if (variant.productFlavors != null && variant.productFlavors.size() > 0) {
+            key = variant.productFlavors[0].name
+        } else {
+            key = ""
+        }
+        Global.variantMap.put(key, variant.name)
+        Global.providerMap.put(key, variant.mergeAssetsProvider.name)
+    }
+}
 project.afterEvaluate {
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
@@ -231,16 +247,12 @@ def delDebugFile() {
 ext.out = []
 
 def printEncryptInfo() {
-    println "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    println "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    println "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    println "\n>>>>>>>>>>>>>>>>>>>>>>>>>>处理的加密文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     ext.out.each {
         println "> Task " + it
     }
     ext.out = []
-    println "==========================================================================="
-    println "==========================================================================="
-    println "==========================================================================="
+    println ">>>>>>>>>>>>>>>>>>>>>>>>>>处理的加密文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 }
 /**
  * 打开Release目录
@@ -256,7 +268,7 @@ def openReleaseDir(flavor) {
         def outputPath = new File(project.buildDir, outputDir)
         def cmd = "explorer.exe " + outputPath
         cmd.execute()
-        println "> Task  :${project.name}:openReleaseDir [${outputPath}]"
+        println "> Task :${project.name}:openReleaseDir [${outputPath}]"
     } catch (Exception e) {
     }
 }
@@ -283,6 +295,40 @@ def getApplicationId(flavor) {
  * @return
  */
 def getAssetsOutDir(flavor) {
+    def flavorName = flavor == null ? "" : flavor
+    def assetsOutDirList = []
+    def finalAssetsDir = null
+    def variantName = Global.variantMap.get(flavorName)
+    def providerName = Global.providerMap.get(flavorName)
+    def outAssetsDir = String.format("intermediates/assets/%s/release", variantName)
+    assetsOutDirList.add(new File(project.getBuildDir(), outAssetsDir))
+    outAssetsDir = String.format("intermediates/merged_assets/%s/%s/out", variantName, providerName)
+    assetsOutDirList.add(new File(project.getBuildDir(), outAssetsDir))
+    outAssetsDir = String.format("intermediates/merged_assets/%s/out", variantName)
+    assetsOutDirList.add(new File(project.getBuildDir(), outAssetsDir))
+
+    System.out.println "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+    for (dir in assetsOutDirList) {
+        if (dir.exists()) {
+            finalAssetsDir = dir
+            break;
+        } else {
+            System.out.println "[WARNING...] Dir : [" + dir + "] is not exists "
+        }
+    }
+    System.out.println ">>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"
+    if (finalAssetsDir != null) {
+        System.out.println "[VERBOSE...] Dir : [" + finalAssetsDir + "] is exists"
+    }
+    return finalAssetsDir
+}
+
+/**
+ * 获取assets输出目录
+ * @param flavor
+ * @return
+ */
+def getAssetsOutDir_Old(flavor) {
     def productFlavor = toUpperCaseFirstOne(flavor)
     def flavorNoSlash = productFlavor == null ? "" : productFlavor
     def assetsOutDirList = []
@@ -430,7 +476,7 @@ def encryptAssetsFiles(flavor) {
     def appId = getApplicationId(flavor)
     def assetDir = getAssetsOutDir(flavor)
     if (assetDir == null) {
-        System.err.println("[ERROR] Can not find the output Asset Dir");
+        System.out.println("[WARNING...] Can not find the output Asset Dir");
         return;
     }
     def signFile = generateSignMd5(flavor, assetDir)

@@ -103,3 +103,17 @@ afterEvaluate {
     }
 }
 // apply plugin: 'com.google.gms.google-services'
+
+//android.applicationVariants.all{ variant ->
+//    String dirPath = "${buildDir}/intermediates/merged_assets/${variant.name}/${variant.mergeAssetsProvider.name}/out/src"
+//    println "+++++++++++++++++ dirPath1 : " + dirPath
+//    variant.mergeAssets.doLast{
+//        def sourceDir = "${buildDir}/../"   // 资源存放目录，这里是app下
+//        print "================================ : " + "${sourceDir} \n"  // 打印路径
+//        print "================================ : " + "${outputDir} \n"  // 打印路径
+//        copy { // 将from目录下的资源拷贝到into 下目录去
+//            from "${sourceDir}/res"
+//            into "${outputDir}/res"
+//        }
+//    }
+//}
