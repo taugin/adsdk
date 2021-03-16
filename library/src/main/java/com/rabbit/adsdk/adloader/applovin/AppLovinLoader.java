@@ -66,7 +66,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, "applovin sdk init successfully");
                 }
             });
-            appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList("YOUR_GAID_HERE"));
         }
     }
 
