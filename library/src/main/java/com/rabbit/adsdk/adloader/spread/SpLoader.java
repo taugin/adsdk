@@ -62,9 +62,7 @@ public class SpLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
-            }
+            notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -92,9 +90,7 @@ public class SpLoader extends AbstractSdkLoader {
             }
         } else {
             reportAdError(String.valueOf("ERROR_LOAD"));
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
-            }
+            notifyAdFailed(Constant.AD_ERROR_LOAD);
         }
     }
 
@@ -121,9 +117,7 @@ public class SpLoader extends AbstractSdkLoader {
             SpreadCfg spreadCfg = mSpread;
             spreadBindNativeView.setClickListener(new ClickClass(spreadCfg));
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadCfg);
-            if (getAdListener() != null) {
-                getAdListener().onAdImp();
-            }
+            notifyAdImp();
             mSpread = null;
             reportAdImp();
         }
@@ -144,9 +138,7 @@ public class SpLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
-            }
+            notifyInterstitialError(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -174,9 +166,7 @@ public class SpLoader extends AbstractSdkLoader {
             }
         } else {
             reportAdError(String.valueOf("ERROR_LOAD"));
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
-            }
+            notifyInterstitialError(Constant.AD_ERROR_LOAD);
         }
     }
 
@@ -259,9 +249,7 @@ public class SpLoader extends AbstractSdkLoader {
                 mContext.startActivity(intent);
                 reportAdShow();
                 registerEvent();
-                if (getAdListener() != null) {
-                    getAdListener().onAdShow();
-                }
+                notifyAdShow();
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
@@ -353,24 +341,16 @@ public class SpLoader extends AbstractSdkLoader {
             if (TextUtils.equals(getDismissAction(context), intent.getAction())) {
                 unregisterEvent();
                 reportAdClose();
-                if (getAdListener() != null) {
-                    getAdListener().onAdDismiss();
-                }
+                notifyAdDismiss();
             } else if (TextUtils.equals(getClickAction(context), intent.getAction())) {
                 reportAdClick();
-                if (getAdListener() != null) {
-                    getAdListener().onAdClick();
-                }
+                notifyAdClick();
             } else if (TextUtils.equals(getShowAction(context), intent.getAction())) {
                 reportAdShow();
-                if (getAdListener() != null) {
-                    getAdListener().onAdShow();
-                }
+                notifyAdShow();
             } else if (TextUtils.equals(getImpAction(context), intent.getAction())) {
                 reportAdImp();
-                if (getAdListener() != null) {
-                    getAdListener().onAdImp();
-                }
+                notifyAdImp();
             }
         }
     };
@@ -397,9 +377,7 @@ public class SpLoader extends AbstractSdkLoader {
                     Log.v(Log.TAG, "error : " + e);
                 }
                 reportAdClick();
-                if (getAdListener() != null) {
-                    getAdListener().onAdClick();
-                }
+                notifyAdClick();
             }
         }
     }

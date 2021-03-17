@@ -39,6 +39,7 @@ import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,6 +66,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, "applovin sdk init successfully");
                 }
             });
+            appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList("65bb786c-32a2-44df-89e1-bb824a7b7400"));
         }
     }
 
@@ -109,16 +111,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
         AppLovinSdk appLovinSdk = getInstance();
         if (appLovinSdk == null) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " , empty applovin_sdk_key");
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
-            }
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
-            }
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isBannerLoaded()) {
@@ -128,9 +126,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
-            }
+            notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -168,39 +164,28 @@ public class AppLovinLoader extends AbstractSdkLoader {
         AppLovinSdk appLovinSdk = getInstance();
         if (appLovinSdk == null) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " , empty applovin_sdk_key");
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
-            }
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         Activity activity = getActivity();
         if (activity == null) {
             Log.v(Log.TAG, "applovin interstitial need an activity context");
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_CONTEXT);
-            }
+            notifyInterstitialError(Constant.AD_ERROR_CONTEXT);
             return;
         }
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
-            }
+            notifyInterstitialError(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isInterstitialLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                setLoadedFlag();
-                getAdListener().onInterstitialLoaded(this);
-            }
+            notifyInterstitialLoaded(this);
             return;
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
-            }
+            notifyInterstitialError(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -236,39 +221,28 @@ public class AppLovinLoader extends AbstractSdkLoader {
         AppLovinSdk appLovinSdk = getInstance();
         if (appLovinSdk == null) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " , empty applovin_sdk_key");
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
-            }
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         Activity activity = getActivity();
         if (activity == null) {
             Log.v(Log.TAG, "applovin reward need an activity context");
-            if (getAdListener() != null) {
-                getAdListener().onRewardedVideoError(Constant.AD_ERROR_CONTEXT);
-            }
+            notifyRewardedVideoError(Constant.AD_ERROR_CONTEXT);
             return;
         }
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
-            }
+            notifyInterstitialError(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isRewardedVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                setLoadedFlag();
-                getAdListener().onRewardedVideoAdLoaded(this);
-            }
+            notifyRewardedVideoAdLoaded(this);
             return;
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
-            }
+            notifyInterstitialError(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -298,6 +272,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     private AppLovinAdView appLovinAdView;
     private AppLovinAdView loadingAdView;
+    private AppLovinAdView lastUseAdView;
 
     private AppLovinIncentivizedInterstitial incentivizedInterstitial;
 
@@ -329,9 +304,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(i));
-                if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
-                }
+                notifyAdFailed(Constant.AD_ERROR_LOAD);
             }
         });
 
@@ -339,17 +312,17 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void adDisplayed(AppLovinAd appLovinAd) {
                 Log.v(Log.TAG, "");
-                if (getAdListener() != null) {
-                    getAdListener().onAdShow();
-                }
+                reportAdImp();
+                notifyAdImp();
             }
 
             @Override
             public void adHidden(AppLovinAd appLovinAd) {
                 Log.v(Log.TAG, "");
                 reportAdClose();
-                if (getAdListener() != null) {
-                    getAdListener().onAdDismiss();
+                notifyAdDismiss();
+                if (lastUseAdView != null) {
+                    lastUseAdView.pause();
                 }
             }
         });
@@ -359,12 +332,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void adClicked(AppLovinAd appLovinAd) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                if (getAdListener() != null) {
-                    getAdListener().onAdClick();
-                }
-                if (isDestroyAfterClick()) {
-                    appLovinAdView = null;
-                }
+                notifyAdClick();
             }
         });
         loadingAdView.loadNextAd();
@@ -385,11 +353,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
-            if (!isDestroyAfterClick()) {
-                appLovinAdView = null;
-            }
+            lastUseAdView = appLovinAdView;
             reportAdShow();
-            reportAdImp();
+            notifyAdShow();
         } catch (Exception e) {
             Log.e(Log.TAG, "applovin loader error : " + e);
         }
@@ -417,9 +383,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 public void adClicked(AppLovinAd appLovinAd) {
                     Log.v(Log.TAG, "");
                     reportAdClick();
-                    if (getAdListener() != null) {
-                        getAdListener().onInterstitialClick();
-                    }
+                    notifyInterstitialClick();
                 }
             });
             interstitialAdDialog.setAdDisplayListener(new AppLovinAdDisplayListener() {
@@ -427,9 +391,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 public void adDisplayed(AppLovinAd appLovinAd) {
                     Log.v(Log.TAG, "");
                     reportAdImp();
-                    if (getAdListener() != null) {
-                        getAdListener().onInterstitialImp();
-                    }
+                    notifyInterstitialImp();
                 }
 
                 @Override
@@ -437,9 +399,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     Log.v(Log.TAG, "");
                     loadedAd = null;
                     reportAdClose();
-                    if (getAdListener() != null) {
-                        getAdListener().onInterstitialDismiss();
-                    }
+                    notifyInterstitialDismiss();
                 }
             });
         }
@@ -452,10 +412,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     setLoading(false, STATE_SUCCESS);
                     putCachedAdTime(loadedAd);
                     reportAdLoaded();
-                    if (getAdListener() != null) {
-                        setLoadedFlag();
-                        getAdListener().onInterstitialLoaded(AppLovinLoader.this);
-                    }
+                    notifyInterstitialLoaded(AppLovinLoader.this);
                 }
 
                 @Override
@@ -463,18 +420,14 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                     setLoading(false, STATE_FAILURE);
                     reportAdError(codeToError(i));
-                    if (getAdListener() != null) {
-                        getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
-                    }
+                    notifyInterstitialError(Constant.AD_ERROR_LOAD);
                 }
             });
         } catch (Exception e) {
             Log.v(Log.TAG, "reason : " + String.valueOf(e) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
             setLoading(false, STATE_FAILURE);
             reportAdError(String.valueOf(e));
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
-            }
+            notifyInterstitialError(Constant.AD_ERROR_LOAD);
         }
         reportAdRequest();
         Log.v(Log.TAG, "");
@@ -512,10 +465,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(incentivizedInterstitial);
                 reportAdLoaded();
-                if (getAdListener() != null) {
-                    setLoadedFlag();
-                    getAdListener().onRewardedVideoAdLoaded(AppLovinLoader.this);
-                }
+                notifyRewardedVideoAdLoaded(AppLovinLoader.this);
             }
 
             @Override
@@ -523,9 +473,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(i));
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
-                }
+                notifyInterstitialError(Constant.AD_ERROR_LOAD);
             }
         });
         reportAdRequest();
@@ -548,9 +496,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     } catch (Exception e) {
                     }
                     reportAdReward();
-                    if (getAdListener() != null) {
-                        getAdListener().onRewarded(item);
-                    }
+                    notifyRewarded(item);
                 }
 
                 @Override
@@ -573,17 +519,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 @Override
                 public void videoPlaybackBegan(AppLovinAd appLovinAd) {
                     Log.v(Log.TAG, "");
-                    if (getAdListener() != null) {
-                        getAdListener().onRewardedVideoStarted();
-                    }
+                    notifyRewardedVideoStarted();
                 }
 
                 @Override
                 public void videoPlaybackEnded(AppLovinAd appLovinAd, double v, boolean b) {
                     Log.v(Log.TAG, "");
-                    if (getAdListener() != null) {
-                        getAdListener().onRewardedVideoCompleted();
-                    }
+                    notifyRewardedVideoCompleted();
                 }
             }, new AppLovinAdDisplayListener() {
 
@@ -591,18 +533,14 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 public void adDisplayed(AppLovinAd appLovinAd) {
                     Log.v(Log.TAG, "");
                     reportAdImp();
-                    if (getAdListener() != null) {
-                        getAdListener().onRewardedVideoAdOpened();
-                    }
+                    notifyRewardedVideoAdOpened();
                 }
 
                 @Override
                 public void adHidden(AppLovinAd appLovinAd) {
                     Log.v(Log.TAG, "");
                     reportAdClose();
-                    if (getAdListener() != null) {
-                        getAdListener().onRewardedVideoAdClosed();
-                    }
+                    notifyRewardedVideoAdClosed();
                 }
             }, new AppLovinAdClickListener() {
 
@@ -610,9 +548,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 public void adClicked(AppLovinAd appLovinAd) {
                     Log.v(Log.TAG, "");
                     reportAdClick();
-                    if (getAdListener() != null) {
-                        getAdListener().onRewardedVideoAdClicked();
-                    }
+                    notifyRewardedVideoAdClicked();
                 }
             });
             clearCachedAdTime(incentivizedInterstitial);
@@ -634,8 +570,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private MaxInterstitialAd interstitialAd;
 
     private MaxAdView loadingMaxAdView;
-
     private MaxAdView maxAdView;
+    private MaxAdView lastUseMaxAdView;
 
     static private MaxRewardedAd rewardedAd;
 
@@ -681,25 +617,23 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(errorCode));
-                if (getAdListener() != null) {
-                    getAdListener().onAdFailed(Constant.AD_ERROR_LOAD);
-                }
+                notifyAdFailed(Constant.AD_ERROR_LOAD);
             }
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 Log.v(Log.TAG, "");
-                if (getAdListener() != null) {
-                    getAdListener().onAdShow();
-                }
+                reportAdImp();
+                notifyAdImp();
             }
 
             @Override
             public void onAdHidden(MaxAd ad) {
                 Log.v(Log.TAG, "");
                 reportAdClose();
-                if (getAdListener() != null) {
-                    getAdListener().onAdDismiss();
+                notifyAdDismiss();
+                if (lastUseMaxAdView != null) {
+                    lastUseMaxAdView.stopAutoRefresh();
                 }
             }
 
@@ -707,12 +641,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdClicked(MaxAd ad) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                if (getAdListener() != null) {
-                    getAdListener().onAdClick();
-                }
-                if (isDestroyAfterClick()) {
-                    maxAdView = null;
-                }
+                notifyAdClick();
             }
 
             @Override
@@ -748,11 +677,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
-            if (!isDestroyAfterClick()) {
-                maxAdView = null;
-            }
+            lastUseMaxAdView = maxAdView;
             reportAdShow();
-            reportAdImp();
+            notifyAdShow();
         } catch (Exception e) {
             Log.e(Log.TAG, "applovin loader error : " + e);
         }
@@ -779,10 +706,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
                 reportAdLoaded();
-                if (getAdListener() != null) {
-                    setLoadedFlag();
-                    getAdListener().onInterstitialLoaded(AppLovinLoader.this);
-                }
+                notifyInterstitialLoaded(AppLovinLoader.this);
             }
 
             @Override
@@ -790,18 +714,14 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(errorCode));
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
-                }
+                notifyInterstitialError(Constant.AD_ERROR_LOAD);
             }
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 Log.v(Log.TAG, "");
                 reportAdImp();
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialImp();
-                }
+                notifyInterstitialImp();
             }
 
             @Override
@@ -812,18 +732,14 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     interstitialAd = null;
                 }
                 reportAdClose();
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialDismiss();
-                }
+                notifyInterstitialDismiss();
             }
 
             @Override
             public void onAdClicked(MaxAd ad) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialClick();
-                }
+                notifyInterstitialClick();
             }
 
             @Override
@@ -865,17 +781,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onRewardedVideoStarted(MaxAd ad) {
                 Log.v(Log.TAG, "");
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoStarted();
-                }
+                notifyRewardedVideoStarted();
             }
 
             @Override
             public void onRewardedVideoCompleted(MaxAd ad) {
                 Log.v(Log.TAG, "");
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoCompleted();
-                }
+                notifyRewardedVideoCompleted();
             }
 
             @Override
@@ -891,9 +803,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 } catch (Exception e) {
                 }
                 reportAdReward();
-                if (getAdListener() != null) {
-                    getAdListener().onRewarded(item);
-                }
+                notifyRewarded(item);
             }
 
             @Override
@@ -902,10 +812,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(rewardedAd);
                 reportAdLoaded();
-                if (getAdListener() != null) {
-                    setLoadedFlag();
-                    getAdListener().onRewardedVideoAdLoaded(AppLovinLoader.this);
-                }
+                notifyRewardedVideoAdLoaded(AppLovinLoader.this);
             }
 
             @Override
@@ -913,36 +820,28 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(errorCode));
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(Constant.AD_ERROR_LOAD);
-                }
+                notifyInterstitialError(Constant.AD_ERROR_LOAD);
             }
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 Log.v(Log.TAG, "");
                 reportAdImp();
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdOpened();
-                }
+                notifyRewardedVideoAdOpened();
             }
 
             @Override
             public void onAdHidden(MaxAd ad) {
                 Log.v(Log.TAG, "");
                 reportAdClose();
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdClosed();
-                }
+                notifyRewardedVideoAdClosed();
             }
 
             @Override
             public void onAdClicked(MaxAd ad) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdClicked();
-                }
+                notifyRewardedVideoAdClicked();
             }
 
             @Override
@@ -966,6 +865,38 @@ public class AppLovinLoader extends AbstractSdkLoader {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void resume() {
+        Log.iv(Log.TAG, "resume ...");
+        if (lastUseAdView != null) {
+            lastUseAdView.resume();
+        }
+        if (lastUseMaxAdView != null) {
+            lastUseMaxAdView.startAutoRefresh();
+        }
+    }
+
+    @Override
+    public void pause() {
+        Log.iv(Log.TAG, "pause ...");
+        if (lastUseAdView != null) {
+            lastUseAdView.pause();
+        }
+        if (lastUseMaxAdView != null) {
+            lastUseMaxAdView.stopAutoRefresh();
+        }
+    }
+
+    @Override
+    public void destroy() {
+        if (lastUseAdView != null) {
+            lastUseAdView.destroy();
+        }
+        if (lastUseMaxAdView != null) {
+            lastUseMaxAdView.destroy();
+        }
     }
 
     private String codeToError(int code) {

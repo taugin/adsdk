@@ -50,10 +50,8 @@ public class FBLoader extends AbstractSdkLoader {
     private RewardedVideoAd rewardedVideoAd;
     private RewardedVideoAd loadingRewardedVideoAd;
 
-    private NativeAd gNativeAd;
-    private AdView gBannerView;
-    private NativeAdsManager nativeAdsManager;
-    private int mShowNativeCount = 0;
+    private NativeAd lastUseNativeAd;
+    private AdView lastUseBannerView;
     private FBBindNativeView fbBindNativeView = new FBBindNativeView();
 
     protected BaseBindNativeView getBaseBindNativeView() {
@@ -75,16 +73,12 @@ public class FBLoader extends AbstractSdkLoader {
     public void loadBanner(int adSize) {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
-            }
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (!matchNoFillTime()) {
             Log.v(Log.TAG, "nofill error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_FILLTIME);
-            }
+            notifyAdFailed(Constant.AD_ERROR_FILLTIME);
             return;
         }
         if (isBannerLoaded()) {
@@ -94,9 +88,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
-            }
+            notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -123,9 +115,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 reportAdError(getError(adError));
-                if (getAdListener() != null) {
-                    getAdListener().onAdFailed(toSdkError(adError));
-                }
+                notifyAdFailed(toSdkError(adError));
             }
 
             @Override
@@ -142,9 +132,7 @@ public class FBLoader extends AbstractSdkLoader {
             public void onAdClicked(Ad ad) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                if (getAdListener() != null) {
-                    getAdListener().onAdClick();
-                }
+                notifyAdClick();
                 if (isDestroyAfterClick()) {
                     bannerView = null;
                 }
@@ -154,9 +142,7 @@ public class FBLoader extends AbstractSdkLoader {
             public void onLoggingImpression(Ad ad) {
                 Log.v(Log.TAG, "");
                 reportAdImp();
-                if (getAdListener() != null) {
-                    getAdListener().onAdImp();
-                }
+                notifyAdImp();
             }
         };
         printInterfaceLog(ACTION_LOAD);
@@ -188,7 +174,7 @@ public class FBLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
-            gBannerView = bannerView;
+            lastUseBannerView = bannerView;
             if (!isDestroyAfterClick()) {
                 bannerView = null;
             }
@@ -214,31 +200,22 @@ public class FBLoader extends AbstractSdkLoader {
     public void loadInterstitial() {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_CONFIG);
-            }
+            notifyInterstitialError(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (!matchNoFillTime()) {
             Log.v(Log.TAG, "nofill error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_FILLTIME);
-            }
+            notifyInterstitialError(Constant.AD_ERROR_FILLTIME);
             return;
         }
         if (isInterstitialLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                setLoadedFlag();
-                getAdListener().onInterstitialLoaded(this);
-            }
+            notifyInterstitialLoaded(this);
             return;
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onInterstitialError(Constant.AD_ERROR_LOADING);
-            }
+            notifyInterstitialError(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -254,9 +231,7 @@ public class FBLoader extends AbstractSdkLoader {
             public void onInterstitialDisplayed(Ad ad) {
                 Log.v(Log.TAG, "");
                 reportAdImp();
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialImp();
-                }
+                notifyInterstitialImp();
             }
 
             @Override
@@ -267,9 +242,7 @@ public class FBLoader extends AbstractSdkLoader {
                     fbInterstitial = null;
                 }
                 reportAdClose();
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialDismiss();
-                }
+                notifyInterstitialDismiss();
             }
 
             @Override
@@ -282,9 +255,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 reportAdError(getError(adError));
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialError(toSdkError(adError));
-                }
+                notifyInterstitialError(toSdkError(adError));
             }
 
             @Override
@@ -293,19 +264,14 @@ public class FBLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(fbInterstitial);
                 reportAdLoaded();
-                if (getAdListener() != null) {
-                    setLoadedFlag();
-                    getAdListener().onInterstitialLoaded(FBLoader.this);
-                }
+                notifyInterstitialLoaded(FBLoader.this);
             }
 
             @Override
             public void onAdClicked(Ad ad) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                if (getAdListener() != null) {
-                    getAdListener().onInterstitialClick();
-                }
+                notifyInterstitialClick();
             }
 
             @Override
@@ -349,16 +315,12 @@ public class FBLoader extends AbstractSdkLoader {
         mParams = params;
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_CONFIG);
-            }
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (!matchNoFillTime()) {
             Log.v(Log.TAG, "nofill error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_FILLTIME);
-            }
+            notifyAdFailed(Constant.AD_ERROR_FILLTIME);
             return;
         }
         if (isNativeLoaded()) {
@@ -368,9 +330,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onAdFailed(Constant.AD_ERROR_LOADING);
-            }
+            notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -397,9 +357,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 reportAdError(getError(adError));
-                if (getAdListener() != null) {
-                    getAdListener().onAdFailed(toSdkError(adError));
-                }
+                notifyAdFailed(toSdkError(adError));
             }
 
             @Override
@@ -415,9 +373,7 @@ public class FBLoader extends AbstractSdkLoader {
             public void onAdClicked(Ad ad) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                if (getAdListener() != null) {
-                    getAdListener().onAdClick();
-                }
+                notifyAdClick();
                 if (isDestroyAfterClick()) {
                     nativeAd = null;
                 }
@@ -427,9 +383,7 @@ public class FBLoader extends AbstractSdkLoader {
             public void onLoggingImpression(Ad ad) {
                 Log.v(Log.TAG, "");
                 reportAdImp();
-                if (getAdListener() != null) {
-                    getAdListener().onAdImp();
-                }
+                notifyAdImp();
             }
         };
         reportAdRequest();
@@ -445,7 +399,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         clearCachedAdTime(nativeAd);
         fbBindNativeView.bindFBNative(mParams, viewGroup, nativeAd, mPidConfig);
-        gNativeAd = nativeAd;
+        lastUseNativeAd = nativeAd;
         if (!isDestroyAfterClick()) {
             nativeAd = null;
         }
@@ -456,31 +410,22 @@ public class FBLoader extends AbstractSdkLoader {
     public void loadRewardedVideo() {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onRewardedVideoError(Constant.AD_ERROR_CONFIG);
-            }
+            notifyRewardedVideoError(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (!matchNoFillTime()) {
             Log.v(Log.TAG, "nofill error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onRewardedVideoError(Constant.AD_ERROR_FILLTIME);
-            }
+            notifyRewardedVideoError(Constant.AD_ERROR_FILLTIME);
             return;
         }
         if (isRewardedVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                setLoadedFlag();
-                getAdListener().onRewardedVideoAdLoaded(this);
-            }
+            notifyRewardedVideoAdLoaded(this);
             return;
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            if (getAdListener() != null) {
-                getAdListener().onRewardedVideoError(Constant.AD_ERROR_LOADING);
-            }
+            notifyRewardedVideoError(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -496,20 +441,16 @@ public class FBLoader extends AbstractSdkLoader {
             public void onRewardedVideoCompleted() {
                 Log.v(Log.TAG, "");
                 reportAdReward();
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoCompleted();
-                }
+                notifyRewardedVideoCompleted();
 
-                if (getAdListener() != null) {
-                    AdReward adReward = new AdReward();
-                    adReward.setType(Constant.ECPM);
-                    double ecpm = 0;
-                    if (mPidConfig != null) {
-                        ecpm = mPidConfig.getEcpm();
-                    }
-                    adReward.setAmount(String.valueOf(ecpm));
-                    getAdListener().onRewarded(adReward);
+                AdReward adReward = new AdReward();
+                adReward.setType(Constant.ECPM);
+                double ecpm = 0;
+                if (mPidConfig != null) {
+                    ecpm = mPidConfig.getEcpm();
                 }
+                adReward.setAmount(String.valueOf(ecpm));
+                notifyRewarded(adReward);
             }
 
             @Override
@@ -517,9 +458,7 @@ public class FBLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 setRewardPlaying(true);
                 reportAdImp();
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdOpened();
-                }
+                notifyRewardedVideoAdOpened();
             }
 
             @Override
@@ -527,9 +466,7 @@ public class FBLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 setRewardPlaying(false);
                 reportAdClose();
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdClosed();
-                }
+                notifyRewardedVideoAdClosed();
                 if (rewardedVideoAd != null) {
                     rewardedVideoAd.destroy();
                     rewardedVideoAd = null;
@@ -546,9 +483,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 reportAdError(getError(adError));
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoError(toSdkError(adError));
-                }
+                notifyRewardedVideoError(toSdkError(adError));
             }
 
             @Override
@@ -559,19 +494,14 @@ public class FBLoader extends AbstractSdkLoader {
                 loadingRewardedVideoAd = null;
                 putCachedAdTime(rewardedVideoAd);
                 reportAdLoaded();
-                if (getAdListener() != null) {
-                    setLoadedFlag();
-                    getAdListener().onRewardedVideoAdLoaded(FBLoader.this);
-                }
+                notifyRewardedVideoAdLoaded(FBLoader.this);
             }
 
             @Override
             public void onAdClicked(Ad ad) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                if (getAdListener() != null) {
-                    getAdListener().onRewardedVideoAdClicked();
-                }
+                notifyRewardedVideoAdClicked();
             }
         };
         printInterfaceLog(ACTION_LOAD);
@@ -607,13 +537,13 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     public void destroy() {
-        if (gBannerView != null) {
-            gBannerView.destroy();
-            gBannerView = null;
+        if (lastUseBannerView != null) {
+            lastUseBannerView.destroy();
+            lastUseBannerView = null;
         }
-        if (gNativeAd != null) {
-            gNativeAd.destroy();
-            gNativeAd = null;
+        if (lastUseNativeAd != null) {
+            lastUseNativeAd.destroy();
+            lastUseNativeAd = null;
         }
     }
 

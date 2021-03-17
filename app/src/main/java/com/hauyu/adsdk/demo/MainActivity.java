@@ -351,6 +351,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
     protected void onDestroy() {
         super.onDestroy();
         AdSdk.get(this).stopAutoReward();
+        AdSdk.get(this).destroy("banner_and_native");
     }
 
     private void updateRewardButton() {

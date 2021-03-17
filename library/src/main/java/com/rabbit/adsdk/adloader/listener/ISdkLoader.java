@@ -71,7 +71,7 @@ public interface ISdkLoader {
 
     public boolean isRewardedVideoType();
 
-    public void setLoadedFlag();
+    //public void setLoadedFlag();
 
     public boolean hasLoadedFlag();
 
