@@ -312,8 +312,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void adDisplayed(AppLovinAd appLovinAd) {
                 Log.v(Log.TAG, "");
-                reportAdImp();
-                notifyAdImp();
             }
 
             @Override
@@ -356,6 +354,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
             lastUseAdView = appLovinAdView;
             reportAdShow();
             notifyAdShow();
+            reportAdImp();
+            notifyAdImp();
         } catch (Exception e) {
             Log.e(Log.TAG, "applovin loader error : " + e);
         }
@@ -623,8 +623,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 Log.v(Log.TAG, "");
-                reportAdImp();
-                notifyAdImp();
             }
 
             @Override
@@ -680,6 +678,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
             lastUseMaxAdView = maxAdView;
             reportAdShow();
             notifyAdShow();
+            reportAdImp();
+            notifyAdImp();
         } catch (Exception e) {
             Log.e(Log.TAG, "applovin loader error : " + e);
         }

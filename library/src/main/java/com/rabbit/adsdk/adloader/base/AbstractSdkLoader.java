@@ -124,9 +124,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadInterstitial() {
-        if (getAdListener() != null) {
-            notifyAdFailed(Constant.AD_ERROR_UNSUPPORT);
-        }
+        notifyAdFailed(Constant.AD_ERROR_UNSUPPORT);
     }
 
     @Override
@@ -136,9 +134,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadNative(Params params) {
-        if (getAdListener() != null) {
-            notifyAdFailed(Constant.AD_ERROR_UNSUPPORT);
-        }
+        notifyAdFailed(Constant.AD_ERROR_UNSUPPORT);
     }
 
     @Override
@@ -147,9 +143,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadBanner(int adSize) {
-        if (getAdListener() != null) {
-            notifyAdFailed(Constant.AD_ERROR_UNSUPPORT);
-        }
+        notifyAdFailed(Constant.AD_ERROR_UNSUPPORT);
     }
 
     @Override
@@ -158,9 +152,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadRewardedVideo() {
-        if (getAdListener() != null) {
-            notifyAdFailed(Constant.AD_ERROR_UNSUPPORT);
-        }
+        notifyAdFailed(Constant.AD_ERROR_UNSUPPORT);
     }
 
     @Override
@@ -318,9 +310,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private void processCheatUser() {
         Log.d(Log.TAG, "cheat user : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-        if (getAdListener() != null) {
-            notifyAdFailed(Constant.AD_ERROR_CHEAT);
-        }
+        notifyAdFailed(Constant.AD_ERROR_CHEAT);
     }
 
     private boolean isUserCheat() {
@@ -346,9 +336,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private void processAdLoaderFilter() {
         Log.iv(Log.TAG, "loader is filter : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-        if (getAdListener() != null) {
-            notifyAdFailed(Constant.AD_ERROR_FILTERED);
-        }
+        notifyAdFailed(Constant.AD_ERROR_FILTERED);
     }
 
     private boolean isImpByRatio() {
@@ -360,9 +348,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private void processImpByRatio() {
         Log.iv(Log.TAG, "loader not ratio : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-        if (getAdListener() != null) {
-            notifyAdFailed(Constant.AD_ERROR_RATIO);
-        }
+        notifyAdFailed(Constant.AD_ERROR_RATIO);
     }
 
     private OnAdBaseListener getAdListener() {
@@ -533,18 +519,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         reportAdError("AD_ERROR_TIMEOUT");
         setLoading(false, STATE_TIMTOUT);
         if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)) {
-            if (getAdListener() != null) {
-                notifyInterstitialError(Constant.AD_ERROR_TIMEOUT);
-            }
+            notifyInterstitialError(Constant.AD_ERROR_TIMEOUT);
         } else if (TextUtils.equals(getAdType(), Constant.TYPE_REWARD)) {
-            if (getAdListener() != null) {
-                notifyRewardedVideoError(Constant.AD_ERROR_TIMEOUT);
-            }
+            notifyRewardedVideoError(Constant.AD_ERROR_TIMEOUT);
         } else if (TextUtils.equals(getAdType(), Constant.TYPE_BANNER)
                 || TextUtils.equals(getAdType(), Constant.TYPE_NATIVE)) {
-            if (getAdListener() != null) {
-                notifyAdFailed(Constant.AD_ERROR_TIMEOUT);
-            }
+            notifyAdFailed(Constant.AD_ERROR_TIMEOUT);
         }
     }
 
