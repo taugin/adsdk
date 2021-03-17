@@ -98,6 +98,14 @@ public class AppLovinLoader extends AbstractSdkLoader {
         return AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, mContext);
     }
 
+    private boolean isApplovinMax() {
+        PidConfig pidConfig = getPidConfig();
+        if (pidConfig != null) {
+            return pidConfig.isMax();
+        }
+        return false;
+    }
+
     @Override
     public boolean isBannerLoaded() {
         if (isApplovinMax()) {
