@@ -53,9 +53,9 @@ android {
 
 dependencies {
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
-    implementation 'com.facebook.android:audience-network-sdk:6.2.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.3.0'
     // MoPub
-    implementation('com.mopub:mopub-sdk:5.15.0@aar') {
+    implementation('com.mopub:mopub-sdk:5.16.0@aar') {
         transitive = true
         exclude group: 'androidx.fragment'
         exclude group: 'androidx.core'

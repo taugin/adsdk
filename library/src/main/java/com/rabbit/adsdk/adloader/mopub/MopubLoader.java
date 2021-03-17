@@ -18,6 +18,9 @@ import com.mopub.common.privacy.ConsentDialogListener;
 import com.mopub.common.privacy.PersonalInfoManager;
 import com.mopub.mobileads.MoPubErrorCode;
 import com.mopub.mobileads.MoPubInterstitial;
+import com.mopub.mobileads.MoPubRewardedAdListener;
+import com.mopub.mobileads.MoPubRewardedAdManager;
+import com.mopub.mobileads.MoPubRewardedAds;
 import com.mopub.mobileads.MoPubRewardedVideoListener;
 import com.mopub.mobileads.MoPubRewardedVideoManager;
 import com.mopub.mobileads.MoPubRewardedVideos;
@@ -404,7 +407,7 @@ public class MopubLoader extends AbstractSdkLoader {
         SdkConfiguration sdkConfiguration = new SdkConfiguration.Builder(getPid())
                 .build();
         MoPub.initializeSdk(activity, sdkConfiguration, initSdkListener());
-        MoPubRewardedVideoManager.updateActivity(activity);
+        MoPubRewardedAdManager.updateActivity(activity);
 
         if (isRewardedVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
@@ -423,9 +426,9 @@ public class MopubLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
-        MoPubRewardedVideos.setRewardedVideoListener(new MoPubRewardedVideoListener() {
+        MoPubRewardedAdManager.setRewardedAdListener(new MoPubRewardedAdListener() {
             @Override
-            public void onRewardedVideoLoadSuccess(@NonNull String adUnitId) {
+            public void onRewardedAdLoadSuccess(String s) {
                 Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 reportAdLoaded();
@@ -433,15 +436,15 @@ public class MopubLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onRewardedVideoLoadFailure(@NonNull String adUnitId, @NonNull MoPubErrorCode errorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+            public void onRewardedAdLoadFailure(String s, MoPubErrorCode moPubErrorCode) {
+                Log.v(Log.TAG, "reason : " + codeToError(moPubErrorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
-                reportAdError(codeToError(errorCode));
-                notifyRewardedVideoError(toSdkError(errorCode));
+                reportAdError(codeToError(moPubErrorCode));
+                notifyRewardedVideoError(toSdkError(moPubErrorCode));
             }
 
             @Override
-            public void onRewardedVideoStarted(@NonNull String adUnitId) {
+            public void onRewardedAdStarted(String s) {
                 Log.v(Log.TAG, "");
                 setRewardPlaying(true);
                 reportAdImp();
@@ -450,18 +453,14 @@ public class MopubLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onRewardedVideoPlaybackError(@NonNull String adUnitId, @NonNull MoPubErrorCode errorCode) {
-            }
-
-            @Override
-            public void onRewardedVideoClicked(@NonNull String adUnitId) {
+            public void onRewardedAdClicked(String s) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
                 notifyRewardedVideoAdClicked();
             }
 
             @Override
-            public void onRewardedVideoClosed(@NonNull String adUnitId) {
+            public void onRewardedAdClosed(String s) {
                 Log.v(Log.TAG, "");
                 setRewardPlaying(false);
                 reportAdClose();
@@ -469,7 +468,11 @@ public class MopubLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onRewardedVideoCompleted(@NonNull Set<String> adUnitIds, @NonNull MoPubReward reward) {
+            public void onRewardedAdShowError(String s, MoPubErrorCode moPubErrorCode) {
+            }
+
+            @Override
+            public void onRewardedAdCompleted(Set<String> set, MoPubReward moPubReward) {
                 Log.v(Log.TAG, "");
                 reportAdReward();
                 notifyRewardedVideoCompleted();
@@ -485,13 +488,13 @@ public class MopubLoader extends AbstractSdkLoader {
         });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
-        MoPubRewardedVideos.loadRewardedVideo(getPidConfig().getPid());
+        MoPubRewardedAds.loadRewardedAd(getPidConfig().getPid());
     }
 
     @Override
     public boolean showRewardedVideo() {
         printInterfaceLog(ACTION_SHOW);
-        MoPubRewardedVideos.showRewardedVideo(getPidConfig().getPid());
+        MoPubRewardedAds.showRewardedAd(getPidConfig().getPid());
         reportAdShow();
         notifyAdShow();
         return true;

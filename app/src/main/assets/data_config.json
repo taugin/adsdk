@@ -73,13 +73,13 @@
           "sdk": "mopub",
           "type": "banner",
           "pid": "252412d5e9364a05ab77d9396346d73d",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "mopub",
           "type": "native",
           "pid": "02a2d288d2674ad09f3241d46a44356e",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
@@ -111,7 +111,7 @@
           "ismax": 1,
           "bs": "MEDIUM_RECTANGLE",
           "pid": "a9eeb2d3ee33003c",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,
@@ -214,7 +214,7 @@
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
           "ctr": 5,
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",
@@ -233,7 +233,7 @@
           "type": "interstitial",
           "bs": "MEDIUM_RECTANGLE",
           "pid": "2787a9b587529f8f",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,
@@ -261,7 +261,7 @@
           "sdk": "mopub",
           "type": "reward",
           "pid": "920b6145fb1546cf8b5cf2ac34638bb7",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "fb",
@@ -274,7 +274,7 @@
           "ismax": 1,
           "type": "reward",
           "pid": "b1f3b51e98603fbf",
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,

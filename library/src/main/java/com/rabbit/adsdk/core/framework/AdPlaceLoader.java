@@ -117,45 +117,45 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 for (PidConfig config : pidList) {
                     if (config != null) {
                         if (config.isAdmob() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new AdmobLoader();
-                            loader.init(mContext, config);
-                            loader.setListenerManager(this);
-                            if (loader.allowUseLoader()) {
+                            if (!config.isDisable()) {
+                                loader = new AdmobLoader();
+                                loader.init(mContext, config);
+                                loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isFB() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new FBLoader();
-                            loader.init(mContext, config);
-                            loader.setListenerManager(this);
-                            if (loader.allowUseLoader()) {
+                            if (!config.isDisable()) {
+                                loader = new FBLoader();
+                                loader.init(mContext, config);
+                                loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isMopub() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new MopubLoader();
-                            loader.init(mContext, config);
-                            loader.setListenerManager(this);
-                            if (loader.allowUseLoader()) {
+                            if (!config.isDisable()) {
+                                loader = new MopubLoader();
+                                loader.init(mContext, config);
+                                loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isDfp() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new AdDfpLoader();
-                            loader.init(mContext, config);
-                            loader.setListenerManager(this);
-                            if (loader.allowUseLoader()) {
+                            if (!config.isDisable()) {
+                                loader = new AdDfpLoader();
+                                loader.init(mContext, config);
+                                loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isApplovin() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new AppLovinLoader();
-                            loader.init(mContext, config);
-                            loader.setListenerManager(this);
-                            if (loader.allowUseLoader()) {
+                            if (!config.isDisable()) {
+                                loader = new AppLovinLoader();
+                                loader.init(mContext, config);
+                                loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
                         } else if (config.isSpread() && AdHelper.isModuleLoaded(config.getSdk())) {
-                            loader = new SpLoader();
-                            loader.init(mContext, config);
-                            loader.setListenerManager(this);
-                            if (loader.allowUseLoader()) {
+                            if (!config.isDisable()) {
+                                loader = new SpLoader();
+                                loader.init(mContext, config);
+                                loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
                         }
