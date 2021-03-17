@@ -39,7 +39,6 @@ import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
