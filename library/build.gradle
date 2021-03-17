@@ -23,7 +23,7 @@ static def getConfigKey() {
 }
 
 def isSnapshot = true
-def baseVersion = '4.0.6'
+def baseVersion = '4.0.2'
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -85,8 +85,8 @@ uploadArchives {
                 authentication(userName: username, password: password)
             }
             pom.version = android.defaultConfig.versionName
-            pom.artifactId = "adsdk"
-            pom.groupId = "com.rabbit"
+            pom.artifactId = "rabbit"
+            pom.groupId = "com.hauyu"
             pom.packaging = "aar"
         }
 
