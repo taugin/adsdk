@@ -166,6 +166,11 @@ public class Constant {
      */
     public static final int AD_ERROR_RATIO = 18;
 
+    /**
+     * 停止队列模式加载
+     */
+    public static final int AD_ERROR_QUEUE = 19;
+
     public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
 
     public static final SimpleDateFormat SDF_LEFT_TIME = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());

@@ -655,10 +655,10 @@ public class AdSdk {
         return null;
     }
 
-    public void setQueueRunning(String pidName, boolean running) {
+    public void stopQueueRunning(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            loader.setQueueRunning(running);
+            loader.stopQueueRunning();
         }
     }
 
@@ -752,7 +752,7 @@ public class AdSdk {
     private void loadRewardAuto() {
         AdPlaceLoader loader = getAdLoader(mRewardPidName, true);
         if (loader != null) {
-            loader.setQueueRunning(true);
+            loader.startQueueRunning();
             loader.setOnAdSdkListener(mAutoRewardListener, false);
             loader.loadRewardedVideo(null, false);
         } else {
@@ -775,7 +775,7 @@ public class AdSdk {
         if (mHandler != null) {
             mHandler.removeCallbacks(mRewardLoadRunnable);
         }
-        setQueueRunning(mRewardPidName, false);
+        stopQueueRunning(mRewardPidName);
     }
 
     public void setAdLoaderFilter(AdLoaderFilter filter) {
