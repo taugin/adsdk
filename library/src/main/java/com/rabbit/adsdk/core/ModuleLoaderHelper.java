@@ -13,7 +13,7 @@ import com.rabbit.adsdk.log.Log;
  * Created by Administrator on 2018-10-25.
  */
 
-public class AdHelper {
+public class ModuleLoaderHelper {
 
     public static boolean isModuleLoaded(String sdk) {
 

@@ -25,7 +25,7 @@ import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
 import com.rabbit.adsdk.adloader.mopub.MopubLoader;
 import com.rabbit.adsdk.adloader.spread.SpLoader;
 import com.rabbit.adsdk.constant.Constant;
-import com.rabbit.adsdk.core.AdHelper;
+import com.rabbit.adsdk.core.ModuleLoaderHelper;
 import com.rabbit.adsdk.core.AdPolicy;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PidConfig;
@@ -114,42 +114,42 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 ISdkLoader loader = null;
                 for (PidConfig config : pidList) {
                     if (config != null) {
-                        if (config.isAdmob() && AdHelper.isModuleLoaded(config.getSdk())) {
+                        if (config.isAdmob() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
                             if (!config.isDisable()) {
                                 loader = new AdmobLoader();
                                 loader.init(mContext, config);
                                 loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
-                        } else if (config.isFB() && AdHelper.isModuleLoaded(config.getSdk())) {
+                        } else if (config.isFB() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
                             if (!config.isDisable()) {
                                 loader = new FBLoader();
                                 loader.init(mContext, config);
                                 loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
-                        } else if (config.isMopub() && AdHelper.isModuleLoaded(config.getSdk())) {
+                        } else if (config.isMopub() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
                             if (!config.isDisable()) {
                                 loader = new MopubLoader();
                                 loader.init(mContext, config);
                                 loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
-                        } else if (config.isDfp() && AdHelper.isModuleLoaded(config.getSdk())) {
+                        } else if (config.isDfp() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
                             if (!config.isDisable()) {
                                 loader = new AdDfpLoader();
                                 loader.init(mContext, config);
                                 loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
-                        } else if (config.isApplovin() && AdHelper.isModuleLoaded(config.getSdk())) {
+                        } else if (config.isApplovin() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
                             if (!config.isDisable()) {
                                 loader = new AppLovinLoader();
                                 loader.init(mContext, config);
                                 loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
-                        } else if (config.isSpread() && AdHelper.isModuleLoaded(config.getSdk())) {
+                        } else if (config.isSpread() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
                             if (!config.isDisable()) {
                                 loader = new SpLoader();
                                 loader.init(mContext, config);

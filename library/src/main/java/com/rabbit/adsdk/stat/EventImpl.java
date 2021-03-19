@@ -23,8 +23,6 @@ public class EventImpl implements IEvent {
 
     private static EventImpl sEventImpl;
 
-    private Object mFacebookObject = null;
-
     public static EventImpl get() {
         synchronized (EventImpl.class) {
             if (sEventImpl == null) {
