@@ -599,21 +599,23 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             return true;
         }
-        int loadCount = 0;
         List<String> loadedSdk = new ArrayList<String>();
         for (ISdkLoader loader : mAdLoaders) {
             if (loader != null
                     && loader.isInterstitialLoaded()) {
-                loadCount++;
                 loadedSdk.add(loader.getSdkName());
             }
         }
-        Log.v(Log.TAG, "interstitial queue core count : " + loadCount + " , source : " + loadedSdk);
 
-        if (mAdLoaders.size() < mAdPlace.getQueueSize()) {
-            return loadCount >= mAdLoaders.size();
+        int loadCount = loadedSdk.size();
+        int loaderSize = mAdLoaders.size();
+        int queueSize = mAdPlace.getQueueSize();
+        Log.v(Log.TAG, "interstitial queue core count : " + loadCount + " , source : " + loadedSdk + " , loaderSize : " + loaderSize + " , queSize : " + queueSize);
+
+        if (loaderSize < queueSize) {
+            return loadCount > 0 && loadCount >= loaderSize;
         }
-        return loadCount >= mAdPlace.getQueueSize();
+        return loadCount > 0 && loadCount >= queueSize;
     }
 
     private void loadInterstitialQueueInternalWithDelay(final Iterator<ISdkLoader> iterator, long delay) {
@@ -924,21 +926,23 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             return true;
         }
-        int loadCount = 0;
         List<String> loadedSdk = new ArrayList<String>();
         for (ISdkLoader loader : mAdLoaders) {
             if (loader != null
                     && loader.isRewardedVideoLoaded()) {
-                loadCount++;
                 loadedSdk.add(loader.getSdkName());
             }
         }
-        Log.v(Log.TAG, "reward queue core count : " + loadCount + " , source : " + loadedSdk);
 
-        if (mAdLoaders.size() < mAdPlace.getQueueSize()) {
-            return loadCount >= mAdLoaders.size();
+        int loadCount = loadedSdk.size();
+        int loaderSize = mAdLoaders.size();
+        int queueSize = mAdPlace.getQueueSize();
+        Log.v(Log.TAG, "reward queue core count : " + loadCount + " , source : " + loadedSdk + " , loaderSize : " + loaderSize + " , queSize : " + queueSize);
+
+        if (loaderSize < queueSize) {
+            return loadCount > 0 && loadCount >= loaderSize;
         }
-        return loadCount >= mAdPlace.getQueueSize();
+        return loadCount > 0 && loadCount >= queueSize;
     }
 
     private void loadRewardedVideoQueueInternalWithDelay(final Iterator<ISdkLoader> iterator, long delay) {
