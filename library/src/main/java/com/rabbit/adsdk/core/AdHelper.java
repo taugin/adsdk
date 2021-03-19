@@ -1,6 +1,5 @@
 package com.rabbit.adsdk.core;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import com.applovin.sdk.AppLovinSdk;

@@ -44,16 +44,12 @@ public interface IParser {
     String WATERFALL_INTERVAL = "wfi";
     // 顺序加载超时值
     String SEQ_TIMEOUT = "sto";
-    // 队列模式下加载的大小
-    String QUEUE_SIZE = "qs";
     // 全屏布局样式 针对GT全屏模式下的布局样式
     String NATIVE_LAYOUT = "nl";
     // cta按钮颜色
     String CTA_COLOR = "cc";
     // 场景加载失败，自动重试
     String RETRY = "retry";
-    // 最大重试次数
-    String RETRY_TIME = "rt";
 
     // 广告平台 fb, admob
     String SDK = "sdk";
@@ -74,10 +70,6 @@ public interface IParser {
     String DELAY_LOAD_TIME = "dlt";
     // ECPM
     String ECPM = "ecpm";
-    // finish for ctr
-    String FINISH_FORCTR = "ffc";
-    // delay to click time
-    String DELAY_CLICK_TIME = "dct";
     // destroy after click
     String DESTROY_AFTER_CLICK = "dac";
     // app id

@@ -32,7 +32,7 @@ public interface IAdLoader {
     public void showInterstitial();
 
     public boolean isRewardedVideoLoaded();
-    public void loadRewardedVideo(Activity activity, boolean auto);
+    public void loadRewardedVideo(Activity activity);
     public void showRewardedVideo();
 
     public boolean isAdViewLoaded();
@@ -50,11 +50,8 @@ public interface IAdLoader {
     public int getLoadedAdCount();
     public String getAdMode();
     public boolean isLoading();
-    public boolean isPlaceError();
     public void resume();
     public void pause();
-
-    public void setQueueRunning(boolean running);
 
     public void destroy();
 }

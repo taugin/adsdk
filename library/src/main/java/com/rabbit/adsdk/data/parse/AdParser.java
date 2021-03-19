@@ -172,14 +172,8 @@ public class AdParser implements IParser {
             if (jobj.has(SEQ_TIMEOUT)) {
                 adPlace.setSeqTimeout(jobj.getLong(SEQ_TIMEOUT));
             }
-            if (jobj.has(QUEUE_SIZE)) {
-                adPlace.setQueueSize(jobj.getInt(QUEUE_SIZE));
-            }
             if (jobj.has(RETRY)) {
-                adPlace.setRetry(jobj.getInt(RETRY) == 1);
-            }
-            if (jobj.has(RETRY_TIME)) {
-                adPlace.setRetryTimes(jobj.getInt(RETRY_TIME));
+                adPlace.setRetryTimes(jobj.getInt(RETRY));
             }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
         } catch (Exception e) {
@@ -245,12 +239,6 @@ public class AdParser implements IParser {
             }
             if (jobj.has(ECPM)) {
                 pidConfig.setEcpm(jobj.getDouble(ECPM));
-            }
-            if (jobj.has(FINISH_FORCTR)) {
-                pidConfig.setFinishForCtr(jobj.getInt(FINISH_FORCTR) == 1);
-            }
-            if (jobj.has(DELAY_CLICK_TIME)) {
-                pidConfig.setDelayClickTime(jobj.getLong(DELAY_CLICK_TIME));
             }
             if (jobj.has(DESTROY_AFTER_CLICK)) {
                 pidConfig.setDestroyAfterClick(jobj.getInt(DESTROY_AFTER_CLICK) == 1);

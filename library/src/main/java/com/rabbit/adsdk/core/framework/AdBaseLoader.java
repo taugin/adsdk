@@ -62,7 +62,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void loadRewardedVideo(Activity activity, boolean auto) {
+    public void loadRewardedVideo(Activity activity) {
     }
 
     @Override
@@ -127,20 +127,11 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public boolean isPlaceError() {
-        return false;
-    }
-
-    @Override
     public void resume() {
     }
 
     @Override
     public void pause() {
-    }
-
-    @Override
-    public void setQueueRunning(boolean running) {
     }
 
     @Override

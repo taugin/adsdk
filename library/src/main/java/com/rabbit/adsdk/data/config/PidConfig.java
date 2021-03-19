@@ -34,12 +34,6 @@ public class PidConfig {
 
     private double ecpm;
 
-    // 0 : double click, 1 : finish for ctr
-    private boolean finishForCtr = false;
-
-    // delay to click time
-    private long delayClickTime;
-
     private boolean destroyAfterClick;
 
     private String appId;
@@ -150,22 +144,6 @@ public class PidConfig {
 
     public void setEcpm(double ecpm) {
         this.ecpm = ecpm;
-    }
-
-    public boolean isFinishForCtr() {
-        return finishForCtr;
-    }
-
-    public void setFinishForCtr(boolean finishForCtr) {
-        this.finishForCtr = finishForCtr;
-    }
-
-    public long getDelayClickTime() {
-        return delayClickTime;
-    }
-
-    public void setDelayClickTime(long delayClickTime) {
-        this.delayClickTime = delayClickTime;
     }
 
     public boolean isDestroyAfterClick() {

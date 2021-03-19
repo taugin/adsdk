@@ -15,7 +15,6 @@ import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdListener;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdListener;
-import com.facebook.ads.NativeAdsManager;
 import com.facebook.ads.RewardedVideoAd;
 import com.facebook.ads.RewardedVideoAdListener;
 import com.rabbit.adsdk.AdReward;

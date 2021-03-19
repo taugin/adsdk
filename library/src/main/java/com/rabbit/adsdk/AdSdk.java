@@ -321,7 +321,7 @@ public class AdSdk {
                     activity = mActivity.get();
                 }
             }
-            loader.loadRewardedVideo(activity, false);
+            loader.loadRewardedVideo(activity);
         } else {
             if (l != null) {
                 l.onError(pidName, null, null, Constant.AD_ERROR_ADLOADER);
@@ -570,10 +570,10 @@ public class AdSdk {
         return false;
     }
 
-    public boolean isAdError(String pidName) {
+    public boolean isAdPlaceError(String pidName) {
         AdPlaceLoader loader = getAdLoader(pidName);
         if (loader != null) {
-            return loader.isAdError();
+            return loader.isAdPlaceError();
         }
         return false;
     }
@@ -653,13 +653,6 @@ public class AdSdk {
             return Utils.getString(mContext, Constant.AD_SDK_PREFIX + srcAdPlace, null);
         }
         return null;
-    }
-
-    public void stopQueueRunning(String pidName) {
-        AdPlaceLoader loader = getAdLoader(pidName);
-        if (loader != null) {
-            loader.stopQueueRunning();
-        }
     }
 
     /**
@@ -752,9 +745,8 @@ public class AdSdk {
     private void loadRewardAuto() {
         AdPlaceLoader loader = getAdLoader(mRewardPidName, true);
         if (loader != null) {
-            loader.startQueueRunning();
             loader.setOnAdSdkListener(mAutoRewardListener, false);
-            loader.loadRewardedVideo(null, false);
+            loader.loadRewardedVideo(null);
         } else {
             if (mAutoRewardListener != null) {
                 mAutoRewardListener.onError(mRewardPidName, null, null, Constant.AD_ERROR_ADLOADER);
@@ -775,7 +767,6 @@ public class AdSdk {
         if (mHandler != null) {
             mHandler.removeCallbacks(mRewardLoadRunnable);
         }
-        stopQueueRunning(mRewardPidName);
     }
 
     public void setAdLoaderFilter(AdLoaderFilter filter) {

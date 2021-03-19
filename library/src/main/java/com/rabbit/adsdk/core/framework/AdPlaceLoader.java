@@ -67,11 +67,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private View mDotView;
     private boolean mAdPlaceSeqLoading = false;
-    private boolean mQueueRunning = true;
     private String mPlaceType = null;
     private int mErrorTimes = 0;
     private int mRetryTimes = 0;
-    private boolean mAutoLoad = false;
 
     public AdPlaceLoader(Context context) {
         mContext = context;
@@ -399,9 +397,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             loadInterstitialSequence();
         } else if (mAdPlace.isRandom()) {
             loadInterstitialRandom();
-        } else if (mAdPlace.isQueue()) {
-            startQueueRunning();
-            loadInterstitialQueue();
         } else {
             loadInterstitialConcurrent();
         }
@@ -509,141 +504,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     /**
-     * 使用que模式进行加载，核心，加载够指定个数
-     */
-    private void loadInterstitialQueue() {
-        Log.iv(Log.TAG, mAdPlace.getName() + " queue mode running : " + mQueueRunning);
-        if (mQueueRunning) {
-            if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
-                if (!isInterstitialReachToCoreCount()) {
-                    final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
-                    loadInterstitialQueueInternal(iterator);
-                } else {
-                    Log.iv(Log.TAG, mAdPlace.getName() + " has loaded enough ...");
-                    if (mOnAdSdkListener != null) {
-                        mOnAdSdkListener.onLoaded(mAdPlace.getName(), null, null);
-                    }
-                }
-            } else {
-                if (mOnAdSdkListener != null) {
-                    mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
-                }
-            }
-        } else {
-            if (mOnAdSdkListener != null) {
-                if (isInterstitialLoaded()) {
-                    mOnAdSdkListener.onLoaded(mAdPlace.getName(), null, null);
-                } else {
-                    mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_QUEUE);
-                }
-            }
-        }
-    }
-
-    private void loadInterstitialQueueInternal(final Iterator<ISdkLoader> iterator) {
-        if (iterator == null || !iterator.hasNext()) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
-            }
-            return;
-        }
-        ISdkLoader loader = iterator.next();
-        if (loader != null && loader.allowUseLoader()) {
-            SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
-                    loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
-                @Override
-                public void onInterstitialDismiss() {
-                    super.onInterstitialDismiss();
-                    if (!isInterstitialReachToCoreCount()) {
-                        loadInterstitialQueue();
-                    }
-                }
-
-                @Override
-                public void onAdDismiss() {
-                    super.onAdDismiss();
-                    if (!isInterstitialReachToCoreCount()) {
-                        loadInterstitialQueue();
-                    }
-                }
-
-                @Override
-                public void onInterstitialError(int error) {
-                    if (iterator.hasNext()) {
-                        Log.iv(Log.TAG, "load next interstitial in que");
-                        loadInterstitialQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
-                    } else {
-                        setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onInterstitialError(error);
-                    }
-                }
-
-                @Override
-                public void onInterstitialLoaded(ISdkLoader loader) {
-                    super.onInterstitialLoaded(loader);
-                    if (isInterstitialReachToCoreCount()) {
-                        setAdPlaceSeqLoading(false, SeqState.LOADED);
-                    } else {
-                        Log.iv(Log.TAG, "load for core interstitial");
-                        loadInterstitialQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
-                    }
-                }
-            };
-            registerAdBaseListener(loader, simpleAdBaseBaseListener);
-            if (loader.isInterstitialType()) {
-                loader.loadInterstitial();
-            } else {
-                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
-                simpleAdBaseBaseListener.onInterstitialError(Constant.AD_ERROR_CONFIG);
-            }
-        }
-    }
-
-    /**
-     * 判断是否加载够指定成功数
-     *
-     * @return
-     */
-    private boolean isInterstitialReachToCoreCount() {
-        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
-            return true;
-        }
-        List<String> loadedSdk = new ArrayList<String>();
-        for (ISdkLoader loader : mAdLoaders) {
-            if (loader != null
-                    && loader.isInterstitialLoaded()) {
-                loadedSdk.add(loader.getSdkName());
-            }
-        }
-
-        int loadCount = loadedSdk.size();
-        int loaderSize = mAdLoaders.size();
-        int queueSize = mAdPlace.getQueueSize();
-
-        boolean reachToCoreCount = false;
-        if (loaderSize < queueSize) {
-            reachToCoreCount = loadCount > 0 && loadCount >= loaderSize;
-        } else {
-            reachToCoreCount = loadCount > 0 && loadCount >= queueSize;
-        }
-        Log.v(Log.TAG, getPlaceName() + " - queue load count : " + loadCount + " , sources : " + loadedSdk + " , loader size : " + loaderSize + " , queue size : " + queueSize + " , reach core count : " + reachToCoreCount);
-        return reachToCoreCount;
-    }
-
-    private void loadInterstitialQueueInternalWithDelay(final Iterator<ISdkLoader> iterator, long delay) {
-        if (delay <= 0 || mHandler == null) {
-            loadInterstitialQueueInternal(iterator);
-        } else {
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    loadInterstitialQueueInternal(iterator);
-                }
-            }, delay);
-        }
-    }
-
-    /**
      * 展示插屏
      */
     @Override
@@ -689,7 +549,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      * 加载插屏
      */
     @Override
-    public void loadRewardedVideo(Activity activity, boolean auto) {
+    public void loadRewardedVideo(Activity activity) {
         if (mAdPlace == null) {
             if (mOnAdSdkListener != null) {
                 mOnAdSdkListener.onError(null, null, null, Constant.AD_ERROR_ADLOADER);
@@ -728,27 +588,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             return;
         }
         setPlaceType(Constant.PLACE_TYPE_REWARDEDVIDEO);
-        loadRewardedVideoInternal(auto);
+        loadRewardedVideoInternal();
     }
 
-    private void loadRewardedVideoInternal(boolean auto) {
-        mAutoLoad = auto;
+    private void loadRewardedVideoInternal() {
         resetPlaceErrorTimes();
-        if (auto) {
-            loadRewardedVideoQueue();
+        if (mAdPlace.isConcurrent()) {
+            loadRewardedVideoConcurrent();
+        } else if (mAdPlace.isSequence()) {
+            loadRewardedVideoSequence();
+        } else if (mAdPlace.isRandom()) {
+            loadRewardedVideoRandom();
         } else {
-            if (mAdPlace.isConcurrent()) {
-                loadRewardedVideoConcurrent();
-            } else if (mAdPlace.isSequence()) {
-                loadRewardedVideoSequence();
-            } else if (mAdPlace.isRandom()) {
-                loadRewardedVideoRandom();
-            } else if (mAdPlace.isQueue()) {
-                startQueueRunning();
-                loadRewardedVideoQueue();
-            } else {
-                loadRewardedVideoConcurrent();
-            }
+            loadRewardedVideoConcurrent();
         }
     }
 
@@ -849,134 +701,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public void run() {
                     loadRewardedVideoSequenceInternal(iterator);
-                }
-            }, delay);
-        }
-    }
-
-    /**
-     * 使用que模式进行加载，核心，加载够指定个数
-     */
-    private void loadRewardedVideoQueue() {
-        Log.iv(Log.TAG, mAdPlace.getName() + " queue mode running : " + mQueueRunning);
-        if (mQueueRunning) {
-            if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
-                if (!isRewardedVideoReachToCoreCount()) {
-                    final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
-                    loadRewardedVideoQueueInternal(iterator);
-                } else {
-                    Log.iv(Log.TAG, mAdPlace.getName() + " has enough ...");
-                    if (mOnAdSdkListener != null) {
-                        mOnAdSdkListener.onLoaded(mAdPlace.getName(), null, null);
-                    }
-                }
-            } else {
-                if (mOnAdSdkListener != null) {
-                    mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
-                }
-            }
-        } else {
-            if (mOnAdSdkListener != null) {
-                if (isRewardedVideoLoaded()) {
-                    mOnAdSdkListener.onLoaded(mAdPlace.getName(), null, null);
-                } else {
-                    mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_QUEUE);
-                }
-            }
-        }
-    }
-
-    private void loadRewardedVideoQueueInternal(final Iterator<ISdkLoader> iterator) {
-        if (iterator == null || !iterator.hasNext()) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
-            }
-            return;
-        }
-        ISdkLoader loader = iterator.next();
-        if (loader != null && loader.allowUseLoader()) {
-            SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
-                    loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
-
-                @Override
-                public void onRewardedVideoAdClosed() {
-                    super.onRewardedVideoAdClosed();
-                    if (!isRewardedVideoReachToCoreCount()) {
-                        loadRewardedVideoQueue();
-                    }
-                }
-
-                @Override
-                public void onRewardedVideoError(int error) {
-                    if (iterator.hasNext()) {
-                        Log.iv(Log.TAG, "load next rewardedvideo in que");
-                        loadRewardedVideoQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
-                    } else {
-                        setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onRewardedVideoError(error);
-                    }
-                }
-
-                @Override
-                public void onRewardedVideoAdLoaded(ISdkLoader loader) {
-                    super.onRewardedVideoAdLoaded(loader);
-                    if (isRewardedVideoReachToCoreCount()) {
-                        setAdPlaceSeqLoading(false, SeqState.LOADED);
-                    } else {
-                        Log.iv(Log.TAG, "load for core rewardedvideo");
-                        loadRewardedVideoQueueInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
-                    }
-                }
-            };
-            registerAdBaseListener(loader, simpleAdBaseBaseListener);
-            if (loader.isRewardedVideoType()) {
-                loader.loadRewardedVideo();
-            } else {
-                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
-                simpleAdBaseBaseListener.onRewardedVideoError(Constant.AD_ERROR_CONFIG);
-            }
-        }
-    }
-
-    /**
-     * 判断是否加载够指定成功数
-     *
-     * @return
-     */
-    private boolean isRewardedVideoReachToCoreCount() {
-        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
-            return true;
-        }
-        List<String> loadedSdk = new ArrayList<String>();
-        for (ISdkLoader loader : mAdLoaders) {
-            if (loader != null
-                    && loader.isRewardedVideoLoaded()) {
-                loadedSdk.add(loader.getSdkName());
-            }
-        }
-
-        int loadCount = loadedSdk.size();
-        int loaderSize = mAdLoaders.size();
-        int queueSize = mAdPlace.getQueueSize();
-
-        boolean reachToCoreCount = false;
-        if (loaderSize < queueSize) {
-            reachToCoreCount = loadCount > 0 && loadCount >= loaderSize;
-        } else {
-            reachToCoreCount = loadCount > 0 && loadCount >= queueSize;
-        }
-        Log.v(Log.TAG, getPlaceName() + " - queue load count : " + loadCount + " , sources : " + loadedSdk + " , loader size : " + loaderSize + " , queue size : " + queueSize + " , reach core count : " + reachToCoreCount);
-        return reachToCoreCount;
-    }
-
-    private void loadRewardedVideoQueueInternalWithDelay(final Iterator<ISdkLoader> iterator, long delay) {
-        if (delay <= 0 || mHandler == null) {
-            loadRewardedVideoQueueInternal(iterator);
-        } else {
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    loadRewardedVideoQueueInternal(iterator);
                 }
             }, delay);
         }
@@ -1699,15 +1423,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 }
             }
         }
-        // clearAdBaseListener();
-    }
-
-    public void stopQueueRunning() {
-        mQueueRunning = false;
-    }
-
-    public void startQueueRunning() {
-        mQueueRunning = true;
     }
 
     @Override
@@ -1781,15 +1496,17 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private synchronized void startRetryIfNeed(String pidName, String source, String adType) {
-        boolean isRetry = mAdPlace.isRetry();
-        boolean isAdError = isAdError();
-        boolean isRetryTimesAllow = isRetryTimesAllow();
-        Log.iv(Log.TAG, "pidName : " + pidName + " , retry : " + isRetry + " , adError : " + isAdError + " , allowRetry : " + isRetryTimesAllow);
-        if (isRetry && isAdError && isRetryTimesAllow) {
-            mRetryTimes++;
-            startRetry(pidName);
-        } else {
-            if (!isRetryTimesAllow && isAdError) {
+        boolean isAdPlaceError = isAdPlaceError();
+        if (isAdPlaceError) {
+            int cfgRetryTimes = 0;
+            if (mAdPlace != null) {
+                cfgRetryTimes = mAdPlace.getRetryTimes();
+            }
+            boolean allowRetry = mRetryTimes < cfgRetryTimes;
+            Log.iv(Log.TAG, "pidName : " + pidName + " , allowRetry : " + allowRetry + " , retry times : " + mRetryTimes + " , cfg retry times : " + cfgRetryTimes);
+            if (allowRetry) {
+                startRetry(pidName);
+            } else {
                 resetRetryTimes(pidName, source, adType);
             }
         }
@@ -1805,21 +1522,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         Log.iv(Log.TAG, "pidName : " + pidName + " , reset retry times " + mRetryTimes);
     }
 
-    private boolean isRetryTimesAllow() {
-        if (mAdPlace != null) {
-            return mRetryTimes < mAdPlace.getRetryTimes();
-        }
-        return false;
-    }
-
     private void startRetry(String pidName) {
+        mRetryTimes++;
         Log.iv(Log.TAG, "pidName : " + pidName + " , start retry " + mPlaceType + " " + mRetryTimes);
         if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_ADVIEW)) {
             loadAdViewInternal();
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_INTERSTITIAL)) {
             loadInterstitialInternal();
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_REWARDEDVIDEO)) {
-            loadRewardedVideoInternal(mAutoLoad);
+            loadRewardedVideoInternal();
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_COMPLEX)) {
             loadComplexAdsInternal();
         } else {
@@ -1827,7 +1538,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
     }
 
-    public boolean isAdError() {
+    public boolean isAdPlaceError() {
         boolean placeError = false;
         if (mAdLoaders != null) {
             if (TextUtils.equals(getAdMode(), Constant.MODE_CON)) {
@@ -1835,8 +1546,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             } else if (TextUtils.equals(getAdMode(), Constant.MODE_SEQ)) {
                 placeError = mErrorTimes == 1;
             } else if (TextUtils.equals(getAdMode(), Constant.MODE_RAN)) {
-                placeError = mErrorTimes == 1;
-            } else if (TextUtils.equals(getAdMode(), Constant.MODE_QUE)) {
                 placeError = mErrorTimes == 1;
             } else {
                 Log.iv(Log.TAG, "can not match mode");
@@ -1904,6 +1613,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (mOnAdSdkListener != null) {
                 mOnAdSdkListener.onError(pidName, source, adType, error);
             }
+            startRetryIfNeed(pidName, source, adType);
         }
 
         @Override
@@ -1914,7 +1624,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (mOnAdSdkListener != null) {
                 mOnAdSdkListener.onRewarded(pidName, source, adType, item);
             }
-            startRetryIfNeed(pidName, source, adType);
         }
 
         @Override

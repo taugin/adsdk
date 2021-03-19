@@ -1,15 +1,11 @@
 package com.rabbit.adsdk.adloader.base;
 
-import android.text.TextUtils;
-
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.listener.IManagerListener;
 import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
 import com.rabbit.adsdk.constant.Constant;
-import com.rabbit.adsdk.core.framework.AdPlaceLoader;
 import com.rabbit.adsdk.listener.OnAdSdkListener;
-import com.rabbit.adsdk.log.Log;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -69,12 +65,6 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onAdLoaded(ISdkLoader loader) {
         // 所有加载成功的loader都将通知给adplaceloader
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
-        String adMode = getAdMode();
-        Log.v(Log.TAG, "ad mode : " + adMode);
-        if (hasNotifyLoaded() && !TextUtils.equals(adMode, Constant.MODE_QUE)) {
-            Log.v(Log.TAG, "has notify loaded ******************");
-            return;
-        }
         notifyAdLoaded();
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onLoaded(placeName, source, adType);
@@ -135,12 +125,6 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     @Override
     public void onInterstitialLoaded(ISdkLoader loader) {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
-        String adMode = getAdMode();
-        Log.v(Log.TAG, "ad mode : " + adMode);
-        if (hasNotifyLoaded() && !TextUtils.equals(adMode, Constant.MODE_QUE)) {
-            Log.v(Log.TAG, "has notify loaded ++++++++++++++++++");
-            return;
-        }
         notifyAdLoaded();
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onLoaded(placeName, source, adType);
@@ -213,12 +197,6 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     @Override
     public void onRewardedVideoAdLoaded(ISdkLoader loader) {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
-        String adMode = getAdMode();
-        Log.v(Log.TAG, "ad mode : " + adMode);
-        if (hasNotifyLoaded() && !TextUtils.equals(adMode, Constant.MODE_QUE)) {
-            Log.v(Log.TAG, "has notify loaded ------------------");
-            return;
-        }
         notifyAdLoaded();
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onLoaded(placeName, source, adType);

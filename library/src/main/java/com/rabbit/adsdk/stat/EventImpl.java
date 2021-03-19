@@ -3,7 +3,6 @@ package com.rabbit.adsdk.stat;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.rabbit.adsdk.constant.Constant;
@@ -12,7 +11,6 @@ import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
 
-import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;

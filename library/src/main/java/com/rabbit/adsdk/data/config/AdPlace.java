@@ -53,9 +53,7 @@ public class AdPlace {
 
     private List<String> clickViews;
 
-    private boolean retry;
-
-    private int retryTimes = 2;
+    private int retryTimes = 0;
 
     public String getName() {
         return name;
@@ -152,10 +150,6 @@ public class AdPlace {
         return TextUtils.equals(Constant.MODE_RAN, getMode());
     }
 
-    public boolean isQueue() {
-        return TextUtils.equals(Constant.MODE_QUE, getMode());
-    }
-
     public boolean isPlaceCache() {
         return placeCache;
     }
@@ -234,14 +228,6 @@ public class AdPlace {
 
     public void setClickViews(List<String> clickViews) {
         this.clickViews = clickViews;
-    }
-
-    public boolean isRetry() {
-        return retry;
-    }
-
-    public void setRetry(boolean retry) {
-        this.retry = retry;
     }
 
     public int getRetryTimes() {

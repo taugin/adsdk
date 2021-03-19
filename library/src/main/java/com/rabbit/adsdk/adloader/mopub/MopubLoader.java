@@ -21,8 +21,6 @@ import com.mopub.mobileads.MoPubInterstitial;
 import com.mopub.mobileads.MoPubRewardedAdListener;
 import com.mopub.mobileads.MoPubRewardedAdManager;
 import com.mopub.mobileads.MoPubRewardedAds;
-import com.mopub.mobileads.MoPubRewardedVideoListener;
-import com.mopub.mobileads.MoPubRewardedVideoManager;
 import com.mopub.mobileads.MoPubRewardedVideos;
 import com.mopub.mobileads.MoPubView;
 import com.mopub.nativeads.MoPubNative;

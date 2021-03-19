@@ -192,8 +192,7 @@
     },
     {
       "name": "interstitial",
-      "mode": "que",
-      "bs": 2,
+      "mode": "con",
       "pids": [
         {
           "sdk": "admob",
@@ -241,7 +240,7 @@
     },
     {
       "name": "reward_video",
-      "mode": "que",
+      "mode": "con",
       "retry": 1,
       "qs": 2,
       "pids": [
