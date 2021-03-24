@@ -56,7 +56,7 @@ public class PidConfig {
 
     private int ratio = 100;
 
-    private boolean isMax = false;
+    private boolean isMax = true;
 
     public String getAdPlaceName() {
         return adPlaceName;
