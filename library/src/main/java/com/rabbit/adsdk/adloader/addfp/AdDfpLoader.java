@@ -223,17 +223,17 @@ public class AdDfpLoader extends AbstractSdkLoader {
     public void loadInterstitial() {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyInterstitialError(Constant.AD_ERROR_CONFIG);
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isInterstitialLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyInterstitialLoaded(this);
+            notifyAdLoaded(this);
             return;
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyInterstitialError(Constant.AD_ERROR_LOADING);
+            notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -251,7 +251,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 interstitialAd = null;
                 reportAdClose();
-                notifyInterstitialDismiss();
+                notifyAdDismiss();
             }
 
             @Override
@@ -259,21 +259,21 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(i));
-                notifyInterstitialError(toSdkError(i));
+                notifyAdFailed(toSdkError(i));
             }
 
             @Override
             public void onAdLeftApplication() {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                notifyInterstitialClick();
+                notifyAdClick();
             }
 
             @Override
             public void onAdOpened() {
                 Log.v(Log.TAG, "");
                 reportAdImp();
-                notifyInterstitialImp();
+                notifyAdImp();
             }
 
             @Override
@@ -282,7 +282,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
                 reportAdLoaded();
-                notifyInterstitialLoaded(AdDfpLoader.this);
+                notifyAdLoaded(AdDfpLoader.this);
             }
 
             @Override
@@ -442,17 +442,17 @@ public class AdDfpLoader extends AbstractSdkLoader {
     public void loadRewardedVideo() {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyRewardedVideoError(Constant.AD_ERROR_CONFIG);
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isRewardedVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyRewardedVideoAdLoaded(this);
+            notifyAdLoaded(this);
             return;
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyRewardedVideoError(Constant.AD_ERROR_LOADING);
+            notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -475,7 +475,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 loadingRewardedAd = null;
                 putCachedAdTime(rewardedAd);
                 reportAdLoaded();
-                notifyRewardedVideoAdLoaded(AdDfpLoader.this);
+                notifyAdLoaded(AdDfpLoader.this);
             }
 
             @Override
@@ -483,7 +483,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(i));
-                notifyRewardedVideoError(toSdkError(i));
+                notifyAdFailed(toSdkError(i));
             }
         });
     }
@@ -512,8 +512,8 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     Log.v(Log.TAG, "");
                     setRewardPlaying(true);
                     reportAdImp();
-                    notifyRewardedVideoAdOpened();
-                    notifyRewardedVideoStarted();
+                    notifyAdOpened();
+                    notifyRewardAdsStarted();
                 }
 
                 @Override
@@ -521,7 +521,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                     Log.v(Log.TAG, "");
                     setRewardPlaying(false);
                     reportAdClose();
-                    notifyRewardedVideoAdClosed();
+                    notifyAdDismiss();
                     rewardedAd = null;
                 }
 
@@ -541,7 +541,7 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 @Override
                 public void onRewardedAdFailedToShow(int i) {
                     Log.v(Log.TAG, "");
-                    notifyRewardedVideoError(toSdkError(i));
+                    notifyAdFailed(toSdkError(i));
                     rewardedAd = null;
                 }
             });

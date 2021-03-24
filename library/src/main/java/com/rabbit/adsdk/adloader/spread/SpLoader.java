@@ -138,7 +138,7 @@ public class SpLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyInterstitialError(Constant.AD_ERROR_LOADING);
+            notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -166,7 +166,7 @@ public class SpLoader extends AbstractSdkLoader {
             }
         } else {
             reportAdError(String.valueOf("ERROR_LOAD"));
-            notifyInterstitialError(Constant.AD_ERROR_LOAD);
+            notifyAdFailed(Constant.AD_ERROR_LOAD);
         }
     }
 

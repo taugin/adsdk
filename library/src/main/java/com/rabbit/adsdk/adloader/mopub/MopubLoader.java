@@ -274,23 +274,23 @@ public class MopubLoader extends AbstractSdkLoader {
 
         if (activity == null) {
             Log.v(Log.TAG, "mopub interstitial need an activity context");
-            notifyInterstitialError(Constant.AD_ERROR_CONTEXT);
+            notifyAdFailed(Constant.AD_ERROR_CONTEXT);
             return;
         }
 
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyInterstitialError(Constant.AD_ERROR_CONFIG);
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isInterstitialLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyInterstitialLoaded(this);
+            notifyAdLoaded(this);
             return;
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyInterstitialError(Constant.AD_ERROR_LOADING);
+            notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -308,7 +308,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(moPubInterstitial);
                 reportAdLoaded();
-                notifyInterstitialLoaded(MopubLoader.this);
+                notifyAdLoaded(MopubLoader.this);
             }
 
             @Override
@@ -316,21 +316,21 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(errorCode));
-                notifyInterstitialError(toSdkError(errorCode));
+                notifyAdFailed(toSdkError(errorCode));
             }
 
             @Override
             public void onInterstitialShown(MoPubInterstitial interstitial) {
                 Log.v(Log.TAG, "");
                 reportAdImp();
-                notifyInterstitialImp();
+                notifyAdImp();
             }
 
             @Override
             public void onInterstitialClicked(MoPubInterstitial interstitial) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                notifyInterstitialClick();
+                notifyAdClick();
             }
 
             @Override
@@ -342,7 +342,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     moPubInterstitial = null;
                 }
                 reportAdClose();
-                notifyInterstitialDismiss();
+                notifyAdDismiss();
             }
         });
         printInterfaceLog(ACTION_LOAD);
@@ -391,14 +391,14 @@ public class MopubLoader extends AbstractSdkLoader {
         Activity activity = getActivity();
         if (activity == null) {
             Log.v(Log.TAG, "mopub reward need an activity context");
-            notifyRewardedVideoError(Constant.AD_ERROR_CONTEXT);
+            notifyAdFailed(Constant.AD_ERROR_CONTEXT);
             return;
         }
 //      MoPub.onCreate(activity);
 
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyRewardedVideoError(Constant.AD_ERROR_CONFIG);
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
 
@@ -409,12 +409,12 @@ public class MopubLoader extends AbstractSdkLoader {
 
         if (isRewardedVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyRewardedVideoAdLoaded(this);
+            notifyAdLoaded(this);
             return;
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyRewardedVideoError(Constant.AD_ERROR_LOADING);
+            notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -430,7 +430,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_SUCCESS);
                 reportAdLoaded();
-                notifyRewardedVideoAdLoaded(MopubLoader.this);
+                notifyAdLoaded(MopubLoader.this);
             }
 
             @Override
@@ -438,7 +438,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "reason : " + codeToError(moPubErrorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(moPubErrorCode));
-                notifyRewardedVideoError(toSdkError(moPubErrorCode));
+                notifyAdFailed(toSdkError(moPubErrorCode));
             }
 
             @Override
@@ -446,15 +446,15 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 setRewardPlaying(true);
                 reportAdImp();
-                notifyRewardedVideoAdOpened();
-                notifyRewardedVideoStarted();
+                notifyAdOpened();
+                notifyRewardAdsStarted();
             }
 
             @Override
             public void onRewardedAdClicked(String s) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                notifyRewardedVideoAdClicked();
+                notifyAdClick();
             }
 
             @Override
@@ -462,7 +462,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 setRewardPlaying(false);
                 reportAdClose();
-                notifyRewardedVideoAdClosed();
+                notifyAdDismiss();
             }
 
             @Override
@@ -473,7 +473,7 @@ public class MopubLoader extends AbstractSdkLoader {
             public void onRewardedAdCompleted(Set<String> set, MoPubReward moPubReward) {
                 Log.v(Log.TAG, "");
                 reportAdReward();
-                notifyRewardedVideoCompleted();
+                notifyRewardAdsCompleted();
                 AdReward adReward = new AdReward();
                 adReward.setType(Constant.ECPM);
                 double ecpm = 0;

@@ -511,9 +511,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         reportAdError("AD_ERROR_TIMEOUT");
         setLoading(false, STATE_TIMTOUT);
         if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)) {
-            notifyInterstitialError(Constant.AD_ERROR_TIMEOUT);
+            notifyAdFailed(Constant.AD_ERROR_TIMEOUT);
         } else if (TextUtils.equals(getAdType(), Constant.TYPE_REWARD)) {
-            notifyRewardedVideoError(Constant.AD_ERROR_TIMEOUT);
+            notifyAdFailed(Constant.AD_ERROR_TIMEOUT);
         } else if (TextUtils.equals(getAdType(), Constant.TYPE_BANNER)
                 || TextUtils.equals(getAdType(), Constant.TYPE_NATIVE)) {
             notifyAdFailed(Constant.AD_ERROR_TIMEOUT);
@@ -818,52 +818,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     /**
-     * interstitial load
-     */
-    protected void notifyInterstitialLoaded(ISdkLoader loader) {
-        if (getAdListener() != null) {
-            setLoadedFlag();
-            getAdListener().onInterstitialLoaded(loader);
-        }
-    }
-
-    /**
-     * interstitial impression
-     */
-    protected void notifyInterstitialImp() {
-        if (getAdListener() != null) {
-            getAdListener().onInterstitialImp();
-        }
-    }
-
-    /**
-     * interstitial click
-     */
-    protected void notifyInterstitialClick() {
-        if (getAdListener() != null) {
-            getAdListener().onInterstitialClick();
-        }
-    }
-
-    /**
-     * interstitial dismiss
-     */
-    protected void notifyInterstitialDismiss() {
-        if (getAdListener() != null) {
-            getAdListener().onInterstitialDismiss();
-        }
-    }
-
-    /**
-     * interstitial or reward video error
-     */
-    protected void notifyInterstitialError(int error) {
-        if (getAdListener() != null) {
-            getAdListener().onInterstitialError(error);
-        }
-    }
-
-    /**
      * reward
      */
     protected void notifyRewarded(AdReward reward) {
@@ -873,66 +827,20 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     /**
-     * reward close
-     */
-    protected void notifyRewardedVideoAdClosed() {
-        if (getAdListener() != null) {
-            getAdListener().onRewardedVideoAdClosed();
-        }
-    }
-
-    /**
-     * reward click
-     */
-    protected void notifyRewardedVideoAdClicked() {
-        if (getAdListener() != null) {
-            getAdListener().onRewardedVideoAdClicked();
-        }
-    }
-
-    /**
-     * reward load
-     */
-    protected void notifyRewardedVideoAdLoaded(ISdkLoader loader) {
-        if (getAdListener() != null) {
-            setLoadedFlag();
-            getAdListener().onRewardedVideoAdLoaded(loader);
-        }
-    }
-
-    /**
-     * interstitial or reward video error
-     */
-    protected void notifyRewardedVideoError(int error) {
-        if (getAdListener() != null) {
-            getAdListener().onRewardedVideoError(error);
-        }
-    }
-
-    /**
-     * reward opened
-     */
-    protected void notifyRewardedVideoAdOpened() {
-        if (getAdListener() != null) {
-            getAdListener().onRewardedVideoAdOpened();
-        }
-    }
-
-    /**
      * reward complete
      */
-    protected void notifyRewardedVideoCompleted() {
+    protected void notifyRewardAdsCompleted() {
         if (getAdListener() != null) {
-            getAdListener().onRewardedVideoCompleted();
+            getAdListener().onRewardAdsCompleted();
         }
     }
 
     /**
      * reward start
      */
-    protected void notifyRewardedVideoStarted() {
+    protected void notifyRewardAdsStarted() {
         if (getAdListener() != null) {
-            getAdListener().onRewardedVideoStarted();
+            getAdListener().onRewardAdsStarted();
         }
     }
 }

@@ -43,67 +43,17 @@ public interface OnAdBaseListener {
     public void onAdOpened();
 
     /**
-     * interstitial load
-     */
-    public void onInterstitialLoaded(ISdkLoader loader);
-
-    /**
-     * interstitial impression
-     */
-    public void onInterstitialImp();
-
-    /**
-     * interstitial click
-     */
-    public void onInterstitialClick();
-
-    /**
-     * interstitial dismiss
-     */
-    public void onInterstitialDismiss();
-
-    /**
-     * interstitial or reward video error
-     */
-    public void onInterstitialError(int error);
-
-    /**
      * reward
      */
     public void onRewarded(AdReward reward);
 
     /**
-     * reward close
-     */
-    public void onRewardedVideoAdClosed();
-
-    /**
-     * reward click
-     */
-    public void onRewardedVideoAdClicked();
-
-    /**
-     * reward load
-     */
-    public void onRewardedVideoAdLoaded(ISdkLoader loader);
-
-    /**
-     * interstitial or reward video error
-     */
-    public void onRewardedVideoError(int error);
-
-    /**
-     * reward opened
-     */
-    public void onRewardedVideoAdOpened();
-
-    /**
      * reward complete
      */
-    public void onRewardedVideoCompleted();
+    public void onRewardAdsCompleted();
 
     /**
      * reward start
      */
-    public void onRewardedVideoStarted();
+    public void onRewardAdsStarted();
 }

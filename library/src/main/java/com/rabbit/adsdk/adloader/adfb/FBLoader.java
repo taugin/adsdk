@@ -199,22 +199,22 @@ public class FBLoader extends AbstractSdkLoader {
     public void loadInterstitial() {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyInterstitialError(Constant.AD_ERROR_CONFIG);
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (!matchNoFillTime()) {
             Log.v(Log.TAG, "nofill error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyInterstitialError(Constant.AD_ERROR_FILLTIME);
+            notifyAdFailed(Constant.AD_ERROR_FILLTIME);
             return;
         }
         if (isInterstitialLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyInterstitialLoaded(this);
+            notifyAdLoaded(this);
             return;
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyInterstitialError(Constant.AD_ERROR_LOADING);
+            notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -230,7 +230,7 @@ public class FBLoader extends AbstractSdkLoader {
             public void onInterstitialDisplayed(Ad ad) {
                 Log.v(Log.TAG, "");
                 reportAdImp();
-                notifyInterstitialImp();
+                notifyAdImp();
             }
 
             @Override
@@ -241,7 +241,7 @@ public class FBLoader extends AbstractSdkLoader {
                     fbInterstitial = null;
                 }
                 reportAdClose();
-                notifyInterstitialDismiss();
+                notifyAdDismiss();
             }
 
             @Override
@@ -254,7 +254,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 reportAdError(getError(adError));
-                notifyInterstitialError(toSdkError(adError));
+                notifyAdFailed(toSdkError(adError));
             }
 
             @Override
@@ -263,14 +263,14 @@ public class FBLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(fbInterstitial);
                 reportAdLoaded();
-                notifyInterstitialLoaded(FBLoader.this);
+                notifyAdLoaded(FBLoader.this);
             }
 
             @Override
             public void onAdClicked(Ad ad) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                notifyInterstitialClick();
+                notifyAdClick();
             }
 
             @Override
@@ -409,22 +409,22 @@ public class FBLoader extends AbstractSdkLoader {
     public void loadRewardedVideo() {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyRewardedVideoError(Constant.AD_ERROR_CONFIG);
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (!matchNoFillTime()) {
             Log.v(Log.TAG, "nofill error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyRewardedVideoError(Constant.AD_ERROR_FILLTIME);
+            notifyAdFailed(Constant.AD_ERROR_FILLTIME);
             return;
         }
         if (isRewardedVideoLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyRewardedVideoAdLoaded(this);
+            notifyAdLoaded(this);
             return;
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyRewardedVideoError(Constant.AD_ERROR_LOADING);
+            notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -440,7 +440,7 @@ public class FBLoader extends AbstractSdkLoader {
             public void onRewardedVideoCompleted() {
                 Log.v(Log.TAG, "");
                 reportAdReward();
-                notifyRewardedVideoCompleted();
+                notifyRewardAdsCompleted();
 
                 AdReward adReward = new AdReward();
                 adReward.setType(Constant.ECPM);
@@ -457,7 +457,7 @@ public class FBLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 setRewardPlaying(true);
                 reportAdImp();
-                notifyRewardedVideoAdOpened();
+                notifyAdOpened();
             }
 
             @Override
@@ -465,7 +465,7 @@ public class FBLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 setRewardPlaying(false);
                 reportAdClose();
-                notifyRewardedVideoAdClosed();
+                notifyAdDismiss();
                 if (rewardedVideoAd != null) {
                     rewardedVideoAd.destroy();
                     rewardedVideoAd = null;
@@ -482,7 +482,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 reportAdError(getError(adError));
-                notifyRewardedVideoError(toSdkError(adError));
+                notifyAdFailed(toSdkError(adError));
             }
 
             @Override
@@ -493,14 +493,14 @@ public class FBLoader extends AbstractSdkLoader {
                 loadingRewardedVideoAd = null;
                 putCachedAdTime(rewardedVideoAd);
                 reportAdLoaded();
-                notifyRewardedVideoAdLoaded(FBLoader.this);
+                notifyAdLoaded(FBLoader.this);
             }
 
             @Override
             public void onAdClicked(Ad ad) {
                 Log.v(Log.TAG, "");
                 reportAdClick();
-                notifyRewardedVideoAdClicked();
+                notifyAdClick();
             }
         };
         printInterfaceLog(ACTION_LOAD);

@@ -25,8 +25,8 @@ import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
 import com.rabbit.adsdk.adloader.mopub.MopubLoader;
 import com.rabbit.adsdk.adloader.spread.SpLoader;
 import com.rabbit.adsdk.constant.Constant;
-import com.rabbit.adsdk.core.ModuleLoaderHelper;
 import com.rabbit.adsdk.core.AdPolicy;
+import com.rabbit.adsdk.core.ModuleLoaderHelper;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.listener.OnAdSdkListener;
@@ -464,20 +464,20 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
-                public void onInterstitialError(int error) {
+                public void onAdFailed(int error) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next interstitial");
                         loadInterstitialSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
                     } else {
                         setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onInterstitialError(error);
+                        super.onAdFailed(error);
                     }
                 }
 
                 @Override
-                public void onInterstitialLoaded(ISdkLoader loader) {
+                public void onAdLoaded(ISdkLoader loader) {
                     setAdPlaceSeqLoading(false, SeqState.LOADED);
-                    super.onInterstitialLoaded(loader);
+                    super.onAdLoaded(loader);
                 }
             };
             registerAdBaseListener(loader, simpleAdBaseBaseListener);
@@ -485,7 +485,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 loader.loadInterstitial();
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
-                simpleAdBaseBaseListener.onInterstitialError(Constant.AD_ERROR_CONFIG);
+                simpleAdBaseBaseListener.onAdFailed(Constant.AD_ERROR_CONFIG);
             }
         }
     }
@@ -667,20 +667,20 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
 
                 @Override
-                public void onRewardedVideoError(int error) {
+                public void onAdFailed(int error) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next rewardedvideo");
                         loadRewardedVideoSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
                     } else {
                         setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onRewardedVideoError(error);
+                        super.onAdFailed(error);
                     }
                 }
 
                 @Override
-                public void onRewardedVideoAdLoaded(ISdkLoader loader) {
+                public void onAdLoaded(ISdkLoader loader) {
                     setAdPlaceSeqLoading(false, SeqState.LOADED);
-                    super.onRewardedVideoAdLoaded(loader);
+                    super.onAdLoaded(loader);
                 }
             };
             registerAdBaseListener(loader, simpleAdBaseBaseListener);
@@ -688,7 +688,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 loader.loadRewardedVideo();
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
-                simpleAdBaseBaseListener.onRewardedVideoError(Constant.AD_ERROR_CONFIG);
+                simpleAdBaseBaseListener.onAdFailed(Constant.AD_ERROR_CONFIG);
             }
         }
     }
@@ -1145,43 +1145,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 }
 
                 @Override
-                public void onInterstitialError(int error) {
-                    if (iterator.hasNext()) {
-                        Log.iv(Log.TAG, "load next complex");
-                        loadComplexAdsSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
-                    } else {
-                        setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onInterstitialError(error);
-                    }
-                }
-
-                @Override
-                public void onRewardedVideoError(int error) {
-                    if (iterator.hasNext()) {
-                        Log.iv(Log.TAG, "load next complex");
-                        loadComplexAdsSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
-                    } else {
-                        setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onRewardedVideoError(error);
-                    }
-                }
-
-                @Override
                 public void onAdLoaded(ISdkLoader loader) {
                     setAdPlaceSeqLoading(false, SeqState.LOADED);
                     super.onAdLoaded(loader);
-                }
-
-                @Override
-                public void onInterstitialLoaded(ISdkLoader loader) {
-                    setAdPlaceSeqLoading(false, SeqState.LOADED);
-                    super.onInterstitialLoaded(loader);
-                }
-
-                @Override
-                public void onRewardedVideoAdLoaded(ISdkLoader loader) {
-                    setAdPlaceSeqLoading(false, SeqState.LOADED);
-                    super.onRewardedVideoAdLoaded(loader);
                 }
             };
             registerAdBaseListener(loader, simpleAdBaseBaseListener);
