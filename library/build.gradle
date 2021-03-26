@@ -70,6 +70,10 @@ dependencies {
     // firebase
     implementation 'com.google.firebase:firebase-core:18.0.2'
     implementation 'com.google.firebase:firebase-config:18.0.0'
+
+    implementation 'com.mopub.mediation:applovin:10.0.1.0'
+    implementation 'com.mopub.mediation:facebookaudiencenetwork:6.3.0.0'
+    implementation 'com.mopub.mediation:admob:19.6.0.1'
 }
 
 // 发布aar

@@ -1,6 +1,7 @@
 package com.rabbit.adsdk.adloader.mopub;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
@@ -8,8 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.ads.MediaView;
+import com.mopub.nativeads.FacebookAdRenderer;
+import com.mopub.nativeads.GooglePlayServicesMediaLayout;
+import com.mopub.nativeads.GooglePlayServicesViewBinder;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.StaticNativeAd;
 import com.mopub.nativeads.ViewBinder;
@@ -90,6 +96,24 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } catch (Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
+
+        try {
+            rootView = LayoutInflater.from(context).inflate(rootLayout, null);
+            bindAdMobRender(context, rootView, nativeAd);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
+
+        try {
+            rootView = LayoutInflater.from(context).inflate(rootLayout, null);
+            bindFBRender(context, rootView, nativeAd);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
     }
 
     private void bindStaticRender(Context context, MoPubNative nativeAd, View layout) {
@@ -116,6 +140,153 @@ public class MopubBindNativeView extends BaseBindNativeView {
         return viewBinder;
     }
 
+    private GooglePlayServicesMediaLayout createGooglePlayServicesMediaLayout(Context context) {
+        try {
+            return new GooglePlayServicesMediaLayout(context);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    private void bindAdMobRender(Context context, View layout, MoPubNative nativeAd) {
+        int mediaLayoutId = 0;
+        ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
+        if (coverLayout != null) {
+            GooglePlayServicesMediaLayout mediaLayout = createGooglePlayServicesMediaLayout(context);
+            mediaLayout.setId(getAdmobMediaLayoutId());
+            coverLayout.addView(mediaLayout);
+            mediaLayoutId = mediaLayout.getId();
+        }
+
+        ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
+        adChoiceLayout.setVisibility(View.VISIBLE);
+        int padding = Utils.dp2px(context, 4);
+        adChoiceLayout.setPadding(padding, padding, padding, padding);
+        ImageView imageView = createImageView(context);
+        imageView.setId(getImageViewId());
+        int size = Utils.dp2px(context, 20);
+        adChoiceLayout.addView(imageView, size, size);
+
+        GooglePlayServicesViewBinder videoViewBinder = new GooglePlayServicesViewBinder.Builder(mParams.getNativeRootLayout())
+                .mediaLayoutId(mediaLayoutId)
+                .iconImageId(mParams.getAdIcon())
+                .titleId(mParams.getAdTitle())
+                .textId(mParams.getAdDetail())
+                .callToActionId(mParams.getAdAction())
+                .privacyInformationIconImageId(imageView.getId())
+                .build();
+        MoPubGoogleAdRenderer adRender = new MoPubGoogleAdRenderer(videoViewBinder, layout);
+        nativeAd.registerAdRenderer(adRender);
+    }
+
+    private MediaView createFacebookMediaView(Context context) {
+        try {
+            return new MediaView(context);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    private void bindFBRender(Context context, View layout, MoPubNative nativeAd) {
+        int mediaViewId = 0;
+        ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
+        if (coverLayout != null) {
+            MediaView mediaView = createFacebookMediaView(context);
+            if (mediaView != null) {
+                mediaView.setId(getFBMediaViewId());
+                coverLayout.addView(mediaView);
+                mediaViewId = mediaView.getId();
+            }
+        }
+
+        ViewGroup adChoiceLayout = layout.findViewById(mParams.getAdChoices());
+        adChoiceLayout.setVisibility(View.VISIBLE);
+        adChoiceLayout.setPadding(0, 0, 0, 0);
+        RelativeLayout adChoiceRelativeLayout = new RelativeLayout(layout.getContext());
+        adChoiceRelativeLayout.setId(getRelativeLayoutId());
+        adChoiceRelativeLayout.setBackgroundColor(Color.parseColor("#88FFFFFF"));
+        adChoiceLayout.addView(adChoiceRelativeLayout);
+
+        ImageView imageView = layout.findViewById(mParams.getAdIcon());
+        MediaView iconView = createFacebookAdIconView(context, imageView);
+        FacebookAdRenderer.FacebookViewBinder binder =
+                new FacebookAdRenderer.FacebookViewBinder.Builder(mParams.getNativeRootLayout()/*布局文件没有被使用*/)
+                        .titleId(mParams.getAdTitle())
+                        .textId(mParams.getAdDetail())
+                        .advertiserNameId(mParams.getAdSponsored())
+                        .callToActionId(mParams.getAdAction())
+                        .mediaViewId(mediaViewId)
+                        .adIconViewId(iconView.getId())
+                        .adChoicesRelativeLayoutId(adChoiceRelativeLayout.getId())
+                        .build();
+
+        MopubFacebookAdRenderer render = new MopubFacebookAdRenderer(binder, layout);
+        nativeAd.registerAdRenderer(render);
+    }
+
+    private MediaView createFacebookAdIconView(Context context, ImageView icon) {
+        MediaView iconView = createFacebookAdIconView(context);
+        if (icon != null && iconView != null) {
+            iconView.setId(icon.getId());
+            ViewGroup.LayoutParams iconParams = icon.getLayoutParams();
+            android.widget.RelativeLayout.LayoutParams iconViewParams = new android.widget.RelativeLayout.LayoutParams(iconParams.width, iconParams.height);
+            if (iconParams instanceof ViewGroup.MarginLayoutParams) {
+                ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) iconParams;
+                iconViewParams.setMargins(marginParams.leftMargin, marginParams.topMargin, marginParams.rightMargin, marginParams.bottomMargin);
+            }
+            if (iconParams instanceof android.widget.RelativeLayout.LayoutParams) {
+                android.widget.RelativeLayout.LayoutParams mainImageViewRelativeLayoutParams = (android.widget.RelativeLayout.LayoutParams) iconParams;
+                int[] rules = mainImageViewRelativeLayoutParams.getRules();
+
+                for (int i = 0; i < rules.length; ++i) {
+                    iconViewParams.addRule(i, rules[i]);
+                }
+            }
+            ViewGroup viewGroup = (ViewGroup) icon.getParent();
+            if (viewGroup != null) {
+                int index = viewGroup.indexOfChild(icon);
+                viewGroup.removeView(icon);
+                viewGroup.addView(iconView, index, iconViewParams);
+            }
+        }
+        return iconView;
+    }
+
+    private MediaView createFacebookAdIconView(Context context) {
+        try {
+            return new MediaView(context);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    private ImageView createImageView(Context context) {
+        try {
+            return new ImageView(context);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    private int getAdmobMediaLayoutId() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return View.generateViewId();
+        }
+        return 0x1000001;
+    }
+
     private int getImageViewId() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             return View.generateViewId();
@@ -123,6 +294,20 @@ public class MopubBindNativeView extends BaseBindNativeView {
         return 0x1000002;
     }
 
+    private int getRelativeLayoutId() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return View.generateViewId();
+        }
+        return 0x1000003;
+    }
+
+    private int getFBMediaViewId() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return View.generateViewId();
+        }
+        return 0x1000004;
+    }
+    
     public void notifyAdViewShowing(View view, PidConfig pidConfig, boolean staticRender) {
         updateCtaButtonBackground(view, pidConfig, mParams);
         updateClickView(view, pidConfig);
