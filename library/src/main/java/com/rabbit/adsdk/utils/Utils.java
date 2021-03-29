@@ -178,7 +178,7 @@ public class Utils {
         if (isContainKey(context, key)) {
             return key;
         }
-        return Base64.encodeToString(key.getBytes(), Base64.DEFAULT);
+        return "pref_" + Utils.string2MD5(key);
     }
 
     private static boolean isContainKey(Context context, String key) {
