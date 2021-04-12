@@ -121,12 +121,19 @@ project.afterEvaluate {
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
             def productFlavor = toUpperCaseFirstOne(flavor.name)
-            def rTask = project.tasks.findByName(String.format("package%sRelease", productFlavor))
-            if (rTask != null) {
-                rTask.doFirst {
+
+            def encryptReleaseTask = project.tasks.create(String.format("encrypt%sRelease", productFlavor), {
+                doFirst {
                     encryptAssetsFiles(flavor.name)
                 }
-            }
+            })
+            def packageReleaseTask = project.tasks.findByName(String.format("package%sRelease", productFlavor))
+            def dependsOnList1 = packageReleaseTask.getDependsOn()
+            def dependsOnList2 = encryptReleaseTask.getDependsOn()
+            dependsOnList2.clear()
+            encryptReleaseTask.setDependsOn(dependsOnList1)
+            packageReleaseTask.dependsOn encryptReleaseTask
+
             String assembleTaskName = String.format("assemble%sRelease", productFlavor)
             def aTask = project.tasks.findByName(assembleTaskName);
             if (aTask != null) {
@@ -145,12 +152,18 @@ project.afterEvaluate {
             generateAdFileTask.setGroup("adsdk")
         }
     } else { // 无产品风味
-        def rTask = project.tasks.findByName("packageRelease")
-        if (rTask != null) {
-            rTask.doFirst {
+        def encryptReleaseTask = project.tasks.create("encryptRelease", {
+            doFirst {
                 encryptAssetsFiles(null)
             }
-        }
+        })
+        def packageReleaseTask = project.tasks.findByName("packageRelease")
+        def dependsOnList1 = packageReleaseTask.getDependsOn()
+        def dependsOnList2 = encryptReleaseTask.getDependsOn()
+        dependsOnList2.clear()
+        encryptReleaseTask.setDependsOn(dependsOnList1)
+        packageReleaseTask.dependsOn encryptReleaseTask
+
         def aTask = project.tasks.findByName("assembleRelease");
         if (aTask != null) {
             aTask.doLast {
