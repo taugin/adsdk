@@ -67,8 +67,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:18.0.0'
 
     // applovin
-    implementation 'com.mopub.mediation:applovin:10.1.1.0'
-    implementation 'com.applovin:applovin-sdk:10.1.1'
+    implementation 'com.mopub.mediation:applovin:10.1.2.0'
+    implementation 'com.applovin:applovin-sdk:10.1.2'
 
     // facebook
     implementation 'com.mopub.mediation:facebookaudiencenetwork:6.3.0.0'
