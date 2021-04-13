@@ -458,7 +458,7 @@ def encryptFileForAssets(workDir, encryptFiles) {
  */
 def updateEncryptFileToApk(workDir, encryptFiles, outputFile, aaptFile) {
     deleteFilesFromApk(outputFile.getAbsolutePath(), aaptFile, encryptFiles)
-    addFilesToApk(workDir, outputFile.getAbsolutePath(), aaptFile, encryptFiles)
+    appendFilesToApk(workDir, outputFile.getAbsolutePath(), aaptFile, encryptFiles)
 }
 
 /**
@@ -485,7 +485,7 @@ def deleteTempAssetsFile(workDir, encryptNames) {
  * @param fileList
  * @return
  */
-def addFilesToApk(workDir, apkFile, aaptFile, fileList) {
+def appendFilesToApk(workDir, apkFile, aaptFile, fileList) {
     def cmd = []
     cmd.add(aaptFile)
     cmd.add("a")
@@ -495,7 +495,7 @@ def addFilesToApk(workDir, apkFile, aaptFile, fileList) {
         cmd.add(it)
     }
     def cmdString = cmd.join(" ")
-    println "> Task :${project.name}:addFilesToApk Command : " + optimizeCommand(cmdString)
+    println ":${project.name}:appendFilesToApk Command : " + optimizeCommand(cmdString)
     try {
         Process p = cmdString.execute(null, new File(workDir))
         p.waitFor(20, TimeUnit.SECONDS)
@@ -524,7 +524,7 @@ def deleteFilesFromApk(apkFile, aaptFile, fileList) {
         cmd.add(it)
     }
     def cmdList = cmd.join(" ")
-    println ":${project.name} :deleteFilesFromApk Command [" + optimizeCommand(cmdList) + "]"
+    println ":${project.name}:deleteFilesFromApk Command [" + optimizeCommand(cmdList) + "]"
     try {
         def startTime = System.currentTimeMillis()
         Process p = cmdList.execute()
@@ -532,7 +532,7 @@ def deleteFilesFromApk(apkFile, aaptFile, fileList) {
         p.destroy()
         def endTime = System.currentTimeMillis()
         def signTime = (endTime - startTime) / 1000
-        println ":${project.name} :deleteFilesFromApk Command [Delete File From Apk Use Time " + signTime + "s]"
+        println ":${project.name}:deleteFilesFromApk Command [Delete File From Apk Use Time " + signTime + "s]"
     } catch (Exception e) {
     }
 }
