@@ -238,17 +238,8 @@ def appendChannelsFile(baseApk, channel, channelApk, releaseDir, flavorName, aap
     writer.close()
 
     // 添加渠道文件到assets目录
-    def appendFileToApk = aaptFile + " a -v " + channelApk + " " + "assets/" + channelFileName
-    def cwd = new File(baseApk).getParentFile()
-    println ":${project.name}:appendChannelsFile [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(appendFileToApk) + "]"
-    println ":${project.name}:appendChannelsFile [" + flavorName + "][" + channel + "] Current [" + cwd + "]"
-    try {
-        Process p = appendFileToApk.execute(null, cwd)
-        p.waitFor(20, TimeUnit.SECONDS)
-        p.destroy();
-    } catch (Exception e) {
-        e.printStackTrace()
-    }
+    def cwd = new File(baseApk).getParent()
+    appendFilesToApk(cwd, channelApk, aaptFile, ["assets/" + channelFileName])
     // 删除临时渠道文件
     channelFile.delete()
     tempAssets.delete()
@@ -298,28 +289,11 @@ def modifyAndroidManifest(baseApk, channel, channelApk, releaseDir, flavorName, 
         /////////////////////////////////////////////////////////
 
         // 删除AndroidManifest.xml文件
-        def deleteFileToApk = aaptFile + " r -v " + channelApk + " " + xmlFile.getName()
-        println ":${project.name}:modifyAndroidManifest [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(deleteFileToApk) + "]"
-        try {
-            Process p = deleteFileToApk.execute()
-            p.waitFor(20, TimeUnit.SECONDS)
-            p.destroy();
-        } catch (Exception e) {
-            e.printStackTrace()
-        }
+        deleteFilesFromApk(channelApk, aaptFile, [xmlFile.getName()])
 
         // 添加AndroidManifest.xml到apk文件
-        def appendFileToApk = aaptFile + " a -v " + channelApk + " " + xmlFile.getName()
-        def cwd = new File(baseApk).getParentFile()
-        println ":${project.name}:modifyAndroidManifest [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(appendFileToApk) + "]"
-        println ":${project.name}:modifyAndroidManifest [" + flavorName + "][" + channel + "] Current [" + cwd + "]"
-        try {
-            Process p = appendFileToApk.execute(null, cwd)
-            p.waitFor(20, TimeUnit.SECONDS)
-            p.destroy();
-        } catch (Exception e) {
-            e.printStackTrace()
-        }
+        def cwd = new File(baseApk).getParent()
+        appendFilesToApk(cwd, channelApk, aaptFile, [xmlFile.getName()])
         xmlFile.delete()
     }
     println ":${project.name}:modifyAndroidManifest [" + flavorName + "][" + channel + "] >>>>>>>>> Modify AndroidManifest Complete <<<<<<<<<\n"
@@ -604,21 +578,69 @@ def deleteApkSignInfo(flavorName, apkFile, aaptFile, channel) {
     if (signInfoList == null || signInfoList.isEmpty()) {
         return true
     }
-    signInfoList.each {
-        def cmdList = aaptFile + " r -v " + apkFile + " " + it
-        println ":${project.name} :deleteApkSignInfo [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(cmdList) + "]"
-        try {
-            def startTime = System.currentTimeMillis()
-            Process p = cmdList.execute()
-            p.waitFor(20, TimeUnit.SECONDS)
-            p.destroy();
-            def endTime = System.currentTimeMillis()
-            def signTime = (endTime - startTime) / 1000
-            println ":${project.name} :deleteApkSignInfo [" + flavorName + "][" + channel + "] Command [Delete Sign Info Use Time " + signTime + "s]"
-        } catch (Exception e) {
-        }
-    }
+    deleteFilesFromApk(apkFile, aaptFile, signInfoList)
     return true
+}
+
+
+/**
+ * 添加文件到apk
+ * @param workDir
+ * @param apkFile
+ * @param aaptFile
+ * @param fileList
+ * @return
+ */
+def appendFilesToApk(workDir, apkFile, aaptFile, fileList) {
+    def cmd = []
+    cmd.add(aaptFile)
+    cmd.add("a")
+    cmd.add("-v")
+    cmd.add(apkFile)
+    fileList.each {
+        cmd.add(it)
+    }
+    def cmdString = cmd.join(" ")
+    println ":${project.name}:appendFilesToApk Command : " + optimizeCommand(cmdString)
+    try {
+        Process p = cmdString.execute(null, new File(workDir))
+        p.waitFor(20, TimeUnit.SECONDS)
+        printOutput(p)
+        p.closeStreams()
+        p.destroy();
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+}
+
+/**
+ * 从apk中删除文件
+ * @param apkFile
+ * @param aaptFile
+ * @param fileList
+ * @return
+ */
+def deleteFilesFromApk(apkFile, aaptFile, fileList) {
+    def cmd = []
+    cmd.add(aaptFile)
+    cmd.add("r")
+    cmd.add("-v")
+    cmd.add(apkFile)
+    fileList.each {
+        cmd.add(it)
+    }
+    def cmdList = cmd.join(" ")
+    println ":${project.name}:deleteFilesFromApk Command [" + optimizeCommand(cmdList) + "]"
+    try {
+        def startTime = System.currentTimeMillis()
+        Process p = cmdList.execute()
+        p.waitFor(20, TimeUnit.SECONDS)
+        p.destroy()
+        def endTime = System.currentTimeMillis()
+        def signTime = (endTime - startTime) / 1000
+        println ":${project.name}:deleteFilesFromApk Command [Delete File From Apk Use Time " + signTime + "s]"
+    } catch (Exception e) {
+    }
 }
 
 /**
@@ -702,7 +724,8 @@ def copyManifestFromApk(apkFile, flavorName, String filePath, String outputFile,
             fos.write(buf, 0, read)
         }
         fos.close()
-        is.close();
+        is.close()
+        zipFile.close()
         return true
     } catch (Exception e) {
         e.printStackTrace()
