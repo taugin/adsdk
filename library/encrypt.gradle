@@ -3,6 +3,8 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
 
 /**
  * 首字母转大写
@@ -100,21 +102,26 @@ try {
     }
 } catch (Exception e) {
 }
+
 class Global {
     static Map<String, String> variantMap = new HashMap<String, String>()
     static Map<String, String> providerMap = new HashMap<String, String>()
+    static Map<String, String> flavorMap = new HashMap<String, String>()
 }
 
 android.applicationVariants.all { variant ->
-    if (variant.buildType.name == 'release') {
-        String key = null;
-        if (variant.productFlavors != null && variant.productFlavors.size() > 0) {
-            key = variant.productFlavors[0].name
-        } else {
-            key = ""
+    variant.outputs.all { output ->
+        if (variant.buildType.name == 'release') {
+            String key = null;
+            if (variant.productFlavors != null && variant.productFlavors.size() > 0) {
+                key = variant.productFlavors[0].name
+            } else {
+                key = ""
+            }
+            Global.variantMap.put(key, variant.name)
+            Global.providerMap.put(key, variant.mergeAssetsProvider.name)
+            Global.flavorMap.put(key, outputFile)
         }
-        Global.variantMap.put(key, variant.name)
-        Global.providerMap.put(key, variant.mergeAssetsProvider.name)
     }
 }
 project.afterEvaluate {
@@ -124,23 +131,19 @@ project.afterEvaluate {
 
             def encryptReleaseTask = project.tasks.create(String.format("encrypt%sRelease", productFlavor), {
                 doFirst {
-                    encryptAssetsFiles(flavor.name)
+                    encryptAssetsFilesFromApk(flavor.name)
                 }
             })
-            def packageReleaseTask = project.tasks.findByName(String.format("package%sRelease", productFlavor))
-            def dependsOnList1 = packageReleaseTask.getDependsOn()
+            def assembleReleaseTask = project.tasks.findByName(String.format("assemble%sRelease", productFlavor))
+            def dependsOnList1 = assembleReleaseTask.getDependsOn()
             def dependsOnList2 = encryptReleaseTask.getDependsOn()
             dependsOnList2.clear()
             encryptReleaseTask.setDependsOn(dependsOnList1)
-            packageReleaseTask.dependsOn encryptReleaseTask
+            assembleReleaseTask.dependsOn encryptReleaseTask
 
-            String assembleTaskName = String.format("assemble%sRelease", productFlavor)
-            def aTask = project.tasks.findByName(assembleTaskName);
-            if (aTask != null) {
-                aTask.doLast {
-                    openReleaseDir(flavor.name)
-                    printEncryptInfo()
-                }
+            assembleReleaseTask.doLast {
+                openReleaseDir(flavor.name)
+                printEncryptInfo()
             }
 
             String generateAdFile = String.format("generateAdFile%s", productFlavor)
@@ -154,22 +157,19 @@ project.afterEvaluate {
     } else { // 无产品风味
         def encryptReleaseTask = project.tasks.create("encryptRelease", {
             doFirst {
-                encryptAssetsFiles(null)
+                encryptAssetsFilesFromApk(null)
             }
         })
-        def packageReleaseTask = project.tasks.findByName("packageRelease")
-        def dependsOnList1 = packageReleaseTask.getDependsOn()
+        def assembleReleaseTask = project.tasks.findByName("assembleRelease")
+        def dependsOnList1 = assembleReleaseTask.getDependsOn()
         def dependsOnList2 = encryptReleaseTask.getDependsOn()
         dependsOnList2.clear()
         encryptReleaseTask.setDependsOn(dependsOnList1)
-        packageReleaseTask.dependsOn encryptReleaseTask
+        assembleReleaseTask.dependsOn encryptReleaseTask
 
-        def aTask = project.tasks.findByName("assembleRelease");
-        if (aTask != null) {
-            aTask.doLast {
-                openReleaseDir(null)
-                printEncryptInfo()
-            }
+        assembleReleaseTask.doLast {
+            openReleaseDir(null)
+            printEncryptInfo()
         }
 
         def generateAdFileTask = project.tasks.create("generateAdFile", {
@@ -217,6 +217,11 @@ def printOutput(Process p) {
     try {
         def line = null
         BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()))
+        while ((line = br.readLine()) != null) {
+            println(line)
+        }
+        br.close()
+        br = new BufferedReader(new InputStreamReader(p.getErrorStream()))
         while ((line = br.readLine()) != null) {
             println(line)
         }
@@ -303,71 +308,6 @@ def getApplicationId(flavor) {
 }
 
 /**
- * 获取assets输出目录
- * @param flavor
- * @return
- */
-def getAssetsOutDir(flavor) {
-    def flavorName = flavor == null ? "" : flavor
-    def assetsOutDirList = []
-    def finalAssetsDir = null
-    def variantName = Global.variantMap.get(flavorName)
-    def providerName = Global.providerMap.get(flavorName)
-    def outAssetsDir = String.format("intermediates/assets/%s/release", variantName)
-    assetsOutDirList.add(new File(project.getBuildDir(), outAssetsDir))
-    outAssetsDir = String.format("intermediates/merged_assets/%s/%s/out", variantName, providerName)
-    assetsOutDirList.add(new File(project.getBuildDir(), outAssetsDir))
-    outAssetsDir = String.format("intermediates/merged_assets/%s/out", variantName)
-    assetsOutDirList.add(new File(project.getBuildDir(), outAssetsDir))
-
-    System.out.println "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-    for (dir in assetsOutDirList) {
-        if (dir.exists()) {
-            finalAssetsDir = dir
-            break;
-        } else {
-            System.out.println "[WARNING...] Dir : [" + dir + "] is not exists "
-        }
-    }
-    System.out.println ">>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n"
-    if (finalAssetsDir != null) {
-        System.out.println "[VERBOSE...] Dir : [" + finalAssetsDir + "] is exists"
-    }
-    return finalAssetsDir
-}
-
-/**
- * 获取assets输出目录
- * @param flavor
- * @return
- */
-def getAssetsOutDir_Old(flavor) {
-    def productFlavor = toUpperCaseFirstOne(flavor)
-    def flavorNoSlash = productFlavor == null ? "" : productFlavor
-    def assetsOutDirList = []
-    def finalAssetsDir = null
-    def outAssetsDir = String.format("intermediates/assets/%s/release", flavorNoSlash)
-    assetsOutDirList.add(new File(project.getBuildDir(), outAssetsDir))
-    outAssetsDir = String.format("intermediates/merged_assets/%srelease/merge%sReleaseAssets/out", flavorNoSlash, flavorNoSlash)
-    assetsOutDirList.add(new File(project.getBuildDir(), outAssetsDir))
-    outAssetsDir = String.format("intermediates/merged_assets/%srelease/out", flavorNoSlash, flavorNoSlash)
-    assetsOutDirList.add(new File(project.getBuildDir(), outAssetsDir))
-
-    for (dir in assetsOutDirList) {
-        if (dir.exists()) {
-            finalAssetsDir = dir
-            break;
-        } else {
-            System.err.println "[WARNING...] Dir is not exists : [" + dir + "]"
-        }
-    }
-    if (finalAssetsDir != null) {
-        System.out.println "[VERBOSE...] Dir is exists : [" + finalAssetsDir + "]"
-    }
-    return finalAssetsDir
-}
-
-/**
  * 生成包名对应的广告配置文件名称
  * @param flavor
  * @return
@@ -382,60 +322,13 @@ def generateAdFileByUser(flavor) {
 }
 
 /**
- * 获取广告配置文件名称
- * @param assetsDir
- * @param appId
- * @return
- */
-def getAdConfigFile(assetsDir, appId) {
-    def pkgnameMd5 = Aes.string2MD5(appId)
-    def adConfigName = "cfg" + pkgnameMd5.substring(0, 8)
-    def adDefaultName = "data_config"
-    def adConfigFile1 = new File(assetsDir, adConfigName + getSuffix1())
-    def adConfigFile2 = new File(assetsDir, adConfigName + getSuffix2())
-    def adDefaultFile1 = new File(assetsDir, adDefaultName + getSuffix1())
-    def adDefaultFile2 = new File(assetsDir, adDefaultName + getSuffix2())
-    if (adConfigFile1.exists()) {
-        return adConfigFile1.getAbsolutePath()
-    }
-    if (adConfigFile2.exists()) {
-        return adConfigFile2.getAbsolutePath()
-    }
-    if (adDefaultFile1.exists()) {
-        return adDefaultFile1.getAbsolutePath()
-    }
-    if (adDefaultFile2.exists()) {
-        return adDefaultFile2.getAbsolutePath()
-    }
-    return null
-}
-
-/**
- * 获取待加密的文件树
- * @param assetDir
- * @return
- */
-def getEncryptFileTree(assetDir) {
-    def output = ext != null && ext.has("encryptFiles") ? ext.encryptFiles : null
-    FileTree mainTree = fileTree(dir: assetDir)
-    if (output != null) {
-        output.each {
-            out ->
-                mainTree.include out
-        }
-    }
-    mainTree.include("mdncfg")
-    return mainTree
-}
-
-/**
  * 获取签名信息
  * @param flavor
  * @return
  */
 def getSignConfig(flavor) {
     def signConfig = null
-    if (flavor != null) {
+    if (flavor != null && flavor.trim().length() > 0) {
         try {
             signConfig = project.android.productFlavors[flavor].signingConfig
         } catch (Exception e) {
@@ -451,93 +344,470 @@ def getSignConfig(flavor) {
 }
 
 /**
- * 生成签名的md5文件，一边验证是否被重打包
- * @param assetDir
+ * 加密assets文件
+ * @param flavorName
+ * @param outputFile
+ * @return
  */
-def generateSignMd5(flavor, assetDir) {
-    def signConfig = getSignConfig(flavor)
-    def signMd5 = null
-    if (signConfig != null && signConfig.hasProperty("storeFile") && signConfig.hasProperty("storePassword")) {
-        def cmdString = String.format("keytool -v -list -keystore %s -storepass %s", signConfig.storeFile, signConfig.storePassword)
-        def result = cmdString.execute().text.trim()
-        BufferedReader br = new BufferedReader(new StringReader(result))
-        try {
-            while ((line = br.readLine()) != null) {
-                if (line.trim().startsWith("MD5:") || line.trim().startsWith("md5:")) {
-                    signMd5 = line.trim().substring("MD5:".length()).trim()
-                    break
-                }
-            }
-        } catch (Exception e) {
-        }
-    }
-    if (signMd5 != null && signMd5.trim().length() > 0) {
-        signMd5 = signMd5.replaceAll(":", "")
-        signMd5 = signMd5.toLowerCase()
-    }
-    println "> Task  :${project.name}:signMd5 [${signMd5}]"
-    return null
+def encryptAssetsFilesFromApk(flavor) {
+    def flavorName = flavor != null ? flavor : ""
+    def outputFile = Global.flavorMap.get(flavorName)
+    println "> Task :${project.name}:encryptAssetsFilesFromApk flavorName : " + flavorName
+    println "> Task :${project.name}:encryptAssetsFilesFromApk outputFile : " + outputFile
+    encryptAssetsFilesFromApkInternal(flavorName, outputFile)
 }
 
 /**
- * 加密asset文件
- * @param flavor
+ * 加密assets文件
+ * @param flavorName
+ * @param outputFile
  * @return
  */
-def encryptAssetsFiles(flavor) {
-    def secret = ext != null && ext.has("secret") ? ext["secret"] : "123456789"
-    def appId = getApplicationId(flavor)
-    def assetDir = getAssetsOutDir(flavor)
-    if (assetDir == null) {
-        System.out.println("[WARNING...] Can not find the output Asset Dir");
-        return;
-    }
-    def signFile = generateSignMd5(flavor, assetDir)
-    def adFilePath = getAdConfigFile(assetDir, appId);
-    def mainTree = getEncryptFileTree(assetDir)
-    // println "flavor     : " + flavor
-    // println "appId      : " + appId
-    // println "secret     : " + secret
-    // println "assetDir   : " + assetDir
-    if (Aes.isJson(adFilePath)) {
-        try {
-            Aes.encryptFile(adFilePath, secret)
-            println "> Task  :${project.name}:encryptAdFile    [${adFilePath}]"
-            ext.out += ":${project.name}:encryptAdFile    [${adFilePath}]"
-        } catch (Exception e) {
-            e.printStackTrace()
+def encryptAssetsFilesFromApkInternal(flavorName, File outputFile) {
+    def appId = getApplicationId(flavorName)
+    def pkgmd5 = Aes.string2MD5(appId)
+    def adname = "cfg" + pkgmd5.substring(0, 8)
+    def encryptNames = []
+    encryptNames.add(adname + ".dat")
+    encryptNames.add(adname + ".json")
+    encryptNames.add("data_config" + ".dat")
+    encryptNames.add("data_config" + ".json")
+    encryptNames.add("mdncfg")
+    def configEncryptFiles = ext != null && ext.has("encryptFiles") ? ext.encryptFiles : null
+    if (configEncryptFiles != null && !configEncryptFiles.isEmpty()) {
+        configEncryptFiles.each {
+            encryptNames.add(it)
         }
     }
-    if (false) {
-        try {
-            if (adFilePath != null && adFilePath.endsWith(getSuffix2())) {
-                def adFile = new File(adFilePath)
-                def filePath = adFile.getParent()
-                def fileName = adFile.getName()
-                fileName = fileName.replaceAll(getSuffix2(), getSuffix1())
-                def newAdFile = new File(filePath, fileName)
-                println "> Task  :${project.name}:renameAdFile     [${newAdFile}]"
-                ext.out += ":${project.name}:renameAdFile     [${newAdFile}]"
-                if (newAdFile.exists()) {
-                    newAdFile.delete()
-                }
-                adFile.renameTo(newAdFile)
-            }
-        } catch (Exception e) {
-            e.printStackTrace()
-        }
-    }
-    if (mainTree != null) {
-        mainTree.each { File file ->
-            println "> Task  :${project.name}:encryptExtraFile [${file}]"
-            ext.out += ":${project.name}:encryptExtraFile [${file}]"
+    def aaptFile = getAaptFile()
+    def workDir = outputFile.getParent()
+    println "> Task :${project.name}:encryptRelease flavorName : " + flavorName
+    println "> Task :${project.name}:encryptRelease appId : " + appId
+    println "> Task :${project.name}:encryptRelease encryptNames : " + encryptNames
+    println "> Task :${project.name}:encryptRelease aaptFile : " + aaptFile
+    println "> Task :${project.name}:encryptRelease workDir : " + workDir
+    println "> Task :${project.name}:encryptRelease outputFile : " + outputFile
+
+    // 读取待加密的文件到本地磁盘
+    def encryptFiles = readEncryptFileFromApk(workDir, encryptNames, outputFile)
+
+    println "> Task :${project.name}:encryptRelease encryptFiles : " + encryptFiles
+    encryptFileForAssets(workDir, encryptFiles)
+    updateEncryptFileToApk(workDir, encryptFiles, outputFile, aaptFile)
+    deleteTempAssetsFile(workDir, encryptNames)
+    signChannelApkFile(flavorName, outputFile, aaptFile)
+}
+
+/**
+ * 从apk中拷贝待加密文件
+ * @param workDir
+ * @param encryptNames
+ * @param outputFile
+ * @return
+ */
+def readEncryptFileFromApk(workDir, encryptNames, outputFile) {
+    def copyNames = []
+    def assetsFolder = "assets";
+    def assetsDir = new File(workDir, assetsFolder)
+    assetsDir.mkdirs()
+    encryptNames.each {
+        def assetsFile = assetsFolder + "/" + it
+        def content = readContentFromApk(outputFile, assetsFile)
+        if (content != null && content.trim().length() > 0) {
+            def outputFilePath = new File(assetsDir, it)
+            copyNames.add(assetsFile)
             try {
-                Aes.encryptFile(file.getAbsolutePath(), secret)
+                FileOutputStream fos = new FileOutputStream(outputFilePath)
+                fos.write(content.getBytes())
+                fos.close()
             } catch (Exception e) {
                 e.printStackTrace()
             }
         }
     }
+    return copyNames
+}
+
+/**
+ * 对文件进行加密
+ * @param workDir
+ * @param encryptFiles
+ * @return
+ */
+def encryptFileForAssets(workDir, encryptFiles) {
+    def secret = ext != null && ext.has("secret") ? ext["secret"] : "123456789"
+    encryptFiles.each {
+        try {
+            def srcFile = new File(workDir, it).getAbsolutePath()
+            Aes.encryptFile(srcFile, secret)
+            println "> Task :${project.name}:encryptAdFile    [${it}]"
+            ext.out += ":${project.name}:encryptAdFile    [${it}]"
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
+    }
+}
+
+/**
+ * 更新apk文件
+ * @param workDir
+ * @param encryptFiles
+ * @param outputFile
+ * @param aaptFile
+ * @return
+ */
+def updateEncryptFileToApk(workDir, encryptFiles, outputFile, aaptFile) {
+    deleteFilesFromApk(outputFile.getAbsolutePath(), aaptFile, encryptFiles)
+    addFilesToApk(workDir, outputFile.getAbsolutePath(), aaptFile, encryptFiles)
+}
+
+/**
+ * 删除临时文件
+ * @param workDir
+ * @param encryptNames
+ * @return
+ */
+def deleteTempAssetsFile(workDir, encryptNames) {
+    def assetsFolder = "assets";
+    def assetsDir = new File(workDir, assetsFolder)
+    encryptNames.each {
+        def outputFilePath = new File(assetsDir, it)
+        outputFilePath.delete()
+    }
+    assetsDir.delete()
+}
+
+/**
+ * 添加文件到apk
+ * @param workDir
+ * @param apkFile
+ * @param aaptFile
+ * @param fileList
+ * @return
+ */
+def addFilesToApk(workDir, apkFile, aaptFile, fileList) {
+    def cmd = []
+    cmd.add(aaptFile)
+    cmd.add("a")
+    cmd.add("-v")
+    cmd.add(apkFile)
+    fileList.each {
+        cmd.add(it)
+    }
+    def cmdString = cmd.join(" ")
+    println "> Task :${project.name}:addFilesToApk Command : " + optimizeCommand(cmdString)
+    try {
+        Process p = cmdString.execute(null, new File(workDir))
+        p.waitFor(20, TimeUnit.SECONDS)
+        printOutput(p)
+        p.closeStreams()
+        p.destroy();
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+}
+
+/**
+ * 从apk中删除文件
+ * @param apkFile
+ * @param aaptFile
+ * @param fileList
+ * @return
+ */
+def deleteFilesFromApk(apkFile, aaptFile, fileList) {
+    def cmd = []
+    cmd.add(aaptFile)
+    cmd.add("r")
+    cmd.add("-v")
+    cmd.add(apkFile)
+    fileList.each {
+        cmd.add(it)
+    }
+    def cmdList = cmd.join(" ")
+    println ":${project.name} :deleteFilesFromApk Command [" + optimizeCommand(cmdList) + "]"
+    try {
+        def startTime = System.currentTimeMillis()
+        Process p = cmdList.execute()
+        p.waitFor(20, TimeUnit.SECONDS)
+        p.destroy()
+        def endTime = System.currentTimeMillis()
+        def signTime = (endTime - startTime) / 1000
+        println ":${project.name} :deleteFilesFromApk Command [Delete File From Apk Use Time " + signTime + "s]"
+    } catch (Exception e) {
+    }
+}
+/**
+ * 为apk包签名
+ * @param flavorName
+ * @param apkFile
+ * @param aaptFile
+ * @param channel
+ * @return
+ */
+def signChannelApkFile(flavorName, apkFile, aaptFile) {
+    println "\n:${project.name}:signChannelApkFile [" + flavorName + "] >>>>>>>>> Sign Channel File Start <<<<<<<<<"
+    def signConfig = getSignConfig(flavorName)
+    if (signConfig == null) {
+        System.err.println ":${project.name}:signChannelApkFile [" + flavorName + "] signConfig is Null"
+        return
+    }
+    if (!signConfig.hasProperty("storeFile")
+            || !signConfig.hasProperty("storePassword")
+            || !signConfig.hasProperty("keyAlias")
+            || !signConfig.hasProperty("keyPassword")) {
+        System.err.println ":${project.name}:signChannelApkFile [" + flavorName + "][" + channel + "] signConfig is not completion"
+        return
+    }
+    def jarSignerFile = getJarSigner()
+    if (jarSignerFile == null) {
+        System.err.println ":${project.name}:signChannelApkFile jarSignerFile is Null"
+        return
+    }
+    if (deleteOldSignFiles(apkFile, aaptFile)) {
+        signChannelFileInternal(apkFile, signConfig, jarSignerFile)
+    }
+    println ":${project.name}:signChannelApkFile >>>>>>>>> Sign Channel File Complete <<<<<<<<<\n"
+}
+
+/**
+ * 删除旧的签名
+ * @param apkFile
+ * @param aaptFile
+ * @param channel
+ * @return
+ */
+def deleteOldSignFiles(apkFile, aaptFile) {
+    def signInfoList = readOldSignFiles(apkFile, aaptFile)
+    println ":${project.name} :deleteOldSignFiles SignDef " + signInfoList
+    if (signInfoList == null || signInfoList.isEmpty()) {
+        return true
+    }
+    deleteFilesFromApk(apkFile, aaptFile, signInfoList)
+    return true
+}
+
+/**
+ * 获取旧的签名文件
+ * @param apkFile
+ * @param flavorName
+ * @param aaptFile
+ * @param channel
+ * @return
+ */
+def readOldSignFiles(apkFile, aaptFile) {
+    def cmdString = aaptFile + " l -a " + apkFile
+    println ":${project.name} :readOldSignFiles Command [" + optimizeCommand(cmdString) + "]"
+    def result = cmdString.execute().text
+    BufferedReader br = new BufferedReader(new StringReader(result))
+    def signInfoList = []
+    def line = null
+    while ((line = br.readLine()) != null) {
+        if (line.startsWith("META-INF") && (line.endsWith(".MF") || line.endsWith(".SF") || line.endsWith(".RSA"))) {
+            signInfoList.add(line)
+        }
+    }
+    br.close()
+    return signInfoList
+}
+
+/**
+ * 对apk包签名
+ * @param apkFile
+ * @param signConfig
+ * @param jarSignerFile
+ * @param channel
+ * @return
+ */
+def signChannelFileInternal(apkFile, signConfig, jarSignerFile) {
+    if (signConfig != null
+            && signConfig.hasProperty("storeFile")
+            && signConfig.hasProperty("storePassword")
+            && signConfig.hasProperty("keyAlias")
+            && signConfig.hasProperty("keyPassword")) {
+        println ":${project.name}:signChannelPackage ApkFile [" + apkFile + "]"
+        def cmdlist = []
+        cmdlist.add(jarSignerFile)
+
+        cmdlist.add("-digestalg")
+        cmdlist.add("SHA1")
+        cmdlist.add("-sigalg")
+        cmdlist.add("MD5withRSA")
+        // cmdlist.add("-tsa https://timestamp.geotrust.com/tsa")
+        cmdlist.add("-keystore")
+        cmdlist.add(signConfig.storeFile)
+        cmdlist.add("-storepass")
+        cmdlist.add(signConfig.storePassword)
+        cmdlist.add("-keypass")
+        cmdlist.add(signConfig.keyPassword)
+        cmdlist.add("-signedjar")
+        cmdlist.add(apkFile)
+        cmdlist.add(apkFile)
+        cmdlist.add(signConfig.keyAlias)
+
+        def cmdString = cmdlist.join(" ")
+        def cmdStringInfo = cmdlist.join(",")
+        println ":${project.name}:signChannelPackage Command [" + optimizeCommand(cmdStringInfo, ",") + "]"
+        try {
+            def startTime = System.currentTimeMillis()
+            Process p = cmdString.execute()
+            p.waitFor(20, TimeUnit.SECONDS)
+            p.destroy();
+            def endTime = System.currentTimeMillis()
+            def signTime = (endTime - startTime) / 1000
+            println ":${project.name} :signChannelFileInternal Command [Sign Apk File Use Time " + signTime + "s]"
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
+    }
+}
+
+/**
+ * 获取Jarsigner文件路径
+ * @param flavorName
+ * @param channel
+ * @return
+ */
+def getJarSigner() {
+    def jarSignerFile = null
+    try {
+        def cmdString = "which jarsigner"
+        if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+            cmdString = "where jarsigner"
+        }
+        def result = cmdString.execute().text.trim()
+        if (result != null && result.length() > 0) {
+            BufferedReader br = new BufferedReader(new StringReader(result))
+            def tmpFile = br.readLine()
+            br.close()
+            File f = new File(tmpFile)
+            if (f.exists()) {
+                jarSignerFile = tmpFile
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+    return jarSignerFile
+}
+
+/**
+ * 获取aapt文件路径
+ * @return
+ */
+def getAaptFile() {
+    def sdkDir = null
+    try {
+        Properties properties = new Properties()
+        InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream();
+        properties.load(inputStream)
+        //读取文件
+        sdkDir = properties.getProperty('sdk.dir')
+    } catch (Exception e) {
+    }
+    if (sdkDir == null || !new File(sdkDir).exists()) {
+        if (sdkDir == null) {
+            println "> Task :${project.name}:getAaptFile sdkDir == null, Use ANDROID_SDK_ROOT"
+        } else {
+            println "> Task :${project.name}:getAaptFile sdkDir is not exist, Use ANDROID_SDK_ROOT"
+        }
+        sdkDir = System.getenv("ANDROID_SDK_ROOT")
+    }
+    if (sdkDir == null || !new File(sdkDir).exists()) {
+        if (sdkDir == null) {
+            println ":${project.name}:getAaptFile sdkDir == null, Use ANDROID_HOME"
+        } else {
+            println ":${project.name}:getAaptFile sdkDir is not exist, Use ANDROID_HOME"
+        }
+        sdkDir = System.getenv("ANDROID_HOME")
+    }
+    println "> Task :${project.name}:getAaptFile sdkDir : " + sdkDir
+    if (sdkDir == null) {
+        println "> Task :${project.name}:getAaptFile sdkDir == null"
+        return null
+    }
+    if (!new File(sdkDir).exists()) {
+        println "> Task :${project.name}:getAaptFile sdkDir is not exist"
+        return null
+    }
+    def exe = ""
+    if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+        exe = ".exe"
+    }
+    def compileSdkVersion = android.compileSdkVersion
+    if (compileSdkVersion != null) {
+        compileSdkVersion = compileSdkVersion.replaceAll("android-", "");
+    }
+    def buildToolDir = sdkDir + File.separator + "build-tools"
+    def buildToolVersionDir = android.buildToolsVersion
+    if (buildToolVersionDir == null) {
+        def buildToolDirs = new File(buildToolDir).list(new FilenameFilter() {
+            @Override
+            boolean accept(File dir, String name) {
+                return name.startsWith(String.valueOf(compileSdkVersion))
+            }
+        })
+        if (buildToolDirs != null && buildToolDirs.length > 0) {
+            buildToolVersionDir = buildToolDirs[0]
+        }
+    }
+    def aaptFile = buildToolDir + File.separator + buildToolVersionDir + File.separator + "aapt" + exe
+    println "> Task :${project.name}:getAaptFile aaptFile : " + aaptFile
+    return aaptFile
+}
+
+/**
+ * 读取apk中指定文件的内容
+ * @param apkFile
+ * @param filePath
+ * @return
+ */
+def readContentFromApk(apkFile, filePath) {
+    String content = null;
+    try {
+        ZipFile zipFile = new ZipFile(apkFile)
+        ZipEntry zipEntry = zipFile.getEntry(filePath)
+        if (zipEntry != null) {
+            InputStream is = zipFile.getInputStream(zipEntry)
+            StringBuilder builder = new StringBuilder();
+            int read = 0;
+            byte[] buf = new byte[1024];
+            while ((read = is.read(buf)) > 0) {
+                builder.append(new String(buf, 0, read));
+            }
+            is.close();
+            content = builder.toString()
+        }
+        zipFile.close()
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+    return content
+}
+
+def optimizeCommand(cmdString, delimiter = " ") {
+    if (android.defaultConfig.ext.has("debug") && android.defaultConfig.ext["debug"]) {
+        if (" ".equals(delimiter)) {
+            return cmdString
+        }
+        return cmdString.replaceAll(",", " ")
+    }
+    try {
+        List<String> list = Arrays.asList(cmdString.split(delimiter))
+        List<String> list2 = new ArrayList<String>(list.size())
+        for (int index = 0; index < list.size(); index++) {
+            String s = list.get(index)
+            File file = new File(s)
+            if (file.exists()) {
+                list2.add(file.getName())
+            } else {
+                list2.add(s)
+            }
+        }
+        return list2.join(" ")
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+    return cmdString
 }
 
 class Aes {
