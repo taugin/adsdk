@@ -628,21 +628,26 @@ def deleteApkSignInfo(flavorName, apkFile, aaptFile, channel) {
  * @return
  */
 def readContentFromApk(apkFile, filePath) {
+    String content = null;
     try {
         ZipFile zipFile = new ZipFile(apkFile)
         ZipEntry zipEntry = zipFile.getEntry(filePath)
-        InputStream is = zipFile.getInputStream(zipEntry)
-        StringBuilder builder = new StringBuilder();
-        int read = 0;
-        byte[] buf = new byte[1024];
-        while ((read = is.read(buf)) > 0) {
-            builder.append(new String(buf, 0, read));
+        if (zipEntry != null) {
+            InputStream is = zipFile.getInputStream(zipEntry)
+            StringBuilder builder = new StringBuilder();
+            int read = 0;
+            byte[] buf = new byte[1024];
+            while ((read = is.read(buf)) > 0) {
+                builder.append(new String(buf, 0, read));
+            }
+            is.close();
+            content = builder.toString()
         }
-        is.close();
-        return builder.toString();
+        zipFile.close()
     } catch (Exception e) {
+        e.printStackTrace()
     }
-    return null
+    return content
 }
 
 /**
