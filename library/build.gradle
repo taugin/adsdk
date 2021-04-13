@@ -30,6 +30,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         versionName baseVersion + (isSnapshot ? "-SNAPSHOT" : "")
+        buildConfigField "String", "SDK_VERSION_NAME", "\"${versionName}\""
         consumerProguardFiles 'proguard-rules-adsdk.pro'
     }
 

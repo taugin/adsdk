@@ -90,7 +90,7 @@ public class AdSdk {
      * @return
      */
     public String getSdkVersion() {
-        return BuildConfig.VERSION_NAME;
+        return BuildConfig.SDK_VERSION_NAME;
     }
 
     /**
