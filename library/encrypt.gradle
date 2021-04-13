@@ -575,7 +575,7 @@ def signChannelApkFile(flavorName, apkFile, aaptFile) {
  */
 def deleteOldSignFiles(apkFile, aaptFile) {
     def signInfoList = readOldSignFiles(apkFile, aaptFile)
-    println ":${project.name} :deleteOldSignFiles SignDef " + signInfoList
+    println ":${project.name}:deleteOldSignFiles SignDef " + signInfoList
     if (signInfoList == null || signInfoList.isEmpty()) {
         return true
     }
@@ -593,7 +593,7 @@ def deleteOldSignFiles(apkFile, aaptFile) {
  */
 def readOldSignFiles(apkFile, aaptFile) {
     def cmdString = aaptFile + " l -a " + apkFile
-    println ":${project.name} :readOldSignFiles Command [" + optimizeCommand(cmdString) + "]"
+    println ":${project.name}:readOldSignFiles Command [" + optimizeCommand(cmdString) + "]"
     def result = cmdString.execute().text
     BufferedReader br = new BufferedReader(new StringReader(result))
     def signInfoList = []
@@ -651,7 +651,7 @@ def signChannelFileInternal(apkFile, signConfig, jarSignerFile) {
             p.destroy();
             def endTime = System.currentTimeMillis()
             def signTime = (endTime - startTime) / 1000
-            println ":${project.name} :signChannelFileInternal Command [Sign Apk File Use Time " + signTime + "s]"
+            println ":${project.name}:signChannelFileInternal Command [Sign Apk File Use Time " + signTime + "s]"
         } catch (Exception e) {
             e.printStackTrace()
         }
