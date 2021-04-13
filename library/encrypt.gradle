@@ -104,26 +104,9 @@ try {
 }
 
 class Global {
-    static Map<String, String> variantMap = new HashMap<String, String>()
-    static Map<String, String> providerMap = new HashMap<String, String>()
     static Map<String, String> flavorMap = new HashMap<String, String>()
 }
 
-android.applicationVariants.all { variant ->
-    variant.outputs.all { output ->
-        if (variant.buildType.name == 'release') {
-            String key = null;
-            if (variant.productFlavors != null && variant.productFlavors.size() > 0) {
-                key = variant.productFlavors[0].name
-            } else {
-                key = ""
-            }
-            Global.variantMap.put(key, variant.name)
-            Global.providerMap.put(key, variant.mergeAssetsProvider.name)
-            Global.flavorMap.put(key, outputFile)
-        }
-    }
-}
 project.afterEvaluate {
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
@@ -198,6 +181,20 @@ project.afterEvaluate {
         }
     })
     delDebugFileTask.setGroup("adsdk")
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (variant.buildType.name == 'release') {
+                String key = null;
+                if (variant.productFlavors != null && variant.productFlavors.size() > 0) {
+                    key = variant.productFlavors[0].name
+                } else {
+                    key = ""
+                }
+                Global.flavorMap.put(key, outputFile)
+            }
+        }
+    }
 }
 
 def getSuffix1() {
