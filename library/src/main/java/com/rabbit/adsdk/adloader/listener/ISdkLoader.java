@@ -82,4 +82,8 @@ public interface ISdkLoader {
     public int getBannerSize();
 
     public double getEcpm();
+
+    public void notifyAdViewUIDismiss();
+
+    public void showInterstitialWithNative(ViewGroup viewGroup, Params params);
 }

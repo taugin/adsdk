@@ -82,7 +82,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onAdDismiss() {
+    public void onAdDismiss(boolean complexAds) {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         if (placeLoaderListener != null && isCurrent()) {
             placeLoaderListener.onDismiss(placeName, source, adType, false);

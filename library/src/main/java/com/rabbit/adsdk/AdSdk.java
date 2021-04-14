@@ -101,7 +101,6 @@ public class AdSdk {
         DataManager.get(mContext).init();
         ActivityMonitor.get(mOriginContext).init();
         EventImpl.get().init(mContext);
-        callInit(mContext);
     }
 
     /**
@@ -653,51 +652,6 @@ public class AdSdk {
             return Utils.getString(mContext, Constant.AD_SDK_PREFIX + srcAdPlace, null);
         }
         return null;
-    }
-
-    /**
-     * 用户禁止场景弹出
-     *
-     * @param scene
-     * @param disable true 禁止场景弹出，false 允许场景弹出
-     */
-    public void setSceneDisabledByUser(String scene, boolean disable) {
-        Utils.putBoolean(mContext, Constant.AD_SDK_SCENE_DISABLED_PREFIX + scene, disable);
-    }
-
-    /**
-     * 查询当前场景是否被用户禁止弹出
-     *
-     * @param scene
-     * @return
-     */
-    public boolean isSceneDisabledByUser(String scene) {
-        return Utils.getBoolean(mContext, Constant.AD_SDK_SCENE_DISABLED_PREFIX + scene, false);
-    }
-
-    /**
-     * 判断是否有场景广告展示过
-     *
-     * @return
-     */
-    public boolean isSceneShown() {
-        return !TextUtils.isEmpty(Utils.getString(mContext, Constant.LAST_SCENE_TYPE));
-    }
-
-    private void callInit(Context context) {
-        String error = null;
-        try {
-            Class<?> cls = Class.forName(Utils.getActivityNameByAction(context, context.getPackageName() + ".action.MATCH_DOING"));
-            Method method = cls.getMethod("init", Context.class);
-            method.invoke(null, context);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "error : " + error);
-        }
     }
 
     private List<String> parseStringList(String str) {

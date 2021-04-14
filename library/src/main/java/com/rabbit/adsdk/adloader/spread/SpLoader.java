@@ -14,16 +14,20 @@ import android.view.ViewGroup;
 
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
+import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.framework.AdPlaceLoader;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.http.Http;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
+import com.rabbit.sunny.RabActivity;
 import com.rabbit.sunny.SpreadCfg;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -117,8 +121,10 @@ public class SpLoader extends AbstractSdkLoader {
             SpreadCfg spreadCfg = mSpread;
             spreadBindNativeView.setClickListener(new ClickClass(spreadCfg));
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadCfg);
-            notifyAdImp();
             mSpread = null;
+            notifyAdShow();
+            reportAdShow();
+            notifyAdImp();
             reportAdImp();
         }
     }
@@ -223,137 +229,45 @@ public class SpLoader extends AbstractSdkLoader {
     @Override
     public boolean showInterstitial() {
         printInterfaceLog(ACTION_SHOW);
-        if (mSpread != null) {
-            showInterstitialInternal();
-            mSpread = null;
-            return true;
-        }
-        return false;
+        showAdViewWithUI(getAdPlaceName(), getSdkName(), getAdType(), this);
+        return true;
     }
 
-    private void showInterstitialInternal() {
+    private void showAdViewWithUI(String pidName, String source, String adType, ISdkLoader iSdkLoader) {
+        Log.iv(Log.TAG, "show spread ads with ui");
         try {
-            if (mSpread != null) {
-                SpreadCfg spreadCfg = mSpread;
-                Intent intent = Utils.getIntentByAction(mContext, mContext.getPackageName() + ".action.AFPICKER");
-                if (intent == null) {
-                    intent = new Intent();
-                    ComponentName cmp = new ComponentName(mContext, Utils.getActivityNameByAction(getContext(), getContext().getPackageName() + ".action.MATCH_DOING"));
-                    intent.setComponent(cmp);
-                }
-                intent.putExtra(Intent.EXTRA_STREAM, spreadCfg);
-                intent.putExtra(Intent.EXTRA_TITLE, getAdPlaceName());
-                intent.putExtra(Intent.EXTRA_TEXT, getSdkName());
-                intent.putExtra(Intent.EXTRA_TEMPLATE, getAdType());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
-                reportAdShow();
-                registerEvent();
-                notifyAdShow();
-            }
+            Params params = new Params();
+            params.setAdCardStyle(Constant.NATIVE_CARD_FULL);
+            AdPlaceLoader.sLoaderMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, pidName), iSdkLoader);
+            AdPlaceLoader.sParamsMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, pidName), params);
+            Intent intent = new Intent(mContext, RabActivity.class);
+            intent.putExtra(Intent.EXTRA_TITLE, pidName);
+            intent.putExtra(Intent.EXTRA_TEXT, source);
+            intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+            reportAdShow();
+            notifyAdShow();
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
     }
 
-    private void registerEvent() {
-        unregisterEvent();
-        try {
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(getClickAction(mContext));
-            filter.addAction(getShowAction(mContext));
-            filter.addAction(getDismissAction(mContext));
-            filter.addAction(getImpAction(mContext));
-            mContext.registerReceiver(mBroadcastReceiver, filter);
-        } catch (Exception e) {
+    @Override
+    public void showInterstitialWithNative(ViewGroup viewGroup, Params params) {
+        printInterfaceLog(ACTION_SHOW);
+        if (params != null) {
+            mParams = params;
+        }
+        if (mSpread != null) {
+            SpreadCfg spreadCfg = mSpread;
+            spreadBindNativeView.setClickListener(new ClickClass(spreadCfg));
+            spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadCfg);
+            mSpread = null;
+            notifyAdImp();
+            reportAdImp();
         }
     }
-
-    private static String getClickAction(Context context) {
-        if (context == null) {
-            return "com.hauyu.adsdk.action.SP_CLICK";
-        }
-        return context.getPackageName() + ".action.SP_CLICK";
-    }
-
-    private static String getShowAction(Context context) {
-        if (context == null) {
-            return "com.hauyu.adsdk.action.SP_SHOW";
-        }
-        return context.getPackageName() + ".action.SP_SHOW";
-    }
-
-    private static String getImpAction(Context context) {
-        if (context == null) {
-            return "com.hauyu.adsdk.action.SP_IMP";
-        }
-        return context.getPackageName() + ".action.SP_IMP";
-    }
-
-    private static String getDismissAction(Context context) {
-        if (context == null) {
-            return "com.hauyu.adsdk.action.SP_DISMISS";
-        }
-        return context.getPackageName() + ".action.SP_DISMISS";
-    }
-
-    public static void reportShow(Context context) {
-        try {
-            context.sendBroadcast(new Intent(SpLoader.getShowAction(context)).setPackage(context.getPackageName()));
-        } catch (Exception e) {
-        }
-    }
-
-    public static void reportImp(Context context) {
-        try {
-            context.sendBroadcast(new Intent(SpLoader.getImpAction(context)).setPackage(context.getPackageName()));
-        } catch (Exception e) {
-        }
-    }
-
-    public static void reportClick(Context context) {
-        try {
-            context.sendBroadcast(new Intent(SpLoader.getClickAction(context)).setPackage(context.getPackageName()));
-        } catch (Exception e) {
-        }
-    }
-
-    public static void reportDismiss(Context context) {
-        try {
-            context.sendBroadcast(new Intent(SpLoader.getDismissAction(context)).setPackage(context.getPackageName()));
-        } catch (Exception e) {
-        }
-    }
-
-    private void unregisterEvent() {
-        try {
-            mContext.unregisterReceiver(mBroadcastReceiver);
-        } catch (Exception e) {
-        }
-    }
-
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (context == null || intent == null) {
-                return;
-            }
-            if (TextUtils.equals(getDismissAction(context), intent.getAction())) {
-                unregisterEvent();
-                reportAdClose();
-                notifyAdDismiss();
-            } else if (TextUtils.equals(getClickAction(context), intent.getAction())) {
-                reportAdClick();
-                notifyAdClick();
-            } else if (TextUtils.equals(getShowAction(context), intent.getAction())) {
-                reportAdShow();
-                notifyAdShow();
-            } else if (TextUtils.equals(getImpAction(context), intent.getAction())) {
-                reportAdImp();
-                notifyAdImp();
-            }
-        }
-    };
 
     public class ClickClass implements View.OnClickListener {
         private SpreadCfg mSpreadCfg;

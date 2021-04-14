@@ -670,6 +670,16 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     @Override
+    public void notifyAdViewUIDismiss() {
+        reportAdClose();
+        notifyAdDismiss(true);
+    }
+
+    @Override
+    public void showInterstitialWithNative(ViewGroup viewGroup, Params params) {
+    }
+
+    @Override
     public String toString() {
         return "pn = " + getAdPlaceName() + " , " +
                 "tp = " + getAdType() + " , " +
@@ -790,12 +800,16 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
     }
 
+    protected void notifyAdDismiss() {
+        notifyAdDismiss(false);
+    }
+
     /**
      * banner or native dismiss
      */
-    protected void notifyAdDismiss() {
+    protected void notifyAdDismiss(boolean complexAds) {
         if (getAdListener() != null) {
-            getAdListener().onAdDismiss();
+            getAdListener().onAdDismiss(complexAds);
         }
     }
 

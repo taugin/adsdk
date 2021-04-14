@@ -30,7 +30,7 @@ public interface OnAdBaseListener {
     /**
      * banner or native dismiss
      */
-    public void onAdDismiss();
+    public void onAdDismiss(boolean complexAds);
 
     /**
      * banner or native fail

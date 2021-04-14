@@ -36,13 +36,12 @@
     {
       "name": "banner_and_native",
       "mode": "con",
-      "bs": 2,
       "cc": [
         "#FF660000",
         "#4455bb22"
       ],
       "nl": [
-        "tiny"
+        "head, small, tiny"
       ],
       "pids": [
         {
@@ -67,7 +66,7 @@
           "sdk": "mopub",
           "type": "native",
           "pid": "11a17b188668469fb0412708c3d16813",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "mopub",
@@ -91,13 +90,13 @@
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",
           "type": "native",
           "pid": "/6499/example/native",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "dfp",
@@ -224,7 +223,7 @@
         {
           "sdk": "spread",
           "type": "interstitial",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "applovin",

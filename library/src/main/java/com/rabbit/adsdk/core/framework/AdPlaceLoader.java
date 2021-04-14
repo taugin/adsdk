@@ -39,8 +39,10 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,6 +52,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Runnable, Handler.Callback {
+    public static Map<String, ISdkLoader> sLoaderMap = new HashMap<String, ISdkLoader>();
+    public static Map<String, Params> sParamsMap = new HashMap<String, Params>();
     private List<ISdkLoader> mAdLoaders = new ArrayList<ISdkLoader>();
     private AdPlace mAdPlace;
     private Context mContext;
@@ -1201,75 +1205,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
     }
 
-    /**
-     * 检测是否是指定的source和adtype
-     *
-     * @param loader
-     * @param source
-     * @param adType
-     * @return
-     */
-    private boolean checkSourceAndType(ISdkLoader loader, String source, String adType) {
-        if (loader == null) {
-            return false;
-        }
-        if (!TextUtils.isEmpty(source) && !TextUtils.equals(loader.getSdkName(), source)) {
-            return false;
-        }
-        if (!TextUtils.isEmpty(adType) && !TextUtils.equals(loader.getAdType(), adType)) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 展示混合广告
-     *
-     * @param adContainer
-     */
-    @Override
-    public boolean showComplexAds(ViewGroup adContainer, AdParams adParams, String source, String adType) {
-        Log.d(Log.TAG, "");
-        return showComplexAdsInNormalMode(adContainer, adParams, source, adType);
-    }
-
-    private boolean showComplexAdsInNormalMode(ViewGroup adContainer, AdParams adParams, String source, String adType) {
-        if (adParams != null) {
-            mAdParams = adParams;
-        }
-        if (mAdLoaders != null) {
-            for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null && loader.useAndClearFlag()) {
-                    if (!checkSourceAndType(loader, source, adType)) {
-                        continue;
-                    }
-                    if (loader.isBannerLoaded()) {
-                        loader.showBanner(adContainer);
-                        mCurrentAdLoader = loader;
-                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
-                        return true;
-                    } else if (loader.isNativeLoaded()) {
-                        loader.showNative(adContainer, getParams(loader));
-                        mCurrentAdLoader = loader;
-                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
-                        return true;
-                    } else if (loader.isInterstitialLoaded()) {
-                        loader.showInterstitial();
-                        mCurrentAdLoader = loader;
-                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
-                        return true;
-                    } else if (loader.isRewardedVideoLoaded()) {
-                        loader.showRewardedVideo();
-                        mCurrentAdLoader = loader;
-                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
     @Override
     public boolean showComplexAds() {
         return showComplexAdsInternal();
@@ -1293,11 +1228,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
                             return true;
                         }
-                    } else if (loader.isBannerType() && loader.isBannerLoaded()) {
-                        show(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType());
-                        return true;
-                    } else if (loader.isNativeType() && loader.isNativeLoaded()) {
-                        show(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType());
+                    } else if ((loader.isBannerType() && loader.isBannerLoaded())
+                            || (loader.isNativeType() && loader.isNativeLoaded())) {
+                        mCurrentAdLoader = loader;
+                        showAdViewWithUI(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(), loader);
                         return true;
                     }
                 }
@@ -1306,8 +1240,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return false;
     }
 
-    private void show(String pidName, String source, String adType) {
+    private void showAdViewWithUI(String pidName, String source, String adType, ISdkLoader iSdkLoader) {
+        Log.iv(Log.TAG, "show complex ads for banner or native");
         try {
+            sLoaderMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, pidName), iSdkLoader);
+            sParamsMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, pidName), getParams(iSdkLoader));
             Intent intent = new Intent(mContext, RabActivity.class);
             intent.putExtra(Intent.EXTRA_TITLE, pidName);
             intent.putExtra(Intent.EXTRA_TEXT, source);
