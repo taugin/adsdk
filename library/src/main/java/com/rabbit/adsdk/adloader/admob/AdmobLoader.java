@@ -119,7 +119,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isBannerLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyAdLoaded(true);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -181,7 +181,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 putCachedAdTime(loadingView);
                 bannerView = loadingView;
                 reportAdLoaded();
-                notifyAdLoaded(false);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override
@@ -496,7 +496,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isNativeLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyAdLoaded(true);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -533,7 +533,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(unifiedNativeAd);
                 reportAdLoaded();
-                notifyAdLoaded(false);
+                notifySdkLoaderLoaded(false);
             }
         }).withAdListener(new AdListener() {
             @Override

@@ -152,7 +152,7 @@ public class MopubLoader extends AbstractSdkLoader {
         }
         if (isBannerLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyAdLoaded(true);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -194,7 +194,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 putCachedAdTime(loadingView);
                 moPubView = loadingView;
                 reportAdLoaded();
-                notifyAdLoaded(false);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override
@@ -524,7 +524,7 @@ public class MopubLoader extends AbstractSdkLoader {
         }
         if (isNativeLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyAdLoaded(true);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -548,7 +548,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 nativeAd = nAd;
                 putCachedAdTime(nativeAd);
-                notifyAdLoaded(false);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override

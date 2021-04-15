@@ -127,7 +127,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (isBannerLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyAdLoaded(true);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -302,7 +302,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 putCachedAdTime(loadingAdView);
                 appLovinAdView = loadingAdView;
                 reportAdLoaded();
-                notifyAdLoaded(false);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override
@@ -615,7 +615,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 putCachedAdTime(loadingMaxAdView);
                 maxAdView = loadingMaxAdView;
                 reportAdLoaded();
-                notifyAdLoaded(false);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override

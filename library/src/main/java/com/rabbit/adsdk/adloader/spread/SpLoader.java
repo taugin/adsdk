@@ -1,10 +1,6 @@
 package com.rabbit.adsdk.adloader.spread;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -61,7 +57,7 @@ public class SpLoader extends AbstractSdkLoader {
         }
         if (isNativeLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyAdLoaded(true);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -88,7 +84,7 @@ public class SpLoader extends AbstractSdkLoader {
                         mSpread = spreadCfg;
                         setLoading(false, STATE_SUCCESS);
                         reportAdLoaded();
-                        notifyAdLoaded(false);
+                        notifySdkLoaderLoaded(false);
                     }
                 }, MOCK_LOADING_TIME);
             }
@@ -139,7 +135,7 @@ public class SpLoader extends AbstractSdkLoader {
         }
         if (isInterstitialLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyAdLoaded(true);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -166,7 +162,7 @@ public class SpLoader extends AbstractSdkLoader {
                         mSpread = spreadCfg;
                         setLoading(false, STATE_SUCCESS);
                         reportAdLoaded();
-                        notifyAdLoaded(false);
+                        notifySdkLoaderLoaded(false);
                     }
                 }, MOCK_LOADING_TIME);
             }

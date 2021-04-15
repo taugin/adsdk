@@ -278,7 +278,7 @@ public class AdSdk {
             loader.loadInterstitial(activity);
         } else {
             if (l != null) {
-                l.onError(pidName, null, null, Constant.AD_ERROR_ADLOADER);
+                l.onError(pidName, null, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }
@@ -323,7 +323,7 @@ public class AdSdk {
             loader.loadRewardedVideo(activity);
         } else {
             if (l != null) {
-                l.onError(pidName, null, null, Constant.AD_ERROR_ADLOADER);
+                l.onError(pidName, null, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }
@@ -358,7 +358,7 @@ public class AdSdk {
             loader.loadAdView(adParams);
         } else {
             if (l != null) {
-                l.onError(pidName, null, null, Constant.AD_ERROR_ADLOADER);
+                l.onError(pidName, null, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }
@@ -397,7 +397,7 @@ public class AdSdk {
             loader.loadComplexAds(adParams);
         } else {
             if (l != null) {
-                l.onError(pidName, null, null, Constant.AD_ERROR_ADLOADER);
+                l.onError(pidName, null, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }
@@ -683,7 +683,7 @@ public class AdSdk {
                 setAutoRewardListener(mRewardPidName, mAutoRewardListener);
             }
             if (mAutoRewardListener != null) {
-                mAutoRewardListener.onUpdate(mRewardPidName, null, Constant.TYPE_REWARD);
+                mAutoRewardListener.onUpdate(mRewardPidName, null, Constant.TYPE_REWARD, null);
             }
             if (mHandler != null) {
                 mHandler.postDelayed(this, mRewardLoadInterval);
@@ -703,7 +703,7 @@ public class AdSdk {
             loader.loadRewardedVideo(null);
         } else {
             if (mAutoRewardListener != null) {
-                mAutoRewardListener.onError(mRewardPidName, null, null, Constant.AD_ERROR_ADLOADER);
+                mAutoRewardListener.onError(mRewardPidName, null, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }

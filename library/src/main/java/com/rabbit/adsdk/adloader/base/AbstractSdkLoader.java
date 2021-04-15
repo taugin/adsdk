@@ -605,7 +605,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
      *
      * @param cached
      */
-    protected void notifyAdLoaded(boolean cached) {
+    protected void notifySdkLoaderLoaded(boolean cached) {
         delayNotifyAdLoaded(mNotifyLoadRunnable, cached);
     }
 

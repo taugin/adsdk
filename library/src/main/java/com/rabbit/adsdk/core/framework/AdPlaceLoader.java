@@ -354,13 +354,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     public void loadInterstitial(Activity activity) {
         if (mAdPlace == null) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(null, null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(null, null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
         if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
@@ -368,14 +368,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         List<PidConfig> pidList = mAdPlace.getPidsList();
         if (pidList == null || pidList.isEmpty()) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
 
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
@@ -384,7 +384,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             mActivity = new WeakReference<Activity>(activity);
         }
         mCurrentAdLoader = null;
-        mHasNotifyLoaded = false;
+        resetAdLoaded();
         // 处理场景缓存
         if (processAdPlaceCache()) {
             return;
@@ -438,7 +438,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             }
         } else {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }
@@ -556,13 +556,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     public void loadRewardedVideo(Activity activity) {
         if (mAdPlace == null) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(null, null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(null, null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
         if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
@@ -570,14 +570,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         List<PidConfig> pidList = mAdPlace.getPidsList();
         if (pidList == null || pidList.isEmpty()) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
 
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
@@ -586,7 +586,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             mActivity = new WeakReference<Activity>(activity);
         }
         mCurrentAdLoader = null;
-        mHasNotifyLoaded = false;
+        resetAdLoaded();
         // 处理场景缓存
         if (processAdPlaceCache()) {
             return;
@@ -640,7 +640,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             }
         } else {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }
@@ -759,13 +759,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     public void loadAdView(AdParams adParams) {
         if (mAdPlace == null) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(null, null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(null, null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
         if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
@@ -773,20 +773,20 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         List<PidConfig> pidList = mAdPlace.getPidsList();
         if (pidList == null || pidList.isEmpty()) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
 
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
         mAdParams = adParams;
         mCurrentAdLoader = null;
-        mHasNotifyLoaded = false;
+        resetAdLoaded();
         // 处理场景缓存
         if (processAdPlaceCache()) {
             return;
@@ -841,7 +841,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             }
         } else {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }
@@ -1037,13 +1037,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     public void loadComplexAds(AdParams adParams) {
         if (mAdPlace == null) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(null, null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(null, null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
         if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
@@ -1051,21 +1051,21 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         List<PidConfig> pidList = mAdPlace.getPidsList();
         if (pidList == null || pidList.isEmpty()) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
 
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
             return;
         }
 
         mAdParams = adParams;
         mCurrentAdLoader = null;
-        mHasNotifyLoaded = false;
+        resetAdLoaded();
         // 处理场景缓存
         if (processAdPlaceCache()) {
             return;
@@ -1124,7 +1124,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             }
         } else {
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, Constant.AD_ERROR_ADLOADER);
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
             }
         }
     }
@@ -1356,26 +1356,27 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
     }
 
-    @Override
-    public boolean hasNotifyLoaded() {
+    private boolean hasNotifyLoaded() {
         if (mAdPlace != null && mAdPlace.isLoadOnlyOnce()) {
             return mHasNotifyLoaded;
         }
         return false;
     }
 
-    @Override
-    public void notifyAdLoaded() {
+    private void notifyAdLoaded() {
         mHasNotifyLoaded = true;
     }
 
-    @Override
-    public boolean isCurrent(String source, String type, String pidName) {
+    private void resetAdLoaded() {
+        mHasNotifyLoaded = false;
+    }
+
+    private boolean isCurrentLoader(String source, String type, String pid) {
         boolean isCurrentLoader = false;
         if (mCurrentAdLoader != null) {
             isCurrentLoader = TextUtils.equals(mCurrentAdLoader.getSdkName(), source)
                     && TextUtils.equals(mCurrentAdLoader.getAdType(), type)
-                    && TextUtils.equals(getPidByLoader(mCurrentAdLoader), pidName);
+                    && TextUtils.equals(getPidByLoader(mCurrentAdLoader), pid);
         }
         return isCurrentLoader;
     }
@@ -1467,129 +1468,157 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     public class AdPlaceLoaderListener implements OnAdSdkListener {
 
         @Override
-        public void onLoaded(String pidName, String source, String adType) {
-            resetRetryTimes(pidName, source, adType);
-            if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onLoaded(pidName, source, adType);
+        public void onLoaded(String placeName, String source, String adType, String pid) {
+            resetRetryTimes(placeName, source, adType);
+            if (hasNotifyLoaded()) {
+                Log.v(Log.TAG, "has notify loaded ******************");
+                return;
             }
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoaded(pidName, source, adType);
-            }
-        }
-
-        @Override
-        public void onLoading(String pidName, String source, String adType) {
-            if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onLoading(pidName, source, adType);
-            }
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoading(pidName, source, adType);
-            }
-        }
-
-        @Override
-        public void onShow(String pidName, String source, String adType) {
-            if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onShow(pidName, source, adType);
-            }
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onShow(pidName, source, adType);
-            }
-        }
-
-        @Override
-        public void onImp(String pidName, String source, String adType) {
-            if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onImp(pidName, source, adType);
-            }
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onImp(pidName, source, adType);
-            }
-        }
-
-        @Override
-        public void onError(String pidName, String source, String adType, int error) {
-            recordErrorTimes(pidName, source, adType);
-            if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onError(pidName, source, adType, error);
-            }
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onError(pidName, source, adType, error);
-            }
-            startRetryIfNeed(pidName, source, adType);
-        }
-
-        @Override
-        public void onRewarded(String pidName, String source, String adType, AdReward item) {
-            if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onRewarded(pidName, source, adType, item);
-            }
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onRewarded(pidName, source, adType, item);
-            }
-        }
-
-        @Override
-        public void onCompleted(String pidName, String source, String adType) {
-            if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onCompleted(pidName, source, adType);
-            }
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onCompleted(pidName, source, adType);
-            }
-        }
-
-        @Override
-        public void onStarted(String pidName, String source, String adType) {
-            if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onStarted(pidName, source, adType);
-            }
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onStarted(pidName, source, adType);
-            }
-        }
-
-        @Override
-        public void onUpdate(String pidName, String source, String adType) {
-            if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onUpdate(pidName, source, adType);
-            }
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onUpdate(pidName, source, adType);
-            }
-        }
-
-        @Override
-        public void onClick(String pidName, String source, String adType) {
-            if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
-                Log.d(Log.TAG, "ad place loader pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                if (TextUtils.equals(adType, Constant.TYPE_NATIVE) || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
-                    resume();
-                    showNextAdView();
+            boolean isCurrentLoader = isCurrentLoader(source, adType, pid);
+            if (isCurrentLoader) {
+                notifyAdLoaded();
+                if (mOnAdSdkLoadedListener != null) {
+                    mOnAdSdkLoadedListener.onLoaded(placeName, source, adType, pid);
+                }
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onLoaded(placeName, source, adType, pid);
                 }
             }
-            if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onClick(pidName, source, adType);
-            }
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onClick(pidName, source, adType);
+        }
+
+        @Override
+        public void onLoading(String placeName, String source, String adType, String pid) {
+            if (isCurrentLoader(source, adType, placeName)) {
+                if (mOnAdSdkLoadedListener != null) {
+                    mOnAdSdkLoadedListener.onLoading(placeName, source, adType, pid);
+                }
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onLoading(placeName, source, adType, pid);
+                }
             }
         }
 
         @Override
-        public void onDismiss(String pidName, String source, String adType, boolean complexAds) {
-            if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
-                Log.d(Log.TAG, "adplaceloader pidName : " + pidName + " , source : " + source + " , adType : " + adType);
-                if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)
-                        || TextUtils.equals(adType, Constant.TYPE_REWARD)) {
-                    showInterstitialInternal();
+        public void onShow(String placeName, String source, String adType, String pid) {
+            if (isCurrentLoader(source, adType, placeName)) {
+                if (mOnAdSdkLoadedListener != null) {
+                    mOnAdSdkLoadedListener.onShow(placeName, source, adType, pid);
+                }
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onShow(placeName, source, adType, pid);
                 }
             }
-            if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onDismiss(pidName, source, adType, complexAds);
+        }
+
+        @Override
+        public void onImp(String placeName, String source, String adType, String pid) {
+            if (isCurrentLoader(source, adType, placeName)) {
+                if (mOnAdSdkLoadedListener != null) {
+                    mOnAdSdkLoadedListener.onImp(placeName, source, adType, pid);
+                }
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onImp(placeName, source, adType, pid);
+                }
             }
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onDismiss(pidName, source, adType, complexAds);
+        }
+
+        @Override
+        public void onError(String placeName, String source, String adType, String pid, int error) {
+            recordErrorTimes(placeName, source, adType);
+            if (isCurrentLoader(source, adType, placeName)) {
+                if (mOnAdSdkLoadedListener != null) {
+                    mOnAdSdkLoadedListener.onError(placeName, source, adType, pid, error);
+                }
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onError(placeName, source, adType, pid, error);
+                }
+            }
+            startRetryIfNeed(placeName, source, adType);
+        }
+
+        @Override
+        public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
+            if (isCurrentLoader(source, adType, placeName)) {
+                if (mOnAdSdkLoadedListener != null) {
+                    mOnAdSdkLoadedListener.onRewarded(placeName, source, adType, pid, item);
+                }
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onRewarded(placeName, source, adType, pid, item);
+                }
+            }
+        }
+
+        @Override
+        public void onCompleted(String placeName, String source, String adType, String pid) {
+            if (isCurrentLoader(source, adType, placeName)) {
+                if (mOnAdSdkLoadedListener != null) {
+                    mOnAdSdkLoadedListener.onCompleted(placeName, source, adType, pid);
+                }
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onCompleted(placeName, source, adType, pid);
+                }
+            }
+        }
+
+        @Override
+        public void onStarted(String placeName, String source, String adType, String pid) {
+            if (isCurrentLoader(source, adType, placeName)) {
+                if (mOnAdSdkLoadedListener != null) {
+                    mOnAdSdkLoadedListener.onStarted(placeName, source, adType, pid);
+                }
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onStarted(placeName, source, adType, pid);
+                }
+            }
+        }
+
+        @Override
+        public void onUpdate(String placeName, String source, String adType, String pid) {
+            if (isCurrentLoader(source, adType, placeName)) {
+                if (mOnAdSdkLoadedListener != null) {
+                    mOnAdSdkLoadedListener.onUpdate(placeName, source, adType, pid);
+                }
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onUpdate(placeName, source, adType, pid);
+                }
+            }
+        }
+
+        @Override
+        public void onClick(String placeName, String source, String adType, String pid) {
+            if (isCurrentLoader(source, adType, placeName)) {
+                if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
+                    Log.d(Log.TAG, "ad place loader place name : " + placeName + " , source : " + source + " , adType : " + adType);
+                    if (TextUtils.equals(adType, Constant.TYPE_NATIVE) || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
+                        resume();
+                        showNextAdView();
+                    }
+                }
+                if (mOnAdSdkLoadedListener != null) {
+                    mOnAdSdkLoadedListener.onClick(placeName, source, adType, pid);
+                }
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onClick(placeName, source, adType, pid);
+                }
+            }
+        }
+
+        @Override
+        public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
+            if (isCurrentLoader(source, adType, placeName)) {
+                if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
+                    Log.d(Log.TAG, "ad place loader place name : " + placeName + " , source : " + source + " , adType : " + adType);
+                    if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)
+                            || TextUtils.equals(adType, Constant.TYPE_REWARD)) {
+                        showInterstitialInternal();
+                    }
+                }
+                if (mOnAdSdkLoadedListener != null) {
+                    mOnAdSdkLoadedListener.onDismiss(placeName, source, adType, pid, complexAds);
+                }
+                if (mOnAdSdkListener != null) {
+                    mOnAdSdkListener.onDismiss(placeName, source, adType, pid, complexAds);
+                }
             }
         }
     }
@@ -1638,7 +1667,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (mOnAdSdkListener != null) {
                 Log.v(Log.TAG, "notify place loaded " + mAdPlace.getName() + " - " + getLoadedSdk() + " - " + getLoadedType());
                 notifyAdLoaded();
-                mOnAdSdkListener.onLoaded(mAdPlace.getName(), getLoadedSdk(), getLoadedType());
+                mOnAdSdkListener.onLoaded(mAdPlace.getName(), getLoadedSdk(), getLoadedType(), null);
             }
         }
     };

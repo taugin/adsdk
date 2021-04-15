@@ -82,7 +82,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isBannerLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyAdLoaded(true);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -124,7 +124,7 @@ public class FBLoader extends AbstractSdkLoader {
                 bannerView = loadingView;
                 putCachedAdTime(loadingView);
                 reportAdLoaded();
-                notifyAdLoaded(false);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override
@@ -324,7 +324,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isNativeLoaded()) {
             Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyAdLoaded(true);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -365,7 +365,7 @@ public class FBLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
                 reportAdLoaded();
-                notifyAdLoaded(false);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override

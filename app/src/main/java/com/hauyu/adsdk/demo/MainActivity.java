@@ -103,7 +103,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             } else {
                 AdSdk.get(mContext).loadRewardedVideo("reward_video", new SimpleAdSdkListener() {
                     @Override
-                    public void onRewarded(String pidName, String source, String adType, AdReward item) {
+                    public void onRewarded(String pidName, String source, String adType, String pid, AdReward item) {
                         Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , item : " + item);
                         runToast(item.toString());
                     }
@@ -128,13 +128,13 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         AdParams adParams = builder.build();
         AdSdk.get(mContext).loadComplexAds("for_layout", adParams, new SimpleAdSdkListener() {
             @Override
-            public void onLoaded(String pidName, String source, String adType) {
+            public void onLoaded(String pidName, String source, String adType, String pid) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 AdSdk.get(mContext).showComplexAds(pidName);
             }
 
             @Override
-            public void onDismiss(String pidName, String source, String adType, boolean complexAds) {
+            public void onDismiss(String pidName, String source, String adType, String pid, boolean complexAds) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , onDestroy : " + complexAds);
             }
         });
@@ -146,7 +146,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         } else {
             AdSdk.get(mContext).loadComplexAds("nt_outer_place", new SimpleAdSdkListener() {
                 @Override
-                public void onLoaded(String pidName, String source, String adType) {
+                public void onLoaded(String pidName, String source, String adType, String pid) {
                     AdSdk.get(mContext).showComplexAds(pidName);
                 }
             });
@@ -173,15 +173,14 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         AdParams adParams = builder.build();
         AdSdk.get(mContext).loadComplexAds("banner_and_native", adParams, new SimpleAdSdkListener() {
             @Override
-            public void onLoaded(String pidName, String source, String adType) {
+            public void onLoaded(String pidName, String source, String adType, String pid) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 AdSdk.get(mContext).showComplexAds(pidName);
             }
 
             @Override
-            public void onDismiss(String pidName, String source, String adType, boolean complexAds) {
+            public void onDismiss(String pidName, String source, String adType, String pid, boolean complexAds) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , onDestroy : " + complexAds);
-                super.onDismiss(pidName, source, adType, complexAds);
             }
         });
     }
@@ -260,7 +259,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
     private SimpleAdSdkListener mSimpleAdsdkListener = new SimpleAdSdkListener() {
 
         @Override
-        public void onLoaded(String pidName, String source, String adType) {
+        public void onLoaded(String pidName, String source, String adType, String pid) {
             Log.d(Log.TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
             if (AdExtra.AD_TYPE_BANNER.equalsIgnoreCase(adType) || AdExtra.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
                 // showAdView(pidName);
@@ -273,76 +272,72 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         }
 
         @Override
-        public void onLoading(String pidName, String source, String adType) {
+        public void onLoading(String pidName, String source, String adType, String pid) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
 
         @Override
-        public void onImp(String pidName, String source, String adType) {
+        public void onImp(String pidName, String source, String adType, String pid) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
 
         @Override
-        public void onClick(String pidName, String source, String adType) {
+        public void onClick(String pidName, String source, String adType, String pid) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
 
         @Override
-        public void onDismiss(String pidName, String source, String adType, boolean complexAds) {
+        public void onDismiss(String pidName, String source, String adType, String pid, boolean complexAds) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , onDestroy : " + complexAds);
         }
 
         @Override
-        public void onError(String pidName, String source, String adType, int error) {
+        public void onError(String pidName, String source, String adType, String pid, int error) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , error : " + error);
         }
 
         @Override
-        public void onRewarded(String pidName, String source, String adType, AdReward item) {
+        public void onRewarded(String pidName, String source, String adType, String pid, AdReward item) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , item : " + item);
             runToast(item.toString());
         }
 
         @Override
-        public void onCompleted(String pidName, String source, String adType) {
+        public void onCompleted(String pidName, String source, String adType, String pid) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
 
         @Override
-        public void onStarted(String pidName, String source, String adType) {
+        public void onStarted(String pidName, String source, String adType, String pid) {
             Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
         }
     };
 
     private SimpleAdSdkListener mRewardListener = new SimpleAdSdkListener() {
         @Override
-        public void onLoaded(String pidName, String source, String adType) {
+        public void onLoaded(String pidName, String source, String adType, String pid) {
             updateRewardButton();
         }
 
         @Override
-        public void onImp(String pidName, String source, String adType) {
-            super.onImp(pidName, source, adType);
+        public void onImp(String pidName, String source, String adType, String pid) {
             mRewardShowTimes++;
             updateRewardButton();
         }
 
         @Override
-        public void onRewarded(String pidName, String source, String adType, AdReward item) {
-            super.onRewarded(pidName, source, adType, item);
+        public void onRewarded(String pidName, String source, String adType, String pid, AdReward item) {
             mRewardGetTimes++;
             updateRewardButton();
         }
 
         @Override
-        public void onDismiss(String pidName, String source, String adType, boolean complexAds) {
-            super.onDismiss(pidName, source, adType, complexAds);
+        public void onDismiss(String pidName, String source, String adType, String pid, boolean complexAds) {
             updateRewardButton();
         }
 
         @Override
-        public void onUpdate(String pidName, String source, String adType) {
-            super.onUpdate(pidName, source, adType);
+        public void onUpdate(String pidName, String source, String adType, String pid) {
             updateRewardButton();
         }
     };
@@ -376,13 +371,13 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
     private void showSpread() {
         AdSdk.get(this).loadComplexAds("show_spread", new SimpleAdSdkListener() {
             @Override
-            public void onLoaded(String pidName, String source, String adType) {
+            public void onLoaded(String pidName, String source, String adType, String pid) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType);
                 AdSdk.get(getApplicationContext()).showComplexAds(pidName);
             }
 
             @Override
-            public void onDismiss(String pidName, String source, String adType, boolean complexAds) {
+            public void onDismiss(String pidName, String source, String adType, String pid, boolean complexAds) {
                 Log.d(TAG, "pidName : " + pidName + " , source : " + source + " , adType : " + adType + " , onDestroy : " + complexAds);
             }
         });

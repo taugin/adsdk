@@ -17,27 +17,14 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     private String source;
     private String adType;
     private String placeName;
-    private String pidName;
+    private String pid;
 
-    public SimpleAdBaseBaseListener(String placeName, String source, String adType, String pidName, IManagerListener l) {
+    public SimpleAdBaseBaseListener(String placeName, String source, String adType, String pid, IManagerListener l) {
         this.source = source;
         this.adType = adType;
         this.placeName = placeName;
-        this.pidName = pidName;
+        this.pid = pid;
         this.listener = l;
-    }
-
-    private boolean isCurrent() {
-        if (listener != null) {
-            return listener.isCurrent(source, adType, pidName);
-        }
-        return false;
-    }
-
-    private void notifyAdLoaded() {
-        if (listener != null) {
-            listener.notifyAdLoaded();
-        }
     }
 
     private OnAdSdkListener getOnAdPlaceLoaderListener() {
@@ -51,41 +38,40 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     public void onAdLoaded(ISdkLoader loader) {
         // 所有加载成功的loader都将通知给adplaceloader
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
-        notifyAdLoaded();
-        if (placeLoaderListener != null && isCurrent()) {
-            placeLoaderListener.onLoaded(placeName, source, adType);
+        if (placeLoaderListener != null) {
+            placeLoaderListener.onLoaded(placeName, source, adType, pid);
         }
     }
 
     @Override
     public void onAdShow() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
-        if (placeLoaderListener != null && isCurrent()) {
-            placeLoaderListener.onShow(placeName, source, adType);
+        if (placeLoaderListener != null) {
+            placeLoaderListener.onShow(placeName, source, adType, pid);
         }
     }
 
     @Override
     public void onAdImp() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
-        if (placeLoaderListener != null && isCurrent()) {
-            placeLoaderListener.onImp(placeName, source, adType);
+        if (placeLoaderListener != null) {
+            placeLoaderListener.onImp(placeName, source, adType, pid);
         }
     }
 
     @Override
     public void onAdClick() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
-        if (placeLoaderListener != null && isCurrent()) {
-            placeLoaderListener.onClick(placeName, source, adType);
+        if (placeLoaderListener != null) {
+            placeLoaderListener.onClick(placeName, source, adType, pid);
         }
     }
 
     @Override
     public void onAdDismiss(boolean complexAds) {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
-        if (placeLoaderListener != null && isCurrent()) {
-            placeLoaderListener.onDismiss(placeName, source, adType, false);
+        if (placeLoaderListener != null) {
+            placeLoaderListener.onDismiss(placeName, source, adType, pid, false);
         }
     }
 
@@ -97,9 +83,9 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         if (placeLoaderListener != null) {
             if (error == Constant.AD_ERROR_LOADING) {
-                placeLoaderListener.onLoading(placeName, source, adType);
+                placeLoaderListener.onLoading(placeName, source, adType, pid);
             } else {
-                placeLoaderListener.onError(placeName, source, adType, error);
+                placeLoaderListener.onError(placeName, source, adType, pid, error);
             }
         }
     }
@@ -111,24 +97,24 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     @Override
     public void onRewarded(AdReward reward) {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
-        if (placeLoaderListener != null && isCurrent()) {
-            placeLoaderListener.onRewarded(placeName, source, adType, reward);
+        if (placeLoaderListener != null) {
+            placeLoaderListener.onRewarded(placeName, source, adType, pid, reward);
         }
     }
 
     @Override
     public void onRewardAdsCompleted() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
-        if (placeLoaderListener != null && isCurrent()) {
-            placeLoaderListener.onCompleted(placeName, source, adType);
+        if (placeLoaderListener != null) {
+            placeLoaderListener.onCompleted(placeName, source, adType, pid);
         }
     }
 
     @Override
     public void onRewardAdsStarted() {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
-        if (placeLoaderListener != null && isCurrent()) {
-            placeLoaderListener.onStarted(placeName, source, adType);
+        if (placeLoaderListener != null) {
+            placeLoaderListener.onStarted(placeName, source, adType, pid);
         }
     }
 }
