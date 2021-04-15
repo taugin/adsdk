@@ -44,13 +44,13 @@ public class AdPolicy {
     private Context mContext;
     private Random mRandom;
 
-    public void reportAdPlaceShow(String originPidname, AdPlace adPlace) {
+    public void reportAdPlaceShow(String originPlaceName, AdPlace adPlace) {
         if (adPlace == null) {
             Log.v(Log.TAG, "adPlace == null");
             return;
         }
-        String placeName = originPidname;
-        if (TextUtils.isEmpty(originPidname)) {
+        String placeName = originPlaceName;
+        if (TextUtils.isEmpty(originPlaceName)) {
             placeName = adPlace.getName();
         }
         if (TextUtils.isEmpty(placeName)) {

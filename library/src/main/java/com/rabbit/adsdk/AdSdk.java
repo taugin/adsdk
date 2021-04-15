@@ -135,7 +135,7 @@ public class AdSdk {
 
     private AdPlaceLoader getAdLoader(String placeName, boolean forLoad) {
         Log.d(Log.TAG, "getAdLoader forLoad : " + forLoad);
-        // 获取引用的pidname
+        // 获取引用的PlaceName
         String refPlaceName = getAdRefPlaceName(placeName);
 
         Log.v(Log.TAG, "placeName : " + placeName + " , refPlaceName : " + refPlaceName);
