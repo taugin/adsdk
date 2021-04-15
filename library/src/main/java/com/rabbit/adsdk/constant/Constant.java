@@ -20,9 +20,7 @@ public class Constant {
 
     public static final String AD_SDK_PREFIX = "pref_hauyu_";
 
-    public static final String AD_SDK_SCENE_DISABLED_PREFIX = "pref_hauyu_scene_disabled_";
-
-    public static final String LAST_SCENE_TYPE = "pref_last_scene_type";
+    public static final String PREF_GAID = "pref_gaid";
 
     public static final int NOSET = -1;
     public static final int BANNER = 1000;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.rabbit.adsdk.AdSdk;
+import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.InternalStat;
@@ -11,8 +12,12 @@ import com.rabbit.adsdk.utils.Utils;
 
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class CheatManager {
     private static final String PREF_AD_IMP_COUNT = "pref_ad_%s_%s_imp_count";
@@ -51,6 +56,30 @@ public class CheatManager {
      * @return
      */
     public boolean isUserCheat(String sdk, String placeName) {
+        return interceptCheatByGAID() || interceptCheatByConfig(sdk, placeName);
+    }
+
+    /**
+     * 是否过滤了指定gaid的用户
+     *
+     * @return
+     */
+    private boolean interceptCheatByGAID() {
+        String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+        if (!TextUtils.isEmpty(gaid)) {
+            String gaidmd5 = Utils.string2MD5(gaid);
+            String cfgGAID = DataManager.get(mContext).getString("cheat_gaids");
+            if (!TextUtils.isEmpty(cfgGAID)) {
+                List<String> gaidList = Arrays.asList(cfgGAID.split(","));
+                if (gaidList != null) {
+                    return gaidList.contains(gaidmd5);
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean interceptCheatByConfig(String sdk, String placeName) {
         try {
             String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, placeName);
             long impCount = Utils.getLong(mContext, prefKey, 0);
@@ -160,7 +189,13 @@ public class CheatManager {
         prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, placeName);
         long clickCount = Utils.getLong(mContext, prefKey, 0);
         String clkImpInfo = String.format(Locale.getDefault(), "%s_%s_clk_imp_%d_%d", sdk, placeName, clickCount, impCount);
-        InternalStat.reportEvent(mContext, "clk_imp_info", clkImpInfo);
+        Map<String, String> extra = new HashMap<String, String>();
+        extra.put("place_info", clkImpInfo);
+        String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+        if (!TextUtils.isEmpty(gaid)) {
+            extra.put("entry_info", Utils.string2MD5(gaid));
+        }
+        InternalStat.reportEvent(mContext, "clk_imp_info", extra);
     }
 
     /**
