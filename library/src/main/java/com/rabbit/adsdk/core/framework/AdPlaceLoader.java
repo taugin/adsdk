@@ -1488,7 +1488,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         @Override
         public void onLoading(String placeName, String source, String adType, String pid) {
-            if (isCurrentLoader(source, adType, placeName)) {
+            if (isCurrentLoader(source, adType, pid)) {
                 if (mOnAdSdkLoadedListener != null) {
                     mOnAdSdkLoadedListener.onLoading(placeName, source, adType, pid);
                 }
@@ -1500,7 +1500,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         @Override
         public void onShow(String placeName, String source, String adType, String pid) {
-            if (isCurrentLoader(source, adType, placeName)) {
+            if (isCurrentLoader(source, adType, pid)) {
                 if (mOnAdSdkLoadedListener != null) {
                     mOnAdSdkLoadedListener.onShow(placeName, source, adType, pid);
                 }
@@ -1512,7 +1512,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         @Override
         public void onImp(String placeName, String source, String adType, String pid) {
-            if (isCurrentLoader(source, adType, placeName)) {
+            if (isCurrentLoader(source, adType, pid)) {
                 if (mOnAdSdkLoadedListener != null) {
                     mOnAdSdkLoadedListener.onImp(placeName, source, adType, pid);
                 }
@@ -1525,7 +1525,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         @Override
         public void onError(String placeName, String source, String adType, String pid, int error) {
             recordErrorTimes(placeName, source, adType);
-            if (isCurrentLoader(source, adType, placeName)) {
+            if (isCurrentLoader(source, adType, pid)) {
                 if (mOnAdSdkLoadedListener != null) {
                     mOnAdSdkLoadedListener.onError(placeName, source, adType, pid, error);
                 }
@@ -1538,7 +1538,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         @Override
         public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
-            if (isCurrentLoader(source, adType, placeName)) {
+            if (isCurrentLoader(source, adType, pid)) {
                 if (mOnAdSdkLoadedListener != null) {
                     mOnAdSdkLoadedListener.onRewarded(placeName, source, adType, pid, item);
                 }
@@ -1550,7 +1550,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         @Override
         public void onCompleted(String placeName, String source, String adType, String pid) {
-            if (isCurrentLoader(source, adType, placeName)) {
+            if (isCurrentLoader(source, adType, pid)) {
                 if (mOnAdSdkLoadedListener != null) {
                     mOnAdSdkLoadedListener.onCompleted(placeName, source, adType, pid);
                 }
@@ -1562,7 +1562,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         @Override
         public void onStarted(String placeName, String source, String adType, String pid) {
-            if (isCurrentLoader(source, adType, placeName)) {
+            if (isCurrentLoader(source, adType, pid)) {
                 if (mOnAdSdkLoadedListener != null) {
                     mOnAdSdkLoadedListener.onStarted(placeName, source, adType, pid);
                 }
@@ -1574,7 +1574,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         @Override
         public void onUpdate(String placeName, String source, String adType, String pid) {
-            if (isCurrentLoader(source, adType, placeName)) {
+            if (isCurrentLoader(source, adType, pid)) {
                 if (mOnAdSdkLoadedListener != null) {
                     mOnAdSdkLoadedListener.onUpdate(placeName, source, adType, pid);
                 }
@@ -1586,7 +1586,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         @Override
         public void onClick(String placeName, String source, String adType, String pid) {
-            if (isCurrentLoader(source, adType, placeName)) {
+            if (isCurrentLoader(source, adType, pid)) {
                 if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
                     Log.d(Log.TAG, "ad place loader place name : " + placeName + " , source : " + source + " , adType : " + adType);
                     if (TextUtils.equals(adType, Constant.TYPE_NATIVE) || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
@@ -1605,7 +1605,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
         @Override
         public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
-            if (isCurrentLoader(source, adType, placeName)) {
+            if (isCurrentLoader(source, adType, pid)) {
                 if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
                     Log.d(Log.TAG, "ad place loader place name : " + placeName + " , source : " + source + " , adType : " + adType);
                     if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)
