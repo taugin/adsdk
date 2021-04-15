@@ -37,7 +37,7 @@ import androidx.annotation.Nullable;
 
 public class RabActivity extends Activity {
 
-    private String mPidName;
+    private String mPlaceName;
     private String mSource;
     private String mAdType;
     private Handler mHandler = null;
@@ -118,7 +118,7 @@ public class RabActivity extends Activity {
     private void parseIntent() {
         Intent intent = getIntent();
         if (intent != null) {
-            mPidName = intent.getStringExtra(Intent.EXTRA_TITLE);
+            mPlaceName = intent.getStringExtra(Intent.EXTRA_TITLE);
             mSource = intent.getStringExtra(Intent.EXTRA_TEXT);
             mAdType = intent.getStringExtra(Intent.EXTRA_TEMPLATE);
         }
@@ -153,8 +153,8 @@ public class RabActivity extends Activity {
 
     private void showAdViewInternal() {
         if (mAdLayout != null) {
-            mISdkLoader = AdPlaceLoader.sLoaderMap.remove(String.format(Locale.getDefault(), "%s_%s_%s", mSource, mAdType, mPidName));
-            Params params = AdPlaceLoader.sParamsMap.remove(String.format(Locale.getDefault(), "%s_%s_%s", mSource, mAdType, mPidName));
+            mISdkLoader = AdPlaceLoader.sLoaderMap.remove(String.format(Locale.getDefault(), "%s_%s_%s", mSource, mAdType, mPlaceName));
+            Params params = AdPlaceLoader.sParamsMap.remove(String.format(Locale.getDefault(), "%s_%s_%s", mSource, mAdType, mPlaceName));
             if (mISdkLoader != null) {
                 try {
                     // Spread类型的广告插屏类型需要单独处理
@@ -237,7 +237,7 @@ public class RabActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AdSdk.get(this).destroy(mPidName);
+        AdSdk.get(this).destroy(mPlaceName);
         if (mISdkLoader != null) {
             mISdkLoader.notifyAdViewUIDismiss();
         }

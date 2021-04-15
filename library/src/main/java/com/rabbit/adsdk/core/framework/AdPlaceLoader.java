@@ -67,7 +67,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private WeakReference<Activity> mActivity;
     private WeakReference<ViewGroup> mAdContainer;
     private ISdkLoader mCurrentAdLoader;
-    private String mOriginPidName;
+    private String mOriginPlaceName;
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private View mDotView;
     private boolean mAdPlaceSeqLoading = false;
@@ -90,14 +90,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     @Override
-    public void setOriginPidName(String pidName) {
-        mOriginPidName = pidName;
+    public void setOriginPlaceName(String placeName) {
+        mOriginPlaceName = placeName;
     }
 
     @Override
     public boolean needReload(AdPlace adPlace) {
         if (mAdPlace != null && adPlace != null) {
-            Log.d(Log.TAG, "pidName : " + mAdPlace.getName() + " , usingUnique : " + mAdPlace.getUniqueValue() + " , remoteUnique : " + adPlace.getUniqueValue());
+            Log.d(Log.TAG, "placeName : " + mAdPlace.getName() + " , usingUnique : " + mAdPlace.getUniqueValue() + " , remoteUnique : " + adPlace.getUniqueValue());
             return !TextUtils.equals(mAdPlace.getUniqueValue(), adPlace.getUniqueValue());
         }
         return false;
@@ -523,7 +523,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
                         if (loader.showInterstitial()) {
                             mCurrentAdLoader = loader;
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                             break;
                         }
                     }
@@ -726,7 +726,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
                         if (loader.showRewardedVideo()) {
                             mCurrentAdLoader = loader;
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                             break;
                         }
                     }
@@ -945,7 +945,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         mCurrentAdLoader = loader;
                         loader.showBanner(viewGroup);
                         if (needCounting) {
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                         }
                         addDotView(viewGroup);
                         break;
@@ -953,7 +953,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         mCurrentAdLoader = loader;
                         loader.showNative(viewGroup, getParams(loader));
                         if (needCounting) {
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                         }
                         addDotView(viewGroup);
                         break;
@@ -1218,14 +1218,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         loader.useAndClearFlag();
                         if (loader.showRewardedVideo()) {
                             mCurrentAdLoader = loader;
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                             return true;
                         }
                     } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
                         loader.useAndClearFlag();
                         if (loader.showInterstitial()) {
                             mCurrentAdLoader = loader;
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPidName(), mAdPlace);
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                             return true;
                         }
                     } else if ((loader.isBannerType() && loader.isBannerLoaded())
@@ -1240,13 +1240,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return false;
     }
 
-    private void showAdViewWithUI(String pidName, String source, String adType, ISdkLoader iSdkLoader) {
+    private void showAdViewWithUI(String placeName, String source, String adType, ISdkLoader iSdkLoader) {
         Log.iv(Log.TAG, "show complex ads for banner or native");
         try {
-            sLoaderMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, pidName), iSdkLoader);
-            sParamsMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, pidName), getParams(iSdkLoader));
+            sLoaderMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, placeName), iSdkLoader);
+            sParamsMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, placeName), getParams(iSdkLoader));
             Intent intent = new Intent(mContext, RabActivity.class);
-            intent.putExtra(Intent.EXTRA_TITLE, pidName);
+            intent.putExtra(Intent.EXTRA_TITLE, placeName);
             intent.putExtra(Intent.EXTRA_TEXT, source);
             intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1382,8 +1382,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     @Override
-    public String getOriginPidName() {
-        return mOriginPidName;
+    public String getOriginPlaceName() {
+        return mOriginPlaceName;
     }
 
     private void clearAdBaseListener() {
@@ -1399,7 +1399,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         mPlaceType = placeType;
     }
 
-    private synchronized void startRetryIfNeed(String pidName, String source, String adType) {
+    private synchronized void startRetryIfNeed(String placeName, String source, String adType) {
         boolean isAdPlaceError = isAdPlaceError();
         if (isAdPlaceError) {
             int cfgRetryTimes = 0;
@@ -1407,28 +1407,28 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 cfgRetryTimes = mAdPlace.getRetryTimes();
             }
             boolean allowRetry = mRetryTimes < cfgRetryTimes;
-            Log.iv(Log.TAG, "pidName : " + pidName + " , allowRetry : " + allowRetry + " , retry times : " + mRetryTimes + " , cfg retry times : " + cfgRetryTimes);
+            Log.iv(Log.TAG, "placeName : " + placeName + " , allowRetry : " + allowRetry + " , retry times : " + mRetryTimes + " , cfg retry times : " + cfgRetryTimes);
             if (allowRetry) {
-                startRetry(pidName);
+                startRetry(placeName);
             } else {
-                resetRetryTimes(pidName, source, adType);
+                resetRetryTimes(placeName, source, adType);
             }
         }
     }
 
-    private synchronized void recordErrorTimes(String pidName, String source, String adType) {
+    private synchronized void recordErrorTimes(String placeName, String source, String adType) {
         mErrorTimes++;
-        Log.iv(Log.TAG, "pidName : " + pidName + " , record error times " + mErrorTimes);
+        Log.iv(Log.TAG, "placeName : " + placeName + " , record error times " + mErrorTimes);
     }
 
-    private synchronized void resetRetryTimes(String pidName, String source, String adType) {
+    private synchronized void resetRetryTimes(String placeName, String source, String adType) {
         mRetryTimes = 0;
-        Log.iv(Log.TAG, "pidName : " + pidName + " , reset retry times " + mRetryTimes);
+        Log.iv(Log.TAG, "placeName : " + placeName + " , reset retry times " + mRetryTimes);
     }
 
-    private void startRetry(String pidName) {
+    private void startRetry(String placeName) {
         mRetryTimes++;
-        Log.iv(Log.TAG, "pidName : " + pidName + " , start retry " + mPlaceType + " " + mRetryTimes);
+        Log.iv(Log.TAG, "placeName : " + placeName + " , start retry " + mPlaceType + " " + mRetryTimes);
         if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_ADVIEW)) {
             loadAdViewInternal();
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_INTERSTITIAL)) {

@@ -108,9 +108,9 @@ public class EventImpl implements IEvent {
         return eventId;
     }
 
-    private boolean checkArgument(Context context, String pidName, String sdk, String type) {
-        if (context == null || TextUtils.isEmpty(pidName) || TextUtils.isEmpty(sdk) || TextUtils.isEmpty(type)) {
-            Log.iv(Log.TAG, "context == null or pidname == null or sdk == null or type all must not be empty or null");
+    private boolean checkArgument(Context context, String placeName, String sdk, String type) {
+        if (context == null || TextUtils.isEmpty(placeName) || TextUtils.isEmpty(sdk) || TextUtils.isEmpty(type)) {
+            Log.iv(Log.TAG, "context == null or placeName == null or sdk == null or type all must not be empty or null");
             return false;
         }
         return true;
@@ -127,81 +127,81 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdRequest(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
-        if (!checkArgument(context, pidName, sdk, type)) {
+    public void reportAdRequest(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+        if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "request", sdk, type);
-        extra = addExtra(extra, pidName, sdk, type, pid, ecpm);
-        reportEvent(context, pidName, eventId, extra);
-        reportEvent(context, pidName, "e_ad_request", extra);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
+        extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
+        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, placeName, "e_ad_request", extra);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
     }
 
     @Override
-    public void reportAdLoaded(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
-        if (!checkArgument(context, pidName, sdk, type)) {
+    public void reportAdLoaded(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+        if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "loaded", sdk, type);
-        extra = addExtra(extra, pidName, sdk, type, pid, ecpm);
-        reportEvent(context, pidName, eventId, extra);
-        reportEvent(context, pidName, "e_ad_loaded", extra);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
+        extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
+        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, placeName, "e_ad_loaded", extra);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
     }
 
     @Override
-    public void reportAdShow(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
-        if (!checkArgument(context, pidName, sdk, type)) {
+    public void reportAdShow(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+        if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "show", sdk, type);
-        extra = addExtra(extra, pidName, sdk, type, pid, ecpm);
-        reportEvent(context, pidName, eventId, extra);
-        reportEvent(context, pidName, "e_ad_show", extra);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
+        extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
+        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, placeName, "e_ad_show", extra);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
     }
 
     @Override
-    public void reportAdImp(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
-        if (!checkArgument(context, pidName, sdk, type)) {
+    public void reportAdImp(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+        if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "imp", sdk, type);
-        extra = addExtra(extra, pidName, sdk, type, pid, ecpm);
-        reportEvent(context, pidName, eventId, extra);
-        reportEvent(context, pidName, "e_ad_imp", extra);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
-        CheatManager.get(context).recordAdImp(sdk, pidName);
+        extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
+        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, placeName, "e_ad_imp", extra);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        CheatManager.get(context).recordAdImp(sdk, placeName);
     }
 
     @Override
-    public void reportAdClick(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
-        if (!checkArgument(context, pidName, sdk, type)) {
+    public void reportAdClick(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+        if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "click", sdk, type);
-        extra = addExtra(extra, pidName, sdk, type, pid, ecpm);
-        reportEvent(context, pidName, eventId, extra);
-        reportEvent(context, pidName, "e_ad_click", extra);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
-        CheatManager.get(context).recordAdClick(sdk, pidName);
+        extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
+        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, placeName, "e_ad_click", extra);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        CheatManager.get(context).recordAdClick(sdk, placeName);
     }
 
     @Override
-    public void reportAdReward(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
-        if (!checkArgument(context, pidName, sdk, type)) {
+    public void reportAdReward(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+        if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "receive", sdk, type);
-        extra = addExtra(extra, pidName, sdk, type, pid, ecpm);
-        reportEvent(context, pidName, eventId, extra);
-        reportEvent(context, pidName, "e_ad_reward", extra);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
+        extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
+        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, placeName, "e_ad_reward", extra);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
     }
 
     @Override
-    public void reportAdError(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdError(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!isReportError(context)) {
             return;
         }
@@ -210,26 +210,26 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "error", sdk, type);
         extra = addExtraForError(context, extra);
-        extra = addExtra(extra, pidName, sdk, type, pid, ecpm);
-        reportEvent(context, pidName, eventId, extra);
-        reportEvent(context, pidName, "e_ad_error", extra);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
+        extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
+        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, placeName, "e_ad_error", extra);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
     }
 
     @Override
-    public void reportAdClose(Context context, String pidName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
-        if (!checkArgument(context, pidName, sdk, type)) {
+    public void reportAdClose(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+        if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "close", sdk, type);
-        extra = addExtra(extra, pidName, sdk, type, pid, ecpm);
-        reportEvent(context, pidName, eventId, extra);
-        reportEvent(context, pidName, "e_ad_close", extra);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + pidName + " , extra : " + extra);
+        extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
+        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, placeName, "e_ad_close", extra);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
     }
 
     @Override
-    public void reportAdLoadSuccessTime(Context context, String pidName, String sdk, String type, int value) {
+    public void reportAdLoadSuccessTime(Context context, String placeName, String sdk, String type, int value) {
         if (!isReportTime(context)) {
             return;
         }
@@ -239,7 +239,7 @@ public class EventImpl implements IEvent {
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("name", pidName);
+        map.put("name", placeName);
         map.put("sdk", sdk);
         map.put("type", type);
         if (isReportUmeng(context)) {
@@ -250,7 +250,7 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdLoadFailureTime(Context context, String pidName, String sdk, String type, String error, int value) {
+    public void reportAdLoadFailureTime(Context context, String placeName, String sdk, String type, String error, int value) {
         if (!isReportTime(context)) {
             return;
         }
@@ -260,7 +260,7 @@ public class EventImpl implements IEvent {
         String eventId = "load_ad_failure_time";
         eventId = generateEventIdAlias(context, eventId);
         Map<String, String> map = new HashMap<String, String>();
-        map.put("name", pidName);
+        map.put("name", placeName);
         map.put("sdk", sdk);
         map.put("type", type);
         map.put("error", error);
@@ -282,15 +282,15 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdPlaceSeqRequest(Context context, String pidName) {
+    public void reportAdPlaceSeqRequest(Context context, String placeName) {
     }
 
     @Override
-    public void reportAdPlaceSeqLoaded(Context context, String pidName) {
+    public void reportAdPlaceSeqLoaded(Context context, String placeName) {
     }
 
     @Override
-    public void reportAdPlaceSeqError(Context context, String pidName) {
+    public void reportAdPlaceSeqError(Context context, String placeName) {
     }
 
     private boolean parseReport(String value, boolean defaultValue) {

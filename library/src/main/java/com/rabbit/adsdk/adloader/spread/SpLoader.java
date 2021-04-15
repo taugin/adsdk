@@ -229,15 +229,15 @@ public class SpLoader extends AbstractSdkLoader {
         return true;
     }
 
-    private void showAdViewWithUI(String pidName, String source, String adType, ISdkLoader iSdkLoader) {
+    private void showAdViewWithUI(String placeName, String source, String adType, ISdkLoader iSdkLoader) {
         Log.iv(Log.TAG, "show spread ads with ui");
         try {
             Params params = new Params();
             params.setAdCardStyle(Constant.NATIVE_CARD_FULL);
-            AdPlaceLoader.sLoaderMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, pidName), iSdkLoader);
-            AdPlaceLoader.sParamsMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, pidName), params);
+            AdPlaceLoader.sLoaderMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, placeName), iSdkLoader);
+            AdPlaceLoader.sParamsMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, placeName), params);
             Intent intent = new Intent(mContext, RabActivity.class);
-            intent.putExtra(Intent.EXTRA_TITLE, pidName);
+            intent.putExtra(Intent.EXTRA_TITLE, placeName);
             intent.putExtra(Intent.EXTRA_TEXT, source);
             intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

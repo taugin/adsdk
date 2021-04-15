@@ -196,7 +196,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     public String getAdPlaceName() {
         String adPlaceName = null;
         if (mManagerListener != null) {
-            adPlaceName = mManagerListener.getOriginPidName();
+            adPlaceName = mManagerListener.getOriginPlaceName();
         }
         if (!TextUtils.isEmpty(adPlaceName)) {
             return adPlaceName;

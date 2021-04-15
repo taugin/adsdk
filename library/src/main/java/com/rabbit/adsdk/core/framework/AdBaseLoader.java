@@ -21,7 +21,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void setOriginPidName(String pidName) {
+    public void setOriginPlaceName(String placeName) {
     }
 
     @Override
