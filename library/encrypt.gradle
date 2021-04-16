@@ -392,7 +392,7 @@ def encryptAssetsFilesFromApkInternal(flavorName, File outputFile) {
     encryptFileForAssets(workDir, encryptFiles)
     updateEncryptFileToApk(workDir, encryptFiles, outputFile, aaptFile)
     deleteTempAssetsFile(workDir, encryptNames)
-    signChannelApkFile(flavorName, outputFile, aaptFile)
+    signApkFilePackage(flavorName, outputFile, aaptFile)
 }
 
 /**
@@ -437,12 +437,13 @@ def encryptFileForAssets(workDir, encryptFiles) {
         try {
             def srcFile = new File(workDir, it).getAbsolutePath()
             Aes.encryptFile(srcFile, secret)
-            println "> Task :${project.name}:encryptAdFile    [${it}]"
-            ext.out += ":${project.name}:encryptAdFile    [${it}]"
+            println "> Task :${project.name}:encryptAdFiles [${it}]"
+            ext.out += ":${project.name}:encryptAdFiles [${it}]"
         } catch (Exception e) {
             e.printStackTrace()
         }
     }
+    println ""
 }
 
 /**
@@ -455,7 +456,7 @@ def encryptFileForAssets(workDir, encryptFiles) {
  */
 def updateEncryptFileToApk(workDir, encryptFiles, outputFile, aaptFile) {
     deleteFilesFromApk(outputFile.getAbsolutePath(), aaptFile, encryptFiles)
-    appendFilesToApk(workDir, outputFile.getAbsolutePath(), aaptFile, encryptFiles)
+    appendFilesIntoApk(workDir, outputFile.getAbsolutePath(), aaptFile, encryptFiles)
 }
 
 /**
@@ -482,7 +483,7 @@ def deleteTempAssetsFile(workDir, encryptNames) {
  * @param fileList
  * @return
  */
-def appendFilesToApk(workDir, apkFile, aaptFile, fileList) {
+def appendFilesIntoApk(workDir, apkFile, aaptFile, fileList) {
     def cmd = []
     cmd.add(aaptFile)
     cmd.add("a")
@@ -492,7 +493,7 @@ def appendFilesToApk(workDir, apkFile, aaptFile, fileList) {
         cmd.add(it)
     }
     def cmdString = cmd.join(" ")
-    println ":${project.name}:appendFilesToApk Command : " + optimizeCommand(cmdString)
+    println "> Task :${project.name}:appendFilesIntoApk Command [" + optimizeCommand(cmdString) + "]"
     try {
         Process p = cmdString.execute(null, new File(workDir))
         p.waitFor(20, TimeUnit.SECONDS)
@@ -521,7 +522,7 @@ def deleteFilesFromApk(apkFile, aaptFile, fileList) {
         cmd.add(it)
     }
     def cmdList = cmd.join(" ")
-    println ":${project.name}:deleteFilesFromApk Command [" + optimizeCommand(cmdList) + "]"
+    println "> Task :${project.name}:deleteFilesFromApk Command [" + optimizeCommand(cmdList) + "]"
     try {
         def startTime = System.currentTimeMillis()
         Process p = cmdList.execute()
@@ -529,7 +530,7 @@ def deleteFilesFromApk(apkFile, aaptFile, fileList) {
         p.destroy()
         def endTime = System.currentTimeMillis()
         def signTime = (endTime - startTime) / 1000
-        println ":${project.name}:deleteFilesFromApk Command [Delete File From Apk Use Time " + signTime + "s]"
+        println "> Task :${project.name}:deleteFilesFromApk Command [Delete File From Apk Use Time " + signTime + "s]"
     } catch (Exception e) {
     }
 }
@@ -541,29 +542,29 @@ def deleteFilesFromApk(apkFile, aaptFile, fileList) {
  * @param channel
  * @return
  */
-def signChannelApkFile(flavorName, apkFile, aaptFile) {
-    println "\n:${project.name}:signChannelApkFile [" + flavorName + "] >>>>>>>>> Sign Channel File Start <<<<<<<<<"
+def signApkFilePackage(flavorName, apkFile, aaptFile) {
+    println "\n> Task :${project.name}:signApkFilePackage [" + flavorName + "] >>>>>>>>> Sign Channel File Start <<<<<<<<<"
     def signConfig = getSignConfig(flavorName)
     if (signConfig == null) {
-        System.err.println ":${project.name}:signChannelApkFile [" + flavorName + "] signConfig is Null"
+        System.err.println "> Task :${project.name}:signApkFilePackage [" + flavorName + "] signConfig is Null"
         return
     }
     if (!signConfig.hasProperty("storeFile")
             || !signConfig.hasProperty("storePassword")
             || !signConfig.hasProperty("keyAlias")
             || !signConfig.hasProperty("keyPassword")) {
-        System.err.println ":${project.name}:signChannelApkFile [" + flavorName + "][" + channel + "] signConfig is not completion"
+        System.err.println "> Task :${project.name}:signApkFilePackage [" + flavorName + "][" + channel + "] signConfig is not completion"
         return
     }
     def jarSignerFile = getJarSigner()
     if (jarSignerFile == null) {
-        System.err.println ":${project.name}:signChannelApkFile jarSignerFile is Null"
+        System.err.println "> Task :${project.name}:signApkFilePackage jarSignerFile is Null"
         return
     }
     if (deleteOldSignFiles(apkFile, aaptFile)) {
-        signChannelFileInternal(apkFile, signConfig, jarSignerFile)
+        signApkFilePackageLocked(apkFile, signConfig, jarSignerFile)
     }
-    println ":${project.name}:signChannelApkFile >>>>>>>>> Sign Channel File Complete <<<<<<<<<\n"
+    println "> Task :${project.name}:signApkFilePackage [" + flavorName + "] >>>>>>>>> Sign Channel File Complete <<<<<<<<<"
 }
 
 /**
@@ -574,8 +575,8 @@ def signChannelApkFile(flavorName, apkFile, aaptFile) {
  * @return
  */
 def deleteOldSignFiles(apkFile, aaptFile) {
-    def signInfoList = readOldSignFiles(apkFile, aaptFile)
-    println ":${project.name}:deleteOldSignFiles SignDef " + signInfoList
+    def signInfoList = readOldSignedFiles(apkFile, aaptFile)
+    println "> Task :${project.name}:deleteOldSignFiles AllFile " + signInfoList
     if (signInfoList == null || signInfoList.isEmpty()) {
         return true
     }
@@ -591,9 +592,9 @@ def deleteOldSignFiles(apkFile, aaptFile) {
  * @param channel
  * @return
  */
-def readOldSignFiles(apkFile, aaptFile) {
+def readOldSignedFiles(apkFile, aaptFile) {
     def cmdString = aaptFile + " l -a " + apkFile
-    println ":${project.name}:readOldSignFiles Command [" + optimizeCommand(cmdString) + "]"
+    println "> Task :${project.name}:readOldSignedFiles Command [" + optimizeCommand(cmdString) + "]"
     def result = cmdString.execute().text
     BufferedReader br = new BufferedReader(new StringReader(result))
     def signInfoList = []
@@ -615,13 +616,13 @@ def readOldSignFiles(apkFile, aaptFile) {
  * @param channel
  * @return
  */
-def signChannelFileInternal(apkFile, signConfig, jarSignerFile) {
+def signApkFilePackageLocked(apkFile, signConfig, jarSignerFile) {
     if (signConfig != null
             && signConfig.hasProperty("storeFile")
             && signConfig.hasProperty("storePassword")
             && signConfig.hasProperty("keyAlias")
             && signConfig.hasProperty("keyPassword")) {
-        println ":${project.name}:signChannelPackage ApkFile [" + apkFile + "]"
+        println "> Task :${project.name}:signApkFilePackage ApkFile [" + apkFile + "]"
         def cmdlist = []
         cmdlist.add(jarSignerFile)
 
@@ -643,7 +644,7 @@ def signChannelFileInternal(apkFile, signConfig, jarSignerFile) {
 
         def cmdString = cmdlist.join(" ")
         def cmdStringInfo = cmdlist.join(",")
-        println ":${project.name}:signChannelPackage Command [" + optimizeCommand(cmdStringInfo, ",") + "]"
+        println "> Task :${project.name}:signApkFilePackage Command [" + optimizeCommand(cmdStringInfo, ",") + "]"
         try {
             def startTime = System.currentTimeMillis()
             Process p = cmdString.execute()
@@ -651,7 +652,7 @@ def signChannelFileInternal(apkFile, signConfig, jarSignerFile) {
             p.destroy();
             def endTime = System.currentTimeMillis()
             def signTime = (endTime - startTime) / 1000
-            println ":${project.name}:signChannelFileInternal Command [Sign Apk File Use Time " + signTime + "s]"
+            println "> Task :${project.name}:signApkFilePackage Command [Sign Apk File Use Time " + signTime + "s]"
         } catch (Exception e) {
             e.printStackTrace()
         }
