@@ -446,6 +446,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 setRewardPlaying(true);
                 reportAdImp();
+                notifyAdImp();
                 notifyAdOpened();
                 notifyRewardAdsStarted();
             }

@@ -194,13 +194,13 @@ public class RabActivity extends Activity {
 
         shape = new OvalShape();
         ShapeDrawable shapeNormal = new ShapeDrawable(shape);
-        shapeNormal.getPaint().setColor(Color.parseColor("#88aaaaaa"));
+        shapeNormal.getPaint().setColor(Color.parseColor("#88AAAAAA"));
 
         StateListDrawable drawable = new StateListDrawable();
         drawable.addState(new int[]{android.R.attr.state_pressed}, shapePressed);
         drawable.addState(new int[]{android.R.attr.state_enabled}, shapeNormal);
         imageView.setBackground(drawable);
-        int padding = Utils.dp2px(this, 2);
+        int padding = Utils.dp2px(this, 4);
         imageView.setPadding(padding, padding, padding, padding);
         imageView.setClickable(true);
         return imageView;

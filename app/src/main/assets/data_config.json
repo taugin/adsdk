@@ -84,7 +84,7 @@
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "admob",
@@ -102,7 +102,7 @@
           "sdk": "dfp",
           "type": "banner",
           "pid": "/6253334/dfp_example_ad",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "applovin",
@@ -197,8 +197,7 @@
           "sdk": "admob",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
-          "ctr": 5,
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "fb",
@@ -218,12 +217,12 @@
           "sdk": "dfp",
           "type": "interstitial",
           "pid": "/6499/example/interstitial",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "spread",
           "type": "interstitial",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "applovin",
