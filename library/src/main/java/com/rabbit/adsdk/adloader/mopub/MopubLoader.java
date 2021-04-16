@@ -120,8 +120,8 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
                 Map<String, String> commonConfig = config.get("common_config");
                 if (commonConfig != null) {
-                    String logLevel = commonConfig.get("log_level");
-                    Log.iv(Log.TAG, "log_level : " + logLevel);
+                    String logLevel = commonConfig.get("mopub_log_level");
+                    Log.iv(Log.TAG, "mopub log level : " + logLevel);
                     if (TextUtils.equals(logLevel, "debug")) {
                         builder.withLogLevel(MoPubLog.LogLevel.DEBUG);
                     } else if (TextUtils.equals(logLevel, "info")) {
