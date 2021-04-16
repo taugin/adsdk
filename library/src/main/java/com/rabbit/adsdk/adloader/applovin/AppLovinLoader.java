@@ -39,6 +39,7 @@ import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,11 +66,33 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, "applovin sdk init successfully");
                 }
             });
+            if (isDebug()) {
+                String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+                Log.iv(Log.TAG, "applovin debug mode gaid : " + gaid);
+                if (!TextUtils.isEmpty(gaid)) {
+                    appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList(new String[]{gaid}));
+                }
+            }
         }
     }
 
     public String getSdkName() {
         return Constant.AD_SDK_APPLOVIN;
+    }
+
+    private boolean isDebug() {
+        boolean isDebug = false;
+        Map<String, Map<String, String>> config = DataManager.get(mContext).getMediationConfig();
+        if (config != null) {
+            Map<String, String> commonConfig = config.get("common_config");
+            if (commonConfig != null) {
+                try {
+                    isDebug = Boolean.parseBoolean(commonConfig.get("applovin_debug"));
+                } catch (Exception e) {
+                }
+            }
+        }
+        return isDebug;
     }
 
     private String getSdkKey() {
