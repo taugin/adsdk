@@ -95,6 +95,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="left|center_vertical"
                     android:minHeight="24dp"
+                    android:lines="2"
+                    android:ellipsize="end"
                     android:maxLines="2"
                     android:textColor="@color/rab_secondaryColor"
                     android:textSize="12sp" />
