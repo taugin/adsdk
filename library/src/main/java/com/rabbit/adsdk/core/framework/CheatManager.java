@@ -12,9 +12,10 @@ import com.rabbit.adsdk.utils.Utils;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -22,7 +23,8 @@ import java.util.Map;
 public class CheatManager {
     private static final String PREF_AD_IMP_COUNT = "pref_ad_%s_%s_imp_count";
     private static final String PREF_AD_CLK_COUNT = "pref_ad_%s_%s_clk_count";
-    private static final String PREF_AD_COUNT_DATE = "pref_ad_%s_%s_count_date";
+    private static final String PREF_AD_COUNT_DATE = "pref_ad_imp_clk_count_date";
+    private static final String PREF_AD_KEY_LIST = "pref_ad_key_list";
     private static CheatManager sCheatManager;
 
     public static CheatManager get(Context context) {
@@ -127,6 +129,7 @@ public class CheatManager {
         Log.iv(Log.TAG, "prefKey : " + prefKey);
         long count = Utils.getLong(mContext, prefKey, 0);
         Utils.putLong(mContext, prefKey, count + 1);
+        recordAdKeyList(sdk, placeName);
         printLog(sdk, placeName);
     }
 
@@ -138,16 +141,59 @@ public class CheatManager {
         printLog(sdk, placeName);
     }
 
+    private synchronized void recordAdKeyList(String sdk, String placeName) {
+        try {
+            String newKey = String.format(Locale.getDefault(), "%s,%s", sdk, placeName);
+            List<String> allKeyList = new ArrayList<String>();
+            String keyListString = Utils.getString(mContext, PREF_AD_KEY_LIST, null);
+            List<String> lastKeyList = null;
+            if (!TextUtils.isEmpty(keyListString)) {
+                lastKeyList = Arrays.asList(keyListString.split("\\|"));
+            }
+            Log.iv(Log.TAG, "last key list : " + lastKeyList);
+            if (lastKeyList != null && lastKeyList.contains(newKey)) {
+                Log.iv(Log.TAG, newKey + " has saved");
+                return;
+            }
+            if (lastKeyList != null && !lastKeyList.isEmpty()) {
+                allKeyList.addAll(lastKeyList);
+            }
+            allKeyList.add(newKey);
+            StringBuilder builder = new StringBuilder();
+            for (int index = 0; index < allKeyList.size(); index++) {
+                String s = allKeyList.get(index);
+                if (index == allKeyList.size() - 1) {
+                    builder.append(s);
+                } else {
+                    builder.append(s);
+                    builder.append("|");
+                }
+            }
+            String allKeyString = builder.toString();
+            Log.iv(Log.TAG, "all key string : " + allKeyString);
+            Utils.putString(mContext, PREF_AD_KEY_LIST, allKeyString);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+    }
+
+    private List<String> getKeyList() {
+        String keyListString = Utils.getString(mContext, PREF_AD_KEY_LIST, null);
+        List<String> lastKeyList = null;
+        if (!TextUtils.isEmpty(keyListString)) {
+            lastKeyList = Arrays.asList(keyListString.split("\\|"));
+        }
+        return lastKeyList;
+    }
+
     private void resetCount(String sdk, String placeName) {
-        String prefDateKey = String.format(Locale.getDefault(), PREF_AD_COUNT_DATE, sdk, placeName);
-        Log.iv(Log.TAG, "prefKey : " + prefDateKey);
         long nowDate = getTodayTime();
-        long lastDate = Utils.getLong(mContext, prefDateKey, 0);
+        long lastDate = Utils.getLong(mContext, PREF_AD_COUNT_DATE, 0);
         if (nowDate > lastDate) {
             if (lastDate > 0 && isReportClkImp(mContext)) {
-                report(sdk, placeName);
+                report();
             }
-            Utils.putLong(mContext, prefDateKey, nowDate);
+            Utils.putLong(mContext, PREF_AD_COUNT_DATE, nowDate);
             Log.iv(Log.TAG, String.format(Locale.getDefault(), "%s %s reset count data", sdk, placeName));
             String prefImp = String.format(PREF_AD_IMP_COUNT, sdk, placeName);
             Utils.putLong(mContext, prefImp, 0);
@@ -183,19 +229,42 @@ public class CheatManager {
         return result;
     }
 
-    private void report(String sdk, String placeName) {
-        String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, placeName);
-        long impCount = Utils.getLong(mContext, prefKey, 0);
-        prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, placeName);
-        long clickCount = Utils.getLong(mContext, prefKey, 0);
-        String clkImpInfo = String.format(Locale.getDefault(), "%s_%s_clk_imp_%d_%d", sdk, placeName, clickCount, impCount);
-        Map<String, String> extra = new HashMap<String, String>();
-        extra.put("place_info", clkImpInfo);
-        String gaid = Utils.getString(mContext, Constant.PREF_GAID);
-        if (!TextUtils.isEmpty(gaid)) {
-            extra.put("entry_info", Utils.string2MD5(gaid));
+    private void report() {
+        try {
+            List<String> keyList = getKeyList();
+            Map<String, String> extra = new LinkedHashMap<String, String>();
+            if (keyList != null && !keyList.isEmpty()) {
+                for (String key : keyList) {
+                    if (TextUtils.isEmpty(key)) {
+                        continue;
+                    }
+                    String keySplit[] = key.split(",");
+                    if (keySplit == null || keySplit.length != 2) {
+                        continue;
+                    }
+                    String sdk = keySplit[0];
+                    String placeName = keySplit[1];
+                    String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, placeName);
+                    long impCount = Utils.getLong(mContext, prefKey, 0);
+                    prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, placeName);
+                    long clickCount = Utils.getLong(mContext, prefKey, 0);
+                    // 有展示的广告位才需要上报
+                    if (impCount > 0) {
+                        String clkImpInfo = String.format(Locale.getDefault(), "clk_imp_%d_%d", clickCount, impCount);
+                        String sdkInfo = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
+                        extra.put(sdkInfo, clkImpInfo);
+                    }
+                }
+            }
+            String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+            if (!TextUtils.isEmpty(gaid)) {
+                extra.put("uac", Utils.string2MD5(gaid));
+            }
+            Log.iv(Log.TAG, "event_clk_imp : " + extra);
+            InternalStat.reportEvent(mContext, "event_clk_imp", extra);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
-        InternalStat.reportEvent(mContext, "clk_imp_info", extra);
     }
 
     /**
