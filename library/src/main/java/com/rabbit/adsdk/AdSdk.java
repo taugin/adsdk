@@ -22,8 +22,6 @@ import com.rabbit.adsdk.utils.Utils;
 import com.rabbit.sunny.BuildConfig;
 import com.rabbit.sunny.MView;
 
-import org.json.JSONArray;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -433,9 +431,9 @@ public class AdSdk {
 
     public boolean isComplexAdsLoaded() {
         try {
-            List<String> cpxNames = parseStringList(DataManager.get(mContext).getString(Constant.COMPLEX_NAMES));
-            if (cpxNames != null && !cpxNames.isEmpty()) {
-                for (String name : cpxNames) {
+            List<String> placeList = DataManager.get(mContext).getPlaceList();
+            if (placeList != null && !placeList.isEmpty()) {
+                for (String name : placeList) {
                     AdPlaceLoader adPlaceLoader = mAdLoaders.get(name);
                     if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
                         Log.v(Log.TAG, "place name [" + name + "] is loaded");
@@ -459,10 +457,10 @@ public class AdSdk {
 
     public void showComplexAds() {
         try {
-            List<String> cpxNames = parseStringList(DataManager.get(mContext).getString(Constant.COMPLEX_NAMES));
+            List<String> placeList = DataManager.get(mContext).getPlaceList();
             List<AdPlaceLoader> list = new ArrayList<AdPlaceLoader>();
-            if (cpxNames != null && !cpxNames.isEmpty()) {
-                for (String name : cpxNames) {
+            if (placeList != null && !placeList.isEmpty()) {
+                for (String name : placeList) {
                     AdPlaceLoader adPlaceLoader = mAdLoaders.get(name);
                     if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
                         list.add(adPlaceLoader);
@@ -477,7 +475,7 @@ public class AdSdk {
                 }
             }
             if (list != null && !list.isEmpty()) {
-                if (cpxNames == null || cpxNames.isEmpty()) {
+                if (placeList == null || placeList.isEmpty()) {
                     List<String> finalCpxOrderList = Constant.DEFAULT_COMPLEX_ORDER;
                     Collections.sort(list, new Comparator<AdPlaceLoader>() {
                         @Override
@@ -651,24 +649,6 @@ public class AdSdk {
             return Utils.getString(mContext, Constant.AD_SDK_PREFIX + srcAdPlace, null);
         }
         return null;
-    }
-
-    private List<String> parseStringList(String str) {
-        List<String> list = null;
-        try {
-            JSONArray jarray = new JSONArray(str);
-            if (jarray != null && jarray.length() > 0) {
-                list = new ArrayList<String>(jarray.length());
-                for (int index = 0; index < jarray.length(); index++) {
-                    String s = jarray.getString(index);
-                    if (!TextUtils.isEmpty(s)) {
-                        list.add(s);
-                    }
-                }
-            }
-        } catch (Exception e) {
-        }
-        return list;
     }
 
     private Runnable mRewardLoadRunnable = new Runnable() {

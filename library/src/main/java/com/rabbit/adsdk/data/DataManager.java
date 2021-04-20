@@ -13,6 +13,9 @@ import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
 import com.rabbit.sunny.SpreadCfg;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -162,6 +165,28 @@ public class DataManager {
 
     public String getString(String key) {
         return DataConfigRemote.get(mContext).getString(key);
+    }
+
+    public List<String> getPlaceList() {
+        return parseStringList(DataManager.get(mContext).getString(Constant.COMPLEX_PLACES));
+    }
+
+    private List<String> parseStringList(String str) {
+        List<String> list = null;
+        try {
+            JSONArray jarray = new JSONArray(str);
+            if (jarray != null && jarray.length() > 0) {
+                list = new ArrayList<String>(jarray.length());
+                for (int index = 0; index < jarray.length(); index++) {
+                    String s = jarray.getString(index);
+                    if (!TextUtils.isEmpty(s)) {
+                        list.add(s);
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
 
     /**
