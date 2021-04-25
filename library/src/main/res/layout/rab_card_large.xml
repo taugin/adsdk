@@ -15,8 +15,7 @@
         <androidx.percentlayout.widget.PercentRelativeLayout
             android:id="@+id/rab_native_cover_info"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#33000000">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/rab_native_image_cover"
