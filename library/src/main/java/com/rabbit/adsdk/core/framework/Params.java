@@ -58,14 +58,6 @@ public class Params {
         this.adTitle = adTitle;
     }
 
-    public int getAdSubTitle() {
-        return adSubTitle;
-    }
-
-    public void setAdSubTitle(int adSubTitle) {
-        this.adSubTitle = adSubTitle;
-    }
-
     public int getAdIcon() {
         return adIcon;
     }

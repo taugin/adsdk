@@ -11,6 +11,7 @@ import java.util.Map;
 public interface IEvent {
     /**
      * 广告请求
+     *
      * @param context
      * @param placeName
      * @param sdk
@@ -21,6 +22,7 @@ public interface IEvent {
 
     /**
      * 广告请求成功
+     *
      * @param context
      * @param placeName
      * @param sdk
@@ -31,6 +33,7 @@ public interface IEvent {
 
     /**
      * 广告展示
+     *
      * @param context
      * @param placeName
      * @param sdk
@@ -41,6 +44,7 @@ public interface IEvent {
 
     /**
      * 广告展示
+     *
      * @param context
      * @param placeName
      * @param sdk
@@ -51,6 +55,7 @@ public interface IEvent {
 
     /**
      * 广告点击
+     *
      * @param context
      * @param placeName
      * @param sdk
@@ -61,6 +66,7 @@ public interface IEvent {
 
     /**
      * 广告点击
+     *
      * @param context
      * @param placeName
      * @param sdk
@@ -71,6 +77,7 @@ public interface IEvent {
 
     /**
      * 广告加载错误
+     *
      * @param context
      * @param error
      * @param sdk
@@ -81,6 +88,7 @@ public interface IEvent {
 
     /**
      * 广告关闭
+     *
      * @param context
      * @param placeName
      * @param sdk
@@ -91,6 +99,7 @@ public interface IEvent {
 
     /**
      * 广告加载成功时间
+     *
      * @param context
      * @param value
      */
@@ -98,6 +107,7 @@ public interface IEvent {
 
     /**
      * 广告加载成功时间
+     *
      * @param context
      * @param value
      */
@@ -105,6 +115,7 @@ public interface IEvent {
 
     /**
      * 上报FSA结束事件
+     *
      * @param context
      * @param key
      * @param value
@@ -113,6 +124,7 @@ public interface IEvent {
 
     /**
      * 顺序请求
+     *
      * @param context
      * @param placeName
      */
@@ -120,6 +132,7 @@ public interface IEvent {
 
     /**
      * 顺序已加载
+     *
      * @param context
      * @param placeName
      */
@@ -127,6 +140,7 @@ public interface IEvent {
 
     /**
      * 顺序失败
+     *
      * @param context
      * @param placeName
      */

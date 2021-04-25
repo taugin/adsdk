@@ -69,7 +69,6 @@ public class AdParams {
         sdkParams.setAdCardStyle(commonParams.getNativeCardStyle());
         sdkParams.setAdRootLayout(commonParams.getNativeRootLayout());
         sdkParams.setAdTitle(commonParams.getAdTitle());
-        sdkParams.setAdSubTitle(commonParams.getAdSubTitle());
         sdkParams.setAdSocial(commonParams.getAdSocial());
         sdkParams.setAdDetail(commonParams.getAdDetail());
         sdkParams.setAdIcon(commonParams.getAdIcon());
@@ -117,11 +116,6 @@ public class AdParams {
 
         public Builder setAdTitle(String sdk, int adTitle) {
             getParams(sdk).setAdTitle(adTitle);
-            return this;
-        }
-
-        public Builder setAdSubTitle(String sdk, int adSubTitle) {
-            getParams(sdk).setAdSubTitle(adSubTitle);
             return this;
         }
 

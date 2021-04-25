@@ -1,4 +1,5 @@
 <resources>
+
     <style name="RabButtonBaseStyle">
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
@@ -26,9 +27,11 @@
         <item name="android:background">@drawable/rab_action_bg</item>
         <item name="android:layout_height">40dp</item>
     </style>
+
     <style name="RabButtonMediumStyle" parent="RabButtonBaseStyle">
         <item name="android:background">@drawable/rab_action_bg</item>
     </style>
+
     <style name="RabButtonLargeStyle" parent="RabButtonBaseStyle">
         <item name="android:background">@drawable/rab_action_bg</item>
     </style>

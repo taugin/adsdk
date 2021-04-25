@@ -63,7 +63,7 @@ public class AdExtra {
      */
     public static final int ADMOB_SMART_BANNER = Constant.SMART_BANNER;
 
-   /**
+    /**
      * ADMOB banner尺寸 smart_banner
      */
     public static final int ADMOB_ADAPTIVE_BANNER = Constant.ADAPTIVE_BANNER;

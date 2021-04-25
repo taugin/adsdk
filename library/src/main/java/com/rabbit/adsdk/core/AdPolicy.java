@@ -94,7 +94,7 @@ public class AdPolicy {
 
     public boolean allowLoadByPercent(int percent) {
         if (percent <= 0 || percent > 100) return false;
-        return mRandom.nextInt(100)  < percent;
+        return mRandom.nextInt(100) < percent;
     }
 
     private String getShowCountKey(String placeName) {

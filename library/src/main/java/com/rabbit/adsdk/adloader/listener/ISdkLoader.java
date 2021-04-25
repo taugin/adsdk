@@ -20,6 +20,7 @@ public interface ISdkLoader {
     public Context getContext();
 
     public Activity getActivity();
+
     // 获取loader名称
     public String getSdkName();
 

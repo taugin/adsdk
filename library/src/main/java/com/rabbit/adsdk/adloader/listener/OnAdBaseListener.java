@@ -1,7 +1,8 @@
 package com.rabbit.adsdk.adloader.
-listener;
+        listener;
 
 import com.rabbit.adsdk.AdReward;
+
 /**
  * Listener for ad sdk
  */

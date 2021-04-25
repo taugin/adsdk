@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.rabbit.adsdk.log.Log;
-
 import androidx.annotation.Nullable;
+
+import com.rabbit.adsdk.log.Log;
 
 /**
  * Created by Administrator on 2018-10-16.

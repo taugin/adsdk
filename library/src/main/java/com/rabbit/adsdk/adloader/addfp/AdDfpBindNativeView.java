@@ -94,17 +94,10 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
 
         View titleView = rootView.findViewById(mParams.getAdTitle());
         View adCoverView = adView.findViewById(mParams.getAdCover());
-        // 由于dfp没有subTitle的接口，因此将使用subTitle或者detailView
-        View detailView = adView.findViewById(mParams.getAdDetail());
-        View subTitleView = adView.findViewById(mParams.getAdSubTitle());
-        View bodyView = detailView != null ? detailView : subTitleView;
-
+        View bodyView = adView.findViewById(mParams.getAdDetail());
         View ctaView = adView.findViewById(mParams.getAdAction());
-
         View adIconView = adView.findViewById(mParams.getAdIcon());
-
         View rateBarView = adView.getStarRatingView();
-
         if (titleView != null && isClickable(AD_TITLE, pidConfig)) {
             adView.setHeadlineView(titleView);
         }
@@ -233,7 +226,7 @@ public class AdDfpBindNativeView extends BaseBindNativeView {
                 images.add(image.getUri().toString());
             }
             String choiceStr = nativeAd.getAdChoicesInfo().getText().toString();
-            putValue(AD_CHOICES,  choiceStr + "-" + images.toString());
+            putValue(AD_CHOICES, choiceStr + "-" + images.toString());
         } catch (Exception e) {
         }
         try {

@@ -208,7 +208,7 @@ public class DataManager {
                     AdvertisingIdClient.Info info = AdvertisingIdClient.getAdvertisingIdInfo(mContext);
                     String gaid = info.getId();
                     boolean isLimited = info.isLimitAdTrackingEnabled();
-                    String gaidmd5= Utils.string2MD5(gaid);
+                    String gaidmd5 = Utils.string2MD5(gaid);
                     Log.iv(Log.TAG, "google advertising id (gaid) : " + gaid + " , is limit ad tracking : " + isLimited + " , gaid2 : " + gaidmd5);
                     Utils.putString(mContext, Constant.PREF_GAID, gaid);
                 } catch (Exception e) {

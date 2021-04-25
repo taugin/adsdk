@@ -307,7 +307,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
         return 0x1000004;
     }
-    
+
     public void notifyAdViewShowing(View view, PidConfig pidConfig, boolean staticRender) {
         updateCtaButtonBackground(view, pidConfig, mParams);
         updateClickView(view, pidConfig);
@@ -326,7 +326,6 @@ public class MopubBindNativeView extends BaseBindNativeView {
             Map<String, View> viewMap = new HashMap<String, View>();
             viewMap.put(AD_ICON, view.findViewById(mParams.getAdIcon()));
             viewMap.put(AD_TITLE, view.findViewById(mParams.getAdTitle()));
-            viewMap.put(AD_SUBTITLE, view.findViewById(mParams.getAdSubTitle()));
             viewMap.put(AD_DETAIL, view.findViewById(mParams.getAdDetail()));
             viewMap.put(AD_CTA, view.findViewById(mParams.getAdAction()));
             viewMap.put(AD_MEDIA, view.findViewById(mParams.getAdMediaView()));

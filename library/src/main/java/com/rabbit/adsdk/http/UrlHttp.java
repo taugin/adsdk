@@ -50,7 +50,7 @@ class UrlHttp {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 byte[] buf = new byte[1024];
                 int read = 0;
-                while((read = is.read(buf)) > 0) {
+                while ((read = is.read(buf)) > 0) {
                     baos.write(buf, 0, read);
                 }
                 is.close();
@@ -101,7 +101,7 @@ class UrlHttp {
     private void configConnection(HttpURLConnection conn) {
         // 配置https信任
         if (conn instanceof HttpsURLConnection) {
-            HttpsConfig.configHttps((HttpsURLConnection)conn);
+            HttpsConfig.configHttps((HttpsURLConnection) conn);
         }
         conn.setConnectTimeout(mRequest.getConnectTimeout());
         conn.setReadTimeout(mRequest.getReadTimeout());

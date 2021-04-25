@@ -86,7 +86,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             if (rootView.getParent() != null) {
                 ((ViewGroup) rootView.getParent()).removeView(rootView);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
 
@@ -94,17 +94,10 @@ public class AdmobBindNativeView extends BaseBindNativeView {
 
         View titleView = rootView.findViewById(mParams.getAdTitle());
         View adCoverView = adView.findViewById(mParams.getAdCover());
-        // 由于admob没有subTitle的接口，因此将使用subTitle或者detailView
-        View detailView = adView.findViewById(mParams.getAdDetail());
-        View subTitleView = adView.findViewById(mParams.getAdSubTitle());
-        View bodyView = detailView != null ? detailView : subTitleView;
-
+        View bodyView = adView.findViewById(mParams.getAdDetail());
         View ctaView = adView.findViewById(mParams.getAdAction());
-
         View adIconView = adView.findViewById(mParams.getAdIcon());
-
         View rateBarView = adView.getStarRatingView();
-
         if (titleView != null && isClickable(AD_TITLE, pidConfig)) {
             adView.setHeadlineView(titleView);
         }
@@ -127,14 +120,14 @@ public class AdmobBindNativeView extends BaseBindNativeView {
         // 设置广告元素内容
         if (!TextUtils.isEmpty(nativeAd.getHeadline())) {
             if (titleView instanceof TextView) {
-                ((TextView)titleView).setText(nativeAd.getHeadline());
+                ((TextView) titleView).setText(nativeAd.getHeadline());
                 titleView.setVisibility(View.VISIBLE);
             }
         }
 
         if (!TextUtils.isEmpty(nativeAd.getBody())) {
             if (bodyView instanceof TextView) {
-                ((TextView)bodyView).setText(nativeAd.getBody());
+                ((TextView) bodyView).setText(nativeAd.getBody());
                 bodyView.setVisibility(View.VISIBLE);
             }
         }
@@ -233,7 +226,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
                 images.add(image.getUri().toString());
             }
             String choiceStr = nativeAd.getAdChoicesInfo().getText().toString();
-            putValue(AD_CHOICES,  choiceStr + "-" + images.toString());
+            putValue(AD_CHOICES, choiceStr + "-" + images.toString());
         } catch (Exception e) {
         }
         try {

@@ -105,7 +105,7 @@ public class Http {
                 }
                 if (response != null && response.getStatusCode() == 200) {
                     parseResponse(r, response);
-                } else if (response != null){
+                } else if (response != null) {
                     deliverFailure(r, response.getStatusCode(), response.getError());
                 } else {
                     deliverFailure(r, -1, "unknown");
@@ -151,7 +151,7 @@ public class Http {
             String filePath = getCacheFilePath(request.getUrl());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             FileInputStream fis = new FileInputStream(filePath);
-            byte buf [] = new byte[1024];
+            byte buf[] = new byte[1024];
             int len = 0;
             while ((len = fis.read(buf)) > 0) {
                 baos.write(buf, 0, len);
@@ -265,13 +265,13 @@ public class Http {
 
 
     public static String parseCharset(Map<String, String> headers, String defaultCharset) {
-        String contentType = (String)headers.get("Content-Type");
-        if(contentType != null) {
+        String contentType = (String) headers.get("Content-Type");
+        if (contentType != null) {
             String[] params = contentType.split(";");
 
-            for(int i = 1; i < params.length; ++i) {
+            for (int i = 1; i < params.length; ++i) {
                 String[] pair = params[i].trim().split("=");
-                if(pair.length == 2 && pair[0].equals("charset")) {
+                if (pair.length == 2 && pair[0].equals("charset")) {
                     return pair[1];
                 }
             }

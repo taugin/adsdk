@@ -430,7 +430,7 @@ def modifyAppAttrResource(attrValue, attrName, channel, channelApk, flavorName, 
             def result = cmd.execute().text.trim()
             BufferedReader br = new BufferedReader(new StringReader(result))
             def line = null
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 line = line.trim()
                 if (line.startsWith("resource") && line.endsWith(attrValue)) {
                     println ":${project.name}:modifyAppAttrResource [" + flavorName + "][" + channel + "] Resource [" + line + "]"
@@ -441,7 +441,7 @@ def modifyAppAttrResource(attrValue, attrName, channel, channelApk, flavorName, 
                 }
             }
             br.close()
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace()
         }
         if (attrResourceId != null && attrResourceId.trim().length() > 0) {

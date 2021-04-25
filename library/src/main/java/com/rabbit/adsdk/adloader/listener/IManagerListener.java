@@ -11,15 +11,21 @@ import com.rabbit.adsdk.listener.OnAdSdkListener;
 public interface IManagerListener {
     /**
      * 获取banner和native的listener
+     *
      * @param loader
      * @return
      */
     OnAdBaseListener getAdBaseListener(ISdkLoader loader);
+
     void registerAdBaseListener(ISdkLoader loader, OnAdBaseListener l);
 
     OnAdSdkListener getOnAdPlaceLoaderListener();
+
     void setLoader(ISdkLoader adLoader);
+
     Activity getActivity();
+
     String getOriginPlaceName();
+
     String getAdMode();
 }

@@ -108,18 +108,6 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/rab_native_sub_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:ellipsize="marquee"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:textColor="@color/rab_secondaryColor"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-
-                <TextView
                     android:id="@+id/rab_native_social"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -145,10 +133,9 @@
             android:ellipsize="marquee"
             android:gravity="center"
             android:maxLines="3"
-            android:text="detail"
             android:textColor="@color/rab_secondaryColor"
             android:textSize="15sp"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/rab_native_action_btn"

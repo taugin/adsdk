@@ -21,6 +21,7 @@ public class HttpsConfig {
         trustAllHosts();
         connection.setHostnameVerifier(DO_NOT_VERIFY);
     }
+
     // always verify the host - dont check for certificate
     // 加次静态变量的目的是因为google play hui 验证HostnameVerifier的verify方法的安全性
     private static String[] VERIFY_HOST_NAME_ARRAY = new String[]{};

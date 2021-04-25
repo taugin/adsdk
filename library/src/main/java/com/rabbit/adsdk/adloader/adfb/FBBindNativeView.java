@@ -93,17 +93,14 @@ public class FBBindNativeView extends BaseBindNativeView {
         adView.addView(rootView);
 
         TextView titleView = rootView.findViewById(mParams.getAdTitle());
-        TextView subTitleView = rootView.findViewById(mParams.getAdSubTitle());
         ImageView icon = rootView.findViewById(mParams.getAdIcon());
         ImageView imageCover = rootView.findViewById(mParams.getAdCover());
         TextView socialView = rootView.findViewById(mParams.getAdSocial());
-        TextView detail = rootView.findViewById(mParams.getAdDetail());
+        TextView bodyView = rootView.findViewById(mParams.getAdDetail());
         TextView btnAction = rootView.findViewById(mParams.getAdAction());
         ViewGroup adChoiceContainer = rootView.findViewById(mParams.getAdChoices());
         MediaView mediaView = createMediaView(rootView.getContext());
         ViewGroup mediaLayout = rootView.findViewById(mParams.getAdMediaView());
-
-        TextView bodyView = detail != null ? detail : subTitleView;
 
         if (mediaLayout != null && mediaView != null) {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);

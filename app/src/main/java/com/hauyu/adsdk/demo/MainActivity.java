@@ -199,7 +199,6 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
         builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
-        builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
         builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
         builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
         builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
@@ -216,7 +215,6 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_large);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
         builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
-        builder.setAdSubTitle(AdExtra.AD_SDK_COMMON, R.id.common_sub_title);
         builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
         builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
         builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);

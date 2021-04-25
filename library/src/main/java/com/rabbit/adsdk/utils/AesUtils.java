@@ -58,7 +58,7 @@ public class AesUtils {
     }
 
     private static byte[] encrypt(byte[] key,
-                                  byte[] content)throws Exception {
+                                  byte[] content) throws Exception {
         SecretKeySpec localSecretKeySpec = new SecretKeySpec(key,
                 "AES");
         Cipher localCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");

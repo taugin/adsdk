@@ -14,7 +14,6 @@ public class SpreadCfg implements Serializable {
     private String icon;
     private String title;
     private String pkgname;
-    private String subTitle;
     private String detail;
     private String linkUrl;
     private String cta;
@@ -50,14 +49,6 @@ public class SpreadCfg implements Serializable {
 
     public void setPkgname(String pkgname) {
         this.pkgname = pkgname;
-    }
-
-    public String getSubTitle() {
-        return subTitle;
-    }
-
-    public void setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
     }
 
     public String getDetail() {
@@ -98,7 +89,6 @@ public class SpreadCfg implements Serializable {
                 "banner='" + banner + '\'' +
                 ", icon='" + icon + '\'' +
                 ", title='" + title + '\'' +
-                ", subTitle='" + subTitle + '\'' +
                 ", detail='" + detail + '\'' +
                 ", linkUrl='" + linkUrl + '\'' +
                 ", cta='" + cta + '\'' +

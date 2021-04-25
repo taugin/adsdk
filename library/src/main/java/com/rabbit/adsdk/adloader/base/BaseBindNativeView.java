@@ -33,7 +33,6 @@ import java.util.Random;
 public class BaseBindNativeView {
 
     protected static final String AD_TITLE = "title";
-    protected static final String AD_SUBTITLE = "subtitle";
     protected static final String AD_ICON = "icon";
     protected static final String AD_COVER = "cover";
     protected static final String AD_MEDIA = "media";
@@ -49,6 +48,7 @@ public class BaseBindNativeView {
     protected static final String AD_VIDEO = "video";
 
     private static final Map<String, Integer> LAYOUT_MAPS;
+
     static {
         LAYOUT_MAPS = new HashMap<String, Integer>();
         LAYOUT_MAPS.put("tiny", R.layout.rab_card_tiny);
@@ -192,7 +192,6 @@ public class BaseBindNativeView {
             return;
         }
         params.setAdTitle(R.id.rab_native_title);
-        params.setAdSubTitle(R.id.rab_native_sub_title);
         params.setAdSocial(R.id.rab_native_social);
         params.setAdDetail(R.id.rab_native_detail);
         params.setAdIcon(R.id.rab_native_icon);

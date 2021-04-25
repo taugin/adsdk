@@ -353,9 +353,6 @@ public class AdParser implements IParser {
                 if (jobj.has(PKGNAME)) {
                     spreadCfg.setPkgname(jobj.getString(PKGNAME));
                 }
-                if (jobj.has(SUBTITLE)) {
-                    spreadCfg.setSubTitle(jobj.getString(SUBTITLE));
-                }
                 if (jobj.has(DETAIL)) {
                     spreadCfg.setDetail(jobj.getString(DETAIL));
                 }

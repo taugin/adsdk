@@ -19,7 +19,6 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Base64;
 
 import com.rabbit.adsdk.log.Log;
 

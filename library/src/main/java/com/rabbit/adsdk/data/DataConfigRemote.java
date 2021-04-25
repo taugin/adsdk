@@ -15,7 +15,7 @@ import java.util.Locale;
  */
 
 @SuppressWarnings("unchecked")
-    public class DataConfigRemote {
+public class DataConfigRemote {
 
     private Context mContext;
     private static DataConfigRemote sDataConfigRemote;

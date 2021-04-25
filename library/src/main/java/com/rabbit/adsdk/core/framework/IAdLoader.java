@@ -28,29 +28,43 @@ public interface IAdLoader {
     public OnAdSdkListener getOnAdSdkListener();
 
     public boolean isInterstitialLoaded();
+
     public void loadInterstitial(Activity activity);
+
     public void showInterstitial();
 
     public boolean isRewardedVideoLoaded();
+
     public void loadRewardedVideo(Activity activity);
+
     public void showRewardedVideo();
 
     public boolean isAdViewLoaded();
+
     public void loadAdView(AdParams adParams);
+
     public void showAdView(ViewGroup adContainer, AdParams adParams);
 
     public boolean isComplexAdsLoaded();
+
     public String getLoadedType();
+
     public void loadComplexAds(AdParams adParams);
+
     public boolean showComplexAds(ViewGroup adContainer, AdParams adParams, String source, String adType);
 
     public boolean showComplexAds();
 
     public int getAdCount();
+
     public int getLoadedAdCount();
+
     public String getAdMode();
+
     public boolean isLoading();
+
     public void resume();
+
     public void pause();
 
     public void destroy();

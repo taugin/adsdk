@@ -11,7 +11,10 @@ import com.rabbit.adsdk.AdParams;
 
 public interface IAdvance {
     String ACT_VIEW_NAME = MView.class.getName();
+
     AdParams getAdParams(String adType);
+
     View getRootLayout(Context context, String adType);
+
     int getAdLayoutId(String adType);
 }

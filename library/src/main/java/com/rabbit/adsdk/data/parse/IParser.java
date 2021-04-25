@@ -94,7 +94,6 @@ public interface IParser {
     String ICON = "icon";
     String TITLE = "title";
     String PKGNAME = "pkgname";
-    String SUBTITLE = "subtitle";
     String DETAIL = "detail";
     String LINKURL = "linkurl";
     String CTA = "cta";

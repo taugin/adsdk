@@ -92,7 +92,6 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         View titleView = rootView.findViewById(mParams.getAdTitle());
         View adCoverView = rootView.findViewById(mParams.getAdCover());
         View detailView = rootView.findViewById(mParams.getAdDetail());
-        View subTitleView = rootView.findViewById(mParams.getAdSubTitle());
         View ctaView = rootView.findViewById(mParams.getAdAction());
 
         final View adIconView = rootView.findViewById(mParams.getAdIcon());
@@ -103,14 +102,6 @@ public class SpreadBindNativeView extends BaseBindNativeView {
                 ((TextView) titleView).setText(spreadCfg.getTitle());
                 titleView.setVisibility(View.VISIBLE);
                 titleView.setOnClickListener(mClickClass);
-            }
-        }
-
-        if (!TextUtils.isEmpty(spreadCfg.getSubTitle())) {
-            if (subTitleView instanceof TextView) {
-                ((TextView) subTitleView).setText(spreadCfg.getSubTitle());
-                subTitleView.setVisibility(View.VISIBLE);
-                subTitleView.setOnClickListener(mClickClass);
             }
         }
 
@@ -174,10 +165,6 @@ public class SpreadBindNativeView extends BaseBindNativeView {
     private void putAdvertiserInfo(SpreadCfg spreadCfg) {
         try {
             putValue(AD_TITLE, spreadCfg.getTitle());
-        } catch (Exception e) {
-        }
-        try {
-            putValue(AD_SUBTITLE, spreadCfg.getSubTitle());
         } catch (Exception e) {
         }
         try {
