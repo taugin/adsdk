@@ -23,6 +23,9 @@ import com.mopub.mobileads.MoPubRewardedAdManager;
 import com.mopub.mobileads.MoPubRewardedAds;
 import com.mopub.mobileads.MoPubRewardedVideos;
 import com.mopub.mobileads.MoPubView;
+import com.mopub.nativeads.FacebookAdRenderer;
+import com.mopub.nativeads.GooglePlayServicesAdRenderer;
+import com.mopub.nativeads.MoPubAdRenderer;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
 import com.mopub.nativeads.NativeAd;
@@ -579,6 +582,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     Log.v(Log.TAG, "");
                     reportAdImp();
                     notifyAdImp();
+                    logImpression();
                 }
 
                 @Override
@@ -620,6 +624,22 @@ public class MopubLoader extends AbstractSdkLoader {
             }
         } else {
             Log.e(Log.TAG, "nativeAd is null");
+        }
+    }
+
+    private void logImpression() {
+        try {
+            String network = Constant.AD_SDK_MOPUB;
+            if (lastUseNativeAd != null) {
+                MoPubAdRenderer adRenderer = lastUseNativeAd.getMoPubAdRenderer();
+                if (adRenderer instanceof GooglePlayServicesAdRenderer) {
+                    network = Constant.AD_SDK_ADMOB;
+                } else if (adRenderer instanceof FacebookAdRenderer) {
+                    network = Constant.AD_SDK_FACEBOOK;
+                }
+            }
+            Log.iv(Log.TAG, "impression network : " + network);
+        } catch (Exception e) {
         }
     }
 
