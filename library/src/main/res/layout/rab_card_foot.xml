@@ -27,8 +27,7 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginBottom="20dp"
-                android:contentDescription="@null"
-                android:visibility="gone" />
+                android:contentDescription="@null" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -137,7 +136,6 @@
                 android:layout_height="0dp"
                 android:contentDescription="@null"
                 android:gravity="center"
-                android:visibility="gone"
                 app:layout_aspectRatio="192%"
                 app:layout_widthPercent="100%" />
 

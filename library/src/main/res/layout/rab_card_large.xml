@@ -32,7 +32,6 @@
                 android:layout_height="0dp"
                 android:contentDescription="@null"
                 android:gravity="center"
-                android:visibility="gone"
                 app:layout_aspectRatio="192%"
                 app:layout_widthPercent="100%" />
 
@@ -61,8 +60,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_centerHorizontal="true"
-                android:contentDescription="@null"
-                android:visibility="gone" />
+                android:contentDescription="@null" />
 
             <LinearLayout
                 android:layout_width="match_parent"
