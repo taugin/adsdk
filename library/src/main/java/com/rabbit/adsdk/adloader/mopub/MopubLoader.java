@@ -638,7 +638,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     network = Constant.AD_SDK_FACEBOOK;
                 }
             }
-            Log.iv(Log.TAG, "impression network : " + network);
+            Log.v(Log.TAG, "network imp place name : " + getAdPlaceName() + " , sdk : " + network + " , type : " + getAdType());
         } catch (Exception e) {
         }
     }
