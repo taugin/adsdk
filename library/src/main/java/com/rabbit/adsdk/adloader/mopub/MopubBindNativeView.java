@@ -90,7 +90,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         View rootView = null;
         try {
             rootView = LayoutInflater.from(context).inflate(rootLayout, null);
-            bindStaticRender(context, nativeAd, rootView);
+            bindMopubcRender(context, nativeAd, rootView);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         } catch (Error e) {
@@ -116,7 +116,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
     }
 
-    private void bindStaticRender(Context context, MoPubNative nativeAd, View layout) {
+    private void bindMopubcRender(Context context, MoPubNative nativeAd, View layout) {
         MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(moPubAdRenderer);
     }

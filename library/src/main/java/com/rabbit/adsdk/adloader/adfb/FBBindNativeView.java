@@ -47,10 +47,10 @@ public class FBBindNativeView extends BaseBindNativeView {
 
         if (rootLayout > 0) {
             bindNativeViewWithRootView(adContainer, rootLayout, nativeAd, pidConfig);
+            updateCtaButtonBackground(adContainer, pidConfig, mParams);
         } else {
             Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
         }
-        updateCtaButtonBackground(adContainer, pidConfig, mParams);
     }
 
     /**
