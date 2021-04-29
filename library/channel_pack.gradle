@@ -17,6 +17,15 @@ static def getDate() {
 @groovy.transform.Field
 Map<String, Map<String, String>> channelFileMap = new HashMap<String, Map<String, String>>()
 
+class Global {
+    static def sAxmlEditorFilePath = null
+    static def s7ZipCommandPath = null
+}
+
+def getChannelPackVersion() {
+    return "1.0.3"
+}
+
 def getAxmlGroupId() {
     return "cn.wjdiankong"
 }
@@ -38,6 +47,7 @@ def getAxmlFileName() {
 }
 
 afterEvaluate {
+    println ":${project.name}:ChannelPackVersion [" + getChannelPackVersion() + "]"
     project.configurations.provided.setCanBeResolved(true)
     project.configurations.api.setCanBeResolved(true)
     project.dependencies.add("provided", getAxmlImplementation())
@@ -111,6 +121,8 @@ def generateMulChannel(flavor) {
         System.err.println ":${project.name}:generateMulChannel [" + flavorName + "] Channel Files is Empty"
         return
     }
+    Global.sAxmlEditorFilePath = getAXMLEditJarFile()
+    Global.s7ZipCommandPath = get7ZipCmd()
     def aaptFile = getAaptFile()
     if (aaptFile == null || !new File(aaptFile).exists()) {
         System.err.println ":${project.name}:generateMulChannel [" + flavorName + "] AaptFile is not exist"
@@ -263,10 +275,7 @@ def modifyAndroidManifest(baseApk, channel, channelApk, releaseDir, flavorName, 
     if (needModifyAndroidManifest(channelKey, channelCfg, channel)) {
         println ":${project.name}:modifyAndroidManifest [" + flavorName + "][" + channel + "] BaseApk [" + baseApk + "]"
         println ":${project.name}:modifyAndroidManifest [" + flavorName + "][" + channel + "] Channel [" + new File(channelApk).getName() + "]"
-        def aXMLEditorJarFile = getAXMLEditJarFile2(flavorName, channel)
-        if (aXMLEditorJarFile == null || !new File(aXMLEditorJarFile).exists()) {
-            aXMLEditorJarFile = getAXMLEditJarFile(flavorName, channel)
-        }
+        def aXMLEditorJarFile = Global.sAxmlEditorFilePath
         if (aXMLEditorJarFile == null || !new File(aXMLEditorJarFile).exists()) {
             System.err.println ":${project.name}:modifyAndroidManifest [" + flavorName + "][" + channel + "] AXMLEditor.jar [" + aXMLEditorJarFile + "] is not exists"
             return
@@ -582,7 +591,65 @@ def deleteApkSignInfo(flavorName, apkFile, aaptFile, channel) {
     return true
 }
 
+def get7ZipCmd() {
+    def axmlFile = Global.sAxmlEditorFilePath
+    def platform = "windows"
+    def ext = ".exe"
+    if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+        platform = "windows"
+        ext = ".exe"
+    } else if (org.gradle.internal.os.OperatingSystem.current().isLinux()) {
+        platform = "linux"
+        ext = ""
+    } else if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
+        platform = "mac"
+        ext = ""
+    }
+    def tempDir = System.getProperty("java.io.tmpdir")
+    def fromPath = String.format(Locale.getDefault(), "7z/%s/7z%s", platform, ext)
+    def destPath = new File(tempDir, fromPath).getAbsolutePath()
+    def destFile = new File(destPath)
+    destFile.getParentFile().mkdirs()
+    def exist = destFile.exists()
+    println ":${project.name}:get7ZipCmd axmlFile : " + axmlFile
+    println ":${project.name}:get7ZipCmd fromPath : " + fromPath
+    println ":${project.name}:get7ZipCmd destPath : " + destPath
+    println ":${project.name}:get7ZipCmd 7z Exist : " + exist
+    if (!exist) {
+        def result = copyFileFromZipFile(axmlFile, fromPath, destPath)
+        println ":${project.name}:get7ZipCmd Result : " + result
+    }
+    exist = destFile.exists()
+    println ":${project.name}:get7ZipCmd 7z Exist : " + exist
+    if (exist) {
+        destFile.setExecutable(true, false);
+    }
+    return destFile.getAbsolutePath()
+}
 
+def getAppendCmdListByAapt(apkFile, aaptFile, fileList) {
+    def cmd = []
+    cmd.add(aaptFile)
+    cmd.add("a")
+    cmd.add("-v")
+    cmd.add(apkFile)
+    fileList.each {
+        cmd.add(it)
+    }
+    return cmd
+}
+
+def getAppendCmdListBy7z(apkFile, sevenZip, fileList) {
+    def cmd = []
+    cmd.add(sevenZip)
+    cmd.add("a")
+    cmd.add("-tzip")
+    cmd.add(apkFile)
+    fileList.each {
+        cmd.add(it)
+    }
+    return cmd
+}
 /**
  * 添加文件到apk
  * @param workDir
@@ -592,13 +659,12 @@ def deleteApkSignInfo(flavorName, apkFile, aaptFile, channel) {
  * @return
  */
 def appendFilesToApk(workDir, apkFile, aaptFile, fileList) {
+    def sevenZip = Global.s7ZipCommandPath
     def cmd = []
-    cmd.add(aaptFile)
-    cmd.add("a")
-    cmd.add("-v")
-    cmd.add(apkFile)
-    fileList.each {
-        cmd.add(it)
+    if (sevenZip != null && new File(sevenZip).exists()) {
+        cmd = getAppendCmdListBy7z(apkFile, sevenZip, fileList)
+    } else {
+        cmd = getAppendCmdListByAapt(apkFile, aaptFile, fileList)
     }
     def cmdString = cmd.join(" ")
     println ":${project.name}:appendFilesToApk Command : " + optimizeCommand(cmdString)
@@ -613,6 +679,30 @@ def appendFilesToApk(workDir, apkFile, aaptFile, fileList) {
     }
 }
 
+def getDeleteCmdListByAapt(apkFile, aaptFile, fileList) {
+    def cmd = []
+    cmd.add(aaptFile)
+    cmd.add("r")
+    cmd.add("-v")
+    cmd.add(apkFile)
+    fileList.each {
+        cmd.add(it)
+    }
+    return cmd
+}
+
+def getDeleteCmdListBy7z(apkFile, sevenZip, fileList) {
+    def cmd = []
+    cmd.add(sevenZip)
+    cmd.add("d")
+    cmd.add("-tzip")
+    cmd.add(apkFile)
+    fileList.each {
+        cmd.add(it)
+    }
+    return cmd
+}
+
 /**
  * 从apk中删除文件
  * @param apkFile
@@ -621,13 +711,12 @@ def appendFilesToApk(workDir, apkFile, aaptFile, fileList) {
  * @return
  */
 def deleteFilesFromApk(apkFile, aaptFile, fileList) {
+    def sevenZip = Global.s7ZipCommandPath
     def cmd = []
-    cmd.add(aaptFile)
-    cmd.add("r")
-    cmd.add("-v")
-    cmd.add(apkFile)
-    fileList.each {
-        cmd.add(it)
+    if (sevenZip != null && new File(sevenZip).exists()) {
+        cmd = getDeleteCmdListBy7z(apkFile, sevenZip, fileList)
+    } else {
+        cmd = getDeleteCmdListByAapt(apkFile, aaptFile, fileList)
     }
     def cmdList = cmd.join(" ")
     println ":${project.name}:deleteFilesFromApk Command [" + optimizeCommand(cmdList) + "]"
@@ -707,30 +796,73 @@ def printOutput(Process p) {
  * @param apkFile
  * @param flavorName
  * @param filePath
- * @param outputFile
+ * @param outputPath
  * @param channel
  * @return
  */
-def copyManifestFromApk(apkFile, flavorName, String filePath, String outputFile, channel) {
-    println ":${project.name}  :copyManifestFromApk [" + flavorName + "][" + channel + "] FromXml [" + filePath + "] to " + "[" + outputFile + "]"
+def copyManifestFromApk(inputFile, flavorName, String filePath, String outputPath, channel) {
+    println ":${project.name}  :copyManifestFromApk [" + flavorName + "][" + channel + "] FromXml [" + filePath + "] to " + "[" + outputPath + "]"
+    def copyResult = false;
     try {
-        ZipFile zipFile = new ZipFile(apkFile)
+        ZipFile zipFile = new ZipFile(inputFile)
         ZipEntry zipEntry = zipFile.getEntry(filePath)
-        InputStream is = zipFile.getInputStream(zipEntry)
-        FileOutputStream fos = new FileOutputStream(outputFile)
-        int read = 0;
-        byte[] buf = new byte[1024];
-        while ((read = is.read(buf)) > 0) {
-            fos.write(buf, 0, read)
+        if (zipEntry != null) {
+            InputStream is = zipFile.getInputStream(zipEntry)
+            FileOutputStream fos = new FileOutputStream(outputPath)
+            int read = 0;
+            byte[] buf = new byte[1024];
+            while ((read = is.read(buf)) > 0) {
+                fos.write(buf, 0, read)
+            }
+            fos.close()
+            is.close()
+            zipFile.close()
+            copyResult = true;
+        } else {
+            zipFile.close()
         }
-        fos.close()
-        is.close()
-        zipFile.close()
-        return true
     } catch (Exception e) {
         e.printStackTrace()
+        copyResult = false;
     }
-    return false
+    return copyResult
+}
+
+/**
+ * 从apk中copy文件
+ * @param inputFile
+ * @param flavorName
+ * @param filePath
+ * @param outputPath
+ * @param channel
+ * @return
+ */
+def copyFileFromZipFile(inputFile, String filePath, String outputPath) {
+    println ":${project.name}:copyFileFromZipFile From ZipFile [" + inputFile + "] copy [" + filePath + "] to " + "[" + outputPath + "]"
+    def copyResult = false;
+    try {
+        ZipFile zipFile = new ZipFile(inputFile)
+        ZipEntry zipEntry = zipFile.getEntry(filePath)
+        if (zipEntry != null) {
+            InputStream is = zipFile.getInputStream(zipEntry)
+            FileOutputStream fos = new FileOutputStream(outputPath)
+            int read = 0;
+            byte[] buf = new byte[1024];
+            while ((read = is.read(buf)) > 0) {
+                fos.write(buf, 0, read)
+            }
+            fos.close()
+            is.close()
+            zipFile.close()
+            copyResult = true;
+        } else {
+            zipFile.close()
+        }
+    } catch (Exception e) {
+        e.printStackTrace()
+        copyResult = false;
+    }
+    return copyResult
 }
 
 /**
@@ -962,34 +1094,22 @@ def getAaptFile() {
  * @param channel
  * @return
  */
-def getAXMLEditJarFile(flavorName, channel) {
+def getAXMLEditJarFile() {
     def rootDir = getRootDir()
     def aXmlEditJarFile = new File(rootDir, "AXMLEditor.jar")
-    if (!aXmlEditJarFile.exists()) {
-        System.err.println ":${project.name}:getAXMLEditorJarFile [" + flavorName + "][" + channel + "] Should AXMLEditor.jar in [" + rootDir + "]"
+    if (aXmlEditJarFile.exists()) {
+        return aXmlEditJarFile.getAbsolutePath()
+    } else {
+        System.err.println ":${project.name}:getAXMLEditorFile Can not find AXMLEditor.jar in [" + rootDir + "]"
     }
-    return aXmlEditJarFile.getAbsolutePath()
-}
-
-/**
- * 获取axmleditor文件路径
- * @param flavorName
- * @param channel
- * @return
- */
-def getAXMLEditJarFile2(flavorName, channel) {
-    try {
-        def aXmlEditJarFile = project.configurations.provided*.toURI().find {
-            URI uri ->
-                new File(uri).name == getAxmlFileName()
-        }
-        if (aXmlEditJarFile == null || !new File(aXmlEditJarFile).exists()) {
-            System.err.println ":${project.name}:getAXMLEditorJarFile [" + flavorName + "][" + channel + "] Should add dependencies [provided '" + getAxmlImplementation() + "] in app.dependencies"
-            return null
-        }
+    aXmlEditJarFile = project.configurations.provided*.toURI().find {
+        URI uri ->
+            new File(uri).name == getAxmlFileName()
+    }
+    if (aXmlEditJarFile != null && new File(aXmlEditJarFile).exists()) {
         return new File(aXmlEditJarFile).getAbsolutePath()
-    } catch (Exception e) {
-        e.printStackTrace()
+    } else {
+        System.err.println ":${project.name}:getAXMLEditorFile Can not find dependencies [provided '" + getAxmlImplementation() + "] in app.dependencies"
     }
     return null
 }
