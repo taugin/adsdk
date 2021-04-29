@@ -105,9 +105,34 @@ try {
 
 class Global {
     static Map<String, String> flavorMap = new HashMap<String, String>()
+    static def sAxmlEditorFilePath = null
+    static def s7ZipCommandPath = null
+}
+
+def getAxmlGroupId() {
+    return "cn.wjdiankong"
+}
+
+def getAxmlArtifactId() {
+    return "axmleditor"
+}
+
+def getAxmlVersion() {
+    return "1.0.3"
+}
+
+def getAxmlImplementation() {
+    return getAxmlGroupId() + ":" + getAxmlArtifactId() + ":" + getAxmlVersion()
+}
+
+def getAxmlFileName() {
+    return getAxmlArtifactId() + "-" + getAxmlVersion() + ".jar"
 }
 
 project.afterEvaluate {
+    project.configurations.provided.setCanBeResolved(true)
+    project.configurations.api.setCanBeResolved(true)
+    project.dependencies.add("provided", getAxmlImplementation())
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
             def productFlavor = toUpperCaseFirstOne(flavor.name)
@@ -162,11 +187,13 @@ project.afterEvaluate {
         })
         generateAdFileTask.setGroup("adsdk")
     }
+
     def setHauYuLogVerboseTask = project.tasks.create("setHauYuLogVerbose", {
         doLast {
             setHauYuLogVerbose()
         }
     })
+
     setHauYuLogVerboseTask.setGroup("adsdk")
 
     def addDebugFileTask = project.tasks.create("addDebugFile", {
@@ -195,14 +222,6 @@ project.afterEvaluate {
             }
         }
     }
-}
-
-def getSuffix1() {
-    return ".dat"
-}
-
-def getSuffix2() {
-    return ".json"
 }
 
 def isWindows() {
@@ -347,6 +366,8 @@ def getSignConfig(flavor) {
  * @return
  */
 def encryptAssetsFilesFromApk(flavor) {
+    Global.sAxmlEditorFilePath = getAXMLEditJarFile()
+    Global.s7ZipCommandPath = get7ZipCmd()
     def flavorName = flavor != null ? flavor : ""
     def outputFile = Global.flavorMap.get(flavorName)
     println "> Task :${project.name}:encryptAssetsFilesFromApk flavorName : " + flavorName
@@ -475,6 +496,129 @@ def deleteTempAssetsFile(workDir, encryptNames) {
     assetsDir.delete()
 }
 
+
+/**
+ * 从apk中copy文件
+ * @param inputFile
+ * @param flavorName
+ * @param filePath
+ * @param outputPath
+ * @param channel
+ * @return
+ */
+def copyFileFromZipFile(inputFile, String filePath, String outputPath) {
+    println ":${project.name}:copyFileFromZipFile From ZipFile [" + inputFile + "] copy [" + filePath + "] to " + "[" + outputPath + "]"
+    def copyResult = false;
+    try {
+        ZipFile zipFile = new ZipFile(inputFile)
+        ZipEntry zipEntry = zipFile.getEntry(filePath)
+        if (zipEntry != null) {
+            InputStream is = zipFile.getInputStream(zipEntry)
+            FileOutputStream fos = new FileOutputStream(outputPath)
+            int read = 0;
+            byte[] buf = new byte[1024];
+            while ((read = is.read(buf)) > 0) {
+                fos.write(buf, 0, read)
+            }
+            fos.close()
+            is.close()
+            zipFile.close()
+            copyResult = true;
+        } else {
+            zipFile.close()
+        }
+    } catch (Exception e) {
+        e.printStackTrace()
+        copyResult = false;
+    }
+    return copyResult
+}
+
+/**
+ * 获取axmleditor文件路径
+ * @param flavorName
+ * @param channel
+ * @return
+ */
+def getAXMLEditJarFile() {
+    def rootDir = getRootDir()
+    def aXmlEditJarFile = new File(rootDir, "AXMLEditor.jar")
+    if (aXmlEditJarFile.exists()) {
+        return aXmlEditJarFile.getAbsolutePath()
+    } else {
+        System.err.println ":${project.name}:getAXMLEditorFile Can not find AXMLEditor.jar in [" + rootDir + "]"
+    }
+    aXmlEditJarFile = project.configurations.provided*.toURI().find {
+        URI uri ->
+            new File(uri).name == getAxmlFileName()
+    }
+    if (aXmlEditJarFile != null && new File(aXmlEditJarFile).exists()) {
+        return new File(aXmlEditJarFile).getAbsolutePath()
+    } else {
+        System.err.println ":${project.name}:getAXMLEditorFile Can not find dependencies [provided '" + getAxmlImplementation() + "] in app.dependencies"
+    }
+    return null
+}
+
+def get7ZipCmd() {
+    def axmlFile = Global.sAxmlEditorFilePath
+    def platform = "windows"
+    def ext = ".exe"
+    if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+        platform = "windows"
+        ext = ".exe"
+    } else if (org.gradle.internal.os.OperatingSystem.current().isLinux()) {
+        platform = "linux"
+        ext = ""
+    } else if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
+        platform = "mac"
+        ext = ""
+    }
+    def tempDir = System.getProperty("java.io.tmpdir")
+    def fromPath = String.format(Locale.getDefault(), "7z/%s/7z%s", platform, ext)
+    def destPath = new File(tempDir, fromPath).getAbsolutePath()
+    def destFile = new File(destPath)
+    destFile.getParentFile().mkdirs()
+    def exist = destFile.exists()
+    println ":${project.name}:get7ZipCmd axmlFile : " + axmlFile
+    println ":${project.name}:get7ZipCmd fromPath : " + fromPath
+    println ":${project.name}:get7ZipCmd destPath : " + destPath
+    println ":${project.name}:get7ZipCmd 7z Exist : " + exist
+    if (!exist) {
+        def result = copyFileFromZipFile(axmlFile, fromPath, destPath)
+        println ":${project.name}:get7ZipCmd Result : " + result
+    }
+    exist = destFile.exists()
+    println ":${project.name}:get7ZipCmd 7z Exist : " + exist
+    if (exist) {
+        destFile.setExecutable(true, false);
+    }
+    return destFile.getAbsolutePath()
+}
+
+def getAppendCmdListByAapt(apkFile, aaptFile, fileList) {
+    def cmd = []
+    cmd.add(aaptFile)
+    cmd.add("a")
+    cmd.add("-v")
+    cmd.add(apkFile)
+    fileList.each {
+        cmd.add(it)
+    }
+    return cmd
+}
+
+def getAppendCmdListBy7z(apkFile, sevenZip, fileList) {
+    def cmd = []
+    cmd.add(sevenZip)
+    cmd.add("a")
+    cmd.add("-tzip")
+    cmd.add(apkFile)
+    fileList.each {
+        cmd.add(it)
+    }
+    return cmd
+}
 /**
  * 添加文件到apk
  * @param workDir
@@ -484,16 +628,15 @@ def deleteTempAssetsFile(workDir, encryptNames) {
  * @return
  */
 def appendFilesIntoApk(workDir, apkFile, aaptFile, fileList) {
+    def sevenZip = Global.s7ZipCommandPath
     def cmd = []
-    cmd.add(aaptFile)
-    cmd.add("a")
-    cmd.add("-v")
-    cmd.add(apkFile)
-    fileList.each {
-        cmd.add(it)
+    if (sevenZip != null && new File(sevenZip).exists()) {
+        cmd = getAppendCmdListBy7z(apkFile, sevenZip, fileList)
+    } else {
+        cmd = getAppendCmdListByAapt(apkFile, aaptFile, fileList)
     }
     def cmdString = cmd.join(" ")
-    println "> Task :${project.name}:appendFilesIntoApk Command [" + optimizeCommand(cmdString) + "]"
+    println ":${project.name}:appendFilesIntoApk Command [" + optimizeCommand(cmdString) + "]"
     try {
         Process p = cmdString.execute(null, new File(workDir))
         p.waitFor(20, TimeUnit.SECONDS)
@@ -505,14 +648,7 @@ def appendFilesIntoApk(workDir, apkFile, aaptFile, fileList) {
     }
 }
 
-/**
- * 从apk中删除文件
- * @param apkFile
- * @param aaptFile
- * @param fileList
- * @return
- */
-def deleteFilesFromApk(apkFile, aaptFile, fileList) {
+def getDeleteCmdListByAapt(apkFile, aaptFile, fileList) {
     def cmd = []
     cmd.add(aaptFile)
     cmd.add("r")
@@ -521,8 +657,38 @@ def deleteFilesFromApk(apkFile, aaptFile, fileList) {
     fileList.each {
         cmd.add(it)
     }
+    return cmd
+}
+
+def getDeleteCmdListBy7z(apkFile, sevenZip, fileList) {
+    def cmd = []
+    cmd.add(sevenZip)
+    cmd.add("d")
+    cmd.add("-tzip")
+    cmd.add(apkFile)
+    fileList.each {
+        cmd.add(it)
+    }
+    return cmd
+}
+
+/**
+ * 从apk中删除文件
+ * @param apkFile
+ * @param aaptFile
+ * @param fileList
+ * @return
+ */
+def deleteFilesFromApk(apkFile, aaptFile, fileList) {
+    def sevenZip = Global.s7ZipCommandPath
+    def cmd = []
+    if (sevenZip != null && new File(sevenZip).exists()) {
+        cmd = getDeleteCmdListBy7z(apkFile, sevenZip, fileList)
+    } else {
+        cmd = getDeleteCmdListByAapt(apkFile, aaptFile, fileList)
+    }
     def cmdList = cmd.join(" ")
-    println "> Task :${project.name}:deleteFilesFromApk Command [" + optimizeCommand(cmdList) + "]"
+    println ":${project.name}:deleteFilesFromApk Command [" + optimizeCommand(cmdList) + "]"
     try {
         def startTime = System.currentTimeMillis()
         Process p = cmdList.execute()
@@ -530,10 +696,11 @@ def deleteFilesFromApk(apkFile, aaptFile, fileList) {
         p.destroy()
         def endTime = System.currentTimeMillis()
         def signTime = (endTime - startTime) / 1000
-        println "> Task :${project.name}:deleteFilesFromApk Command [Delete File From Apk Use Time " + signTime + "s]"
+        println ":${project.name}:deleteFilesFromApk Command [Delete File From Apk Use Time " + signTime + "s]"
     } catch (Exception e) {
     }
 }
+
 /**
  * 为apk包签名
  * @param flavorName
