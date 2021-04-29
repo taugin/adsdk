@@ -48,10 +48,10 @@ public class SpreadBindNativeView extends BaseBindNativeView {
 
         if (rootLayout > 0) {
             bindNativeViewWithRootView(adContainer, rootLayout, pidConfig, spreadCfg);
+            updateCtaButtonBackground(adContainer, pidConfig, mParams);
         } else {
             Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
         }
-        updateCtaButtonBackground(adContainer, pidConfig, mParams);
     }
 
     private void bindNativeViewWithRootView(ViewGroup adContainer, int rootLayout, PidConfig pidConfig, SpreadCfg spreadCfg) {
