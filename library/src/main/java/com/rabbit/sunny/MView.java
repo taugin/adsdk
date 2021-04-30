@@ -74,6 +74,16 @@ public class MView extends View {
                 }
                 return super.getApplicationContext();
             }
+
+            @Override
+            public String getLocalClassName() {
+                try {
+                    return super.getLocalClassName();
+                } catch (Exception | Error e) {
+                    Log.e(Log.TAG, "error : " + e);
+                }
+                return MView.class.getName();
+            }
         };
         try {
             Class ContextWrapperClass = Class.forName("android.content.ContextWrapper");
