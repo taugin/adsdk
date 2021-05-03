@@ -110,7 +110,7 @@ public class EventImpl implements IEvent {
 
     private boolean checkArgument(Context context, String placeName, String sdk, String type) {
         if (context == null || TextUtils.isEmpty(placeName) || TextUtils.isEmpty(sdk) || TextUtils.isEmpty(type)) {
-            Log.iv(Log.TAG, "context == null or placeName == null or sdk == null or type all must not be empty or null");
+            Log.iv(Log.TAG, "context == null or place name == null or sdk == null or type all must not be empty or null");
             return false;
         }
         return true;

@@ -140,6 +140,31 @@ public class AdExtra {
     public static final int NATIVE_CARD_TINY = Constant.NATIVE_CARD_TINY;
 
     /**
+     * 原生广告模板值
+     */
+    public static final int NATIVE_CARD_MICRO = Constant.NATIVE_CARD_MICRO;
+
+    /**
+     * 原生广告模板值
+     */
+    public static final int NATIVE_CARD_WRAP = Constant.NATIVE_CARD_WRAP;
+
+    /**
+     * 原生广告模板值
+     */
+    public static final int NATIVE_CARD_HEAD = Constant.NATIVE_CARD_HEAD;
+
+    /**
+     * 原生广告模板值
+     */
+    public static final int NATIVE_CARD_MIX = Constant.NATIVE_CARD_MIX;
+
+    /**
+     * 原生广告模板值
+     */
+    public static final int NATIVE_CARD_FOOT = Constant.NATIVE_CARD_FOOT;
+
+    /**
      * BANNER类型
      */
     public static final String AD_TYPE_BANNER = Constant.TYPE_BANNER;

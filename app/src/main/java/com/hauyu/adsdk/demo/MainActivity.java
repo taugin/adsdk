@@ -40,11 +40,16 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
 
     static {
         LAYOUT_MAP = new HashMap<>();
+        LAYOUT_MAP.put("micro", AdExtra.NATIVE_CARD_MICRO);
         LAYOUT_MAP.put("tiny", AdExtra.NATIVE_CARD_TINY);
         LAYOUT_MAP.put("small", AdExtra.NATIVE_CARD_SMALL);
         LAYOUT_MAP.put("medium", AdExtra.NATIVE_CARD_MEDIUM);
         LAYOUT_MAP.put("large", AdExtra.NATIVE_CARD_LARGE);
+        LAYOUT_MAP.put("wrap", AdExtra.NATIVE_CARD_WRAP);
         LAYOUT_MAP.put("full", AdExtra.NATIVE_CARD_FULL);
+        LAYOUT_MAP.put("head", AdExtra.NATIVE_CARD_HEAD);
+        LAYOUT_MAP.put("mix", AdExtra.NATIVE_CARD_MIX);
+        LAYOUT_MAP.put("foot", AdExtra.NATIVE_CARD_FOOT);
     }
 
     private static final String TAG = "MA";

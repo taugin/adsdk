@@ -136,7 +136,7 @@ public class AdSdk {
         // 获取引用的PlaceName
         String refPlaceName = getAdRefPlaceName(placeName);
 
-        Log.v(Log.TAG, "placeName : " + placeName + " , refPlaceName : " + refPlaceName);
+        Log.v(Log.TAG, "place name : " + placeName + " , refPlaceName : " + refPlaceName);
         boolean useShareObject = false;
         // 如果共享loader对象
         if (!TextUtils.equals(placeName, refPlaceName) && isRefShare(refPlaceName)) {

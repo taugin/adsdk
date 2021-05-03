@@ -51,10 +51,12 @@ public class BaseBindNativeView {
 
     static {
         LAYOUT_MAPS = new HashMap<String, Integer>();
+        LAYOUT_MAPS.put("micro", R.layout.rab_card_micro);
         LAYOUT_MAPS.put("tiny", R.layout.rab_card_tiny);
         LAYOUT_MAPS.put("small", R.layout.rab_card_small);
         LAYOUT_MAPS.put("medium", R.layout.rab_card_medium);
         LAYOUT_MAPS.put("large", R.layout.rab_card_large);
+        LAYOUT_MAPS.put("wrap", R.layout.rab_card_wrap);
         LAYOUT_MAPS.put("full", R.layout.rab_card_full);
         LAYOUT_MAPS.put("mix", R.layout.rab_card_mix);
         LAYOUT_MAPS.put("foot", R.layout.rab_card_foot);
@@ -180,8 +182,18 @@ public class BaseBindNativeView {
                 layoutId = R.layout.rab_card_full;
             } else if (template == Constant.NATIVE_CARD_TINY) {
                 layoutId = R.layout.rab_card_tiny;
+            } else if (template == Constant.NATIVE_CARD_MICRO) {
+                layoutId = R.layout.rab_card_micro;
+            } else if (template == Constant.NATIVE_CARD_WRAP) {
+                layoutId = R.layout.rab_card_wrap;
+            } else if (template == Constant.NATIVE_CARD_HEAD) {
+                layoutId = R.layout.rab_card_head;
+            } else if (template == Constant.NATIVE_CARD_MIX) {
+                layoutId = R.layout.rab_card_mix;
+            } else if (template == Constant.NATIVE_CARD_FOOT) {
+                layoutId = R.layout.rab_card_foot;
             } else {
-                layoutId = R.layout.rab_card_large;
+                layoutId = R.layout.rab_card_tiny;
             }
         }
         return layoutId;

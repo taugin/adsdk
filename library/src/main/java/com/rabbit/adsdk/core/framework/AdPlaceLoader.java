@@ -96,7 +96,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public boolean needReload(AdPlace adPlace) {
         if (mAdPlace != null && adPlace != null) {
-            Log.d(Log.TAG, "placeName : " + mAdPlace.getName() + " , usingUnique : " + mAdPlace.getUniqueValue() + " , remoteUnique : " + adPlace.getUniqueValue());
+            Log.d(Log.TAG, "place name : " + mAdPlace.getName() + " , using unique : " + mAdPlace.getUniqueValue() + " , remote unique : " + adPlace.getUniqueValue());
             return !TextUtils.equals(mAdPlace.getUniqueValue(), adPlace.getUniqueValue());
         }
         return false;
@@ -1446,7 +1446,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         public void onLoaded(String placeName, String source, String adType, String pid) {
             resetRetryTimes(placeName, source, adType);
             if (hasNotifyLoaded()) {
-                Log.v(Log.TAG, "has notify loaded ******************");
+                Log.iv(Log.TAG, "place name : " + placeName + " , sdk : " + source + " , type : " + adType + " is loaded, but has already notified ******************");
                 return;
             }
             notifyAdLoaded();

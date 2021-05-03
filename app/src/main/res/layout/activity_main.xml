@@ -15,6 +15,16 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/micro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:tag="micro"
+                android:text="micro" />
+
+            <Button
                 android:id="@+id/tiny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,6 +64,22 @@
                 android:onClick="onClick"
                 android:tag="large"
                 android:text="large" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/wrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:tag="wrap"
+                android:text="wrap" />
 
             <Button
                 android:id="@+id/full"
@@ -64,6 +90,37 @@
                 android:onClick="onClick"
                 android:tag="full"
                 android:text="full" />
+
+            <Button
+                android:id="@+id/head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:singleLine="true"
+                android:tag="head"
+                android:text="head" />
+
+            <Button
+                android:id="@+id/mix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:tag="mix"
+                android:text="mix" />
+
+            <Button
+                android:id="@+id/foot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:tag="foot"
+                android:text="foot" />
         </LinearLayout>
 
         <Button
