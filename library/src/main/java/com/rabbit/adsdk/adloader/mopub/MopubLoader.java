@@ -77,6 +77,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onInitializationFinished() {
+                Log.iv(Log.TAG, "mopub sdk init successfully");
                 PersonalInfoManager manager = MoPub.getPersonalInformationManager();
                 if (manager != null && manager.shouldShowConsentDialog()) {
                     manager.loadConsentDialog(initDialogLoadListener());
