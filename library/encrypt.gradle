@@ -6,6 +6,19 @@ import java.util.concurrent.TimeUnit
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
+
+/**
+// 阿里云映射的maven仓库地址
+maven { url 'https://maven.aliyun.com/repository/public' }
+maven { url 'https://maven.aliyun.com/repository/central' }
+maven { url 'https://maven.aliyun.com/repository/google' }
+maven { url 'https://maven.aliyun.com/repository/jcenter' }
+maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+maven { url 'https://maven.aliyun.com/repository/releases' }
+maven { url 'https://adcolony.bintray.com/AdColony' }
+maven { url 'https://jitpack.io' }
+*/
+
 /**
  * 首字母转大写
  * @param s
@@ -24,26 +37,6 @@ def toUpperCaseFirstOne(String s) {
 try {
     project.rootProject.allprojects.repositories.each {
         repo ->
-            repo.maven {
-                r ->
-                    r.url = "https://repo1.maven.org/maven2/"
-            }
-            repo.maven {
-                r ->
-                    r.url = "http://jcenter.bintray.com/"
-            }
-            repo.maven {
-                r ->
-                    r.url = "https://maven.aliyun.com/repository/public"
-            }
-            repo.maven {
-                r ->
-                    r.url = "https://maven.aliyun.com/repository/google"
-            }
-            repo.maven {
-                r ->
-                    r.url = "https://maven.aliyun.com/repository/central"
-            }
             repo.maven {
                 r ->
                     r.url = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
@@ -75,29 +68,6 @@ try {
             repo.maven {
                 r ->
                     r.url = "https://taugin.gitee.io/werepo"
-            }
-    }
-    project.rootProject.buildscript.repositories.each {
-        repo ->
-            repo.maven {
-                r ->
-                    r.url = "https://repo1.maven.org/maven2/"
-            }
-            repo.maven {
-                r ->
-                    r.url = "http://jcenter.bintray.com/"
-            }
-            repo.maven {
-                r ->
-                    r.url = "https://maven.aliyun.com/repository/public"
-            }
-            repo.maven {
-                r ->
-                    r.url = "https://maven.aliyun.com/repository/google"
-            }
-            repo.maven {
-                r ->
-                    r.url = "https://maven.aliyun.com/repository/central"
             }
     }
 } catch (Exception e) {
