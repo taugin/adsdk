@@ -3,6 +3,7 @@ package com.rabbit.adsdk.core.framework;
 import android.content.Context;
 import android.text.TextUtils;
 
+
 import com.rabbit.adsdk.AdSdk;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.data.DataManager;
@@ -15,16 +16,24 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class CheatManager {
-    private static final String PREF_AD_IMP_COUNT = "pref_ad_%s_%s_imp_count";
-    private static final String PREF_AD_CLK_COUNT = "pref_ad_%s_%s_clk_count";
-    private static final String PREF_AD_COUNT_DATE = "pref_ad_imp_clk_count_date";
-    private static final String PREF_AD_KEY_LIST = "pref_ad_key_list";
+    private static final String PREF_AD_PLACE_IMP_COUNT     = "pref_ad_cheat_%s_%s_imp_count";
+    private static final String PREF_AD_PLACE_CLK_COUNT     = "pref_ad_cheat_%s_%s_clk_count";
+    private static final String PREF_AD_SDK_IMP_COUNT       = "pref_ad_cheat_%s_imp_count";
+    private static final String PREF_AD_SDK_CLK_COUNT       = "pref_ad_cheat_%s_clk_count";
+    private static final String PREF_AD_CHEAT_COUNT_DATE    = "pref_ad_cheat_count_date";
+    private static final String PREF_AD_CHEAT_KEY_LIST      = "pref_ad_cheat_key_list";
+
+    private static final String KEY_AD_CHEAT_INTERCEPT      = "cheat_intercept";
+    private static final String KEY_AD_CHEAT_GAIDS          = "cheat_gaids";
+    private static final String KEY_AD_CHEAT_CONFIG         = "cheat_config";
+    private static final String MAX_CLK                     = "max_clk";
+    private static final String MIN_IMP                     = "min_imp";
+
+
     private static CheatManager sCheatManager;
 
     public static CheatManager get(Context context) {
@@ -58,7 +67,11 @@ public class CheatManager {
      * @return
      */
     public boolean isUserCheat(String sdk, String placeName) {
-        return interceptCheatByGAID() || interceptCheatByConfig(sdk, placeName);
+        resetCheatData();
+        if (isCheatInterceptEnabled()) {
+            return interceptCheatByGAID() || interceptCheatByConfig(sdk, placeName);
+        }
+        return false;
     }
 
     /**
@@ -70,7 +83,7 @@ public class CheatManager {
         String gaid = Utils.getString(mContext, Constant.PREF_GAID);
         if (!TextUtils.isEmpty(gaid)) {
             String gaidmd5 = Utils.string2MD5(gaid);
-            String cfgGAID = DataManager.get(mContext).getString("cheat_gaids");
+            String cfgGAID = DataManager.get(mContext).getString(KEY_AD_CHEAT_GAIDS);
             if (!TextUtils.isEmpty(cfgGAID)) {
                 List<String> gaidList = Arrays.asList(cfgGAID.split(","));
                 if (gaidList != null) {
@@ -82,70 +95,203 @@ public class CheatManager {
     }
 
     private boolean interceptCheatByConfig(String sdk, String placeName) {
-        try {
-            String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, placeName);
-            long impCount = Utils.getLong(mContext, prefKey, 0);
-            prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, placeName);
-            long clickCount = Utils.getLong(mContext, prefKey, 0);
-            String cheatConfigKey = "cheat_config";
-            String cheatConfigString = AdSdk.get(mContext).getString(cheatConfigKey);
-            if (!TextUtils.isEmpty(cheatConfigString)) {
-                int minImp = 0;
-                int maxCtr = 0;
-                try {
-                    JSONObject cheatJobj = null;
-                    JSONObject jobj = new JSONObject(cheatConfigString);
-                    String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
-                    if (jobj.has(keyConfig)) {
-                        cheatJobj = jobj.getJSONObject(keyConfig);
-                    } else if (jobj.has(sdk)) {
-                        cheatJobj = jobj.getJSONObject(sdk);
-                    }
-                    if (cheatJobj != null) {
-                        minImp = cheatJobj.getInt("min_imp");
-                        maxCtr = cheatJobj.getInt("max_ctr");
-                    }
-                } catch (Exception e) {
-                    Log.e(Log.TAG, "error : " + e);
-                }
-                if (minImp > 0 && maxCtr > 0 && impCount >= minImp) {
-                    int ctr = Math.round(clickCount / (float) impCount * 100);
-                    boolean isUserCheat = ctr > maxCtr;
-                    if (isUserCheat) {
-                        String cheatLog = String.format(Locale.getDefault(), "cheat info : min imp : %d, max ctr : %d, imp count : %d, click count : %d, ctr : %d", minImp, maxCtr, impCount, clickCount, ctr);
-                        Log.iv(Log.TAG, cheatLog);
-                    }
-                    return isUserCheat;
-                }
+        boolean isCheatUser = false;
+        CheatInfo cheatInfo = getJudgeConfig(sdk, placeName);
+        String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
+        if (cheatInfo != null) {
+            long impCount = 0;
+            long clkCount = 0;
+            String prefImpKey = null;
+            String prefClkKey = null;
+            if (TextUtils.equals(keyConfig, cheatInfo.placement)) {
+                // 具体广告位
+                prefImpKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
+                prefClkKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
+            } else {
+                // 具体平台
+                prefImpKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
+                prefClkKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
             }
-        } catch (Exception e) {
+            impCount = Utils.getLong(mContext, prefImpKey, 0);
+            clkCount = Utils.getLong(mContext, prefClkKey, 0);
+            isCheatUser = judgeCheatUser(cheatInfo.maxClk, cheatInfo.minImp, (int) impCount, (int) clkCount);
+            if (isCheatUser) {
+                Log.iv(Log.TAG, "intercept cheat info : " + getCheatInfo(cheatInfo.placement, cheatInfo.maxClk, cheatInfo.minImp, (int) impCount, (int) clkCount));
+            }
         }
-        return false;
+        return isCheatUser;
+    }
+
+    private void reportCheatUser(String sdk, String placeName) {
+        CheatInfo cheatInfo = getJudgeConfig(sdk, placeName);
+        String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
+        if (cheatInfo != null) {
+            long impCount = 0;
+            long clkCount = 0;
+            String prefImpKey = null;
+            String prefClkKey = null;
+            if (TextUtils.equals(keyConfig, cheatInfo.placement)) {
+                // 具体广告位
+                prefImpKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
+                prefClkKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
+            } else {
+                // 具体平台
+                prefImpKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
+                prefClkKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
+            }
+            impCount = Utils.getLong(mContext, prefImpKey, 0);
+            clkCount = Utils.getLong(mContext, prefClkKey, 0);
+            boolean isCheatUser = judgeCheatUser(cheatInfo.maxClk, cheatInfo.minImp, (int) impCount, (int) clkCount);
+            if (isCheatUser) {
+                String reportInfo = getCheatInfo(cheatInfo.placement, cheatInfo.maxClk, cheatInfo.minImp, (int) impCount, (int) clkCount);
+                Log.iv(Log.TAG, "report cheat info : " + reportInfo);
+                InternalStat.reportEvent(mContext, "cheat_info", reportInfo);
+            }
+        }
+    }
+
+    private String getCheatInfo(String placement, int maxClk, int minImp, int impCount, int clkCount) {
+        String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+        if (!TextUtils.isEmpty(gaid)) {
+            gaid = Utils.string2MD5(gaid);
+        } else {
+            gaid = "unknown";
+        }
+        return String.format(Locale.getDefault(), "%s|%s|%d/%d|%d/%d", gaid, placement, maxClk, minImp, clkCount, impCount);
+    }
+
+    private boolean judgeCheatUser(int maxClk, int minImp, int impCount, int clkCount) {
+        boolean isUserCheat = false;
+        if (maxClk > 0) {
+            if (minImp > 0) {
+                isUserCheat = impCount >= minImp && clkCount > maxClk;
+            } else {
+                isUserCheat = clkCount > maxClk;
+            }
+        }
+        return isUserCheat;
+    }
+
+    private CheatInfo getJudgeConfig(String sdk, String placeName) {
+        int maxClk = 0;
+        int minImp = 0;
+        CheatInfo cheatInfo = new CheatInfo();
+        String cheatConfigString = AdSdk.get(mContext).getString(KEY_AD_CHEAT_CONFIG);
+        if (!TextUtils.isEmpty(cheatConfigString)) {
+            try {
+                JSONObject cheatJobj = null;
+                JSONObject jobj = new JSONObject(cheatConfigString);
+                String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
+                if (jobj.has(keyConfig)) {
+                    cheatJobj = jobj.getJSONObject(keyConfig);
+                    cheatInfo.placement = keyConfig;
+                } else if (jobj.has(sdk)) {
+                    cheatJobj = jobj.getJSONObject(sdk);
+                    cheatInfo.placement = sdk;
+                }
+                if (cheatJobj != null) {
+                    if (cheatJobj.has(MAX_CLK)) {
+                        maxClk = cheatJobj.getInt(MAX_CLK);
+                    }
+                    if (cheatJobj.has(MIN_IMP)) {
+                        minImp = cheatJobj.getInt(MIN_IMP);
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e);
+            }
+        }
+        cheatInfo.maxClk = maxClk;
+        cheatInfo.minImp = minImp;
+        return cheatInfo;
     }
 
     public void recordAdImp(String sdk, String placeName) {
-        resetCount(sdk, placeName);
-        String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, placeName);
+        // 记录PLACE层级的展示次数
+        String prefKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
         Log.iv(Log.TAG, "prefKey : " + prefKey);
         long count = Utils.getLong(mContext, prefKey, 0);
         Utils.putLong(mContext, prefKey, count + 1);
-        recordAdKeyList(sdk, placeName);
+        // 记录SDK层级的展示次数
+        prefKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
+        Log.iv(Log.TAG, "prefKey : " + prefKey);
+        count = Utils.getLong(mContext, prefKey, 0);
+        Utils.putLong(mContext, prefKey, count + 1);
         printLog(sdk, placeName);
+        recordAdKeyList(sdk, placeName);
     }
 
     public void recordAdClick(String sdk, String placeName) {
-        String prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, placeName);
+        // 记录PLACE层级的点击次数
+        String prefKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
         Log.iv(Log.TAG, "prefKey : " + prefKey);
         long count = Utils.getLong(mContext, prefKey, 0);
         Utils.putLong(mContext, prefKey, count + 1);
+        // 记录SDK层级的点击次数
+        prefKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
+        Log.iv(Log.TAG, "prefKey : " + prefKey);
+        count = Utils.getLong(mContext, prefKey, 0);
+        Utils.putLong(mContext, prefKey, count + 1);
         printLog(sdk, placeName);
+        reportCheatUser(sdk, placeName);
+    }
+
+    private void resetCheatData() {
+        long nowDate = getTodayTime();
+        long lastDate = Utils.getLong(mContext, PREF_AD_CHEAT_COUNT_DATE, 0);
+        if (nowDate > lastDate) {
+            Utils.putLong(mContext, PREF_AD_CHEAT_COUNT_DATE, nowDate);
+            resetSdkAndPlace();
+        }
+    }
+
+    private void resetSdkAndPlace() {
+        List<String> keyList = getKeyList();
+        if (keyList != null && !keyList.isEmpty()) {
+            for (String key : keyList) {
+                if (TextUtils.isEmpty(key)) {
+                    continue;
+                }
+                String keySplit[] = key.split(",");
+                if (keySplit == null || keySplit.length != 2) {
+                    continue;
+                }
+                String sdk = keySplit[0];
+                String placeName = keySplit[1];
+                Log.iv(Log.TAG, String.format(Locale.getDefault(), "[%s - %s] reset count data", sdk, placeName));
+                String prefPlaceImpKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
+                Utils.putLong(mContext, prefPlaceImpKey, 0);
+                String prefPlaceClkKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
+                Utils.putLong(mContext, prefPlaceClkKey, 0);
+
+                Log.iv(Log.TAG, String.format(Locale.getDefault(), "[%s] reset count data", sdk));
+                String prefSdkImpKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
+                Utils.putLong(mContext, prefSdkImpKey, 0);
+                String prefSdkClkKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
+                Utils.putLong(mContext, prefSdkClkKey, 0);
+            }
+        }
+    }
+
+    private void printLog(String sdk, String placeName) {
+        String prefKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
+        long placeImpCount = Utils.getLong(mContext, prefKey, 0);
+        prefKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
+        long placeClickCount = Utils.getLong(mContext, prefKey, 0);
+
+        prefKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
+        long sdkImpCount = Utils.getLong(mContext, prefKey, 0);
+        prefKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
+        long sdkClickCount = Utils.getLong(mContext, prefKey, 0);
+        String logInfo = String.format(Locale.getDefault(), "[%s : %d/%d] [%s - %s : %d/%d]", sdk, sdkClickCount, sdkImpCount, sdk, placeName, placeClickCount, placeImpCount);
+        Log.iv(Log.TAG, logInfo);
     }
 
     private synchronized void recordAdKeyList(String sdk, String placeName) {
         try {
             String newKey = String.format(Locale.getDefault(), "%s,%s", sdk, placeName);
             List<String> allKeyList = new ArrayList<String>();
-            String keyListString = Utils.getString(mContext, PREF_AD_KEY_LIST, null);
+            String keyListString = Utils.getString(mContext, PREF_AD_CHEAT_KEY_LIST, null);
             List<String> lastKeyList = null;
             if (!TextUtils.isEmpty(keyListString)) {
                 lastKeyList = Arrays.asList(keyListString.split("\\|"));
@@ -171,14 +317,14 @@ public class CheatManager {
             }
             String allKeyString = builder.toString();
             Log.iv(Log.TAG, "all key string : " + allKeyString);
-            Utils.putString(mContext, PREF_AD_KEY_LIST, allKeyString);
+            Utils.putString(mContext, PREF_AD_CHEAT_KEY_LIST, allKeyString);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
     }
 
     private List<String> getKeyList() {
-        String keyListString = Utils.getString(mContext, PREF_AD_KEY_LIST, null);
+        String keyListString = Utils.getString(mContext, PREF_AD_CHEAT_KEY_LIST, null);
         List<String> lastKeyList = null;
         if (!TextUtils.isEmpty(keyListString)) {
             lastKeyList = Arrays.asList(keyListString.split("\\|"));
@@ -186,87 +332,20 @@ public class CheatManager {
         return lastKeyList;
     }
 
-    private void resetCount(String sdk, String placeName) {
-        long nowDate = getTodayTime();
-        long lastDate = Utils.getLong(mContext, PREF_AD_COUNT_DATE, 0);
-        if (nowDate > lastDate) {
-            if (lastDate > 0 && isReportClkImp(mContext)) {
-                report();
-            }
-            Utils.putLong(mContext, PREF_AD_COUNT_DATE, nowDate);
-            Log.iv(Log.TAG, String.format(Locale.getDefault(), "%s %s reset count data", sdk, placeName));
-            String prefImp = String.format(PREF_AD_IMP_COUNT, sdk, placeName);
-            Utils.putLong(mContext, prefImp, 0);
-            String prefClk = String.format(PREF_AD_CLK_COUNT, sdk, placeName);
-            Utils.putLong(mContext, prefClk, 0);
-        }
-    }
-
-    private void printLog(String sdk, String placeName) {
-        String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, placeName);
-        long impCount = Utils.getLong(mContext, prefKey, 0);
-        prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, placeName);
-        long clickCount = Utils.getLong(mContext, prefKey, 0);
-        String logInfo = String.format(Locale.getDefault(), "%s %s clk/imp : %d/%d", sdk, placeName, clickCount, impCount);
-        Log.iv(Log.TAG, logInfo);
-    }
-
-    private boolean parseReport(String value, boolean defaultValue) {
+    private boolean parseBoolean(String value, boolean defaultValue) {
         if (!TextUtils.isEmpty(value)) {
             try {
                 return Boolean.parseBoolean(value);
             } catch (Exception e) {
-                Log.e(Log.TAG, "parseReport error : " + e);
+                Log.e(Log.TAG, "parseBoolean error : " + e);
             }
         }
         return defaultValue;
     }
 
-    private boolean isReportClkImp(Context context) {
-        String value = DataManager.get(context).getString("report_clk_imp");
-        boolean result = parseReport(value, false);
-        Log.v(Log.TAG, "is report clk imp : " + result);
-        return result;
+    private boolean isCheatInterceptEnabled() {
+        return parseBoolean(AdSdk.get(mContext).getString(KEY_AD_CHEAT_INTERCEPT), false);
     }
-
-    private void report() {
-        try {
-            List<String> keyList = getKeyList();
-            Map<String, String> extra = new LinkedHashMap<String, String>();
-            if (keyList != null && !keyList.isEmpty()) {
-                for (String key : keyList) {
-                    if (TextUtils.isEmpty(key)) {
-                        continue;
-                    }
-                    String keySplit[] = key.split(",");
-                    if (keySplit == null || keySplit.length != 2) {
-                        continue;
-                    }
-                    String sdk = keySplit[0];
-                    String placeName = keySplit[1];
-                    String prefKey = String.format(Locale.getDefault(), PREF_AD_IMP_COUNT, sdk, placeName);
-                    long impCount = Utils.getLong(mContext, prefKey, 0);
-                    prefKey = String.format(Locale.getDefault(), PREF_AD_CLK_COUNT, sdk, placeName);
-                    long clickCount = Utils.getLong(mContext, prefKey, 0);
-                    // 有展示的广告位才需要上报
-                    if (impCount > 0) {
-                        String clkImpInfo = String.format(Locale.getDefault(), "clk_imp_%d_%d", clickCount, impCount);
-                        String sdkInfo = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
-                        extra.put(sdkInfo, clkImpInfo);
-                    }
-                }
-            }
-            String gaid = Utils.getString(mContext, Constant.PREF_GAID);
-            if (!TextUtils.isEmpty(gaid)) {
-                extra.put("uac", Utils.string2MD5(gaid));
-            }
-            Log.iv(Log.TAG, "event_clk_imp : " + extra);
-            InternalStat.reportEvent(mContext, "event_clk_imp", extra);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-    }
-
     /**
      * 获取当天零点毫秒数
      *
@@ -280,5 +359,11 @@ public class CheatManager {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTimeInMillis();
+    }
+
+    class CheatInfo {
+        public int maxClk;
+        public int minImp;
+        public String placement = "unknown";
     }
 }

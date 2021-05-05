@@ -1,6 +1,13 @@
 {
   "admob_banner_and_native": {
-    "min_imp": 10,
-    "max_ctr": 70
-  }
+    "min_imp": 2,
+    "max_clk": 2
+  },
+  "mopub": {
+    "max_clk": 2
+  },
+  "dfp_banner_and_native": {
+      "min_imp": 2,
+      "max_clk": 2
+    }
 }
