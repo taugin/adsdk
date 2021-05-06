@@ -23,7 +23,7 @@ static def getConfigKey() {
 }
 
 def isSnapshot = true
-def baseVersion = '4.1.5'
+def baseVersion = '4.1.6'
 android {
     compileSdkVersion 29
     defaultConfig {
