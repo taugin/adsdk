@@ -46,10 +46,9 @@ public class DataConfigRemote {
 
     public String getString(String key) {
         VRemoteConfig.get(mContext).updateRemoteConfig(false);
-        boolean isLocalPriority = isLocalPriority();
-        Log.iv(Log.TAG, "local priority : " + isLocalPriority);
+        boolean isLocalFirst = DataManager.get(mContext).isLocalFirst();
         String value = null;
-        if (isLocalPriority) {
+        if (isLocalFirst) {
             value = readConfigFromLocal(key);
             if (TextUtils.isEmpty(value)) {
                 value = readConfigFromRemote(key);
@@ -141,19 +140,6 @@ public class DataConfigRemote {
             value = dataWithSuffix;
         }
         return value;
-    }
-
-    private boolean isLocalPriority() {
-        try {
-            String localPriority = Utils.readConfig(mContext, "local_priority");
-            if (localPriority != null) {
-                localPriority = localPriority.trim();
-            }
-            return TextUtils.equals(localPriority, "true");
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
-        }
-        return false;
     }
 
     private String getRemoteConfig(String key) {

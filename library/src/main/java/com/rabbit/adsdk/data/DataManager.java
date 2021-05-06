@@ -15,6 +15,7 @@ import com.rabbit.sunny.SpreadCfg;
 
 import org.json.JSONArray;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -57,11 +58,22 @@ public class DataManager {
     private Context mContext;
     private PlaceConfig mLocalPlaceConfig;
     private IParser mParser;
+    private boolean mLocalFirst = false;
 
     public void init() {
+        setLocalFirst();
         VRemoteConfig.get(mContext).init();
         parseLocalData();
         printGoogleAdvertisingId();
+    }
+
+    private void setLocalFirst() {
+        try {
+            File file = new File(mContext.getExternalFilesDir("config"), "local_first");
+            mLocalFirst = file.exists();
+            Log.iv(Log.TAG, "local first : " + mLocalFirst + " , path : " + file.getAbsolutePath());
+        } catch (Exception e) {
+        }
     }
 
     private void parseLocalData() {
@@ -105,7 +117,9 @@ public class DataManager {
     }
 
     public PlaceConfig getAdConfig() {
-        parseRemoteData();
+        if (!isLocalFirst()) {
+            parseRemoteData();
+        }
         parseLocalData();
         return mLocalPlaceConfig;
     }
@@ -216,5 +230,9 @@ public class DataManager {
                 }
             }
         }.start();
+    }
+
+    public boolean isLocalFirst() {
+        return mLocalFirst;
     }
 }

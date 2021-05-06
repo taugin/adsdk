@@ -323,9 +323,12 @@ public class Utils {
             return localConfig;
         }
         try {
-            String localConfigFile = new File(context.getExternalFilesDir("config"), configName).getAbsolutePath();
+            File file = new File(context.getExternalFilesDir("config"), configName);
+            String localConfigFile = file.getAbsolutePath();
             Log.iv(Log.TAG, "config locale : " + localConfigFile);
-            localConfig = readLocal(localConfigFile);
+            if (file.exists()) {
+                localConfig = readLocal(localConfigFile);
+            }
         } catch (Exception e) {
         }
         if (!TextUtils.isEmpty(localConfig)) {
