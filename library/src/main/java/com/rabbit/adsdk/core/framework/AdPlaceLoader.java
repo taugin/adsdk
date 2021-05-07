@@ -1570,8 +1570,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
             Log.iv(Log.TAG, "notify callback onDismiss place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid);
             if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
-                if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)
-                        || TextUtils.equals(adType, Constant.TYPE_REWARD)) {
+                if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
                     showInterstitialInternal();
                 }
             }
