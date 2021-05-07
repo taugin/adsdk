@@ -10,6 +10,5 @@
   "dfp_banner_and_native": {
     "min_imp": 2,
     "max_clk": 2
-  },
-  "gaids":["",""]
+  }
 }

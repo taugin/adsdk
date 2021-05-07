@@ -83,13 +83,17 @@ public class CheatManager {
      * @return
      */
     private boolean interceptCheatByGAID(CheatCfg cheatCfg) {
+        boolean interceptByGaid = false;
+        String gaid = Utils.getString(mContext, Constant.PREF_GAID);
         if (cheatCfg != null && cheatCfg.gaidList != null && !cheatCfg.gaidList.isEmpty()) {
-            String gaid = Utils.getString(mContext, Constant.PREF_GAID);
             if (!TextUtils.isEmpty(gaid)) {
-                return cheatCfg.gaidList.contains(gaid);
+                interceptByGaid = cheatCfg.gaidList.contains(gaid);
             }
         }
-        return false;
+        if (interceptByGaid && cheatCfg != null) {
+            Log.iv(Log.TAG, "intercept gaid [" + gaid + "] placement [" + cheatCfg.placement + "]");
+        }
+        return interceptByGaid;
     }
 
     private boolean interceptCheatByConfig(String sdk, String placeName, CheatCfg cheatCfg) {
@@ -193,10 +197,6 @@ public class CheatManager {
                 if (jobj.has(OPT_INTERCEPT)) {
                     cheatCfg.intercept = jobj.getBoolean(OPT_INTERCEPT);
                 }
-                if (jobj.has(OPT_GAIDS)) {
-                    cheatCfg.gaidList = parseStringList(jobj.getString(OPT_GAIDS));
-                }
-
                 String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
                 JSONObject cheatJobj = null;
                 if (jobj.has(keyConfig)) {
@@ -212,6 +212,9 @@ public class CheatManager {
                     }
                     if (cheatJobj.has(OPT_MIN_IMP)) {
                         cheatCfg.minImp = cheatJobj.getInt(OPT_MIN_IMP);
+                    }
+                    if (cheatJobj.has(OPT_GAIDS)) {
+                        cheatCfg.gaidList = parseStringList(cheatJobj.getString(OPT_GAIDS));
                     }
                 }
             } catch (Exception e) {
