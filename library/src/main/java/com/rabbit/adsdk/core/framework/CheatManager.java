@@ -3,14 +3,13 @@ package com.rabbit.adsdk.core.framework;
 import android.content.Context;
 import android.text.TextUtils;
 
-
 import com.rabbit.adsdk.AdSdk;
 import com.rabbit.adsdk.constant.Constant;
-import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -20,18 +19,18 @@ import java.util.List;
 import java.util.Locale;
 
 public class CheatManager {
-    private static final String PREF_AD_PLACE_IMP_COUNT     = "pref_ad_cheat_%s_%s_imp_count";
-    private static final String PREF_AD_PLACE_CLK_COUNT     = "pref_ad_cheat_%s_%s_clk_count";
-    private static final String PREF_AD_SDK_IMP_COUNT       = "pref_ad_cheat_%s_imp_count";
-    private static final String PREF_AD_SDK_CLK_COUNT       = "pref_ad_cheat_%s_clk_count";
-    private static final String PREF_AD_CHEAT_COUNT_DATE    = "pref_ad_cheat_count_date";
-    private static final String PREF_AD_CHEAT_KEY_LIST      = "pref_ad_cheat_key_list";
+    private static final String PREF_AD_PLACE_IMP_COUNT = "pref_ad_cheat_%s_%s_imp_count";
+    private static final String PREF_AD_PLACE_CLK_COUNT = "pref_ad_cheat_%s_%s_clk_count";
+    private static final String PREF_AD_SDK_IMP_COUNT = "pref_ad_cheat_%s_imp_count";
+    private static final String PREF_AD_SDK_CLK_COUNT = "pref_ad_cheat_%s_clk_count";
+    private static final String PREF_AD_CHEAT_COUNT_DATE = "pref_ad_cheat_count_date";
+    private static final String PREF_AD_CHEAT_KEY_LIST = "pref_ad_cheat_key_list";
 
-    private static final String KEY_AD_CHEAT_INTERCEPT      = "cheat_intercept";
-    private static final String KEY_AD_CHEAT_GAIDS          = "cheat_gaids";
-    private static final String KEY_AD_CHEAT_CONFIG         = "cheat_config";
-    private static final String MAX_CLK                     = "max_clk";
-    private static final String MIN_IMP                     = "min_imp";
+    private static final String CFG_AD_CHEAT_CONFIG = "cheatcfg";
+    private static final String OPT_MAX_CLK = "max_clk";
+    private static final String OPT_MIN_IMP = "min_imp";
+    private static final String OPT_INTERCEPT = "intercept";
+    private static final String OPT_GAIDS = "gaids";
 
 
     private static CheatManager sCheatManager;
@@ -68,8 +67,11 @@ public class CheatManager {
      */
     public boolean isUserCheat(String sdk, String placeName) {
         resetCheatData();
-        if (isCheatInterceptEnabled()) {
-            return interceptCheatByGAID() || interceptCheatByConfig(sdk, placeName);
+        CheatCfg cheatCfg = getCheatConfig(sdk, placeName);
+        if (cheatCfg != null) {
+            if (cheatCfg.intercept) {
+                return interceptCheatByGAID(cheatCfg) || interceptCheatByConfig(sdk, placeName, cheatCfg);
+            }
         }
         return false;
     }
@@ -79,31 +81,23 @@ public class CheatManager {
      *
      * @return
      */
-    private boolean interceptCheatByGAID() {
-        String gaid = Utils.getString(mContext, Constant.PREF_GAID);
-        if (!TextUtils.isEmpty(gaid)) {
-            String gaidmd5 = Utils.string2MD5(gaid);
-            String cfgGAID = DataManager.get(mContext).getString(KEY_AD_CHEAT_GAIDS);
-            if (!TextUtils.isEmpty(cfgGAID)) {
-                List<String> gaidList = Arrays.asList(cfgGAID.split(","));
-                if (gaidList != null) {
-                    return gaidList.contains(gaidmd5);
-                }
+    private boolean interceptCheatByGAID(CheatCfg cheatCfg) {
+        if (cheatCfg != null && cheatCfg.gaidList != null && !cheatCfg.gaidList.isEmpty()) {
+            String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+            if (!TextUtils.isEmpty(gaid)) {
+                return cheatCfg.gaidList.contains(gaid);
             }
         }
         return false;
     }
 
-    private boolean interceptCheatByConfig(String sdk, String placeName) {
+    private boolean interceptCheatByConfig(String sdk, String placeName, CheatCfg cheatCfg) {
         boolean isCheatUser = false;
-        CheatInfo cheatInfo = getJudgeConfig(sdk, placeName);
         String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
-        if (cheatInfo != null) {
-            long impCount = 0;
-            long clkCount = 0;
-            String prefImpKey = null;
-            String prefClkKey = null;
-            if (TextUtils.equals(keyConfig, cheatInfo.placement)) {
+        if (cheatCfg != null) {
+            String prefImpKey;
+            String prefClkKey;
+            if (TextUtils.equals(keyConfig, cheatCfg.placement)) {
                 // 具体广告位
                 prefImpKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
                 prefClkKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
@@ -112,25 +106,25 @@ public class CheatManager {
                 prefImpKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
                 prefClkKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
             }
-            impCount = Utils.getLong(mContext, prefImpKey, 0);
-            clkCount = Utils.getLong(mContext, prefClkKey, 0);
-            isCheatUser = judgeCheatUser(cheatInfo.maxClk, cheatInfo.minImp, (int) impCount, (int) clkCount);
+            long impCount = Utils.getLong(mContext, prefImpKey, 0);
+            long clkCount = Utils.getLong(mContext, prefClkKey, 0);
+            isCheatUser = judgeCheatUser(cheatCfg.maxClk, cheatCfg.minImp, (int) impCount, (int) clkCount);
             if (isCheatUser) {
-                Log.iv(Log.TAG, "intercept cheat info : " + getCheatInfo(cheatInfo.placement, cheatInfo.maxClk, cheatInfo.minImp, (int) impCount, (int) clkCount));
+                Log.iv(Log.TAG, "intercept cheat info : " + getCheatInfo(cheatCfg.placement, cheatCfg.maxClk, cheatCfg.minImp, (int) impCount, (int) clkCount));
             }
         }
         return isCheatUser;
     }
 
     private void reportCheatUser(String sdk, String placeName) {
-        CheatInfo cheatInfo = getJudgeConfig(sdk, placeName);
+        CheatCfg cheatCfg = getCheatConfig(sdk, placeName);
         String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
-        if (cheatInfo != null) {
+        if (cheatCfg != null) {
             long impCount = 0;
             long clkCount = 0;
             String prefImpKey = null;
             String prefClkKey = null;
-            if (TextUtils.equals(keyConfig, cheatInfo.placement)) {
+            if (TextUtils.equals(keyConfig, cheatCfg.placement)) {
                 // 具体广告位
                 prefImpKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
                 prefClkKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
@@ -141,9 +135,9 @@ public class CheatManager {
             }
             impCount = Utils.getLong(mContext, prefImpKey, 0);
             clkCount = Utils.getLong(mContext, prefClkKey, 0);
-            boolean isCheatUser = judgeCheatUser(cheatInfo.maxClk, cheatInfo.minImp, (int) impCount, (int) clkCount);
+            boolean isCheatUser = judgeCheatUser(cheatCfg.maxClk, cheatCfg.minImp, (int) impCount, (int) clkCount);
             if (isCheatUser) {
-                String reportInfo = getCheatInfo(cheatInfo.placement, cheatInfo.maxClk, cheatInfo.minImp, (int) impCount, (int) clkCount);
+                String reportInfo = getCheatInfo(cheatCfg.placement, cheatCfg.maxClk, cheatCfg.minImp, (int) impCount, (int) clkCount);
                 Log.iv(Log.TAG, "report cheat info : " + reportInfo);
                 InternalStat.reportEvent(mContext, "cheat_info", reportInfo);
             }
@@ -152,9 +146,7 @@ public class CheatManager {
 
     private String getCheatInfo(String placement, int maxClk, int minImp, int impCount, int clkCount) {
         String gaid = Utils.getString(mContext, Constant.PREF_GAID);
-        if (!TextUtils.isEmpty(gaid)) {
-            gaid = Utils.string2MD5(gaid);
-        } else {
+        if (TextUtils.isEmpty(gaid)) {
             gaid = "unknown";
         }
         return String.format(Locale.getDefault(), "%s|%s|%d/%d|%d/%d", gaid, placement, maxClk, minImp, clkCount, impCount);
@@ -172,38 +164,41 @@ public class CheatManager {
         return isUserCheat;
     }
 
-    private CheatInfo getJudgeConfig(String sdk, String placeName) {
-        int maxClk = 0;
-        int minImp = 0;
-        CheatInfo cheatInfo = new CheatInfo();
-        String cheatConfigString = AdSdk.get(mContext).getString(KEY_AD_CHEAT_CONFIG);
+    private CheatCfg getCheatConfig(String sdk, String placeName) {
+        CheatCfg cheatCfg = new CheatCfg();
+        String cheatConfigString = AdSdk.get(mContext).getString(CFG_AD_CHEAT_CONFIG);
         if (!TextUtils.isEmpty(cheatConfigString)) {
             try {
-                JSONObject cheatJobj = null;
                 JSONObject jobj = new JSONObject(cheatConfigString);
+                if (jobj.has(OPT_INTERCEPT)) {
+                    cheatCfg.intercept = jobj.getBoolean(OPT_INTERCEPT);
+                }
+                if (jobj.has(OPT_GAIDS)) {
+                    cheatCfg.gaidList = parseStringList(jobj.getString(OPT_GAIDS));
+                }
+
                 String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
+                JSONObject cheatJobj = null;
                 if (jobj.has(keyConfig)) {
                     cheatJobj = jobj.getJSONObject(keyConfig);
-                    cheatInfo.placement = keyConfig;
+                    cheatCfg.placement = keyConfig;
                 } else if (jobj.has(sdk)) {
                     cheatJobj = jobj.getJSONObject(sdk);
-                    cheatInfo.placement = sdk;
+                    cheatCfg.placement = sdk;
                 }
                 if (cheatJobj != null) {
-                    if (cheatJobj.has(MAX_CLK)) {
-                        maxClk = cheatJobj.getInt(MAX_CLK);
+                    if (cheatJobj.has(OPT_MAX_CLK)) {
+                        cheatCfg.maxClk = cheatJobj.getInt(OPT_MAX_CLK);
                     }
-                    if (cheatJobj.has(MIN_IMP)) {
-                        minImp = cheatJobj.getInt(MIN_IMP);
+                    if (cheatJobj.has(OPT_MIN_IMP)) {
+                        cheatCfg.minImp = cheatJobj.getInt(OPT_MIN_IMP);
                     }
                 }
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e);
             }
         }
-        cheatInfo.maxClk = maxClk;
-        cheatInfo.minImp = minImp;
-        return cheatInfo;
+        return cheatCfg;
     }
 
     public void recordAdImp(String sdk, String placeName) {
@@ -332,20 +327,24 @@ public class CheatManager {
         return lastKeyList;
     }
 
-    private boolean parseBoolean(String value, boolean defaultValue) {
-        if (!TextUtils.isEmpty(value)) {
-            try {
-                return Boolean.parseBoolean(value);
-            } catch (Exception e) {
-                Log.e(Log.TAG, "parseBoolean error : " + e);
+    private List<String> parseStringList(String str) {
+        List<String> list = null;
+        try {
+            JSONArray jarray = new JSONArray(str);
+            if (jarray != null && jarray.length() > 0) {
+                list = new ArrayList<String>(jarray.length());
+                for (int index = 0; index < jarray.length(); index++) {
+                    String s = jarray.getString(index);
+                    if (!TextUtils.isEmpty(s)) {
+                        list.add(s);
+                    }
+                }
             }
+        } catch (Exception e) {
         }
-        return defaultValue;
+        return list;
     }
 
-    private boolean isCheatInterceptEnabled() {
-        return parseBoolean(AdSdk.get(mContext).getString(KEY_AD_CHEAT_INTERCEPT), false);
-    }
     /**
      * 获取当天零点毫秒数
      *
@@ -361,9 +360,22 @@ public class CheatManager {
         return calendar.getTimeInMillis();
     }
 
-    class CheatInfo {
+    class CheatCfg {
+        public boolean intercept = false;
         public int maxClk;
         public int minImp;
         public String placement = "unknown";
+        public List<String> gaidList;
+
+        @Override
+        public String toString() {
+            return "CheatCfg{" +
+                    "intercept=" + intercept +
+                    ", maxClk=" + maxClk +
+                    ", minImp=" + minImp +
+                    ", placement='" + placement + '\'' +
+                    ", gaidList=" + gaidList +
+                    '}';
+        }
     }
 }
