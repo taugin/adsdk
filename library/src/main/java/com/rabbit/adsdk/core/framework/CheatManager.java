@@ -1,6 +1,7 @@
 package com.rabbit.adsdk.core.framework;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.rabbit.adsdk.AdSdk;
@@ -149,7 +150,26 @@ public class CheatManager {
         if (TextUtils.isEmpty(gaid)) {
             gaid = "unknown";
         }
-        return String.format(Locale.getDefault(), "%s|%s|%d/%d|%d/%d", gaid, placement, maxClk, minImp, clkCount, impCount);
+        String locale = getLocale(mContext);
+        if (TextUtils.isEmpty(locale)) {
+            locale = "unknown";
+        }
+        return String.format(Locale.getDefault(), "%s|%s|%s|%d/%d|%d/%d", gaid, locale, placement, maxClk, minImp, clkCount, impCount);
+    }
+
+    private static String getLocale(Context context) {
+        String channel = "unknown";
+        try {
+            Locale locale = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                locale = context.getResources().getConfiguration().getLocales().get(0);
+            } else {
+                locale = context.getResources().getConfiguration().locale;
+            }
+            channel = locale.getCountry().toLowerCase(Locale.getDefault());
+        } catch (Exception e) {
+        }
+        return channel;
     }
 
     private boolean judgeCheatUser(int maxClk, int minImp, int impCount, int clkCount) {
