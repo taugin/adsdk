@@ -60,7 +60,7 @@ public class EventImpl implements IEvent {
         }
     }
 
-    private String getUserFlag() {
+    public String getUserFlag() {
         try {
             Calendar calendar = Calendar.getInstance();
             int nowYear = calendar.get(Calendar.YEAR);

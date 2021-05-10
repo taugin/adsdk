@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.rabbit.adsdk.AdSdk;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 
@@ -158,9 +159,20 @@ public class CheatManager {
         if (TextUtils.isEmpty(locale)) {
             locale = "unknown";
         }
-        return String.format(Locale.getDefault(), "%s|%s|%s|%d/%d|%d/%d", gaid, locale, placement, maxClk, minImp, clkCount, impCount);
+        String userFlag = getUserFlag();
+        return String.format(Locale.getDefault(), "%s|%s|%s|%s|%d/%d|%d/%d", gaid, userFlag, locale, placement, maxClk, minImp, clkCount, impCount);
     }
 
+    private String getUserFlag() {
+        String userFlag = EventImpl.get().getUserFlag();
+        if (TextUtils.equals(userFlag, "true")) {
+            return "1";
+        }
+        if (TextUtils.equals(userFlag, "false")) {
+            return "0";
+        }
+        return "-1";
+    }
     private static String getLocale(Context context) {
         String channel = "unknown";
         try {
