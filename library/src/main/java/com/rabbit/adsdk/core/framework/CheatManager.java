@@ -92,7 +92,7 @@ public class CheatManager {
             }
         }
         if (interceptByGaid && cheatCfg != null) {
-            Log.iv(Log.TAG, "intercept gaid [" + gaid + "] placement [" + cheatCfg.placement + "]");
+            Log.iv(Log.TAG, "intercept gaid [" + gaid + "] placement [" + cheatCfg.cheatKey + "]");
         }
         return interceptByGaid;
     }
@@ -100,17 +100,20 @@ public class CheatManager {
     private boolean interceptCheatByConfig(String sdk, String placeName, CheatCfg cheatCfg) {
         boolean isCheatUser = false;
         String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
-        if (cheatCfg != null) {
+        if (cheatCfg != null && (TextUtils.equals(keyConfig, cheatCfg.cheatKey)
+                || TextUtils.equals(sdk, cheatCfg.cheatKey))) {
             String prefImpKey;
             String prefClkKey;
-            if (TextUtils.equals(keyConfig, cheatCfg.placement)) {
+            if (TextUtils.equals(keyConfig, cheatCfg.cheatKey)) {
                 // 具体广告位
                 prefImpKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
                 prefClkKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
+                cheatCfg.placement = cheatCfg.cheatKey;
             } else {
                 // 具体平台
                 prefImpKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
                 prefClkKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
+                cheatCfg.placement = String.format(Locale.getDefault(), "%s#%s", sdk, placeName);
             }
             long impCount = Utils.getLong(mContext, prefImpKey, 0);
             long clkCount = Utils.getLong(mContext, prefClkKey, 0);
@@ -125,19 +128,22 @@ public class CheatManager {
     private void reportCheatUser(String sdk, String placeName) {
         CheatCfg cheatCfg = getCheatConfig(sdk, placeName);
         String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
-        if (cheatCfg != null) {
+        if (cheatCfg != null && (TextUtils.equals(keyConfig, cheatCfg.cheatKey)
+                || TextUtils.equals(sdk, cheatCfg.cheatKey))) {
             long impCount = 0;
             long clkCount = 0;
             String prefImpKey = null;
             String prefClkKey = null;
-            if (TextUtils.equals(keyConfig, cheatCfg.placement)) {
+            if (TextUtils.equals(keyConfig, cheatCfg.cheatKey)) {
                 // 具体广告位
                 prefImpKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
                 prefClkKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
+                cheatCfg.placement = cheatCfg.cheatKey;
             } else {
                 // 具体平台
                 prefImpKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
                 prefClkKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
+                cheatCfg.placement = String.format(Locale.getDefault(), "%s#%s", sdk, placeName);
             }
             impCount = Utils.getLong(mContext, prefImpKey, 0);
             clkCount = Utils.getLong(mContext, prefClkKey, 0);
@@ -173,6 +179,7 @@ public class CheatManager {
         }
         return "-1";
     }
+
     private static String getLocale(Context context) {
         String channel = "unknown";
         try {
@@ -213,10 +220,10 @@ public class CheatManager {
                 JSONObject cheatJobj = null;
                 if (jobj.has(keyConfig)) {
                     cheatJobj = jobj.getJSONObject(keyConfig);
-                    cheatCfg.placement = keyConfig;
+                    cheatCfg.cheatKey = keyConfig;
                 } else if (jobj.has(sdk)) {
                     cheatJobj = jobj.getJSONObject(sdk);
-                    cheatCfg.placement = sdk;
+                    cheatCfg.cheatKey = sdk;
                 }
                 if (cheatJobj != null) {
                     if (cheatJobj.has(OPT_MAX_CLK)) {
@@ -399,6 +406,7 @@ public class CheatManager {
         public boolean intercept = false;
         public int maxClk;
         public int minImp;
+        public String cheatKey;
         public String placement = "unknown";
         public List<String> gaidList;
 
@@ -408,6 +416,7 @@ public class CheatManager {
                     "intercept=" + intercept +
                     ", maxClk=" + maxClk +
                     ", minImp=" + minImp +
+                    ", cheatKey='" + cheatKey + '\'' +
                     ", placement='" + placement + '\'' +
                     ", gaidList=" + gaidList +
                     '}';
