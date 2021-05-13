@@ -32,6 +32,7 @@ public class CheatManager {
     private static final String OPT_MAX_CLK = "max_clk";
     private static final String OPT_MIN_IMP = "min_imp";
     private static final String OPT_INTERCEPT = "intercept";
+    private static final String OPT_REMOVEADS = "removeads";
     private static final String OPT_GAIDS = "gaids";
 
 
@@ -74,6 +75,14 @@ public class CheatManager {
             if (cheatCfg.intercept) {
                 return interceptCheatByGAID(cheatCfg) || interceptCheatByConfig(sdk, placeName, cheatCfg);
             }
+        }
+        return false;
+    }
+
+    public boolean isRemoveAds(String sdk, String placeName) {
+        CheatCfg cheatCfg = getCheatConfig(sdk, placeName);
+        if (cheatCfg != null) {
+            return cheatCfg.removeAds;
         }
         return false;
     }
@@ -215,6 +224,9 @@ public class CheatManager {
                 JSONObject jobj = new JSONObject(cheatConfigString);
                 if (jobj.has(OPT_INTERCEPT)) {
                     cheatCfg.intercept = jobj.getBoolean(OPT_INTERCEPT);
+                }
+                if (jobj.has(OPT_REMOVEADS)) {
+                    cheatCfg.removeAds = jobj.getBoolean(OPT_REMOVEADS);
                 }
                 String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
                 JSONObject cheatJobj = null;
@@ -404,6 +416,7 @@ public class CheatManager {
 
     class CheatCfg {
         public boolean intercept = false;
+        public boolean removeAds = false;
         public int maxClk;
         public int minImp;
         public String cheatKey;
@@ -414,6 +427,7 @@ public class CheatManager {
         public String toString() {
             return "CheatCfg{" +
                     "intercept=" + intercept +
+                    "removeAds=" + removeAds +
                     ", maxClk=" + maxClk +
                     ", minImp=" + minImp +
                     ", cheatKey='" + cheatKey + '\'' +

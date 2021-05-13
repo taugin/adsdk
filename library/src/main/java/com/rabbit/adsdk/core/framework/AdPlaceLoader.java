@@ -1552,8 +1552,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         @Override
         public void onClick(String placeName, String source, String adType, String pid) {
             Log.iv(Log.TAG, "notify callback onClick place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid);
-            if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
-                if (TextUtils.equals(adType, Constant.TYPE_NATIVE) || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
+            if (TextUtils.equals(adType, Constant.TYPE_NATIVE)
+                    || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
+                boolean removeAds = CheatManager.get(mContext).isUserCheat(source, placeName)
+                        && CheatManager.get(mContext).isRemoveAds(source, placeName);
+                if (removeAds) {
+                    if (mAdContainer != null) {
+                        ViewGroup viewGroup = mAdContainer.get();
+                        if (viewGroup != null) {
+                            viewGroup.removeAllViews();
+                        }
+                    }
+                }
+                if (removeAds || (mAdPlace != null && mAdPlace.isAutoSwitch())) {
                     resume();
                     showNextAdView();
                 }

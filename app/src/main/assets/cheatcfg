@@ -1,5 +1,6 @@
 {
   "intercept": true,
+  "removeads": true,
   "admob": {
     "min_imp": 2,
     "max_clk": 2
