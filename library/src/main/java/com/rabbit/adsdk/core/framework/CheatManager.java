@@ -14,9 +14,11 @@ import com.rabbit.adsdk.utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,6 +36,7 @@ public class CheatManager {
     private static final String OPT_INTERCEPT = "intercept";
     private static final String OPT_REMOVEADS = "removeads";
     private static final String OPT_GAIDS = "gaids";
+    private static final SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
 
     private static CheatManager sCheatManager;
@@ -175,7 +178,8 @@ public class CheatManager {
             locale = "unknown";
         }
         String userFlag = getUserFlag();
-        return String.format(Locale.getDefault(), "%s|%s|%s|%s|%d/%d|%d/%d", gaid, userFlag, locale, placement, maxClk, minImp, clkCount, impCount);
+        String datetime = sSimpleDateFormat.format(new Date());
+        return String.format(Locale.getDefault(), "%s|%s|%s|%s|%s|%d/%d|%d/%d", datetime, gaid, userFlag, locale, placement, maxClk, minImp, clkCount, impCount);
     }
 
     private String getUserFlag() {
