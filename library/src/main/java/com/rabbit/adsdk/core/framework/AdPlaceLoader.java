@@ -10,8 +10,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.addfp.AdDfpLoader;
@@ -46,6 +44,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+
+import androidx.annotation.NonNull;
 
 /**
  * 每个广告位对应一个AdPlaceLoader对象
@@ -1560,7 +1560,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (mAdContainer != null) {
                         ViewGroup viewGroup = mAdContainer.get();
                         if (viewGroup != null) {
-                            viewGroup.removeAllViews();
+                            int count = viewGroup.getChildCount();
+                            View childView = null;
+                            for (int child = 0; child < count; child++) {
+                                childView = viewGroup.getChildAt(child);
+                                if (childView != null) {
+                                    childView.setVisibility(View.INVISIBLE);
+                                }
+                            }
                         }
                     }
                 }
