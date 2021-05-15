@@ -179,7 +179,7 @@ public class CheatManager {
         }
         String userFlag = getUserFlag();
         String datetime = sSimpleDateFormat.format(new Date());
-        return String.format(Locale.getDefault(), "%s|%s|%s|%s|%s|%d/%d|%d/%d", datetime, gaid, userFlag, locale, placement, maxClk, minImp, clkCount, impCount);
+        return String.format(Locale.getDefault(), "%s|%s|%s|%s|%s|%d/%d|%d/%d", gaid, userFlag, locale, datetime, placement, maxClk, minImp, clkCount, impCount);
     }
 
     private String getUserFlag() {
