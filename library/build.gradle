@@ -69,11 +69,11 @@ dependencies {
 
     // applovin
     implementation 'com.applovin:applovin-sdk:10.2.1'
-    implementation 'com.mopub.mediation:applovin:10.2.0.0'
+    implementation 'com.mopub.mediation:applovin:10.2.1.0'
 
     // facebook
-    implementation 'com.facebook.android:audience-network-sdk:6.4.0'
-    implementation 'com.mopub.mediation:facebookaudiencenetwork:6.4.0.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.5.0'
+    implementation 'com.mopub.mediation:facebookaudiencenetwork:6.5.0.0'
 
     // admob
     implementation 'com.mopub.mediation:admob:19.6.0.1'
