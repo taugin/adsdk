@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.rabbit.adsdk.constant.Constant;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -17,8 +18,6 @@ public class PidConfig {
     private String sdk;
 
     private String pid;
-
-    private int ctr = 100;
 
     private String adType;
 
@@ -58,6 +57,8 @@ public class PidConfig {
 
     private boolean isMax = true;
 
+    private Map<String, String> subNativeLayout;
+
     public String getAdPlaceName() {
         return adPlaceName;
     }
@@ -80,14 +81,6 @@ public class PidConfig {
 
     public void setPid(String pid) {
         this.pid = pid;
-    }
-
-    public int getCtr() {
-        return ctr;
-    }
-
-    public void setCtr(int ctr) {
-        this.ctr = ctr;
     }
 
     public String getAdType() {
@@ -242,6 +235,14 @@ public class PidConfig {
         isMax = max;
     }
 
+    public Map<String, String> getSubNativeLayout() {
+        return subNativeLayout;
+    }
+
+    public void setSubNativeLayout(Map<String, String> subNativeLayout) {
+        this.subNativeLayout = subNativeLayout;
+    }
+
     public boolean isAdmob() {
         return TextUtils.equals(Constant.AD_SDK_ADMOB, sdk);
     }
@@ -288,10 +289,10 @@ public class PidConfig {
                 "name=" + adPlaceName +
                 ", sdk=" + sdk +
                 ", pid=" + pid +
-                ", ctr=" + ctr +
                 ", type=" + adType +
                 ", ecpm=" + ecpm +
                 ", nl=" + nativeLayout +
+                ", snl=" + subNativeLayout +
                 ", aid=" + appId +
                 ", eid=" + extId +
                 ", ac=" + activityContext +

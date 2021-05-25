@@ -199,6 +199,23 @@ public class BaseBindNativeView {
         return layoutId;
     }
 
+    protected int getSubNativeLayout(PidConfig pidConfig, String sdk) {
+        if (pidConfig != null && !TextUtils.isEmpty(sdk)) {
+            Map<String, String> subNativeLayout = pidConfig.getSubNativeLayout();
+            if (subNativeLayout != null) {
+                String layout = subNativeLayout.get(sdk);
+                if (!TextUtils.isEmpty(layout)) {
+                    Log.v(Log.TAG, "sub native layout flag : " + layout);
+                    Integer nativeLayout = LAYOUT_MAPS.get(layout);
+                    if (nativeLayout != null) {
+                        return nativeLayout.intValue();
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
     protected void bindParamsViewId(Params params) {
         if (params == null) {
             return;

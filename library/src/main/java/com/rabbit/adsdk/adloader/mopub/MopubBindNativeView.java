@@ -20,6 +20,7 @@ import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.StaticNativeAd;
 import com.mopub.nativeads.ViewBinder;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
+import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
@@ -89,7 +90,14 @@ public class MopubBindNativeView extends BaseBindNativeView {
 
         View rootView = null;
         try {
-            rootView = LayoutInflater.from(context).inflate(rootLayout, null);
+            int mopubRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_MOPUB);
+            if (mopubRootLayout <= 0) {
+                mopubRootLayout = rootLayout;
+            } else {
+                Log.iv(Log.TAG, "bind mopub layout");
+                bindParamsViewId(mParams);
+            }
+            rootView = LayoutInflater.from(context).inflate(mopubRootLayout, null);
             bindMopubcRender(context, nativeAd, rootView);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
@@ -98,7 +106,14 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
 
         try {
-            rootView = LayoutInflater.from(context).inflate(rootLayout, null);
+            int admobRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_ADMOB);
+            if (admobRootLayout <= 0) {
+                admobRootLayout = rootLayout;
+            } else {
+                Log.iv(Log.TAG, "bind admob layout");
+                bindParamsViewId(mParams);
+            }
+            rootView = LayoutInflater.from(context).inflate(admobRootLayout, null);
             bindAdMobRender(context, rootView, nativeAd);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
@@ -107,7 +122,14 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
 
         try {
-            rootView = LayoutInflater.from(context).inflate(rootLayout, null);
+            int facebookRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_FACEBOOK);
+            if (facebookRootLayout <= 0) {
+                facebookRootLayout = rootLayout;
+            } else {
+                Log.iv(Log.TAG, "bind facebook layout");
+                bindParamsViewId(mParams);
+            }
+            rootView = LayoutInflater.from(context).inflate(facebookRootLayout, null);
             bindFBRender(context, rootView, nativeAd);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);

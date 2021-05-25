@@ -216,9 +216,6 @@ public class AdParser implements IParser {
                 }
                 pidConfig.setPid(pid);
             }
-            if (jobj.has(CTR)) {
-                pidConfig.setCtr(jobj.getInt(CTR));
-            }
             if (jobj.has(TYPE)) {
                 pidConfig.setAdType(jobj.getString(TYPE));
             }
@@ -272,6 +269,9 @@ public class AdParser implements IParser {
             }
             if (jobj.has(ISMAX)) {
                 pidConfig.setMax(jobj.getInt(ISMAX) == 1);
+            }
+            if (jobj.has(SUB_NATIVE_LAYOUT)) {
+                pidConfig.setSubNativeLayout(jsonToMap(jobj.getString(SUB_NATIVE_LAYOUT)));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

@@ -55,8 +55,6 @@ public interface IParser {
     String SDK = "sdk";
     // 具体广告平台的广告位ID
     String PID = "pid";
-    // 控制原生广告的点击区域百分比
-    String CTR = "ctr";
     // 广告类型 interstitial, banner, native
     String TYPE = "type";
     // 禁用某个广告
@@ -88,6 +86,8 @@ public interface IParser {
     String RATIO = "ratio";
     // 是否applovin max
     String ISMAX = "ismax";
+    // 子原生布局
+    String SUB_NATIVE_LAYOUT = "snl";
 
     // banner
     String BANNER = "banner";
