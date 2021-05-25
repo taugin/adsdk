@@ -581,9 +581,10 @@ public class MopubLoader extends AbstractSdkLoader {
                 @Override
                 public void onImpression(View view) {
                     Log.v(Log.TAG, "");
-                    reportAdImp();
+                    String render = getRender();
+                    reportAdImp(render);
                     notifyAdImp();
-                    logImpression();
+                    Log.v(Log.TAG, "network imp place name : " + getAdPlaceName() + " , sdk : " + render + " , type : " + getAdType());
                 }
 
                 @Override
@@ -628,20 +629,21 @@ public class MopubLoader extends AbstractSdkLoader {
         }
     }
 
-    private void logImpression() {
+    private String getRender() {
+        String render = Constant.AD_SDK_MOPUB;
         try {
-            String network = Constant.AD_SDK_MOPUB;
             if (lastUseNativeAd != null) {
                 MoPubAdRenderer adRenderer = lastUseNativeAd.getMoPubAdRenderer();
                 if (adRenderer instanceof GooglePlayServicesAdRenderer) {
-                    network = Constant.AD_SDK_ADMOB;
+                    render = Constant.AD_SDK_ADMOB;
                 } else if (adRenderer instanceof FacebookAdRenderer) {
-                    network = Constant.AD_SDK_FACEBOOK;
+                    render = Constant.AD_SDK_FACEBOOK;
                 }
             }
-            Log.v(Log.TAG, "network imp place name : " + getAdPlaceName() + " , sdk : " + network + " , type : " + getAdType());
         } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
+        return render;
     }
 
     @Override
