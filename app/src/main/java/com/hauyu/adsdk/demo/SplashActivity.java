@@ -46,7 +46,7 @@ public class SplashActivity extends Activity {
 
     public void initAds(boolean fromPrivacy) {
         setTimeOutState(fromPrivacy ? 10000 : 8000);
-        loadNativeSplashRetry(5, true);
+        loadNativeSplashRetry(1, true);
     }
 
     private void loadNativeSplashRetry(final int retryTimes, final boolean enterApp) {
