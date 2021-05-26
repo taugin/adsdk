@@ -48,14 +48,22 @@ public class MopubBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "bindMopubNative context == null###");
             return;
         }
+        if (pidConfig == null) {
+            Log.e(Log.TAG, "bindMopubNative pidconfig == null###");
+            return;
+        }
+        boolean useCardStyle;
         int rootLayout = mParams.getNativeRootLayout();
-        if (rootLayout <= 0 && mParams.getNativeCardStyle() > 0) {
-            rootLayout = getAdViewLayout(context, mParams.getNativeCardStyle(), pidConfig);
+        int cardStyle = mParams.getNativeCardStyle();
+        if (rootLayout > 0) {
+            useCardStyle = false;
+        } else {
+            useCardStyle = true;
+            rootLayout = getAdViewLayout(context, cardStyle, pidConfig);
             bindParamsViewId(mParams);
         }
-
         if (rootLayout > 0) {
-            bindNativeViewWithRootView(context, rootLayout, nativeAd, pidConfig);
+            bindNativeViewWithRootView(context, rootLayout, nativeAd, pidConfig, useCardStyle);
         } else {
             Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
         }
@@ -69,7 +77,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
      * @param nativeAd
      * @param pidConfig
      */
-    private void bindNativeViewWithRootView(Context context, int rootLayout, MoPubNative nativeAd, PidConfig pidConfig) {
+    private void bindNativeViewWithRootView(Context context, int rootLayout, MoPubNative nativeAd, PidConfig pidConfig, boolean useCardStyle) {
         if (rootLayout <= 0) {
             Log.v(Log.TAG, "bindNativeViewWithRootView rootLayout == 0x0");
             return;
@@ -90,12 +98,17 @@ public class MopubBindNativeView extends BaseBindNativeView {
 
         View rootView = null;
         try {
-            int mopubRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_MOPUB);
-            if (mopubRootLayout <= 0) {
-                mopubRootLayout = rootLayout;
+            int mopubRootLayout;
+            if (useCardStyle) {
+                mopubRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_MOPUB);
+                if (mopubRootLayout > 0) {
+                    Log.iv(Log.TAG, "bind mopub layout");
+                    bindParamsViewId(mParams);
+                } else {
+                    mopubRootLayout = rootLayout;
+                }
             } else {
-                Log.iv(Log.TAG, "bind mopub layout");
-                bindParamsViewId(mParams);
+                mopubRootLayout = rootLayout;
             }
             rootView = LayoutInflater.from(context).inflate(mopubRootLayout, null);
             bindMopubcRender(context, nativeAd, rootView);
@@ -106,12 +119,17 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
 
         try {
-            int admobRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_ADMOB);
-            if (admobRootLayout <= 0) {
-                admobRootLayout = rootLayout;
+            int admobRootLayout;
+            if (useCardStyle) {
+                admobRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_ADMOB);
+                if (admobRootLayout > 0) {
+                    Log.iv(Log.TAG, "bind admob layout");
+                    bindParamsViewId(mParams);
+                } else {
+                    admobRootLayout = rootLayout;
+                }
             } else {
-                Log.iv(Log.TAG, "bind admob layout");
-                bindParamsViewId(mParams);
+                admobRootLayout = rootLayout;
             }
             rootView = LayoutInflater.from(context).inflate(admobRootLayout, null);
             bindAdMobRender(context, rootView, nativeAd);
@@ -122,12 +140,17 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
 
         try {
-            int facebookRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_FACEBOOK);
-            if (facebookRootLayout <= 0) {
-                facebookRootLayout = rootLayout;
+            int facebookRootLayout;
+            if (useCardStyle) {
+                facebookRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_FACEBOOK);
+                if (facebookRootLayout > 0) {
+                    Log.iv(Log.TAG, "bind facebook layout");
+                    bindParamsViewId(mParams);
+                } else {
+                    facebookRootLayout = rootLayout;
+                }
             } else {
-                Log.iv(Log.TAG, "bind facebook layout");
-                bindParamsViewId(mParams);
+                facebookRootLayout = rootLayout;
             }
             rootView = LayoutInflater.from(context).inflate(facebookRootLayout, null);
             bindFBRender(context, rootView, nativeAd);
