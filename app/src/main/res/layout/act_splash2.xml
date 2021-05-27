@@ -4,10 +4,62 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/splash_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <ProgressBar
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ad_container_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/ad_splash_advertise_bg"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <FrameLayout
+                android:id="@+id/ad_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/dp_8"
+                android:paddingRight="@dimen/dp_8" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_weight="0"
+                android:gravity="center"
+                android:text="Advertisement"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/app_info_layout"
         android:layout_width="match_parent"
         android:layout_height="96dp"
+        android:layout_weight="0"
         android:background="#FFEEEEEE"
         android:gravity="center_vertical">
 
@@ -64,52 +116,4 @@
                 android:src="@drawable/next" />
         </RelativeLayout>
     </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/splash_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:src="@mipmap/ic_launcher" />
-
-            <ProgressBar
-                android:layout_width="@dimen/dp_24"
-                android:layout_height="@dimen/dp_24"
-                android:layout_marginTop="@dimen/dp_16" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ad_container_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/ad_splash_advertise_bg"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:gravity="center"
-                android:text="Advertisement"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <FrameLayout
-                android:id="@+id/ad_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/dp_8"
-                android:paddingRight="@dimen/dp_8" />
-        </LinearLayout>
-    </FrameLayout>
 </LinearLayout>

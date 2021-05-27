@@ -1,5 +1,5 @@
 {
-  "intercept": true,
+  "intercept": false,
   "removeads": true,
   "admob": {
     "min_imp": 2,

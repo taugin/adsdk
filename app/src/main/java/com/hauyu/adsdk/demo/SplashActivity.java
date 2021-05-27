@@ -21,6 +21,7 @@ public class SplashActivity extends Activity {
     private static final String TAG = "MA";
     private FrameLayout adContainer;
     private ViewGroup splashLayout;
+    private View adContainerLayout;
     private Handler mHandler = new Handler();
     private View appInfoLayout = null;
 
@@ -31,6 +32,7 @@ public class SplashActivity extends Activity {
         adContainer = findViewById(R.id.ad_container);
         splashLayout = findViewById(R.id.splash_layout);
         appInfoLayout = findViewById(R.id.app_info_layout);
+        adContainerLayout = findViewById(R.id.ad_container_layout);
         appInfoLayout.setVisibility(View.GONE);
         appInfoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +99,7 @@ public class SplashActivity extends Activity {
         if (adContainer != null) {
             appInfoLayout.setVisibility(View.VISIBLE);
             adContainer.setVisibility(View.VISIBLE);
+            adContainerLayout.setVisibility(View.VISIBLE);
             splashLayout.setVisibility(View.GONE);
             AdSdk.get(this).showAdView("native_splash", adContainer);
         }
