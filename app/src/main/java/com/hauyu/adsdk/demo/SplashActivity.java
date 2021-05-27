@@ -28,7 +28,7 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_splash);
+        setContentView(R.layout.act_splash2);
         adContainer = findViewById(R.id.ad_container);
         splashLayout = findViewById(R.id.splash_layout);
         appInfoLayout = findViewById(R.id.app_info_layout);

@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/ad_splash_advertise_bg"
+            android:paddingTop="8dp"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -40,13 +41,15 @@
                 android:id="@+id/ad_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingLeft="@dimen/dp_8"
-                android:paddingRight="@dimen/dp_8" />
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginRight="@dimen/dp_8"
+                android:layout_weight="1" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginRight="@dimen/dp_8"
                 android:layout_weight="0"
                 android:gravity="center"
                 android:text="Advertisement"
