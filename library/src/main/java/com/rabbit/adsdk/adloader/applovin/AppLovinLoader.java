@@ -15,6 +15,7 @@ import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
 import com.applovin.mediation.MaxAdListener;
 import com.applovin.mediation.MaxAdViewAdListener;
+import com.applovin.mediation.MaxError;
 import com.applovin.mediation.MaxReward;
 import com.applovin.mediation.MaxRewardedAdListener;
 import com.applovin.mediation.ads.MaxAdView;
@@ -642,10 +643,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdLoadFailed(String adUnitId, int errorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+            public void onAdLoadFailed(String adUnitId, MaxError error) {
+                Log.v(Log.TAG, "reason : " + codeToError(error) + " , place name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
-                reportAdError(codeToError(errorCode));
+                reportAdError(codeToError(error));
                 notifyAdFailed(Constant.AD_ERROR_LOAD);
             }
 
@@ -672,8 +673,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdDisplayFailed(MaxAd ad, int errorCode) {
-                Log.v(Log.TAG, "");
+            public void onAdRevenuePaid(MaxAd ad) {
+                Log.v(Log.TAG, "on ad revenue paid");
+            }
+
+            @Override
+            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+                Log.v(Log.TAG, "on ad display failed");
             }
 
             @Override
@@ -739,10 +745,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdLoadFailed(String adUnitId, int errorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+            public void onAdLoadFailed(String adUnitId, MaxError error) {
+                Log.v(Log.TAG, "reason : " + codeToError(error) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
-                reportAdError(codeToError(errorCode));
+                reportAdError(codeToError(error));
                 notifyAdFailed(Constant.AD_ERROR_LOAD);
             }
 
@@ -772,8 +778,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdDisplayFailed(MaxAd ad, int errorCode) {
-                Log.v(Log.TAG, "applovin max interstitial display failed error : " + codeToError(errorCode));
+            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+                Log.v(Log.TAG, "applovin max interstitial display failed error : " + codeToError(error));
+            }
+
+            @Override
+            public void onAdRevenuePaid(MaxAd ad) {
+                Log.v(Log.TAG, "on ad revenue paid");
             }
         });
         reportAdRequest();
@@ -845,10 +856,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdLoadFailed(String adUnitId, int errorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+            public void onAdLoadFailed(String adUnitId, MaxError error) {
+                Log.v(Log.TAG, "reason : " + codeToError(error) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
-                reportAdError(codeToError(errorCode));
+                reportAdError(codeToError(error));
                 notifyAdFailed(Constant.AD_ERROR_LOAD);
             }
 
@@ -874,8 +885,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdDisplayFailed(MaxAd ad, int errorCode) {
-                Log.v(Log.TAG, "applovin max reward video display failed error : " + codeToError(errorCode));
+            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+                Log.v(Log.TAG, "applovin max reward video display failed error : " + codeToError(error));
+            }
+
+            @Override
+            public void onAdRevenuePaid(MaxAd ad) {
+                Log.v(Log.TAG, "on ad revenue paid");
             }
         });
 
@@ -934,6 +950,20 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (code == AppLovinErrorCodes.NO_NETWORK) {
             return "NO_NETWORK[" + code + "]";
+        }
+        return "UNKNOWN[" + code + "]";
+    }
+
+    private String codeToError(MaxError error) {
+        int code = -1;
+        if (error != null) {
+            code = error.getCode();
+            if (code == AppLovinErrorCodes.NO_FILL) {
+                return "NO_FILL[" + code + "]";
+            }
+            if (code == AppLovinErrorCodes.NO_NETWORK) {
+                return "NO_NETWORK[" + code + "]";
+            }
         }
         return "UNKNOWN[" + code + "]";
     }
