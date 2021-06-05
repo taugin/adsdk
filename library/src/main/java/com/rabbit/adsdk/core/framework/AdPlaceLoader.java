@@ -1554,8 +1554,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             Log.iv(Log.TAG, "notify callback onClick place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid);
             if (TextUtils.equals(adType, Constant.TYPE_NATIVE)
                     || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
-                boolean removeAds = CheatManager.get(mContext).isUserCheat(source, placeName)
-                        && CheatManager.get(mContext).isRemoveAds(source, placeName);
+                boolean removeAds = BlockAdsManager.get(mContext).isBlockAds(source, placeName)
+                        && BlockAdsManager.get(mContext).isRemoveAds(source, placeName);
                 if (removeAds) {
                     if (mAdContainer != null) {
                         ViewGroup viewGroup = mAdContainer.get();

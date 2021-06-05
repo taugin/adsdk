@@ -17,7 +17,7 @@ import com.rabbit.adsdk.adloader.listener.IManagerListener;
 import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
 import com.rabbit.adsdk.constant.Constant;
-import com.rabbit.adsdk.core.framework.CheatManager;
+import com.rabbit.adsdk.core.framework.BlockAdsManager;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.listener.AdLoaderFilter;
@@ -281,8 +281,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
      */
     protected boolean checkCommonConfig() {
         // 检测作弊用户
-        if (isUserCheat()) {
-            processCheatUser();
+        if (isBlockAds()) {
+            processBlockAds();
             return false;
         }
 
@@ -300,13 +300,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return true;
     }
 
-    private void processCheatUser() {
-        Log.d(Log.TAG, "cheat user : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-        notifyAdFailed(Constant.AD_ERROR_CHEAT);
+    private void processBlockAds() {
+        Log.d(Log.TAG, "block ads : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+        notifyAdFailed(Constant.AD_ERROR_BLOCK_ADS);
     }
 
-    private boolean isUserCheat() {
-        return CheatManager.get(mContext).isUserCheat(getSdkName(), getAdPlaceName());
+    private boolean isBlockAds() {
+        return BlockAdsManager.get(mContext).isBlockAds(getSdkName(), getAdPlaceName());
     }
 
     protected void printInterfaceLog(String action) {

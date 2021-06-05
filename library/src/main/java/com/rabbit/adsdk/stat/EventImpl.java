@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import com.rabbit.adsdk.constant.Constant;
-import com.rabbit.adsdk.core.framework.CheatManager;
+import com.rabbit.adsdk.core.framework.BlockAdsManager;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
@@ -172,7 +172,7 @@ public class EventImpl implements IEvent {
         reportEvent(context, placeName, eventId, extra);
         reportEvent(context, placeName, "e_ad_imp", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        CheatManager.get(context).recordAdImp(sdk, placeName);
+        BlockAdsManager.get(context).recordAdImp(sdk, placeName);
     }
 
     @Override
@@ -185,7 +185,7 @@ public class EventImpl implements IEvent {
         reportEvent(context, placeName, eventId, extra);
         reportEvent(context, placeName, "e_ad_click", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        CheatManager.get(context).recordAdClick(sdk, placeName);
+        BlockAdsManager.get(context).recordAdClick(sdk, placeName);
     }
 
     @Override

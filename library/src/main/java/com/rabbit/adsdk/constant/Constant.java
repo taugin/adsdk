@@ -156,7 +156,7 @@ public class Constant {
     /**
      * 被判断为作弊用户
      */
-    public static final int AD_ERROR_CHEAT = 16;
+    public static final int AD_ERROR_BLOCK_ADS = 16;
 
     /**
      * 判断adloader是否被过滤

@@ -1,0 +1,8 @@
+{
+  "blockads": false,
+  "removeads": true,
+  "mopub": {
+    "min_imp": 0,
+    "max_clk": 1
+  }
+}
