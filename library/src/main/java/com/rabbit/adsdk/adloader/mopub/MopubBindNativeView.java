@@ -13,9 +13,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.ads.MediaView;
+import com.mbridge.msdk.nativex.view.MBMediaView;
+import com.mbridge.msdk.widget.MBAdChoice;
 import com.mopub.nativeads.FacebookAdRenderer;
 import com.mopub.nativeads.GooglePlayServicesMediaLayout;
 import com.mopub.nativeads.GooglePlayServicesViewBinder;
+import com.mopub.nativeads.MintegralAdRenderer;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.StaticNativeAd;
 import com.mopub.nativeads.ViewBinder;
@@ -159,8 +162,30 @@ public class MopubBindNativeView extends BaseBindNativeView {
         } catch (Error e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
+
+        try {
+            int mintegralRootLayout;
+            if (useCardStyle) {
+                mintegralRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_MINTEGRAL);
+                if (mintegralRootLayout > 0) {
+                    Log.iv(Log.TAG, "bind mintegral layout");
+                    bindParamsViewId(mParams);
+                } else {
+                    mintegralRootLayout = rootLayout;
+                }
+            } else {
+                mintegralRootLayout = rootLayout;
+            }
+            rootView = LayoutInflater.from(context).inflate(mintegralRootLayout, null);
+            bindMintegralRender(context, rootView, nativeAd);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
     }
 
+    ///////////////////////////////////Bind Mopub Render start////////////////////////////////////////
     private void bindMopubcRender(Context context, MoPubNative nativeAd, View layout) {
         MoPubStaticAdRender moPubAdRenderer = new MoPubStaticAdRender(getStaticViewBinder(context, layout), layout);
         nativeAd.registerAdRenderer(moPubAdRenderer);
@@ -184,7 +209,9 @@ public class MopubBindNativeView extends BaseBindNativeView {
                 .build();
         return viewBinder;
     }
+    ///////////////////////////////////Bind Mopub Render end////////////////////////////////////////
 
+    ///////////////////////////////////Bind Admob Render start////////////////////////////////////////
     private GooglePlayServicesMediaLayout createGooglePlayServicesMediaLayout(Context context) {
         try {
             return new GooglePlayServicesMediaLayout(context);
@@ -226,7 +253,9 @@ public class MopubBindNativeView extends BaseBindNativeView {
         MoPubGoogleAdRenderer adRender = new MoPubGoogleAdRenderer(videoViewBinder, layout);
         nativeAd.registerAdRenderer(adRender);
     }
+    ///////////////////////////////////Bind Admob Render end////////////////////////////////////////
 
+    ///////////////////////////////////Bind Facebook Render start////////////////////////////////////////
     private MediaView createFacebookMediaView(Context context) {
         try {
             return new MediaView(context);
@@ -275,6 +304,17 @@ public class MopubBindNativeView extends BaseBindNativeView {
         nativeAd.registerAdRenderer(render);
     }
 
+    private MediaView createFacebookAdIconView(Context context) {
+        try {
+            return new MediaView(context);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
     private MediaView createFacebookAdIconView(Context context, ImageView icon) {
         MediaView iconView = createFacebookAdIconView(context);
         if (icon != null && iconView != null) {
@@ -302,10 +342,12 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
         return iconView;
     }
+    ///////////////////////////////////Bind Facebook Render end////////////////////////////////////////
 
-    private MediaView createFacebookAdIconView(Context context) {
+    ///////////////////////////////////Bind Mintegral Render start////////////////////////////////////////
+    private MBMediaView createMintegralMediaView(Context context) {
         try {
-            return new MediaView(context);
+            return new MBMediaView(context);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         } catch (Error e) {
@@ -313,6 +355,54 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
         return null;
     }
+
+    private MBAdChoice createMintegralMBAdChoice(Context context) {
+        try {
+            return new MBAdChoice(context);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        } catch (Error e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    private void bindMintegralRender(Context context, View layout, MoPubNative nativeAd) {
+        int mediaViewId = 0;
+        ViewGroup coverLayout = layout.findViewById(mParams.getAdMediaView());
+        if (coverLayout != null) {
+            MBMediaView mediaView = createMintegralMediaView(context);
+            if (mediaView != null) {
+                mediaView.setId(View.generateViewId());
+                coverLayout.addView(mediaView);
+                mediaViewId = mediaView.getId();
+            }
+        }
+
+        int adChoiceId = 0;
+        ViewGroup choiceLayout = layout.findViewById(mParams.getAdChoices());
+        if (choiceLayout != null) {
+            MBAdChoice mbAdChoice = createMintegralMBAdChoice(context);
+            if (mbAdChoice != null) {
+                mbAdChoice.setId(View.generateViewId());
+                choiceLayout.addView(mbAdChoice);
+                adChoiceId = mbAdChoice.getId();
+            }
+        }
+
+        MintegralAdRenderer.ViewBinder viewBinder = new MintegralAdRenderer.ViewBinder.Builder(0)
+                .iconImageId(mParams.getAdIcon())
+                .titleId(mParams.getAdTitle())
+                .mainImageId(mParams.getAdCover())
+                .mediaViewId(mediaViewId)
+                .adChoicesId(adChoiceId)
+                .callToActionId(mParams.getAdAction())
+                .textId(mParams.getAdDetail())
+                .build();
+        MopubMintegralAdRenderer adRenderer = new MopubMintegralAdRenderer(viewBinder, layout);
+        nativeAd.registerAdRenderer(adRenderer);
+    }
+    ///////////////////////////////////Bind Mintegral Render end////////////////////////////////////////
 
     private ImageView createImageView(Context context) {
         try {

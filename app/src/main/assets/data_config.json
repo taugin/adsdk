@@ -46,15 +46,15 @@
         {
           "sdk": "mopub",
           "type": "native",
-          "pid": "11a17b188668469fb0412708c3d16813",
-          "disable": 1
+          "pid": "9439665e1f05483197562159c72aef98",
+          "disable": 0
         },
         {
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
           "cv": ["cta"],
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,

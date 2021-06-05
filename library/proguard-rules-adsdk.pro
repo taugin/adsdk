@@ -55,3 +55,16 @@
 # 保留applovin下的所有类及其内部类
 -keep class com.applovin.** {*;}
 -dontwarn com.applovin.**
+
+#mintegral
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class com.mintegral.** {*; }
+-keep interface com.mintegral.** {*; }
+-keep interface androidx.** { *; }
+-keep class androidx.** { *; }
+-keep public class * extends androidx.** { *; }
+-dontwarn com.mintegral.**
+-keep class **.R$* { public static final int mintegral*; }
+-keep class com.alphab.** {*; }
+-keep interface com.alphab.** {*; }

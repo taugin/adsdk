@@ -52,6 +52,7 @@ allprojects {
                 password "xcgJSde4Zuo4"
             }
         }
+        maven { url 'https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea'}
         google()
         jcenter()
         mavenLocal()
