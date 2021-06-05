@@ -304,7 +304,7 @@ public class BlockAdsManager {
                 if (TextUtils.isEmpty(key)) {
                     continue;
                 }
-                String keySplit[] = key.split(",");
+                String keySplit[] = key.split("#");
                 if (keySplit == null || keySplit.length != 2) {
                     continue;
                 }
@@ -341,7 +341,7 @@ public class BlockAdsManager {
 
     private synchronized void recordAdKeyList(String sdk, String placeName) {
         try {
-            String newKey = String.format(Locale.getDefault(), "%s,%s", sdk, placeName);
+            String newKey = String.format(Locale.getDefault(), "%s#%s", sdk, placeName);
             List<String> allKeyList = new ArrayList<String>();
             String keyListString = Utils.getString(mContext, PREF_AD_CLICK_KEY_LIST, null);
             List<String> lastKeyList = null;
