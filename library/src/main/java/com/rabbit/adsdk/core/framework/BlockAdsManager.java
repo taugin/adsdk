@@ -19,8 +19,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class BlockAdsManager {
     private static final String PREF_AD_PLACE_IMP_COUNT = "pref_block_ads_%s_%s_imp_count";
@@ -62,6 +65,54 @@ public class BlockAdsManager {
     }
 
     private Context mContext;
+    private String mLastCfgMd5 = null;
+    private Map<String, BlockCfg> mBlockMap = new HashMap<String, BlockCfg>();
+
+    private void parseAdBlockConfig() {
+        String configString = AdSdk.get(mContext).getString(CFG_BLOCK_ADS);
+        if (!TextUtils.isEmpty(configString)) {
+            String currentMd5 = Utils.string2MD5(configString);
+            if (mBlockMap != null && !mBlockMap.isEmpty() && TextUtils.equals(currentMd5, mLastCfgMd5)) {
+                return;
+            }
+            Log.iv(Log.TAG, "parse block config");
+            mLastCfgMd5 = currentMd5;
+            mBlockMap.clear();
+            try {
+                JSONObject jobj = new JSONObject(configString);
+                Iterator<String> jobjKeys = jobj.keys();
+                if (jobjKeys != null) {
+                    while (jobjKeys.hasNext()) {
+                        String blockKey = jobjKeys.next();
+                        JSONObject blockObj = jobj.getJSONObject(blockKey);
+                        BlockCfg blockCfg = new BlockCfg();
+                        if (blockObj != null) {
+                            blockCfg.blockKey = blockKey;
+                            if (jobj.has(OPT_BLOCKADS)) {
+                                blockCfg.blockAds = jobj.getBoolean(OPT_BLOCKADS);
+                            }
+                            if (jobj.has(OPT_REMOVEADS)) {
+                                blockCfg.removeAds = jobj.getBoolean(OPT_REMOVEADS);
+                            }
+                            if (blockObj.has(OPT_MAX_CLK)) {
+                                blockCfg.maxClk = blockObj.getInt(OPT_MAX_CLK);
+                            }
+                            if (blockObj.has(OPT_MIN_IMP)) {
+                                blockCfg.minImp = blockObj.getInt(OPT_MIN_IMP);
+                            }
+                            if (blockObj.has(OPT_GAIDS)) {
+                                blockCfg.gaidList = parseStringList(blockObj.getString(OPT_GAIDS));
+                            }
+                            Log.iv(Log.TAG, "block cfg : " + blockCfg);
+                            mBlockMap.put(blockCfg.blockKey, blockCfg);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e);
+            }
+        }
+    }
 
     /**
      * 判断是否屏蔽广告
@@ -71,6 +122,7 @@ public class BlockAdsManager {
      * @return
      */
     public boolean isBlockAds(String sdk, String placeName) {
+        parseAdBlockConfig();
         resetBlockAdsData();
         BlockCfg blockCfg = getBlockAdsConfig(sdk, placeName);
         if (blockCfg != null) {
@@ -103,7 +155,7 @@ public class BlockAdsManager {
             }
         }
         if (blockByGaid && blockCfg != null) {
-            Log.iv(Log.TAG, "block ads gaid [" + gaid + "] placement [" + blockCfg.blockAdsKey + "]");
+            Log.iv(Log.TAG, "block ads gaid [" + gaid + "] placement [" + blockCfg.blockKey + "]");
         }
         return blockByGaid;
     }
@@ -111,26 +163,27 @@ public class BlockAdsManager {
     private boolean blockAdsByConfig(String sdk, String placeName, BlockCfg blockCfg) {
         boolean isBlockAds = false;
         String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
-        if (blockCfg != null && (TextUtils.equals(keyConfig, blockCfg.blockAdsKey)
-                || TextUtils.equals(sdk, blockCfg.blockAdsKey))) {
+        if (blockCfg != null && (TextUtils.equals(keyConfig, blockCfg.blockKey)
+                || TextUtils.equals(sdk, blockCfg.blockKey))) {
             String prefImpKey;
             String prefClkKey;
-            if (TextUtils.equals(keyConfig, blockCfg.blockAdsKey)) {
+            String placement;
+            if (TextUtils.equals(keyConfig, blockCfg.blockKey)) {
                 // 具体广告位
                 prefImpKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
                 prefClkKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
-                blockCfg.placement = blockCfg.blockAdsKey;
+                placement = blockCfg.blockKey;
             } else {
                 // 具体平台
                 prefImpKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
                 prefClkKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
-                blockCfg.placement = String.format(Locale.getDefault(), "%s#%s", sdk, placeName);
+                placement = String.format(Locale.getDefault(), "%s#%s", sdk, placeName);
             }
             long impCount = Utils.getLong(mContext, prefImpKey, 0);
             long clkCount = Utils.getLong(mContext, prefClkKey, 0);
             isBlockAds = judgeBlockAds(blockCfg.maxClk, blockCfg.minImp, (int) impCount, (int) clkCount);
             if (isBlockAds) {
-                Log.iv(Log.TAG, "block ads info : " + getBlockInfo(blockCfg.placement, blockCfg.maxClk, blockCfg.minImp, (int) impCount, (int) clkCount));
+                Log.iv(Log.TAG, "block ads info : " + getBlockInfo(placement, blockCfg.maxClk, blockCfg.minImp, (int) impCount, (int) clkCount));
             }
         }
         return isBlockAds;
@@ -139,28 +192,29 @@ public class BlockAdsManager {
     private void reportBlockAdsInfo(String sdk, String placeName) {
         BlockCfg blockCfg = getBlockAdsConfig(sdk, placeName);
         String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
-        if (blockCfg != null && (TextUtils.equals(keyConfig, blockCfg.blockAdsKey)
-                || TextUtils.equals(sdk, blockCfg.blockAdsKey))) {
+        if (blockCfg != null && (TextUtils.equals(keyConfig, blockCfg.blockKey)
+                || TextUtils.equals(sdk, blockCfg.blockKey))) {
             long impCount = 0;
             long clkCount = 0;
             String prefImpKey = null;
             String prefClkKey = null;
-            if (TextUtils.equals(keyConfig, blockCfg.blockAdsKey)) {
+            String placement = null;
+            if (TextUtils.equals(keyConfig, blockCfg.blockKey)) {
                 // 具体广告位
                 prefImpKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
                 prefClkKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
-                blockCfg.placement = blockCfg.blockAdsKey;
+                placement = blockCfg.blockKey;
             } else {
                 // 具体平台
                 prefImpKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
                 prefClkKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
-                blockCfg.placement = String.format(Locale.getDefault(), "%s#%s", sdk, placeName);
+                placement = String.format(Locale.getDefault(), "%s#%s", sdk, placeName);
             }
             impCount = Utils.getLong(mContext, prefImpKey, 0);
             clkCount = Utils.getLong(mContext, prefClkKey, 0);
             boolean isBlockAds = judgeBlockAds(blockCfg.maxClk, blockCfg.minImp, (int) impCount, (int) clkCount);
             if (isBlockAds) {
-                String blockInfo = getBlockInfo(blockCfg.placement, blockCfg.maxClk, blockCfg.minImp, (int) impCount, (int) clkCount);
+                String blockInfo = getBlockInfo(placement, blockCfg.maxClk, blockCfg.minImp, (int) impCount, (int) clkCount);
                 Log.iv(Log.TAG, "report block info : " + blockInfo);
                 InternalStat.reportEvent(mContext, "block_ads_info", blockInfo);
             }
@@ -220,42 +274,16 @@ public class BlockAdsManager {
     }
 
     private BlockCfg getBlockAdsConfig(String sdk, String placeName) {
-        BlockCfg blockCfg = new BlockCfg();
-        String adClickCfgString = AdSdk.get(mContext).getString(CFG_BLOCK_ADS);
-        if (!TextUtils.isEmpty(adClickCfgString)) {
-            try {
-                JSONObject jobj = new JSONObject(adClickCfgString);
-                if (jobj.has(OPT_BLOCKADS)) {
-                    blockCfg.blockAds = jobj.getBoolean(OPT_BLOCKADS);
-                }
-                if (jobj.has(OPT_REMOVEADS)) {
-                    blockCfg.removeAds = jobj.getBoolean(OPT_REMOVEADS);
-                }
-                String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
-                JSONObject clickJobj = null;
-                if (jobj.has(keyConfig)) {
-                    clickJobj = jobj.getJSONObject(keyConfig);
-                    blockCfg.blockAdsKey = keyConfig;
-                } else if (jobj.has(sdk)) {
-                    clickJobj = jobj.getJSONObject(sdk);
-                    blockCfg.blockAdsKey = sdk;
-                }
-                if (clickJobj != null) {
-                    if (clickJobj.has(OPT_MAX_CLK)) {
-                        blockCfg.maxClk = clickJobj.getInt(OPT_MAX_CLK);
-                    }
-                    if (clickJobj.has(OPT_MIN_IMP)) {
-                        blockCfg.minImp = clickJobj.getInt(OPT_MIN_IMP);
-                    }
-                    if (clickJobj.has(OPT_GAIDS)) {
-                        blockCfg.gaidList = parseStringList(clickJobj.getString(OPT_GAIDS));
-                    }
-                }
-            } catch (Exception e) {
-                Log.e(Log.TAG, "error : " + e);
+        if (mBlockMap != null && !mBlockMap.isEmpty()) {
+            BlockCfg blockCfg;
+            String blockKey = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
+            blockCfg = mBlockMap.get(blockKey);
+            if (blockCfg == null) {
+                blockCfg = mBlockMap.get(sdk);
             }
+            return blockCfg;
         }
-        return blockCfg;
+        return null;
     }
 
     public void recordAdImp(String sdk, String placeName) {
@@ -422,19 +450,17 @@ public class BlockAdsManager {
         public boolean removeAds = false;
         public int maxClk;
         public int minImp;
-        public String blockAdsKey;
-        public String placement = "unknown";
+        public String blockKey;
         public List<String> gaidList;
 
         @Override
         public String toString() {
             return "BlockCfg{" +
                     "blockAds=" + blockAds +
-                    "removeAds=" + removeAds +
+                    ", removeAds=" + removeAds +
                     ", maxClk=" + maxClk +
                     ", minImp=" + minImp +
-                    ", blockKey='" + blockAdsKey + '\'' +
-                    ", placement='" + placement + '\'' +
+                    ", blockKey='" + blockKey + '\'' +
                     ", gaidList=" + gaidList +
                     '}';
         }

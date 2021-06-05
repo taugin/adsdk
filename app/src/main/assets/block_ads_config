@@ -1,8 +1,14 @@
 {
-  "blockads": false,
-  "removeads": true,
   "mopub": {
+    "blockads": false,
+    "removeads": true,
     "min_imp": 0,
     "max_clk": 1
-  }
+  },
+  "admob": {
+      "blockads": false,
+      "removeads": true,
+      "min_imp": 0,
+      "max_clk": 1
+    }
 }
