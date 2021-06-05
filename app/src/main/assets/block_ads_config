@@ -1,13 +1,13 @@
 {
   "mopub": {
-    "blockads": false,
-    "removeads": true,
+    "block_ads": true,
+    "remove_ads": true,
     "min_imp": 0,
     "max_clk": 1
   },
-  "admob": {
-      "blockads": false,
-      "removeads": true,
+  "admob_banner_and_native": {
+      "block_ads": true,
+      "remove_ads": true,
       "min_imp": 0,
       "max_clk": 1
     }

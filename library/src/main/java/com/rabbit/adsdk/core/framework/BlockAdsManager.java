@@ -36,8 +36,8 @@ public class BlockAdsManager {
     private static final String CFG_BLOCK_ADS = "block_ads_config";
     private static final String OPT_MAX_CLK = "max_clk";
     private static final String OPT_MIN_IMP = "min_imp";
-    private static final String OPT_BLOCKADS = "blockads";
-    private static final String OPT_REMOVEADS = "removeads";
+    private static final String OPT_BLOCK_ADS = "block_ads";
+    private static final String OPT_REMOVE_ADS = "remove_ads";
     private static final String OPT_GAIDS = "gaids";
     private static final SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
@@ -68,7 +68,7 @@ public class BlockAdsManager {
     private String mLastCfgMd5 = null;
     private Map<String, BlockCfg> mBlockMap = new HashMap<String, BlockCfg>();
 
-    private void parseAdBlockConfig() {
+    private void parseBlockAdsConfig() {
         String configString = AdSdk.get(mContext).getString(CFG_BLOCK_ADS);
         if (!TextUtils.isEmpty(configString)) {
             String currentMd5 = Utils.string2MD5(configString);
@@ -79,20 +79,20 @@ public class BlockAdsManager {
             mLastCfgMd5 = currentMd5;
             mBlockMap.clear();
             try {
-                JSONObject jobj = new JSONObject(configString);
-                Iterator<String> jobjKeys = jobj.keys();
+                JSONObject cfgJobj = new JSONObject(configString);
+                Iterator<String> jobjKeys = cfgJobj.keys();
                 if (jobjKeys != null) {
                     while (jobjKeys.hasNext()) {
                         String blockKey = jobjKeys.next();
-                        JSONObject blockObj = jobj.getJSONObject(blockKey);
+                        JSONObject blockObj = cfgJobj.getJSONObject(blockKey);
                         BlockCfg blockCfg = new BlockCfg();
                         if (blockObj != null) {
                             blockCfg.blockKey = blockKey;
-                            if (jobj.has(OPT_BLOCKADS)) {
-                                blockCfg.blockAds = jobj.getBoolean(OPT_BLOCKADS);
+                            if (blockObj.has(OPT_BLOCK_ADS)) {
+                                blockCfg.blockAds = blockObj.getBoolean(OPT_BLOCK_ADS);
                             }
-                            if (jobj.has(OPT_REMOVEADS)) {
-                                blockCfg.removeAds = jobj.getBoolean(OPT_REMOVEADS);
+                            if (blockObj.has(OPT_REMOVE_ADS)) {
+                                blockCfg.removeAds = blockObj.getBoolean(OPT_REMOVE_ADS);
                             }
                             if (blockObj.has(OPT_MAX_CLK)) {
                                 blockCfg.maxClk = blockObj.getInt(OPT_MAX_CLK);
@@ -122,13 +122,12 @@ public class BlockAdsManager {
      * @return
      */
     public boolean isBlockAds(String sdk, String placeName) {
-        parseAdBlockConfig();
+        parseBlockAdsConfig();
         resetBlockAdsData();
         BlockCfg blockCfg = getBlockAdsConfig(sdk, placeName);
-        if (blockCfg != null) {
-            if (blockCfg.blockAds) {
-                return blockAdsByGAID(blockCfg) || blockAdsByConfig(sdk, placeName, blockCfg);
-            }
+        Log.iv(Log.TAG, sdk + " - " + placeName + " block cfg : " + blockCfg);
+        if (blockCfg != null && blockCfg.blockAds) {
+            return blockAdsByGAID(blockCfg) || blockAdsByConfig(sdk, placeName, blockCfg);
         }
         return false;
     }
