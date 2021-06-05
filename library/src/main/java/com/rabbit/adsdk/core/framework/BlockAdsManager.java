@@ -162,7 +162,7 @@ public class BlockAdsManager {
             if (isBlockAds) {
                 String blockInfo = getBlockInfo(blockCfg.placement, blockCfg.maxClk, blockCfg.minImp, (int) impCount, (int) clkCount);
                 Log.iv(Log.TAG, "report block info : " + blockInfo);
-                InternalStat.reportEvent(mContext, "block_ads_user", blockInfo);
+                InternalStat.reportEvent(mContext, "block_ads_info", blockInfo);
             }
         }
     }
