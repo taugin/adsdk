@@ -95,17 +95,17 @@ public class BlockAdsManager {
      * @return
      */
     private boolean blockAdsByGAID(BlockCfg blockCfg) {
-        boolean interceptByGaid = false;
+        boolean blockByGaid = false;
         String gaid = Utils.getString(mContext, Constant.PREF_GAID);
         if (blockCfg != null && blockCfg.gaidList != null && !blockCfg.gaidList.isEmpty()) {
             if (!TextUtils.isEmpty(gaid)) {
-                interceptByGaid = blockCfg.gaidList.contains(gaid);
+                blockByGaid = blockCfg.gaidList.contains(gaid);
             }
         }
-        if (interceptByGaid && blockCfg != null) {
-            Log.iv(Log.TAG, "intercept gaid [" + gaid + "] placement [" + blockCfg.blockAdsKey + "]");
+        if (blockByGaid && blockCfg != null) {
+            Log.iv(Log.TAG, "block ads gaid [" + gaid + "] placement [" + blockCfg.blockAdsKey + "]");
         }
-        return interceptByGaid;
+        return blockByGaid;
     }
 
     private boolean blockAdsByConfig(String sdk, String placeName, BlockCfg blockCfg) {
