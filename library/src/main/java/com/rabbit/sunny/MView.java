@@ -20,6 +20,8 @@ import com.rabbit.adsdk.log.Log;
 
 import java.lang.reflect.Field;
 
+import androidx.annotation.NonNull;
+
 /**
  * 监听Banner或native是否可见的类
  */
@@ -83,6 +85,16 @@ public class MView extends View {
                     Log.e(Log.TAG, "error : " + e);
                 }
                 return MView.class.getName();
+            }
+
+            @Override
+            public Object getSystemService(@NonNull String name) {
+                try {
+                    return application.getSystemService(name);
+                } catch (Exception | Error e) {
+                    Log.e(Log.TAG, "error : " + e);
+                }
+                return super.getSystemService(name);
             }
         };
         try {
