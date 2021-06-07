@@ -53,7 +53,9 @@
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "cv": ["cta"],
+          "cv": [
+            "cta"
+          ],
           "disable": 1
         }
       ],
@@ -237,6 +239,13 @@
           "sdk": "mopub",
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
+          "ctr": 5,
+          "disable": 0
+        },
+        {
+          "sdk": "mopub",
+          "type": "interstitial",
+          "pid": "890d5b50d792457e883a48e1798906d1",
           "ctr": 5,
           "disable": 0
         },
