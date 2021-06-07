@@ -8,19 +8,18 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+
 import com.rabbit.adsdk.core.framework.ActivityMonitor;
 import com.rabbit.adsdk.log.Log;
 
 import java.lang.reflect.Field;
-
-import androidx.annotation.NonNull;
 
 /**
  * 监听Banner或native是否可见的类
@@ -123,10 +122,11 @@ public class MView extends View {
         return appContext;
     }
 
-    private static class AppContext extends ContextWrapper {
+    private static class AppContext extends Application {
 
         public AppContext(Context base) {
-            super(base);
+            super();
+            attachBaseContext(base);
         }
 
         @Override
