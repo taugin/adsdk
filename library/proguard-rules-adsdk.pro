@@ -61,8 +61,8 @@
 -keepattributes *Annotation*
 -keep class com.mintegral.** {*; }
 -keep interface com.mintegral.** {*; }
--keep class com.com.mbridge.** {*; }
--keep interface com.com.mbridge.** {*; }
+-keep class com.mbridge.** {*; }
+-keep interface com.mbridge.** {*; }
 -keep interface androidx.** { *; }
 -keep class androidx.** { *; }
 -keep public class * extends androidx.** { *; }
