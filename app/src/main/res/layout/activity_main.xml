@@ -44,6 +44,13 @@
                 android:tag="small"
                 android:text="small" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
             <Button
                 android:id="@+id/medium"
                 android:layout_width="match_parent"
@@ -64,12 +71,6 @@
                 android:onClick="onClick"
                 android:tag="large"
                 android:text="large" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/wrap"
@@ -90,6 +91,13 @@
                 android:onClick="onClick"
                 android:tag="full"
                 android:text="full" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
 
             <Button
                 android:id="@+id/head"
@@ -121,6 +129,16 @@
                 android:onClick="onClick"
                 android:tag="foot"
                 android:text="foot" />
+
+            <Button
+                android:id="@+id/round"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:tag="round"
+                android:text="round" />
         </LinearLayout>
 
         <Button

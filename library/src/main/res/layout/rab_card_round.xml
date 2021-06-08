@@ -98,7 +98,7 @@
                         android:paddingRight="4dp"
                         android:paddingBottom="2dp"
                         android:text="AD"
-                        android:textColor="#FFFF0000"
+                        android:textColor="@android:color/darker_gray"
                         android:textSize="8sp"
                         android:textStyle="bold" />
 
@@ -145,7 +145,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/ad_splash_btn_bg"
+                    android:background="@drawable/rab_round_bg"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:paddingLeft="20dp"

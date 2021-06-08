@@ -61,6 +61,7 @@ public class BaseBindNativeView {
         LAYOUT_MAPS.put("mix", R.layout.rab_card_mix);
         LAYOUT_MAPS.put("foot", R.layout.rab_card_foot);
         LAYOUT_MAPS.put("head", R.layout.rab_card_head);
+        LAYOUT_MAPS.put("round", R.layout.rab_card_round);
     }
 
     private Random mRandom = new Random(System.currentTimeMillis());
@@ -192,6 +193,8 @@ public class BaseBindNativeView {
                 layoutId = R.layout.rab_card_mix;
             } else if (template == Constant.NATIVE_CARD_FOOT) {
                 layoutId = R.layout.rab_card_foot;
+            } else if (template == Constant.NATIVE_CARD_ROUND) {
+                layoutId = R.layout.rab_card_round;
             } else {
                 layoutId = R.layout.rab_card_tiny;
             }

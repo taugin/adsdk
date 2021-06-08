@@ -50,6 +50,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         LAYOUT_MAP.put("head", AdExtra.NATIVE_CARD_HEAD);
         LAYOUT_MAP.put("mix", AdExtra.NATIVE_CARD_MIX);
         LAYOUT_MAP.put("foot", AdExtra.NATIVE_CARD_FOOT);
+        LAYOUT_MAP.put("round", AdExtra.NATIVE_CARD_ROUND);
     }
 
     private static final String TAG = "MA";

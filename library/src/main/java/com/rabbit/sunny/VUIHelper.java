@@ -176,6 +176,7 @@ public class VUIHelper {
     private ImageView generateCloseView() {
         ImageView imageView = new ImageView(mActivity);
         imageView.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+        imageView.setColorFilter(Color.WHITE);
         Shape shape = new OvalShape();
 
         ShapeDrawable shapePressed = new ShapeDrawable(shape);
@@ -183,13 +184,13 @@ public class VUIHelper {
 
         shape = new OvalShape();
         ShapeDrawable shapeNormal = new ShapeDrawable(shape);
-        shapeNormal.getPaint().setColor(Color.parseColor("#88AAAAAA"));
+        shapeNormal.getPaint().setColor(Color.parseColor("#AA000000"));
 
         StateListDrawable drawable = new StateListDrawable();
         drawable.addState(new int[]{android.R.attr.state_pressed}, shapePressed);
         drawable.addState(new int[]{android.R.attr.state_enabled}, shapeNormal);
         imageView.setBackground(drawable);
-        int padding = Utils.dp2px(mActivity, 4);
+        int padding = Utils.dp2px(mActivity, 2);
         imageView.setPadding(padding, padding, padding, padding);
         imageView.setClickable(true);
         return imageView;
