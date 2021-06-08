@@ -61,10 +61,14 @@
 -keepattributes *Annotation*
 -keep class com.mintegral.** {*; }
 -keep interface com.mintegral.** {*; }
+-keep class com.com.mbridge.** {*; }
+-keep interface com.com.mbridge.** {*; }
 -keep interface androidx.** { *; }
 -keep class androidx.** { *; }
 -keep public class * extends androidx.** { *; }
 -dontwarn com.mintegral.**
+-dontwarn com.mbridge.**
 -keep class **.R$* { public static final int mintegral*; }
+-keep class **.R$* { public static final int mbridge*; }
 -keep class com.alphab.** {*; }
 -keep interface com.alphab.** {*; }
