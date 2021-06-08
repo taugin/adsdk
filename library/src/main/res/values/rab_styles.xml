@@ -23,6 +23,11 @@
         <item name="android:layout_height">30dp</item>
     </style>
 
+    <style name="RabButtonMicroStyle" parent="RabButtonBaseStyle">
+        <item name="android:background">@drawable/rab_green_bg</item>
+        <item name="android:layout_height">36dp</item>
+    </style>
+
     <style name="RabButtonSmallStyle" parent="RabButtonBaseStyle">
         <item name="android:background">@drawable/rab_action_bg</item>
         <item name="android:layout_height">40dp</item>

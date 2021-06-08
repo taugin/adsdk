@@ -106,6 +106,7 @@
                         android:ellipsize="end"
                         android:gravity="center"
                         android:lines="1"
+                        android:maxWidth="120dp"
                         android:text="Learn More"
                         android:textColor="@android:color/white"
                         android:textSize="14sp"

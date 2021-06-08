@@ -77,13 +77,14 @@
 
             <TextView
                 android:id="@+id/rab_native_action_btn"
-                style="@style/RabButtonTinyStyle"
+                style="@style/RabButtonMicroStyle"
                 android:layout_width="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:background="@drawable/rab_action_bg"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:lines="1"
+                android:maxLines="2"
+                android:maxWidth="120dp"
                 android:text="Learn More"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
