@@ -120,6 +120,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     String key = entry.getKey();
                     if (!TextUtils.isEmpty(key) && !TextUtils.equals(key, "common_config")) {
                         builder.withMediatedNetworkConfiguration(entry.getKey(), entry.getValue());
+                        builder.withAdditionalNetwork(entry.getKey());
                     }
                 }
                 Map<String, String> commonConfig = config.get("common_config");
