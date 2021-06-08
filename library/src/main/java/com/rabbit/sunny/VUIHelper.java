@@ -176,7 +176,6 @@ public class VUIHelper {
     private ImageView generateCloseView() {
         ImageView imageView = new ImageView(mActivity);
         imageView.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-        imageView.setColorFilter(Color.WHITE);
         Shape shape = new OvalShape();
 
         ShapeDrawable shapePressed = new ShapeDrawable(shape);
