@@ -33,8 +33,6 @@ public class PidConfig {
 
     private double ecpm;
 
-    private boolean destroyAfterClick;
-
     private String appId;
 
     private String extId;
@@ -137,14 +135,6 @@ public class PidConfig {
 
     public void setEcpm(double ecpm) {
         this.ecpm = ecpm;
-    }
-
-    public boolean isDestroyAfterClick() {
-        return destroyAfterClick;
-    }
-
-    public void setDestroyAfterClick(boolean destroyAfterClick) {
-        this.destroyAfterClick = destroyAfterClick;
     }
 
     public String getAppId() {

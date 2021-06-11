@@ -237,9 +237,6 @@ public class AdParser implements IParser {
             if (jobj.has(ECPM)) {
                 pidConfig.setEcpm(jobj.getDouble(ECPM));
             }
-            if (jobj.has(DESTROY_AFTER_CLICK)) {
-                pidConfig.setDestroyAfterClick(jobj.getInt(DESTROY_AFTER_CLICK) == 1);
-            }
             if (jobj.has(APPID)) {
                 pidConfig.setAppId(jobj.getString(APPID));
             }

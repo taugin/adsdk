@@ -153,7 +153,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
-                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                Log.v(Log.TAG, "ad error reason : " + codeToError(i) + " , place name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(i));
                 notifyAdFailed(toSdkError(i));
@@ -169,9 +169,6 @@ public class AdmobLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 reportAdClick();
                 notifyAdClick();
-                if (isDestroyAfterClick()) {
-                    bannerView = null;
-                }
             }
 
             @Override
@@ -224,14 +221,12 @@ public class AdmobLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             lastUseBannerView = bannerView;
-            if (!isDestroyAfterClick()) {
-                bannerView = null;
-            }
+            bannerView = null;
             reportAdShow();
             reportAdImp();
             notifyAdShow();
         } catch (Exception e) {
-            Log.e(Log.TAG, "admobloader error : " + e);
+            Log.e(Log.TAG, "admob loader error : " + e);
         }
     }
 
@@ -284,7 +279,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdFailedToLoad(int i) {
-                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                Log.v(Log.TAG, "ad error reason : " + codeToError(i) + " , place name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(i));
                 notifyAdFailed(toSdkError(i));
@@ -386,7 +381,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
             @Override
             public void onRewardedAdFailedToLoad(int i) {
-                Log.v(Log.TAG, "reason : " + codeToError(i) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
+                Log.v(Log.TAG, "ad error reason : " + codeToError(i) + " , place name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , pid : " + getPid());
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(i));
                 notifyAdFailed(toSdkError(i));
@@ -546,9 +541,6 @@ public class AdmobLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 reportAdClick();
                 notifyAdClick();
-                if (isDestroyAfterClick()) {
-                    nativeAd = null;
-                }
             }
 
             @Override
@@ -565,7 +557,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.v(Log.TAG, "ad error reason : " + codeToError(errorCode) + " , place name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
                 if (errorCode == AdRequest.ERROR_CODE_NO_FILL) {
                     updateLastNoFillTime();
                 }
@@ -614,11 +606,9 @@ public class AdmobLoader extends AbstractSdkLoader {
         clearCachedAdTime(nativeAd);
         admobBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
         lastUseNativeAd = nativeAd;
+        nativeAd = null;
         reportAdShow();
         notifyAdShow();
-        if (!isDestroyAfterClick()) {
-            nativeAd = null;
-        }
     }
 
     @Override
@@ -637,11 +627,11 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public void destroy() {
-        if (lastUseBannerView != null && !isDestroyAfterClick()) {
+        if (lastUseBannerView != null) {
             lastUseBannerView.destroy();
             lastUseBannerView = null;
         }
-        if (lastUseNativeAd != null && !isDestroyAfterClick()) {
+        if (lastUseNativeAd != null) {
             lastUseNativeAd.destroy();
             lastUseNativeAd = null;
         }

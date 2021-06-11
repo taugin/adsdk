@@ -445,12 +445,12 @@ public class MopubBindNativeView extends BaseBindNativeView {
 
     public void notifyAdViewShowing(View view, PidConfig pidConfig, boolean staticRender) {
         updateCtaButtonBackground(view, pidConfig, mParams);
-        updateClickView(view, pidConfig);
         updateAdViewVisibility(staticRender, view);
     }
 
-    private void updateClickView(View view, PidConfig pidConfig) {
+    public void updateClickView(View view, PidConfig pidConfig) {
         if (view == null || pidConfig == null || mParams == null) {
+            Log.iv(Log.TAG, "update cv error cause of null view or config or params");
             return;
         }
         try {
@@ -468,13 +468,13 @@ public class MopubBindNativeView extends BaseBindNativeView {
             viewMap.put(AD_CHOICES, view.findViewById(mParams.getAdChoices()));
             viewMap.put(AD_SPONSORED, view.findViewById(mParams.getAdSponsored()));
             viewMap.put(AD_SOCIAL, view.findViewById(mParams.getAdSocial()));
-            List<View> clickElements = new ArrayList<View>(clickViews.size());
+            List<View> clickElements = new ArrayList<View>();
             for (String text : clickViews) {
                 clickElements.add(viewMap.get(text));
             }
-            clickElements.add(viewMap.get(AD_CHOICES));
             traversalView(view, clickElements);
         } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
     }
 

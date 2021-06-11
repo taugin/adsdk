@@ -107,7 +107,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onError(Ad ad, AdError adError) {
                 if (adError != null) {
-                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
+                    Log.e(Log.TAG, "ad error name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
                     if (adError.getErrorCode() == AdError.NO_FILL_ERROR_CODE) {
                         updateLastNoFillTime();
                     }
@@ -132,9 +132,6 @@ public class FBLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 reportAdClick();
                 notifyAdClick();
-                if (isDestroyAfterClick()) {
-                    bannerView = null;
-                }
             }
 
             @Override
@@ -174,10 +171,9 @@ public class FBLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             lastUseBannerView = bannerView;
-            if (!isDestroyAfterClick()) {
-                bannerView = null;
-            }
+            bannerView = null;
             reportAdShow();
+            notifyAdShow();
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
@@ -247,7 +243,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onError(Ad ad, AdError adError) {
                 if (adError != null) {
-                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
+                    Log.e(Log.TAG, "ad error name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
                     if (adError.getErrorCode() == AdError.NO_FILL_ERROR_CODE) {
                         updateLastNoFillTime();
                     }
@@ -292,6 +288,7 @@ public class FBLoader extends AbstractSdkLoader {
             fbInterstitial.show();
             clearCachedAdTime(fbInterstitial);
             reportAdShow();
+            notifyAdShow();
             return true;
         }
         return false;
@@ -349,7 +346,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onError(Ad ad, AdError adError) {
                 if (adError != null) {
-                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
+                    Log.e(Log.TAG, "ad error name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
                     if (adError.getErrorCode() == AdError.NO_FILL_ERROR_CODE) {
                         updateLastNoFillTime();
                     }
@@ -373,9 +370,6 @@ public class FBLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 reportAdClick();
                 notifyAdClick();
-                if (isDestroyAfterClick()) {
-                    nativeAd = null;
-                }
             }
 
             @Override
@@ -399,10 +393,9 @@ public class FBLoader extends AbstractSdkLoader {
         clearCachedAdTime(nativeAd);
         fbBindNativeView.bindFBNative(mParams, viewGroup, nativeAd, mPidConfig);
         lastUseNativeAd = nativeAd;
-        if (!isDestroyAfterClick()) {
-            nativeAd = null;
-        }
+        nativeAd = null;
         reportAdShow();
+        notifyAdShow();
     }
 
     @Override
@@ -457,7 +450,7 @@ public class FBLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 setRewardPlaying(true);
                 reportAdImp();
-                notifyAdOpened();
+                notifyAdImp();
             }
 
             @Override
@@ -475,7 +468,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onError(Ad ad, AdError adError) {
                 if (adError != null) {
-                    Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
+                    Log.e(Log.TAG, "ad error name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , error : " + adError.getErrorCode() + " , msg : " + adError.getErrorMessage() + " , pid : " + getPid());
                     if (adError.getErrorCode() == AdError.NO_FILL_ERROR_CODE) {
                         updateLastNoFillTime();
                     }
@@ -529,6 +522,7 @@ public class FBLoader extends AbstractSdkLoader {
             rewardedVideoAd.show();
             clearCachedAdTime(rewardedVideoAd);
             reportAdShow();
+            notifyAdShow();
             return true;
         }
         return false;

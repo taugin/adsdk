@@ -422,14 +422,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
     }
 
-    protected boolean isDestroyAfterClick() {
-        try {
-            return mPidConfig.isDestroyAfterClick();
-        } catch (Exception e) {
-        }
-        return false;
-    }
-
     @Override
     public boolean allowUseLoader() {
         if (mPidConfig != null) {

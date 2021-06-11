@@ -134,6 +134,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="16dp"
                 android:maxWidth="120dp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:text="Learn More" />
         </RelativeLayout>
     </RelativeLayout>

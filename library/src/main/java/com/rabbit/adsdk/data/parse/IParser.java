@@ -68,8 +68,6 @@ public interface IParser {
     String DELAY_LOAD_TIME = "dlt";
     // ECPM
     String ECPM = "ecpm";
-    // destroy after click
-    String DESTROY_AFTER_CLICK = "dac";
     // app id
     String APPID = "aid";
     // ext id

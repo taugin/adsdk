@@ -215,9 +215,6 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 reportAdClick();
                 notifyAdClick();
-                if (isDestroyAfterClick()) {
-                    moPubView = null;
-                }
             }
 
             @Override
@@ -262,12 +259,11 @@ public class MopubLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             lastUseMoPubView = moPubView;
-            if (!isDestroyAfterClick()) {
-                moPubView = null;
-            }
+            moPubView = null;
             reportAdShow();
-            reportAdImp();
             notifyAdShow();
+            reportAdImp();
+            notifyAdImp();
         } catch (Exception e) {
             Log.e(Log.TAG, "mopubloader error : " + e);
         }
@@ -575,17 +571,18 @@ public class MopubLoader extends AbstractSdkLoader {
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
-        lastUseNativeAd = nativeAd;
         if (nativeAd != null) {
             clearCachedAdTime(nativeAd);
             nativeAd.setMoPubNativeEventListener(new NativeAd.MoPubNativeEventListener() {
                 @Override
                 public void onImpression(View view) {
-                    Log.v(Log.TAG, "");
                     String render = getRender();
+                    Log.v(Log.TAG, "network imp place name : " + getAdPlaceName() + " , sdk : " + render + " , type : " + getAdType());
                     reportAdImp(render);
                     notifyAdImp();
-                    Log.v(Log.TAG, "network imp place name : " + getAdPlaceName() + " , sdk : " + render + " , type : " + getAdType());
+                    if (bindNativeView != null) {
+                        bindNativeView.updateClickView(viewGroup, getPidConfig());
+                    }
                 }
 
                 @Override
@@ -593,9 +590,6 @@ public class MopubLoader extends AbstractSdkLoader {
                     Log.v(Log.TAG, "");
                     reportAdClick();
                     notifyAdClick();
-                    if (isDestroyAfterClick()) {
-                        nativeAd = null;
-                    }
                 }
             });
 
@@ -617,13 +611,12 @@ public class MopubLoader extends AbstractSdkLoader {
                     bindNativeView.notifyAdViewShowing(adView, getPidConfig(), staticRender);
                     bindNativeView.putAdvertiserInfo(nativeAd);
                 }
+                nativeAd = null;
+                lastUseNativeAd = nativeAd;
                 reportAdShow();
                 notifyAdShow();
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e, e);
-            }
-            if (!isDestroyAfterClick()) {
-                nativeAd = null;
             }
         } else {
             Log.e(Log.TAG, "nativeAd is null");

@@ -141,9 +141,6 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 reportAdClick();
                 notifyAdClick();
-                if (isDestroyAfterClick()) {
-                    bannerView = null;
-                }
             }
 
             @Override
@@ -196,12 +193,11 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             lastUseBannerView = bannerView;
-            if (!isDestroyAfterClick()) {
-                bannerView = null;
-            }
+            bannerView = null;
             reportAdShow();
-            reportAdImp();
             notifyAdShow();
+            reportAdImp();
+            notifyAdImp();
         } catch (Exception e) {
             Log.e(Log.TAG, "dfploader error : " + e);
         }
@@ -373,9 +369,6 @@ public class AdDfpLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
                 reportAdClick();
                 notifyAdClick();
-                if (isDestroyAfterClick()) {
-                    nativeAd = null;
-                }
             }
 
             @Override
@@ -431,11 +424,9 @@ public class AdDfpLoader extends AbstractSdkLoader {
         clearCachedAdTime(nativeAd);
         adDfpBindNativeView.bindNative(mParams, viewGroup, nativeAd, mPidConfig);
         lastUseNativeAd = nativeAd;
+        nativeAd = null;
         reportAdShow();
         notifyAdShow();
-        if (!isDestroyAfterClick()) {
-            nativeAd = null;
-        }
     }
 
     @Override
@@ -569,11 +560,11 @@ public class AdDfpLoader extends AbstractSdkLoader {
 
     @Override
     public void destroy() {
-        if (lastUseBannerView != null && !isDestroyAfterClick()) {
+        if (lastUseBannerView != null) {
             lastUseBannerView.destroy();
             lastUseBannerView = null;
         }
-        if (lastUseNativeAd != null && !isDestroyAfterClick()) {
+        if (lastUseNativeAd != null) {
             lastUseNativeAd.destroy();
             lastUseNativeAd = null;
         }
