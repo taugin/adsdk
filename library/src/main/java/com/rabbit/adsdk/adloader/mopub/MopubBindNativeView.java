@@ -497,7 +497,8 @@ public class MopubBindNativeView extends BaseBindNativeView {
     private void updateAdViewVisibility(boolean staticRender, View adView) {
         updateIconView(adView);
         updateDetailView(adView);
-        updateMediaView(staticRender, adView);
+        // MediaView和CoverView默认都可见，不再隐藏
+        // updateMediaView(staticRender, adView);
     }
 
     private void updateIconView(View adView) {
