@@ -93,6 +93,11 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public String getLoadedSdk() {
+        return null;
+    }
+
+    @Override
     public void loadComplexAds(AdParams adParams) {
     }
 

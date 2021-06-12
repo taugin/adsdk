@@ -136,6 +136,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             @Override
             public void onLoaded(String placeName, String source, String adType, String pid) {
                 Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+                String loadedSdk = AdSdk.get(mContext).getLoadedSdk(placeName);
+                Log.v(TAG, "loaded sdk : " + loadedSdk);
                 AdSdk.get(mContext).showComplexAds(placeName);
             }
 
@@ -162,6 +164,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
     private void loadInterstitial() {
         //AdSdk.get(mContext).loadInterstitial("interstitial", mSimpleAdsdkListener);
         if (AdSdk.get(mContext).isInterstitialLoaded("interstitial")) {
+            String loadedSdk = AdSdk.get(mContext).getLoadedSdk("interstitial");
+            Log.v(TAG, "loaded sdk : " + loadedSdk);
             AdSdk.get(mContext).showInterstitial("interstitial");
         } else {
             AdSdk.get(mContext).loadInterstitial("interstitial", null);
@@ -170,6 +174,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
 
     private void loadAdComplex() {
         if (AdSdk.get(mContext).isComplexAdsLoaded("banner_and_native")) {
+            String loadedSdk = AdSdk.get(mContext).getLoadedSdk("banner_and_native");
+            Log.v(TAG, "loaded sdk : " + loadedSdk);
             AdSdk.get(mContext).showComplexAds("banner_and_native");
             return;
         }
@@ -181,6 +187,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             @Override
             public void onLoaded(String placeName, String source, String adType, String pid) {
                 Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+                String loadedSdk = AdSdk.get(mContext).getLoadedSdk(placeName);
+                Log.v(TAG, "loaded sdk : " + loadedSdk);
                 AdSdk.get(mContext).showComplexAds(placeName);
             }
 
@@ -265,6 +273,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         @Override
         public void onLoaded(String placeName, String source, String adType, String pid) {
             Log.d(Log.TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+            String loadedSdk = AdSdk.get(mContext).getLoadedSdk(placeName);
+            Log.v(TAG, "loaded sdk : " + loadedSdk);
             if (AdExtra.AD_TYPE_BANNER.equalsIgnoreCase(adType) || AdExtra.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
                 // showAdView(placeName);
                 AdSdk.get(getBaseContext()).showAdView(placeName, mNativeBannerLayout);

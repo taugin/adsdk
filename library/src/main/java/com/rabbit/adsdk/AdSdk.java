@@ -243,6 +243,14 @@ public class AdSdk {
         return loader;
     }
 
+    public String getLoadedSdk(String placeName) {
+        AdPlaceLoader loader = getAdLoader(placeName);
+        if (loader != null) {
+            return loader.getLoadedSdk();
+        }
+        return null;
+    }
+
     public boolean isInterstitialLoaded(String placeName) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {

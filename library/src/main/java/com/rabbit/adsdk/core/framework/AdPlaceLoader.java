@@ -1003,7 +1003,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return null;
     }
 
-    private String getLoadedSdk() {
+    @Override
+    public String getLoadedSdk() {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
