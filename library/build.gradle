@@ -80,18 +80,18 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:19.6.0'
 
     // mintegral
-    implementation 'com.mbridge.msdk.oversea:videojs:15.5.21'
-    implementation 'com.mbridge.msdk.oversea:mbjscommon:15.5.21'
-    implementation 'com.mbridge.msdk.oversea:playercommon:15.5.21'
-    implementation 'com.mbridge.msdk.oversea:reward:15.5.21'
-    implementation 'com.mbridge.msdk.oversea:videocommon:15.5.21'
-    implementation 'com.mbridge.msdk.oversea:same:15.5.21'
-    implementation 'com.mbridge.msdk.oversea:interstitialvideo:15.5.21'
-    implementation 'com.mbridge.msdk.oversea:mbnative:15.5.21'
-    implementation 'com.mbridge.msdk.oversea:nativeex:15.5.21'
-    implementation 'com.mbridge.msdk.oversea:mbbanner:15.5.21'
-    implementation 'com.mbridge.msdk.oversea:mbbid:15.5.21'
-    implementation 'com.mopub.mediation:mintegral:15.5.21.0'
+    implementation 'com.mbridge.msdk.oversea:videojs:15.5.41'
+    implementation 'com.mbridge.msdk.oversea:mbjscommon:15.5.41'
+    implementation 'com.mbridge.msdk.oversea:playercommon:15.5.41'
+    implementation 'com.mbridge.msdk.oversea:reward:15.5.41'
+    implementation 'com.mbridge.msdk.oversea:videocommon:15.5.41'
+    implementation 'com.mbridge.msdk.oversea:same:15.5.41'
+    implementation 'com.mbridge.msdk.oversea:interstitialvideo:15.5.41'
+    implementation 'com.mbridge.msdk.oversea:mbnative:15.5.41'
+    implementation 'com.mbridge.msdk.oversea:nativeex:15.5.41'
+    implementation 'com.mbridge.msdk.oversea:mbbanner:15.5.41'
+    implementation 'com.mbridge.msdk.oversea:mbbid:15.5.41'
+    implementation 'com.mopub.mediation:mintegral:15.5.41.0'
 }
 
 // 发布aar
