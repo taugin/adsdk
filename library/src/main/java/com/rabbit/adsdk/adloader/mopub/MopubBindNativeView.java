@@ -374,7 +374,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
             MBMediaView mediaView = createMintegralMediaView(context);
             if (mediaView != null) {
                 mediaView.setId(View.generateViewId());
-                coverLayout.addView(mediaView);
+                coverLayout.addView(mediaView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 mediaViewId = mediaView.getId();
             }
         }
