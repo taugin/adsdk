@@ -34,6 +34,7 @@ import java.util.HashMap;
 public class FBLoader extends AbstractSdkLoader {
 
     private static final HashMap<Integer, AdSize> ADSIZE = new HashMap<Integer, AdSize>();
+    private static boolean sFacebookInited = false;
 
     static {
         ADSIZE.put(Constant.BANNER, AdSize.BANNER_HEIGHT_50);
@@ -60,7 +61,10 @@ public class FBLoader extends AbstractSdkLoader {
     @Override
     public void init(Context context, PidConfig pidConfig) {
         super.init(context, pidConfig);
-        AudienceNetworkAds.initialize(context);
+        if (!sFacebookInited) {
+            sFacebookInited = true;
+            AudienceNetworkAds.initialize(context);
+        }
     }
 
     @Override
