@@ -1,7 +1,8 @@
 package com.rabbit.adsdk.adloader.admob;
 
 import android.app.Activity;
-import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,6 @@ import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
-import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 
 import java.util.ArrayList;
@@ -45,7 +45,9 @@ import java.util.Map;
 public class AdmobLoader extends AbstractSdkLoader {
 
     protected static final Map<Integer, AdSize> ADSIZE = new HashMap<>();
-    private static boolean sAdmobInited = false;
+    private static SDKInitializeState sSdkInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
+    private static final Handler sHandler = new Handler(Looper.getMainLooper());
+
     private AdView bannerView;
     private AdView loadingView;
     private InterstitialAd interstitialAd;
@@ -67,18 +69,41 @@ public class AdmobLoader extends AbstractSdkLoader {
         return admobBindNativeView;
     }
 
-    @Override
-    public void init(Context context, PidConfig pidConfig) {
-        super.init(context, pidConfig);
-        initBannerSize();
-        if (!sAdmobInited) {
+    private void configSdkInit(final SDKInitializeListener sdkInitializeListener) {
+        if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZING) {
+            if (sdkInitializeListener != null) {
+                sdkInitializeListener.onInitializeFailure("admob failed to initialize");
+            }
+        } else {
+            if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS) {
+                if (sdkInitializeListener != null) {
+                    sdkInitializeListener.onInitializeSuccess(null, null);
+                }
+                return;
+            }
+            sSdkInitializeState = SDKInitializeState.SDK_STATE_INITIALIZING;
+            if (sHandler != null) {
+                sHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        sSdkInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
+                    }
+                }, 10000);
+            }
+            initBannerSize();
             MobileAds.initialize(mContext, new OnInitializationCompleteListener() {
                 @Override
                 public void onInitializationComplete(InitializationStatus initializationStatus) {
                     Log.iv(Log.TAG, "admob init successfully");
+                    if (sHandler != null) {
+                        sHandler.removeCallbacksAndMessages(null);
+                    }
+                    sSdkInitializeState = SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS;
+                    if (sdkInitializeListener != null) {
+                        sdkInitializeListener.onInitializeSuccess(null, null);
+                    }
                 }
             });
-            sAdmobInited = true;
         }
     }
 
@@ -112,6 +137,21 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public void loadBanner(int adSize) {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess(String appId, String appSecret) {
+                loadBannerInternal(adSize);
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.v(Log.TAG, "admob init error : " + error);
+                notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
+            }
+        });
+    }
+
+    private void loadBannerInternal(int adSize) {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             notifyAdFailed(Constant.AD_ERROR_CONFIG);
@@ -244,6 +284,21 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public void loadInterstitial() {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess(String appId, String appSecret) {
+                loadInterstitialInternal();
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.v(Log.TAG, "admob init error : " + error);
+                notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
+            }
+        });
+    }
+
+    public void loadInterstitialInternal() {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             notifyAdFailed(Constant.AD_ERROR_CONFIG);
@@ -341,6 +396,21 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public void loadRewardedVideo() {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess(String appId, String appSecret) {
+                loadRewardedVideoInternal();
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.v(Log.TAG, "admob init error : " + error);
+                notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
+            }
+        });
+    }
+
+    public void loadRewardedVideoInternal() {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             notifyAdFailed(Constant.AD_ERROR_CONFIG);
@@ -481,7 +551,22 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void loadNative(Params params) {
+    public void loadNative(final Params params) {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess(String appId, String appSecret) {
+                loadNativeInternal(params);
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.v(Log.TAG, "admob init error : " + error);
+                notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
+            }
+        });
+    }
+
+    private void loadNativeInternal(Params params) {
         mParams = params;
 
         if (!checkPidConfig()) {
