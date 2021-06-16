@@ -94,7 +94,7 @@ public class MopubLoader extends AbstractSdkLoader {
     private void configSdkInit(final SDKInitializeListener sdkInitializeListener) {
         if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZING) {
             if (sdkInitializeListener != null) {
-                sdkInitializeListener.onInitializeFailure("mopub failed to initialize");
+                sdkInitializeListener.onInitializeFailure("initializing");
             }
         } else {
             if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS) {
@@ -109,6 +109,9 @@ public class MopubLoader extends AbstractSdkLoader {
                     @Override
                     public void run() {
                         sSdkInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
+                        if (sdkInitializeListener != null) {
+                            sdkInitializeListener.onInitializeFailure("timeout");
+                        }
                     }
                 }, 10000);
             }
@@ -185,7 +188,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onInitializeFailure(String error) {
-                Log.v(Log.TAG, "mopub init error : " + error);
+                Log.v(Log.TAG, getSdkName() + " - " + getAdPlaceName() + " - " + getAdType() + " init error : " + error);
                 notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
             }
         });
@@ -321,7 +324,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onInitializeFailure(String error) {
-                Log.v(Log.TAG, "mopub init error : " + error);
+                Log.v(Log.TAG, getSdkName() + " - " + getAdPlaceName() + " - " + getAdType() + " init error : " + error);
                 notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
             }
         });
@@ -454,7 +457,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onInitializeFailure(String error) {
-                Log.v(Log.TAG, "mopub init error : " + error);
+                Log.v(Log.TAG, getSdkName() + " - " + getAdPlaceName() + " - " + getAdType() + " init error : " + error);
                 notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
             }
         });
@@ -590,7 +593,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onInitializeFailure(String error) {
-                Log.v(Log.TAG, "mopub init error : " + error);
+                Log.v(Log.TAG, getSdkName() + " - " + getAdPlaceName() + " - " + getAdType() + " init error : " + error);
                 notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
             }
         });
