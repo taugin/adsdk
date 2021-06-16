@@ -34,7 +34,7 @@
       "percent": 100
     },
     {
-      "name": "for_layout",
+      "name": "for_native_layout",
       "mode": "con",
       "pids": [
         {
@@ -122,97 +122,11 @@
           "disable": 0
         },
         {
-          "sdk": "dfp",
-          "type": "native",
-          "pid": "/6499/example/native",
-          "disable": 0
-        },
-        {
-          "sdk": "dfp",
-          "type": "banner",
-          "pid": "/6253334/dfp_example_ad",
-          "disable": 0
-        },
-        {
           "sdk": "applovin",
           "type": "banner",
-          "ismax": 1,
           "bs": "MEDIUM_RECTANGLE",
           "pid": "a9eeb2d3ee33003c",
           "disable": 0
-        }
-      ],
-      "maxcount": 100,
-      "percent": 100
-    },
-    {
-      "name": "for_lock",
-      "mode": "con",
-      "cc": [
-        "#FF660000",
-        "#4455bb22"
-      ],
-      "pids": [
-        {
-          "sdk": "spread",
-          "type": "native",
-          "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "disable": 1
-        },
-        {
-          "sdk": "fb",
-          "type": "native",
-          "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "disable": 1
-        },
-        {
-          "sdk": "fb",
-          "type": "banner",
-          "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "disable": 1
-        },
-        {
-          "sdk": "mopub",
-          "type": "native",
-          "pid": "11a17b188668469fb0412708c3d16813",
-          "disable": 0
-        },
-        {
-          "sdk": "mopub",
-          "type": "banner",
-          "pid": "252412d5e9364a05ab77d9396346d73d",
-          "disable": 1
-        },
-        {
-          "sdk": "mopub",
-          "type": "native",
-          "pid": "02a2d288d2674ad09f3241d46a44356e",
-          "disable": 0
-        },
-        {
-          "sdk": "admob",
-          "type": "banner",
-          "bs": "MEDIUM_RECTANGLE",
-          "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
-        },
-        {
-          "sdk": "admob",
-          "type": "native",
-          "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
-        },
-        {
-          "sdk": "dfp",
-          "type": "native",
-          "pid": "/6499/example/native",
-          "disable": 1
-        },
-        {
-          "sdk": "dfp",
-          "type": "banner",
-          "pid": "/6253334/dfp_example_ad",
-          "disable": 1
         }
       ],
       "maxcount": 100,
@@ -232,14 +146,12 @@
           "sdk": "fb",
           "type": "interstitial",
           "pid": "VID_HD_16_9_15S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "ctr": 5,
           "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
-          "ctr": 5,
           "disable": 0
         },
         {
@@ -247,12 +159,6 @@
           "type": "interstitial",
           "pid": "890d5b50d792457e883a48e1798906d1",
           "ctr": 5,
-          "disable": 0
-        },
-        {
-          "sdk": "dfp",
-          "type": "interstitial",
-          "pid": "/6499/example/interstitial",
           "disable": 0
         },
         {
@@ -266,7 +172,7 @@
           "type": "interstitial",
           "bs": "MEDIUM_RECTANGLE",
           "pid": "2787a9b587529f8f",
-          "disable": 1
+          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -282,12 +188,6 @@
           "sdk": "admob",
           "type": "reward",
           "pid": "ca-app-pub-3940256099942544/5224354917",
-          "disable": 1
-        },
-        {
-          "sdk": "dfp",
-          "type": "reward",
-          "pid": "/6499/example/rewarded-video",
           "disable": 1
         },
         {
@@ -320,13 +220,6 @@
         {
           "sdk": "spread",
           "type": "interstitial",
-          "pid": "/6253334/dfp_example_ad",
-          "disable": 0
-        },
-        {
-          "sdk": "dfp",
-          "type": "native",
-          "pid": "/6499/example/native",
           "disable": 0
         },
         {
@@ -350,83 +243,6 @@
           "sdk": "admob",
           "type": "reward",
           "pid": "ca-app-pub-3940256099942544/5224354917",
-          "disable": 0
-        }
-      ],
-      "maxcount": 100,
-      "percent": 100
-    },
-    {
-      "name": "gt_outer_place",
-      "mode": "con",
-      "as": 0,
-      "pids": [
-        {
-          "sdk": "admob",
-          "type": "interstitial",
-          "pid": "ca-app-pub-3940256099942544/1033173712",
-          "disable": 0
-        },
-        {
-          "sdk": "mopub",
-          "type": "interstitial",
-          "pid": "24534e1901884e398f1253216226017e",
-          "dct": 2000,
-          "disable": 0
-        }
-      ],
-      "maxcount": 100,
-      "percent": 100
-    },
-    {
-      "name": "nt_outer_place",
-      "mode": "seq",
-      "as": 1,
-      "nl": [
-        "head"
-      ],
-      "cc": [
-        "#FF6600",
-        "#4455bb22"
-      ],
-      "cv": [
-        "cta"
-      ],
-      "pids": [
-        {
-          "sdk": "mopub",
-          "type": "banner",
-          "pid": "252412d5e9364a05ab77d9396346d73d",
-          "disable": 0
-        },
-        {
-          "sdk": "mopub",
-          "type": "native",
-          "pid": "02a2d288d2674ad09f3241d46a44356e",
-          "disable": 0
-        },
-        {
-          "sdk": "admob",
-          "type": "banner",
-          "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
-        },
-        {
-          "sdk": "admob",
-          "type": "native",
-          "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
-        },
-        {
-          "sdk": "dfp",
-          "type": "native",
-          "pid": "/6499/example/native",
-          "disable": 0
-        },
-        {
-          "sdk": "dfp",
-          "type": "banner",
-          "pid": "/6253334/dfp_example_ad",
           "disable": 0
         }
       ],

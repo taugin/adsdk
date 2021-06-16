@@ -132,7 +132,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         AdParams.Builder builder = new AdParams.Builder();
         builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layout);
         AdParams adParams = builder.build();
-        AdSdk.get(mContext).loadComplexAds("for_layout", adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadComplexAds("for_native_layout", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String placeName, String source, String adType, String pid) {
                 Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
