@@ -2,6 +2,8 @@ package com.rabbit.adsdk.adloader.mopub;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,6 @@ import com.mopub.mobileads.MoPubInterstitial;
 import com.mopub.mobileads.MoPubRewardedAdListener;
 import com.mopub.mobileads.MoPubRewardedAdManager;
 import com.mopub.mobileads.MoPubRewardedAds;
-import com.mopub.mobileads.MoPubRewardedVideos;
 import com.mopub.mobileads.MoPubView;
 import com.mopub.nativeads.FacebookAdRenderer;
 import com.mopub.nativeads.GooglePlayServicesAdRenderer;
@@ -38,6 +39,7 @@ import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +52,8 @@ import java.util.Set;
 public class MopubLoader extends AbstractSdkLoader {
 
     protected static final Map<Integer, MoPubView.MoPubAdSize> ADSIZE = new HashMap<>();
+    private static SDKInitializeState sSdkInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
+    private static final Handler sHandler = new Handler(Looper.getMainLooper());
 
     static {
         ADSIZE.put(Constant.BANNER, MoPubView.MoPubAdSize.HEIGHT_50);
@@ -72,12 +76,19 @@ public class MopubLoader extends AbstractSdkLoader {
         return bindNativeView;
     }
 
-    private SdkInitializationListener initSdkListener() {
+    private SdkInitializationListener initSdkListener(final SDKInitializeListener sdkInitializeListener) {
         return new SdkInitializationListener() {
 
             @Override
             public void onInitializationFinished() {
                 Log.iv(Log.TAG, "mopub sdk init successfully");
+                if (sHandler != null) {
+                    sHandler.removeCallbacksAndMessages(null);
+                }
+                sSdkInitializeState = SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS;
+                if (sdkInitializeListener != null) {
+                    sdkInitializeListener.onInitializeSuccess(null, null);
+                }
                 PersonalInfoManager manager = MoPub.getPersonalInformationManager();
                 if (manager != null && manager.shouldShowConsentDialog()) {
                     manager.loadConsentDialog(initDialogLoadListener());
@@ -106,41 +117,73 @@ public class MopubLoader extends AbstractSdkLoader {
     @Override
     public void init(Context context, PidConfig pidConfig) {
         super.init(context, pidConfig);
-        String adUnit = null;
-        try {
-            adUnit = getPidConfig().getPid();
-        } catch (Exception e) {
-        }
-        SdkConfiguration.Builder builder = new SdkConfiguration.Builder(adUnit);
-        try {
-            Map<String, Map<String, String>> config = DataManager.get(mContext).getMediationConfig();
-            Log.iv(Log.TAG, "config : " + config);
-            if (config != null && !config.isEmpty()) {
-                for (Map.Entry<String, Map<String, String>> entry : config.entrySet()) {
-                    String key = entry.getKey();
-                    if (!TextUtils.isEmpty(key) && !TextUtils.equals(key, "common_config")) {
-                        builder.withMediatedNetworkConfiguration(entry.getKey(), entry.getValue());
-                        builder.withAdditionalNetwork(entry.getKey());
-                    }
-                }
-                Map<String, String> commonConfig = config.get("common_config");
-                if (commonConfig != null) {
-                    String logLevel = commonConfig.get("mopub_log_level");
-                    Log.iv(Log.TAG, "mopub log level : " + logLevel);
-                    if (TextUtils.equals(logLevel, "debug")) {
-                        builder.withLogLevel(MoPubLog.LogLevel.DEBUG);
-                    } else if (TextUtils.equals(logLevel, "info")) {
-                        builder.withLogLevel(MoPubLog.LogLevel.INFO);
-                    } else if (TextUtils.equals(logLevel, "none")) {
-                        builder.withLogLevel(MoPubLog.LogLevel.NONE);
-                    }
-                }
+    }
+
+    private boolean isConfigChanged() {
+        return false;
+    }
+
+    private void configSdkInit(final SDKInitializeListener sdkInitializeListener) {
+        if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZING) {
+            if (sdkInitializeListener != null) {
+                sdkInitializeListener.onInitializeFailure("Mopub failed to initialize");
             }
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+        } else {
+            if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS) {
+                if (sdkInitializeListener != null) {
+                    sdkInitializeListener.onInitializeSuccess(null, null);
+                }
+                return;
+            }
+            sSdkInitializeState = SDKInitializeState.SDK_STATE_INITIALIZING;
+            if (sHandler != null) {
+                sHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        sSdkInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
+                    }
+                }, 10000);
+            }
+            String adUnit = null;
+            try {
+                adUnit = getPidConfig().getPid();
+            } catch (Exception e) {
+            }
+            SdkConfiguration.Builder builder = new SdkConfiguration.Builder(adUnit);
+            try {
+                Map<String, Map<String, String>> config = DataManager.get(mContext).getMediationConfig();
+                Log.iv(Log.TAG, "config : " + config);
+                if (config != null && !config.isEmpty()) {
+                    for (Map.Entry<String, Map<String, String>> entry : config.entrySet()) {
+                        String key = entry.getKey();
+                        if (!TextUtils.isEmpty(key) && !TextUtils.equals(key, "common_config")) {
+                            builder.withMediatedNetworkConfiguration(entry.getKey(), entry.getValue());
+                            builder.withAdditionalNetwork(entry.getKey());
+                        }
+                    }
+                    Map<String, String> commonConfig = config.get("common_config");
+                    if (commonConfig != null) {
+                        String logLevel = commonConfig.get("mopub_log_level");
+                        Log.iv(Log.TAG, "mopub log level : " + logLevel);
+                        if (TextUtils.equals(logLevel, "debug")) {
+                            builder.withLogLevel(MoPubLog.LogLevel.DEBUG);
+                        } else if (TextUtils.equals(logLevel, "info")) {
+                            builder.withLogLevel(MoPubLog.LogLevel.INFO);
+                        } else if (TextUtils.equals(logLevel, "none")) {
+                            builder.withLogLevel(MoPubLog.LogLevel.NONE);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e);
+            }
+            SdkConfiguration sdkConfiguration = builder.build();
+            Context context = getActivity();
+            if (context == null) {
+                context = mContext;
+            }
+            MoPub.initializeSdk(context, sdkConfiguration, initSdkListener(sdkInitializeListener));
         }
-        SdkConfiguration sdkConfiguration = builder.build();
-        MoPub.initializeSdk(mContext, sdkConfiguration, initSdkListener());
     }
 
     @Override
@@ -149,7 +192,22 @@ public class MopubLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void loadBanner(int adSize) {
+    public void loadBanner(final int adSize) {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess(String appId, String appSecret) {
+                loadBannerInternal(adSize);
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.v(Log.TAG, "mopub init error : " + error);
+                notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
+            }
+        });
+    }
+
+    public void loadBannerInternal(int adSize) {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             notifyAdFailed(Constant.AD_ERROR_CONFIG);
@@ -271,6 +329,21 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public void loadInterstitial() {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess(String appId, String appSecret) {
+                loadInterstitialInternal();
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.v(Log.TAG, "mopub init error : " + error);
+                notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
+            }
+        });
+    }
+
+    public void loadInterstitialInternal() {
         Activity activity = getActivity();
 
         if (activity == null) {
@@ -379,7 +452,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isRewardedVideoLoaded() {
-        boolean loaded = MoPubRewardedVideos.hasRewardedVideo(getPidConfig().getPid());
+        boolean loaded = MoPubRewardedAds.hasRewardedAd(getPidConfig().getPid());
         boolean finalLoaded = loaded || isRewardPlaying();
         if (finalLoaded) {
             Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded + " , playing : " + isRewardPlaying());
@@ -389,13 +462,27 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public void loadRewardedVideo() {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess(String appId, String appSecret) {
+                loadRewardedVideoInternal();
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.v(Log.TAG, "mopub init error : " + error);
+                notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
+            }
+        });
+    }
+
+    public void loadRewardedVideoInternal() {
         Activity activity = getActivity();
         if (activity == null) {
             Log.v(Log.TAG, "mopub reward need an activity context");
             notifyAdFailed(Constant.AD_ERROR_CONTEXT);
             return;
         }
-//      MoPub.onCreate(activity);
 
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
@@ -403,9 +490,6 @@ public class MopubLoader extends AbstractSdkLoader {
             return;
         }
 
-        SdkConfiguration sdkConfiguration = new SdkConfiguration.Builder(getPid())
-                .build();
-        MoPub.initializeSdk(activity, sdkConfiguration, initSdkListener());
         MoPubRewardedAdManager.updateActivity(activity);
 
         if (isRewardedVideoLoaded()) {
@@ -513,7 +597,22 @@ public class MopubLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void loadNative(Params params) {
+    public void loadNative(final Params params) {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess(String appId, String appSecret) {
+                loadNativeInternal(params);
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.v(Log.TAG, "mopub init error : " + error);
+                notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
+            }
+        });
+    }
+
+    public void loadNativeInternal(Params params) {
         if (!checkPidConfig()) {
             Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             notifyAdFailed(Constant.AD_ERROR_CONFIG);

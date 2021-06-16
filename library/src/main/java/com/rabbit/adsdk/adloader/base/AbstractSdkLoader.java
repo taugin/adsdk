@@ -849,4 +849,19 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             getAdListener().onRewardAdsStarted();
         }
     }
+
+    public static interface SDKInitializeListener {
+        void onInitializeSuccess(String appId, String appSecret);
+        void onInitializeFailure(String error);
+    }
+
+    public static enum SDKInitializeState {
+        SDK_STATE_UN_INITIALIZE,
+        SDK_STATE_INITIALIZING,
+        SDK_STATE_INITIALIZE_SUCCESS,
+        SDK_STATE_INITIALIZE_FAILURE;
+
+        private SDKInitializeState() {
+        }
+    }
 }
