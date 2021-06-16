@@ -17,9 +17,6 @@ public class ModuleLoaderHelper {
 
     public static boolean isModuleLoaded(String sdk) {
 
-        if (TextUtils.equals(Constant.AD_SDK_DFP, sdk)) {
-            return hasDfpModule();
-        }
         if (TextUtils.equals(Constant.AD_SDK_ADMOB, sdk)) {
             return hasAdmobModule();
         }
@@ -34,16 +31,6 @@ public class ModuleLoaderHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
             return true;
-        }
-        return false;
-    }
-
-    private static boolean hasDfpModule() {
-        try {
-            MobileAds.class.getName();
-            return true;
-        } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
         }
         return false;
     }

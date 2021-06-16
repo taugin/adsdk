@@ -245,10 +245,6 @@ public class PidConfig {
         return TextUtils.equals(Constant.AD_SDK_FACEBOOK, sdk);
     }
 
-    public boolean isDfp() {
-        return TextUtils.equals(Constant.AD_SDK_DFP, sdk);
-    }
-
     public boolean isApplovin() {
         return TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk);
     }

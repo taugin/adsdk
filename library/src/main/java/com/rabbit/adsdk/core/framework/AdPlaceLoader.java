@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
-import com.rabbit.adsdk.adloader.addfp.AdDfpLoader;
 import com.rabbit.adsdk.adloader.adfb.FBLoader;
 import com.rabbit.adsdk.adloader.admob.AdmobLoader;
 import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
@@ -138,13 +137,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                                 loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
-                        } else if (config.isDfp() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
-                            if (!config.isDisable()) {
-                                loader = new AdDfpLoader();
-                                loader.init(mContext, config);
-                                loader.setListenerManager(this);
-                                mAdLoaders.add(loader);
-                            }
                         } else if (config.isApplovin() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
                             if (!config.isDisable()) {
                                 loader = new AppLovinLoader();
@@ -179,7 +171,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 params = new Params();
                 params.setAdCardStyle(Constant.NATIVE_CARD_FULL);
                 params.setBannerSize(Constant.AD_SDK_ADMOB, Constant.MEDIUM_RECTANGLE);
-                params.setBannerSize(Constant.AD_SDK_DFP, Constant.MEDIUM_RECTANGLE);
                 Log.v(Log.TAG, "use default ad params");
             }
         } catch (Exception e) {

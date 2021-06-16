@@ -24,11 +24,6 @@ public class AdExtra {
     public static final String AD_SDK_FACEBOOK = Constant.AD_SDK_FACEBOOK;
 
     /**
-     * DFP SDK 名字
-     */
-    public static final String AD_SDK_DFP = Constant.AD_SDK_DFP;
-
-    /**
      * ADMOB banner尺寸 320 x 50
      */
     public static final int ADMOB_BANNER = Constant.BANNER;
@@ -82,37 +77,6 @@ public class AdExtra {
      * FB banner尺寸 w x 250
      */
     public static final int FB_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
-
-
-    /**
-     * DFP banner尺寸 320 x 50
-     */
-    public static final int DFP_BANNER = Constant.BANNER;
-
-    /**
-     * DFP banner尺寸 468 x 60
-     */
-    public static final int DFP_FULL_BANNER = Constant.FULL_BANNER;
-
-    /**
-     * DFP banner尺寸 320 x 100
-     */
-    public static final int DFP_LARGE_BANNER = Constant.LARGE_BANNER;
-
-    /**
-     * DFP banner尺寸 728 x 90
-     */
-    public static final int DFP_LEADERBOARD = Constant.LEADERBOARD;
-
-    /**
-     * DFP banner尺寸 300 x 250
-     */
-    public static final int DFP_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
-
-    /**
-     * DFP banner尺寸 smart_banner
-     */
-    public static final int DFP_SMART_BANNER = Constant.SMART_BANNER;
 
     /**
      * 原生广告模板值
