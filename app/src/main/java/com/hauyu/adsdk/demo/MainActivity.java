@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -64,7 +65,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Switch switchView = findViewById(R.id.auto_reward);
+        CheckBox switchView = findViewById(R.id.auto_reward);
         switchView.setOnCheckedChangeListener(this);
         mRewardButton = findViewById(R.id.reward_video_queue);
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
@@ -366,7 +367,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
     private void updateRewardButton() {
         int loadedAdCount = AdSdk.get(this).getLoadedAdCount("reward_video");
         Log.v(Log.TAG, "loadedAdCount : " + loadedAdCount);
-        mRewardButton.setText("已加载激励视频数 : " + loadedAdCount + " (" + mRewardGetTimes + "/" + mRewardShowTimes + ")");
+        mRewardButton.setText("加载成功数 : " + loadedAdCount + " (" + mRewardGetTimes + "/" + mRewardShowTimes + ")");
         mRewardButton.setEnabled(loadedAdCount > 0);
     }
 
