@@ -52,18 +52,18 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onAdImp() {
+    public void onAdImp(String render) {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         if (placeLoaderListener != null) {
-            placeLoaderListener.onImp(placeName, source, adType, pid);
+            placeLoaderListener.onImp(placeName, source, adType, render, pid);
         }
     }
 
     @Override
-    public void onAdClick() {
+    public void onAdClick(String render) {
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
         if (placeLoaderListener != null) {
-            placeLoaderListener.onClick(placeName, source, adType, pid);
+            placeLoaderListener.onClick(placeName, source, adType, render, pid);
         }
     }
 

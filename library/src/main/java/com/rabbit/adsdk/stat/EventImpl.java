@@ -163,7 +163,7 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdImp(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdImp(Context context, String placeName, String sdk, String render, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
@@ -172,11 +172,11 @@ public class EventImpl implements IEvent {
         reportEvent(context, placeName, eventId, extra);
         reportEvent(context, placeName, "e_ad_imp", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        BlockAdsManager.get(context).recordAdImp(sdk, placeName);
+        BlockAdsManager.get(context).recordAdImp(sdk, placeName, render);
     }
 
     @Override
-    public void reportAdClick(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdClick(Context context, String placeName, String sdk, String render, String type, String pid, String ecpm, Map<String, String> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
@@ -185,7 +185,7 @@ public class EventImpl implements IEvent {
         reportEvent(context, placeName, eventId, extra);
         reportEvent(context, placeName, "e_ad_click", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        BlockAdsManager.get(context).recordAdClick(sdk, placeName);
+        BlockAdsManager.get(context).recordAdClick(sdk, placeName, render);
     }
 
     @Override

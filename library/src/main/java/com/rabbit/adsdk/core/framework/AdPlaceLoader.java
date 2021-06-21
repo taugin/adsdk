@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.adfb.FBLoader;
@@ -43,8 +45,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-
-import androidx.annotation.NonNull;
 
 /**
  * 每个广告位对应一个AdPlaceLoader对象
@@ -1474,13 +1474,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onImp(String placeName, String source, String adType, String pid) {
-            Log.iv(Log.TAG, "notify callback onImp place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid);
+        public void onImp(String placeName, String source, String adType, String render, String pid) {
+            Log.iv(Log.TAG, "notify callback onImp place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , render : " + render + " , pid : " + pid);
             if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onImp(placeName, source, adType, pid);
+                mOnAdSdkLoadedListener.onImp(placeName, source, adType, render, pid);
             }
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onImp(placeName, source, adType, pid);
+                mOnAdSdkListener.onImp(placeName, source, adType, render, pid);
             }
         }
 
@@ -1542,12 +1542,17 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onClick(String placeName, String source, String adType, String pid) {
-            Log.iv(Log.TAG, "notify callback onClick place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid);
+        public void onClick(String placeName, String source, String adType, String render, String pid) {
+            Log.iv(Log.TAG, "notify callback onClick place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , render : " + render + " , pid : " + pid);
             if (TextUtils.equals(adType, Constant.TYPE_NATIVE)
                     || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
-                boolean removeAds = BlockAdsManager.get(mContext).isBlockAds(source, placeName)
-                        && BlockAdsManager.get(mContext).isRemoveAds(source, placeName);
+                String sdkName = source;
+                if (!TextUtils.isEmpty(render) && !TextUtils.equals(source, render)) {
+                    sdkName = render;
+                }
+                boolean removeAds = BlockAdsManager.get(mContext).isBlockAds(sdkName, placeName)
+                        && BlockAdsManager.get(mContext).isRemoveAds(sdkName, placeName);
+                Log.iv(Log.TAG, "place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , render : " + render + " , removeAds : " + removeAds);
                 if (removeAds) {
                     if (mAdContainer != null) {
                         ViewGroup viewGroup = mAdContainer.get();
@@ -1569,10 +1574,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 }
             }
             if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onClick(placeName, source, adType, pid);
+                mOnAdSdkLoadedListener.onClick(placeName, source, adType, render, pid);
             }
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onClick(placeName, source, adType, pid);
+                mOnAdSdkListener.onClick(placeName, source, adType, render, pid);
             }
         }
 

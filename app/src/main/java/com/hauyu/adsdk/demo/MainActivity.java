@@ -294,12 +294,12 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         }
 
         @Override
-        public void onImp(String placeName, String source, String adType, String pid) {
+        public void onImp(String placeName, String source, String adType, String render, String pid) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
         }
 
         @Override
-        public void onClick(String placeName, String source, String adType, String pid) {
+        public void onClick(String placeName, String source, String adType, String render, String pid) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
         }
 
@@ -337,7 +337,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         }
 
         @Override
-        public void onImp(String placeName, String source, String adType, String pid) {
+        public void onImp(String placeName, String source, String adType, String render, String pid) {
             mRewardShowTimes++;
             updateRewardButton();
         }

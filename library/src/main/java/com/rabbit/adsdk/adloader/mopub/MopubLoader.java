@@ -26,6 +26,7 @@ import com.mopub.mobileads.MoPubRewardedAds;
 import com.mopub.mobileads.MoPubView;
 import com.mopub.nativeads.FacebookAdRenderer;
 import com.mopub.nativeads.GooglePlayServicesAdRenderer;
+import com.mopub.nativeads.MintegralAdRenderer;
 import com.mopub.nativeads.MoPubAdRenderer;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
@@ -663,9 +664,9 @@ public class MopubLoader extends AbstractSdkLoader {
                 @Override
                 public void onImpression(View view) {
                     String render = getRender();
-                    Log.v(Log.TAG, "network imp place name : " + getAdPlaceName() + " , sdk : " + render + " , type : " + getAdType());
+                    Log.iv(Log.TAG, "network imp place name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , render : " + render);
                     reportAdImp(render);
-                    notifyAdImp();
+                    notifyAdImp(render);
                     if (bindNativeView != null) {
                         bindNativeView.updateClickView(viewGroup, getPidConfig());
                     }
@@ -673,9 +674,10 @@ public class MopubLoader extends AbstractSdkLoader {
 
                 @Override
                 public void onClick(View view) {
-                    Log.v(Log.TAG, "");
-                    reportAdClick();
-                    notifyAdClick();
+                    String render = getRender();
+                    Log.iv(Log.TAG, "network clk place name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , render : " + render);
+                    reportAdClick(render);
+                    notifyAdClick(render);
                 }
             });
 
@@ -697,8 +699,8 @@ public class MopubLoader extends AbstractSdkLoader {
                     bindNativeView.notifyAdViewShowing(adView, getPidConfig(), staticRender);
                     bindNativeView.putAdvertiserInfo(nativeAd);
                 }
-                nativeAd = null;
                 lastUseNativeAd = nativeAd;
+                nativeAd = null;
                 reportAdShow();
                 notifyAdShow();
             } catch (Exception e) {
@@ -718,6 +720,8 @@ public class MopubLoader extends AbstractSdkLoader {
                     render = Constant.AD_SDK_ADMOB;
                 } else if (adRenderer instanceof FacebookAdRenderer) {
                     render = Constant.AD_SDK_FACEBOOK;
+                } else if (adRenderer instanceof MintegralAdRenderer) {
+                    render = Constant.AD_SDK_MINTEGRAL;
                 }
             }
         } catch (Exception e) {

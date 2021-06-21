@@ -1,6 +1,6 @@
 {
-  "mopub": {
-    "block_ads": false,
+  "mintegral": {
+    "block_ads": true,
     "remove_ads": true,
     "min_imp": 0,
     "max_clk": 1

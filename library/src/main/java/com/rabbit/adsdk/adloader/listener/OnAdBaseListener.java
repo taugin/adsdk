@@ -21,12 +21,12 @@ public interface OnAdBaseListener {
     /**
      * banner or native impression
      */
-    public void onAdImp();
+    public void onAdImp(String render);
 
     /**
      * banner or native click
      */
-    public void onAdClick();
+    public void onAdClick(String render);
 
     /**
      * banner or native dismiss

@@ -285,19 +285,35 @@ public class BlockAdsManager {
         return null;
     }
 
+    public void recordAdImp(String sdk, String placeName, String render) {
+        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , render : " + render);
+        if (!TextUtils.isEmpty(render) && !TextUtils.equals(sdk, render)) {
+            sdk = render;
+        }
+        recordAdImp(sdk, placeName);
+    }
+
     public void recordAdImp(String sdk, String placeName) {
         // 记录PLACE层级的展示次数
         String prefKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
         Log.iv(Log.TAG, "prefKey : " + prefKey);
         long count = Utils.getLong(mContext, prefKey, 0);
-        Utils.putLong(mContext, prefKey, count + 1);
+        Utils.putLong(mContext, prefKey, count + 1, true);
         // 记录SDK层级的展示次数
         prefKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
         Log.iv(Log.TAG, "prefKey : " + prefKey);
         count = Utils.getLong(mContext, prefKey, 0);
-        Utils.putLong(mContext, prefKey, count + 1);
+        Utils.putLong(mContext, prefKey, count + 1, true);
         printLog(sdk, placeName);
         recordAdKeyList(sdk, placeName);
+    }
+
+    public void recordAdClick(String sdk, String placeName, String render) {
+        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , render : " + render);
+        if (!TextUtils.isEmpty(render) && !TextUtils.equals(sdk, render)) {
+            sdk = render;
+        }
+        recordAdClick(sdk, placeName);
     }
 
     public void recordAdClick(String sdk, String placeName) {
@@ -305,12 +321,12 @@ public class BlockAdsManager {
         String prefKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
         Log.iv(Log.TAG, "prefKey : " + prefKey);
         long count = Utils.getLong(mContext, prefKey, 0);
-        Utils.putLong(mContext, prefKey, count + 1);
+        Utils.putLong(mContext, prefKey, count + 1, true);
         // 记录SDK层级的点击次数
         prefKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
         Log.iv(Log.TAG, "prefKey : " + prefKey);
         count = Utils.getLong(mContext, prefKey, 0);
-        Utils.putLong(mContext, prefKey, count + 1);
+        Utils.putLong(mContext, prefKey, count + 1, true);
         printLog(sdk, placeName);
         reportBlockAdsInfo(sdk, placeName);
     }
@@ -319,7 +335,7 @@ public class BlockAdsManager {
         long nowDate = getTodayTime();
         long lastDate = Utils.getLong(mContext, PREF_AD_CLICK_COUNT_DATE, 0);
         if (nowDate > lastDate) {
-            Utils.putLong(mContext, PREF_AD_CLICK_COUNT_DATE, nowDate);
+            Utils.putLong(mContext, PREF_AD_CLICK_COUNT_DATE, nowDate, true);
             resetSdkAndPlace();
         }
     }
@@ -339,15 +355,15 @@ public class BlockAdsManager {
                 String placeName = keySplit[1];
                 Log.iv(Log.TAG, String.format(Locale.getDefault(), "[%s - %s] reset count data", sdk, placeName));
                 String prefPlaceImpKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
-                Utils.putLong(mContext, prefPlaceImpKey, 0);
+                Utils.putLong(mContext, prefPlaceImpKey, 0, true);
                 String prefPlaceClkKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
-                Utils.putLong(mContext, prefPlaceClkKey, 0);
+                Utils.putLong(mContext, prefPlaceClkKey, 0, true);
 
                 Log.iv(Log.TAG, String.format(Locale.getDefault(), "[%s] reset count data", sdk));
                 String prefSdkImpKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
-                Utils.putLong(mContext, prefSdkImpKey, 0);
+                Utils.putLong(mContext, prefSdkImpKey, 0, true);
                 String prefSdkClkKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
-                Utils.putLong(mContext, prefSdkClkKey, 0);
+                Utils.putLong(mContext, prefSdkClkKey, 0, true);
             }
         }
     }

@@ -24,6 +24,7 @@ import com.mopub.nativeads.StaticNativeAd;
 import com.mopub.nativeads.ViewBinder;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.framework.BlockAdsManager;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
@@ -100,6 +101,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
 
         View rootView = null;
+        String placeName = pidConfig.getAdPlaceName();
         try {
             int mopubRootLayout;
             if (useCardStyle) {
@@ -121,67 +123,79 @@ public class MopubBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e, e);
         }
 
-        try {
-            int admobRootLayout;
-            if (useCardStyle) {
-                admobRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_ADMOB);
-                if (admobRootLayout > 0) {
-                    Log.iv(Log.TAG, "bind admob layout");
-                    bindParamsViewId(mParams);
+        if (!BlockAdsManager.get(context).isBlockAds(Constant.AD_SDK_ADMOB, placeName)) {
+            try {
+                int admobRootLayout;
+                if (useCardStyle) {
+                    admobRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_ADMOB);
+                    if (admobRootLayout > 0) {
+                        Log.iv(Log.TAG, "bind admob layout");
+                        bindParamsViewId(mParams);
+                    } else {
+                        admobRootLayout = rootLayout;
+                    }
                 } else {
                     admobRootLayout = rootLayout;
                 }
-            } else {
-                admobRootLayout = rootLayout;
+                rootView = LayoutInflater.from(context).inflate(admobRootLayout, null);
+                bindAdMobRender(context, rootView, nativeAd);
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e, e);
+            } catch (Error e) {
+                Log.e(Log.TAG, "error : " + e, e);
             }
-            rootView = LayoutInflater.from(context).inflate(admobRootLayout, null);
-            bindAdMobRender(context, rootView, nativeAd);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+        } else {
+            Log.iv(Log.TAG, "block " + Constant.AD_SDK_ADMOB + " in mopub mediation for place name " + placeName);
         }
 
-        try {
-            int facebookRootLayout;
-            if (useCardStyle) {
-                facebookRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_FACEBOOK);
-                if (facebookRootLayout > 0) {
-                    Log.iv(Log.TAG, "bind facebook layout");
-                    bindParamsViewId(mParams);
+        if (!BlockAdsManager.get(context).isBlockAds(Constant.AD_SDK_FACEBOOK, placeName)) {
+            try {
+                int facebookRootLayout;
+                if (useCardStyle) {
+                    facebookRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_FACEBOOK);
+                    if (facebookRootLayout > 0) {
+                        Log.iv(Log.TAG, "bind facebook layout");
+                        bindParamsViewId(mParams);
+                    } else {
+                        facebookRootLayout = rootLayout;
+                    }
                 } else {
                     facebookRootLayout = rootLayout;
                 }
-            } else {
-                facebookRootLayout = rootLayout;
+                rootView = LayoutInflater.from(context).inflate(facebookRootLayout, null);
+                bindFBRender(context, rootView, nativeAd);
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e, e);
+            } catch (Error e) {
+                Log.e(Log.TAG, "error : " + e, e);
             }
-            rootView = LayoutInflater.from(context).inflate(facebookRootLayout, null);
-            bindFBRender(context, rootView, nativeAd);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+        } else {
+            Log.iv(Log.TAG, "block " + Constant.AD_SDK_FACEBOOK + " in mopub mediation for place name " + placeName);
         }
 
-        try {
-            int mintegralRootLayout;
-            if (useCardStyle) {
-                mintegralRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_MINTEGRAL);
-                if (mintegralRootLayout > 0) {
-                    Log.iv(Log.TAG, "bind mintegral layout");
-                    bindParamsViewId(mParams);
+        if (!BlockAdsManager.get(context).isBlockAds(Constant.AD_SDK_MINTEGRAL, placeName)) {
+            try {
+                int mintegralRootLayout;
+                if (useCardStyle) {
+                    mintegralRootLayout = getSubNativeLayout(pidConfig, Constant.AD_SDK_MINTEGRAL);
+                    if (mintegralRootLayout > 0) {
+                        Log.iv(Log.TAG, "bind mintegral layout");
+                        bindParamsViewId(mParams);
+                    } else {
+                        mintegralRootLayout = rootLayout;
+                    }
                 } else {
                     mintegralRootLayout = rootLayout;
                 }
-            } else {
-                mintegralRootLayout = rootLayout;
+                rootView = LayoutInflater.from(context).inflate(mintegralRootLayout, null);
+                bindMintegralRender(context, rootView, nativeAd);
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e, e);
+            } catch (Error e) {
+                Log.e(Log.TAG, "error : " + e, e);
             }
-            rootView = LayoutInflater.from(context).inflate(mintegralRootLayout, null);
-            bindMintegralRender(context, rootView, nativeAd);
-        } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+        } else {
+            Log.iv(Log.TAG, "block " + Constant.AD_SDK_MINTEGRAL + " in mopub mediation for place name " + placeName);
         }
     }
 

@@ -717,7 +717,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 mediaTypeExtra = new HashMap<String, String>();
                 mediaTypeExtra.put("render", render);
             }
-            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), mediaTypeExtra);
+            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), render, getAdType(), getPid(), String.valueOf(getEcpm()), mediaTypeExtra);
             if (extra != null) {
                 extra.clear();
             }
@@ -725,8 +725,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected void reportAdClick() {
+        reportAdClick(null);
+    }
+
+    protected void reportAdClick(String render) {
         if (mStat != null) {
-            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), String.valueOf(getEcpm()), null);
+            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), render, getAdType(), getPid(), String.valueOf(getEcpm()), null);
         }
     }
 
@@ -774,21 +778,27 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
     }
 
+    protected void notifyAdImp() {
+        notifyAdImp(null);
+    }
     /**
      * banner or native impression
      */
-    protected void notifyAdImp() {
+    protected void notifyAdImp(String render) {
         if (getAdListener() != null) {
-            getAdListener().onAdImp();
+            getAdListener().onAdImp(render);
         }
     }
 
+    protected void notifyAdClick() {
+        notifyAdClick(null);
+    }
     /**
      * banner or native click
      */
-    protected void notifyAdClick() {
+    protected void notifyAdClick(String render) {
         if (getAdListener() != null) {
-            getAdListener().onAdClick();
+            getAdListener().onAdClick(render);
         }
     }
 
@@ -852,6 +862,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     public static interface SDKInitializeListener {
         void onInitializeSuccess(String appId, String appSecret);
+
         void onInitializeFailure(String error);
     }
 

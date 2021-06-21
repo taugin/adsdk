@@ -7,6 +7,7 @@ import android.app.KeyguardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -126,9 +127,18 @@ public class Utils {
     }
 
     public static void putString(Context context, String key, String value) {
+        putString(context, key, value, false);
+    }
+
+    public static void putString(Context context, String key, String value, boolean sync) {
         try {
             key = encryptSpKey(context, key);
-            PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, value).apply();
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, value);
+            if (sync) {
+                editor.commit();
+            } else {
+                editor.apply();
+            }
         } catch (Exception | Error e) {
         }
     }
@@ -143,9 +153,18 @@ public class Utils {
     }
 
     public static void putBoolean(Context context, String key, boolean value) {
+        putBoolean(context, key, value, false);
+    }
+
+    public static void putBoolean(Context context, String key, boolean value, boolean sync) {
         try {
             key = encryptSpKey(context, key);
-            PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(key, value);
+            if (sync) {
+                editor.commit();
+            } else {
+                editor.apply();
+            }
         } catch (Exception | Error e) {
         }
     }
@@ -160,8 +179,20 @@ public class Utils {
     }
 
     public static void putLong(Context context, String key, long value) {
-        key = encryptSpKey(context, key);
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(key, value).apply();
+        putLong(context, key, value, false);
+    }
+
+    public static void putLong(Context context, String key, long value, boolean sync) {
+        try {
+            key = encryptSpKey(context, key);
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(key, value);
+            if (sync) {
+                editor.commit();
+            } else {
+                editor.apply();
+            }
+        } catch (Exception e) {
+        }
     }
 
     public static long getLong(Context context, String key) {
