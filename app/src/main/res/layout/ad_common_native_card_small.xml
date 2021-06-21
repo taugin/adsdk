@@ -13,10 +13,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="14dp"
             android:paddingLeft="6dp"
+            android:paddingTop="14dp"
             android:paddingRight="6dp"
-            android:paddingTop="14dp">
+            android:paddingBottom="14dp">
 
             <RelativeLayout
                 android:id="@+id/common_cover_info"
@@ -35,8 +35,7 @@
                     android:id="@+id/common_media_cover"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_80"
-                    android:contentDescription="@null"
-                    android:visibility="gone" />
+                    android:contentDescription="@null" />
             </RelativeLayout>
 
             <ImageView
@@ -92,8 +91,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:layout_marginBottom="@dimen/dp_4"
-                    android:layout_marginTop="@dimen/dp_6">
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:layout_marginBottom="@dimen/dp_4">
 
                     <Button
                         android:id="@+id/common_action_btn"

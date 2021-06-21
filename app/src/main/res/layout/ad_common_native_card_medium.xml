@@ -38,7 +38,6 @@
                         android:id="@+id/common_media_cover"
                         android:contentDescription="@null"
                         android:gravity="center"
-                        android:visibility="gone"
                         app:layout_aspectRatio="190%"
                         app:layout_widthPercent="100%" />
 

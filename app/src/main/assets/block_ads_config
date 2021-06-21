@@ -1,14 +1,8 @@
 {
-  "mintegral": {
-    "block_ads": true,
+  "admob": {
+    "block_ads": false,
     "remove_ads": true,
     "min_imp": 0,
     "max_clk": 1
-  },
-  "admob_banner_and_native": {
-      "block_ads": true,
-      "remove_ads": true,
-      "min_imp": 0,
-      "max_clk": 1
-    }
+  }
 }
