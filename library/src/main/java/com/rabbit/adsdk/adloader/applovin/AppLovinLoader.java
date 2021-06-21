@@ -14,6 +14,7 @@ import com.applovin.adview.AppLovinInterstitialAdDialog;
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
 import com.applovin.mediation.MaxAdListener;
+import com.applovin.mediation.MaxAdRevenueListener;
 import com.applovin.mediation.MaxAdViewAdListener;
 import com.applovin.mediation.MaxError;
 import com.applovin.mediation.MaxReward;
@@ -677,11 +678,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdRevenuePaid(MaxAd ad) {
-                Log.v(Log.TAG, "on ad revenue paid");
-            }
-
-            @Override
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
                 Log.v(Log.TAG, "on ad display failed");
             }
@@ -696,6 +692,14 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.v(Log.TAG, "");
             }
         });
+
+        loadingMaxAdView.setRevenueListener(new MaxAdRevenueListener() {
+            @Override
+            public void onAdRevenuePaid(MaxAd ad) {
+                Log.v(Log.TAG, "on ad revenue paid");
+            }
+        });
+
         loadingMaxAdView.loadAd();
         reportAdRequest();
         Log.v(Log.TAG, "");
@@ -785,12 +789,15 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
                 Log.v(Log.TAG, "applovin max interstitial display failed error : " + codeToError(error));
             }
+        });
 
+        loadingMaxAdView.setRevenueListener(new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.v(Log.TAG, "on ad revenue paid");
             }
         });
+
         reportAdRequest();
         Log.v(Log.TAG, "");
         interstitialAd.loadAd();
@@ -892,7 +899,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
                 Log.v(Log.TAG, "applovin max reward video display failed error : " + codeToError(error));
             }
+        });
 
+        loadingMaxAdView.setRevenueListener(new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.v(Log.TAG, "on ad revenue paid");
