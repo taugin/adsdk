@@ -98,14 +98,14 @@
           "type": "native",
           "pid": "11a17b188668469fb0412708c3d16813",
           "mark": "mopub测试广告位",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "native",
           "pid": "9439665e1f05483197562159c72aef98",
           "mark": "测试APP广告位",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "mopub",
