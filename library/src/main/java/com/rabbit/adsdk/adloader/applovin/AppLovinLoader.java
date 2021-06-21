@@ -791,7 +791,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
         });
 
-        loadingMaxAdView.setRevenueListener(new MaxAdRevenueListener() {
+        interstitialAd.setRevenueListener(new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.v(Log.TAG, "on ad revenue paid");
@@ -901,7 +901,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
         });
 
-        loadingMaxAdView.setRevenueListener(new MaxAdRevenueListener() {
+        rewardedAd.setRevenueListener(new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.v(Log.TAG, "on ad revenue paid");
