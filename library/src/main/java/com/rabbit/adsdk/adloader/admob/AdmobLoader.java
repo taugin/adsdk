@@ -2,6 +2,7 @@ package com.rabbit.adsdk.adloader.admob;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -298,8 +299,8 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
-                    clearCachedAdTime(mInterstitialAd);
-                    mInterstitialAd = null;
+                    clearResetTimer();
+                    onResetInterstitial();
                 }
 
                 @Override
@@ -312,8 +313,8 @@ public class AdmobLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, formatLog("ad dismissed full screen content"));
                     reportAdClose();
                     notifyAdDismiss();
-                    clearCachedAdTime(mInterstitialAd);
-                    mInterstitialAd = null;
+                    clearResetTimer();
+                    onResetInterstitial();
                 }
 
                 @Override
@@ -324,6 +325,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
             });
             mInterstitialAd.show(getActivity());
+            setResetTimer();
             reportAdShow();
             notifyAdShow();
             return true;
@@ -397,8 +399,8 @@ public class AdmobLoader extends AbstractSdkLoader {
                 public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
                     notifyAdFailed(toSdkError(adError));
-                    clearCachedAdTime(mRewardedAd);
-                    mRewardedAd = null;
+                    clearResetTimer();
+                    onResetReward();
                 }
 
                 @Override
@@ -413,8 +415,8 @@ public class AdmobLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, formatLog("ad dismissed full screen content"));
                     reportAdClose();
                     notifyAdDismiss();
-                    clearCachedAdTime(mRewardedAd);
-                    mRewardedAd = null;
+                    clearResetTimer();
+                    onResetReward();
                 }
 
                 @Override
@@ -438,6 +440,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     }
                 }
             });
+            setResetTimer();
             reportAdShow();
             notifyAdShow();
             return true;
@@ -622,6 +625,18 @@ public class AdmobLoader extends AbstractSdkLoader {
             lastUseNativeAd.destroy();
             lastUseNativeAd = null;
         }
+    }
+
+    @Override
+    protected void onResetInterstitial() {
+        clearCachedAdTime(mInterstitialAd);
+        mInterstitialAd = null;
+    }
+
+    @Override
+    protected void onResetReward() {
+        clearCachedAdTime(mRewardedAd);
+        mRewardedAd = null;
     }
 
     private String codeToError(AdError adError) {

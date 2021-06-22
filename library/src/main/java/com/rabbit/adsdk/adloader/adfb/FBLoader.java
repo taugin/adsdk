@@ -234,11 +234,8 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onInterstitialDismissed(Ad ad) {
                 Log.iv(Log.TAG, formatLog("ad interstitial dismissed"));
-                clearCachedAdTime(fbInterstitial);
-                if (fbInterstitial != null) {
-                    fbInterstitial.destroy();
-                    fbInterstitial = null;
-                }
+                clearResetTimer();
+                onResetInterstitial();
                 reportAdClose();
                 notifyAdDismiss();
             }
@@ -252,7 +249,8 @@ public class FBLoader extends AbstractSdkLoader {
                     }
                 }
                 setLoading(false, STATE_FAILURE);
-                fbInterstitial = null;
+                clearResetTimer();
+                onResetInterstitial();
                 reportAdError(getError(adError));
                 notifyAdFailed(toSdkError(adError));
             }
@@ -294,6 +292,7 @@ public class FBLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (fbInterstitial != null && fbInterstitial.isAdLoaded()) {
             fbInterstitial.show();
+            setResetTimer();
             reportAdShow();
             notifyAdShow();
             return true;
@@ -455,7 +454,6 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onLoggingImpression(Ad ad) {
                 Log.iv(Log.TAG, formatLog("ad logging impression"));
-                setRewardPlaying(true);
                 reportAdImp();
                 notifyAdImp();
             }
@@ -463,14 +461,10 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onRewardedVideoClosed() {
                 Log.iv(Log.TAG, formatLog("ad reward closed"));
-                setRewardPlaying(false);
                 reportAdClose();
                 notifyAdDismiss();
-                clearCachedAdTime(rewardedVideoAd);
-                if (rewardedVideoAd != null) {
-                    rewardedVideoAd.destroy();
-                    rewardedVideoAd = null;
-                }
+                clearResetTimer();
+                onResetReward();
             }
 
             @Override
@@ -482,8 +476,8 @@ public class FBLoader extends AbstractSdkLoader {
                     }
                 }
                 setLoading(false, STATE_FAILURE);
-                clearCachedAdTime(rewardedVideoAd);
-                rewardedVideoAd = null;
+                clearResetTimer();
+                onResetReward();
                 reportAdError(getError(adError));
                 notifyAdFailed(toSdkError(adError));
             }
@@ -526,6 +520,7 @@ public class FBLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (rewardedVideoAd != null && rewardedVideoAd.isAdLoaded() && !rewardedVideoAd.isAdInvalidated()) {
             rewardedVideoAd.show();
+            setResetTimer();
             reportAdShow();
             notifyAdShow();
             return true;
@@ -542,6 +537,24 @@ public class FBLoader extends AbstractSdkLoader {
         if (lastUseNativeAd != null) {
             lastUseNativeAd.destroy();
             lastUseNativeAd = null;
+        }
+    }
+
+    @Override
+    protected void onResetInterstitial() {
+        clearCachedAdTime(fbInterstitial);
+        if (fbInterstitial != null) {
+            fbInterstitial.destroy();
+            fbInterstitial = null;
+        }
+    }
+
+    @Override
+    protected void onResetReward() {
+        clearCachedAdTime(rewardedVideoAd);
+        if (rewardedVideoAd != null) {
+            rewardedVideoAd.destroy();
+            rewardedVideoAd = null;
         }
     }
 

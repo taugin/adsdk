@@ -48,10 +48,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     // 加载未返回的超时时间1分钟
     protected static final int LOADING_TIMEOUT = 60 * 1000;
 
-    // 加载未返回的超时消息
-    protected static final int MSG_PLAYING_TIMEOUT = 1001;
-    // 加载未返回的超时时间5分钟
-    protected static final int PLAYING_TIMEOUT = 60 * 1000;
+    protected static final int MSG_RESET_AD_OBJECT = 1002;
+    protected static final int RESET_AD_OBJECT_TIMEOUT = 120 * 1000;
 
     protected static final int STATE_REQUEST = 1;
     protected static final int STATE_SUCCESS = 2;
@@ -68,7 +66,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private long mRequestTime = 0;
     private int mBannerSize = Constant.NOSET;
     private IEvent mStat;
-    private boolean mRewardVideoPlaying = false;
     private static final Random sRandom = new Random(System.currentTimeMillis());
 
     @Override
@@ -371,26 +368,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
     }
 
-    protected synchronized boolean isRewardPlaying() {
-        return mRewardVideoPlaying;
-    }
-
-    protected synchronized void setRewardPlaying(boolean playing) {
-        mRewardVideoPlaying = playing;
-        if (mRewardVideoPlaying) {
-            if (mHandler != null) {
-                mHandler.removeMessages(MSG_PLAYING_TIMEOUT);
-                mHandler.sendEmptyMessageDelayed(MSG_PLAYING_TIMEOUT, PLAYING_TIMEOUT);
-                Log.iv(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - reward playing : " + PLAYING_TIMEOUT);
-            }
-        } else {
-            if (mHandler != null) {
-                mHandler.removeMessages(MSG_PLAYING_TIMEOUT);
-                Log.iv(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - reward dismiss");
-            }
-        }
-    }
-
     protected void putCachedAdTime(Object object) {
         try {
             mCachedTime.put(object, SystemClock.elapsedRealtime());
@@ -518,9 +495,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             if (msg.what == MSG_LOADING_TIMEOUT) {
                 onLoadTimeout();
                 return true;
-            } else if (msg.what == MSG_PLAYING_TIMEOUT) {
-                mRewardVideoPlaying = false;
-                return true;
+            } else if (msg.what == MSG_RESET_AD_OBJECT) {
+                onResetTimerTrigger();
             }
         }
         return false;
@@ -786,6 +762,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void notifyAdImp() {
         notifyAdImp(null);
     }
+
     /**
      * banner or native impression
      */
@@ -798,6 +775,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void notifyAdClick() {
         notifyAdClick(null);
     }
+
     /**
      * banner or native click
      */
@@ -891,5 +869,35 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             baseLog = baseLog + " - " + getPid();
         }
         return baseLog + " [" + info + "]";
+    }
+
+
+    private void onResetTimerTrigger() {
+        Log.iv(Log.TAG, formatLog("reset ad object"));
+        if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)) {
+            onResetInterstitial();
+        } else if (TextUtils.equals(getAdType(), Constant.TYPE_REWARD)) {
+            onResetReward();
+        }
+    }
+
+    protected void onResetInterstitial() {
+    }
+
+    protected void onResetReward() {
+    }
+
+    protected void setResetTimer() {
+        Log.iv(Log.TAG, formatLog("set reset timer"));
+        if (mHandler != null) {
+            mHandler.sendEmptyMessageDelayed(MSG_RESET_AD_OBJECT, RESET_AD_OBJECT_TIMEOUT);
+        }
+    }
+
+    protected void clearResetTimer() {
+        Log.iv(Log.TAG, formatLog("clear reset timer"));
+        if (mHandler != null) {
+            mHandler.removeMessages(MSG_RESET_AD_OBJECT);
+        }
     }
 }
