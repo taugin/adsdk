@@ -875,4 +875,16 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         private SDKInitializeState() {
         }
     }
+
+    protected String formatLog(String info) {
+        return formatLog(info, false);
+    }
+
+    protected String formatLog(String info, boolean showPid) {
+        String baseLog = getAdPlaceName() + " - " + getSdkName() + " - " + getAdType();
+        if (showPid) {
+            baseLog = baseLog + " - " + getPid();
+        }
+        return baseLog + " [" + info + "]";
+    }
 }

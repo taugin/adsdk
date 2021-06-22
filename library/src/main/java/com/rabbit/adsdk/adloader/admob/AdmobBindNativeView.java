@@ -11,10 +11,9 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.formats.MediaView;
-import com.google.android.gms.ads.formats.NativeAd;
-import com.google.android.gms.ads.formats.UnifiedNativeAd;
-import com.google.android.gms.ads.formats.UnifiedNativeAdView;
+import com.google.android.gms.ads.nativead.MediaView;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdView;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
@@ -30,7 +29,7 @@ import java.util.List;
 public class AdmobBindNativeView extends BaseBindNativeView {
     private Params mParams;
 
-    public void bindNative(Params params, ViewGroup adContainer, UnifiedNativeAd nativeAd, PidConfig pidConfig) {
+    public void bindNative(Params params, ViewGroup adContainer, NativeAd nativeAd, PidConfig pidConfig) {
         mParams = params;
         if (mParams == null) {
             Log.e(Log.TAG, "bindNative mParams == null###");
@@ -54,7 +53,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
         }
     }
 
-    private void bindNativeViewWithRootView(ViewGroup adContainer, int rootLayout, UnifiedNativeAd nativeAd, PidConfig pidConfig) {
+    private void bindNativeViewWithRootView(ViewGroup adContainer, int rootLayout, NativeAd nativeAd, PidConfig pidConfig) {
         if (adContainer == null) {
             throw new AndroidRuntimeException("adContainer is null");
         }
@@ -80,8 +79,8 @@ public class AdmobBindNativeView extends BaseBindNativeView {
         }
     }
 
-    private View showUnifiedAdView(View rootView, UnifiedNativeAd nativeAd, PidConfig pidConfig) throws Exception {
-        UnifiedNativeAdView adView = new UnifiedNativeAdView(rootView.getContext());
+    private View showUnifiedAdView(View rootView, NativeAd nativeAd, PidConfig pidConfig) throws Exception {
+        NativeAdView adView = new NativeAdView(rootView.getContext());
         try {
             if (rootView.getParent() != null) {
                 ((ViewGroup) rootView.getParent()).removeView(rootView);
@@ -198,7 +197,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
         return null;
     }
 
-    private void putAdvertiserInfo(UnifiedNativeAd nativeAd) {
+    private void putAdvertiserInfo(NativeAd nativeAd) {
         try {
             putValue(AD_TITLE, nativeAd.getHeadline());
         } catch (Exception e) {

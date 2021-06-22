@@ -76,8 +76,8 @@ dependencies {
     implementation 'com.mopub.mediation:facebookaudiencenetwork:6.5.0.0'
 
     // admob
-    implementation 'com.mopub.mediation:admob:19.6.0.1'
-    implementation 'com.google.android.gms:play-services-ads:19.6.0'
+    implementation 'com.google.android.gms:play-services-ads:20.2.0'
+    implementation 'com.mopub.mediation:admob:20.2.0.0'
 
     // mintegral
     def mintegral_version = "15.5.41"
