@@ -381,12 +381,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_PLAYING_TIMEOUT);
                 mHandler.sendEmptyMessageDelayed(MSG_PLAYING_TIMEOUT, PLAYING_TIMEOUT);
-                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - reward playing : " + getTimeout());
+                Log.iv(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - reward playing : " + PLAYING_TIMEOUT);
             }
         } else {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_PLAYING_TIMEOUT);
-                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - reward dismiss");
+                Log.iv(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - reward dismiss");
             }
         }
     }
@@ -514,9 +514,14 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public boolean handleMessage(Message msg) {
-        if (msg != null && msg.what == MSG_LOADING_TIMEOUT) {
-            onLoadTimeout();
-            return true;
+        if (msg != null) {
+            if (msg.what == MSG_LOADING_TIMEOUT) {
+                onLoadTimeout();
+                return true;
+            } else if (msg.what == MSG_PLAYING_TIMEOUT) {
+                mRewardVideoPlaying = false;
+                return true;
+            }
         }
         return false;
     }

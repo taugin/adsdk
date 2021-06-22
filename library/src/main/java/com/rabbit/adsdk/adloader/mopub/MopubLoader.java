@@ -189,7 +189,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onInitializeFailure(String error) {
-                Log.v(Log.TAG, getSdkName() + " - " + getAdPlaceName() + " - " + getAdType() + " init error : " + error);
+                Log.iv(Log.TAG, formatLog("init error : " + error));
                 notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
             }
         });
@@ -197,17 +197,17 @@ public class MopubLoader extends AbstractSdkLoader {
 
     private void loadBannerInternal(int adSize) {
         if (!checkPidConfig()) {
-            Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, formatLog("config error"));
             notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isBannerLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, formatLog("already loaded"));
             notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, formatLog("already loading"));
             notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
@@ -240,7 +240,7 @@ public class MopubLoader extends AbstractSdkLoader {
         loadingView.setBannerAdListener(new MoPubView.BannerAdListener() {
             @Override
             public void onBannerLoaded(MoPubView banner) {
-                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.iv(Log.TAG, formatLog("ad load success"));
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(loadingView);
                 moPubView = loadingView;
@@ -250,7 +250,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(errorCode), true));
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(errorCode));
                 notifyAdFailed(toSdkError(errorCode));
@@ -258,20 +258,20 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onBannerClicked(MoPubView banner) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, formatLog("ad banner click"));
                 reportAdClick();
                 notifyAdClick();
             }
 
             @Override
             public void onBannerExpanded(MoPubView banner) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, formatLog("ad banner expanded"));
                 notifyAdImp();
             }
 
             @Override
             public void onBannerCollapsed(MoPubView banner) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, formatLog("ad banner collapsed"));
                 reportAdClose();
                 notifyAdDismiss();
             }
@@ -285,7 +285,7 @@ public class MopubLoader extends AbstractSdkLoader {
     public boolean isBannerLoaded() {
         boolean loaded = moPubView != null && !isCachedAdExpired(moPubView);
         if (loaded) {
-            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+            Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
         return loaded;
     }
@@ -311,7 +311,7 @@ public class MopubLoader extends AbstractSdkLoader {
             reportAdImp();
             notifyAdImp();
         } catch (Exception e) {
-            Log.e(Log.TAG, "mopubloader error : " + e);
+            Log.iv(Log.TAG, formatLog("show error : " + e));
         }
     }
 
@@ -325,7 +325,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onInitializeFailure(String error) {
-                Log.v(Log.TAG, getSdkName() + " - " + getAdPlaceName() + " - " + getAdType() + " init error : " + error);
+                Log.iv(Log.TAG, formatLog("init error : " + error));
                 notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
             }
         });
@@ -335,23 +335,23 @@ public class MopubLoader extends AbstractSdkLoader {
         Activity activity = getActivity();
 
         if (activity == null) {
-            Log.v(Log.TAG, "mopub interstitial need an activity context");
+            Log.iv(Log.TAG, formatLog("error activity context"));
             notifyAdFailed(Constant.AD_ERROR_CONTEXT);
             return;
         }
 
         if (!checkPidConfig()) {
-            Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, formatLog("config error"));
             notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isInterstitialLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, formatLog("already loaded"));
             notifyAdLoaded(this);
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, formatLog("already loading"));
             notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
@@ -366,7 +366,7 @@ public class MopubLoader extends AbstractSdkLoader {
         moPubInterstitial.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
             @Override
             public void onInterstitialLoaded(MoPubInterstitial interstitial) {
-                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.iv(Log.TAG, formatLog("ad load success"));
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(moPubInterstitial);
                 reportAdLoaded();
@@ -375,7 +375,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onInterstitialFailed(MoPubInterstitial interstitial, MoPubErrorCode errorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(errorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(errorCode), true));
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(errorCode));
                 notifyAdFailed(toSdkError(errorCode));
@@ -383,24 +383,24 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onInterstitialShown(MoPubInterstitial interstitial) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, formatLog("ad interstitial shown"));
                 reportAdImp();
                 notifyAdImp();
             }
 
             @Override
             public void onInterstitialClicked(MoPubInterstitial interstitial) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, formatLog("ad interstitial click"));
                 reportAdClick();
                 notifyAdClick();
             }
 
             @Override
             public void onInterstitialDismissed(MoPubInterstitial interstitial) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, formatLog("ad interstitial dismissed"));
+                clearCachedAdTime(moPubInterstitial);
                 if (moPubInterstitial != null) {
                     moPubInterstitial.destroy();
-                    clearCachedAdTime(moPubInterstitial);
                     moPubInterstitial = null;
                 }
                 reportAdClose();
@@ -419,7 +419,7 @@ public class MopubLoader extends AbstractSdkLoader {
             loaded = moPubInterstitial.isReady() && !isCachedAdExpired(moPubInterstitial);
         }
         if (loaded) {
-            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+            Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
         return loaded;
     }
@@ -443,7 +443,7 @@ public class MopubLoader extends AbstractSdkLoader {
         boolean loaded = MoPubRewardedAds.hasRewardedAd(getPidConfig().getPid());
         boolean finalLoaded = loaded || isRewardPlaying();
         if (finalLoaded) {
-            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded + " , playing : " + isRewardPlaying());
+            Log.iv(Log.TAG, formatLog("ad loaded : " + loaded + " , playing : " + isRewardPlaying()));
         }
         return finalLoaded;
     }
@@ -458,7 +458,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onInitializeFailure(String error) {
-                Log.v(Log.TAG, getSdkName() + " - " + getAdPlaceName() + " - " + getAdType() + " init error : " + error);
+                Log.iv(Log.TAG, formatLog("init error : " + error));
                 notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
             }
         });
@@ -467,13 +467,13 @@ public class MopubLoader extends AbstractSdkLoader {
     private void loadRewardedVideoInternal() {
         Activity activity = getActivity();
         if (activity == null) {
-            Log.v(Log.TAG, "mopub reward need an activity context");
+            Log.iv(Log.TAG, formatLog("error activity context"));
             notifyAdFailed(Constant.AD_ERROR_CONTEXT);
             return;
         }
 
         if (!checkPidConfig()) {
-            Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, formatLog("config error"));
             notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
@@ -481,12 +481,12 @@ public class MopubLoader extends AbstractSdkLoader {
         MoPubRewardedAdManager.updateActivity(activity);
 
         if (isRewardedVideoLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, formatLog("already loaded"));
             notifyAdLoaded(this);
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, formatLog("already loading"));
             notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
@@ -500,7 +500,7 @@ public class MopubLoader extends AbstractSdkLoader {
         MoPubRewardedAdManager.setRewardedAdListener(new MoPubRewardedAdListener() {
             @Override
             public void onRewardedAdLoadSuccess(String s) {
-                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.iv(Log.TAG, formatLog("ad load success"));
                 setLoading(false, STATE_SUCCESS);
                 reportAdLoaded();
                 notifyAdLoaded(MopubLoader.this);
@@ -508,7 +508,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onRewardedAdLoadFailure(String s, MoPubErrorCode moPubErrorCode) {
-                Log.v(Log.TAG, "reason : " + codeToError(moPubErrorCode) + " , placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(moPubErrorCode), true));
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(moPubErrorCode));
                 notifyAdFailed(toSdkError(moPubErrorCode));
@@ -516,7 +516,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onRewardedAdStarted(String s) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, formatLog("ad reward start"));
                 setRewardPlaying(true);
                 reportAdImp();
                 notifyAdImp();
@@ -526,14 +526,14 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onRewardedAdClicked(String s) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, formatLog("ad reward click"));
                 reportAdClick();
                 notifyAdClick();
             }
 
             @Override
             public void onRewardedAdClosed(String s) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, formatLog("ad reward closed"));
                 setRewardPlaying(false);
                 reportAdClose();
                 notifyAdDismiss();
@@ -545,7 +545,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onRewardedAdCompleted(Set<String> set, MoPubReward moPubReward) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, formatLog("ad reward complete"));
                 reportAdReward();
                 notifyRewardAdsCompleted();
                 AdReward adReward = new AdReward();
@@ -579,7 +579,7 @@ public class MopubLoader extends AbstractSdkLoader {
             loaded = !isCachedAdExpired(nativeAd);
         }
         if (loaded) {
-            Log.d(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - loaded : " + loaded);
+            Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
         return loaded;
     }
@@ -594,7 +594,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onInitializeFailure(String error) {
-                Log.v(Log.TAG, getSdkName() + " - " + getAdPlaceName() + " - " + getAdType() + " init error : " + error);
+                Log.iv(Log.TAG, formatLog("init error : " + error));
                 notifyAdFailed(Constant.AD_ERROR_INITIALIZE);
             }
         });
@@ -602,22 +602,17 @@ public class MopubLoader extends AbstractSdkLoader {
 
     private void loadNativeInternal(Params params) {
         if (!checkPidConfig()) {
-            Log.v(Log.TAG, "config error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, formatLog("config error"));
             notifyAdFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
-        if (!matchNoFillTime()) {
-            Log.v(Log.TAG, "nofill error : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyAdFailed(Constant.AD_ERROR_FILLTIME);
-            return;
-        }
         if (isNativeLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, formatLog("already loaded"));
             notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, formatLog("already loading"));
             notifyAdFailed(Constant.AD_ERROR_LOADING);
             return;
         }
@@ -632,7 +627,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onNativeLoad(final NativeAd nAd) {
-                Log.v(Log.TAG, "ad loaded name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType());
+                Log.iv(Log.TAG, formatLog("ad load success"));
                 reportAdLoaded();
                 setLoading(false, STATE_SUCCESS);
                 nativeAd = nAd;
@@ -642,7 +637,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
             @Override
             public void onNativeFail(NativeErrorCode errorCode) {
-                Log.e(Log.TAG, "aderror placename : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , msg : " + codeToErrorNative(errorCode) + " , pid : " + getPid());
+                Log.iv(Log.TAG, formatLog("ad load failed : " + codeToErrorNative(errorCode), true));
                 reportAdError(codeToErrorNative(errorCode));
                 setLoading(false, STATE_FAILURE);
                 notifyAdFailed(toSdkError2(errorCode));
@@ -664,7 +659,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 @Override
                 public void onImpression(View view) {
                     String render = getRender();
-                    Log.iv(Log.TAG, "network imp place name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , render : " + render);
+                    Log.iv(Log.TAG, formatLog("ad network impression render : " + render));
                     reportAdImp(render);
                     notifyAdImp(render);
                     if (bindNativeView != null) {
@@ -675,7 +670,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 @Override
                 public void onClick(View view) {
                     String render = getRender();
-                    Log.iv(Log.TAG, "network clk place name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , type : " + getAdType() + " , render : " + render);
+                    Log.iv(Log.TAG, formatLog("ad network click render : " + render));
                     reportAdClick(render);
                     notifyAdClick(render);
                 }
@@ -707,7 +702,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.e(Log.TAG, "error : " + e, e);
             }
         } else {
-            Log.e(Log.TAG, "nativeAd is null");
+            Log.iv(Log.TAG, formatLog("nativeAd is null"));
         }
     }
 
