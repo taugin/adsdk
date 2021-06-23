@@ -145,17 +145,6 @@ public class MView extends View {
     private static void configIntent(Context context, Intent intent) {
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if (!ActivityMonitor.get(context).appOnTop()) {
-                ComponentName cmp = intent.getComponent();
-                if (cmp != null) {
-                    String className = cmp.getClassName();
-                    if (TextUtils.equals(className, "com.google.android.gms.ads.AdActivity")
-                            || TextUtils.equals(className, "com.mopub.mobileads.MoPubFullscreenActivity")) {
-                        Log.v(Log.TAG, "add no history for Activity");
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    }
-                }
-            }
         }
     }
 }

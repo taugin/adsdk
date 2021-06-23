@@ -15,7 +15,6 @@
             android:excludeFromRecents="true"
             android:icon="@drawable/rab_tr_bg"
             android:label=""
-            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent" />
         <!-- MoPub's consent dialog -->
         <activity
