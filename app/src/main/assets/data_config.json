@@ -156,7 +156,7 @@
           "sdk": "fb",
           "type": "interstitial",
           "pid": "VID_HD_16_9_15S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "mopub",
@@ -198,26 +198,25 @@
           "sdk": "admob",
           "type": "reward",
           "pid": "ca-app-pub-3940256099942544/5224354917",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "mopub",
           "type": "reward",
-          "pid": "920b6145fb1546cf8b5cf2ac34638bb7",
+          "pid": "89c000c7bb514d8fa78614f8b53a356b",
           "disable": 0
         },
         {
           "sdk": "fb",
           "type": "reward",
           "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "applovin",
-          "ismax": 1,
           "type": "reward",
           "pid": "b1f3b51e98603fbf",
-          "disable": 1
+          "disable": 0
         }
       ],
       "maxcount": 100,
