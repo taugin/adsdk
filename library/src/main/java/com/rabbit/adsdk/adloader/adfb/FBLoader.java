@@ -296,6 +296,8 @@ public class FBLoader extends AbstractSdkLoader {
             reportAdShow();
             notifyAdShow();
             return true;
+        } else {
+            onResetInterstitial();
         }
         return false;
     }
@@ -524,6 +526,8 @@ public class FBLoader extends AbstractSdkLoader {
             reportAdShow();
             notifyAdShow();
             return true;
+        } else {
+            onResetReward();
         }
         return false;
     }

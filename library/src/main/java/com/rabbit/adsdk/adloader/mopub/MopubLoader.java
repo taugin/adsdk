@@ -434,6 +434,8 @@ public class MopubLoader extends AbstractSdkLoader {
             reportAdShow();
             notifyAdShow();
             return showed;
+        } else {
+            onResetInterstitial();
         }
         return false;
     }
@@ -578,6 +580,8 @@ public class MopubLoader extends AbstractSdkLoader {
             reportAdShow();
             notifyAdShow();
             return true;
+        } else {
+            onResetReward();
         }
         return false;
     }

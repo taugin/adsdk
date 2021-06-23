@@ -325,6 +325,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             reportAdShow();
             notifyAdShow();
             return true;
+        } else {
+            onResetInterstitial();
         }
         return false;
     }
@@ -440,6 +442,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             reportAdShow();
             notifyAdShow();
             return true;
+        } else {
+            onResetReward();
         }
         return false;
     }
