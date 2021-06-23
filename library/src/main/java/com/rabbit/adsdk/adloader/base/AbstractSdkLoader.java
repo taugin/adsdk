@@ -866,7 +866,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (showPid) {
             baseLog = baseLog + " - " + getPid();
         }
-        return "sdk loader - " + baseLog + " [" + info + "]";
+        return "[sdk loader] " + baseLog + " [" + info + "]";
     }
 
     protected void onResetInterstitial() {
