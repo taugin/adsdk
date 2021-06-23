@@ -264,9 +264,6 @@ public class AdParser implements IParser {
             if (jobj.has(RATIO)) {
                 pidConfig.setRatio(jobj.getInt(RATIO));
             }
-            if (jobj.has(ISMAX)) {
-                pidConfig.setMax(jobj.getInt(ISMAX) == 1);
-            }
             if (jobj.has(SUB_NATIVE_LAYOUT)) {
                 pidConfig.setSubNativeLayout(jsonToMap(jobj.getString(SUB_NATIVE_LAYOUT)));
             }

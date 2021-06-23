@@ -53,8 +53,6 @@ public class PidConfig {
 
     private int ratio = 100;
 
-    private boolean isMax = true;
-
     private Map<String, String> subNativeLayout;
 
     public String getAdPlaceName() {
@@ -215,14 +213,6 @@ public class PidConfig {
 
     public void setRatio(int ratio) {
         this.ratio = ratio;
-    }
-
-    public boolean isMax() {
-        return isMax;
-    }
-
-    public void setMax(boolean max) {
-        isMax = max;
     }
 
     public Map<String, String> getSubNativeLayout() {

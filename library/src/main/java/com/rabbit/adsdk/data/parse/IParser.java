@@ -82,8 +82,6 @@ public interface IParser {
     String ACTIVITY_CONTEXT = "ac";
     // 展示比例
     String RATIO = "ratio";
-    // 是否applovin max
-    String ISMAX = "ismax";
     // 子原生布局
     String SUB_NATIVE_LAYOUT = "snl";
 
