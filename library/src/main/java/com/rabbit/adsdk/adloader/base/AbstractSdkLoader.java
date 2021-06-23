@@ -257,15 +257,15 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected boolean checkPidConfig() {
         if (mPidConfig == null) {
-            Log.e(Log.TAG, "pid config is null");
+            Log.iv(Log.TAG, formatLog("error pid config is null"));
             return false;
         }
         if (!TextUtils.equals(mPidConfig.getSdk(), getSdkName())) {
-            Log.e(Log.TAG, "sdk not equals");
+            Log.iv(Log.TAG, formatLog("error sdk not equals"));
             return false;
         }
         if (TextUtils.isEmpty(mPidConfig.getPid())) {
-            Log.e(Log.TAG, "pid is empty");
+            Log.iv(Log.TAG, formatLog("error pid is empty"));
             return false;
         }
         return true;
@@ -298,7 +298,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     private void processBlockAds() {
-        Log.d(Log.TAG, "block ads : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+        Log.iv(Log.TAG, formatLog("block ads"));
         notifyAdFailed(Constant.AD_ERROR_BLOCK_ADS);
     }
 
@@ -324,19 +324,19 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     private void processAdLoaderFilter() {
-        Log.iv(Log.TAG, "loader is filter : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+        Log.iv(Log.TAG, formatLog("loader is filter"));
         notifyAdFailed(Constant.AD_ERROR_FILTERED);
     }
 
     private boolean isImpByRatio() {
         int maxRatio = mPidConfig.getRatio();
         int randomRatio = sRandom.nextInt(100);
-        Log.iv(Log.TAG, "random ratio : " + randomRatio + " , max ratio : " + maxRatio);
+        Log.iv(Log.TAG, formatLog("random ratio : " + randomRatio + " , max ratio : " + maxRatio));
         return randomRatio < maxRatio;
     }
 
     private void processImpByRatio() {
-        Log.iv(Log.TAG, "loader not ratio : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+        Log.iv(Log.TAG, formatLog("ratio not match"));
         notifyAdFailed(Constant.AD_ERROR_RATIO);
     }
 
@@ -358,12 +358,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
                 mHandler.sendEmptyMessageDelayed(MSG_LOADING_TIMEOUT, getTimeout());
-                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - send time out message : " + getTimeout());
+                Log.iv(Log.TAG, formatLog("send time out message : " + getTimeout()));
             }
         } else {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
-                Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - remove time out message");
+                Log.iv(Log.TAG, formatLog("remove time out message"));
             }
         }
     }
@@ -476,7 +476,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected void onLoadTimeout() {
-        Log.v(Log.TAG, getSdkName() + " - " + getAdType() + " - " + getAdPlaceName() + " - load time out");
+        Log.iv(Log.TAG, formatLog("load time out"));
         reportAdError("AD_ERROR_TIMEOUT");
         setLoading(false, STATE_TIMTOUT);
         if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)) {
@@ -542,7 +542,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
      */
     private void delayNotifyAdLoaded(Runnable runnable, boolean cached) {
         long delay = getDelayNotifyLoadTime(cached);
-        Log.v(Log.TAG, "delay notify loaded time : " + delay);
+        Log.iv(Log.TAG, formatLog("delay notify loaded time : " + delay));
         if (delay <= 0) {
             if (runnable != null) {
                 runnable.run();
@@ -858,7 +858,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected String formatLog(String info) {
-        return formatLog(info, false);
+        return formatLog("sdk loader - " + info, false);
     }
 
     protected String formatLog(String info, boolean showPid) {
