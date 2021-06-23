@@ -174,8 +174,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             public void onAdLoaded() {
                 Log.iv(Log.TAG, formatLog("ad load success"));
                 setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(loadingView);
                 bannerView = loadingView;
+                putCachedAdTime(loadingView);
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
             }

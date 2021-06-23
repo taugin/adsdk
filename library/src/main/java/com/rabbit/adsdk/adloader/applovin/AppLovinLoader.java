@@ -297,8 +297,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdLoaded(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad load success"));
                 setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(loadingMaxAdView);
                 maxAdView = loadingMaxAdView;
+                putCachedAdTime(loadingMaxAdView);
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
             }
@@ -375,6 +375,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             lastUseMaxAdView = maxAdView;
+            maxAdView = null;
             reportAdShow();
             notifyAdShow();
             reportAdImp();
