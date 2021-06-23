@@ -858,7 +858,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected String formatLog(String info) {
-        return formatLog("sdk loader - " + info, false);
+        return formatLog(info, false);
     }
 
     protected String formatLog(String info, boolean showPid) {
@@ -866,7 +866,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (showPid) {
             baseLog = baseLog + " - " + getPid();
         }
-        return baseLog + " [" + info + "]";
+        return "sdk loader - " + baseLog + " [" + info + "]";
     }
 
     protected void onResetInterstitial() {
