@@ -188,7 +188,7 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isInterstitialLoaded() {
-        boolean loaded = fbInterstitial != null && !isCachedAdExpired(fbInterstitial);
+        boolean loaded = fbInterstitial != null && !isCachedAdExpired(fbInterstitial) && !isShowTimeExpired();
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
@@ -234,7 +234,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onInterstitialDismissed(Ad ad) {
                 Log.iv(Log.TAG, formatLog("ad interstitial dismissed"));
-                clearResetTimer();
+                clearLastShowTime();
                 onResetInterstitial();
                 reportAdClose();
                 notifyAdDismiss();
@@ -249,7 +249,7 @@ public class FBLoader extends AbstractSdkLoader {
                     }
                 }
                 setLoading(false, STATE_FAILURE);
-                clearResetTimer();
+                clearLastShowTime();
                 onResetInterstitial();
                 reportAdError(getError(adError));
                 notifyAdFailed(toSdkError(adError));
@@ -292,7 +292,7 @@ public class FBLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (fbInterstitial != null && fbInterstitial.isAdLoaded()) {
             fbInterstitial.show();
-            setResetTimer();
+            updateLastShowTime();
             reportAdShow();
             notifyAdShow();
             return true;
@@ -463,7 +463,7 @@ public class FBLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad reward closed"));
                 reportAdClose();
                 notifyAdDismiss();
-                clearResetTimer();
+                clearLastShowTime();
                 onResetReward();
             }
 
@@ -476,7 +476,7 @@ public class FBLoader extends AbstractSdkLoader {
                     }
                 }
                 setLoading(false, STATE_FAILURE);
-                clearResetTimer();
+                clearLastShowTime();
                 onResetReward();
                 reportAdError(getError(adError));
                 notifyAdFailed(toSdkError(adError));
@@ -508,7 +508,7 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isRewardedVideoLoaded() {
-        boolean loaded = rewardedVideoAd != null && !rewardedVideoAd.isAdInvalidated()/* && !isCachedAdExpired(rewardedVideoAd)*/;
+        boolean loaded = rewardedVideoAd != null && !rewardedVideoAd.isAdInvalidated() && !isShowTimeExpired()/* && !isCachedAdExpired(rewardedVideoAd)*/;
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
@@ -520,7 +520,7 @@ public class FBLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (rewardedVideoAd != null && rewardedVideoAd.isAdLoaded() && !rewardedVideoAd.isAdInvalidated()) {
             rewardedVideoAd.show();
-            setResetTimer();
+            updateLastShowTime();
             reportAdShow();
             notifyAdShow();
             return true;
@@ -542,6 +542,7 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     protected void onResetInterstitial() {
+        super.onResetInterstitial();
         clearCachedAdTime(fbInterstitial);
         if (fbInterstitial != null) {
             fbInterstitial.destroy();
@@ -551,6 +552,7 @@ public class FBLoader extends AbstractSdkLoader {
 
     @Override
     protected void onResetReward() {
+        super.onResetReward();
         clearCachedAdTime(rewardedVideoAd);
         if (rewardedVideoAd != null) {
             rewardedVideoAd.destroy();

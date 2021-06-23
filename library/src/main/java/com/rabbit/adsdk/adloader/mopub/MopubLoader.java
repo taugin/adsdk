@@ -382,7 +382,7 @@ public class MopubLoader extends AbstractSdkLoader {
             public void onInterstitialFailed(MoPubInterstitial interstitial, MoPubErrorCode errorCode) {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(errorCode), true));
                 setLoading(false, STATE_FAILURE);
-                clearResetTimer();
+                clearLastShowTime();
                 onResetInterstitial();
                 reportAdError(codeToError(errorCode));
                 notifyAdFailed(toSdkError(errorCode));
@@ -405,7 +405,7 @@ public class MopubLoader extends AbstractSdkLoader {
             @Override
             public void onInterstitialDismissed(MoPubInterstitial interstitial) {
                 Log.iv(Log.TAG, formatLog("ad interstitial dismissed"));
-                clearResetTimer();
+                clearLastShowTime();
                 onResetInterstitial();
                 reportAdClose();
                 notifyAdDismiss();
@@ -418,7 +418,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isInterstitialLoaded() {
-        boolean loaded = moPubInterstitial != null && !isCachedAdExpired(moPubInterstitial);
+        boolean loaded = moPubInterstitial != null && !isCachedAdExpired(moPubInterstitial) && !isShowTimeExpired();
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
@@ -430,7 +430,7 @@ public class MopubLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (moPubInterstitial != null && moPubInterstitial.isReady()) {
             boolean showed = moPubInterstitial.show();
-            setResetTimer();
+            updateLastShowTime();
             reportAdShow();
             notifyAdShow();
             return showed;
@@ -441,7 +441,8 @@ public class MopubLoader extends AbstractSdkLoader {
     @Override
     public boolean isRewardedVideoLoaded() {
         boolean loaded = !TextUtils.isEmpty(mLoadedRewardUnit)
-                && !isCachedAdExpired(mLoadedRewardUnit);
+                && !isCachedAdExpired(mLoadedRewardUnit)
+                && !isShowTimeExpired();
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
@@ -512,6 +513,7 @@ public class MopubLoader extends AbstractSdkLoader {
             public void onRewardedAdLoadFailure(String s, MoPubErrorCode moPubErrorCode) {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(moPubErrorCode), true));
                 setLoading(false, STATE_FAILURE);
+                clearLastShowTime();
                 onResetReward();
                 reportAdError(codeToError(moPubErrorCode));
                 notifyAdFailed(toSdkError(moPubErrorCode));
@@ -536,6 +538,7 @@ public class MopubLoader extends AbstractSdkLoader {
             @Override
             public void onRewardedAdClosed(String s) {
                 Log.iv(Log.TAG, formatLog("ad reward closed"));
+                clearLastShowTime();
                 onResetReward();
                 reportAdClose();
                 notifyAdDismiss();
@@ -571,7 +574,7 @@ public class MopubLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (MoPubRewardedAds.hasRewardedAd(getPidConfig().getPid())) {
             MoPubRewardedAds.showRewardedAd(getPidConfig().getPid());
-            setResetTimer();
+            updateLastShowTime();
             reportAdShow();
             notifyAdShow();
             return true;
@@ -766,6 +769,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     protected void onResetInterstitial() {
+        super.onResetInterstitial();
         clearCachedAdTime(moPubInterstitial);
         if (moPubInterstitial != null) {
             moPubInterstitial.destroy();
@@ -775,6 +779,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
     @Override
     protected void onResetReward() {
+        super.onResetReward();
         clearCachedAdTime(mLoadedRewardUnit);
         if (mLoadedRewardUnit != null) {
             mLoadedRewardUnit = null;

@@ -48,8 +48,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     // 加载未返回的超时时间1分钟
     protected static final int LOADING_TIMEOUT = 60 * 1000;
 
-    protected static final int MSG_RESET_AD_OBJECT = 1002;
-    protected static final int RESET_AD_OBJECT_TIMEOUT = 120 * 1000;
+    protected static final int FULLSCREEN_SHOWTIME_EXPIRED = 5 * 60 * 1000;
 
     protected static final int STATE_REQUEST = 1;
     protected static final int STATE_SUCCESS = 2;
@@ -67,6 +66,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private int mBannerSize = Constant.NOSET;
     private IEvent mStat;
     private static final Random sRandom = new Random(System.currentTimeMillis());
+    private long mLastFullScreenShowTime = 0;
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -495,8 +495,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             if (msg.what == MSG_LOADING_TIMEOUT) {
                 onLoadTimeout();
                 return true;
-            } else if (msg.what == MSG_RESET_AD_OBJECT) {
-                onResetTimerTrigger();
             }
         }
         return false;
@@ -871,33 +869,30 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return baseLog + " [" + info + "]";
     }
 
-
-    private void onResetTimerTrigger() {
-        Log.iv(Log.TAG, formatLog("reset ad object"));
-        if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)) {
-            onResetInterstitial();
-        } else if (TextUtils.equals(getAdType(), Constant.TYPE_REWARD)) {
-            onResetReward();
-        }
-    }
-
     protected void onResetInterstitial() {
+        Log.iv(Log.TAG, formatLog("reset interstitial"));
     }
 
     protected void onResetReward() {
+        Log.iv(Log.TAG, formatLog("reset reward"));
     }
 
-    protected void setResetTimer() {
-        Log.iv(Log.TAG, formatLog("set reset timer"));
-        if (mHandler != null) {
-            mHandler.sendEmptyMessageDelayed(MSG_RESET_AD_OBJECT, RESET_AD_OBJECT_TIMEOUT);
-        }
+    protected void updateLastShowTime() {
+        Log.iv(Log.TAG, formatLog("update last show time"));
+        mLastFullScreenShowTime = System.currentTimeMillis();
     }
 
-    protected void clearResetTimer() {
-        Log.iv(Log.TAG, formatLog("clear reset timer"));
-        if (mHandler != null) {
-            mHandler.removeMessages(MSG_RESET_AD_OBJECT);
+    protected void clearLastShowTime() {
+        Log.iv(Log.TAG, formatLog("clear last show time"));
+        mLastFullScreenShowTime = 0;
+    }
+
+    protected boolean isShowTimeExpired() {
+        if (mLastFullScreenShowTime > 0) {
+            long now = System.currentTimeMillis();
+            long saveTime = now - mLastFullScreenShowTime;
+            return saveTime > FULLSCREEN_SHOWTIME_EXPIRED;
         }
+        return false;
     }
 }

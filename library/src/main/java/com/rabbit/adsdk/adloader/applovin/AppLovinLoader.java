@@ -733,10 +733,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     private boolean isInterstitialLoadedForMax() {
-        boolean loaded = false;
-        if (interstitialAd != null) {
-            loaded = interstitialAd.isReady() && !isCachedAdExpired(interstitialAd);
-        }
+        boolean loaded = interstitialAd != null && !isCachedAdExpired(interstitialAd) && !isShowTimeExpired();
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
@@ -761,7 +758,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdLoadFailed(String adUnitId, MaxError error) {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(error), true));
                 setLoading(false, STATE_FAILURE);
-                clearResetTimer();
+                clearLastShowTime();
                 onResetInterstitial();
                 reportAdError(codeToError(error));
                 notifyAdFailed(Constant.AD_ERROR_LOAD);
@@ -777,7 +774,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdHidden(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad hidden"));
-                clearResetTimer();
+                clearLastShowTime();
                 onResetInterstitial();
                 reportAdClose();
                 notifyAdDismiss();
@@ -793,7 +790,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
                 Log.iv(Log.TAG, formatLog("ad display failed : " + error));
-                clearResetTimer();
+                clearLastShowTime();
                 onResetInterstitial();
             }
         });
@@ -815,7 +812,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (interstitialAd != null) {
             Log.v(Log.TAG, "");
             interstitialAd.showAd();
-            setResetTimer();
+            updateLastShowTime();
             reportAdShow();
             notifyAdShow();
             return true;
@@ -824,7 +821,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     private boolean isRewardedVideoLoadedForMax() {
-        boolean loaded = rewardedAd != null && !isCachedAdExpired(rewardedAd);
+        boolean loaded = rewardedAd != null && !isCachedAdExpired(rewardedAd) && !isShowTimeExpired();
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
@@ -877,7 +874,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdLoadFailed(String adUnitId, MaxError error) {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(error), true));
                 setLoading(false, STATE_FAILURE);
-                clearResetTimer();
+                clearLastShowTime();
                 onResetReward();
                 reportAdError(codeToError(error));
                 notifyAdFailed(Constant.AD_ERROR_LOAD);
@@ -893,7 +890,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdHidden(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad hidden"));
-                clearResetTimer();
+                clearLastShowTime();
                 onResetReward();
                 reportAdClose();
                 notifyAdDismiss();
@@ -909,7 +906,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
                 Log.iv(Log.TAG, formatLog("ad display failed : " + error));
-                clearResetTimer();
+                clearLastShowTime();
                 onResetReward();
             }
         });
@@ -930,7 +927,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (rewardedAd != null && rewardedAd.isReady()) {
             rewardedAd.showAd();
-            setResetTimer();
+            updateLastShowTime();
             reportAdShow();
             notifyAdShow();
             return true;
@@ -972,6 +969,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     protected void onResetInterstitial() {
+        super.onResetInterstitial();
         clearCachedAdTime(interstitialAd);
         if (interstitialAd != null) {
             interstitialAd.destroy();
@@ -981,6 +979,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     protected void onResetReward() {
+        super.onResetReward();
         clearCachedAdTime(rewardedAd);
         if (rewardedAd != null) {
             rewardedAd.destroy();
