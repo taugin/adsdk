@@ -97,7 +97,6 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
 
     public void onClick(View v) {
         if (v.getId() == R.id.show_complex) {
-            // loadGtOuter();
             if (AdSdk.get(this).isComplexAdsLoaded()) {
                 AdSdk.get(this).showComplexAds();
             }
@@ -163,17 +162,17 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
     }
 
     private void loadAdComplex() {
-        if (AdSdk.get(mContext).isComplexAdsLoaded("banner_and_native")) {
-            String loadedSdk = AdSdk.get(mContext).getLoadedSdk("banner_and_native");
+        if (AdSdk.get(mContext).isComplexAdsLoaded("ad_complex")) {
+            String loadedSdk = AdSdk.get(mContext).getLoadedSdk("ad_complex");
             Log.v(TAG, "loaded sdk : " + loadedSdk);
-            AdSdk.get(mContext).showComplexAds("banner_and_native");
+            AdSdk.get(mContext).showComplexAds("ad_complex");
             return;
         }
         AdParams.Builder builder = new AdParams.Builder();
         int styles[] = new int[]{AdExtra.NATIVE_CARD_FULL, AdExtra.NATIVE_CARD_SMALL, AdExtra.NATIVE_CARD_MEDIUM, AdExtra.NATIVE_CARD_TINY, AdExtra.NATIVE_CARD_LARGE};
         builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, styles[new Random(System.currentTimeMillis()).nextInt(styles.length)]);
         AdParams adParams = builder.build();
-        AdSdk.get(mContext).loadComplexAds("banner_and_native", adParams, new SimpleAdSdkListener() {
+        AdSdk.get(mContext).loadComplexAds("ad_complex", adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String placeName, String source, String adType, String pid) {
                 Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);

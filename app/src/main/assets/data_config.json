@@ -224,12 +224,12 @@
     },
     {
       "name": "ad_complex",
-      "mode": "seq",
+      "mode": "con",
       "pids": [
         {
           "sdk": "spread",
           "type": "interstitial",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
@@ -273,7 +273,6 @@
         {
           "sdk": "spread",
           "type": "native",
-          "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
           "disable": 0
         }
       ],
