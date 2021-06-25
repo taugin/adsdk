@@ -6,6 +6,7 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -16,7 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rabbit.adsdk.AdExtra;
@@ -101,23 +102,13 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
                 AdSdk.get(this).showComplexAds();
             }
         } else if (v.getId() == R.id.interstitial) {
-            loadInterstitial();
+            loadInterstitial((TextView) v);
         } else if (v.getId() == R.id.complex) {
             loadAdComplex();
         } else if (v.getId() == R.id.native_common) {
             loadAdViewCommon();
         } else if (v.getId() == R.id.reward_video) {
-            if (AdSdk.get(mContext).isRewardedVideoLoaded("reward_video")) {
-                AdSdk.get(mContext).showRewardedVideo("reward_video");
-            } else {
-                AdSdk.get(mContext).loadRewardedVideo("reward_video", new SimpleAdSdkListener() {
-                    @Override
-                    public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
-                        Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , item : " + item);
-                        runToast(item.toString());
-                    }
-                });
-            }
+            loadReward((TextView) v);
         } else if (v.getId() == R.id.reward_video_queue) {
             AdSdk.get(mContext).showRewardedVideo("reward_video");
         } else if (v.getId() == R.id.spread_button) {
@@ -143,35 +134,31 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
                 Log.v(TAG, "loaded sdk : " + loadedSdk);
                 AdSdk.get(mContext).showComplexAds(placeName);
             }
-
-            @Override
-            public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
-                Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , onDestroy : " + complexAds);
-            }
         });
     }
 
-    private void loadGtOuter() {
-        if (AdSdk.get(mContext).isComplexAdsLoaded("nt_outer_place")) {
-            AdSdk.get(mContext).showComplexAds("nt_outer_place");
-        } else {
-            AdSdk.get(mContext).loadComplexAds("nt_outer_place", new SimpleAdSdkListener() {
-                @Override
-                public void onLoaded(String placeName, String source, String adType, String pid) {
-                    AdSdk.get(mContext).showComplexAds(placeName);
-                }
-            });
-        }
-    }
-
-    private void loadInterstitial() {
-        //AdSdk.get(mContext).loadInterstitial("interstitial", mSimpleAdsdkListener);
+    private void loadInterstitial(TextView textView) {
         if (AdSdk.get(mContext).isInterstitialLoaded("interstitial")) {
             String loadedSdk = AdSdk.get(mContext).getLoadedSdk("interstitial");
             Log.v(TAG, "loaded sdk : " + loadedSdk);
             AdSdk.get(mContext).showInterstitial("interstitial");
         } else {
-            AdSdk.get(mContext).loadInterstitial("interstitial", null);
+            AdSdk.get(mContext).loadInterstitial("interstitial", new FullScreenAdListener(textView));
+        }
+    }
+
+    private void loadReward(TextView textView) {
+        if (AdSdk.get(mContext).isRewardedVideoLoaded("reward_video")) {
+            AdSdk.get(mContext).showRewardedVideo("reward_video");
+        } else {
+            AdSdk.get(mContext).loadRewardedVideo("reward_video", new FullScreenAdListener(textView) {
+                @Override
+                public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
+                    super.onRewarded(placeName, source, adType, pid, item);
+                    Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , item : " + item);
+                    runToast(item.toString());
+                }
+            });
         }
     }
 
@@ -398,5 +385,51 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
                 Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , onDestroy : " + complexAds);
             }
         });
+    }
+
+    class FullScreenAdListener extends SimpleAdSdkListener {
+        private TextView textView;
+
+        public FullScreenAdListener(TextView textView) {
+            this.textView = textView;
+        }
+
+        @Override
+        public void onLoaded(String placeName, String source, String adType, String pid) {
+            Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+            updateLoadStatus(textView, placeName);
+        }
+
+        @Override
+        public void onImp(String placeName, String source, String adType, String render, String pid) {
+            Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+            updateLoadStatus(textView, placeName);
+        }
+
+        @Override
+        public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
+            Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+            updateLoadStatus(textView, placeName);
+        }
+
+        @Override
+        public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
+            Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+            updateLoadStatus(textView, placeName);
+        }
+
+        @Override
+        public void onUpdate(String placeName, String source, String adType, String pid) {
+            Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+            updateLoadStatus(textView, placeName);
+        }
+    }
+
+    private void updateLoadStatus(TextView textView, String placeName) {
+        if (textView == null) {
+            return;
+        }
+        boolean loaded = AdSdk.get(this).isComplexAdsLoaded(placeName);
+        textView.setTextColor(loaded ? Color.RED : Color.BLACK);
     }
 }
