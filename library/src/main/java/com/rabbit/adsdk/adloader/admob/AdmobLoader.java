@@ -307,10 +307,10 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdDismissedFullScreenContent() {
                     Log.iv(Log.TAG, formatLog("ad dismissed full screen content"));
-                    reportAdClose();
-                    notifyAdDismiss();
                     clearLastShowTime();
                     onResetInterstitial();
+                    reportAdClose();
+                    notifyAdDismiss();
                 }
 
                 @Override
@@ -396,9 +396,9 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
-                    notifyAdFailed(toSdkError(adError));
                     clearLastShowTime();
                     onResetReward();
+                    notifyAdFailed(toSdkError(adError));
                 }
 
                 @Override
@@ -411,10 +411,10 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdDismissedFullScreenContent() {
                     Log.iv(Log.TAG, formatLog("ad dismissed full screen content"));
-                    reportAdClose();
-                    notifyAdDismiss();
                     clearLastShowTime();
                     onResetReward();
+                    reportAdClose();
+                    notifyAdDismiss();
                 }
 
                 @Override

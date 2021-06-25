@@ -463,10 +463,10 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onRewardedVideoClosed() {
                 Log.iv(Log.TAG, formatLog("ad reward closed"));
-                reportAdClose();
-                notifyAdDismiss();
                 clearLastShowTime();
                 onResetReward();
+                reportAdClose();
+                notifyAdDismiss();
             }
 
             @Override
