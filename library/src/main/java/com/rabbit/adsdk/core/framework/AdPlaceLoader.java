@@ -31,6 +31,8 @@ import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.listener.OnAdSdkListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
+import com.rabbit.adsdk.stat.InternalStat;
+import com.rabbit.adsdk.utils.Utils;
 import com.rabbit.sunny.IAdvance;
 import com.rabbit.sunny.RabActivity;
 
@@ -38,6 +40,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -1476,6 +1479,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         @Override
         public void onImp(String placeName, String source, String adType, String render, String pid) {
             Log.iv(Log.TAG, "notify callback onImp place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , render : " + render + " , pid : " + pid);
+            BlockAdsManager.get(mContext).recordAdImp(source, placeName, render);
             if (mOnAdSdkLoadedListener != null) {
                 mOnAdSdkLoadedListener.onImp(placeName, source, adType, render, pid);
             }
@@ -1544,6 +1548,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         @Override
         public void onClick(String placeName, String source, String adType, String render, String pid) {
             Log.iv(Log.TAG, "notify callback onClick place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , render : " + render + " , pid : " + pid);
+            BlockAdsManager.get(mContext).recordAdClick(source, placeName, render);
             if (TextUtils.equals(adType, Constant.TYPE_NATIVE)
                     || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
                 String sdkName = source;
@@ -1565,6 +1570,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                                     childView.setVisibility(View.INVISIBLE);
                                 }
                             }
+                        } else {
+                            String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+                            if (TextUtils.isEmpty(gaid)) {
+                                gaid = "unknown";
+                            }
+                            InternalStat.reportEvent(mContext, "remove_ads_error", gaid);
                         }
                     }
                 }

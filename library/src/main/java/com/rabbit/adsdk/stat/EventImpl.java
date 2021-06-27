@@ -172,7 +172,6 @@ public class EventImpl implements IEvent {
         reportEvent(context, placeName, eventId, extra);
         reportEvent(context, placeName, "e_ad_imp", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        BlockAdsManager.get(context).recordAdImp(sdk, placeName, render);
     }
 
     @Override
@@ -185,7 +184,6 @@ public class EventImpl implements IEvent {
         reportEvent(context, placeName, eventId, extra);
         reportEvent(context, placeName, "e_ad_click", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        BlockAdsManager.get(context).recordAdClick(sdk, placeName, render);
     }
 
     @Override
