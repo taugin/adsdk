@@ -127,7 +127,7 @@ public class BlockAdsManager {
         BlockCfg blockCfg = getBlockAdsConfig(sdk, placeName);
         Log.iv(Log.TAG, sdk + " - " + placeName + " block cfg : " + blockCfg);
         if (blockCfg != null && blockCfg.blockAds) {
-            return blockAdsByGAID(blockCfg) || blockAdsByConfig(sdk, placeName, blockCfg);
+            return isBlockAdsByGAID(blockCfg) || isBlockAdsByConfig(sdk, placeName, blockCfg);
         }
         return false;
     }
@@ -145,7 +145,7 @@ public class BlockAdsManager {
      *
      * @return
      */
-    private boolean blockAdsByGAID(BlockCfg blockCfg) {
+    private boolean isBlockAdsByGAID(BlockCfg blockCfg) {
         boolean blockByGaid = false;
         String gaid = Utils.getString(mContext, Constant.PREF_GAID);
         if (blockCfg != null && blockCfg.gaidList != null && !blockCfg.gaidList.isEmpty()) {
@@ -159,7 +159,7 @@ public class BlockAdsManager {
         return blockByGaid;
     }
 
-    private boolean blockAdsByConfig(String sdk, String placeName, BlockCfg blockCfg) {
+    private boolean isBlockAdsByConfig(String sdk, String placeName, BlockCfg blockCfg) {
         boolean isBlockAds = false;
         String keyConfig = String.format(Locale.getDefault(), "%s_%s", sdk, placeName);
         if (blockCfg != null && (TextUtils.equals(keyConfig, blockCfg.blockKey)
@@ -264,9 +264,9 @@ public class BlockAdsManager {
         boolean isBlockAds = false;
         if (maxClk > 0) {
             if (minImp > 0) {
-                isBlockAds = impCount >= minImp && clkCount > maxClk;
+                isBlockAds = impCount >= minImp && clkCount >= maxClk;
             } else {
-                isBlockAds = clkCount > maxClk;
+                isBlockAds = clkCount >= maxClk;
             }
         }
         return isBlockAds;
