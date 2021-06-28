@@ -3,12 +3,16 @@ package com.rabbit.adsdk.core.framework;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -34,13 +38,13 @@ import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 import com.rabbit.sunny.IAdvance;
+import com.rabbit.sunny.R;
 import com.rabbit.sunny.RabActivity;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -1562,14 +1566,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (mAdContainer != null) {
                         ViewGroup viewGroup = mAdContainer.get();
                         if (viewGroup != null) {
-                            int count = viewGroup.getChildCount();
-                            View childView = null;
-                            for (int child = 0; child < count; child++) {
-                                childView = viewGroup.getChildAt(child);
-                                if (childView != null) {
-                                    childView.setVisibility(View.INVISIBLE);
-                                }
-                            }
+                            addLoadingView(viewGroup);
                         } else {
                             String gaid = Utils.getString(mContext, Constant.PREF_GAID);
                             if (TextUtils.isEmpty(gaid)) {
@@ -1606,6 +1603,29 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (mOnAdSdkListener != null) {
                 mOnAdSdkListener.onDismiss(placeName, source, adType, pid, complexAds);
             }
+        }
+    }
+
+    private void addLoadingView(ViewGroup viewGroup) {
+        try {
+            int viewHeight = viewGroup.getHeight();
+            Log.iv(Log.TAG, "viewHeight : " + viewHeight);
+            if (viewHeight > 0) {
+                LinearLayout linearLayout = new LinearLayout(mContext);
+                linearLayout.setGravity(Gravity.CENTER);
+                linearLayout.setBackgroundColor(Color.WHITE);
+                TextView textView = new TextView(mContext);
+                textView.setGravity(Gravity.CENTER);
+                textView.setBackgroundResource(R.drawable.rab_badge_bg);
+                textView.setTextColor(Color.DKGRAY);
+                int padding = Utils.dp2px(mContext, 4);
+                textView.setPadding(padding, padding, padding, padding);
+                textView.setText("AD LOADING...");
+                linearLayout.addView(textView);
+                viewGroup.removeAllViews();
+                viewGroup.addView(linearLayout, -1, viewHeight);
+            }
+        } catch (Exception e) {
         }
     }
 
