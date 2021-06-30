@@ -143,7 +143,7 @@ public class AdParser implements IParser {
                 adPlace.setClickViews(parseStringList(jobj.getString(CLICK_VIEWS)));
             }
             if (jobj.has(PIDS)) {
-                adPlace.setPidsList(parsePidList(adPlace, jobj.getString(PIDS)));
+                adPlace.setPidList(parsePidList(adPlace, jobj.getString(PIDS)));
             }
             if (jobj.has(AUTO_SWITCH)) {
                 adPlace.setAutoSwitch(jobj.getInt(AUTO_SWITCH) == 1);

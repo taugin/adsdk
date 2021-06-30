@@ -118,7 +118,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private void generateLoaders() {
         if (mAdPlace != null) {
-            List<PidConfig> pidList = mAdPlace.getPidsList();
+            List<PidConfig> pidList = mAdPlace.getPidList();
             if (pidList != null && !pidList.isEmpty()) {
                 ISdkLoader loader = null;
                 for (PidConfig config : pidList) {
@@ -362,7 +362,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             return;
         }
 
-        List<PidConfig> pidList = mAdPlace.getPidsList();
+        List<PidConfig> pidList = mAdPlace.getPidList();
         if (pidList == null || pidList.isEmpty()) {
             if (mOnAdSdkListener != null) {
                 mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
@@ -562,7 +562,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             return;
         }
 
-        List<PidConfig> pidList = mAdPlace.getPidsList();
+        List<PidConfig> pidList = mAdPlace.getPidList();
         if (pidList == null || pidList.isEmpty()) {
             if (mOnAdSdkListener != null) {
                 mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
@@ -763,7 +763,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             return;
         }
 
-        List<PidConfig> pidList = mAdPlace.getPidsList();
+        List<PidConfig> pidList = mAdPlace.getPidList();
         if (pidList == null || pidList.isEmpty()) {
             if (mOnAdSdkListener != null) {
                 mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
@@ -1039,7 +1039,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             return;
         }
 
-        List<PidConfig> pidList = mAdPlace.getPidsList();
+        List<PidConfig> pidList = mAdPlace.getPidList();
         if (pidList == null || pidList.isEmpty()) {
             if (mOnAdSdkListener != null) {
                 mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);

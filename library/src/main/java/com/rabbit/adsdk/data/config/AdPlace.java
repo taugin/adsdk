@@ -16,7 +16,7 @@ public class AdPlace {
 
     private String mode; // seq : 顺序请求, con : 并发请求, ran : 随机请求
 
-    private List<PidConfig> pidsList;
+    private List<PidConfig> pidList;
 
     private int maxCount = 100;
 
@@ -71,18 +71,18 @@ public class AdPlace {
         this.mode = mode;
     }
 
-    public List<PidConfig> getPidsList() {
-        return pidsList;
+    public List<PidConfig> getPidList() {
+        return pidList;
     }
 
-    public void setPidsList(List<PidConfig> pidsList) {
-        this.pidsList = pidsList;
+    public void setPidList(List<PidConfig> pidList) {
+        this.pidList = pidList;
         setAdPlaceNames();
     }
 
     private void setAdPlaceNames() {
-        if (pidsList != null && !pidsList.isEmpty()) {
-            for (PidConfig config : pidsList) {
+        if (pidList != null && !pidList.isEmpty()) {
+            for (PidConfig config : pidList) {
                 if (config != null) {
                     config.setPlaceName(name);
                 }
@@ -243,7 +243,7 @@ public class AdPlace {
         return "AdPlace{" +
                 "name=" + name +
                 ", mode=" + mode +
-                ", list=" + pidsList +
+                ", list=" + pidList +
                 ", mc=" + maxCount +
                 ", p=" + percent +
                 ", as=" + autoSwitch +
