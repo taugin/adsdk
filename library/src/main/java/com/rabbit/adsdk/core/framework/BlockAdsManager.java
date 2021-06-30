@@ -33,7 +33,7 @@ public class BlockAdsManager {
     private static final String PREF_AD_CLICK_COUNT_DATE = "pref_block_ads_count_date";
     private static final String PREF_AD_CLICK_KEY_LIST = "pref_block_ads_key_list";
 
-    private static final String CFG_BLOCK_ADS = "block_ads_config";
+    private static final String CFG_BLOCK_ADS = "blockcfg";
     private static final String OPT_MAX_CLK = "max_clk";
     private static final String OPT_MIN_IMP = "min_imp";
     private static final String OPT_BLOCK_ADS = "block_ads";
