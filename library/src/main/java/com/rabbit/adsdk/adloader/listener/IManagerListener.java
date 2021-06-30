@@ -21,8 +21,6 @@ public interface IManagerListener {
 
     OnAdSdkListener getOnAdPlaceLoaderListener();
 
-    void setLoader(ISdkLoader adLoader);
-
     Activity getActivity();
 
     String getOriginPlaceName();

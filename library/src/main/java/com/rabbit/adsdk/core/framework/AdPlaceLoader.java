@@ -965,8 +965,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     public boolean isComplexAdsLoaded() {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null && loader.hasLoadedFlag()
-                        && (loader.isBannerLoaded()
+                if (loader != null && (loader.isBannerLoaded()
                         || loader.isNativeLoaded()
                         || loader.isInterstitialLoaded()
                         || loader.isRewardedVideoLoaded())) {
@@ -1203,15 +1202,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private boolean showComplexAdsInternal() {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null && loader.hasLoadedFlag()) {
+                if (loader != null) {
                     if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
-                        loader.useAndClearFlag();
                         if (loader.showRewardedVideo()) {
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                             return true;
                         }
                     } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
-                        loader.useAndClearFlag();
                         if (loader.showInterstitial()) {
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                             return true;
@@ -1336,10 +1333,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return mOnAdPlaceLoaderListener;
     }
 
-    @Override
-    public synchronized void setLoader(ISdkLoader adLoader) {
-    }
-
     private boolean hasNotifyLoaded() {
         if (mAdPlace != null && mAdPlace.isLoadOnlyOnce()) {
             return mHasNotifyLoaded;
@@ -1358,15 +1351,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public String getOriginPlaceName() {
         return mOriginPlaceName;
-    }
-
-    private void clearAdBaseListener() {
-        try {
-            if (mAdViewListener != null) {
-                mAdViewListener.clear();
-            }
-        } catch (Exception e) {
-        }
     }
 
     private void setPlaceType(String placeType) {

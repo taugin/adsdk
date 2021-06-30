@@ -72,12 +72,6 @@ public interface ISdkLoader {
 
     public boolean isRewardedVideoType();
 
-    //public void setLoadedFlag();
-
-    public boolean hasLoadedFlag();
-
-    public boolean useAndClearFlag();
-
     public boolean allowUseLoader();
 
     public int getBannerSize();

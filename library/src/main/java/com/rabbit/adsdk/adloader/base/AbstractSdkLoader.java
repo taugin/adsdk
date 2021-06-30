@@ -236,25 +236,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return false;
     }
 
-    private void setLoadedFlag() {
-        mLoadedFlag = true;
-        if (mManagerListener != null) {
-            mManagerListener.setLoader(this);
-        }
-    }
-
-    @Override
-    public boolean hasLoadedFlag() {
-        return mLoadedFlag;
-    }
-
-    @Override
-    public boolean useAndClearFlag() {
-        boolean flag = mLoadedFlag;
-        mLoadedFlag = false;
-        return flag;
-    }
-
     protected boolean checkPidConfig() {
         if (mPidConfig == null) {
             Log.iv(Log.TAG, formatLog("error pid config is null"));
@@ -729,7 +710,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
      */
     protected void notifyAdLoaded(ISdkLoader loader) {
         if (getAdListener() != null) {
-            setLoadedFlag();
             getAdListener().onAdLoaded(loader);
         }
     }
