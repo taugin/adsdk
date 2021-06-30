@@ -602,7 +602,7 @@ def deleteApkSignInfo(flavorName, apkFile, channel) {
 }
 
 def forceUse7Zip() {
-    if (ext.has("force_use_7zip") && ext["force_use_7zip"]) {
+    if (android.defaultConfig.ext.has("force_use_7zip") && android.defaultConfig.ext["force_use_7zip"]) {
         return true
     }
     return false
