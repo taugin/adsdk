@@ -37,7 +37,7 @@ class Global {
 }
 
 def getChannelPackVersion() {
-    return "1.0.3"
+    return "1.0.4"
 }
 
 def getAxmlGroupId() {
@@ -601,6 +601,13 @@ def deleteApkSignInfo(flavorName, apkFile, channel) {
     return true
 }
 
+def forceUse7Zip() {
+    if (ext.has("force_use_7zip") && ext["force_use_7zip"]) {
+        return true
+    }
+    return false
+}
+
 def get7ZipCmd() {
     def axmlFile = Global.sAxmlEditorFilePath
     def platform = "windows"
@@ -670,8 +677,10 @@ def getAppendCmdListBy7z(apkFile, sevenZip, fileList) {
 def appendFilesIntoApk(workDir, apkFile, fileList) {
     def sevenZip = Global.s7ZipCommandPath
     def aaptFile = Global.sAaptFile
+    def forceUse7Zip = forceUse7Zip()
+    println ":${project.name}:deleteFilesFromApk forceUse7Zip [" + forceUse7Zip + "]"
     def cmd = []
-    if (sevenZip != null && new File(sevenZip).exists()) {
+    if (forceUse7Zip && sevenZip != null && new File(sevenZip).exists()) {
         cmd = getAppendCmdListBy7z(apkFile, sevenZip, fileList)
     } else if (aaptFile != null) {
         cmd = getAppendCmdListByAapt(apkFile, aaptFile, fileList)
@@ -726,8 +735,10 @@ def getDeleteCmdListBy7z(apkFile, sevenZip, fileList) {
 def deleteFilesFromApk(apkFile, fileList) {
     def sevenZip = Global.s7ZipCommandPath
     def aaptFile = Global.sAaptFile
+    def forceUse7Zip = forceUse7Zip()
+    println ":${project.name}:deleteFilesFromApk forceUse7Zip [" + forceUse7Zip + "]"
     def cmd = []
-    if (sevenZip != null && new File(sevenZip).exists()) {
+    if (forceUse7Zip && sevenZip != null && new File(sevenZip).exists()) {
         cmd = getDeleteCmdListBy7z(apkFile, sevenZip, fileList)
     } else if (aaptFile != null) {
         cmd = getDeleteCmdListByAapt(apkFile, aaptFile, fileList)
@@ -1127,16 +1138,17 @@ def getAXMLEditJarFile() {
     if (aXmlEditJarFile.exists()) {
         return aXmlEditJarFile.getAbsolutePath()
     } else {
-        System.err.println ":${project.name}:getAXMLEditorFile Can not find AXMLEditor.jar in [" + rootDir + "]"
+        System.err.println ":${project.name}:getAXMLEditJarFile Can not find AXMLEditor.jar in [" + rootDir + "]"
     }
     aXmlEditJarFile = project.configurations.provided*.toURI().find {
         URI uri ->
             new File(uri).name == getAxmlFileName()
     }
     if (aXmlEditJarFile != null && new File(aXmlEditJarFile).exists()) {
+        println ":${project.name}:getAXMLEditJarFile aXmlEditJarFile : [" + aXmlEditJarFile + "]"
         return new File(aXmlEditJarFile).getAbsolutePath()
     } else {
-        System.err.println ":${project.name}:getAXMLEditorFile Can not find dependencies [provided '" + getAxmlImplementation() + "] in app.dependencies"
+        System.err.println ":${project.name}:getAXMLEditJarFile Can not find dependencies [provided '" + getAxmlImplementation() + "] in app.dependencies"
     }
     return null
 }
