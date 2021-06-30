@@ -13,61 +13,59 @@ import com.rabbit.adsdk.listener.OnAdSdkListener;
 
 public interface IAdLoader {
 
-    public void init();
+    void init();
 
-    public void setAdPlaceConfig(AdPlace adPlace);
+    void setAdPlaceConfig(AdPlace adPlace);
 
-    public void setOriginPlaceName(String placeName);
+    void setOriginPlaceName(String placeName);
 
-    public boolean needReload(AdPlace adPlace);
+    boolean needReload(AdPlace adPlace);
 
-    public String getPlaceName();
+    String getPlaceName();
 
-    public void setOnAdSdkListener(OnAdSdkListener l, boolean loaded);
+    void setOnAdSdkListener(OnAdSdkListener l, boolean loaded);
 
-    public OnAdSdkListener getOnAdSdkListener();
+    OnAdSdkListener getOnAdSdkListener();
 
-    public boolean isInterstitialLoaded();
+    boolean isInterstitialLoaded();
 
-    public void loadInterstitial(Activity activity);
+    void loadInterstitial(Activity activity);
 
-    public void showInterstitial();
+    void showInterstitial();
 
-    public boolean isRewardedVideoLoaded();
+    boolean isRewardedVideoLoaded();
 
-    public void loadRewardedVideo(Activity activity);
+    void loadRewardedVideo(Activity activity);
 
-    public void showRewardedVideo();
+    void showRewardedVideo();
 
-    public boolean isAdViewLoaded();
+    boolean isAdViewLoaded();
 
-    public void loadAdView(AdParams adParams);
+    void loadAdView(AdParams adParams);
 
-    public void showAdView(ViewGroup adContainer, AdParams adParams);
+    void showAdView(ViewGroup adContainer, AdParams adParams);
 
-    public boolean isComplexAdsLoaded();
+    boolean isComplexAdsLoaded();
 
-    public String getLoadedType();
+    String getLoadedType();
 
-    public String getLoadedSdk();
+    String getLoadedSdk();
 
-    public void loadComplexAds(AdParams adParams);
+    void loadComplexAds(AdParams adParams);
 
-    public boolean showComplexAds(ViewGroup adContainer, AdParams adParams, String source, String adType);
+    boolean showComplexAds();
 
-    public boolean showComplexAds();
+    int getAdCount();
 
-    public int getAdCount();
+    int getLoadedAdCount();
 
-    public int getLoadedAdCount();
+    String getAdMode();
 
-    public String getAdMode();
+    boolean isLoading();
 
-    public boolean isLoading();
+    void resume();
 
-    public void resume();
+    void pause();
 
-    public void pause();
-
-    public void destroy();
+    void destroy();
 }

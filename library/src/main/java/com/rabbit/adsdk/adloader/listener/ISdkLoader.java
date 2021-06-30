@@ -13,72 +13,72 @@ import com.rabbit.adsdk.data.config.PidConfig;
 
 public interface ISdkLoader {
 
-    public void setListenerManager(IManagerListener l);
+    void setListenerManager(IManagerListener l);
 
-    public void init(Context context, PidConfig pidConfig);
+    void init(Context context, PidConfig pidConfig);
 
-    public Context getContext();
+    Context getContext();
 
-    public Activity getActivity();
+    Activity getActivity();
 
     // 获取loader名称
-    public String getSdkName();
+    String getSdkName();
 
-    public String getAdType();
+    String getAdType();
 
-    public PidConfig getPidConfig();
+    PidConfig getPidConfig();
 
     // 加载插屏
-    public void loadInterstitial();
+    void loadInterstitial();
 
     // 展示插屏
-    public boolean showInterstitial();
+    boolean showInterstitial();
 
     // 加载原生
-    public void loadNative(Params params);
+    void loadNative(Params params);
 
     // 展示原生
-    public void showNative(ViewGroup viewGroup, Params params);
+    void showNative(ViewGroup viewGroup, Params params);
 
-    public void loadBanner(int adSize);
+    void loadBanner(int adSize);
 
-    public void showBanner(ViewGroup viewGroup);
+    void showBanner(ViewGroup viewGroup);
 
-    public void loadRewardedVideo();
+    void loadRewardedVideo();
 
-    public boolean showRewardedVideo();
+    boolean showRewardedVideo();
 
-    public boolean isInterstitialLoaded();
+    boolean isInterstitialLoaded();
 
-    public boolean isBannerLoaded();
+    boolean isBannerLoaded();
 
-    public boolean isNativeLoaded();
+    boolean isNativeLoaded();
 
-    public boolean isRewardedVideoLoaded();
+    boolean isRewardedVideoLoaded();
 
-    public void resume();
+    void resume();
 
-    public void pause();
+    void pause();
 
-    public void destroy();
+    void destroy();
 
-    public String getAdPlaceName();
+    String getAdPlaceName();
 
-    public boolean isBannerType();
+    boolean isBannerType();
 
-    public boolean isNativeType();
+    boolean isNativeType();
 
-    public boolean isInterstitialType();
+    boolean isInterstitialType();
 
-    public boolean isRewardedVideoType();
+    boolean isRewardedVideoType();
 
-    public boolean allowUseLoader();
+    boolean allowUseLoader();
 
-    public int getBannerSize();
+    int getBannerSize();
 
-    public double getEcpm();
+    double getEcpm();
 
-    public void notifyAdViewUIDismiss();
+    void notifyAdViewUIDismiss();
 
-    public void showInterstitialWithNative(ViewGroup viewGroup, Params params);
+    void showInterstitialWithNative(ViewGroup viewGroup, Params params);
 }

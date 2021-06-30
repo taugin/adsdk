@@ -407,29 +407,6 @@ public class AdSdk {
         }
     }
 
-    public void showComplexAds(String placeName, ViewGroup adContainer) {
-        showComplexAds(placeName, null, null, adContainer);
-    }
-
-    public void showComplexAds(String placeName, String source, String adType, ViewGroup adContainer) {
-        showComplexAds(placeName, null, source, adType, adContainer);
-    }
-
-    public void showComplexAds(String placeName, AdParams adParams, String source, String adType, ViewGroup adContainer) {
-        AdPlaceLoader loader = getAdLoader(placeName);
-        if (loader != null) {
-            loader.showComplexAds(adContainer, adParams, source, adType);
-        }
-    }
-
-    public boolean showComplexAdsWithResult(String placeName, AdParams adParams, String source, String adType, ViewGroup adContainer) {
-        AdPlaceLoader loader = getAdLoader(placeName);
-        if (loader != null) {
-            return loader.showComplexAds(adContainer, adParams, source, adType);
-        }
-        return false;
-    }
-
     public void showComplexAds(String placeName) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {

@@ -102,11 +102,6 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public boolean showComplexAds(ViewGroup adContainer, AdParams adParams, String source, String adType) {
-        return false;
-    }
-
-    @Override
     public boolean showComplexAds() {
         return false;
     }
