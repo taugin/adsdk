@@ -68,10 +68,6 @@ public interface IParser {
     String DELAY_LOAD_TIME = "dlt";
     // ECPM
     String ECPM = "ecpm";
-    // app id
-    String APPID = "aid";
-    // ext id
-    String EXTID = "eid";
     // bannersize
     String BANNER_SIZE = "bs";
     // 可点击原生视图

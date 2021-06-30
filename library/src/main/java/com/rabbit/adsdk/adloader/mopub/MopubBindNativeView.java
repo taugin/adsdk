@@ -101,7 +101,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
 
         View rootView = null;
-        String placeName = pidConfig.getAdPlaceName();
+        String placeName = pidConfig.getPlaceName();
         try {
             int mopubRootLayout;
             if (useCardStyle) {

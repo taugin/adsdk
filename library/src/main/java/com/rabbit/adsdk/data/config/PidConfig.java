@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class PidConfig {
 
-    private String adPlaceName;
+    private String placeName;
 
     private String sdk;
 
@@ -33,10 +33,6 @@ public class PidConfig {
 
     private double ecpm;
 
-    private String appId;
-
-    private String extId;
-
     private String bannerSize;
 
     private List<String> clickViews;
@@ -55,12 +51,12 @@ public class PidConfig {
 
     private Map<String, String> subNativeLayout;
 
-    public String getAdPlaceName() {
-        return adPlaceName;
+    public String getPlaceName() {
+        return placeName;
     }
 
-    public void setAdPlaceName(String adPlaceName) {
-        this.adPlaceName = adPlaceName;
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
     }
 
     public String getSdk() {
@@ -133,22 +129,6 @@ public class PidConfig {
 
     public void setEcpm(double ecpm) {
         this.ecpm = ecpm;
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
-    public String getExtId() {
-        return extId;
-    }
-
-    public void setExtId(String extId) {
-        this.extId = extId;
     }
 
     public String getBannerSize() {
@@ -262,15 +242,13 @@ public class PidConfig {
     @Override
     public String toString() {
         return "PidConfig{" +
-                "name=" + adPlaceName +
+                "name=" + placeName +
                 ", sdk=" + sdk +
                 ", pid=" + pid +
                 ", type=" + adType +
                 ", ecpm=" + ecpm +
                 ", nl=" + nativeLayout +
                 ", snl=" + subNativeLayout +
-                ", aid=" + appId +
-                ", eid=" + extId +
                 ", ac=" + activityContext +
                 ", bs=" + bannerSize +
                 ", dis=" + disable +

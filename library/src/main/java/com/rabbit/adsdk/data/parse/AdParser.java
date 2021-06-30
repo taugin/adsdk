@@ -237,12 +237,6 @@ public class AdParser implements IParser {
             if (jobj.has(ECPM)) {
                 pidConfig.setEcpm(jobj.getDouble(ECPM));
             }
-            if (jobj.has(APPID)) {
-                pidConfig.setAppId(jobj.getString(APPID));
-            }
-            if (jobj.has(EXTID)) {
-                pidConfig.setExtId(jobj.getString(EXTID));
-            }
             if (jobj.has(BANNER_SIZE)) {
                 pidConfig.setBannerSize(jobj.getString(BANNER_SIZE));
             }

@@ -84,7 +84,7 @@ public class AdPlace {
         if (pidsList != null && !pidsList.isEmpty()) {
             for (PidConfig config : pidsList) {
                 if (config != null) {
-                    config.setAdPlaceName(name);
+                    config.setPlaceName(name);
                 }
             }
         }

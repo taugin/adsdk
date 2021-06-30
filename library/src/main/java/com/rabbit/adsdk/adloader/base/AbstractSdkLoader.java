@@ -199,7 +199,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             return adPlaceName;
         }
         if (mPidConfig != null) {
-            return mPidConfig.getAdPlaceName();
+            return mPidConfig.getPlaceName();
         }
         return null;
     }
@@ -600,20 +600,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             e.printStackTrace();
         }
         return info != null ? info.metaData.getString(key) : null;
-    }
-
-    protected String getAppId() {
-        if (mPidConfig != null) {
-            return mPidConfig.getAppId();
-        }
-        return null;
-    }
-
-    protected String getExtId() {
-        if (mPidConfig != null) {
-            return mPidConfig.getExtId();
-        }
-        return null;
     }
 
     protected boolean isLoadMultipleNative() {
