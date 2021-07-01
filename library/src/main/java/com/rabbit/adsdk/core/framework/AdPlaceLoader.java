@@ -1565,11 +1565,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         @Override
         public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
             Log.iv(Log.TAG, "notify callback onDismiss place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid);
-            if (mAdPlace != null && mAdPlace.isClickSwitch()) {
-                if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
-                    showInterstitialInternal();
-                }
-            }
             if (mOnAdSdkLoadedListener != null) {
                 mOnAdSdkLoadedListener.onDismiss(placeName, source, adType, pid, complexAds);
             }
