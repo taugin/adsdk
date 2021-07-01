@@ -22,7 +22,7 @@ public class AdPlace {
 
     private int percent = 100;
 
-    private boolean autoSwitch;
+    private boolean clickSwitch;
 
     private long autoInterval;
 
@@ -106,12 +106,12 @@ public class AdPlace {
         this.percent = percent;
     }
 
-    public boolean isAutoSwitch() {
-        return autoSwitch;
+    public boolean isClickSwitch() {
+        return clickSwitch;
     }
 
-    public void setAutoSwitch(boolean autoSwitch) {
-        this.autoSwitch = autoSwitch;
+    public void setClickSwitch(boolean clickSwitch) {
+        this.clickSwitch = clickSwitch;
     }
 
     public long getAutoInterval() {
@@ -246,7 +246,7 @@ public class AdPlace {
                 ", list=" + pidList +
                 ", mc=" + maxCount +
                 ", p=" + percent +
-                ", as=" + autoSwitch +
+                ", as=" + clickSwitch +
                 ", ai=" + autoInterval +
                 ", bs=" + bannerSize +
                 ", uv=" + uniqueValue +

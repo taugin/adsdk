@@ -23,7 +23,7 @@ public interface IParser {
     // 广告的加载模式 seq, ran, con
     String MODE = "mode";
     // 对于插屏，关闭广告自动切换下一个，对于banner和native，点击自动切换
-    String AUTO_SWITCH = "as";
+    String CLICK_SWITCH = "cs";
     // 自动刷新间隔
     String AUTO_INTERVAL = "ai";
     // 开启或关闭单次加载通知

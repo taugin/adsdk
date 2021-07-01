@@ -1547,20 +1547,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         && BlockAdsManager.get(mContext).isRemoveAds(sdkName, placeName);
                 Log.iv(Log.TAG, "place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , render : " + render + " , removeAds : " + removeAds);
                 if (removeAds) {
-                    if (mAdContainer != null) {
-                        ViewGroup viewGroup = mAdContainer.get();
-                        if (viewGroup != null) {
-                            addLoadingView(viewGroup);
-                        } else {
-                            String gaid = Utils.getString(mContext, Constant.PREF_GAID);
-                            if (TextUtils.isEmpty(gaid)) {
-                                gaid = "unknown";
-                            }
-                            InternalStat.reportEvent(mContext, "remove_ads_error", gaid);
-                        }
-                    }
+                    replaceLoadingView();
                 }
-                if (removeAds || (mAdPlace != null && mAdPlace.isAutoSwitch())) {
+                if (removeAds || (mAdPlace != null && mAdPlace.isClickSwitch())) {
                     resume();
                     showNextAdView();
                 }
@@ -1576,7 +1565,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         @Override
         public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
             Log.iv(Log.TAG, "notify callback onDismiss place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid);
-            if (mAdPlace != null && mAdPlace.isAutoSwitch()) {
+            if (mAdPlace != null && mAdPlace.isClickSwitch()) {
                 if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
                     showInterstitialInternal();
                 }
@@ -1590,26 +1579,31 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
     }
 
-    private void addLoadingView(ViewGroup viewGroup) {
+    private void replaceLoadingView() {
         try {
-            int viewHeight = viewGroup.getHeight();
-            Log.iv(Log.TAG, "viewHeight : " + viewHeight);
-            if (viewHeight > 0) {
-                LinearLayout linearLayout = new LinearLayout(mContext);
-                linearLayout.setGravity(Gravity.CENTER);
-                linearLayout.setBackgroundColor(Color.WHITE);
-                TextView textView = new TextView(mContext);
-                textView.setGravity(Gravity.CENTER);
-                textView.setBackgroundResource(R.drawable.rab_badge_bg);
-                textView.setTextColor(Color.DKGRAY);
-                int padding = Utils.dp2px(mContext, 4);
-                textView.setPadding(padding, padding, padding, padding);
-                textView.setText("AD LOADING...");
-                linearLayout.addView(textView);
-                viewGroup.removeAllViews();
-                viewGroup.addView(linearLayout, -1, viewHeight);
+            if (mAdContainer != null) {
+                ViewGroup viewGroup = mAdContainer.get();
+                if (viewGroup != null) {
+                    int viewHeight = viewGroup.getHeight();
+                    if (viewHeight > 0) {
+                        LinearLayout linearLayout = new LinearLayout(mContext);
+                        linearLayout.setGravity(Gravity.CENTER);
+                        linearLayout.setBackgroundColor(Color.WHITE);
+                        linearLayout.setBackgroundResource(R.drawable.rab_badge_bg);
+                        TextView textView = new TextView(mContext);
+                        textView.setGravity(Gravity.CENTER);
+                        textView.setTextColor(Color.DKGRAY);
+                        int padding = Utils.dp2px(mContext, 4);
+                        textView.setPadding(padding, padding, padding, padding);
+                        textView.setText("AD LOADING...");
+                        linearLayout.addView(textView);
+                        viewGroup.removeAllViews();
+                        viewGroup.addView(linearLayout, -1, viewHeight);
+                    }
+                }
             }
         } catch (Exception e) {
+            InternalStat.reportError(mContext, e);
         }
     }
 
