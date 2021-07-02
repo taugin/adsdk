@@ -20,6 +20,12 @@ maven { url 'https://adcolony.bintray.com/AdColony' }
 maven { url 'https://jitpack.io' }
 */
 
+/*
+    version : 1.0.5
+    update : 增加apk对齐功能
+ */
+
+
 static def getDate() {
     def date = new Date()
     def formattedDate = date.format('yyyyMMddHHmm')
@@ -33,11 +39,12 @@ class Global {
     static def sAxmlEditorFilePath = null
     static def s7ZipCommandPath = null
     static def sAaptFile = null
+    static def sZipAlignFile = null
     static def sJarSignerFile = null
 }
 
 def getChannelPackVersion() {
-    return "1.0.4"
+    return "1.0.5"
 }
 
 def getAxmlGroupId() {
@@ -109,6 +116,7 @@ def generateMulChannel(flavor) {
     Global.sAxmlEditorFilePath = getAXMLEditJarFile()
     Global.s7ZipCommandPath = get7ZipCmd()
     Global.sAaptFile = getAaptFile()
+    Global.sZipAlignFile = getZipAlignFile()
     Global.sJarSignerFile = getJarSigner()
     if (Global.sAaptFile == null) {
         println "> Task :${project.name}:generateMulChannel [aapt file is not exist, stop generate multiple channel task]"
@@ -177,6 +185,7 @@ def generateMulChannel(flavor) {
         copyChannelApkFile(basePackage, channels_files[it])
         appendChannelsFile(basePackage, it, channels_files[it], releaseDir, flavorName, channelFileName)
         modifyAndroidManifest(basePackage, it, channels_files[it], releaseDir, flavorName, channelKey, channelCfg)
+        // zipAlignApkFile(flavorName, channels_files[it], it)
         signChannelApkFile(flavorName, channels_files[it], it)
         println ":${project.name}:generateMulChannel [" + flavorName + "][" + it + "] ***********************************************************\n"
     }
@@ -552,6 +561,30 @@ def parseChannelConfig(flavorObj, outputFile) {
     println ":${project.name}:parseChannelConfig [" + flavorName + "] Channel ========================================"
 }
 
+def zipAlignApkFile(flavorName, apkFile, channel) {
+    println "\n:${project.name}:zipAlignApkFile [" + flavorName + "][" + channel + "] >>>>>>>>> ZipAlign Channel File Start <<<<<<<<<"
+    def cmdlist = []
+    cmdlist.add(Global.sZipAlignFile)
+    cmdlist.add("-f")
+    cmdlist.add("4")
+    cmdlist.add(apkFile)
+    cmdlist.add(apkFile)
+
+    def cmdString = cmdlist.join(" ")
+    def cmdStringInfo = cmdlist.join(",")
+    println ":${project.name}:zipAlignApkFile [" + flavorName + "][" + channel + "] Command [" + optimizeCommand(cmdStringInfo, ",") + "]"
+    try {
+        def startTime = System.currentTimeMillis()
+        Process p = cmdString.execute()
+        p.waitFor(20, TimeUnit.SECONDS)
+        p.destroy();
+        def endTime = System.currentTimeMillis()
+        def signTime = (endTime - startTime) / 1000
+        println ":${project.name}:zipAlignApkFile [" + flavorName + "][" + channel + "] Command [ZipAlign Apk Use Time " + signTime + "s]"
+    } catch (Exception e) {
+    }
+    println ":${project.name}:zipAlignApkFile [" + flavorName + "][" + channel + "] >>>>>>>>> ZipAlign Channel File Complete <<<<<<<<<\n"
+}
 /**
  * 为渠道包签名
  * @param flavorName
@@ -1126,6 +1159,73 @@ def getAaptFile() {
     return aaptFile
 }
 
+/**
+ * 获取aapt文件路径
+ * @return
+ */
+def getZipAlignFile() {
+    def sdkDir = null
+    try {
+        Properties properties = new Properties()
+        InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream();
+        properties.load(inputStream)
+        //读取文件
+        sdkDir = properties.getProperty('sdk.dir')
+    } catch (Exception e) {
+    }
+    if (sdkDir == null || !new File(sdkDir).exists()) {
+        if (sdkDir == null) {
+            println ":${project.name}:getAaptFile sdkDir == null, Use ANDROID_SDK_ROOT"
+        } else {
+            println ":${project.name}:getAaptFile sdkDir is not exist, Use ANDROID_SDK_ROOT"
+        }
+        sdkDir = System.getenv("ANDROID_SDK_ROOT")
+    }
+    if (sdkDir == null || !new File(sdkDir).exists()) {
+        if (sdkDir == null) {
+            println ":${project.name}:getAaptFile sdkDir == null, Use ANDROID_HOME"
+        } else {
+            println ":${project.name}:getAaptFile sdkDir is not exist, Use ANDROID_HOME"
+        }
+        sdkDir = System.getenv("ANDROID_HOME")
+    }
+    println ":${project.name}:getZipAlignFile sdkDir : [" + sdkDir + "]"
+    if (sdkDir == null) {
+        println ":${project.name}:getZipAlignFile sdkDir == null"
+        return null
+    }
+    if (!new File(sdkDir).exists()) {
+        println ":${project.name}:getZipAlignFile sdkDir is not exist"
+        return null
+    }
+    def exe = ""
+    if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+        exe = ".exe"
+    }
+    def compileSdkVersion = android.compileSdkVersion
+    if (compileSdkVersion != null) {
+        compileSdkVersion = compileSdkVersion.replaceAll("android-", "");
+    }
+    def buildToolDir = sdkDir + File.separator + "build-tools"
+    def buildToolVersionDir = android.buildToolsVersion
+    if (buildToolVersionDir == null) {
+        def buildToolDirs = new File(buildToolDir).list(new FilenameFilter() {
+            @Override
+            boolean accept(File dir, String name) {
+                return name.startsWith(String.valueOf(compileSdkVersion))
+            }
+        })
+        if (buildToolDirs != null && buildToolDirs.length > 0) {
+            buildToolVersionDir = buildToolDirs[0]
+        }
+    }
+    def zipAlignFile = buildToolDir + File.separator + buildToolVersionDir + File.separator + "zipalign" + exe
+    if (!new File(zipAlignFile).exists()) {
+        zipAlignFile = null
+    }
+    println ":${project.name}:getZipAlignFile zipAlignFile : [" + zipAlignFile + "]"
+    return zipAlignFile
+}
 /**
  * 获取axmleditor文件路径
  * @param flavorName
