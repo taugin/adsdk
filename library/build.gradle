@@ -25,10 +25,10 @@ static def getConfigKey() {
 def isSnapshot = true
 def baseVersion = '4.4.4'
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionName baseVersion + (isSnapshot ? "-SNAPSHOT" : "")
         buildConfigField "String", "SDK_VERSION_NAME", "\"${versionName}\""
         consumerProguardFiles 'proguard-rules-adsdk.pro'

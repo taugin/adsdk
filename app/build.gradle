@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply from: '../library/encrypt.gradle'
+apply from: '../library/channel_pack.gradle'
 ext {
     openRelease = true
     encryptFiles = ["complex_names", "spconfig"]
@@ -7,11 +7,11 @@ ext {
 def useProject = true;
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.hauyu.adsdk.demo"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
