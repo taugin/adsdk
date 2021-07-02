@@ -185,7 +185,7 @@ def generateMulChannel(flavor) {
     println ":${project.name}:generateMulChannel [" + flavorName + "] Channel >>>>>>>>> Generate Multiple Channel ApkFile Start <<<<<<<<<"
     channels.each {
         copyChannelApkFile(basePackage, channels_files[it])
-        //appendChannelsFile(basePackage, it, channels_files[it], releaseDir, flavorName, channelFileName)
+        appendChannelsFile(basePackage, it, channels_files[it], releaseDir, flavorName, channelFileName)
         modifyAndroidManifest(basePackage, it, channels_files[it], releaseDir, flavorName, channelKey, channelCfg)
         signChannelApkFile(flavorName, channels_files[it], it)
         println ":${project.name}:generateMulChannel [" + flavorName + "][" + it + "] ***********************************************************\n"
