@@ -13,7 +13,7 @@
         {
           "sdk": "mopub",
           "type": "native",
-          "pid": "9439665e1f05483197562159c72aef98",
+          "pid": "bb410fc77500463e8d1e397072823e08",
           "mark": "测试APP广告位",
           "disable": 0
         },
@@ -40,7 +40,7 @@
         {
           "sdk": "mopub",
           "type": "native",
-          "pid": "9439665e1f05483197562159c72aef98",
+          "pid": "bb410fc77500463e8d1e397072823e08",
           "mark": "测试APP广告位",
           "disable": 0
         },
@@ -97,7 +97,7 @@
         {
           "sdk": "mopub",
           "type": "native",
-          "pid": "9439665e1f05483197562159c72aef98",
+          "pid": "bb410fc77500463e8d1e397072823e08",
           "mark": "测试APP广告位",
           "disable": 0
         },
@@ -105,6 +105,13 @@
           "sdk": "mopub",
           "type": "banner",
           "pid": "252412d5e9364a05ab77d9396346d73d",
+          "disable": 0
+        },
+        {
+          "sdk": "mopub",
+          "type": "banner",
+          "pid": "bfd61bd407d84d17b241e6a707391c4d",
+          "mark": "测试APP广告位",
           "disable": 0
         },
         {
@@ -161,8 +168,8 @@
         {
           "sdk": "mopub",
           "type": "interstitial",
-          "pid": "890d5b50d792457e883a48e1798906d1",
-          "ctr": 5,
+          "mark": "测试APP广告位",
+          "pid": "c32e5d6016434bcc84fcb3e27fc54619",
           "disable": 0
         },
         {
@@ -198,6 +205,13 @@
           "sdk": "mopub",
           "type": "reward",
           "pid": "89c000c7bb514d8fa78614f8b53a356b",
+          "disable": 0
+        },
+        {
+          "sdk": "mopub",
+          "type": "reward",
+          "mark": "测试APP广告位",
+          "pid": "d5bac1a5700c4f3aa0ac1db70724a893",
           "disable": 0
         },
         {
