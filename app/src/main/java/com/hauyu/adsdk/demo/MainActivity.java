@@ -7,6 +7,8 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -20,6 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hauyu.adsdk.demo.view.CustomDrawable;
+import com.hauyu.adsdk.demo.view.DynamicHeartView;
 import com.rabbit.adsdk.AdExtra;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
@@ -80,6 +84,15 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Drawable drawable = mNativeBannerLayout.getBackground();
+        if (drawable instanceof AnimationDrawable) {
+            ((AnimationDrawable) drawable).start();
+        }
     }
 
     private boolean hasEnable() {
@@ -272,6 +285,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             } else if (AdExtra.AD_TYPE_REWARD.equalsIgnoreCase(adType)) {
                 AdSdk.get(getBaseContext()).showRewardedVideo(placeName);
             }
+            CustomDrawable.setBackground(mNativeBannerLayout);
         }
 
         @Override
