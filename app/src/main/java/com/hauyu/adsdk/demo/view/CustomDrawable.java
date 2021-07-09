@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.SweepGradient;
 import android.graphics.drawable.ShapeDrawable;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -61,9 +62,9 @@ public class CustomDrawable extends ShapeDrawable {
         Log.v(Log.TAG, "bounds : " + bounds);
         int[] colors = new int[]{Color.RED, Color.YELLOW, Color.RED, Color.YELLOW, Color.RED};
         float[] stops = null;//new float[]{0, 0.33f, 0.66f, 1f};
-        mShader = new LinearGradient(0f, bounds.height() / 2, bounds.width(), bounds.height() / 2, colors, stops, Shader.TileMode.CLAMP);
+        // mShader = new LinearGradient(0f, bounds.height() / 2, bounds.width(), bounds.height() / 2, colors, stops, Shader.TileMode.CLAMP);
         // mShader = new RadialGradient(bounds.width() / 2, bounds.height() / 2, bounds.height() / 2, colors, stops, Shader.TileMode.CLAMP);
-        // mShader = new SweepGradient(bounds.width() / 2, bounds.height() / 2, colors, stops);
+        mShader = new SweepGradient(bounds.width() / 2, bounds.height() / 2, colors, stops);
         mShader.setLocalMatrix(mMatrix);
         setupAnimation();
     }
@@ -78,10 +79,12 @@ public class CustomDrawable extends ShapeDrawable {
         mRectF.set(rect);
         mRectF.inset(mStrokeWidth / 2, mStrokeWidth / 2);
         mPaint.setShader(mShader);
+        mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(mStrokeWidth);
         canvas.drawRoundRect(mRectF, mRadius, mRadius, mPaint);
         mRectF.inset(mStrokeWidth, mStrokeWidth);
         mPaint.setColor(mBgColor);
+        mPaint.setStyle(Paint.Style.FILL);
         mPaint.setShader(null);
         canvas.drawRoundRect(mRectF, mRadius, mRadius, mPaint);
     }
