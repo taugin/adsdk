@@ -7,11 +7,9 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.graphics.SweepGradient;
 import android.graphics.drawable.ShapeDrawable;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -23,7 +21,7 @@ public class CustomDrawable extends ShapeDrawable {
     private Paint mPaint = new Paint();
     private Context mContext;
     private int mStrokeWidth;
-    private float mRadius;
+    private int mRadius;
     private RectF mRectF = new RectF();
     private Shader mShader;
     private Matrix mMatrix = new Matrix();
@@ -34,9 +32,8 @@ public class CustomDrawable extends ShapeDrawable {
     public CustomDrawable(Context context) {
         mContext = context;
         mStrokeWidth = Utils.dp2px(mContext, 4);
-        mRadius = Utils.dp2px(mContext, 8);
+        mRadius = Utils.dp2px(mContext, 4);
         mPaint.setAntiAlias(true);
-        mPaint.setStyle(Paint.Style.FILL);
     }
 
     public static void setBackground(View view) {
@@ -48,6 +45,8 @@ public class CustomDrawable extends ShapeDrawable {
         customDrawable.setBgColor(bgColor);
         view.setBackground(customDrawable);
         int padding = customDrawable.getStrokeWidth();
+        padding += padding / 2;
+        padding += Utils.dp2px(view.getContext(), 1);
         view.setPadding(padding, padding, padding, padding);
     }
 
@@ -62,9 +61,9 @@ public class CustomDrawable extends ShapeDrawable {
         Log.v(Log.TAG, "bounds : " + bounds);
         int[] colors = new int[]{Color.RED, Color.YELLOW, Color.RED, Color.YELLOW, Color.RED};
         float[] stops = null;//new float[]{0, 0.33f, 0.66f, 1f};
-        // mShader = new LinearGradient(0f, bounds.height() / 2, bounds.width(), bounds.height() / 2, colors, stops, Shader.TileMode.CLAMP);
-        // mShader = new RadialGradient(bounds.width() / 2, bounds.height() / 2, bounds.width() / 2, colors, stops, Shader.TileMode.CLAMP);
-        mShader = new SweepGradient(bounds.width() / 2, bounds.height() / 2, colors, stops);
+        mShader = new LinearGradient(0f, bounds.height() / 2, bounds.width(), bounds.height() / 2, colors, stops, Shader.TileMode.CLAMP);
+        // mShader = new RadialGradient(bounds.width() / 2, bounds.height() / 2, bounds.height() / 2, colors, stops, Shader.TileMode.CLAMP);
+        // mShader = new SweepGradient(bounds.width() / 2, bounds.height() / 2, colors, stops);
         mShader.setLocalMatrix(mMatrix);
         setupAnimation();
     }
@@ -77,6 +76,7 @@ public class CustomDrawable extends ShapeDrawable {
     public void draw(Canvas canvas) {
         Rect rect = getBounds();
         mRectF.set(rect);
+        mRectF.inset(mStrokeWidth / 2, mStrokeWidth / 2);
         mPaint.setShader(mShader);
         mPaint.setStrokeWidth(mStrokeWidth);
         canvas.drawRoundRect(mRectF, mRadius, mRadius, mPaint);
