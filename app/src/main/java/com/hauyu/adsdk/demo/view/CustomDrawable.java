@@ -29,19 +29,30 @@ public class CustomDrawable extends ShapeDrawable {
     private Matrix mMatrix = new Matrix();
     private Rect mBounds = new Rect();
     private ValueAnimator mValueAnimator;
+    private int mBgColor = Color.WHITE;
 
     public CustomDrawable(Context context) {
         mContext = context;
-        mStrokeWidth = Utils.dp2px(mContext, 8);
+        mStrokeWidth = Utils.dp2px(mContext, 4);
         mRadius = Utils.dp2px(mContext, 8);
         mPaint.setAntiAlias(true);
+        mPaint.setStyle(Paint.Style.FILL);
     }
 
     public static void setBackground(View view) {
+        setBackground(view, Color.WHITE);
+    }
+
+    public static void setBackground(View view, int bgColor) {
         CustomDrawable customDrawable = new CustomDrawable(view.getContext());
+        customDrawable.setBgColor(bgColor);
         view.setBackground(customDrawable);
         int padding = customDrawable.getStrokeWidth();
         view.setPadding(padding, padding, padding, padding);
+    }
+
+    public void setBgColor(int bgColor) {
+        mBgColor = bgColor;
     }
 
     @Override
@@ -49,11 +60,11 @@ public class CustomDrawable extends ShapeDrawable {
         super.onBoundsChange(bounds);
         mBounds.set(bounds);
         Log.v(Log.TAG, "bounds : " + bounds);
-        int[] colors = new int[]{Color.YELLOW, Color.RED, Color.YELLOW, Color.RED};
-        float[] stops = new float[]{0, 0.33f, 0.66f, 1f};
-        mShader = new LinearGradient(0f, bounds.height() / 2, bounds.width(), bounds.height() / 2, colors, stops, Shader.TileMode.CLAMP);
-        // mShader = new RadialGradient(bounds.width() / 2, bounds.height() / 2, bounds.height() / 2, colors, stops, Shader.TileMode.CLAMP);
-        // mShader = new SweepGradient(bounds.width() / 2, bounds.height() / 2, colors, stops);
+        int[] colors = new int[]{Color.RED, Color.YELLOW, Color.RED, Color.YELLOW, Color.RED};
+        float[] stops = null;//new float[]{0, 0.33f, 0.66f, 1f};
+        // mShader = new LinearGradient(0f, bounds.height() / 2, bounds.width(), bounds.height() / 2, colors, stops, Shader.TileMode.CLAMP);
+        // mShader = new RadialGradient(bounds.width() / 2, bounds.height() / 2, bounds.width() / 2, colors, stops, Shader.TileMode.CLAMP);
+        mShader = new SweepGradient(bounds.width() / 2, bounds.height() / 2, colors, stops);
         mShader.setLocalMatrix(mMatrix);
         setupAnimation();
     }
@@ -66,13 +77,11 @@ public class CustomDrawable extends ShapeDrawable {
     public void draw(Canvas canvas) {
         Rect rect = getBounds();
         mRectF.set(rect);
-        mPaint.setColor(Color.RED);
         mPaint.setShader(mShader);
         mPaint.setStrokeWidth(mStrokeWidth);
         canvas.drawRoundRect(mRectF, mRadius, mRadius, mPaint);
-        mPaint.setStyle(Paint.Style.FILL);
         mRectF.inset(mStrokeWidth, mStrokeWidth);
-        mPaint.setColor(Color.WHITE);
+        mPaint.setColor(mBgColor);
         mPaint.setShader(null);
         canvas.drawRoundRect(mRectF, mRadius, mRadius, mPaint);
     }
