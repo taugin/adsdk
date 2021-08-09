@@ -55,7 +55,7 @@ android {
 dependencies {
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
     // MoPub
-    implementation('com.mopub:mopub-sdk:5.17.0@aar') {
+    implementation('com.mopub:mopub-sdk:5.18.0@aar') {
         transitive = true
         exclude group: 'androidx.fragment'
         exclude group: 'androidx.core'
@@ -68,8 +68,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:18.0.0'
 
     // applovin
-    implementation 'com.applovin:applovin-sdk:10.3.1'
-    implementation 'com.mopub.mediation:applovin:10.3.1.0'
+    implementation 'com.applovin:applovin-sdk:10.3.2'
+    implementation 'com.mopub.mediation:applovin:10.3.2.0'
 
     // facebook
     implementation 'com.facebook.android:audience-network-sdk:6.5.1'
@@ -80,8 +80,8 @@ dependencies {
     implementation 'com.mopub.mediation:admob:20.2.0.0'
 
     // mintegral
-    def mintegral_version = "15.5.51"
-    def mopub_mintegral_version = "15.5.51.0"
+    def mintegral_version = "15.6.21"
+    def mopub_mintegral_version = "15.6.21.0"
     implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
