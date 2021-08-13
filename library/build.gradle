@@ -80,8 +80,8 @@ dependencies {
     implementation 'com.mopub.mediation:admob:20.2.0.0'
 
     // mintegral
-    def mintegral_version = "15.6.21"
-    def mopub_mintegral_version = "15.6.21.0"
+    def mintegral_version = "15.6.31"
+    def mopub_mintegral_version = "15.6.31.0"
     implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
