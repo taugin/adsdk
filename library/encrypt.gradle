@@ -313,8 +313,8 @@ def getApplicationId(flavor) {
  */
 def generateAdFileByUser(flavor) {
     def appId = getApplicationId(flavor)
-    def pkgnameMd5 = Aes.string2MD5(appId)
-    def adConfigName = "cfg" + pkgnameMd5.substring(0, 8) + ".[dat/json]"
+    def packagenameMd5 = Aes.string2MD5(appId)
+    def adConfigName = "cfg" + packagenameMd5.substring(0, 8) + ".[dat/json]"
     println("+++++++++++++++++++++++++++++++++++++++++++")
     println "generateAdFileName : " + adConfigName
     println("-------------------------------------------")
@@ -383,14 +383,14 @@ def encryptAssetsFilesFromApk(flavor, isAab) {
         println "> Task :${project.name}:encryptAssetsFilesFromAab outputFile : " + outputFile
         println "> Task :${project.name}:encryptAssetsFilesFromAab outputFiles : " + outputDir.list()
         if (outputFile.exists()) {
-            encryptAssetsFilesFromPkgInternal(flavorName, outputFile, isAab)
+            encryptAssetsFilesFromPackageInternal(flavorName, outputFile, isAab)
         }
     } else {
         outputFile = Global.flavorMap.get(flavorName)
         println "> Task :${project.name}:encryptAssetsFilesFromApk flavorName : " + flavorName
         println "> Task :${project.name}:encryptAssetsFilesFromApk outputFile : " + outputFile
         if (outputFile.exists()) {
-            encryptAssetsFilesFromPkgInternal(flavorName, outputFile, isAab)
+            encryptAssetsFilesFromPackageInternal(flavorName, outputFile, isAab)
         }
     }
 }
@@ -401,10 +401,10 @@ def encryptAssetsFilesFromApk(flavor, isAab) {
  * @param outputFile
  * @return
  */
-def encryptAssetsFilesFromPkgInternal(flavorName, File outputFile, isAab) {
+def encryptAssetsFilesFromPackageInternal(flavorName, File outputFile, isAab) {
     def appId = getApplicationId(flavorName)
-    def pkgmd5 = Aes.string2MD5(appId)
-    def adname = "cfg" + pkgmd5.substring(0, 8)
+    def packagemd5 = Aes.string2MD5(appId)
+    def adname = "cfg" + packagemd5.substring(0, 8)
     def encryptNames = []
     encryptNames.add(adname + ".dat")
     encryptNames.add(adname + ".json")
@@ -431,7 +431,7 @@ def encryptAssetsFilesFromPkgInternal(flavorName, File outputFile, isAab) {
     encryptFileForAssets(workDir, encryptFiles)
     updateEncryptFileToApk(workDir, encryptFiles, outputFile)
     deleteTempAssetsFile(workDir, encryptNames, isAab)
-    signPkgFilePackage(flavorName, outputFile.getAbsolutePath(), isAab)
+    signPackageFilePackage(flavorName, outputFile.getAbsolutePath(), isAab)
 }
 
 /**
@@ -751,24 +751,24 @@ def get7ZipCmd() {
     return null
 }
 
-def getAppendCmdListByAapt(pkgFile, aaptFile, fileList) {
+def getAppendCmdListByAapt(packageFile, aaptFile, fileList) {
     def cmd = []
     cmd.add(aaptFile)
     cmd.add("a")
     cmd.add("-v")
-    cmd.add(pkgFile)
+    cmd.add(packageFile)
     fileList.each {
         cmd.add(it)
     }
     return cmd
 }
 
-def getAppendCmdListBy7z(pkgFile, sevenZip, fileList) {
+def getAppendCmdListBy7z(packageFile, sevenZip, fileList) {
     def cmd = []
     cmd.add(sevenZip)
     cmd.add("a")
     cmd.add("-tzip")
-    cmd.add(pkgFile)
+    cmd.add(packageFile)
     fileList.each {
         cmd.add(it)
     }
@@ -777,18 +777,18 @@ def getAppendCmdListBy7z(pkgFile, sevenZip, fileList) {
 /**
  * 添加文件到apk
  * @param workDir
- * @param pkgFile
+ * @param packageFile
  * @param fileList
  * @return
  */
-def appendFilesIntoApk(workDir, pkgFile, fileList) {
+def appendFilesIntoApk(workDir, packageFile, fileList) {
     def sevenZip = Global.s7ZipCommandPath
     def aaptFile = Global.sAaptFile
     def cmd = []
     if (sevenZip != null && new File(sevenZip).exists()) {
-        cmd = getAppendCmdListBy7z(pkgFile, sevenZip, fileList)
+        cmd = getAppendCmdListBy7z(packageFile, sevenZip, fileList)
     } else if (aaptFile != null) {
-        cmd = getAppendCmdListByAapt(pkgFile, aaptFile, fileList)
+        cmd = getAppendCmdListByAapt(packageFile, aaptFile, fileList)
     }
     if (cmd == null || cmd.isEmpty()) {
         println ":${project.name}:appendFilesIntoApk Error [cmd is empty]"
@@ -807,24 +807,24 @@ def appendFilesIntoApk(workDir, pkgFile, fileList) {
     }
 }
 
-def getDeleteCmdListByAapt(pkgFile, aaptFile, fileList) {
+def getDeleteCmdListByAapt(packageFile, aaptFile, fileList) {
     def cmd = []
     cmd.add(aaptFile)
     cmd.add("r")
     cmd.add("-v")
-    cmd.add(pkgFile)
+    cmd.add(packageFile)
     fileList.each {
         cmd.add(it)
     }
     return cmd
 }
 
-def getDeleteCmdListBy7z(pkgFile, sevenZip, fileList) {
+def getDeleteCmdListBy7z(packageFile, sevenZip, fileList) {
     def cmd = []
     cmd.add(sevenZip)
     cmd.add("d")
     cmd.add("-tzip")
-    cmd.add(pkgFile)
+    cmd.add(packageFile)
     fileList.each {
         cmd.add(it)
     }
@@ -833,18 +833,18 @@ def getDeleteCmdListBy7z(pkgFile, sevenZip, fileList) {
 
 /**
  * 从apk中删除文件
- * @param pkgFile
+ * @param packageFile
  * @param fileList
  * @return
  */
-def deleteFilesFromApk(pkgFile, fileList) {
+def deleteFilesFromApk(packageFile, fileList) {
     def sevenZip = Global.s7ZipCommandPath
     def aaptFile = Global.sAaptFile
     def cmd = []
     if (sevenZip != null && new File(sevenZip).exists()) {
-        cmd = getDeleteCmdListBy7z(pkgFile, sevenZip, fileList)
+        cmd = getDeleteCmdListBy7z(packageFile, sevenZip, fileList)
     } else if (aaptFile != null) {
-        cmd = getDeleteCmdListByAapt(pkgFile, aaptFile, fileList)
+        cmd = getDeleteCmdListByAapt(packageFile, aaptFile, fileList)
     }
     if (cmd == null || cmd.isEmpty()) {
         println ":${project.name}:deleteFilesFromApk Error [cmd is empty]"
@@ -867,53 +867,53 @@ def deleteFilesFromApk(pkgFile, fileList) {
 /**
  * 为apk包签名
  * @param flavorName
- * @param pkgFile
+ * @param packageFile
  * @return
  */
-def signPkgFilePackage(flavorName, pkgFile, isAab) {
-    println "\n> Task :${project.name}:signPkgFilePackage [" + flavorName + "] >>>>>>>>> Sign Package File Start <<<<<<<<<"
+def signPackageFilePackage(flavorName, packageFile, isAab) {
+    println "\n> Task :${project.name}:signPackageFilePackage [" + flavorName + "] >>>>>>>>> Sign Package File Start <<<<<<<<<"
     def signConfig = getSignConfig(flavorName)
     if (signConfig == null) {
-        System.err.println "> Task :${project.name}:signPkgFilePackage [" + flavorName + "] signConfig is Null"
+        System.err.println "> Task :${project.name}:signPackageFilePackage [" + flavorName + "] signConfig is Null"
         return
     }
     if (!signConfig.hasProperty("storeFile")
             || !signConfig.hasProperty("storePassword")
             || !signConfig.hasProperty("keyAlias")
             || !signConfig.hasProperty("keyPassword")) {
-        System.err.println "> Task :${project.name}:signPkgFilePackage [" + flavorName + "] signConfig is not completion"
+        System.err.println "> Task :${project.name}:signPackageFilePackage [" + flavorName + "] signConfig is not completion"
         return
     }
-    if (deleteOldSignFiles(pkgFile)) {
-        signPkgFilePackageLocked(flavorName, pkgFile, signConfig, isAab)
+    if (deleteOldSignFiles(packageFile)) {
+        signPackageFilePackageLocked(flavorName, packageFile, signConfig, isAab)
     }
-    println "> Task :${project.name}:signPkgFilePackage [" + flavorName + "] >>>>>>>>> Sign Package File Complete <<<<<<<<<"
+    println "> Task :${project.name}:signPackageFilePackage [" + flavorName + "] >>>>>>>>> Sign Package File Complete <<<<<<<<<"
 }
 
 /**
  * 删除旧的签名
- * @param pkgFile
+ * @param packageFile
  * @return
  */
-def deleteOldSignFiles(pkgFile) {
-    def signInfoList = readOldSignedFiles(pkgFile)
+def deleteOldSignFiles(packageFile) {
+    def signInfoList = readOldSignedFiles(packageFile)
     println "> Task :${project.name}:deleteOldSignFiles AllFile " + signInfoList
     if (signInfoList == null || signInfoList.isEmpty()) {
         return true
     }
-    deleteFilesFromApk(pkgFile, signInfoList)
+    deleteFilesFromApk(packageFile, signInfoList)
     return true
 }
 
 /**
  * 获取旧的签名文件
- * @param pkgFile
+ * @param packageFile
  * @return
  */
-def readOldSignedFiles(pkgFile) {
+def readOldSignedFiles(packageFile) {
     def list = []
     try {
-        ZipFile zipFile = new ZipFile(pkgFile)
+        ZipFile zipFile = new ZipFile(packageFile)
         Enumeration<? extends ZipEntry> entries = zipFile.entries()
         while (entries.hasMoreElements()) {
             def name = entries.nextElement().getName()
@@ -931,15 +931,15 @@ def readOldSignedFiles(pkgFile) {
 /**
  * 对渠道包签名
  * @param flavorName
- * @param pkgFile
+ * @param packageFile
  * @param signConfig
  * @param jarSignerFile
  * @return
  */
-def signPkgFilePackageLocked(flavorName, pkgFile, signConfig, isAab) {
+def signPackageFilePackageLocked(flavorName, packageFile, signConfig, isAab) {
     def jarSignerFile = Global.sJarSignerFile
     if (jarSignerFile == null) {
-        System.err.println "> Task :${project.name}:signPkgFilePackage jarSignerFile is Null"
+        System.err.println "> Task :${project.name}:signPackageFilePackage jarSignerFile is Null"
         return
     }
     if (signConfig != null
@@ -947,18 +947,18 @@ def signPkgFilePackageLocked(flavorName, pkgFile, signConfig, isAab) {
             && signConfig.hasProperty("storePassword")
             && signConfig.hasProperty("keyAlias")
             && signConfig.hasProperty("keyPassword")) {
-        println ":${project.name}:signPkgFilePackageLocked PkgFile [" + pkgFile + "]"
-        if (pkgFile.endsWith(".aab")) {
-            signApkWithJarSigner(flavorName, pkgFile, signConfig)
-            zipAlignPkgFile(flavorName, pkgFile, isAab)
+        println ":${project.name}:signPackageFilePackageLocked PackageFile [" + packageFile + "]"
+        if (packageFile.endsWith(".aab")) {
+            signApkWithJarSigner(flavorName, packageFile, signConfig)
+            zipAlignPackageFile(flavorName, packageFile, isAab)
         } else {
-            signApkWithApkSigner(flavorName, pkgFile, signConfig, isAab)
+            signApkWithApkSigner(flavorName, packageFile, signConfig, isAab)
         }
     }
 }
 
 
-def signApkWithJarSigner(flavorName, pkgFile, signConfig) {
+def signApkWithJarSigner(flavorName, packageFile, signConfig) {
     if (Global.sJarSignerFile == null || !new File(Global.sJarSignerFile).exists()) {
         System.err.println "> Task :${project.name}:signApkWithJarSigner jarSignerFile is Null"
         return false
@@ -978,8 +978,8 @@ def signApkWithJarSigner(flavorName, pkgFile, signConfig) {
     cmdlist.add("-keypass")
     cmdlist.add(signConfig.keyPassword)
     cmdlist.add("-signedjar")
-    cmdlist.add(pkgFile)
-    cmdlist.add(pkgFile)
+    cmdlist.add(packageFile)
+    cmdlist.add(packageFile)
     cmdlist.add(signConfig.keyAlias)
 
     def cmdString = cmdlist.join(" ")
@@ -999,25 +999,25 @@ def signApkWithJarSigner(flavorName, pkgFile, signConfig) {
     return false
 }
 
-def zipAlignPkgFile(flavorName, pkgFile, isAab) {
-    def apkName = new File(pkgFile).getName()
-    def apkDir = new File(pkgFile).getParent()
+def zipAlignPackageFile(flavorName, packageFile, isAab) {
+    def apkName = new File(packageFile).getName()
+    def apkDir = new File(packageFile).getParent()
     def alignApkName = apkName.substring(0, apkName.lastIndexOf(isAab ? ".aab" : ".apk")) + (isAab ? "-align.aab" : "-align.apk")
     println("alignApkName : " + alignApkName)
     println("apkDir : " + apkDir)
-    def alignPkgFile = new File(apkDir, alignApkName)
-    println("alignPkgFile : " + alignPkgFile)
-    println "\n:${project.name}:zipAlignPkgFile [" + flavorName + "] >>>>>>>>> ZipAlign Package File Start <<<<<<<<<"
+    def alignPackageFile = new File(apkDir, alignApkName)
+    println("alignPackageFile : " + alignPackageFile)
+    println "\n:${project.name}:zipAlignPackageFile [" + flavorName + "] >>>>>>>>> ZipAlign Package File Start <<<<<<<<<"
     def cmdlist = []
     cmdlist.add(Global.sZipAlignFile)
     cmdlist.add("-f")
     cmdlist.add("4")
-    cmdlist.add(pkgFile)
-    cmdlist.add(alignPkgFile.getAbsolutePath())
+    cmdlist.add(packageFile)
+    cmdlist.add(alignPackageFile.getAbsolutePath())
 
     def cmdString = cmdlist.join(" ")
     def cmdStringInfo = cmdlist.join(",")
-    println ":${project.name}:zipAlignPkgFile [" + flavorName + "] Command [" + optimizeCommand(cmdStringInfo, ",") + "]"
+    println ":${project.name}:zipAlignPackageFile [" + flavorName + "] Command [" + optimizeCommand(cmdStringInfo, ",") + "]"
     try {
         def startTime = System.currentTimeMillis()
         Process p = cmdString.execute()
@@ -1026,20 +1026,20 @@ def zipAlignPkgFile(flavorName, pkgFile, isAab) {
         p.destroy();
         def endTime = System.currentTimeMillis()
         def signTime = (endTime - startTime) / 1000
-        println ":${project.name}:zipAlignPkgFile [" + flavorName + "] Command [ZipAlign Apk Use Time " + signTime + "s]"
+        println ":${project.name}:zipAlignPackageFile [" + flavorName + "] Command [ZipAlign Apk Use Time " + signTime + "s]"
     } catch (Exception e) {
     }
-    println ":${project.name}:zipAlignPkgFile [" + flavorName + "] >>>>>>>>> ZipAlign Package File Complete <<<<<<<<<\n"
-    new File(pkgFile).delete()
-    alignPkgFile.renameTo(pkgFile)
+    println ":${project.name}:zipAlignPackageFile [" + flavorName + "] >>>>>>>>> ZipAlign Package File Complete <<<<<<<<<\n"
+    new File(packageFile).delete()
+    alignPackageFile.renameTo(packageFile)
 }
 
-def signApkWithApkSigner(flavorName, pkgFile, signConfig, isAab) {
+def signApkWithApkSigner(flavorName, packageFile, signConfig, isAab) {
     if (Global.sApkSignerFile == null || !new File(Global.sApkSignerFile).exists()) {
         System.err.println "> Task :${project.name}:signApkWithApkSigner apkSignerFile is Null"
         return false
     }
-    zipAlignPkgFile(flavorName, pkgFile, isAab)
+    zipAlignPackageFile(flavorName, packageFile, isAab)
     def cmdlist = []
     cmdlist.add("java")
     cmdlist.add("-jar")
@@ -1054,8 +1054,8 @@ def signApkWithApkSigner(flavorName, pkgFile, signConfig, isAab) {
     cmdlist.add("--key-pass")
     cmdlist.add("pass:" + signConfig.keyPassword)
     cmdlist.add("--out")
-    cmdlist.add(pkgFile)
-    cmdlist.add(pkgFile)
+    cmdlist.add(packageFile)
+    cmdlist.add(packageFile)
     def cmdString = cmdlist.join(" ")
     def cmdStringInfo = cmdlist.join(",")
     println ":${project.name}:signApkWithApkSigner [" + flavorName + "] Command [" + optimizeCommand(cmdStringInfo, ",") + "]"
@@ -1172,14 +1172,14 @@ def getAaptFile() {
 
 /**
  * 读取apk中指定文件的内容
- * @param pkgFile
+ * @param packageFile
  * @param filePath
  * @return
  */
-def readContentFromApk(pkgFile, filePath) {
+def readContentFromApk(packageFile, filePath) {
     String content = null;
     try {
-        ZipFile zipFile = new ZipFile(pkgFile)
+        ZipFile zipFile = new ZipFile(packageFile)
         ZipEntry zipEntry = zipFile.getEntry(filePath)
         if (zipEntry != null) {
             InputStream is = zipFile.getInputStream(zipEntry)
