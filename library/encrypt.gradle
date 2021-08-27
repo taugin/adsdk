@@ -8,16 +8,8 @@ import java.util.zip.ZipFile
 
 
 /**
-// 阿里云映射的maven仓库地址
-maven { url 'https://maven.aliyun.com/repository/public' }
-maven { url 'https://maven.aliyun.com/repository/central' }
-maven { url 'https://maven.aliyun.com/repository/google' }
-maven { url 'https://maven.aliyun.com/repository/jcenter' }
-maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
-maven { url 'https://maven.aliyun.com/repository/releases' }
-maven { url 'https://adcolony.bintray.com/AdColony' }
-maven { url 'https://jitpack.io' }
-*/
+ // 阿里云映射的maven仓库地址
+ maven { url 'https://maven.aliyun.com/repository/public' }maven { url 'https://maven.aliyun.com/repository/central' }maven { url 'https://maven.aliyun.com/repository/google' }maven { url 'https://maven.aliyun.com/repository/jcenter' }maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }maven { url 'https://maven.aliyun.com/repository/releases' }maven { url 'https://adcolony.bintray.com/AdColony' }maven { url 'https://jitpack.io' }*/
 
 /**
  * 首字母转大写
@@ -79,6 +71,8 @@ class Global {
     static def s7ZipCommandPath = null
     static def sAaptFile = null
     static def sJarSignerFile = null
+    static def sApkSignerFile = null
+    static def sZipAlignFile = null
 }
 
 def getAxmlGroupId() {
@@ -90,7 +84,7 @@ def getAxmlArtifactId() {
 }
 
 def getAxmlVersion() {
-    return "1.0.3"
+    return "1.0.4"
 }
 
 def getAxmlImplementation() {
@@ -111,9 +105,10 @@ project.afterEvaluate {
 
             def encryptReleaseTask = project.tasks.create(String.format("encrypt%sRelease", productFlavor), {
                 doFirst {
-                    encryptAssetsFilesFromApk(flavor.name)
+                    encryptAssetsFilesFromApk(flavor.name, false)
                 }
             })
+            encryptReleaseTask.setGroup("adsdk")
             def assembleReleaseTask = project.tasks.findByName(String.format("assemble%sRelease", productFlavor))
             def dependsOnList1 = assembleReleaseTask.getDependsOn()
             def dependsOnList2 = encryptReleaseTask.getDependsOn()
@@ -124,6 +119,14 @@ project.afterEvaluate {
             assembleReleaseTask.doLast {
                 openReleaseDir(flavor.name)
                 printEncryptInfo()
+            }
+
+            // 给bungle广告文件加密
+            def packageReleaseBungleTask = project.tasks.findByName(String.format("sign%sReleaseBundle", productFlavor))
+            if (packageReleaseBungleTask != null) {
+                packageReleaseBungleTask.doLast {
+                    encryptAssetsFilesFromApk(flavor.name, true)
+                }
             }
 
             String generateAdFile = String.format("generateAdFile%s", productFlavor)
@@ -137,9 +140,10 @@ project.afterEvaluate {
     } else { // 无产品风味
         def encryptReleaseTask = project.tasks.create("encryptRelease", {
             doFirst {
-                encryptAssetsFilesFromApk(null)
+                encryptAssetsFilesFromApk(null, false)
             }
         })
+        encryptReleaseTask.setGroup("adsdk")
         def assembleReleaseTask = project.tasks.findByName("assembleRelease")
         def dependsOnList1 = assembleReleaseTask.getDependsOn()
         def dependsOnList2 = encryptReleaseTask.getDependsOn()
@@ -150,6 +154,13 @@ project.afterEvaluate {
         assembleReleaseTask.doLast {
             openReleaseDir(null)
             printEncryptInfo()
+        }
+
+        def packageReleaseBungleTask = project.tasks.findByName("signReleaseBundle")
+        if (packageReleaseBungleTask != null) {
+            packageReleaseBungleTask.doLast {
+                encryptAssetsFilesFromApk(null, true)
+            }
         }
 
         def generateAdFileTask = project.tasks.create("generateAdFile", {
@@ -337,11 +348,13 @@ def getSignConfig(flavor) {
  * @param outputFile
  * @return
  */
-def encryptAssetsFilesFromApk(flavor) {
+def encryptAssetsFilesFromApk(flavor, isAab) {
     Global.sAxmlEditorFilePath = getAXMLEditJarFile()
     Global.s7ZipCommandPath = get7ZipCmd()
     Global.sAaptFile = getAaptFile()
     Global.sJarSignerFile = getJarSigner()
+    Global.sZipAlignFile = getZipAlignFile()
+    Global.sApkSignerFile = getApkSigner()
     if (Global.sAaptFile == null && Global.s7ZipCommandPath == null) {
         println "> Task :${project.name}:encryptAssetsFilesFromApk [aapt and 7z file is not exist, stop encrypt task]"
         return
@@ -351,10 +364,35 @@ def encryptAssetsFilesFromApk(flavor) {
         return
     }
     def flavorName = flavor != null ? flavor : ""
-    def outputFile = Global.flavorMap.get(flavorName)
-    println "> Task :${project.name}:encryptAssetsFilesFromApk flavorName : " + flavorName
-    println "> Task :${project.name}:encryptAssetsFilesFromApk outputFile : " + outputFile
-    encryptAssetsFilesFromApkInternal(flavorName, outputFile)
+    def outputFile = null
+    if (isAab) {
+        def outputDir = getBuildDir()
+        outputDir = new File(outputDir, "outputs")
+        outputDir = new File(outputDir, "bundle")
+        if (flavor != null) {
+            outputDir = new File(outputDir, flavorName + "Release")
+        } else {
+            outputDir = new File(outputDir, "release")
+        }
+        File[] outputFileList = outputDir.listFiles()
+        if (outputFileList != null && outputFileList.length > 0) {
+            outputFile = outputFileList[0]
+        }
+        println "> Task :${project.name}:encryptAssetsFilesFromAab flavorName : " + flavorName
+        println "> Task :${project.name}:encryptAssetsFilesFromAab outputDir : " + outputDir
+        println "> Task :${project.name}:encryptAssetsFilesFromAab outputFile : " + outputFile
+        println "> Task :${project.name}:encryptAssetsFilesFromAab outputFiles : " + outputDir.list()
+        if (outputFile.exists()) {
+            encryptAssetsFilesFromPkgInternal(flavorName, outputFile, isAab)
+        }
+    } else {
+        outputFile = Global.flavorMap.get(flavorName)
+        println "> Task :${project.name}:encryptAssetsFilesFromApk flavorName : " + flavorName
+        println "> Task :${project.name}:encryptAssetsFilesFromApk outputFile : " + outputFile
+        if (outputFile.exists()) {
+            encryptAssetsFilesFromPkgInternal(flavorName, outputFile, isAab)
+        }
+    }
 }
 
 /**
@@ -363,7 +401,7 @@ def encryptAssetsFilesFromApk(flavor) {
  * @param outputFile
  * @return
  */
-def encryptAssetsFilesFromApkInternal(flavorName, File outputFile) {
+def encryptAssetsFilesFromPkgInternal(flavorName, File outputFile, isAab) {
     def appId = getApplicationId(flavorName)
     def pkgmd5 = Aes.string2MD5(appId)
     def adname = "cfg" + pkgmd5.substring(0, 8)
@@ -387,13 +425,13 @@ def encryptAssetsFilesFromApkInternal(flavorName, File outputFile) {
     println "> Task :${project.name}:encryptRelease outputFile : " + outputFile
 
     // 读取待加密的文件到本地磁盘
-    def encryptFiles = readEncryptFileFromApk(workDir, encryptNames, outputFile)
+    def encryptFiles = readEncryptFileFromApk(workDir, encryptNames, outputFile, isAab)
 
     println "> Task :${project.name}:encryptRelease encryptFiles : " + encryptFiles
     encryptFileForAssets(workDir, encryptFiles)
     updateEncryptFileToApk(workDir, encryptFiles, outputFile)
-    deleteTempAssetsFile(workDir, encryptNames)
-    signApkFilePackage(flavorName, outputFile)
+    deleteTempAssetsFile(workDir, encryptNames, isAab)
+    signApkFilePackage(flavorName, outputFile.getAbsolutePath(), isAab)
 }
 
 /**
@@ -403,9 +441,9 @@ def encryptAssetsFilesFromApkInternal(flavorName, File outputFile) {
  * @param outputFile
  * @return
  */
-def readEncryptFileFromApk(workDir, encryptNames, outputFile) {
+def readEncryptFileFromApk(workDir, encryptNames, outputFile, isAab) {
     def copyNames = []
-    def assetsFolder = "assets";
+    def assetsFolder = isAab ? "base/assets" : "assets";
     def assetsDir = new File(workDir, assetsFolder)
     assetsDir.mkdirs()
     encryptNames.each {
@@ -465,14 +503,20 @@ def updateEncryptFileToApk(workDir, encryptFiles, outputFile) {
  * @param encryptNames
  * @return
  */
-def deleteTempAssetsFile(workDir, encryptNames) {
-    def assetsFolder = "assets";
+def deleteTempAssetsFile(workDir, encryptNames, isAab) {
+    def assetsFolder = isAab ? "base/assets" : "assets";
     def assetsDir = new File(workDir, assetsFolder)
     encryptNames.each {
         def outputFilePath = new File(assetsDir, it)
-        outputFilePath.delete()
+        if (outputFilePath.exists()) {
+            outputFilePath.delete()
+        }
     }
     assetsDir.delete()
+    def baseDir = new File(workDir, "base")
+    if (baseDir.exists()) {
+        baseDir.delete()
+    }
 }
 
 
@@ -482,7 +526,6 @@ def deleteTempAssetsFile(workDir, encryptNames) {
  * @param flavorName
  * @param filePath
  * @param outputPath
- * @param channel
  * @return
  */
 def copyFileFromZipFile(inputFile, String filePath, String outputPath) {
@@ -513,10 +556,142 @@ def copyFileFromZipFile(inputFile, String filePath, String outputPath) {
     return copyResult
 }
 
+
+/**
+ * 获取aapt文件路径
+ * @return
+ */
+def getZipAlignFile() {
+    def sdkDir = null
+    try {
+        Properties properties = new Properties()
+        InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream();
+        properties.load(inputStream)
+        //读取文件
+        sdkDir = properties.getProperty('sdk.dir')
+    } catch (Exception e) {
+    }
+    if (sdkDir == null || !new File(sdkDir).exists()) {
+        if (sdkDir == null) {
+            println ":${project.name}:getZipAlignFile sdkDir == null, Use ANDROID_SDK_ROOT"
+        } else {
+            println ":${project.name}:getZipAlignFile sdkDir is not exist, Use ANDROID_SDK_ROOT"
+        }
+        sdkDir = System.getenv("ANDROID_SDK_ROOT")
+    }
+    if (sdkDir == null || !new File(sdkDir).exists()) {
+        if (sdkDir == null) {
+            println ":${project.name}:getZipAlignFile sdkDir == null, Use ANDROID_HOME"
+        } else {
+            println ":${project.name}:getZipAlignFile sdkDir is not exist, Use ANDROID_HOME"
+        }
+        sdkDir = System.getenv("ANDROID_HOME")
+    }
+    println ":${project.name}:getZipAlignFile sdkDir : [" + sdkDir + "]"
+    if (sdkDir == null) {
+        println ":${project.name}:getZipAlignFile sdkDir == null"
+        return null
+    }
+    if (!new File(sdkDir).exists()) {
+        println ":${project.name}:getZipAlignFile sdkDir is not exist"
+        return null
+    }
+    def exe = ""
+    if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+        exe = ".exe"
+    }
+    def compileSdkVersion = android.compileSdkVersion
+    if (compileSdkVersion != null) {
+        compileSdkVersion = compileSdkVersion.replaceAll("android-", "");
+    }
+    def buildToolDir = sdkDir + File.separator + "build-tools"
+    def buildToolVersionDir = android.buildToolsVersion
+    if (buildToolVersionDir == null) {
+        def buildToolDirs = new File(buildToolDir).list(new FilenameFilter() {
+            @Override
+            boolean accept(File dir, String name) {
+                return name.startsWith(String.valueOf(compileSdkVersion))
+            }
+        })
+        if (buildToolDirs != null && buildToolDirs.length > 0) {
+            buildToolVersionDir = buildToolDirs[0]
+        }
+    }
+    def zipAlignFile = buildToolDir + File.separator + buildToolVersionDir + File.separator + "zipalign" + exe
+    if (!new File(zipAlignFile).exists()) {
+        zipAlignFile = null
+    }
+    println ":${project.name}:getZipAlignFile zipAlignFile : [" + zipAlignFile + "]"
+    return zipAlignFile
+}
+
+/**
+ * 获取aapt文件路径
+ * @return
+ */
+def getApkSigner() {
+    def sdkDir = null
+    try {
+        Properties properties = new Properties()
+        InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream();
+        properties.load(inputStream)
+        //读取文件
+        sdkDir = properties.getProperty('sdk.dir')
+    } catch (Exception e) {
+    }
+    if (sdkDir == null || !new File(sdkDir).exists()) {
+        if (sdkDir == null) {
+            println ":${project.name}:getApkSigner sdkDir == null, Use ANDROID_SDK_ROOT"
+        } else {
+            println ":${project.name}:getApkSigner sdkDir is not exist, Use ANDROID_SDK_ROOT"
+        }
+        sdkDir = System.getenv("ANDROID_SDK_ROOT")
+    }
+    if (sdkDir == null || !new File(sdkDir).exists()) {
+        if (sdkDir == null) {
+            println ":${project.name}:getApkSigner sdkDir == null, Use ANDROID_HOME"
+        } else {
+            println ":${project.name}:getApkSigner sdkDir is not exist, Use ANDROID_HOME"
+        }
+        sdkDir = System.getenv("ANDROID_HOME")
+    }
+    println ":${project.name}:getApkSigner sdkDir : [" + sdkDir + "]"
+    if (sdkDir == null) {
+        println ":${project.name}:getApkSigner sdkDir == null"
+        return null
+    }
+    if (!new File(sdkDir).exists()) {
+        println ":${project.name}:getApkSigner sdkDir is not exist"
+        return null
+    }
+    def compileSdkVersion = android.compileSdkVersion
+    if (compileSdkVersion != null) {
+        compileSdkVersion = compileSdkVersion.replaceAll("android-", "");
+    }
+    def buildToolDir = sdkDir + File.separator + "build-tools"
+    def buildToolVersionDir = android.buildToolsVersion
+    if (buildToolVersionDir == null) {
+        def buildToolDirs = new File(buildToolDir).list(new FilenameFilter() {
+            @Override
+            boolean accept(File dir, String name) {
+                return name.startsWith(String.valueOf(compileSdkVersion))
+            }
+        })
+        if (buildToolDirs != null && buildToolDirs.length > 0) {
+            buildToolVersionDir = buildToolDirs[0]
+        }
+    }
+    def apkSigner = buildToolDir + File.separator + buildToolVersionDir + File.separator + "lib" + File.separator + "apksigner.jar"
+    if (!new File(apkSigner).exists()) {
+        apkSigner = null
+    }
+    println ":${project.name}:getApkSigner apkSigner : [" + apkSigner + "]"
+    return apkSigner
+}
+
 /**
  * 获取axmleditor文件路径
  * @param flavorName
- * @param channel
  * @return
  */
 def getAXMLEditJarFile() {
@@ -693,11 +868,10 @@ def deleteFilesFromApk(apkFile, fileList) {
  * 为apk包签名
  * @param flavorName
  * @param apkFile
- * @param channel
  * @return
  */
-def signApkFilePackage(flavorName, apkFile) {
-    println "\n> Task :${project.name}:signApkFilePackage [" + flavorName + "] >>>>>>>>> Sign Channel File Start <<<<<<<<<"
+def signApkFilePackage(flavorName, apkFile, isAab) {
+    println "\n> Task :${project.name}:signApkFilePackage [" + flavorName + "] >>>>>>>>> Sign Package File Start <<<<<<<<<"
     def signConfig = getSignConfig(flavorName)
     if (signConfig == null) {
         System.err.println "> Task :${project.name}:signApkFilePackage [" + flavorName + "] signConfig is Null"
@@ -707,19 +881,18 @@ def signApkFilePackage(flavorName, apkFile) {
             || !signConfig.hasProperty("storePassword")
             || !signConfig.hasProperty("keyAlias")
             || !signConfig.hasProperty("keyPassword")) {
-        System.err.println "> Task :${project.name}:signApkFilePackage [" + flavorName + "][" + channel + "] signConfig is not completion"
+        System.err.println "> Task :${project.name}:signApkFilePackage [" + flavorName + "] signConfig is not completion"
         return
     }
     if (deleteOldSignFiles(apkFile)) {
-        signApkFilePackageLocked(apkFile, signConfig)
+        signApkFilePackageLocked(flavorName, apkFile, signConfig, isAab)
     }
-    println "> Task :${project.name}:signApkFilePackage [" + flavorName + "] >>>>>>>>> Sign Channel File Complete <<<<<<<<<"
+    println "> Task :${project.name}:signApkFilePackage [" + flavorName + "] >>>>>>>>> Sign Package File Complete <<<<<<<<<"
 }
 
 /**
  * 删除旧的签名
  * @param apkFile
- * @param channel
  * @return
  */
 def deleteOldSignFiles(apkFile) {
@@ -756,14 +929,14 @@ def readOldSignedFiles(apkFile) {
 }
 
 /**
- * 对apk包签名
+ * 对渠道包签名
+ * @param flavorName
  * @param apkFile
  * @param signConfig
  * @param jarSignerFile
- * @param channel
  * @return
  */
-def signApkFilePackageLocked(apkFile, signConfig) {
+def signApkFilePackageLocked(flavorName, apkFile, signConfig, isAab) {
     def jarSignerFile = Global.sJarSignerFile
     if (jarSignerFile == null) {
         System.err.println "> Task :${project.name}:signApkFilePackage jarSignerFile is Null"
@@ -774,47 +947,136 @@ def signApkFilePackageLocked(apkFile, signConfig) {
             && signConfig.hasProperty("storePassword")
             && signConfig.hasProperty("keyAlias")
             && signConfig.hasProperty("keyPassword")) {
-        println "> Task :${project.name}:signApkFilePackage ApkFile [" + apkFile + "]"
-        def cmdlist = []
-        cmdlist.add(jarSignerFile)
-
-        cmdlist.add("-digestalg")
-        cmdlist.add("SHA1")
-        cmdlist.add("-sigalg")
-        cmdlist.add("MD5withRSA")
-        // cmdlist.add("-tsa https://timestamp.geotrust.com/tsa")
-        cmdlist.add("-keystore")
-        cmdlist.add(signConfig.storeFile)
-        cmdlist.add("-storepass")
-        cmdlist.add(signConfig.storePassword)
-        cmdlist.add("-keypass")
-        cmdlist.add(signConfig.keyPassword)
-        cmdlist.add("-signedjar")
-        cmdlist.add(apkFile)
-        cmdlist.add(apkFile)
-        cmdlist.add(signConfig.keyAlias)
-
-        def cmdString = cmdlist.join(" ")
-        def cmdStringInfo = cmdlist.join(",")
-        println "> Task :${project.name}:signApkFilePackage Command [" + optimizeCommand(cmdStringInfo, ",") + "]"
-        try {
-            def startTime = System.currentTimeMillis()
-            Process p = cmdString.execute()
-            p.waitFor(20, TimeUnit.SECONDS)
-            p.destroy();
-            def endTime = System.currentTimeMillis()
-            def signTime = (endTime - startTime) / 1000
-            println "> Task :${project.name}:signApkFilePackage Command [Sign Apk File Use Time " + signTime + "s]"
-        } catch (Exception e) {
-            e.printStackTrace()
+        println ":${project.name}:signApkFilePackageLocked ApkFile [" + apkFile + "]"
+        if (apkFile.endsWith(".aab")) {
+            signApkWithJarSigner(flavorName, apkFile, signConfig)
+            zipAlignApkFile(flavorName, apkFile, isAab)
+        } else {
+            signApkWithApkSigner(flavorName, apkFile, signConfig, isAab)
         }
     }
+}
+
+
+def signApkWithJarSigner(flavorName, apkFile, signConfig) {
+    if (Global.sJarSignerFile == null || !new File(Global.sJarSignerFile).exists()) {
+        System.err.println "> Task :${project.name}:signApkWithJarSigner jarSignerFile is Null"
+        return false
+    }
+    def cmdlist = []
+    cmdlist.add(Global.sJarSignerFile)
+
+    cmdlist.add("-digestalg")
+    cmdlist.add("SHA1")
+    cmdlist.add("-sigalg")
+    cmdlist.add("MD5withRSA")
+    // cmdlist.add("-tsa https://timestamp.geotrust.com/tsa")
+    cmdlist.add("-keystore")
+    cmdlist.add(signConfig.storeFile)
+    cmdlist.add("-storepass")
+    cmdlist.add(signConfig.storePassword)
+    cmdlist.add("-keypass")
+    cmdlist.add(signConfig.keyPassword)
+    cmdlist.add("-signedjar")
+    cmdlist.add(apkFile)
+    cmdlist.add(apkFile)
+    cmdlist.add(signConfig.keyAlias)
+
+    def cmdString = cmdlist.join(" ")
+    def cmdStringInfo = cmdlist.join(",")
+    println ":${project.name}:signApkWithJarSigner [" + flavorName + "] Command [" + optimizeCommand(cmdStringInfo, ",") + "]"
+    try {
+        def startTime = System.currentTimeMillis()
+        Process p = cmdString.execute()
+        p.waitFor(20, TimeUnit.SECONDS)
+        p.destroy();
+        def endTime = System.currentTimeMillis()
+        def signTime = (endTime - startTime) / 1000
+        println ":${project.name}:signApkWithJarSigner [" + flavorName + "] Command [Sign Apk Use Time " + signTime + "s]"
+        return true
+    } catch (Exception e) {
+    }
+    return false
+}
+
+def zipAlignApkFile(flavorName, apkFile, isAab) {
+    def apkName = new File(apkFile).getName()
+    def apkDir = new File(apkFile).getParent()
+    def alignApkName = apkName.substring(0, apkName.lastIndexOf(isAab ? ".aab" : ".apk")) + (isAab ? "-align.aab" : "-align.apk")
+    println("alignApkName : " + alignApkName)
+    println("apkDir : " + apkDir)
+    def alignApkFile = new File(apkDir, alignApkName)
+    println("alignApkFile : " + alignApkFile)
+    println "\n:${project.name}:zipAlignApkFile [" + flavorName + "] >>>>>>>>> ZipAlign Package File Start <<<<<<<<<"
+    def cmdlist = []
+    cmdlist.add(Global.sZipAlignFile)
+    cmdlist.add("-f")
+    cmdlist.add("4")
+    cmdlist.add(apkFile)
+    cmdlist.add(alignApkFile.getAbsolutePath())
+
+    def cmdString = cmdlist.join(" ")
+    def cmdStringInfo = cmdlist.join(",")
+    println ":${project.name}:zipAlignApkFile [" + flavorName + "] Command [" + optimizeCommand(cmdStringInfo, ",") + "]"
+    try {
+        def startTime = System.currentTimeMillis()
+        Process p = cmdString.execute()
+        p.waitFor(20, TimeUnit.SECONDS)
+        printOutput(p)
+        p.destroy();
+        def endTime = System.currentTimeMillis()
+        def signTime = (endTime - startTime) / 1000
+        println ":${project.name}:zipAlignApkFile [" + flavorName + "] Command [ZipAlign Apk Use Time " + signTime + "s]"
+    } catch (Exception e) {
+    }
+    println ":${project.name}:zipAlignApkFile [" + flavorName + "] >>>>>>>>> ZipAlign Package File Complete <<<<<<<<<\n"
+    new File(apkFile).delete()
+    alignApkFile.renameTo(apkFile)
+}
+
+def signApkWithApkSigner(flavorName, apkFile, signConfig, isAab) {
+    if (Global.sApkSignerFile == null || !new File(Global.sApkSignerFile).exists()) {
+        System.err.println "> Task :${project.name}:signApkWithApkSigner apkSignerFile is Null"
+        return false
+    }
+    zipAlignApkFile(flavorName, apkFile, isAab)
+    def cmdlist = []
+    cmdlist.add("java")
+    cmdlist.add("-jar")
+    cmdlist.add(Global.sApkSignerFile)
+    cmdlist.add("sign")
+    cmdlist.add("--ks")
+    cmdlist.add(signConfig.storeFile)
+    cmdlist.add("--ks-key-alias")
+    cmdlist.add(signConfig.keyAlias)
+    cmdlist.add("--ks-pass")
+    cmdlist.add("pass:" + signConfig.storePassword)
+    cmdlist.add("--key-pass")
+    cmdlist.add("pass:" + signConfig.keyPassword)
+    cmdlist.add("--out")
+    cmdlist.add(apkFile)
+    cmdlist.add(apkFile)
+    def cmdString = cmdlist.join(" ")
+    def cmdStringInfo = cmdlist.join(",")
+    println ":${project.name}:signApkWithApkSigner [" + flavorName + "] Command [" + optimizeCommand(cmdStringInfo, ",") + "]"
+    try {
+        def startTime = System.currentTimeMillis()
+        Process p = cmdString.execute()
+        p.waitFor(20, TimeUnit.SECONDS)
+        printOutput(p)
+        p.destroy();
+        def endTime = System.currentTimeMillis()
+        def signTime = (endTime - startTime) / 1000
+        println ":${project.name}:signApkWithApkSigner [" + flavorName + "] Command [Sign Apk Use Time " + signTime + "s]"
+        return true
+    } catch (Exception e) {
+    }
+    return false
 }
 
 /**
  * 获取Jarsigner文件路径
  * @param flavorName
- * @param channel
  * @return
  */
 def getJarSigner() {
