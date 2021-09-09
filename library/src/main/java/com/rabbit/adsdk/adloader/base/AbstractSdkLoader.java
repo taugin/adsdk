@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -78,7 +79,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         mContext = context;
         mPidConfig = pidConfig;
         mStat = EventImpl.get();
-        mHandler = new Handler(this);
+        mHandler = new Handler(Looper.getMainLooper());
     }
 
     @Override

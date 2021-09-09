@@ -32,15 +32,23 @@ import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
 import com.mopub.nativeads.NativeAd;
 import com.mopub.nativeads.NativeErrorCode;
+import com.mopub.network.ImpressionData;
+import com.mopub.network.ImpressionListener;
+import com.mopub.network.ImpressionsEmitter;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.DataManager;
+import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.stat.InternalStat;
+import com.rabbit.adsdk.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,6 +58,7 @@ import java.util.Set;
 
 public class MopubLoader extends AbstractSdkLoader {
 
+    private static boolean sHasSetImpressionListener = false;
     protected static final Map<Integer, MoPubView.MoPubAdSize> ADSIZE = new HashMap<>();
     private static SDKInitializeState sSdkInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
     private static final Handler sHandler = new Handler(Looper.getMainLooper());
@@ -74,6 +83,38 @@ public class MopubLoader extends AbstractSdkLoader {
     private MopubBindNativeView bindNativeView = new MopubBindNativeView();
 
     private String mLoadedRewardUnit;
+
+    @Override
+    public void init(Context context, PidConfig pidConfig) {
+        super.init(context, pidConfig);
+        if (!sHasSetImpressionListener) {
+            setImpressionListener();
+            sHasSetImpressionListener = true;
+        }
+    }
+
+    private ImpressionListener mImpressionListener = new ImpressionListener() {
+        @Override
+        public void onImpression(String adUnitId, ImpressionData impressionData) {
+            String impData = null;
+            try {
+                impData = impressionData.getJsonRepresentation().toString(2);
+            } catch (Exception | Error e) {
+            }
+            Log.iv(Log.TAG, "mopub impression pid : " + adUnitId + " , impData : " + impData);
+            reportAdImpressionRevenue(impressionData);
+        }
+    };
+
+    private void setImpressionListener() {
+        Log.iv(Log.TAG, "add impression listener for mopub");
+        try {
+            ImpressionsEmitter.removeListener(mImpressionListener);
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "remove impression listener for mopub error");
+        }
+        ImpressionsEmitter.addListener(mImpressionListener);
+    }
 
     protected BaseBindNativeView getBaseBindNativeView() {
         return bindNativeView;
@@ -845,4 +886,93 @@ public class MopubLoader extends AbstractSdkLoader {
         return Constant.AD_ERROR_UNKNOWN;
     }
 
+    private void reportAdImpressionRevenue(ImpressionData impressionData) {
+        try {
+            if (impressionData != null) {
+                Map<String, String> map = new HashMap<>();
+                map.put("value", impressionData.getPublisherRevenue().toString());
+                map.put("currency", impressionData.getCurrency());
+                map.put("precisionType", impressionData.getPrecision());
+                map.put("adNetwork", impressionData.getNetworkName());
+                map.put("adFormat", impressionData.getAdUnitFormat());
+                InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
+                Log.iv(Log.TAG, "imp data map : " + map);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    /*************************************************************************************/
+    // Taichi模型，为AC2.5准备数据
+    private void reportAdLTVOneDayPercent(ImpressionData impressionData) {
+        if (impressionData != null) {
+            Double publishRevenue = impressionData.getPublisherRevenue();
+            if (publishRevenue != null && !Double.isNaN(publishRevenue)) {
+                calcTaiChitCPAOneDayAdRevenueCache(publishRevenue.floatValue());
+            }
+        }
+    }
+
+    private void resetTaiChitCPAOneDayAdRevenueCache() {
+        long todayTime = Utils.getTodayTime();
+        long lastTime = Utils.getLong(getContext(), "TaiChitCPAOneDayAdRevenueCacheDate", todayTime);
+        if (todayTime != lastTime) {
+            Utils.putLong(getContext(), "TaiChitCPAOneDayAdRevenueCacheDate", todayTime);
+            Utils.putFloat(getContext(), "TaiChitCPAOneDayAdRevenueCache", 0f);
+        }
+    }
+
+    private void calcTaiChitCPAOneDayAdRevenueCache(float currentImpressionRevenue) {
+        resetTaiChitCPAOneDayAdRevenueCache();
+        float previousOneDayAdRevenueCache = Utils.getFloat(getContext(), "TaiChitCPAOneDayAdRevenueCache", 0f);
+        float currentOneDayAdRevenueCache = (float) (previousOneDayAdRevenueCache + currentImpressionRevenue);
+        Utils.putFloat(getContext(), "TaiChitCPAOneDayAdRevenueCache", currentOneDayAdRevenueCache);
+        reportLogTaiChiTCPAFirebaseAdRevenueEvent(previousOneDayAdRevenueCache, currentImpressionRevenue);
+    }
+
+    private Float[] getAdsLTVThreshold() {
+        String adsLTVThresholdString = DataManager.get(getContext()).getString("TaiChitCPAOneDayAdRevenueLTVThreshold");
+        try {
+            String[] temp = adsLTVThresholdString.split("|");
+            List<Float> adsLTVThreshold = new ArrayList<>();
+            for (String s : temp) {
+                adsLTVThreshold.add(Float.parseFloat(s));
+            }
+            return adsLTVThreshold.toArray(new Float[]{});
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    private void reportLogTaiChiTCPAFirebaseAdRevenueEvent(float previousAdsTV, float currentAdsTv) {
+        Float[] adsLTVThreshold = getAdsLTVThreshold();
+        if (adsLTVThreshold != null && adsLTVThreshold.length > 0) {
+            for (int i = 0; i < adsLTVThreshold.length; i++) {
+                if (previousAdsTV < adsLTVThreshold[i] && currentAdsTv >= adsLTVThreshold[i]) {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("value", String.valueOf(adsLTVThreshold[i]));
+                    map.put("currency", "USD");
+                    String TaichiEventName = null;
+                    switch (i) {
+                        case 0:
+                            TaichiEventName = "AdLTV_OneDay_Top50Percent";
+                            break;
+                        case 1:
+                            TaichiEventName = "AdLTV_OneDay_Top40Percent";
+                            break;
+                        case 2:
+                            TaichiEventName = "AdLTV_OneDay_Top30Percent";
+                            break;
+                        case 3:
+                            TaichiEventName = "AdLTV_OneDay_Top20Percent";
+                            break;
+                        default:
+                            TaichiEventName = "AdLTV_OneDay_Top10Percent";
+                    }
+                    InternalStat.reportEvent(getContext(), TaichiEventName, map);
+                }
+            }
+        }
+    }
 }

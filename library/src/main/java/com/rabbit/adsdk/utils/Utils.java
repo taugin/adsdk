@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -202,6 +203,32 @@ public class Utils {
     public static long getLong(Context context, String key, long defValue) {
         key = encryptSpKey(context, key);
         return PreferenceManager.getDefaultSharedPreferences(context).getLong(key, defValue);
+    }
+
+    public static void putFloat(Context context, String key, float value) {
+        putFloat(context, key, value, false);
+    }
+
+    public static void putFloat(Context context, String key, float value, boolean sync) {
+        try {
+            key = encryptSpKey(context, key);
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit().putFloat(key, value);
+            if (sync) {
+                editor.commit();
+            } else {
+                editor.apply();
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public static float getFloat(Context context, String key) {
+        return getFloat(context, key, 0);
+    }
+
+    public static float getFloat(Context context, String key, float defValue) {
+        key = encryptSpKey(context, key);
+        return PreferenceManager.getDefaultSharedPreferences(context).getFloat(key, defValue);
     }
 
     private static String encryptSpKey(Context context, String key) {
@@ -677,5 +704,15 @@ public class Utils {
         } catch (Exception e) {
         }
         return null;
+    }
+
+    public static long getTodayTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
     }
 }
