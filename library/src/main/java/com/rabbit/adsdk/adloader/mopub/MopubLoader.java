@@ -893,8 +893,8 @@ public class MopubLoader extends AbstractSdkLoader {
                 map.put("value", impressionData.getPublisherRevenue().toString());
                 map.put("currency", impressionData.getCurrency());
                 map.put("precisionType", impressionData.getPrecision());
-                map.put("adNetwork", impressionData.getNetworkName());
-                map.put("adFormat", impressionData.getAdUnitFormat());
+                map.put("ad_network", impressionData.getNetworkName());
+                map.put("ad_format", impressionData.getAdUnitFormat());
                 InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
                 Log.iv(Log.TAG, "imp data map : " + map);
             }
