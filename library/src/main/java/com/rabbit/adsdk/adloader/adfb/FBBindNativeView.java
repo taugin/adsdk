@@ -187,7 +187,7 @@ public class FBBindNativeView extends BaseBindNativeView {
             if (rootView != null) {
                 nativeAd.registerViewForInteraction(rootView, mediaView, iconView, actionView);
             }
-            Log.iv(Log.TAG, "clickable view : " + pidConfig.getClickViews());
+            Log.iv(Log.TAG, "clickable view : " + pidConfig.getClickView());
         }
         try {
             adContainer.removeAllViews();

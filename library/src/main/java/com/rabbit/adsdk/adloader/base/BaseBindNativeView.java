@@ -151,23 +151,35 @@ public class BaseBindNativeView {
         if (pidConfig == null) {
             return false;
         }
-        List<String> clickViews = getClickViews(pidConfig);
-        if (clickViews == null || clickViews.isEmpty()) {
+        List<String> clickView = getClickView(pidConfig);
+        if (clickView == null || clickView.isEmpty()) {
             return true;
         }
-        return clickViews.contains(view);
+        return clickView.contains(view);
     }
 
-    protected List<String> getClickViews(PidConfig pidConfig) {
-        List<String> clickViews = pidConfig.getClickViews();
+    protected List<String> getClickView(PidConfig pidConfig) {
+        List<String> clickView = pidConfig.getClickView();
         // 获取clickviews
-        if (clickViews == null || clickViews.isEmpty()) {
+        if (clickView == null || clickView.isEmpty()) {
             try {
-                clickViews = pidConfig.getAdPlace().getClickViews();
+                clickView = pidConfig.getAdPlace().getClickView();
             } catch (Exception e) {
             }
         }
-        return clickViews;
+        return clickView;
+    }
+
+    protected List<String> getClickViewRender(PidConfig pidConfig) {
+        List<String> clickViewRender = pidConfig.getClickViewRender();
+        // 获取clickviews
+        if (clickViewRender == null || clickViewRender.isEmpty()) {
+            try {
+                clickViewRender = pidConfig.getAdPlace().getClickViewRender();
+            } catch (Exception e) {
+            }
+        }
+        return clickViewRender;
     }
 
     protected int getAdViewLayout(Context context, int template, PidConfig pidConfig) {

@@ -35,7 +35,9 @@ public class PidConfig {
 
     private String bannerSize;
 
-    private List<String> clickViews;
+    private List<String> clickView;
+
+    private List<String> clickViewRender;
 
     private int cnt;
 
@@ -139,12 +141,20 @@ public class PidConfig {
         this.bannerSize = bannerSize;
     }
 
-    public List<String> getClickViews() {
-        return clickViews;
+    public List<String> getClickView() {
+        return clickView;
     }
 
-    public void setClickViews(List<String> clickViews) {
-        this.clickViews = clickViews;
+    public void setClickView(List<String> clickView) {
+        this.clickView = clickView;
+    }
+
+    public List<String> getClickViewRender() {
+        return clickViewRender;
+    }
+
+    public void setClickViewRender(List<String> clickViewRender) {
+        this.clickViewRender = clickViewRender;
     }
 
     public int getCnt() {

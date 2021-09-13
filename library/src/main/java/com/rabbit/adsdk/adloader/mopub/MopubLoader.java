@@ -718,7 +718,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     reportAdImp(render);
                     notifyAdImp(render);
                     if (bindNativeView != null) {
-                        bindNativeView.updateClickView(viewGroup, getPidConfig());
+                        bindNativeView.updateClickView(viewGroup, getPidConfig(), render);
                     }
                 }
 

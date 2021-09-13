@@ -179,7 +179,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
-        Log.iv(Log.TAG, "clickable view : " + pidConfig.getClickViews());
+        Log.iv(Log.TAG, "clickable view : " + pidConfig.getClickView());
         adView.setNativeAd(nativeAd);
         putAdvertiserInfo(nativeAd);
         return adView;

@@ -462,14 +462,20 @@ public class MopubBindNativeView extends BaseBindNativeView {
         updateAdViewVisibility(staticRender, view);
     }
 
-    public void updateClickView(View view, PidConfig pidConfig) {
+    public void updateClickView(View view, PidConfig pidConfig, String render) {
         if (view == null || pidConfig == null || mParams == null) {
             Log.iv(Log.TAG, "update cv error cause of null view or config or params");
             return;
         }
         try {
-            List<String> clickViews = getClickViews(pidConfig);
-            if (clickViews == null || clickViews.isEmpty()) {
+            List<String> clickView = getClickView(pidConfig);
+            if (clickView == null || clickView.isEmpty()) {
+                Log.iv(Log.TAG, "click view empty");
+                return;
+            }
+            List<String> clickViewRender = getClickViewRender(pidConfig);
+            if (clickViewRender != null && !clickViewRender.contains(render)) {
+                Log.iv(Log.TAG, "click view miss match render : " + render + " , cfg render : " + clickViewRender);
                 return;
             }
             Map<String, View> viewMap = new HashMap<String, View>();
@@ -483,9 +489,10 @@ public class MopubBindNativeView extends BaseBindNativeView {
             viewMap.put(AD_SPONSORED, view.findViewById(mParams.getAdSponsored()));
             viewMap.put(AD_SOCIAL, view.findViewById(mParams.getAdSocial()));
             List<View> clickElements = new ArrayList<View>();
-            for (String text : clickViews) {
+            for (String text : clickView) {
                 clickElements.add(viewMap.get(text));
             }
+            Log.iv(Log.TAG, "cv : " + clickView + " , render : " + clickViewRender);
             traversalView(view, clickElements);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

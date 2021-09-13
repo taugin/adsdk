@@ -71,7 +71,9 @@ public interface IParser {
     // bannersize
     String BANNER_SIZE = "bs";
     // 可点击原生视图
-    String CLICK_VIEWS = "cv";
+    String CLICK_VIEW = "cv";
+    // 可点击原生视图
+    String CLICK_VIEW_RENDER = "cvr";
     // 加载原生个数
     String LOAD_NATIVE_COUNT = "lnc";
     // 使用activity上下文

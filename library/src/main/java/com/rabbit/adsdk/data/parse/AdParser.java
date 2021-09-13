@@ -139,8 +139,11 @@ public class AdParser implements IParser {
             if (jobj.has(CTA_COLOR)) {
                 adPlace.setCtaColor(parseStringList(jobj.getString(CTA_COLOR)));
             }
-            if (jobj.has(CLICK_VIEWS)) {
-                adPlace.setClickViews(parseStringList(jobj.getString(CLICK_VIEWS)));
+            if (jobj.has(CLICK_VIEW)) {
+                adPlace.setClickView(parseStringList(jobj.getString(CLICK_VIEW)));
+            }
+            if (jobj.has(CLICK_VIEW_RENDER)) {
+                adPlace.setClickViewRender(parseStringList(jobj.getString(CLICK_VIEW_RENDER)));
             }
             if (jobj.has(PIDS)) {
                 adPlace.setPidList(parsePidList(adPlace, jobj.getString(PIDS)));
@@ -249,8 +252,11 @@ public class AdParser implements IParser {
             if (jobj.has(CTA_COLOR)) {
                 pidConfig.setCtaColor(parseStringList(jobj.getString(CTA_COLOR)));
             }
-            if (jobj.has(CLICK_VIEWS)) {
-                pidConfig.setClickViews(parseStringList(jobj.getString(CLICK_VIEWS)));
+            if (jobj.has(CLICK_VIEW)) {
+                pidConfig.setClickView(parseStringList(jobj.getString(CLICK_VIEW)));
+            }
+            if (jobj.has(CLICK_VIEW_RENDER)) {
+                pidConfig.setClickViewRender(parseStringList(jobj.getString(CLICK_VIEW_RENDER)));
             }
             if (jobj.has(ACTIVITY_CONTEXT)) {
                 pidConfig.setActivityContext(jobj.getInt(ACTIVITY_CONTEXT) == 1);
