@@ -263,7 +263,6 @@ public class MopubLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
-        setBannerSize(adSize);
         boolean activityContext = false;
         try {
             activityContext = getPidConfig().isActivityContext();
