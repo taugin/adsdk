@@ -111,7 +111,11 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (sAppLovinSdkSettings == null) {
             sAppLovinSdkSettings = new AppLovinSdkSettings(mContext);
         }
-        return AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, mContext);
+        Context applovinContext = getActivity();
+        if (applovinContext == null) {
+            applovinContext = getContext();
+        }
+        return AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, applovinContext);
     }
 
     @Override
