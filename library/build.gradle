@@ -61,8 +61,10 @@ dependencies {
         exclude group: 'androidx.core'
     }
     implementation 'com.mopub.volley:mopub-volley:2.1.0'
+
     // stringfog
     implementation 'com.github.megatronking.stringfog:xor:1.1.0'
+
     // firebase
     implementation 'com.google.firebase:firebase-core:18.0.2'
     implementation 'com.google.firebase:firebase-config:18.0.0'
@@ -72,8 +74,8 @@ dependencies {
     implementation 'com.mopub.mediation:applovin:10.3.3.0'
 
     // facebook
-    implementation 'com.facebook.android:audience-network-sdk:6.6.0'
-    implementation 'com.mopub.mediation:facebookaudiencenetwork:6.6.0.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.7.0'
+    implementation 'com.mopub.mediation:facebookaudiencenetwork:6.7.0.0'
 
     // admob
     implementation 'com.google.android.gms:play-services-ads:20.3.0'
