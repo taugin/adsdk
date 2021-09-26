@@ -30,6 +30,8 @@ import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
 
+import org.json.JSONObject;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -357,6 +359,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
+                reportMaxAdImpData(ad);
             }
         });
 
@@ -456,6 +459,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
+                reportMaxAdImpData(ad);
             }
         });
 
@@ -574,6 +578,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
+                reportMaxAdImpData(ad);
             }
         });
 
@@ -661,5 +666,25 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
         }
         return "UNKNOWN[" + code + "]";
+    }
+
+    private void reportMaxAdImpData(MaxAd maxAd) {
+        try {
+            double revenue = maxAd.getRevenue(); // In USD
+            String countryCode = getInstance().getConfiguration().getCountryCode(); // "US" for the United States, etc - Note: Do not confuse this with currency code which is "USD" in most cases!
+            String networkName = maxAd.getNetworkName(); // Display name of the network that showed the ad (e.g. "AdColony")
+            String adUnitId = maxAd.getAdUnitId(); // The MAX Ad Unit ID
+            MaxAdFormat adFormat = maxAd.getFormat(); // The ad format of the ad (e.g. BANNER, MREC, INTERSTITIAL, REWARDED)
+            String placement = maxAd.getPlacement(); // The placement this ad's postbacks are tied to
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("revenue", revenue);
+            jsonObject.put("countryCode", countryCode);
+            jsonObject.put("networkName", networkName);
+            jsonObject.put("adUnitId", adUnitId);
+            jsonObject.put("adFormat", adFormat);
+            jsonObject.put("placement", placement);
+            Log.iv(Log.TAG, "applovin max impression data : " + jsonObject.toString(2));
+        } catch (Exception e) {
+        }
     }
 }
