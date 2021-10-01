@@ -897,84 +897,14 @@ public class MopubLoader extends AbstractSdkLoader {
                 map.put("ad_unit_id", impressionData.getAdUnitId());
                 map.put("ad_unit_name", impressionData.getAdUnitName());
                 map.put("ad_group_name", impressionData.getAdGroupName());
-                InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
-                Log.iv(Log.TAG, "imp data map : " + map);
+                map.put("ad_provider", getSdkName());
+                if (isReportAdImpData()) {
+                    InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
+                }
+                Log.iv(Log.TAG, "mopub imp data map : " + map);
             }
-        } catch (Exception e) {
-        }
-    }
-
-    /*************************************************************************************/
-    // Taichi模型，为AC2.5准备数据
-    private void reportAdLTVOneDayPercent(ImpressionData impressionData) {
-        if (impressionData != null) {
-            Double publishRevenue = impressionData.getPublisherRevenue();
-            if (publishRevenue != null && !Double.isNaN(publishRevenue)) {
-                calcTaiChitCPAOneDayAdRevenueCache(publishRevenue.floatValue());
-            }
-        }
-    }
-
-    private void resetTaiChitCPAOneDayAdRevenueCache() {
-        long todayTime = Utils.getTodayTime();
-        long lastTime = Utils.getLong(getContext(), "TaiChitCPAOneDayAdRevenueCacheDate", todayTime);
-        if (todayTime != lastTime) {
-            Utils.putLong(getContext(), "TaiChitCPAOneDayAdRevenueCacheDate", todayTime);
-            Utils.putFloat(getContext(), "TaiChitCPAOneDayAdRevenueCache", 0f);
-        }
-    }
-
-    private void calcTaiChitCPAOneDayAdRevenueCache(float currentImpressionRevenue) {
-        resetTaiChitCPAOneDayAdRevenueCache();
-        float previousOneDayAdRevenueCache = Utils.getFloat(getContext(), "TaiChitCPAOneDayAdRevenueCache", 0f);
-        float currentOneDayAdRevenueCache = (float) (previousOneDayAdRevenueCache + currentImpressionRevenue);
-        Utils.putFloat(getContext(), "TaiChitCPAOneDayAdRevenueCache", currentOneDayAdRevenueCache);
-        reportLogTaiChiTCPAFirebaseAdRevenueEvent(previousOneDayAdRevenueCache, currentImpressionRevenue);
-    }
-
-    private Float[] getAdsLTVThreshold() {
-        String adsLTVThresholdString = DataManager.get(getContext()).getString("TaiChitCPAOneDayAdRevenueLTVThreshold");
-        try {
-            String[] temp = adsLTVThresholdString.split("|");
-            List<Float> adsLTVThreshold = new ArrayList<>();
-            for (String s : temp) {
-                adsLTVThreshold.add(Float.parseFloat(s));
-            }
-            return adsLTVThreshold.toArray(new Float[]{});
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
-        }
-        return null;
-    }
-
-    private void reportLogTaiChiTCPAFirebaseAdRevenueEvent(float previousAdsTV, float currentAdsTv) {
-        Float[] adsLTVThreshold = getAdsLTVThreshold();
-        if (adsLTVThreshold != null && adsLTVThreshold.length > 0) {
-            for (int i = 0; i < adsLTVThreshold.length; i++) {
-                if (previousAdsTV < adsLTVThreshold[i] && currentAdsTv >= adsLTVThreshold[i]) {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("value", String.valueOf(adsLTVThreshold[i]));
-                    map.put("currency", "USD");
-                    String TaichiEventName = null;
-                    switch (i) {
-                        case 0:
-                            TaichiEventName = "AdLTV_OneDay_Top50Percent";
-                            break;
-                        case 1:
-                            TaichiEventName = "AdLTV_OneDay_Top40Percent";
-                            break;
-                        case 2:
-                            TaichiEventName = "AdLTV_OneDay_Top30Percent";
-                            break;
-                        case 3:
-                            TaichiEventName = "AdLTV_OneDay_Top20Percent";
-                            break;
-                        default:
-                            TaichiEventName = "AdLTV_OneDay_Top10Percent";
-                    }
-                    InternalStat.reportEvent(getContext(), TaichiEventName, map);
-                }
-            }
         }
     }
 }

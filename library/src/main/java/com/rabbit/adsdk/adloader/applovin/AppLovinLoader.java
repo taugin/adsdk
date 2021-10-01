@@ -28,9 +28,8 @@ import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
-
-import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -676,15 +675,19 @@ public class AppLovinLoader extends AbstractSdkLoader {
             String adUnitId = maxAd.getAdUnitId(); // The MAX Ad Unit ID
             MaxAdFormat adFormat = maxAd.getFormat(); // The ad format of the ad (e.g. BANNER, MREC, INTERSTITIAL, REWARDED)
             String placement = maxAd.getPlacement(); // The placement this ad's postbacks are tied to
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("revenue", revenue);
-            jsonObject.put("countryCode", countryCode);
-            jsonObject.put("networkName", networkName);
-            jsonObject.put("adUnitId", adUnitId);
-            jsonObject.put("adFormat", adFormat);
-            jsonObject.put("placement", placement);
-            Log.iv(Log.TAG, "applovin max impression data : " + jsonObject.toString(2));
+            Map<String, String> map = new HashMap<>();
+            map.put("value", String.valueOf(revenue));
+            map.put("ad_network", networkName);
+            map.put("ad_unit_id", adUnitId);
+            map.put("ad_format", adFormat.getDisplayName());
+            map.put("ad_unit_name", placement);
+            map.put("ad_provider", getSdkName());
+            if (isReportAdImpData()) {
+                InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
+            }
+            Log.iv(Log.TAG, "applovin max imp data : " + map);
         } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
         }
     }
 }

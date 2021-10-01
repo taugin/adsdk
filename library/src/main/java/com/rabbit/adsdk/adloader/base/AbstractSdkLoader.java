@@ -12,6 +12,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.mopub.network.ImpressionData;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.core.AdLoaderManager;
 import com.rabbit.adsdk.adloader.listener.IManagerListener;
@@ -20,15 +21,19 @@ import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.BlockAdsManager;
 import com.rabbit.adsdk.core.framework.Params;
+import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.listener.AdLoaderFilter;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.stat.IEvent;
+import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 import com.rabbit.sunny.MView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -861,5 +866,94 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             return saveTime > FULLSCREEN_SHOWTIME_EXPIRED;
         }
         return false;
+    }
+
+    /**
+     * 控制是否上报广告展示价值
+     * @return
+     */
+    protected boolean isReportAdImpData() {
+        String value = DataManager.get(mContext).getString("report_ad_imp_data");
+        if (!TextUtils.isEmpty(value)) {
+            try {
+                return Boolean.parseBoolean(value);
+            } catch (Exception e) {
+            }
+        }
+        return false;
+    }
+
+    /*************************************************************************************/
+    // Taichi模型，为AC2.5准备数据
+    private void reportAdLTVOneDayPercent(ImpressionData impressionData) {
+        if (impressionData != null) {
+            Double publishRevenue = impressionData.getPublisherRevenue();
+            if (publishRevenue != null && !Double.isNaN(publishRevenue)) {
+                calcTaiChitCPAOneDayAdRevenueCache(publishRevenue.floatValue());
+            }
+        }
+    }
+
+    private void resetTaiChitCPAOneDayAdRevenueCache() {
+        long todayTime = Utils.getTodayTime();
+        long lastTime = Utils.getLong(getContext(), "TaiChitCPAOneDayAdRevenueCacheDate", todayTime);
+        if (todayTime != lastTime) {
+            Utils.putLong(getContext(), "TaiChitCPAOneDayAdRevenueCacheDate", todayTime);
+            Utils.putFloat(getContext(), "TaiChitCPAOneDayAdRevenueCache", 0f);
+        }
+    }
+
+    private void calcTaiChitCPAOneDayAdRevenueCache(float currentImpressionRevenue) {
+        resetTaiChitCPAOneDayAdRevenueCache();
+        float previousOneDayAdRevenueCache = Utils.getFloat(getContext(), "TaiChitCPAOneDayAdRevenueCache", 0f);
+        float currentOneDayAdRevenueCache = (float) (previousOneDayAdRevenueCache + currentImpressionRevenue);
+        Utils.putFloat(getContext(), "TaiChitCPAOneDayAdRevenueCache", currentOneDayAdRevenueCache);
+        reportLogTaiChiTCPAFirebaseAdRevenueEvent(previousOneDayAdRevenueCache, currentImpressionRevenue);
+    }
+
+    private Float[] getAdsLTVThreshold() {
+        String adsLTVThresholdString = DataManager.get(getContext()).getString("TaiChitCPAOneDayAdRevenueLTVThreshold");
+        try {
+            String[] temp = adsLTVThresholdString.split("|");
+            List<Float> adsLTVThreshold = new ArrayList<>();
+            for (String s : temp) {
+                adsLTVThreshold.add(Float.parseFloat(s));
+            }
+            return adsLTVThreshold.toArray(new Float[]{});
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    private void reportLogTaiChiTCPAFirebaseAdRevenueEvent(float previousAdsTV, float currentAdsTv) {
+        Float[] adsLTVThreshold = getAdsLTVThreshold();
+        if (adsLTVThreshold != null && adsLTVThreshold.length > 0) {
+            for (int i = 0; i < adsLTVThreshold.length; i++) {
+                if (previousAdsTV < adsLTVThreshold[i] && currentAdsTv >= adsLTVThreshold[i]) {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("value", String.valueOf(adsLTVThreshold[i]));
+                    map.put("currency", "USD");
+                    String TaichiEventName = null;
+                    switch (i) {
+                        case 0:
+                            TaichiEventName = "AdLTV_OneDay_Top50Percent";
+                            break;
+                        case 1:
+                            TaichiEventName = "AdLTV_OneDay_Top40Percent";
+                            break;
+                        case 2:
+                            TaichiEventName = "AdLTV_OneDay_Top30Percent";
+                            break;
+                        case 3:
+                            TaichiEventName = "AdLTV_OneDay_Top20Percent";
+                            break;
+                        default:
+                            TaichiEventName = "AdLTV_OneDay_Top10Percent";
+                    }
+                    InternalStat.reportEvent(getContext(), TaichiEventName, map);
+                }
+            }
+        }
     }
 }
