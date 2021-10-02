@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_toLeftOf="@+id/rab_native_action_btn_layout"
@@ -38,10 +39,10 @@
                 android:layout_toLeftOf="@+id/common_sponsored_label"
                 android:ellipsize="end"
                 android:gravity="left|top"
-                android:singleLine="true"
                 android:text="Charge Master"
+                android:maxLines="2"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/rab_native_social"
