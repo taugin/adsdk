@@ -898,6 +898,8 @@ public class MopubLoader extends AbstractSdkLoader {
                 map.put("ad_unit_name", impressionData.getAdUnitName());
                 map.put("ad_group_name", impressionData.getAdGroupName());
                 map.put("ad_provider", getSdkName());
+                String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+                map.put("ad_gaid", gaid);
                 if (isReportAdImpData()) {
                     InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
                 }
