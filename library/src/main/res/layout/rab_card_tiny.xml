@@ -62,10 +62,10 @@
                     android:layout_toLeftOf="@+id/common_sponsored_label"
                     android:ellipsize="marquee"
                     android:gravity="left|top"
-                    android:singleLine="true"
                     android:text="Charge Master"
+                    android:maxLines="2"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/rab_native_social"
