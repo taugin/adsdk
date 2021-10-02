@@ -82,16 +82,35 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/rab_native_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="12dp"
+                        android:ellipsize="marquee"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:maxLines="2"
+                        android:text="Charge Master"
+                        android:textColor="@color/rab_primaryColor"
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/rab_native_sponsored_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
-                        android:layout_toRightOf="@+id/rab_native_title"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="0"
                         android:background="@drawable/rab_badge_bg"
                         android:gravity="center"
                         android:paddingLeft="4dp"
@@ -101,20 +120,7 @@
                         android:text="AD"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="8sp" />
-
-                    <TextView
-                        android:id="@+id/rab_native_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:ellipsize="marquee"
-                        android:gravity="left|top"
-                        android:singleLine="true"
-                        android:text="Charge Master"
-                        android:textColor="@color/rab_primaryColor"
-                        android:textSize="18sp" />
-
-                </RelativeLayout>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/rab_native_social"
