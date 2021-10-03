@@ -74,9 +74,27 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="4dp"
+                        android:background="@drawable/rab_badge_bg"
+                        android:gravity="center"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingTop="2dp"
+                        android:text="AD"
+                        android:layout_weight="0"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="8sp"
+                        android:visibility="invisible" />
 
                     <TextView
                         android:id="@+id/rab_native_title"
@@ -84,26 +102,20 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="2dp"
-                        android:layout_weight="1"
                         android:ellipsize="marquee"
                         android:gravity="center"
-                        android:maxWidth="240dp"
+                        android:layout_weight="1"
                         android:maxLines="2"
-                        android:paddingLeft="4dp"
-                        android:paddingRight="4dp"
-                        android:singleLine="false"
                         android:text="Charge Master"
                         android:textColor="@color/rab_primaryColor"
-                        android:textSize="24sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/rab_native_sponsored_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:layout_marginLeft="14dp"
-                        android:layout_toRightOf="@+id/rab_native_title"
+                        android:layout_marginLeft="4dp"
+                        android:layout_gravity="center_horizontal"
                         android:layout_weight="0"
                         android:background="@drawable/rab_badge_bg"
                         android:gravity="center"
@@ -111,12 +123,10 @@
                         android:paddingTop="2dp"
                         android:paddingRight="4dp"
                         android:paddingBottom="2dp"
-                        android:singleLine="true"
                         android:text="AD"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="8sp" />
-
-                </RelativeLayout>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/rab_native_social"
