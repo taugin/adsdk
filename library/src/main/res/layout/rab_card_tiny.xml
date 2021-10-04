@@ -63,7 +63,8 @@
                     android:ellipsize="marquee"
                     android:gravity="left|top"
                     android:text="Charge Master"
-                    android:singleLine="true"
+                    android:lines="2"
+                    android:maxLines="2"
                     android:includeFontPadding="false"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
