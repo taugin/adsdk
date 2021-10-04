@@ -30,6 +30,7 @@
                 android:id="@+id/rab_native_cover_info"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:background="#FFEEEEEE"
                 android:layout_weight="1">
 
                 <ImageView
@@ -37,7 +38,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@null"
-                    android:background="#FFEEEEEE"
                     android:scaleType="fitCenter" />
 
                 <RelativeLayout
