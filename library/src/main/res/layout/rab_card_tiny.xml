@@ -30,7 +30,7 @@
                 android:id="@+id/rab_native_cover_info"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="#FFEEEEEE"
+                android:background="@drawable/rab_media_bg"
                 android:layout_weight="1">
 
                 <ImageView
