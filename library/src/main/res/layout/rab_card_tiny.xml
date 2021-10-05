@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center">
@@ -26,27 +27,30 @@
             android:paddingRight="6dp"
             android:paddingBottom="14dp">
 
-            <RelativeLayout
+            <androidx.percentlayout.widget.PercentRelativeLayout
                 android:id="@+id/rab_native_cover_info"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/rab_media_bg"
                 android:layout_weight="1">
 
                 <ImageView
                     android:id="@+id/rab_native_image_cover"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:contentDescription="@null"
-                    android:scaleType="fitCenter" />
+                    android:scaleType="fitXY"
+                    app:layout_aspectRatio="192%"
+                    app:layout_widthPercent="100%" />
 
                 <RelativeLayout
                     android:id="@+id/rab_native_media_cover"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:contentDescription="@null"
-                    android:gravity="center" />
-            </RelativeLayout>
+                    android:gravity="center"
+                    app:layout_aspectRatio="192%"
+                    app:layout_widthPercent="100%" />
+            </androidx.percentlayout.widget.PercentRelativeLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -64,8 +68,7 @@
                     android:ellipsize="marquee"
                     android:gravity="left|top"
                     android:text="Charge Master"
-                    android:lines="2"
-                    android:maxLines="2"
+                    android:singleLine="true"
                     android:includeFontPadding="false"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
@@ -91,8 +94,8 @@
                     android:maxLines="2"
                     android:minHeight="24dp"
                     android:includeFontPadding="false"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:textColor="@color/rab_secondaryColor"
                     android:textSize="12sp" />
 
