@@ -35,21 +35,23 @@
 
                 <ImageView
                     android:id="@+id/rab_native_image_cover"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:contentDescription="@null"
+                    android:layout_centerInParent="true"
                     android:scaleType="fitXY"
-                    app:layout_aspectRatio="192%"
-                    app:layout_widthPercent="100%" />
+                    app:layout_heightPercent="100%"
+                    app:layout_aspectRatio="192%" />
 
                 <RelativeLayout
                     android:id="@+id/rab_native_media_cover"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:contentDescription="@null"
+                    android:layout_centerInParent="true"
                     android:gravity="center"
                     app:layout_aspectRatio="192%"
-                    app:layout_widthPercent="100%" />
+                    app:layout_heightPercent="100%" />
             </androidx.percentlayout.widget.PercentRelativeLayout>
 
             <LinearLayout
@@ -62,13 +64,13 @@
 
                 <TextView
                     android:id="@+id/rab_native_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/common_sponsored_label"
                     android:ellipsize="marquee"
                     android:gravity="left|top"
                     android:text="Charge Master"
-                    android:singleLine="true"
+                    android:maxLines="2"
                     android:includeFontPadding="false"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
@@ -94,8 +96,8 @@
                     android:maxLines="2"
                     android:minHeight="24dp"
                     android:includeFontPadding="false"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
                     android:textColor="@color/rab_secondaryColor"
                     android:textSize="12sp" />
 
