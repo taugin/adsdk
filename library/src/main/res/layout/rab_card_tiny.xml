@@ -32,6 +32,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="2dp"
+                android:gravity="center_horizontal|bottom"
                 android:layout_weight="1">
 
                 <ImageView
@@ -50,7 +51,7 @@
                     android:layout_height="match_parent"
                     android:contentDescription="@null"
                     android:layout_centerInParent="true"
-                    android:gravity="center"
+                    android:gravity="center_horizontal|bottom"
                     app:layout_aspectRatio="192%"
                     app:layout_heightPercent="100%" />
             </androidx.percentlayout.widget.PercentRelativeLayout>
