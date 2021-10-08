@@ -31,6 +31,7 @@
                 android:id="@+id/rab_native_cover_info"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginRight="2dp"
                 android:layout_weight="1">
 
                 <ImageView
@@ -54,11 +55,16 @@
                     app:layout_heightPercent="100%" />
             </androidx.percentlayout.widget.PercentRelativeLayout>
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#44AAAAAA" />
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="4dp"
+                android:layout_marginLeft="2dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
