@@ -79,12 +79,12 @@ public interface IEvent {
      * 广告加载错误
      *
      * @param context
-     * @param error
+     * @param placeName
      * @param sdk
      * @param type
      * @param extra
      */
-    public void reportAdError(Context context, String error, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
+    public void reportAdError(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
 
     /**
      * 广告关闭
