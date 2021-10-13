@@ -2,6 +2,7 @@ package com.rabbit.adsdk.adloader.mopub;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -83,6 +84,7 @@ public class MopubLoader extends AbstractSdkLoader {
     private MopubBindNativeView bindNativeView = new MopubBindNativeView();
 
     private String mLoadedRewardUnit;
+    private CountDownTimer mStateChecker;
 
     @Override
     public void init(Context context, PidConfig pidConfig) {
@@ -137,11 +139,43 @@ public class MopubLoader extends AbstractSdkLoader {
         };
     }
 
-    private void configSdkInit(final SDKInitializeListener sdkInitializeListener) {
-        if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZING) {
+    private void checkSdkInitializeState(final SDKInitializeListener sdkInitializeListener) {
+        if (mStateChecker == null) {
+            Log.iv(Log.TAG, "mopub sdk init start checking");
+            mStateChecker = new CountDownTimer(10000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    Log.iv(Log.TAG, "mopub sdk init state check");
+                    if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS) {
+                        mStateChecker.cancel();
+                        mStateChecker = null;
+                        if (sdkInitializeListener != null) {
+                            sdkInitializeListener.onInitializeSuccess(null, null);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    Log.iv(Log.TAG, "mopub sdk init timeout");
+                    mStateChecker = null;
+                    if (sdkInitializeListener != null) {
+                        sdkInitializeListener.onInitializeFailure("timeout");
+                    }
+                }
+            };
+            mStateChecker.start();
+        } else {
+            Log.iv(Log.TAG, "mopub sdk initializing");
             if (sdkInitializeListener != null) {
                 sdkInitializeListener.onInitializeFailure("initializing");
             }
+        }
+    }
+
+    private void configSdkInit(final SDKInitializeListener sdkInitializeListener) {
+        if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZING) {
+            checkSdkInitializeState(sdkInitializeListener);
         } else {
             if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS) {
                 if (sdkInitializeListener != null) {
