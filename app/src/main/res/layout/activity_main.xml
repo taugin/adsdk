@@ -191,7 +191,7 @@
             <Button
                 android:id="@+id/show_complex"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
@@ -200,7 +200,7 @@
             <Button
                 android:id="@+id/spread_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
@@ -209,7 +209,7 @@
             <Button
                 android:id="@+id/show_ads_in_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
