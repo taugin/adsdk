@@ -95,17 +95,14 @@ public class MopubLoader extends AbstractSdkLoader {
         }
     }
 
-    private ImpressionListener mImpressionListener = new ImpressionListener() {
-        @Override
-        public void onImpression(String adUnitId, ImpressionData impressionData) {
-            String impData = null;
-            try {
-                impData = impressionData.getJsonRepresentation().toString(2);
-            } catch (Exception | Error e) {
-            }
-            Log.iv(Log.TAG, "mopub impression pid : " + adUnitId + " , impData : " + impData);
-            reportAdImpressionRevenue(impressionData);
+    private ImpressionListener mImpressionListener = (adUnitId, impressionData) -> {
+        String impData = null;
+        try {
+            impData = impressionData.getJsonRepresentation().toString(2);
+        } catch (Exception | Error e) {
         }
+        Log.iv(Log.TAG, "mopub impression pid : " + adUnitId + " , impData : " + impData);
+        reportAdImpressionRevenue(impressionData);
     };
 
     private void setImpressionListener() {

@@ -77,12 +77,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         super.init(context, pidConfig);
         initBannerSize();
         if (!sAdmobInited.getAndSet(true)) {
-            MobileAds.initialize(mContext, new OnInitializationCompleteListener() {
-                @Override
-                public void onInitializationComplete(InitializationStatus initializationStatus) {
-                    Log.iv(Log.TAG, "admob init successfully");
-                }
-            });
+            MobileAds.initialize(mContext, initializationStatus -> Log.iv(Log.TAG, "admob init successfully"));
         }
     }
 

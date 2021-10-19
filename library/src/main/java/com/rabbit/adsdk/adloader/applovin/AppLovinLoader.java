@@ -55,12 +55,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     appLovinSdk.setMediationProvider("max");
                 } catch (Exception e) {
                 }
-                appLovinSdk.initializeSdk(new AppLovinSdk.SdkInitializationListener() {
-                    @Override
-                    public void onSdkInitialized(AppLovinSdkConfiguration config) {
-                        Log.iv(Log.TAG, "applovin sdk init successfully");
-                    }
-                });
+                appLovinSdk.initializeSdk(config -> Log.iv(Log.TAG, "applovin sdk init successfully"));
                 if (isDebug()) {
                     String gaid = Utils.getString(mContext, Constant.PREF_GAID);
                     Log.iv(Log.TAG, "applovin debug mode gaid : " + gaid);
