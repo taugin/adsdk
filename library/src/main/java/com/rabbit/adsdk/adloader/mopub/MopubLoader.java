@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Administrator on 2018/6/28.
@@ -59,7 +60,7 @@ import java.util.Set;
 
 public class MopubLoader extends AbstractSdkLoader {
 
-    private static boolean sHasSetImpressionListener = false;
+    private static AtomicBoolean sHasSetImpressionListener = new AtomicBoolean(false);
     protected static final Map<Integer, MoPubView.MoPubAdSize> ADSIZE = new HashMap<>();
     private static SDKInitializeState sSdkInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
     private static final Handler sHandler = new Handler(Looper.getMainLooper());
@@ -89,9 +90,8 @@ public class MopubLoader extends AbstractSdkLoader {
     @Override
     public void init(Context context, PidConfig pidConfig) {
         super.init(context, pidConfig);
-        if (!sHasSetImpressionListener) {
+        if (!sHasSetImpressionListener.getAndSet(true)) {
             setImpressionListener();
-            sHasSetImpressionListener = true;
         }
     }
 

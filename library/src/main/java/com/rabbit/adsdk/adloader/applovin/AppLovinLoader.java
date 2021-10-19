@@ -34,6 +34,7 @@ import com.rabbit.adsdk.utils.Utils;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Administrator on 2018/7/16.
@@ -41,14 +42,13 @@ import java.util.Map;
 
 public class AppLovinLoader extends AbstractSdkLoader {
 
-    private static boolean sApplovinInited = false;
+    private static AtomicBoolean sApplovinInited = new AtomicBoolean(false);
     private static AppLovinSdkSettings sAppLovinSdkSettings;
 
     @Override
     public void init(Context context, PidConfig pidConfig) {
         super.init(context, pidConfig);
-        if (!sApplovinInited) {
-            sApplovinInited = true;
+        if (!sApplovinInited.getAndSet(true)) {
             AppLovinSdk appLovinSdk = getInstance();
             if (appLovinSdk != null) {
                 try {

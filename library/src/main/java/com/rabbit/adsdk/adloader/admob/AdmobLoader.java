@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -50,7 +51,7 @@ import java.util.Map;
 public class AdmobLoader extends AbstractSdkLoader {
 
     protected static final Map<Integer, AdSize> ADSIZE = new HashMap<>();
-    private static boolean sAdmobInited = false;
+    private static AtomicBoolean sAdmobInited = new AtomicBoolean(false);
     private AdView bannerView;
     private AdView loadingView;
     private InterstitialAd mInterstitialAd;
@@ -75,8 +76,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     public void init(Context context, PidConfig pidConfig) {
         super.init(context, pidConfig);
         initBannerSize();
-        if (!sAdmobInited) {
-            sAdmobInited = true;
+        if (!sAdmobInited.getAndSet(true)) {
             MobileAds.initialize(mContext, new OnInitializationCompleteListener() {
                 @Override
                 public void onInitializationComplete(InitializationStatus initializationStatus) {

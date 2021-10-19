@@ -26,6 +26,7 @@ import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -34,7 +35,7 @@ import java.util.HashMap;
 public class FBLoader extends AbstractSdkLoader {
 
     private static final HashMap<Integer, AdSize> ADSIZE = new HashMap<Integer, AdSize>();
-    private static boolean sFacebookInited = false;
+    private static AtomicBoolean sFacebookInited = new AtomicBoolean(false);
 
     static {
         ADSIZE.put(Constant.BANNER, AdSize.BANNER_HEIGHT_50);
@@ -64,8 +65,7 @@ public class FBLoader extends AbstractSdkLoader {
     @Override
     public void init(Context context, PidConfig pidConfig) {
         super.init(context, pidConfig);
-        if (!sFacebookInited) {
-            sFacebookInited = true;
+        if (!sFacebookInited.getAndSet(true)) {
             AudienceNetworkAds.initialize(context);
         }
     }
