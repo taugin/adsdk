@@ -314,6 +314,13 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
 
                 @Override
+                public void onAdClicked() {
+                    Log.iv(Log.TAG, formatLog("ad click"));
+                    reportAdClick();
+                    notifyAdClick();
+                }
+
+                @Override
                 public void onAdImpression() {
                     Log.iv(Log.TAG, formatLog("ad impression"));
                     reportAdImp();
@@ -415,6 +422,13 @@ public class AdmobLoader extends AbstractSdkLoader {
                     onResetReward();
                     reportAdClose();
                     notifyAdDismiss();
+                }
+
+                @Override
+                public void onAdClicked() {
+                    Log.iv(Log.TAG, formatLog("ad click"));
+                    reportAdClick();
+                    notifyAdClick();
                 }
 
                 @Override

@@ -66,7 +66,7 @@ dependencies {
     implementation 'com.github.megatronking.stringfog:xor:1.1.0'
 
     // firebase
-    implementation 'com.google.firebase:firebase-core:18.0.2'
+    implementation 'com.google.firebase:firebase-core:18.0.3'
     implementation 'com.google.firebase:firebase-config:18.0.0'
 
     // applovin
@@ -78,7 +78,7 @@ dependencies {
     implementation 'com.mopub.mediation:facebookaudiencenetwork:6.7.0.0'
 
     // admob
-    implementation 'com.google.android.gms:play-services-ads:20.3.0'
+    implementation 'com.google.android.gms:play-services-ads:20.4.0'
     implementation 'com.mopub.mediation:admob:20.3.0.0'
 
     // mintegral
