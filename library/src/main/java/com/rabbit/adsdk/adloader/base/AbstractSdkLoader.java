@@ -657,12 +657,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void reportAdImp(String render) {
         if (mStat != null) {
             BaseBindNativeView baseBindNativeView = getBaseBindNativeView();
-            Map<String, String> extra = null;
+            Map<String, String> nativeAssets = null;
             if (baseBindNativeView != null) {
-                extra = baseBindNativeView.getAdvMap();
+                nativeAssets = baseBindNativeView.getAdvMap();
             }
-            if (extra != null && !extra.isEmpty()) {
-                Log.v(Log.TAG, "extra : " + extra);
+            if (nativeAssets != null && !nativeAssets.isEmpty()) {
+                Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " [" + render + "] assets : " + nativeAssets);
             }
             Map<String, String> mediaTypeExtra = null;
             if (!TextUtils.isEmpty(render)) {
@@ -670,8 +670,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 mediaTypeExtra.put("render", render);
             }
             mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), render, getAdType(), getPid(), String.valueOf(getEcpm()), mediaTypeExtra);
-            if (extra != null) {
-                extra.clear();
+            if (nativeAssets != null) {
+                nativeAssets.clear();
             }
         }
     }

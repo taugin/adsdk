@@ -15,10 +15,13 @@ import android.widget.TextView;
 import com.facebook.ads.MediaView;
 import com.mbridge.msdk.nativex.view.MBMediaView;
 import com.mbridge.msdk.widget.MBAdChoice;
+import com.mopub.nativeads.BaseNativeAd;
 import com.mopub.nativeads.FacebookAdRenderer;
 import com.mopub.nativeads.GooglePlayServicesMediaLayout;
+import com.mopub.nativeads.GooglePlayServicesNative;
 import com.mopub.nativeads.GooglePlayServicesViewBinder;
 import com.mopub.nativeads.MintegralAdRenderer;
+import com.mopub.nativeads.MintegralNative;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.StaticNativeAd;
 import com.mopub.nativeads.ViewBinder;
@@ -604,12 +607,59 @@ public class MopubBindNativeView extends BaseBindNativeView {
 
     public void putAdvertiserInfo(com.mopub.nativeads.NativeAd nativeAd) {
         try {
-            if (nativeAd.getBaseNativeAd() instanceof StaticNativeAd) {
-                StaticNativeAd staticNativeAd = (StaticNativeAd) nativeAd.getBaseNativeAd();
-                putStaticInfo(staticNativeAd);
-            }
+            BaseNativeAd baseNativeAd = nativeAd.getBaseNativeAd();
+            processMopubStaticAd(baseNativeAd);
+            processMintegralAd(baseNativeAd);
+            processAdmobAd(baseNativeAd);
+            processFacebookAd(baseNativeAd);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+    }
+
+    private boolean processMopubStaticAd(BaseNativeAd baseNativeAd) {
+        if (baseNativeAd instanceof StaticNativeAd) {
+            StaticNativeAd staticNativeAd = (StaticNativeAd) baseNativeAd;
+            putStaticInfo(staticNativeAd);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean processMintegralAd(BaseNativeAd baseNativeAd) {
+        if (baseNativeAd instanceof MintegralNative.MBridgeNativeAd) {
+            MintegralNative.MBridgeNativeAd mintegralAd = (MintegralNative.MBridgeNativeAd) baseNativeAd;
+            putMintegralInfo(mintegralAd);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean processAdmobAd(BaseNativeAd baseNativeAd) {
+        if (baseNativeAd instanceof GooglePlayServicesNative.GooglePlayServicesNativeAd) {
+            GooglePlayServicesNative.GooglePlayServicesNativeAd googlePlayServicesNativeAd = (GooglePlayServicesNative.GooglePlayServicesNativeAd) baseNativeAd;
+            putAdmobInfo(googlePlayServicesNativeAd);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean processFacebookAd(BaseNativeAd baseNativeAd) {
+        Class<?> fbNativeAd = null;
+        try {
+            fbNativeAd = Class.forName("com.mopub.nativeads.FacebookNative$FacebookNativeAd");
         } catch (Exception e) {
         }
+        if (fbNativeAd != null) {
+            String baseAdClassName = baseNativeAd.getClass().getName();
+            String facebookAdClassName = fbNativeAd.getName();
+            Log.iv(Log.TAG, "base ad name : " + baseAdClassName + " , facebook ad name : " + facebookAdClassName);
+            if (TextUtils.equals(baseAdClassName, facebookAdClassName)) {
+                putFacebookInfo(baseNativeAd, fbNativeAd);
+                return true;
+            }
+        }
+        return false;
     }
 
     private void putStaticInfo(StaticNativeAd staticNativeAd) {
@@ -644,6 +694,103 @@ public class MopubBindNativeView extends BaseBindNativeView {
             }
             try {
                 putValue(AD_RATE, staticNativeAd.getStarRating().toString());
+            } catch (Exception e) {
+            }
+        }
+    }
+    private void putMintegralInfo(MintegralNative.MBridgeNativeAd nativeAd) {
+        if (nativeAd != null) {
+            try {
+                putValue(AD_TITLE, nativeAd.getTitle());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_DETAIL, nativeAd.getText());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_MEDIA, nativeAd.getMainImageUrl());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_CTA, nativeAd.getCallToAction());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_ICON, nativeAd.getIconUrl());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_RATE, String.valueOf(nativeAd.getStarRating()));
+            } catch (Exception e) {
+            }
+        }
+    }
+    private void putAdmobInfo(GooglePlayServicesNative.GooglePlayServicesNativeAd googleNativeAd) {
+        if (googleNativeAd != null) {
+            try {
+                putValue(AD_TITLE, googleNativeAd.getTitle());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_DETAIL, googleNativeAd.getText());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_ADVERTISER, googleNativeAd.getAdvertiser());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_MEDIA, googleNativeAd.getMainImageUrl());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_CTA, googleNativeAd.getCallToAction());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_ICON, googleNativeAd.getIconImageUrl());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_RATE, googleNativeAd.getStarRating().toString());
+            } catch (Exception e) {
+            }
+        }
+    }
+
+
+    private String getReflectResult(BaseNativeAd baseNativeAd, Class<?> fbNativeAd, String methodName) {
+        try {
+            return (String) fbNativeAd.getMethod(methodName).invoke(baseNativeAd);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    private void putFacebookInfo(BaseNativeAd baseNativeAd, Class<?> fbNativeAd) {
+        if (baseNativeAd != null && fbNativeAd != null) {
+            try {
+                putValue(AD_TITLE, getReflectResult(baseNativeAd, fbNativeAd, "getTitle"));
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_DETAIL, getReflectResult(baseNativeAd, fbNativeAd, "getText"));
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_ADVERTISER, getReflectResult(baseNativeAd, fbNativeAd, "getAdvertiserName"));
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_SPONSORED, getReflectResult(baseNativeAd, fbNativeAd, "getSponsoredName"));
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_CHOICES, getReflectResult(baseNativeAd, fbNativeAd, "getPrivacyInformationIconClickThroughUrl"));
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_CTA, getReflectResult(baseNativeAd, fbNativeAd, "getCallToAction"));
             } catch (Exception e) {
             }
         }
