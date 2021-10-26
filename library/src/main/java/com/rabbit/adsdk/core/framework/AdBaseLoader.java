@@ -83,6 +83,19 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public boolean isSplashLoaded() {
+        return false;
+    }
+
+    @Override
+    public void loadSplash(Activity activity) {
+    }
+
+    @Override
+    public void showSplash() {
+    }
+
+    @Override
     public boolean isComplexAdsLoaded() {
         return false;
     }

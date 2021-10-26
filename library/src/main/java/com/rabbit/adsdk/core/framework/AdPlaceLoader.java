@@ -729,6 +729,210 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     ///////////////////////////////////////////////////////////////////
+
+    @Override
+    public boolean isSplashLoaded() {
+        if (mAdLoaders != null) {
+            for (ISdkLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    if (loader.isSplashType() && loader.isSplashLoaded()) {
+                        Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        return true;
+                    }
+                    if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
+                        Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 加载插屏
+     */
+    @Override
+    public void loadSplash(Activity activity) {
+        if (mAdPlace == null) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(null, null, null, null, Constant.AD_ERROR_ADLOADER);
+            }
+            return;
+        }
+        if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
+            }
+            return;
+        }
+
+        List<PidConfig> pidList = mAdPlace.getPidList();
+        if (pidList == null || pidList.isEmpty()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
+            }
+            return;
+        }
+
+        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
+            }
+            return;
+        }
+
+        if (activity != null) {
+            mActivity = new WeakReference<Activity>(activity);
+        }
+        resetAdLoaded();
+        // 处理场景缓存
+        if (processAdPlaceCache()) {
+            return;
+        }
+        setPlaceType(Constant.PLACE_TYPE_INTERSTITIAL);
+        loadSplashInternal();
+    }
+
+    private void loadSplashInternal() {
+        resetPlaceErrorTimes();
+        if (mAdPlace.isConcurrent()) {
+            loadSplashConcurrent();
+        } else if (mAdPlace.isSequence()) {
+            loadSplashSequence();
+        } else if (mAdPlace.isRandom()) {
+            loadSplashRandom();
+        } else {
+            loadSplashConcurrent();
+        }
+    }
+
+    private void loadSplashConcurrent() {
+        if (mAdLoaders != null) {
+            for (ISdkLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                            loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this));
+                }
+            }
+            for (ISdkLoader loader : mAdLoaders) {
+                if (loader != null && loader.allowUseLoader()) {
+                    if (loader.isSplashType()) {
+                        loader.loadSplash();
+                    } else {
+                        Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                    }
+                }
+            }
+        }
+    }
+
+    private void loadSplashSequence() {
+        if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
+            // 使用迭代器处理
+            if (!isAdPlaceSeqLoading()) {
+                setAdPlaceSeqLoading(true, SeqState.REQUEST);
+                final Iterator<ISdkLoader> iterator = mAdLoaders.iterator();
+                loadSplashSequenceInternal(iterator);
+            } else {
+                Log.iv(Log.TAG, mAdPlace.getName() + " seq is loading ...");
+            }
+        } else {
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onError(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_ADLOADER);
+            }
+        }
+    }
+
+    private void loadSplashRandom() {
+        if (mAdLoaders != null) {
+            int pos = new Random().nextInt(mAdLoaders.size());
+            ISdkLoader loader = mAdLoaders.get(pos);
+            if (loader != null && loader.allowUseLoader()) {
+                registerAdBaseListener(loader, new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                        loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this));
+                if (loader.isSplashType()) {
+                    loader.loadSplash();
+                } else {
+                    Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                }
+            }
+        }
+    }
+
+    private void loadSplashSequenceInternal(final Iterator<ISdkLoader> iterator) {
+        if (iterator == null || !iterator.hasNext()) {
+            return;
+        }
+        ISdkLoader loader = iterator.next();
+        if (loader != null && loader.allowUseLoader()) {
+            SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
+                    loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
+                @Override
+                public void onAdFailed(int error) {
+                    if (iterator.hasNext()) {
+                        Log.iv(Log.TAG, "load next splash");
+                        loadSplashSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
+                    } else {
+                        setAdPlaceSeqLoading(false, SeqState.ERROR);
+                        super.onAdFailed(error);
+                    }
+                }
+
+                @Override
+                public void onAdLoaded(ISdkLoader loader) {
+                    setAdPlaceSeqLoading(false, SeqState.LOADED);
+                    super.onAdLoaded(loader);
+                }
+            };
+            registerAdBaseListener(loader, simpleAdBaseBaseListener);
+            if (loader.isSplashType()) {
+                loader.loadSplash();
+            } else {
+                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                simpleAdBaseBaseListener.onAdFailed(Constant.AD_ERROR_CONFIG);
+            }
+        }
+    }
+
+    private void loadSplashSequenceInternalWithDelay(final Iterator<ISdkLoader> iterator, long delay) {
+        if (delay <= 0 || mHandler == null) {
+            loadSplashSequenceInternal(iterator);
+        } else {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loadSplashSequenceInternal(iterator);
+                }
+            }, delay);
+        }
+    }
+
+    /**
+     * 展示插屏
+     */
+    @Override
+    public void showSplash() {
+        Log.d(Log.TAG, "showSplash");
+        showSplashInternal();
+    }
+
+    private void showSplashInternal() {
+        if (mAdLoaders != null) {
+            for (ISdkLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    if (loader.isSplashType() && loader.isSplashLoaded()) {
+                        if (loader.showSplash()) {
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public boolean isAdViewLoaded() {
         if (mAdLoaders != null) {
@@ -968,7 +1172,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 if (loader != null && (loader.isBannerLoaded()
                         || loader.isNativeLoaded()
                         || loader.isInterstitialLoaded()
-                        || loader.isRewardedVideoLoaded())) {
+                        || loader.isRewardedVideoLoaded())
+                        || loader.isSplashLoaded()) {
                     Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                     return true;
                 }

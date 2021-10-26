@@ -127,6 +127,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             showSpread();
         } else if (v.getId() == R.id.show_ads_in_list) {
             startActivity(new Intent(this, ListViewForAd.class));
+        } else if (v.getId() == R.id.show_admob_splash) {
+            loadSplash((TextView) v);
         } else {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag);
@@ -156,6 +158,14 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             AdSdk.get(mContext).showInterstitial("interstitial");
         } else {
             AdSdk.get(mContext).loadInterstitial("interstitial", new FullScreenAdListener(textView));
+        }
+    }
+
+    private void loadSplash(TextView textView) {
+        if (AdSdk.get(mContext).isSplashLoaded("admob_splash")) {
+            AdSdk.get(mContext).showSplash("admob_splash");
+        } else {
+            AdSdk.get(mContext).loadSplash("admob_splash", new FullScreenAdListener(textView));
         }
     }
 

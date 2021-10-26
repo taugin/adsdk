@@ -45,6 +45,12 @@ public interface IAdLoader {
 
     void showAdView(ViewGroup adContainer, AdParams adParams);
 
+    boolean isSplashLoaded();
+
+    void loadSplash(Activity activity);
+
+    void showSplash();
+
     boolean isComplexAdsLoaded();
 
     String getLoadedType();

@@ -1,6 +1,7 @@
 package com.rabbit.adsdk.adloader.admob;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.VideoOptions;
+import com.google.android.gms.ads.appopen.AppOpenAd;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
@@ -55,6 +57,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     private AdView bannerView;
     private AdView loadingView;
     private InterstitialAd mInterstitialAd;
+    private AppOpenAd mAppOpenAd;
 
     private RewardedAd mRewardedAd;
 
@@ -610,6 +613,112 @@ public class AdmobLoader extends AbstractSdkLoader {
         notifyAdShow();
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    @Override
+    public boolean isSplashLoaded() {
+        boolean loaded = super.isSplashLoaded();
+        if (mAppOpenAd != null) {
+            loaded = !isCachedAdExpired(mAppOpenAd);
+        }
+        if (loaded) {
+            Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
+        }
+        return loaded;
+    }
+
+    @Override
+    public void loadSplash() {
+        if (!checkPidConfig()) {
+            Log.iv(Log.TAG, formatLog("config error"));
+            notifyAdFailed(Constant.AD_ERROR_CONFIG);
+            return;
+        }
+        if (isSplashLoaded()) {
+            Log.iv(Log.TAG, formatLog("already loaded"));
+            notifyAdLoaded(this);
+            return;
+        }
+        if (isLoading()) {
+            Log.iv(Log.TAG, formatLog("already loading"));
+            notifyAdFailed(Constant.AD_ERROR_LOADING);
+            return;
+        }
+
+        // 检测通用配置是否符合
+        if (!checkCommonConfig()) {
+            return;
+        }
+
+        setLoading(true, STATE_REQUEST);
+        AppOpenAd.AppOpenAdLoadCallback appOpenAdLoadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
+            @Override
+            public void onAdLoaded(AppOpenAd appOpenAd) {
+                Log.iv(Log.TAG, formatLog("ad load success"));
+                setLoading(false, STATE_SUCCESS);
+                mAppOpenAd = appOpenAd;
+                putCachedAdTime(mAppOpenAd);
+                reportAdLoaded();
+                notifyAdLoaded(AdmobLoader.this);
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(loadAdError), true));
+                setLoading(false, STATE_FAILURE);
+                mAppOpenAd = null;
+                reportAdError(codeToError(loadAdError));
+                notifyAdFailed(toSdkError(loadAdError));
+            }
+        };
+        printInterfaceLog(ACTION_LOAD);
+        reportAdRequest();
+        int splashOrientation = mPidConfig.getSplashOrientation();
+        AppOpenAd.load(mContext, getPid(), new AdRequest.Builder().build(), splashOrientation, appOpenAdLoadCallback);
+    }
+
+    @Override
+    public boolean showSplash() {
+        Log.iv(Log.TAG, getSdkName() + " show splash");
+        if (mAppOpenAd != null) {
+            Activity activity = getActivity();
+            FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
+                @Override
+                public void onAdFailedToShowFullScreenContent(AdError adError) {
+                    Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
+                    clearLastShowTime();
+                    onResetSplash();
+                    notifyAdFailed(toSdkError(adError));
+                }
+
+                @Override
+                public void onAdShowedFullScreenContent() {
+                    Log.iv(Log.TAG, formatLog("ad showed full screen content"));
+                    notifyAdOpened();
+                    notifyRewardAdsStarted();
+                }
+
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    Log.iv(Log.TAG, formatLog("ad dismissed full screen content"));
+                    clearLastShowTime();
+                    onResetSplash();
+                    reportAdClose();
+                    notifyAdDismiss();
+                }
+            };
+            mAppOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
+            mAppOpenAd.show(activity);
+            updateLastShowTime();
+            reportAdShow();
+            notifyAdShow();
+            return true;
+        } else {
+            onResetSplash();
+        }
+        return false;
+    }
+    ////////////////////////////////////////////////////////////////////////////
+
     @Override
     public void resume() {
         if (bannerView != null) {
@@ -648,6 +757,13 @@ public class AdmobLoader extends AbstractSdkLoader {
         super.onResetReward();
         clearCachedAdTime(mRewardedAd);
         mRewardedAd = null;
+    }
+
+    @Override
+    protected void onResetSplash() {
+        super.onResetSplash();
+        clearCachedAdTime(mAppOpenAd);
+        mAppOpenAd = null;
     }
 
     private String codeToError(AdError adError) {

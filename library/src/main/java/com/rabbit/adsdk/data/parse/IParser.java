@@ -82,6 +82,8 @@ public interface IParser {
     String RATIO = "ratio";
     // 子原生布局
     String SUB_NATIVE_LAYOUT = "snl";
+    // admob开屏方向 1：竖屏，2：横屏
+    String SPLASH_ORIENTATION = "so";
 
     // banner
     String BANNER = "banner";

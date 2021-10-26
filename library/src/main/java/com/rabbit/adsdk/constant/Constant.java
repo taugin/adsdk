@@ -52,6 +52,7 @@ public class Constant {
     public static final String TYPE_NATIVE = "native";
     public static final String TYPE_INTERSTITIAL = "interstitial";
     public static final String TYPE_REWARD = "reward";
+    public static final String TYPE_SPLASH = "splash";
 
     public static final String PLACE_TYPE_ADVIEW = "adview";
     public static final String PLACE_TYPE_INTERSTITIAL = "interstitial";

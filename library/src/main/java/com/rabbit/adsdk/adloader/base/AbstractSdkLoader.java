@@ -164,6 +164,18 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     @Override
+    public void loadSplash() {
+        if (getAdListener() != null) {
+            getAdListener().onAdFailed(Constant.AD_ERROR_UNSUPPORT);
+        }
+    }
+
+    @Override
+    public boolean showSplash() {
+        return false;
+    }
+
+    @Override
     public boolean isInterstitialLoaded() {
         return false;
     }
@@ -180,6 +192,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public boolean isRewardedVideoLoaded() {
+        return false;
+    }
+
+    @Override
+    public boolean isSplashLoaded() {
         return false;
     }
 
@@ -238,6 +255,14 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     public boolean isRewardedVideoType() {
         if (mPidConfig != null) {
             return mPidConfig.isRewardedVideoType();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isSplashType() {
+        if (mPidConfig != null) {
+            return mPidConfig.isSplashType();
         }
         return false;
     }
@@ -847,6 +872,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void onResetReward() {
         Log.iv(Log.TAG, formatLog("reset reward"));
+    }
+
+    protected void onResetSplash() {
+        Log.iv(Log.TAG, formatLog("reset splash"));
     }
 
     protected void updateLastShowTime() {

@@ -267,6 +267,9 @@ public class AdParser implements IParser {
             if (jobj.has(SUB_NATIVE_LAYOUT)) {
                 pidConfig.setSubNativeLayout(jsonToMap(jobj.getString(SUB_NATIVE_LAYOUT)));
             }
+            if (jobj.has(SPLASH_ORIENTATION)) {
+                pidConfig.setSplashOrientation(jobj.getInt(SPLASH_ORIENTATION));
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

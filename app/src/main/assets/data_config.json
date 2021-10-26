@@ -1,6 +1,19 @@
 {
   "adplaces": [
     {
+      "name": "admob_splash",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "admob",
+          "type": "splash",
+          "pid": "ca-app-pub-3940256099942544/3419835294"
+        }
+      ],
+      "maxcount": 100,
+      "percent": 100
+    },
+    {
       "name": "native_splash",
       "mode": "con",
       "pids": [

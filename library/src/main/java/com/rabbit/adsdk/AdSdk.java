@@ -379,6 +379,53 @@ public class AdSdk {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////
+
+    public boolean isSplashLoaded(String placeName) {
+        AdPlaceLoader loader = getAdLoader(placeName);
+        if (loader != null) {
+            return loader.isSplashLoaded();
+        }
+        return false;
+    }
+
+    public void loadSplash(String placeName) {
+        loadSplash(null, placeName);
+    }
+
+    public void loadSplash(String placeName, OnAdSdkListener l) {
+        loadSplash(null, placeName, l);
+    }
+
+    public void loadSplash(Activity activity, String placeName) {
+        loadSplash(activity, placeName, null);
+    }
+
+    public void loadSplash(Activity activity, String placeName, OnAdSdkListener l) {
+        AdPlaceLoader loader = getAdLoader(placeName, true);
+        if (loader != null) {
+            loader.setOnAdSdkListener(l, false);
+            if (activity == null) {
+                if (mActivity != null && mActivity.get() != null && !mActivity.get().isFinishing()) {
+                    activity = mActivity.get();
+                }
+            }
+            loader.loadSplash(activity);
+        } else {
+            if (l != null) {
+                l.onError(placeName, null, null, null, Constant.AD_ERROR_ADLOADER);
+            }
+        }
+    }
+
+    public void showSplash(String placeName) {
+        AdPlaceLoader loader = getAdLoader(placeName);
+        if (loader != null) {
+            loader.showSplash();
+        }
+    }
+/////////////////////////////////////////////////////////////////////////////
+
     public boolean isComplexAdsLoaded(String placeName) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {

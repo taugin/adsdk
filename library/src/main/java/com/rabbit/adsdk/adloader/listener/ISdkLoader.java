@@ -48,6 +48,10 @@ public interface ISdkLoader {
 
     boolean showRewardedVideo();
 
+    public void loadSplash();
+
+    public boolean showSplash();
+
     boolean isInterstitialLoaded();
 
     boolean isBannerLoaded();
@@ -55,6 +59,8 @@ public interface ISdkLoader {
     boolean isNativeLoaded();
 
     boolean isRewardedVideoLoaded();
+
+    boolean isSplashLoaded();
 
     void resume();
 
@@ -71,6 +77,8 @@ public interface ISdkLoader {
     boolean isInterstitialType();
 
     boolean isRewardedVideoType();
+
+    boolean isSplashType();
 
     boolean allowUseLoader();
 

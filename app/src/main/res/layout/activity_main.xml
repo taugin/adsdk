@@ -214,6 +214,15 @@
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:text="列表广告" />
+
+            <Button
+                android:id="@+id/show_admob_splash"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="Admob开屏" />
         </LinearLayout>
 
         <LinearLayout
@@ -250,8 +259,8 @@
             android:id="@+id/native_banner_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
             android:layout_margin="4dp"
+            android:layout_marginTop="8dp"
             android:gravity="center" />
     </LinearLayout>
 </ScrollView>

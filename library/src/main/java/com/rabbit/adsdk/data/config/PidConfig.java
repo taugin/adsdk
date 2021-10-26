@@ -53,6 +53,8 @@ public class PidConfig {
 
     private Map<String, String> subNativeLayout;
 
+    private int splashOrientation = 1;
+
     public String getPlaceName() {
         return placeName;
     }
@@ -213,6 +215,14 @@ public class PidConfig {
         this.subNativeLayout = subNativeLayout;
     }
 
+    public int getSplashOrientation() {
+        return splashOrientation;
+    }
+
+    public void setSplashOrientation(int splashOrientation) {
+        this.splashOrientation = splashOrientation;
+    }
+
     public boolean isAdmob() {
         return TextUtils.equals(Constant.AD_SDK_ADMOB, sdk);
     }
@@ -247,6 +257,10 @@ public class PidConfig {
 
     public boolean isRewardedVideoType() {
         return TextUtils.equals(Constant.TYPE_REWARD, adType);
+    }
+
+    public boolean isSplashType() {
+        return TextUtils.equals(Constant.TYPE_SPLASH, adType);
     }
 
     @Override
