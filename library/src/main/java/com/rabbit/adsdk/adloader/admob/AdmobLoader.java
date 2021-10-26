@@ -1,7 +1,6 @@
 package com.rabbit.adsdk.adloader.admob;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -22,8 +21,6 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.appopen.AppOpenAd;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.NativeAd;
@@ -116,7 +113,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     public void loadBanner(int adSize) {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isBannerLoaded()) {
@@ -126,7 +123,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -158,7 +155,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(loadAdError), true));
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(loadAdError));
-                notifyAdFailed(toSdkError(loadAdError));
+                notifyAdLoadFailed(toSdkError(loadAdError));
             }
 
             @Override
@@ -240,7 +237,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     public void loadInterstitial() {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isInterstitialLoaded()) {
@@ -250,7 +247,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -277,7 +274,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_FAILURE);
                 mInterstitialAd = null;
                 reportAdError(codeToError(loadAdError));
-                notifyAdFailed(toSdkError(loadAdError));
+                notifyAdLoadFailed(toSdkError(loadAdError));
             }
         };
         printInterfaceLog(ACTION_LOAD);
@@ -295,6 +292,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
                     clearLastShowTime();
                     onResetInterstitial();
+                    notifyAdShowFailed(toSdkError(adError));
                 }
 
                 @Override
@@ -340,7 +338,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     public void loadRewardedVideo() {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isRewardedVideoLoaded()) {
@@ -350,7 +348,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -379,7 +377,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(loadAdError), true));
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(loadAdError));
-                notifyAdFailed(toSdkError(loadAdError));
+                notifyAdLoadFailed(toSdkError(loadAdError));
             }
         });
     }
@@ -403,7 +401,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
                     clearLastShowTime();
                     onResetReward();
-                    notifyAdFailed(toSdkError(adError));
+                    notifyAdShowFailed(toSdkError(adError));
                 }
 
                 @Override
@@ -492,7 +490,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isNativeLoaded()) {
@@ -502,7 +500,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -564,7 +562,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(loadAdError));
-                notifyAdFailed(toSdkError(loadAdError));
+                notifyAdLoadFailed(toSdkError(loadAdError));
             }
 
             @Override
@@ -630,7 +628,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     public void loadSplash() {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isSplashLoaded()) {
@@ -640,7 +638,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -667,7 +665,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_FAILURE);
                 mAppOpenAd = null;
                 reportAdError(codeToError(loadAdError));
-                notifyAdFailed(toSdkError(loadAdError));
+                notifyAdLoadFailed(toSdkError(loadAdError));
             }
         };
         printInterfaceLog(ACTION_LOAD);
@@ -687,7 +685,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
                     clearLastShowTime();
                     onResetSplash();
-                    notifyAdFailed(toSdkError(adError));
+                    notifyAdShowFailed(toSdkError(adError));
                 }
 
                 @Override

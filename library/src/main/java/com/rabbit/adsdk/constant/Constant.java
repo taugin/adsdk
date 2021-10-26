@@ -81,7 +81,7 @@ public class Constant {
     /**
      * ADLOADER错误
      */
-    public static final int AD_ERROR_ADLOADER = -1;
+    public static final int AD_ERROR_LOADER = -1;
     /**
      * 未知错误
      */
@@ -179,6 +179,11 @@ public class Constant {
      * 初始化失败
      */
     public static final int AD_ERROR_INITIALIZE = 20;
+
+    /**
+     * 展示失败
+     */
+    public static final int AD_ERROR_SHOW = 21;
 
     public static final SimpleDateFormat SDF_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
 

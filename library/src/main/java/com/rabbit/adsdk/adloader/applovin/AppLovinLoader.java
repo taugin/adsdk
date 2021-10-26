@@ -20,7 +20,6 @@ import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.mediation.ads.MaxRewardedAd;
 import com.applovin.sdk.AppLovinErrorCodes;
 import com.applovin.sdk.AppLovinSdk;
-import com.applovin.sdk.AppLovinSdkConfiguration;
 import com.applovin.sdk.AppLovinSdkSettings;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
@@ -124,12 +123,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
         AppLovinSdk appLovinSdk = getInstance();
         if (appLovinSdk == null) {
             Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
-            notifyAdFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isBannerLoaded()) {
@@ -139,7 +138,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -165,18 +164,18 @@ public class AppLovinLoader extends AbstractSdkLoader {
         AppLovinSdk appLovinSdk = getInstance();
         if (appLovinSdk == null) {
             Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
-            notifyAdFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
-            notifyAdFailed(Constant.AD_ERROR_CONTEXT);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT);
             return;
         }
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isInterstitialLoaded()) {
@@ -186,7 +185,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -212,18 +211,18 @@ public class AppLovinLoader extends AbstractSdkLoader {
         AppLovinSdk appLovinSdk = getInstance();
         if (appLovinSdk == null) {
             Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
-            notifyAdFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
-            notifyAdFailed(Constant.AD_ERROR_CONTEXT);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT);
             return;
         }
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (isRewardedVideoLoaded()) {
@@ -233,7 +232,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -308,7 +307,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(error), true));
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(error));
-                notifyAdFailed(Constant.AD_ERROR_LOAD);
+                notifyAdLoadFailed(Constant.AD_ERROR_LOAD);
             }
 
             @Override
@@ -336,6 +335,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
                 Log.iv(Log.TAG, formatLog("ad display failed : " + error));
+                notifyAdShowFailed(error != null ? error.getCode() : Constant.AD_ERROR_SHOW);
             }
 
             @Override
@@ -415,7 +415,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 clearLastShowTime();
                 onResetInterstitial();
                 reportAdError(codeToError(error));
-                notifyAdFailed(Constant.AD_ERROR_LOAD);
+                notifyAdLoadFailed(Constant.AD_ERROR_LOAD);
             }
 
             @Override
@@ -446,6 +446,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad display failed : " + error));
                 clearLastShowTime();
                 onResetInterstitial();
+                notifyAdShowFailed(error != null ? error.getCode() : Constant.AD_ERROR_SHOW);
             }
         });
 
@@ -534,7 +535,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 clearLastShowTime();
                 onResetReward();
                 reportAdError(codeToError(error));
-                notifyAdFailed(Constant.AD_ERROR_LOAD);
+                notifyAdLoadFailed(Constant.AD_ERROR_LOAD);
             }
 
             @Override
@@ -565,6 +566,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad display failed : " + error));
                 clearLastShowTime();
                 onResetReward();
+                notifyAdShowFailed(error != null ? error.getCode() : Constant.AD_ERROR_SHOW);
             }
         });
 

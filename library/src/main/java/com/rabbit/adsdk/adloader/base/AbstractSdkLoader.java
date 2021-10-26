@@ -127,7 +127,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadInterstitial() {
-        notifyAdFailed(Constant.AD_ERROR_UNSUPPORT);
+        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
     }
 
     @Override
@@ -137,7 +137,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadNative(Params params) {
-        notifyAdFailed(Constant.AD_ERROR_UNSUPPORT);
+        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
     }
 
     @Override
@@ -146,7 +146,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadBanner(int adSize) {
-        notifyAdFailed(Constant.AD_ERROR_UNSUPPORT);
+        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
     }
 
     @Override
@@ -155,7 +155,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadRewardedVideo() {
-        notifyAdFailed(Constant.AD_ERROR_UNSUPPORT);
+        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
     }
 
     @Override
@@ -166,7 +166,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     @Override
     public void loadSplash() {
         if (getAdListener() != null) {
-            getAdListener().onAdFailed(Constant.AD_ERROR_UNSUPPORT);
+            getAdListener().onAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
         }
     }
 
@@ -311,7 +311,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private void processBlockAds() {
         Log.iv(Log.TAG, formatLog("block ads"));
-        notifyAdFailed(Constant.AD_ERROR_BLOCK_ADS);
+        notifyAdLoadFailed(Constant.AD_ERROR_BLOCK_ADS);
     }
 
     private boolean isBlockAds() {
@@ -337,7 +337,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private void processAdLoaderFilter() {
         Log.iv(Log.TAG, formatLog("loader is filter"));
-        notifyAdFailed(Constant.AD_ERROR_FILTERED);
+        notifyAdLoadFailed(Constant.AD_ERROR_FILTERED);
     }
 
     private boolean isImpByRatio() {
@@ -349,7 +349,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private void processImpByRatio() {
         Log.iv(Log.TAG, formatLog("ratio not match"));
-        notifyAdFailed(Constant.AD_ERROR_RATIO);
+        notifyAdLoadFailed(Constant.AD_ERROR_RATIO);
     }
 
     private OnAdBaseListener getAdListener() {
@@ -492,12 +492,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         reportAdError("AD_ERROR_TIMEOUT");
         setLoading(false, STATE_TIMTOUT);
         if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)) {
-            notifyAdFailed(Constant.AD_ERROR_TIMEOUT);
+            notifyAdLoadFailed(Constant.AD_ERROR_TIMEOUT);
         } else if (TextUtils.equals(getAdType(), Constant.TYPE_REWARD)) {
-            notifyAdFailed(Constant.AD_ERROR_TIMEOUT);
+            notifyAdLoadFailed(Constant.AD_ERROR_TIMEOUT);
         } else if (TextUtils.equals(getAdType(), Constant.TYPE_BANNER)
                 || TextUtils.equals(getAdType(), Constant.TYPE_NATIVE)) {
-            notifyAdFailed(Constant.AD_ERROR_TIMEOUT);
+            notifyAdLoadFailed(Constant.AD_ERROR_TIMEOUT);
         }
     }
 
@@ -796,9 +796,15 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     /**
      * banner or native fail
      */
-    protected void notifyAdFailed(int error) {
+    protected void notifyAdLoadFailed(int error) {
         if (getAdListener() != null) {
-            getAdListener().onAdFailed(error);
+            getAdListener().onAdLoadFailed(error);
+        }
+    }
+
+    protected void notifyAdShowFailed(int error) {
+        if (getAdListener() != null) {
+            getAdListener().onAdShowFailed(error);
         }
     }
 

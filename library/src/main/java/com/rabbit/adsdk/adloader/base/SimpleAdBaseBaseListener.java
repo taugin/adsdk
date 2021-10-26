@@ -76,7 +76,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onAdFailed(int error) {
+    public void onAdLoadFailed(int error) {
         /**
          * 错误回调不需要判断是否是当前loader
          */
@@ -85,8 +85,19 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
             if (error == Constant.AD_ERROR_LOADING) {
                 placeLoaderListener.onLoading(placeName, source, adType, pid);
             } else {
-                placeLoaderListener.onError(placeName, source, adType, pid, error);
+                placeLoaderListener.onLoadFailed(placeName, source, adType, pid, error);
             }
+        }
+    }
+
+    @Override
+    public void onAdShowFailed(int error) {
+        /**
+         * 错误回调不需要判断是否是当前loader
+         */
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        if (placeLoaderListener != null) {
+            placeLoaderListener.onShowFailed(placeName, source, adType, pid, error);
         }
     }
 

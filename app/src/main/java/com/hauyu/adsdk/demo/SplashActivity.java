@@ -68,7 +68,7 @@ public class SplashActivity extends Activity {
             }
 
             @Override
-            public void onError(String placeName, String source, String adType, String pid, int error) {
+            public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
                 if (AdSdk.get(getApplicationContext()).isAdPlaceError(placeName)) {
                     Log.v(TAG, "splash error " + retryTimes);
                     if (retryTimes > 1) {

@@ -283,7 +283,7 @@ public class AdSdk {
             loader.loadInterstitial(activity);
         } else {
             if (l != null) {
-                l.onError(placeName, null, null, null, Constant.AD_ERROR_ADLOADER);
+                l.onLoadFailed(placeName, null, null, null, Constant.AD_ERROR_LOADER);
             }
         }
     }
@@ -328,7 +328,7 @@ public class AdSdk {
             loader.loadRewardedVideo(activity);
         } else {
             if (l != null) {
-                l.onError(placeName, null, null, null, Constant.AD_ERROR_ADLOADER);
+                l.onLoadFailed(placeName, null, null, null, Constant.AD_ERROR_LOADER);
             }
         }
     }
@@ -363,7 +363,7 @@ public class AdSdk {
             loader.loadAdView(adParams);
         } else {
             if (l != null) {
-                l.onError(placeName, null, null, null, Constant.AD_ERROR_ADLOADER);
+                l.onLoadFailed(placeName, null, null, null, Constant.AD_ERROR_LOADER);
             }
         }
     }
@@ -413,7 +413,7 @@ public class AdSdk {
             loader.loadSplash(activity);
         } else {
             if (l != null) {
-                l.onError(placeName, null, null, null, Constant.AD_ERROR_ADLOADER);
+                l.onLoadFailed(placeName, null, null, null, Constant.AD_ERROR_LOADER);
             }
         }
     }
@@ -449,7 +449,7 @@ public class AdSdk {
             loader.loadComplexAds(adParams);
         } else {
             if (l != null) {
-                l.onError(placeName, null, null, null, Constant.AD_ERROR_ADLOADER);
+                l.onLoadFailed(placeName, null, null, null, Constant.AD_ERROR_LOADER);
             }
         }
     }
@@ -714,7 +714,7 @@ public class AdSdk {
             loader.loadRewardedVideo(null);
         } else {
             if (mAutoRewardListener != null) {
-                mAutoRewardListener.onError(mRewardPlaceName, null, null, null, Constant.AD_ERROR_ADLOADER);
+                mAutoRewardListener.onLoadFailed(mRewardPlaceName, null, null, null, Constant.AD_ERROR_LOADER);
             }
         }
     }

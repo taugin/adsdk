@@ -319,7 +319,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         }
 
         @Override
-        public void onError(String placeName, String source, String adType, String pid, int error) {
+        public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , error : " + error);
         }
 

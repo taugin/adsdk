@@ -62,7 +62,7 @@ public class SpLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyAdFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -90,7 +90,7 @@ public class SpLoader extends AbstractSdkLoader {
             }
         } else {
             reportAdError(String.valueOf("ERROR_LOAD"));
-            notifyAdFailed(Constant.AD_ERROR_LOAD);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOAD);
         }
     }
 
@@ -140,7 +140,7 @@ public class SpLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
-            notifyAdFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
             return;
         }
 
@@ -168,7 +168,7 @@ public class SpLoader extends AbstractSdkLoader {
             }
         } else {
             reportAdError(String.valueOf("ERROR_LOAD"));
-            notifyAdFailed(Constant.AD_ERROR_LOAD);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOAD);
         }
     }
 

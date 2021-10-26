@@ -19,7 +19,9 @@ public interface OnAdSdkListener {
 
     void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds);
 
-    void onError(String placeName, String source, String adType, String pid, int error);
+    void onLoadFailed(String placeName, String source, String adType, String pid, int error);
+
+    void onShowFailed(String placeName, String source, String adType, String pid, int error);
 
     void onRewarded(String placeName, String source, String adType, String pid, AdReward item);
 
