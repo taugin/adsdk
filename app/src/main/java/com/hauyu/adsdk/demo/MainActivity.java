@@ -131,24 +131,33 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             loadSplash((TextView) v);
         } else {
             String tag = (String) v.getTag();
-            loadAdViewByLayout(tag);
+            loadAdViewByLayout(tag, (TextView) v);
         }
     }
 
-    private void loadAdViewByLayout(String tag) {
-        int layout = LAYOUT_MAP.get(tag);
-        AdParams.Builder builder = new AdParams.Builder();
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layout);
-        AdParams adParams = builder.build();
-        AdSdk.get(mContext).loadComplexAds("for_native_layout", adParams, new SimpleAdSdkListener() {
-            @Override
-            public void onLoaded(String placeName, String source, String adType, String pid) {
-                Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
-                String loadedSdk = AdSdk.get(mContext).getLoadedSdk(placeName);
-                Log.v(TAG, "loaded sdk : " + loadedSdk);
-                AdSdk.get(mContext).showComplexAds(placeName);
-            }
-        });
+    private void loadAdViewByLayout(String tag, TextView textView) {
+        if (AdSdk.get(this).isComplexAdsLoaded("for_native_layout")) {
+            AdSdk.get(this).showComplexAds("for_native_layout");
+        } else {
+            int layout = LAYOUT_MAP.get(tag);
+            AdParams.Builder builder = new AdParams.Builder();
+            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layout);
+            AdParams adParams = builder.build();
+            AdSdk.get(mContext).loadComplexAds("for_native_layout", adParams, new SimpleAdSdkListener() {
+                @Override
+                public void onLoaded(String placeName, String source, String adType, String pid) {
+                    Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+                    String loadedSdk = AdSdk.get(mContext).getLoadedSdk(placeName);
+                    Log.v(TAG, "loaded sdk : " + loadedSdk);
+                    updateLoadStatus(textView, placeName);
+                }
+
+                @Override
+                public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
+                    updateLoadStatus(textView, placeName);
+                }
+            });
+        }
     }
 
     private void loadInterstitial(TextView textView) {
