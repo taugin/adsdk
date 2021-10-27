@@ -616,7 +616,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     public boolean isSplashLoaded() {
         boolean loaded = super.isSplashLoaded();
         if (mAppOpenAd != null) {
-            loaded = !isCachedAdExpired(mAppOpenAd);
+            loaded = !isCachedAdExpired(mAppOpenAd) && !isShowTimeExpired();
         }
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));

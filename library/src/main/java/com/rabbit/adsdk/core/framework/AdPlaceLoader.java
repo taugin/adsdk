@@ -790,7 +790,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (processAdPlaceCache()) {
             return;
         }
-        setPlaceType(Constant.PLACE_TYPE_INTERSTITIAL);
+        setPlaceType(Constant.PLACE_TYPE_SPLASH);
         loadSplashInternal();
     }
 
@@ -1174,7 +1174,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         || loader.isInterstitialLoaded()
                         || loader.isRewardedVideoLoaded())
                         || loader.isSplashLoaded()) {
-                    Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                    Log.v(Log.TAG, loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                     return true;
                 }
             }
@@ -1195,7 +1195,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     boolean loaded = loader.isBannerLoaded()
                             || loader.isNativeLoaded()
                             || loader.isInterstitialLoaded()
-                            || loader.isRewardedVideoLoaded();
+                            || loader.isRewardedVideoLoaded()
+                            || loader.isSplashLoaded();
                     if (loaded) {
                         return loader.getAdType();
                     }
@@ -1213,7 +1214,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     boolean loaded = loader.isBannerLoaded()
                             || loader.isNativeLoaded()
                             || loader.isInterstitialLoaded()
-                            || loader.isRewardedVideoLoaded();
+                            || loader.isRewardedVideoLoaded()
+                            || loader.isSplashLoaded();
                     if (loaded) {
                         return loader.getSdkName();
                     }
@@ -1299,6 +1301,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         loader.loadInterstitial();
                     } else if (loader.isRewardedVideoType()) {
                         loader.loadRewardedVideo();
+                    }  else if (loader.isSplashType()) {
+                        loader.loadSplash();
                     } else {
                         Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                     }
@@ -1357,6 +1361,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 loader.loadInterstitial();
             } else if (loader.isRewardedVideoType()) {
                 loader.loadRewardedVideo();
+            } else if (loader.isSplashType()) {
+                loader.loadSplash();
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG);
@@ -1392,6 +1398,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     loader.loadInterstitial();
                 } else if (loader.isRewardedVideoType()) {
                     loader.loadRewardedVideo();
+                } else if (loader.isSplashType()) {
+                    loader.loadSplash();
                 } else {
                     Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 }
@@ -1415,6 +1423,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         }
                     } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
                         if (loader.showInterstitial()) {
+                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                            return true;
+                        }
+                    } else if (loader.isSplashType() && loader.isSplashLoaded()) {
+                        if (loader.showSplash()) {
                             AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                             return true;
                         }
@@ -1461,7 +1474,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 if ((loader.isBannerLoaded()
                         || loader.isNativeLoaded()
                         || loader.isInterstitialLoaded()
-                        || loader.isRewardedVideoLoaded())) {
+                        || loader.isRewardedVideoLoaded()
+                        || loader.isSplashLoaded())) {
                     loadedAdCount++;
                 }
             }
@@ -1598,6 +1612,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             loadInterstitialInternal();
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_REWARDEDVIDEO)) {
             loadRewardedVideoInternal();
+        } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_SPLASH)) {
+            loadSplashInternal();
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_COMPLEX)) {
             loadComplexAdsInternal();
         } else {

@@ -57,6 +57,7 @@ public class Constant {
     public static final String PLACE_TYPE_ADVIEW = "adview";
     public static final String PLACE_TYPE_INTERSTITIAL = "interstitial";
     public static final String PLACE_TYPE_REWARDEDVIDEO = "reward";
+    public static final String PLACE_TYPE_SPLASH = "splash";
     public static final String PLACE_TYPE_COMPLEX = "complex";
 
     public static final String ECPM = "ecpm";
