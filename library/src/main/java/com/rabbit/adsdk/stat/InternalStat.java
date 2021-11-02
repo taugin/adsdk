@@ -17,6 +17,41 @@ import java.util.Map;
 public class InternalStat {
     private static Object mFacebookObject = null;
 
+    private static void mapToBundle(Map<String, Object> map, Bundle bundle) {
+        if (map == null || bundle == null) {
+            return;
+        }
+        if (map != null && !map.isEmpty()) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                if (entry != null) {
+                    String key = entry.getKey();
+                    Object valueObj = entry.getValue();
+                    if (!TextUtils.isEmpty(key) && valueObj != null) {
+                        if (valueObj instanceof Integer) {
+                            bundle.putInt(key, ((Integer) valueObj).intValue());
+                        } else if (valueObj instanceof Float) {
+                            bundle.putFloat(key, ((Float) valueObj).floatValue());
+                        } else if (valueObj instanceof Double) {
+                            bundle.putDouble(key, ((Double) valueObj).doubleValue());
+                        } else if (valueObj instanceof Boolean) {
+                            bundle.putBoolean(key, ((Boolean) valueObj).booleanValue());
+                        } else if (valueObj instanceof Byte) {
+                            bundle.putByte(key, ((Byte) valueObj).byteValue());
+                        } else if (valueObj instanceof Short) {
+                            bundle.putShort(key, ((Short) valueObj).shortValue());
+                        } else if (valueObj instanceof Long) {
+                            bundle.putLong(key, ((Long) valueObj).longValue());
+                        } else if (valueObj instanceof String) {
+                            bundle.putString(key, valueObj.toString());
+                        } else {
+                            bundle.putString(key, String.valueOf(valueObj));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * 发送Firebase统计事件
      *
@@ -32,30 +67,7 @@ public class InternalStat {
         } else {
             bundle.putString("entry_point", eventId);
         }
-        if (extra != null && !extra.isEmpty()) {
-            for (Map.Entry<String, Object> entry : extra.entrySet()) {
-                if (entry != null) {
-                    String key = entry.getKey();
-                    Object valueObj = entry.getValue();
-                    if (!TextUtils.isEmpty(key) && valueObj != null) {
-                        if (valueObj instanceof Integer) {
-                            bundle.putInt(key, ((Integer) valueObj).intValue());
-                        } else if (valueObj instanceof Float) {
-                            bundle.putFloat(key, ((Float) valueObj).floatValue());
-                        } else if (valueObj instanceof Double) {
-                            bundle.putDouble(key, ((Double) valueObj).doubleValue());
-                        } else if (valueObj instanceof Boolean) {
-                            bundle.putBoolean(key, ((Boolean) valueObj).booleanValue());
-                        } else if (valueObj instanceof String) {
-                            bundle.putString(key, valueObj.toString());
-                        } else {
-                            bundle.putString(key, String.valueOf(valueObj));
-                        }
-                    }
-                }
-            }
-        }
-
+        mapToBundle(extra, bundle);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.google.firebase.analytics.FirebaseAnalytics");
@@ -247,29 +259,7 @@ public class InternalStat {
         } else {
             bundle.putString("entry_point", eventId);
         }
-        if (extra != null && !extra.isEmpty()) {
-            for (Map.Entry<String, Object> entry : extra.entrySet()) {
-                if (entry != null) {
-                    String key = entry.getKey();
-                    Object valueObj = entry.getValue();
-                    if (!TextUtils.isEmpty(key) && valueObj != null) {
-                        if (valueObj instanceof Integer) {
-                            bundle.putInt(key, ((Integer) valueObj).intValue());
-                        } else if (valueObj instanceof Float) {
-                            bundle.putFloat(key, ((Float) valueObj).floatValue());
-                        } else if (valueObj instanceof Double) {
-                            bundle.putDouble(key, ((Double) valueObj).doubleValue());
-                        } else if (valueObj instanceof Boolean) {
-                            bundle.putBoolean(key, ((Boolean) valueObj).booleanValue());
-                        } else if (valueObj instanceof String) {
-                            bundle.putString(key, valueObj.toString());
-                        } else {
-                            bundle.putString(key, String.valueOf(valueObj));
-                        }
-                    }
-                }
-            }
-        }
+        mapToBundle(extra, bundle);
 
         String error = null;
         try {
