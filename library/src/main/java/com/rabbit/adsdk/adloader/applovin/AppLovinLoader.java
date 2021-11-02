@@ -672,8 +672,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
             String adUnitId = maxAd.getAdUnitId(); // The MAX Ad Unit ID
             MaxAdFormat adFormat = maxAd.getFormat(); // The ad format of the ad (e.g. BANNER, MREC, INTERSTITIAL, REWARDED)
             String placement = maxAd.getPlacement(); // The placement this ad's postbacks are tied to
-            Map<String, String> map = new HashMap<>();
-            map.put("value", String.valueOf(revenue));
+            Map<String, Object> map = new HashMap<>();
+            map.put("value", revenue);
             map.put("ad_network", networkName);
             map.put("ad_unit_id", adUnitId);
             map.put("ad_format", adFormat.getDisplayName());

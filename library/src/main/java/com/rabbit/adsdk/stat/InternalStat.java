@@ -25,7 +25,7 @@ public class InternalStat {
      * @param eventId
      * @param extra
      */
-    protected static void sendFirebaseAnalytics(Context context, String value, String eventId, Map<String, String> extra) {
+    protected static void sendFirebaseAnalytics(Context context, String value, String eventId, Map<String, Object> extra) {
         Bundle bundle = new Bundle();
         if (!TextUtils.isEmpty(value)) {
             bundle.putString("entry_point", value);
@@ -33,10 +33,24 @@ public class InternalStat {
             bundle.putString("entry_point", eventId);
         }
         if (extra != null && !extra.isEmpty()) {
-            for (Map.Entry<String, String> entry : extra.entrySet()) {
+            for (Map.Entry<String, Object> entry : extra.entrySet()) {
                 if (entry != null) {
-                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
-                        bundle.putString(entry.getKey(), entry.getValue());
+                    String key = entry.getKey();
+                    Object valueObj = entry.getValue();
+                    if (!TextUtils.isEmpty(key) && valueObj != null) {
+                        if (valueObj instanceof Integer) {
+                            bundle.putInt(key, ((Integer) valueObj).intValue());
+                        } else if (valueObj instanceof Float) {
+                            bundle.putFloat(key, ((Float) valueObj).floatValue());
+                        } else if (valueObj instanceof Double) {
+                            bundle.putDouble(key, ((Double) valueObj).doubleValue());
+                        } else if (valueObj instanceof Boolean) {
+                            bundle.putBoolean(key, ((Boolean) valueObj).booleanValue());
+                        } else if (valueObj instanceof String) {
+                            bundle.putString(key, valueObj.toString());
+                        } else {
+                            bundle.putString(key, String.valueOf(valueObj));
+                        }
                     }
                 }
             }
@@ -67,7 +81,7 @@ public class InternalStat {
      * @param eventId
      * @param extra
      */
-    protected static void sendUmeng(Context context, String value, String eventId, Map<String, String> extra) {
+    protected static void sendUmeng(Context context, String value, String eventId, Map<String, Object> extra) {
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
@@ -75,10 +89,16 @@ public class InternalStat {
             map.put("entry_point", eventId);
         }
         if (extra != null && !extra.isEmpty()) {
-            for (Map.Entry<String, String> entry : extra.entrySet()) {
+            for (Map.Entry<String, Object> entry : extra.entrySet()) {
                 if (entry != null) {
-                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
-                        map.put(entry.getKey(), entry.getValue());
+                    String key = entry.getKey();
+                    Object valueObj = entry.getValue();
+                    if (!TextUtils.isEmpty(key) && valueObj != null) {
+                        if (valueObj instanceof String) {
+                            map.put(entry.getKey(), valueObj.toString());
+                        } else {
+                            map.put(entry.getKey(), String.valueOf(valueObj));
+                        }
                     }
                 }
             }
@@ -106,14 +126,20 @@ public class InternalStat {
      * @param extra
      * @param value
      */
-    protected static void sendUmengEventValue(Context context, String eventId, Map<String, String> extra, int value) {
-        Log.iv(Log.TAG, "Report Event sendUmeng Analytics");
+    protected static void sendUmengEventValue(Context context, String eventId, Map<String, Object> extra, int value) {
+        Log.iv(Log.TAG, "Report Event sendUmeng Event Value Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (extra != null && !extra.isEmpty()) {
-            for (Map.Entry<String, String> entry : extra.entrySet()) {
+            for (Map.Entry<String, Object> entry : extra.entrySet()) {
                 if (entry != null) {
-                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
-                        map.put(entry.getKey(), entry.getValue());
+                    String key = entry.getKey();
+                    Object valueObj = entry.getValue();
+                    if (!TextUtils.isEmpty(key) && valueObj != null) {
+                        if (valueObj instanceof String) {
+                            map.put(entry.getKey(), valueObj.toString());
+                        } else {
+                            map.put(entry.getKey(), String.valueOf(valueObj));
+                        }
                     }
                 }
             }
@@ -157,16 +183,18 @@ public class InternalStat {
      * @param eventId
      * @param extra
      */
-    private static void sendAppsflyer(Context context, String value, String eventId, Map<String, String> extra) {
+    private static void sendAppsflyer(Context context, String value, String eventId, Map<String, Object> extra) {
         Map<String, Object> eventValue = new HashMap<String, Object>();
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
         }
         if (extra != null && !extra.isEmpty()) {
-            for (Map.Entry<String, String> entry : extra.entrySet()) {
+            for (Map.Entry<String, Object> entry : extra.entrySet()) {
                 if (entry != null) {
-                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
-                        eventValue.put(entry.getKey(), entry.getValue());
+                    String key = entry.getKey();
+                    Object valueObj = entry.getValue();
+                    if (!TextUtils.isEmpty(key) && valueObj != null) {
+                        eventValue.put(key, valueObj);
                     }
                 }
             }
@@ -207,7 +235,7 @@ public class InternalStat {
         }
     }
 
-    protected static void sendFacebook(Context context, String value, String eventId, Map<String, String> extra) {
+    protected static void sendFacebook(Context context, String value, String eventId, Map<String, Object> extra) {
         initFacebook(context);
         if (mFacebookObject == null) {
             return;
@@ -220,10 +248,24 @@ public class InternalStat {
             bundle.putString("entry_point", eventId);
         }
         if (extra != null && !extra.isEmpty()) {
-            for (Map.Entry<String, String> entry : extra.entrySet()) {
+            for (Map.Entry<String, Object> entry : extra.entrySet()) {
                 if (entry != null) {
-                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
-                        bundle.putString(entry.getKey(), entry.getValue());
+                    String key = entry.getKey();
+                    Object valueObj = entry.getValue();
+                    if (!TextUtils.isEmpty(key) && valueObj != null) {
+                        if (valueObj instanceof Integer) {
+                            bundle.putInt(key, ((Integer) valueObj).intValue());
+                        } else if (valueObj instanceof Float) {
+                            bundle.putFloat(key, ((Float) valueObj).floatValue());
+                        } else if (valueObj instanceof Double) {
+                            bundle.putDouble(key, ((Double) valueObj).doubleValue());
+                        } else if (valueObj instanceof Boolean) {
+                            bundle.putBoolean(key, ((Boolean) valueObj).booleanValue());
+                        } else if (valueObj instanceof String) {
+                            bundle.putString(key, valueObj.toString());
+                        } else {
+                            bundle.putString(key, String.valueOf(valueObj));
+                        }
                     }
                 }
             }
@@ -252,16 +294,18 @@ public class InternalStat {
      * @param eventId
      * @param extra
      */
-    protected static void sendFlurry(Context context, String value, String eventId, Map<String, String> extra) {
+    protected static void sendFlurry(Context context, String value, String eventId, Map<String, Object> extra) {
         Map<String, Object> eventValue = new HashMap<String, Object>();
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
         }
         if (extra != null && !extra.isEmpty()) {
-            for (Map.Entry<String, String> entry : extra.entrySet()) {
+            for (Map.Entry<String, Object> entry : extra.entrySet()) {
                 if (entry != null) {
-                    if (!TextUtils.isEmpty(entry.getKey()) && !TextUtils.isEmpty(entry.getValue())) {
-                        eventValue.put(entry.getKey(), entry.getValue());
+                    String key = entry.getKey();
+                    Object valueObj = entry.getValue();
+                    if (!TextUtils.isEmpty(key) && valueObj != null) {
+                        eventValue.put(key, valueObj);
                     }
                 }
             }
@@ -285,7 +329,7 @@ public class InternalStat {
         reportEvent(context, key, null, null);
     }
 
-    public static void reportEvent(Context context, String key, Map<String, String> map) {
+    public static void reportEvent(Context context, String key, Map<String, Object> map) {
         reportEvent(context, key, null, map);
     }
 
@@ -293,7 +337,7 @@ public class InternalStat {
         reportEvent(context, key, value, null);
     }
 
-    public static void reportEvent(Context context, String key, String value, Map<String, String> map) {
+    public static void reportEvent(Context context, String key, String value, Map<String, Object> map) {
         sendUmeng(context, value, key, map);
         sendAppsflyer(context, value, key, map);
         sendFirebaseAnalytics(context, value, key, map);

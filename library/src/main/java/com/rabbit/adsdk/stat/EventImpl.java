@@ -241,7 +241,14 @@ public class EventImpl implements IEvent {
         map.put("sdk", sdk);
         map.put("type", type);
         if (isReportUmeng(context)) {
-            InternalStat.sendUmengEventValue(context, eventId, map, value);
+            Map<String, Object> umengMap = null;
+            if (map != null && !map.isEmpty()) {
+                umengMap = new HashMap<String, Object>();
+                for (Map.Entry<String, String> entry : map.entrySet()) {
+                    umengMap.put(entry.getKey(), entry.getValue());
+                }
+            }
+            InternalStat.sendUmengEventValue(context, eventId, umengMap, value);
         }
         reportEvent(context, null, eventId, map);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
@@ -263,7 +270,14 @@ public class EventImpl implements IEvent {
         map.put("type", type);
         map.put("error", error);
         if (isReportUmeng(context)) {
-            InternalStat.sendUmengEventValue(context, eventId, map, value);
+            Map<String, Object> umengMap = null;
+            if (map != null && !map.isEmpty()) {
+                umengMap = new HashMap<String, Object>();
+                for (Map.Entry<String, String> entry : map.entrySet()) {
+                    umengMap.put(entry.getKey(), entry.getValue());
+                }
+            }
+            InternalStat.sendUmengEventValue(context, eventId, umengMap, value);
         }
         reportEvent(context, null, eventId, map);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
@@ -384,17 +398,24 @@ public class EventImpl implements IEvent {
     }
 
     private void reportEvent(Context context, String value, String eventId, Map<String, String> extra) {
+        Map<String, Object> maps = null;
+        if (extra != null && !extra.isEmpty()) {
+            maps = new HashMap<String, Object>();
+            for (Map.Entry<String, String> entry : extra.entrySet()) {
+                maps.put(entry.getKey(), entry.getValue());
+            }
+        }
         if (isReportFirebase(context)) {
-            InternalStat.sendFirebaseAnalytics(context, value, eventId, extra);
+            InternalStat.sendFirebaseAnalytics(context, value, eventId, maps);
         }
         if (isReportUmeng(context)) {
-            InternalStat.sendUmeng(context, value, eventId, extra);
+            InternalStat.sendUmeng(context, value, eventId, maps);
         }
         if (isReportFacebook(context)) {
-            InternalStat.sendFacebook(context, value, eventId, extra);
+            InternalStat.sendFacebook(context, value, eventId, maps);
         }
         if (isReportFlurry(context)) {
-            InternalStat.sendFlurry(context, value, eventId, extra);
+            InternalStat.sendFlurry(context, value, eventId, maps);
         }
     }
 

@@ -918,8 +918,8 @@ public class MopubLoader extends AbstractSdkLoader {
     private void reportAdImpressionRevenue(ImpressionData impressionData) {
         try {
             if (impressionData != null) {
-                Map<String, String> map = new HashMap<>();
-                map.put("value", impressionData.getPublisherRevenue().toString());
+                Map<String, Object> map = new HashMap<>();
+                map.put("value", impressionData.getPublisherRevenue());
                 map.put("currency", impressionData.getCurrency());
                 map.put("precisionType", impressionData.getPrecision());
                 map.put("ad_network", impressionData.getNetworkName());

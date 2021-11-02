@@ -966,8 +966,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (adsLTVThreshold != null && adsLTVThreshold.length > 0) {
             for (int i = 0; i < adsLTVThreshold.length; i++) {
                 if (previousAdsTV < adsLTVThreshold[i] && currentAdsTv >= adsLTVThreshold[i]) {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("value", String.valueOf(adsLTVThreshold[i]));
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("value", adsLTVThreshold[i]);
                     map.put("currency", "USD");
                     String TaichiEventName = null;
                     switch (i) {
