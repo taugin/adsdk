@@ -687,7 +687,14 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 nativeAssets = baseBindNativeView.getAdvMap();
             }
             if (nativeAssets != null && !nativeAssets.isEmpty()) {
-                Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " [" + render + "] assets : " + nativeAssets);
+                StringBuilder builder = new StringBuilder("{");
+                builder.append("\n");
+                for (Map.Entry<String, String> entry : nativeAssets.entrySet()) {
+                    builder.append("  " + entry.getKey() + " : " + entry.getValue());
+                    builder.append("\n");
+                }
+                builder.append("}");
+                Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " [" + render + "] assets : " + builder.toString());
             }
             Map<String, String> mediaTypeExtra = null;
             if (!TextUtils.isEmpty(render)) {
