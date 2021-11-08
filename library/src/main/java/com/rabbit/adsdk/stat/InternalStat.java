@@ -68,7 +68,7 @@ public class InternalStat {
             bundle.putString("entry_point", eventId);
         }
         mapToBundle(extra, bundle);
-        Log.iv(Log.TAG, "firebase event : " + bundle);
+        Log.iv(Log.TAG, "firebase event id : " + eventId + " , value : " + bundle);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.google.firebase.analytics.FirebaseAnalytics");
@@ -116,7 +116,7 @@ public class InternalStat {
                 }
             }
         }
-        Log.iv(Log.TAG, "umeng event : " + map);
+        Log.iv(Log.TAG, "umeng event id : " + eventId + " , value : " + map);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
@@ -158,7 +158,7 @@ public class InternalStat {
                 }
             }
         }
-        Log.iv(Log.TAG, "umeng event : " + map);
+        Log.iv(Log.TAG, "umeng event id : " + eventId + " , value : " + map);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
@@ -214,7 +214,7 @@ public class InternalStat {
                 }
             }
         }
-        Log.iv(Log.TAG, "appsflyer event : " + eventValue);
+        Log.iv(Log.TAG, "appsflyer event id : " + eventId + " , value : " + eventValue);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.appsflyer.AppsFlyerLib");
@@ -264,7 +264,7 @@ public class InternalStat {
             bundle.putString("entry_point", eventId);
         }
         mapToBundle(extra, bundle);
-        Log.iv(Log.TAG, "facebook event : " + bundle);
+        Log.iv(Log.TAG, "facebook event id : " + eventId + " , value : " + bundle);
 
         String error = null;
         try {
@@ -305,7 +305,7 @@ public class InternalStat {
                 }
             }
         }
-        Log.iv(Log.TAG, "flurry event : " + eventValue);
+        Log.iv(Log.TAG, "flurry event id : " + eventId + " , value : " + eventValue);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.flurry.android.FlurryAgent");
