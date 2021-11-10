@@ -79,7 +79,7 @@ dependencies {
 
     // admob
     implementation 'com.google.android.gms:play-services-ads:20.4.0'
-    implementation 'com.mopub.mediation:admob:20.3.0.0'
+    implementation 'com.mopub.mediation:admob:20.4.0.0'
 
     // mintegral
     def mintegral_version = "15.7.21"
