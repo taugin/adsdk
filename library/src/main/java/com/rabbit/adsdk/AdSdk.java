@@ -11,6 +11,7 @@ import com.rabbit.adsdk.adloader.core.AdLoaderManager;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.ActivityMonitor;
 import com.rabbit.adsdk.core.framework.AdPlaceLoader;
+import com.rabbit.adsdk.core.framework.LimitAdsManager;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PlaceConfig;
@@ -133,8 +134,15 @@ public class AdSdk {
 
     private AdPlaceLoader getAdLoader(String placeName, boolean forLoad) {
         Log.d(Log.TAG, "getAdLoader forLoad : " + forLoad);
-        // 获取引用的PlaceName
-        String refPlaceName = getAdRefPlaceName(placeName);
+        // 优先处理场景被限制的情况
+        String limitPlaceName = LimitAdsManager.get(mContext).addSuffixForPlaceNameIfNeed(placeName);
+        String refPlaceName = null;
+        if (TextUtils.equals(limitPlaceName, placeName)) {
+            // 获取引用的PlaceName
+            refPlaceName = getAdRefPlaceName(placeName);
+        } else {
+            refPlaceName = limitPlaceName;
+        }
 
         Log.v(Log.TAG, "place name : " + placeName + " , refPlaceName : " + refPlaceName);
         boolean useShareObject = false;
