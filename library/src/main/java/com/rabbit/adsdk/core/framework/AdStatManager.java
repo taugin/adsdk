@@ -32,10 +32,12 @@ public class AdStatManager {
     public void recordAdImp(String sdk, String placeName, String render) {
         Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , render : " + render);
         BlockAdsManager.get(mContext).recordAdImp(sdk, placeName, render);
+        LimitAdsManager.get(mContext).recordAdImp(sdk, placeName, render);
     }
 
     public void recordAdClick(String sdk, String placeName, String render) {
         Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , render : " + render);
         BlockAdsManager.get(mContext).recordAdClick(sdk, placeName, render);
+        LimitAdsManager.get(mContext).recordAdClick(sdk, placeName, render);
     }
 }
