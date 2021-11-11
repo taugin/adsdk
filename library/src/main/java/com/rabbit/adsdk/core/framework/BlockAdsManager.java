@@ -1,8 +1,13 @@
 package com.rabbit.adsdk.core.framework;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.rabbit.adsdk.AdSdk;
 import com.rabbit.adsdk.constant.Constant;
@@ -10,10 +15,12 @@ import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
+import com.rabbit.sunny.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -132,7 +139,51 @@ public class BlockAdsManager {
         return false;
     }
 
-    public boolean isRemoveAds(String sdk, String placeName) {
+    /**
+     * 将广告view替换为ad loading view
+     * @param adViewGroup
+     * @return
+     */
+    public boolean replaceAdWithLoadingView(WeakReference<ViewGroup> adViewGroup, String placeName, String sdkName, String adType, String render) {
+        boolean removeAds = isBlockAds(sdkName, placeName) && isRemoveAds(sdkName, placeName);
+        Log.iv(Log.TAG, "place name : " + placeName + " , sdk : " + sdkName + " , type : " + adType + " , render : " + render + " , removeAds : " + removeAds);
+        if (removeAds && adViewGroup != null) {
+            ViewGroup viewGroup = adViewGroup.get();
+            if (viewGroup != null) {
+                return replaceLoadingView(viewGroup);
+            }
+        }
+        return false;
+    }
+
+    private boolean replaceLoadingView(ViewGroup viewGroup) {
+        try {
+            if (viewGroup != null) {
+                int viewHeight = viewGroup.getHeight();
+                if (viewHeight > 0) {
+                    LinearLayout linearLayout = new LinearLayout(mContext);
+                    linearLayout.setGravity(Gravity.CENTER);
+                    linearLayout.setBackgroundColor(Color.WHITE);
+                    linearLayout.setBackgroundResource(R.drawable.rab_badge_bg);
+                    TextView textView = new TextView(mContext);
+                    textView.setGravity(Gravity.CENTER);
+                    textView.setTextColor(Color.DKGRAY);
+                    int padding = Utils.dp2px(mContext, 4);
+                    textView.setPadding(padding, padding, padding, padding);
+                    textView.setText("AD LOADING...");
+                    linearLayout.addView(textView);
+                    viewGroup.removeAllViews();
+                    viewGroup.addView(linearLayout, -1, viewHeight);
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            InternalStat.reportError(mContext, e);
+        }
+        return false;
+    }
+
+    private boolean isRemoveAds(String sdk, String placeName) {
         BlockCfg blockCfg = getBlockAdsConfig(sdk, placeName);
         if (blockCfg != null) {
             return blockCfg.removeAds;

@@ -3,16 +3,12 @@ package com.rabbit.adsdk.core.framework;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -35,10 +31,7 @@ import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.listener.OnAdSdkListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
-import com.rabbit.adsdk.stat.InternalStat;
-import com.rabbit.adsdk.utils.Utils;
 import com.rabbit.sunny.IAdvance;
-import com.rabbit.sunny.R;
 import com.rabbit.sunny.RabActivity;
 
 import java.lang.ref.WeakReference;
@@ -1301,7 +1294,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         loader.loadInterstitial();
                     } else if (loader.isRewardedVideoType()) {
                         loader.loadRewardedVideo();
-                    }  else if (loader.isSplashType()) {
+                    } else if (loader.isSplashType()) {
                         loader.loadSplash();
                     } else {
                         Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
@@ -1688,7 +1681,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         @Override
         public void onImp(String placeName, String source, String adType, String render, String pid) {
             Log.iv(Log.TAG, "notify callback onImp place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , render : " + render + " , pid : " + pid);
-            BlockAdsManager.get(mContext).recordAdImp(source, placeName, render);
+            AdStatManager.get(mContext).recordAdImp(source, placeName, render);
             if (mOnAdSdkLoadedListener != null) {
                 mOnAdSdkLoadedListener.onImp(placeName, source, adType, render, pid);
             }
@@ -1768,20 +1761,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         @Override
         public void onClick(String placeName, String source, String adType, String render, String pid) {
             Log.iv(Log.TAG, "notify callback onClick place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , render : " + render + " , pid : " + pid);
-            BlockAdsManager.get(mContext).recordAdClick(source, placeName, render);
+            AdStatManager.get(mContext).recordAdClick(source, placeName, render);
             if (TextUtils.equals(adType, Constant.TYPE_NATIVE)
                     || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
                 String sdkName = source;
                 if (!TextUtils.isEmpty(render) && !TextUtils.equals(source, render)) {
                     sdkName = render;
                 }
-                boolean removeAds = BlockAdsManager.get(mContext).isBlockAds(sdkName, placeName)
-                        && BlockAdsManager.get(mContext).isRemoveAds(sdkName, placeName);
-                Log.iv(Log.TAG, "place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , render : " + render + " , removeAds : " + removeAds);
-                if (removeAds) {
-                    replaceLoadingView();
-                }
-                if (removeAds || (mAdPlace != null && mAdPlace.isClickSwitch())) {
+                if (BlockAdsManager.get(mContext).replaceAdWithLoadingView(mAdContainer, placeName, sdkName, adType, render) || (mAdPlace != null && mAdPlace.isClickSwitch())) {
                     resume();
                     showNextAdView();
                 }
@@ -1803,34 +1790,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (mOnAdSdkListener != null) {
                 mOnAdSdkListener.onDismiss(placeName, source, adType, pid, complexAds);
             }
-        }
-    }
-
-    private void replaceLoadingView() {
-        try {
-            if (mAdContainer != null) {
-                ViewGroup viewGroup = mAdContainer.get();
-                if (viewGroup != null) {
-                    int viewHeight = viewGroup.getHeight();
-                    if (viewHeight > 0) {
-                        LinearLayout linearLayout = new LinearLayout(mContext);
-                        linearLayout.setGravity(Gravity.CENTER);
-                        linearLayout.setBackgroundColor(Color.WHITE);
-                        linearLayout.setBackgroundResource(R.drawable.rab_badge_bg);
-                        TextView textView = new TextView(mContext);
-                        textView.setGravity(Gravity.CENTER);
-                        textView.setTextColor(Color.DKGRAY);
-                        int padding = Utils.dp2px(mContext, 4);
-                        textView.setPadding(padding, padding, padding, padding);
-                        textView.setText("AD LOADING...");
-                        linearLayout.addView(textView);
-                        viewGroup.removeAllViews();
-                        viewGroup.addView(linearLayout, -1, viewHeight);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            InternalStat.reportError(mContext, e);
         }
     }
 
