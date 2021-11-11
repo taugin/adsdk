@@ -13,11 +13,16 @@ import com.rabbit.adsdk.utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class LimitAdsManager {
     private static LimitAdsManager sLimitAdsManager;
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     private static final String DEFAULT_LIST_TEXT = "[]";
     private static final String LIMIT_TYPE_IMP = "imp";
     private static final String LIMIT_TYPE_CLK = "clk";
@@ -182,7 +187,15 @@ public class LimitAdsManager {
             if (limitPolicy != null) {
                 long lastLimitTime = getLastLimitTime();
                 long nowTime = System.currentTimeMillis();
-                isInLimitTime = nowTime - lastLimitTime <= limitPolicy.limitTime;
+                long expTime = limitPolicy.getLimitTime() - (nowTime - lastLimitTime);
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
+                Log.iv(Log.TAG, "now : " + sdf.format(new Date(nowTime)) + " , last : " + sdf.format(new Date(lastLimitTime)) + " , exp : " + expTime);
+                isInLimitTime = expTime > 0;
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+                if (expTime < 0 ) {
+                    expTime = 0;
+                }
+                Log.iv(Log.TAG, "exp time : " + sdf.format(new Date(expTime)));
             }
         }
         Log.iv(Log.TAG, "limit type : " + limitType + " , in limit time : " + isInLimitTime);
