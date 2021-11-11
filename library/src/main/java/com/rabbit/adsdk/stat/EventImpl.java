@@ -406,16 +406,16 @@ public class EventImpl implements IEvent {
             }
         }
         if (isReportFirebase(context)) {
-            InternalStat.sendFirebaseAnalytics(context, value, eventId, maps);
+            InternalStat.sendFirebaseAnalytics(context, eventId, value, maps);
         }
         if (isReportUmeng(context)) {
-            InternalStat.sendUmeng(context, value, eventId, maps);
+            InternalStat.sendUmeng(context, eventId, value, maps);
         }
         if (isReportFacebook(context)) {
-            InternalStat.sendFacebook(context, value, eventId, maps);
+            InternalStat.sendFacebook(context, eventId, value, maps);
         }
         if (isReportFlurry(context)) {
-            InternalStat.sendFlurry(context, value, eventId, maps);
+            InternalStat.sendFlurry(context, eventId, value, maps);
         }
     }
 

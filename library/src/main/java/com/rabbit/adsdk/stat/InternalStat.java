@@ -56,11 +56,11 @@ public class InternalStat {
      * 发送Firebase统计事件
      *
      * @param context
-     * @param value
      * @param eventId
+     * @param value
      * @param extra
      */
-    protected static void sendFirebaseAnalytics(Context context, String value, String eventId, Map<String, Object> extra) {
+    public static void sendFirebaseAnalytics(Context context, String eventId, String value, Map<String, Object> extra) {
         Bundle bundle = new Bundle();
         if (!TextUtils.isEmpty(value)) {
             bundle.putString("entry_point", value);
@@ -90,11 +90,11 @@ public class InternalStat {
      * 发送友盟计数事件
      *
      * @param context
-     * @param value
      * @param eventId
+     * @param value
      * @param extra
      */
-    protected static void sendUmeng(Context context, String value, String eventId, Map<String, Object> extra) {
+    public static void sendUmeng(Context context, String eventId, String value, Map<String, Object> extra) {
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
@@ -140,7 +140,7 @@ public class InternalStat {
      * @param extra
      * @param value
      */
-    protected static void sendUmengEventValue(Context context, String eventId, Map<String, Object> extra, int value) {
+    public static void sendUmengEventValue(Context context, String eventId, Map<String, Object> extra, int value) {
         Log.iv(Log.TAG, "Report Event sendUmeng Event Value Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (extra != null && !extra.isEmpty()) {
@@ -194,11 +194,11 @@ public class InternalStat {
      * 发送appsflyer统计事件
      *
      * @param context
-     * @param value
      * @param eventId
+     * @param value
      * @param extra
      */
-    private static void sendAppsflyer(Context context, String value, String eventId, Map<String, Object> extra) {
+    public static void sendAppsflyer(Context context, String eventId, String value, Map<String, Object> extra) {
         Map<String, Object> eventValue = new HashMap<String, Object>();
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
@@ -251,7 +251,14 @@ public class InternalStat {
         }
     }
 
-    protected static void sendFacebook(Context context, String value, String eventId, Map<String, Object> extra) {
+    /**
+     *
+     * @param context
+     * @param eventId
+     * @param value
+     * @param extra
+     */
+    public static void sendFacebook(Context context, String eventId, String value, Map<String, Object> extra) {
         initFacebook(context);
         if (mFacebookObject == null) {
             return;
@@ -285,11 +292,11 @@ public class InternalStat {
      * 发送flurry统计事件
      *
      * @param context
-     * @param value
      * @param eventId
+     * @param value
      * @param extra
      */
-    protected static void sendFlurry(Context context, String value, String eventId, Map<String, Object> extra) {
+    public static void sendFlurry(Context context, String eventId, String value, Map<String, Object> extra) {
         Map<String, Object> eventValue = new HashMap<String, Object>();
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
@@ -334,11 +341,11 @@ public class InternalStat {
     }
 
     public static void reportEvent(Context context, String key, String value, Map<String, Object> map) {
-        sendUmeng(context, value, key, map);
-        sendAppsflyer(context, value, key, map);
-        sendFirebaseAnalytics(context, value, key, map);
-        sendFacebook(context, value, key, map);
-        sendFlurry(context, value, key, map);
+        sendUmeng(context, key, value, map);
+        sendAppsflyer(context, key, value, map);
+        sendFirebaseAnalytics(context, key, value, map);
+        sendFacebook(context, key, value, map);
+        sendFlurry(context, key, value, map);
     }
 
     public static void reportError(Context context, Throwable e) {
