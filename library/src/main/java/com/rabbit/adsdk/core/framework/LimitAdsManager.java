@@ -79,7 +79,7 @@ public class LimitAdsManager {
     }
 
     private synchronized void appendAdImpTimestamp() {
-        updateLimitConfig();
+        parseLimitConfig();
         if (mLimitConfig != null) {
             if (isLimitAd()) {
                 Log.iv(Log.TAG, "ad is limiting while appending imp");
@@ -162,13 +162,6 @@ public class LimitAdsManager {
     }
 
     /**
-     * 更新广告限制配置
-     */
-    private void updateLimitConfig() {
-        mLimitConfig = parseLimitConfig();
-    }
-
-    /**
      * 判断是否需要为所有广告名称添加后缀
      * 需要添加的条件：
      * 1. 用户在一定时间间隔内展示次数超过配置值
@@ -211,7 +204,7 @@ public class LimitAdsManager {
     public String addSuffixForPlaceNameIfNeed(String placeName) {
         String placeNameWithSuffix = placeName;
         try {
-            updateLimitConfig();
+            parseLimitConfig();
             if (isLimitAd() && mLimitConfig != null) {
                 String placeNameSuffix = mLimitConfig.getPlaceNameSuffix();
                 Log.iv(Log.TAG, "place name suffix : " + placeNameSuffix);
@@ -286,17 +279,21 @@ public class LimitAdsManager {
         }
     }
 
-    private LimitConfig parseLimitConfig() {
+    /**
+     * 解析配置
+     */
+    private void parseLimitConfig() {
         String limitConfigContent = AdSdk.get(mContext).getString(LIMIT_CFG);
         if (!TextUtils.isEmpty(limitConfigContent)) {
             String contentMD5 = Utils.string2MD5(limitConfigContent);
             if (mLimitConfig != null && TextUtils.equals(contentMD5, mLimitConfig.getContentMD5())) {
                 Log.iv(Log.TAG, "limit config has parsed");
-                return mLimitConfig;
+                return;
             }
+            LimitConfig limitConfig = null;
             try {
                 JSONObject jsonObject = new JSONObject(limitConfigContent);
-                LimitConfig limitConfig = new LimitConfig();
+                limitConfig = new LimitConfig();
                 limitConfig.setContentMD5(contentMD5);
                 if (jsonObject.has(LimitConfig.LIMIT_ENABLE)) {
                     limitConfig.setEnable(jsonObject.getBoolean(LimitConfig.LIMIT_ENABLE));
@@ -310,11 +307,12 @@ public class LimitAdsManager {
                 if (jsonObject.has(LimitConfig.LIMIT_CLK)) {
                     limitConfig.setClkLimitPolicy(parseLimitPolicy(jsonObject.getString(LimitConfig.LIMIT_CLK)));
                 }
-                return limitConfig;
             } catch (Exception e) {
             }
+            mLimitConfig = limitConfig;
+        } else {
+            mLimitConfig = null;
         }
-        return null;
     }
 
     private LimitConfig.LimitPolicy parseLimitPolicy(String content) {
