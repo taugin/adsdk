@@ -142,8 +142,10 @@ public class MopubLoader extends AbstractSdkLoader {
                 public void onTick(long millisUntilFinished) {
                     Log.iv(Log.TAG, "mopub sdk init state check");
                     if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS) {
-                        mStateChecker.cancel();
-                        mStateChecker = null;
+                        if (mStateChecker != null) {
+                            mStateChecker.cancel();
+                            mStateChecker = null;
+                        }
                         if (sdkInitializeListener != null) {
                             sdkInitializeListener.onInitializeSuccess(null, null);
                         }
