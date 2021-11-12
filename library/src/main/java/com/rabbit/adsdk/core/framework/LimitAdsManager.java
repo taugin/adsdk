@@ -80,7 +80,7 @@ public class LimitAdsManager {
 
     private synchronized void appendAdImpTimestamp() {
         parseLimitConfig();
-        if (mLimitConfig != null) {
+        if (mLimitConfig != null && mLimitConfig.isEnable()) {
             if (isLimitAd()) {
                 Log.iv(Log.TAG, "ad is limiting while appending imp");
                 return;
@@ -97,7 +97,7 @@ public class LimitAdsManager {
     }
 
     private synchronized void appendAdClkTimestamp() {
-        if (mLimitConfig != null) {
+        if (mLimitConfig != null && mLimitConfig.isEnable()) {
             if (isLimitAd()) {
                 Log.iv(Log.TAG, "ad is limiting while appending clk");
                 return;
@@ -185,7 +185,7 @@ public class LimitAdsManager {
                 Log.iv(Log.TAG, "now : " + sdf.format(new Date(nowTime)) + " , last : " + sdf.format(new Date(lastLimitTime)) + " , exp : " + expTime);
                 isInLimitTime = expTime > 0;
                 sdf.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-                if (expTime < 0 ) {
+                if (expTime < 0) {
                     expTime = 0;
                 }
                 Log.iv(Log.TAG, "exp time : " + sdf.format(new Date(expTime)));
@@ -205,21 +205,23 @@ public class LimitAdsManager {
         String placeNameWithSuffix = placeName;
         try {
             parseLimitConfig();
-            if (isLimitAd() && mLimitConfig != null) {
-                String placeNameSuffix = mLimitConfig.getPlaceNameSuffix();
-                Log.iv(Log.TAG, "place name suffix : " + placeNameSuffix);
-                if (!TextUtils.isEmpty(placeNameSuffix)) {
-                    placeNameWithSuffix = placeName + placeNameSuffix;
-                    AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(placeNameWithSuffix);
-                    // 如果远程无配置，则读取本地或者远程整体广告位配置
-                    if (adPlace == null) {
-                        PlaceConfig localConfig = DataManager.get(mContext).getAdConfig();
-                        if (localConfig != null) {
-                            adPlace = localConfig.get(placeNameWithSuffix);
+            if (mLimitConfig != null && mLimitConfig.isEnable()) {
+                if (isLimitAd()) {
+                    String placeNameSuffix = mLimitConfig.getPlaceNameSuffix();
+                    Log.iv(Log.TAG, "place name suffix : " + placeNameSuffix);
+                    if (!TextUtils.isEmpty(placeNameSuffix)) {
+                        placeNameWithSuffix = placeName + placeNameSuffix;
+                        AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(placeNameWithSuffix);
+                        // 如果远程无配置，则读取本地或者远程整体广告位配置
+                        if (adPlace == null) {
+                            PlaceConfig localConfig = DataManager.get(mContext).getAdConfig();
+                            if (localConfig != null) {
+                                adPlace = localConfig.get(placeNameWithSuffix);
+                            }
                         }
-                    }
-                    if (adPlace == null) {
-                        placeNameWithSuffix = placeName;
+                        if (adPlace == null) {
+                            placeNameWithSuffix = placeName;
+                        }
                     }
                 }
             }
