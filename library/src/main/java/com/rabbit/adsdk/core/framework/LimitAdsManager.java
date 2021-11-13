@@ -1,13 +1,17 @@
 package com.rabbit.adsdk.core.framework;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.rabbit.adsdk.AdSdk;
+import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PlaceConfig;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.stat.EventImpl;
+import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 
 import org.json.JSONArray;
@@ -23,6 +27,7 @@ import java.util.TimeZone;
 public class LimitAdsManager {
     private static LimitAdsManager sLimitAdsManager;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    private static final SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     private static final String DEFAULT_LIST_TEXT = "[]";
     private static final String LIMIT_TYPE_IMP = "imp";
     private static final String LIMIT_TYPE_CLK = "clk";
@@ -127,9 +132,59 @@ public class LimitAdsManager {
             long expTime = now - lastLimitTime;
             Log.iv(Log.TAG, "now : " + now + " , last limit time : " + lastLimitTime + " , expTime : " + expTime + " , limit duration : " + limitDuration);
             if (expTime <= limitDuration) {
+                Log.iv(Log.TAG, "user action abnormal, use limit placement");
                 recordLastLimitStatus(type, now);
+                reportLimitInfo();
             }
         }
+    }
+
+    private void reportLimitInfo() {
+        int impCount = (int) AdStatManager.get(mContext).getAllImpCount();
+        int clkCount = (int) AdStatManager.get(mContext).getAllClkCount();
+        String reportInfo = getLimitInfo(impCount, clkCount);
+        Log.iv(Log.TAG, "limit ads info : " + reportInfo);
+        InternalStat.reportEvent(mContext, "limit_ads_info", reportInfo);
+    }
+
+    private String getLimitInfo(int impCount, int clkCount) {
+        String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+        if (TextUtils.isEmpty(gaid)) {
+            gaid = "unknown";
+        }
+        String locale = getLocale(mContext);
+        if (TextUtils.isEmpty(locale)) {
+            locale = "unknown";
+        }
+        String userFlag = getUserFlag();
+        String datetime = sSimpleDateFormat.format(new Date());
+        return String.format(Locale.getDefault(), "%s|%s|%s|%s|%d/%d", gaid, userFlag, locale, datetime, clkCount, impCount);
+    }
+
+    private String getUserFlag() {
+        String userFlag = EventImpl.get().getUserFlag();
+        if (TextUtils.equals(userFlag, "true")) {
+            return "1";
+        }
+        if (TextUtils.equals(userFlag, "false")) {
+            return "0";
+        }
+        return "-1";
+    }
+
+    private static String getLocale(Context context) {
+        String channel = "unknown";
+        try {
+            Locale locale = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                locale = context.getResources().getConfiguration().getLocales().get(0);
+            } else {
+                locale = context.getResources().getConfiguration().locale;
+            }
+            channel = locale.getCountry().toLowerCase(Locale.getDefault());
+        } catch (Exception e) {
+        }
+        return channel;
     }
 
     /**
