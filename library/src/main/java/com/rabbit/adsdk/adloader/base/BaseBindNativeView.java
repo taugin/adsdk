@@ -53,6 +53,7 @@ public class BaseBindNativeView {
         LAYOUT_MAPS = new HashMap<String, Integer>();
         LAYOUT_MAPS.put("micro", R.layout.rab_card_micro);
         LAYOUT_MAPS.put("tiny", R.layout.rab_card_tiny);
+        LAYOUT_MAPS.put("little", R.layout.rab_card_little);
         LAYOUT_MAPS.put("small", R.layout.rab_card_small);
         LAYOUT_MAPS.put("medium", R.layout.rab_card_medium);
         LAYOUT_MAPS.put("large", R.layout.rab_card_large);
@@ -207,8 +208,10 @@ public class BaseBindNativeView {
                 layoutId = R.layout.rab_card_foot;
             } else if (template == Constant.NATIVE_CARD_ROUND) {
                 layoutId = R.layout.rab_card_round;
+            } else if (template == Constant.NATIVE_CARD_LITTLE) {
+                layoutId = R.layout.rab_card_little;
             } else {
-                layoutId = R.layout.rab_card_tiny;
+                layoutId = R.layout.rab_card_little;
             }
         }
         return layoutId;

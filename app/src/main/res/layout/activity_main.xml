@@ -35,6 +35,16 @@
                 android:text="tiny" />
 
             <Button
+                android:id="@+id/little"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:tag="little"
+                android:text="little" />
+
+            <Button
                 android:id="@+id/small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -230,6 +240,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/reward_video_queue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="加载成功数 : 0" />
+
             <CheckBox
                 android:id="@+id/auto_reward"
                 style="@android:style/Widget.DeviceDefault.Button"
@@ -243,15 +262,6 @@
                 android:text="自动加载激励视频"
                 android:thumb="@android:color/transparent"
                 android:track="@android:color/transparent" />
-
-            <Button
-                android:id="@+id/reward_video_queue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:text="加载成功数 : 0" />
 
         </LinearLayout>
 

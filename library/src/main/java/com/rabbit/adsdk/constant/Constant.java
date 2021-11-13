@@ -43,6 +43,7 @@ public class Constant {
     public static final int NATIVE_CARD_MIX = 9;
     public static final int NATIVE_CARD_FOOT = 10;
     public static final int NATIVE_CARD_ROUND = 11;
+    public static final int NATIVE_CARD_LITTLE = 12;
 
     public static final String MODE_SEQ = "seq";
     public static final String MODE_CON = "con";

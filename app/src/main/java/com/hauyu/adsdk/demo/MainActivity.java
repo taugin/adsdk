@@ -49,6 +49,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         LAYOUT_MAP = new HashMap<>();
         LAYOUT_MAP.put("micro", AdExtra.NATIVE_CARD_MICRO);
         LAYOUT_MAP.put("tiny", AdExtra.NATIVE_CARD_TINY);
+        LAYOUT_MAP.put("little", AdExtra.NATIVE_CARD_LITTLE);
         LAYOUT_MAP.put("small", AdExtra.NATIVE_CARD_SMALL);
         LAYOUT_MAP.put("medium", AdExtra.NATIVE_CARD_MEDIUM);
         LAYOUT_MAP.put("large", AdExtra.NATIVE_CARD_LARGE);
