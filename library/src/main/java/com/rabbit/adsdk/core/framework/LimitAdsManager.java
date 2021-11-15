@@ -276,11 +276,12 @@ public class LimitAdsManager {
                         }
                         if (adPlace == null) {
                             placeNameWithSuffix = placeName;
+                        } else {
+                            Log.iv(Log.TAG, "limit place name with suffix : " + placeNameWithSuffix);
                         }
                     }
                 }
             }
-            Log.iv(Log.TAG, "place name with suffix : " + placeNameWithSuffix);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
