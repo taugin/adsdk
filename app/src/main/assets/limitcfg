@@ -1,14 +1,14 @@
 {
-  "le": true,
-  "ls": "_suffix",
-  "li": {
-    "ld": 60000,
-    "lc": 20,
-    "lt": 3600000
+  "limit_enable": true,
+  "limit_suffix": "_suffix",
+  "limit_imp": {
+    "limit_duration": 60000,
+    "limit_count": 20,
+    "limit_time": 3600000
   },
-  "lc": {
-    "ld": 60000,
-    "lc": 20,
-    "lt": 3600000
+  "limit_clk": {
+    "limit_duration": 60000,
+    "limit_count": 20,
+    "limit_time": 3600000
   }
 }

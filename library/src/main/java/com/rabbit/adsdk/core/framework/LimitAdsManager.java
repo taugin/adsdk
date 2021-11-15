@@ -392,13 +392,13 @@ public class LimitAdsManager {
     }
 
     public static class LimitConfig {
-        private static final String LIMIT_ENABLE = "le";
-        private static final String LIMIT_SUFFIX = "ls";
-        private static final String LIMIT_IMP = "li";
-        private static final String LIMIT_CLK = "lc";
-        private static final String LIMIT_DURATION = "ld";
-        private static final String LIMIT_TIME = "lt";
-        private static final String LIMIT_COUNT = "lc";
+        private static final String LIMIT_ENABLE = "limit_enable";
+        private static final String LIMIT_SUFFIX = "limit_suffix";
+        private static final String LIMIT_IMP = "limit_imp";
+        private static final String LIMIT_CLK = "limit_clk";
+        private static final String LIMIT_DURATION = "limit_duration";
+        private static final String LIMIT_TIME = "limit_time";
+        private static final String LIMIT_COUNT = "limit_count";
         private boolean enable;
         private String placeNameSuffix;
         private LimitPolicy impLimitPolicy;

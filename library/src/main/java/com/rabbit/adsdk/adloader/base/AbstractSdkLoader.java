@@ -23,6 +23,7 @@ import com.rabbit.adsdk.core.framework.BlockAdsManager;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.PidConfig;
+import com.rabbit.adsdk.data.parse.IParser;
 import com.rabbit.adsdk.listener.AdLoaderFilter;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
@@ -687,6 +688,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 nativeAssets = baseBindNativeView.getAdvMap();
             }
             if (nativeAssets != null && !nativeAssets.isEmpty()) {
+                if (!TextUtils.isEmpty(render)) {
+                    nativeAssets.put(IParser.SDK, render);
+                } else {
+                    nativeAssets.put(IParser.SDK, getSdkName());
+                }
                 StringBuilder builder = new StringBuilder("{");
                 builder.append("\n");
                 for (Map.Entry<String, String> entry : nativeAssets.entrySet()) {
