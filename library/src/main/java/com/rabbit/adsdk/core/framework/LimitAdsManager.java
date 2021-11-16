@@ -87,7 +87,7 @@ public class LimitAdsManager {
         parseLimitConfig();
         if (mLimitConfig != null && mLimitConfig.isEnable()) {
             if (isLimitAd()) {
-                Log.iv(Log.TAG, "ad is limiting while appending imp");
+                Log.iv(Log.TAG, "placement is limiting while appending imp");
                 return;
             }
             LinkedList<Long> linkedList = getLinkedListFromSP(PREF_IMP_TIMESTAMP_LIST);
@@ -104,7 +104,7 @@ public class LimitAdsManager {
     private synchronized void appendAdClkTimestamp() {
         if (mLimitConfig != null && mLimitConfig.isEnable()) {
             if (isLimitAd()) {
-                Log.iv(Log.TAG, "ad is limiting while appending clk");
+                Log.iv(Log.TAG, "placement is limiting while appending clk");
                 return;
             }
             LinkedList<Long> linkedList = getLinkedListFromSP(PREF_CLK_TIMESTAMP_LIST);
