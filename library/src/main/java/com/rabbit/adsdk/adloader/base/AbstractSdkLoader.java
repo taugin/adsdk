@@ -748,6 +748,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return null;
     }
 
+    protected void notifyAdRequest() {
+        if (getAdListener() != null) {
+            getAdListener().onAdRequest();
+        }
+    }
 
     /**
      * banner or native loaded

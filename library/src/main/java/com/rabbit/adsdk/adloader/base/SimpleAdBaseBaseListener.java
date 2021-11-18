@@ -35,6 +35,15 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
+    public void onAdRequest() {
+        // 所有加载成功的loader都将通知给adplaceloader
+        OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();
+        if (placeLoaderListener != null) {
+            placeLoaderListener.onRequest(placeName, source, adType, pid);
+        }
+    }
+
+    @Override
     public void onAdLoaded(ISdkLoader loader) {
         // 所有加载成功的loader都将通知给adplaceloader
         OnAdSdkListener placeLoaderListener = getOnAdPlaceLoaderListener();

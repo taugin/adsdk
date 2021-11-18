@@ -353,6 +353,7 @@ public class MopubLoader extends AbstractSdkLoader {
         });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         loadingView.loadAd();
     }
 
@@ -484,6 +485,7 @@ public class MopubLoader extends AbstractSdkLoader {
         });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         moPubLoadingInterstitial.load();
     }
 
@@ -640,6 +642,7 @@ public class MopubLoader extends AbstractSdkLoader {
         });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         MoPubRewardedAds.loadRewardedAd(getPidConfig().getPid());
     }
 
@@ -733,6 +736,7 @@ public class MopubLoader extends AbstractSdkLoader {
         bindNativeView.bindMopubNative(params, mContext, moPubNative, mPidConfig);
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         moPubNative.makeRequest();
     }
 

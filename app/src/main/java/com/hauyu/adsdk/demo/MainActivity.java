@@ -293,6 +293,11 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
     private SimpleAdSdkListener mSimpleAdsdkListener = new SimpleAdSdkListener() {
 
         @Override
+        public void onRequest(String placeName, String source, String adType, String pid) {
+            Log.d(Log.TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+        }
+
+        @Override
         public void onLoaded(String placeName, String source, String adType, String pid) {
             Log.d(Log.TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
             String loadedSdk = AdSdk.get(mContext).getLoadedSdk(placeName);

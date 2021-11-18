@@ -7,6 +7,8 @@ import com.rabbit.adsdk.AdReward;
  */
 
 public interface OnAdSdkListener {
+    void onRequest(String placeName, String source, String adType, String pid);
+
     void onLoaded(String placeName, String source, String adType, String pid);
 
     void onLoading(String placeName, String source, String adType, String pid);

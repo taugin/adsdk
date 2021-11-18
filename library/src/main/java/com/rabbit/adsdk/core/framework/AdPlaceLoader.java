@@ -1640,6 +1640,17 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     public class AdPlaceLoaderListener implements OnAdSdkListener {
 
         @Override
+        public void onRequest(String placeName, String source, String adType, String pid) {
+            Log.iv(Log.TAG, "notify callback onRequest place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid);
+            if (mOnAdSdkLoadedListener != null) {
+                mOnAdSdkLoadedListener.onRequest(placeName, source, adType, pid);
+            }
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onRequest(placeName, source, adType, pid);
+            }
+        }
+
+        @Override
         public void onLoaded(String placeName, String source, String adType, String pid) {
             resetRetryTimes(placeName, source, adType);
             if (hasNotifyLoaded()) {

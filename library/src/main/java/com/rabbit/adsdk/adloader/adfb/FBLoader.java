@@ -150,6 +150,7 @@ public class FBLoader extends AbstractSdkLoader {
         };
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         AdView.AdViewLoadConfig adViewLoadConfig = loadingView.buildLoadAdConfig().withAdListener(adListener).build();
         loadingView.loadAd(adViewLoadConfig);
     }
@@ -283,6 +284,7 @@ public class FBLoader extends AbstractSdkLoader {
 
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         InterstitialAd.InterstitialLoadAdConfig loadConfig = fbLoadingInterstitial.buildLoadAdConfig().withAdListener(interstitialAdListener).build();
         fbLoadingInterstitial.loadAd(loadConfig);
     }
@@ -388,6 +390,7 @@ public class FBLoader extends AbstractSdkLoader {
             }
         };
         reportAdRequest();
+        notifyAdRequest();
         NativeAd.NativeLoadAdConfig loadAdConfig = nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build();
         nativeAd.loadAd(loadAdConfig);
     }
@@ -504,6 +507,7 @@ public class FBLoader extends AbstractSdkLoader {
         };
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         RewardedVideoAd.RewardedVideoLoadAdConfig loadAdConfig = loadingRewardedVideoAd.buildLoadAdConfig().withAdListener(rewardedVideoAdListener).build();
         loadingRewardedVideoAd.loadAd(loadAdConfig);
     }

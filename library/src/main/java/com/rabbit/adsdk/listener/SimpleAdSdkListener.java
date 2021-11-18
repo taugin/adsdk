@@ -8,6 +8,10 @@ import com.rabbit.adsdk.AdReward;
 
 public class SimpleAdSdkListener implements OnAdSdkListener {
     @Override
+    public void onRequest(String placeName, String source, String adType, String pid) {
+    }
+
+    @Override
     public void onLoaded(String placeName, String source, String adType, String pid) {
     }
 

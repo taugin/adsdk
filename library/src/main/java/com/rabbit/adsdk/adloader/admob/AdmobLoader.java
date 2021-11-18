@@ -187,6 +187,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         loadingView.loadAd(new AdRequest.Builder().build());
     }
 
@@ -279,6 +280,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         };
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         InterstitialAd.load(mContext, mPidConfig.getPid(), new AdRequest.Builder().build(), interstitialAdLoadCallback);
     }
 
@@ -361,6 +363,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         RewardedAd.load(mContext, mPidConfig.getPid(), new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
@@ -582,6 +585,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         AdLoader adLoader = loadingBuilder.build();
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         if (adLoader != null) {
             if (isLoadMultipleNative()) {
                 adLoader.loadAds(new AdRequest.Builder().build(), mPidConfig.getCnt());
@@ -670,6 +674,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         };
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         int splashOrientation = mPidConfig.getSplashOrientation();
         AppOpenAd.load(mContext, getPid(), new AdRequest.Builder().build(), splashOrientation, appOpenAdLoadCallback);
     }

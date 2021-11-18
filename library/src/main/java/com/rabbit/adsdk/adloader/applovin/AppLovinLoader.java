@@ -357,9 +357,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
         });
 
-        loadingMaxAdView.loadAd();
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
+        loadingMaxAdView.loadAd();
     }
 
     private void showBannerForMax(ViewGroup viewGroup) {
@@ -460,6 +461,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         loadingInterstitialAd.loadAd();
     }
 
@@ -580,6 +582,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
+        notifyAdRequest();
         loadingRewardedAd.loadAd();
     }
 

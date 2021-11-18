@@ -8,6 +8,12 @@ import com.rabbit.adsdk.AdReward;
  */
 
 public interface OnAdBaseListener {
+
+    /**
+     * ad request
+     */
+    public void onAdRequest();
+
     /**
      * banner or native loaded
      */
