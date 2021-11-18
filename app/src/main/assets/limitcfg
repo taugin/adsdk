@@ -4,11 +4,11 @@
   "limit_imp": {
     "limit_duration": 60000,
     "limit_count": 20,
-    "limit_time": 3600000
+    "limit_time": 604800000
   },
   "limit_clk": {
     "limit_duration": 60000,
     "limit_count": 20,
-    "limit_time": 3600000
+    "limit_time": 604800000
   }
 }
