@@ -132,9 +132,9 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "request", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
-        reportEvent(context, placeName, eventId, extra);
-        reportEvent(context, placeName, "e_ad_request", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        reportEvent(context, placeName, "e_ad_request", extra);
+        reportEvent(context, placeName, eventId, extra);
     }
 
     @Override
@@ -144,9 +144,9 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "loaded", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
-        reportEvent(context, placeName, eventId, extra);
-        reportEvent(context, placeName, "e_ad_loaded", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        reportEvent(context, placeName, "e_ad_loaded", extra);
+        reportEvent(context, placeName, eventId, extra);
     }
 
     @Override
@@ -156,9 +156,9 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "show", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
-        reportEvent(context, placeName, eventId, extra);
-        reportEvent(context, placeName, "e_ad_show", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        reportEvent(context, placeName, "e_ad_show", extra);
+        reportEvent(context, placeName, eventId, extra);
     }
 
     @Override
@@ -168,9 +168,9 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "imp", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
-        reportEvent(context, placeName, eventId, extra);
-        reportEvent(context, placeName, "e_ad_imp", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        reportEvent(context, placeName, "e_ad_imp", extra);
+        reportEvent(context, placeName, eventId, extra);
     }
 
     @Override
@@ -180,9 +180,9 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "click", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
-        reportEvent(context, placeName, eventId, extra);
-        reportEvent(context, placeName, "e_ad_click", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        reportEvent(context, placeName, "e_ad_click", extra);
+        reportEvent(context, placeName, eventId, extra);
     }
 
     @Override
@@ -192,9 +192,9 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "receive", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
-        reportEvent(context, placeName, eventId, extra);
-        reportEvent(context, placeName, "e_ad_reward", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        reportEvent(context, placeName, "e_ad_reward", extra);
+        reportEvent(context, placeName, eventId, extra);
     }
 
     @Override
@@ -208,9 +208,9 @@ public class EventImpl implements IEvent {
         String eventId = generateEventId(context, "error", sdk, type);
         extra = addExtraForError(context, extra);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
-        reportEvent(context, placeName, eventId, extra);
-        reportEvent(context, placeName, "e_ad_error", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        reportEvent(context, placeName, "e_ad_error", extra);
+        reportEvent(context, placeName, eventId, extra);
     }
 
     @Override
@@ -220,9 +220,9 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "close", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
-        reportEvent(context, placeName, eventId, extra);
-        reportEvent(context, placeName, "e_ad_close", extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        reportEvent(context, placeName, "e_ad_close", extra);
+        reportEvent(context, placeName, eventId, extra);
     }
 
     @Override
@@ -239,6 +239,7 @@ public class EventImpl implements IEvent {
         map.put("name", placeName);
         map.put("sdk", sdk);
         map.put("type", type);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
         if (isReportUmeng(context)) {
             Map<String, Object> umengMap = null;
             if (map != null && !map.isEmpty()) {
@@ -250,7 +251,6 @@ public class EventImpl implements IEvent {
             InternalStat.sendUmengEventValue(context, eventId, umengMap, value);
         }
         reportEvent(context, null, eventId, map);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
     }
 
     @Override
@@ -268,6 +268,7 @@ public class EventImpl implements IEvent {
         map.put("sdk", sdk);
         map.put("type", type);
         map.put("error", error);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
         if (isReportUmeng(context)) {
             Map<String, Object> umengMap = null;
             if (map != null && !map.isEmpty()) {
@@ -279,7 +280,6 @@ public class EventImpl implements IEvent {
             InternalStat.sendUmengEventValue(context, eventId, umengMap, value);
         }
         reportEvent(context, null, eventId, map);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
     }
 
     @Override
@@ -288,8 +288,8 @@ public class EventImpl implements IEvent {
             return;
         }
         String eventId = generateEventIdAlias(context, key);
-        reportEvent(context, value, eventId, extra);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + value + " , extra : " + extra);
+        reportEvent(context, value, eventId, extra);
     }
 
     @Override
