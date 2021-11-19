@@ -6,7 +6,6 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import com.rabbit.adsdk.constant.Constant;
-import com.rabbit.adsdk.core.framework.BlockAdsManager;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
@@ -336,29 +335,29 @@ public class EventImpl implements IEvent {
         return result;
     }
 
+    private boolean isReportAppsflyer(Context context) {
+        String value = DataManager.get(context).getString("ad_report_appsflyer");
+        boolean result = parseReport(value, false);
+        Log.v(Log.TAG, "is report appsflyer : " + result);
+        return result;
+    }
+
     private boolean isReportUmeng(Context context) {
-        String value = DataManager.get(context).getString("report_umeng");
+        String value = DataManager.get(context).getString("ad_report_umeng");
         boolean result = parseReport(value, true);
         Log.v(Log.TAG, "is report umeng : " + result);
         return result;
     }
 
     private boolean isReportFirebase(Context context) {
-        String value = DataManager.get(context).getString("report_firebase");
+        String value = DataManager.get(context).getString("ad_report_firebase");
         boolean result = parseReport(value, true);
         Log.v(Log.TAG, "is report firebase : " + result);
         return result;
     }
 
-    private boolean isReportFacebook(Context context) {
-        String value = DataManager.get(context).getString("report_facebook");
-        boolean result = parseReport(value, true);
-        Log.v(Log.TAG, "is report facebook : " + result);
-        return result;
-    }
-
     private boolean isReportFlurry(Context context) {
-        String value = DataManager.get(context).getString("report_flurry");
+        String value = DataManager.get(context).getString("ad_report_flurry");
         boolean result = parseReport(value, true);
         Log.v(Log.TAG, "is report flurry : " + result);
         return result;
@@ -405,14 +404,14 @@ public class EventImpl implements IEvent {
                 maps.put(entry.getKey(), entry.getValue());
             }
         }
+        if (isReportAppsflyer(context)) {
+            InternalStat.sendAppsflyer(context, eventId, value, maps);
+        }
         if (isReportFirebase(context)) {
             InternalStat.sendFirebaseAnalytics(context, eventId, value, maps);
         }
         if (isReportUmeng(context)) {
             InternalStat.sendUmeng(context, eventId, value, maps);
-        }
-        if (isReportFacebook(context)) {
-            InternalStat.sendFacebook(context, eventId, value, maps);
         }
         if (isReportFlurry(context)) {
             InternalStat.sendFlurry(context, eventId, value, maps);

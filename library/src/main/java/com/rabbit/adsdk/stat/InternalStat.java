@@ -4,10 +4,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,8 +18,6 @@ import java.util.Map;
  */
 
 public class InternalStat {
-    private static Object mFacebookObject = null;
-
     private static void mapToBundle(Map<String, Object> map, Bundle bundle) {
         if (map == null || bundle == null) {
             return;
@@ -61,6 +62,13 @@ public class InternalStat {
      * @param extra
      */
     public static void sendFirebaseAnalytics(Context context, String eventId, String value, Map<String, Object> extra) {
+        sendFirebaseAnalytics(context, eventId, value, extra, true);
+    }
+
+    public static void sendFirebaseAnalytics(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
+        if (!isReportPlatform(context, eventId, "firebase", defaultValue)) {
+            return;
+        }
         Bundle bundle = new Bundle();
         if (!TextUtils.isEmpty(value)) {
             bundle.putString("entry_point", value);
@@ -95,6 +103,13 @@ public class InternalStat {
      * @param extra
      */
     public static void sendUmeng(Context context, String eventId, String value, Map<String, Object> extra) {
+        sendUmeng(context, eventId, value, extra, true);
+    }
+
+    public static void sendUmeng(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
+        if (!isReportPlatform(context, eventId, "umeng", defaultValue)) {
+            return;
+        }
         HashMap<String, String> map = new HashMap<String, String>();
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
@@ -141,6 +156,13 @@ public class InternalStat {
      * @param value
      */
     public static void sendUmengEventValue(Context context, String eventId, Map<String, Object> extra, int value) {
+        sendUmengEventValue(context, eventId, extra, value, true);
+    }
+
+    public static void sendUmengEventValue(Context context, String eventId, Map<String, Object> extra, int value, boolean defaultValue) {
+        if (!isReportPlatform(context, eventId, "umeng", defaultValue)) {
+            return;
+        }
         Log.iv(Log.TAG, "Report Event sendUmeng Event Value Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (extra != null && !extra.isEmpty()) {
@@ -174,7 +196,10 @@ public class InternalStat {
         }
     }
 
-    private static void sendUmengError(Context context, Throwable throwable) {
+    private static void sendUmengError(Context context, Throwable throwable, boolean defaultValue) {
+        if (!isReportPlatform(context, "umeng_error", "umeng", defaultValue)) {
+            return;
+        }
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
@@ -199,6 +224,13 @@ public class InternalStat {
      * @param extra
      */
     public static void sendAppsflyer(Context context, String eventId, String value, Map<String, Object> extra) {
+        sendAppsflyer(context, eventId, value, extra, true);
+    }
+
+    public static void sendAppsflyer(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
+        if (!isReportPlatform(context, eventId, "appsflyer", defaultValue)) {
+            return;
+        }
         Map<String, Object> eventValue = new HashMap<String, Object>();
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
@@ -232,62 +264,6 @@ public class InternalStat {
         }
     }
 
-    private static void initFacebook(Context context) {
-        if (mFacebookObject != null) {
-            return;
-        }
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.facebook.appevents.AppEventsLogger");
-            Method method = clazz.getMethod("newLogger", Context.class);
-            mFacebookObject = method.invoke(null, context);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "error : " + error);
-        }
-    }
-
-    /**
-     *
-     * @param context
-     * @param eventId
-     * @param value
-     * @param extra
-     */
-    public static void sendFacebook(Context context, String eventId, String value, Map<String, Object> extra) {
-        initFacebook(context);
-        if (mFacebookObject == null) {
-            return;
-        }
-        Bundle bundle = new Bundle();
-
-        if (!TextUtils.isEmpty(value)) {
-            bundle.putString("entry_point", value);
-        } else {
-            bundle.putString("entry_point", eventId);
-        }
-        mapToBundle(extra, bundle);
-        Log.iv(Log.TAG, "facebook event id : " + eventId + " , value : " + bundle);
-
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.facebook.appevents.AppEventsLogger");
-            Method method = clazz.getMethod("logEvent", String.class, Bundle.class);
-            method.invoke(mFacebookObject, eventId, bundle);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "error : " + error);
-        }
-    }
-
     /**
      * 发送flurry统计事件
      *
@@ -297,6 +273,13 @@ public class InternalStat {
      * @param extra
      */
     public static void sendFlurry(Context context, String eventId, String value, Map<String, Object> extra) {
+        sendFlurry(context, eventId, value, extra, true);
+    }
+
+    public static void sendFlurry(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
+        if (!isReportPlatform(context, eventId, "flurry", defaultValue)) {
+            return;
+        }
         Map<String, Object> eventValue = new HashMap<String, Object>();
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
@@ -342,13 +325,69 @@ public class InternalStat {
 
     public static void reportEvent(Context context, String key, String value, Map<String, Object> map) {
         sendUmeng(context, key, value, map);
-        sendAppsflyer(context, key, value, map);
+        sendAppsflyer(context, key, value, map, false);
         sendFirebaseAnalytics(context, key, value, map);
-        sendFacebook(context, key, value, map);
         sendFlurry(context, key, value, map);
     }
 
     public static void reportError(Context context, Throwable e) {
-        sendUmengError(context, e);
+        sendUmengError(context, e, true);
+    }
+
+    private static boolean isReportPlatform(Context context, String eventId, String platform, boolean defaultValue) {
+        boolean finalResult = false;
+        try {
+            boolean isReport = isReportEvent(context, "ad_report_event_" + platform, defaultValue);
+            boolean isEventAllow = false;
+            if (isReport) {
+                isEventAllow = isEventAllow(context, eventId, platform);
+            }
+            finalResult = isReport && isEventAllow;
+            Log.iv(Log.TAG, "[" + eventId + "] report " + platform + " : " + finalResult + " , enable : " + finalResult + " , is event allow : " + isEventAllow);
+        } catch (Exception e) {
+        }
+        return finalResult;
+    }
+
+    private static boolean isEventAllow(Context context, String eventId, String platform) {
+        try {
+            String whiteEventString = DataManager.get(context).getString("ad_report_event_" + platform + "_white");
+            if (!TextUtils.isEmpty(whiteEventString)) {
+                // 白名单生效
+                String[] whiteEventArray = whiteEventString.split(",");
+                List<String> whiteEventList = Arrays.asList(whiteEventArray);
+                Log.iv(Log.TAG, platform + " white event list : " + whiteEventList);
+                if (whiteEventList != null) {
+                    return whiteEventList.contains(eventId);
+                }
+            }
+            String blackEventString = DataManager.get(context).getString("ad_report_event_" + platform + "_black");
+            if (!TextUtils.isEmpty(blackEventString)) {
+                // 黑名单名单生效
+                String[] blackEventArray = blackEventString.split(",");
+                List<String> blackEventList = Arrays.asList(blackEventArray);
+                Log.iv(Log.TAG, platform + " black event list : " + blackEventList);
+                if (blackEventList != null) {
+                    return !blackEventList.contains(eventId);
+                }
+            }
+        } catch (Exception e) {
+        }
+        return true;
+    }
+
+    private static boolean isReportEvent(Context context, String reportPlatform, boolean defaultValue) {
+        String value = DataManager.get(context).getString(reportPlatform);
+        return parseReport(value, defaultValue);
+    }
+
+    private static boolean parseReport(String value, boolean defaultValue) {
+        try {
+            if (!TextUtils.isEmpty(value)) {
+                return Boolean.parseBoolean(value);
+            }
+        } catch (Exception e) {
+        }
+        return defaultValue;
     }
 }
