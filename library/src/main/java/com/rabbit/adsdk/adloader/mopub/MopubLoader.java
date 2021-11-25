@@ -12,6 +12,8 @@ import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 
+import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.AppLovinSdkSettings;
 import com.mopub.common.MoPub;
 import com.mopub.common.MoPubReward;
 import com.mopub.common.SdkConfiguration;
@@ -230,6 +232,7 @@ public class MopubLoader extends AbstractSdkLoader {
             if (context == null) {
                 context = mContext;
             }
+            initApplovinWithActivityContext();
             MoPub.initializeSdk(context, sdkConfiguration, new SdkInitializationListener() {
                 @Override
                 public void onInitializationFinished() {
@@ -248,6 +251,36 @@ public class MopubLoader extends AbstractSdkLoader {
                 }
             });
         }
+    }
+
+    private String getSdkKey() {
+        String applovinSdkKey = null;
+        Map<String, Map<String, String>> config = DataManager.get(mContext).getMediationConfig();
+        if (config != null) {
+            Map<String, String> applovinConfig = config.get("com.mopub.mobileads.AppLovinAdapterConfiguration");
+            if (applovinConfig != null) {
+                applovinSdkKey = applovinConfig.get("sdk_key");
+            }
+        }
+        return applovinSdkKey;
+    }
+
+    /**
+     * 提前初始化applovin，避免applovin被mopub使用Application Context初始化
+     * @return
+     */
+    private AppLovinSdk initApplovinWithActivityContext() {
+        String sdkKey = getSdkKey();
+        Log.iv(Log.TAG, "applovin sdk key : " + sdkKey);
+        if (TextUtils.isEmpty(sdkKey)) {
+            return null;
+        }
+        AppLovinSdkSettings sAppLovinSdkSettings = new AppLovinSdkSettings(mContext);
+        Context applovinContext = getActivity();
+        if (applovinContext == null) {
+            applovinContext = getContext();
+        }
+        return AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, applovinContext);
     }
 
     @Override
