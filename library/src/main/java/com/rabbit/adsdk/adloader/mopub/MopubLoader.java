@@ -262,6 +262,9 @@ public class MopubLoader extends AbstractSdkLoader {
                 applovinSdkKey = applovinConfig.get("sdk_key");
             }
         }
+        if (TextUtils.isEmpty(applovinSdkKey)) {
+            applovinSdkKey = Utils.getMetaData(mContext, "applovin.sdk.key");
+        }
         return applovinSdkKey;
     }
 
@@ -271,7 +274,6 @@ public class MopubLoader extends AbstractSdkLoader {
      */
     private AppLovinSdk initApplovinWithActivityContext() {
         String sdkKey = getSdkKey();
-        Log.iv(Log.TAG, "applovin sdk key : " + sdkKey);
         if (TextUtils.isEmpty(sdkKey)) {
             return null;
         }
