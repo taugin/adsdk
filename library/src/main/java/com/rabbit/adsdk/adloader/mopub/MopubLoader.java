@@ -272,17 +272,21 @@ public class MopubLoader extends AbstractSdkLoader {
      * 提前初始化applovin，避免applovin被mopub使用Application Context初始化
      * @return
      */
-    private AppLovinSdk initApplovinWithActivityContext() {
+    private void initApplovinWithActivityContext() {
         String sdkKey = getSdkKey();
         if (TextUtils.isEmpty(sdkKey)) {
-            return null;
+            return;
         }
         AppLovinSdkSettings sAppLovinSdkSettings = new AppLovinSdkSettings(mContext);
         Context applovinContext = getActivity();
         if (applovinContext == null) {
             applovinContext = getContext();
         }
-        return AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, applovinContext);
+        AppLovinSdk appLovinSdk = AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, applovinContext);
+        try {
+            appLovinSdk.setMediationProvider("max");
+        } catch (Exception e) {
+        }
     }
 
     @Override
