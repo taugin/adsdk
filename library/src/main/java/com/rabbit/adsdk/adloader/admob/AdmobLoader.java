@@ -29,6 +29,7 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.rabbit.adsdk.AdReward;
+import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
@@ -77,6 +78,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         super.init(context, pidConfig);
         initBannerSize();
         if (!sAdmobInited.getAndSet(true)) {
+            AppLovinLoader.initApplovin(getActivity(), false);
             MobileAds.initialize(mContext, initializationStatus -> Log.iv(Log.TAG, "admob init successfully"));
         }
     }

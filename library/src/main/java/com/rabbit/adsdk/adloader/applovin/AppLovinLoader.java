@@ -44,19 +44,19 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private static AtomicBoolean sApplovinInited = new AtomicBoolean(false);
     private static AppLovinSdkSettings sAppLovinSdkSettings;
 
-    @Override
-    public void init(Context context, PidConfig pidConfig) {
-        super.init(context, pidConfig);
-        if (!sApplovinInited.getAndSet(true)) {
-            AppLovinSdk appLovinSdk = getInstance();
-            if (appLovinSdk != null) {
-                try {
-                    appLovinSdk.setMediationProvider("max");
-                } catch (Exception e) {
-                }
+    /**
+     * 提前初始化applovin，避免applovin被mopub使用Application Context初始化
+     *
+     * @return
+     */
+    public static void initApplovin(Activity activity, boolean realInit) {
+        AppLovinSdk appLovinSdk = getInstance(activity);
+        if (appLovinSdk != null) {
+            if (realInit) {
+                appLovinSdk.setMediationProvider("max");
                 appLovinSdk.initializeSdk(config -> Log.iv(Log.TAG, "applovin sdk init successfully"));
-                if (isDebug()) {
-                    String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+                if (isDebug(activity)) {
+                    String gaid = Utils.getString(activity, Constant.PREF_GAID);
                     Log.iv(Log.TAG, "applovin debug mode gaid : " + gaid);
                     if (!TextUtils.isEmpty(gaid)) {
                         appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList(new String[]{gaid}));
@@ -66,13 +66,21 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
     }
 
+    @Override
+    public void init(Context context, PidConfig pidConfig) {
+        super.init(context, pidConfig);
+        if (!sApplovinInited.getAndSet(true)) {
+            initApplovin(getActivity(), true);
+        }
+    }
+
     public String getSdkName() {
         return Constant.AD_SDK_APPLOVIN;
     }
 
-    private boolean isDebug() {
+    private static boolean isDebug(Context context) {
         boolean isDebug = false;
-        Map<String, Map<String, String>> config = DataManager.get(mContext).getMediationConfig();
+        Map<String, Map<String, String>> config = DataManager.get(context).getMediationConfig();
         if (config != null) {
             Map<String, String> commonConfig = config.get("common_config");
             if (commonConfig != null) {
@@ -85,9 +93,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
         return isDebug;
     }
 
-    private String getSdkKey() {
+    private static String getSdkKey(Context context) {
         String applovinSdkKey = null;
-        Map<String, Map<String, String>> config = DataManager.get(mContext).getMediationConfig();
+        Map<String, Map<String, String>> config = DataManager.get(context).getMediationConfig();
         if (config != null) {
             Map<String, String> applovinConfig = config.get("com.mopub.mobileads.AppLovinAdapterConfiguration");
             if (applovinConfig != null) {
@@ -95,24 +103,25 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
         }
         if (TextUtils.isEmpty(applovinSdkKey)) {
-            applovinSdkKey = Utils.getMetaData(mContext, "applovin.sdk.key");
+            applovinSdkKey = Utils.getMetaData(context, "applovin.sdk.key");
         }
         return applovinSdkKey;
     }
 
-    private AppLovinSdk getInstance() {
-        String sdkKey = getSdkKey();
+    private static AppLovinSdk getInstance(Activity activity) {
+        if (activity == null) {
+            Log.iv(Log.TAG, "applovin init activity is null");
+            return null;
+        }
+        String sdkKey = getSdkKey(activity);
         if (TextUtils.isEmpty(sdkKey)) {
+            Log.iv(Log.TAG, "applovin init applovin.sdk.key is null");
             return null;
         }
         if (sAppLovinSdkSettings == null) {
-            sAppLovinSdkSettings = new AppLovinSdkSettings(mContext);
+            sAppLovinSdkSettings = new AppLovinSdkSettings(activity);
         }
-        Context applovinContext = getActivity();
-        if (applovinContext == null) {
-            applovinContext = getContext();
-        }
-        return AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, applovinContext);
+        return AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, activity);
     }
 
     @Override
@@ -122,7 +131,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public void loadBanner(int adSize) {
-        AppLovinSdk appLovinSdk = getInstance();
+        AppLovinSdk appLovinSdk = getInstance(getActivity());
         if (appLovinSdk == null) {
             Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
             notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
@@ -163,16 +172,16 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public void loadInterstitial() {
-        AppLovinSdk appLovinSdk = getInstance();
-        if (appLovinSdk == null) {
-            Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
-            return;
-        }
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
             notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT);
+            return;
+        }
+        AppLovinSdk appLovinSdk = getInstance(activity);
+        if (appLovinSdk == null) {
+            Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (!checkPidConfig()) {
@@ -210,16 +219,16 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public void loadRewardedVideo() {
-        AppLovinSdk appLovinSdk = getInstance();
-        if (appLovinSdk == null) {
-            Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
-            return;
-        }
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
             notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT);
+            return;
+        }
+        AppLovinSdk appLovinSdk = getInstance(activity);
+        if (appLovinSdk == null) {
+            Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
             return;
         }
         if (!checkPidConfig()) {
@@ -672,7 +681,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private void reportMaxAdImpData(MaxAd maxAd) {
         try {
             double revenue = maxAd.getRevenue(); // In USD
-            String countryCode = getInstance().getConfiguration().getCountryCode(); // "US" for the United States, etc - Note: Do not confuse this with currency code which is "USD" in most cases!
+            String countryCode = getInstance(getActivity()).getConfiguration().getCountryCode(); // "US" for the United States, etc - Note: Do not confuse this with currency code which is "USD" in most cases!
             String networkName = maxAd.getNetworkName(); // Display name of the network that showed the ad (e.g. "AdColony")
             String adUnitId = maxAd.getAdUnitId(); // The MAX Ad Unit ID
             MaxAdFormat adFormat = maxAd.getFormat(); // The ad format of the ad (e.g. BANNER, MREC, INTERSTITIAL, REWARDED)

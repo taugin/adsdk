@@ -39,6 +39,7 @@ import com.mopub.network.ImpressionData;
 import com.mopub.network.ImpressionListener;
 import com.mopub.network.ImpressionsEmitter;
 import com.rabbit.adsdk.AdReward;
+import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
@@ -232,7 +233,7 @@ public class MopubLoader extends AbstractSdkLoader {
             if (context == null) {
                 context = mContext;
             }
-            initApplovinWithActivityContext();
+            AppLovinLoader.initApplovin(getActivity(), false);
             MoPub.initializeSdk(context, sdkConfiguration, new SdkInitializationListener() {
                 @Override
                 public void onInitializationFinished() {
@@ -250,42 +251,6 @@ public class MopubLoader extends AbstractSdkLoader {
                     }
                 }
             });
-        }
-    }
-
-    private String getSdkKey() {
-        String applovinSdkKey = null;
-        Map<String, Map<String, String>> config = DataManager.get(mContext).getMediationConfig();
-        if (config != null) {
-            Map<String, String> applovinConfig = config.get("com.mopub.mobileads.AppLovinAdapterConfiguration");
-            if (applovinConfig != null) {
-                applovinSdkKey = applovinConfig.get("sdk_key");
-            }
-        }
-        if (TextUtils.isEmpty(applovinSdkKey)) {
-            applovinSdkKey = Utils.getMetaData(mContext, "applovin.sdk.key");
-        }
-        return applovinSdkKey;
-    }
-
-    /**
-     * 提前初始化applovin，避免applovin被mopub使用Application Context初始化
-     * @return
-     */
-    private void initApplovinWithActivityContext() {
-        String sdkKey = getSdkKey();
-        if (TextUtils.isEmpty(sdkKey)) {
-            return;
-        }
-        AppLovinSdkSettings sAppLovinSdkSettings = new AppLovinSdkSettings(mContext);
-        Context applovinContext = getActivity();
-        if (applovinContext == null) {
-            applovinContext = getContext();
-        }
-        AppLovinSdk appLovinSdk = AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, applovinContext);
-        try {
-            appLovinSdk.setMediationProvider("max");
-        } catch (Exception e) {
         }
     }
 
