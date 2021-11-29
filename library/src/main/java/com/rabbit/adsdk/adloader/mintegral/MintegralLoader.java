@@ -56,11 +56,11 @@ public class MintegralLoader extends AbstractSdkLoader {
 
     private void checkSdkInitializeState(final SDKInitializeListener sdkInitializeListener) {
         if (mStateChecker == null) {
-            Log.iv(Log.TAG, "mopub sdk init start checking");
+            Log.iv(Log.TAG, getSdkName() + " sdk init start checking");
             mStateChecker = new CountDownTimer(10000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    Log.iv(Log.TAG, "mopub sdk init state check");
+                    Log.iv(Log.TAG, getSdkName() + " sdk init state check");
                     if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS) {
                         if (mStateChecker != null) {
                             mStateChecker.cancel();
@@ -74,7 +74,7 @@ public class MintegralLoader extends AbstractSdkLoader {
 
                 @Override
                 public void onFinish() {
-                    Log.iv(Log.TAG, "mopub sdk init timeout");
+                    Log.iv(Log.TAG, getSdkName() + " sdk init timeout");
                     mStateChecker = null;
                     if (sdkInitializeListener != null) {
                         sdkInitializeListener.onInitializeFailure("timeout");
@@ -83,7 +83,7 @@ public class MintegralLoader extends AbstractSdkLoader {
             };
             mStateChecker.start();
         } else {
-            Log.iv(Log.TAG, "mopub sdk initializing");
+            Log.iv(Log.TAG, getSdkName() + " sdk initializing");
             if (sdkInitializeListener != null) {
                 sdkInitializeListener.onInitializeFailure("initializing");
             }
@@ -145,7 +145,7 @@ public class MintegralLoader extends AbstractSdkLoader {
         mintegralSdk.init(configs, mContext, new SDKInitStatusListener() {
             @Override
             public void onInitSuccess() {
-                Log.iv(Log.TAG, "mintegral sdk init successfully");
+                Log.iv(Log.TAG, getSdkName() + " sdk init successfully");
                 if (sHandler != null) {
                     sHandler.removeCallbacksAndMessages(null);
                 }
@@ -157,7 +157,7 @@ public class MintegralLoader extends AbstractSdkLoader {
 
             @Override
             public void onInitFail(String s) {
-                Log.iv(Log.TAG, "mintegral sdk init failure : " + s);
+                Log.iv(Log.TAG, getSdkName() + " sdk init failure : " + s);
                 sSdkInitializeState = SDKInitializeState.SDK_STATE_INITIALIZE_FAILURE;
                 if (sdkInitializeListener != null) {
                     sdkInitializeListener.onInitializeFailure("failure");

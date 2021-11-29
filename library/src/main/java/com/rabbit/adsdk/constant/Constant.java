@@ -17,6 +17,7 @@ public class Constant {
     public static final String AD_SDK_MOPUB = "mopub";
     public static final String AD_SDK_APPLOVIN = "applovin";
     public static final String AD_SDK_MINTEGRAL = "mintegral";
+    public static final String AD_SDK_INMOBI = "inmobi";
 
     public static final String AD_SDK_PREFIX = "pref_hauyu_";
 

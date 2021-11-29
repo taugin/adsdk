@@ -12,8 +12,6 @@ import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 
-import com.applovin.sdk.AppLovinSdk;
-import com.applovin.sdk.AppLovinSdkSettings;
 import com.mopub.common.MoPub;
 import com.mopub.common.MoPubReward;
 import com.mopub.common.SdkConfiguration;
@@ -102,7 +100,7 @@ public class MopubLoader extends AbstractSdkLoader {
             impData = impressionData.getJsonRepresentation().toString(2);
         } catch (Exception | Error e) {
         }
-        Log.iv(Log.TAG, "mopub impression pid : " + adUnitId + " , impData : " + impData);
+        Log.iv(Log.TAG, getSdkName() + " impression pid : " + adUnitId + " , impData : " + impData);
         reportAdImpressionRevenue(impressionData);
     };
 
@@ -139,11 +137,11 @@ public class MopubLoader extends AbstractSdkLoader {
 
     private void checkSdkInitializeState(final SDKInitializeListener sdkInitializeListener) {
         if (mStateChecker == null) {
-            Log.iv(Log.TAG, "mopub sdk init start checking");
+            Log.iv(Log.TAG, getSdkName() + " sdk init start checking");
             mStateChecker = new CountDownTimer(10000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    Log.iv(Log.TAG, "mopub sdk init state check");
+                    Log.iv(Log.TAG, getSdkName() + " sdk init state check");
                     if (sSdkInitializeState == SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS) {
                         if (mStateChecker != null) {
                             mStateChecker.cancel();
@@ -157,7 +155,7 @@ public class MopubLoader extends AbstractSdkLoader {
 
                 @Override
                 public void onFinish() {
-                    Log.iv(Log.TAG, "mopub sdk init timeout");
+                    Log.iv(Log.TAG, getSdkName() + " sdk init timeout");
                     mStateChecker = null;
                     if (sdkInitializeListener != null) {
                         sdkInitializeListener.onInitializeFailure("timeout");
@@ -166,7 +164,7 @@ public class MopubLoader extends AbstractSdkLoader {
             };
             mStateChecker.start();
         } else {
-            Log.iv(Log.TAG, "mopub sdk initializing");
+            Log.iv(Log.TAG, getSdkName() + " sdk initializing");
             if (sdkInitializeListener != null) {
                 sdkInitializeListener.onInitializeFailure("initializing");
             }
@@ -237,7 +235,7 @@ public class MopubLoader extends AbstractSdkLoader {
             MoPub.initializeSdk(context, sdkConfiguration, new SdkInitializationListener() {
                 @Override
                 public void onInitializationFinished() {
-                    Log.iv(Log.TAG, "mopub sdk init successfully");
+                    Log.iv(Log.TAG, getSdkName() + " sdk init successfully");
                     if (sHandler != null) {
                         sHandler.removeCallbacksAndMessages(null);
                     }
@@ -943,7 +941,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (isReportAdImpData()) {
                     InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
                 }
-                Log.iv(Log.TAG, "mopub imp data map : " + map);
+                Log.iv(Log.TAG, getSdkName() + " imp data map : " + map);
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
