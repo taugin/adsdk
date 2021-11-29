@@ -184,7 +184,7 @@ public class MintegralLoader extends AbstractSdkLoader {
 
     @Override
     protected boolean checkPidConfig() {
-        boolean superCheck = super.checkCommonConfig();
+        boolean superCheck = super.checkPidConfig();
         boolean pidExtraCheck = false;
         PidConfig pidConfig = getPidConfig();
         if (pidConfig != null) {
