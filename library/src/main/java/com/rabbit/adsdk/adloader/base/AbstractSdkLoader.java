@@ -166,9 +166,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadSplash() {
-        if (getAdListener() != null) {
-            getAdListener().onAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
-        }
+        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
     }
 
     @Override

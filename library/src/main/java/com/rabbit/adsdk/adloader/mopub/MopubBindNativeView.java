@@ -681,7 +681,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
             } catch (Exception e) {
             }
             try {
-                putValue(AD_MEDIA, staticNativeAd.getMainImageUrl());
+                putValue(AD_COVER, staticNativeAd.getMainImageUrl());
             } catch (Exception e) {
             }
             try {
@@ -709,7 +709,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
             } catch (Exception e) {
             }
             try {
-                putValue(AD_MEDIA, nativeAd.getMainImageUrl());
+                putValue(AD_COVER, nativeAd.getMainImageUrl());
             } catch (Exception e) {
             }
             try {
@@ -741,7 +741,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
             } catch (Exception e) {
             }
             try {
-                putValue(AD_MEDIA, googleNativeAd.getMainImageUrl());
+                putValue(AD_COVER, googleNativeAd.getMainImageUrl());
             } catch (Exception e) {
             }
             try {
