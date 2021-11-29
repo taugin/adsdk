@@ -270,8 +270,8 @@ public class AdParser implements IParser {
             if (jobj.has(SPLASH_ORIENTATION)) {
                 pidConfig.setSplashOrientation(jobj.getInt(SPLASH_ORIENTATION));
             }
-            if (jobj.has(PID_EXTRA)) {
-                pidConfig.setPidExtra(jsonToMap(jobj.getString(PID_EXTRA)));
+            if (jobj.has(EXTRA)) {
+                pidConfig.setExtra(jsonToMap(jobj.getString(EXTRA)));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

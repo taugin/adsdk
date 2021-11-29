@@ -55,7 +55,7 @@ public class PidConfig {
 
     private int splashOrientation = 1;
 
-    private Map<String, String> pidExtra;
+    private Map<String, String> extra;
 
     public String getPlaceName() {
         return placeName;
@@ -225,12 +225,12 @@ public class PidConfig {
         this.splashOrientation = splashOrientation;
     }
 
-    public Map<String, String> getPidExtra() {
-        return pidExtra;
+    public Map<String, String> getExtra() {
+        return extra;
     }
 
-    public void setPidExtra(Map<String, String> pidExtra) {
-        this.pidExtra = pidExtra;
+    public void setExtra(Map<String, String> extra) {
+        this.extra = extra;
     }
 
     public boolean isAdmob() {
