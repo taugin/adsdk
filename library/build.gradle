@@ -96,6 +96,12 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbbanner:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbbid:${mintegral_version}"
     implementation "com.mopub.mediation:mintegral:${mopub_mintegral_version}"
+
+    // Inmobi
+    implementation 'com.inmobi.monetization:inmobi-ads:9.2.0'
+    implementation 'com.mopub.mediation:inmobi:9.2.0.0'
+    // Inmobi applovin mediation
+    implementation 'com.applovin.mediation:inmobi-adapter:9.9.9.6@aar'
 }
 
 // 发布aar

@@ -18,6 +18,7 @@ import com.rabbit.adsdk.adloader.adfb.FBLoader;
 import com.rabbit.adsdk.adloader.admob.AdmobLoader;
 import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.adloader.base.SimpleAdBaseBaseListener;
+import com.rabbit.adsdk.adloader.inmobi.InmobiLoader;
 import com.rabbit.adsdk.adloader.listener.IManagerListener;
 import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
@@ -148,6 +149,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         } else if (config.isMintegral() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
                             if (!config.isDisable()) {
                                 loader = new MintegralLoader();
+                                loader.init(mContext, config);
+                                loader.setListenerManager(this);
+                                mAdLoaders.add(loader);
+                            }
+                        } else if (config.isInmobi() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
+                            if (!config.isDisable()) {
+                                loader = new InmobiLoader();
                                 loader.init(mContext, config);
                                 loader.setListenerManager(this);
                                 mAdLoaders.add(loader);

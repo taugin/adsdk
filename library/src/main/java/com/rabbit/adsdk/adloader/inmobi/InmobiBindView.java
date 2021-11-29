@@ -1,0 +1,226 @@
+package com.rabbit.adsdk.adloader.inmobi;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.inmobi.ads.InMobiNative;
+import com.mbridge.msdk.out.MBNativeHandler;
+import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
+import com.rabbit.adsdk.core.framework.Params;
+import com.rabbit.adsdk.data.config.PidConfig;
+import com.rabbit.adsdk.http.Http;
+import com.rabbit.adsdk.http.OnImageCallback;
+import com.rabbit.adsdk.log.Log;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Administrator on 2018/2/11.
+ */
+
+public class InmobiBindView extends BaseBindNativeView {
+    private Params mParams;
+
+    public void bindInmobiNative(Params params, Context context, ViewGroup adContainer, InMobiNative inMobiNative, PidConfig pidConfig, MBNativeHandler mbNativeHandler) {
+        mParams = params;
+        if (mParams == null) {
+            Log.e(Log.TAG, "bindMintegralNative mParams == null###");
+            return;
+        }
+        if (context == null) {
+            Log.e(Log.TAG, "bindMintegralNative context == null###");
+            return;
+        }
+        if (adContainer == null) {
+            Log.e(Log.TAG, "bindFBNative adContainer == null###");
+            return;
+        }
+        if (pidConfig == null) {
+            Log.e(Log.TAG, "bindMintegralNative pidconfig == null###");
+            return;
+        }
+        int rootLayout = mParams.getNativeRootLayout();
+        if (rootLayout <= 0 && mParams.getNativeCardStyle() > 0) {
+            rootLayout = getAdViewLayout(adContainer.getContext(), mParams.getNativeCardStyle(), pidConfig);
+            bindParamsViewId(mParams);
+        }
+
+        if (rootLayout > 0) {
+            bindNativeViewWithRootView(context, adContainer, rootLayout, inMobiNative, pidConfig, mbNativeHandler);
+            updateCtaButtonBackground(adContainer, pidConfig, mParams);
+        } else {
+            Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
+        }
+    }
+
+
+    /**
+     * 外部传入ViewRoot
+     *
+     * @param rootLayout
+     * @param inMobiNative
+     * @param pidConfig
+     */
+    private void bindNativeViewWithRootView(Context context, ViewGroup adContainer, int rootLayout, InMobiNative inMobiNative, PidConfig pidConfig, MBNativeHandler mbNativeHandler) {
+        if (rootLayout <= 0) {
+            Log.v(Log.TAG, "bindNativeViewWithRootView rootLayout == 0x0");
+            return;
+        }
+        if (inMobiNative == null) {
+            Log.v(Log.TAG, "bindNativeViewWithRootView inMobiNative == null");
+            return;
+        }
+        if (pidConfig == null) {
+            Log.v(Log.TAG, "bindNativeViewWithRootView pidConfig == null");
+            return;
+        }
+
+        View rootView = LayoutInflater.from(context).inflate(rootLayout, null);
+        bindInmobiRender(context, adContainer, inMobiNative, rootView, pidConfig, mbNativeHandler);
+
+        try {
+            adContainer.removeAllViews();
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -2);
+            adContainer.addView(rootView, params);
+            if (adContainer.getVisibility() != View.VISIBLE) {
+                adContainer.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
+    }
+
+    ///////////////////////////////////Bind Mintegral Render start////////////////////////////////////////
+    private void bindInmobiRender(Context context, ViewGroup adContainer, InMobiNative inMobiNative, View layout, PidConfig pidConfig, MBNativeHandler mbNativeHandler) {
+        View titleView = layout.findViewById(mParams.getAdTitle());
+        View adCoverView = layout.findViewById(mParams.getAdCover());
+        View bodyView = layout.findViewById(mParams.getAdDetail());
+        View ctaView = layout.findViewById(mParams.getAdAction());
+        View adIconView = layout.findViewById(mParams.getAdIcon());
+        View coverView = layout.findViewById(mParams.getAdCover());
+        ViewGroup mediaLayout = layout.findViewById(mParams.getAdMediaView());
+        ViewGroup adChoiceContainer = layout.findViewById(mParams.getAdChoices());
+
+        List<View> clickView = new ArrayList<>();
+
+        if (titleView != null && isClickable(AD_TITLE, pidConfig)) {
+            clickView.add(titleView);
+        }
+        if (adCoverView != null && isClickable(AD_COVER, pidConfig)) {
+            clickView.add(adCoverView);
+        }
+        if (bodyView != null && isClickable(AD_DETAIL, pidConfig)) {
+            clickView.add(bodyView);
+        }
+        if (ctaView != null && isClickable(AD_CTA, pidConfig)) {
+            clickView.add(ctaView);
+        }
+        if (adIconView != null && isClickable(AD_ICON, pidConfig)) {
+            clickView.add(adIconView);
+        }
+        if (layout != null && isClickable(AD_BACKGROUND, pidConfig)) {
+            clickView.add(layout);
+        }
+
+        // 设置广告元素内容
+        if (!TextUtils.isEmpty(inMobiNative.getAdTitle())) {
+            if (titleView instanceof TextView) {
+                ((TextView) titleView).setText(inMobiNative.getAdTitle());
+                titleView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (!TextUtils.isEmpty(inMobiNative.getAdDescription())) {
+            if (bodyView instanceof TextView) {
+                ((TextView) bodyView).setText(inMobiNative.getAdDescription());
+                bodyView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (!TextUtils.isEmpty(inMobiNative.getAdCtaText())) {
+            if (ctaView instanceof TextView) {
+                ((TextView) ctaView).setText(inMobiNative.getAdCtaText());
+                ctaView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        String iconUrl = inMobiNative.getAdIconUrl();
+        if (!TextUtils.isEmpty(iconUrl)) {
+            if (adIconView instanceof ImageView) {
+                Http.get(coverView.getContext()).loadImage(iconUrl, null, new OnImageCallback() {
+                    @Override
+                    public void onSuccess(Bitmap bitmap) {
+                        ((ImageView) adIconView).setImageBitmap(bitmap);
+                        adIconView.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onFailure(int code, String error) {
+                        Log.iv(Log.TAG, "inmobi load image error : " + error);
+                    }
+                });
+            }
+        }
+
+        if (mediaLayout != null) {
+            mediaLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    final View primaryView =
+                            inMobiNative.getPrimaryViewOfWidth(context, mediaLayout, (ViewGroup) layout,
+                                    mediaLayout.getWidth());
+                    clickView.add(primaryView);
+                    mediaLayout.addView(primaryView);
+                }
+            });
+        }
+
+        for (View view : clickView) {
+            if (view != null) {
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (inMobiNative != null) {
+                            inMobiNative.reportAdClickAndOpenLandingPage();
+                        }
+                    }
+                });
+            }
+        }
+        putInmobiInfo(inMobiNative);
+    }
+
+    ///////////////////////////////////Bind Mintegral Render end////////////////////////////////////////
+    private void putInmobiInfo(InMobiNative inMobiNative) {
+        if (inMobiNative != null) {
+            try {
+                putValue(AD_TITLE, inMobiNative.getAdTitle());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_DETAIL, inMobiNative.getAdDescription());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_CTA, inMobiNative.getAdCtaText());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_ICON, inMobiNative.getAdIconUrl());
+            } catch (Exception e) {
+            }
+            try {
+                putValue(AD_RATE, String.valueOf(inMobiNative.getAdRating()));
+            } catch (Exception e) {
+            }
+        }
+    }
+}

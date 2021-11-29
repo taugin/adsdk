@@ -253,6 +253,10 @@ public class PidConfig {
         return TextUtils.equals(Constant.AD_SDK_MINTEGRAL, sdk);
     }
 
+    public boolean isInmobi() {
+        return TextUtils.equals(Constant.AD_SDK_INMOBI, sdk);
+    }
+
     public boolean isSpread() {
         return TextUtils.equals(Constant.AD_SDK_SPREAD, sdk);
     }

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.applovin.sdk.AppLovinSdk;
 import com.facebook.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.inmobi.ads.InMobiNative;
 import com.mbridge.msdk.MBridgeSDK;
 import com.mopub.mobileads.MoPubInterstitial;
 import com.rabbit.adsdk.constant.Constant;
@@ -32,6 +33,9 @@ public class ModuleLoaderHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_MINTEGRAL, sdk)) {
             return hasMintegralModule();
+        }
+        if (TextUtils.equals(Constant.AD_SDK_INMOBI, sdk)) {
+            return hasInmobiModule();
         }
         if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
             return true;
@@ -81,6 +85,16 @@ public class ModuleLoaderHelper {
     private static boolean hasMintegralModule() {
         try {
             MBridgeSDK.class.getName();
+            return true;
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
+        return false;
+    }
+
+    private static boolean hasInmobiModule() {
+        try {
+            InMobiNative.class.getName();
             return true;
         } catch (Exception | Error e) {
             Log.e(Log.TAG, "error : " + e, e);

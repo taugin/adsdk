@@ -47,6 +47,16 @@
             "unit_id": "146868",
             "placement_id": "138780"
           },
+          "disable": 1
+        },
+        {
+          "sdk": "inmobi",
+          "type": "native",
+          "pid": "1538433861066",
+          "cv": ["cta"],
+          "extra": {
+            "account_id": "3a7c9443ab95449084eb270ee0154fcd"
+          },
           "disable": 0
         }
       ],
