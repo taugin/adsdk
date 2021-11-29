@@ -85,7 +85,7 @@ public interface IParser {
     // admob开屏方向 1：竖屏，2：横屏
     String SPLASH_ORIENTATION = "so";
     // 广告位的附加参数
-    String PID_EXTRA = "pe";
+    String PID_EXTRA = "extra";
 
     // banner
     String BANNER = "banner";
