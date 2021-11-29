@@ -55,6 +55,8 @@ public class PidConfig {
 
     private int splashOrientation = 1;
 
+    private Map<String, String> pidExtra;
+
     public String getPlaceName() {
         return placeName;
     }
@@ -221,6 +223,14 @@ public class PidConfig {
 
     public void setSplashOrientation(int splashOrientation) {
         this.splashOrientation = splashOrientation;
+    }
+
+    public Map<String, String> getPidExtra() {
+        return pidExtra;
+    }
+
+    public void setPidExtra(Map<String, String> pidExtra) {
+        this.pidExtra = pidExtra;
     }
 
     public boolean isAdmob() {
