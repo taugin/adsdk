@@ -46,6 +46,7 @@ public class BaseBindNativeView {
     protected static final String AD_PRICE = "price";
     protected static final String AD_STORE = "store";
     protected static final String AD_VIDEO = "video";
+    protected static final String AD_BACKGROUND = "background";
 
     private static final Map<String, Integer> LAYOUT_MAPS;
 

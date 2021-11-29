@@ -28,13 +28,26 @@
           "type": "native",
           "pid": "bb410fc77500463e8d1e397072823e08",
           "mark": "测试APP广告位",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
           "disable": 1
+        },
+        {
+          "sdk": "mintegral",
+          "type": "native",
+          "pid": "146868",
+          "cv": ["cta"],
+          "extra": {
+            "app_key": "7c22942b749fe6a6e361b675e96b3ee9",
+            "app_id": "118690",
+            "unit_id": "146868",
+            "placement_id": "138780"
+          },
+          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -64,6 +77,18 @@
           "cv": [
             "cta"
           ],
+          "disable": 1
+        },
+        {
+          "sdk": "mintegral",
+          "type": "native",
+          "pid": "146868",
+          "extra": {
+            "app_key": "7c22942b749fe6a6e361b675e96b3ee9",
+            "app_id": "118690",
+            "unit_id": "146868",
+            "placement_id": "138780"
+          },
           "disable": 1
         }
       ],
@@ -150,6 +175,18 @@
           "type": "banner",
           "bs": "MEDIUM_RECTANGLE",
           "pid": "a9eeb2d3ee33003c",
+          "disable": 1
+        },
+        {
+          "sdk": "mintegral",
+          "type": "native",
+          "pid": "146868",
+          "extra": {
+            "app_key": "7c22942b749fe6a6e361b675e96b3ee9",
+            "app_id": "118690",
+            "unit_id": "146868",
+            "placement_id": "138780"
+          },
           "disable": 1
         }
       ],

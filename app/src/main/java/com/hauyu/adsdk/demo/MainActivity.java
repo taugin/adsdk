@@ -40,7 +40,7 @@ import java.util.Random;
 public class MainActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
 
     private static final int LAYOUT[] = new int[]{
-            R.layout.ad_common_native_card_small,
+            //R.layout.ad_common_native_card_small,
             R.layout.ad_common_native_card_medium
     };
     private static final Map<String, Integer> LAYOUT_MAP;
