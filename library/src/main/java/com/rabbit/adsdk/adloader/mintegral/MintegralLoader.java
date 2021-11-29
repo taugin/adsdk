@@ -133,6 +133,7 @@ public class MintegralLoader extends AbstractSdkLoader {
                 appId = pidExtra.get("app_id");
             }
         }
+        Log.iv(Log.TAG, getSdkName() + " app id : " + appId + " , app key : " + appKey);
         if (TextUtils.isEmpty(appId) || TextUtils.isEmpty(appKey)) {
             sSdkInitializeState = SDKInitializeState.SDK_STATE_INITIALIZE_FAILURE;
             if (sdkInitializeListener != null) {
