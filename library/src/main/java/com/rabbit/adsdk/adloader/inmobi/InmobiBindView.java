@@ -178,12 +178,13 @@ public class InmobiBindView extends BaseBindNativeView {
                     final View primaryView =
                             inMobiNative.getPrimaryViewOfWidth(context, null, mediaLayout,
                                     width);
-                    clickView.add(primaryView);
-                    mediaLayout.addView(primaryView);
-                    reportAdClick(clickView, inMobiNative);
+                    if (primaryView != null) {
+                        mediaLayout.addView(primaryView);
+                    }
                 }
             });
         }
+        reportAdClick(clickView, inMobiNative);
 
         putInmobiInfo(inMobiNative);
     }

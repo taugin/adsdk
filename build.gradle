@@ -44,7 +44,7 @@ allprojects {
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/releases' }
-        maven { url 'https://dl.bintray.com/umsdk/release' }
+        // maven { url 'https://dl.bintray.com/umsdk/release' }
         maven {
             url 'https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/'
             credentials {
