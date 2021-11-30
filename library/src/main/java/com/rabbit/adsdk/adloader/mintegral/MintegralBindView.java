@@ -42,7 +42,7 @@ public class MintegralBindView extends BaseBindNativeView {
             return;
         }
         if (adContainer == null) {
-            Log.e(Log.TAG, "bindFBNative adContainer == null###");
+            Log.e(Log.TAG, "bindMintegralNative adContainer == null###");
             return;
         }
         if (pidConfig == null) {

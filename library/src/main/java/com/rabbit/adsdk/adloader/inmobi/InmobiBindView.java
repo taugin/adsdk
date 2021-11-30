@@ -32,19 +32,19 @@ public class InmobiBindView extends BaseBindNativeView {
     public void bindInmobiNative(Params params, Context context, ViewGroup adContainer, InMobiNative inMobiNative, PidConfig pidConfig, MBNativeHandler mbNativeHandler) {
         mParams = params;
         if (mParams == null) {
-            Log.e(Log.TAG, "bindMintegralNative mParams == null###");
+            Log.e(Log.TAG, "bindInmobiNative mParams == null###");
             return;
         }
         if (context == null) {
-            Log.e(Log.TAG, "bindMintegralNative context == null###");
+            Log.e(Log.TAG, "bindInmobiNative context == null###");
             return;
         }
         if (adContainer == null) {
-            Log.e(Log.TAG, "bindFBNative adContainer == null###");
+            Log.e(Log.TAG, "bindInmobiNative adContainer == null###");
             return;
         }
         if (pidConfig == null) {
-            Log.e(Log.TAG, "bindMintegralNative pidconfig == null###");
+            Log.e(Log.TAG, "bindInmobiNative pidconfig == null###");
             return;
         }
         int rootLayout = mParams.getNativeRootLayout();
@@ -98,7 +98,7 @@ public class InmobiBindView extends BaseBindNativeView {
         }
     }
 
-    ///////////////////////////////////Bind Mintegral Render start////////////////////////////////////////
+    ///////////////////////////////////Bind Inmobi Render start////////////////////////////////////////
     private void bindInmobiRender(Context context, ViewGroup adContainer, InMobiNative inMobiNative, View layout, PidConfig pidConfig, MBNativeHandler mbNativeHandler) {
         View titleView = layout.findViewById(mParams.getAdTitle());
         View adCoverView = layout.findViewById(mParams.getAdCover());
@@ -174,31 +174,39 @@ public class InmobiBindView extends BaseBindNativeView {
             mediaLayout.post(new Runnable() {
                 @Override
                 public void run() {
+                    int width = mediaLayout.getWidth();
                     final View primaryView =
-                            inMobiNative.getPrimaryViewOfWidth(context, mediaLayout, (ViewGroup) layout,
-                                    mediaLayout.getWidth());
+                            inMobiNative.getPrimaryViewOfWidth(context, null, mediaLayout,
+                                    width);
                     clickView.add(primaryView);
                     mediaLayout.addView(primaryView);
+                    reportAdClick(clickView, inMobiNative);
                 }
             });
         }
 
-        for (View view : clickView) {
-            if (view != null) {
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (inMobiNative != null) {
-                            inMobiNative.reportAdClickAndOpenLandingPage();
-                        }
-                    }
-                });
-            }
-        }
         putInmobiInfo(inMobiNative);
     }
 
-    ///////////////////////////////////Bind Mintegral Render end////////////////////////////////////////
+    private void reportAdClick(List<View> list, InMobiNative inMobiNative) {
+        try {
+            for (View view : list) {
+                if (view != null) {
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (inMobiNative != null) {
+                                inMobiNative.reportAdClickAndOpenLandingPage();
+                            }
+                        }
+                    });
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    ///////////////////////////////////Bind Inmobi Render end////////////////////////////////////////
     private void putInmobiInfo(InMobiNative inMobiNative) {
         if (inMobiNative != null) {
             try {

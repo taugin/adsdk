@@ -52,10 +52,10 @@
         {
           "sdk": "inmobi",
           "type": "native",
-          "pid": "1538433861066",
+          "pid": "1636568786660",
           "cv": ["cta"],
           "extra": {
-            "account_id": "3a7c9443ab95449084eb270ee0154fcd"
+            "account_id": "24ca94ec4776473eb9ce0e22c4da0c84"
           },
           "disable": 0
         }
