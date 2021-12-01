@@ -164,7 +164,7 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
             return;
         }
         if (task.isSuccessful()) {
-            Log.iv(Log.TAG, "successfully");
+            Log.iv(Log.TAG, "onComplete successfully");
             if (mInstance != null) {
                 mInstance.fetchAndActivate();
             }
