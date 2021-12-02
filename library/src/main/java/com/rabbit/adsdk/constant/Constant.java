@@ -66,7 +66,11 @@ public class Constant {
 
     public static final String KEY_PASSWORD = "123456789";
 
-    public static final long ONE_DAY_TIME = 24 * 60 * 60 * 1000;
+    public static final String ACCOUNT_ID = "account_id";
+    public static final String UNIT_ID = "unit_id";
+    public static final String PLACEMENT_ID = "placement_id";
+    public static final String APP_KEY = "app_key";
+    public static final String APP_ID = "app_id";
 
     // 配置文件中使用的名字++++++
     public static final String ADREFS_NAME = "adrefs";

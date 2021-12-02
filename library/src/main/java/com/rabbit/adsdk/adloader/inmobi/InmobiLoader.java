@@ -123,10 +123,10 @@ public class InmobiLoader extends AbstractSdkLoader {
         if (pidConfig != null) {
             Map<String, String> pidExtra = pidConfig.getExtra();
             if (pidExtra != null) {
-                accountId = pidExtra.get("account_id");
+                accountId = pidExtra.get(Constant.ACCOUNT_ID);
             }
         }
-        Log.iv(Log.TAG, getSdkName() + " account id : " + accountId);
+        Log.iv(Log.TAG, getSdkName() + " account_id : " + accountId);
         if (TextUtils.isEmpty(accountId)) {
             sSdkInitializeState = SDKInitializeState.SDK_STATE_INITIALIZE_FAILURE;
             if (sdkInitializeListener != null) {

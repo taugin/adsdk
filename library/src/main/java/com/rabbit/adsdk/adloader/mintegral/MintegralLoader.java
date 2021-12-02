@@ -129,8 +129,8 @@ public class MintegralLoader extends AbstractSdkLoader {
         if (pidConfig != null) {
             Map<String, String> pidExtra = pidConfig.getExtra();
             if (pidExtra != null) {
-                appKey = pidExtra.get("app_key");
-                appId = pidExtra.get("app_id");
+                appKey = pidExtra.get(Constant.APP_KEY);
+                appId = pidExtra.get(Constant.APP_ID);
             }
         }
         Log.iv(Log.TAG, getSdkName() + " app id : " + appId + " , app key : " + appKey);
@@ -191,8 +191,8 @@ public class MintegralLoader extends AbstractSdkLoader {
         if (pidConfig != null) {
             Map<String, String> pidExtra = pidConfig.getExtra();
             if (pidExtra != null) {
-                String unitId = pidExtra.get("unit_id");
-                String placementId = pidExtra.get("placement_id");
+                String unitId = pidExtra.get(Constant.UNIT_ID);
+                String placementId = pidExtra.get(Constant.PLACEMENT_ID);
                 if (!TextUtils.isEmpty(unitId) && !TextUtils.isEmpty(placementId)) {
                     pidExtraCheck = true;
                 } else {
