@@ -227,12 +227,9 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.e(Log.TAG, "error : " + e);
             }
             SdkConfiguration sdkConfiguration = builder.build();
-            Context context = getActivity();
-            if (context == null) {
-                context = mContext;
-            }
-            AppLovinLoader.initApplovin(getActivity(), false);
-            MoPub.initializeSdk(context, sdkConfiguration, new SdkInitializationListener() {
+            Activity activity = getActivity();
+            AppLovinLoader.initApplovin(activity, false);
+            MoPub.initializeSdk(activity, sdkConfiguration, new SdkInitializationListener() {
                 @Override
                 public void onInitializationFinished() {
                     Log.iv(Log.TAG, getSdkName() + " sdk init successfully");
