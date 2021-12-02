@@ -6,17 +6,14 @@ package com.rabbit.sunny;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
-import com.rabbit.adsdk.core.framework.ActivityMonitor;
 import com.rabbit.adsdk.log.Log;
 
 import java.lang.reflect.Field;
