@@ -97,7 +97,7 @@ public class InternalStat {
             bundle.putString("entry_point", eventId);
         }
         mapToBundle(extra, bundle);
-        Log.iv(Log.TAG, "firebase event id : " + eventId + " , value : " + bundle);
+        Log.iv(Log.TAG, platform + " event id : " + eventId + " , value : " + bundle);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.google.firebase.analytics.FirebaseAnalytics");
@@ -154,7 +154,7 @@ public class InternalStat {
                 }
             }
         }
-        Log.iv(Log.TAG, "umeng event id : " + eventId + " , value : " + map);
+        Log.iv(Log.TAG, platform + " event id : " + eventId + " , value : " + map);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
@@ -188,7 +188,6 @@ public class InternalStat {
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
-        Log.iv(Log.TAG, "Report Event sendUmeng Event Value Analytics");
         HashMap<String, String> map = new HashMap<String, String>();
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, Object> entry : extra.entrySet()) {
@@ -205,7 +204,7 @@ public class InternalStat {
                 }
             }
         }
-        Log.iv(Log.TAG, "umeng event id : " + eventId + " , value : " + map);
+        Log.iv(Log.TAG, platform + " event id : " + eventId + " , value : " + map);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
@@ -275,7 +274,7 @@ public class InternalStat {
                 }
             }
         }
-        Log.iv(Log.TAG, "appsflyer event id : " + eventId + " , value : " + eventValue);
+        Log.iv(Log.TAG, platform + " event id : " + eventId + " , value : " + eventValue);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.appsflyer.AppsFlyerLib");
@@ -326,7 +325,7 @@ public class InternalStat {
                 }
             }
         }
-        Log.iv(Log.TAG, "flurry event id : " + eventId + " , value : " + eventValue);
+        Log.iv(Log.TAG, platform + " event id : " + eventId + " , value : " + eventValue);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.flurry.android.FlurryAgent");
