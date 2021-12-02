@@ -134,20 +134,20 @@ public class LimitAdsManager {
             if (expTime <= limitDuration) {
                 Log.iv(Log.TAG, "user action abnormal, use limit placement");
                 recordLastLimitStatus(type, now);
-                reportLimitInfo();
+                reportLimitInfo(type);
             }
         }
     }
 
-    private void reportLimitInfo() {
+    private void reportLimitInfo(String type) {
         int impCount = (int) AdStatManager.get(mContext).getAllImpCount();
         int clkCount = (int) AdStatManager.get(mContext).getAllClkCount();
-        String reportInfo = getLimitInfo(impCount, clkCount);
+        String reportInfo = getLimitInfo(impCount, clkCount, type);
         Log.iv(Log.TAG, "limit ads info : " + reportInfo);
         InternalStat.reportEvent(mContext, "limit_ads_info", reportInfo);
     }
 
-    private String getLimitInfo(int impCount, int clkCount) {
+    private String getLimitInfo(int impCount, int clkCount, String type) {
         String gaid = Utils.getString(mContext, Constant.PREF_GAID);
         if (TextUtils.isEmpty(gaid)) {
             gaid = "unknown";
@@ -158,7 +158,7 @@ public class LimitAdsManager {
         }
         String userFlag = getUserFlag();
         String datetime = sSimpleDateFormat.format(new Date());
-        return String.format(Locale.getDefault(), "%s|%s|%s|%s|%d/%d", gaid, userFlag, locale, datetime, clkCount, impCount);
+        return String.format(Locale.getDefault(), "%s|%s|%s|%s|%s|%d/%d", gaid, userFlag, locale, type, datetime, clkCount, impCount);
     }
 
     private String getUserFlag() {
