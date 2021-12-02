@@ -6,18 +6,38 @@ import android.text.TextUtils;
 
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.utils.Utils;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2018-12-19.
  */
 
 public class InternalStat {
+
+    private static final long    DEFAULT_MAX_EVENT_COUNT = 1000;
+    private static final String AD_REPORT_EVENT_PLATFORM_ENABLE = "ad_report_event_%s";
+    private static final String AD_REPORT_EVENT_PLATFORM_WHITE = "ad_report_event_%s_white";
+    private static final String AD_REPORT_EVENT_PLATFORM_BLACK = "ad_report_event_%s_black";
+    private static final String AD_REPORT_EVENT_PLATFORM_COUNT = "ad_report_event_%s_count";
+
+    private static final String PREF_AD_REPORT_EVENT_PLATFORM_COUNT = "pref_ad_report_event_%s_count";
+    private static final String PREF_AD_REPORT_EVENT_RESET_DATE = "pref_ad_report_event_reset_date";
+    private static final String PREF_AD_REPORT_EVENT_PLATFORM_LIST = "pref_ad_report_event_platform_list";
+
+    /**
+     * Map转Bundle
+     * @param map
+     * @param bundle
+     */
     private static void mapToBundle(Map<String, Object> map, Bundle bundle) {
         if (map == null || bundle == null) {
             return;
@@ -66,7 +86,8 @@ public class InternalStat {
     }
 
     public static void sendFirebaseAnalytics(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
-        if (!isReportPlatform(context, eventId, "firebase", defaultValue)) {
+        String platform = "firebase";
+        if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
         Bundle bundle = new Bundle();
@@ -84,6 +105,7 @@ public class InternalStat {
             Object instance = method.invoke(null, context);
             method = clazz.getMethod("logEvent", String.class, Bundle.class);
             method.invoke(instance, eventId, bundle);
+            reportPlatformEventCount(context, platform);
         } catch (Exception e) {
             error = String.valueOf(e);
         } catch (Error e) {
@@ -107,7 +129,8 @@ public class InternalStat {
     }
 
     public static void sendUmeng(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
-        if (!isReportPlatform(context, eventId, "umeng", defaultValue)) {
+        String platform = "umeng";
+        if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
         HashMap<String, String> map = new HashMap<String, String>();
@@ -137,6 +160,7 @@ public class InternalStat {
             Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
             Method method = clazz.getDeclaredMethod("onEvent", Context.class, String.class, Map.class);
             method.invoke(null, context, eventId, map);
+            reportPlatformEventCount(context, platform);
         } catch (Exception e) {
             error = String.valueOf(e);
         } catch (Error e) {
@@ -160,7 +184,8 @@ public class InternalStat {
     }
 
     public static void sendUmengEventValue(Context context, String eventId, Map<String, Object> extra, int value, boolean defaultValue) {
-        if (!isReportPlatform(context, eventId, "umeng", defaultValue)) {
+        String platform = "umeng";
+        if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
         Log.iv(Log.TAG, "Report Event sendUmeng Event Value Analytics");
@@ -186,6 +211,7 @@ public class InternalStat {
             Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
             Method method = clazz.getDeclaredMethod("onEventValue", Context.class, String.class, Map.class, int.class);
             method.invoke(null, context, eventId, map, value);
+            reportPlatformEventCount(context, platform);
         } catch (Exception e) {
             error = String.valueOf(e);
         } catch (Error e) {
@@ -197,7 +223,8 @@ public class InternalStat {
     }
 
     private static void sendUmengError(Context context, Throwable throwable, boolean defaultValue) {
-        if (!isReportPlatform(context, "umeng_error", "umeng", defaultValue)) {
+        String platform = "umeng";
+        if (!isReportPlatform(context, "umeng_error", platform, defaultValue)) {
             return;
         }
         String error = null;
@@ -205,6 +232,7 @@ public class InternalStat {
             Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
             Method method = clazz.getDeclaredMethod("reportError", Context.class, Throwable.class);
             method.invoke(null, context, throwable);
+            reportPlatformEventCount(context, platform);
         } catch (Exception e) {
             error = String.valueOf(e);
         } catch (Error e) {
@@ -228,7 +256,8 @@ public class InternalStat {
     }
 
     public static void sendAppsflyer(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
-        if (!isReportPlatform(context, eventId, "appsflyer", defaultValue)) {
+        String platform = "appsflyer";
+        if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
         Map<String, Object> eventValue = new HashMap<String, Object>();
@@ -254,6 +283,7 @@ public class InternalStat {
             Object instance = method.invoke(null);
             method = clazz.getMethod("trackEvent", Context.class, String.class, Map.class);
             method.invoke(instance, context, eventId, eventValue);
+            reportPlatformEventCount(context, platform);
         } catch (Exception e) {
             error = String.valueOf(e);
         } catch (Error e) {
@@ -277,7 +307,8 @@ public class InternalStat {
     }
 
     public static void sendFlurry(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
-        if (!isReportPlatform(context, eventId, "flurry", defaultValue)) {
+        String platform = "flurry";
+        if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
         Map<String, Object> eventValue = new HashMap<String, Object>();
@@ -301,6 +332,7 @@ public class InternalStat {
             Class<?> clazz = Class.forName("com.flurry.android.FlurryAgent");
             Method method = clazz.getDeclaredMethod("logEvent", String.class, Map.class);
             method.invoke(null, eventId, eventValue);
+            reportPlatformEventCount(context, platform);
         } catch (Exception e) {
             error = String.valueOf(e);
         } catch (Error e) {
@@ -337,21 +369,32 @@ public class InternalStat {
     private static boolean isReportPlatform(Context context, String eventId, String platform, boolean defaultValue) {
         boolean finalResult = false;
         try {
-            boolean isReport = isReportEvent(context, "ad_report_event_" + platform, defaultValue);
+            String eventArgs = String.format(Locale.getDefault(), AD_REPORT_EVENT_PLATFORM_ENABLE, platform);
+            boolean isReport = isReportEvent(context, eventArgs, defaultValue);
             boolean isEventAllow = false;
+            boolean isEventCountAllow = false;
             if (isReport) {
                 isEventAllow = isEventAllow(context, eventId, platform);
+                isEventCountAllow = isEventCountAllow(context, platform);
             }
-            finalResult = isReport && isEventAllow;
-            Log.iv(Log.TAG, "[" + eventId + "] report " + platform + " : " + finalResult + " , enable : " + finalResult + " , is event allow : " + isEventAllow);
+            finalResult = isReport && isEventAllow && isEventCountAllow;
+            Log.iv(Log.TAG, "[" + eventId + "] report " + platform + " : " + finalResult + " , enable : " + finalResult + " , event allow : " + isEventAllow + " , event count allow : " + isEventCountAllow);
         } catch (Exception e) {
         }
         return finalResult;
     }
 
+    /**
+     * 判断事件是否允许上报, 白名单优先于黑名单
+     * @param context
+     * @param eventId
+     * @param platform
+     * @return
+     */
     private static boolean isEventAllow(Context context, String eventId, String platform) {
         try {
-            String whiteEventString = DataManager.get(context).getString("ad_report_event_" + platform + "_white");
+            String eventArgs = String.format(Locale.getDefault(), AD_REPORT_EVENT_PLATFORM_WHITE, platform);
+            String whiteEventString = DataManager.get(context).getString(eventArgs);
             if (!TextUtils.isEmpty(whiteEventString)) {
                 // 白名单生效
                 String[] whiteEventArray = whiteEventString.split(",");
@@ -361,7 +404,8 @@ public class InternalStat {
                     return whiteEventList.contains(eventId);
                 }
             }
-            String blackEventString = DataManager.get(context).getString("ad_report_event_" + platform + "_black");
+            eventArgs = String.format(Locale.getDefault(), AD_REPORT_EVENT_PLATFORM_BLACK, platform);
+            String blackEventString = DataManager.get(context).getString(eventArgs);
             if (!TextUtils.isEmpty(blackEventString)) {
                 // 黑名单名单生效
                 String[] blackEventArray = blackEventString.split(",");
@@ -389,5 +433,101 @@ public class InternalStat {
         } catch (Exception e) {
         }
         return defaultValue;
+    }
+
+    /**
+     * 获取远程配置的平台事件最大值，默认为{@link #DEFAULT_MAX_EVENT_COUNT}
+     * @param context
+     * @param platform
+     * @return
+     */
+    private static long getMaxEventCount(Context context, String platform) {
+        String eventArgs = String.format(Locale.getDefault(), AD_REPORT_EVENT_PLATFORM_COUNT, platform);
+        String eventCountString = DataManager.get(context).getString(eventArgs);
+        long maxEventCount = DEFAULT_MAX_EVENT_COUNT;
+        if (!TextUtils.isEmpty(eventCountString)) {
+            try {
+                maxEventCount = Long.parseLong(eventCountString);
+            } catch (Exception e) {
+                maxEventCount = DEFAULT_MAX_EVENT_COUNT;
+            }
+        }
+        return maxEventCount;
+    }
+
+    /**
+     * 判断当天平台事件数目是否超过最大值, 参数{@link #PREF_AD_REPORT_EVENT_PLATFORM_COUNT}
+     * @param context
+     * @param platform
+     * @return
+     */
+    private static boolean isEventCountAllow(Context context, String platform) {
+        try {
+            resetPlatformEventCountIfNeed(context);
+            String eventArgs = String.format(Locale.getDefault(), PREF_AD_REPORT_EVENT_PLATFORM_COUNT, platform);
+            long curEventCount = Utils.getLong(context, eventArgs);
+            long maxEventCount = getMaxEventCount(context, platform);
+            Log.iv(Log.TAG, "[" + platform + "] event count : " + curEventCount + "/" + maxEventCount);
+            return curEventCount < maxEventCount;
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return false;
+    }
+
+    /**
+     * 记录平台事件总数, 参数{@link #PREF_AD_REPORT_EVENT_PLATFORM_COUNT}，
+     * 记录平台列表{@link #recordPlatformList}
+     * @param context
+     * @param platform
+     */
+    private static void reportPlatformEventCount(Context context, String platform) {
+        try {
+            String eventArgs = String.format(Locale.getDefault(), PREF_AD_REPORT_EVENT_PLATFORM_COUNT, platform);
+            long count = Utils.getLong(context, eventArgs, 0);
+            count += 1;
+            Utils.putLong(context, eventArgs, count);
+            recordPlatformList(context, platform);
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    /**
+     * 记录打点平台列表, 参数{@link #PREF_AD_REPORT_EVENT_PLATFORM_LIST}
+     * @param context
+     * @param platform
+     */
+    private static void recordPlatformList(Context context, String platform) {
+        Set<String> sets = Utils.getStringSet(context, PREF_AD_REPORT_EVENT_PLATFORM_LIST);
+        Set<String> newSets;
+        if (sets != null && !sets.isEmpty()) {
+            newSets = new HashSet<>(sets);
+        } else {
+            newSets = new HashSet<>();
+        }
+        newSets.add(platform);
+        Log.iv(Log.TAG, "platform set : " + newSets);
+        Utils.putStringSet(context, PREF_AD_REPORT_EVENT_PLATFORM_LIST, newSets);
+    }
+
+    /**
+     * 重置平台事件计数，所有平台一起重置, 记录日期参数{@link #PREF_AD_REPORT_EVENT_RESET_DATE}
+     * 记录事件参数{@link #PREF_AD_REPORT_EVENT_PLATFORM_COUNT}
+     * @param context
+     */
+    private static void resetPlatformEventCountIfNeed(Context context) {
+        long nowDate = Utils.getTodayTime();
+        long lastDate = Utils.getLong(context, PREF_AD_REPORT_EVENT_RESET_DATE, 0);
+        if (nowDate != lastDate) {
+            Set<String> sets = Utils.getStringSet(context, PREF_AD_REPORT_EVENT_PLATFORM_LIST);
+            if (sets != null && !sets.isEmpty()) {
+                for (String s : sets) {
+                    String eventArgs = String.format(Locale.getDefault(), PREF_AD_REPORT_EVENT_PLATFORM_COUNT, s);
+                    Utils.putLong(context, eventArgs, 0);
+                }
+            }
+            Utils.putLong(context, PREF_AD_REPORT_EVENT_RESET_DATE, nowDate);
+        }
     }
 }

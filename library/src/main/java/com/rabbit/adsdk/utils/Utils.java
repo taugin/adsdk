@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2017/12/27.
@@ -229,6 +230,32 @@ public class Utils {
     public static float getFloat(Context context, String key, float defValue) {
         key = encryptSpKey(context, key);
         return PreferenceManager.getDefaultSharedPreferences(context).getFloat(key, defValue);
+    }
+
+    public static void putStringSet(Context context, String key, Set<String> value) {
+        putStringSet(context, key, value, false);
+    }
+
+    public static void putStringSet(Context context, String key, Set<String> value, boolean sync) {
+        try {
+            key = encryptSpKey(context, key);
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(key, value);
+            if (sync) {
+                editor.commit();
+            } else {
+                editor.apply();
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public static Set<String> getStringSet(Context context, String key) {
+        return getStringSet(context, key, null);
+    }
+
+    public static Set<String> getStringSet(Context context, String key, Set<String> sets) {
+        key = encryptSpKey(context, key);
+        return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(key, sets);
     }
 
     private static String encryptSpKey(Context context, String key) {
