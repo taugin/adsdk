@@ -28,6 +28,7 @@ import com.mopub.nativeads.ViewBinder;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.BlockAdsManager;
+import com.rabbit.adsdk.core.framework.LimitAdsManager;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
@@ -126,7 +127,8 @@ public class MopubBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e, e);
         }
 
-        if (!BlockAdsManager.get(context).isBlockAds(Constant.AD_SDK_ADMOB, placeName)) {
+        if (!BlockAdsManager.get(context).isBlockAds(Constant.AD_SDK_ADMOB, placeName)
+                && !LimitAdsManager.get(context).isLimitExclude(Constant.AD_SDK_ADMOB)) {
             try {
                 int admobRootLayout;
                 if (useCardStyle) {
@@ -148,10 +150,11 @@ public class MopubBindNativeView extends BaseBindNativeView {
                 Log.e(Log.TAG, "error : " + e, e);
             }
         } else {
-            Log.iv(Log.TAG, "block " + Constant.AD_SDK_ADMOB + " in mopub mediation for place name " + placeName);
+            Log.iv(Log.TAG, "block  or limit " + Constant.AD_SDK_ADMOB + " in mopub mediation for place name " + placeName);
         }
 
-        if (!BlockAdsManager.get(context).isBlockAds(Constant.AD_SDK_FACEBOOK, placeName)) {
+        if (!BlockAdsManager.get(context).isBlockAds(Constant.AD_SDK_FACEBOOK, placeName)
+                && !LimitAdsManager.get(context).isLimitExclude(Constant.AD_SDK_FACEBOOK)) {
             try {
                 int facebookRootLayout;
                 if (useCardStyle) {
@@ -173,10 +176,11 @@ public class MopubBindNativeView extends BaseBindNativeView {
                 Log.e(Log.TAG, "error : " + e, e);
             }
         } else {
-            Log.iv(Log.TAG, "block " + Constant.AD_SDK_FACEBOOK + " in mopub mediation for place name " + placeName);
+            Log.iv(Log.TAG, "block  or limit " + Constant.AD_SDK_FACEBOOK + " in mopub mediation for place name " + placeName);
         }
 
-        if (!BlockAdsManager.get(context).isBlockAds(Constant.AD_SDK_MINTEGRAL, placeName)) {
+        if (!BlockAdsManager.get(context).isBlockAds(Constant.AD_SDK_MINTEGRAL, placeName)
+                && !LimitAdsManager.get(context).isLimitExclude(Constant.AD_SDK_MINTEGRAL)) {
             try {
                 int mintegralRootLayout;
                 if (useCardStyle) {
@@ -198,7 +202,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
                 Log.e(Log.TAG, "error : " + e, e);
             }
         } else {
-            Log.iv(Log.TAG, "block " + Constant.AD_SDK_MINTEGRAL + " in mopub mediation for place name " + placeName);
+            Log.iv(Log.TAG, "block or limit " + Constant.AD_SDK_MINTEGRAL + " in mopub mediation for place name " + placeName);
         }
     }
 
@@ -698,6 +702,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
             }
         }
     }
+
     private void putMintegralInfo(MintegralNative.MBridgeNativeAd nativeAd) {
         if (nativeAd != null) {
             try {
@@ -726,6 +731,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
             }
         }
     }
+
     private void putAdmobInfo(GooglePlayServicesNative.GooglePlayServicesNativeAd googleNativeAd) {
         if (googleNativeAd != null) {
             try {
@@ -767,6 +773,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         }
         return null;
     }
+
     private void putFacebookInfo(BaseNativeAd baseNativeAd, Class<?> fbNativeAd) {
         if (baseNativeAd != null && fbNativeAd != null) {
             try {

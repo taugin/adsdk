@@ -1,6 +1,7 @@
 {
   "limit_enable": true,
   "limit_suffix": "_suffix",
+  "limit_exclude": ["admob"],
   "limit_imp": {
     "limit_duration": 60000,
     "limit_count": 20,

@@ -18,15 +18,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 public class LimitAdsManager {
     private static LimitAdsManager sLimitAdsManager;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    private static final SimpleDateFormat sdfSimple = new SimpleDateFormat("dd-HH:mm:ss", Locale.getDefault());
     private static final SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     private static final String DEFAULT_LIST_TEXT = "[]";
     private static final String LIMIT_TYPE_IMP = "imp";
@@ -236,14 +239,11 @@ public class LimitAdsManager {
                 long lastLimitTime = getLastLimitTime();
                 long nowTime = System.currentTimeMillis();
                 long expTime = limitPolicy.getLimitTime() - (nowTime - lastLimitTime);
-                sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
-                Log.iv(Log.TAG, "now : " + sdf.format(new Date(nowTime)) + " , last : " + sdf.format(new Date(lastLimitTime)) + " , exp : " + expTime);
                 isInLimitTime = expTime > 0;
-                sdf.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-                if (expTime < 0) {
-                    expTime = 0;
-                }
-                Log.iv(Log.TAG, "exp time : " + sdf.format(new Date(expTime)));
+                sdfSimple.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+                String logInfo = "now : " + sdf.format(new Date(nowTime)) + " , last : " + sdf.format(new Date(lastLimitTime))
+                        + " , exp : " + sdfSimple.format(new Date(expTime < 0 ? 0 : expTime)) + "(" + expTime + ")";
+                Log.iv(Log.TAG, logInfo);
             }
         }
         Log.iv(Log.TAG, "limit type : " + limitType + " , in limit time : " + isInLimitTime);
@@ -262,7 +262,7 @@ public class LimitAdsManager {
             parseLimitConfig();
             if (mLimitConfig != null && mLimitConfig.isEnable()) {
                 if (isLimitAd()) {
-                    String placeNameSuffix = mLimitConfig.getPlaceNameSuffix();
+                    String placeNameSuffix = mLimitConfig.getLimitSuffix();
                     Log.iv(Log.TAG, "place name suffix : " + placeNameSuffix);
                     if (!TextUtils.isEmpty(placeNameSuffix)) {
                         placeNameWithSuffix = placeName + placeNameSuffix;
@@ -285,6 +285,19 @@ public class LimitAdsManager {
             Log.e(Log.TAG, "error : " + e);
         }
         return placeNameWithSuffix;
+    }
+
+    public boolean isLimitExclude(String sdk) {
+        parseLimitConfig();
+        if (mLimitConfig != null && mLimitConfig.isEnable()) {
+            if (isLimitAd()) {
+                List<String> limitExclude = mLimitConfig.getLimitExclude();
+                if (limitExclude != null) {
+                    return limitExclude.contains(sdk);
+                }
+            }
+        }
+        return false;
     }
 
     private void putLinkedListToSP(String prefName, LinkedList<Long> linkedList) {
@@ -356,7 +369,10 @@ public class LimitAdsManager {
                     limitConfig.setEnable(jsonObject.getBoolean(LimitConfig.LIMIT_ENABLE));
                 }
                 if (jsonObject.has(LimitConfig.LIMIT_SUFFIX)) {
-                    limitConfig.setPlaceNameSuffix(jsonObject.getString(LimitConfig.LIMIT_SUFFIX));
+                    limitConfig.setLimitSuffix(jsonObject.getString(LimitConfig.LIMIT_SUFFIX));
+                }
+                if (jsonObject.has(LimitConfig.LIMIT_EXCLUDE)) {
+                    limitConfig.setLimitExclude(parseStringList(jsonObject.getString(LimitConfig.LIMIT_EXCLUDE)));
                 }
                 if (jsonObject.has(LimitConfig.LIMIT_IMP)) {
                     limitConfig.setImpLimitPolicy(parseLimitPolicy(jsonObject.getString(LimitConfig.LIMIT_IMP)));
@@ -370,6 +386,24 @@ public class LimitAdsManager {
         } else {
             mLimitConfig = null;
         }
+    }
+
+    private List<String> parseStringList(String str) {
+        List<String> list = null;
+        try {
+            JSONArray jarray = new JSONArray(str);
+            if (jarray != null && jarray.length() > 0) {
+                list = new ArrayList<String>(jarray.length());
+                for (int index = 0; index < jarray.length(); index++) {
+                    String s = jarray.getString(index);
+                    if (!TextUtils.isEmpty(s)) {
+                        list.add(s);
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
 
     private LimitConfig.LimitPolicy parseLimitPolicy(String content) {
@@ -394,13 +428,15 @@ public class LimitAdsManager {
     public static class LimitConfig {
         private static final String LIMIT_ENABLE = "limit_enable";
         private static final String LIMIT_SUFFIX = "limit_suffix";
+        private static final String LIMIT_EXCLUDE = "limit_exclude";
         private static final String LIMIT_IMP = "limit_imp";
         private static final String LIMIT_CLK = "limit_clk";
         private static final String LIMIT_DURATION = "limit_duration";
         private static final String LIMIT_TIME = "limit_time";
         private static final String LIMIT_COUNT = "limit_count";
         private boolean enable;
-        private String placeNameSuffix;
+        private String limitSuffix;
+        private List<String> limitExclude;
         private LimitPolicy impLimitPolicy;
         private LimitPolicy clkLimitPolicy;
         private String contentMD5;
@@ -421,12 +457,20 @@ public class LimitAdsManager {
             this.enable = enable;
         }
 
-        public String getPlaceNameSuffix() {
-            return placeNameSuffix;
+        public String getLimitSuffix() {
+            return limitSuffix;
         }
 
-        public void setPlaceNameSuffix(String placeNameSuffix) {
-            this.placeNameSuffix = placeNameSuffix;
+        public void setLimitSuffix(String limitSuffix) {
+            this.limitSuffix = limitSuffix;
+        }
+
+        public List<String> getLimitExclude() {
+            return limitExclude;
+        }
+
+        public void setLimitExclude(List<String> limitExclude) {
+            this.limitExclude = limitExclude;
         }
 
         public LimitPolicy getImpLimitPolicy() {

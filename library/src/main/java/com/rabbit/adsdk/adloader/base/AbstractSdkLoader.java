@@ -20,6 +20,7 @@ import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.BlockAdsManager;
+import com.rabbit.adsdk.core.framework.LimitAdsManager;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.PidConfig;
@@ -294,6 +295,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             return false;
         }
 
+        // 排除异常平台
+        if (isLimitExclude()) {
+            processLimitAds();
+            return false;
+        }
+
         // 检测adLoader是否被过滤
         if (isAdFilter()) {
             processAdLoaderFilter();
@@ -315,6 +322,15 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private boolean isBlockAds() {
         return BlockAdsManager.get(mContext).isBlockAds(getSdkName(), getAdPlaceName());
+    }
+
+    private void processLimitAds() {
+        Log.iv(Log.TAG, formatLog("limit ads"));
+        notifyAdLoadFailed(Constant.AD_ERROR_LIMIT_ADS);
+    }
+
+    private boolean isLimitExclude() {
+        return LimitAdsManager.get(mContext).isLimitExclude(getSdkName());
     }
 
     protected void printInterfaceLog(String action) {
