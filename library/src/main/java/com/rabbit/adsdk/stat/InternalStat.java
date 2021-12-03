@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class InternalStat {
 
-    private static final long    DEFAULT_MAX_EVENT_COUNT = 1000;
+    private static final long    DEFAULT_MAX_EVENT_COUNT = 10000;
     private static final String AD_REPORT_EVENT_PLATFORM_ENABLE = "ad_report_event_%s";
     private static final String AD_REPORT_EVENT_PLATFORM_WHITE = "ad_report_event_%s_white";
     private static final String AD_REPORT_EVENT_PLATFORM_BLACK = "ad_report_event_%s_black";
