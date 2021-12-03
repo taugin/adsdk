@@ -71,6 +71,8 @@ public class Constant {
     public static final String PLACEMENT_ID = "placement_id";
     public static final String APP_KEY = "app_key";
     public static final String APP_ID = "app_id";
+    public static final String WIDTH = "width";
+    public static final String HEIGHT = "height";
 
     // 配置文件中使用的名字++++++
     public static final String ADREFS_NAME = "adrefs";

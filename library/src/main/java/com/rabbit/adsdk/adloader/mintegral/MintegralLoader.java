@@ -5,13 +5,22 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Pair;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
+import com.mbridge.msdk.MBridgeConstans;
 import com.mbridge.msdk.MBridgeSDK;
+import com.mbridge.msdk.out.AutoPlayMode;
 import com.mbridge.msdk.out.Campaign;
 import com.mbridge.msdk.out.Frame;
+import com.mbridge.msdk.out.MBMultiStateEnum;
+import com.mbridge.msdk.out.MBNativeAdvancedHandler;
 import com.mbridge.msdk.out.MBNativeHandler;
+import com.mbridge.msdk.out.MBridgeIds;
 import com.mbridge.msdk.out.MBridgeSDKFactory;
+import com.mbridge.msdk.out.NativeAdvancedAdListener;
 import com.mbridge.msdk.out.NativeListener;
 import com.mbridge.msdk.out.SDKInitStatusListener;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
@@ -20,6 +29,7 @@ import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.utils.Utils;
 
 import java.util.List;
 import java.util.Map;
@@ -36,6 +46,8 @@ public class MintegralLoader extends AbstractSdkLoader {
     private MBridgeSDK mintegralSdk;
     private Campaign mCampaign;
     private MBNativeHandler mMBNativeHandler;
+    private MBNativeAdvancedHandler mMBNativeAdvancedHandler;
+    private ViewGroup mAdViewGroup;
 
     private MintegralBindView mintegralBindNativeView = new MintegralBindView();
 
@@ -241,6 +253,14 @@ public class MintegralLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
+        if (isTemplateRendering()) {
+            loadNativeTemplate(placementId, unitId);
+        } else {
+            loadNativeCustom(placementId, unitId);
+        }
+    }
+
+    private void loadNativeCustom(String placementId, String unitId) {
         Map<String, Object> properties = MBNativeHandler.getNativeProperties(placementId, unitId);
         properties.put("ad_num", 1);
         properties.put("native_video_width", 720);
@@ -254,7 +274,7 @@ public class MintegralLoader extends AbstractSdkLoader {
                 reportAdLoaded();
                 setLoading(false, STATE_SUCCESS);
                 if (campaigns != null && campaigns.size() != 0) {
-                    mCampaign = (Campaign)campaigns.get(0);
+                    mCampaign = (Campaign) campaigns.get(0);
                     putCachedAdTime(mCampaign);
                     notifySdkLoaderLoaded(false);
                 } else {
@@ -294,11 +314,115 @@ public class MintegralLoader extends AbstractSdkLoader {
         mMBNativeHandler.load();
     }
 
+    private int parseInt(String text, int defaultValue) {
+        int value = defaultValue;
+        if (!TextUtils.isEmpty(text)) {
+            try {
+                value = Integer.parseInt(text);
+            } catch (Exception e) {
+                value = defaultValue;
+            }
+        }
+        return value;
+    }
+
+    private Pair<Integer, Integer> getNativeViewSize() {
+        if (mPidConfig != null) {
+            Map<String, String> extra = mPidConfig.getExtra();
+            if (extra != null) {
+                String widthText = extra.get(Constant.WIDTH);
+                String heightText = extra.get(Constant.HEIGHT);
+                int width = parseInt(widthText, 0);
+                int height = parseInt(heightText, 0);
+                if (width > 0 && height > 0) {
+                    return new Pair<>(width, height);
+                }
+            }
+        }
+        int screenWidth = Utils.getScreenWidth(mContext);
+        int height = (int) ((float)screenWidth * 250 / 320);
+        return new Pair<>(screenWidth, height);
+    }
+
+    private void loadNativeTemplate(String placementId, String unitId) {
+        mMBNativeAdvancedHandler = new MBNativeAdvancedHandler(getActivity(), placementId, unitId);
+        Pair<Integer, Integer> pair = getNativeViewSize();
+        int width = 320;
+        int height = 250;
+        if (pair != null) {
+            width = pair.first;
+            height = pair.second;
+        }
+        mMBNativeAdvancedHandler.setNativeViewSize(width, height);
+        mMBNativeAdvancedHandler.setPlayMuteState(MBridgeConstans.REWARD_VIDEO_PLAY_MUTE);
+        mMBNativeAdvancedHandler.setCloseButtonState(MBMultiStateEnum.positive);
+        mMBNativeAdvancedHandler.autoLoopPlay(AutoPlayMode.PLAY_WHEN_USER_CLICK);
+        mMBNativeAdvancedHandler.setAdListener(new NativeAdvancedAdListener() {
+            @Override
+            public void onLoadFailed(MBridgeIds mBridgeIds, String s) {
+                Log.iv(Log.TAG, formatLog("ad load failed : " + s, true));
+                reportAdError(s);
+                setLoading(false, STATE_FAILURE);
+                notifyAdLoadFailed(Constant.AD_ERROR_NOFILL);
+            }
+
+            @Override
+            public void onLoadSuccessed(MBridgeIds mBridgeIds) {
+                String requestId = mMBNativeAdvancedHandler.getRequestId();
+                Log.iv(Log.TAG, formatLog("ad load success req id : " + requestId));
+                reportAdLoaded();
+                setLoading(false, STATE_SUCCESS);
+                mAdViewGroup = mMBNativeAdvancedHandler.getAdViewGroup();
+                putCachedAdTime(mAdViewGroup);
+                notifySdkLoaderLoaded(false);
+            }
+
+            @Override
+            public void onLogImpression(MBridgeIds mBridgeIds) {
+                Log.iv(Log.TAG, formatLog("ad impression"));
+                reportAdImp("template");
+                notifyAdImp("template");
+            }
+
+            @Override
+            public void onClick(MBridgeIds mBridgeIds) {
+                Log.iv(Log.TAG, formatLog("ad click"));
+                reportAdClick();
+                notifyAdClick();
+            }
+
+            @Override
+            public void onLeaveApp(MBridgeIds mBridgeIds) {
+            }
+
+            @Override
+            public void showFullScreen(MBridgeIds mBridgeIds) {
+            }
+
+            @Override
+            public void closeFullScreen(MBridgeIds mBridgeIds) {
+            }
+
+            @Override
+            public void onClose(MBridgeIds mBridgeIds) {
+                Log.iv(Log.TAG, formatLog("ad close"));
+                reportAdClose();
+                notifyAdDismiss();
+            }
+        });
+        printInterfaceLog(ACTION_LOAD);
+        reportAdRequest();
+        notifyAdRequest();
+        mMBNativeAdvancedHandler.load();
+    }
+
     @Override
     public boolean isNativeLoaded() {
         boolean loaded = false;
-        if (mCampaign != null) {
-            loaded = !isCachedAdExpired(mCampaign);
+        if (isTemplateRendering()) {
+            loaded = isTemplateNativeLoaded();
+        } else {
+            loaded = isCustomNativeLoaded();
         }
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
@@ -306,13 +430,47 @@ public class MintegralLoader extends AbstractSdkLoader {
         return loaded;
     }
 
+    private boolean isCustomNativeLoaded() {
+        return mCampaign != null && !isCachedAdExpired(mCampaign);
+    }
+
+    private boolean isTemplateNativeLoaded() {
+        return mAdViewGroup != null  && !isCachedAdExpired(mAdViewGroup);
+    }
+
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
+        if (isTemplateRendering()) {
+            showTemplateNative(viewGroup);
+        } else {
+            showCustomNative(viewGroup, params);
+        }
+    }
+
+    private void showCustomNative(ViewGroup viewGroup, Params params) {
         if (mCampaign != null) {
             clearCachedAdTime(mCampaign);
             mintegralBindNativeView.bindMintegralNative(params, mContext, viewGroup, mCampaign, mPidConfig, mMBNativeHandler);
             mCampaign = null;
+            reportAdShow();
+            notifyAdShow();
+        }
+    }
+
+    private void showTemplateNative(ViewGroup viewGroup) {
+        if (mAdViewGroup != null) {
+            clearCachedAdTime(mAdViewGroup);
+            viewGroup.removeAllViews();
+            ViewParent viewParent = mAdViewGroup.getParent();
+            if (viewParent instanceof ViewGroup) {
+                ((ViewGroup) viewParent).removeView(mAdViewGroup);
+            }
+            viewGroup.addView(mAdViewGroup);
+            if (viewGroup.getVisibility() != View.VISIBLE) {
+                viewGroup.setVisibility(View.VISIBLE);
+            }
+            mAdViewGroup = null;
             reportAdShow();
             notifyAdShow();
         }

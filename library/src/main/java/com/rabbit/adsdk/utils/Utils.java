@@ -742,4 +742,12 @@ public class Utils {
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTimeInMillis();
     }
+
+    public static int getScreenWidth(Context context) {
+        try {
+            return context.getResources().getDisplayMetrics().widthPixels;
+        } catch (Exception e) {
+        }
+        return 0;
+    }
 }

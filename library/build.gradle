@@ -99,6 +99,7 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:nativeex:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbbanner:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbbid:${mintegral_version}"
+    implementation "com.mbridge.msdk.oversea:mbnativeadvanced:${mintegral_version}"
     implementation "com.mopub.mediation:mintegral:${mopub_mintegral_version}"
     // mintegral applovin mediation
     implementation 'com.applovin.mediation:mintegral-adapter:15.7.21.0@aar'

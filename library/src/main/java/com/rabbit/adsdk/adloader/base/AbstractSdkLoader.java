@@ -663,6 +663,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     public void showInterstitialWithNative(ViewGroup viewGroup, Params params) {
     }
 
+    protected boolean isTemplateRendering() {
+        if (mPidConfig != null) {
+            return mPidConfig.isTemplate();
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return "pn = " + getAdPlaceName() + " , " +

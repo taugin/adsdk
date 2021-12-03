@@ -86,6 +86,8 @@ public interface IParser {
     String SPLASH_ORIENTATION = "so";
     // 广告位的附加参数
     String EXTRA = "extra";
+    // 是否为模板渲染
+    String TEMPLATE = "template";
 
     // banner
     String BANNER = "banner";

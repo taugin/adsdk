@@ -40,7 +40,9 @@
           "sdk": "mintegral",
           "type": "native",
           "pid": "146868",
-          "cv": ["cta"],
+          "cv": [
+            "cta"
+          ],
           "extra": {
             "app_key": "7c22942b749fe6a6e361b675e96b3ee9",
             "app_id": "118690",
@@ -53,7 +55,10 @@
           "sdk": "inmobi",
           "type": "native",
           "pid": "1638846642398",
-          "cv": ["cta", "title"],
+          "cv": [
+            "cta",
+            "title"
+          ],
           "extra": {
             "account_id": "0ad6ff4e884340ed9c480177af959b94"
           },
@@ -140,45 +145,45 @@
           "type": "native",
           "pid": "11a17b188668469fb0412708c3d16813",
           "mark": "mopub测试广告位",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "native",
           "pid": "bb410fc77500463e8d1e397072823e08",
           "mark": "测试APP广告位",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "banner",
           "pid": "252412d5e9364a05ab77d9396346d73d",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "banner",
           "pid": "bfd61bd407d84d17b241e6a707391c4d",
           "mark": "测试APP广告位",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "native",
           "pid": "02a2d288d2674ad09f3241d46a44356e",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
           "type": "banner",
           "pid": "ca-app-pub-3940256099942544/6300978111",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "applovin",
@@ -198,6 +203,19 @@
             "placement_id": "138780"
           },
           "disable": 1
+        },
+        {
+          "sdk": "mintegral",
+          "type": "native",
+          "pid": "262716",
+          "template": 1,
+          "extra": {
+            "app_key": "7c22942b749fe6a6e361b675e96b3ee9",
+            "app_id": "118690",
+            "unit_id": "258656",
+            "placement_id": "202132"
+          },
+          "disable": 0
         }
       ],
       "maxcount": 100,

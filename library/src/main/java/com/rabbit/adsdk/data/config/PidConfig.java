@@ -57,6 +57,8 @@ public class PidConfig {
 
     private Map<String, String> extra;
 
+    private boolean template;
+
     public String getPlaceName() {
         return placeName;
     }
@@ -231,6 +233,14 @@ public class PidConfig {
 
     public void setExtra(Map<String, String> extra) {
         this.extra = extra;
+    }
+
+    public boolean isTemplate() {
+        return template;
+    }
+
+    public void setTemplate(boolean template) {
+        this.template = template;
     }
 
     public boolean isAdmob() {

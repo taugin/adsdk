@@ -268,7 +268,7 @@
         <RelativeLayout
             android:id="@+id/native_banner_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_marginTop="8dp"
             android:gravity="center" />

@@ -273,6 +273,9 @@ public class AdParser implements IParser {
             if (jobj.has(EXTRA)) {
                 pidConfig.setExtra(jsonToMap(jobj.getString(EXTRA)));
             }
+            if (jobj.has(TEMPLATE)) {
+                pidConfig.setTemplate(jobj.getInt(TEMPLATE) == 1);
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
