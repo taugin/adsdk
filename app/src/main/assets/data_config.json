@@ -75,6 +75,7 @@
             "unit_id": "258656",
             "placement_id": "202132"
           },
+          "mrt": 5,
           "disable": 0
         }
       ],
@@ -96,6 +97,7 @@
           "type": "native",
           "pid": "043b7cd7529f4b92b200afd58d461c3e",
           "mark": "测试APP广告位",
+          "mrt": 5,
           "disable": 0
         },
         {
@@ -222,6 +224,7 @@
           "type": "native",
           "pid": "262716",
           "template": 1,
+          "mrt": 5,
           "extra": {
             "app_key": "7c22942b749fe6a6e361b675e96b3ee9",
             "app_id": "118690",
