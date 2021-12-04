@@ -109,6 +109,11 @@ public class AdParams {
             return this;
         }
 
+        public Builder setNativeTemplateWidth(String sdk, int width) {
+            getParams(sdk).setNativeTemplateWidth(width);
+            return this;
+        }
+
         public Builder setAdRootLayout(String sdk, int layout) {
             getParams(sdk).setAdRootLayout(layout);
             return this;

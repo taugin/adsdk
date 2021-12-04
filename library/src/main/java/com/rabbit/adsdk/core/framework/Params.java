@@ -12,8 +12,8 @@ public class Params {
     private int mNativeRootLayout;
     private int mNativeCardStyle;
     private Map<String, Integer> mBannerSize = new HashMap<String, Integer>();
+    private int mNativeTemplateWidth;
     private int adTitle;
-    private int adSubTitle;
     private int adIcon;
     private int adCover;
     private int adMediaView;
@@ -48,6 +48,14 @@ public class Params {
 
     public Map<String, Integer> getBannerSize() {
         return mBannerSize;
+    }
+
+    public int getNativeTemplateWidth() {
+        return mNativeTemplateWidth;
+    }
+
+    public void setNativeTemplateWidth(int mNativeTemplateWidth) {
+        this.mNativeTemplateWidth = mNativeTemplateWidth;
     }
 
     public int getAdTitle() {

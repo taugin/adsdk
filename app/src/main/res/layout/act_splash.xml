@@ -104,10 +104,12 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/ad_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
                 android:paddingLeft="@dimen/dp_8"
                 android:paddingRight="@dimen/dp_8" />
         </LinearLayout>

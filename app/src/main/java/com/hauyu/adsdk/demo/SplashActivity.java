@@ -19,7 +19,7 @@ import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 
 public class SplashActivity extends Activity {
     private static final String TAG = "MA";
-    private FrameLayout adContainer;
+    private ViewGroup adContainer;
     private ViewGroup splashLayout;
     private View adContainerLayout;
     private Handler mHandler = new Handler();

@@ -241,6 +241,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
         builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
         builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_TINY);
+        builder.setNativeTemplateWidth(AdExtra.AD_SDK_COMMON, Utils.dp2px(mContext, 200));
         AdParams adParams = builder.build();
 
         AdSdk.get(mContext).loadAdView("banner_and_native", adParams, mSimpleAdsdkListener);

@@ -254,7 +254,7 @@ public class MintegralLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
         if (isTemplateRendering()) {
-            loadNativeTemplate(placementId, unitId);
+            loadNativeTemplate(placementId, unitId, params);
         } else {
             loadNativeCustom(placementId, unitId);
         }
@@ -326,29 +326,36 @@ public class MintegralLoader extends AbstractSdkLoader {
         return value;
     }
 
-    private Pair<Integer, Integer> getNativeViewSize() {
+    private Pair<Integer, Integer> getNativeViewSize(Params params) {
         if (mPidConfig != null) {
             Map<String, String> extra = mPidConfig.getExtra();
             if (extra != null) {
                 String widthText = extra.get(Constant.WIDTH);
                 String heightText = extra.get(Constant.HEIGHT);
-                int width = parseInt(widthText, 0);
-                int height = parseInt(heightText, 0);
+                int widthDP = parseInt(widthText, 0);
+                int heightDP = parseInt(heightText, 0);
+                int width = Utils.dp2px(mContext, widthDP);
+                int height = Utils.dp2px(mContext, heightDP);
                 if (width > 0 && height > 0) {
                     return new Pair<>(width, height);
                 }
             }
         }
-        int screenWidth = Utils.getScreenWidth(mContext);
-        int height = (int) ((float)screenWidth * 250 / 320);
-        return new Pair<>(screenWidth, height);
+        if (params != null) {
+            int width = params.getNativeTemplateWidth();
+            int height = (int) ((float)width * 250 / 320);
+            if (width > 0 && height > 0) {
+                return new Pair<>(width, height);
+            }
+        }
+        return null;
     }
 
-    private void loadNativeTemplate(String placementId, String unitId) {
+    private void loadNativeTemplate(String placementId, String unitId, Params params) {
         mMBNativeAdvancedHandler = new MBNativeAdvancedHandler(getActivity(), placementId, unitId);
-        Pair<Integer, Integer> pair = getNativeViewSize();
-        int width = 320;
-        int height = 250;
+        Pair<Integer, Integer> pair = getNativeViewSize(params);
+        int width = Utils.dp2px(mContext, 320);
+        int height = Utils.dp2px(mContext, 250);
         if (pair != null) {
             width = pair.first;
             height = pair.second;
