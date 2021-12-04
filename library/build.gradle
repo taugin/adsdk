@@ -22,7 +22,7 @@ static def getConfigKey() {
     return String.valueOf(("adsdk-" + formattedDate).hashCode())
 }
 
-def isSnapshot = testResultsDir
+def isSnapshot = true
 def baseVersion = '4.7.4'
 android {
     compileSdkVersion 30
