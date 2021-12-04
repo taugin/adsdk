@@ -19,6 +19,7 @@ import com.rabbit.adsdk.adloader.listener.IManagerListener;
 import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
 import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.AdPolicy;
 import com.rabbit.adsdk.core.framework.BlockAdsManager;
 import com.rabbit.adsdk.core.framework.LimitAdsManager;
 import com.rabbit.adsdk.core.framework.Params;
@@ -312,6 +313,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             processImpByRatio();
             return false;
         }
+
+        // 超出最大请求次数
+        if (isExceedReqTimes()) {
+            processExceedReqTimes();
+            return false;
+        }
         return true;
     }
 
@@ -331,6 +338,16 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private boolean isLimitExclude() {
         return LimitAdsManager.get(mContext).isLimitExclude(getSdkName());
+    }
+
+    private void processExceedReqTimes() {
+        long reqTimes = AdPolicy.get(mContext).getReqTimes(getAdPlaceName(), getSdkName());
+        Log.iv(Log.TAG, formatLog("exceed max req times : " + reqTimes + "/" + getMaxReqTimes()));
+        notifyAdLoadFailed(Constant.AD_ERROR_LIMIT_ADS);
+    }
+
+    private boolean isExceedReqTimes() {
+        return AdPolicy.get(mContext).isExceedMaxReqTimes(getAdPlaceName(), getSdkName(), getMaxReqTimes());
     }
 
     protected void printInterfaceLog(String action) {
@@ -365,6 +382,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private void processImpByRatio() {
         Log.iv(Log.TAG, formatLog("ratio not match"));
         notifyAdLoadFailed(Constant.AD_ERROR_RATIO);
+    }
+
+    private int getMaxReqTimes() {
+        if (mPidConfig != null) {
+            return mPidConfig.getMaxReqTimes();
+        }
+        return 0;
     }
 
     private OnAdBaseListener getAdListener() {
@@ -773,6 +797,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (getAdListener() != null) {
             getAdListener().onAdRequest();
         }
+        AdPolicy.get(mContext).recordRequestTimes(getAdPlaceName(), getSdkName(), getMaxReqTimes());
     }
 
     /**

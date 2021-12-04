@@ -57,7 +57,11 @@ public class PidConfig {
 
     private Map<String, String> extra;
 
+    // 是否为模板广告
     private boolean template;
+
+    // 最大请求次数
+    private int maxReqTimes;
 
     public String getPlaceName() {
         return placeName;
@@ -241,6 +245,14 @@ public class PidConfig {
 
     public void setTemplate(boolean template) {
         this.template = template;
+    }
+
+    public int getMaxReqTimes() {
+        return maxReqTimes;
+    }
+
+    public void setMaxReqTimes(int maxReqTimes) {
+        this.maxReqTimes = maxReqTimes;
     }
 
     public boolean isAdmob() {

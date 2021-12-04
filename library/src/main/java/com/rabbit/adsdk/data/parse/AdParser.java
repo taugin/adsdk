@@ -127,8 +127,8 @@ public class AdParser implements IParser {
             if (jobj.has(MODE)) {
                 adPlace.setMode(jobj.getString(MODE));
             }
-            if (jobj.has(MAXCOUNT)) {
-                adPlace.setMaxCount(jobj.getInt(MAXCOUNT));
+            if (jobj.has(MAXSHOW)) {
+                adPlace.setMaxCount(jobj.getInt(MAXSHOW));
             }
             if (jobj.has(PERCENT)) {
                 adPlace.setPercent(jobj.getInt(PERCENT));
@@ -275,6 +275,9 @@ public class AdParser implements IParser {
             }
             if (jobj.has(TEMPLATE)) {
                 pidConfig.setTemplate(jobj.getInt(TEMPLATE) == 1);
+            }
+            if (jobj.has(MAX_REQ_TIME)) {
+                pidConfig.setMaxReqTimes(jobj.getInt(MAX_REQ_TIME));
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

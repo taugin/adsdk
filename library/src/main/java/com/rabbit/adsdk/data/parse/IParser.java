@@ -29,7 +29,7 @@ public interface IParser {
     // 开启或关闭单次加载通知
     String LOAD_ONLY_ONCE = "loo";
     // 24小时最大展示次数
-    String MAXCOUNT = "maxcount";
+    String MAXSHOW = "maxshow";
     // 展示的百分比
     String PERCENT = "percent";
     // 具体广告位配置
@@ -88,6 +88,8 @@ public interface IParser {
     String EXTRA = "extra";
     // 是否为模板渲染
     String TEMPLATE = "template";
+    // 设置广告单元最大请求次数
+    String MAX_REQ_TIME = "mrt";
 
     // banner
     String BANNER = "banner";

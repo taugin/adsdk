@@ -63,6 +63,20 @@
             "account_id": "0ad6ff4e884340ed9c480177af959b94"
           },
           "disable": 0
+        },
+        {
+          "sdk": "mintegral",
+          "type": "native",
+          "pid": "262716",
+          "template": 1,
+          "mrt": 10,
+          "extra": {
+            "app_key": "7c22942b749fe6a6e361b675e96b3ee9",
+            "app_id": "118690",
+            "unit_id": "258656",
+            "placement_id": "202132"
+          },
+          "disable": 0
         }
       ],
       "maxcount": 100,
@@ -81,7 +95,7 @@
         {
           "sdk": "mopub",
           "type": "native",
-          "pid": "bb410fc77500463e8d1e397072823e08",
+          "pid": "043b7cd7529f4b92b200afd58d461c3e",
           "mark": "测试APP广告位",
           "disable": 0
         },
