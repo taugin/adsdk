@@ -1,12 +1,14 @@
 package com.rabbit.adsdk;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.adloader.core.AdLoaderManager;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.ActivityMonitor;
@@ -99,6 +101,7 @@ public class AdSdk {
         DataManager.get(mContext).init();
         ActivityMonitor.get(mOriginContext).init();
         EventImpl.get().init(mContext);
+        AppLovinLoader.initApplovin(mContext);
     }
 
     /**

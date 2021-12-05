@@ -10,10 +10,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
+import com.rabbit.adsdk.core.framework.ActivityMonitor;
 import com.rabbit.adsdk.log.Log;
 
 import java.lang.reflect.Field;
@@ -91,6 +93,27 @@ public class MView extends View {
                     Log.e(Log.TAG, "error : " + e);
                 }
                 return super.getSystemService(name);
+            }
+
+            @Override
+            public <T extends View> T findViewById(int id) {
+                try {
+                    return super.findViewById(id);
+                } catch (Exception | Error e) {
+                    Log.e(Log.TAG, "error : " + e);
+                    try {
+                        Activity topActivity = ActivityMonitor.get(this).getTopActivity();
+                        if (topActivity != null) {
+                            Window window = topActivity.getWindow();
+                            if (window != null) {
+                                return window.findViewById(id);
+                            }
+                        }
+                    } catch (Exception | Error error) {
+                        Log.e(Log.TAG, "error : " + error);
+                    }
+                }
+                return null;
             }
         };
         try {

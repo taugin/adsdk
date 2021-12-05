@@ -228,7 +228,6 @@ public class MopubLoader extends AbstractSdkLoader {
             }
             SdkConfiguration sdkConfiguration = builder.build();
             Activity activity = getActivity();
-            AppLovinLoader.initApplovin(activity, false);
             MoPub.initializeSdk(activity, sdkConfiguration, new SdkInitializationListener() {
                 @Override
                 public void onInitializationFinished() {

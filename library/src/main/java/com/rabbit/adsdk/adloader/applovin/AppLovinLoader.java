@@ -1,6 +1,7 @@
 package com.rabbit.adsdk.adloader.applovin;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
+import com.rabbit.sunny.MView;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,19 +51,23 @@ public class AppLovinLoader extends AbstractSdkLoader {
      *
      * @return
      */
-    public static void initApplovin(Activity activity, boolean realInit) {
-        AppLovinSdk appLovinSdk = getInstance(activity);
-        if (appLovinSdk != null) {
-            if (realInit) {
-                appLovinSdk.setMediationProvider("max");
-                appLovinSdk.initializeSdk(config -> Log.iv(Log.TAG, "applovin sdk init successfully"));
-                if (isDebug(activity)) {
-                    String gaid = Utils.getString(activity, Constant.PREF_GAID);
-                    Log.iv(Log.TAG, "applovin debug mode gaid : " + gaid);
-                    if (!TextUtils.isEmpty(gaid)) {
-                        appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList(new String[]{gaid}));
+    public static void initApplovin(Context context) {
+        if (!sApplovinInited.getAndSet(true)) {
+            try {
+                Activity activity = MView.createFakeActivity((Application) context.getApplicationContext());
+                AppLovinSdk appLovinSdk = getInstance(activity);
+                if (appLovinSdk != null) {
+                    appLovinSdk.setMediationProvider("max");
+                    appLovinSdk.initializeSdk(config -> Log.iv(Log.TAG, "applovin sdk init successfully"));
+                    if (isDebug(activity)) {
+                        String gaid = Utils.getString(activity, Constant.PREF_GAID);
+                        Log.iv(Log.TAG, "applovin debug mode gaid : " + gaid);
+                        if (!TextUtils.isEmpty(gaid)) {
+                            appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList(new String[]{gaid}));
+                        }
                     }
                 }
+            } catch (Exception e) {
             }
         }
     }
@@ -69,9 +75,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
     @Override
     public void init(Context context, PidConfig pidConfig) {
         super.init(context, pidConfig);
-        if (!sApplovinInited.getAndSet(true)) {
-            initApplovin(getActivity(), true);
-        }
     }
 
     public String getSdkName() {

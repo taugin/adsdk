@@ -205,7 +205,7 @@
           "type": "banner",
           "bs": "MEDIUM_RECTANGLE",
           "pid": "a9eeb2d3ee33003c",
-          "disable": 1
+          "disable": 0
         },
         {
           "sdk": "mintegral",
@@ -231,7 +231,7 @@
             "unit_id": "258656",
             "placement_id": "202132"
           },
-          "disable": 0
+          "disable": 1
         }
       ],
       "maxcount": 100,
@@ -273,10 +273,9 @@
         },
         {
           "sdk": "applovin",
-          "ismax": 1,
           "type": "interstitial",
           "bs": "MEDIUM_RECTANGLE",
-          "pid": "2787a9b587529f8f",
+          "pid": "6564124aafcc90d6",
           "disable": 0
         }
       ],

@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import com.rabbit.adsdk.log.Log;
 
+import java.lang.ref.WeakReference;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -20,6 +21,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     private static ActivityMonitor sActivityMonitor;
     private AtomicInteger mAtomicInteger = new AtomicInteger(0);
+    private WeakReference<Activity> mTopActivity = null;
 
     public static ActivityMonitor get(Context context) {
         synchronized (ActivityMonitor.class) {
@@ -69,6 +71,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityResumed(Activity activity) {
+        mTopActivity = new WeakReference<Activity>(activity);
     }
 
     @Override
@@ -112,5 +115,12 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
         }
         return TextUtils.equals(action, Intent.ACTION_MAIN)
                 && categories.contains(Intent.CATEGORY_LAUNCHER);
+    }
+
+    public Activity getTopActivity() {
+        if (mTopActivity != null) {
+            return mTopActivity.get();
+        }
+        return null;
     }
 }
