@@ -367,7 +367,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                reportMaxAdImpData(ad);
+                reportMaxAdImpData(ad, getAdPlaceName());
             }
         });
 
@@ -469,7 +469,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                reportMaxAdImpData(ad);
+                reportMaxAdImpData(ad, getAdPlaceName());
             }
         });
 
@@ -590,7 +590,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                reportMaxAdImpData(ad);
+                reportMaxAdImpData(ad, getAdPlaceName());
             }
         });
 
@@ -681,7 +681,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         return "UNKNOWN[" + code + "]";
     }
 
-    private void reportMaxAdImpData(MaxAd maxAd) {
+    private void reportMaxAdImpData(MaxAd maxAd, String placeName) {
         try {
             double revenue = maxAd.getRevenue(); // In USD
             String countryCode = getInstance(getActivity()).getConfiguration().getCountryCode(); // "US" for the United States, etc - Note: Do not confuse this with currency code which is "USD" in most cases!
@@ -689,6 +689,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             String adUnitId = maxAd.getAdUnitId(); // The MAX Ad Unit ID
             MaxAdFormat adFormat = maxAd.getFormat(); // The ad format of the ad (e.g. BANNER, MREC, INTERSTITIAL, REWARDED)
             String placement = maxAd.getPlacement(); // The placement this ad's postbacks are tied to
+            placement = TextUtils.isEmpty(placement) ? placeName : placement;
             String placementId = maxAd.getNetworkPlacement();
             Map<String, Object> map = new HashMap<>();
             map.put("value", revenue);
