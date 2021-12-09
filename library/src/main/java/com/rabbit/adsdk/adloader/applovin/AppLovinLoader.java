@@ -19,12 +19,15 @@ import com.applovin.mediation.MaxRewardedAdListener;
 import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.mediation.ads.MaxRewardedAd;
+import com.applovin.mediation.nativeAds.MaxNativeAdListener;
+import com.applovin.mediation.nativeAds.MaxNativeAdLoader;
 import com.applovin.sdk.AppLovinErrorCodes;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkSettings;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
@@ -45,6 +48,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     private static AtomicBoolean sApplovinInited = new AtomicBoolean(false);
     private static AppLovinSdkSettings sAppLovinSdkSettings;
+    private View mTemplateAdView;
 
     /**
      * 提前初始化applovin，避免applovin被mopub使用Application Context初始化
@@ -612,6 +616,144 @@ public class AppLovinLoader extends AbstractSdkLoader {
             onResetReward();
         }
         return false;
+    }
+
+    @Override
+    public void loadNative(Params params) {
+        if (!checkPidConfig()) {
+            Log.iv(Log.TAG, formatLog("config error"));
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            return;
+        }
+        if (isNativeLoaded()) {
+            Log.iv(Log.TAG, formatLog("already loaded"));
+            notifySdkLoaderLoaded(true);
+            return;
+        }
+        if (isLoading()) {
+            Log.iv(Log.TAG, formatLog("already loading"));
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            return;
+        }
+
+        // 检测通用配置是否符合
+        if (!checkCommonConfig()) {
+            return;
+        }
+        setLoading(true, STATE_REQUEST);
+        try {
+            if (isTemplateRendering()) {
+                loadTemplateNative();
+            } else {
+                loadCustomNative();
+            }
+        } catch (Exception e) {
+            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT);
+        }
+    }
+
+    private void loadTemplateNative() {
+        Activity activity = getActivity();
+        MaxNativeAdLoader templateNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
+        templateNativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
+            @Override
+            public void onNativeAdLoaded(View view, MaxAd maxAd) {
+                Log.iv(Log.TAG, formatLog("ad load success"));
+                reportAdLoaded();
+                setLoading(false, STATE_SUCCESS);
+                mTemplateAdView = view;
+                putCachedAdTime(mTemplateAdView);
+                reportAdLoaded();
+                notifySdkLoaderLoaded(false);
+            }
+
+            @Override
+            public void onNativeAdLoadFailed(String s, MaxError maxError) {
+                Log.iv(Log.TAG, formatLog("ad load failed : " + maxError, true));
+                reportAdError(s);
+                setLoading(false, STATE_FAILURE);
+                notifyAdLoadFailed(Constant.AD_ERROR_NOFILL);
+            }
+
+            @Override
+            public void onNativeAdClicked(MaxAd maxAd) {
+                Log.iv(Log.TAG, formatLog("ad click"));
+                reportAdClick();
+                notifyAdClick();
+            }
+        });
+        templateNativeAdLoader.setRevenueListener(new MaxAdRevenueListener() {
+            @Override
+            public void onAdRevenuePaid(MaxAd ad) {
+                Log.iv(Log.TAG, formatLog("ad revenue paid"));
+                reportMaxAdImpData(ad, getAdPlaceName());
+            }
+        });
+        printInterfaceLog(ACTION_LOAD);
+        reportAdRequest();
+        notifyAdRequest();
+        templateNativeAdLoader.loadAd();
+    }
+
+    private void loadCustomNative() {
+        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
+    }
+
+    @Override
+    public boolean isNativeLoaded() {
+        boolean loaded = false;
+        if (isTemplateRendering()) {
+            loaded = isTemplateNativeLoaded();
+        } else {
+            loaded = isCustomNativeLoaded();
+        }
+        if (loaded) {
+            Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
+        }
+        return loaded;
+    }
+
+    private boolean isTemplateNativeLoaded() {
+        return mTemplateAdView != null && !isCachedAdExpired(mTemplateAdView);
+    }
+
+    private boolean isCustomNativeLoaded() {
+        return false;
+    }
+
+    @Override
+    public void showNative(ViewGroup viewGroup, Params params) {
+        printInterfaceLog(ACTION_SHOW);
+        if (isTemplateRendering()) {
+            showTemplateNative(viewGroup);
+        } else {
+            showCustomNative(viewGroup, params);
+        }
+    }
+
+    private void showCustomNative(ViewGroup viewGroup, Params params) {
+    }
+
+    private void showTemplateNative(ViewGroup viewGroup) {
+        try {
+            if (mTemplateAdView != null) {
+                viewGroup.removeAllViews();
+                ViewParent viewParent = mTemplateAdView.getParent();
+                if (viewParent instanceof ViewGroup) {
+                    ((ViewGroup) viewParent).removeView(mTemplateAdView);
+                }
+                viewGroup.addView(mTemplateAdView);
+                if (viewGroup.getVisibility() != View.VISIBLE) {
+                    viewGroup.setVisibility(View.VISIBLE);
+                }
+                clearCachedAdTime(mTemplateAdView);
+                mTemplateAdView = null;
+                reportAdShow();
+                notifyAdShow();
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
     }
 
     @Override

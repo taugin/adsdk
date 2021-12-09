@@ -205,7 +205,7 @@
           "type": "banner",
           "bs": "MEDIUM_RECTANGLE",
           "pid": "a9eeb2d3ee33003c",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mintegral",
@@ -232,6 +232,13 @@
             "placement_id": "202132"
           },
           "disable": 1
+        },
+        {
+          "sdk": "applovin",
+          "type": "native",
+          "template": 1,
+          "pid": "04bb953da790a09b",
+          "disable": 0
         }
       ],
       "maxcount": 100,
