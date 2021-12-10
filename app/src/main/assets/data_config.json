@@ -238,6 +238,15 @@
           "type": "native",
           "template": 1,
           "pid": "04bb953da790a09b",
+          "disable": 1
+        },
+        {
+          "sdk": "tradplus",
+          "type": "native",
+          "pid": "C0A4A6BA231CA19D882F007E143818EA",
+          "extra": {
+            "app_id": "BA819D2F55B23ED81FD43E632EFF0FE7"
+          },
           "disable": 0
         }
       ],
@@ -252,26 +261,26 @@
           "sdk": "admob",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "fb",
           "type": "interstitial",
           "pid": "VID_HD_16_9_15S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "interstitial",
           "pid": "24534e1901884e398f1253216226017e",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "interstitial",
           "mark": "测试APP广告位",
           "pid": "c32e5d6016434bcc84fcb3e27fc54619",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "spread",
@@ -283,6 +292,15 @@
           "type": "interstitial",
           "bs": "MEDIUM_RECTANGLE",
           "pid": "6564124aafcc90d6",
+          "disable": 1
+        },
+        {
+          "sdk": "tradplus",
+          "type": "interstitial",
+          "pid": "390467770FD3681386CF5C74E7244B30",
+          "extra": {
+            "app_id": "BA819D2F55B23ED81FD43E632EFF0FE7"
+          },
           "disable": 0
         }
       ],
@@ -299,31 +317,40 @@
           "sdk": "admob",
           "type": "reward",
           "pid": "ca-app-pub-3940256099942544/5224354917",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "reward",
           "pid": "89c000c7bb514d8fa78614f8b53a356b",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "mopub",
           "type": "reward",
           "mark": "测试APP广告位",
           "pid": "d5bac1a5700c4f3aa0ac1db70724a893",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "fb",
           "type": "reward",
           "pid": "VID_HD_9_16_39S_APP_INSTALL#YOUR_PLACEMENT_ID",
-          "disable": 0
+          "disable": 1
         },
         {
           "sdk": "applovin",
           "type": "reward",
           "pid": "b1f3b51e98603fbf",
+          "disable": 1
+        },
+        {
+          "sdk": "tradplus",
+          "type": "reward",
+          "pid": "A5AF90C502A014B3BDCF2B267ADA6007",
+          "extra": {
+            "app_id": "BA819D2F55B23ED81FD43E632EFF0FE7"
+          },
           "disable": 0
         }
       ],

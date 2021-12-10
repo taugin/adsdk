@@ -232,7 +232,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
 //        }
         builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.COMMON_ADAPTIVE_BANNER);
         builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.FB_MEDIUM_RECTANGLE);
-        builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
+        // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
         builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
         builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
         builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
@@ -240,7 +240,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
         builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
         builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_TINY);
+        Integer [] values = new Integer[] {AdExtra.NATIVE_CARD_LITTLE, AdExtra.NATIVE_CARD_LARGE, AdExtra.NATIVE_CARD_SMALL, AdExtra.NATIVE_CARD_TINY, AdExtra.NATIVE_CARD_MEDIUM};
+        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, values[new Random().nextInt(values.length)]);
         builder.setNativeTemplateWidth(AdExtra.AD_SDK_COMMON, Utils.dp2px(mContext, 200));
         AdParams adParams = builder.build();
 

@@ -56,6 +56,9 @@ allprojects {
         google()
         jcenter()
         mavenLocal()
+        maven { url 'https://sdk.tapjoy.com/' }
+        maven { url 'https://mvnrepository.com/artifact/com.inmobi.monetization/inmobi-ads' }
+        maven { url 'https://android-sdk.is.com/'}
     }
 }
 

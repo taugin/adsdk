@@ -22,13 +22,15 @@
                 android:background="@color/white"
                 android:orientation="vertical">
 
-                <androidx.percentlayout.widget.PercentRelativeLayout
+                <RelativeLayout
                     android:id="@+id/common_cover_info"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="200dp">
 
                     <ImageView
                         android:id="@+id/common_image_cover"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:contentDescription="@null"
                         android:scaleType="fitXY"
                         app:layout_aspectRatio="190%"
@@ -36,6 +38,8 @@
 
                     <RelativeLayout
                         android:id="@+id/common_media_cover"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:contentDescription="@null"
                         android:gravity="center"
                         app:layout_aspectRatio="190%"
@@ -55,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/ad_sponsored_icon"
                         android:gravity="center" />
-                </androidx.percentlayout.widget.PercentRelativeLayout>
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/common_header_info"

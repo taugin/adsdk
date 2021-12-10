@@ -10,6 +10,7 @@ import com.mbridge.msdk.MBridgeSDK;
 import com.mopub.mobileads.MoPubInterstitial;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.log.Log;
+import com.tradplus.ads.mobileads.TradPlus;
 
 /**
  * Created by Administrator on 2018-10-25.
@@ -36,6 +37,9 @@ public class ModuleLoaderHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_INMOBI, sdk)) {
             return hasInmobiModule();
+        }
+        if (TextUtils.equals(Constant.AD_SDK_TRADPLUS, sdk)) {
+            return hasTradPlusModule();
         }
         if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
             return true;
@@ -95,6 +99,16 @@ public class ModuleLoaderHelper {
     private static boolean hasInmobiModule() {
         try {
             InMobiNative.class.getName();
+            return true;
+        } catch (Exception | Error e) {
+            Log.e(Log.TAG, "error : " + e, e);
+        }
+        return false;
+    }
+
+    private static boolean hasTradPlusModule() {
+        try {
+            TradPlus.class.getName();
             return true;
         } catch (Exception | Error e) {
             Log.e(Log.TAG, "error : " + e, e);
