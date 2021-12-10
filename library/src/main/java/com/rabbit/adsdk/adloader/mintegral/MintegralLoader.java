@@ -163,8 +163,19 @@ public class MintegralLoader extends AbstractSdkLoader {
                     sHandler.removeCallbacksAndMessages(null);
                 }
                 sSdkInitializeState = SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS;
-                if (sdkInitializeListener != null) {
-                    sdkInitializeListener.onInitializeSuccess(null, null);
+                if (Looper.myLooper() != Looper.getMainLooper()) {
+                    sHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (sdkInitializeListener != null) {
+                                sdkInitializeListener.onInitializeSuccess(null, null);
+                            }
+                        }
+                    });
+                } else {
+                    if (sdkInitializeListener != null) {
+                        sdkInitializeListener.onInitializeSuccess(null, null);
+                    }
                 }
             }
 
@@ -172,8 +183,19 @@ public class MintegralLoader extends AbstractSdkLoader {
             public void onInitFail(String s) {
                 Log.iv(Log.TAG, getSdkName() + " sdk init failure : " + s);
                 sSdkInitializeState = SDKInitializeState.SDK_STATE_INITIALIZE_FAILURE;
-                if (sdkInitializeListener != null) {
-                    sdkInitializeListener.onInitializeFailure("failure");
+                if (Looper.myLooper() != Looper.getMainLooper()) {
+                    sHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (sdkInitializeListener != null) {
+                                sdkInitializeListener.onInitializeFailure("failure");
+                            }
+                        }
+                    });
+                } else {
+                    if (sdkInitializeListener != null) {
+                        sdkInitializeListener.onInitializeFailure("failure");
+                    }
                 }
             }
         });
@@ -343,7 +365,7 @@ public class MintegralLoader extends AbstractSdkLoader {
         }
         if (params != null) {
             int width = params.getNativeTemplateWidth();
-            int height = (int) ((float)width * 250 / 320);
+            int height = (int) ((float) width * 250 / 320);
             if (width > 0 && height > 0) {
                 return new Pair<>(width, height);
             }
@@ -442,7 +464,7 @@ public class MintegralLoader extends AbstractSdkLoader {
     }
 
     private boolean isTemplateNativeLoaded() {
-        return mAdViewGroup != null  && !isCachedAdExpired(mAdViewGroup);
+        return mAdViewGroup != null && !isCachedAdExpired(mAdViewGroup);
     }
 
     @Override
