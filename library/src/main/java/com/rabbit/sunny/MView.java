@@ -115,6 +115,19 @@ public class MView extends View {
                 }
                 return null;
             }
+
+            @Override
+            public Window getWindow() {
+                try {
+                    Activity topActivity = ActivityMonitor.get(this).getTopActivity();
+                    if (topActivity != null) {
+                        Window window = topActivity.getWindow();
+                        return window;
+                    }
+                } catch (Exception e) {
+                }
+                return super.getWindow();
+            }
         };
         try {
             Class ContextWrapperClass = Class.forName("android.content.ContextWrapper");
