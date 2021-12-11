@@ -57,6 +57,7 @@ public class MView extends View {
 
             @Override
             public void startActivity(Intent intent) {
+                Log.iv(Log.TAG, "fk act start activity");
                 try {
                     configIntent(application, intent);
                     application.startActivity(intent);
@@ -67,6 +68,7 @@ public class MView extends View {
 
             @Override
             public Context getApplicationContext() {
+                Log.iv(Log.TAG, "fk act get application context");
                 try {
                     return application.getApplicationContext();
                 } catch (Exception | Error e) {
@@ -77,6 +79,7 @@ public class MView extends View {
 
             @Override
             public String getLocalClassName() {
+                Log.iv(Log.TAG, "fk act get local class name");
                 try {
                     return super.getLocalClassName();
                 } catch (Exception | Error e) {
@@ -87,6 +90,7 @@ public class MView extends View {
 
             @Override
             public Object getSystemService(@NonNull String name) {
+                Log.iv(Log.TAG, "fk act get system service");
                 try {
                     return application.getSystemService(name);
                 } catch (Exception | Error e) {
@@ -97,6 +101,7 @@ public class MView extends View {
 
             @Override
             public <T extends View> T findViewById(int id) {
+                Log.iv(Log.TAG, "fk act find view by id");
                 try {
                     return super.findViewById(id);
                 } catch (Exception | Error e) {
@@ -118,6 +123,7 @@ public class MView extends View {
 
             @Override
             public Window getWindow() {
+                Log.iv(Log.TAG, "fk act get window");
                 try {
                     Activity topActivity = ActivityMonitor.get(this).getTopActivity();
                     if (topActivity != null) {
