@@ -24,6 +24,7 @@
         </activity>
         <activity android:name="com.hauyu.adsdk.demo.ListViewForAd" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity2" />
 
         <meta-data
             android:name="android.max_aspect"

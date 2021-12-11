@@ -3,4 +3,39 @@
     <string name="app_name_vivo">AdSdkVivo</string>
     <string name="app_name_oppo">AdSdkOppo</string>
     <string name="continue_to_app">Continue to app</string>
+    <string-array name="ad_sdk">
+        <item>TradPlus</item>
+        <item>Applovin</item>
+        <item>Admob</item>
+        <item>Mopub</item>
+    </string-array>
+    <string-array name="ad_layout">
+        <item>Random</item>
+        <item>Micro</item>
+        <item>Tiny</item>
+        <item>Little</item>
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+        <item>Large</item>
+        <item>Wrap</item>
+        <item>Full</item>
+        <item>Head</item>
+        <item>Mix</item>
+        <item>Foot</item>
+        <item>Round</item>
+    </string-array>
+
+    <string-array name="ad_banner_size">
+        <item>NOSET</item>
+        <item>BANNER</item>
+        <item>FULL_BANNER</item>
+        <item>LARGE_BANNER</item>
+        <item>LEADERBOARD</item>
+        <item>MEDIUM_RECTANGLE</item>
+        <item>WIDE_SKYSCRAPER</item>
+        <item>SMART_BANNER</item>
+        <item>ADAPTIVE_BANNER</item>
+    </string-array>
+
 </resources>

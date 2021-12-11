@@ -17,6 +17,9 @@ import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdSdk;
 import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 
+import java.util.Locale;
+import java.util.Random;
+
 public class SplashActivity extends Activity {
     private static final String TAG = "MA";
     private ViewGroup adContainer;
@@ -24,10 +27,14 @@ public class SplashActivity extends Activity {
     private View adContainerLayout;
     private Handler mHandler = new Handler();
     private View appInfoLayout = null;
+    private String mNativeSplashPlace = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String sdkArray[] = getResources().getStringArray(R.array.ad_sdk);
+        String sdk = sdkArray[new Random().nextInt(sdkArray.length)];
+        mNativeSplashPlace = String.format(Locale.getDefault(), "native_%s", sdk.toLowerCase());
         setContentView(R.layout.act_splash);
         adContainer = findViewById(R.id.ad_container);
         splashLayout = findViewById(R.id.splash_layout);
@@ -58,7 +65,7 @@ public class SplashActivity extends Activity {
             return;
         }
         AdParams adParams = new AdParams.Builder().setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_ROUND).build();
-        AdSdk.get(this).loadAdView("native_splash", adParams, new SimpleAdSdkListener() {
+        AdSdk.get(this).loadAdView(mNativeSplashPlace, adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String placeName, String source, String adType, String pid) {
                 if (!isFinishing()) {
@@ -101,7 +108,7 @@ public class SplashActivity extends Activity {
             adContainer.setVisibility(View.VISIBLE);
             adContainerLayout.setVisibility(View.VISIBLE);
             splashLayout.setVisibility(View.GONE);
-            AdSdk.get(this).showAdView("native_splash", adContainer);
+            AdSdk.get(this).showAdView(mNativeSplashPlace, adContainer);
         }
     }
 
@@ -132,7 +139,7 @@ public class SplashActivity extends Activity {
     }
 
     private void startApp() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainActivity2.class);
         startActivity(intent);
         finish();
     }
