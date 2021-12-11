@@ -517,6 +517,9 @@ public class TradPlusLoader extends AbstractSdkLoader {
             if (customNativeAd != null) {
                 mTradPlusBindView.bindNativeView(mContext, mPidConfig, params, customNativeAd);
                 customNativeAd.showAd(viewGroup, mTradPlusBindView.getCustomTPNativeAdRender(), "");
+                if (viewGroup != null && viewGroup.getVisibility() != View.VISIBLE) {
+                    viewGroup.setVisibility(View.VISIBLE);
+                }
             } else {
                 Log.e(Log.TAG, "render native ad view error : TPCustomNativeAd == null");
             }
