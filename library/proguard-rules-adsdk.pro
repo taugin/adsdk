@@ -72,3 +72,7 @@
 -keep class **.R$* { public static final int mbridge*; }
 -keep class com.alphab.** {*; }
 -keep interface com.alphab.** {*; }
+
+#tradplus
+-keep public class com.tradplus.** { *; }
+-keep class com.tradplus.ads.** { *; }
