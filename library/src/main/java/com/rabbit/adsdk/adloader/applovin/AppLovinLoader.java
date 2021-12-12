@@ -847,7 +847,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (isReportAdImpData()) {
                 InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
             }
-            Log.iv(Log.TAG, "applovin max imp data : " + map);
+            Log.iv(Log.TAG, getSdkName() + " imp data : " + map);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

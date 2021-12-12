@@ -13,6 +13,8 @@ import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.stat.InternalStat;
+import com.rabbit.adsdk.utils.Utils;
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
 import com.tradplus.ads.base.bean.TPBaseAd;
@@ -27,6 +29,7 @@ import com.tradplus.ads.open.nativead.TPNative;
 import com.tradplus.ads.open.reward.RewardAdListener;
 import com.tradplus.ads.open.reward.TPReward;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -100,6 +103,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 putCachedAdTime(mTPBanner);
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
+                reportTradPlusImpressionData(tpAdInfo);
             }
 
             @Override
@@ -237,6 +241,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad interstitial impression"));
                 reportAdImp();
                 notifyAdImp();
+                reportTradPlusImpressionData(tpAdInfo);
             }
 
             @Override
@@ -348,6 +353,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad reward start"));
                 reportAdImp();
                 notifyAdImp();
+                reportTradPlusImpressionData(tpAdInfo);
             }
 
             @Override
@@ -468,6 +474,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad network impression render : " + render));
                 reportAdImp(render);
                 notifyAdImp(render);
+                reportTradPlusImpressionData(tpAdInfo);
             }
 
             @Override
@@ -551,6 +558,32 @@ public class TradPlusLoader extends AbstractSdkLoader {
         clearCachedAdTime(mTPReward);
         if (mTPReward != null) {
             mTPReward = null;
+        }
+    }
+
+    private void reportTradPlusImpressionData(TPAdInfo tpAdInfo) {
+        try {
+            double ecpm = 0f;
+            try {
+                ecpm = Double.parseDouble(tpAdInfo.ecpm);
+            } catch (Exception e) {
+            }
+            Map<String, Object> map = new HashMap<>();
+            map.put("value", ecpm);
+            map.put("ad_network", tpAdInfo.adSourceName);
+            map.put("ad_network_pid", tpAdInfo.adSourceId);
+            map.put("ad_unit_id", getPid());
+            map.put("ad_format", getAdType());
+            map.put("ad_unit_name", getAdPlaceName());
+            map.put("ad_provider", getSdkName());
+            String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+            map.put("ad_gaid", gaid);
+            if (isReportAdImpData()) {
+                InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
+            }
+            Log.iv(Log.TAG, getSdkName() + " imp data : " + map);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "report trusplus error : " + e);
         }
     }
 
