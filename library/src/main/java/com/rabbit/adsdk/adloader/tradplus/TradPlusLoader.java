@@ -579,6 +579,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             map.put("ad_format", getAdType());
             map.put("ad_unit_name", getAdPlaceName());
             map.put("ad_provider", getSdkName());
+            map.put("ad_bidding", tpAdInfo.isBiddingNetwork);
             String gaid = Utils.getString(mContext, Constant.PREF_GAID);
             map.put("ad_gaid", gaid);
             if (isReportAdImpData()) {
