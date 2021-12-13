@@ -72,32 +72,38 @@ dependencies {
 
     // applovin
     implementation 'com.applovin:applovin-sdk:10.3.5'
+    // mopub applovin mediation
     implementation 'com.mopub.mediation:applovin:10.3.4.0'
     // tradplus applovin mediation
     implementation 'com.tradplusad:tradplus-applovin:9.7.2.0.1'
+    // admob applovin mediation
+    implementation 'com.google.ads.mediation:applovin:10.3.5.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // facebook
-    implementation 'com.facebook.android:audience-network-sdk:6.7.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.8.0'
+    // mopub facebook mediation
     implementation 'com.mopub.mediation:facebookaudiencenetwork:6.7.0.0'
-    // facebook applovin mediation
-    implementation 'com.applovin.mediation:facebook-adapter:6.7.0.0@aar'
+    // applovin facebook mediation
+    implementation 'com.applovin.mediation:facebook-adapter:6.8.0.2@aar'
     // tradplus facebook mediation
     implementation 'com.tradplusad:tradplus-facebook:1.7.2.0.1'
+    // admob facebook mediation
+    implementation 'com.google.ads.mediation:facebook:6.8.0.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // admob
-    implementation 'com.google.android.gms:play-services-ads:20.4.0'
+    implementation 'com.google.android.gms:play-services-ads:20.5.0'
+    // mopub admob mediation
     implementation 'com.mopub.mediation:admob:20.4.0.0'
-    // admob applovin mediation
-    implementation 'com.applovin.mediation:google-adapter:20.4.0.2@aar'
+    // applovin admob mediation
+    implementation 'com.applovin.mediation:google-adapter:20.5.0.2@aar'
     // tradplus admob mediation
     implementation 'com.tradplusad:tradplus-googlex:2.7.2.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // mintegral
     def mintegral_version = "15.7.21"
-    def mopub_mintegral_version = "15.7.21.0"
     implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
@@ -110,8 +116,9 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbbanner:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbbid:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbnativeadvanced:${mintegral_version}"
-    implementation "com.mopub.mediation:mintegral:${mopub_mintegral_version}"
-    // mintegral applovin mediation
+    // mopub mintegral mediation
+    implementation "com.mopub.mediation:mintegral:15.7.21.0"
+    // applovin mintegral mediation
     implementation 'com.applovin.mediation:mintegral-adapter:15.7.21.0@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.7.2.0.1'
@@ -119,11 +126,14 @@ dependencies {
 
     // Inmobi
     implementation 'com.inmobi.monetization:inmobi-ads:9.2.0'
+    // mopub inmobi mediation
     implementation 'com.mopub.mediation:inmobi:9.2.0.0'
-    // Inmobi applovin mediation
+    // applovin inmobi mediation
     implementation 'com.applovin.mediation:inmobi-adapter:9.9.9.6@aar'
     //tradplus inmobi mediation
     implementation 'com.tradplusad:tradplus-inmobix:23.7.2.0.1'
+    //admob inmobi mediation
+    implementation 'com.google.ads.mediation:inmobi:9.2.0.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // tradplus
@@ -135,28 +145,38 @@ dependencies {
 
     // unity
     implementation 'com.unity3d.ads:unity-ads:3.7.5'
+    // mopub applovin mediation
     implementation 'com.mopub.mediation:unityads:3.7.5.0'
     // unity applovin mediation
     implementation 'com.applovin.mediation:unityads-adapter:3.7.5.1@aar'
     // tradplus unity mediation
     implementation 'com.tradplusad:tradplus-unity:5.7.2.0.1'
+    // admob unity mediation
+    implementation 'com.google.ads.mediation:unity:3.7.5.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // vungle
     implementation 'com.vungle:publisher-sdk-android:6.10.2'
+    // mopub vungle mediation
     implementation 'com.mopub.mediation:vungle:6.10.2.0'
+    // applovin vungle mediation
     implementation 'com.applovin.mediation:vungle-adapter:6.10.2.0'
     // tradplus vungle mediation
     implementation 'com.tradplusad:tradplus-vunglex:7.7.2.0.1'
+    // admob vungle mediation
+    implementation 'com.google.ads.mediation:vungle:6.10.2.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // ironsource
     implementation 'com.ironsource.sdk:mediationsdk:7.1.10'
+    // mopub ironsource mediation
     implementation 'com.mopub.mediation:ironsource:7.1.10.0'
-    // ironsource applovin mediation
+    // applovin ironsource mediation
     implementation 'com.applovin.mediation:ironsource-adapter:7.1.10.1.0'
     // tradplus ironsource mediation
     implementation 'com.tradplusad:tradplus-ironsource:10.7.2.0.1'
+    // admob ironsource mediation
+    implementation 'com.google.ads.mediation:ironsource:7.1.11.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // adcolony
@@ -164,15 +184,20 @@ dependencies {
     implementation 'com.adcolony:sdk:4.6.5'
     // tradplus mediation
     implementation 'com.tradplusad:tradplus-adcolony:4.7.2.0.1'
+    // admob mediation
+    implementation 'com.google.ads.mediation:adcolony:4.6.4.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Tapjoy
     implementation 'com.tapjoy:tapjoy-android-sdk:12.8.1@aar'
+    // mopub tapjoy mediation
     implementation 'com.mopub.mediation:tapjoy:12.8.1.0'
-    // Tapjoy applovin mediation
+    // applovin tapjoy mediation
     implementation 'com.applovin.mediation:tapjoy-adapter:12.8.1.0@aar'
     // tradplus tapjoy mediation
     implementation 'com.tradplusad:tradplus-tapjoy:6.7.2.0.1'
+    // admob tapjoy mediation
+    implementation 'com.google.ads.mediation:tapjoy:12.8.1.1@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Cross Promotion
