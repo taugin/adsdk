@@ -195,7 +195,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 params = new Params();
                 params.setAdCardStyle(Constant.NATIVE_CARD_FULL);
                 params.setBannerSize(Constant.AD_SDK_ADMOB, Constant.MEDIUM_RECTANGLE);
-                Log.v(Log.TAG, "use default ad params");
+                Log.iv(Log.TAG, "use default ad params");
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
@@ -348,11 +348,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
-                        Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                         return true;
                     }
                     if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
-                        Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                         return true;
                     }
                 }
@@ -552,7 +552,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
-                        Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                         return true;
                     }
                 }
@@ -753,11 +753,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     if (loader.isSplashType() && loader.isSplashLoaded()) {
-                        Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                         return true;
                     }
                     if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
-                        Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                         return true;
                     }
                 }
@@ -956,7 +956,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null &&
                         (loader.isBannerLoaded() || loader.isNativeLoaded())) {
-                    Log.v(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                    Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                     return true;
                 }
             }
@@ -1191,7 +1191,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         || loader.isInterstitialLoaded()
                         || loader.isRewardedVideoLoaded())
                         || loader.isSplashLoaded()) {
-                    Log.v(Log.TAG, loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                    Log.iv(Log.TAG, loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                     return true;
                 }
             }
@@ -1844,11 +1844,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      */
     private boolean processAdPlaceCache() {
         if (mAdPlace == null) {
-            Log.v(Log.TAG, "place is null");
+            Log.iv(Log.TAG, "place is null");
             return false;
         }
         if (!mAdPlace.isPlaceCache()) {
-            Log.v(Log.TAG, "place no need cache");
+            Log.iv(Log.TAG, "place no need cache");
             return false;
         }
         if (isInterstitialLoaded() || isAdViewLoaded() || isComplexAdsLoaded()) {
@@ -1861,7 +1861,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void notifyLoadedWithDelay() {
         if (mHandler != null) {
             mHandler.removeCallbacks(mNotifyRunnable);
-            Log.v(Log.TAG, "notify loaded with delay : " + mAdPlace.getDelayNotifyTime());
+            Log.iv(Log.TAG, "notify loaded with delay : " + mAdPlace.getDelayNotifyTime());
             mHandler.postDelayed(mNotifyRunnable, mAdPlace.getDelayNotifyTime());
         }
     }
@@ -1870,7 +1870,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         @Override
         public void run() {
             if (mOnAdSdkListener != null) {
-                Log.v(Log.TAG, "notify place loaded " + mAdPlace.getName() + " - " + getLoadedSdk() + " - " + getLoadedType());
+                Log.iv(Log.TAG, "notify place loaded " + mAdPlace.getName() + " - " + getLoadedSdk() + " - " + getLoadedType());
                 notifyAdLoaded();
                 mOnAdSdkListener.onLoaded(mAdPlace.getName(), getLoadedSdk(), getLoadedType(), null);
             }
@@ -1879,26 +1879,26 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private void autoSwitchAdView() {
         if (mAdPlace == null) {
-            Log.v(Log.TAG, "place is null");
+            Log.iv(Log.TAG, "place is null");
             return;
         }
         if (mAdPlace.getAutoInterval() <= 0) {
-            Log.v(Log.TAG, "no need auto switch");
+            Log.iv(Log.TAG, "no need auto switch");
             return;
         }
         if (mHandler == null) {
-            Log.v(Log.TAG, "handler is null");
+            Log.iv(Log.TAG, "handler is null");
             return;
         }
         mHandler.removeCallbacks(this);
-        Log.v(Log.TAG, "wait " + mAdPlace.getAutoInterval() + " ms");
+        Log.iv(Log.TAG, "wait " + mAdPlace.getAutoInterval() + " ms");
         mHandler.postDelayed(this, mAdPlace.getAutoInterval());
     }
 
     @Override
     public void run() {
         if (!isAdViewLoaded()) {
-            Log.v(Log.TAG, "ai not loaded");
+            Log.iv(Log.TAG, "ai not loaded");
             return;
         }
 
@@ -1907,12 +1907,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             viewGroup = mAdContainer.get();
         }
         if (viewGroup == null) {
-            Log.v(Log.TAG, "ai empty view group");
+            Log.iv(Log.TAG, "ai empty view group");
             return;
         }
 
         if (!isDotViewVisible()) {
-            Log.v(Log.TAG, "ai not visible");
+            Log.iv(Log.TAG, "ai not visible");
             return;
         }
         resume();
