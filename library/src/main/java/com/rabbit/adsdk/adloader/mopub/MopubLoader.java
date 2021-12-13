@@ -937,7 +937,14 @@ public class MopubLoader extends AbstractSdkLoader {
                 if (isReportAdImpData()) {
                     InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
                 }
-                Log.iv(Log.TAG, getSdkName() + " imp data : " + map);
+                StringBuilder builder = new StringBuilder("{");
+                builder.append("\n");
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                    builder.append("  " + entry.getKey() + " : " + entry.getValue());
+                    builder.append("\n");
+                }
+                builder.append("}");
+                Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

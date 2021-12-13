@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -21,6 +19,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.appopen.AppOpenAd;
+import com.google.android.gms.ads.initialization.AdapterStatus;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.NativeAd;
@@ -29,7 +28,6 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.rabbit.adsdk.AdReward;
-import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
@@ -43,6 +41,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -78,7 +78,19 @@ public class AdmobLoader extends AbstractSdkLoader {
         super.init(context, pidConfig);
         initBannerSize();
         if (!sAdmobInited.getAndSet(true)) {
-            MobileAds.initialize(getActivity(), initializationStatus -> Log.iv(Log.TAG, "admob init successfully"));
+            MobileAds.initialize(getActivity(), initializationStatus -> {
+                Log.iv(Log.TAG, "admob init successfully");
+                try {
+                    Map<String, AdapterStatus> statusMap = initializationStatus.getAdapterStatusMap();
+                    for (String adapterClass : statusMap.keySet()) {
+                        AdapterStatus status = statusMap.get(adapterClass);
+                        Log.iv(Log.TAG, String.format(
+                                "Adapter name: %s, Description: %s, Latency: %d",
+                                adapterClass, status.getDescription(), status.getLatency()));
+                    }
+                } catch (Exception e) {
+                }
+            });
         }
     }
 
