@@ -50,22 +50,22 @@ public class TradPlusLoader extends AbstractSdkLoader {
     @Override
     public void init(Context context, PidConfig pidConfig) {
         super.init(context, pidConfig);
-        String aid = null;
+        String appId = null;
         if (mPidConfig != null) {
             Map<String, String> extra = mPidConfig.getExtra();
             if (extra != null) {
-                aid = extra.get(Constant.APP_ID);
+                appId = extra.get(Constant.APP_ID);
             }
         }
-        if (!TextUtils.isEmpty(aid)) {
+        if (!TextUtils.isEmpty(appId)) {
             if (!sAtomicBoolean.getAndSet(true)) {
-                Log.iv(Log.TAG, "init trad plus with app id : " + aid);
-                TradPlusSdk.initSdk(context, aid);
+                Log.iv(Log.TAG, "init tradplus with app id : " + appId);
+                TradPlusSdk.initSdk(context, appId);
             } else {
-                Log.iv(Log.TAG, "trad plus has initialized");
+                Log.iv(Log.TAG, "tradplus has initialized");
             }
         } else {
-            Log.e(Log.TAG, "app id is empty");
+            Log.e(Log.TAG, "tradplus app id is empty");
         }
     }
 
