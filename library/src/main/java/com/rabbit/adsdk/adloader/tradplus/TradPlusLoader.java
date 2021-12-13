@@ -58,8 +58,11 @@ public class TradPlusLoader extends AbstractSdkLoader {
             }
         }
         if (!TextUtils.isEmpty(aid)) {
-            if (sAtomicBoolean.getAndSet(true)) {
+            if (!sAtomicBoolean.getAndSet(true)) {
+                Log.iv(Log.TAG, "init trad plus with app id : " + aid);
                 TradPlusSdk.initSdk(context, aid);
+            } else {
+                Log.iv(Log.TAG, "trad plus has initialized");
             }
         } else {
             Log.e(Log.TAG, "app id is empty");
