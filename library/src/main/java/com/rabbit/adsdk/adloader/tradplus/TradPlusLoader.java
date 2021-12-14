@@ -568,7 +568,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         try {
             double ecpm = 0f;
             String reportEcpm;
-            if ("exact".equalsIgnoreCase(tpAdInfo.ecpmPrecision) && tpAdInfo.isBiddingNetwork) {
+            if ("exact".equalsIgnoreCase(tpAdInfo.ecpmPrecision) && tpAdInfo.isBiddingNetwork && !TextUtils.isEmpty(tpAdInfo.ecpmExact)) {
                 reportEcpm = tpAdInfo.ecpmExact;
             } else {
                 reportEcpm = tpAdInfo.ecpm;
