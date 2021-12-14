@@ -82,7 +82,6 @@ public class TradPlusBindView extends BaseBindNativeView {
                 if (useCardStyle && mTPAdInfo != null && !TextUtils.isEmpty(mTPAdInfo.adSourceName)) {
                     String sourceName = toLower(mTPAdInfo.adSourceName);
                     String layout = null;
-                    Log.iv(Log.TAG, "tradplus network name : " + sourceName);
                     try {
                         Pair<String, Integer> pair = getSubNativeLayout(mPidConfig, sourceName);
                         adRootLayout = pair.second;
@@ -90,8 +89,11 @@ public class TradPlusBindView extends BaseBindNativeView {
                     } catch (Exception e) {
                         adRootLayout = 0;
                     }
+                    try {
+                        Log.iv(Log.TAG, mPidConfig.getPlaceName() + " - tradplus network name [" + sourceName + "] sub layout [" + (adRootLayout > 0 ? layout : "none") + "]");
+                    } catch (Exception e) {
+                    }
                     if (adRootLayout > 0) {
-                        Log.iv(Log.TAG, "tradplus use sub native layout for " + sourceName + "[" + layout + "]");
                         bindParamsViewId(mParams);
                     } else {
                         adRootLayout = rootLayout;
