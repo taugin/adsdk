@@ -193,11 +193,6 @@
         {
           "sdk": "tradplus",
           "type": "native",
-          "snl": {
-            "mintegral": "round",
-            "admob": "small",
-            "mopub": "tiny"
-          },
           "pid": "C0A4A6BA231CA19D882F007E143818EA",
           "extra": {
             "app_id": "BA819D2F55B23ED81FD43E632EFF0FE7"
