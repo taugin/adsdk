@@ -100,7 +100,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         tpBanner.setAdListener(new BannerAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad load success"));
+                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
                 setLoading(false, STATE_SUCCESS);
                 mTPBanner = tpBanner;
                 putCachedAdTime(mTPBanner);
@@ -222,7 +222,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         mTPInterstitial.setAdListener(new InterstitialAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad load success"));
+                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mTPInterstitial);
                 reportAdLoaded();
@@ -337,7 +337,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         mTPReward.setAdListener(new RewardAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad load success"));
+                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
                 putCachedAdTime(mTPReward);
                 setLoading(false, STATE_SUCCESS);
                 reportAdLoaded();
@@ -455,7 +455,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         tpNative.setAdListener(new NativeAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
-                Log.iv(Log.TAG, formatLog("ad load success"));
+                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
                 reportAdLoaded();
                 setLoading(false, STATE_SUCCESS);
                 mTPNative = tpNative;
@@ -596,6 +596,29 @@ public class TradPlusLoader extends AbstractSdkLoader {
         } catch (Exception e) {
             Log.e(Log.TAG, "report trusplus error : " + e);
         }
+    }
+
+    private String getLoadedInfo(TPAdInfo tpAdInfo) {
+        String networkName = null;
+        String placement = null;
+        if (tpAdInfo != null) {
+            networkName = tpAdInfo.adSourceName;
+            placement = tpAdInfo.adSourceId;
+        }
+        StringBuilder builder = new StringBuilder();
+        if (!TextUtils.isEmpty(networkName)) {
+            builder.append("ad_network : " + networkName);
+        }
+        if (builder.length() > 0) {
+            builder.append(" , ");
+        }
+        if (!TextUtils.isEmpty(placement)) {
+            builder.append("ad_network_id : " + placement);
+        }
+        if (builder.length() > 0) {
+            return " - " + builder.toString();
+        }
+        return builder.toString();
     }
 
     private String codeToError(TPAdError tpError) {

@@ -312,7 +312,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         loadingMaxAdView.setListener(new MaxAdViewAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
-                Log.iv(Log.TAG, formatLog("ad load success"));
+                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
                 setLoading(false, STATE_SUCCESS);
                 maxAdView = loadingMaxAdView;
                 putCachedAdTime(loadingMaxAdView);
@@ -419,7 +419,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         loadingInterstitialAd.setListener(new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
-                Log.iv(Log.TAG, formatLog("ad load success"));
+                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
                 setLoading(false, STATE_SUCCESS);
                 interstitialAd = loadingInterstitialAd;
                 putCachedAdTime(loadingInterstitialAd);
@@ -540,7 +540,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdLoaded(MaxAd ad) {
-                Log.iv(Log.TAG, formatLog("ad load success"));
+                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
                 setLoading(false, STATE_SUCCESS);
                 rewardedAd = loadingRewardedAd;
                 putCachedAdTime(loadingRewardedAd);
@@ -658,7 +658,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         templateNativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(View view, MaxAd maxAd) {
-                Log.iv(Log.TAG, formatLog("ad load success"));
+                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(maxAd)));
                 reportAdLoaded();
                 setLoading(false, STATE_SUCCESS);
                 mTemplateAdView = view;
@@ -858,5 +858,28 @@ public class AppLovinLoader extends AbstractSdkLoader {
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
+    }
+
+    private String getLoadedInfo(MaxAd maxAd) {
+        String networkName = null;
+        String placement = null;
+        if (maxAd != null) {
+            networkName = maxAd.getNetworkName();
+            placement = maxAd.getNetworkPlacement();
+        }
+        StringBuilder builder = new StringBuilder();
+        if (!TextUtils.isEmpty(networkName)) {
+            builder.append("ad_network : " + networkName);
+        }
+        if (builder.length() > 0) {
+            builder.append(" , ");
+        }
+        if (!TextUtils.isEmpty(placement)) {
+            builder.append("ad_network_id : " + placement);
+        }
+        if (builder.length() > 0) {
+            return " - " + builder.toString();
+        }
+        return builder.toString();
     }
 }
