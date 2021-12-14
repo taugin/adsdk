@@ -567,9 +567,19 @@ public class TradPlusLoader extends AbstractSdkLoader {
     private void reportTradPlusImpressionData(TPAdInfo tpAdInfo) {
         try {
             double ecpm = 0f;
+            String reportEcpm;
+            if ("exact".equalsIgnoreCase(tpAdInfo.ecpmPrecision) && tpAdInfo.isBiddingNetwork) {
+                reportEcpm = tpAdInfo.ecpmExact;
+            } else {
+                reportEcpm = tpAdInfo.ecpm;
+            }
             try {
-                ecpm = Double.parseDouble(tpAdInfo.ecpm);
+                ecpm = Double.parseDouble(reportEcpm);
             } catch (Exception e) {
+                try {
+                    ecpm = Double.parseDouble(tpAdInfo.ecpm);
+                } catch (Exception error) {
+                }
             }
             Map<String, Object> map = new HashMap<>();
             map.put("value", ecpm);
@@ -580,6 +590,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             map.put("ad_unit_name", getAdPlaceName());
             map.put("ad_provider", getSdkName());
             map.put("ad_bidding", tpAdInfo.isBiddingNetwork);
+            map.put("ad_precision", tpAdInfo.ecpmPrecision);
             String gaid = Utils.getString(mContext, Constant.PREF_GAID);
             map.put("ad_gaid", gaid);
             if (isReportAdImpData()) {
