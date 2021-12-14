@@ -133,11 +133,11 @@ public class TradPlusBindView extends BaseBindNativeView {
                     // facebook会需要一个adchoice的容器来填充adchoice
                     ViewGroup adChoiceViewLayout = viewGroup.findViewById(mParams.getAdChoices());
                     if (adChoiceViewLayout != null) {
-                        Drawable adChoiceDrawable = tpNativeAdView.getAdChoiceImage();
-                        String adChoiceUrl = tpNativeAdView.getAdChoiceUrl();
-                        Log.iv(Log.TAG, "adChoiceDrawable : " + adChoiceDrawable);
-                        Log.iv(Log.TAG, "adChoiceUrl : " + adChoiceUrl);
                         if (!renderAdChoice(adChoiceViewLayout, mTPCustomNativeAd)) {
+                            Drawable adChoiceDrawable = tpNativeAdView.getAdChoiceImage();
+                            String adChoiceUrl = tpNativeAdView.getAdChoiceUrl();
+                            Log.iv(Log.TAG, "adChoiceDrawable : " + adChoiceDrawable);
+                            Log.iv(Log.TAG, "adChoiceUrl : " + adChoiceUrl);
                             if (adChoiceDrawable != null) {
                                 ImageView imageView = new ImageView(mContext);
                                 imageView.setImageDrawable(adChoiceDrawable);
