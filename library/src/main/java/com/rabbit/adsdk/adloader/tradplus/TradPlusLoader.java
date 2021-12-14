@@ -40,6 +40,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
     private TPInterstitial mTPInterstitial;
     private TPReward mTPReward;
     private TPNative mTPNative;
+    private TPAdInfo mNativeTPAdInfo;
     private TradPlusBindView mTradPlusBindView = new TradPlusBindView();
 
     @Override
@@ -458,6 +459,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
                 reportAdLoaded();
                 setLoading(false, STATE_SUCCESS);
+                mNativeTPAdInfo = tpAdInfo;
                 mTPNative = tpNative;
                 putCachedAdTime(mTPNative);
                 notifySdkLoaderLoaded(false);
@@ -525,7 +527,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         if (mTPNative != null) {
             final TPCustomNativeAd customNativeAd = mTPNative.getNativeAd();
             if (customNativeAd != null) {
-                mTradPlusBindView.bindNativeView(mContext, mPidConfig, params, customNativeAd);
+                mTradPlusBindView.bindNativeView(mContext, mPidConfig, params, customNativeAd, mNativeTPAdInfo);
                 customNativeAd.showAd(viewGroup, mTradPlusBindView.getCustomTPNativeAdRender(), getAdPlaceName());
                 if (viewGroup != null && viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);

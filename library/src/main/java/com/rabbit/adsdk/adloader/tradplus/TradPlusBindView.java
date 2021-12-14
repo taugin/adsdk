@@ -3,6 +3,7 @@ package com.rabbit.adsdk.adloader.tradplus;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.mopub.common.util.Drawables;
 import com.mopub.nativeads.BaseNativeAd;
 import com.mopub.nativeads.StaticNativeAd;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
+import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
@@ -26,12 +28,14 @@ import com.tradplus.ads.base.common.TPImageLoader;
 import com.tradplus.ads.mgr.nativead.TPCustomNativeAd;
 import com.tradplus.ads.open.nativead.TPNativeAdRender;
 
+import java.util.Locale;
+
 public class TradPlusBindView extends BaseBindNativeView {
 
     private CustomTPNativeAdRender mCustomTPNativeAdRender;
 
-    public void bindNativeView(Context context, PidConfig pidConfig, Params params, TPCustomNativeAd customNativeAd) {
-        mCustomTPNativeAdRender = new CustomTPNativeAdRender(context, pidConfig, params, customNativeAd);
+    public void bindNativeView(Context context, PidConfig pidConfig, Params params, TPCustomNativeAd customNativeAd, TPAdInfo tpAdInfo) {
+        mCustomTPNativeAdRender = new CustomTPNativeAdRender(context, pidConfig, params, customNativeAd, tpAdInfo);
     }
 
     public CustomTPNativeAdRender getCustomTPNativeAdRender() {
@@ -43,26 +47,59 @@ public class TradPlusBindView extends BaseBindNativeView {
         private PidConfig mPidConfig;
         private Params mParams;
         private TPCustomNativeAd mTPCustomNativeAd;
+        private TPAdInfo mTPAdInfo;
 
-        public CustomTPNativeAdRender(Context context, PidConfig pidConfig, Params params, TPCustomNativeAd customNativeAd) {
+        public CustomTPNativeAdRender(Context context, PidConfig pidConfig, Params params, TPCustomNativeAd customNativeAd, TPAdInfo tpAdInfo) {
             mContext = context;
             mPidConfig = pidConfig;
             mParams = params;
             mTPCustomNativeAd = customNativeAd;
+            mTPAdInfo = tpAdInfo;
+        }
+
+        private String toLower(String str) {
+            if (!TextUtils.isEmpty(str)) {
+                return str.toLowerCase(Locale.getDefault());
+            }
+            return str;
         }
 
         @Override
         public ViewGroup createAdLayoutView() {
             try {
+                boolean useCardStyle;
+                int adRootLayout;
                 int rootLayout = mParams.getNativeRootLayout();
                 int cardStyle = mParams.getNativeCardStyle();
-                int adRootLayout = 0;
                 if (rootLayout > 0) {
-                    adRootLayout = rootLayout;
+                    useCardStyle = false;
                 } else {
-                    adRootLayout = getAdViewLayout(mContext, cardStyle, mPidConfig);
+                    useCardStyle = true;
+                    rootLayout = getAdViewLayout(mContext, cardStyle, mPidConfig);
                     bindParamsViewId(mParams);
                 }
+
+                if (useCardStyle && mTPAdInfo != null && !TextUtils.isEmpty(mTPAdInfo.adSourceName)) {
+                    String sourceName = toLower(mTPAdInfo.adSourceName);
+                    String layout = null;
+                    Log.iv(Log.TAG, "tradplus network name : " + sourceName);
+                    try {
+                        Pair<String, Integer> pair = getSubNativeLayout(mPidConfig, sourceName);
+                        adRootLayout = pair.second;
+                        layout = pair.first;
+                    } catch (Exception e) {
+                        adRootLayout = 0;
+                    }
+                    if (adRootLayout > 0) {
+                        Log.iv(Log.TAG, "tradplus use sub native layout for " + sourceName + "[" + layout + "]");
+                        bindParamsViewId(mParams);
+                    } else {
+                        adRootLayout = rootLayout;
+                    }
+                } else {
+                    adRootLayout = rootLayout;
+                }
+
                 if (adRootLayout > 0) {
                     return (ViewGroup) LayoutInflater.from(mContext).inflate(adRootLayout, null);
                 } else {
