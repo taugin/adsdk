@@ -150,7 +150,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        tpBanner.loadAd(getPid());
+        tpBanner.loadAd(getPid(), getAdPlaceName());
     }
 
     @Override
@@ -292,7 +292,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (mTPInterstitial != null && mTPInterstitial.isReady()) {
             Activity activity = getActivity();
-            mTPInterstitial.showAd(activity, "");
+            mTPInterstitial.showAd(activity, getAdPlaceName());
             updateLastShowTime();
             reportAdShow();
             notifyAdShow();
@@ -416,7 +416,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (mTPReward != null) {
             Activity activity = getActivity();
-            mTPReward.showAd(activity, "");
+            mTPReward.showAd(activity, getAdPlaceName());
             updateLastShowTime();
             reportAdShow();
             notifyAdShow();
@@ -526,7 +526,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             final TPCustomNativeAd customNativeAd = mTPNative.getNativeAd();
             if (customNativeAd != null) {
                 mTradPlusBindView.bindNativeView(mContext, mPidConfig, params, customNativeAd);
-                customNativeAd.showAd(viewGroup, mTradPlusBindView.getCustomTPNativeAdRender(), "");
+                customNativeAd.showAd(viewGroup, mTradPlusBindView.getCustomTPNativeAdRender(), getAdPlaceName());
                 if (viewGroup != null && viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }

@@ -378,6 +378,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
+        loadingMaxAdView.setPlacement(getAdPlaceName());
         loadingMaxAdView.loadAd();
     }
 
@@ -487,7 +488,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (interstitialAd != null) {
             Log.v(Log.TAG, "");
-            interstitialAd.showAd();
+            interstitialAd.showAd(getAdPlaceName());
             updateLastShowTime();
             reportAdShow();
             notifyAdShow();
@@ -607,7 +608,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private boolean showRewardedVideoForMax() {
         printInterfaceLog(ACTION_SHOW);
         if (rewardedAd != null && rewardedAd.isReady()) {
-            rewardedAd.showAd();
+            rewardedAd.showAd(getAdPlaceName());
             updateLastShowTime();
             reportAdShow();
             notifyAdShow();
@@ -692,6 +693,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
+        templateNativeAdLoader.setPlacement(getAdPlaceName());
         templateNativeAdLoader.loadAd();
     }
 
