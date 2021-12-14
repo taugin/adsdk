@@ -53,19 +53,22 @@ public class TradPlusBindView extends BaseBindNativeView {
 
         @Override
         public ViewGroup createAdLayoutView() {
-            int rootLayout = mParams.getNativeRootLayout();
-            int cardStyle = mParams.getNativeCardStyle();
-            int adRootLayout = 0;
-            if (rootLayout > 0) {
-                adRootLayout = rootLayout;
-            } else {
-                adRootLayout = getAdViewLayout(mContext, cardStyle, mPidConfig);
-                bindParamsViewId(mParams);
-            }
-            if (adRootLayout > 0) {
-                return (ViewGroup) LayoutInflater.from(mContext).inflate(adRootLayout, null);
-            } else {
-                Log.e(Log.TAG, "Can not find " + mPidConfig.getSdk() + " native layout###");
+            try {
+                int rootLayout = mParams.getNativeRootLayout();
+                int cardStyle = mParams.getNativeCardStyle();
+                int adRootLayout = 0;
+                if (rootLayout > 0) {
+                    adRootLayout = rootLayout;
+                } else {
+                    adRootLayout = getAdViewLayout(mContext, cardStyle, mPidConfig);
+                    bindParamsViewId(mParams);
+                }
+                if (adRootLayout > 0) {
+                    return (ViewGroup) LayoutInflater.from(mContext).inflate(adRootLayout, null);
+                } else {
+                    Log.e(Log.TAG, "Can not find " + mPidConfig.getSdk() + " native layout###");
+                }
+            } catch (Exception e) {
             }
             return new FrameLayout(mContext);
         }
