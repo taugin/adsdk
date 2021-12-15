@@ -90,7 +90,6 @@ public class BaseBindNativeView {
             normalColor = Color.parseColor(pidConfig.getCtaColor().get(0));
             pressedColor = Color.parseColor(pidConfig.getCtaColor().get(1));
         } catch (Exception e) {
-            Log.iv(Log.TAG, "cc error : " + e);
         }
         // 获取 color
         if (normalColor == Color.TRANSPARENT || pressedColor == Color.TRANSPARENT) {
@@ -98,7 +97,6 @@ public class BaseBindNativeView {
                 normalColor = Color.parseColor(pidConfig.getAdPlace().getCtaColor().get(0));
                 pressedColor = Color.parseColor(pidConfig.getAdPlace().getCtaColor().get(1));
             } catch (Exception e) {
-                Log.iv(Log.TAG, "cc error : " + e);
             }
         }
         if (normalColor != Color.TRANSPARENT && pressedColor != Color.TRANSPARENT && ctaView != null) {
@@ -127,6 +125,7 @@ public class BaseBindNativeView {
 
     /**
      * 获取最佳布局
+     *
      * @param context
      * @param pidConfig
      * @param params
@@ -168,7 +167,7 @@ public class BaseBindNativeView {
             adRootLayout = rootLayout;
         }
         try {
-            Log.iv(Log.TAG, pidConfig.getPlaceName() + " - " + pidConfig.getSdk() + " network name [" + network + "] main layout [" + template +"] sub layout [" + (adRootLayout > 0 ? layout : "none") + "]");
+            Log.iv(Log.TAG, "bind native layout [" + pidConfig.getSdk() + " : " + template + "] [" + network + " : " + (adRootLayout > 0 ? layout : "none") + "] - [" + pidConfig.getPlaceName() + "]");
         } catch (Exception e) {
         }
         return adRootLayout;
@@ -252,7 +251,6 @@ public class BaseBindNativeView {
             if (subNativeLayout != null) {
                 String layout = subNativeLayout.get(sdk);
                 if (!TextUtils.isEmpty(layout)) {
-                    Log.iv(Log.TAG, "sub native layout flag : " + layout);
                     Integer nativeLayout = LAYOUT_MAPS.get(layout);
                     if (nativeLayout != null) {
                         return new Pair<>(layout, nativeLayout.intValue());
