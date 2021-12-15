@@ -123,7 +123,7 @@ public class DataConfigRemote {
         String attrSuffix = getAfSuffix();
         String mediaSourceKey = key + mediaSourceSuffix;
         String attrKey = key + attrSuffix;
-        Log.iv(Log.TAG, "media suffix : " + mediaSourceSuffix + " , attr suffix : " + attrSuffix);
+        Log.iv(Log.TAG_SDK, "media suffix : " + mediaSourceSuffix + " , attr suffix : " + attrSuffix);
         // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
         String mediaData = getRemoteConfig(mediaSourceKey);
         String attrData = getRemoteConfig(attrKey);
@@ -173,7 +173,7 @@ public class DataConfigRemote {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "firebase error : " + error);
+            Log.iv(Log.TAG_SDK, "firebase error : " + error);
         }
         return null;
     }
@@ -195,7 +195,7 @@ public class DataConfigRemote {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "umeng error : " + error);
+            Log.iv(Log.TAG_SDK, "umeng error : " + error);
         }
         return null;
     }

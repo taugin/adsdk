@@ -404,20 +404,20 @@ public class Utils {
         String localConfig = null;
         localConfig = readAssets(context, configName);
         if (!TextUtils.isEmpty(localConfig)) {
-            Log.iv(Log.TAG, "assets config | [" + configName + "]" + " : " + localConfig);
+            Log.iv(Log.TAG_SDK, "assets config | [" + configName + "]" + " : " + localConfig);
             return localConfig;
         }
         try {
             File file = new File(context.getExternalFilesDir("config"), configName);
             String localConfigFile = file.getAbsolutePath();
-            Log.iv(Log.TAG, "config locale : " + localConfigFile);
+            Log.iv(Log.TAG_SDK, "config locale : " + localConfigFile);
             if (file.exists()) {
                 localConfig = readLocal(localConfigFile);
             }
         } catch (Exception e) {
         }
         if (!TextUtils.isEmpty(localConfig)) {
-            Log.iv(Log.TAG, "sdcard config | [" + configName + "]" + " : " + localConfig);
+            Log.iv(Log.TAG_SDK, "sdcard config | [" + configName + "]" + " : " + localConfig);
             return localConfig;
         }
         return null;

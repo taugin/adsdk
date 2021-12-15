@@ -22,6 +22,7 @@ public class Log {
     private static final boolean INTERNAL_LOG_ENABLE;
 
     public static final String TAG = "hauyu";
+    public static final String TAG_SDK = "adsdk";
     public static final boolean DB = BuildConfig.DEBUG;
 
     static {

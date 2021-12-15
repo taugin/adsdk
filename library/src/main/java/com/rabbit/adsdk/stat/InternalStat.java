@@ -112,7 +112,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "error : " + error);
+            Log.iv(Log.TAG_SDK, "error : " + error);
         }
     }
 
@@ -167,7 +167,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "error : " + error);
+            Log.iv(Log.TAG_SDK, "error : " + error);
         }
     }
 
@@ -217,7 +217,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "Report Event sendUmengEventValue error : " + error);
+            Log.iv(Log.TAG_SDK, "Report Event sendUmengEventValue error : " + error);
         }
     }
 
@@ -238,7 +238,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "error : " + error);
+            Log.iv(Log.TAG_SDK, "error : " + error);
         }
     }
 
@@ -289,7 +289,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "error : " + error);
+            Log.iv(Log.TAG_SDK, "error : " + error);
         }
     }
 
@@ -338,7 +338,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "Report Event sendFlurry error : " + error);
+            Log.iv(Log.TAG_SDK, "Report Event sendFlurry error : " + error);
         }
     }
 
@@ -377,7 +377,7 @@ public class InternalStat {
                 isEventCountAllow = isEventCountAllow(context, platform);
             }
             finalResult = isReport && isEventAllow && isEventCountAllow;
-            Log.iv(Log.TAG, "[" + eventId + "] report " + platform + " : " + finalResult + " , enable : " + finalResult + " , event allow : " + isEventAllow + " , event count allow : " + isEventCountAllow);
+            Log.iv(Log.TAG_SDK, "[" + eventId + "] report " + platform + " : " + finalResult + " , enable : " + finalResult + " , event allow : " + isEventAllow + " , event count allow : " + isEventCountAllow);
         } catch (Exception e) {
         }
         return finalResult;
@@ -466,10 +466,10 @@ public class InternalStat {
             String eventArgs = String.format(Locale.getDefault(), PREF_AD_REPORT_EVENT_PLATFORM_COUNT, platform);
             long curEventCount = Utils.getLong(context, eventArgs);
             long maxEventCount = getMaxEventCount(context, platform);
-            Log.iv(Log.TAG, "[" + platform + "] event count : " + curEventCount + "/" + maxEventCount);
+            Log.iv(Log.TAG_SDK, "[" + platform + "] event count : " + curEventCount + "/" + maxEventCount);
             return curEventCount < maxEventCount;
         } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG_SDK, "error : " + e);
         }
         return false;
     }
@@ -488,7 +488,7 @@ public class InternalStat {
             Utils.putLong(context, eventArgs, count);
             recordPlatformList(context, platform);
         } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG_SDK, "error : " + e);
         }
     }
 
