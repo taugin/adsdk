@@ -198,7 +198,7 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG, "act config error : " + error);
+            Log.iv(Log.TAG_SDK, "act config error : " + error);
         }
     }
 }
