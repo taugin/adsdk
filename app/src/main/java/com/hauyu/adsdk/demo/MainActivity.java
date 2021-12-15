@@ -43,23 +43,6 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             //R.layout.ad_common_native_card_small,
             R.layout.ad_common_native_card_medium
     };
-    private static final Map<String, Integer> LAYOUT_MAP;
-
-    static {
-        LAYOUT_MAP = new HashMap<>();
-        LAYOUT_MAP.put("micro", AdExtra.NATIVE_CARD_MICRO);
-        LAYOUT_MAP.put("tiny", AdExtra.NATIVE_CARD_TINY);
-        LAYOUT_MAP.put("little", AdExtra.NATIVE_CARD_LITTLE);
-        LAYOUT_MAP.put("small", AdExtra.NATIVE_CARD_SMALL);
-        LAYOUT_MAP.put("medium", AdExtra.NATIVE_CARD_MEDIUM);
-        LAYOUT_MAP.put("large", AdExtra.NATIVE_CARD_LARGE);
-        LAYOUT_MAP.put("wrap", AdExtra.NATIVE_CARD_WRAP);
-        LAYOUT_MAP.put("full", AdExtra.NATIVE_CARD_FULL);
-        LAYOUT_MAP.put("head", AdExtra.NATIVE_CARD_HEAD);
-        LAYOUT_MAP.put("mix", AdExtra.NATIVE_CARD_MIX);
-        LAYOUT_MAP.put("foot", AdExtra.NATIVE_CARD_FOOT);
-        LAYOUT_MAP.put("round", AdExtra.NATIVE_CARD_ROUND);
-    }
 
     private static final String TAG = "MA";
     private Context mContext;
@@ -140,9 +123,8 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         if (AdSdk.get(this).isComplexAdsLoaded("for_native_layout")) {
             AdSdk.get(this).showComplexAds("for_native_layout");
         } else {
-            int layout = LAYOUT_MAP.get(tag);
             AdParams.Builder builder = new AdParams.Builder();
-            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layout);
+            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, tag);
             AdParams adParams = builder.build();
             AdSdk.get(mContext).loadComplexAds("for_native_layout", adParams, new SimpleAdSdkListener() {
                 @Override
@@ -202,7 +184,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
             return;
         }
         AdParams.Builder builder = new AdParams.Builder();
-        int styles[] = new int[]{AdExtra.NATIVE_CARD_FULL, AdExtra.NATIVE_CARD_SMALL, AdExtra.NATIVE_CARD_MEDIUM, AdExtra.NATIVE_CARD_TINY, AdExtra.NATIVE_CARD_LARGE};
+        String styles[] = new String[]{AdExtra.NATIVE_CARD_FULL, AdExtra.NATIVE_CARD_SMALL, AdExtra.NATIVE_CARD_MEDIUM, AdExtra.NATIVE_CARD_TINY, AdExtra.NATIVE_CARD_LARGE};
         builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, styles[new Random(System.currentTimeMillis()).nextInt(styles.length)]);
         AdParams adParams = builder.build();
         AdSdk.get(mContext).loadComplexAds("ad_complex", adParams, new SimpleAdSdkListener() {
@@ -240,7 +222,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
         builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
         builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
-        Integer [] values = new Integer[] {AdExtra.NATIVE_CARD_LITTLE, AdExtra.NATIVE_CARD_LARGE, AdExtra.NATIVE_CARD_SMALL, AdExtra.NATIVE_CARD_TINY, AdExtra.NATIVE_CARD_MEDIUM};
+        String [] values = new String[] {AdExtra.NATIVE_CARD_LITTLE, AdExtra.NATIVE_CARD_LARGE, AdExtra.NATIVE_CARD_SMALL, AdExtra.NATIVE_CARD_TINY, AdExtra.NATIVE_CARD_MEDIUM};
         builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, values[new Random().nextInt(values.length)]);
         builder.setNativeTemplateWidth(AdExtra.AD_SDK_COMMON, Utils.dp2px(mContext, 200));
         AdParams adParams = builder.build();

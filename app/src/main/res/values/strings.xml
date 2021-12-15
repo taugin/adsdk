@@ -11,6 +11,9 @@
     </string-array>
     <string-array name="ad_layout">
         <item>Random</item>
+        <item>Custom Small</item>
+        <item>Custom Medium</item>
+        <item>Custom Large</item>
         <item>Micro</item>
         <item>Tiny</item>
         <item>Little</item>

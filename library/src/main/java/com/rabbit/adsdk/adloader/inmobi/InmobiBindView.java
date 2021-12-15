@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.inmobi.ads.InMobiNative;
 import com.mbridge.msdk.out.MBNativeHandler;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
+import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.http.Http;
@@ -47,12 +48,7 @@ public class InmobiBindView extends BaseBindNativeView {
             Log.e(Log.TAG, "bindInmobiNative pidconfig == null###");
             return;
         }
-        int rootLayout = mParams.getNativeRootLayout();
-        if (rootLayout <= 0 && mParams.getNativeCardStyle() > 0) {
-            rootLayout = getAdViewLayout(adContainer.getContext(), mParams.getNativeCardStyle(), pidConfig);
-            bindParamsViewId(mParams);
-        }
-
+        int rootLayout = getBestNativeLayout(adContainer.getContext(), pidConfig, mParams, Constant.AD_SDK_INMOBI);
         if (rootLayout > 0) {
             bindNativeViewWithRootView(context, adContainer, rootLayout, inMobiNative, pidConfig, mbNativeHandler);
             updateCtaButtonBackground(adContainer, pidConfig, mParams);

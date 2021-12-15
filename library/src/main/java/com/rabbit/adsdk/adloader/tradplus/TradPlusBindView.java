@@ -67,41 +67,11 @@ public class TradPlusBindView extends BaseBindNativeView {
         @Override
         public ViewGroup createAdLayoutView() {
             try {
-                boolean useCardStyle;
-                int adRootLayout;
-                int rootLayout = mParams.getNativeRootLayout();
-                int cardStyle = mParams.getNativeCardStyle();
-                if (rootLayout > 0) {
-                    useCardStyle = false;
-                } else {
-                    useCardStyle = true;
-                    rootLayout = getAdViewLayout(mContext, cardStyle, mPidConfig);
-                    bindParamsViewId(mParams);
+                String sourceName = null;
+                if (mTPAdInfo != null && !TextUtils.isEmpty(mTPAdInfo.adSourceName)) {
+                    sourceName = toLower(mTPAdInfo.adSourceName);
                 }
-
-                if (useCardStyle && mTPAdInfo != null && !TextUtils.isEmpty(mTPAdInfo.adSourceName)) {
-                    String sourceName = toLower(mTPAdInfo.adSourceName);
-                    String layout = null;
-                    try {
-                        Pair<String, Integer> pair = getSubNativeLayout(mPidConfig, sourceName);
-                        adRootLayout = pair.second;
-                        layout = pair.first;
-                    } catch (Exception e) {
-                        adRootLayout = 0;
-                    }
-                    try {
-                        Log.iv(Log.TAG, mPidConfig.getPlaceName() + " - tradplus network name [" + sourceName + "] sub layout [" + (adRootLayout > 0 ? layout : "none") + "]");
-                    } catch (Exception e) {
-                    }
-                    if (adRootLayout > 0) {
-                        bindParamsViewId(mParams);
-                    } else {
-                        adRootLayout = rootLayout;
-                    }
-                } else {
-                    adRootLayout = rootLayout;
-                }
-
+                int adRootLayout = getBestNativeLayout(mContext, mPidConfig, mParams, sourceName);
                 if (adRootLayout > 0) {
                     return (ViewGroup) LayoutInflater.from(mContext).inflate(adRootLayout, null);
                 } else {

@@ -34,18 +34,18 @@ public class Constant {
     public static final int SMART_BANNER = 1006;
     public static final int ADAPTIVE_BANNER = 1007;
 
-    public static final int NATIVE_CARD_SMALL = 1;
-    public static final int NATIVE_CARD_MEDIUM = 2;
-    public static final int NATIVE_CARD_LARGE = 3;
-    public static final int NATIVE_CARD_FULL = 4;
-    public static final int NATIVE_CARD_TINY = 5;
-    public static final int NATIVE_CARD_MICRO = 6;
-    public static final int NATIVE_CARD_WRAP = 7;
-    public static final int NATIVE_CARD_HEAD = 8;
-    public static final int NATIVE_CARD_MIX = 9;
-    public static final int NATIVE_CARD_FOOT = 10;
-    public static final int NATIVE_CARD_ROUND = 11;
-    public static final int NATIVE_CARD_LITTLE = 12;
+    public static final String NATIVE_CARD_MICRO = "micro";
+    public static final String NATIVE_CARD_TINY = "tiny";
+    public static final String NATIVE_CARD_LITTLE = "little";
+    public static final String NATIVE_CARD_SMALL = "small";
+    public static final String NATIVE_CARD_MEDIUM = "medium";
+    public static final String NATIVE_CARD_LARGE = "large";
+    public static final String NATIVE_CARD_ROUND = "round";
+    public static final String NATIVE_CARD_FULL = "full";
+    public static final String NATIVE_CARD_WRAP = "wrap";
+    public static final String NATIVE_CARD_HEAD = "head";
+    public static final String NATIVE_CARD_MIX = "mix";
+    public static final String NATIVE_CARD_FOOT = "foot";
 
     public static final String MODE_SEQ = "seq";
     public static final String MODE_CON = "con";

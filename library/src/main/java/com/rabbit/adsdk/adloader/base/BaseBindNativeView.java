@@ -53,18 +53,18 @@ public class BaseBindNativeView {
 
     static {
         LAYOUT_MAPS = new HashMap<String, Integer>();
-        LAYOUT_MAPS.put("micro", R.layout.rab_card_micro);
-        LAYOUT_MAPS.put("tiny", R.layout.rab_card_tiny);
-        LAYOUT_MAPS.put("little", R.layout.rab_card_little);
-        LAYOUT_MAPS.put("small", R.layout.rab_card_small);
-        LAYOUT_MAPS.put("medium", R.layout.rab_card_medium);
-        LAYOUT_MAPS.put("large", R.layout.rab_card_large);
-        LAYOUT_MAPS.put("wrap", R.layout.rab_card_wrap);
-        LAYOUT_MAPS.put("full", R.layout.rab_card_full);
-        LAYOUT_MAPS.put("mix", R.layout.rab_card_mix);
-        LAYOUT_MAPS.put("foot", R.layout.rab_card_foot);
-        LAYOUT_MAPS.put("head", R.layout.rab_card_head);
-        LAYOUT_MAPS.put("round", R.layout.rab_card_round);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MICRO, R.layout.rab_card_micro);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_TINY, R.layout.rab_card_tiny);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_LITTLE, R.layout.rab_card_little);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_SMALL, R.layout.rab_card_small);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MEDIUM, R.layout.rab_card_medium);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_LARGE, R.layout.rab_card_large);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_WRAP, R.layout.rab_card_wrap);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_ROUND, R.layout.rab_card_round);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_FULL, R.layout.rab_card_full);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MIX, R.layout.rab_card_mix);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_FOOT, R.layout.rab_card_foot);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_HEAD, R.layout.rab_card_head);
     }
 
     private Random mRandom = new Random(System.currentTimeMillis());
@@ -125,7 +125,56 @@ public class BaseBindNativeView {
         }
     }
 
-    protected int getNativeLayout(Context context, PidConfig pidConfig) {
+    /**
+     * 获取最佳布局
+     * @param context
+     * @param pidConfig
+     * @param params
+     * @param network
+     * @return
+     */
+    protected int getBestNativeLayout(Context context, PidConfig pidConfig, Params params, String network) {
+        boolean useCardStyle;
+        int adRootLayout;
+        int rootLayout = params.getNativeRootLayout();
+        String template = params.getNativeCardStyle();
+        if (rootLayout > 0) {
+            useCardStyle = false;
+            template = "custom";
+        } else {
+            useCardStyle = true;
+            rootLayout = getAdViewLayout(context, template, pidConfig);
+            bindParamsViewId(params);
+            if (TextUtils.isEmpty(template)) {
+                template = "default";
+            }
+        }
+
+        String layout = "none";
+        if (useCardStyle && !TextUtils.isEmpty(network)) {
+            try {
+                Pair<String, Integer> pair = getSubNativeLayout(pidConfig, network);
+                adRootLayout = pair.second;
+                layout = pair.first;
+            } catch (Exception e) {
+                adRootLayout = 0;
+            }
+            if (adRootLayout > 0) {
+                bindParamsViewId(params);
+            } else {
+                adRootLayout = rootLayout;
+            }
+        } else {
+            adRootLayout = rootLayout;
+        }
+        try {
+            Log.iv(Log.TAG, pidConfig.getPlaceName() + " - " + pidConfig.getSdk() + " network name [" + network + "] main layout [" + template +"] sub layout [" + (adRootLayout > 0 ? layout : "none") + "]");
+        } catch (Exception e) {
+        }
+        return adRootLayout;
+    }
+
+    private int getNativeLayout(Context context, PidConfig pidConfig) {
         if (pidConfig != null && context != null) {
             List<String> layoutFlag = pidConfig.getNativeLayout();
             // 获取 layout flag
@@ -139,7 +188,7 @@ public class BaseBindNativeView {
             if (layoutFlag != null && !layoutFlag.isEmpty()) {
                 String layout = layoutFlag.get(mRandom.nextInt(layoutFlag.size()));
                 if (!TextUtils.isEmpty(layout)) {
-                    Log.v(Log.TAG, "layout flag : " + layout);
+                    Log.iv(Log.TAG, "layout flag : " + layout);
                     Integer nativeLayout = LAYOUT_MAPS.get(layout);
                     if (nativeLayout != null) {
                         return nativeLayout.intValue();
@@ -185,47 +234,25 @@ public class BaseBindNativeView {
         return clickViewRender;
     }
 
-    protected int getAdViewLayout(Context context, int template, PidConfig pidConfig) {
+    private int getAdViewLayout(Context context, String template, PidConfig pidConfig) {
         int layoutId = getNativeLayout(context, pidConfig);
         if (layoutId == 0) {
-            if (template == Constant.NATIVE_CARD_SMALL) {
-                layoutId = R.layout.rab_card_small;
-            } else if (template == Constant.NATIVE_CARD_MEDIUM) {
-                layoutId = R.layout.rab_card_medium;
-            } else if (template == Constant.NATIVE_CARD_LARGE) {
-                layoutId = R.layout.rab_card_large;
-            } else if (template == Constant.NATIVE_CARD_FULL) {
-                layoutId = R.layout.rab_card_full;
-            } else if (template == Constant.NATIVE_CARD_TINY) {
-                layoutId = R.layout.rab_card_tiny;
-            } else if (template == Constant.NATIVE_CARD_MICRO) {
-                layoutId = R.layout.rab_card_micro;
-            } else if (template == Constant.NATIVE_CARD_WRAP) {
-                layoutId = R.layout.rab_card_wrap;
-            } else if (template == Constant.NATIVE_CARD_HEAD) {
-                layoutId = R.layout.rab_card_head;
-            } else if (template == Constant.NATIVE_CARD_MIX) {
-                layoutId = R.layout.rab_card_mix;
-            } else if (template == Constant.NATIVE_CARD_FOOT) {
-                layoutId = R.layout.rab_card_foot;
-            } else if (template == Constant.NATIVE_CARD_ROUND) {
-                layoutId = R.layout.rab_card_round;
-            } else if (template == Constant.NATIVE_CARD_LITTLE) {
-                layoutId = R.layout.rab_card_little;
-            } else {
+            try {
+                layoutId = LAYOUT_MAPS.get(template);
+            } catch (Exception e) {
                 layoutId = R.layout.rab_card_little;
             }
         }
         return layoutId;
     }
 
-    protected Pair<String, Integer> getSubNativeLayout(PidConfig pidConfig, String sdk) {
+    private Pair<String, Integer> getSubNativeLayout(PidConfig pidConfig, String sdk) {
         if (pidConfig != null && !TextUtils.isEmpty(sdk)) {
             Map<String, String> subNativeLayout = pidConfig.getSubNativeLayout();
             if (subNativeLayout != null) {
                 String layout = subNativeLayout.get(sdk);
                 if (!TextUtils.isEmpty(layout)) {
-                    Log.v(Log.TAG, "sub native layout flag : " + layout);
+                    Log.iv(Log.TAG, "sub native layout flag : " + layout);
                     Integer nativeLayout = LAYOUT_MAPS.get(layout);
                     if (nativeLayout != null) {
                         return new Pair<>(layout, nativeLayout.intValue());

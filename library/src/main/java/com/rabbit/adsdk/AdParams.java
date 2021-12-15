@@ -55,7 +55,7 @@ public class AdParams {
             return false;
         }
         if (params.getNativeRootLayout() <= 0
-                && params.getNativeCardStyle() <= 0) {
+                && TextUtils.isEmpty(params.getNativeCardStyle())) {
             // 未设置commonsdk参数
             return false;
         }
@@ -99,7 +99,7 @@ public class AdParams {
             return params;
         }
 
-        public Builder setAdCardStyle(String sdk, int cardStyle) {
+        public Builder setAdCardStyle(String sdk, String cardStyle) {
             getParams(sdk).setAdCardStyle(cardStyle);
             return this;
         }

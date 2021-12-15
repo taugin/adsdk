@@ -45,7 +45,6 @@ public class MainActivity2 extends Activity {
             //R.layout.ad_common_native_card_small,
             R.layout.ad_common_native_card_medium
     };
-    private static final Map<String, Integer> LAYOUT_MAP;
     private static final Map<String, Integer> BANNER_MAP;
 
     private static final String BANNER_PREFIX = "banner_%s";
@@ -55,20 +54,6 @@ public class MainActivity2 extends Activity {
     private static final String SPLASH_PREFIX = "splash_%s";
 
     static {
-        LAYOUT_MAP = new HashMap<>();
-        LAYOUT_MAP.put("micro", AdExtra.NATIVE_CARD_MICRO);
-        LAYOUT_MAP.put("tiny", AdExtra.NATIVE_CARD_TINY);
-        LAYOUT_MAP.put("little", AdExtra.NATIVE_CARD_LITTLE);
-        LAYOUT_MAP.put("small", AdExtra.NATIVE_CARD_SMALL);
-        LAYOUT_MAP.put("medium", AdExtra.NATIVE_CARD_MEDIUM);
-        LAYOUT_MAP.put("large", AdExtra.NATIVE_CARD_LARGE);
-        LAYOUT_MAP.put("wrap", AdExtra.NATIVE_CARD_WRAP);
-        LAYOUT_MAP.put("full", AdExtra.NATIVE_CARD_FULL);
-        LAYOUT_MAP.put("head", AdExtra.NATIVE_CARD_HEAD);
-        LAYOUT_MAP.put("mix", AdExtra.NATIVE_CARD_MIX);
-        LAYOUT_MAP.put("foot", AdExtra.NATIVE_CARD_FOOT);
-        LAYOUT_MAP.put("round", AdExtra.NATIVE_CARD_ROUND);
-
         BANNER_MAP = new HashMap<>();
         BANNER_MAP.put("NOSET", AdExtra.COMMON_BANNER);
         BANNER_MAP.put("BANNER", AdExtra.COMMON_BANNER);
@@ -137,9 +122,8 @@ public class MainActivity2 extends Activity {
         if (AdSdk.get(this).isComplexAdsLoaded("for_native_layout")) {
             AdSdk.get(this).showComplexAds("for_native_layout");
         } else {
-            int layout = LAYOUT_MAP.get(tag);
             AdParams.Builder builder = new AdParams.Builder();
-            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layout);
+            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, tag);
             AdParams adParams = builder.build();
             AdSdk.get(mContext).loadComplexAds("for_native_layout", adParams, new SimpleAdSdkListener() {
                 @Override
@@ -210,15 +194,42 @@ public class MainActivity2 extends Activity {
     private void loadNative(TextView textView) {
         AdParams.Builder builder = new AdParams.Builder();
         String layout = (String) mAdLayoutSpinner.getSelectedItem();
-        int layoutId = 0;
+        String layoutStyle;
+        String sdkArray[] = getResources().getStringArray(R.array.ad_layout);
         if ("Random".equalsIgnoreCase(layout)) {
-            Integer [] values = new Integer[LAYOUT_MAP.size()];
-            LAYOUT_MAP.values().toArray(values);
-            layoutId = values[new Random().nextInt(values.length)];
+            layoutStyle = sdkArray[new Random().nextInt(sdkArray.length - 4) + 4];
+            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layoutStyle.toLowerCase());
+        } else if ("Custom Small".equalsIgnoreCase(layout)) {
+            builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_small);
+            builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
+            builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
+            builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
+            builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
+            builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
+            builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+            builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+        }  else if ("Custom Medium".equalsIgnoreCase(layout)) {
+            builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_medium);
+            builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
+            builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
+            builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
+            builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
+            builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
+            builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+            builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+        }  else if ("Custom Large".equalsIgnoreCase(layout)) {
+            builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_large);
+            builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
+            builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
+            builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
+            builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
+            builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
+            builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+            builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
         } else {
-            layoutId = LAYOUT_MAP.get(layout.toLowerCase());
+            layoutStyle = layout;
+            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layoutStyle.toLowerCase());
         }
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layoutId);
         builder.setNativeTemplateWidth(AdExtra.AD_SDK_COMMON, Utils.dp2px(mContext, 200));
         AdParams adParams = builder.build();
         String sdk = (String) mAdSdkSpinner.getSelectedItem();

@@ -10,7 +10,7 @@ import java.util.Map;
 public class Params {
 
     private int mNativeRootLayout;
-    private int mNativeCardStyle;
+    private String mNativeCardStyle;
     private Map<String, Integer> mBannerSize = new HashMap<String, Integer>();
     private int mNativeTemplateWidth;
     private int adTitle;
@@ -34,11 +34,11 @@ public class Params {
         return mNativeRootLayout;
     }
 
-    public void setAdCardStyle(int tid) {
+    public void setAdCardStyle(String tid) {
         mNativeCardStyle = tid;
     }
 
-    public int getNativeCardStyle() {
+    public String getNativeCardStyle() {
         return mNativeCardStyle;
     }
 

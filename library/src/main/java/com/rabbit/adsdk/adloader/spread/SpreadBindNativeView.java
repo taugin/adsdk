@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
+import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.http.Http;
@@ -40,12 +41,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "bindNative adContainer == null###");
             return;
         }
-        int rootLayout = mParams.getNativeRootLayout();
-        if (rootLayout <= 0 && mParams.getNativeCardStyle() > 0) {
-            rootLayout = getAdViewLayout(adContainer.getContext(), mParams.getNativeCardStyle(), pidConfig);
-            bindParamsViewId(mParams);
-        }
-
+        int rootLayout = getBestNativeLayout(adContainer.getContext(), pidConfig, mParams, Constant.AD_SDK_SPREAD);
         if (rootLayout > 0) {
             bindNativeViewWithRootView(adContainer, rootLayout, pidConfig, spreadCfg);
             updateCtaButtonBackground(adContainer, pidConfig, mParams);

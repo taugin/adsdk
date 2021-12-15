@@ -61,36 +61,17 @@ public class MopubBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "bindMopubNative pidconfig == null###");
             return;
         }
-        boolean useCardStyle;
-        int rootLayout = mParams.getNativeRootLayout();
-        int cardStyle = mParams.getNativeCardStyle();
-        if (rootLayout > 0) {
-            useCardStyle = false;
-        } else {
-            useCardStyle = true;
-            rootLayout = getAdViewLayout(context, cardStyle, pidConfig);
-            bindParamsViewId(mParams);
-        }
-        if (rootLayout > 0) {
-            bindNativeViewWithRootView(context, rootLayout, nativeAd, pidConfig, useCardStyle);
-        } else {
-            Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
-        }
+        bindNativeViewWithRootView(context, nativeAd, pidConfig);
     }
 
 
     /**
      * 外部传入ViewRoot
      *
-     * @param rootLayout
      * @param nativeAd
      * @param pidConfig
      */
-    private void bindNativeViewWithRootView(Context context, int rootLayout, MoPubNative nativeAd, PidConfig pidConfig, boolean useCardStyle) {
-        if (rootLayout <= 0) {
-            Log.v(Log.TAG, "bindNativeViewWithRootView rootLayout == 0x0");
-            return;
-        }
+    private void bindNativeViewWithRootView(Context context, MoPubNative nativeAd, PidConfig pidConfig) {
         if (nativeAd == null) {
             Log.v(Log.TAG, "bindNativeViewWithRootView nativeAd == null");
             return;
@@ -108,25 +89,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         View rootView = null;
         String placeName = pidConfig.getPlaceName();
         try {
-            int mopubRootLayout;
-            String layout = null;
-            if (useCardStyle) {
-                try {
-                    Pair<String, Integer> pair = getSubNativeLayout(pidConfig, Constant.AD_SDK_MOPUB);
-                    mopubRootLayout = pair.second;
-                    layout = pair.first;
-                } catch (Exception e) {
-                    mopubRootLayout = 0;
-                }
-                if (mopubRootLayout > 0) {
-                    Log.iv(Log.TAG, "bind mopub layout [" + layout + "]");
-                    bindParamsViewId(mParams);
-                } else {
-                    mopubRootLayout = rootLayout;
-                }
-            } else {
-                mopubRootLayout = rootLayout;
-            }
+            int mopubRootLayout = getBestNativeLayout(context, pidConfig, mParams, Constant.AD_SDK_MOPUB);
             rootView = LayoutInflater.from(context).inflate(mopubRootLayout, null);
             bindMopubcRender(context, nativeAd, rootView);
         } catch (Exception e) {
@@ -138,25 +101,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         if (!BlockAdsManager.get(context).isBlockAds(Constant.AD_SDK_ADMOB, placeName)
                 && !LimitAdsManager.get(context).isLimitExclude(Constant.AD_SDK_ADMOB)) {
             try {
-                int admobRootLayout;
-                String layout = null;
-                if (useCardStyle) {
-                    try {
-                        Pair<String, Integer> pair = getSubNativeLayout(pidConfig, Constant.AD_SDK_ADMOB);
-                        admobRootLayout = pair.second;
-                        layout = pair.first;
-                    } catch (Exception e) {
-                        admobRootLayout = 0;
-                    }
-                    if (admobRootLayout > 0) {
-                        Log.iv(Log.TAG, "bind admob layout [" + layout + "]");
-                        bindParamsViewId(mParams);
-                    } else {
-                        admobRootLayout = rootLayout;
-                    }
-                } else {
-                    admobRootLayout = rootLayout;
-                }
+                int admobRootLayout = getBestNativeLayout(context, pidConfig, mParams, Constant.AD_SDK_ADMOB);
                 rootView = LayoutInflater.from(context).inflate(admobRootLayout, null);
                 bindAdMobRender(context, rootView, nativeAd);
             } catch (Exception e) {
@@ -171,25 +116,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         if (!BlockAdsManager.get(context).isBlockAds(Constant.AD_SDK_FACEBOOK, placeName)
                 && !LimitAdsManager.get(context).isLimitExclude(Constant.AD_SDK_FACEBOOK)) {
             try {
-                int facebookRootLayout;
-                String layout = null;
-                if (useCardStyle) {
-                    try {
-                        Pair<String, Integer> pair = getSubNativeLayout(pidConfig, Constant.AD_SDK_FACEBOOK);
-                        facebookRootLayout = pair.second;
-                        layout = pair.first;
-                    } catch (Exception e) {
-                        facebookRootLayout = 0;
-                    }
-                    if (facebookRootLayout > 0) {
-                        Log.iv(Log.TAG, "bind facebook layout [" + layout + "]");
-                        bindParamsViewId(mParams);
-                    } else {
-                        facebookRootLayout = rootLayout;
-                    }
-                } else {
-                    facebookRootLayout = rootLayout;
-                }
+                int facebookRootLayout = getBestNativeLayout(context, pidConfig, mParams, Constant.AD_SDK_FACEBOOK);
                 rootView = LayoutInflater.from(context).inflate(facebookRootLayout, null);
                 bindFBRender(context, rootView, nativeAd);
             } catch (Exception e) {
@@ -204,25 +131,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         if (!BlockAdsManager.get(context).isBlockAds(Constant.AD_SDK_MINTEGRAL, placeName)
                 && !LimitAdsManager.get(context).isLimitExclude(Constant.AD_SDK_MINTEGRAL)) {
             try {
-                int mintegralRootLayout;
-                String layout = null;
-                if (useCardStyle) {
-                    try {
-                        Pair<String, Integer> pair = getSubNativeLayout(pidConfig, Constant.AD_SDK_MINTEGRAL);
-                        mintegralRootLayout = pair.second;
-                        layout = pair.first;
-                    } catch (Exception e) {
-                        mintegralRootLayout = 0;
-                    }
-                    if (mintegralRootLayout > 0) {
-                        Log.iv(Log.TAG, "bind mintegral layout [" + layout + "]");
-                        bindParamsViewId(mParams);
-                    } else {
-                        mintegralRootLayout = rootLayout;
-                    }
-                } else {
-                    mintegralRootLayout = rootLayout;
-                }
+                int mintegralRootLayout = getBestNativeLayout(context, pidConfig, mParams, Constant.AD_SDK_MINTEGRAL);
                 rootView = LayoutInflater.from(context).inflate(mintegralRootLayout, null);
                 bindMintegralRender(context, rootView, nativeAd);
             } catch (Exception e) {
