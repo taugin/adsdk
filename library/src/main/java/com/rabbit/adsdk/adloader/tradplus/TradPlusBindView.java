@@ -34,8 +34,8 @@ public class TradPlusBindView extends BaseBindNativeView {
 
     private CustomTPNativeAdRender mCustomTPNativeAdRender;
 
-    public void bindNativeView(Context context, PidConfig pidConfig, Params params, TPCustomNativeAd customNativeAd, TPAdInfo tpAdInfo) {
-        mCustomTPNativeAdRender = new CustomTPNativeAdRender(context, pidConfig, params, customNativeAd, tpAdInfo);
+    public void bindNativeView(Context context, PidConfig pidConfig, Params params, TPCustomNativeAd customNativeAd) {
+        mCustomTPNativeAdRender = new CustomTPNativeAdRender(context, pidConfig, params, customNativeAd);
     }
 
     public CustomTPNativeAdRender getCustomTPNativeAdRender() {
@@ -47,14 +47,12 @@ public class TradPlusBindView extends BaseBindNativeView {
         private PidConfig mPidConfig;
         private Params mParams;
         private TPCustomNativeAd mTPCustomNativeAd;
-        private TPAdInfo mTPAdInfo;
 
-        public CustomTPNativeAdRender(Context context, PidConfig pidConfig, Params params, TPCustomNativeAd customNativeAd, TPAdInfo tpAdInfo) {
+        public CustomTPNativeAdRender(Context context, PidConfig pidConfig, Params params, TPCustomNativeAd customNativeAd) {
             mContext = context;
             mPidConfig = pidConfig;
             mParams = params;
             mTPCustomNativeAd = customNativeAd;
-            mTPAdInfo = tpAdInfo;
         }
 
         private String toLower(String str) {
@@ -68,8 +66,9 @@ public class TradPlusBindView extends BaseBindNativeView {
         public ViewGroup createAdLayoutView() {
             try {
                 String sourceName = null;
-                if (mTPAdInfo != null && !TextUtils.isEmpty(mTPAdInfo.adSourceName)) {
-                    sourceName = toLower(mTPAdInfo.adSourceName);
+                try {
+                    sourceName = toLower(mTPCustomNativeAd.getCustomNetworkName());
+                } catch (Exception e) {
                 }
                 int adRootLayout = getBestNativeLayout(mContext, mPidConfig, mParams, sourceName);
                 if (adRootLayout > 0) {
