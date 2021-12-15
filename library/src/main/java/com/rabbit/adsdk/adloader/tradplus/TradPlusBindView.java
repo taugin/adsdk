@@ -166,11 +166,11 @@ public class TradPlusBindView extends BaseBindNativeView {
                         }
                     }
 
-                    setImageView(adCoverImageView, isClickable("cover", mPidConfig));
-                    setIconView(adIconView, isClickable("icon", mPidConfig));
-                    setTitleView(titleView, isClickable("title", mPidConfig));
-                    setSubTitleView(subTitleView, isClickable("detail", mPidConfig));
-                    setCallToActionView(callToActionView, isClickable("cta", mPidConfig));
+                    setImageView(adCoverImageView, isClickable(AD_COVER, mPidConfig));
+                    setIconView(adIconView, isClickable(AD_ICON, mPidConfig));
+                    setTitleView(titleView, isClickable(AD_TITLE, mPidConfig));
+                    setSubTitleView(subTitleView, isClickable(AD_DETAIL, mPidConfig));
+                    setCallToActionView(callToActionView, isClickable(AD_CTA, mPidConfig));
                     updateCtaButtonBackground(viewGroup, mPidConfig, mParams);
                 }
                 return viewGroup;
@@ -179,10 +179,6 @@ public class TradPlusBindView extends BaseBindNativeView {
             }
             return null;
         }
-    }
-
-    private String getNetwork(TPAdInfo tpAdInfo) {
-        return tpAdInfo != null ? tpAdInfo.adSourceName : null;
     }
 
     private boolean renderAdChoice(ViewGroup viewGroup, TPCustomNativeAd customNativeAd) {
