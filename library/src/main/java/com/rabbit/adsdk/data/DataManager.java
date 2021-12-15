@@ -79,7 +79,7 @@ public class DataManager {
     private void parseLocalData() {
         String cfgName = getConfigName();
         String defName = getDefaultName();
-        Log.iv(Log.TAG, "name : " + cfgName + "/" + defName);
+        Log.iv(Log.TAG_SDK, "name : " + cfgName + "/" + defName);
         if (mLocalPlaceConfig == null && mParser != null) {
             String data = Utils.readConfig(mContext, cfgName + CONFIG_SUFFIX1);
             if (TextUtils.isEmpty(data)) {
@@ -100,7 +100,7 @@ public class DataManager {
     }
 
     private void parseRemoteData() {
-        Log.iv(Log.TAG, "remote data reading");
+        Log.iv(Log.TAG_SDK, "remote data reading");
         String data = null;
         data = getString(DATA_CONFIG);
         data = checkLastData(data, DATA_CONFIG);

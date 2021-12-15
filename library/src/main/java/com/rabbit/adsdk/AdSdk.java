@@ -97,7 +97,7 @@ public class AdSdk {
      * 初始化
      */
     public void init() {
-        Log.v(Log.TAG, "sdk version : " + getSdkVersion());
+        Log.iv(Log.TAG, "sdk version : " + getSdkVersion());
         DataManager.get(mContext).init();
         ActivityMonitor.get(mOriginContext).init();
         EventImpl.get().init(mContext);
@@ -136,7 +136,7 @@ public class AdSdk {
     }
 
     private AdPlaceLoader getAdLoader(String placeName, boolean forLoad) {
-        Log.d(Log.TAG, "getAdLoader forLoad : " + forLoad);
+        Log.d(Log.TAG_SDK, "getAdLoader forLoad : " + forLoad);
         // 优先处理场景被限制的情况
         String limitPlaceName = LimitAdsManager.get(mContext).addSuffixForPlaceNameIfNeed(placeName);
         String refPlaceName = null;
@@ -147,7 +147,7 @@ public class AdSdk {
             refPlaceName = limitPlaceName;
         }
 
-        Log.v(Log.TAG, "place name : " + placeName + " , refPlaceName : " + refPlaceName);
+        Log.iv(Log.TAG_SDK, "place name : " + placeName + " , refPlaceName : " + refPlaceName);
         boolean useShareObject = false;
         // 如果共享loader对象
         if (!TextUtils.equals(placeName, refPlaceName) && isRefShare(refPlaceName)) {
@@ -244,13 +244,13 @@ public class AdSdk {
             adPlace = localConfig.get(placeName);
             useRemote = false;
         }
-        Log.v(Log.TAG, "placeName : " + placeName + " , adPlace : " + adPlace);
+        Log.iv(Log.TAG, "placeName : " + placeName + " , adPlace : " + adPlace);
         if (adPlace != null) {
             loader = new AdPlaceLoader(mContext);
             loader.setAdPlaceConfig(adPlace);
             loader.init();
         }
-        Log.v(Log.TAG, "placeName [" + placeName + "] use remote adplace : " + useRemote);
+        Log.iv(Log.TAG, "placeName [" + placeName + "] use remote adplace : " + useRemote);
         return loader;
     }
 
@@ -479,7 +479,7 @@ public class AdSdk {
                 for (String name : placeList) {
                     AdPlaceLoader adPlaceLoader = mAdLoaders.get(name);
                     if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
-                        Log.v(Log.TAG, "place name [" + name + "] is loaded");
+                        Log.iv(Log.TAG, "place name [" + name + "] is loaded");
                         return true;
                     }
                 }
@@ -487,7 +487,7 @@ public class AdSdk {
                 for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
                     AdPlaceLoader adPlaceLoader = entry.getValue();
                     if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
-                        Log.v(Log.TAG, "place name [" + entry.getKey() + "] is loaded");
+                        Log.iv(Log.TAG, "place name [" + entry.getKey() + "] is loaded");
                         return true;
                     }
                 }
@@ -541,7 +541,7 @@ public class AdSdk {
                 }
                 for (AdPlaceLoader loader : list) {
                     if (loader != null && loader.isComplexAdsLoaded()) {
-                        Log.v(Log.TAG, "place name [" + loader.getPlaceName() + "] is called to show");
+                        Log.iv(Log.TAG, "place name [" + loader.getPlaceName() + "] is called to show");
                         loader.showComplexAds();
                         break;
                     }
