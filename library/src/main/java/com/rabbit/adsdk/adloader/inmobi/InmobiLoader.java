@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.facebook.ads.AdError;
 import com.inmobi.ads.AdMetaInfo;
 import com.inmobi.ads.InMobiAdRequestStatus;
 import com.inmobi.ads.InMobiNative;
@@ -178,7 +179,7 @@ public class InmobiLoader extends AbstractSdkLoader {
             @Override
             public void onInitializeFailure(String error) {
                 Log.iv(Log.TAG, formatLog("init error : " + error));
-                notifyAdLoadFailed(Constant.AD_ERROR_INITIALIZE);
+                notifyAdLoadFailed(Constant.AD_ERROR_INITIALIZE, "init error : " + error);
             }
         });
     }
@@ -186,7 +187,7 @@ public class InmobiLoader extends AbstractSdkLoader {
     private void loadNativeInternal(Params params) {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (isNativeLoaded()) {
@@ -196,7 +197,7 @@ public class InmobiLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -243,7 +244,7 @@ public class InmobiLoader extends AbstractSdkLoader {
                     reportAdError(inMobiAdRequestStatus.getMessage());
                 }
                 setLoading(false, STATE_FAILURE);
-                notifyAdLoadFailed(toSdkError(inMobiAdRequestStatus));
+                notifyAdLoadFailed(toSdkError(inMobiAdRequestStatus), toErrorMessage(inMobiAdRequestStatus));
             }
 
             @Override
@@ -307,5 +308,12 @@ public class InmobiLoader extends AbstractSdkLoader {
             }
         }
         return Constant.AD_ERROR_UNKNOWN;
+    }
+
+    private String toErrorMessage(InMobiAdRequestStatus status) {
+        if (status != null) {
+            return "[" + status.getStatusCode() + "] " + status.getMessage();
+        }
+        return null;
     }
 }

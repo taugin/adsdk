@@ -42,12 +42,12 @@ public interface OnAdBaseListener {
     /**
      * banner or native fail
      */
-    public void onAdLoadFailed(int error);
+    public void onAdLoadFailed(int error, String msg);
 
     /**
      * banner or native show failed
      */
-    public void onAdShowFailed(int error);
+    public void onAdShowFailed(int error, String msg);
 
     /**
      * banner or native opened

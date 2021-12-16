@@ -141,12 +141,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
         AppLovinSdk appLovinSdk = getInstance(getActivity());
         if (appLovinSdk == null) {
             Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (isBannerLoaded()) {
@@ -156,7 +156,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -182,18 +182,18 @@ public class AppLovinLoader extends AbstractSdkLoader {
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT, "error activity context");
             return;
         }
         AppLovinSdk appLovinSdk = getInstance(activity);
         if (appLovinSdk == null) {
             Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (isInterstitialLoaded()) {
@@ -203,7 +203,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -229,18 +229,18 @@ public class AppLovinLoader extends AbstractSdkLoader {
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT, "error activity context");
             return;
         }
         AppLovinSdk appLovinSdk = getInstance(activity);
         if (appLovinSdk == null) {
             Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (isRewardedVideoLoaded()) {
@@ -250,7 +250,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -325,7 +325,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(error), true));
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(error));
-                notifyAdLoadFailed(Constant.AD_ERROR_LOAD);
+                notifyAdLoadFailed(Constant.AD_ERROR_LOAD, toErrorMessage(error));
             }
 
             @Override
@@ -353,7 +353,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
                 Log.iv(Log.TAG, formatLog("ad display failed : " + error));
-                notifyAdShowFailed(error != null ? error.getCode() : Constant.AD_ERROR_SHOW);
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, toErrorMessage(error));
             }
 
             @Override
@@ -435,7 +435,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 clearLastShowTime();
                 onResetInterstitial();
                 reportAdError(codeToError(error));
-                notifyAdLoadFailed(Constant.AD_ERROR_LOAD);
+                notifyAdLoadFailed(Constant.AD_ERROR_LOAD, toErrorMessage(error));
             }
 
             @Override
@@ -466,7 +466,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad display failed : " + error));
                 clearLastShowTime();
                 onResetInterstitial();
-                notifyAdShowFailed(error != null ? error.getCode() : Constant.AD_ERROR_SHOW);
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, toErrorMessage(error));
             }
         });
 
@@ -556,7 +556,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 clearLastShowTime();
                 onResetReward();
                 reportAdError(codeToError(error));
-                notifyAdLoadFailed(Constant.AD_ERROR_LOAD);
+                notifyAdLoadFailed(Constant.AD_ERROR_LOAD, toErrorMessage(error));
             }
 
             @Override
@@ -587,7 +587,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad display failed : " + error));
                 clearLastShowTime();
                 onResetReward();
-                notifyAdShowFailed(error != null ? error.getCode() : Constant.AD_ERROR_SHOW);
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, toErrorMessage(error));
             }
         });
 
@@ -623,7 +623,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     public void loadNative(Params params) {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (isNativeLoaded()) {
@@ -633,7 +633,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -649,7 +649,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 loadCustomNative();
             }
         } catch (Exception e) {
-            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT, "error activity context");
         }
     }
 
@@ -673,7 +673,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + maxError, true));
                 reportAdError(s);
                 setLoading(false, STATE_FAILURE);
-                notifyAdLoadFailed(Constant.AD_ERROR_NOFILL);
+                notifyAdLoadFailed(Constant.AD_ERROR_NOFILL, toErrorMessage(maxError));
             }
 
             @Override
@@ -698,7 +698,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     private void loadCustomNative() {
-        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
+        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT, "unsupported");
     }
 
     @Override
@@ -823,6 +823,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
         }
         return "UNKNOWN[" + code + "]";
+    }
+    
+    private String toErrorMessage(MaxError error) {
+        if (error != null) {
+            return "[" + error.getCode() + "] " + error.getMessage();
+        }
+        return null;
     }
 
     private void reportMaxAdImpData(MaxAd maxAd, String placeName) {

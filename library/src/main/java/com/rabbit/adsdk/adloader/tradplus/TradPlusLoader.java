@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.mopub.mobileads.MoPubErrorCode;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.constant.Constant;
@@ -74,7 +75,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
     public void loadBanner(int adSize) {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (isBannerLoaded()) {
@@ -84,7 +85,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -124,7 +125,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdShowFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
                 Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(tpAdError), true));
-                notifyAdShowFailed(toSdkError(tpAdError));
+                notifyAdShowFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
             }
 
             @Override
@@ -132,7 +133,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(tpAdError));
-                notifyAdLoadFailed(toSdkError(tpAdError));
+                notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
             }
 
             @Override
@@ -193,13 +194,13 @@ public class TradPlusLoader extends AbstractSdkLoader {
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT, "error activity context");
             return;
         }
 
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (isInterstitialLoaded()) {
@@ -209,7 +210,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -236,7 +237,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 clearLastShowTime();
                 onResetInterstitial();
                 reportAdError(codeToError(tpAdError));
-                notifyAdLoadFailed(toSdkError(tpAdError));
+                notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
             }
 
             @Override
@@ -266,7 +267,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdVideoError(TPAdInfo tpAdInfo) {
                 Log.iv(Log.TAG, formatLog("ad interstitial show error"));
-                notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN);
+                notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "ad interstitial show error");
             }
         });
         printInterfaceLog(ACTION_LOAD);
@@ -308,13 +309,13 @@ public class TradPlusLoader extends AbstractSdkLoader {
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT, "error activity context");
             return;
         }
 
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (isRewardedVideoLoaded()) {
@@ -324,7 +325,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -366,7 +367,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 clearLastShowTime();
                 onResetReward();
                 reportAdError(codeToError(tpAdError));
-                notifyAdLoadFailed(toSdkError(tpAdError));
+                notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
             }
 
             @Override
@@ -393,7 +394,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             public void onAdVideoError(TPAdInfo tpAdInfo) {
                 Log.iv(Log.TAG, formatLog("ad reward video error"));
                 onResetReward();
-                notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN);
+                notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "ad reward video error");
             }
         });
         printInterfaceLog(ACTION_LOAD);
@@ -432,7 +433,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
     public void loadNative(Params params) {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (isNativeLoaded()) {
@@ -442,7 +443,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -483,7 +484,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdShowFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
                 Log.iv(Log.TAG, formatLog("ad show error : " + toSdkError(tpAdError)));
-                notifyAdShowFailed(toSdkError(tpAdError));
+                notifyAdShowFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
             }
 
             @Override
@@ -491,7 +492,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
                 reportAdError(codeToError(tpAdError));
                 setLoading(false, STATE_FAILURE);
-                notifyAdLoadFailed(toSdkError(tpAdError));
+                notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
             }
 
             @Override
@@ -644,5 +645,12 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return tpAdError.getErrorCode();
         }
         return Constant.AD_ERROR_UNKNOWN;
+    }
+
+    private String toErrorMessage(TPAdError adError) {
+        if (adError != null) {
+            return "[" + adError.getErrorCode() + "] " + adError.getErrorMsg();
+        }
+        return null;
     }
 }

@@ -212,7 +212,7 @@ public class MintegralLoader extends AbstractSdkLoader {
             @Override
             public void onInitializeFailure(String error) {
                 Log.iv(Log.TAG, formatLog("init error : " + error));
-                notifyAdLoadFailed(Constant.AD_ERROR_INITIALIZE);
+                notifyAdLoadFailed(Constant.AD_ERROR_INITIALIZE, "init error : " + error);
             }
         });
     }
@@ -241,7 +241,7 @@ public class MintegralLoader extends AbstractSdkLoader {
     private void loadNativeInternal(Params params) {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (isNativeLoaded()) {
@@ -251,7 +251,7 @@ public class MintegralLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -300,7 +300,7 @@ public class MintegralLoader extends AbstractSdkLoader {
                     putCachedAdTime(mCampaign);
                     notifySdkLoaderLoaded(false);
                 } else {
-                    notifyAdLoadFailed(Constant.AD_ERROR_NOFILL);
+                    notifyAdLoadFailed(Constant.AD_ERROR_NOFILL, "error no fill");
                 }
             }
 
@@ -309,7 +309,7 @@ public class MintegralLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + s, true));
                 reportAdError(s);
                 setLoading(false, STATE_FAILURE);
-                notifyAdLoadFailed(Constant.AD_ERROR_NOFILL);
+                notifyAdLoadFailed(Constant.AD_ERROR_NOFILL, s);
             }
 
             @Override
@@ -392,7 +392,7 @@ public class MintegralLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + s, true));
                 reportAdError(s);
                 setLoading(false, STATE_FAILURE);
-                notifyAdLoadFailed(Constant.AD_ERROR_NOFILL);
+                notifyAdLoadFailed(Constant.AD_ERROR_NOFILL, s);
             }
 
             @Override

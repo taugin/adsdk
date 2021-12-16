@@ -22,6 +22,7 @@ import com.rabbit.adsdk.adloader.inmobi.InmobiLoader;
 import com.rabbit.adsdk.adloader.listener.IManagerListener;
 import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
+import com.rabbit.adsdk.adloader.listener.OnAdSdkInternalListener;
 import com.rabbit.adsdk.adloader.mintegral.MintegralLoader;
 import com.rabbit.adsdk.adloader.mopub.MopubLoader;
 import com.rabbit.adsdk.adloader.spread.SpLoader;
@@ -61,7 +62,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private Context mContext;
     private OnAdSdkListener mOnAdSdkListener;
     private OnAdSdkListener mOnAdSdkLoadedListener;
-    private OnAdSdkListener mOnAdPlaceLoaderListener = new AdPlaceLoaderListener();
+    private OnAdSdkInternalListener mOnAdPlaceLoaderListener = new AdPlaceLoaderListener();
     private AdParams mAdParams;
     private boolean mHasNotifyLoaded = false;
     // banner和native的listener集合
@@ -481,13 +482,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
-                public void onAdLoadFailed(int error) {
+                public void onAdLoadFailed(int error, String msg) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next interstitial");
                         loadInterstitialSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
                     } else {
                         setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onAdLoadFailed(error);
+                        super.onAdLoadFailed(error, msg);
                     }
                 }
 
@@ -502,7 +503,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 loader.loadInterstitial();
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
-                simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG);
+                simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG, "error config");
             }
         }
     }
@@ -682,13 +683,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
 
                 @Override
-                public void onAdLoadFailed(int error) {
+                public void onAdLoadFailed(int error, String msg) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next rewardedvideo");
                         loadRewardedVideoSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
                     } else {
                         setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onAdLoadFailed(error);
+                        super.onAdLoadFailed(error, msg);
                     }
                 }
 
@@ -703,7 +704,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 loader.loadRewardedVideo();
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
-                simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG);
+                simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG, "error config");
             }
         }
     }
@@ -886,13 +887,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
-                public void onAdLoadFailed(int error) {
+                public void onAdLoadFailed(int error, String msg) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next splash");
                         loadSplashSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
                     } else {
                         setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onAdLoadFailed(error);
+                        super.onAdLoadFailed(error, msg);
                     }
                 }
 
@@ -907,7 +908,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 loader.loadSplash();
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
-                simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG);
+                simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG, "error config");
             }
         }
     }
@@ -1086,13 +1087,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
-                public void onAdLoadFailed(int error) {
+                public void onAdLoadFailed(int error, String msg) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next adview");
                         loadAdViewSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
                     } else {
                         setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onAdLoadFailed(error);
+                        super.onAdLoadFailed(error, msg);
                     }
                 }
 
@@ -1109,7 +1110,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 loader.loadNative(getParams(loader));
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getAdType());
-                simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG);
+                simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG, "error config");
             }
         }
     }
@@ -1353,13 +1354,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
-                public void onAdLoadFailed(int error) {
+                public void onAdLoadFailed(int error, String msg) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next complex");
                         loadComplexAdsSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
                     } else {
                         setAdPlaceSeqLoading(false, SeqState.ERROR);
-                        super.onAdLoadFailed(error);
+                        super.onAdLoadFailed(error, msg);
                     }
                 }
 
@@ -1382,7 +1383,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 loader.loadSplash();
             } else {
                 Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
-                simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG);
+                simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG, "error config");
             }
         }
     }
@@ -1565,7 +1566,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     @Override
-    public OnAdSdkListener getOnAdPlaceLoaderListener() {
+    public OnAdSdkInternalListener getOnAdPlaceLoaderListener() {
         return mOnAdPlaceLoaderListener;
     }
 
@@ -1661,7 +1662,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     /**
      * AdPlaceLoader类使用的监听器
      */
-    public class AdPlaceLoaderListener implements OnAdSdkListener {
+    public class AdPlaceLoaderListener implements OnAdSdkInternalListener {
 
         @Override
         public void onRequest(String placeName, String source, String adType, String pid) {
@@ -1726,8 +1727,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
-            Log.iv(Log.TAG, "notify callback onLoadFailed place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid);
+        public void onLoadFailed(String placeName, String source, String adType, String pid, int error, String msg) {
+            Log.iv(Log.TAG, "notify callback onLoadFailed place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid + " , error : " + msg);
             recordErrorTimes(placeName, source, adType);
             if (mOnAdSdkLoadedListener != null) {
                 mOnAdSdkLoadedListener.onLoadFailed(placeName, source, adType, pid, error);
@@ -1739,8 +1740,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onShowFailed(String placeName, String source, String adType, String pid, int error) {
-            Log.iv(Log.TAG, "notify callback onShowFailed place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid);
+        public void onShowFailed(String placeName, String source, String adType, String pid, int error, String msg) {
+            Log.iv(Log.TAG, "notify callback onShowFailed place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid + " , error : " + msg);
             if (mOnAdSdkLoadedListener != null) {
                 mOnAdSdkLoadedListener.onShowFailed(placeName, source, adType, pid, error);
             }

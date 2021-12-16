@@ -130,7 +130,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadInterstitial() {
-        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
+        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT, "unsupported");
     }
 
     @Override
@@ -140,7 +140,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadNative(Params params) {
-        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
+        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT, "unsupported");
     }
 
     @Override
@@ -149,7 +149,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadBanner(int adSize) {
-        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
+        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT, "unsupported");
     }
 
     @Override
@@ -158,7 +158,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadRewardedVideo() {
-        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
+        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT, "unsupported");
     }
 
     @Override
@@ -168,7 +168,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public void loadSplash() {
-        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT);
+        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT, "unsupported");
     }
 
     @Override
@@ -324,7 +324,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private void processBlockAds() {
         Log.iv(Log.TAG, formatLog("block ads"));
-        notifyAdLoadFailed(Constant.AD_ERROR_BLOCK_ADS);
+        notifyAdLoadFailed(Constant.AD_ERROR_BLOCK_ADS, "block ads");
     }
 
     private boolean isBlockAds() {
@@ -333,7 +333,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private void processLimitAds() {
         Log.iv(Log.TAG, formatLog("limit ads"));
-        notifyAdLoadFailed(Constant.AD_ERROR_LIMIT_ADS);
+        notifyAdLoadFailed(Constant.AD_ERROR_LIMIT_ADS, "limit ads");
     }
 
     private boolean isLimitExclude() {
@@ -343,7 +343,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private void processExceedReqTimes() {
         long reqTimes = AdPolicy.get(mContext).getReqTimes(getAdPlaceName(), getSdkName());
         Log.iv(Log.TAG, formatLog("exceed max req times : " + reqTimes + "/" + getMaxReqTimes()));
-        notifyAdLoadFailed(Constant.AD_ERROR_LIMIT_ADS);
+        notifyAdLoadFailed(Constant.AD_ERROR_LIMIT_ADS, "limit ads");
     }
 
     private boolean isExceedReqTimes() {
@@ -369,7 +369,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private void processAdLoaderFilter() {
         Log.iv(Log.TAG, formatLog("loader is filter"));
-        notifyAdLoadFailed(Constant.AD_ERROR_FILTERED);
+        notifyAdLoadFailed(Constant.AD_ERROR_FILTERED, "loader is filter");
     }
 
     private boolean isImpByRatio() {
@@ -381,7 +381,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private void processImpByRatio() {
         Log.iv(Log.TAG, formatLog("ratio not match"));
-        notifyAdLoadFailed(Constant.AD_ERROR_RATIO);
+        notifyAdLoadFailed(Constant.AD_ERROR_RATIO, "ratio not match");
     }
 
     private int getMaxReqTimes() {
@@ -530,14 +530,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         Log.iv(Log.TAG, formatLog("load time out"));
         reportAdError("AD_ERROR_TIMEOUT");
         setLoading(false, STATE_TIMTOUT);
-        if (TextUtils.equals(getAdType(), Constant.TYPE_INTERSTITIAL)) {
-            notifyAdLoadFailed(Constant.AD_ERROR_TIMEOUT);
-        } else if (TextUtils.equals(getAdType(), Constant.TYPE_REWARD)) {
-            notifyAdLoadFailed(Constant.AD_ERROR_TIMEOUT);
-        } else if (TextUtils.equals(getAdType(), Constant.TYPE_BANNER)
-                || TextUtils.equals(getAdType(), Constant.TYPE_NATIVE)) {
-            notifyAdLoadFailed(Constant.AD_ERROR_TIMEOUT);
-        }
+        notifyAdLoadFailed(Constant.AD_ERROR_TIMEOUT, "load time out");
     }
 
     @Override
@@ -860,15 +853,15 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     /**
      * banner or native fail
      */
-    protected void notifyAdLoadFailed(int error) {
+    protected void notifyAdLoadFailed(int error, String msg) {
         if (getAdListener() != null) {
-            getAdListener().onAdLoadFailed(error);
+            getAdListener().onAdLoadFailed(error, msg);
         }
     }
 
-    protected void notifyAdShowFailed(int error) {
+    protected void notifyAdShowFailed(int error, String msg) {
         if (getAdListener() != null) {
-            getAdListener().onAdShowFailed(error);
+            getAdListener().onAdShowFailed(error, msg);
         }
     }
 

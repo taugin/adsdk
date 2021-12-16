@@ -79,12 +79,12 @@ public class FBLoader extends AbstractSdkLoader {
     public void loadBanner(int adSize) {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (!matchNoFillTime()) {
             Log.iv(Log.TAG, formatLog("nofill error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_FILLTIME);
+            notifyAdLoadFailed(Constant.AD_ERROR_FILLTIME, "no fill error");
             return;
         }
         if (isBannerLoaded()) {
@@ -94,7 +94,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -121,7 +121,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 reportAdError(getError(adError));
-                notifyAdLoadFailed(toSdkError(adError));
+                notifyAdLoadFailed(toSdkError(adError), toErrorMessage(adError));
             }
 
             @Override
@@ -200,12 +200,12 @@ public class FBLoader extends AbstractSdkLoader {
     public void loadInterstitial() {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (!matchNoFillTime()) {
             Log.iv(Log.TAG, formatLog("nofill error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_FILLTIME);
+            notifyAdLoadFailed(Constant.AD_ERROR_FILLTIME, "no fill error");
             return;
         }
         if (isInterstitialLoaded()) {
@@ -215,7 +215,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -253,7 +253,7 @@ public class FBLoader extends AbstractSdkLoader {
                 clearLastShowTime();
                 onResetInterstitial();
                 reportAdError(getError(adError));
-                notifyAdLoadFailed(toSdkError(adError));
+                notifyAdLoadFailed(toSdkError(adError), toErrorMessage(adError));
             }
 
             @Override
@@ -321,12 +321,12 @@ public class FBLoader extends AbstractSdkLoader {
         mParams = params;
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (!matchNoFillTime()) {
             Log.iv(Log.TAG, formatLog("nofill error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_FILLTIME);
+            notifyAdLoadFailed(Constant.AD_ERROR_FILLTIME, "no fill error");
             return;
         }
         if (isNativeLoaded()) {
@@ -336,7 +336,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -363,7 +363,7 @@ public class FBLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_FAILURE);
                 reportAdError(getError(adError));
-                notifyAdLoadFailed(toSdkError(adError));
+                notifyAdLoadFailed(toSdkError(adError), toErrorMessage(adError));
             }
 
             @Override
@@ -413,12 +413,12 @@ public class FBLoader extends AbstractSdkLoader {
     public void loadRewardedVideo() {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG);
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
             return;
         }
         if (!matchNoFillTime()) {
             Log.iv(Log.TAG, formatLog("nofill error"));
-            notifyAdLoadFailed(Constant.AD_ERROR_FILLTIME);
+            notifyAdLoadFailed(Constant.AD_ERROR_FILLTIME, "no fill error");
             return;
         }
         if (isRewardedVideoLoaded()) {
@@ -428,7 +428,7 @@ public class FBLoader extends AbstractSdkLoader {
         }
         if (isLoading()) {
             Log.iv(Log.TAG, formatLog("already loading"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOADING);
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
 
@@ -484,7 +484,7 @@ public class FBLoader extends AbstractSdkLoader {
                 clearLastShowTime();
                 onResetReward();
                 reportAdError(getError(adError));
-                notifyAdLoadFailed(toSdkError(adError));
+                notifyAdLoadFailed(toSdkError(adError), toErrorMessage(adError));
             }
 
             @Override
@@ -624,5 +624,12 @@ public class FBLoader extends AbstractSdkLoader {
             }
         }
         return Constant.AD_ERROR_UNKNOWN;
+    }
+
+    private String toErrorMessage(AdError adError) {
+        if (adError != null) {
+            return "[" + adError.getErrorCode() + "] " + adError.getErrorMessage();
+        }
+        return null;
     }
 }

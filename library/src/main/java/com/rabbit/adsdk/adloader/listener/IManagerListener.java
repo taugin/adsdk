@@ -19,7 +19,7 @@ public interface IManagerListener {
 
     void registerAdBaseListener(ISdkLoader loader, OnAdBaseListener l);
 
-    OnAdSdkListener getOnAdPlaceLoaderListener();
+    OnAdSdkInternalListener getOnAdPlaceLoaderListener();
 
     Activity getActivity();
 
