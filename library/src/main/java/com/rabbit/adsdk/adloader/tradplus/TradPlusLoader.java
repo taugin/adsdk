@@ -185,6 +185,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             notifyAdImp();
         } catch (Exception e) {
             Log.iv(Log.TAG, formatLog("show error : " + e));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPBaner not ready");
         }
     }
 
@@ -300,6 +301,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetInterstitial();
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPInterstitial not ready");
         }
         return false;
     }
@@ -424,6 +426,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetReward();
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPReward not ready");
         }
         return false;
     }
@@ -535,13 +538,13 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 notifyAdShow();
             } else {
                 Log.e(Log.TAG, "render native ad view error : TPCustomNativeAd is null");
-                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "render tradplus native error : TPCustomNativeAd is null");
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPCustomNativeAd not ready");
             }
             clearCachedAdTime(mTPNative);
             mTPNative = null;
         } else {
             Log.iv(Log.TAG, formatLog("TPNative is null"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "render tradplus native error  : TPNative is null");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPNative not ready");
         }
     }
 

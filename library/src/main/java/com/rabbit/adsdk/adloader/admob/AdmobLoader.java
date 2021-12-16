@@ -235,6 +235,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             notifyAdImp();
         } catch (Exception e) {
             Log.e(Log.TAG, "admob loader error : " + e);
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : AdView not ready");
         }
     }
 
@@ -345,6 +346,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetInterstitial();
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : InterstitialAd not ready");
         }
         return false;
     }
@@ -470,6 +472,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetReward();
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : RewardedAd not ready");
         }
         return false;
     }
@@ -620,12 +623,16 @@ public class AdmobLoader extends AbstractSdkLoader {
             } catch (Exception e) {
             }
         }
-        clearCachedAdTime(mNativeAd);
-        admobBindNativeView.bindNative(mParams, viewGroup, mNativeAd, mPidConfig);
-        lastUseNativeAd = mNativeAd;
-        mNativeAd = null;
-        reportAdShow();
-        notifyAdShow();
+        if (mNativeAd != null) {
+            admobBindNativeView.bindNative(mParams, viewGroup, mNativeAd, mPidConfig);
+            lastUseNativeAd = mNativeAd;
+            clearCachedAdTime(mNativeAd);
+            mNativeAd = null;
+            reportAdShow();
+            notifyAdShow();
+        } else {
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd not ready");
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////
