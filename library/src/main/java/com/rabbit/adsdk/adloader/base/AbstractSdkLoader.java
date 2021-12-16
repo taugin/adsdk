@@ -53,9 +53,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     // 广告的最大默认缓存时间
     protected static final long MAX_CACHED_TIME = 30 * 60 * 1000;
     // 加载未返回的超时消息
-    protected static final int MSG_LOADING_TIMEOUT = 1000;
-    // 加载未返回的超时时间1分钟
-    protected static final int LOADING_TIMEOUT = 60 * 1000;
+    protected static final int MSG_LOADING_TIMEOUT = 0x1234;
+    // 加载未返回的超时时间0.5分钟
+    protected static final int LOADING_TIMEOUT = 30 * 1000;
 
     protected static final int FULLSCREEN_SHOWTIME_EXPIRED = 5 * 60 * 1000;
 
@@ -69,8 +69,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected Context mContext;
     protected IManagerListener mManagerListener;
     private boolean mLoading = false;
-    private boolean mLoadedFlag = false;
-    private Handler mHandler = null;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
     private long mRequestTime = 0;
     private int mBannerSize = Constant.NOSET;
     private IEvent mStat;
@@ -87,7 +86,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         mContext = context;
         mPidConfig = pidConfig;
         mStat = EventImpl.get();
-        mHandler = new Handler(Looper.getMainLooper());
     }
 
     @Override
@@ -399,6 +397,19 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected synchronized boolean isLoading() {
+        // handle会出现超时没有回调的情况，使用一下代码，双重保险
+        mRequestTime = SystemClock.elapsedRealtime();
+        if (mRequestTime > 0) {
+            long loadingTime = SystemClock.elapsedRealtime() - mRequestTime;
+            // 此处时长需要超过handle的超时时间
+            if (loadingTime >= getTimeout() + 5000) {
+                // 超时值已过
+                if (mHandler != null) {
+                    mHandler.removeMessages(MSG_LOADING_TIMEOUT);
+                }
+                mRequestTime = 0;
+            }
+        }
         return mLoading;
     }
 
@@ -850,9 +861,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
     }
 
-    /**
-     * banner or native fail
-     */
     protected void notifyAdLoadFailed(int error, String msg) {
         if (getAdListener() != null) {
             getAdListener().onAdLoadFailed(error, msg);

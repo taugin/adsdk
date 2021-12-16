@@ -531,15 +531,17 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 if (viewGroup != null && viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
+                reportAdShow();
+                notifyAdShow();
             } else {
-                Log.e(Log.TAG, "render native ad view error : TPCustomNativeAd == null");
+                Log.e(Log.TAG, "render native ad view error : TPCustomNativeAd is null");
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "render tradplus native error : TPCustomNativeAd is null");
             }
             clearCachedAdTime(mTPNative);
             mTPNative = null;
-            reportAdShow();
-            notifyAdShow();
         } else {
             Log.iv(Log.TAG, formatLog("TPNative is null"));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "render tradplus native error  : TPNative is null");
         }
     }
 
