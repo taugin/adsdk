@@ -68,8 +68,10 @@ dependencies {
         exclude group: 'androidx.core'
     }
     implementation 'com.mopub.volley:mopub-volley:2.1.0'
-    // tradplus mediation
+    // tradplus mopub mediation
     implementation 'com.tradplusad:tradplus-mopubx:3.7.2.0.1'
+    // topon mopub mediation
+    api "com.anythink.sdk:adapter-mopub:5.7.83"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // applovin
@@ -80,6 +82,8 @@ dependencies {
     implementation 'com.tradplusad:tradplus-applovin:9.7.2.0.1'
     // admob applovin mediation
     implementation 'com.google.ads.mediation:applovin:10.3.5.0@aar'
+    // topon applovin mediation
+    api "com.anythink.sdk:adapter-applovin:5.7.83"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // facebook
@@ -92,6 +96,8 @@ dependencies {
     implementation 'com.tradplusad:tradplus-facebook:1.7.2.0.1'
     // admob facebook mediation
     implementation 'com.google.ads.mediation:facebook:6.8.0.0@aar'
+    // topon facebook mediation
+    api "com.anythink.sdk:adapter-facebook:5.7.83"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // admob
@@ -102,6 +108,8 @@ dependencies {
     implementation 'com.applovin.mediation:google-adapter:20.5.0.2@aar'
     // tradplus admob mediation
     implementation 'com.tradplusad:tradplus-googlex:2.7.2.0.1'
+    // topon admob mediation
+    api "com.anythink.sdk:adapter-admob:5.7.83"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // mintegral
@@ -124,6 +132,8 @@ dependencies {
     implementation 'com.applovin.mediation:mintegral-adapter:15.7.21.0@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.7.2.0.1'
+    // topon mintegral mediation
+    api "com.anythink.sdk:adapter-mintegral-nonchina:5.7.83"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Inmobi
@@ -136,6 +146,8 @@ dependencies {
     implementation 'com.tradplusad:tradplus-inmobix:23.7.2.0.1'
     //admob inmobi mediation
     implementation 'com.google.ads.mediation:inmobi:9.2.0.0@aar'
+    //topon inmobi mediation
+    api "com.anythink.sdk:adapter-inmobi:5.7.83"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // tradplus
@@ -155,6 +167,8 @@ dependencies {
     implementation 'com.tradplusad:tradplus-unity:5.7.2.0.1'
     // admob unity mediation
     implementation 'com.google.ads.mediation:unity:3.7.5.0@aar'
+    // top unity mediation
+    api "com.anythink.sdk:adapter-unityads:5.7.83"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // vungle
@@ -167,6 +181,9 @@ dependencies {
     implementation 'com.tradplusad:tradplus-vunglex:7.7.2.0.1'
     // admob vungle mediation
     implementation 'com.google.ads.mediation:vungle:6.10.2.0@aar'
+    // topon vungle mediation
+    api "com.anythink.sdk:adapter-vungle:5.7.83"
+    api "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // ironsource
@@ -179,15 +196,19 @@ dependencies {
     implementation 'com.tradplusad:tradplus-ironsource:10.7.2.0.1'
     // admob ironsource mediation
     implementation 'com.google.ads.mediation:ironsource:7.1.11.0@aar'
+    // topon ironsource mediation
+    api "com.anythink.sdk:adapter-ironsource:5.7.83"
 //////////////////////////////////////////////////////////////////////////////////////////
 
-    // adcolony
-    implementation 'com.applovin.mediation:adcolony-adapter:4.6.5.0'
     implementation 'com.adcolony:sdk:4.6.5'
-    // tradplus mediation
+    // applovin adcolony mediation
+    implementation 'com.applovin.mediation:adcolony-adapter:4.6.5.0'
+    // tradplus adcolony mediation
     implementation 'com.tradplusad:tradplus-adcolony:4.7.2.0.1'
-    // admob mediation
+    // admob adcolony mediation
     implementation 'com.google.ads.mediation:adcolony:4.6.4.0@aar'
+    // topon adcolony mediation
+    api "com.anythink.sdk:adapter-adcolony:5.7.83"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Tapjoy
@@ -200,10 +221,22 @@ dependencies {
     implementation 'com.tradplusad:tradplus-tapjoy:6.7.2.0.1'
     // admob tapjoy mediation
     implementation 'com.google.ads.mediation:tapjoy:12.8.1.1@aar'
+    // topon tapjoy mediation
+    api "com.anythink.sdk:adapter-tapjoy:5.7.83"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Cross Promotion
     implementation 'com.tradplusad:tradplus-crosspromotion:27.7.2.0.1'
+
+//////////////////////////////////////////////////////////////////////////////////////////
+    //Anythink (Necessary)
+    def topon_version = "5.7.83"
+    api "com.anythink.sdk:core:${topon_version}"
+    api "com.anythink.sdk:nativead:${topon_version}"
+    api "com.anythink.sdk:banner:${topon_version}"
+    api "com.anythink.sdk:interstitial:${topon_version}"
+    api "com.anythink.sdk:rewardedvideo:${topon_version}"
+    api "com.anythink.sdk:splash:${topon_version}"
 }
 
 // 发布aar

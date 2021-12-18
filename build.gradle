@@ -59,6 +59,9 @@ allprojects {
         maven { url 'https://sdk.tapjoy.com/' }
         maven { url 'https://mvnrepository.com/artifact/com.inmobi.monetization/inmobi-ads' }
         maven { url 'https://android-sdk.is.com/'}
+        maven {
+            url "https://anythink.jfrog.io/artifactory/android_sdk"
+        }
     }
 }
 
