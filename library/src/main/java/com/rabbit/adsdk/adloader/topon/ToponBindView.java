@@ -1,6 +1,7 @@
 package com.rabbit.adsdk.adloader.topon;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,36 +89,67 @@ public class ToponBindView extends BaseBindNativeView {
             ViewGroup contentArea = view.findViewById(mParams.getAdMediaView());
             FrameLayout iconArea = imageToViewGroup(mContext, view.findViewById(mParams.getAdIcon()));
             ViewGroup adChoiceLayout = view.findViewById(mParams.getAdChoices());
-            ATNativeImageView logoView = new ATNativeImageView(mContext);
-            adChoiceLayout.addView(logoView);
 
-            titleView.setText("");
-            descView.setText("");
-            ctaView.setText("");
-            adFromView.setText("");
-            titleView.setText("");
-            contentArea.removeAllViews();
-            iconArea.removeAllViews();
-            logoView.setImageDrawable(null);
+            if (titleView != null) {
+                titleView.setText("");
+            }
+            if (descView != null) {
+                descView.setText("");
+            }
+            if (ctaView != null) {
+                ctaView.setText("");
+            }
+            if (adFromView != null) {
+                adFromView.setText("");
+            }
+            if (titleView != null) {
+                titleView.setText("");
+            }
+            if (contentArea != null) {
+                contentArea.removeAllViews();
+            }
+            if (iconArea != null) {
+                iconArea.removeAllViews();
+            }
+            if (adChoiceLayout != null) {
+                adChoiceLayout.removeAllViews();
+            }
 
             View adIconView = customNativeAd.getAdIconView();
-            if (adIconView != null) {
+            if (adIconView != null && iconArea != null) {
                 iconArea.addView(adIconView);
                 if (isClickable(AD_ICON, mPidConfig)) {
                     mClickView.add(adIconView);
                 }
             } else {
-                final ATNativeImageView atNativeImageView = new ATNativeImageView(mContext);
-                iconArea.addView(atNativeImageView);
-                atNativeImageView.setImage(customNativeAd.getIconImageUrl());
-                if (isClickable(AD_ICON, mPidConfig)) {
-                    mClickView.add(atNativeImageView);
+                if (iconArea != null) {
+                    final ATNativeImageView atNativeImageView = new ATNativeImageView(mContext);
+                    iconArea.addView(atNativeImageView);
+                    atNativeImageView.setImage(customNativeAd.getIconImageUrl());
+                    if (isClickable(AD_ICON, mPidConfig)) {
+                        mClickView.add(atNativeImageView);
+                    }
                 }
             }
 
-            Log.iv(Log.TAG, "topon ad choice icon url : " + customNativeAd.getAdChoiceIconUrl());
-            if (!TextUtils.isEmpty(customNativeAd.getAdChoiceIconUrl())) {
-                logoView.setImage(customNativeAd.getAdChoiceIconUrl());
+            if (adChoiceLayout != null) {
+                String adChoiceIconUrl = customNativeAd.getAdChoiceIconUrl();
+                Bitmap logoBmp = customNativeAd.getAdLogo();
+                View logoView = customNativeAd.getAdLogoView();
+                Log.iv(Log.TAG, "topon ad choice logo url : " + adChoiceIconUrl);
+                Log.iv(Log.TAG, "topon ad choice logo bitmap : " + logoBmp);
+                Log.iv(Log.TAG, "topon ad choice logo view : " + logoView);
+                if (!TextUtils.isEmpty(customNativeAd.getAdChoiceIconUrl())) {
+                    ATNativeImageView atNativeImageView = new ATNativeImageView(mContext);
+                    atNativeImageView.setImage(customNativeAd.getAdChoiceIconUrl());
+                    adChoiceLayout.addView(atNativeImageView);
+                } else if (logoBmp != null) {
+                    ATNativeImageView atNativeImageView = new ATNativeImageView(mContext);
+                    adChoiceLayout.addView(atNativeImageView);
+                    atNativeImageView.setImageBitmap(logoBmp);
+                } else if (logoView != null) {
+                    adChoiceLayout.addView(logoView);
+                }
             }
 
             View mediaView = customNativeAd.getAdMediaView(contentArea, contentArea.getWidth());
@@ -137,9 +169,15 @@ public class ToponBindView extends BaseBindNativeView {
                 }
             }
 
-            titleView.setText(customNativeAd.getTitle());
-            descView.setText(customNativeAd.getDescriptionText());
-            ctaView.setText(customNativeAd.getCallToActionText());
+            if (titleView != null) {
+                titleView.setText(customNativeAd.getTitle());
+            }
+            if (descView != null) {
+                descView.setText(customNativeAd.getDescriptionText());
+            }
+            if (ctaView != null) {
+                ctaView.setText(customNativeAd.getCallToActionText());
+            }
             String adFromText = customNativeAd.getAdFrom();
             Log.iv(Log.TAG, "topon ad from text : " + adFromText);
             if (adFromView != null) {

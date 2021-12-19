@@ -181,7 +181,7 @@ public class ToponLoader extends AbstractSdkLoader {
                 reportAdShow();
                 notifyAdShow();
             } catch (Exception e) {
-                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd show exception");
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd show exception [" + e + "]");
             }
         } else {
             Log.iv(Log.TAG, formatLog("NativeAd is null"));
