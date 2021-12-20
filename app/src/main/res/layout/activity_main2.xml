@@ -26,6 +26,7 @@
                 android:id="@+id/ad_sdk_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:tag="ad_sdk_spinner"
                 android:entries="@array/ad_sdk" />
         </LinearLayout>
 
@@ -46,6 +47,7 @@
                 android:id="@+id/ad_layout_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:tag="ad_layout_spinner"
                 android:entries="@array/ad_layout" />
         </LinearLayout>
 
@@ -65,6 +67,7 @@
                 android:id="@+id/ad_banner_size_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:tag="ad_banner_size_spinner"
                 android:entries="@array/ad_banner_size" />
         </LinearLayout>
     </LinearLayout>

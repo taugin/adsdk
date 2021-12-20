@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -32,6 +33,7 @@ import com.rabbit.adsdk.AdSdk;
 import com.rabbit.adsdk.listener.AdLoaderFilter;
 import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.utils.Utils;
+import com.umeng.commonsdk.debug.E;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +41,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
-public class MainActivity2 extends Activity {
+public class MainActivity2 extends Activity implements AdapterView.OnItemSelectedListener {
 
     private static final int LAYOUT[] = new int[]{
             //R.layout.ad_common_native_card_small,
@@ -82,6 +84,23 @@ public class MainActivity2 extends Activity {
         mAdSdkSpinner = findViewById(R.id.ad_sdk_spinner);
         mAdLayoutSpinner = findViewById(R.id.ad_layout_spinner);
         mAdBannerSizeSpinner = findViewById(R.id.ad_banner_size_spinner);
+        mAdSdkSpinner.setOnItemSelectedListener(this);
+        mAdLayoutSpinner.setOnItemSelectedListener(this);
+        mAdBannerSizeSpinner.setOnItemSelectedListener(this);
+        int position = 0;
+        String tag = null;
+
+        tag = (String) mAdSdkSpinner.getTag();
+        position = (int) Utils.getLong(this, tag);
+        mAdSdkSpinner.setSelection(position);
+
+        tag = (String) mAdLayoutSpinner.getTag();
+        position = (int) Utils.getLong(this, tag);
+        mAdLayoutSpinner.setSelection(position);
+
+        tag = (String) mAdBannerSizeSpinner.getTag();
+        position = (int) Utils.getLong(this, tag);
+        mAdBannerSizeSpinner.setSelection(position);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = getApplicationContext();
         AdSdk.get(this).setAdLoaderFilter(new AdLoaderFilter() {
@@ -310,6 +329,19 @@ public class MainActivity2 extends Activity {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
         }
     };
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        try {
+            String prefKey = (String) parent.getTag();
+            Utils.putLong(this, prefKey, position);
+        } catch (Exception e) {
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
 
     class FullScreenAdListener extends SimpleAdSdkListener {
         private TextView textView;

@@ -59,6 +59,21 @@
       ]
     },
     {
+      "name": "banner_topon",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "topon",
+          "type": "banner",
+          "pid": "b61bdccc7d6e87",
+          "extra": {
+            "app_id": "a61bdc4a0a9019",
+            "app_key": "06f443ba0f648f0930e96a1924fdbd6d"
+          }
+        }
+      ]
+    },
+    {
       "name": "interstitial_admob",
       "mode": "con",
       "pids": [
@@ -106,6 +121,21 @@
       ]
     },
     {
+      "name": "interstitial_topon",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "topon",
+          "type": "interstitial",
+          "pid": "b61bdc8fd5da13",
+          "extra": {
+            "app_id": "a61bdc4a0a9019",
+            "app_key": "06f443ba0f648f0930e96a1924fdbd6d"
+          }
+        }
+      ]
+    },
+    {
       "name": "reward_admob",
       "mode": "con",
       "pids": [
@@ -148,6 +178,21 @@
           "pid": "A5AF90C502A014B3BDCF2B267ADA6007",
           "extra": {
             "app_id": "BA819D2F55B23ED81FD43E632EFF0FE7"
+          }
+        }
+      ]
+    },
+    {
+      "name": "reward_topon",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "topon",
+          "type": "reward",
+          "pid": "b61bdc9362a4d1",
+          "extra": {
+            "app_id": "a61bdc4a0a9019",
+            "app_key": "06f443ba0f648f0930e96a1924fdbd6d"
           }
         }
       ]
