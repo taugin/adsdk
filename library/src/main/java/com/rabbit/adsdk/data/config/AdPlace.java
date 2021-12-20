@@ -57,6 +57,8 @@ public class AdPlace {
 
     private int retryTimes = 0;
 
+    private String sceneId;
+
     public String getName() {
         return name;
     }
@@ -246,6 +248,14 @@ public class AdPlace {
 
     public void setRetryTimes(int retryTimes) {
         this.retryTimes = retryTimes;
+    }
+
+    public String getSceneId() {
+        return sceneId;
+    }
+
+    public void setSceneId(String sceneId) {
+        this.sceneId = sceneId;
     }
 
     @Override

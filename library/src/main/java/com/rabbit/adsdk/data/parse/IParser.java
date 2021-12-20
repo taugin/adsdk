@@ -50,6 +50,8 @@ public interface IParser {
     String CTA_COLOR = "cc";
     // 场景加载失败，自动重试
     String RETRY = "retry";
+    // 设置场景id
+    String SCENE_ID = "scene_id";
 
     // 广告平台 fb, admob
     String SDK = "sdk";

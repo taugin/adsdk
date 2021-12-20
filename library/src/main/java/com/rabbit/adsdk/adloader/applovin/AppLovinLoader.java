@@ -378,7 +378,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        loadingMaxAdView.setPlacement(getAdPlaceName());
+        loadingMaxAdView.setPlacement(getSceneId());
         loadingMaxAdView.loadAd();
     }
 
@@ -488,8 +488,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private boolean showInterstitialForMax() {
         printInterfaceLog(ACTION_SHOW);
         if (interstitialAd != null) {
-            Log.v(Log.TAG, "");
-            interstitialAd.showAd(getAdPlaceName());
+            Log.iv(Log.TAG, "");
+            interstitialAd.showAd(getSceneId());
             updateLastShowTime();
             reportAdShow();
             notifyAdShow();
@@ -515,19 +515,19 @@ public class AppLovinLoader extends AbstractSdkLoader {
         loadingRewardedAd.setListener(new MaxRewardedAdListener() {
             @Override
             public void onRewardedVideoStarted(MaxAd ad) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, "");
                 notifyRewardAdsStarted();
             }
 
             @Override
             public void onRewardedVideoCompleted(MaxAd ad) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, "");
                 notifyRewardAdsCompleted();
             }
 
             @Override
             public void onUserRewarded(MaxAd ad, MaxReward reward) {
-                Log.v(Log.TAG, "");
+                Log.iv(Log.TAG, "");
                 AdReward item = null;
                 try {
                     String currencyName = reward.getLabel();
@@ -610,7 +610,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private boolean showRewardedVideoForMax() {
         printInterfaceLog(ACTION_SHOW);
         if (rewardedAd != null && rewardedAd.isReady()) {
-            rewardedAd.showAd(getAdPlaceName());
+            rewardedAd.showAd(getSceneId());
             updateLastShowTime();
             reportAdShow();
             notifyAdShow();
@@ -659,6 +659,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private void loadTemplateNative() {
         Activity activity = getActivity();
         MaxNativeAdLoader templateNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
+        templateNativeAdLoader.setPlacement(getSceneId());
         templateNativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(View view, MaxAd maxAd) {

@@ -24,6 +24,7 @@ import com.rabbit.adsdk.core.framework.BlockAdsManager;
 import com.rabbit.adsdk.core.framework.LimitAdsManager;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.DataManager;
+import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.data.parse.IParser;
 import com.rabbit.adsdk.listener.AdLoaderFilter;
@@ -560,6 +561,20 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             return mPidConfig.getPid();
         }
         return null;
+    }
+
+    protected String getSceneId() {
+        String sceneId = null;
+        if (mPidConfig != null) {
+            AdPlace adPlace = mPidConfig.getAdPlace();
+            if (adPlace != null) {
+                sceneId = adPlace.getSceneId();
+            }
+        }
+        if (TextUtils.isEmpty(sceneId)) {
+            sceneId = getAdPlaceName();
+        }
+        return sceneId;
     }
 
     private void reportLoadAdTime(int state) {

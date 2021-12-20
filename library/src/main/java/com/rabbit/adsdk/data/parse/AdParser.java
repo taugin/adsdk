@@ -178,6 +178,9 @@ public class AdParser implements IParser {
             if (jobj.has(RETRY)) {
                 adPlace.setRetryTimes(jobj.getInt(RETRY));
             }
+            if (jobj.has(SCENE_ID)) {
+                adPlace.setSceneId(jobj.getString(SCENE_ID));
+            }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
         } catch (Exception e) {
             Log.iv(Log.TAG, "parseAdPlace error : " + e);
