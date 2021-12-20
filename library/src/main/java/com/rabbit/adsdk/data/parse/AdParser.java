@@ -61,17 +61,24 @@ public class AdParser implements IParser {
             JSONObject jobj = new JSONObject(data);
             List<AdPlace> adPlaces = null;
             Map<String, String> adrefs = null;
+            String scenePrefix = null;
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
             }
             if (jobj.has(ADREFS)) {
                 adrefs = parseAdRefs(jobj.getString(ADREFS));
             }
+            if (jobj.has(SCENE_PREFIX)) {
+                scenePrefix = jobj.getString(SCENE_PREFIX);
+            }
             if (adPlaces != null
                     || adrefs != null) {
                 placeConfig = new PlaceConfig();
                 placeConfig.setAdPlaceList(adPlaces);
                 placeConfig.setAdRefs(adrefs);
+            }
+            if (placeConfig != null) {
+                placeConfig.setScenePrefix(scenePrefix);
             }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdConfigInternal error : " + e);

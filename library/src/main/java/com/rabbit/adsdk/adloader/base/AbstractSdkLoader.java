@@ -565,15 +565,25 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected String getSceneId() {
         String sceneId = null;
-        if (mPidConfig != null) {
-            AdPlace adPlace = mPidConfig.getAdPlace();
-            if (adPlace != null) {
-                sceneId = adPlace.getSceneId();
+        try {
+            if (mPidConfig != null) {
+                AdPlace adPlace = mPidConfig.getAdPlace();
+                if (adPlace != null) {
+                    sceneId = adPlace.getSceneId();
+                }
             }
-        }
-        if (TextUtils.isEmpty(sceneId)) {
+            if (TextUtils.isEmpty(sceneId)) {
+                String scenePrefix = DataManager.get(mContext).getScenePrefix();
+                if (!TextUtils.isEmpty(scenePrefix)) {
+                    sceneId = scenePrefix + getAdPlaceName();
+                } else {
+                    sceneId = getAdPlaceName();
+                }
+            }
+        } catch (Exception e) {
             sceneId = getAdPlaceName();
         }
+        Log.iv(Log.TAG, formatLog("scene id : " + sceneId));
         return sceneId;
     }
 
@@ -985,6 +995,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     /**
      * 控制是否上报广告展示价值
+     *
      * @return
      */
     protected boolean isReportAdImpData() {

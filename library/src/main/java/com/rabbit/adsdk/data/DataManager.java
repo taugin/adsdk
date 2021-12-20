@@ -235,4 +235,12 @@ public class DataManager {
     public boolean isLocalFirst() {
         return mLocalFirst;
     }
+
+    public String getScenePrefix() {
+        String scenePrefix = getString(IParser.SCENE_PREFIX);
+        if (TextUtils.isEmpty(scenePrefix) && mLocalPlaceConfig != null) {
+            scenePrefix = mLocalPlaceConfig.getScenePrefix();
+        }
+        return scenePrefix;
+    }
 }

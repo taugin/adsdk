@@ -19,6 +19,8 @@ public class PlaceConfig {
 
     private String adConfigMd5;
 
+    private String scenePrefix;
+
     public List<AdPlace> getAdPlaceList() {
         return adPlaceList;
     }
@@ -41,6 +43,14 @@ public class PlaceConfig {
 
     public void setAdConfigMd5(String adConfigMd5) {
         this.adConfigMd5 = adConfigMd5;
+    }
+
+    public String getScenePrefix() {
+        return scenePrefix;
+    }
+
+    public void setScenePrefix(String scenePrefix) {
+        this.scenePrefix = scenePrefix;
     }
 
     /**

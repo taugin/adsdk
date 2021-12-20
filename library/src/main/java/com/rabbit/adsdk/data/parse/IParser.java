@@ -18,6 +18,8 @@ public interface IParser {
     String ADPLACES = "adplaces";
     // 广告位引用影射表
     String ADREFS = "adrefs";
+    // 场景前缀
+    String SCENE_PREFIX = "scene_prefix";
     // 自定义广告位名称
     String NAME = "name";
     // 广告的加载模式 seq, ran, con

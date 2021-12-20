@@ -1,4 +1,5 @@
 {
+  "scene_prefix": "adsdk_demo_",
   "adplaces": [
     {
       "name": "splash_admob",
