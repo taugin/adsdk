@@ -140,7 +140,7 @@ public class ToponBindView extends BaseBindNativeView {
                 Log.iv(Log.TAG, "topon ad choice logo url : " + adChoiceIconUrl);
                 Log.iv(Log.TAG, "topon ad choice logo bitmap : " + logoBmp);
                 Log.iv(Log.TAG, "topon ad choice logo view : " + logoView);
-                if (!TextUtils.isEmpty(customNativeAd.getAdChoiceIconUrl())) {
+                if (!TextUtils.isEmpty(adChoiceIconUrl)) {
                     ATNativeImageView atNativeImageView = new ATNativeImageView(mContext);
                     atNativeImageView.setImage(customNativeAd.getAdChoiceIconUrl());
                     adChoiceLayout.addView(atNativeImageView);
@@ -164,21 +164,26 @@ public class ToponBindView extends BaseBindNativeView {
                     }
                 }
             }
-
-            View mediaView = customNativeAd.getAdMediaView(contentArea, contentArea.getWidth());
-            if (mediaView != null) {
-                if (mediaView.getParent() != null) {
-                    ((ViewGroup) mediaView.getParent()).removeView(mediaView);
+            if (contentArea != null) {
+                int width = contentArea.getWidth();
+                if (width == 0) {
+                    width = -1;
                 }
-                contentArea.addView(mediaView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
-            } else {
-                final ATNativeImageView imageView = new ATNativeImageView(mContext);
-                imageView.setImage(customNativeAd.getMainImageUrl());
-                ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-                imageView.setLayoutParams(params);
-                contentArea.addView(imageView, params);
-                if (isClickable(AD_COVER, mPidConfig)) {
-                    mClickView.add(imageView);
+                View mediaView = customNativeAd.getAdMediaView(contentArea, width);
+                if (mediaView != null) {
+                    if (mediaView.getParent() != null) {
+                        ((ViewGroup) mediaView.getParent()).removeView(mediaView);
+                    }
+                    contentArea.addView(mediaView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+                } else {
+                    final ATNativeImageView imageView = new ATNativeImageView(mContext);
+                    imageView.setImage(customNativeAd.getMainImageUrl());
+                    ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                    imageView.setLayoutParams(params);
+                    contentArea.addView(imageView, params);
+                    if (isClickable(AD_COVER, mPidConfig)) {
+                        mClickView.add(imageView);
+                    }
                 }
             }
 
