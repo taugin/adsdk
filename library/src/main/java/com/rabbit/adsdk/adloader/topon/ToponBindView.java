@@ -16,10 +16,13 @@ import com.anythink.nativead.api.ATNativeAdView;
 import com.anythink.nativead.api.ATNativeImageView;
 import com.anythink.nativead.api.NativeAd;
 import com.anythink.nativead.unitgroup.api.CustomNativeAd;
+import com.mopub.common.util.Drawables;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
+import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +32,6 @@ public class ToponBindView extends BaseBindNativeView {
     public class NativeCustomRender implements ATNativeAdRenderer<CustomNativeAd> {
         private Context mContext;
         List<View> mClickView = new ArrayList<>();
-        View mDevelopView;
-        int mNetworkFirmId;
         private NativeAd mNativeAd;
         private PidConfig mPidConfig;
         private Params mParams;
@@ -85,7 +86,7 @@ public class ToponBindView extends BaseBindNativeView {
             TextView titleView = view.findViewById(mParams.getAdTitle());
             TextView descView = view.findViewById(mParams.getAdDetail());
             TextView ctaView = view.findViewById(mParams.getAdAction());
-            TextView adFromView = view.findViewById(mParams.getAdSocial());
+            TextView adSocial = view.findViewById(mParams.getAdSocial());
             ViewGroup contentArea = view.findViewById(mParams.getAdMediaView());
             FrameLayout iconArea = imageToViewGroup(mContext, view.findViewById(mParams.getAdIcon()));
             ViewGroup adChoiceLayout = view.findViewById(mParams.getAdChoices());
@@ -99,8 +100,8 @@ public class ToponBindView extends BaseBindNativeView {
             if (ctaView != null) {
                 ctaView.setText("");
             }
-            if (adFromView != null) {
-                adFromView.setText("");
+            if (adSocial != null) {
+                adSocial.setText("");
             }
             if (titleView != null) {
                 titleView.setText("");
@@ -149,6 +150,18 @@ public class ToponBindView extends BaseBindNativeView {
                     atNativeImageView.setImageBitmap(logoBmp);
                 } else if (logoView != null) {
                     adChoiceLayout.addView(logoView);
+                } else {
+                    String sourceName = null;
+                    try {
+                        sourceName = getNetwork(mNativeAd.getAdInfo());
+                    } catch (Exception e) {
+                    }
+                    if (Constant.AD_SDK_MOPUB.equalsIgnoreCase(sourceName)) {
+                        ImageView imageView = new ImageView(mContext);
+                        imageView.setImageDrawable(Drawables.NATIVE_PRIVACY_INFORMATION_ICON.createDrawable(mContext));
+                        int size = Utils.dp2px(mContext, 24);
+                        adChoiceLayout.addView(imageView, size, size);
+                    }
                 }
             }
 
@@ -180,12 +193,12 @@ public class ToponBindView extends BaseBindNativeView {
             }
             String adFromText = customNativeAd.getAdFrom();
             Log.iv(Log.TAG, "topon ad from text : " + adFromText);
-            if (adFromView != null) {
+            if (adSocial != null) {
                 if (!TextUtils.isEmpty(adFromText)) {
-                    adFromView.setText(adFromText != null ? adFromText : "");
-                    adFromView.setVisibility(View.VISIBLE);
+                    adSocial.setText(adFromText != null ? adFromText : "");
+                    adSocial.setVisibility(View.VISIBLE);
                 } else {
-                    adFromView.setVisibility(View.GONE);
+                    adSocial.setVisibility(View.GONE);
                 }
             }
             if (isClickable(AD_TITLE, mPidConfig)) {
