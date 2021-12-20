@@ -2,7 +2,6 @@ package com.rabbit.adsdk.core;
 
 import android.text.TextUtils;
 
-import com.anythink.core.api.ATSDK;
 import com.applovin.sdk.AppLovinSdk;
 import com.facebook.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
@@ -41,9 +40,6 @@ public class ModuleLoaderHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_TRADPLUS, sdk)) {
             return hasTradPlusModule();
-        }
-        if (TextUtils.equals(Constant.AD_SDK_TOPON, sdk)) {
-            return hasToponModule();
         }
         if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
             return true;
@@ -114,16 +110,6 @@ public class ModuleLoaderHelper {
     private static boolean hasTradPlusModule() {
         try {
             TradPlus.class.getName();
-            return true;
-        } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        }
-        return false;
-    }
-
-    private static boolean hasToponModule() {
-        try {
-            ATSDK.class.getName();
             return true;
         } catch (Exception | Error e) {
             Log.e(Log.TAG, "error : " + e, e);

@@ -5,7 +5,6 @@
     <string name="continue_to_app">Continue to app</string>
     <string-array name="ad_sdk">
         <item>TradPlus</item>
-        <item>Topon</item>
         <item>Applovin</item>
         <item>Admob</item>
         <item>Mopub</item>
