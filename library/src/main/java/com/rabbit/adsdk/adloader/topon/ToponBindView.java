@@ -136,6 +136,29 @@ public class ToponBindView extends BaseBindNativeView {
                     }
                 }
             }
+            setVideoDefaultMuteForMintegral(customNativeAd);
+            if (contentArea != null) {
+                int width = contentArea.getWidth();
+                if (width == 0) {
+                    width = -1;
+                }
+                View mediaView = customNativeAd.getAdMediaView(contentArea, width);
+                if (mediaView != null) {
+                    if (mediaView.getParent() != null) {
+                        ((ViewGroup) mediaView.getParent()).removeView(mediaView);
+                    }
+                    contentArea.addView(mediaView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+                } else {
+                    final ATNativeImageView imageView = new ATNativeImageView(mContext);
+                    imageView.setImage(customNativeAd.getMainImageUrl());
+                    ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                    imageView.setLayoutParams(params);
+                    contentArea.addView(imageView, params);
+                    if (isClickable(AD_COVER, mPidConfig)) {
+                        mClickView.add(imageView);
+                    }
+                }
+            }
 
             if (adChoiceLayout != null) {
                 String adChoiceIconUrl = customNativeAd.getAdChoiceIconUrl();
@@ -168,29 +191,6 @@ public class ToponBindView extends BaseBindNativeView {
                     }
                     if (adChoiceLayout.getChildCount() == 0) {
                         setMintegralAdChoiceByDefault(customNativeAd, adChoiceLayout);
-                    }
-                }
-            }
-            setVideoDefaultMuteForMintegral(customNativeAd);
-            if (contentArea != null) {
-                int width = contentArea.getWidth();
-                if (width == 0) {
-                    width = -1;
-                }
-                View mediaView = customNativeAd.getAdMediaView(contentArea, width);
-                if (mediaView != null) {
-                    if (mediaView.getParent() != null) {
-                        ((ViewGroup) mediaView.getParent()).removeView(mediaView);
-                    }
-                    contentArea.addView(mediaView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
-                } else {
-                    final ATNativeImageView imageView = new ATNativeImageView(mContext);
-                    imageView.setImage(customNativeAd.getMainImageUrl());
-                    ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-                    imageView.setLayoutParams(params);
-                    contentArea.addView(imageView, params);
-                    if (isClickable(AD_COVER, mPidConfig)) {
-                        mClickView.add(imageView);
                     }
                 }
             }
