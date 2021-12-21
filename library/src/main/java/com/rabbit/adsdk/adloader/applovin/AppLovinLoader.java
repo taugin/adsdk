@@ -274,14 +274,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     private MaxInterstitialAd interstitialAd;
-    private MaxInterstitialAd loadingInterstitialAd;
 
     private MaxAdView loadingMaxAdView;
     private MaxAdView maxAdView;
     private MaxAdView lastUseMaxAdView;
 
     private MaxRewardedAd rewardedAd;
-    private MaxRewardedAd loadingRewardedAd;
 
     private boolean isBannerLoadedForMax() {
         boolean loaded = maxAdView != null && !isCachedAdExpired(maxAdView);
@@ -408,7 +406,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     private boolean isInterstitialLoadedForMax() {
-        boolean loaded = interstitialAd != null && !isCachedAdExpired(interstitialAd) && !isShowTimeExpired();
+        boolean loaded = interstitialAd != null && interstitialAd.isReady() && !isCachedAdExpired(interstitialAd) && !isShowTimeExpired();
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
@@ -417,14 +415,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     private void loadInterstitialForMax(AppLovinSdk appLovinSdk, Activity activity) {
         setLoading(true, STATE_REQUEST);
-        loadingInterstitialAd = new MaxInterstitialAd(getPid(), appLovinSdk, activity);
-        loadingInterstitialAd.setListener(new MaxAdListener() {
+        interstitialAd = new MaxInterstitialAd(getPid(), appLovinSdk, activity);
+        interstitialAd.setListener(new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
                 setLoading(false, STATE_SUCCESS);
-                interstitialAd = loadingInterstitialAd;
-                putCachedAdTime(loadingInterstitialAd);
+                putCachedAdTime(interstitialAd);
                 reportAdLoaded();
                 notifyAdLoaded(AppLovinLoader.this);
             }
@@ -471,7 +468,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
         });
 
-        loadingInterstitialAd.setRevenueListener(new MaxAdRevenueListener() {
+        interstitialAd.setRevenueListener(new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
@@ -482,12 +479,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        loadingInterstitialAd.loadAd();
+        interstitialAd.loadAd();
     }
 
     private boolean showInterstitialForMax() {
         printInterfaceLog(ACTION_SHOW);
-        if (interstitialAd != null) {
+        if (interstitialAd != null && interstitialAd.isReady()) {
             Log.iv(Log.TAG, "");
             interstitialAd.showAd(getSceneId());
             updateLastShowTime();
@@ -502,7 +499,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     private boolean isRewardedVideoLoadedForMax() {
-        boolean loaded = rewardedAd != null && !isCachedAdExpired(rewardedAd) && !isShowTimeExpired();
+        boolean loaded = rewardedAd != null && rewardedAd.isReady() && !isCachedAdExpired(rewardedAd) && !isShowTimeExpired();
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
@@ -511,8 +508,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     private void loadRewardedVideoForMax(AppLovinSdk appLovinSdk, Activity activity) {
         setLoading(true, STATE_REQUEST);
-        loadingRewardedAd = MaxRewardedAd.getInstance(getPid(), appLovinSdk, activity);
-        loadingRewardedAd.setListener(new MaxRewardedAdListener() {
+        rewardedAd = MaxRewardedAd.getInstance(getPid(), appLovinSdk, activity);
+        rewardedAd.setListener(new MaxRewardedAdListener() {
             @Override
             public void onRewardedVideoStarted(MaxAd ad) {
                 Log.iv(Log.TAG, "");
@@ -545,8 +542,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdLoaded(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
                 setLoading(false, STATE_SUCCESS);
-                rewardedAd = loadingRewardedAd;
-                putCachedAdTime(loadingRewardedAd);
+                putCachedAdTime(rewardedAd);
                 reportAdLoaded();
                 notifyAdLoaded(AppLovinLoader.this);
             }
@@ -593,7 +589,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
         });
 
-        loadingRewardedAd.setRevenueListener(new MaxAdRevenueListener() {
+        rewardedAd.setRevenueListener(new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
@@ -604,7 +600,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        loadingRewardedAd.loadAd();
+        rewardedAd.loadAd();
     }
 
     private boolean showRewardedVideoForMax() {
