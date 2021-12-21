@@ -16,6 +16,9 @@ import com.anythink.nativead.api.ATNativeAdView;
 import com.anythink.nativead.api.ATNativeImageView;
 import com.anythink.nativead.api.NativeAd;
 import com.anythink.nativead.unitgroup.api.CustomNativeAd;
+import com.anythink.network.mintegral.MintegralATNativeAd;
+import com.mbridge.msdk.out.Campaign;
+import com.mbridge.msdk.widget.MBAdChoice;
 import com.mopub.common.util.Drawables;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
@@ -24,6 +27,7 @@ import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,8 +166,12 @@ public class ToponBindView extends BaseBindNativeView {
                         int size = Utils.dp2px(mContext, 24);
                         adChoiceLayout.addView(imageView, size, size);
                     }
+                    if (adChoiceLayout.getChildCount() == 0) {
+                        setMintegralAdChoiceByDefault(customNativeAd, adChoiceLayout);
+                    }
                 }
             }
+            setVideoDefaultMuteForMintegral(customNativeAd);
             if (contentArea != null) {
                 int width = contentArea.getWidth();
                 if (width == 0) {
@@ -219,6 +227,48 @@ public class ToponBindView extends BaseBindNativeView {
 
         public List<View> getClickView() {
             return mClickView;
+        }
+
+        /**
+         * mintegral视频默认静音
+         * @param customNativeAd
+         */
+        private void setVideoDefaultMuteForMintegral(CustomNativeAd customNativeAd) {
+            try {
+                if (customNativeAd instanceof MintegralATNativeAd) {
+                    ((MintegralATNativeAd) customNativeAd).setVideoMute("1");
+                }
+            } catch (Exception e) {
+            }
+        }
+
+        /**
+         * 反射设置mintegral的ad choice
+         * @param customNativeAd
+         * @param viewGroup
+         */
+        private void setMintegralAdChoiceByDefault(CustomNativeAd customNativeAd, ViewGroup viewGroup) {
+            try {
+                if (customNativeAd instanceof MintegralATNativeAd) {
+                    MintegralATNativeAd mintegralATNativeAd = (MintegralATNativeAd) customNativeAd;
+                    Field fields[] = mintegralATNativeAd.getClass().getDeclaredFields();
+                    for (Field field : fields) {
+                        Class<?> fieldType = field.getType();
+                        if (fieldType.getName() == Campaign.class.getName()) {
+                            field.setAccessible(true);
+                            Campaign campaign = (Campaign) field.get(mintegralATNativeAd);
+                            field.setAccessible(false);
+                            if (campaign != null) {
+                                MBAdChoice mbAdChoice = new MBAdChoice(mContext);
+                                mbAdChoice.setCampaign(campaign);
+                                viewGroup.addView(mbAdChoice);
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e);
+            }
         }
     }
 

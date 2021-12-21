@@ -161,10 +161,6 @@ public class ToponLoader extends AbstractSdkLoader {
         atBannerView.loadAd();
     }
 
-    private String getLoadedInfo(TPAdInfo tpAdInfo) {
-        return null;
-    }
-
     @Override
     public boolean isBannerLoaded() {
         boolean loaded = mATBannerView != null && !isCachedAdExpired(mATBannerView);
@@ -659,7 +655,7 @@ public class ToponLoader extends AbstractSdkLoader {
 
     private String toErrorMessage(AdError adError) {
         if (adError != null) {
-            return adError.getFullErrorInfo();
+            return adError.getDesc();
         }
         return null;
     }
