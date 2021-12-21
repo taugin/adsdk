@@ -239,9 +239,6 @@
         {
           "sdk": "tradplus",
           "type": "native",
-          "snl": {
-            "mintegral": "large"
-          },
           "pid": "C0A4A6BA231CA19D882F007E143818EA",
           "extra": {
             "app_id": "BA819D2F55B23ED81FD43E632EFF0FE7"
@@ -256,9 +253,6 @@
         {
           "sdk": "topon",
           "type": "native",
-          "snl": {
-            "mintegral": "large"
-          },
           "pid": "b61bdc662cb56f",
           "extra": {
             "app_id": "a61bdc4a0a9019",
