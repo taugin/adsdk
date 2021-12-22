@@ -289,6 +289,9 @@ public class AdParser implements IParser {
             if (jobj.has(MAX_REQ_TIME)) {
                 pidConfig.setMaxReqTimes(jobj.getInt(MAX_REQ_TIME));
             }
+            if (jobj.has(SCENE_ID)) {
+                pidConfig.setSceneId(jobj.getString(SCENE_ID));
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

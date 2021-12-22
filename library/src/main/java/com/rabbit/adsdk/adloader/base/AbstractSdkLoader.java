@@ -567,9 +567,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         String sceneId = null;
         try {
             if (mPidConfig != null) {
-                AdPlace adPlace = mPidConfig.getAdPlace();
-                if (adPlace != null) {
-                    sceneId = adPlace.getSceneId();
+                sceneId = mPidConfig.getSceneId();
+                if (TextUtils.isEmpty(sceneId)) {
+                    AdPlace adPlace = mPidConfig.getAdPlace();
+                    if (adPlace != null) {
+                        sceneId = adPlace.getSceneId();
+                    }
                 }
             }
             if (TextUtils.isEmpty(sceneId)) {

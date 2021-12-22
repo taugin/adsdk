@@ -63,6 +63,8 @@ public class PidConfig {
     // 最大请求次数
     private int maxReqTimes;
 
+    private String sceneId;
+
     public String getPlaceName() {
         return placeName;
     }
@@ -253,6 +255,14 @@ public class PidConfig {
 
     public void setMaxReqTimes(int maxReqTimes) {
         this.maxReqTimes = maxReqTimes;
+    }
+
+    public String getSceneId() {
+        return sceneId;
+    }
+
+    public void setSceneId(String sceneId) {
+        this.sceneId = sceneId;
     }
 
     public boolean isAdmob() {
