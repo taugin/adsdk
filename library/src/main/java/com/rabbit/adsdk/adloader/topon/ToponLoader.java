@@ -603,7 +603,7 @@ public class ToponLoader extends AbstractSdkLoader {
             map.put("ad_unit_id", getPid());
             map.put("ad_format", getAdType());
             map.put("ad_unit_name", getAdPlaceName());
-            map.put("ad_provider", getSdkName());
+            map.put("ad_platform", getSdkName());
             map.put("ad_bidding", atAdInfo.isHeaderBiddingAdsource());
             map.put("ad_precision", atAdInfo.getEcpmPrecision());
             String gaid = Utils.getString(mContext, Constant.PREF_GAID);

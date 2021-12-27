@@ -943,15 +943,16 @@ public class MopubLoader extends AbstractSdkLoader {
         try {
             if (impressionData != null) {
                 Map<String, Object> map = new HashMap<>();
-                map.put("value", impressionData.getPublisherRevenue());
+                // mopub给出的是单次展示的价值，换算ecpm需要乘以1000
+                map.put("value", impressionData.getPublisherRevenue() * 1000);
                 map.put("currency", impressionData.getCurrency());
-                map.put("precisionType", impressionData.getPrecision());
+                map.put("ad_precision", impressionData.getPrecision());
                 map.put("ad_network", impressionData.getNetworkName());
                 map.put("ad_format", impressionData.getAdUnitFormat());
                 map.put("ad_unit_id", impressionData.getAdUnitId());
                 map.put("ad_unit_name", impressionData.getAdUnitName());
                 map.put("ad_group_name", impressionData.getAdGroupName());
-                map.put("ad_provider", getSdkName());
+                map.put("ad_platform", getSdkName());
                 String gaid = Utils.getString(mContext, Constant.PREF_GAID);
                 map.put("ad_gaid", gaid);
                 if (isReportAdImpData()) {

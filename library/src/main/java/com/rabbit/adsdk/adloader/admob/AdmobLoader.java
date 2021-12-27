@@ -7,15 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.appopen.AppOpenAd;
@@ -34,6 +38,8 @@ import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.stat.InternalStat;
+import com.rabbit.adsdk.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,8 +47,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import androidx.annotation.NonNull;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -223,6 +227,17 @@ public class AdmobLoader extends AbstractSdkLoader {
             if (viewParent instanceof ViewGroup) {
                 ((ViewGroup) viewParent).removeView(bannerView);
             }
+            bannerView.setOnPaidEventListener(new OnPaidEventListener() {
+                @Override
+                public void onPaidEvent(AdValue adValue) {
+                    String network = null;
+                    try {
+                        network = bannerView.getResponseInfo().getMediationAdapterClassName();
+                    } catch (Exception e) {
+                    }
+                    reportAdmobImpressionData(adValue, network);
+                }
+            });
             viewGroup.addView(bannerView);
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
@@ -339,6 +354,17 @@ public class AdmobLoader extends AbstractSdkLoader {
                     notifyAdImp();
                 }
             });
+            mInterstitialAd.setOnPaidEventListener(new OnPaidEventListener() {
+                @Override
+                public void onPaidEvent(AdValue adValue) {
+                    String network = null;
+                    try {
+                        network = mInterstitialAd.getResponseInfo().getMediationAdapterClassName();
+                    } catch (Exception e) {
+                    }
+                    reportAdmobImpressionData(adValue, network);
+                }
+            });
             mInterstitialAd.show(getActivity());
             updateLastShowTime();
             reportAdShow();
@@ -450,6 +476,17 @@ public class AdmobLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, formatLog("ad impression"));
                     reportAdImp();
                     notifyAdImp();
+                }
+            });
+            mRewardedAd.setOnPaidEventListener(new OnPaidEventListener() {
+                @Override
+                public void onPaidEvent(@NonNull AdValue adValue) {
+                    String network = null;
+                    try {
+                        network = mRewardedAd.getResponseInfo().getMediationAdapterClassName();
+                    } catch (Exception e) {
+                    }
+                    reportAdmobImpressionData(adValue, network);
                 }
             });
             Activity activity = getActivity();
@@ -624,6 +661,17 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
         }
         if (mNativeAd != null) {
+            mNativeAd.setOnPaidEventListener(new OnPaidEventListener() {
+                @Override
+                public void onPaidEvent(@NonNull AdValue adValue) {
+                    String network = null;
+                    try {
+                        network = mNativeAd.getResponseInfo().getMediationAdapterClassName();
+                    } catch (Exception e) {
+                    }
+                    reportAdmobImpressionData(adValue, network);
+                }
+            });
             admobBindNativeView.bindNative(mParams, viewGroup, mNativeAd, mPidConfig);
             lastUseNativeAd = mNativeAd;
             clearCachedAdTime(mNativeAd);
@@ -730,6 +778,17 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
             };
             mAppOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
+            mAppOpenAd.setOnPaidEventListener(new OnPaidEventListener() {
+                @Override
+                public void onPaidEvent(@NonNull AdValue adValue) {
+                    String network = null;
+                    try {
+                        network = mAppOpenAd.getResponseInfo().getMediationAdapterClassName();
+                    } catch (Exception e) {
+                    }
+                    reportAdmobImpressionData(adValue, network);
+                }
+            });
             mAppOpenAd.show(activity);
             updateLastShowTime();
             reportAdShow();
@@ -787,6 +846,44 @@ public class AdmobLoader extends AbstractSdkLoader {
         super.onResetSplash();
         clearCachedAdTime(mAppOpenAd);
         mAppOpenAd = null;
+    }
+
+    private void reportAdmobImpressionData(AdValue adValue, String network) {
+        try {
+            // admob给出的是百万次展示的价值，换算ecpm需要除以1000
+            double revenue = adValue.getValueMicros() / (double)1000;
+            String networkName = network;
+            String adUnitId = getPid();
+            String adFormat = getAdType();
+            String adUnitName = getAdPlaceName();
+            Map<String, Object> map = new HashMap<>();
+            map.put("value", revenue);
+            map.put("ad_network", networkName);
+            map.put("ad_unit_id", adUnitId);
+            map.put("ad_format", adFormat);
+            map.put("ad_unit_name", adUnitName);
+            map.put("ad_platform", getSdkName());
+            try {
+                String[] precisionTypes = new String[]{"unknown", "estimated", "publisher_provided", "precise"};
+                map.put("ad_precision", precisionTypes[adValue.getPrecisionType()]);
+            } catch (Exception e) {
+            }
+            String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+            map.put("ad_gaid", gaid);
+            if (isReportAdImpData()) {
+                InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
+            }
+            StringBuilder builder = new StringBuilder("{");
+            builder.append("\n");
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                builder.append("  " + entry.getKey() + " : " + entry.getValue());
+                builder.append("\n");
+            }
+            builder.append("}");
+            Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
     }
 
     private String codeToError(AdError adError) {

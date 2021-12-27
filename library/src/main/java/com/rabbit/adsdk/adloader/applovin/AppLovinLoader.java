@@ -834,7 +834,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     private void reportMaxAdImpData(MaxAd maxAd, String placeName) {
         try {
-            double revenue = maxAd.getRevenue(); // In USD
+            // applovin给出的是单次展示的价值，换算ecpm需要乘以1000
+            double revenue = maxAd.getRevenue() * 1000; // In USD
             String countryCode = getInstance(getActivity()).getConfiguration().getCountryCode(); // "US" for the United States, etc - Note: Do not confuse this with currency code which is "USD" in most cases!
             String networkName = maxAd.getNetworkName(); // Display name of the network that showed the ad (e.g. "AdColony")
             String adUnitId = maxAd.getAdUnitId(); // The MAX Ad Unit ID
@@ -849,7 +850,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             map.put("ad_unit_id", adUnitId);
             map.put("ad_format", adFormat.getDisplayName());
             map.put("ad_unit_name", placement);
-            map.put("ad_provider", getSdkName());
+            map.put("ad_platform", getSdkName());
             map.put("ad_country_code", countryCode);
             String gaid = Utils.getString(mContext, Constant.PREF_GAID);
             map.put("ad_gaid", gaid);
