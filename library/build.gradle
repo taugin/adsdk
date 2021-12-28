@@ -54,12 +54,12 @@ android {
 
 dependencies {
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
-
     // firebase
     implementation 'com.google.firebase:firebase-core:18.0.3'
     implementation 'com.google.firebase:firebase-config:18.0.0'
     // stringfog
     implementation 'com.github.megatronking.stringfog:xor:1.1.0'
+//////////////////////////////////////////////////////////////////////////////////////////
 
     // MoPub
     implementation('com.mopub:mopub-sdk:5.18.0@aar') {
