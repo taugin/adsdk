@@ -406,7 +406,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
         updateAdViewVisibility(staticRender, view);
     }
 
-    public void updateClickView(View view, PidConfig pidConfig, String render) {
+    public void updateClickView(View view, PidConfig pidConfig, String network) {
         if (view == null || pidConfig == null || mParams == null) {
             Log.iv(Log.TAG, "update cv error cause of null view or config or params");
             return;
@@ -418,8 +418,8 @@ public class MopubBindNativeView extends BaseBindNativeView {
                 return;
             }
             List<String> clickViewRender = getClickViewRender(pidConfig);
-            if (clickViewRender != null && !clickViewRender.contains(render)) {
-                Log.iv(Log.TAG, "click view miss match render : " + render + " , cfg render : " + clickViewRender);
+            if (clickViewRender != null && !clickViewRender.contains(network)) {
+                Log.iv(Log.TAG, "click view miss match network : " + network + " , cfg network : " + clickViewRender);
                 return;
             }
             Map<String, View> viewMap = new HashMap<String, View>();
@@ -436,7 +436,7 @@ public class MopubBindNativeView extends BaseBindNativeView {
             for (String text : clickView) {
                 clickElements.add(viewMap.get(text));
             }
-            Log.iv(Log.TAG, "cv : " + clickView + " , render : " + clickViewRender);
+            Log.iv(Log.TAG, "cv : " + clickView + " , network : " + clickViewRender);
             traversalView(view, clickElements);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

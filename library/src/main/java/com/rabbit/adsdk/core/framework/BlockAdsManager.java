@@ -144,9 +144,9 @@ public class BlockAdsManager {
      * @param adViewGroup
      * @return
      */
-    public boolean replaceAdWithLoadingView(WeakReference<ViewGroup> adViewGroup, String placeName, String sdkName, String adType, String render) {
+    public boolean replaceAdWithLoadingView(WeakReference<ViewGroup> adViewGroup, String placeName, String sdkName, String adType, String network) {
         boolean removeAds = isBlockAds(sdkName, placeName) && isRemoveAds(sdkName, placeName);
-        Log.iv(Log.TAG, "place name : " + placeName + " , sdk : " + sdkName + " , type : " + adType + " , render : " + render + " , removeAds : " + removeAds);
+        Log.iv(Log.TAG, "place name : " + placeName + " , sdk : " + sdkName + " , type : " + adType + " , network : " + network + " , removeAds : " + removeAds);
         if (removeAds && adViewGroup != null) {
             ViewGroup viewGroup = adViewGroup.get();
             if (viewGroup != null) {
@@ -336,10 +336,10 @@ public class BlockAdsManager {
         return null;
     }
 
-    public void recordAdImp(String sdk, String placeName, String render) {
-        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , render : " + render);
-        if (!TextUtils.isEmpty(render) && !TextUtils.equals(sdk, render)) {
-            sdk = render;
+    public void recordAdImp(String sdk, String placeName, String network) {
+        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
+        if (!TextUtils.isEmpty(network) && !TextUtils.equals(sdk, network)) {
+            sdk = network;
         }
         recordAdImp(sdk, placeName);
     }
@@ -359,10 +359,10 @@ public class BlockAdsManager {
         recordAdKeyList(sdk, placeName);
     }
 
-    public void recordAdClick(String sdk, String placeName, String render) {
-        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , render : " + render);
-        if (!TextUtils.isEmpty(render) && !TextUtils.equals(sdk, render)) {
-            sdk = render;
+    public void recordAdClick(String sdk, String placeName, String network) {
+        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
+        if (!TextUtils.isEmpty(network) && !TextUtils.equals(sdk, network)) {
+            sdk = network;
         }
         recordAdClick(sdk, placeName);
     }

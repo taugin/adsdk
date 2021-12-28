@@ -679,6 +679,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             reportAdShow();
             notifyAdShow();
         } else {
+            Log.e(Log.TAG, "show native ad view error : NativeAd is null");
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd not ready");
         }
     }

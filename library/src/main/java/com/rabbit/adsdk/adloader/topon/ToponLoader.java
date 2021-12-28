@@ -534,17 +534,17 @@ public class ToponLoader extends AbstractSdkLoader {
             mNativeAd.setNativeEventListener(new ATNativeEventListener() {
                 @Override
                 public void onAdImpressed(ATNativeAdView atNativeAdView, ATAdInfo atAdInfo) {
-                    String render = getNetwork(atAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad network impression render : " + render));
-                    reportAdImp(render);
-                    notifyAdImp(render);
+                    String network = getNetwork(atAdInfo);
+                    Log.iv(Log.TAG, formatLog("ad impression network : " + network));
+                    reportAdImp(network);
+                    notifyAdImp(network);
                     reportToponImpressionData(atAdInfo);
                 }
 
                 @Override
                 public void onAdClicked(ATNativeAdView atNativeAdView, ATAdInfo atAdInfo) {
                     String network = getNetwork(atAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad network click render : " + network));
+                    Log.iv(Log.TAG, formatLog("ad click network : " + network));
                     reportAdClick(network);
                     notifyAdClick(network);
                 }

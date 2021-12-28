@@ -24,11 +24,11 @@ public class SimpleAdSdkListener implements OnAdSdkListener {
     }
 
     @Override
-    public void onImp(String placeName, String source, String adType, String render, String pid) {
+    public void onImp(String placeName, String source, String adType, String network, String pid) {
     }
 
     @Override
-    public void onClick(String placeName, String source, String adType, String render, String pid) {
+    public void onClick(String placeName, String source, String adType, String network, String pid) {
     }
 
     @Override

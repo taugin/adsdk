@@ -171,7 +171,7 @@ public class TradPlusBindView extends BaseBindNativeView {
                 }
                 return viewGroup;
             } catch (Exception e) {
-                Log.e(Log.TAG, "render ad view error : " + e);
+                Log.e(Log.TAG, "show native ad view error : " + e);
             }
             return null;
         }
@@ -210,7 +210,7 @@ public class TradPlusBindView extends BaseBindNativeView {
                 return true;
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "render ad choice view error : " + e);
+            Log.e(Log.TAG, "show native ad choice view error : " + e);
         }
         return false;
     }

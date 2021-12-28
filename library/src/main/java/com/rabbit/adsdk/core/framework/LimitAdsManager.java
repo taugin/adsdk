@@ -68,8 +68,8 @@ public class LimitAdsManager {
         mContext = context;
     }
 
-    public void recordAdImp(String sdk, String placeName, String render) {
-        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , render : " + render);
+    public void recordAdImp(String sdk, String placeName, String network) {
+        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         try {
             appendAdImpTimestamp();
         } catch (Exception e) {
@@ -77,8 +77,8 @@ public class LimitAdsManager {
         }
     }
 
-    public void recordAdClick(String sdk, String placeName, String render) {
-        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , render : " + render);
+    public void recordAdClick(String sdk, String placeName, String network) {
+        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         try {
             appendAdClkTimestamp();
         } catch (Exception e) {

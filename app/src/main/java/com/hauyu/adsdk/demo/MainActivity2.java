@@ -294,12 +294,12 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
         }
 
         @Override
-        public void onImp(String placeName, String source, String adType, String render, String pid) {
+        public void onImp(String placeName, String source, String adType, String network, String pid) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
         }
 
         @Override
-        public void onClick(String placeName, String source, String adType, String render, String pid) {
+        public void onClick(String placeName, String source, String adType, String network, String pid) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
         }
 
@@ -357,7 +357,7 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
         }
 
         @Override
-        public void onImp(String placeName, String source, String adType, String render, String pid) {
+        public void onImp(String placeName, String source, String adType, String network, String pid) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
             updateLoadStatus(textView, placeName);
         }

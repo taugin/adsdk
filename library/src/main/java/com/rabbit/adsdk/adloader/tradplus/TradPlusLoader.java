@@ -469,17 +469,17 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad network click render : " + network));
+                Log.iv(Log.TAG, formatLog("ad network click network : " + network));
                 reportAdClick(network);
                 notifyAdClick(network);
             }
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
-                String render = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad network impression render : " + render));
-                reportAdImp(render);
-                notifyAdImp(render);
+                String network = getNetwork(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad network impression network : " + network));
+                reportAdImp(network);
+                notifyAdImp(network);
                 reportTradPlusImpressionData(tpAdInfo);
             }
 
@@ -539,13 +539,13 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 reportAdShow();
                 notifyAdShow();
             } else {
-                Log.e(Log.TAG, "render native ad view error : TPCustomNativeAd is null");
+                Log.e(Log.TAG, "show native ad view error : TPCustomNativeAd is null");
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPCustomNativeAd not ready");
             }
             clearCachedAdTime(mTPNative);
             mTPNative = null;
         } else {
-            Log.iv(Log.TAG, formatLog("TPNative is null"));
+            Log.e(Log.TAG, "show native ad view error : TPNative is null");
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPNative not ready");
         }
     }

@@ -15,9 +15,9 @@ public interface OnAdSdkInternalListener {
 
     void onShow(String placeName, String source, String adType, String pid);
 
-    void onImp(String placeName, String source, String adType, String render, String pid);
+    void onImp(String placeName, String source, String adType, String network, String pid);
 
-    void onClick(String placeName, String source, String adType, String render, String pid);
+    void onClick(String placeName, String source, String adType, String network, String pid);
 
     void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds);
 

@@ -740,21 +740,21 @@ public class MopubLoader extends AbstractSdkLoader {
             nativeAd.setMoPubNativeEventListener(new NativeAd.MoPubNativeEventListener() {
                 @Override
                 public void onImpression(View view) {
-                    String render = getRender();
-                    Log.iv(Log.TAG, formatLog("ad network impression render : " + render));
-                    reportAdImp(render);
-                    notifyAdImp(render);
+                    String network = getNetwork();
+                    Log.iv(Log.TAG, formatLog("ad impression network : " + network));
+                    reportAdImp(network);
+                    notifyAdImp(network);
                     if (bindNativeView != null) {
-                        bindNativeView.updateClickView(viewGroup, getPidConfig(), render);
+                        bindNativeView.updateClickView(viewGroup, getPidConfig(), network);
                     }
                 }
 
                 @Override
                 public void onClick(View view) {
-                    String render = getRender();
-                    Log.iv(Log.TAG, formatLog("ad network click render : " + render));
-                    reportAdClick(render);
-                    notifyAdClick(render);
+                    String network = getNetwork();
+                    Log.iv(Log.TAG, formatLog("ad click network : " + network));
+                    reportAdClick(network);
+                    notifyAdClick(network);
                 }
             });
 
@@ -789,23 +789,23 @@ public class MopubLoader extends AbstractSdkLoader {
         }
     }
 
-    private String getRender() {
-        String render = Constant.AD_SDK_MOPUB;
+    private String getNetwork() {
+        String network = Constant.AD_SDK_MOPUB;
         try {
             if (lastUseNativeAd != null) {
                 MoPubAdRenderer adRenderer = lastUseNativeAd.getMoPubAdRenderer();
                 if (adRenderer instanceof GooglePlayServicesAdRenderer) {
-                    render = Constant.AD_SDK_ADMOB;
+                    network = Constant.AD_SDK_ADMOB;
                 } else if (adRenderer instanceof FacebookAdRenderer) {
-                    render = Constant.AD_SDK_FACEBOOK;
+                    network = Constant.AD_SDK_FACEBOOK;
                 } else if (adRenderer instanceof MintegralAdRenderer) {
-                    render = Constant.AD_SDK_MINTEGRAL;
+                    network = Constant.AD_SDK_MINTEGRAL;
                 }
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
-        return render;
+        return network;
     }
 
     @Override

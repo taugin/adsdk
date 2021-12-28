@@ -1723,14 +1723,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onImp(String placeName, String source, String adType, String render, String pid) {
-            Log.iv(Log.TAG, "notify callback onImp place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , render : " + render + " , pid : " + pid);
-            AdStatManager.get(mContext).recordAdImp(source, placeName, render);
+        public void onImp(String placeName, String source, String adType, String network, String pid) {
+            Log.iv(Log.TAG, "notify callback onImp place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , network : " + network + " , pid : " + pid);
+            AdStatManager.get(mContext).recordAdImp(source, placeName, network);
             if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onImp(placeName, source, adType, render, pid);
+                mOnAdSdkLoadedListener.onImp(placeName, source, adType, network, pid);
             }
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onImp(placeName, source, adType, render, pid);
+                mOnAdSdkListener.onImp(placeName, source, adType, network, pid);
             }
         }
 
@@ -1803,25 +1803,25 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onClick(String placeName, String source, String adType, String render, String pid) {
-            Log.iv(Log.TAG, "notify callback onClick place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , render : " + render + " , pid : " + pid);
-            AdStatManager.get(mContext).recordAdClick(source, placeName, render);
+        public void onClick(String placeName, String source, String adType, String network, String pid) {
+            Log.iv(Log.TAG, "notify callback onClick place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , network : " + network + " , pid : " + pid);
+            AdStatManager.get(mContext).recordAdClick(source, placeName, network);
             if (TextUtils.equals(adType, Constant.TYPE_NATIVE)
                     || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
                 String sdkName = source;
-                if (!TextUtils.isEmpty(render) && !TextUtils.equals(source, render)) {
-                    sdkName = render;
+                if (!TextUtils.isEmpty(network) && !TextUtils.equals(source, network)) {
+                    sdkName = network;
                 }
-                if (BlockAdsManager.get(mContext).replaceAdWithLoadingView(mAdContainer, placeName, sdkName, adType, render) || (mAdPlace != null && mAdPlace.isClickSwitch())) {
+                if (BlockAdsManager.get(mContext).replaceAdWithLoadingView(mAdContainer, placeName, sdkName, adType, network) || (mAdPlace != null && mAdPlace.isClickSwitch())) {
                     resume();
                     showNextAdView();
                 }
             }
             if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onClick(placeName, source, adType, render, pid);
+                mOnAdSdkLoadedListener.onClick(placeName, source, adType, network, pid);
             }
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onClick(placeName, source, adType, render, pid);
+                mOnAdSdkListener.onClick(placeName, source, adType, network, pid);
             }
         }
 

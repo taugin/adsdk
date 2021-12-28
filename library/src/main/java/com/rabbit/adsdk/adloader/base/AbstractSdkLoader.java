@@ -800,7 +800,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         reportAdImp(null);
     }
 
-    protected void reportAdImp(String render) {
+    protected void reportAdImp(String network) {
         if (mStat != null) {
             BaseBindNativeView baseBindNativeView = getBaseBindNativeView();
             Map<String, String> nativeAssets = null;
@@ -808,8 +808,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 nativeAssets = baseBindNativeView.getAdvMap();
             }
             if (nativeAssets != null && !nativeAssets.isEmpty()) {
-                if (!TextUtils.isEmpty(render)) {
-                    nativeAssets.put(IParser.SDK, render);
+                if (!TextUtils.isEmpty(network)) {
+                    nativeAssets.put(IParser.SDK, network);
                 } else {
                     nativeAssets.put(IParser.SDK, getSdkName());
                 }
@@ -820,14 +820,14 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                     builder.append("\n");
                 }
                 builder.append("}");
-                Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " [" + render + "] assets : " + builder.toString());
+                Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " [" + network + "] assets : " + builder.toString());
             }
             Map<String, String> mediaTypeExtra = null;
-            if (!TextUtils.isEmpty(render)) {
+            if (!TextUtils.isEmpty(network)) {
                 mediaTypeExtra = new HashMap<String, String>();
-                mediaTypeExtra.put("render", render);
+                mediaTypeExtra.put("network", network);
             }
-            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), render, getAdType(), getPid(), String.valueOf(getEcpm()), mediaTypeExtra);
+            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), String.valueOf(getEcpm()), mediaTypeExtra);
             if (nativeAssets != null) {
                 nativeAssets.clear();
             }
@@ -838,9 +838,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         reportAdClick(null);
     }
 
-    protected void reportAdClick(String render) {
+    protected void reportAdClick(String network) {
         if (mStat != null) {
-            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), render, getAdType(), getPid(), String.valueOf(getEcpm()), null);
+            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), String.valueOf(getEcpm()), null);
         }
     }
 
@@ -900,9 +900,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     /**
      * banner or native impression
      */
-    protected void notifyAdImp(String render) {
+    protected void notifyAdImp(String network) {
         if (getAdListener() != null) {
-            getAdListener().onAdImp(render);
+            getAdListener().onAdImp(network);
         }
     }
 
@@ -913,9 +913,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     /**
      * banner or native click
      */
-    protected void notifyAdClick(String render) {
+    protected void notifyAdClick(String network) {
         if (getAdListener() != null) {
-            getAdListener().onAdClick(render);
+            getAdListener().onAdClick(network);
         }
     }
 
