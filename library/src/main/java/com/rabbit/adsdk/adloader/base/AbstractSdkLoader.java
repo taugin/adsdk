@@ -1008,6 +1008,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return "[sdk loader] " + baseLog + " [" + info + "]";
     }
 
+    protected String formatShowErrorLog(String info) {
+        String baseLog = "[" + getAdPlaceName() + " - " + getSdkName() + " - " + getPid() + "]";
+        return "[sdk loader]" + " " + baseLog + " " + "show " + getAdType() + " error : " + "[" + info + "]";
+    }
+
     protected void onResetInterstitial() {
         Log.iv(Log.TAG, formatLog("reset interstitial"));
     }

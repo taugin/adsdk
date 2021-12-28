@@ -380,7 +380,7 @@ public class MopubLoader extends AbstractSdkLoader {
             reportAdImp();
             notifyAdImp();
         } catch (Exception e) {
-            Log.iv(Log.TAG, formatLog("show error : " + e));
+            Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MoPubView not ready");
         }
     }
@@ -503,6 +503,7 @@ public class MopubLoader extends AbstractSdkLoader {
             return showed;
         } else {
             onResetInterstitial();
+            Log.e(Log.TAG, formatShowErrorLog("MoPubInterstitial not ready"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MoPubInterstitial not ready");
         }
         return false;
@@ -648,6 +649,7 @@ public class MopubLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetReward();
+            Log.e(Log.TAG, formatShowErrorLog("MoPubRewardedAds is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MoPubRewardedAds not ready");
         }
         return false;
@@ -784,7 +786,7 @@ public class MopubLoader extends AbstractSdkLoader {
                 Log.e(Log.TAG, "error : " + e, e);
             }
         } else {
-            Log.iv(Log.TAG, formatLog("nativeAd is null"));
+            Log.e(Log.TAG, formatShowErrorLog("NativeAd is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd not ready");
         }
     }

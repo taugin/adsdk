@@ -183,7 +183,8 @@ public class FBLoader extends AbstractSdkLoader {
             reportAdShow();
             notifyAdShow();
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : " + e);
         }
     }
 
@@ -299,6 +300,8 @@ public class FBLoader extends AbstractSdkLoader {
             notifyAdShow();
             return true;
         } else {
+            Log.e(Log.TAG, formatShowErrorLog("InterstitialAd not ready"));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : InterstitialAd not ready");
             onResetInterstitial();
         }
         return false;
@@ -401,12 +404,17 @@ public class FBLoader extends AbstractSdkLoader {
         if (params != null) {
             mParams = params;
         }
-        clearCachedAdTime(nativeAd);
-        fbBindNativeView.bindFBNative(mParams, viewGroup, nativeAd, mPidConfig);
-        lastUseNativeAd = nativeAd;
-        nativeAd = null;
-        reportAdShow();
-        notifyAdShow();
+        if (nativeAd != null) {
+            clearCachedAdTime(nativeAd);
+            fbBindNativeView.bindFBNative(mParams, viewGroup, nativeAd, mPidConfig);
+            lastUseNativeAd = nativeAd;
+            nativeAd = null;
+            reportAdShow();
+            notifyAdShow();
+        } else {
+            Log.e(Log.TAG, formatShowErrorLog("NativeAd is null"));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd is null");
+        }
     }
 
     @Override
@@ -528,6 +536,8 @@ public class FBLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetReward();
+            Log.e(Log.TAG, formatShowErrorLog("RewardedVideoAd not ready"));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : RewardedVideoAd not ready");
         }
         return false;
     }

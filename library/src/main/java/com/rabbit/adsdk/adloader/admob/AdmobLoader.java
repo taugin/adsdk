@@ -249,7 +249,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             reportAdImp();
             notifyAdImp();
         } catch (Exception e) {
-            Log.e(Log.TAG, "admob loader error : " + e);
+            Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : AdView not ready");
         }
     }
@@ -372,6 +372,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetInterstitial();
+            Log.e(Log.TAG, formatShowErrorLog("InterstitialAd is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : InterstitialAd not ready");
         }
         return false;
@@ -509,6 +510,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetReward();
+            Log.e(Log.TAG, formatShowErrorLog("RewardedAd is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : RewardedAd not ready");
         }
         return false;
@@ -679,7 +681,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             reportAdShow();
             notifyAdShow();
         } else {
-            Log.e(Log.TAG, "show native ad view error : NativeAd is null");
+            Log.e(Log.TAG, formatShowErrorLog("NativeAd is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd not ready");
         }
     }
@@ -796,6 +798,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             notifyAdShow();
             return true;
         } else {
+            Log.e(Log.TAG, formatShowErrorLog("AppOpenAd is null"));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : AppOpenAd not ready");
             onResetSplash();
         }
         return false;

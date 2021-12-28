@@ -400,7 +400,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             reportAdImp();
             notifyAdImp();
         } catch (Exception e) {
-            Log.iv(Log.TAG, formatLog("show banner error : " + e));
+            Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MaxAdView not ready");
         }
     }
@@ -493,6 +493,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetInterstitial();
+            Log.e(Log.TAG, formatShowErrorLog("MaxInterstitialAd not ready"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MaxInterstitialAd not ready");
         }
         return false;
@@ -613,6 +614,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetReward();
+            Log.e(Log.TAG, formatShowErrorLog("MaxRewardedAd not ready"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MaxRewardedAd not ready");
         }
         return false;
@@ -754,7 +756,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 notifyAdShow();
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : " + e);
         }
     }
 

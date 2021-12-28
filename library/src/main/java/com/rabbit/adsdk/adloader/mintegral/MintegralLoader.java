@@ -47,7 +47,7 @@ public class MintegralLoader extends AbstractSdkLoader {
     private Campaign mCampaign;
     private MBNativeHandler mMBNativeHandler;
     private MBNativeAdvancedHandler mMBNativeAdvancedHandler;
-    private ViewGroup mAdViewGroup;
+    private ViewGroup mTemplateView;
 
     private MintegralBindView mintegralBindNativeView = new MintegralBindView();
 
@@ -401,8 +401,8 @@ public class MintegralLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load success req id : " + requestId));
                 reportAdLoaded();
                 setLoading(false, STATE_SUCCESS);
-                mAdViewGroup = mMBNativeAdvancedHandler.getAdViewGroup();
-                putCachedAdTime(mAdViewGroup);
+                mTemplateView = mMBNativeAdvancedHandler.getAdViewGroup();
+                putCachedAdTime(mTemplateView);
                 notifySdkLoaderLoaded(false);
             }
 
@@ -464,7 +464,7 @@ public class MintegralLoader extends AbstractSdkLoader {
     }
 
     private boolean isTemplateNativeLoaded() {
-        return mAdViewGroup != null && !isCachedAdExpired(mAdViewGroup);
+        return mTemplateView != null && !isCachedAdExpired(mTemplateView);
     }
 
     @Override
@@ -484,24 +484,30 @@ public class MintegralLoader extends AbstractSdkLoader {
             mCampaign = null;
             reportAdShow();
             notifyAdShow();
+        } else {
+            Log.e(Log.TAG, formatShowErrorLog("Campaign is null"));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : Campaign is null");
         }
     }
 
     private void showTemplateNative(ViewGroup viewGroup) {
-        if (mAdViewGroup != null) {
-            clearCachedAdTime(mAdViewGroup);
+        if (mTemplateView != null) {
+            clearCachedAdTime(mTemplateView);
             viewGroup.removeAllViews();
-            ViewParent viewParent = mAdViewGroup.getParent();
+            ViewParent viewParent = mTemplateView.getParent();
             if (viewParent instanceof ViewGroup) {
-                ((ViewGroup) viewParent).removeView(mAdViewGroup);
+                ((ViewGroup) viewParent).removeView(mTemplateView);
             }
-            viewGroup.addView(mAdViewGroup);
+            viewGroup.addView(mTemplateView);
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
-            mAdViewGroup = null;
+            mTemplateView = null;
             reportAdShow();
             notifyAdShow();
+        } else {
+            Log.e(Log.TAG, formatShowErrorLog("TemplateView is null"));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TemplateView is null");
         }
     }
 }

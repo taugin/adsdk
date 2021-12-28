@@ -183,7 +183,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             reportAdImp();
             notifyAdImp();
         } catch (Exception e) {
-            Log.iv(Log.TAG, formatLog("show error : " + e));
+            Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPBaner not ready");
         }
     }
@@ -300,6 +300,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetInterstitial();
+            Log.e(Log.TAG, formatShowErrorLog("TPInterstitial not ready"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPInterstitial not ready");
         }
         return false;
@@ -425,6 +426,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetReward();
+            Log.e(Log.TAG, formatShowErrorLog("TPReward is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPReward not ready");
         }
         return false;
@@ -539,13 +541,13 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 reportAdShow();
                 notifyAdShow();
             } else {
-                Log.e(Log.TAG, "show native ad view error : TPCustomNativeAd is null");
+                Log.e(Log.TAG, formatShowErrorLog("TPCustomNativeAd is null"));
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPCustomNativeAd not ready");
             }
             clearCachedAdTime(mTPNative);
             mTPNative = null;
         } else {
-            Log.e(Log.TAG, "show native ad view error : TPNative is null");
+            Log.e(Log.TAG, formatShowErrorLog("TPNative is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPNative not ready");
         }
     }

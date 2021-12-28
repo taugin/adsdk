@@ -187,8 +187,8 @@ public class ToponLoader extends AbstractSdkLoader {
             reportAdShow();
             notifyAdShow();
         } catch (Exception e) {
-            Log.iv(Log.TAG, formatLog("show error : " + e));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPBaner not ready");
+            Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPBanner not ready");
         }
     }
 
@@ -314,6 +314,7 @@ public class ToponLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetInterstitial();
+            Log.e(Log.TAG, formatShowErrorLog("TPInterstitial not ready"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPInterstitial not ready");
         }
         return false;
@@ -444,6 +445,7 @@ public class ToponLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetReward();
+            Log.e(Log.TAG, formatShowErrorLog("TPReward not ready"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPReward not ready");
         }
         return false;
@@ -570,10 +572,11 @@ public class ToponLoader extends AbstractSdkLoader {
                 reportAdShow();
                 notifyAdShow();
             } catch (Exception e) {
+                Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd show exception [" + e + "]");
             }
         } else {
-            Log.iv(Log.TAG, formatLog("NativeAd is null"));
+            Log.e(Log.TAG, formatShowErrorLog("NativeAd is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd not ready");
         }
     }
