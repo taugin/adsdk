@@ -30,7 +30,6 @@ import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
-import com.tradplus.ads.base.bean.TPAdInfo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -595,9 +594,8 @@ public class ToponLoader extends AbstractSdkLoader {
 
     private void reportToponImpressionData(ATAdInfo atAdInfo) {
         try {
-            double ecpm = atAdInfo.getEcpm();
             Map<String, Object> map = new HashMap<>();
-            map.put("value", ecpm);
+            map.put("value", atAdInfo.getEcpm());
             map.put("ad_network", sNetworkFirmTable.get(atAdInfo.getNetworkFirmId()));
             map.put("ad_network_pid", atAdInfo.getNetworkPlacementId());
             map.put("ad_unit_id", getPid());

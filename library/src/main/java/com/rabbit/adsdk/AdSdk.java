@@ -1,7 +1,6 @@
 package com.rabbit.adsdk;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;

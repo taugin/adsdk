@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.facebook.ads.AdError;
 import com.inmobi.ads.AdMetaInfo;
 import com.inmobi.ads.InMobiAdRequestStatus;
 import com.inmobi.ads.InMobiNative;

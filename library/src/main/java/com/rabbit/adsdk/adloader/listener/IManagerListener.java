@@ -2,8 +2,6 @@ package com.rabbit.adsdk.adloader.listener;
 
 import android.app.Activity;
 
-import com.rabbit.adsdk.listener.OnAdSdkListener;
-
 /**
  * Created by Administrator on 2018/2/27.
  */

@@ -12,7 +12,6 @@ import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 
-import com.facebook.ads.AdError;
 import com.mopub.common.MoPub;
 import com.mopub.common.MoPubReward;
 import com.mopub.common.SdkConfiguration;
@@ -20,7 +19,6 @@ import com.mopub.common.SdkInitializationListener;
 import com.mopub.common.logging.MoPubLog;
 import com.mopub.common.privacy.ConsentDialogListener;
 import com.mopub.common.privacy.PersonalInfoManager;
-import com.mopub.mobileads.MoPubError;
 import com.mopub.mobileads.MoPubErrorCode;
 import com.mopub.mobileads.MoPubInterstitial;
 import com.mopub.mobileads.MoPubRewardedAdListener;
@@ -39,7 +37,6 @@ import com.mopub.network.ImpressionData;
 import com.mopub.network.ImpressionListener;
 import com.mopub.network.ImpressionsEmitter;
 import com.rabbit.adsdk.AdReward;
-import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
@@ -195,11 +192,7 @@ public class MopubLoader extends AbstractSdkLoader {
                     }
                 }, 10000);
             }
-            String adUnit = null;
-            try {
-                adUnit = getPidConfig().getPid();
-            } catch (Exception e) {
-            }
+            String adUnit = getPid();
             SdkConfiguration.Builder builder = new SdkConfiguration.Builder(adUnit);
             try {
                 Map<String, Map<String, String>> config = DataManager.get(mContext).getMediationConfig();
@@ -634,25 +627,21 @@ public class MopubLoader extends AbstractSdkLoader {
                 notifyRewardAdsCompleted();
                 AdReward adReward = new AdReward();
                 adReward.setType(Constant.ECPM);
-                double ecpm = 0;
-                if (mPidConfig != null) {
-                    ecpm = mPidConfig.getEcpm();
-                }
-                adReward.setAmount(String.valueOf(ecpm));
+                adReward.setAmount(String.valueOf(getEcpm()));
                 notifyRewarded(adReward);
             }
         });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        MoPubRewardedAds.loadRewardedAd(getPidConfig().getPid());
+        MoPubRewardedAds.loadRewardedAd(getPid());
     }
 
     @Override
     public boolean showRewardedVideo() {
         printInterfaceLog(ACTION_SHOW);
-        if (MoPubRewardedAds.hasRewardedAd(getPidConfig().getPid())) {
-            MoPubRewardedAds.showRewardedAd(getPidConfig().getPid());
+        if (MoPubRewardedAds.hasRewardedAd(getPid())) {
+            MoPubRewardedAds.showRewardedAd(getPid());
             updateLastShowTime();
             reportAdShow();
             notifyAdShow();
