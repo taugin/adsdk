@@ -604,6 +604,8 @@ public class ToponLoader extends AbstractSdkLoader {
             map.put("ad_platform", getSdkName());
             map.put("ad_bidding", atAdInfo.isHeaderBiddingAdsource());
             map.put("ad_precision", atAdInfo.getEcpmPrecision());
+            map.put("ad_sdk_version", getSdkVersion());
+            map.put("ad_app_version", getAppVersion());
             String gaid = Utils.getString(mContext, Constant.PREF_GAID);
             map.put("ad_gaid", gaid);
             if (isReportAdImpData()) {

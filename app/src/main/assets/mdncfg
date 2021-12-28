@@ -4,6 +4,6 @@
   },
   "common_config": {
     "mopub_log_level": "debug",
-    "applovin_debug": "true"
+    "applovin_debug": "false"
   }
 }

@@ -863,6 +863,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             map.put("ad_format", adFormat);
             map.put("ad_unit_name", adUnitName);
             map.put("ad_platform", getSdkName());
+            map.put("ad_sdk_version", getSdkVersion());
+            map.put("ad_app_version", getAppVersion());
             try {
                 String[] precisionTypes = new String[]{"unknown", "estimated", "publisher_provided", "precise"};
                 map.put("ad_precision", precisionTypes[adValue.getPrecisionType()]);

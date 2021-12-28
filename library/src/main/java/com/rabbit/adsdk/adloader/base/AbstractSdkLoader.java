@@ -33,6 +33,7 @@ import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.stat.IEvent;
 import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
+import com.rabbit.sunny.BuildConfig;
 import com.rabbit.sunny.MView;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected static final int STATE_REQUEST = 1;
     protected static final int STATE_SUCCESS = 2;
     protected static final int STATE_FAILURE = 3;
-    protected static final int STATE_TIMTOUT = 4;
+    protected static final int STATE_TIMEOUT = 4;
 
     private static Map<Object, Long> mCachedTime = new ConcurrentHashMap<Object, Long>();
     protected PidConfig mPidConfig;
@@ -575,7 +576,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void onLoadTimeout() {
         Log.iv(Log.TAG, formatLog("load time out"));
         reportAdError("AD_ERROR_TIMEOUT");
-        setLoading(false, STATE_TIMTOUT);
+        setLoading(false, STATE_TIMEOUT);
         notifyAdLoadFailed(Constant.AD_ERROR_TIMEOUT, "load time out");
     }
 
@@ -624,6 +625,14 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return sceneId;
     }
 
+    protected String getSdkVersion() {
+        return BuildConfig.SDK_VERSION_NAME;
+    }
+
+    protected String getAppVersion() {
+        return Utils.getVersionName(mContext);
+    }
+
     private void reportLoadAdTime(int state) {
         if (state == STATE_REQUEST) {
             mRequestTime = SystemClock.elapsedRealtime();
@@ -640,8 +649,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             if (mRequestTime > 0) {
                 try {
                     String error = "STATE_FAILURE";
-                    if (state == STATE_TIMTOUT) {
-                        error = "STATE_TIMTOUT";
+                    if (state == STATE_TIMEOUT) {
+                        error = "STATE_TIMEOUT";
                     }
                     int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
                     mStat.reportAdLoadFailureTime(mContext, getAdPlaceName(), getSdkName(), getAdType(), error, time);

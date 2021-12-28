@@ -852,6 +852,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
             map.put("ad_unit_name", placement);
             map.put("ad_platform", getSdkName());
             map.put("ad_country_code", countryCode);
+            map.put("ad_sdk_version", getSdkVersion());
+            map.put("ad_app_version", getAppVersion());
             String gaid = Utils.getString(mContext, Constant.PREF_GAID);
             map.put("ad_gaid", gaid);
             if (isReportAdImpData()) {

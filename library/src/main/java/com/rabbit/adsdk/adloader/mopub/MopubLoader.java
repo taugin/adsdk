@@ -942,6 +942,8 @@ public class MopubLoader extends AbstractSdkLoader {
                 map.put("ad_unit_name", impressionData.getAdUnitName());
                 map.put("ad_group_name", impressionData.getAdGroupName());
                 map.put("ad_platform", getSdkName());
+                map.put("ad_sdk_version", getSdkVersion());
+                map.put("ad_app_version", getAppVersion());
                 String gaid = Utils.getString(mContext, Constant.PREF_GAID);
                 map.put("ad_gaid", gaid);
                 if (isReportAdImpData()) {
