@@ -121,6 +121,7 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:videocommon:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:same:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:interstitialvideo:${mintegral_version}"
+    implementation "com.mbridge.msdk.oversea:interstitial:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbnative:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:nativeex:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbbanner:${mintegral_version}"
