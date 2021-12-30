@@ -451,13 +451,12 @@ public class MopubLoader extends AbstractSdkLoader {
                 clearLastShowTime();
                 onResetInterstitial();
                 reportAdError(codeToError(errorCode));
+                notifyAdLoadFailed(toSdkError(errorCode), toErrorMessage(errorCode));
                 if (errorCode == MoPubErrorCode.FULLSCREEN_SHOW_ERROR
                         || errorCode == MoPubErrorCode.INLINE_SHOW_ERROR
                         || errorCode == MoPubErrorCode.AD_SHOW_ERROR
                         || errorCode == MoPubErrorCode.VIDEO_PLAYBACK_ERROR) {
                     notifyAdShowFailed(toSdkError(errorCode), toErrorMessage(errorCode));
-                } else {
-                    notifyAdLoadFailed(toSdkError(errorCode), toErrorMessage(errorCode));
                 }
             }
 
@@ -594,13 +593,12 @@ public class MopubLoader extends AbstractSdkLoader {
                 clearLastShowTime();
                 onResetReward();
                 reportAdError(codeToError(moPubErrorCode));
+                notifyAdLoadFailed(toSdkError(moPubErrorCode), toErrorMessage(moPubErrorCode));
                 if (moPubErrorCode == MoPubErrorCode.FULLSCREEN_SHOW_ERROR
                         || moPubErrorCode == MoPubErrorCode.INLINE_SHOW_ERROR
                         || moPubErrorCode == MoPubErrorCode.AD_SHOW_ERROR
                         || moPubErrorCode == MoPubErrorCode.VIDEO_PLAYBACK_ERROR) {
                     notifyAdShowFailed(toSdkError(moPubErrorCode), toErrorMessage(moPubErrorCode));
-                } else {
-                    notifyAdLoadFailed(toSdkError(moPubErrorCode), toErrorMessage(moPubErrorCode));
                 }
             }
 
