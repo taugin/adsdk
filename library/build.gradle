@@ -60,6 +60,16 @@ dependencies {
     // stringfog
     implementation 'com.github.megatronking.stringfog:xor:1.1.0'
 //////////////////////////////////////////////////////////////////////////////////////////
+    //Anythink (Necessary)
+    def topon_version = "5.7.93"
+    implementation "com.anythink.sdk:core:${topon_version}"
+    implementation "com.anythink.sdk:nativead:${topon_version}"
+    implementation "com.anythink.sdk:banner:${topon_version}"
+    implementation "com.anythink.sdk:interstitial:${topon_version}"
+    implementation "com.anythink.sdk:rewardedvideo:${topon_version}"
+    implementation "com.anythink.sdk:splash:${topon_version}"
+
+//////////////////////////////////////////////////////////////////////////////////////////
 
     // applovin
     implementation 'com.applovin:applovin-sdk:10.3.5'
@@ -68,7 +78,7 @@ dependencies {
     // admob applovin mediation
     implementation 'com.google.ads.mediation:applovin:10.3.5.0@aar'
     // topon applovin mediation
-    api "com.anythink.sdk:adapter-applovin:5.7.83"
+    implementation "com.anythink.sdk:adapter-applovin:${topon_version}"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // facebook
@@ -80,7 +90,7 @@ dependencies {
     // admob facebook mediation
     implementation 'com.google.ads.mediation:facebook:6.8.0.0@aar'
     // topon facebook mediation
-    api "com.anythink.sdk:adapter-facebook:5.7.83"
+    implementation "com.anythink.sdk:adapter-facebook:${topon_version}"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // admob
@@ -90,11 +100,11 @@ dependencies {
     // tradplus admob mediation
     implementation 'com.tradplusad:tradplus-googlex:2.7.2.0.1'
     // topon admob mediation
-    api "com.anythink.sdk:adapter-admob:5.7.83"
+    implementation "com.anythink.sdk:adapter-admob:${topon_version}"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // mintegral
-    def mintegral_version = "15.7.21"
+    def mintegral_version = "15.7.71"
     implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
@@ -109,11 +119,11 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbbid:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbnativeadvanced:${mintegral_version}"
     // applovin mintegral mediation
-    implementation 'com.applovin.mediation:mintegral-adapter:15.7.21.0@aar'
+    implementation 'com.applovin.mediation:mintegral-adapter:15.7.71.1@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.7.2.0.1'
     // topon mintegral mediation
-    api "com.anythink.sdk:adapter-mintegral-nonchina:5.7.83"
+    implementation "com.anythink.sdk:adapter-mintegral-nonchina:${topon_version}"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Inmobi
@@ -125,7 +135,7 @@ dependencies {
     //admob inmobi mediation
     implementation 'com.google.ads.mediation:inmobi:9.2.0.0@aar'
     //topon inmobi mediation
-    api "com.anythink.sdk:adapter-inmobi:5.7.83"
+    implementation "com.anythink.sdk:adapter-inmobi:${topon_version}"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // tradplus
@@ -144,7 +154,7 @@ dependencies {
     // admob unity mediation
     implementation 'com.google.ads.mediation:unity:3.7.5.0@aar'
     // top unity mediation
-    api "com.anythink.sdk:adapter-unityads:5.7.83"
+    implementation "com.anythink.sdk:adapter-unityads:${topon_version}"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // vungle
@@ -156,8 +166,8 @@ dependencies {
     // admob vungle mediation
     implementation 'com.google.ads.mediation:vungle:6.10.2.0@aar'
     // topon vungle mediation
-    api "com.anythink.sdk:adapter-vungle:5.7.83"
-    api "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
+    implementation "com.anythink.sdk:adapter-vungle:${topon_version}"
+    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // ironsource
@@ -169,7 +179,7 @@ dependencies {
     // admob ironsource mediation
     implementation 'com.google.ads.mediation:ironsource:7.1.11.0@aar'
     // topon ironsource mediation
-    api "com.anythink.sdk:adapter-ironsource:5.7.83"
+    implementation "com.anythink.sdk:adapter-ironsource:${topon_version}"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     implementation 'com.adcolony:sdk:4.6.5'
@@ -180,7 +190,7 @@ dependencies {
     // admob adcolony mediation
     implementation 'com.google.ads.mediation:adcolony:4.6.4.0@aar'
     // topon adcolony mediation
-    api "com.anythink.sdk:adapter-adcolony:5.7.83"
+    implementation "com.anythink.sdk:adapter-adcolony:${topon_version}"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Tapjoy
@@ -192,21 +202,12 @@ dependencies {
     // admob tapjoy mediation
     implementation 'com.google.ads.mediation:tapjoy:12.8.1.1@aar'
     // topon tapjoy mediation
-    api "com.anythink.sdk:adapter-tapjoy:5.7.83"
+    implementation "com.anythink.sdk:adapter-tapjoy:${topon_version}"
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Cross Promotion
     implementation 'com.tradplusad:tradplus-crosspromotion:27.7.2.0.1'
 
-//////////////////////////////////////////////////////////////////////////////////////////
-    //Anythink (Necessary)
-    def topon_version = "5.7.83"
-    api "com.anythink.sdk:core:${topon_version}"
-    api "com.anythink.sdk:nativead:${topon_version}"
-    api "com.anythink.sdk:banner:${topon_version}"
-    api "com.anythink.sdk:interstitial:${topon_version}"
-    api "com.anythink.sdk:rewardedvideo:${topon_version}"
-    api "com.anythink.sdk:splash:${topon_version}"
 }
 
 // 发布aar
@@ -237,8 +238,8 @@ afterEvaluate {
         publications {
             android.libraryVariants.all { variant ->
                 if (variant.name.contains("Release")) {
-                    "maven${variant.name.capitalize()}Aar"(MavenPublication) {
-                        def taskName = "bundle${variant.name.capitalize()}Aar"
+                    "maven${variant.name.cimplementationtalize()}Aar"(MavenPublication) {
+                        def taskName = "bundle${variant.name.cimplementationtalize()}Aar"
                         println "taskName : " + taskName
                         artifact tasks.findByName(taskName)
                         groupId 'com.hauyu'
