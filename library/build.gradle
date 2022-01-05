@@ -61,23 +61,8 @@ dependencies {
     implementation 'com.github.megatronking.stringfog:xor:1.1.0'
 //////////////////////////////////////////////////////////////////////////////////////////
 
-    // MoPub
-    implementation('com.mopub:mopub-sdk:5.18.0@aar') {
-        transitive = true
-        exclude group: 'androidx.fragment'
-        exclude group: 'androidx.core'
-    }
-    implementation 'com.mopub.volley:mopub-volley:2.1.0'
-    // tradplus mopub mediation
-    implementation 'com.tradplusad:tradplus-mopubx:3.7.2.0.1'
-    // topon mopub mediation
-    api "com.anythink.sdk:adapter-mopub:5.7.83"
-//////////////////////////////////////////////////////////////////////////////////////////
-
     // applovin
     implementation 'com.applovin:applovin-sdk:10.3.5'
-    // mopub applovin mediation
-    implementation 'com.mopub.mediation:applovin:10.3.4.0'
     // tradplus applovin mediation
     implementation 'com.tradplusad:tradplus-applovin:9.7.2.0.1'
     // admob applovin mediation
@@ -88,8 +73,6 @@ dependencies {
 
     // facebook
     implementation 'com.facebook.android:audience-network-sdk:6.8.0'
-    // mopub facebook mediation
-    implementation 'com.mopub.mediation:facebookaudiencenetwork:6.7.0.0'
     // applovin facebook mediation
     implementation 'com.applovin.mediation:facebook-adapter:6.8.0.2@aar'
     // tradplus facebook mediation
@@ -102,8 +85,6 @@ dependencies {
 
     // admob
     implementation 'com.google.android.gms:play-services-ads:20.5.0'
-    // mopub admob mediation
-    implementation 'com.mopub.mediation:admob:20.4.0.0'
     // applovin admob mediation
     implementation 'com.applovin.mediation:google-adapter:20.5.0.2@aar'
     // tradplus admob mediation
@@ -127,8 +108,6 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbbanner:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbbid:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbnativeadvanced:${mintegral_version}"
-    // mopub mintegral mediation
-    implementation "com.mopub.mediation:mintegral:15.7.21.0"
     // applovin mintegral mediation
     implementation 'com.applovin.mediation:mintegral-adapter:15.7.21.0@aar'
     // tradplus mintegral mediation
@@ -139,8 +118,6 @@ dependencies {
 
     // Inmobi
     implementation 'com.inmobi.monetization:inmobi-ads:9.2.0'
-    // mopub inmobi mediation
-    implementation 'com.mopub.mediation:inmobi:9.2.0.0'
     // applovin inmobi mediation
     implementation 'com.applovin.mediation:inmobi-adapter:9.9.9.6@aar'
     //tradplus inmobi mediation
@@ -160,8 +137,6 @@ dependencies {
 
     // unity
     implementation 'com.unity3d.ads:unity-ads:3.7.5'
-    // mopub applovin mediation
-    implementation 'com.mopub.mediation:unityads:3.7.5.0'
     // unity applovin mediation
     implementation 'com.applovin.mediation:unityads-adapter:3.7.5.1@aar'
     // tradplus unity mediation
@@ -174,8 +149,6 @@ dependencies {
 
     // vungle
     implementation 'com.vungle:publisher-sdk-android:6.10.2'
-    // mopub vungle mediation
-    implementation 'com.mopub.mediation:vungle:6.10.2.0'
     // applovin vungle mediation
     implementation 'com.applovin.mediation:vungle-adapter:6.10.2.0'
     // tradplus vungle mediation
@@ -189,8 +162,6 @@ dependencies {
 
     // ironsource
     implementation 'com.ironsource.sdk:mediationsdk:7.1.10'
-    // mopub ironsource mediation
-    implementation 'com.mopub.mediation:ironsource:7.1.10.0'
     // applovin ironsource mediation
     implementation 'com.applovin.mediation:ironsource-adapter:7.1.10.1.0'
     // tradplus ironsource mediation
@@ -214,8 +185,6 @@ dependencies {
 
     // Tapjoy
     implementation 'com.tapjoy:tapjoy-android-sdk:12.8.1@aar'
-    // mopub tapjoy mediation
-    implementation 'com.mopub.mediation:tapjoy:12.8.1.0'
     // applovin tapjoy mediation
     implementation 'com.applovin.mediation:tapjoy-adapter:12.8.1.0@aar'
     // tradplus tapjoy mediation

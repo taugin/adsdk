@@ -19,13 +19,10 @@ import com.anythink.nativead.unitgroup.api.CustomNativeAd;
 import com.anythink.network.mintegral.MintegralATNativeAd;
 import com.mbridge.msdk.out.Campaign;
 import com.mbridge.msdk.widget.MBAdChoice;
-import com.mopub.common.util.Drawables;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
-import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
-import com.rabbit.adsdk.utils.Utils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -178,20 +175,7 @@ public class ToponBindView extends BaseBindNativeView {
                 } else if (logoView != null) {
                     adChoiceLayout.addView(logoView);
                 } else {
-                    String sourceName = null;
-                    try {
-                        sourceName = getNetwork(mNativeAd.getAdInfo());
-                    } catch (Exception e) {
-                    }
-                    if (Constant.AD_SDK_MOPUB.equalsIgnoreCase(sourceName)) {
-                        ImageView imageView = new ImageView(mContext);
-                        imageView.setImageDrawable(Drawables.NATIVE_PRIVACY_INFORMATION_ICON.createDrawable(mContext));
-                        int size = Utils.dp2px(mContext, 24);
-                        adChoiceLayout.addView(imageView, size, size);
-                    }
-                    if (adChoiceLayout.getChildCount() == 0) {
-                        setMintegralAdChoiceByDefault(customNativeAd, adChoiceLayout);
-                    }
+                    setMintegralAdChoiceByDefault(customNativeAd, adChoiceLayout);
                 }
             }
 
@@ -231,6 +215,7 @@ public class ToponBindView extends BaseBindNativeView {
 
         /**
          * mintegral视频默认静音
+         *
          * @param customNativeAd
          */
         private void setVideoDefaultMuteForMintegral(CustomNativeAd customNativeAd) {
@@ -244,6 +229,7 @@ public class ToponBindView extends BaseBindNativeView {
 
         /**
          * 反射设置mintegral的ad choice
+         *
          * @param customNativeAd
          * @param viewGroup
          */

@@ -24,17 +24,6 @@
       ]
     },
     {
-      "name": "banner_mopub",
-      "mode": "con",
-      "pids": [
-        {
-          "sdk": "mopub",
-          "type": "banner",
-          "pid": "252412d5e9364a05ab77d9396346d73d"
-        }
-      ]
-    },
-    {
       "name": "banner_applovin",
       "mode": "con",
       "pids": [
@@ -82,17 +71,6 @@
           "sdk": "admob",
           "type": "interstitial",
           "pid": "ca-app-pub-3940256099942544/1033173712"
-        }
-      ]
-    },
-    {
-      "name": "interstitial_mopub",
-      "mode": "con",
-      "pids": [
-        {
-          "sdk": "mopub",
-          "type": "interstitial",
-          "pid": "24534e1901884e398f1253216226017e"
         }
       ]
     },
@@ -148,17 +126,6 @@
       ]
     },
     {
-      "name": "reward_mopub",
-      "mode": "con",
-      "pids": [
-        {
-          "sdk": "mopub",
-          "type": "reward",
-          "pid": "89c000c7bb514d8fa78614f8b53a356b"
-        }
-      ]
-    },
-    {
       "name": "reward_applovin",
       "mode": "con",
       "pids": [
@@ -206,17 +173,6 @@
           "sdk": "admob",
           "type": "native",
           "pid": "ca-app-pub-3940256099942544/2247696110"
-        }
-      ]
-    },
-    {
-      "name": "native_mopub",
-      "mode": "con",
-      "pids": [
-        {
-          "sdk": "mopub",
-          "type": "native",
-          "pid": "02a2d288d2674ad09f3241d46a44356e"
         }
       ]
     },

@@ -8,7 +8,6 @@ import com.facebook.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.inmobi.ads.InMobiNative;
 import com.mbridge.msdk.MBridgeSDK;
-import com.mopub.mobileads.MoPubInterstitial;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.log.Log;
 import com.tradplus.ads.mobileads.TradPlus;
@@ -26,9 +25,6 @@ public class ModuleLoaderHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_FACEBOOK, sdk)) {
             return hasFBModule();
-        }
-        if (TextUtils.equals(Constant.AD_SDK_MOPUB, sdk)) {
-            return hasMopubModule();
         }
         if (TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk)) {
             return hasApplovinModule();
@@ -64,16 +60,6 @@ public class ModuleLoaderHelper {
     private static boolean hasFBModule() {
         try {
             InterstitialAd.class.getName();
-            return true;
-        } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        }
-        return false;
-    }
-
-    private static boolean hasMopubModule() {
-        try {
-            MoPubInterstitial.class.getName();
             return true;
         } catch (Exception | Error e) {
             Log.e(Log.TAG, "error : " + e, e);

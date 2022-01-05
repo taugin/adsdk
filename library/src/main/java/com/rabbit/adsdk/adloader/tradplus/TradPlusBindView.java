@@ -12,14 +12,10 @@ import android.widget.TextView;
 
 import com.mbridge.msdk.out.Campaign;
 import com.mbridge.msdk.widget.MBAdChoice;
-import com.mopub.common.util.Drawables;
-import com.mopub.nativeads.BaseNativeAd;
-import com.mopub.nativeads.StaticNativeAd;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
-import com.rabbit.adsdk.utils.Utils;
 import com.tradplus.ads.base.adapter.nativead.TPNativeAdView;
 import com.tradplus.ads.base.common.TPImageLoader;
 import com.tradplus.ads.mgr.nativead.TPCustomNativeAd;
@@ -180,28 +176,7 @@ public class TradPlusBindView extends BaseBindNativeView {
     private boolean renderAdChoice(ViewGroup viewGroup, TPCustomNativeAd customNativeAd) {
         try {
             Object obj = customNativeAd.getCustomNetworkObj();
-            // 设置mopub的ad choice
-            if (obj instanceof com.mopub.nativeads.NativeAd) {
-                com.mopub.nativeads.NativeAd nativeAd = (com.mopub.nativeads.NativeAd) obj;
-                BaseNativeAd baseNativeAd = nativeAd.getBaseNativeAd();
-                if (baseNativeAd instanceof com.mopub.nativeads.StaticNativeAd) {
-                    com.mopub.nativeads.StaticNativeAd staticNativeAd = (StaticNativeAd) baseNativeAd;
-                    String url = staticNativeAd.getPrivacyInformationIconImageUrl();
-                    if (!TextUtils.isEmpty(url)) {
-                        ImageView imageView = new ImageView(viewGroup.getContext());
-                        TPImageLoader.getInstance().loadImage(imageView, url);
-                        int size = Utils.dp2px(viewGroup.getContext(), 24);
-                        viewGroup.addView(imageView, size, size);
-                        return true;
-                    } else {
-                        ImageView imageView = new ImageView(viewGroup.getContext());
-                        imageView.setImageDrawable(Drawables.NATIVE_PRIVACY_INFORMATION_ICON.createDrawable(viewGroup.getContext()));
-                        int size = Utils.dp2px(viewGroup.getContext(), 24);
-                        viewGroup.addView(imageView, size, size);
-                        return true;
-                    }
-                }
-            } else if (obj instanceof com.mbridge.msdk.out.Campaign) {
+            if (obj instanceof com.mbridge.msdk.out.Campaign) {
                 // 设置mintegral的ad choice
                 com.mbridge.msdk.out.Campaign campaign = (Campaign) obj;
                 MBAdChoice mbAdChoice = new MBAdChoice(viewGroup.getContext());

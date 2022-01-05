@@ -8,7 +8,6 @@
         <item>TradPlus</item>
         <item>Applovin</item>
         <item>Admob</item>
-        <item>Mopub</item>
     </string-array>
     <string-array name="ad_layout">
         <item>Random</item>

@@ -672,7 +672,6 @@ public class ToponLoader extends AbstractSdkLoader {
         sNetworkFirmTable.put(4, "Flurry");
         sNetworkFirmTable.put(5, "Applovin");
         sNetworkFirmTable.put(6, "Mintegral");
-        sNetworkFirmTable.put(7, "Mopub");
         sNetworkFirmTable.put(10, "Tapjoy");
         sNetworkFirmTable.put(11, "Ironsource");
         sNetworkFirmTable.put(12, "UnityAds");

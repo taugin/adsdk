@@ -269,10 +269,6 @@ public class PidConfig {
         return TextUtils.equals(Constant.AD_SDK_ADMOB, sdk);
     }
 
-    public boolean isMopub() {
-        return TextUtils.equals(Constant.AD_SDK_MOPUB, sdk);
-    }
-
     public boolean isFB() {
         return TextUtils.equals(Constant.AD_SDK_FACEBOOK, sdk);
     }

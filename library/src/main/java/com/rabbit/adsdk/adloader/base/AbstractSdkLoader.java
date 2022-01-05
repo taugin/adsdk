@@ -12,7 +12,6 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.mopub.network.ImpressionData;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.core.AdLoaderManager;
 import com.rabbit.adsdk.adloader.listener.IManagerListener;
@@ -1062,12 +1061,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     /*************************************************************************************/
     // Taichi模型，为AC2.5准备数据
-    private void reportAdLTVOneDayPercent(ImpressionData impressionData) {
-        if (impressionData != null) {
-            Double publishRevenue = impressionData.getPublisherRevenue();
-            if (publishRevenue != null && !Double.isNaN(publishRevenue)) {
-                calcTaiChitCPAOneDayAdRevenueCache(publishRevenue.floatValue());
-            }
+    private void reportAdLTVOneDayPercent() {
+        Double publishRevenue = Double.valueOf(0.0f);
+        if (publishRevenue != null && !Double.isNaN(publishRevenue)) {
+            calcTaiChitCPAOneDayAdRevenueCache(publishRevenue.floatValue());
         }
     }
 

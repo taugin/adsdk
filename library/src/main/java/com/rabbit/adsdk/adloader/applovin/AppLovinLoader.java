@@ -51,7 +51,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private View mTemplateAdView;
 
     /**
-     * 提前初始化applovin，避免applovin被mopub使用Application Context初始化
+     * 提前初始化applovin，避免applovin被使用Application Context初始化
      *
      * @return
      */
@@ -89,10 +89,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
         boolean isDebug = false;
         Map<String, Map<String, String>> config = DataManager.get(context).getMediationConfig();
         if (config != null) {
-            Map<String, String> commonConfig = config.get("common_config");
-            if (commonConfig != null) {
+            Map<String, String> applovinConfig = config.get("applovin.sdk.config");
+            if (applovinConfig != null) {
                 try {
-                    isDebug = Boolean.parseBoolean(commonConfig.get("applovin_debug"));
+                    isDebug = Boolean.parseBoolean(applovinConfig.get("applovin_debug"));
                 } catch (Exception e) {
                 }
             }
@@ -104,7 +104,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
         String applovinSdkKey = null;
         Map<String, Map<String, String>> config = DataManager.get(context).getMediationConfig();
         if (config != null) {
-            Map<String, String> applovinConfig = config.get("com.mopub.mobileads.AppLovinAdapterConfiguration");
+            Map<String, String> applovinConfig = config.get("applovin.sdk.config");
+            if (applovinConfig == null) {
+                applovinConfig = config.get("com.mopub.mobileads.AppLovinAdapterConfiguration");
+            }
             if (applovinConfig != null) {
                 applovinSdkKey = applovinConfig.get("sdk_key");
             }
