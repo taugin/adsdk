@@ -265,7 +265,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdVideoError(TPAdInfo tpAdInfo) {
+            public void onAdVideoError(TPAdInfo tpAdInfo, TPAdError tpAdError) {
                 Log.iv(Log.TAG, formatLog("ad interstitial show error"));
                 notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "ad interstitial show error");
             }
@@ -393,7 +393,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdVideoError(TPAdInfo tpAdInfo) {
+            public void onAdVideoError(TPAdInfo tpAdInfo, TPAdError tpAdError) {
                 Log.iv(Log.TAG, formatLog("ad reward video error"));
                 onResetReward();
                 notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "ad reward video error");

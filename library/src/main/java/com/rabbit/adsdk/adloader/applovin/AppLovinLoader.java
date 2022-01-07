@@ -21,6 +21,7 @@ import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.mediation.ads.MaxRewardedAd;
 import com.applovin.mediation.nativeAds.MaxNativeAdListener;
 import com.applovin.mediation.nativeAds.MaxNativeAdLoader;
+import com.applovin.mediation.nativeAds.MaxNativeAdView;
 import com.applovin.sdk.AppLovinErrorCodes;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkSettings;
@@ -48,7 +49,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     private static AtomicBoolean sApplovinInited = new AtomicBoolean(false);
     private static AppLovinSdkSettings sAppLovinSdkSettings;
-    private View mTemplateAdView;
+    private MaxNativeAdView mMaxNativeAdView;
+    private ApplovinBindView mApplovinBindView = new ApplovinBindView();
 
     /**
      * 提前初始化applovin，避免applovin被使用Application Context初始化
@@ -625,6 +627,18 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public void loadNative(Params params) {
+        Activity activity = getActivity();
+        if (activity == null) {
+            Log.iv(Log.TAG, formatLog("error activity context"));
+            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT, "error activity context");
+            return;
+        }
+        AppLovinSdk appLovinSdk = getInstance(activity);
+        if (appLovinSdk == null) {
+            Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
+            return;
+        }
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
             notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
@@ -646,29 +660,16 @@ public class AppLovinLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        try {
-            if (isTemplateRendering()) {
-                loadTemplateNative();
-            } else {
-                loadCustomNative();
-            }
-        } catch (Exception e) {
-            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT, "error activity context");
-        }
-    }
-
-    private void loadTemplateNative() {
-        Activity activity = getActivity();
         MaxNativeAdLoader templateNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
         templateNativeAdLoader.setPlacement(getSceneId());
         templateNativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
             @Override
-            public void onNativeAdLoaded(View view, MaxAd maxAd) {
+            public void onNativeAdLoaded(MaxNativeAdView maxNativeAdView, MaxAd maxAd) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(maxAd)));
                 reportAdLoaded();
                 setLoading(false, STATE_SUCCESS);
-                mTemplateAdView = view;
-                putCachedAdTime(mTemplateAdView);
+                mMaxNativeAdView = maxNativeAdView;
+                putCachedAdTime(mMaxNativeAdView);
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
             }
@@ -699,62 +700,35 @@ public class AppLovinLoader extends AbstractSdkLoader {
         reportAdRequest();
         notifyAdRequest();
         templateNativeAdLoader.setPlacement(getAdPlaceName());
-        templateNativeAdLoader.loadAd();
-    }
-
-    private void loadCustomNative() {
-        notifyAdLoadFailed(Constant.AD_ERROR_UNSUPPORT, "unsupported");
+        MaxNativeAdView maxNativeAdView = mApplovinBindView.bindMaxNativeAdView(activity, params, mPidConfig);
+        templateNativeAdLoader.loadAd(isTemplateRendering() ? null : maxNativeAdView);
     }
 
     @Override
     public boolean isNativeLoaded() {
-        boolean loaded = false;
-        if (isTemplateRendering()) {
-            loaded = isTemplateNativeLoaded();
-        } else {
-            loaded = isCustomNativeLoaded();
-        }
+        boolean loaded = mMaxNativeAdView != null && !isCachedAdExpired(mMaxNativeAdView);
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
         return loaded;
     }
 
-    private boolean isTemplateNativeLoaded() {
-        return mTemplateAdView != null && !isCachedAdExpired(mTemplateAdView);
-    }
-
-    private boolean isCustomNativeLoaded() {
-        return false;
-    }
-
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
-        if (isTemplateRendering()) {
-            showTemplateNative(viewGroup);
-        } else {
-            showCustomNative(viewGroup, params);
-        }
-    }
-
-    private void showCustomNative(ViewGroup viewGroup, Params params) {
-    }
-
-    private void showTemplateNative(ViewGroup viewGroup) {
         try {
-            if (mTemplateAdView != null) {
+            if (mMaxNativeAdView != null) {
                 viewGroup.removeAllViews();
-                ViewParent viewParent = mTemplateAdView.getParent();
+                ViewParent viewParent = mMaxNativeAdView.getParent();
                 if (viewParent instanceof ViewGroup) {
-                    ((ViewGroup) viewParent).removeView(mTemplateAdView);
+                    ((ViewGroup) viewParent).removeView(mMaxNativeAdView);
                 }
-                viewGroup.addView(mTemplateAdView);
+                viewGroup.addView(mMaxNativeAdView);
                 if (viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
-                clearCachedAdTime(mTemplateAdView);
-                mTemplateAdView = null;
+                clearCachedAdTime(mMaxNativeAdView);
+                mMaxNativeAdView = null;
                 reportAdShow();
                 notifyAdShow();
             }
@@ -830,7 +804,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         return "UNKNOWN[" + code + "]";
     }
-    
+
     private String toErrorMessage(MaxError error) {
         if (error != null) {
             return "[" + error.getCode() + "] " + error.getMessage();

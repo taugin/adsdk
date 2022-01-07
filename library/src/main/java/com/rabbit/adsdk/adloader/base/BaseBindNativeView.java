@@ -292,4 +292,25 @@ public class BaseBindNativeView {
         } catch (Exception e) {
         }
     }
+
+    protected void replaceSrcViewToDstView(View srcView, View dstView) {
+        if (srcView != null && dstView != null) {
+            int paddingLeft = srcView.getPaddingLeft();
+            int paddingTop = srcView.getPaddingTop();
+            int paddingRight = srcView.getPaddingRight();
+            int paddingBottom = srcView.getPaddingBottom();
+            dstView.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            dstView.setId(srcView.getId());
+            ViewGroup.LayoutParams layoutParams = srcView.getLayoutParams();
+            if (layoutParams == null) {
+                layoutParams = new ViewGroup.LayoutParams(-2, -2);
+            }
+            ViewGroup viewGroup = (ViewGroup) srcView.getParent();
+            if (viewGroup != null) {
+                int index = viewGroup.indexOfChild(srcView);
+                viewGroup.removeView(srcView);
+                viewGroup.addView(dstView, index, layoutParams);
+            }
+        }
+    }
 }

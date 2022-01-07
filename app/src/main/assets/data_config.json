@@ -183,7 +183,7 @@
         {
           "sdk": "applovin",
           "type": "native",
-          "template": 1,
+          "template": 0,
           "pid": "362f47498059fbdb"
         }
       ]
