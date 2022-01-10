@@ -823,6 +823,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             String placement = maxAd.getPlacement(); // The placement this ad's postbacks are tied to
             placement = TextUtils.isEmpty(placement) ? placeName : placement;
             String placementId = maxAd.getNetworkPlacement();
+            String precision = maxAd.getRevenuePrecision();
             Map<String, Object> map = new HashMap<>();
             map.put("value", revenue);
             map.put("ad_network", networkName);
@@ -831,6 +832,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             map.put("ad_format", adFormat.getDisplayName());
             map.put("ad_unit_name", placement);
             map.put("ad_platform", getSdkName());
+            map.put("ad_precision", precision);
             map.put("ad_country_code", countryCode);
             map.put("ad_sdk_version", getSdkVersion());
             map.put("ad_app_version", getAppVersion());
