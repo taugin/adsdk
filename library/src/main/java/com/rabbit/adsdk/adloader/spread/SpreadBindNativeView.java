@@ -126,13 +126,9 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             }
         }
 
-        ViewGroup mediaViewLayout = rootView.findViewById(mParams.getAdMediaView());
-        ImageView mediaView = new ImageView(mediaViewLayout.getContext());
-        if (mediaViewLayout != null && mediaView != null) {
-            mediaView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        ImageView mediaView = rootView.findViewById(mParams.getAdCover());
+        if (mediaView != null) {
             loadAndShowImage(mediaView, spreadCfg.getBanner());
-            mediaViewLayout.addView(mediaView, -1, -1);
-            mediaViewLayout.setVisibility(View.VISIBLE);
             mediaView.setOnClickListener(mClickClass);
         }
         putAdvertiserInfo(spreadCfg);
