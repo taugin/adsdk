@@ -115,6 +115,16 @@
       ]
     },
     {
+      "name": "interstitial_spread",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "spread",
+          "type": "interstitial"
+        }
+      ]
+    },
+    {
       "name": "reward_admob",
       "mode": "con",
       "pids": [
@@ -214,6 +224,16 @@
             "app_id": "a61bdc4a0a9019",
             "app_key": "06f443ba0f648f0930e96a1924fdbd6d"
           }
+        }
+      ]
+    },
+    {
+      "name": "native_spread",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "spread",
+          "type": "native"
         }
       ]
     }
