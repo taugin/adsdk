@@ -30,7 +30,7 @@
                     <ImageView
                         android:id="@+id/common_image_cover"
                         android:contentDescription="@null"
-                        android:scaleType="fitXY"
+                        android:scaleType="fitCenter"
                         app:layout_aspectRatio="190%"
                         app:layout_widthPercent="100%" />
 

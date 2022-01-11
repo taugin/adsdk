@@ -138,7 +138,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:contentDescription="@null"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 app:layout_aspectRatio="192%"
                 app:layout_widthPercent="100%" />
 

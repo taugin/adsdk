@@ -4,10 +4,10 @@
     <string name="app_name_oppo">AdSdkOppo</string>
     <string name="continue_to_app">Continue to app</string>
     <string-array name="ad_sdk">
-        <item>Topon</item>
         <item>TradPlus</item>
         <item>Applovin</item>
         <item>Admob</item>
+        <item>Topon</item>
     </string-array>
     <string-array name="ad_layout">
         <item>Random</item>
