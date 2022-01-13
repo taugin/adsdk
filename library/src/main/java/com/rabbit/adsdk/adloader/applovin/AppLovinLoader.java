@@ -444,8 +444,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad displayed"));
-                reportAdImp();
-                notifyAdImp();
+                String network = null;
+                try {
+                    network = ad.getNetworkName();
+                } catch (Exception e) {
+                }
+                reportAdImp(network);
+                notifyAdImp(network);
             }
 
             @Override
@@ -566,8 +571,14 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad displayed"));
-                reportAdImp();
+                String network = null;
+                try {
+                    network = ad.getNetworkName();
+                } catch (Exception e) {
+                }
+                reportAdImp(network);
                 notifyAdOpened();
+                notifyAdImp(network);
             }
 
             @Override
@@ -660,9 +671,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        MaxNativeAdLoader templateNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
-        templateNativeAdLoader.setPlacement(getSceneId());
-        templateNativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
+        MaxNativeAdLoader nativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
+        nativeAdLoader.setPlacement(getSceneId());
+        nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(MaxNativeAdView maxNativeAdView, MaxAd maxAd) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(maxAd)));
@@ -689,7 +700,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 notifyAdClick();
             }
         });
-        templateNativeAdLoader.setRevenueListener(new MaxAdRevenueListener() {
+        nativeAdLoader.setRevenueListener(new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
@@ -699,9 +710,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        templateNativeAdLoader.setPlacement(getAdPlaceName());
+        nativeAdLoader.setPlacement(getAdPlaceName());
         MaxNativeAdView maxNativeAdView = mApplovinBindView.bindMaxNativeAdView(activity, params, mPidConfig);
-        templateNativeAdLoader.loadAd(isTemplateRendering() ? null : maxNativeAdView);
+        nativeAdLoader.loadAd(isTemplateRendering() ? null : maxNativeAdView);
     }
 
     @Override
