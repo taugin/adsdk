@@ -594,7 +594,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             Map<String, Object> map = new HashMap<>();
             map.put("value", ecpm);
             map.put("ad_network", tpAdInfo.adSourceName);
-            map.put("ad_network_pid", tpAdInfo.adSourceId);
+            map.put("ad_network_pid", getAdSourceId(tpAdInfo));
             map.put("ad_unit_id", getPid());
             map.put("ad_format", getAdType());
             map.put("ad_unit_name", getAdPlaceName());
@@ -619,6 +619,26 @@ public class TradPlusLoader extends AbstractSdkLoader {
         } catch (Exception e) {
             Log.e(Log.TAG, "report trusplus error : " + e);
         }
+    }
+
+    private String getAdSourceId(TPAdInfo tpAdInfo) {
+        String networkUnitId = null;
+        try {
+            if (tpAdInfo != null) {
+                if ("mintegral".equalsIgnoreCase(tpAdInfo.adSourceName)) {
+                    if (tpAdInfo.configBean != null) {
+                        networkUnitId = tpAdInfo.configBean.getUnitId();
+                    }
+                    if (TextUtils.isEmpty(networkUnitId)) {
+                        networkUnitId = tpAdInfo.adSourceId;
+                    }
+                } else {
+                    networkUnitId = tpAdInfo.adSourceId;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return networkUnitId;
     }
 
     private String getLoadedInfo(TPAdInfo tpAdInfo) {
