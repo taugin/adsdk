@@ -111,9 +111,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad banner click"));
-                reportAdClick();
-                notifyAdClick();
+                String network = getNetwork(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network));
+                reportAdClick(network);
+                notifyAdClick(network);
             }
 
             @Override
@@ -242,17 +243,19 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad interstitial impression"));
-                reportAdImp();
-                notifyAdImp();
+                String network = getNetwork(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network));
+                reportAdImp(network);
+                notifyAdImp(network);
                 reportTradPlusImpressionData(tpAdInfo);
             }
 
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad interstitial click"));
-                reportAdClick();
-                notifyAdClick();
+                String network = getNetwork(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network));
+                reportAdClick(network);
+                notifyAdClick(network);
             }
 
             @Override
@@ -349,16 +352,18 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad reward click"));
-                reportAdClick();
-                notifyAdClick();
+                String network = getNetwork(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network));
+                reportAdClick(network);
+                notifyAdClick(network);
             }
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad reward start"));
-                reportAdImp();
-                notifyAdImp();
+                String network = getNetwork(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network));
+                reportAdImp(network);
+                notifyAdImp(network);
                 reportTradPlusImpressionData(tpAdInfo);
             }
 
@@ -471,7 +476,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad network click network : " + network));
+                Log.iv(Log.TAG, formatLog("ad click network : " + network));
                 reportAdClick(network);
                 notifyAdClick(network);
             }
@@ -479,7 +484,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad network impression network : " + network));
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network));
                 reportAdImp(network);
                 notifyAdImp(network);
                 reportTradPlusImpressionData(tpAdInfo);

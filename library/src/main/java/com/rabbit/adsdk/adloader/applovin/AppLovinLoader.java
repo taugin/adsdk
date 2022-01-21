@@ -348,9 +348,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
-                notifyAdClick();
+                String network = getNetwork(ad);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network));
+                reportAdClick(network);
+                notifyAdClick(network);
             }
 
             @Override
@@ -443,12 +444,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
-                Log.iv(Log.TAG, formatLog("ad displayed"));
-                String network = null;
-                try {
-                    network = ad.getNetworkName();
-                } catch (Exception e) {
-                }
+                String network = getNetwork(ad);
+                Log.iv(Log.TAG, formatLog("ad displayed network : " + network));
                 reportAdImp(network);
                 notifyAdImp(network);
             }
@@ -464,9 +461,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
-                notifyAdClick();
+                String network = getNetwork(ad);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network));
+                reportAdClick(network);
+                notifyAdClick(network);
             }
 
             @Override
@@ -570,12 +568,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
-                Log.iv(Log.TAG, formatLog("ad displayed"));
-                String network = null;
-                try {
-                    network = ad.getNetworkName();
-                } catch (Exception e) {
-                }
+                String network = getNetwork(ad);
+                Log.iv(Log.TAG, formatLog("ad displayed network : " + network));
                 reportAdImp(network);
                 notifyAdOpened();
                 notifyAdImp(network);
@@ -592,9 +586,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdClicked(MaxAd ad) {
-                Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
-                notifyAdClick();
+                String network = getNetwork(ad);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network));
+                reportAdClick(network);
+                notifyAdClick(network);
             }
 
             @Override
@@ -695,15 +690,19 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
             @Override
             public void onNativeAdClicked(MaxAd maxAd) {
-                Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
-                notifyAdClick();
+                String network = getNetwork(maxAd);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network));
+                reportAdClick(network);
+                notifyAdClick(network);
             }
         });
         nativeAdLoader.setRevenueListener(new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
+                String network = getNetwork(ad);
+                reportAdImp(network);
+                notifyAdImp(network);
                 reportMaxAdImpData(ad, getAdPlaceName());
             }
         });
@@ -886,5 +885,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
             return " - " + builder.toString();
         }
         return builder.toString();
+    }
+
+    private String getNetwork(MaxAd maxAd) {
+        if (maxAd != null) {
+            return maxAd.getNetworkName();
+        }
+        return null;
     }
 }
