@@ -738,6 +738,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
                 clearCachedAdTime(mMaxNativeAdView);
+                updateNativeStatus(mMaxNativeAdView);
                 mMaxNativeAdView = null;
                 reportAdShow();
                 notifyAdShow();
@@ -745,6 +746,26 @@ public class AppLovinLoader extends AbstractSdkLoader {
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : " + e);
+        }
+    }
+
+    private void updateNativeStatus(MaxNativeAdView maxNativeAdView) {
+        try {
+            if (maxNativeAdView != null) {
+                ViewGroup viewGroup = maxNativeAdView.getOptionsContentViewGroup();
+                if (viewGroup != null && viewGroup.getChildCount() > 0) {
+                    View childView = viewGroup.getChildAt(0);
+                    if (childView != null) {
+                        ViewGroup.LayoutParams params = childView.getLayoutParams();
+                        if (params != null) {
+                            params.width = -2;
+                            params.height = -2;
+                            childView.setLayoutParams(params);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
         }
     }
 
