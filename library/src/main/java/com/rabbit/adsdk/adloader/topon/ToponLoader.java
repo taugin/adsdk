@@ -598,7 +598,8 @@ public class ToponLoader extends AbstractSdkLoader {
     private void reportToponImpressionData(ATAdInfo atAdInfo) {
         try {
             Map<String, Object> map = new HashMap<>();
-            map.put("value", atAdInfo.getEcpm());
+            map.put("value", atAdInfo.getEcpm() / 1000);
+            map.put("currency", atAdInfo.getCurrency());
             map.put("ad_network", sNetworkFirmTable.get(atAdInfo.getNetworkFirmId()));
             map.put("ad_network_pid", atAdInfo.getNetworkPlacementId());
             map.put("ad_unit_id", getPid());

@@ -597,7 +597,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 }
             }
             Map<String, Object> map = new HashMap<>();
-            map.put("value", ecpm);
+            map.put("value", ecpm / 1000);
+            map.put("currency", tpAdInfo.currency);
             map.put("ad_network", tpAdInfo.adSourceName);
             map.put("ad_network_pid", getAdSourceId(tpAdInfo));
             map.put("ad_unit_id", getPid());

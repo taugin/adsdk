@@ -1049,7 +1049,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
      * @return
      */
     protected boolean isReportAdImpData() {
-        String value = DataManager.get(mContext).getString("report_ad_imp_data");
+        String value = DataManager.get(mContext).getString("report_ad_imp_revenue");
         if (!TextUtils.isEmpty(value)) {
             try {
                 return Boolean.parseBoolean(value);
