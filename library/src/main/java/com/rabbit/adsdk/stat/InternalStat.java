@@ -506,7 +506,7 @@ public class InternalStat {
             newSets = new HashSet<>();
         }
         newSets.add(platform);
-        Log.iv(Log.TAG, "record statistics platform set : " + newSets);
+        Log.iv(Log.TAG_SDK, "record statistics platform set : " + newSets);
         Utils.putStringSet(context, PREF_AD_REPORT_EVENT_PLATFORM_LIST, newSets);
     }
 

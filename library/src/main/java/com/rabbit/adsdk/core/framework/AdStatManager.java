@@ -39,14 +39,14 @@ public class AdStatManager {
     }
 
     public void recordAdImp(String sdk, String placeName, String network) {
-        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
+        Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         recordAllImpCount();
         BlockAdsManager.get(mContext).recordAdImp(sdk, placeName, network);
         LimitAdsManager.get(mContext).recordAdImp(sdk, placeName, network);
     }
 
     public void recordAdClick(String sdk, String placeName, String network) {
-        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
+        Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         recordAllClkCount();
         BlockAdsManager.get(mContext).recordAdClick(sdk, placeName, network);
         LimitAdsManager.get(mContext).recordAdClick(sdk, placeName, network);
@@ -57,14 +57,14 @@ public class AdStatManager {
         long impCount = Utils.getLong(mContext, PREF_ALL_IMP_COUNT, 0);
         long allImpCount = impCount + 1;
         Utils.putLong(mContext, PREF_ALL_IMP_COUNT, allImpCount);
-        Log.iv(Log.TAG, "all imp count : " + allImpCount);
+        Log.iv(Log.TAG_SDK, "all imp count : " + allImpCount);
     }
 
     private void recordAllClkCount() {
         long clkCount = Utils.getLong(mContext, PREF_ALL_CLK_COUNT, 0);
         long allClkCount = clkCount + 1;
         Utils.putLong(mContext, PREF_ALL_CLK_COUNT, allClkCount);
-        Log.iv(Log.TAG, "all clk count : " + allClkCount);
+        Log.iv(Log.TAG_SDK, "all clk count : " + allClkCount);
     }
 
     public long getAllImpCount() {

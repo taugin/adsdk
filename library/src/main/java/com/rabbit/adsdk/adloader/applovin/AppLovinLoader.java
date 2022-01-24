@@ -389,6 +389,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private void showBannerForMax(ViewGroup viewGroup) {
         printInterfaceLog(ACTION_SHOW);
         try {
+            reportAdShow();
+            notifyAdShow();
             clearCachedAdTime(maxAdView);
             viewGroup.removeAllViews();
             ViewParent viewParent = maxAdView.getParent();
@@ -401,8 +403,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
             lastUseMaxAdView = maxAdView;
             maxAdView = null;
-            reportAdShow();
-            notifyAdShow();
             reportAdImp();
             notifyAdImp();
         } catch (Exception e) {
@@ -494,10 +494,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (interstitialAd != null && interstitialAd.isReady()) {
             Log.iv(Log.TAG, "");
-            interstitialAd.showAd(getSceneId());
-            updateLastShowTime();
             reportAdShow();
             notifyAdShow();
+            interstitialAd.showAd(getSceneId());
+            updateLastShowTime();
             return true;
         } else {
             onResetInterstitial();
@@ -618,10 +618,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private boolean showRewardedVideoForMax() {
         printInterfaceLog(ACTION_SHOW);
         if (rewardedAd != null && rewardedAd.isReady()) {
-            rewardedAd.showAd(getSceneId());
-            updateLastShowTime();
             reportAdShow();
             notifyAdShow();
+            rewardedAd.showAd(getSceneId());
+            updateLastShowTime();
             return true;
         } else {
             onResetReward();
@@ -728,6 +728,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         try {
             if (mMaxNativeAdView != null) {
+                reportAdShow();
+                notifyAdShow();
                 viewGroup.removeAllViews();
                 ViewParent viewParent = mMaxNativeAdView.getParent();
                 if (viewParent instanceof ViewGroup) {
@@ -740,8 +742,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 clearCachedAdTime(mMaxNativeAdView);
                 updateNativeStatus(mMaxNativeAdView);
                 mMaxNativeAdView = null;
-                reportAdShow();
-                notifyAdShow();
             }
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));

@@ -479,11 +479,11 @@ public class MintegralLoader extends AbstractSdkLoader {
 
     private void showCustomNative(ViewGroup viewGroup, Params params) {
         if (mCampaign != null) {
+            reportAdShow();
+            notifyAdShow();
             clearCachedAdTime(mCampaign);
             mintegralBindNativeView.bindMintegralNative(params, mContext, viewGroup, mCampaign, mPidConfig, mMBNativeHandler);
             mCampaign = null;
-            reportAdShow();
-            notifyAdShow();
         } else {
             Log.e(Log.TAG, formatShowErrorLog("Campaign is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : Campaign is null");
@@ -492,6 +492,8 @@ public class MintegralLoader extends AbstractSdkLoader {
 
     private void showTemplateNative(ViewGroup viewGroup) {
         if (mTemplateView != null) {
+            reportAdShow();
+            notifyAdShow();
             clearCachedAdTime(mTemplateView);
             viewGroup.removeAllViews();
             ViewParent viewParent = mTemplateView.getParent();
@@ -503,8 +505,6 @@ public class MintegralLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             mTemplateView = null;
-            reportAdShow();
-            notifyAdShow();
         } else {
             Log.e(Log.TAG, formatShowErrorLog("TemplateView is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TemplateView is null");

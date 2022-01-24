@@ -82,7 +82,7 @@ public class BlockAdsManager {
             if (mBlockMap != null && !mBlockMap.isEmpty() && TextUtils.equals(currentMd5, mLastCfgMd5)) {
                 return;
             }
-            Log.iv(Log.TAG, "parse block config");
+            Log.iv(Log.TAG_SDK, "parse block config");
             mLastCfgMd5 = currentMd5;
             mBlockMap.clear();
             try {
@@ -110,13 +110,13 @@ public class BlockAdsManager {
                             if (blockObj.has(OPT_GAIDS)) {
                                 blockCfg.gaidList = parseStringList(blockObj.getString(OPT_GAIDS));
                             }
-                            Log.iv(Log.TAG, "block cfg : " + blockCfg);
+                            Log.iv(Log.TAG_SDK, "block cfg : " + blockCfg);
                             mBlockMap.put(blockCfg.blockKey, blockCfg);
                         }
                     }
                 }
             } catch (Exception e) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.e(Log.TAG_SDK, "error : " + e);
             }
         }
     }
@@ -132,7 +132,7 @@ public class BlockAdsManager {
         parseBlockAdsConfig();
         resetBlockAdsData();
         BlockCfg blockCfg = getBlockAdsConfig(sdk, placeName);
-        Log.iv(Log.TAG, sdk + " - " + placeName + " block cfg : " + blockCfg);
+        Log.iv(Log.TAG_SDK, sdk + " - " + placeName + " block cfg : " + blockCfg);
         if (blockCfg != null && blockCfg.blockAds) {
             return isBlockAdsByGAID(blockCfg) || isBlockAdsByConfig(sdk, placeName, blockCfg);
         }
@@ -146,7 +146,7 @@ public class BlockAdsManager {
      */
     public boolean replaceAdWithLoadingView(WeakReference<ViewGroup> adViewGroup, String placeName, String sdkName, String adType, String network) {
         boolean removeAds = isBlockAds(sdkName, placeName) && isRemoveAds(sdkName, placeName);
-        Log.iv(Log.TAG, "place name : " + placeName + " , sdk : " + sdkName + " , type : " + adType + " , network : " + network + " , removeAds : " + removeAds);
+        Log.iv(Log.TAG_SDK, "place name : " + placeName + " , sdk : " + sdkName + " , type : " + adType + " , network : " + network + " , removeAds : " + removeAds);
         if (removeAds && adViewGroup != null) {
             ViewGroup viewGroup = adViewGroup.get();
             if (viewGroup != null) {
@@ -205,7 +205,7 @@ public class BlockAdsManager {
             }
         }
         if (blockByGaid && blockCfg != null) {
-            Log.iv(Log.TAG, "block ads gaid [" + gaid + "] placement [" + blockCfg.blockKey + "]");
+            Log.iv(Log.TAG_SDK, "block ads gaid [" + gaid + "] placement [" + blockCfg.blockKey + "]");
         }
         return blockByGaid;
     }
@@ -233,7 +233,7 @@ public class BlockAdsManager {
             long clkCount = Utils.getLong(mContext, prefClkKey, 0);
             isBlockAds = judgeBlockAds(blockCfg.maxClk, blockCfg.minImp, (int) impCount, (int) clkCount);
             if (isBlockAds) {
-                Log.iv(Log.TAG, "block ads info : " + getBlockInfo(placement, blockCfg.maxClk, blockCfg.minImp, (int) impCount, (int) clkCount));
+                Log.iv(Log.TAG_SDK, "block ads info : " + getBlockInfo(placement, blockCfg.maxClk, blockCfg.minImp, (int) impCount, (int) clkCount));
             }
         }
         return isBlockAds;
@@ -265,7 +265,7 @@ public class BlockAdsManager {
             boolean isBlockAds = judgeBlockAds(blockCfg.maxClk, blockCfg.minImp, (int) impCount, (int) clkCount);
             if (isBlockAds) {
                 String blockInfo = getBlockInfo(placement, blockCfg.maxClk, blockCfg.minImp, (int) impCount, (int) clkCount);
-                Log.iv(Log.TAG, "report block info : " + blockInfo);
+                Log.iv(Log.TAG_SDK, "report block info : " + blockInfo);
                 InternalStat.reportEvent(mContext, "block_ads_info", blockInfo);
             }
         }
@@ -337,7 +337,7 @@ public class BlockAdsManager {
     }
 
     public void recordAdImp(String sdk, String placeName, String network) {
-        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
+        Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         if (!TextUtils.isEmpty(network) && !TextUtils.equals(sdk, network)) {
             sdk = network;
         }
@@ -347,12 +347,12 @@ public class BlockAdsManager {
     public void recordAdImp(String sdk, String placeName) {
         // 记录PLACE层级的展示次数
         String prefKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
-        Log.iv(Log.TAG, "prefKey : " + prefKey);
+        Log.iv(Log.TAG_SDK, "prefKey : " + prefKey);
         long count = Utils.getLong(mContext, prefKey, 0);
         Utils.putLong(mContext, prefKey, count + 1, true);
         // 记录SDK层级的展示次数
         prefKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
-        Log.iv(Log.TAG, "prefKey : " + prefKey);
+        Log.iv(Log.TAG_SDK, "prefKey : " + prefKey);
         count = Utils.getLong(mContext, prefKey, 0);
         Utils.putLong(mContext, prefKey, count + 1, true);
         printLog(sdk, placeName);
@@ -360,7 +360,7 @@ public class BlockAdsManager {
     }
 
     public void recordAdClick(String sdk, String placeName, String network) {
-        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
+        Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         if (!TextUtils.isEmpty(network) && !TextUtils.equals(sdk, network)) {
             sdk = network;
         }
@@ -370,12 +370,12 @@ public class BlockAdsManager {
     public void recordAdClick(String sdk, String placeName) {
         // 记录PLACE层级的点击次数
         String prefKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
-        Log.iv(Log.TAG, "prefKey : " + prefKey);
+        Log.iv(Log.TAG_SDK, "prefKey : " + prefKey);
         long count = Utils.getLong(mContext, prefKey, 0);
         Utils.putLong(mContext, prefKey, count + 1, true);
         // 记录SDK层级的点击次数
         prefKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
-        Log.iv(Log.TAG, "prefKey : " + prefKey);
+        Log.iv(Log.TAG_SDK, "prefKey : " + prefKey);
         count = Utils.getLong(mContext, prefKey, 0);
         Utils.putLong(mContext, prefKey, count + 1, true);
         printLog(sdk, placeName);
@@ -404,13 +404,13 @@ public class BlockAdsManager {
                 }
                 String sdk = keySplit[0];
                 String placeName = keySplit[1];
-                Log.iv(Log.TAG, String.format(Locale.getDefault(), "[%s - %s] reset count data", sdk, placeName));
+                Log.iv(Log.TAG_SDK, String.format(Locale.getDefault(), "[%s - %s] reset count data", sdk, placeName));
                 String prefPlaceImpKey = String.format(Locale.getDefault(), PREF_AD_PLACE_IMP_COUNT, sdk, placeName);
                 Utils.putLong(mContext, prefPlaceImpKey, 0, true);
                 String prefPlaceClkKey = String.format(Locale.getDefault(), PREF_AD_PLACE_CLK_COUNT, sdk, placeName);
                 Utils.putLong(mContext, prefPlaceClkKey, 0, true);
 
-                Log.iv(Log.TAG, String.format(Locale.getDefault(), "[%s] reset count data", sdk));
+                Log.iv(Log.TAG_SDK, String.format(Locale.getDefault(), "[%s] reset count data", sdk));
                 String prefSdkImpKey = String.format(Locale.getDefault(), PREF_AD_SDK_IMP_COUNT, sdk);
                 Utils.putLong(mContext, prefSdkImpKey, 0, true);
                 String prefSdkClkKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
@@ -430,7 +430,7 @@ public class BlockAdsManager {
         prefKey = String.format(Locale.getDefault(), PREF_AD_SDK_CLK_COUNT, sdk);
         long sdkClickCount = Utils.getLong(mContext, prefKey, 0);
         String logInfo = String.format(Locale.getDefault(), "[%s : %d/%d] [%s - %s : %d/%d]", sdk, sdkClickCount, sdkImpCount, sdk, placeName, placeClickCount, placeImpCount);
-        Log.iv(Log.TAG, logInfo);
+        Log.iv(Log.TAG_SDK, logInfo);
     }
 
     private synchronized void recordAdKeyList(String sdk, String placeName) {
@@ -442,9 +442,9 @@ public class BlockAdsManager {
             if (!TextUtils.isEmpty(keyListString)) {
                 lastKeyList = Arrays.asList(keyListString.split("\\|"));
             }
-            Log.iv(Log.TAG, "last key list : " + lastKeyList);
+            Log.iv(Log.TAG_SDK, "last key list : " + lastKeyList);
             if (lastKeyList != null && lastKeyList.contains(newKey)) {
-                Log.iv(Log.TAG, newKey + " has saved");
+                Log.iv(Log.TAG_SDK, newKey + " has saved");
                 return;
             }
             if (lastKeyList != null && !lastKeyList.isEmpty()) {
@@ -462,10 +462,10 @@ public class BlockAdsManager {
                 }
             }
             String allKeyString = builder.toString();
-            Log.iv(Log.TAG, "all key string : " + allKeyString);
+            Log.iv(Log.TAG_SDK, "all key string : " + allKeyString);
             Utils.putString(mContext, PREF_AD_CLICK_KEY_LIST, allKeyString);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.e(Log.TAG_SDK, "error : " + e);
         }
     }
 

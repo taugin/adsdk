@@ -84,7 +84,7 @@ public class EventImpl implements IEvent {
             long activeTime = calendar.getTimeInMillis();
 
             try {
-                Log.v(Log.TAG, String.format("now : %d-%02d-%02d , active : %d-%02d-%02d, nowTime : %d , activeTime : %d", nowYear, nowMonth, nowDay, activeYear, activeMonth, activeDay, nowTime, activeTime));
+                Log.iv(Log.TAG_SDK, String.format("now : %d-%02d-%02d , active : %d-%02d-%02d, nowTime : %d , activeTime : %d", nowYear, nowMonth, nowDay, activeYear, activeMonth, activeDay, nowTime, activeTime));
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e);
             }
@@ -318,7 +318,7 @@ public class EventImpl implements IEvent {
     private boolean isReportError(Context context) {
         String value = DataManager.get(context).getString("report_error");
         boolean result = parseReport(value, false);
-        Log.v(Log.TAG, "is report error : " + result);
+        Log.iv(Log.TAG_SDK, "is report error : " + result);
         return result;
     }
 
@@ -331,35 +331,35 @@ public class EventImpl implements IEvent {
     private boolean isReportTime(Context context) {
         String value = DataManager.get(context).getString("report_time");
         boolean result = parseReport(value, false);
-        Log.v(Log.TAG, "is report time : " + result);
+        Log.iv(Log.TAG_SDK, "is report time : " + result);
         return result;
     }
 
     private boolean isReportAppsflyer(Context context) {
         String value = DataManager.get(context).getString("ad_report_appsflyer");
         boolean result = parseReport(value, false);
-        Log.v(Log.TAG, "is report appsflyer : " + result);
+        Log.iv(Log.TAG_SDK, "is report appsflyer : " + result);
         return result;
     }
 
     private boolean isReportUmeng(Context context) {
         String value = DataManager.get(context).getString("ad_report_umeng");
         boolean result = parseReport(value, true);
-        Log.v(Log.TAG, "is report umeng : " + result);
+        Log.iv(Log.TAG_SDK, "is report umeng : " + result);
         return result;
     }
 
     private boolean isReportFirebase(Context context) {
         String value = DataManager.get(context).getString("ad_report_firebase");
         boolean result = parseReport(value, true);
-        Log.v(Log.TAG, "is report firebase : " + result);
+        Log.iv(Log.TAG_SDK, "is report firebase : " + result);
         return result;
     }
 
     private boolean isReportFlurry(Context context) {
         String value = DataManager.get(context).getString("ad_report_flurry");
         boolean result = parseReport(value, true);
-        Log.v(Log.TAG, "is report flurry : " + result);
+        Log.iv(Log.TAG_SDK, "is report flurry : " + result);
         return result;
     }
 

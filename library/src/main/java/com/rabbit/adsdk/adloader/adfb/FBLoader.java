@@ -168,6 +168,8 @@ public class FBLoader extends AbstractSdkLoader {
     public void showBanner(ViewGroup viewGroup) {
         printInterfaceLog(ACTION_SHOW);
         try {
+            reportAdShow();
+            notifyAdShow();
             clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
             ViewParent viewParent = bannerView.getParent();
@@ -180,8 +182,6 @@ public class FBLoader extends AbstractSdkLoader {
             }
             lastUseBannerView = bannerView;
             bannerView = null;
-            reportAdShow();
-            notifyAdShow();
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : " + e);
@@ -294,10 +294,10 @@ public class FBLoader extends AbstractSdkLoader {
     public boolean showInterstitial() {
         printInterfaceLog(ACTION_SHOW);
         if (fbInterstitial != null && fbInterstitial.isAdLoaded()) {
-            fbInterstitial.show();
-            updateLastShowTime();
             reportAdShow();
             notifyAdShow();
+            fbInterstitial.show();
+            updateLastShowTime();
             return true;
         } else {
             Log.e(Log.TAG, formatShowErrorLog("InterstitialAd not ready"));
@@ -405,12 +405,12 @@ public class FBLoader extends AbstractSdkLoader {
             mParams = params;
         }
         if (nativeAd != null) {
+            reportAdShow();
+            notifyAdShow();
             clearCachedAdTime(nativeAd);
             fbBindNativeView.bindFBNative(mParams, viewGroup, nativeAd, mPidConfig);
             lastUseNativeAd = nativeAd;
             nativeAd = null;
-            reportAdShow();
-            notifyAdShow();
         } else {
             Log.e(Log.TAG, formatShowErrorLog("NativeAd is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd is null");
@@ -529,10 +529,10 @@ public class FBLoader extends AbstractSdkLoader {
     public boolean showRewardedVideo() {
         printInterfaceLog(ACTION_SHOW);
         if (rewardedVideoAd != null && rewardedVideoAd.isAdLoaded() && !rewardedVideoAd.isAdInvalidated()) {
-            rewardedVideoAd.show();
-            updateLastShowTime();
             reportAdShow();
             notifyAdShow();
+            rewardedVideoAd.show();
+            updateLastShowTime();
             return true;
         } else {
             onResetReward();

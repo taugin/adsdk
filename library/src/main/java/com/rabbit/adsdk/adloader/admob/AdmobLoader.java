@@ -235,19 +235,19 @@ public class AdmobLoader extends AbstractSdkLoader {
                         network = bannerView.getResponseInfo().getMediationAdapterClassName();
                     } catch (Exception e) {
                     }
+                    reportAdImp();
+                    notifyAdImp();
                     reportAdmobImpressionData(adValue, network);
                 }
             });
+            reportAdShow();
+            notifyAdShow();
             viewGroup.addView(bannerView);
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             lastUseBannerView = bannerView;
             bannerView = null;
-            reportAdShow();
-            notifyAdShow();
-            reportAdImp();
-            notifyAdImp();
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : AdView not ready");
@@ -365,10 +365,10 @@ public class AdmobLoader extends AbstractSdkLoader {
                     reportAdmobImpressionData(adValue, network);
                 }
             });
-            mInterstitialAd.show(getActivity());
-            updateLastShowTime();
             reportAdShow();
             notifyAdShow();
+            mInterstitialAd.show(getActivity());
+            updateLastShowTime();
             return true;
         } else {
             onResetInterstitial();
@@ -490,6 +490,8 @@ public class AdmobLoader extends AbstractSdkLoader {
                     reportAdmobImpressionData(adValue, network);
                 }
             });
+            reportAdShow();
+            notifyAdShow();
             Activity activity = getActivity();
             mRewardedAd.show(activity, new OnUserEarnedRewardListener() {
                 @Override
@@ -505,8 +507,6 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
             });
             updateLastShowTime();
-            reportAdShow();
-            notifyAdShow();
             return true;
         } else {
             onResetReward();
@@ -663,6 +663,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
         }
         if (mNativeAd != null) {
+            reportAdShow();
+            notifyAdShow();
             mNativeAd.setOnPaidEventListener(new OnPaidEventListener() {
                 @Override
                 public void onPaidEvent(@NonNull AdValue adValue) {
@@ -678,8 +680,6 @@ public class AdmobLoader extends AbstractSdkLoader {
             lastUseNativeAd = mNativeAd;
             clearCachedAdTime(mNativeAd);
             mNativeAd = null;
-            reportAdShow();
-            notifyAdShow();
         } else {
             Log.e(Log.TAG, formatShowErrorLog("NativeAd is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd not ready");
@@ -792,10 +792,10 @@ public class AdmobLoader extends AbstractSdkLoader {
                     reportAdmobImpressionData(adValue, network);
                 }
             });
-            mAppOpenAd.show(activity);
-            updateLastShowTime();
             reportAdShow();
             notifyAdShow();
+            mAppOpenAd.show(activity);
+            updateLastShowTime();
             return true;
         } else {
             Log.e(Log.TAG, formatShowErrorLog("AppOpenAd is null"));

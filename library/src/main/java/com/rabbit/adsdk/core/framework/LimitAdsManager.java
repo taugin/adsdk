@@ -69,20 +69,20 @@ public class LimitAdsManager {
     }
 
     public void recordAdImp(String sdk, String placeName, String network) {
-        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
+        Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         try {
             appendAdImpTimestamp();
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.e(Log.TAG_SDK, "error : " + e);
         }
     }
 
     public void recordAdClick(String sdk, String placeName, String network) {
-        Log.iv(Log.TAG, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
+        Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         try {
             appendAdClkTimestamp();
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.e(Log.TAG_SDK, "error : " + e);
         }
     }
 
@@ -90,7 +90,7 @@ public class LimitAdsManager {
         parseLimitConfig();
         if (mLimitConfig != null && mLimitConfig.isEnable()) {
             if (isLimitAd()) {
-                Log.iv(Log.TAG, "placement is limiting while appending imp");
+                Log.iv(Log.TAG_SDK, "placement is limiting while appending imp");
                 return;
             }
             LinkedList<Long> linkedList = getLinkedListFromSP(PREF_IMP_TIMESTAMP_LIST);
@@ -107,7 +107,7 @@ public class LimitAdsManager {
     private synchronized void appendAdClkTimestamp() {
         if (mLimitConfig != null && mLimitConfig.isEnable()) {
             if (isLimitAd()) {
-                Log.iv(Log.TAG, "placement is limiting while appending clk");
+                Log.iv(Log.TAG_SDK, "placement is limiting while appending clk");
                 return;
             }
             LinkedList<Long> linkedList = getLinkedListFromSP(PREF_CLK_TIMESTAMP_LIST);
@@ -133,9 +133,9 @@ public class LimitAdsManager {
             int lastLimitIndex = (int) (listSize - limitCount);
             long lastLimitTime = linkedList.get(lastLimitIndex);
             long expTime = now - lastLimitTime;
-            Log.iv(Log.TAG, "now : " + now + " , last limit time : " + lastLimitTime + " , expTime : " + expTime + " , limit duration : " + limitDuration);
+            Log.iv(Log.TAG_SDK, "now : " + now + " , last limit time : " + lastLimitTime + " , expTime : " + expTime + " , limit duration : " + limitDuration);
             if (expTime <= limitDuration) {
-                Log.iv(Log.TAG, "user action abnormal, use limit placement");
+                Log.iv(Log.TAG_SDK, "user action abnormal, use limit placement");
                 recordLastLimitStatus(type, now);
                 reportLimitInfo(type);
             }
@@ -146,7 +146,7 @@ public class LimitAdsManager {
         int impCount = (int) AdStatManager.get(mContext).getAllImpCount();
         int clkCount = (int) AdStatManager.get(mContext).getAllClkCount();
         String reportInfo = getLimitInfo(impCount, clkCount, type);
-        Log.iv(Log.TAG, "limit ads info : " + reportInfo);
+        Log.iv(Log.TAG_SDK, "limit ads info : " + reportInfo);
         InternalStat.reportEvent(mContext, "limit_ads_info", reportInfo);
     }
 
@@ -194,7 +194,7 @@ public class LimitAdsManager {
      * 记录下满足广告限制的最后时间和类型(展示 OR 点击)
      */
     private void recordLastLimitStatus(String type, long time) {
-        Log.iv(Log.TAG, "record last limit status");
+        Log.iv(Log.TAG_SDK, "record last limit status");
         Utils.putLong(mContext, PREF_LAST_LIMIT_TIME, time);
         Utils.putString(mContext, PREF_LAST_LIMIT_TYPE, type);
     }
@@ -243,10 +243,10 @@ public class LimitAdsManager {
                 sdfSimple.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
                 String logInfo = "now : " + sdf.format(new Date(nowTime)) + " , last : " + sdf.format(new Date(lastLimitTime))
                         + " , exp : " + sdfSimple.format(new Date(expTime < 0 ? 0 : expTime)) + "(" + expTime + ")";
-                Log.iv(Log.TAG, logInfo);
+                Log.iv(Log.TAG_SDK, logInfo);
             }
         }
-        Log.iv(Log.TAG, "limit type : " + limitType + " , in limit time : " + isInLimitTime);
+        Log.iv(Log.TAG_SDK, "limit type : " + limitType + " , in limit time : " + isInLimitTime);
         return isInLimitTime;
     }
 
@@ -263,7 +263,7 @@ public class LimitAdsManager {
             if (mLimitConfig != null && mLimitConfig.isEnable()) {
                 if (isLimitAd()) {
                     String placeNameSuffix = mLimitConfig.getLimitSuffix();
-                    Log.iv(Log.TAG, "place name suffix : " + placeNameSuffix);
+                    Log.iv(Log.TAG_SDK, "place name suffix : " + placeNameSuffix);
                     if (!TextUtils.isEmpty(placeNameSuffix)) {
                         placeNameWithSuffix = placeName + placeNameSuffix;
                         AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(placeNameWithSuffix);
@@ -277,12 +277,12 @@ public class LimitAdsManager {
                         if (adPlace == null) {
                             placeNameWithSuffix = placeName;
                         }
-                        Log.iv(Log.TAG, "limit place name with suffix : " + placeNameWithSuffix + " , origin place name : " + placeName);
+                        Log.iv(Log.TAG_SDK, "limit place name with suffix : " + placeNameWithSuffix + " , origin place name : " + placeName);
                     }
                 }
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.e(Log.TAG_SDK, "error : " + e);
         }
         return placeNameWithSuffix;
     }
@@ -311,7 +311,7 @@ public class LimitAdsManager {
                 }
                 String content = jsonArray.toString();
                 int size = jsonArray.length();
-                Log.iv(Log.TAG, "put link list to sp size : " + size);
+                Log.iv(Log.TAG_SDK, "put link list to sp size : " + size);
                 Utils.putString(mContext, prefName, content);
             }
         }
@@ -323,9 +323,9 @@ public class LimitAdsManager {
             String content = Utils.getString(mContext, prefName, DEFAULT_LIST_TEXT);
             stringToLinkedList(content, linkedList);
             int size = linkedList.size();
-            Log.iv(Log.TAG, "get link list from sp size : " + size);
+            Log.iv(Log.TAG_SDK, "get link list from sp size : " + size);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.e(Log.TAG_SDK, "error : " + e);
             Utils.putString(mContext, prefName, DEFAULT_LIST_TEXT);
         }
         return linkedList;
@@ -345,7 +345,7 @@ public class LimitAdsManager {
                 }
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.e(Log.TAG_SDK, "error : " + e);
         }
     }
 
@@ -357,7 +357,7 @@ public class LimitAdsManager {
         if (!TextUtils.isEmpty(limitConfigContent)) {
             String contentMD5 = Utils.string2MD5(limitConfigContent);
             if (mLimitConfig != null && TextUtils.equals(contentMD5, mLimitConfig.getContentMD5())) {
-                Log.iv(Log.TAG, "limit config has parsed");
+                Log.iv(Log.TAG_SDK, "limit config has parsed");
                 return;
             }
             LimitConfig limitConfig = null;

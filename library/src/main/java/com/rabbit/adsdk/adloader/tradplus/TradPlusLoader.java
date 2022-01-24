@@ -167,6 +167,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
     public void showBanner(ViewGroup viewGroup) {
         printInterfaceLog(ACTION_SHOW);
         try {
+            reportAdShow();
+            notifyAdShow();
             clearCachedAdTime(mTPBanner);
             viewGroup.removeAllViews();
             ViewParent viewParent = mTPBanner.getParent();
@@ -179,8 +181,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             mTPBanner = null;
-            reportAdShow();
-            notifyAdShow();
             reportAdImp();
             notifyAdImp();
         } catch (Exception e) {
@@ -295,11 +295,11 @@ public class TradPlusLoader extends AbstractSdkLoader {
     public boolean showInterstitial() {
         printInterfaceLog(ACTION_SHOW);
         if (mTPInterstitial != null && mTPInterstitial.isReady()) {
+            reportAdShow();
+            notifyAdShow();
             Activity activity = getActivity();
             mTPInterstitial.showAd(activity, getSceneId());
             updateLastShowTime();
-            reportAdShow();
-            notifyAdShow();
             return true;
         } else {
             onResetInterstitial();
@@ -423,11 +423,11 @@ public class TradPlusLoader extends AbstractSdkLoader {
     public boolean showRewardedVideo() {
         printInterfaceLog(ACTION_SHOW);
         if (mTPReward != null) {
+            reportAdShow();
+            notifyAdShow();
             Activity activity = getActivity();
             mTPReward.showAd(activity, getSceneId());
             updateLastShowTime();
-            reportAdShow();
-            notifyAdShow();
             return true;
         } else {
             onResetReward();
@@ -535,6 +535,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
         if (mTPNative != null) {
             final TPCustomNativeAd customNativeAd = mTPNative.getNativeAd();
             if (customNativeAd != null) {
+                reportAdShow();
+                notifyAdShow();
                 if (viewGroup != null) {
                     viewGroup.removeAllViews();;
                 }
@@ -543,8 +545,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 if (viewGroup != null && viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
-                reportAdShow();
-                notifyAdShow();
             } else {
                 Log.e(Log.TAG, formatShowErrorLog("TPCustomNativeAd is null"));
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPCustomNativeAd not ready");

@@ -114,12 +114,12 @@ public class SpLoader extends AbstractSdkLoader {
             mParams = params;
         }
         if (mSpread != null) {
+            notifyAdShow();
+            reportAdShow();
             SpreadCfg spreadCfg = mSpread;
             spreadBindNativeView.setClickListener(new ClickClass(spreadCfg));
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadCfg);
             mSpread = null;
-            notifyAdShow();
-            reportAdShow();
             notifyAdImp();
             reportAdImp();
         } else {
@@ -235,6 +235,8 @@ public class SpLoader extends AbstractSdkLoader {
     private void showAdViewWithUI(String placeName, String source, String adType, ISdkLoader iSdkLoader) {
         Log.iv(Log.TAG, "show spread ads with ui");
         try {
+            reportAdShow();
+            notifyAdShow();
             Params params = new Params();
             params.setAdCardStyle(Constant.NATIVE_CARD_FULL);
             AdPlaceLoader.sLoaderMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, placeName), iSdkLoader);
@@ -245,8 +247,6 @@ public class SpLoader extends AbstractSdkLoader {
             intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
-            reportAdShow();
-            notifyAdShow();
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

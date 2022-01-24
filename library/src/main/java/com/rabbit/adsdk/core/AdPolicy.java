@@ -52,7 +52,7 @@ public class AdPolicy {
 
     public void reportAdPlaceShow(String originPlaceName, AdPlace adPlace) {
         if (adPlace == null) {
-            Log.v(Log.TAG, "adPlace == null");
+            Log.iv(Log.TAG_SDK, "adPlace == null");
             return;
         }
         String placeName = originPlaceName;
@@ -60,12 +60,12 @@ public class AdPolicy {
             placeName = adPlace.getName();
         }
         if (TextUtils.isEmpty(placeName)) {
-            Log.v(Log.TAG, "placeName == null");
+            Log.iv(Log.TAG_SDK, "placeName == null");
             return;
         }
         long loadCount = Utils.getLong(mContext, getShowCountKey(placeName), 0);
         Utils.putLong(mContext, getShowCountKey(placeName), loadCount + 1);
-        Log.d(Log.TAG, "[" + placeName + "]" + " show count : " + (loadCount + 1));
+        Log.d(Log.TAG_SDK, "[" + placeName + "]" + " show count : " + (loadCount + 1));
     }
 
     public boolean reachMaxShowCount(String placeName, int maxCount) {
@@ -75,24 +75,24 @@ public class AdPolicy {
 
     public boolean allowAdPlaceLoad(AdPlace adPlace) {
         if (adPlace == null) {
-            Log.v(Log.TAG, "adPlace is null");
+            Log.iv(Log.TAG_SDK, "adPlace is null");
             return false;
         }
         String placeName = adPlace.getName();
         if (TextUtils.isEmpty(placeName)) {
-            Log.v(Log.TAG, "placeName is null");
+            Log.iv(Log.TAG_SDK, "placeName is null");
             return false;
         }
         resetShowCountEveryDay(placeName);
         boolean exceedMaxCount = reachMaxShowCount(placeName, adPlace.getMaxCount());
         if (exceedMaxCount) {
             long maxCount = adPlace.getMaxCount();
-            Log.v(Log.TAG, "[" + placeName + "]" + " exceed max count " + maxCount);
+            Log.iv(Log.TAG_SDK, "[" + placeName + "]" + " exceed max count " + maxCount);
             return false;
         }
         boolean allowByPercent = allowLoadByPercent(adPlace.getPercent());
         if (!allowByPercent) {
-            Log.v(Log.TAG, "percent not allow");
+            Log.iv(Log.TAG_SDK, "percent not allow");
             return false;
         }
         return true;
@@ -115,7 +115,7 @@ public class AdPolicy {
         long resetTime = Utils.getLong(mContext, getResetTimeKey(placeName), 0);
         long curTime = System.currentTimeMillis();
         if (curTime - resetTime > ONE_DAY) {
-            Log.v(Log.TAG, "reset load count : " + placeName);
+            Log.iv(Log.TAG_SDK, "reset load count : " + placeName);
             Utils.putLong(mContext, getShowCountKey(placeName), 0);
             Utils.putLong(mContext, getResetTimeKey(placeName), curTime);
         }
@@ -128,7 +128,7 @@ public class AdPolicy {
             resetPlatformEventCountIfNeed(mContext);
             String prefKeys = String.format(Locale.getDefault(), PREF_RECORD_PLACE_REQ_TIMES, placeName, sdk);
             long times = Utils.getLong(mContext, prefKeys, 0);
-            Log.iv(Log.TAG, placeName + " - " + sdk + " req times : [" + times + "/" + maxReqTimes + "]");
+            Log.iv(Log.TAG_SDK, placeName + " - " + sdk + " req times : [" + times + "/" + maxReqTimes + "]");
             return times >= maxReqTimes;
         }
         return false;
@@ -170,7 +170,7 @@ public class AdPolicy {
             newSets = new HashSet<>();
         }
         newSets.add(prefKeys);
-        Log.iv(Log.TAG, "record max req time pref key set : " + newSets);
+        Log.iv(Log.TAG_SDK, "record max req time pref key set : " + newSets);
         Utils.putStringSet(context, PREF_RECORD_MAX_REQ_TIME_KEY_SET, newSets);
     }
 

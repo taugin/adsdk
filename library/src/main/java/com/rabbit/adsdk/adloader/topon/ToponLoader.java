@@ -173,6 +173,8 @@ public class ToponLoader extends AbstractSdkLoader {
     public void showBanner(ViewGroup viewGroup) {
         printInterfaceLog(ACTION_SHOW);
         try {
+            reportAdShow();
+            notifyAdShow();
             viewGroup.removeAllViews();
             ViewParent viewParent = mATBannerView.getParent();
             if (viewParent instanceof ViewGroup) {
@@ -184,8 +186,6 @@ public class ToponLoader extends AbstractSdkLoader {
             }
             clearCachedAdTime(mATBannerView);
             mATBannerView = null;
-            reportAdShow();
-            notifyAdShow();
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPBanner not ready");
@@ -306,11 +306,11 @@ public class ToponLoader extends AbstractSdkLoader {
     public boolean showInterstitial() {
         printInterfaceLog(ACTION_SHOW);
         if (mATInterstitial != null && mATInterstitial.isAdReady()) {
+            reportAdShow();
+            notifyAdShow();
             Activity activity = getActivity();
             mATInterstitial.show(activity, getSceneId());
             updateLastShowTime();
-            reportAdShow();
-            notifyAdShow();
             return true;
         } else {
             onResetInterstitial();
@@ -437,11 +437,11 @@ public class ToponLoader extends AbstractSdkLoader {
     public boolean showRewardedVideo() {
         printInterfaceLog(ACTION_SHOW);
         if (mATRewardVideoAd != null) {
+            reportAdShow();
+            notifyAdShow();
             Activity activity = getActivity();
             mATRewardVideoAd.show(activity, getSceneId());
             updateLastShowTime();
-            reportAdShow();
-            notifyAdShow();
             return true;
         } else {
             onResetReward();
@@ -566,11 +566,11 @@ public class ToponLoader extends AbstractSdkLoader {
                 }
             });
             try {
+                reportAdShow();
+                notifyAdShow();
                 mToponBindView.bindNativeView(mContext, viewGroup, mNativeAd, mPidConfig, params);
                 clearCachedAdTime(mNativeAd);
                 mNativeAd = null;
-                reportAdShow();
-                notifyAdShow();
             } catch (Exception e) {
                 Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd show exception [" + e + "]");
