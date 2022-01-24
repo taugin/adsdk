@@ -19,6 +19,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        // setNetworkProxy();
         initUmeng();
         AdSdk.get(this).init();
     }
@@ -34,5 +35,15 @@ public class App extends Application {
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
         UMRemoteConfig.getInstance().setConfigSettings(new RemoteConfigSettings.Builder().setAutoUpdateModeEnabled(true).build());
         UMRemoteConfig.getInstance().init(this);
+    }
+
+    private void setNetworkProxy() {
+        String PROXY_HOST = "172.16.170.218";//代理服务器地址
+        String HTTP_PROXY_PORT = "8888";//代理服务器端口
+        String HTTPS_PROXY_PORT = "443";//代理服务器端口
+        System.setProperty("http.proxyHost", PROXY_HOST);
+        System.setProperty("http.proxyPort", HTTP_PROXY_PORT);
+        System.setProperty("https.proxyHost", PROXY_HOST);
+        System.setProperty("https.proxyPort", HTTPS_PROXY_PORT);
     }
 }
