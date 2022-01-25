@@ -48,8 +48,10 @@ public class InternalStat {
                 if (entry != null) {
                     String key = entry.getKey();
                     Object valueObj = entry.getValue();
-                    if (!TextUtils.isEmpty(key) && valueObj != null) {
-                        if (valueObj instanceof Integer) {
+                    if (!TextUtils.isEmpty(key)) {
+                        if (valueObj == null) {
+                            bundle.putString(key, null);
+                        } else if (valueObj instanceof Integer) {
                             bundle.putInt(key, ((Integer) valueObj).intValue());
                         } else if (valueObj instanceof Float) {
                             bundle.putFloat(key, ((Float) valueObj).floatValue());
@@ -65,6 +67,16 @@ public class InternalStat {
                             bundle.putLong(key, ((Long) valueObj).longValue());
                         } else if (valueObj instanceof String) {
                             bundle.putString(key, valueObj.toString());
+                        } else if (valueObj instanceof boolean[]) {
+                            bundle.putBooleanArray(key, (boolean[]) valueObj);
+                        } else if (valueObj instanceof int[]) {
+                            bundle.putIntArray(key, (int[]) valueObj);
+                        } else if (valueObj instanceof long[]) {
+                            bundle.putLongArray(key, (long[]) valueObj);
+                        } else if (valueObj instanceof double[]) {
+                            bundle.putDoubleArray(key, (double[]) valueObj);
+                        } else if (valueObj instanceof String[]) {
+                            bundle.putStringArray(key, (String[]) valueObj);
                         } else {
                             bundle.putString(key, String.valueOf(valueObj));
                         }
