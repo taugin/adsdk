@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class InternalStat {
 
-    private static final long    DEFAULT_MAX_EVENT_COUNT = 10000;
+    private static final long DEFAULT_MAX_EVENT_COUNT = 10000;
     private static final String AD_REPORT_EVENT_PLATFORM_ENABLE = "ad_report_event_%s";
     private static final String AD_REPORT_EVENT_PLATFORM_WHITE = "ad_report_event_%s_white";
     private static final String AD_REPORT_EVENT_PLATFORM_BLACK = "ad_report_event_%s_black";
@@ -35,6 +35,7 @@ public class InternalStat {
 
     /**
      * Map转Bundle
+     *
      * @param map
      * @param bundle
      */
@@ -355,6 +356,7 @@ public class InternalStat {
     }
 
     public static void reportEvent(Context context, String key, String value, Map<String, Object> map) {
+        Log.iv(Log.TAG, "event id : " + key + " , value : " + value + " , extra : " + map);
         sendUmeng(context, key, value, map);
         sendAppsflyer(context, key, value, map, false);
         sendFirebaseAnalytics(context, key, value, map);
@@ -385,6 +387,7 @@ public class InternalStat {
 
     /**
      * 判断事件是否允许上报, 白名单优先于黑名单
+     *
      * @param context
      * @param eventId
      * @param platform
@@ -436,6 +439,7 @@ public class InternalStat {
 
     /**
      * 获取远程配置的平台事件最大值，默认为{@link #DEFAULT_MAX_EVENT_COUNT}
+     *
      * @param context
      * @param platform
      * @return
@@ -456,6 +460,7 @@ public class InternalStat {
 
     /**
      * 判断当天平台事件数目是否超过最大值, 参数{@link #PREF_AD_REPORT_EVENT_PLATFORM_COUNT}
+     *
      * @param context
      * @param platform
      * @return
@@ -477,6 +482,7 @@ public class InternalStat {
     /**
      * 记录平台事件总数, 参数{@link #PREF_AD_REPORT_EVENT_PLATFORM_COUNT}，
      * 记录平台列表{@link #recordPlatformList}
+     *
      * @param context
      * @param platform
      */
@@ -494,6 +500,7 @@ public class InternalStat {
 
     /**
      * 记录打点平台列表, 参数{@link #PREF_AD_REPORT_EVENT_PLATFORM_LIST}
+     *
      * @param context
      * @param platform
      */
@@ -513,6 +520,7 @@ public class InternalStat {
     /**
      * 重置平台事件计数，所有平台一起重置, 记录日期参数{@link #PREF_AD_REPORT_EVENT_RESET_DATE}
      * 记录事件参数{@link #PREF_AD_REPORT_EVENT_PLATFORM_COUNT}
+     *
      * @param context
      */
     private static void resetPlatformEventCountIfNeed(Context context) {
