@@ -30,6 +30,7 @@
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
+        <meta-data android:name="applovin.sdk.verbose_logging" android:value="true"/>
     </application>
 
 </manifest>
