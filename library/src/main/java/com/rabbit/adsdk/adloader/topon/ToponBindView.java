@@ -161,9 +161,9 @@ public class ToponBindView extends BaseBindNativeView {
                 String adChoiceIconUrl = customNativeAd.getAdChoiceIconUrl();
                 Bitmap logoBmp = customNativeAd.getAdLogo();
                 View logoView = customNativeAd.getAdLogoView();
-                Log.iv(Log.TAG, "topon ad choice logo url : " + adChoiceIconUrl);
-                Log.iv(Log.TAG, "topon ad choice logo bitmap : " + logoBmp);
-                Log.iv(Log.TAG, "topon ad choice logo view : " + logoView);
+                Log.iv(Log.TAG_SDK, "topon ad choice logo url : " + adChoiceIconUrl);
+                Log.iv(Log.TAG_SDK, "topon ad choice logo bitmap : " + logoBmp);
+                Log.iv(Log.TAG_SDK, "topon ad choice logo view : " + logoView);
                 if (!TextUtils.isEmpty(adChoiceIconUrl)) {
                     ATNativeImageView atNativeImageView = new ATNativeImageView(mContext);
                     atNativeImageView.setImage(customNativeAd.getAdChoiceIconUrl());
@@ -189,7 +189,7 @@ public class ToponBindView extends BaseBindNativeView {
                 ctaView.setText(customNativeAd.getCallToActionText());
             }
             String adFromText = customNativeAd.getAdFrom();
-            Log.iv(Log.TAG, "topon ad from text : " + adFromText);
+            Log.iv(Log.TAG_SDK, "topon ad from text : " + adFromText);
             if (adSocial != null) {
                 if (!TextUtils.isEmpty(adFromText)) {
                     adSocial.setText(adFromText != null ? adFromText : "");

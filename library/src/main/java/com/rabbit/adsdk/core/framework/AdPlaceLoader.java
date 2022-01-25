@@ -99,7 +99,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public boolean needReload(AdPlace adPlace) {
         if (mAdPlace != null && adPlace != null) {
-            Log.d(Log.TAG, "place name : " + mAdPlace.getName() + " , using unique : " + mAdPlace.getUniqueValue() + " , remote unique : " + adPlace.getUniqueValue());
+            Log.iv(Log.TAG, "place name : " + mAdPlace.getName() + " , using unique : " + mAdPlace.getUniqueValue() + " , remote unique : " + adPlace.getUniqueValue());
             return !TextUtils.equals(mAdPlace.getUniqueValue(), adPlace.getUniqueValue());
         }
         return false;
@@ -433,7 +433,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (loader.isInterstitialType()) {
                         loader.loadInterstitial();
                     } else {
-                        Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                        Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                     }
                 }
             }
@@ -467,7 +467,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 if (loader.isInterstitialType()) {
                     loader.loadInterstitial();
                 } else {
-                    Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                    Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 }
             }
         }
@@ -502,7 +502,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (loader.isInterstitialType()) {
                 loader.loadInterstitial();
             } else {
-                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG, "error config");
             }
         }
@@ -526,7 +526,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      */
     @Override
     public void showInterstitial() {
-        Log.d(Log.TAG, "showInterstitial");
+        Log.iv(Log.TAG, "showInterstitial");
         showInterstitialInternal();
     }
 
@@ -633,7 +633,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (loader.isRewardedVideoType()) {
                         loader.loadRewardedVideo();
                     } else {
-                        Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                        Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                     }
                 }
             }
@@ -667,7 +667,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 if (loader.isRewardedVideoType()) {
                     loader.loadRewardedVideo();
                 } else {
-                    Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                    Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 }
             }
         }
@@ -703,7 +703,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (loader.isRewardedVideoType()) {
                 loader.loadRewardedVideo();
             } else {
-                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG, "error config");
             }
         }
@@ -727,7 +727,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      */
     @Override
     public void showRewardedVideo() {
-        Log.d(Log.TAG, "showRewardedVideo");
+        Log.iv(Log.TAG, "showRewardedVideo");
         showRewardedVideoInternal();
     }
 
@@ -838,7 +838,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (loader.isSplashType()) {
                         loader.loadSplash();
                     } else {
-                        Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                        Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                     }
                 }
             }
@@ -872,7 +872,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 if (loader.isSplashType()) {
                     loader.loadSplash();
                 } else {
-                    Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                    Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 }
             }
         }
@@ -907,7 +907,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (loader.isSplashType()) {
                 loader.loadSplash();
             } else {
-                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG, "error config");
             }
         }
@@ -931,7 +931,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      */
     @Override
     public void showSplash() {
-        Log.d(Log.TAG, "showSplash");
+        Log.iv(Log.TAG, "showSplash");
         showSplashInternal();
     }
 
@@ -1037,7 +1037,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     } else if (loader.isNativeType()) {
                         loader.loadNative(getParams(loader));
                     } else {
-                        Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                        Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                     }
                 }
             }
@@ -1072,7 +1072,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 } else if (loader.isNativeType()) {
                     loader.loadNative(getParams(loader));
                 } else {
-                    Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                    Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 }
             }
         }
@@ -1109,7 +1109,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             } else if (loader.isNativeType()) {
                 loader.loadNative(getParams(loader));
             } else {
-                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getAdType());
+                Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getAdType());
                 simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG, "error config");
             }
         }
@@ -1136,7 +1136,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      */
     @Override
     public void showAdView(ViewGroup adContainer, AdParams adParams) {
-        Log.d(Log.TAG, "showAdView");
         if (adParams != null) {
             mAdParams = adParams;
         }
@@ -1147,7 +1146,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private void showAdViewInternal(boolean needCounting) {
-        Log.d(Log.TAG, "showAdViewInternal");
         if (mAdLoaders != null && mAdContainer != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
@@ -1322,7 +1320,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     } else if (loader.isSplashType()) {
                         loader.loadSplash();
                     } else {
-                        Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                        Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                     }
                 }
             }
@@ -1382,7 +1380,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             } else if (loader.isSplashType()) {
                 loader.loadSplash();
             } else {
-                Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG, "error config");
             }
         }
@@ -1419,7 +1417,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 } else if (loader.isSplashType()) {
                     loader.loadSplash();
                 } else {
-                    Log.d(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
+                    Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 }
             }
         }
@@ -1516,7 +1514,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     @Override
     public void resume() {
-        Log.d(Log.TAG, "");
+        Log.iv(Log.TAG, "");
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
@@ -1528,7 +1526,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     @Override
     public void pause() {
-        Log.d(Log.TAG, "");
+        Log.iv(Log.TAG, "");
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
