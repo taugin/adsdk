@@ -1877,21 +1877,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     };
 
     private void autoSwitchAdView() {
-        if (mAdPlace == null) {
-            Log.iv(Log.TAG, "place is null");
-            return;
+        if (mAdPlace != null && mHandler != null && mAdPlace.getAutoInterval() > 0) {
+            Log.iv(Log.TAG, "wait " + mAdPlace.getAutoInterval() + " ms to switch ads");
+            mHandler.removeCallbacks(this);
+            mHandler.postDelayed(this, mAdPlace.getAutoInterval());
         }
-        if (mAdPlace.getAutoInterval() <= 0) {
-            Log.iv(Log.TAG, "no need auto switch");
-            return;
-        }
-        if (mHandler == null) {
-            Log.iv(Log.TAG, "handler is null");
-            return;
-        }
-        mHandler.removeCallbacks(this);
-        Log.iv(Log.TAG, "wait " + mAdPlace.getAutoInterval() + " ms");
-        mHandler.postDelayed(this, mAdPlace.getAutoInterval());
     }
 
     @Override
