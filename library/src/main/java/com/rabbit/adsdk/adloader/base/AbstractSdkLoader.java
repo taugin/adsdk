@@ -1056,7 +1056,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             } catch (Exception e) {
             }
         }
-        return false;
+        return true;
     }
 
     /*************************************************************************************/
