@@ -30,6 +30,7 @@ public class ApplovinBindView extends BaseBindNativeView {
                         ColorStateList textColor = ((TextView) ctaButton).getTextColors();
                         button.setTextColor(textColor);
                     }
+                    button.setSingleLine(true);
                     button.setBackground(ctaButton.getBackground());
                     replaceSrcViewToDstView(ctaButton, button);
                 }
