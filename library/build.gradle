@@ -135,13 +135,13 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Inmobi
-    implementation 'com.inmobi.monetization:inmobi-ads:9.2.0'
+    implementation 'com.inmobi.monetization:inmobi-ads:9.2.1'
     // applovin inmobi mediation
     implementation 'com.applovin.mediation:inmobi-adapter:9.9.9.6@aar'
     //tradplus inmobi mediation
     implementation 'com.tradplusad:tradplus-inmobix:23.7.2.0.1'
     //admob inmobi mediation
-    implementation 'com.google.ads.mediation:inmobi:9.2.0.0@aar'
+    implementation 'com.google.ads.mediation:inmobi:9.2.1.0@aar'
     //topon inmobi mediation
     implementation "com.anythink.sdk:adapter-inmobi:${topon_version}"
 //////////////////////////////////////////////////////////////////////////////////////////
