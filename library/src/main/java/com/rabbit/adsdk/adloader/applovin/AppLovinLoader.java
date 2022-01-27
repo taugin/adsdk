@@ -32,7 +32,6 @@ import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
-import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 import com.rabbit.sunny.MView;
 
@@ -856,23 +855,19 @@ public class AppLovinLoader extends AbstractSdkLoader {
             String placementId = maxAd.getNetworkPlacement();
             String precision = maxAd.getRevenuePrecision();
             Map<String, Object> map = new HashMap<>();
-            map.put("value", revenue);
-            map.put("currency", "USD");
-            map.put("ad_network", networkName);
-            map.put("ad_network_pid", placementId);
-            map.put("ad_unit_id", adUnitId);
-            map.put("ad_format", adFormat.getDisplayName());
-            map.put("ad_unit_name", placement);
-            map.put("ad_platform", getSdkName());
-            map.put("ad_precision", precision);
-            map.put("ad_country_code", countryCode);
-            map.put("ad_sdk_version", getSdkVersion());
-            map.put("ad_app_version", getAppVersion());
-            String gaid = Utils.getString(mContext, Constant.PREF_GAID);
-            map.put("ad_gaid", gaid);
-            if (isReportAdImpData()) {
-                InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
-            }
+            map.put(Constant.AD_VALUE, revenue);
+            map.put(Constant.AD_CURRENCY, "USD");
+            map.put(Constant.AD_NETWORK, networkName);
+            map.put(Constant.AD_NETWORK_PID, placementId);
+            map.put(Constant.AD_UNIT_ID, adUnitId);
+            map.put(Constant.AD_FORMAT, adFormat.getDisplayName());
+            map.put(Constant.AD_UNIT_NAME, placement);
+            map.put(Constant.AD_PLATFORM, getSdkName());
+            map.put(Constant.AD_PRECISION, precision);
+            map.put(Constant.AD_COUNTRY_CODE, countryCode);
+            map.put(Constant.AD_SDK_VERSION, getSdkVersion());
+            map.put(Constant.AD_APP_VERSION, getAppVersion());
+            map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             StringBuilder builder = new StringBuilder("{");
             builder.append("\n");
             for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -881,6 +876,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
             builder.append("}");
             Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
+            onReportAdImpData(map);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

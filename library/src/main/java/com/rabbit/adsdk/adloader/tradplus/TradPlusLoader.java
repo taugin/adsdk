@@ -13,7 +13,6 @@ import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
-import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
@@ -597,23 +596,19 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 }
             }
             Map<String, Object> map = new HashMap<>();
-            map.put("value", ecpm / 1000);
-            map.put("currency", tpAdInfo.currency);
-            map.put("ad_network", tpAdInfo.adSourceName);
-            map.put("ad_network_pid", getAdSourceId(tpAdInfo));
-            map.put("ad_unit_id", getPid());
-            map.put("ad_format", getAdType());
-            map.put("ad_unit_name", getAdPlaceName());
-            map.put("ad_platform", getSdkName());
-            map.put("ad_bidding", tpAdInfo.isBiddingNetwork);
-            map.put("ad_precision", tpAdInfo.ecpmPrecision);
-            map.put("ad_sdk_version", getSdkVersion());
-            map.put("ad_app_version", getAppVersion());
-            String gaid = Utils.getString(mContext, Constant.PREF_GAID);
-            map.put("ad_gaid", gaid);
-            if (isReportAdImpData()) {
-                InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
-            }
+            map.put(Constant.AD_VALUE, ecpm / 1000);
+            map.put(Constant.AD_CURRENCY, tpAdInfo.currency);
+            map.put(Constant.AD_NETWORK, tpAdInfo.adSourceName);
+            map.put(Constant.AD_NETWORK_PID, getAdSourceId(tpAdInfo));
+            map.put(Constant.AD_UNIT_ID, getPid());
+            map.put(Constant.AD_FORMAT, getAdType());
+            map.put(Constant.AD_UNIT_NAME, getAdPlaceName());
+            map.put(Constant.AD_PLATFORM, getSdkName());
+            map.put(Constant.AD_BIDDING, tpAdInfo.isBiddingNetwork);
+            map.put(Constant.AD_PRECISION, tpAdInfo.ecpmPrecision);
+            map.put(Constant.AD_SDK_VERSION, getSdkVersion());
+            map.put(Constant.AD_APP_VERSION, getAppVersion());
+            map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             StringBuilder builder = new StringBuilder("{");
             builder.append("\n");
             for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -622,6 +617,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             }
             builder.append("}");
             Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
+            onReportAdImpData(map);
         } catch (Exception e) {
             Log.e(Log.TAG, "report trusplus error : " + e);
         }

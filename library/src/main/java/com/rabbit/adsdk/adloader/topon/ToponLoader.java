@@ -28,7 +28,6 @@ import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
-import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 
 import java.util.HashMap;
@@ -598,23 +597,19 @@ public class ToponLoader extends AbstractSdkLoader {
     private void reportToponImpressionData(ATAdInfo atAdInfo) {
         try {
             Map<String, Object> map = new HashMap<>();
-            map.put("value", atAdInfo.getEcpm() / 1000);
-            map.put("currency", atAdInfo.getCurrency());
-            map.put("ad_network", sNetworkFirmTable.get(atAdInfo.getNetworkFirmId()));
-            map.put("ad_network_pid", atAdInfo.getNetworkPlacementId());
-            map.put("ad_unit_id", getPid());
-            map.put("ad_format", getAdType());
-            map.put("ad_unit_name", getAdPlaceName());
-            map.put("ad_platform", getSdkName());
-            map.put("ad_bidding", atAdInfo.isHeaderBiddingAdsource());
-            map.put("ad_precision", atAdInfo.getEcpmPrecision());
-            map.put("ad_sdk_version", getSdkVersion());
-            map.put("ad_app_version", getAppVersion());
-            String gaid = Utils.getString(mContext, Constant.PREF_GAID);
-            map.put("ad_gaid", gaid);
-            if (isReportAdImpData()) {
-                InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
-            }
+            map.put(Constant.AD_VALUE, atAdInfo.getEcpm() / 1000);
+            map.put(Constant.AD_CURRENCY, atAdInfo.getCurrency());
+            map.put(Constant.AD_NETWORK, sNetworkFirmTable.get(atAdInfo.getNetworkFirmId()));
+            map.put(Constant.AD_NETWORK_PID, atAdInfo.getNetworkPlacementId());
+            map.put(Constant.AD_UNIT_ID, getPid());
+            map.put(Constant.AD_FORMAT, getAdType());
+            map.put(Constant.AD_UNIT_NAME, getAdPlaceName());
+            map.put(Constant.AD_PLATFORM, getSdkName());
+            map.put(Constant.AD_BIDDING, atAdInfo.isHeaderBiddingAdsource());
+            map.put(Constant.AD_PRECISION, atAdInfo.getEcpmPrecision());
+            map.put(Constant.AD_SDK_VERSION, getSdkVersion());
+            map.put(Constant.AD_APP_VERSION, getAppVersion());
+            map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             StringBuilder builder = new StringBuilder("{");
             builder.append("\n");
             for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -623,6 +618,7 @@ public class ToponLoader extends AbstractSdkLoader {
             }
             builder.append("}");
             Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
+            onReportAdImpData(map);
         } catch (Exception e) {
             Log.e(Log.TAG, "report topnon error : " + e);
         }

@@ -256,4 +256,19 @@ public class Constant {
             return value;
         }
     }
+
+    public static final String AD_VALUE = "value";
+    public static final String AD_CURRENCY = "currency";
+    public static final String AD_NETWORK = "ad_network";
+    public static final String AD_NETWORK_PID = "ad_network_pid";
+    public static final String AD_UNIT_ID = "ad_unit_id";
+    public static final String AD_FORMAT = "ad_format";
+    public static final String AD_UNIT_NAME = "ad_unit_name";
+    public static final String AD_PLATFORM = "ad_platform";
+    public static final String AD_PRECISION = "ad_precision";
+    public static final String AD_COUNTRY_CODE = "ad_country_code";
+    public static final String AD_SDK_VERSION = "ad_sdk_version";
+    public static final String AD_APP_VERSION = "ad_app_version";
+    public static final String AD_BIDDING = "ad_bidding";
+    public static final String AD_GAID = "ad_gaid";
 }

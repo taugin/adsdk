@@ -38,7 +38,6 @@ import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
-import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 
 import java.util.ArrayList;
@@ -862,25 +861,21 @@ public class AdmobLoader extends AbstractSdkLoader {
             String adFormat = getAdType();
             String adUnitName = getAdPlaceName();
             Map<String, Object> map = new HashMap<>();
-            map.put("value", revenue);
-            map.put("currency", "USD");
-            map.put("ad_network", networkName);
-            map.put("ad_unit_id", adUnitId);
-            map.put("ad_format", adFormat);
-            map.put("ad_unit_name", adUnitName);
-            map.put("ad_platform", getSdkName());
-            map.put("ad_sdk_version", getSdkVersion());
-            map.put("ad_app_version", getAppVersion());
+            map.put(Constant.AD_VALUE, revenue);
+            map.put(Constant.AD_CURRENCY, "USD");
+            map.put(Constant.AD_NETWORK, networkName);
+            map.put(Constant.AD_UNIT_ID, adUnitId);
+            map.put(Constant.AD_FORMAT, adFormat);
+            map.put(Constant.AD_UNIT_NAME, adUnitName);
+            map.put(Constant.AD_PLATFORM, getSdkName());
+            map.put(Constant.AD_SDK_VERSION, getSdkVersion());
+            map.put(Constant.AD_APP_VERSION, getAppVersion());
             try {
                 String[] precisionTypes = new String[]{"unknown", "estimated", "publisher_provided", "precise"};
-                map.put("ad_precision", precisionTypes[adValue.getPrecisionType()]);
+                map.put(Constant.AD_PRECISION, precisionTypes[adValue.getPrecisionType()]);
             } catch (Exception e) {
             }
-            String gaid = Utils.getString(mContext, Constant.PREF_GAID);
-            map.put("ad_gaid", gaid);
-            if (isReportAdImpData()) {
-                InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", map);
-            }
+            map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             StringBuilder builder = new StringBuilder("{");
             builder.append("\n");
             for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -889,6 +884,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
             builder.append("}");
             Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
+            onReportAdImpData(map);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
