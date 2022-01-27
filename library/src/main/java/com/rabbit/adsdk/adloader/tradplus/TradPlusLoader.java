@@ -597,7 +597,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             }
             Map<String, Object> map = new HashMap<>();
             map.put(Constant.AD_VALUE, ecpm / 1000);
-            map.put(Constant.AD_CURRENCY, tpAdInfo.currency);
+            map.put(Constant.AD_CURRENCY, getCurrency(tpAdInfo));
             map.put(Constant.AD_NETWORK, tpAdInfo.adSourceName);
             map.put(Constant.AD_NETWORK_PID, getAdSourceId(tpAdInfo));
             map.put(Constant.AD_UNIT_ID, getPid());
@@ -641,6 +641,13 @@ public class TradPlusLoader extends AbstractSdkLoader {
         } catch (Exception e) {
         }
         return networkUnitId;
+    }
+
+    private String getCurrency(TPAdInfo tpAdInfo) {
+        if (tpAdInfo != null && !TextUtils.isEmpty(tpAdInfo.currency)) {
+            return tpAdInfo.currency;
+        }
+        return "USD";
     }
 
     private String getLoadedInfo(TPAdInfo tpAdInfo) {
