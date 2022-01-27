@@ -37,6 +37,7 @@ ext {
 allprojects {
     repositories {
         mavenCentral()
+        google()
         maven { url rootProject.ext.publishUri }
         maven { url 'https://maven.aliyun.com/repository/central' }
         maven { url 'https://maven.aliyun.com/repository/google' }

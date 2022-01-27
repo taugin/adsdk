@@ -402,6 +402,11 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 onResetReward();
                 notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "ad reward video error");
             }
+
+            @Override
+            public void onAdPlayAgainReward(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad reward play again"));
+            }
         });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();

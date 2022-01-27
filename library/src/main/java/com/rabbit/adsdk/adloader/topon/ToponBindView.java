@@ -221,7 +221,7 @@ public class ToponBindView extends BaseBindNativeView {
         private void setVideoDefaultMuteForMintegral(CustomNativeAd customNativeAd) {
             try {
                 if (customNativeAd instanceof MintegralATNativeAd) {
-                    ((MintegralATNativeAd) customNativeAd).setVideoMute("1");
+                    ((MintegralATNativeAd) customNativeAd).setVideoMute(true);
                 }
             } catch (Exception e) {
             }
