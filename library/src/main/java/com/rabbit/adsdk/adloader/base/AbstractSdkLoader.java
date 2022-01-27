@@ -13,12 +13,12 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.rabbit.adsdk.AdReward;
-import com.rabbit.adsdk.adloader.core.AdLoaderManager;
 import com.rabbit.adsdk.adloader.listener.IManagerListener;
 import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.AdPolicy;
+import com.rabbit.adsdk.core.framework.AdLoadManager;
 import com.rabbit.adsdk.core.framework.BlockAdsManager;
 import com.rabbit.adsdk.core.framework.LimitAdsManager;
 import com.rabbit.adsdk.core.framework.Params;
@@ -358,7 +358,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
      * @return
      */
     private boolean isAdFilter() {
-        OnAdFilterListener onAdFilterListener = AdLoaderManager.get(mContext).getAdLoaderFilter();
+        OnAdFilterListener onAdFilterListener = AdLoadManager.get(mContext).getOnAdFilterListener();
         if (onAdFilterListener != null) {
             return onAdFilterListener.doFilter(getAdPlaceName(), getSdkName(), getAdType());
         }
@@ -1062,7 +1062,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (isReportAdImpData()) {
             InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", adImpData);
         }
-        OnAdImpressionListener l = AdLoaderManager.get(mContext).getOnAdImpressionListener();
+        OnAdImpressionListener l = AdLoadManager.get(mContext).getOnAdImpressionListener();
         if (l != null) {
             l.onAdImpression(adImpData);
         }

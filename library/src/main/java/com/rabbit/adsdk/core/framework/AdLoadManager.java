@@ -1,31 +1,31 @@
-package com.rabbit.adsdk.adloader.core;
+package com.rabbit.adsdk.core.framework;
 
 import android.content.Context;
 
 import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.OnAdImpressionListener;
 
-public class AdLoaderManager {
-    private static AdLoaderManager sAdLoaderManager;
+public class AdLoadManager {
+    private static AdLoadManager sAdLoadManager;
 
-    public static AdLoaderManager get(Context context) {
-        synchronized (AdLoaderManager.class) {
-            if (sAdLoaderManager == null) {
+    public static AdLoadManager get(Context context) {
+        synchronized (AdLoadManager.class) {
+            if (sAdLoadManager == null) {
                 createInstance(context);
             }
         }
-        return sAdLoaderManager;
+        return sAdLoadManager;
     }
 
     private static void createInstance(Context context) {
-        synchronized (AdLoaderManager.class) {
-            if (sAdLoaderManager == null) {
-                sAdLoaderManager = new AdLoaderManager(context);
+        synchronized (AdLoadManager.class) {
+            if (sAdLoadManager == null) {
+                sAdLoadManager = new AdLoadManager(context);
             }
         }
     }
 
-    private AdLoaderManager(Context context) {
+    private AdLoadManager(Context context) {
         if (context != null) {
             mContext = context.getApplicationContext();
         }
@@ -36,11 +36,11 @@ public class AdLoaderManager {
     private OnAdFilterListener mOnAdFilterListener;
     private OnAdImpressionListener mOnAdImpressionListener;
 
-    public OnAdFilterListener getAdLoaderFilter() {
+    public OnAdFilterListener getOnAdFilterListener() {
         return mOnAdFilterListener;
     }
 
-    public void setAdLoaderFilter(OnAdFilterListener onAdFilterListener) {
+    public void setOnAdFilterListener(OnAdFilterListener onAdFilterListener) {
         mOnAdFilterListener = onAdFilterListener;
     }
 

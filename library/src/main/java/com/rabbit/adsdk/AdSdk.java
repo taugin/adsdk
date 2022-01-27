@@ -8,9 +8,9 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
-import com.rabbit.adsdk.adloader.core.AdLoaderManager;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.ActivityMonitor;
+import com.rabbit.adsdk.core.framework.AdLoadManager;
 import com.rabbit.adsdk.core.framework.AdPlaceLoader;
 import com.rabbit.adsdk.core.framework.LimitAdsManager;
 import com.rabbit.adsdk.data.DataManager;
@@ -745,6 +745,6 @@ public class AdSdk {
     }
 
     public void setAdLoaderFilter(OnAdFilterListener filter) {
-        AdLoaderManager.get(mContext).setAdLoaderFilter(filter);
+        AdLoadManager.get(mContext).setOnAdFilterListener(filter);
     }
 }
