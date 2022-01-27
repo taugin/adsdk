@@ -198,6 +198,14 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
     }
 
     private void loadNative(TextView textView) {
+        String sdk = (String) mAdSdkSpinner.getSelectedItem();
+        String nativePlace = String.format(Locale.getDefault(), NATIVE_PREFIX, sdk.toLowerCase(Locale.getDefault()));
+        if (AdSdk.get(mContext).isAdViewLoaded(nativePlace)) {
+            AdSdk.get(mContext).showAdView(nativePlace, mNativeBannerLayout);
+            CustomDrawable.setBackground(mNativeBannerLayout);
+            return;
+        }
+
         AdParams.Builder builder = new AdParams.Builder();
         String layout = (String) mAdLayoutSpinner.getSelectedItem();
         String layoutStyle;
@@ -238,9 +246,7 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
         }
         builder.setNativeTemplateWidth(AdExtra.AD_SDK_COMMON, Utils.dp2px(mContext, 200));
         AdParams adParams = builder.build();
-        String sdk = (String) mAdSdkSpinner.getSelectedItem();
-        String nativePlace = String.format(Locale.getDefault(), NATIVE_PREFIX, sdk.toLowerCase(Locale.getDefault()));
-        AdSdk.get(mContext).loadAdView(nativePlace, adParams, mSimpleAdsdkListener);
+        AdSdk.get(mContext).loadAdView(nativePlace, adParams, new FullScreenAdListener(textView));
     }
 
     private void runToast(final String toast) {
