@@ -23,18 +23,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hauyu.adsdk.demo.view.CustomDrawable;
-import com.hauyu.adsdk.demo.view.DynamicHeartView;
 import com.rabbit.adsdk.AdExtra;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.AdSdk;
-import com.rabbit.adsdk.listener.AdLoaderFilter;
+import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.utils.Utils;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class MainActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
@@ -62,7 +59,7 @@ public class MainActivity extends Activity implements CompoundButton.OnCheckedCh
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = getApplicationContext();
-        AdSdk.get(this).setAdLoaderFilter(new AdLoaderFilter() {
+        AdSdk.get(this).setAdLoaderFilter(new OnAdFilterListener() {
             @Override
             public boolean doFilter(String placeName, String sdk, String type) {
                 return false;

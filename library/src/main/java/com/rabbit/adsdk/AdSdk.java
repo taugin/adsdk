@@ -16,7 +16,7 @@ import com.rabbit.adsdk.core.framework.LimitAdsManager;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PlaceConfig;
-import com.rabbit.adsdk.listener.AdLoaderFilter;
+import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.OnAdSdkListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
@@ -744,7 +744,7 @@ public class AdSdk {
         }
     }
 
-    public void setAdLoaderFilter(AdLoaderFilter filter) {
+    public void setAdLoaderFilter(OnAdFilterListener filter) {
         AdLoaderManager.get(mContext).setAdLoaderFilter(filter);
     }
 }

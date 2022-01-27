@@ -1,25 +1,14 @@
 package com.hauyu.adsdk.demo;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,13 +19,11 @@ import com.rabbit.adsdk.AdExtra;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.AdSdk;
-import com.rabbit.adsdk.listener.AdLoaderFilter;
+import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.utils.Utils;
-import com.umeng.commonsdk.debug.E;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -103,7 +90,7 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
         mAdBannerSizeSpinner.setSelection(position);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = getApplicationContext();
-        AdSdk.get(this).setAdLoaderFilter(new AdLoaderFilter() {
+        AdSdk.get(this).setAdLoaderFilter(new OnAdFilterListener() {
             @Override
             public boolean doFilter(String placeName, String sdk, String type) {
                 return false;

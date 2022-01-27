@@ -26,7 +26,8 @@ import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.data.parse.IParser;
-import com.rabbit.adsdk.listener.AdLoaderFilter;
+import com.rabbit.adsdk.listener.OnAdFilterListener;
+import com.rabbit.adsdk.listener.OnAdImpressionListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.stat.IEvent;
@@ -357,9 +358,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
      * @return
      */
     private boolean isAdFilter() {
-        AdLoaderFilter adLoaderFilter = AdLoaderManager.get(mContext).getAdLoaderFilter();
-        if (adLoaderFilter != null) {
-            return adLoaderFilter.doFilter(getAdPlaceName(), getSdkName(), getAdType());
+        OnAdFilterListener onAdFilterListener = AdLoaderManager.get(mContext).getAdLoaderFilter();
+        if (onAdFilterListener != null) {
+            return onAdFilterListener.doFilter(getAdPlaceName(), getSdkName(), getAdType());
         }
         return false;
     }
@@ -1060,6 +1061,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void onReportAdImpData(Map<String, Object> adImpData) {
         if (isReportAdImpData()) {
             InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", adImpData);
+        }
+        OnAdImpressionListener l = AdLoaderManager.get(mContext).getOnAdImpressionListener();
+        if (l != null) {
+            l.onAdImpression(adImpData);
         }
     }
 }

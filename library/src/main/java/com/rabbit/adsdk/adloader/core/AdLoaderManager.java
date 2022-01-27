@@ -2,7 +2,8 @@ package com.rabbit.adsdk.adloader.core;
 
 import android.content.Context;
 
-import com.rabbit.adsdk.listener.AdLoaderFilter;
+import com.rabbit.adsdk.listener.OnAdFilterListener;
+import com.rabbit.adsdk.listener.OnAdImpressionListener;
 
 public class AdLoaderManager {
     private static AdLoaderManager sAdLoaderManager;
@@ -32,13 +33,22 @@ public class AdLoaderManager {
 
     private Context mContext;
     // 广告加载过滤器
-    private AdLoaderFilter mAdLoaderFilter;
+    private OnAdFilterListener mOnAdFilterListener;
+    private OnAdImpressionListener mOnAdImpressionListener;
 
-    public AdLoaderFilter getAdLoaderFilter() {
-        return mAdLoaderFilter;
+    public OnAdFilterListener getAdLoaderFilter() {
+        return mOnAdFilterListener;
     }
 
-    public void setAdLoaderFilter(AdLoaderFilter adLoaderFilter) {
-        mAdLoaderFilter = adLoaderFilter;
+    public void setAdLoaderFilter(OnAdFilterListener onAdFilterListener) {
+        mOnAdFilterListener = onAdFilterListener;
+    }
+
+    public OnAdImpressionListener getOnAdImpressionListener() {
+        return mOnAdImpressionListener;
+    }
+
+    public void setOnAdImpressionListener(OnAdImpressionListener l) {
+        mOnAdImpressionListener = l;
     }
 }
