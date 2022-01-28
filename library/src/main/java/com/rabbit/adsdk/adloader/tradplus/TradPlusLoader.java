@@ -9,6 +9,7 @@ import android.view.ViewParent;
 
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
+import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
@@ -40,6 +41,11 @@ public class TradPlusLoader extends AbstractSdkLoader {
     private TPReward mTPReward;
     private TPNative mTPNative;
     private TradPlusBindView mTradPlusBindView = new TradPlusBindView();
+
+    @Override
+    protected BaseBindNativeView getBaseBindNativeView() {
+        return mTradPlusBindView;
+    }
 
     @Override
     public String getSdkName() {

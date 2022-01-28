@@ -52,4 +52,23 @@ public class ApplovinBindView extends BaseBindNativeView {
         }
         return new MaxNativeAdView("", activity);
     }
+
+    public void fillNativeAssets(MaxNativeAdView maxNativeAdView) {
+        try {
+            putValue(AD_TITLE, maxNativeAdView.getTitleTextView().getText().toString());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_DETAIL, maxNativeAdView.getBodyTextView().getText().toString());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_CTA, maxNativeAdView.getCallToActionButton().getText().toString());
+        } catch (Exception e) {
+        }
+        try {
+            putValue(AD_CHOICES, maxNativeAdView.getAdvertiserTextView().getText().toString());
+        } catch (Exception e) {
+        }
+    }
 }

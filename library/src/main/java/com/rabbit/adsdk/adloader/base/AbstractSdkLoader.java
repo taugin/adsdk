@@ -862,9 +862,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
     }
 
-    protected BaseBindNativeView getBaseBindNativeView() {
-        return null;
-    }
+    protected abstract BaseBindNativeView getBaseBindNativeView();
 
     protected void notifyAdRequest() {
         if (getAdListener() != null) {

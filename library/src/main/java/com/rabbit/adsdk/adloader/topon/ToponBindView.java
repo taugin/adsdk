@@ -131,6 +131,7 @@ public class ToponBindView extends BaseBindNativeView {
                     if (isClickable(AD_ICON, mPidConfig)) {
                         mClickView.add(atNativeImageView);
                     }
+                    putValue(AD_TITLE, customNativeAd.getIconImageUrl());
                 }
             }
             setVideoDefaultMuteForMintegral(customNativeAd);
@@ -154,6 +155,7 @@ public class ToponBindView extends BaseBindNativeView {
                     if (isClickable(AD_COVER, mPidConfig)) {
                         mClickView.add(imageView);
                     }
+                    putValue(AD_COVER, customNativeAd.getMainImageUrl());
                 }
             }
 
@@ -177,16 +179,20 @@ public class ToponBindView extends BaseBindNativeView {
                 } else {
                     setMintegralAdChoiceByDefault(customNativeAd, adChoiceLayout);
                 }
+                putValue(AD_CHOICES, adChoiceIconUrl);
             }
 
             if (titleView != null) {
                 titleView.setText(customNativeAd.getTitle());
+                putValue(AD_TITLE, customNativeAd.getTitle());
             }
             if (descView != null) {
                 descView.setText(customNativeAd.getDescriptionText());
+                putValue(AD_DETAIL, customNativeAd.getDescriptionText());
             }
             if (ctaView != null) {
                 ctaView.setText(customNativeAd.getCallToActionText());
+                putValue(AD_CTA, customNativeAd.getCallToActionText());
             }
             String adFromText = customNativeAd.getAdFrom();
             Log.iv(Log.TAG_SDK, "topon ad from text : " + adFromText);

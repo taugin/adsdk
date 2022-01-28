@@ -27,6 +27,7 @@ import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkSettings;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
+import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.DataManager;
@@ -50,6 +51,11 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private static AppLovinSdkSettings sAppLovinSdkSettings;
     private MaxNativeAdView mMaxNativeAdView;
     private ApplovinBindView mApplovinBindView = new ApplovinBindView();
+
+    @Override
+    protected BaseBindNativeView getBaseBindNativeView() {
+        return mApplovinBindView;
+    }
 
     /**
      * 提前初始化applovin，避免applovin被使用Application Context初始化
@@ -740,6 +746,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 }
                 clearCachedAdTime(mMaxNativeAdView);
                 updateNativeStatus(mMaxNativeAdView);
+                mApplovinBindView.fillNativeAssets(mMaxNativeAdView);
                 mMaxNativeAdView = null;
             }
         } catch (Exception e) {

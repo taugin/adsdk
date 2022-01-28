@@ -24,6 +24,7 @@ import com.anythink.rewardvideo.api.ATRewardVideoAd;
 import com.anythink.rewardvideo.api.ATRewardVideoListener;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
+import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
@@ -43,6 +44,11 @@ public class ToponLoader extends AbstractSdkLoader {
     private NativeAd mNativeAd;
     private ATNative mATNative;
     private ToponBindView mToponBindView = new ToponBindView();
+
+    @Override
+    protected BaseBindNativeView getBaseBindNativeView() {
+        return mToponBindView;
+    }
 
     @Override
     public String getSdkName() {

@@ -83,6 +83,7 @@ public class TradPlusBindView extends BaseBindNativeView {
                     View mediaView = tpNativeAdView.getMediaView();
                     Drawable coverDrawable = tpNativeAdView.getMainImage();
                     String mainImageUrl = tpNativeAdView.getMainImageUrl();
+                    putValue(AD_COVER, mainImageUrl);
                     if (mediaView != null) {
                         ViewGroup mediaLayout = viewGroup.findViewById(mParams.getAdMediaView());
                         if (mediaLayout != null) {
@@ -110,6 +111,7 @@ public class TradPlusBindView extends BaseBindNativeView {
                             adIconView = new ImageView(mContext);
                             TPImageLoader.getInstance().loadImage(adIconView, tpNativeAdView.getIconImageUrl());
                             ((ViewGroup) iconTempView).addView(adIconView);
+                            putValue(AD_ICON, tpNativeAdView.getIconImageUrl());
                         }
                     } else if (iconTempView instanceof ImageView) {
                         adIconView = (ImageView) iconTempView;
@@ -117,19 +119,23 @@ public class TradPlusBindView extends BaseBindNativeView {
                             adIconView.setImageDrawable(tpNativeAdView.getIconImage());
                         } else if (tpNativeAdView.getIconImageUrl() != null) {
                             TPImageLoader.getInstance().loadImage(adIconView, tpNativeAdView.getIconImageUrl());
+                            putValue(AD_ICON, tpNativeAdView.getIconImageUrl());
                         }
                     }
                     TextView titleView = viewGroup.findViewById(mParams.getAdTitle());
+                    putValue(AD_TITLE, tpNativeAdView.getTitle());
                     if (titleView != null && tpNativeAdView.getTitle() != null) {
                         titleView.setText(tpNativeAdView.getTitle());
                     }
 
                     TextView subTitleView = viewGroup.findViewById(mParams.getAdDetail());
+                    putValue(AD_DETAIL, tpNativeAdView.getSubTitle());
                     if (subTitleView != null && tpNativeAdView.getSubTitle() != null) {
                         subTitleView.setText(tpNativeAdView.getSubTitle());
                     }
 
                     TextView callToActionView = viewGroup.findViewById(mParams.getAdAction());
+                    putValue(AD_CTA, tpNativeAdView.getCallToAction());
                     if (callToActionView != null && tpNativeAdView.getCallToAction() != null) {
                         callToActionView.setText(tpNativeAdView.getCallToAction());
                     }
@@ -150,6 +156,7 @@ public class TradPlusBindView extends BaseBindNativeView {
                                 ImageView imageView = new ImageView(mContext);
                                 TPImageLoader.getInstance().loadImage(imageView, adChoiceUrl);
                                 adChoiceViewLayout.addView(imageView);
+                                putValue(AD_CHOICES, adChoiceUrl);
                             } else {
                                 FrameLayout frameLayout = new FrameLayout(mContext);
                                 adChoiceViewLayout.addView(frameLayout);
