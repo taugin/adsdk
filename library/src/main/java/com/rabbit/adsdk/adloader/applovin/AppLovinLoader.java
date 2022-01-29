@@ -715,7 +715,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        nativeAdLoader.setPlacement(getAdPlaceName());
+        nativeAdLoader.setPlacement(getSceneId());
         MaxNativeAdView maxNativeAdView = mApplovinBindView.bindMaxNativeAdView(activity, params, mPidConfig);
         nativeAdLoader.loadAd(isTemplateRendering() ? null : maxNativeAdView);
     }
