@@ -67,7 +67,7 @@ public class ApplovinBindView extends BaseBindNativeView {
         } catch (Exception e) {
         }
         try {
-            putValue(AD_CHOICES, maxNativeAdView.getAdvertiserTextView().getText().toString());
+            putValue(AD_SOCIAL, maxNativeAdView.getAdvertiserTextView().getText().toString());
         } catch (Exception e) {
         }
     }
