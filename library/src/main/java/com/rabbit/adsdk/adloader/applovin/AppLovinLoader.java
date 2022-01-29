@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.applovin.impl.sdk.nativeAd.AppLovinOptionsView;
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
 import com.applovin.mediation.MaxAdListener;
@@ -69,7 +70,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 AppLovinSdk appLovinSdk = getInstance(activity);
                 if (appLovinSdk != null) {
                     appLovinSdk.setMediationProvider("max");
-                    appLovinSdk.initializeSdk(config -> Log.iv(Log.TAG, "applovin sdk init successfully"));
                     if (isDebug(activity)) {
                         String gaid = Utils.getString(activity, Constant.PREF_GAID);
                         Log.iv(Log.TAG, "applovin debug mode gaid : " + gaid);
@@ -77,6 +77,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                             appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList(new String[]{gaid}));
                         }
                     }
+                    appLovinSdk.initializeSdk(config -> Log.iv(Log.TAG, "applovin sdk init successfully"));
                 }
             } catch (Exception e) {
             }
@@ -768,6 +769,20 @@ public class AppLovinLoader extends AbstractSdkLoader {
                             params.height = -2;
                             childView.setLayoutParams(params);
                         }
+                    }
+                    try {
+                        if (childView instanceof AppLovinOptionsView) {
+                            View maxOptionView = ((AppLovinOptionsView) childView).getChildAt(0);
+                            ViewGroup.LayoutParams params = maxOptionView.getLayoutParams();
+                            if (params != null) {
+                                int size = Utils.dp2px(mContext, 18);
+                                params.width = size;
+                                params.height = size;
+                                maxOptionView.setLayoutParams(params);
+                            }
+                        }
+                    } catch (Exception e) {
+                        Log.e(Log.TAG, "error : " + e);
                     }
                 }
             }
