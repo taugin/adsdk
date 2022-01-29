@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
@@ -607,13 +606,17 @@ public class MintegralMediationAdapter
         // Native ads do not use the handler maps, because MBNativeHandler.setAdListener fails to update the ad listener after the first assignment.
         mbBidNativeHandler = new MBBidNativeHandler( properties, activity.getApplicationContext() );
         mbBidNativeHandler.setAdListener( nativeAdListener );
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                mbBidNativeHandler.bidLoad( parameters.getBidResponse() );
-            }
-        });
+        Looper looper = Looper.myLooper();
+        if (looper != Looper.getMainLooper()) {
+            AppLovinSdkUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mbBidNativeHandler.bidLoad(parameters.getBidResponse());
+                }
+            });
+        } else {
+            mbBidNativeHandler.bidLoad(parameters.getBidResponse());
+        }
     }
 
     private Boolean getPrivacySetting(final String privacySetting, final MaxAdapterParameters parameters)
