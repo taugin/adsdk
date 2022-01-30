@@ -63,6 +63,9 @@ allprojects {
             url "https://anythink.jfrog.io/artifactory/android_sdk"
         }
         maven { url 'https://mvnrepository.com/artifact/com.inmobi.monetization/inmobi-ads' }
+        maven {
+            url "https://s3.amazonaws.com/smaato-sdk-releases/"
+        }
     }
 }
 

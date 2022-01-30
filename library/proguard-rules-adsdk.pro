@@ -99,3 +99,9 @@
 -keepclassmembers public class com.anythink.myoffer.ui.** {
    public *;
 }
+
+#smaato
+-dontwarn com.smaato.**
+-keep class com.smaato.**{ *;}
+-dontwarn com.iab.**
+-keep class com.iab.**{ *;}
