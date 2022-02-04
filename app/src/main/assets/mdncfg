@@ -1,6 +1,7 @@
 {
   "applovin.sdk.config": {
     "sdk_key": "L7OrRia7Fum7esJFM51m6xd799x4HmN4iNA6H9I7PhlFH_NqVTDDu87T7R58p4gAR3xJNedZzM-0HBT1XwUEv7",
-    "applovin_debug": "false"
+    "applovin_debug_device": "false",
+    "applovin_show_verbose": "false"
   }
 }

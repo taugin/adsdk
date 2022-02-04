@@ -70,14 +70,21 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 AppLovinSdk appLovinSdk = getInstance(activity);
                 if (appLovinSdk != null) {
                     appLovinSdk.setMediationProvider("max");
-                    if (isDebug(activity)) {
+                    if (isDebugDevice(activity)) {
                         String gaid = Utils.getString(activity, Constant.PREF_GAID);
                         Log.iv(Log.TAG, "applovin debug mode gaid : " + gaid);
                         if (!TextUtils.isEmpty(gaid)) {
                             appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList(new String[]{gaid}));
                         }
                     }
-                    appLovinSdk.initializeSdk(config -> Log.iv(Log.TAG, "applovin sdk init successfully"));
+                    try {
+                        appLovinSdk.getSettings().setVerboseLogging(isShowVerbose(activity));
+                    } catch (Exception e) {
+                    }
+                    appLovinSdk.initializeSdk(config -> {
+                                Log.iv(Log.TAG, "applovin sdk init successfully");
+                            }
+                    );
                 }
             } catch (Exception e) {
             }
@@ -93,19 +100,46 @@ public class AppLovinLoader extends AbstractSdkLoader {
         return Constant.AD_SDK_APPLOVIN;
     }
 
-    private static boolean isDebug(Context context) {
+    /**
+     * 设置为调试设备
+     *
+     * @param context
+     * @return
+     */
+    private static boolean isDebugDevice(Context context) {
         boolean isDebug = false;
         Map<String, Map<String, String>> config = DataManager.get(context).getMediationConfig();
         if (config != null) {
             Map<String, String> applovinConfig = config.get("applovin.sdk.config");
             if (applovinConfig != null) {
                 try {
-                    isDebug = Boolean.parseBoolean(applovinConfig.get("applovin_debug"));
+                    isDebug = Boolean.parseBoolean(applovinConfig.get("applovin_debug_device"));
                 } catch (Exception e) {
                 }
             }
         }
         return isDebug;
+    }
+
+    /**
+     * 是否输出verbose信息
+     *
+     * @param context
+     * @return
+     */
+    private static boolean isShowVerbose(Context context) {
+        boolean isShowVerbose = false;
+        Map<String, Map<String, String>> config = DataManager.get(context).getMediationConfig();
+        if (config != null) {
+            Map<String, String> applovinConfig = config.get("applovin.sdk.config");
+            if (applovinConfig != null) {
+                try {
+                    isShowVerbose = Boolean.parseBoolean(applovinConfig.get("applovin_show_verbose"));
+                } catch (Exception e) {
+                }
+            }
+        }
+        return isShowVerbose;
     }
 
     private static String getSdkKey(Context context) {
