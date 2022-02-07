@@ -176,20 +176,6 @@ dependencies {
     implementation 'com.google.ads.mediation:tapjoy:12.8.1.1@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
-    // Smaato
-    def smaato_version = "21.6.7"
-    implementation "com.smaato.android.sdk:smaato-sdk:${smaato_version}"
-    implementation "com.smaato.android.sdk:smaato-sdk-banner:${smaato_version}"
-    implementation "com.smaato.android.sdk:smaato-sdk-interstitial:${smaato_version}"
-    implementation "com.smaato.android.sdk:smaato-sdk-rewarded-ads:${smaato_version}"
-    implementation "com.smaato.android.sdk:smaato-sdk-native:${smaato_version}"
-    implementation "com.smaato.android.sdk:smaato-sdk-in-app-bidding:${smaato_version}"
-    // applovin Smaato mediation
-    implementation 'com.applovin.mediation:smaato-adapter:21.6.7.2'
-    // tradplus Smaato mediation
-    implementation 'com.tradplusad:tradplus-smaato:38.7.4.10.1'
-
-
     // Cross Promotion
     implementation 'com.tradplusad:tradplus-crosspromotion:27.7.2.0.1'
 
