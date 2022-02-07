@@ -71,7 +71,7 @@ public class MintegralMediationAdapter
         implements MaxInterstitialAdapter, MaxRewardedAdapter, MaxAdViewAdapter, MaxSignalProvider /* MaxNativeAdAdapter */
 {
     private static final MintegralMediationAdapterRouter router;
-    private static final AtomicBoolean initialized = new AtomicBoolean();
+    private static final AtomicBoolean                   initialized = new AtomicBoolean();
 
     private static final String APP_ID_PARAMETER  = "app_id";
     private static final String APP_KEY_PARAMETER = "app_key";
@@ -121,11 +121,11 @@ public class MintegralMediationAdapter
     private MBBidInterstitialVideoHandler mbBidInterstitialVideoHandler;
     private MBRewardVideoHandler          mbRewardVideoHandler;
     private MBBidRewardVideoHandler       mbBidRewardVideoHandler;
-    private MBBannerView mbBannerView;
-    private MBBidNativeHandler mbBidNativeHandler;
-    private Campaign nativeAdCampaign;
-    private MaxNativeAdView maxNativeAdView;
-    private List<View> clickableViews;
+    private MBBannerView                  mbBannerView;
+    private MBBidNativeHandler            mbBidNativeHandler;
+    private Campaign                      nativeAdCampaign;
+    private MaxNativeAdView               maxNativeAdView;
+    private List<View>                    clickableViews;
 
     static
     {
@@ -148,13 +148,16 @@ public class MintegralMediationAdapter
 
             final MBridgeSDK mBridgeSDK = MBridgeSDKFactory.getMBridgeSDK();
 
+            // NOTE: `activity` can only be null in 11.1.0+, and `getApplicationContext()` is introduced in 11.1.0
+            Context context = ( activity != null ) ? activity.getApplicationContext() : getApplicationContext();
+
             // Communicated over email, GDPR status can only be set before SDK initialization
             Boolean hasUserConsent = getPrivacySetting( "hasUserConsent", parameters );
             if ( hasUserConsent != null )
             {
                 int consent = hasUserConsent ? MBridgeConstans.IS_SWITCH_ON : MBridgeConstans.IS_SWITCH_OFF;
-                mBridgeSDK.setUserPrivateInfoType( activity, MBridgeConstans.AUTHORITY_ALL_INFO, consent );
-                mBridgeSDK.setConsentStatus( activity, consent );
+                mBridgeSDK.setUserPrivateInfoType( context, MBridgeConstans.AUTHORITY_ALL_INFO, consent );
+                mBridgeSDK.setConsentStatus( context, consent );
             }
 
             // Has to be _before_ their SDK init as well
@@ -169,7 +172,7 @@ public class MintegralMediationAdapter
 
             // Mintegral Docs - "It is recommended to use the API in the main thread"
             final Map<String, String> map = mBridgeSDK.getMBConfigurationMap( appId, appKey );
-            mBridgeSDK.init( map, activity );
+            mBridgeSDK.init( map, context );
         }
 
         onCompletionListener.onCompletion( InitializationStatus.DOES_NOT_APPLY, null );
@@ -190,7 +193,7 @@ public class MintegralMediationAdapter
     @Override
     public String getAdapterVersion()
     {
-        return "15.8.1.3";
+        return "15.8.1.4";
     }
 
     @Override
@@ -914,7 +917,7 @@ public class MintegralMediationAdapter
             implements NativeListener.NativeAdListener, OnMBMediaViewListener
     {
         private final MaxAdapterResponseParameters parameters;
-        private final Context context;
+        private final Context                      context;
         private final MaxNativeAdAdapterListener   listener;
         private final String                       unitId;
         private final String                       placementId;
@@ -1079,13 +1082,13 @@ public class MintegralMediationAdapter
                             adChoiceView.setCampaign( campaign );
 
                             final MaxNativeAd maxNativeAd = new MaxMintegralNativeAd( new MaxNativeAd.Builder()
-                                    .setAdFormat( MaxAdFormat.NATIVE )
-                                    .setTitle( campaign.getAppName() )
-                                    .setBody( campaign.getAppDesc() )
-                                    .setCallToAction( campaign.getAdCall() )
-                                    .setIcon( finalIconImage )
-                                    .setMediaView( mediaView )
-                                    .setOptionsView( adChoiceView ) );
+                                                                                              .setAdFormat( MaxAdFormat.NATIVE )
+                                                                                              .setTitle( campaign.getAppName() )
+                                                                                              .setBody( campaign.getAppDesc() )
+                                                                                              .setCallToAction( campaign.getAdCall() )
+                                                                                              .setIcon( finalIconImage )
+                                                                                              .setMediaView( mediaView )
+                                                                                              .setOptionsView( adChoiceView ) );
                             listener.onNativeAdLoaded( maxNativeAd, null );
                         }
                     } );

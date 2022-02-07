@@ -91,7 +91,7 @@ dependencies {
     // facebook
     implementation 'com.facebook.android:audience-network-sdk:6.8.0'
     // applovin facebook mediation
-    implementation 'com.applovin.mediation:facebook-adapter:6.8.0.7@aar'
+    implementation 'com.applovin.mediation:facebook-adapter:6.8.0.8@aar'
     // tradplus facebook mediation
     implementation 'com.tradplusad:tradplus-facebook:1.7.4.10.1'
     // admob facebook mediation
@@ -213,8 +213,9 @@ dependencies {
     implementation "com.smaato.android.sdk:smaato-sdk-interstitial:${smaato_version}"
     implementation "com.smaato.android.sdk:smaato-sdk-rewarded-ads:${smaato_version}"
     implementation "com.smaato.android.sdk:smaato-sdk-native:${smaato_version}"
+    implementation "com.smaato.android.sdk:smaato-sdk-in-app-bidding:${smaato_version}"
     // applovin Smaato mediation
-    implementation 'com.applovin.mediation:smaato-adapter:21.6.7.1'
+    implementation 'com.applovin.mediation:smaato-adapter:21.6.7.2@aar'
     // tradplus Smaato mediation
     implementation 'com.tradplusad:tradplus-smaato:38.7.4.10.1'
 
