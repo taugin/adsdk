@@ -185,7 +185,7 @@ dependencies {
     implementation "com.smaato.android.sdk:smaato-sdk-native:${smaato_version}"
     implementation "com.smaato.android.sdk:smaato-sdk-in-app-bidding:${smaato_version}"
     // applovin Smaato mediation
-    implementation 'com.applovin.mediation:smaato-adapter:21.6.7.2@aar'
+    implementation 'com.applovin.mediation:smaato-adapter:21.6.7.2'
     // tradplus Smaato mediation
     implementation 'com.tradplusad:tradplus-smaato:38.7.4.10.1'
 
