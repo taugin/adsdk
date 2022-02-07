@@ -77,7 +77,6 @@
 -keep public class com.tradplus.** { *; }
 -keep class com.tradplus.ads.** { *; }
 
-#topon
 -keep public class com.anythink.**
 -keepclassmembers class com.anythink.** {
    *;

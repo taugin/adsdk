@@ -467,7 +467,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     /**
-     * max、tradplus、topon平台是聚合平台，
+     * max、tradplus平台是聚合平台，
      * 平台本身就具有判断广告过期的条件，
      * 因此对于这些平台降忽略对插屏和激励视频过期时间的判断
      *
@@ -482,12 +482,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         // tradplus interstitial reward
         if (TextUtils.equals(Constant.AD_SDK_TRADPLUS, getSdkName())
-                && (TextUtils.equals(Constant.TYPE_INTERSTITIAL, getAdType())
-                || TextUtils.equals(Constant.TYPE_REWARD, getAdType()))) {
-            return true;
-        }
-        // topon interstitial reward
-        if (TextUtils.equals(Constant.AD_SDK_TOPON, getSdkName())
                 && (TextUtils.equals(Constant.TYPE_INTERSTITIAL, getAdType())
                 || TextUtils.equals(Constant.TYPE_REWARD, getAdType()))) {
             return true;

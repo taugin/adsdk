@@ -289,10 +289,6 @@ public class PidConfig {
         return TextUtils.equals(Constant.AD_SDK_TRADPLUS, sdk);
     }
 
-    public boolean isTopon() {
-        return TextUtils.equals(Constant.AD_SDK_TOPON, sdk);
-    }
-
     public boolean isSpread() {
         return TextUtils.equals(Constant.AD_SDK_SPREAD, sdk);
     }
