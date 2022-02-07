@@ -90,7 +90,7 @@ dependencies {
     // admob
     implementation 'com.google.android.gms:play-services-ads:20.5.0'
     // applovin admob mediation
-    implementation 'com.applovin.mediation:google-adapter:20.5.0.7@aar'
+    implementation 'com.applovin.mediation:google-adapter:20.5.0.8@aar'
     implementation 'com.applovin.mediation:google-ad-manager-adapter:20.5.0.5@aar'
     // tradplus admob mediation
     implementation 'com.tradplusad:tradplus-googlex:2.7.4.10.1'
@@ -130,7 +130,7 @@ dependencies {
     // unity
     implementation 'com.unity3d.ads:unity-ads:4.0.0'
     // unity applovin mediation
-    implementation 'com.applovin.mediation:unityads-adapter:4.0.0.0@aar'
+    implementation 'com.applovin.mediation:unityads-adapter:4.0.0.2@aar'
     // tradplus unity mediation
     implementation 'com.tradplusad:tradplus-unity:5.7.4.10.1'
     // admob unity mediation
@@ -150,7 +150,7 @@ dependencies {
     // ironsource
     implementation 'com.ironsource.sdk:mediationsdk:7.1.14'
     // applovin ironsource mediation
-    implementation 'com.applovin.mediation:ironsource-adapter:7.1.14.0.1'
+    implementation 'com.applovin.mediation:ironsource-adapter:7.1.14.0.2'
     // tradplus ironsource mediation
     implementation 'com.tradplusad:tradplus-ironsource:10.7.4.10.1'
     // admob ironsource mediation
