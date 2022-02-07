@@ -127,7 +127,7 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbbid:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbnativeadvanced:${mintegral_version}"
     // applovin mintegral mediation
-    // implementation 'com.applovin.mediation:mintegral-adapter:15.8.1.3@aar'
+    // implementation 'com.applovin.mediation:mintegral-adapter:15.8.1.4@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.7.4.10.1'
     // topon mintegral mediation
