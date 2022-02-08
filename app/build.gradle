@@ -103,6 +103,7 @@ afterEvaluate {
         }
     }
 }
+apply from: 'resguard_apk.gradle'
 // apply plugin: 'com.google.gms.google-services'
 
 //android.applicationVariants.all{ variant ->

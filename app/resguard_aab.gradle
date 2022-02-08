@@ -1,0 +1,215 @@
+apply plugin: "com.bytedance.android.aabResGuard"
+//AndRes
+aabResGuard {
+    // mappingFile = file("./resource_mapping.txt")
+    // mappingFile = null
+    // mappingFile = file('mapping.txt').toPath()//用于增量混淆的mapping文件
+
+    //白名单配置 UM必须配置白名单 否则会提示找不到资源文件
+    whiteList = [
+            // for fabric
+            "*.R.string.com.crashlytics.*",
+            // for umeng update
+            "*.R.string.umeng*",
+            "*.R.string.UM*",
+            "*.R.string.tb_*",
+            "*.R.string.rc_*",
+            "*.R.layout.umeng*",
+            "*.R.layout.tb_*",
+            "*.R.layout.rc_*",
+            "*.R.drawable.umeng*",
+            "*.R.drawable.tb_*",
+            "*.R.drawable.rc_*",
+            "*.R.drawable.u1*",
+            "*.R.drawable.u2*",
+            "*.R.anim.umeng*",
+            "*.R.color.umeng*",
+            "*.R.color.tb_*",
+            "*.R.color.rc_*",
+            "*.R.style.*UM*",
+            "*.R.style.umeng*",
+            "*.R.style.rc_*",
+            "*.R.id.umeng*",
+            "*.R.id.rc_*",
+            // umeng share for sina
+            "*.R.drawable.sina*",
+            // for google-services.json
+            "*.R.string.google_app_id",
+            "*.R.string.gcm_defaultSenderId",
+            "*.R.string.default_web_client_id",
+            "*.R.string.ga_trackingId",
+            "*.R.string.firebase_database_url",
+            "*.R.string.google_api_key",
+            "*.R.string.google_crash_reporting_api_key",
+            "*.R.dimen.rc_*",
+            //getui(个推)
+            "*.R.drawable.push",
+            "*.R.drawable.push_small",
+            "*.R.layout.getui_notification",
+            // JPush(极光推送)
+            "*.R.drawable.jpush_notification_icon",
+            // GrowingIO
+            "*.R.string.growingio_project_id",
+            "*.R.string.growingio_url_scheme",
+            "*.R.string.growingio_channel",
+            // firestore
+            "*.R.string.project_id",
+            // Huawei push
+            "*.R.string.hms_*",
+            "*.R.string.connect_server_fail_prompt_toast",
+            "*.R.string.getting_message_fail_prompt_toast",
+            "*.R.string.no_available_network_prompt_toast",
+            "*.R.string.third_app_*",
+            "*.R.string.upsdk_*",
+            "*.R.style.upsdkDlDialog",
+            "*.R.style.AppTheme",
+            "*.R.style.AppBaseTheme",
+            "*.R.dimen.upsdk_dialog_*",
+            "*.R.color.upsdk_*",
+            "*.R.layout.upsdk_*",
+            "*.R.drawable.upsdk_*",
+            "*.R.drawable.hms_*",
+            "*.R.layout.hms_*",
+            "*.R.id.hms_*",
+            // Firebase Crashlytics
+            "*.R.bool.com.crashlytics.useFirebaseAppId",
+            "*.R.string.com.crashlytics.useFirebaseAppId",
+            "*.R.string.google_app_id",
+            "*.R.bool.com.crashlytics.CollectDeviceIdentifiers",
+            "*.R.string.com.crashlytics.CollectDeviceIdentifiers",
+            "*.R.bool.com.crashlytics.CollectUserIdentifiers",
+            "*.R.string.com.crashlytics.CollectUserIdentifiers",
+            "*.R.string.com.crashlytics.ApiEndpoint",
+            "*.R.string.io.fabric.android.build_id",
+            "*.R.string.com.crashlytics.android.build_id",
+            "*.R.bool.com.crashlytics.RequireBuildId",
+            "*.R.string.com.crashlytics.RequireBuildId",
+            "*.R.bool.com.crashlytics.CollectCustomLogs",
+            "*.R.string.com.crashlytics.CollectCustomLogs",
+            "*.R.bool.com.crashlytics.Trace",
+            "*.R.string.com.crashlytics.Trace",
+            "*.R.string.com.crashlytics.CollectCustomKeys",
+            // Share SDK
+            "*.R.id.ssdk*",
+            "*.R.string.mobcommon*",
+            "*.R.string.ssdk*",
+            "*.R.string.mobdemo*",
+            "*.R.drawable.mobcommon*",
+            "*.R.drawable.ssdk*",
+            "*.R.layout.mob*",
+            "*.R.style.mobcommon*",
+            //穿山甲广告SDK
+            "*.R.string.tt_*",
+            "*.R.integer.tt_*",
+            "*.R.layout.tt_*",
+            "*.R.drawable.tt_*",
+            "*.R.style.tt_*",
+            "*.R.dimen.tt_*",
+            "*.R.anim.tt_*",
+            "*.R.color.tt_*",
+            "*.R.id.tt_*",
+            //Mintegral广告
+            "*.R.string.mbridge*",
+            "*.R.layout.mbridge*",
+            "*.R.drawable.mbridge*",
+            "*.R.anim.mbridge*",
+            "*.R.color.mbridge*",
+            "*.R.style.mbridge*",
+            "*.R.id.mbridge*",
+            // tradplus
+            "*.R.string.tp_*",
+            "*.R.drawable.tp_*",
+            "*.R.layout.tp_*",
+            "*.R.id.tp_*",
+            "*.R.string.cp_*",
+            "*.R.drawable.cp_*",
+            "*.R.layout.cp_*",
+            "*.R.id.cp_*",
+            // topon
+            "*.R.string.anythink_*",
+            "*.R.drawable.anythink_*",
+            "*.R.layout.anythink_*",
+            "*.R.id.anythink_*",
+            "*.R.dimen.anythink_*",
+            "*.R.style.anythink_*",
+            "*.R.color.anythink_*",
+            // smaato
+            "*.R.string.smaato_*",
+            "*.R.drawable.smaato_*",
+            "*.R.layout.smaato_*",
+            "*.R.id.smaato_*",
+            "*.R.dimen.smaato_*",
+            "*.R.style.smaato_*",
+            "*.R.color.smaato_*",
+            "*.R.raw.html_player_vast*"
+    ]
+    //混淆后的文件名称，必须以".aab"结尾
+    // obfuscatedBundleFileName = "duplicated-app.aab"
+    obfuscatedBundleFileName = project.rootProject.name + "_v" + android.defaultConfig.versionName +
+            '_release' + "_" + getDate() + '.aab'
+    //是否允许去除重复资源
+    mergeDuplicatedRes = true
+    //是否允许过滤文件, 被过滤的文件将不会被打包到aab
+    enableFilterFiles = false
+    // filterList = ['*/armeabi/*', '*/armeabi-v7a/*', '*/arm64-v8a/*', 'META-INF/*']
+    filterList = []
+    // switch of filter strings
+    enableFilterStrings = false
+    // strings will be filtered in this file, 过滤文案列表路径，默认在mapping同目录查找
+    unusedStringPath = file("unused.txt").toPath()
+    //languageWhiteList = ["en", "zh"] // keep en,en-xx,zh,zh-xx etc. remove others.
+}
+
+static def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd')
+    return formattedDate
+}
+
+gradle.addBuildListener(new BuildListener() {
+    @Override
+    void buildStarted(Gradle gradle) {
+
+    }
+
+    @Override
+    void settingsEvaluated(Settings settings) {
+
+    }
+
+    @Override
+    void projectsLoaded(Gradle gradle) {
+
+    }
+
+    @Override
+    void projectsEvaluated(Gradle gradle) {
+
+    }
+
+    @Override
+    void buildFinished(BuildResult result) {
+        if (org.gradle.internal.os.OperatingSystem.current().isWindows()
+                && result.gradle.taskGraph.allTasks.size() > 0
+                && isContainBundleRelease(result)) {
+            try {
+                def outputPath = new File(project.buildDir, "outputs/bundle")
+                def cmd = "explorer.exe " + outputPath
+                cmd.execute()
+                println "> Task :${project.name}:openBundleDir [${outputPath}]"
+            } catch (Exception e) {
+            }
+        }
+    }
+})
+
+def isContainBundleRelease(BuildResult result) {
+    def taskList = result.gradle.taskGraph.allTasks
+    for (Task task : taskList) {
+        def taskName = task.getName()
+        if (taskName != null && taskName.startsWith("sign") && taskName.endsWith("ReleaseBundle")) {
+            return true;
+        }
+    }
+    return false
+}
