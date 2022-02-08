@@ -747,4 +747,8 @@ public class AdSdk {
     public void setAdLoaderFilter(OnAdFilterListener filter) {
         AdLoadManager.get(mContext).setOnAdFilterListener(filter);
     }
+
+    public void showMediationDebugger() {
+        AppLovinLoader.showApplovinMediationDebugger(mContext);
+    }
 }

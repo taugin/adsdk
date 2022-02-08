@@ -59,6 +59,22 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     /**
+     * 显示applovin中介调试界面
+     *
+     * @param context
+     */
+    public static void showApplovinMediationDebugger(Context context) {
+        try {
+            Activity activity = MView.createFakeActivity((Application) context.getApplicationContext());
+            AppLovinSdk appLovinSdk = getInstance(activity);
+            if (appLovinSdk != null) {
+                appLovinSdk.showMediationDebugger();
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    /**
      * 提前初始化applovin，避免applovin被使用Application Context初始化
      *
      * @return

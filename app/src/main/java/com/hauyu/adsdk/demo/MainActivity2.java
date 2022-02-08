@@ -108,7 +108,9 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
     }
 
     public void onClick(View v) {
-        if (v.getId() == R.id.interstitial) {
+        if (v.getId() == R.id.mediation_debugger) {
+            AdSdk.get(mContext).showMediationDebugger();
+        } else if (v.getId() == R.id.interstitial) {
             loadInterstitial((TextView) v);
         } else if (v.getId() == R.id.native_common) {
             loadNative((TextView) v);
