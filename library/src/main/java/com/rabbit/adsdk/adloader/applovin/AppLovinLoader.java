@@ -82,9 +82,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     } catch (Exception e) {
                     }
                     appLovinSdk.initializeSdk(config -> {
-                                Log.iv(Log.TAG, "applovin sdk init successfully");
-                            }
-                    );
+                        Log.iv(Log.TAG, "applovin sdk init successfully");
+                    });
                 }
             } catch (Exception e) {
             }
