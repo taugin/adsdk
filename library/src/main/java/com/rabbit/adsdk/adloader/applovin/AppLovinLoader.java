@@ -83,6 +83,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     }
                     appLovinSdk.initializeSdk(config -> {
                         Log.iv(Log.TAG, "applovin sdk init successfully");
+                        try {
+                            if (isShowDebugger(activity)) {
+                                appLovinSdk.showMediationDebugger();
+                            }
+                        } catch (Exception e) {
+                        }
                     });
                 }
             } catch (Exception e) {
@@ -134,6 +140,21 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (applovinConfig != null) {
                 try {
                     isShowVerbose = Boolean.parseBoolean(applovinConfig.get("applovin_show_verbose"));
+                } catch (Exception e) {
+                }
+            }
+        }
+        return isShowVerbose;
+    }
+
+    private static boolean isShowDebugger(Context context) {
+        boolean isShowVerbose = false;
+        Map<String, Map<String, String>> config = DataManager.get(context).getMediationConfig();
+        if (config != null) {
+            Map<String, String> applovinConfig = config.get("applovin.sdk.config");
+            if (applovinConfig != null) {
+                try {
+                    isShowVerbose = Boolean.parseBoolean(applovinConfig.get("applovin_show_debugger"));
                 } catch (Exception e) {
                 }
             }
