@@ -19,7 +19,7 @@ import com.rabbit.adsdk.AdExtra;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.AdSdk;
-import com.rabbit.adsdk.listener.OnAdFilterListener;
+import com.rabbit.adsdk.listener.OnAdDisableLoadingListener;
 import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.utils.Utils;
 
@@ -90,9 +90,9 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
         mAdBannerSizeSpinner.setSelection(position);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = getApplicationContext();
-        AdSdk.get(this).setAdLoaderFilter(new OnAdFilterListener() {
+        AdSdk.get(this).setOnAdDisableLoadingListener(new OnAdDisableLoadingListener() {
             @Override
-            public boolean doFilter(String placeName, String sdk, String type) {
+            public boolean onAdDisableLoading(String placeName, String sdk, String type) {
                 return false;
             }
         });

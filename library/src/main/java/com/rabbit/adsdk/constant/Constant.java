@@ -172,7 +172,7 @@ public class Constant {
     /**
      * 判断adloader是否被过滤
      */
-    public static final int AD_ERROR_FILTERED = 17;
+    public static final int AD_ERROR_DISABLE_LOADING = 17;
 
     /**
      * 判断adloader是否满足展示比率

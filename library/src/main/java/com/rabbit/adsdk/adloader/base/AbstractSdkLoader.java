@@ -26,7 +26,7 @@ import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.data.parse.IParser;
-import com.rabbit.adsdk.listener.OnAdFilterListener;
+import com.rabbit.adsdk.listener.OnAdDisableLoadingListener;
 import com.rabbit.adsdk.listener.OnAdImpressionListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
@@ -301,8 +301,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
 
         // 检测adLoader是否被过滤
-        if (isAdFilter()) {
-            processAdLoaderFilter();
+        if (isAdDisableLoading()) {
+            processAdDisableLoading();
             return false;
         }
 
@@ -357,17 +357,17 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
      *
      * @return
      */
-    private boolean isAdFilter() {
-        OnAdFilterListener onAdFilterListener = AdLoadManager.get(mContext).getOnAdFilterListener();
-        if (onAdFilterListener != null) {
-            return onAdFilterListener.doFilter(getAdPlaceName(), getSdkName(), getAdType());
+    private boolean isAdDisableLoading() {
+        OnAdDisableLoadingListener onAdDisableLoadingListener = AdLoadManager.get(mContext).getOnAdDisableLoadingListener();
+        if (onAdDisableLoadingListener != null) {
+            return onAdDisableLoadingListener.onAdDisableLoading(getAdPlaceName(), getSdkName(), getAdType());
         }
         return false;
     }
 
-    private void processAdLoaderFilter() {
-        Log.iv(Log.TAG, formatLog("loader is filter"));
-        notifyAdLoadFailed(Constant.AD_ERROR_FILTERED, "loader is filter");
+    private void processAdDisableLoading() {
+        Log.iv(Log.TAG, formatLog("ad is disable loading"));
+        notifyAdLoadFailed(Constant.AD_ERROR_DISABLE_LOADING, "ad is disable loading");
     }
 
     private boolean isImpByRatio() {
