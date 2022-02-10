@@ -111,6 +111,8 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbbanner:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbbid:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbnativeadvanced:${mintegral_version}"
+    implementation "com.mbridge.msdk.oversea:mbsplash:${mintegral_version}"
+    implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
     // applovin mintegral mediation
     implementation 'com.applovin.mediation:mintegral-adapter:15.8.1.4@aar'
     // tradplus mintegral mediation
