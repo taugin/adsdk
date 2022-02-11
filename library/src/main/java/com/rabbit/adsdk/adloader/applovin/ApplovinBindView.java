@@ -17,6 +17,7 @@ import com.rabbit.adsdk.log.Log;
 
 public class ApplovinBindView extends BaseBindNativeView {
     private Params mParams;
+
     public MaxNativeAdView bindMaxNativeAdView(Activity activity, Params params, PidConfig pidConfig) {
         mParams = params;
         if (pidConfig != null) {
@@ -24,15 +25,19 @@ public class ApplovinBindView extends BaseBindNativeView {
             if (rootLayout > 0) {
                 View rootView = LayoutInflater.from(activity).inflate(rootLayout, null);
                 View ctaButton = rootView.findViewById(params.getAdAction());
-                if (!(ctaButton instanceof Button)) {
-                    Button button = new Button(activity);
-                    if (ctaButton instanceof TextView) {
-                        ColorStateList textColor = ((TextView) ctaButton).getTextColors();
-                        button.setTextColor(textColor);
+                if (ctaButton != null) {
+                    if (!(ctaButton instanceof Button)) {
+                        Button button = new Button(activity);
+                        if (ctaButton instanceof TextView) {
+                            ColorStateList textColor = ((TextView) ctaButton).getTextColors();
+                            button.setTextColor(textColor);
+                        }
+                        button.setClickable(false);
+                        button.setSingleLine(true);
+                        button.setBackground(ctaButton.getBackground());
+                        replaceSrcViewToDstView(ctaButton, button);
                     }
-                    button.setSingleLine(true);
-                    button.setBackground(ctaButton.getBackground());
-                    replaceSrcViewToDstView(ctaButton, button);
+                    ctaButton.setClickable(false);
                 }
                 MaxNativeAdViewBinder binder = new MaxNativeAdViewBinder.Builder(rootView)
                         .setTitleTextViewId(params.getAdTitle())
