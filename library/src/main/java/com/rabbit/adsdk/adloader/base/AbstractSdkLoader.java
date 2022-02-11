@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.rabbit.adsdk.AdReward;
+import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.adloader.listener.IManagerListener;
 import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
@@ -86,6 +87,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         mContext = context;
         mPidConfig = pidConfig;
         mStat = EventImpl.get();
+        AppLovinLoader.initApplovin(mContext);
     }
 
     @Override

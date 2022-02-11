@@ -101,7 +101,6 @@ public class AdSdk {
         DataManager.get(mContext).init();
         ActivityMonitor.get(mOriginContext).init();
         EventImpl.get().init(mContext);
-        AppLovinLoader.initApplovin(mContext);
     }
 
     /**
