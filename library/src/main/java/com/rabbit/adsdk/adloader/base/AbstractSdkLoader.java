@@ -70,12 +70,16 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected Context mContext;
     protected IManagerListener mManagerListener;
     private boolean mLoading = false;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private Handler mHandler = null;
     private long mRequestTime = 0;
     private int mBannerSize = Constant.NOSET;
     private IEvent mStat;
     private static final Random sRandom = new Random(System.currentTimeMillis());
     private long mLastFullScreenShowTime = 0;
+
+    public AbstractSdkLoader() {
+        mHandler = new Handler(Looper.getMainLooper(), this);
+    }
 
     @Override
     public void setListenerManager(IManagerListener l) {
@@ -399,19 +403,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected synchronized boolean isLoading() {
-        // handle会出现超时没有回调的情况，使用一下代码，双重保险
-        mRequestTime = SystemClock.elapsedRealtime();
-        if (mRequestTime > 0) {
-            long loadingTime = SystemClock.elapsedRealtime() - mRequestTime;
-            // 此处时长需要超过handle的超时时间
-            if (loadingTime >= getTimeout() + 5000) {
-                // 超时值已过
-                if (mHandler != null) {
-                    mHandler.removeMessages(MSG_LOADING_TIMEOUT);
-                }
-                mRequestTime = 0;
-            }
-        }
         return mLoading;
     }
 
