@@ -817,6 +817,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 }
                 clearCachedAdTime(mMaxNativeAdView);
                 updateNativeStatus(mMaxNativeAdView);
+                mApplovinBindView.updateClickViewStatus(mMaxNativeAdView, mPidConfig);
                 mApplovinBindView.fillNativeAssets(mMaxNativeAdView);
                 mMaxNativeAdView = null;
             }

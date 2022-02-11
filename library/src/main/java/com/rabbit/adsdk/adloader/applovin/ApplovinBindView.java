@@ -15,6 +15,8 @@ import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 
+import java.util.List;
+
 public class ApplovinBindView extends BaseBindNativeView {
     private Params mParams;
 
@@ -56,6 +58,42 @@ public class ApplovinBindView extends BaseBindNativeView {
             }
         }
         return new MaxNativeAdView("", activity);
+    }
+
+    /**
+     * 更新原生元素点击状态
+     * @param maxNativeAdView
+     * @param pidConfig
+     */
+    public void updateClickViewStatus(MaxNativeAdView maxNativeAdView, PidConfig pidConfig) {
+        try {
+            List<String> clickView = getClickView(pidConfig);
+            if (clickView != null && !clickView.isEmpty()) {
+                if (maxNativeAdView != null) {
+                    View titleView = maxNativeAdView.getTitleTextView();
+                    if (titleView != null) {
+                        titleView.setClickable(isClickable(AD_TITLE, pidConfig));
+                    }
+                    View bodyView = maxNativeAdView.getBodyTextView();
+                    if (bodyView != null) {
+                        bodyView.setClickable(isClickable(AD_DETAIL, pidConfig));
+                    }
+                    View iconView = maxNativeAdView.getIconImageView();
+                    if (iconView != null) {
+                        iconView.setClickable(isClickable(AD_ICON, pidConfig));
+                    }
+                    View ctaView = maxNativeAdView.getCallToActionButton();
+                    if (ctaView != null) {
+                        ctaView.setClickable(isClickable(AD_CTA, pidConfig));
+                    }
+                    View mainView = maxNativeAdView.getMainView();
+                    if (mainView != null) {
+                        mainView.setClickable(isClickable(AD_MEDIA, pidConfig));
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
     }
 
     public void fillNativeAssets(MaxNativeAdView maxNativeAdView) {
