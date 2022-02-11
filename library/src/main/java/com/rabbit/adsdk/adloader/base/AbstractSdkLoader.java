@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -76,6 +77,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private IEvent mStat;
     private static final Random sRandom = new Random(System.currentTimeMillis());
     private long mLastFullScreenShowTime = 0;
+    private AtomicBoolean mLoadTimeout = new AtomicBoolean(false);
 
     public AbstractSdkLoader() {
         mHandler = new Handler(Looper.getMainLooper(), this);
@@ -563,6 +565,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         reportAdError("AD_ERROR_TIMEOUT");
         setLoading(false, STATE_TIMEOUT);
         notifyAdLoadFailed(Constant.AD_ERROR_TIMEOUT, "load time out");
+        mLoadTimeout.set(true);
     }
 
     @Override
@@ -852,6 +855,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected abstract BaseBindNativeView getBaseBindNativeView();
 
     protected void notifyAdRequest() {
+        mLoadTimeout.set(false);
         if (getAdListener() != null) {
             getAdListener().onAdRequest();
         }
@@ -916,7 +920,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected void notifyAdLoadFailed(int error, String msg) {
-        if (getAdListener() != null) {
+        if (getAdListener() != null && !mLoadTimeout.getAndSet(false)) {
             getAdListener().onAdLoadFailed(error, msg);
         }
     }
