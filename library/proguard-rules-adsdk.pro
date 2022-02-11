@@ -104,3 +104,7 @@
 -keep class com.smaato.**{ *;}
 -dontwarn com.iab.**
 -keep class com.iab.**{ *;}
+
+#inmobi
+-dontwarn com.inmobi.**
+-keep class com.inmobi.**{ *;}
