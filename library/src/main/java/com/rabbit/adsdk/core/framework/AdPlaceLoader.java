@@ -1560,14 +1560,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return mOnAdPlaceLoaderListener;
     }
 
-    private boolean hasNotifyLoaded() {
+    private synchronized boolean hasNotifyLoaded() {
         if (mAdPlace != null && mAdPlace.isLoadOnlyOnce()) {
             return mHasNotifyLoaded;
         }
         return false;
     }
 
-    private void notifyAdLoaded() {
+    private synchronized void notifyAdLoaded() {
         mHasNotifyLoaded = true;
     }
 
