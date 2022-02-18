@@ -78,6 +78,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private static final Random sRandom = new Random(System.currentTimeMillis());
     private long mLastFullScreenShowTime = 0;
     private AtomicBoolean mLoadTimeout = new AtomicBoolean(false);
+    private double mLoadedEcpm;
 
     public AbstractSdkLoader() {
         mHandler = new Handler(Looper.getMainLooper(), this);
@@ -750,6 +751,15 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     public void showInterstitialWithNative(ViewGroup viewGroup, Params params) {
     }
 
+    protected void setLoadedEcpm(double loadedEcpm) {
+        mLoadedEcpm = loadedEcpm;
+    }
+
+    @Override
+    public double getLoadedEcpm() {
+        return mLoadedEcpm;
+    }
+
     protected boolean isTemplateRendering() {
         if (mPidConfig != null) {
             return mPidConfig.isTemplate();
@@ -759,11 +769,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public String toString() {
-        return "pn = " + getAdPlaceName() + " , " +
-                "tp = " + getAdType() + " , " +
-                "sr = " + getSdkName() + " , " +
-                "ba = " + Constant.Banner.valueOf(getBannerSize()) + " , " +
-                "ec = " + getEcpm();
+        return "SdkLoader{" +
+                "placeName=" + getAdPlaceName() + " , " +
+                "adType=" + getAdType() + " , " +
+                "sdkName=" + getSdkName() + " , " +
+                "loadedEcpm=" + mLoadedEcpm +
+                "}";
     }
 
     protected void reportAdRequest() {

@@ -59,6 +59,8 @@ public class AdPlace {
 
     private String sceneId;
 
+    private boolean sort;
+
     public String getName() {
         return name;
     }
@@ -256,6 +258,14 @@ public class AdPlace {
 
     public void setSceneId(String sceneId) {
         this.sceneId = sceneId;
+    }
+
+    public boolean isSort() {
+        return sort;
+    }
+
+    public void setSort(boolean sort) {
+        this.sort = sort;
     }
 
     @Override

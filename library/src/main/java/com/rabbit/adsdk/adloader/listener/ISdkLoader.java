@@ -89,4 +89,6 @@ public interface ISdkLoader {
     void notifyAdViewUIDismiss();
 
     void showInterstitialWithNative(ViewGroup viewGroup, Params params);
+
+    double getLoadedEcpm();
 }

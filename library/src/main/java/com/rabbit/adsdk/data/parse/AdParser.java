@@ -188,6 +188,9 @@ public class AdParser implements IParser {
             if (jobj.has(SCENE_ID)) {
                 adPlace.setSceneId(jobj.getString(SCENE_ID));
             }
+            if (jobj.has(SORT)) {
+                adPlace.setSort(jobj.getInt(SORT) == 1);
+            }
             adPlace.setUniqueValue(Utils.string2MD5(content.trim()));
         } catch (Exception e) {
             Log.iv(Log.TAG, "parseAdPlace error : " + e);

@@ -41,6 +41,8 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -523,15 +525,26 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private void showInterstitialInternal() {
-        if (mAdLoaders != null) {
-            for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null) {
-                    if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
-                        if (loader.showInterstitial()) {
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
-                            break;
-                        }
-                    }
+        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
+            Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
+            return;
+        }
+        final List<ISdkLoader> list = new ArrayList<>();
+        for (ISdkLoader loader : mAdLoaders) {
+            if (loader != null && loader.isInterstitialType() && loader.isInterstitialLoaded()) {
+                list.add(loader);
+            }
+        }
+        if (list == null || list.isEmpty()) {
+            Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
+            return;
+        }
+        sortLoadedLoaders(list);
+        for (ISdkLoader loader : list) {
+            if (loader != null && loader.isInterstitialType() && loader.isInterstitialLoaded()) {
+                if (loader.showInterstitial()) {
+                    AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                    break;
                 }
             }
         }
@@ -724,15 +737,26 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private void showRewardedVideoInternal() {
-        if (mAdLoaders != null) {
-            for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null) {
-                    if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
-                        if (loader.showRewardedVideo()) {
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
-                            break;
-                        }
-                    }
+        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
+            Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
+            return;
+        }
+        final List<ISdkLoader> list = new ArrayList<>();
+        for (ISdkLoader loader : mAdLoaders) {
+            if (loader != null && loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
+                list.add(loader);
+            }
+        }
+        if (list == null || list.isEmpty()) {
+            Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
+            return;
+        }
+        sortLoadedLoaders(list);
+        for (ISdkLoader loader : list) {
+            if (loader != null && loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
+                if (loader.showRewardedVideo()) {
+                    AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                    break;
                 }
             }
         }
@@ -928,15 +952,26 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private void showSplashInternal() {
-        if (mAdLoaders != null) {
-            for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null) {
-                    if (loader.isSplashType() && loader.isSplashLoaded()) {
-                        if (loader.showSplash()) {
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
-                            break;
-                        }
-                    }
+        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
+            Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
+            return;
+        }
+        final List<ISdkLoader> list = new ArrayList<>();
+        for (ISdkLoader loader : mAdLoaders) {
+            if (loader != null && loader.isSplashType() && loader.isSplashLoaded()) {
+                list.add(loader);
+            }
+        }
+        if (list == null || list.isEmpty()) {
+            Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
+            return;
+        }
+        sortLoadedLoaders(list);
+        for (ISdkLoader loader : list) {
+            if (loader != null && loader.isSplashType() && loader.isSplashLoaded()) {
+                if (loader.showSplash()) {
+                    AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                    break;
                 }
             }
         }
@@ -1138,28 +1173,46 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private void showAdViewInternal(boolean needCounting) {
-        if (mAdLoaders != null && mAdContainer != null) {
-            for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null) {
-                    ViewGroup viewGroup = null;
-                    if (mAdContainer != null) {
-                        viewGroup = mAdContainer.get();
+        if (mAdContainer == null) {
+            Log.iv(Log.TAG, "error : ad view group is null for place name : " + getPlaceName());
+            return;
+        }
+        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
+            Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
+            return;
+        }
+        final List<ISdkLoader> list = new ArrayList<>();
+        for (ISdkLoader loader : mAdLoaders) {
+            if (loader != null && ((loader.isBannerType() && loader.isBannerLoaded())
+                    || (loader.isNativeType() && loader.isNativeLoaded()))) {
+                list.add(loader);
+            }
+        }
+        if (list == null || list.isEmpty()) {
+            Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
+            return;
+        }
+        sortLoadedLoaders(list);
+        ViewGroup viewGroup = null;
+        if (mAdContainer != null) {
+            viewGroup = mAdContainer.get();
+        }
+        for (ISdkLoader loader : list) {
+            if (loader != null && viewGroup != null) {
+                if (loader.isBannerType() && loader.isBannerLoaded()) {
+                    loader.showBanner(viewGroup);
+                    if (needCounting) {
+                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                     }
-                    if (loader.isBannerLoaded() && viewGroup != null) {
-                        loader.showBanner(viewGroup);
-                        if (needCounting) {
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
-                        }
-                        addDotView(viewGroup);
-                        break;
-                    } else if (loader.isNativeLoaded() && viewGroup != null) {
-                        loader.showNative(viewGroup, getParams(loader));
-                        if (needCounting) {
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
-                        }
-                        addDotView(viewGroup);
-                        break;
+                    addDotView(viewGroup);
+                    break;
+                } else if (loader.isNativeType() && loader.isNativeLoaded()) {
+                    loader.showNative(viewGroup, getParams(loader));
+                    if (needCounting) {
+                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                     }
+                    addDotView(viewGroup);
+                    break;
                 }
             }
         }
@@ -1421,29 +1474,46 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private boolean showComplexAdsInternal() {
-        if (mAdLoaders != null) {
-            for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null) {
-                    if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
-                        if (loader.showRewardedVideo()) {
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
-                            return true;
-                        }
-                    } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
-                        if (loader.showInterstitial()) {
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
-                            return true;
-                        }
-                    } else if (loader.isSplashType() && loader.isSplashLoaded()) {
-                        if (loader.showSplash()) {
-                            AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
-                            return true;
-                        }
-                    } else if ((loader.isBannerType() && loader.isBannerLoaded())
-                            || (loader.isNativeType() && loader.isNativeLoaded())) {
-                        showAdViewWithUI(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(), loader);
+        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
+            Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
+            return false;
+        }
+        final List<ISdkLoader> list = new ArrayList<>();
+        for (ISdkLoader loader : mAdLoaders) {
+            if (loader != null && ((loader.isRewardedVideoType() && loader.isRewardedVideoLoaded())
+                    || (loader.isInterstitialType() && loader.isInterstitialLoaded())
+                    || (loader.isSplashType() && loader.isSplashLoaded())
+                    || (loader.isBannerType() && loader.isBannerLoaded())
+                    || (loader.isNativeType() && loader.isNativeLoaded()))) {
+                list.add(loader);
+            }
+        }
+        if (list == null || list.isEmpty()) {
+            Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
+            return false;
+        }
+        sortLoadedLoaders(list);
+        for (ISdkLoader loader : list) {
+            if (loader != null) {
+                if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
+                    if (loader.showRewardedVideo()) {
+                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                         return true;
                     }
+                } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
+                    if (loader.showInterstitial()) {
+                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                        return true;
+                    }
+                } else if (loader.isSplashType() && loader.isSplashLoaded()) {
+                    if (loader.showSplash()) {
+                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                        return true;
+                    }
+                } else if ((loader.isBannerType() && loader.isBannerLoaded())
+                        || (loader.isNativeType() && loader.isNativeLoaded())) {
+                    showAdViewWithUI(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(), loader);
+                    return true;
                 }
             }
         }
@@ -2023,5 +2093,29 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public String toString() {
         return getPlaceName();
+    }
+
+    private void sortLoadedLoaders(List<ISdkLoader> list) {
+        try {
+            if (mAdPlace == null || !mAdPlace.isSort()) {
+                Log.iv(Log.TAG, "disable ecpm sort on showing ads");
+                return;
+            }
+            if (list == null || list.size() < 2) {
+                return;
+            }
+            Collections.sort(list, new Comparator<ISdkLoader>() {
+                @Override
+                public int compare(ISdkLoader o1, ISdkLoader o2) {
+                    try {
+                        return Double.compare(o2.getLoadedEcpm(), o1.getLoadedEcpm());
+                    } catch (Exception e) {
+                    }
+                    return 0;
+                }
+            });
+            Log.iv(Log.TAG, "loaded loader list : " + list);
+        } catch (Exception e) {
+        }
     }
 }

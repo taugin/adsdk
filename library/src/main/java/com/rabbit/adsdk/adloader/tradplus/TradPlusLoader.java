@@ -109,6 +109,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 mTPBanner = tpBanner;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mTPBanner);
+                setLoadedEcpm(getLoadedEcpm(tpAdInfo));
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
                 reportTradPlusImpressionData(tpAdInfo);
@@ -232,6 +233,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mTPInterstitial);
+                setLoadedEcpm(getLoadedEcpm(tpAdInfo));
                 reportAdLoaded();
                 notifyAdLoaded(TradPlusLoader.this);
             }
@@ -351,6 +353,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
                 putCachedAdTime(mTPReward);
                 setLoading(false, STATE_SUCCESS);
+                setLoadedEcpm(getLoadedEcpm(tpAdInfo));
                 reportAdLoaded();
                 notifyAdLoaded(TradPlusLoader.this);
             }
@@ -479,6 +482,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 mTPNative = tpNative;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mTPNative);
+                setLoadedEcpm(getLoadedEcpm(tpAdInfo));
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
             }
@@ -591,21 +595,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
     private void reportTradPlusImpressionData(TPAdInfo tpAdInfo) {
         try {
-            double ecpm = 0f;
-            String reportEcpm;
-            if ("exact".equalsIgnoreCase(tpAdInfo.ecpmPrecision) && tpAdInfo.isBiddingNetwork && !TextUtils.isEmpty(tpAdInfo.ecpmExact)) {
-                reportEcpm = tpAdInfo.ecpmExact;
-            } else {
-                reportEcpm = tpAdInfo.ecpm;
-            }
-            try {
-                ecpm = Double.parseDouble(reportEcpm);
-            } catch (Exception e) {
-                try {
-                    ecpm = Double.parseDouble(tpAdInfo.ecpm);
-                } catch (Exception error) {
-                }
-            }
+            double ecpm = getLoadedEcpm(tpAdInfo);
             Map<String, Object> map = new HashMap<>();
             map.put(Constant.AD_VALUE, ecpm / 1000);
             map.put(Constant.AD_CURRENCY, getCurrency(tpAdInfo));
