@@ -184,8 +184,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded() {
                 Log.iv(Log.TAG, formatLog("ad load success"));
-                setLoading(false, STATE_SUCCESS);
                 bannerView = loadingView;
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(loadingView);
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
@@ -290,8 +290,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 Log.iv(Log.TAG, formatLog("ad load success"));
-                setLoading(false, STATE_SUCCESS);
                 mInterstitialAd = interstitialAd;
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
                 reportAdLoaded();
                 notifyAdLoaded(AdmobLoader.this);
@@ -409,8 +409,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                 Log.iv(Log.TAG, formatLog("ad load success"));
-                setLoading(false, STATE_SUCCESS);
                 mRewardedAd = rewardedAd;
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mRewardedAd);
                 reportAdLoaded();
                 notifyAdLoaded(AdmobLoader.this);
@@ -726,8 +726,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded(AppOpenAd appOpenAd) {
                 Log.iv(Log.TAG, formatLog("ad load success"));
-                setLoading(false, STATE_SUCCESS);
                 mAppOpenAd = appOpenAd;
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mAppOpenAd);
                 reportAdLoaded();
                 notifyAdLoaded(AdmobLoader.this);

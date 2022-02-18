@@ -106,8 +106,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
-                setLoading(false, STATE_SUCCESS);
                 mTPBanner = tpBanner;
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mTPBanner);
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
@@ -476,10 +476,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
-                reportAdLoaded();
-                setLoading(false, STATE_SUCCESS);
                 mTPNative = tpNative;
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mTPNative);
+                reportAdLoaded();
                 notifySdkLoaderLoaded(false);
             }
 
@@ -661,12 +661,33 @@ public class TradPlusLoader extends AbstractSdkLoader {
         return "USD";
     }
 
+    private double getLoadedEcpm(TPAdInfo tpAdInfo) {
+        double ecpm = 0f;
+        String reportEcpm;
+        if ("exact".equalsIgnoreCase(tpAdInfo.ecpmPrecision) && tpAdInfo.isBiddingNetwork && !TextUtils.isEmpty(tpAdInfo.ecpmExact)) {
+            reportEcpm = tpAdInfo.ecpmExact;
+        } else {
+            reportEcpm = tpAdInfo.ecpm;
+        }
+        try {
+            ecpm = Double.parseDouble(reportEcpm);
+        } catch (Exception e) {
+            try {
+                ecpm = Double.parseDouble(tpAdInfo.ecpm);
+            } catch (Exception error) {
+            }
+        }
+        return ecpm;
+    }
+
     private String getLoadedInfo(TPAdInfo tpAdInfo) {
         String networkName = null;
         String placement = null;
+        String ecpm = null;
         if (tpAdInfo != null) {
             networkName = tpAdInfo.adSourceName;
             placement = tpAdInfo.adSourceId;
+            ecpm = String.valueOf(getLoadedEcpm(tpAdInfo));
         }
         StringBuilder builder = new StringBuilder();
         if (!TextUtils.isEmpty(networkName)) {
@@ -677,6 +698,12 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
         if (!TextUtils.isEmpty(placement)) {
             builder.append("ad_network_id : " + placement);
+        }
+        if (builder.length() > 0) {
+            builder.append(" , ");
+        }
+        if (!TextUtils.isEmpty(ecpm)) {
+            builder.append("ad_ecpm : " + ecpm);
         }
         if (builder.length() > 0) {
             return " - " + builder.toString();

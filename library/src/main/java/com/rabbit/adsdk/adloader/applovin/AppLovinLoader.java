@@ -392,8 +392,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdLoaded(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
-                setLoading(false, STATE_SUCCESS);
                 maxAdView = loadingMaxAdView;
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(loadingMaxAdView);
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
@@ -748,9 +748,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onNativeAdLoaded(MaxNativeAdView maxNativeAdView, MaxAd maxAd) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(maxAd)));
-                reportAdLoaded();
-                setLoading(false, STATE_SUCCESS);
                 mMaxNativeAdView = maxNativeAdView;
+                setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mMaxNativeAdView);
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
@@ -978,9 +977,11 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private String getLoadedInfo(MaxAd maxAd) {
         String networkName = null;
         String placement = null;
+        String ecpm = null;
         if (maxAd != null) {
             networkName = maxAd.getNetworkName();
             placement = maxAd.getNetworkPlacement();
+            ecpm = String.valueOf(maxAd.getRevenue() * 1000);
         }
         StringBuilder builder = new StringBuilder();
         if (!TextUtils.isEmpty(networkName)) {
@@ -991,6 +992,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (!TextUtils.isEmpty(placement)) {
             builder.append("ad_network_id : " + placement);
+        }
+        if (builder.length() > 0) {
+            builder.append(" , ");
+        }
+        if (!TextUtils.isEmpty(ecpm)) {
+            builder.append("ad_ecpm : " + ecpm);
         }
         if (builder.length() > 0) {
             return " - " + builder.toString();
