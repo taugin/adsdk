@@ -75,7 +75,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // applovin
-    implementation 'com.applovin:applovin-sdk:11.1.2'
+    implementation 'com.applovin:applovin-sdk:11.1.3'
     // tradplus applovin mediation
     implementation 'com.tradplusad:tradplus-applovin:9.7.4.10.1'
     // admob applovin mediation
@@ -95,8 +95,8 @@ dependencies {
     // admob
     implementation 'com.google.android.gms:play-services-ads:20.5.0'
     // applovin admob mediation
-    implementation 'com.applovin.mediation:google-adapter:20.5.0.8@aar'
-    implementation 'com.applovin.mediation:google-ad-manager-adapter:20.5.0.5@aar'
+    implementation 'com.applovin.mediation:google-adapter:20.5.0.9@aar'
+    implementation 'com.applovin.mediation:google-ad-manager-adapter:20.5.0.6@aar'
     // tradplus admob mediation
     implementation 'com.tradplusad:tradplus-googlex:2.7.4.10.1'
 //////////////////////////////////////////////////////////////////////////////////////////
