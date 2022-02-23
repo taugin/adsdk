@@ -22,3 +22,4 @@
 -dontwarn android.support.**
 -dontwarn com.**
 -dontwarn android.**
+-keep class com.hauyu.adsdk.demo.Va { *;}

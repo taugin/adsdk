@@ -17,19 +17,11 @@ import com.umeng.commonsdk.UMConfigure;
 
 public class App extends Application {
 
-    private void setNetworkProxy() {
-        String PROXY_HOST = "172.16.170.218";//代理服务器地址
-        String PROXY_PORT = "8888";//代理服务器端口
-        System.setProperty("http.proxyHost", PROXY_HOST);
-        System.setProperty("http.proxyPort", PROXY_PORT);
-        System.setProperty("https.proxyHost", PROXY_HOST);
-        System.setProperty("https.proxyPort", PROXY_PORT);
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        // setNetworkProxy();
+        Va.setNetworkProxy();
         initUmeng();
         AdSdk.get(this).init();
     }
