@@ -54,7 +54,7 @@ public class App extends Application {
             Utils.putFloat(context, prefRevenue, 0f);
             Map<String, Object> map = new HashMap<>();
             map.put("currency", "USD");
-            map.put("value", revenue);
+            map.put("value", curTotalRevenue);
             InternalStat.reportEvent(context, taichiEvent, map);
         } else {
             Utils.putFloat(context, prefRevenue, curTotalRevenue);
