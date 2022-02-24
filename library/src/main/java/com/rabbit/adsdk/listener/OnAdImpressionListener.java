@@ -1,7 +1,7 @@
 package com.rabbit.adsdk.listener;
 
-import java.util.Map;
+import com.rabbit.adsdk.AdImpData;
 
 public interface OnAdImpressionListener {
-    void onAdImpression(Map<String, Object> adImpData);
+    void onAdImpression(AdImpData adImpData);
 }

@@ -12,6 +12,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.rabbit.adsdk.AdImpData;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.adloader.listener.IManagerListener;
@@ -1064,7 +1065,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         OnAdImpressionListener l = AdLoadManager.get(mContext).getOnAdImpressionListener();
         if (l != null) {
-            l.onAdImpression(adImpData);
+            l.onAdImpression(AdImpData.createAdImpData(adImpData));
         }
     }
 }
