@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.applovin.impl.sdk.nativeAd.AppLovinOptionsView;
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
 import com.applovin.mediation.MaxAdListener;
@@ -50,8 +49,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     private static AtomicBoolean sApplovinInited = new AtomicBoolean(false);
     private static AppLovinSdkSettings sAppLovinSdkSettings;
-    private MaxAd mMaxAd;
     private MaxNativeAdLoader mMaxNativeAdLoader;
+    private MaxNativeAdView mTemplateNativeView;
+    private MaxAd mMaxAd;
     private Params mParams;
     private ApplovinBindView mApplovinBindView = new ApplovinBindView();
 
@@ -755,6 +755,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onNativeAdLoaded(MaxNativeAdView maxNativeAdView, MaxAd maxAd) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(maxAd)));
                 mMaxAd = maxAd;
+                mTemplateNativeView = maxNativeAdView;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mMaxAd);
                 setLoadedEcpm(getLoadedEcpm(maxAd));
@@ -812,9 +813,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         try {
             MaxNativeAdView maxNativeAdView = null;
-            if (mMaxNativeAdLoader != null && mParams != null) {
-                maxNativeAdView = mApplovinBindView.bindMaxNativeAdView(getContext(), mParams, mPidConfig);
-                mMaxNativeAdLoader.render(maxNativeAdView, mMaxAd);
+            if (isTemplateRendering()) {
+                maxNativeAdView = mTemplateNativeView;
+            } else {
+                if (mMaxNativeAdLoader != null && mParams != null) {
+                    maxNativeAdView = mApplovinBindView.bindMaxNativeAdView(getContext(), mParams, mPidConfig);
+                    mMaxNativeAdLoader.render(maxNativeAdView, mMaxAd);
+                }
             }
             if (maxNativeAdView != null) {
                 reportAdShow();
@@ -828,11 +833,11 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 if (viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
-                updateNativeStatus(maxNativeAdView);
-                mApplovinBindView.updateClickViewStatus(maxNativeAdView, mPidConfig);
-                mApplovinBindView.fillNativeAssets(maxNativeAdView);
-                clearCachedAdTime(mMaxAd);
-                mMaxAd = null;
+                if (!isTemplateRendering()) {
+                    mApplovinBindView.updateNativeStatus(getContext(), maxNativeAdView);
+                    mApplovinBindView.updateClickViewStatus(maxNativeAdView, mPidConfig);
+                    mApplovinBindView.fillNativeAssets(maxNativeAdView);
+                }
             } else {
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MaxNativeAdView is null");
             }
@@ -840,40 +845,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : " + e);
         }
-    }
-
-    private void updateNativeStatus(MaxNativeAdView maxNativeAdView) {
-        try {
-            if (maxNativeAdView != null) {
-                ViewGroup viewGroup = maxNativeAdView.getOptionsContentViewGroup();
-                if (viewGroup != null && viewGroup.getChildCount() > 0) {
-                    View childView = viewGroup.getChildAt(0);
-                    if (childView != null) {
-                        ViewGroup.LayoutParams params = childView.getLayoutParams();
-                        if (params != null) {
-                            params.width = -2;
-                            params.height = -2;
-                            childView.setLayoutParams(params);
-                        }
-                    }
-                    try {
-                        if (childView instanceof AppLovinOptionsView) {
-                            View maxOptionView = ((AppLovinOptionsView) childView).getChildAt(0);
-                            ViewGroup.LayoutParams params = maxOptionView.getLayoutParams();
-                            if (params != null) {
-                                int size = Utils.dp2px(mContext, 18);
-                                params.width = size;
-                                params.height = size;
-                                maxOptionView.setLayoutParams(params);
-                            }
-                        }
-                    } catch (Exception e) {
-                        Log.e(Log.TAG, "error : " + e);
-                    }
-                }
-            }
-        } catch (Exception e) {
-        }
+        clearCachedAdTime(mMaxAd);
+        mMaxAd = null;
     }
 
     @Override

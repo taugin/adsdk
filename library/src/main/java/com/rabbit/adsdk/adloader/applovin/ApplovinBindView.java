@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.applovin.impl.sdk.nativeAd.AppLovinOptionsView;
 import com.applovin.mediation.nativeAds.MaxNativeAdView;
 import com.applovin.mediation.nativeAds.MaxNativeAdViewBinder;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
@@ -14,6 +16,7 @@ import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.utils.Utils;
 
 import java.util.List;
 
@@ -58,6 +61,40 @@ public class ApplovinBindView extends BaseBindNativeView {
             }
         }
         return new MaxNativeAdView("", context);
+    }
+
+    public void updateNativeStatus(Context context, MaxNativeAdView maxNativeAdView) {
+        try {
+            if (maxNativeAdView != null) {
+                ViewGroup viewGroup = maxNativeAdView.getOptionsContentViewGroup();
+                if (viewGroup != null && viewGroup.getChildCount() > 0) {
+                    View childView = viewGroup.getChildAt(0);
+                    if (childView != null) {
+                        ViewGroup.LayoutParams params = childView.getLayoutParams();
+                        if (params != null) {
+                            params.width = -2;
+                            params.height = -2;
+                            childView.setLayoutParams(params);
+                        }
+                    }
+                    try {
+                        if (childView instanceof AppLovinOptionsView) {
+                            View maxOptionView = ((AppLovinOptionsView) childView).getChildAt(0);
+                            ViewGroup.LayoutParams params = maxOptionView.getLayoutParams();
+                            if (params != null) {
+                                int size = Utils.dp2px(context, 18);
+                                params.width = size;
+                                params.height = size;
+                                maxOptionView.setLayoutParams(params);
+                            }
+                        }
+                    } catch (Exception e) {
+                        Log.e(Log.TAG, "error : " + e);
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
     }
 
     /**
