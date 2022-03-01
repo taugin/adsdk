@@ -75,7 +75,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // applovin
-    implementation 'com.applovin:applovin-sdk:11.1.3'
+    implementation 'com.applovin:applovin-sdk:11.2.0'
     // tradplus applovin mediation
     implementation 'com.tradplusad:tradplus-applovin:9.7.4.10.1'
     // admob applovin mediation
