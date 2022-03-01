@@ -50,7 +50,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     private static AtomicBoolean sApplovinInited = new AtomicBoolean(false);
     private static AppLovinSdkSettings sAppLovinSdkSettings;
-    private MaxNativeAdView mMaxNativeAdView;
+    private MaxAd mMaxAd;
+    private MaxNativeAdLoader mMaxNativeAdLoader;
+    private Params mParams;
     private ApplovinBindView mApplovinBindView = new ApplovinBindView();
 
     @Override
@@ -712,6 +714,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public void loadNative(Params params) {
+        mParams = params;
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
@@ -745,15 +748,15 @@ public class AppLovinLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        MaxNativeAdLoader nativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
-        nativeAdLoader.setPlacement(getSceneId());
-        nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
+        mMaxNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
+        mMaxNativeAdLoader.setPlacement(getSceneId());
+        mMaxNativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(MaxNativeAdView maxNativeAdView, MaxAd maxAd) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(maxAd)));
-                mMaxNativeAdView = maxNativeAdView;
+                mMaxAd = maxAd;
                 setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(mMaxNativeAdView);
+                putCachedAdTime(mMaxAd);
                 setLoadedEcpm(getLoadedEcpm(maxAd));
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
@@ -775,7 +778,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 notifyAdClick(network);
             }
         });
-        nativeAdLoader.setRevenueListener(new MaxAdRevenueListener() {
+        mMaxNativeAdLoader.setRevenueListener(new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
@@ -788,13 +791,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        nativeAdLoader.setPlacement(getSceneId());
-        nativeAdLoader.loadAd(isTemplateRendering() ? null : mApplovinBindView.bindMaxNativeAdView(activity, params, mPidConfig));
+        mMaxNativeAdLoader.setPlacement(getSceneId());
+        mMaxNativeAdLoader.loadAd();
     }
 
     @Override
     public boolean isNativeLoaded() {
-        boolean loaded = mMaxNativeAdView != null && !isCachedAdExpired(mMaxNativeAdView);
+        boolean loaded = mMaxAd != null && !isCachedAdExpired(mMaxAd);
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
@@ -803,25 +806,35 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
+        if (params != null) {
+            mParams = params;
+        }
         printInterfaceLog(ACTION_SHOW);
         try {
-            if (mMaxNativeAdView != null) {
+            MaxNativeAdView maxNativeAdView = null;
+            if (mMaxNativeAdLoader != null && mParams != null) {
+                maxNativeAdView = mApplovinBindView.bindMaxNativeAdView(getContext(), mParams, mPidConfig);
+                mMaxNativeAdLoader.render(maxNativeAdView, mMaxAd);
+            }
+            if (maxNativeAdView != null) {
                 reportAdShow();
                 notifyAdShow();
                 viewGroup.removeAllViews();
-                ViewParent viewParent = mMaxNativeAdView.getParent();
+                ViewParent viewParent = maxNativeAdView.getParent();
                 if (viewParent instanceof ViewGroup) {
-                    ((ViewGroup) viewParent).removeView(mMaxNativeAdView);
+                    ((ViewGroup) viewParent).removeView(maxNativeAdView);
                 }
-                viewGroup.addView(mMaxNativeAdView);
+                viewGroup.addView(maxNativeAdView);
                 if (viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
-                clearCachedAdTime(mMaxNativeAdView);
-                updateNativeStatus(mMaxNativeAdView);
-                mApplovinBindView.updateClickViewStatus(mMaxNativeAdView, mPidConfig);
-                mApplovinBindView.fillNativeAssets(mMaxNativeAdView);
-                mMaxNativeAdView = null;
+                updateNativeStatus(maxNativeAdView);
+                mApplovinBindView.updateClickViewStatus(maxNativeAdView, mPidConfig);
+                mApplovinBindView.fillNativeAssets(maxNativeAdView);
+                clearCachedAdTime(mMaxAd);
+                mMaxAd = null;
+            } else {
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MaxNativeAdView is null");
             }
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
