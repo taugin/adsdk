@@ -1,6 +1,6 @@
 package com.rabbit.adsdk.adloader.applovin;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +20,16 @@ import java.util.List;
 public class ApplovinBindView extends BaseBindNativeView {
     private Params mParams;
 
-    public MaxNativeAdView bindMaxNativeAdView(Activity activity, Params params, PidConfig pidConfig) {
+    public MaxNativeAdView bindMaxNativeAdView(Context context, Params params, PidConfig pidConfig) {
         mParams = params;
         if (pidConfig != null) {
-            int rootLayout = getBestNativeLayout(activity, pidConfig, mParams, Constant.AD_SDK_APPLOVIN);
+            int rootLayout = getBestNativeLayout(context, pidConfig, mParams, Constant.AD_SDK_APPLOVIN);
             if (rootLayout > 0) {
-                View rootView = LayoutInflater.from(activity).inflate(rootLayout, null);
+                View rootView = LayoutInflater.from(context).inflate(rootLayout, null);
                 View ctaButton = rootView.findViewById(params.getAdAction());
                 if (ctaButton != null) {
                     if (!(ctaButton instanceof Button)) {
-                        Button button = new Button(activity);
+                        Button button = new Button(context);
                         if (ctaButton instanceof TextView) {
                             ColorStateList textColor = ((TextView) ctaButton).getTextColors();
                             button.setTextColor(textColor);
@@ -50,14 +50,14 @@ public class ApplovinBindView extends BaseBindNativeView {
                         .setOptionsContentViewGroupId(params.getAdChoices())
                         .setCallToActionButtonId(params.getAdAction())
                         .build();
-                MaxNativeAdView maxNativeAdView = new MaxNativeAdView(binder, activity);
+                MaxNativeAdView maxNativeAdView = new MaxNativeAdView(binder, context);
                 updateCtaButtonBackground(maxNativeAdView, pidConfig, mParams);
                 return maxNativeAdView;
             } else {
                 Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
             }
         }
-        return new MaxNativeAdView("", activity);
+        return new MaxNativeAdView("", context);
     }
 
     /**
