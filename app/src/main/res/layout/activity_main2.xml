@@ -30,25 +30,42 @@
                 android:tag="ad_sdk_spinner" />
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_36"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_36"
+                android:layout_marginRight="2dp"
+                android:layout_weight="4"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="原生布局" />
+
+                <Spinner
+                    android:id="@+id/ad_layout_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/ad_layout"
+                    android:tag="ad_layout_spinner" />
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/mediation_template"
+                style="@android:style/Widget.DeviceDefault.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="原生布局" />
-
-            <Spinner
-                android:id="@+id/ad_layout_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:entries="@array/ad_layout"
-                android:tag="ad_layout_spinner" />
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:drawablePadding="0dp" />
         </LinearLayout>
 
         <LinearLayout

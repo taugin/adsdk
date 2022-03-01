@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -247,6 +248,10 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
         AdParams adParams = getNativeParams();
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
         String nativePlace = String.format(Locale.getDefault(), NATIVE_PREFIX, sdk.toLowerCase(Locale.getDefault()));
+        Switch switchButton = findViewById(R.id.mediation_template);
+        if (switchButton.isChecked()) {
+            nativePlace += "_template";
+        }
         if (AdSdk.get(mContext).isAdViewLoaded(nativePlace)) {
             AdSdk.get(mContext).showAdView(nativePlace, adParams, mNativeBannerLayout);
             CustomDrawable.setBackground(mNativeBannerLayout);

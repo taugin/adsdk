@@ -154,6 +154,18 @@
       ]
     },
     {
+      "name": "native_applovin_template",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "applovin",
+          "type": "native",
+          "template": 1,
+          "pid": "d58468ed06fa3861"
+        }
+      ]
+    },
+    {
       "name": "native_tradplus",
       "mode": "con",
       "pids": [
