@@ -78,8 +78,6 @@ dependencies {
     implementation 'com.applovin:applovin-sdk:11.2.0'
     // tradplus applovin mediation
     implementation 'com.tradplusad:tradplus-applovin:9.7.4.10.1'
-    // admob applovin mediation
-    implementation 'com.google.ads.mediation:applovin:10.3.5.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // facebook
@@ -88,8 +86,6 @@ dependencies {
     implementation 'com.applovin.mediation:facebook-adapter:6.8.0.12@aar'
     // tradplus facebook mediation
     implementation 'com.tradplusad:tradplus-facebook:1.7.4.10.1'
-    // admob facebook mediation
-    implementation 'com.google.ads.mediation:facebook:6.8.0.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // admob
@@ -130,8 +126,6 @@ dependencies {
     implementation 'com.applovin.mediation:inmobi-adapter:10.0.3.1@aar'
     //tradplus inmobi mediation
     implementation 'com.tradplusad:tradplus-inmobix:23.7.4.10.1'
-    //admob inmobi mediation
-    implementation 'com.google.ads.mediation:inmobi:10.0.3.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // unity
@@ -140,8 +134,6 @@ dependencies {
     implementation 'com.applovin.mediation:unityads-adapter:4.0.0.2@aar'
     // tradplus unity mediation
     implementation 'com.tradplusad:tradplus-unity:5.7.4.10.1'
-    // admob unity mediation
-    implementation 'com.google.ads.mediation:unity:4.0.0.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // vungle
@@ -150,8 +142,6 @@ dependencies {
     implementation 'com.applovin.mediation:vungle-adapter:6.10.2.0'
     // tradplus vungle mediation
     implementation 'com.tradplusad:tradplus-vunglex:7.7.4.10.1'
-    // admob vungle mediation
-    implementation 'com.google.ads.mediation:vungle:6.10.2.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // ironsource
@@ -160,8 +150,6 @@ dependencies {
     implementation 'com.applovin.mediation:ironsource-adapter:7.1.14.0.2'
     // tradplus ironsource mediation
     implementation 'com.tradplusad:tradplus-ironsource:10.7.4.10.1'
-    // admob ironsource mediation
-    implementation 'com.google.ads.mediation:ironsource:7.1.14.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     implementation 'com.adcolony:sdk:4.6.5'
@@ -169,18 +157,14 @@ dependencies {
     implementation 'com.applovin.mediation:adcolony-adapter:4.6.5.0'
     // tradplus adcolony mediation
     implementation 'com.tradplusad:tradplus-adcolony:4.7.4.10.1'
-    // admob adcolony mediation
-    implementation 'com.google.ads.mediation:adcolony:4.6.4.0@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Tapjoy
-    implementation 'com.tapjoy:tapjoy-android-sdk:12.8.1@aar'
+    implementation 'com.tapjoy:tapjoy-android-sdk:12.9.1@aar'
     // applovin tapjoy mediation
-    implementation 'com.applovin.mediation:tapjoy-adapter:12.8.1.0@aar'
+    implementation 'com.applovin.mediation:tapjoy-adapter:12.9.0.3@aar'
     // tradplus tapjoy mediation
     implementation 'com.tradplusad:tradplus-tapjoy:6.7.4.10.1'
-    // admob tapjoy mediation
-    implementation 'com.google.ads.mediation:tapjoy:12.8.1.1@aar'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Smaato
