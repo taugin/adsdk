@@ -816,8 +816,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (isTemplateRendering()) {
                 maxNativeAdView = mTemplateNativeView;
             } else {
-                if (mMaxNativeAdLoader != null && mParams != null) {
-                    maxNativeAdView = mApplovinBindView.bindMaxNativeAdView(getContext(), mParams, mPidConfig);
+                if (mMaxNativeAdLoader != null && mParams != null && mMaxAd != null) {
+                    maxNativeAdView = mApplovinBindView.bindMaxNativeAdView(getContext(), mParams, mPidConfig, mMaxAd.getNetworkName());
                     mMaxNativeAdLoader.render(maxNativeAdView, mMaxAd);
                 }
             }

@@ -19,14 +19,18 @@ import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
 
 import java.util.List;
+import java.util.Locale;
 
 public class ApplovinBindView extends BaseBindNativeView {
     private Params mParams;
 
-    public MaxNativeAdView bindMaxNativeAdView(Context context, Params params, PidConfig pidConfig) {
+    public MaxNativeAdView bindMaxNativeAdView(Context context, Params params, PidConfig pidConfig, String networkName) {
         mParams = params;
         if (pidConfig != null) {
-            int rootLayout = getBestNativeLayout(context, pidConfig, mParams, Constant.AD_SDK_APPLOVIN);
+            if (networkName != null) {
+                networkName = networkName.toLowerCase(Locale.getDefault());
+            }
+            int rootLayout = getBestNativeLayout(context, pidConfig, mParams, networkName);
             if (rootLayout > 0) {
                 View rootView = LayoutInflater.from(context).inflate(rootLayout, null);
                 View ctaButton = rootView.findViewById(params.getAdAction());
