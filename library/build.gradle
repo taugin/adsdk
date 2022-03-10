@@ -147,7 +147,7 @@ dependencies {
     // ironsource
     implementation 'com.ironsource.sdk:mediationsdk:7.2.1'
     // applovin ironsource mediation
-    implementation 'com.applovin.mediation:ironsource-adapter:7.2.0.0.0'
+    implementation 'com.applovin.mediation:ironsource-adapter:7.2.1.0.0'
     // tradplus ironsource mediation
     implementation 'com.tradplusad:tradplus-ironsource:10.7.4.10.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,7 @@ dependencies {
     // Tapjoy
     implementation 'com.tapjoy:tapjoy-android-sdk:12.9.1@aar'
     // applovin tapjoy mediation
-    implementation 'com.applovin.mediation:tapjoy-adapter:12.9.0.3@aar'
+    implementation 'com.applovin.mediation:tapjoy-adapter:12.9.1.0@aar'
     // tradplus tapjoy mediation
     implementation 'com.tradplusad:tradplus-tapjoy:6.7.4.10.1'
 //////////////////////////////////////////////////////////////////////////////////////////
