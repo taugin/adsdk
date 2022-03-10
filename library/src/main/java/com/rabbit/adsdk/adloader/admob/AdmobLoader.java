@@ -23,7 +23,6 @@ import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.appopen.AppOpenAd;
-import com.google.android.gms.ads.initialization.AdapterStatus;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.NativeAd;
@@ -81,19 +80,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         super.init(context, pidConfig);
         initBannerSize();
         if (!sAdmobInited.getAndSet(true)) {
-            MobileAds.initialize(getActivity(), initializationStatus -> {
-                Log.iv(Log.TAG, "admob init successfully");
-                try {
-                    Map<String, AdapterStatus> statusMap = initializationStatus.getAdapterStatusMap();
-                    for (String adapterClass : statusMap.keySet()) {
-                        AdapterStatus status = statusMap.get(adapterClass);
-                        Log.iv(Log.TAG, String.format(
-                                "Adapter name: %s, Description: %s, Latency: %d",
-                                adapterClass, status.getDescription(), status.getLatency()));
-                    }
-                } catch (Exception e) {
-                }
-            });
+            MobileAds.initialize(getActivity());
         }
     }
 
