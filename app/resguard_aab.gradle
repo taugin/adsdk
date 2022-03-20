@@ -141,7 +141,13 @@ aabResGuard {
             "*.R.dimen.smaato_*",
             "*.R.style.smaato_*",
             "*.R.color.smaato_*",
-            "*.R.raw.html_player_vast*"
+            "*.R.raw.html_player_vast*",
+            // onesignal
+            "*.R.layout.onesignal*",
+            "*.R.anim.onesignal*",
+            "*.R.drawable.ic_os*",
+            "*.R.raw.consumer*",
+            "*.R.string.location*"
     ]
     //混淆后的文件名称，必须以".aab"结尾
     // obfuscatedBundleFileName = "duplicated-app.aab"

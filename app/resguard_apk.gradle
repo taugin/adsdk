@@ -144,7 +144,13 @@ andResGuard {
             "R.dimen.smaato_*",
             "R.style.smaato_*",
             "R.color.smaato_*",
-            "R.raw.html_player_vast*"
+            "R.raw.html_player_vast*",
+            // onesignal
+            "R.layout.onesignal*",
+            "R.anim.onesignal*",
+            "R.drawable.ic_os*",
+            "R.raw.consumer*",
+            "R.string.location*"
     ]
     compressFilePattern = [
             "*.png",
