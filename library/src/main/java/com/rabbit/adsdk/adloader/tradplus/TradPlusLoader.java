@@ -676,7 +676,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         String ecpm = null;
         if (tpAdInfo != null) {
             networkName = tpAdInfo.adSourceName;
-            placement = tpAdInfo.adSourceId;
+            placement = getAdSourceId(tpAdInfo);
             ecpm = String.valueOf(getLoadedEcpm(tpAdInfo));
         }
         StringBuilder builder = new StringBuilder();
