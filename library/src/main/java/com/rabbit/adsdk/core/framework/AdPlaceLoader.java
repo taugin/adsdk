@@ -946,12 +946,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      * 展示插屏
      */
     @Override
-    public void showSplash() {
+    public void showSplash(ViewGroup viewGroup) {
         Log.iv(Log.TAG, "showSplash");
-        showSplashInternal();
+        showSplashInternal(viewGroup);
     }
 
-    private void showSplashInternal() {
+    private void showSplashInternal(ViewGroup viewGroup) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
             return;
@@ -969,7 +969,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         sortLoadedLoaders(list);
         for (ISdkLoader loader : list) {
             if (loader != null && loader.isSplashType() && loader.isSplashLoaded()) {
-                if (loader.showSplash()) {
+                if (loader.showSplash(viewGroup)) {
                     AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                     break;
                 }
@@ -1506,7 +1506,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         return true;
                     }
                 } else if (loader.isSplashType() && loader.isSplashLoaded()) {
-                    if (loader.showSplash()) {
+                    if (loader.showSplash(null)) {
                         AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                         return true;
                     }

@@ -180,7 +180,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     @Override
-    public boolean showSplash() {
+    public boolean showSplash(ViewGroup viewGroup) {
         return false;
     }
 

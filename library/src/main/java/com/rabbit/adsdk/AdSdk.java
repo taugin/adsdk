@@ -429,9 +429,13 @@ public class AdSdk {
     }
 
     public void showSplash(String placeName) {
+        showSplash(placeName, null);
+    }
+
+    public void showSplash(String placeName, ViewGroup viewGroup) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {
-            loader.showSplash();
+            loader.showSplash(viewGroup);
         }
     }
 /////////////////////////////////////////////////////////////////////////////
