@@ -19,6 +19,7 @@ import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
 import com.tradplus.ads.base.bean.TPBaseAd;
 import com.tradplus.ads.mgr.nativead.TPCustomNativeAd;
+import com.tradplus.ads.mobileads.util.network.NetworkChangeManager;
 import com.tradplus.ads.open.TradPlusSdk;
 import com.tradplus.ads.open.banner.BannerAdListener;
 import com.tradplus.ads.open.banner.TPBanner;
@@ -64,6 +65,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
         if (!TextUtils.isEmpty(appId)) {
             if (!sAtomicBoolean.getAndSet(true)) {
+                NetworkChangeManager.getInstance().setCloseNetworkChangeReceiver(true);
                 Log.iv(Log.TAG, "init " + getSdkName() + " with app id : " + appId);
                 TradPlusSdk.initSdk(context, appId);
             } else {
