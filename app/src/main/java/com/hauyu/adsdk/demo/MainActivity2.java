@@ -171,7 +171,7 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
         String splashPlace = String.format(Locale.getDefault(), SPLASH_PREFIX, sdk.toLowerCase(Locale.getDefault()));
         if (AdSdk.get(mContext).isSplashLoaded(splashPlace)) {
             mSplashContainer.setVisibility(View.VISIBLE);
-            AdSdk.get(mContext).showSplash(splashPlace);
+            AdSdk.get(mContext).showSplash(splashPlace, mSplashContainer);
         } else {
             AdSdk.get(mContext).loadSplash(splashPlace, new FullScreenAdListener(textView));
         }
