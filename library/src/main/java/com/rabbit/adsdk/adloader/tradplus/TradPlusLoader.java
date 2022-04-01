@@ -11,10 +11,12 @@ import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.framework.ActivityMonitor;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
+import com.tradplus.ads.base.GlobalTradPlus;
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
 import com.tradplus.ads.base.bean.TPBaseAd;
@@ -28,6 +30,8 @@ import com.tradplus.ads.open.nativead.NativeAdListener;
 import com.tradplus.ads.open.nativead.TPNative;
 import com.tradplus.ads.open.reward.RewardAdListener;
 import com.tradplus.ads.open.reward.TPReward;
+import com.tradplus.ads.open.splash.SplashAdListener;
+import com.tradplus.ads.open.splash.TPSplash;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +44,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
     private TPInterstitial mTPInterstitial;
     private TPReward mTPReward;
     private TPNative mTPNative;
+    private TPSplash mTPSplash;
     private TradPlusBindView mTradPlusBindView = new TradPlusBindView();
 
     @Override
@@ -571,6 +576,125 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    @Override
+    public boolean isSplashLoaded() {
+        boolean loaded = super.isSplashLoaded();
+        if (mTPSplash != null) {
+            loaded = mTPSplash.isReady();
+        }
+        if (loaded) {
+            Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
+        }
+        return loaded;
+    }
+
+    @Override
+    public void loadSplash() {
+        if (!checkPidConfig()) {
+            Log.iv(Log.TAG, formatLog("config error"));
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
+            return;
+        }
+        if (isSplashLoaded()) {
+            Log.iv(Log.TAG, formatLog("already loaded"));
+            notifyAdLoaded(this);
+            return;
+        }
+        if (isLoading()) {
+            Log.iv(Log.TAG, formatLog("already loading"));
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
+            return;
+        }
+
+        // 检测通用配置是否符合
+        if (!checkCommonConfig()) {
+            return;
+        }
+
+        setLoading(true, STATE_REQUEST);
+        mTPSplash = new TPSplash(getActivity(), getPid());
+        mTPSplash.setAdListener(new SplashAdListener() {
+            @Override
+            public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
+                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
+                setLoading(false, STATE_SUCCESS);
+                putCachedAdTime(mTPSplash);
+                reportAdLoaded();
+                notifyAdLoaded(TradPlusLoader.this);
+            }
+
+            @Override
+            public void onAdClicked(TPAdInfo tpAdInfo) {
+                String network = getNetwork(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network));
+                reportAdClick(network);
+                notifyAdClick(network);
+            }
+
+            @Override
+            public void onAdImpression(TPAdInfo tpAdInfo) {
+                String network = getNetwork(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network));
+                reportAdImp(network);
+                notifyAdImp(network);
+                reportTradPlusImpressionData(tpAdInfo);
+            }
+
+            @Override
+            public void onAdShowFailed(TPAdInfo tpAdInfo, TPAdError tpAdError) {
+                Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(tpAdError)));
+                clearLastShowTime();
+                onResetSplash();
+                notifyAdShowFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
+            }
+
+            @Override
+            public void onAdLoadFailed(TPAdError tpAdError) {
+                Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
+                setLoading(false, STATE_FAILURE);
+                onResetSplash();
+                reportAdError(codeToError(tpAdError));
+                notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
+            }
+
+            @Override
+            public void onAdClosed(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad dismissed"));
+                clearLastShowTime();
+                onResetSplash();
+                reportAdClose();
+                notifyAdDismiss();
+            }
+        });
+        printInterfaceLog(ACTION_LOAD);
+        reportAdRequest();
+        notifyAdRequest();
+        mTPSplash.loadAd(null);
+    }
+
+    @Override
+    public boolean showSplash(ViewGroup viewGroup) {
+        Log.iv(Log.TAG, getAdPlaceName() + " - " +getSdkName() + " show splash");
+        if (mTPSplash != null && mTPSplash.isReady()) {
+            try {
+                GlobalTradPlus.getInstance().refreshContext(ActivityMonitor.get(mContext).getTopActivity());
+            } catch (Exception e) {
+            }
+            reportAdShow();
+            notifyAdShow();
+            mTPSplash.showAd(viewGroup);
+            updateLastShowTime();
+            return true;
+        } else {
+            Log.e(Log.TAG, formatShowErrorLog("TPSplash is null"));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPSplash not ready");
+            onResetSplash();
+        }
+        return false;
+    }
+    ////////////////////////////////////////////////////////////////////////////
+
     private String getNetwork(TPAdInfo tpAdInfo) {
         return tpAdInfo != null ? tpAdInfo.adSourceName : null;
     }
@@ -591,6 +715,13 @@ public class TradPlusLoader extends AbstractSdkLoader {
         if (mTPReward != null) {
             mTPReward = null;
         }
+    }
+
+    @Override
+    protected void onResetSplash() {
+        super.onResetSplash();
+        clearCachedAdTime(mTPSplash);
+        mTPSplash = null;
     }
 
     private void reportTradPlusImpressionData(TPAdInfo tpAdInfo) {

@@ -724,7 +724,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(loadAdError), true));
                 setLoading(false, STATE_FAILURE);
-                mAppOpenAd = null;
+                onResetSplash();
                 reportAdError(codeToError(loadAdError));
                 notifyAdLoadFailed(toSdkError(loadAdError), toErrorMessage(loadAdError));
             }
@@ -738,7 +738,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showSplash(ViewGroup viewGroup) {
-        Log.iv(Log.TAG, getSdkName() + " show splash");
+        Log.iv(Log.TAG, getAdPlaceName() + " - " +getSdkName() + " show splash");
         if (mAppOpenAd != null) {
             Activity activity = getActivity();
             FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
@@ -751,10 +751,17 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
 
                 @Override
+                public void onAdClicked() {
+                    Log.iv(Log.TAG, formatLog("ad click"));
+                    reportAdClick();
+                    notifyAdClick();
+                }
+
+                @Override
                 public void onAdShowedFullScreenContent() {
                     Log.iv(Log.TAG, formatLog("ad showed full screen content"));
-                    notifyAdOpened();
-                    notifyRewardAdsStarted();
+                    reportAdImp();
+                    notifyAdImp();
                 }
 
                 @Override

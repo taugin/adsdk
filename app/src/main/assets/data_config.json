@@ -13,6 +13,20 @@
       ]
     },
     {
+      "name": "splash_tradplus",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "tradplus",
+          "type": "splash",
+          "pid": "089E30435C67FDCD23111559B8074610",
+          "extra": {
+            "app_id": "BA819D2F55B23ED81FD43E632EFF0FE7"
+          }
+        }
+      ]
+    },
+    {
       "name": "banner_admob",
       "mode": "con",
       "pids": [

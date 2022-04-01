@@ -1,46 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_36"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="广告平台" />
-
-            <Spinner
-                android:id="@+id/ad_sdk_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:entries="@array/ad_sdk"
-                android:tag="ad_sdk_spinner" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_36"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_36"
-                android:layout_marginRight="2dp"
-                android:layout_weight="4"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -48,127 +25,161 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="原生布局" />
+                    android:text="广告平台" />
 
                 <Spinner
-                    android:id="@+id/ad_layout_spinner"
+                    android:id="@+id/ad_sdk_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:entries="@array/ad_layout"
-                    android:tag="ad_layout_spinner" />
+                    android:entries="@array/ad_sdk"
+                    android:tag="ad_sdk_spinner" />
             </LinearLayout>
 
-            <Switch
-                android:id="@+id/mediation_template"
-                style="@android:style/Widget.DeviceDefault.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="1"
-                android:drawablePadding="0dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_36"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_36"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="原生布局" />
+
+                    <Spinner
+                        android:id="@+id/ad_layout_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:entries="@array/ad_layout"
+                        android:tag="ad_layout_spinner" />
+                </LinearLayout>
+
+                <Switch
+                    android:id="@+id/mediation_template"
+                    style="@android:style/Widget.DeviceDefault.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:drawablePadding="0dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_36"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:gravity="center_vertical"
+                        android:text="横幅大小" />
+
+                    <Spinner
+                        android:id="@+id/ad_banner_size_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:entries="@array/ad_banner_size"
+                        android:tag="ad_banner_size_spinner" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/mediation_debugger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="调试" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_36"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <Button
+                android:id="@+id/interstitial"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
-                android:layout_weight="4"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:gravity="center_vertical"
-                    android:text="横幅大小" />
-
-                <Spinner
-                    android:id="@+id/ad_banner_size_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:entries="@array/ad_banner_size"
-                    android:tag="ad_banner_size_spinner" />
-            </LinearLayout>
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="插屏" />
 
             <Button
-                android:id="@+id/mediation_debugger"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:id="@+id/splash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
-                android:text="调试" />
+                android:text="开屏" />
+
+            <Button
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="横幅" />
+
+            <Button
+                android:id="@+id/reward_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="激励" />
+
+            <Button
+                android:id="@+id/native_common"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="原生" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:id="@+id/native_banner_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
         </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/interstitial"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="插屏" />
-
-        <Button
-            android:id="@+id/splash"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="开屏" />
-
-        <Button
-            android:id="@+id/banner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="横幅" />
-
-        <Button
-            android:id="@+id/reward_video"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="激励" />
-
-        <Button
-            android:id="@+id/native_common"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="原生" />
-    </LinearLayout>
-
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/splash_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
-
-        <RelativeLayout
-            android:id="@+id/native_banner_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center" />
-    </LinearLayout>
-</LinearLayout>
+        android:visibility="gone"/>
+</FrameLayout>

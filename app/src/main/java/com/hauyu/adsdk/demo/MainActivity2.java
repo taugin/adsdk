@@ -7,6 +7,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
@@ -62,6 +63,7 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
     private Spinner mAdSdkSpinner;
     private Spinner mAdLayoutSpinner;
     private Spinner mAdBannerSizeSpinner;
+    private ViewGroup mSplashContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
         mAdSdkSpinner = findViewById(R.id.ad_sdk_spinner);
         mAdLayoutSpinner = findViewById(R.id.ad_layout_spinner);
         mAdBannerSizeSpinner = findViewById(R.id.ad_banner_size_spinner);
+        mSplashContainer = findViewById(R.id.splash_container);
         mAdSdkSpinner.setOnItemSelectedListener(this);
         mAdLayoutSpinner.setOnItemSelectedListener(this);
         mAdBannerSizeSpinner.setOnItemSelectedListener(this);
@@ -167,6 +170,7 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
         String splashPlace = String.format(Locale.getDefault(), SPLASH_PREFIX, sdk.toLowerCase(Locale.getDefault()));
         if (AdSdk.get(mContext).isSplashLoaded(splashPlace)) {
+            mSplashContainer.setVisibility(View.VISIBLE);
             AdSdk.get(mContext).showSplash(splashPlace);
         } else {
             AdSdk.get(mContext).loadSplash(splashPlace, new FullScreenAdListener(textView));
@@ -377,6 +381,7 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
         public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
             updateLoadStatus(textView, placeName);
+            mSplashContainer.setVisibility(View.GONE);
         }
 
         @Override

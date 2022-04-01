@@ -310,7 +310,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             return false;
         }
 
-        // 检测adLoader是否被过滤
+        // 检测广告是否被禁止加载
         if (isAdDisableLoading()) {
             processAdDisableLoading();
             return false;
