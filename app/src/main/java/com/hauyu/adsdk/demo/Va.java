@@ -3,6 +3,7 @@ package com.hauyu.adsdk.demo;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -115,6 +116,15 @@ public class Va {
     public static void log(List list) {
         try {
             Log.v(TAG, getMethodNameAndLineNumber() + list);
+        } catch (Exception | Error e) {
+            Log.e(TAG, "error : " + e, e);
+        }
+    }
+
+    public static void log(Object ...objects) {
+        try {
+            List<Object> objectList = Arrays.asList(objects);
+            Log.v(TAG, getMethodNameAndLineNumber() + objectList);
         } catch (Exception | Error e) {
             Log.e(TAG, "error : " + e, e);
         }
