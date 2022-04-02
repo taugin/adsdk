@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Http {
     private static ThreadFactory sFactory = new ThreadFactory() {
-        private final String namePrefix = "hauyu-";
+        private final String namePrefix = "sdk-";
         private final AtomicInteger threadNumber = new AtomicInteger(1);
 
         @Override
