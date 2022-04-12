@@ -115,7 +115,7 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbsplash:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
     // applovin mintegral mediation
-    implementation 'com.applovin.mediation:mintegral-adapter:16.0.11.0@aar'
+    implementation 'com.applovin.mediation:mintegral-adapter:16.0.31.0@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
