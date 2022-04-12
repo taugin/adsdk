@@ -295,6 +295,12 @@ public class AdParser implements IParser {
             if (jobj.has(SCENE_ID)) {
                 pidConfig.setSceneId(jobj.getString(SCENE_ID));
             }
+            if (jobj.has(SPLASH_ICON)) {
+                pidConfig.setShowSplashIcon(jobj.getInt(SPLASH_ICON) == 1);
+            }
+            if (jobj.has(SPLASH_TIME_OUT)) {
+                pidConfig.setSplashTimeout(jobj.getInt(SPLASH_TIME_OUT));
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

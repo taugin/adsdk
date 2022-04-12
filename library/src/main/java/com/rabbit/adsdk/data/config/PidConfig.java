@@ -65,6 +65,10 @@ public class PidConfig {
 
     private String sceneId;
 
+    private boolean showSplashIcon = true;
+
+    private int splashTimeout = 15000;
+
     public String getPlaceName() {
         return placeName;
     }
@@ -263,6 +267,22 @@ public class PidConfig {
 
     public void setSceneId(String sceneId) {
         this.sceneId = sceneId;
+    }
+
+    public boolean isShowSplashIcon() {
+        return showSplashIcon;
+    }
+
+    public void setShowSplashIcon(boolean showSplashIcon) {
+        this.showSplashIcon = showSplashIcon;
+    }
+
+    public int getSplashTimeout() {
+        return splashTimeout;
+    }
+
+    public void setSplashTimeout(int splashTimeout) {
+        this.splashTimeout = splashTimeout;
     }
 
     public boolean isAdmob() {

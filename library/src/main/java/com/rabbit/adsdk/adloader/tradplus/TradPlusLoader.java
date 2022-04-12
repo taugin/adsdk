@@ -670,6 +670,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
+        setSplashParams(mTPSplash);
         mTPSplash.loadAd(null);
     }
 
@@ -692,6 +693,32 @@ public class TradPlusLoader extends AbstractSdkLoader {
             onResetSplash();
         }
         return false;
+    }
+
+    /**
+     * 设置开屏加载的参数
+     * @param tpSplash
+     */
+    private void setSplashParams(TPSplash tpSplash) {
+        try {
+            Map<String, Object> localExtra = new HashMap<String, Object>();
+            // 增加Pangle开屏底部图标
+            if (mPidConfig != null && mPidConfig.isShowSplashIcon()) {
+                int icon = Utils.getApplicationIcon(mContext);
+                if (icon > 0) {
+                    localExtra.put("app_icon", icon);
+                }
+            }
+            if (mPidConfig != null && mPidConfig.getSplashTimeout() > 0) {
+                int splashTimeout = mPidConfig.getSplashTimeout();
+                Log.iv(Log.TAG, formatLog("load splash time out : " + splashTimeout));
+                localExtra.put("time_out", splashTimeout);
+            }
+            if (tpSplash != null && localExtra != null && !localExtra.isEmpty()) {
+                tpSplash.setCustomParams(localExtra);
+            }
+        } catch (Exception e) {
+        }
     }
     ////////////////////////////////////////////////////////////////////////////
 

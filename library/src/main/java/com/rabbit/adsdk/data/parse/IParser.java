@@ -96,6 +96,10 @@ public interface IParser {
     String TEMPLATE = "template";
     // 设置广告单元最大请求次数
     String MAX_REQ_TIME = "mrt";
+    // 开屏图标
+    String SPLASH_ICON = "si";
+    // 开屏加载超时时长
+    String SPLASH_TIME_OUT = "sto";
 
     // banner
     String BANNER = "banner";

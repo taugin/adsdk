@@ -750,4 +750,12 @@ public class Utils {
         }
         return 0;
     }
+
+    public static int getApplicationIcon(Context context) {
+        try {
+            return context.getApplicationInfo().icon;
+        } catch (Exception e) {
+        }
+        return 0;
+    }
 }
