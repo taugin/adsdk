@@ -81,9 +81,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // facebook
-    implementation 'com.facebook.android:audience-network-sdk:6.8.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.10.0'
     // applovin facebook mediation
-    implementation 'com.applovin.mediation:facebook-adapter:6.8.0.15@aar'
+    implementation 'com.applovin.mediation:facebook-adapter:6.10.0.1@aar'
     // tradplus facebook mediation
     implementation 'com.tradplusad:tradplus-facebook:1.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -91,8 +91,8 @@ dependencies {
     // admob
     implementation 'com.google.android.gms:play-services-ads:20.6.0'
     // applovin admob mediation
-    implementation 'com.applovin.mediation:google-adapter:20.6.0.7@aar'
-    implementation 'com.applovin.mediation:google-ad-manager-adapter:20.6.0.5@aar'
+    implementation 'com.applovin.mediation:google-adapter:20.6.0.8@aar'
+    implementation 'com.applovin.mediation:google-ad-manager-adapter:20.6.0.6@aar'
     // tradplus admob mediation
     implementation 'com.tradplusad:tradplus-googlex:2.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbsplash:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
     // applovin mintegral mediation
-    implementation 'com.applovin.mediation:mintegral-adapter:16.0.31.1@aar'
+    implementation 'com.applovin.mediation:mintegral-adapter:16.0.31.2@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ dependencies {
     // Inmobi
     implementation 'com.inmobi.monetization:inmobi-ads:10.0.5'
     // applovin inmobi mediation
-    implementation 'com.applovin.mediation:inmobi-adapter:10.0.5.4@aar'
+    implementation 'com.applovin.mediation:inmobi-adapter:10.0.5.5@aar'
     //tradplus inmobi mediation
     implementation 'com.tradplusad:tradplus-inmobix:23.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
