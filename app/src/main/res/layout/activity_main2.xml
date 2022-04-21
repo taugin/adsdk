@@ -16,23 +16,38 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_36"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="广告平台" />
-
-                <Spinner
-                    android:id="@+id/ad_sdk_spinner"
+                <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_36"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="@string/ad_platform" />
+
+                    <Spinner
+                        android:id="@+id/ad_sdk_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:entries="@array/ad_sdk"
+                        android:tag="ad_sdk_spinner" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/change_language"
+                    android:layout_width="72dp"
                     android:layout_height="match_parent"
-                    android:entries="@array/ad_sdk"
-                    android:tag="ad_sdk_spinner" />
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="0"
+                    android:onClick="onClick"
+                    android:text="@string/change_language" />
             </LinearLayout>
 
             <LinearLayout
@@ -53,7 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:text="原生布局" />
+                        android:text="@string/native_layout" />
 
                     <Spinner
                         android:id="@+id/ad_layout_spinner"
@@ -66,10 +81,10 @@
                 <Switch
                     android:id="@+id/mediation_template"
                     style="@android:style/Widget.DeviceDefault.Button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="72dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="2dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:drawablePadding="0dp" />
             </LinearLayout>
 
@@ -92,7 +107,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0"
                         android:gravity="center_vertical"
-                        android:text="横幅大小" />
+                        android:text="@string/banner_size" />
 
                     <Spinner
                         android:id="@+id/ad_banner_size_spinner"
@@ -105,12 +120,12 @@
 
                 <Button
                     android:id="@+id/mediation_debugger"
-                    android:layout_width="wrap_content"
+                    android:layout_width="72dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="2dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:onClick="onClick"
-                    android:text="调试" />
+                    android:text="@string/debug" />
             </LinearLayout>
         </LinearLayout>
 
@@ -122,47 +137,52 @@
             <Button
                 android:id="@+id/interstitial"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
-                android:text="插屏" />
+                android:text="@string/interstitial_test"
+                android:textSize="@dimen/sp_12" />
 
             <Button
                 android:id="@+id/splash"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
-                android:text="开屏" />
+                android:text="@string/splash_test"
+                android:textSize="@dimen/sp_12" />
 
             <Button
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
-                android:text="横幅" />
+                android:text="@string/banner_test"
+                android:textSize="@dimen/sp_12" />
 
             <Button
                 android:id="@+id/reward_video"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
-                android:text="激励" />
+                android:text="@string/reward_test"
+                android:textSize="@dimen/sp_12" />
 
             <Button
                 android:id="@+id/native_common"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
-                android:text="原生" />
+                android:text="@string/native_test"
+                android:textSize="@dimen/sp_12" />
         </LinearLayout>
 
         <LinearLayout
@@ -177,9 +197,10 @@
                 android:gravity="center" />
         </LinearLayout>
     </LinearLayout>
+
     <FrameLayout
         android:id="@+id/splash_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </FrameLayout>

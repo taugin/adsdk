@@ -22,7 +22,7 @@
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:tag="micro"
-                android:text="micro" />
+                android:text="@string/micro" />
 
             <Button
                 android:id="@+id/tiny"
@@ -32,7 +32,7 @@
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:tag="tiny"
-                android:text="tiny" />
+                android:text="@string/tiny" />
 
             <Button
                 android:id="@+id/little"
@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:tag="little"
-                android:text="little" />
+                android:text="@string/little" />
 
             <Button
                 android:id="@+id/small"
@@ -52,7 +52,7 @@
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:tag="small"
-                android:text="small" />
+                android:text="@string/small" />
 
         </LinearLayout>
 
@@ -70,7 +70,7 @@
                 android:onClick="onClick"
                 android:singleLine="true"
                 android:tag="medium"
-                android:text="medium" />
+                android:text="@string/medium" />
 
             <Button
                 android:id="@+id/large"
@@ -80,7 +80,7 @@
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:tag="large"
-                android:text="large" />
+                android:text="@string/large" />
 
             <Button
                 android:id="@+id/wrap"
@@ -90,7 +90,7 @@
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:tag="wrap"
-                android:text="wrap" />
+                android:text="@string/wrap" />
 
             <Button
                 android:id="@+id/full"
@@ -100,7 +100,7 @@
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:tag="full"
-                android:text="full" />
+                android:text="@string/full" />
         </LinearLayout>
 
         <LinearLayout
@@ -118,7 +118,7 @@
                 android:onClick="onClick"
                 android:singleLine="true"
                 android:tag="head"
-                android:text="head" />
+                android:text="@string/head" />
 
             <Button
                 android:id="@+id/mix"
@@ -128,7 +128,7 @@
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:tag="mix"
-                android:text="mix" />
+                android:text="@string/mix" />
 
             <Button
                 android:id="@+id/foot"
@@ -138,7 +138,7 @@
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:tag="foot"
-                android:text="foot" />
+                android:text="@string/foot" />
 
             <Button
                 android:id="@+id/round"
@@ -148,7 +148,7 @@
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:tag="round"
-                android:text="round" />
+                android:text="@string/round" />
         </LinearLayout>
 
         <LinearLayout

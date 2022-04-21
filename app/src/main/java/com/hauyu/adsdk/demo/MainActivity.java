@@ -34,7 +34,7 @@ import com.rabbit.adsdk.utils.Utils;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
 
     private static final int LAYOUT[] = new int[]{
             //R.layout.ad_common_native_card_small,

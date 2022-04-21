@@ -52,7 +52,7 @@
                 android:layout_marginRight="@dimen/dp_8"
                 android:layout_weight="0"
                 android:gravity="center"
-                android:text="Advertisement"
+                android:text="@string/advertisement"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
         </LinearLayout>

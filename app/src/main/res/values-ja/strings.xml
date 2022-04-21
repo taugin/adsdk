@@ -1,0 +1,32 @@
+<resources>
+    <string name="continue_to_app">適用を続行</string>
+    <string name="advertisement">広告</string>
+    <string name="micro">マイクロ</string>
+    <string name="tiny">小さな</string>
+    <string name="little">少し</string>
+    <string name="small">小さい</string>
+    <string name="medium">中</string>
+    <string name="large">大きい</string>
+    <string name="wrap">スワップ</string>
+    <string name="full">フルスクリーン</string>
+    <string name="head">頭</string>
+    <string name="mix">ミックス</string>
+    <string name="foot">足</string>
+    <string name="round">​​ラウンド</string>
+    <string name="interstitial_test">インタースティシャルテスト</string>
+    <string name="complex_test">複雑なテスト</string>
+    <string name="reward_test">リワード動画</string>
+    <string name="common_test">一般的なテスト</string>
+    <string name="splash_test">スプラッシュテスト</string>
+    <string name="native_test">ネイティブテスト</string>
+    <string name="banner_test">バナーテスト</string>
+    <string name="show_complex">複雑なものを表示</string>
+    <string name="show_spread">プロモーションを表示</string>
+    <string name="list_ad">広告リスト</string>
+    <string name="admob_splash">アドモブスプラッシュ</string>
+    <string name="ad_platform">広告プラットフォーム</string>
+    <string name="native_layout">ネイティブレイアウト</string>
+    <string name="banner_size">バナーサイズ</string>
+    <string name="change_language">言語</string>
+    <string name="debug">デバッグ</string>
+</resources>

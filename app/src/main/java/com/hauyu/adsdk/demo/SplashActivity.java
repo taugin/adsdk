@@ -20,7 +20,7 @@ import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import java.util.Locale;
 import java.util.Random;
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
     private static final String TAG = "MA";
     private ViewGroup adContainer;
     private ViewGroup splashLayout;

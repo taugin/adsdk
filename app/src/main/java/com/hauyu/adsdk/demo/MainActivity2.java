@@ -1,6 +1,5 @@
 package com.hauyu.adsdk.demo;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
@@ -30,7 +29,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
-public class MainActivity2 extends Activity implements AdapterView.OnItemSelectedListener {
+public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
     private static final int LAYOUT[] = new int[]{
             //R.layout.ad_common_native_card_small,
@@ -124,6 +123,8 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
             loadBanner((TextView) v);
         } else if (v.getId() == R.id.splash) {
             loadSplash((TextView) v);
+        } else if (v.getId() == R.id.change_language) {
+            ChangeLanguage.showLanguageDialog(this);
         } else {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag, (TextView) v);
@@ -221,7 +222,7 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
             builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
             builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
             builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
-        }  else if ("Custom Medium".equalsIgnoreCase(layout)) {
+        } else if ("Custom Medium".equalsIgnoreCase(layout)) {
             builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_medium);
             builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
             builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
@@ -230,7 +231,7 @@ public class MainActivity2 extends Activity implements AdapterView.OnItemSelecte
             builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
             builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
             builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
-        }  else if ("Custom Large".equalsIgnoreCase(layout)) {
+        } else if ("Custom Large".equalsIgnoreCase(layout)) {
             builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_large);
             builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
             builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);

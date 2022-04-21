@@ -1,15 +1,45 @@
 <resources>
-    <string name="app_name">AdSdkDemo</string>
-    <string name="app_name_vivo">AdSdkVivo</string>
-    <string name="app_name_oppo">AdSdkOppo</string>
+    <string name="app_name" translatable="false">AdSdkDemo</string>
+    <string name="app_name_vivo" translatable="false">AdSdkVivo</string>
+    <string name="app_name_oppo" translatable="false">AdSdkOppo</string>
     <string name="continue_to_app">Continue to app</string>
-    <string-array name="ad_sdk">
+    <string name="advertisement">Advertisement</string>
+    <string name="micro">micro</string>
+    <string name="tiny">micro</string>
+    <string name="little">micro</string>
+    <string name="small">micro</string>
+    <string name="medium">micro</string>
+    <string name="large">micro</string>
+    <string name="wrap">micro</string>
+    <string name="full">micro</string>
+    <string name="head">micro</string>
+    <string name="mix">micro</string>
+    <string name="foot">micro</string>
+    <string name="round">micro</string>
+    <string name="interstitial_test">Interstitial</string>
+    <string name="complex_test">Complex</string>
+    <string name="reward_test">Reward</string>
+    <string name="common_test">Common</string>
+    <string name="splash_test">Splash</string>
+    <string name="native_test">Native</string>
+    <string name="banner_test">Banner</string>
+    <string name="show_complex">Show Complex</string>
+    <string name="show_spread">Show Spread</string>
+    <string name="list_ad">List Ads</string>
+    <string name="admob_splash">Admob Splash</string>
+    <string name="ad_platform">Ad Platform</string>
+    <string name="native_layout">Native Layout</string>
+    <string name="banner_size">Banner Size</string>
+    <string name="change_language">Language</string>
+    <string name="debug">Debug</string>
+
+    <string-array name="ad_sdk" translatable="false">
         <item>TradPlus</item>
         <item>Applovin</item>
         <item>Admob</item>
         <item>Spread</item>
     </string-array>
-    <string-array name="ad_layout">
+    <string-array name="ad_layout" translatable="false">
         <item>Random</item>
         <item>Custom Small</item>
         <item>Custom Medium</item>
@@ -28,7 +58,7 @@
         <item>Round</item>
     </string-array>
 
-    <string-array name="ad_banner_size">
+    <string-array name="ad_banner_size" translatable="false">
         <item>NOSET</item>
         <item>BANNER</item>
         <item>FULL_BANNER</item>
