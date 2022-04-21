@@ -2,12 +2,14 @@ package com.hauyu.adsdk.demo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
@@ -34,6 +36,47 @@ public class ChangeLanguage {
     }
 
     private static final List<LocaleInfo> sLocaleList;
+    private static final List<Activity> sActivityList = new ArrayList<Activity>();
+    private static Class<?> sMainClass;
+
+    public static void init(Context context, Class<?> mainClass) {
+        sMainClass = mainClass;
+        registerActivityLifeCycleCallback(context);
+    }
+
+    private static void registerActivityLifeCycleCallback(Context context) {
+        ((Application)context.getApplicationContext()).registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                sActivityList.add(activity);
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                sActivityList.remove(activity);
+            }
+        });
+    }
 
     static {
         sLocaleList = new ArrayList<>();
@@ -83,7 +126,6 @@ public class ChangeLanguage {
 
     private static Locale getSelectLocale(Context context) {
         int selectIndex = PreferenceManager.getDefaultSharedPreferences(context).getInt("pref_change_language_index", -1);
-        Log.d("taugin", "selectIndex : " + selectIndex);
         if (selectIndex < 0 || selectIndex >= sLocaleList.size()) {
             return getCurrentLocale(context);
         }
@@ -119,7 +161,6 @@ public class ChangeLanguage {
         Context configContext = context;
         try {
             Locale locale = getSelectLocale(context);
-            Log.d("taugin", "locale : " + locale);
             Resources resources = context.getResources();
             Configuration configuration = resources.getConfiguration();
             configuration.setLocale(locale);
@@ -135,7 +176,9 @@ public class ChangeLanguage {
 
     private static void restartApp(Activity activity, Class<?> clazz) {
         try {
-            activity.finish();
+            for (Activity activity1 : sActivityList) {
+                activity1.finish();
+            }
             activity.startActivity(new Intent(activity, clazz));
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(0);
@@ -204,7 +247,7 @@ public class ChangeLanguage {
                     dialog.dismiss();
                 } catch (Exception e) {
                 }
-                restartApp(activity, MainActivity2.class);
+                restartApp(activity, sMainClass);
             }
         });
         builder.create().show();

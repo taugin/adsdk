@@ -28,6 +28,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        ChangeLanguage.init(this, SplashActivity.class);
         Va.setNetworkProxy();
         initUmeng();
         AdSdk.get(this).setOnAdImpressionListener(new OnAdImpressionListener() {
