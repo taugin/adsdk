@@ -10,6 +10,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
@@ -80,7 +82,7 @@ public class ChangeLanguage {
 
     static {
         sLocaleList = new ArrayList<>();
-        sLocaleList.add(new LocaleInfo(Locale.getDefault(), "跟随系统"));
+        sLocaleList.add(new LocaleInfo(Locale.getDefault(), Locale.getDefault().getDisplayLanguage()));
         sLocaleList.add(new LocaleInfo(Locale.ENGLISH, "English", "英语"));
         sLocaleList.add(new LocaleInfo(new Locale("ar"), "العربية", "阿拉伯语"));
         sLocaleList.add(new LocaleInfo(new Locale("bn", "IN"), "বাংলা", "孟加拉语"));
@@ -108,7 +110,7 @@ public class ChangeLanguage {
         sLocaleList.add(new LocaleInfo(new Locale("fil"), "Pilipinas", "菲律宾语"));
     }
 
-    private static final class CustomContextThemeWrapper extends ContextThemeWrapper {
+    public static final class CustomContextThemeWrapper extends ContextThemeWrapper {
         Configuration mConfiguration;
 
         CustomContextThemeWrapper(Configuration configuration, Context context, int index) {
@@ -137,7 +139,6 @@ public class ChangeLanguage {
     }
 
     private static void setSelectLocale(Context context, int selectIndex) {
-        Log.d("taugin", "setSelectLocale : " + selectIndex);
         PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("pref_change_language_index", selectIndex).commit();
     }
 
@@ -174,14 +175,35 @@ public class ChangeLanguage {
         return configContext;
     }
 
+    public static String getCurrentLanguage(Context context) {
+        String currentLanguage = null;
+        try {
+            int selectIndex = PreferenceManager.getDefaultSharedPreferences(context).getInt("pref_change_language_index", -1);
+            if (selectIndex >= 0 && selectIndex < sLocaleList.size()) {
+                return currentLanguage = sLocaleList.get(selectIndex).display;
+            }
+        } catch (Exception e) {
+        }
+        if (TextUtils.isEmpty(currentLanguage)) {
+            currentLanguage = Locale.getDefault().getDisplayLanguage();
+        }
+        return currentLanguage;
+    }
+
     private static void restartApp(Activity activity, Class<?> clazz) {
         try {
             for (Activity activity1 : sActivityList) {
                 activity1.finish();
             }
-            activity.startActivity(new Intent(activity, clazz));
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(0);
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    activity.startActivity(new Intent(activity, clazz));
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                    System.exit(0);
+                }
+            }, 500);
         } catch (Exception e2) {
         }
     }
@@ -242,9 +264,9 @@ public class ChangeLanguage {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try {
+                    dialog.dismiss();
                     changeLocale(activity, sLocaleList.get(which));
                     setSelectLocale(activity, which);
-                    dialog.dismiss();
                 } catch (Exception e) {
                 }
                 restartApp(activity, sMainClass);

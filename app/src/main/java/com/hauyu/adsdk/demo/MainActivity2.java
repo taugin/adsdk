@@ -63,12 +63,14 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
     private Spinner mAdLayoutSpinner;
     private Spinner mAdBannerSizeSpinner;
     private ViewGroup mSplashContainer;
+    private TextView mLanguageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main2);
+        mLanguageView = findViewById(R.id.change_language);
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         mAdSdkSpinner = findViewById(R.id.ad_sdk_spinner);
         mAdLayoutSpinner = findViewById(R.id.ad_layout_spinner);
@@ -77,6 +79,7 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
         mAdSdkSpinner.setOnItemSelectedListener(this);
         mAdLayoutSpinner.setOnItemSelectedListener(this);
         mAdBannerSizeSpinner.setOnItemSelectedListener(this);
+        mLanguageView.setText(ChangeLanguage.getCurrentLanguage(this));
         int position = 0;
         String tag = null;
 
