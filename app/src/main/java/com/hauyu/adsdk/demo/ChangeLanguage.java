@@ -108,7 +108,7 @@ public class ChangeLanguage {
         sLocaleList.add(new LocaleInfo(new Locale("fil"), "Pilipinas", "菲律宾语"));
     }
 
-    public static final class CustomContextThemeWrapper extends ContextThemeWrapper {
+    private static final class CustomContextThemeWrapper extends ContextThemeWrapper {
         Configuration mConfiguration;
 
         CustomContextThemeWrapper(Configuration configuration, Context context, int index) {
