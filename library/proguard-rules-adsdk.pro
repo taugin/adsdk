@@ -108,3 +108,7 @@
 #inmobi
 -dontwarn com.inmobi.**
 -keep class com.inmobi.**{ *;}
+
+#tapjoy
+-keep class com.tapjoy.** { *; }
+-dontwarn com.tapjoy.**
