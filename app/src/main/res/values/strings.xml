@@ -32,6 +32,7 @@
     <string name="banner_size">Banner Size</string>
     <string name="change_language">Language</string>
     <string name="debug">Debug</string>
+    <string name="template">Template</string>
 
     <string-array name="ad_sdk" translatable="false">
         <item>TradPlus</item>

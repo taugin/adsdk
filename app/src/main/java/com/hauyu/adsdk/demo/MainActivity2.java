@@ -5,10 +5,12 @@ import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -73,8 +75,50 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
         mLanguageView = findViewById(R.id.change_language);
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         mAdSdkSpinner = findViewById(R.id.ad_sdk_spinner);
+        CharSequence[] entries = getResources().getStringArray(R.array.ad_sdk);
+        if (entries != null) {
+            final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+                    this, android.R.layout.simple_spinner_item, entries) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    TextView textView = (TextView) super.getView(position, convertView, parent);
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                    return textView;
+                }
+            };
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mAdSdkSpinner.setAdapter(adapter);
+        }
         mAdLayoutSpinner = findViewById(R.id.ad_layout_spinner);
+        entries = getResources().getStringArray(R.array.ad_layout);
+        if (entries != null) {
+            final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+                    this, android.R.layout.simple_spinner_item, entries) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    TextView textView = (TextView) super.getView(position, convertView, parent);
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                    return textView;
+                }
+            };
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mAdLayoutSpinner.setAdapter(adapter);
+        }
         mAdBannerSizeSpinner = findViewById(R.id.ad_banner_size_spinner);
+        entries = getResources().getStringArray(R.array.ad_banner_size);
+        if (entries != null) {
+            final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+                    this, android.R.layout.simple_spinner_item, entries) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    TextView textView = (TextView) super.getView(position, convertView, parent);
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                    return textView;
+                }
+            };
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mAdBannerSizeSpinner.setAdapter(adapter);
+        }
         mSplashContainer = findViewById(R.id.splash_container);
         mAdSdkSpinner.setOnItemSelectedListener(this);
         mAdLayoutSpinner.setOnItemSelectedListener(this);

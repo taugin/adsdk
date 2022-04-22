@@ -29,4 +29,5 @@
     <string name="banner_size">バナーサイズ</string>
     <string name="change_language">言語</string>
     <string name="debug">デバッグ</string>
+    <string name="template">レンプレート</string>
 </resources>
