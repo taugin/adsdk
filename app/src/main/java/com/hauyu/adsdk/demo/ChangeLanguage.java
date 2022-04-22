@@ -25,6 +25,7 @@ import java.util.Locale;
 public class ChangeLanguage {
     private static final String PREF_LANGUAGE_SWITCH_LANGUAGE = "pref_language_switch_language";
     private static final String PREF_LANGUAGE_SWITCH_COUNTRY = "pref_language_switch_country";
+
     private static class LocaleInfo {
         private Locale locale;
         private String display;
@@ -52,7 +53,7 @@ public class ChangeLanguage {
     }
 
     private static void registerActivityLifeCycleCallback(Context context) {
-        ((Application)context.getApplicationContext()).registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+        ((Application) context.getApplicationContext()).registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 sActivityList.add(activity);
@@ -112,10 +113,20 @@ public class ChangeLanguage {
         sLocaleList.add(new LocaleInfo(new Locale("fa"), "فارسی", "波斯语"));
         sLocaleList.add(new LocaleInfo(new Locale("pl"), "Polski", "波兰语"));
         sLocaleList.add(new LocaleInfo(new Locale("fil"), "Pilipinas", "菲律宾语"));
-        sUserLocaleList = sLocaleList;
-        sUserLocaleList.add(0, new LocaleInfo(Locale.getDefault(), Locale.getDefault().getDisplayLanguage()));
+        sUserLocaleList = new ArrayList<>();
+        //locale为空时，默认行为是跟随系统的语言
+        sUserLocaleList.add(0, new LocaleInfo(null, "Follow System"));
+        sUserLocaleList.add(new LocaleInfo(Locale.ENGLISH, "English", "英语"));
+        sUserLocaleList.add(new LocaleInfo(new Locale("es"), "Español", "西班牙语"));
+        sUserLocaleList.add(new LocaleInfo(new Locale("in", "ID"), "Indonesia", "印尼语"));
+        sUserLocaleList.add(new LocaleInfo(new Locale("ja"), "日本語", "日语"));
+        sUserLocaleList.add(new LocaleInfo(Locale.KOREA, "한국어", "韩语"));
+        sUserLocaleList.add(new LocaleInfo(new Locale("pt"), "Português", "葡萄牙语"));
     }
 
+    /**
+     * Android N以下的主题
+     */
     public static final class CustomContextThemeWrapper extends ContextThemeWrapper {
         Configuration mConfiguration;
 
@@ -132,24 +143,44 @@ public class ChangeLanguage {
         }
     }
 
+    /**
+     * 获取用户在应用内设置的语言
+     * @param context
+     * @return
+     */
     private static Locale getSelectLocale(Context context) {
         String language = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LANGUAGE_SWITCH_LANGUAGE, null);
         String country = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LANGUAGE_SWITCH_COUNTRY, "");
         if (!TextUtils.isEmpty(language)) {
             return new Locale(language, country);
         }
-        return getCurrentLocale(context);
+        return null;
     }
 
+    /**
+     * 持久化设置的语言，如果设置的语言为空，则清除设置, 清除设置后会使用系统默认设置
+     * @param context
+     * @param userSetLocale
+     */
     private static void setSelectLocale(Context context, Locale userSetLocale) {
-        if (context != null && userSetLocale != null) {
-            String language = userSetLocale.getLanguage();
-            String country = userSetLocale.getCountry();
-            PreferenceManager.getDefaultSharedPreferences(context).edit().putString(PREF_LANGUAGE_SWITCH_LANGUAGE, language).commit();
-            PreferenceManager.getDefaultSharedPreferences(context).edit().putString(PREF_LANGUAGE_SWITCH_COUNTRY, country).commit();
+        if (context != null) {
+            if (userSetLocale != null) {
+                String language = userSetLocale.getLanguage();
+                String country = userSetLocale.getCountry();
+                PreferenceManager.getDefaultSharedPreferences(context).edit().putString(PREF_LANGUAGE_SWITCH_LANGUAGE, language).commit();
+                PreferenceManager.getDefaultSharedPreferences(context).edit().putString(PREF_LANGUAGE_SWITCH_COUNTRY, country).commit();
+            } else {
+                PreferenceManager.getDefaultSharedPreferences(context).edit().putString(PREF_LANGUAGE_SWITCH_LANGUAGE, null).commit();
+                PreferenceManager.getDefaultSharedPreferences(context).edit().putString(PREF_LANGUAGE_SWITCH_COUNTRY, null).commit();
+            }
         }
     }
 
+    /**
+     * 获取当前系统默认的语言
+     * @param context
+     * @return
+     */
     private static Locale getCurrentLocale(Context context) {
         Locale locale;
         try {
@@ -166,22 +197,34 @@ public class ChangeLanguage {
         return locale;
     }
 
+    /**
+     * 判断是否开启应用内语言设置
+     * @param context
+     * @return
+     */
     public static boolean isLanguageSwitchStartup(Context context) {
         String visible = AdSdk.get(context).getString("change_language_visible");
         return TextUtils.equals(visible, "true") || BuildConfig.DEBUG;
     }
 
+    /**
+     * 创建更改过语言设置的上线文Context
+     * @param context
+     * @return
+     */
     public static Context createConfigurationContext(Context context) {
         Context configContext = context;
         try {
             Locale locale = getSelectLocale(context);
-            Resources resources = context.getResources();
-            Configuration configuration = resources.getConfiguration();
-            configuration.setLocale(locale);
-            if (Build.VERSION.SDK_INT >= 24) {
-                configContext = context.createConfigurationContext(configuration);
-            } else {
-                configContext = new CustomContextThemeWrapper(configuration, context, android.R.style.Theme_DeviceDefault);
+            if (locale != null) {
+                Resources resources = context.getResources();
+                Configuration configuration = resources.getConfiguration();
+                configuration.setLocale(locale);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    configContext = context.createConfigurationContext(configuration);
+                } else {
+                    configContext = new CustomContextThemeWrapper(configuration, context, android.R.style.Theme_DeviceDefault);
+                }
             }
         } catch (Exception e) {
         }
@@ -191,6 +234,11 @@ public class ChangeLanguage {
         return configContext;
     }
 
+    /**
+     * 获取显示语言
+     * @param context
+     * @return
+     */
     public static String getCurrentLanguage(Context context) {
         String currentLanguage = null;
         int index = findLocaleIndex(context);
@@ -203,6 +251,11 @@ public class ChangeLanguage {
         return currentLanguage;
     }
 
+    /**
+     * 语言设置成功后，重启应用
+     * @param activity
+     * @param clazz
+     */
     private static void restartApp(Activity activity, Class<?> clazz) {
         try {
             for (Activity activity1 : sActivityList) {
@@ -221,29 +274,46 @@ public class ChangeLanguage {
         }
     }
 
-    private static void changeLocale(Context context, LocaleInfo localeInfo) {
+    /**
+     * 更新语言区域
+     * @param context
+     * @param locale
+     */
+    private static void changeLocale(Context context, Locale locale) {
         try {
+            if (locale == null) {
+                locale = getCurrentLocale(context);
+            }
             Resources resources = context.getResources();
             Configuration configuration = resources.getConfiguration();
-            configuration.locale = localeInfo.locale;
+            configuration.locale = locale;
             context.getResources().updateConfiguration(configuration, null);
         } catch (Exception e2) {
         }
     }
 
+    /**
+     * 查找当前设置的语言在列表中的位置
+     * @param context
+     * @return
+     */
     private static int findLocaleIndex(Context context) {
         String language = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LANGUAGE_SWITCH_LANGUAGE, null);
         String country = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LANGUAGE_SWITCH_COUNTRY, "");
         int selectIndex = -1;
-        for (int index = 0; index < sUserLocaleList.size(); index++) {
-            LocaleInfo info = sUserLocaleList.get(index);
-            if (info != null && info.locale != null) {
-                if (selectIndex == -1 && TextUtils.equals(info.locale.getLanguage(), language)) {
-                    selectIndex = index;
-                }
-                if (TextUtils.equals(info.locale.getLanguage(), language) && TextUtils.equals(info.locale.getCountry(), country)) {
-                    selectIndex = index;
-                    break;
+        if (TextUtils.isEmpty(language)) {
+            selectIndex = 0;
+        } else {
+            for (int index = 0; index < sUserLocaleList.size(); index++) {
+                LocaleInfo info = sUserLocaleList.get(index);
+                if (info != null && info.locale != null) {
+                    if (selectIndex == -1 && TextUtils.equals(info.locale.getLanguage(), language)) {
+                        selectIndex = index;
+                    }
+                    if (TextUtils.equals(info.locale.getLanguage(), language) && TextUtils.equals(info.locale.getCountry(), country)) {
+                        selectIndex = index;
+                        break;
+                    }
                 }
             }
         }
@@ -257,6 +327,10 @@ public class ChangeLanguage {
         return true;
     }
 
+    /**
+     * 展示切换语言对话框
+     * @param activity
+     */
     public static void showLanguageDialog(Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         String arrays[] = new String[sUserLocaleList.size()];
@@ -274,9 +348,10 @@ public class ChangeLanguage {
                 try {
                     dialog.dismiss();
                     LocaleInfo localeInfo = sUserLocaleList.get(which);
-                    changeLocale(activity, localeInfo);
                     if (localeInfo != null) {
-                        setSelectLocale(activity, localeInfo.locale);
+                        Locale locale = localeInfo.locale;
+                        setSelectLocale(activity, locale);
+                        changeLocale(activity, locale);
                     }
                 } catch (Exception e) {
                 }
