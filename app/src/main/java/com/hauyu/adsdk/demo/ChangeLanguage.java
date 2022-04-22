@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class ChangeLanguage {
+    private static final String PREF_LANGUAGE_SWITCH_LANGUAGE = "pref_language_switch_language";
+    private static final String PREF_LANGUAGE_SWITCH_COUNTRY = "pref_language_switch_country";
     private static class LocaleInfo {
         private Locale locale;
         private String display;
@@ -40,6 +42,7 @@ public class ChangeLanguage {
     private static final List<LocaleInfo> sLocaleList;
     private static final List<Activity> sActivityList = new ArrayList<Activity>();
     private static Class<?> sMainClass;
+    private static List<LocaleInfo> sUserLocaleList;
 
     public static void init(Context context, Class<?> mainClass) {
         sMainClass = mainClass;
@@ -82,7 +85,6 @@ public class ChangeLanguage {
 
     static {
         sLocaleList = new ArrayList<>();
-        sLocaleList.add(new LocaleInfo(Locale.getDefault(), Locale.getDefault().getDisplayLanguage()));
         sLocaleList.add(new LocaleInfo(Locale.ENGLISH, "English", "英语"));
         sLocaleList.add(new LocaleInfo(new Locale("ar"), "العربية", "阿拉伯语"));
         sLocaleList.add(new LocaleInfo(new Locale("bn", "IN"), "বাংলা", "孟加拉语"));
@@ -108,6 +110,8 @@ public class ChangeLanguage {
         sLocaleList.add(new LocaleInfo(new Locale("fa"), "فارسی", "波斯语"));
         sLocaleList.add(new LocaleInfo(new Locale("pl"), "Polski", "波兰语"));
         sLocaleList.add(new LocaleInfo(new Locale("fil"), "Pilipinas", "菲律宾语"));
+        sUserLocaleList = sLocaleList;
+        sUserLocaleList.add(0, new LocaleInfo(Locale.getDefault(), Locale.getDefault().getDisplayLanguage()));
     }
 
     public static final class CustomContextThemeWrapper extends ContextThemeWrapper {
@@ -127,19 +131,21 @@ public class ChangeLanguage {
     }
 
     private static Locale getSelectLocale(Context context) {
-        int selectIndex = PreferenceManager.getDefaultSharedPreferences(context).getInt("pref_change_language_index", -1);
-        if (selectIndex < 0 || selectIndex >= sLocaleList.size()) {
-            return getCurrentLocale(context);
-        }
-        try {
-            return sLocaleList.get(selectIndex).locale;
-        } catch (Exception e) {
+        String language = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LANGUAGE_SWITCH_LANGUAGE, null);
+        String country = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LANGUAGE_SWITCH_COUNTRY, "");
+        if (!TextUtils.isEmpty(language)) {
+            return new Locale(language, country);
         }
         return getCurrentLocale(context);
     }
 
-    private static void setSelectLocale(Context context, int selectIndex) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("pref_change_language_index", selectIndex).commit();
+    private static void setSelectLocale(Context context, Locale userSetLocale) {
+        if (context != null && userSetLocale != null) {
+            String language = userSetLocale.getLanguage();
+            String country = userSetLocale.getCountry();
+            PreferenceManager.getDefaultSharedPreferences(context).edit().putString(PREF_LANGUAGE_SWITCH_LANGUAGE, language).commit();
+            PreferenceManager.getDefaultSharedPreferences(context).edit().putString(PREF_LANGUAGE_SWITCH_COUNTRY, country).commit();
+        }
     }
 
     private static Locale getCurrentLocale(Context context) {
@@ -158,33 +164,36 @@ public class ChangeLanguage {
         return locale;
     }
 
+    public static boolean isLanguageSwitchStartup(Context context) {
+        return true;
+    }
+
     public static Context createConfigurationContext(Context context) {
         Context configContext = context;
-        try {
-            Locale locale = getSelectLocale(context);
-            Resources resources = context.getResources();
-            Configuration configuration = resources.getConfiguration();
-            configuration.setLocale(locale);
-            if (Build.VERSION.SDK_INT >= 24) {
-                configContext = context.createConfigurationContext(configuration);
-            } else {
-                configContext = new CustomContextThemeWrapper(configuration, context, android.R.style.Theme_DeviceDefault);
+        if (isLanguageSwitchStartup(context)) {
+            try {
+                Locale locale = getSelectLocale(context);
+                Resources resources = context.getResources();
+                Configuration configuration = resources.getConfiguration();
+                configuration.setLocale(locale);
+                if (Build.VERSION.SDK_INT >= 24) {
+                    configContext = context.createConfigurationContext(configuration);
+                } else {
+                    configContext = new CustomContextThemeWrapper(configuration, context, android.R.style.Theme_DeviceDefault);
+                }
+            } catch (Exception e) {
             }
-        } catch (Exception e) {
         }
         return configContext;
     }
 
     public static String getCurrentLanguage(Context context) {
         String currentLanguage = null;
-        try {
-            int selectIndex = PreferenceManager.getDefaultSharedPreferences(context).getInt("pref_change_language_index", -1);
-            if (selectIndex >= 0 && selectIndex < sLocaleList.size()) {
-                return currentLanguage = sLocaleList.get(selectIndex).display;
-            }
-        } catch (Exception e) {
-        }
-        if (TextUtils.isEmpty(currentLanguage)) {
+        int index = findLocaleIndex(context);
+        LocaleInfo localeInfo = sUserLocaleList.get(index);
+        if (localeInfo != null && !TextUtils.isEmpty(localeInfo.display)) {
+            currentLanguage = localeInfo.display;
+        } else {
             currentLanguage = Locale.getDefault().getDisplayLanguage();
         }
         return currentLanguage;
@@ -219,18 +228,16 @@ public class ChangeLanguage {
     }
 
     private static int findLocaleIndex(Context context) {
-        Locale locale = getCurrentLocale(context);
-        if (locale == null) {
-            return 0;
-        }
+        String language = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LANGUAGE_SWITCH_LANGUAGE, null);
+        String country = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LANGUAGE_SWITCH_COUNTRY, "");
         int selectIndex = -1;
-        for (int index = 0; index < sLocaleList.size(); index++) {
-            LocaleInfo info = sLocaleList.get(index);
+        for (int index = 0; index < sUserLocaleList.size(); index++) {
+            LocaleInfo info = sUserLocaleList.get(index);
             if (info != null && info.locale != null) {
-                if (selectIndex == -1 && TextUtils.equals(info.locale.getLanguage(), locale.getLanguage())) {
+                if (selectIndex == -1 && TextUtils.equals(info.locale.getLanguage(), language)) {
                     selectIndex = index;
                 }
-                if (TextUtils.equals(info.locale.getLanguage(), locale.getLanguage()) && TextUtils.equals(info.locale.getCountry(), locale.getCountry())) {
+                if (TextUtils.equals(info.locale.getLanguage(), language) && TextUtils.equals(info.locale.getCountry(), country)) {
                     selectIndex = index;
                     break;
                 }
@@ -248,16 +255,16 @@ public class ChangeLanguage {
 
     public static void showLanguageDialog(Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        String arrays[] = new String[sLocaleList.size()];
-        for (int index = 0; index < sLocaleList.size(); index++) {
-            LocaleInfo localeInfo = sLocaleList.get(index);
+        String arrays[] = new String[sUserLocaleList.size()];
+        for (int index = 0; index < sUserLocaleList.size(); index++) {
+            LocaleInfo localeInfo = sUserLocaleList.get(index);
             arrays[index] = localeInfo.display;
             if (showChineseSimple(activity) && !TextUtils.isEmpty(localeInfo.display2)) {
                 arrays[index] = arrays[index] + " (" + localeInfo.display2 + ")";
             }
         }
         int selectIndex = PreferenceManager.getDefaultSharedPreferences(activity).getInt("pref_change_language_index", -1);
-        if (selectIndex < 0 || selectIndex >= sLocaleList.size()) {
+        if (selectIndex < 0 || selectIndex >= sUserLocaleList.size()) {
             selectIndex = findLocaleIndex(activity);
         }
         builder.setSingleChoiceItems(arrays, selectIndex, new DialogInterface.OnClickListener() {
@@ -265,8 +272,11 @@ public class ChangeLanguage {
             public void onClick(DialogInterface dialog, int which) {
                 try {
                     dialog.dismiss();
-                    changeLocale(activity, sLocaleList.get(which));
-                    setSelectLocale(activity, which);
+                    LocaleInfo localeInfo = sUserLocaleList.get(which);
+                    changeLocale(activity, localeInfo);
+                    if (localeInfo != null) {
+                        setSelectLocale(activity, localeInfo.locale);
+                    }
                 } catch (Exception e) {
                 }
                 restartApp(activity, sMainClass);
