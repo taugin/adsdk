@@ -3,6 +3,7 @@ package com.hauyu.adsdk.demo;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,12 +13,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
+import android.view.View;
 
 import com.rabbit.adsdk.AdSdk;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +41,7 @@ import java.util.Locale;
 public class ChangeLanguage {
     private static final String PREF_LANGUAGE_SWITCH_LANGUAGE = "pref_language_switch_language";
     private static final String PREF_LANGUAGE_SWITCH_COUNTRY = "pref_language_switch_country";
+    private static final String TAG = "ChangeLanguage";
 
     private static class LocaleInfo {
         private Locale locale;
@@ -58,6 +63,11 @@ public class ChangeLanguage {
     private static final List<Activity> sActivityList = new ArrayList<Activity>();
     private static Class<?> sMainClass;
     private static List<LocaleInfo> sUserLocaleList;
+    private static WeakReference<Activity> sTopActivity;
+
+    public static void init(Context context) {
+        init(context, null);
+    }
 
     public static void init(Context context, Class<?> mainClass) {
         sMainClass = mainClass;
@@ -77,10 +87,12 @@ public class ChangeLanguage {
 
             @Override
             public void onActivityResumed(Activity activity) {
+                sTopActivity = new WeakReference<>(activity);
             }
 
             @Override
             public void onActivityPaused(Activity activity) {
+                sTopActivity = null;
             }
 
             @Override
@@ -275,7 +287,7 @@ public class ChangeLanguage {
      * @param activity
      * @param clazz
      */
-    private static void restartApp(Activity activity, Class<?> clazz) {
+    private static void restartApp(Activity activity, final Class<?> clazz) {
         try {
             for (Activity activity1 : sActivityList) {
                 activity1.finish();
@@ -284,7 +296,22 @@ public class ChangeLanguage {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    activity.startActivity(new Intent(activity, clazz));
+                    if (activity != null) {
+                        if (clazz != null) {
+                            try {
+                                activity.startActivity(new Intent(activity, clazz));
+                            } catch (Exception e) {
+                                Log.e(TAG, "error : " + e);
+                            }
+                        } else {
+                            try {
+                                Intent intent = activity.getPackageManager().getLaunchIntentForPackage(activity.getPackageName());
+                                activity.startActivity(intent);
+                            } catch (Exception e) {
+                                Log.e(TAG, "error : " + e);
+                            }
+                        }
+                    }
                     android.os.Process.killProcess(android.os.Process.myPid());
                     System.exit(0);
                 }
@@ -309,6 +336,7 @@ public class ChangeLanguage {
             configuration.locale = locale;
             context.getResources().updateConfiguration(configuration, null);
         } catch (Exception e2) {
+            Log.e(TAG, "error : " + e2);
         }
     }
 
@@ -348,6 +376,29 @@ public class ChangeLanguage {
         return true;
     }
 
+    public static void showLanguageDialogForTestMode(View view) {
+        final long[] mClicks = new long[10];
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //每次点击时，数组向前移动一位
+                System.arraycopy(mClicks, 1, mClicks, 0, mClicks.length - 1);
+                //为数组最后一位赋值
+                mClicks[mClicks.length - 1] = SystemClock.uptimeMillis();
+                //当点击到底10次的时候，拿到点击第一次的时间，获取点击到底10次的时间，看两者之间的差值是否在5s之内，如果是连续点击成功，反之失败。
+                if (mClicks[0] >= (SystemClock.uptimeMillis() - 5000)) {
+                    showLanguageDialog();
+                }
+            }
+        });
+    }
+
+    public static void showLanguageDialog() {
+        if (sTopActivity != null && sTopActivity.get() != null && !sTopActivity.get().isFinishing()) {
+            showLanguageDialog(sTopActivity.get());
+        }
+    }
+
     /**
      * 展示切换语言对话框
      *
@@ -379,11 +430,14 @@ public class ChangeLanguage {
                             changeLocale(activity, locale);
                         }
                     } catch (Exception e) {
+                        Log.e(TAG, "error : " + e);
                     }
                     restartApp(activity, sMainClass);
                 }
             }
         });
-        builder.create().show();
+        Dialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 }

@@ -72,6 +72,7 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main2);
+        ChangeLanguage.showLanguageDialogForTestMode(findViewById(R.id.change_language_layout));
         mLanguageView = findViewById(R.id.change_language);
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         mAdSdkSpinner = findViewById(R.id.ad_sdk_spinner);
@@ -171,7 +172,7 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
         } else if (v.getId() == R.id.splash) {
             loadSplash((TextView) v);
         } else if (v.getId() == R.id.change_language) {
-            ChangeLanguage.showLanguageDialog(this);
+            ChangeLanguage.showLanguageDialog();
         } else {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag, (TextView) v);
