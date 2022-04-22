@@ -16,6 +16,8 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 
+import com.rabbit.adsdk.AdSdk;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -165,24 +167,26 @@ public class ChangeLanguage {
     }
 
     public static boolean isLanguageSwitchStartup(Context context) {
-        return true;
+        String visible = AdSdk.get(context).getString("change_language_visible");
+        return TextUtils.equals(visible, "true") || BuildConfig.DEBUG;
     }
 
     public static Context createConfigurationContext(Context context) {
         Context configContext = context;
-        if (isLanguageSwitchStartup(context)) {
-            try {
-                Locale locale = getSelectLocale(context);
-                Resources resources = context.getResources();
-                Configuration configuration = resources.getConfiguration();
-                configuration.setLocale(locale);
-                if (Build.VERSION.SDK_INT >= 24) {
-                    configContext = context.createConfigurationContext(configuration);
-                } else {
-                    configContext = new CustomContextThemeWrapper(configuration, context, android.R.style.Theme_DeviceDefault);
-                }
-            } catch (Exception e) {
+        try {
+            Locale locale = getSelectLocale(context);
+            Resources resources = context.getResources();
+            Configuration configuration = resources.getConfiguration();
+            configuration.setLocale(locale);
+            if (Build.VERSION.SDK_INT >= 24) {
+                configContext = context.createConfigurationContext(configuration);
+            } else {
+                configContext = new CustomContextThemeWrapper(configuration, context, android.R.style.Theme_DeviceDefault);
             }
+        } catch (Exception e) {
+        }
+        if (configContext == null) {
+            configContext = context;
         }
         return configContext;
     }
@@ -263,10 +267,7 @@ public class ChangeLanguage {
                 arrays[index] = arrays[index] + " (" + localeInfo.display2 + ")";
             }
         }
-        int selectIndex = PreferenceManager.getDefaultSharedPreferences(activity).getInt("pref_change_language_index", -1);
-        if (selectIndex < 0 || selectIndex >= sUserLocaleList.size()) {
-            selectIndex = findLocaleIndex(activity);
-        }
+        int selectIndex = findLocaleIndex(activity);
         builder.setSingleChoiceItems(arrays, selectIndex, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
