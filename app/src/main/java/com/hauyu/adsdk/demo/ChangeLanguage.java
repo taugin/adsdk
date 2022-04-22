@@ -22,6 +22,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * <p>语言切换辅助类，使用方法：</p>
+ * <p>1. 调用ChangeLanguage.init(context, StartupActivity.class);</p>
+ * <p>2. 在Application、Activity、Service重写attachBaseContext方法，根据切换的语言生成新的上下文，如下：</p>
+ * <pre class="prettyprint">
+ * protected void attachBaseContext(Context newBase) {
+ *     super.attachBaseContext(ChangeLanguage.createConfigurationContext(newBase));
+ * }
+ * </pre>
+ * <p>3. 调用ChangeLanguage.getCurrentLanguage(context);获取当前显示语言</p>
+ * <p>4. 调用ChangeLanguage.showLanguageDialog(activity);展示语言列表，选择要切换的语言</p>
+ */
 public class ChangeLanguage {
     private static final String PREF_LANGUAGE_SWITCH_LANGUAGE = "pref_language_switch_language";
     private static final String PREF_LANGUAGE_SWITCH_COUNTRY = "pref_language_switch_country";
