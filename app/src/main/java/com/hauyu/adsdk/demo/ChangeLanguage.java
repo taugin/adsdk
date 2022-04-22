@@ -145,6 +145,7 @@ public class ChangeLanguage {
 
     /**
      * 获取用户在应用内设置的语言
+     *
      * @param context
      * @return
      */
@@ -159,6 +160,7 @@ public class ChangeLanguage {
 
     /**
      * 持久化设置的语言，如果设置的语言为空，则清除设置, 清除设置后会使用系统默认设置
+     *
      * @param context
      * @param userSetLocale
      */
@@ -178,6 +180,7 @@ public class ChangeLanguage {
 
     /**
      * 获取当前系统默认的语言
+     *
      * @param context
      * @return
      */
@@ -199,6 +202,7 @@ public class ChangeLanguage {
 
     /**
      * 判断是否开启应用内语言设置
+     *
      * @param context
      * @return
      */
@@ -209,6 +213,7 @@ public class ChangeLanguage {
 
     /**
      * 创建更改过语言设置的上线文Context
+     *
      * @param context
      * @return
      */
@@ -236,6 +241,7 @@ public class ChangeLanguage {
 
     /**
      * 获取显示语言
+     *
      * @param context
      * @return
      */
@@ -253,6 +259,7 @@ public class ChangeLanguage {
 
     /**
      * 语言设置成功后，重启应用
+     *
      * @param activity
      * @param clazz
      */
@@ -276,6 +283,7 @@ public class ChangeLanguage {
 
     /**
      * 更新语言区域
+     *
      * @param context
      * @param locale
      */
@@ -294,6 +302,7 @@ public class ChangeLanguage {
 
     /**
      * 查找当前设置的语言在列表中的位置
+     *
      * @param context
      * @return
      */
@@ -329,6 +338,7 @@ public class ChangeLanguage {
 
     /**
      * 展示切换语言对话框
+     *
      * @param activity
      */
     public static void showLanguageDialog(Activity activity) {
@@ -341,21 +351,25 @@ public class ChangeLanguage {
                 arrays[index] = arrays[index] + " (" + localeInfo.display2 + ")";
             }
         }
-        int selectIndex = findLocaleIndex(activity);
+        final int selectIndex = findLocaleIndex(activity);
         builder.setSingleChoiceItems(arrays, selectIndex, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                try {
+                if (dialog != null) {
                     dialog.dismiss();
-                    LocaleInfo localeInfo = sUserLocaleList.get(which);
-                    if (localeInfo != null) {
-                        Locale locale = localeInfo.locale;
-                        setSelectLocale(activity, locale);
-                        changeLocale(activity, locale);
-                    }
-                } catch (Exception e) {
                 }
-                restartApp(activity, sMainClass);
+                if (selectIndex != which) {
+                    try {
+                        LocaleInfo localeInfo = sUserLocaleList.get(which);
+                        if (localeInfo != null) {
+                            Locale locale = localeInfo.locale;
+                            setSelectLocale(activity, locale);
+                            changeLocale(activity, locale);
+                        }
+                    } catch (Exception e) {
+                    }
+                    restartApp(activity, sMainClass);
+                }
             }
         });
         builder.create().show();
