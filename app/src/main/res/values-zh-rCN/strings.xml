@@ -1,6 +1,7 @@
 <resources>
     <string name="continue_to_app">继续应用</string>
     <string name="advertisement">广告</string>
+    <string name="loading">加载中...</string>
     <string name="micro">微小</string>
     <string name="tiny">细小</string>
     <string name="little">小</string>

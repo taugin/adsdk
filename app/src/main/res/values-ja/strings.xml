@@ -1,6 +1,7 @@
 <resources>
     <string name="continue_to_app">適用を続行</string>
     <string name="advertisement">広告</string>
+    <string name="loading">読み込み中...</string>
     <string name="micro">マイクロ</string>
     <string name="tiny">小さな</string>
     <string name="little">少し</string>

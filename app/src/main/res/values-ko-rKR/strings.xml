@@ -1,6 +1,7 @@
 <resources>
     <string name="continue_to_app">신청 계속</string>
     <string name="advertisement">광고</string>
+    <string name="loading">로딩 중...</string>
     <string name="micro">마이크로</string>
     <string name="tiny">작은</string>
     <string name="little">작은</string>

@@ -4,6 +4,7 @@
     <string name="app_name_oppo" translatable="false">AdSdkOppo</string>
     <string name="continue_to_app">Continue to app</string>
     <string name="advertisement">Advertisement</string>
+    <string name="loading">Loading...</string>
     <string name="micro">micro</string>
     <string name="tiny">micro</string>
     <string name="little">micro</string>
