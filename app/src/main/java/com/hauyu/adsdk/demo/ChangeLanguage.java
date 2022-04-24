@@ -157,13 +157,18 @@ public class ChangeLanguage {
         CustomContextThemeWrapper(Configuration configuration, Context context, int index) {
             super(context, index);
             mConfiguration = configuration;
+            applyOverrideConfiguration(configuration);
         }
 
         public void applyOverrideConfiguration(Configuration configuration) {
             if (configuration != null) {
                 configuration.setTo(this.mConfiguration);
             }
-            super.applyOverrideConfiguration(configuration);
+            try {
+                super.applyOverrideConfiguration(configuration);
+            } catch (Exception e) {
+                Log.v(TAG, "e : " + e);
+            }
         }
     }
 
