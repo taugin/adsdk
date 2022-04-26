@@ -168,7 +168,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Smaato
-    def smaato_version = "21.8.0"
+    def smaato_version = "21.8.1"
     implementation "com.smaato.android.sdk:module-core:${smaato_version}"
     implementation "com.smaato.android.sdk:module-core-light:${smaato_version}"
     implementation "com.smaato.android.sdk:module-richmedia:${smaato_version}"
@@ -180,7 +180,7 @@ dependencies {
     implementation "com.smaato.android.sdk:smaato-sdk-native:${smaato_version}"
     implementation "com.smaato.android.sdk:smaato-sdk-in-app-bidding:${smaato_version}"
     // applovin Smaato mediation
-    // implementation 'com.applovin.mediation:smaato-adapter:21.8.0.0'
+    // implementation 'com.applovin.mediation:smaato-adapter:21.8.1.2'
     // tradplus Smaato mediation
     implementation 'com.tradplusad:tradplus-smaato:38.7.7.02.1'
 }

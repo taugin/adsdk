@@ -2,12 +2,10 @@ package com.applovin.mediation.adapters;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-
-import androidx.annotation.NonNull;
 
 import com.applovin.impl.sdk.utils.BundleUtils;
 import com.applovin.mediation.MaxAdFormat;
@@ -56,11 +54,12 @@ import com.smaato.sdk.rewarded.RewardedInterstitial;
 import com.smaato.sdk.rewarded.RewardedInterstitialAd;
 import com.smaato.sdk.rewarded.RewardedRequestError;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Christopher Cong on March 11 2019
@@ -110,8 +109,8 @@ public class SmaatoMediationAdapter
                     .setHttpsOnly( parameters.getServerParameters().getBoolean( "https_only" ) )
                     .build();
 
-            // NOTE: `activity` can only be null in 11.1.0+, and `getApplicationContext()` is introduced in 11.1.0
-            Application application = ( activity != null ) ? activity.getApplication() : (Application) getApplicationContext();
+            // NOTE: `getContext()` will always return an application context, so it is safe to cast.
+            Application application = (Application) getContext( activity );
 
             SmaatoSdk.init( application, config, pubId );
 
@@ -135,7 +134,7 @@ public class SmaatoMediationAdapter
     public String getAdapterVersion()
     {
         // return com.applovin.mediation.adapters.smaato.BuildConfig.VERSION_NAME;
-        return "21.8.0.0";
+        return "21.8.1.2";
     }
 
     @Override
@@ -146,10 +145,7 @@ public class SmaatoMediationAdapter
         // Update local params, since not available on init
         updateLocationCollectionEnabled( parameters );
 
-        // NOTE: `activity` can only be null in 11.1.0+, and `getApplicationContext()` is introduced in 11.1.0
-        Application application = ( activity != null ) ? activity.getApplication() : (Application) getApplicationContext();
-
-        String signal = SmaatoSdk.collectSignals( application );
+        String signal = SmaatoSdk.collectSignals( getContext( activity ) );
         callback.onSignalCollected( signal );
     }
 
@@ -184,7 +180,7 @@ public class SmaatoMediationAdapter
         updateAgeRestrictedUser( parameters );
         updateLocationCollectionEnabled( parameters );
 
-        adView = new BannerView( activity );
+        adView = new BannerView( getContext( activity ) );
         adView.setAutoReloadInterval( AutoReloadInterval.DISABLED );
 
         adView.setEventListener( new BannerView.EventListener()
@@ -247,7 +243,7 @@ public class SmaatoMediationAdapter
             }
             else
             {
-                log( adFormat.getLabel() + " ad load failed: ad request null with valid bid response" );
+                log( adFormat.getLabel() + " ad load failed: ad request null with invalid bid response" );
                 listener.onAdViewAdLoadFailed( MaxAdapterError.INVALID_CONFIGURATION );
             }
         }
@@ -291,7 +287,7 @@ public class SmaatoMediationAdapter
             }
             else
             {
-                log( "Interstitial load failed: ad request null with valid bid response" );
+                log( "Interstitial load failed: ad request null with invalid bid response" );
                 listener.onInterstitialAdLoadFailed( MaxAdapterError.INVALID_CONFIGURATION );
             }
         }
@@ -355,7 +351,7 @@ public class SmaatoMediationAdapter
             }
             else
             {
-                log( "Rewarded ad load failed: ad request null with valid bid response" );
+                log( "Rewarded ad load failed: ad request null with invalid bid response" );
                 listener.onRewardedAdLoadFailed( MaxAdapterError.INVALID_CONFIGURATION );
             }
         }
@@ -399,6 +395,16 @@ public class SmaatoMediationAdapter
         String placementId = parameters.getThirdPartyAdPlacementId();
         log( "Loading " + ( AppLovinSdkUtils.isValidString( bidResponse ) ? "bidding " : "" ) + "native ad for placement: " + placementId + "..." );
 
+        if ( activity == null )
+        {
+            log( "Native ad load failed: Activity is null" );
+
+            MaxAdapterError error = new MaxAdapterError( -5601, "Missing Activity" );
+            listener.onNativeAdLoadFailed( error );
+
+            return;
+        }
+
         updateAgeRestrictedUser( parameters );
         updateLocationCollectionEnabled( parameters );
 
@@ -408,7 +414,7 @@ public class SmaatoMediationAdapter
                 .build();
 
         try {
-            RelativeLayout relativeLayout = new RelativeLayout(activity.getApplicationContext());
+            android.widget.RelativeLayout relativeLayout = new android.widget.RelativeLayout(activity.getApplicationContext());
             NativeAd.loadAd( Lifecycling.of( relativeLayout ), nativeAdRequest, new NativeAdListener( parameters, activity, listener ) );
         } catch (Exception e) {
             log ("loadAd error : " + e);
@@ -429,6 +435,7 @@ public class SmaatoMediationAdapter
             Object isLocationCollectionEnabledObj = localExtraParameters.get( "is_location_collection_enabled" );
             if ( isLocationCollectionEnabledObj instanceof Boolean )
             {
+                log( "Setting location collection enabled: " + isLocationCollectionEnabledObj );
                 // NOTE: According to docs - this is disabled by default
                 SmaatoSdk.setGPSEnabled( (boolean) isLocationCollectionEnabledObj );
             }
@@ -458,6 +465,12 @@ public class SmaatoMediationAdapter
             log( "Error getting privacy setting " + privacySetting + " with exception: ", exception );
             return ( AppLovinSdk.VERSION_CODE >= 9140000 ) ? null : false;
         }
+    }
+
+    private Context getContext(Activity activity)
+    {
+        // NOTE: `activity` can only be null in 11.1.0+, and `getApplicationContext()` is introduced in 11.1.0
+        return ( activity != null ) ? activity.getApplication() : getApplicationContext();
     }
 
     private BannerAdSize toAdSize(final MaxAdFormat adFormat)
@@ -542,7 +555,8 @@ public class SmaatoMediationAdapter
         }
         catch ( final InAppBiddingException exception )
         {
-            log( "Error occurred in saving pre-bid: " + exception );
+            log( "Error occurred in saving pre-bid: " + bidResponse, exception );
+
             return null;
         }
 
@@ -558,14 +572,14 @@ public class SmaatoMediationAdapter
     {
         final String                     placementId;
         final Bundle                     serverParameters;
-        final WeakReference<Activity>    activityRef;
+        final Context                    context;
         final MaxNativeAdAdapterListener listener;
 
-        public NativeAdListener(final MaxAdapterResponseParameters parameters, final Activity activity, final MaxNativeAdAdapterListener listener)
+        public NativeAdListener(final MaxAdapterResponseParameters parameters, final Context context, final MaxNativeAdAdapterListener listener)
         {
             placementId = parameters.getThirdPartyAdPlacementId();
             serverParameters = parameters.getServerParameters();
-            activityRef = new WeakReference<>( activity );
+            this.context = context;
 
             this.listener = listener;
         }
@@ -574,15 +588,6 @@ public class SmaatoMediationAdapter
         public void onAdLoaded(@NonNull final NativeAd nativeAd, @NonNull final NativeAdRenderer renderer)
         {
             log( "Native ad loaded: " + placementId );
-
-            final Activity activity = activityRef.get();
-            if ( activity == null )
-            {
-                log( "Native ad failed to load: activity reference is null when ad is loaded" );
-                listener.onNativeAdLoadFailed( MaxAdapterError.INVALID_LOAD_STATE );
-
-                return;
-            }
 
             // Save the renderer in order to register the native ad view later.
             nativeAdRenderer = renderer;
@@ -595,8 +600,7 @@ public class SmaatoMediationAdapter
                     NativeAdAssets assets = renderer.getAssets();
                     String templateName = BundleUtils.getString( "template", "", serverParameters );
                     boolean isTemplateAd = AppLovinSdkUtils.isValidString( templateName );
-
-                    if ( !hasRequiredAssets( isTemplateAd, assets ) )
+                    if ( isTemplateAd && TextUtils.isEmpty( assets.title() ) )
                     {
                         e( "Native ad (" + nativeAd + ") does not have required assets." );
                         listener.onNativeAdLoadFailed( new MaxAdapterError( -5400, "Missing Native Ad Assets" ) );
@@ -616,7 +620,7 @@ public class SmaatoMediationAdapter
                         NativeAdAssets.Image image = assets.images().get( 0 );
                         if ( image.drawable() != null )
                         {
-                            maxNativeAdMediaView = new ImageView( activity );
+                            maxNativeAdMediaView = new ImageView( context );
                             maxNativeAdMediaView.setImageDrawable( image.drawable() );
                         }
                     }
@@ -663,21 +667,6 @@ public class SmaatoMediationAdapter
         public void onTtlExpired(@NonNull final NativeAd nativeAd)
         {
             log( "Native ad expired" );
-        }
-
-        private boolean hasRequiredAssets(final boolean isTemplateAd, final NativeAdAssets assets)
-        {
-            if ( isTemplateAd )
-            {
-                return AppLovinSdkUtils.isValidString( assets.title() );
-            }
-            else
-            {
-                return AppLovinSdkUtils.isValidString( assets.title() )
-                        && AppLovinSdkUtils.isValidString( assets.cta() )
-                        && assets.images().size() > 0
-                        && assets.images().get( 0 ).drawable() != null;
-            }
         }
     }
 
