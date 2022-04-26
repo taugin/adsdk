@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -179,10 +180,15 @@ public class ChangeLanguage {
      * @return
      */
     private static Locale getSelectLocale(Context context) {
-        String language = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LANGUAGE_SWITCH_LANGUAGE, null);
-        String country = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LANGUAGE_SWITCH_COUNTRY, "");
-        if (!TextUtils.isEmpty(language)) {
-            return new Locale(language, country);
+        if (context != null) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("sp_change_language", Context.MODE_PRIVATE);
+            if (sharedPreferences != null) {
+                String language = sharedPreferences.getString(PREF_LANGUAGE_SWITCH_LANGUAGE, null);
+                String country = sharedPreferences.getString(PREF_LANGUAGE_SWITCH_COUNTRY, "");
+                if (!TextUtils.isEmpty(language)) {
+                    return new Locale(language, country);
+                }
+            }
         }
         return null;
     }
@@ -195,14 +201,19 @@ public class ChangeLanguage {
      */
     private static void setSelectLocale(Context context, Locale userSetLocale) {
         if (context != null) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("sp_change_language", Context.MODE_PRIVATE);
             if (userSetLocale != null) {
                 String language = userSetLocale.getLanguage();
                 String country = userSetLocale.getCountry();
-                PreferenceManager.getDefaultSharedPreferences(context).edit().putString(PREF_LANGUAGE_SWITCH_LANGUAGE, language).commit();
-                PreferenceManager.getDefaultSharedPreferences(context).edit().putString(PREF_LANGUAGE_SWITCH_COUNTRY, country).commit();
+                if (sharedPreferences != null) {
+                    sharedPreferences.edit().putString(PREF_LANGUAGE_SWITCH_LANGUAGE, language).commit();
+                    sharedPreferences.edit().putString(PREF_LANGUAGE_SWITCH_COUNTRY, country).commit();
+                }
             } else {
-                PreferenceManager.getDefaultSharedPreferences(context).edit().putString(PREF_LANGUAGE_SWITCH_LANGUAGE, null).commit();
-                PreferenceManager.getDefaultSharedPreferences(context).edit().putString(PREF_LANGUAGE_SWITCH_COUNTRY, null).commit();
+                if (sharedPreferences != null) {
+                    sharedPreferences.edit().putString(PREF_LANGUAGE_SWITCH_LANGUAGE, null).commit();
+                    sharedPreferences.edit().putString(PREF_LANGUAGE_SWITCH_COUNTRY, null).commit();
+                }
             }
         }
     }
@@ -317,8 +328,8 @@ public class ChangeLanguage {
                             }
                         }
                     }
-                    android.os.Process.killProcess(android.os.Process.myPid());
-                    System.exit(0);
+                    // android.os.Process.killProcess(android.os.Process.myPid());
+                    // System.exit(0);
                 }
             }, 500);
         } catch (Exception e2) {
@@ -352,21 +363,28 @@ public class ChangeLanguage {
      * @return
      */
     private static int findLocaleIndex(Context context) {
-        String language = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LANGUAGE_SWITCH_LANGUAGE, null);
-        String country = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_LANGUAGE_SWITCH_COUNTRY, "");
         int selectIndex = -1;
-        if (TextUtils.isEmpty(language)) {
-            selectIndex = 0;
-        } else {
-            for (int index = 0; index < sUserLocaleList.size(); index++) {
-                LocaleInfo info = sUserLocaleList.get(index);
-                if (info != null && info.locale != null) {
-                    if (selectIndex == -1 && TextUtils.equals(info.locale.getLanguage(), language)) {
-                        selectIndex = index;
-                    }
-                    if (TextUtils.equals(info.locale.getLanguage(), language) && TextUtils.equals(info.locale.getCountry(), country)) {
-                        selectIndex = index;
-                        break;
+        if (context != null) {
+            String language = null;
+            String country = "";
+            SharedPreferences sharedPreferences = context.getSharedPreferences("sp_change_language", Context.MODE_PRIVATE);
+            if (sharedPreferences != null) {
+                language = sharedPreferences.getString(PREF_LANGUAGE_SWITCH_LANGUAGE, null);
+                country = sharedPreferences.getString(PREF_LANGUAGE_SWITCH_COUNTRY, "");
+            }
+            if (TextUtils.isEmpty(language)) {
+                selectIndex = 0;
+            } else {
+                for (int index = 0; index < sUserLocaleList.size(); index++) {
+                    LocaleInfo info = sUserLocaleList.get(index);
+                    if (info != null && info.locale != null) {
+                        if (selectIndex == -1 && TextUtils.equals(info.locale.getLanguage(), language)) {
+                            selectIndex = index;
+                        }
+                        if (TextUtils.equals(info.locale.getLanguage(), language) && TextUtils.equals(info.locale.getCountry(), country)) {
+                            selectIndex = index;
+                            break;
+                        }
                     }
                 }
             }
