@@ -305,8 +305,8 @@ public class ChangeLanguage {
      */
     private static void restartApp(Activity activity, final Class<?> clazz) {
         try {
-            for (Activity activity1 : sActivityList) {
-                activity1.finish();
+            for (Activity act : sActivityList) {
+                act.finish();
             }
             Handler handler = new Handler(Looper.getMainLooper());
             handler.postDelayed(new Runnable() {
@@ -331,7 +331,7 @@ public class ChangeLanguage {
                     // android.os.Process.killProcess(android.os.Process.myPid());
                     // System.exit(0);
                 }
-            }, 500);
+            }, 100);
         } catch (Exception e2) {
         }
     }
