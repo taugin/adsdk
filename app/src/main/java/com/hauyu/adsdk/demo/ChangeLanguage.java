@@ -39,6 +39,7 @@ import java.util.Locale;
  * <p>4. 调用ChangeLanguage.showLanguageDialog(activity);展示语言列表，选择要切换的语言</p>
  */
 public class ChangeLanguage {
+    private static final String SP_LANGUAGE_SWITCH_NAME = "sp_change_language";
     private static final String PREF_LANGUAGE_SWITCH_LANGUAGE = "pref_language_switch_language";
     private static final String PREF_LANGUAGE_SWITCH_COUNTRY = "pref_language_switch_country";
     private static final String TAG = "ChangeLanguage";
@@ -180,7 +181,7 @@ public class ChangeLanguage {
      */
     private static Locale getSelectLocale(Context context) {
         if (context != null) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("sp_change_language", Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = context.getSharedPreferences(SP_LANGUAGE_SWITCH_NAME, Context.MODE_PRIVATE);
             if (sharedPreferences != null) {
                 String language = sharedPreferences.getString(PREF_LANGUAGE_SWITCH_LANGUAGE, null);
                 String country = sharedPreferences.getString(PREF_LANGUAGE_SWITCH_COUNTRY, "");
@@ -200,7 +201,7 @@ public class ChangeLanguage {
      */
     private static void setSelectLocale(Context context, Locale userSetLocale) {
         if (context != null) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("sp_change_language", Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = context.getSharedPreferences(SP_LANGUAGE_SWITCH_NAME, Context.MODE_PRIVATE);
             if (userSetLocale != null) {
                 String language = userSetLocale.getLanguage();
                 String country = userSetLocale.getCountry();
@@ -366,7 +367,7 @@ public class ChangeLanguage {
         if (context != null) {
             String language = null;
             String country = "";
-            SharedPreferences sharedPreferences = context.getSharedPreferences("sp_change_language", Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = context.getSharedPreferences(SP_LANGUAGE_SWITCH_NAME, Context.MODE_PRIVATE);
             if (sharedPreferences != null) {
                 language = sharedPreferences.getString(PREF_LANGUAGE_SWITCH_LANGUAGE, null);
                 country = sharedPreferences.getString(PREF_LANGUAGE_SWITCH_COUNTRY, "");
