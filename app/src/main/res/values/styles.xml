@@ -2,7 +2,5 @@
     <style name="SplashTheme" parent="android:Theme.DeviceDefault.Light.NoActionBar">
 <!--        <item name="android:windowFullscreen">true</item>-->
 <!--        <item name="android:statusBarColor">@color/white</item>-->
-        <item name="android:windowDisablePreview">true</item>
-        <item name="android:windowAnimationStyle">@null</item>
     </style>
 </resources>
