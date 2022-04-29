@@ -39,11 +39,11 @@ public interface IAdLoader {
 
     void showRewardedVideo();
 
-    boolean isAdViewLoaded();
+    boolean isAdViewLoaded(String adType);
 
     void loadAdView(AdParams adParams);
 
-    void showAdView(ViewGroup adContainer, AdParams adParams);
+    void showAdView(ViewGroup adContainer, String adType, AdParams adParams);
 
     boolean isSplashLoaded();
 

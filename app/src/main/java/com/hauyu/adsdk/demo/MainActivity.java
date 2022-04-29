@@ -248,7 +248,7 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
         params.width = getResources().getDisplayMetrics().widthPixels;
         dialog.getWindow().setAttributes(params);
-        AdSdk.get(this).showAdView(placeName, adParams, layout);
+        AdSdk.get(this).showAdView(placeName, null, adParams, layout);
         dialog.show();
     }
 

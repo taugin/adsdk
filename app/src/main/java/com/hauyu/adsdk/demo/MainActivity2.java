@@ -306,7 +306,7 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
             nativePlace += "_template";
         }
         if (AdSdk.get(mContext).isAdViewLoaded(nativePlace)) {
-            AdSdk.get(mContext).showAdView(nativePlace, adParams, mNativeBannerLayout);
+            AdSdk.get(mContext).showAdView(nativePlace, null, adParams, mNativeBannerLayout);
             CustomDrawable.setBackground(mNativeBannerLayout);
             return;
         }

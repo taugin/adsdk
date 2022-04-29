@@ -70,7 +70,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public boolean isAdViewLoaded() {
+    public boolean isAdViewLoaded(String adType) {
         return false;
     }
 
@@ -79,7 +79,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void showAdView(ViewGroup adContainer, AdParams adParams) {
+    public void showAdView(ViewGroup adContainer, String adType, AdParams adParams) {
     }
 
     @Override

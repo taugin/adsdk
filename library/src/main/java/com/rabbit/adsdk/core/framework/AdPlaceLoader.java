@@ -979,13 +979,29 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public boolean isAdViewLoaded() {
+    public boolean isAdViewLoaded(String adType) {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null &&
-                        (loader.isBannerLoaded() || loader.isNativeLoaded())) {
-                    Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
-                    return true;
+                if (loader != null) {
+                    if (TextUtils.equals(adType, Constant.TYPE_BANNER)) {
+                        boolean bannerLoaded = loader.isBannerLoaded();
+                        if (bannerLoaded) {
+                            Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        }
+                        return bannerLoaded;
+                    }
+                    if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
+                        boolean nativeLoaded = loader.isNativeLoaded();
+                        if (nativeLoaded) {
+                            Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        }
+                        return nativeLoaded;
+                    }
+                    boolean bannerOrNativeLoaded = loader.isBannerLoaded() || loader.isNativeLoaded();
+                    if (bannerOrNativeLoaded) {
+                        Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                    }
+                    return bannerOrNativeLoaded;
                 }
             }
         }
@@ -1162,17 +1178,17 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      * @param adParams
      */
     @Override
-    public void showAdView(ViewGroup adContainer, AdParams adParams) {
+    public void showAdView(ViewGroup adContainer, String adType, AdParams adParams) {
         if (adParams != null) {
             mAdParams = adParams;
         }
         mAdContainer = new WeakReference<ViewGroup>(adContainer);
 
-        showAdViewInternal(true);
+        showAdViewInternal(adType, true);
         autoSwitchAdView();
     }
 
-    private void showAdViewInternal(boolean needCounting) {
+    private void showAdViewInternal(String adType, boolean needCounting) {
         if (mAdContainer == null) {
             Log.iv(Log.TAG, "error : ad view group is null for place name : " + getPlaceName());
             return;
@@ -1183,9 +1199,21 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         final List<ISdkLoader> list = new ArrayList<>();
         for (ISdkLoader loader : mAdLoaders) {
-            if (loader != null && ((loader.isBannerType() && loader.isBannerLoaded())
-                    || (loader.isNativeType() && loader.isNativeLoaded()))) {
-                list.add(loader);
+            if (loader != null) {
+                if (TextUtils.equals(Constant.TYPE_BANNER, adType)) {
+                    if (loader.isBannerLoaded()) {
+                        list.add(loader);
+                    }
+                } else if (TextUtils.equals(Constant.TYPE_NATIVE, adType)) {
+                    if (loader.isNativeLoaded()) {
+                        list.add(loader);
+                    }
+                } else {
+                    if (((loader.isBannerType() && loader.isBannerLoaded())
+                            || (loader.isNativeType() && loader.isNativeLoaded()))) {
+                        list.add(loader);
+                    }
+                }
             }
         }
         if (list == null || list.isEmpty()) {
@@ -1893,8 +1921,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      * 展示下一个已经加载的AdView
      */
     private void showNextAdView() {
-        if (isAdViewLoaded()) {
-            showAdViewInternal(false);
+        if (isAdViewLoaded(null)) {
+            showAdViewInternal(null, false);
         }
     }
 
@@ -1912,7 +1940,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             Log.iv(Log.TAG, "place no need cache");
             return false;
         }
-        if (isInterstitialLoaded() || isAdViewLoaded() || isComplexAdsLoaded()) {
+        if (isInterstitialLoaded() || isAdViewLoaded(null) || isComplexAdsLoaded()) {
             notifyLoadedWithDelay();
             return true;
         }
@@ -1948,7 +1976,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     @Override
     public void run() {
-        if (!isAdViewLoaded()) {
+        if (!isAdViewLoaded(null)) {
             Log.iv(Log.TAG, "ai not loaded");
             return;
         }

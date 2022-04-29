@@ -351,9 +351,13 @@ public class AdSdk {
     }
 
     public boolean isAdViewLoaded(String placeName) {
+        return isAdViewLoaded(placeName, null);
+    }
+
+    public boolean isAdViewLoaded(String placeName, String adType) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {
-            return loader.isAdViewLoaded();
+            return loader.isAdViewLoaded(adType);
         }
         return false;
     }
@@ -379,13 +383,13 @@ public class AdSdk {
     }
 
     public void showAdView(String placeName, ViewGroup adContainer) {
-        showAdView(placeName, null, adContainer);
+        showAdView(placeName, null, null, adContainer);
     }
 
-    public void showAdView(String placeName, AdParams adParams, ViewGroup adContainer) {
+    public void showAdView(String placeName, String adType, AdParams adParams, ViewGroup adContainer) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {
-            loader.showAdView(adContainer, adParams);
+            loader.showAdView(adContainer, adType, adParams);
         }
     }
 
