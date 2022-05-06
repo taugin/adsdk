@@ -49,9 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rab_native_cover_info"
             android:orientation="horizontal"
-            android:paddingLeft="6dp"
             android:paddingTop="4dp"
-            android:paddingRight="6dp"
             android:paddingBottom="4dp">
 
             <ImageView
@@ -60,7 +58,7 @@
                 android:layout_height="36dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="8dp"
                 android:contentDescription="@null" />
 
             <LinearLayout
@@ -132,7 +130,7 @@
                 style="@style/RabButtonSmallStyle"
                 android:layout_width="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="8dp"
                 android:ellipsize="end"
                 android:maxWidth="120dp"
                 android:maxLines="2"
