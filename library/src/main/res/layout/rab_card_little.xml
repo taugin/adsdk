@@ -49,8 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rab_native_cover_info"
             android:orientation="horizontal"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp">
+            android:layout_marginTop="4dp">
 
             <ImageView
                 android:id="@+id/rab_native_icon"
