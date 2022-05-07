@@ -83,7 +83,7 @@ dependencies {
     // facebook
     implementation 'com.facebook.android:audience-network-sdk:6.10.0'
     // applovin facebook mediation
-    implementation 'com.applovin.mediation:facebook-adapter:6.10.0.1@aar'
+    implementation 'com.applovin.mediation:facebook-adapter:6.10.0.2@aar'
     // tradplus facebook mediation
     implementation 'com.tradplusad:tradplus-facebook:1.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -91,8 +91,8 @@ dependencies {
     // admob
     implementation 'com.google.android.gms:play-services-ads:20.6.0'
     // applovin admob mediation
-    implementation 'com.applovin.mediation:google-adapter:20.6.0.9@aar'
-    implementation 'com.applovin.mediation:google-ad-manager-adapter:20.6.0.8@aar'
+    implementation 'com.applovin.mediation:google-adapter:20.6.0.10@aar'
+    implementation 'com.applovin.mediation:google-ad-manager-adapter:20.6.0.9@aar'
     // tradplus admob mediation
     implementation 'com.tradplusad:tradplus-googlex:2.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbsplash:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
     // applovin mintegral mediation
-    implementation 'com.applovin.mediation:mintegral-adapter:16.1.11.0@aar'
+    implementation 'com.applovin.mediation:mintegral-adapter:16.1.11.1@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ dependencies {
     // Inmobi
     implementation 'com.inmobi.monetization:inmobi-ads:10.0.5'
     // applovin inmobi mediation
-    implementation 'com.applovin.mediation:inmobi-adapter:10.0.5.5@aar'
+    implementation 'com.applovin.mediation:inmobi-adapter:10.0.5.6@aar'
     //tradplus inmobi mediation
     implementation 'com.tradplusad:tradplus-inmobix:23.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -131,7 +131,7 @@ dependencies {
     // unity
     implementation 'com.unity3d.ads:unity-ads:4.1.0'
     // unity applovin mediation
-    implementation 'com.applovin.mediation:unityads-adapter:4.1.0.2@aar'
+    implementation 'com.applovin.mediation:unityads-adapter:4.1.0.3@aar'
     // tradplus unity mediation
     implementation 'com.tradplusad:tradplus-unity:5.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -139,7 +139,7 @@ dependencies {
     // vungle
     implementation 'com.vungle:publisher-sdk-android:6.11.0'
     // applovin vungle mediation
-    implementation 'com.applovin.mediation:vungle-adapter:6.11.0.0'
+    implementation 'com.applovin.mediation:vungle-adapter:6.11.0.1'
     // tradplus vungle mediation
     implementation 'com.tradplusad:tradplus-vunglex:7.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -147,14 +147,14 @@ dependencies {
     // ironsource
     implementation 'com.ironsource.sdk:mediationsdk:7.2.1.1'
     // applovin ironsource mediation
-    implementation 'com.applovin.mediation:ironsource-adapter:7.2.1.1.0'
+    implementation 'com.applovin.mediation:ironsource-adapter:7.2.1.1.1'
     // tradplus ironsource mediation
     implementation 'com.tradplusad:tradplus-ironsource:10.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     implementation 'com.adcolony:sdk:4.7.1'
     // applovin adcolony mediation
-    implementation 'com.applovin.mediation:adcolony-adapter:4.7.1.0'
+    implementation 'com.applovin.mediation:adcolony-adapter:4.7.1.1'
     // tradplus adcolony mediation
     implementation 'com.tradplusad:tradplus-adcolony:4.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,7 @@ dependencies {
     // Tapjoy
     implementation 'com.tapjoy:tapjoy-android-sdk:12.10.0@aar'
     // applovin tapjoy mediation
-    implementation 'com.applovin.mediation:tapjoy-adapter:12.10.0.0@aar'
+    implementation 'com.applovin.mediation:tapjoy-adapter:12.10.0.1@aar'
     // tradplus tapjoy mediation
     implementation 'com.tradplusad:tradplus-tapjoy:6.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -180,7 +180,7 @@ dependencies {
     implementation "com.smaato.android.sdk:smaato-sdk-native:${smaato_version}"
     implementation "com.smaato.android.sdk:smaato-sdk-in-app-bidding:${smaato_version}"
     // applovin Smaato mediation
-    // implementation 'com.applovin.mediation:smaato-adapter:21.8.2.0'
+    // implementation 'com.applovin.mediation:smaato-adapter:21.8.2.1'
     // tradplus Smaato mediation
     implementation 'com.tradplusad:tradplus-smaato:38.7.7.02.1'
 }
