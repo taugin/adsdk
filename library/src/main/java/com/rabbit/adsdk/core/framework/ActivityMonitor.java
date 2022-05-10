@@ -51,6 +51,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     public void init() {
         try {
             if (mContext instanceof Application) {
+                ((Application) mContext).unregisterActivityLifecycleCallbacks(this);
                 ((Application) mContext).registerActivityLifecycleCallbacks(this);
             }
         } catch (Exception | Error e) {
