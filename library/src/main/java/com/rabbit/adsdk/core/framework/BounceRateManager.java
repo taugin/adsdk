@@ -69,7 +69,7 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
     }
 
     @Override
-    public void onForeground(WeakReference<Activity> weakReference) {
+    public void onForeground(boolean fromBackground, WeakReference<Activity> weakReference) {
         String topClass = "";
         if (weakReference != null) {
             Activity activity = weakReference.get();

@@ -136,7 +136,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     }
 
     public interface OnAppMonitorCallback {
-        void onForeground(WeakReference<Activity> activityWeakReference);
+        void onForeground(boolean fromBackground, WeakReference<Activity> activityWeakReference);
 
         void onBackground();
     }
@@ -159,25 +159,30 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     void onResumed() {
         this.mPaused = false;
-        boolean isNonResumed = !mResumed;
+        boolean isFromBackground = !mResumed;
         this.mResumed = true;
         if (mCheckRunnable != null) {
             mHandler.removeCallbacks(mCheckRunnable);
         }
         synchronized (this.mLockObject) {
-            if (!isNonResumed) {
-                // LogHelper.v(LogHelper.TAG, "App is still foreground.");
+            if (mResumed) {
+                // Log.v(Log.TAG, "App is still foreground.");
                 mHandler.removeCallbacks(mForegroundRunnable);
+                mForegroundRunnable.setFromBackground(isFromBackground);
                 mHandler.postDelayed(mForegroundRunnable, getDelayTime());
             }
         }
     }
 
     final class ForegroundRunnable implements Runnable {
+        private boolean mFromBackground = false;
+        public void setFromBackground(boolean fromBackground) {
+            mFromBackground = fromBackground;
+        }
         @Override
         public void run() {
             if (mOnAppMonitorCallback != null) {
-                mOnAppMonitorCallback.onForeground(mTopActivity);
+                mOnAppMonitorCallback.onForeground(mFromBackground, mTopActivity);
             }
         }
     }
@@ -194,7 +199,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
                 if (!(this.mActivityMonitor.mResumed) || !(this.mActivityMonitor.mPaused)) {
                     // LogHelper.v(LogHelper.TAG, "App is still foreground.");
                     if (mOnAppMonitorCallback != null) {
-                        mOnAppMonitorCallback.onForeground(mTopActivity);
+                        mOnAppMonitorCallback.onForeground(false, mTopActivity);
                     }
                 } else {
                     this.mActivityMonitor.mResumed = false;
