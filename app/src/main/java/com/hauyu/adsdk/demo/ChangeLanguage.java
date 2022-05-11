@@ -45,18 +45,32 @@ public class ChangeLanguage {
     private static final String TAG = "ChangeLanguage";
 
     private static class LocaleInfo {
+        /**
+         * 表示国际化语言，当locale为null时，表示跟随系统语言
+         */
         private Locale locale;
+        /**
+         * 显示语言的区域
+         */
         private String display;
+        /**
+         * display的中文翻译版本
+         */
         private String display2;
+        /**
+         * Follow System的翻译语言
+         */
+        private String followSystem;
 
         public LocaleInfo(Locale locale, String display) {
-            this(locale, display, "");
+            this(locale, display, "", null);
         }
 
-        public LocaleInfo(Locale locale, String display, String display2) {
+        public LocaleInfo(Locale locale, String display, String display2, String followSystem) {
             this.locale = locale;
             this.display = display;
             this.display2 = display2;
+            this.followSystem = followSystem;
         }
     }
 
@@ -114,31 +128,31 @@ public class ChangeLanguage {
     static {
         sLocaleList = new ArrayList<>();
         sLocaleList.add(0, new LocaleInfo(null, "Follow System"));
-        sLocaleList.add(new LocaleInfo(Locale.ENGLISH, "English", "英语"));
-        sLocaleList.add(new LocaleInfo(new Locale("ar"), "العربية", "阿拉伯语"));
-        sLocaleList.add(new LocaleInfo(new Locale("bn", "IN"), "বাংলা", "孟加拉语"));
-        sLocaleList.add(new LocaleInfo(Locale.GERMANY, "Deutsch", "德语"));
-        sLocaleList.add(new LocaleInfo(new Locale("es"), "Español", "西班牙语"));
-        sLocaleList.add(new LocaleInfo(Locale.FRENCH, "Français", "法语"));
-        sLocaleList.add(new LocaleInfo(new Locale("hi"), "हिंदी", "印地语"));
-        sLocaleList.add(new LocaleInfo(Locale.ITALY, "Italiano", "意大利语"));
-        sLocaleList.add(new LocaleInfo(new Locale("ja"), "日本語", "日语"));
-        sLocaleList.add(new LocaleInfo(Locale.KOREA, "한국어", "韩语"));
-        sLocaleList.add(new LocaleInfo(new Locale("in", "ID"), "Indonesia", "印尼语"));
-        sLocaleList.add(new LocaleInfo(new Locale("ms"), "Melayu", "马来语"));
-        sLocaleList.add(new LocaleInfo(new Locale("nl"), "Nederlands", "荷兰语"));
-        sLocaleList.add(new LocaleInfo(new Locale("pt"), "Português", "葡萄牙语"));
-        sLocaleList.add(new LocaleInfo(new Locale("ru"), "Русский", "俄语"));
-        sLocaleList.add(new LocaleInfo(new Locale("sv"), "Svenska", "瑞典语"));
-        sLocaleList.add(new LocaleInfo(new Locale("th"), "ภาษาไทย", "泰语"));
-        sLocaleList.add(new LocaleInfo(new Locale("tr"), "Türkçe", "土耳其语"));
-        sLocaleList.add(new LocaleInfo(new Locale("uk"), "Український", "乌克兰语"));
-        sLocaleList.add(new LocaleInfo(new Locale("vi"), "Việt", "越南语"));
-        sLocaleList.add(new LocaleInfo(Locale.SIMPLIFIED_CHINESE, "简体中文", ""));
-        sLocaleList.add(new LocaleInfo(Locale.TAIWAN, "繁體中文", ""));
-        sLocaleList.add(new LocaleInfo(new Locale("fa"), "فارسی", "波斯语"));
-        sLocaleList.add(new LocaleInfo(new Locale("pl"), "Polski", "波兰语"));
-        sLocaleList.add(new LocaleInfo(new Locale("fil"), "Pilipinas", "菲律宾语"));
+        sLocaleList.add(new LocaleInfo(Locale.ENGLISH, "English", "英语", "Follow System"));
+        sLocaleList.add(new LocaleInfo(new Locale("ar"), "العربية", "阿拉伯语", "اتبع النظام"));
+        sLocaleList.add(new LocaleInfo(new Locale("bn", "IN"), "বাংলা", "孟加拉语", "نظام المتابعة"));
+        sLocaleList.add(new LocaleInfo(Locale.GERMANY, "Deutsch", "德语", "System folgen"));
+        sLocaleList.add(new LocaleInfo(new Locale("es"), "Español", "西班牙语", "Seguir sistema"));
+        sLocaleList.add(new LocaleInfo(Locale.FRENCH, "Français", "法语", "Suivre le système"));
+        sLocaleList.add(new LocaleInfo(new Locale("hi"), "हिंदी", "印地语", "सिस्टम का पालन करें"));
+        sLocaleList.add(new LocaleInfo(Locale.ITALY, "Italiano", "意大利语", "Segui il sistema"));
+        sLocaleList.add(new LocaleInfo(new Locale("ja"), "日本語", "日语", "フォローシステム"));
+        sLocaleList.add(new LocaleInfo(Locale.KOREA, "한국어", "韩语", "팔로우 시스템"));
+        sLocaleList.add(new LocaleInfo(new Locale("in", "ID"), "Indonesia", "印尼语", "Ikuti sistem"));
+        sLocaleList.add(new LocaleInfo(new Locale("ms"), "Melayu", "马来语", "Ikut sistem"));
+        sLocaleList.add(new LocaleInfo(new Locale("nl"), "Nederlands", "荷兰语", "Volg systeem"));
+        sLocaleList.add(new LocaleInfo(new Locale("pt"), "Português", "葡萄牙语", "Siga o sistema"));
+        sLocaleList.add(new LocaleInfo(new Locale("ru"), "Русский", "俄语", "Следуйте системе"));
+        sLocaleList.add(new LocaleInfo(new Locale("sv"), "Svenska", "瑞典语", "Följ systemet"));
+        sLocaleList.add(new LocaleInfo(new Locale("th"), "ภาษาไทย", "泰语", "ติดตามระบบ"));
+        sLocaleList.add(new LocaleInfo(new Locale("tr"), "Türkçe", "土耳其语", "takip sistemi"));
+        sLocaleList.add(new LocaleInfo(new Locale("uk"), "Український", "乌克兰语", "Слідкуйте за системою"));
+        sLocaleList.add(new LocaleInfo(new Locale("vi"), "Việt", "越南语", "Theo hệ thống"));
+        sLocaleList.add(new LocaleInfo(Locale.SIMPLIFIED_CHINESE, "简体中文", "", "跟随系统"));
+        sLocaleList.add(new LocaleInfo(Locale.TAIWAN, "繁體中文", "", "跟隨系統"));
+        sLocaleList.add(new LocaleInfo(new Locale("fa"), "فارسی", "波斯语", "سیستم را دنبال کنید"));
+        sLocaleList.add(new LocaleInfo(new Locale("pl"), "Polski", "波兰语", "Śledź system"));
+        sLocaleList.add(new LocaleInfo(new Locale("fil"), "Pilipinas", "菲律宾语", "Sundin ang sistema"));
         sUserLocaleList = sLocaleList;
     }
 
@@ -283,15 +297,24 @@ public class ChangeLanguage {
      * @return
      */
     public static String getCurrentLanguage(Context context, boolean showChinese) {
+        String followSystemString = getFollowSystemTranslation();
         String currentLanguage = null;
         int index = findLocaleIndex(context);
         LocaleInfo localeInfo = sUserLocaleList.get(index);
         if (localeInfo != null && !TextUtils.isEmpty(localeInfo.display)) {
-            currentLanguage = localeInfo.display;
+            if (localeInfo.locale == null) {
+                if (!TextUtils.isEmpty(followSystemString)) {
+                    currentLanguage = followSystemString;
+                } else {
+                    currentLanguage = localeInfo.display;
+                }
+            } else {
+                currentLanguage = localeInfo.display;
+            }
             if (showChinese) {
                 if (!TextUtils.isEmpty(localeInfo.display2)) {
                     currentLanguage = currentLanguage + " (" + localeInfo.display2 + ")";
-                } else {
+                } else if (localeInfo.locale == null) {
                     try {
                         currentLanguage = currentLanguage + " (" + Locale.getDefault().getDisplayLanguage() + ")";
                     } catch (Exception e) {
@@ -366,6 +389,23 @@ public class ChangeLanguage {
         }
     }
 
+    private static int findLocaleIndex(String language, String country) {
+        int selectIndex = -1;
+        for (int index = 0; index < sUserLocaleList.size(); index++) {
+            LocaleInfo info = sUserLocaleList.get(index);
+            if (info != null && info.locale != null) {
+                if (selectIndex == -1 && TextUtils.equals(info.locale.getLanguage(), language)) {
+                    selectIndex = index;
+                }
+                if (TextUtils.equals(info.locale.getLanguage(), language) && TextUtils.equals(info.locale.getCountry(), country)) {
+                    selectIndex = index;
+                    break;
+                }
+            }
+        }
+        return selectIndex;
+    }
+
     /**
      * 查找当前设置的语言在列表中的位置
      *
@@ -385,18 +425,7 @@ public class ChangeLanguage {
             if (TextUtils.isEmpty(language)) {
                 selectIndex = 0;
             } else {
-                for (int index = 0; index < sUserLocaleList.size(); index++) {
-                    LocaleInfo info = sUserLocaleList.get(index);
-                    if (info != null && info.locale != null) {
-                        if (selectIndex == -1 && TextUtils.equals(info.locale.getLanguage(), language)) {
-                            selectIndex = index;
-                        }
-                        if (TextUtils.equals(info.locale.getLanguage(), language) && TextUtils.equals(info.locale.getCountry(), country)) {
-                            selectIndex = index;
-                            break;
-                        }
-                    }
-                }
+                selectIndex = findLocaleIndex(language, country);
             }
         }
         if (selectIndex < 0) {
@@ -432,24 +461,47 @@ public class ChangeLanguage {
         }
     }
 
+    private static String getFollowSystemTranslation() {
+        try {
+            Locale defaultLocale = Locale.getDefault();
+            int selectIndex = findLocaleIndex(defaultLocale.getLanguage(), defaultLocale.getCountry());
+            LocaleInfo localeInfoForFollowSystem = sUserLocaleList.get(selectIndex);
+            return localeInfoForFollowSystem.followSystem;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     /**
      * 展示切换语言对话框
      *
      * @param activity
      */
     public static void showLanguageDialog(Activity activity) {
+        String followSystemString = getFollowSystemTranslation();
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         String arrays[] = new String[sUserLocaleList.size()];
         for (int index = 0; index < sUserLocaleList.size(); index++) {
             LocaleInfo localeInfo = sUserLocaleList.get(index);
-            arrays[index] = localeInfo.display;
-            if (showChineseSimple(activity)) {
-                if (!TextUtils.isEmpty(localeInfo.display2)) {
-                    arrays[index] = arrays[index] + " (" + localeInfo.display2 + ")";
+            if (localeInfo != null) {
+                // locale为空时，跟随系统语言
+                if (localeInfo.locale == null) {
+                    if (!TextUtils.isEmpty(followSystemString)) {
+                        arrays[index] = followSystemString;
+                    } else {
+                        arrays[index] = localeInfo.display;
+                    }
                 } else {
-                    try {
-                        arrays[index] = arrays[index] + " (" + Locale.getDefault().getDisplayLanguage() + ")";
-                    } catch (Exception e) {
+                    arrays[index] = localeInfo.display;
+                }
+                if (showChineseSimple(activity)) {
+                    if (!TextUtils.isEmpty(localeInfo.display2)) {
+                        arrays[index] = arrays[index] + " (" + localeInfo.display2 + ")";
+                    } else if (localeInfo.locale == null) {
+                        try {
+                            arrays[index] = arrays[index] + " (" + Locale.getDefault().getDisplayLanguage() + ")";
+                        } catch (Exception e) {
+                        }
                     }
                 }
             }
