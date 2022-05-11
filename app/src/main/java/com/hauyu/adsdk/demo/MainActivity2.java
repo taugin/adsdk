@@ -414,6 +414,12 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
         }
 
         @Override
+        public void onShow(String placeName, String source, String adType, String pid) {
+            Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+            updateLoadStatus(textView, placeName);
+        }
+
+        @Override
         public void onImp(String placeName, String source, String adType, String network, String pid) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
             updateLoadStatus(textView, placeName);
