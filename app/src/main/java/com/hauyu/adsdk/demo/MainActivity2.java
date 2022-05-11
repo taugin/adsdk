@@ -147,6 +147,8 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
                 return false;
             }
         });
+        String ram = getResources().getString(R.string.format_string, "76G");
+        Log.v(Log.TAG, "ram : " + ram);
     }
 
     @Override

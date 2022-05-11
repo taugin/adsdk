@@ -34,6 +34,7 @@
     <string name="change_language">Language</string>
     <string name="debug">Debug</string>
     <string name="template">Template</string>
+    <string name="format_string" translatable="false">%1$s RAM</string>
 
     <string-array name="ad_sdk" translatable="false">
         <item>TradPlus</item>

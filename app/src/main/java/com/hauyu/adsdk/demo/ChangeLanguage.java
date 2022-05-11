@@ -113,6 +113,7 @@ public class ChangeLanguage {
 
     static {
         sLocaleList = new ArrayList<>();
+        sLocaleList.add(0, new LocaleInfo(null, "Follow System"));
         sLocaleList.add(new LocaleInfo(Locale.ENGLISH, "English", "英语"));
         sLocaleList.add(new LocaleInfo(new Locale("ar"), "العربية", "阿拉伯语"));
         sLocaleList.add(new LocaleInfo(new Locale("bn", "IN"), "বাংলা", "孟加拉语"));
@@ -138,15 +139,7 @@ public class ChangeLanguage {
         sLocaleList.add(new LocaleInfo(new Locale("fa"), "فارسی", "波斯语"));
         sLocaleList.add(new LocaleInfo(new Locale("pl"), "Polski", "波兰语"));
         sLocaleList.add(new LocaleInfo(new Locale("fil"), "Pilipinas", "菲律宾语"));
-        sUserLocaleList = new ArrayList<>();
-        //locale为空时，默认行为是跟随系统的语言
-        sUserLocaleList.add(0, new LocaleInfo(null, "Follow System"));
-        sUserLocaleList.add(new LocaleInfo(Locale.ENGLISH, "English", "英语"));
-        sUserLocaleList.add(new LocaleInfo(new Locale("es"), "Español", "西班牙语"));
-        sUserLocaleList.add(new LocaleInfo(new Locale("in", "ID"), "Indonesia", "印尼语"));
-        sUserLocaleList.add(new LocaleInfo(new Locale("ja"), "日本語", "日语"));
-        sUserLocaleList.add(new LocaleInfo(Locale.KOREA, "한국어", "韩语"));
-        sUserLocaleList.add(new LocaleInfo(new Locale("pt"), "Português", "葡萄牙语"));
+        sUserLocaleList = sLocaleList;
     }
 
     /**
@@ -291,6 +284,13 @@ public class ChangeLanguage {
         LocaleInfo localeInfo = sUserLocaleList.get(index);
         if (localeInfo != null && !TextUtils.isEmpty(localeInfo.display)) {
             currentLanguage = localeInfo.display;
+            if (showChineseSimple(context)) {
+                if (!TextUtils.isEmpty(localeInfo.display2)) {
+                    currentLanguage = currentLanguage + " (" + localeInfo.display2 + ")";
+                } else {
+                    currentLanguage = currentLanguage + " (" + Locale.getDefault().getDisplayLanguage() + ")";
+                }
+            }
         } else {
             currentLanguage = Locale.getDefault().getDisplayLanguage();
         }
@@ -433,8 +433,12 @@ public class ChangeLanguage {
         for (int index = 0; index < sUserLocaleList.size(); index++) {
             LocaleInfo localeInfo = sUserLocaleList.get(index);
             arrays[index] = localeInfo.display;
-            if (showChineseSimple(activity) && !TextUtils.isEmpty(localeInfo.display2)) {
-                arrays[index] = arrays[index] + " (" + localeInfo.display2 + ")";
+            if (showChineseSimple(activity)) {
+                if (!TextUtils.isEmpty(localeInfo.display2)) {
+                    arrays[index] = arrays[index] + " (" + localeInfo.display2 + ")";
+                } else {
+                    arrays[index] = arrays[index] + " (" + Locale.getDefault().getDisplayLanguage() + ")";
+                }
             }
         }
         final int selectIndex = findLocaleIndex(activity);

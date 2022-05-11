@@ -1,0 +1,35 @@
+<resources>
+    <string name="continue_to_app">الاستمرار في التقديم</string>
+    <string name="advertisement">يعلن</string>
+    <string name="loading">تحميل...</string>
+    <string name="micro">صغير</string>
+    <string name="tiny">صغير</string>
+    <string name="little">صغير</string>
+    <string name="small">صغير</string>
+    <string name="medium">متوسط</string>
+    <string name="large">كبير</string>
+    <string name="wrap">تبادل</string>
+    <string name="full">كامل الشاشة</string>
+    <string name="head">رئيس</string>
+    <string name="mix">مزج</string>
+    <string name="foot">ذيل</string>
+    <string name="round">مستدير</string>
+    <string name="interstitial_test">اختبار الخلالي</string>
+    <string name="complex_test">اختبار مركب</string>
+    <string name="reward_test">فيديو تحفيزي</string>
+    <string name="common_test">اختبار عالمي</string>
+    <string name="splash_test">افتح اختبار الشاشة</string>
+    <string name="native_test">اختبار أصلي</string>
+    <string name="banner_test">اختبار البانر</string>
+    <string name="show_complex">عرض مركب</string>
+    <string name="show_spread">عرض الترويج</string>
+    <string name="list_ad">قائمة إعلانية</string>
+    <string name="admob_splash">Admob شاشة مفتوحة</string>
+    <string name="ad_platform">منصة إعلانية</string>
+    <string name="native_layout">التخطيط الأصلي</string>
+    <string name="banner_size">حجم البانر</string>
+    <string name="change_language">لغة</string>
+    <string name="debug">التصحيح</string>
+    <string name="template">نموذج إعلان</string>
+    <string name="format_string" translatable="false">%1$s ذاكرة وصول عشوائي</string>
+</resources>
