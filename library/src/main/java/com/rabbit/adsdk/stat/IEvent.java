@@ -18,7 +18,7 @@ public interface IEvent {
      * @param type
      * @param extra
      */
-    public void reportAdRequest(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
+    public void reportAdRequest(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra);
 
     /**
      * 广告请求成功
@@ -29,7 +29,7 @@ public interface IEvent {
      * @param type
      * @param extra
      */
-    public void reportAdLoaded(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
+    public void reportAdLoaded(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra);
 
     /**
      * 广告展示
@@ -40,7 +40,7 @@ public interface IEvent {
      * @param type
      * @param extra
      */
-    public void reportAdShow(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
+    public void reportAdShow(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra);
 
     /**
      * 广告展示
@@ -51,7 +51,7 @@ public interface IEvent {
      * @param type
      * @param extra
      */
-    public void reportAdImp(Context context, String placeName, String sdk, String network, String type, String pid, String ecpm, Map<String, String> extra);
+    public void reportAdImp(Context context, String placeName, String sdk, String network, String type, String pid, double ecpm, Map<String, Object> extra);
 
     /**
      * 广告点击
@@ -62,7 +62,7 @@ public interface IEvent {
      * @param type
      * @param extra
      */
-    public void reportAdClick(Context context, String placeName, String sdk, String network, String type, String pid, String ecpm, Map<String, String> extra);
+    public void reportAdClick(Context context, String placeName, String sdk, String network, String type, String pid, double ecpm, Map<String, Object> extra);
 
     /**
      * 广告点击
@@ -73,7 +73,7 @@ public interface IEvent {
      * @param type
      * @param extra
      */
-    public void reportAdReward(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
+    public void reportAdReward(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra);
 
     /**
      * 广告加载错误
@@ -84,7 +84,7 @@ public interface IEvent {
      * @param type
      * @param extra
      */
-    public void reportAdError(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
+    public void reportAdError(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra);
 
     /**
      * 广告关闭
@@ -95,7 +95,7 @@ public interface IEvent {
      * @param type
      * @param extra
      */
-    public void reportAdClose(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra);
+    public void reportAdClose(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra);
 
     /**
      * 广告加载成功时间
@@ -120,7 +120,7 @@ public interface IEvent {
      * @param key
      * @param value
      */
-    public void reportKVEvent(Context context, String key, String value, Map<String, String> extra);
+    public void reportKVEvent(Context context, String key, String value, Map<String, Object> extra);
 
     /**
      * 顺序请求

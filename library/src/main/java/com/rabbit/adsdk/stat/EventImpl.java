@@ -126,79 +126,79 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdRequest(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdRequest(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "request", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        reportEvent(context, placeName, "e_ad_request", extra);
-        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, "e_ad_request", placeName, extra);
+        reportEvent(context, eventId, placeName, extra);
     }
 
     @Override
-    public void reportAdLoaded(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdLoaded(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "loaded", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        reportEvent(context, placeName, "e_ad_loaded", extra);
-        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, "e_ad_loaded", placeName, extra);
+        reportEvent(context, eventId, placeName, extra);
     }
 
     @Override
-    public void reportAdShow(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdShow(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "show", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        reportEvent(context, placeName, "e_ad_show", extra);
-        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, "e_ad_show", placeName, extra);
+        reportEvent(context, eventId, placeName, extra);
     }
 
     @Override
-    public void reportAdImp(Context context, String placeName, String sdk, String network, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdImp(Context context, String placeName, String sdk, String network, String type, String pid, double ecpm, Map<String, Object> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "imp", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        reportEvent(context, placeName, "e_ad_imp", extra);
-        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, "e_ad_imp", placeName, extra);
+        reportEvent(context, eventId, placeName, extra);
     }
 
     @Override
-    public void reportAdClick(Context context, String placeName, String sdk, String network, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdClick(Context context, String placeName, String sdk, String network, String type, String pid, double ecpm, Map<String, Object> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "click", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        reportEvent(context, placeName, "e_ad_click", extra);
-        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, "e_ad_click", placeName, extra);
+        reportEvent(context, eventId, placeName, extra);
     }
 
     @Override
-    public void reportAdReward(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdReward(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "receive", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        reportEvent(context, placeName, "e_ad_reward", extra);
-        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, "e_ad_reward", placeName, extra);
+        reportEvent(context, eventId, placeName, extra);
     }
 
     @Override
-    public void reportAdError(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdError(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra) {
         if (!isReportError(context)) {
             return;
         }
@@ -209,20 +209,20 @@ public class EventImpl implements IEvent {
         extra = addExtraForError(context, extra);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        reportEvent(context, placeName, "e_ad_error", extra);
-        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, "e_ad_error", placeName, extra);
+        reportEvent(context, eventId, placeName, extra);
     }
 
     @Override
-    public void reportAdClose(Context context, String placeName, String sdk, String type, String pid, String ecpm, Map<String, String> extra) {
+    public void reportAdClose(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "close", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-        reportEvent(context, placeName, "e_ad_close", extra);
-        reportEvent(context, placeName, eventId, extra);
+        reportEvent(context, "e_ad_close", placeName, extra);
+        reportEvent(context, eventId, placeName, extra);
     }
 
     @Override
@@ -235,22 +235,15 @@ public class EventImpl implements IEvent {
         if (!checkArgument(context, eventId, sdk, type)) {
             return;
         }
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", placeName);
         map.put("sdk", sdk);
         map.put("type", type);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
         if (isReportUmeng(context)) {
-            Map<String, Object> umengMap = null;
-            if (map != null && !map.isEmpty()) {
-                umengMap = new HashMap<String, Object>();
-                for (Map.Entry<String, String> entry : map.entrySet()) {
-                    umengMap.put(entry.getKey(), entry.getValue());
-                }
-            }
-            InternalStat.sendUmengEventValue(context, eventId, umengMap, value);
+            InternalStat.sendUmengEventValue(context, eventId, map, value);
         }
-        reportEvent(context, null, eventId, map);
+        reportEvent(context, eventId, null, map);
     }
 
     @Override
@@ -263,33 +256,26 @@ public class EventImpl implements IEvent {
         }
         String eventId = "load_ad_failure_time";
         eventId = generateEventIdAlias(context, eventId);
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", placeName);
         map.put("sdk", sdk);
         map.put("type", type);
         map.put("error", error);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
         if (isReportUmeng(context)) {
-            Map<String, Object> umengMap = null;
-            if (map != null && !map.isEmpty()) {
-                umengMap = new HashMap<String, Object>();
-                for (Map.Entry<String, String> entry : map.entrySet()) {
-                    umengMap.put(entry.getKey(), entry.getValue());
-                }
-            }
-            InternalStat.sendUmengEventValue(context, eventId, umengMap, value);
+            InternalStat.sendUmengEventValue(context, eventId, map, value);
         }
-        reportEvent(context, null, eventId, map);
+        reportEvent(context, eventId, null, map);
     }
 
     @Override
-    public void reportKVEvent(Context context, String key, String value, Map<String, String> extra) {
+    public void reportKVEvent(Context context, String key, String value, Map<String, Object> extra) {
         if (context == null) {
             return;
         }
         String eventId = generateEventIdAlias(context, key);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + value + " , extra : " + extra);
-        reportEvent(context, value, eventId, extra);
+        reportEvent(context, eventId, value, extra);
     }
 
     @Override
@@ -363,7 +349,7 @@ public class EventImpl implements IEvent {
         return result;
     }
 
-    private Map<String, String> addExtraForError(Context context, Map<String, String> extra) {
+    private Map<String, Object> addExtraForError(Context context, Map<String, Object> extra) {
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -387,7 +373,7 @@ public class EventImpl implements IEvent {
                 builder.append("]");
             }
             if (extra == null) {
-                extra = new HashMap<String, String>();
+                extra = new HashMap<String, Object>();
             }
             extra.put("network", builder.toString());
         } catch (Exception e) {
@@ -396,14 +382,8 @@ public class EventImpl implements IEvent {
         return extra;
     }
 
-    private void reportEvent(Context context, String value, String eventId, Map<String, String> extra) {
-        Map<String, Object> maps = null;
-        if (extra != null && !extra.isEmpty()) {
-            maps = new HashMap<String, Object>();
-            for (Map.Entry<String, String> entry : extra.entrySet()) {
-                maps.put(entry.getKey(), entry.getValue());
-            }
-        }
+    private void reportEvent(Context context, String eventId, String value, Map<String, Object> extra) {
+        Map<String, Object> maps = extra;
         if (isReportAppsflyer(context)) {
             InternalStat.sendAppsflyer(context, eventId, value, maps);
         }
@@ -418,9 +398,9 @@ public class EventImpl implements IEvent {
         }
     }
 
-    private Map<String, String> addExtra(Map<String, String> extra, String name, String sdk, String type, String pid, String ecpm) {
+    private Map<String, Object> addExtra(Map<String, Object> extra, String name, String sdk, String type, String pid, double ecpm) {
         if (extra == null) {
-            extra = new HashMap<String, String>();
+            extra = new HashMap<String, Object>();
         }
         extra.put("name", name);
         extra.put("sdk", sdk);
