@@ -158,13 +158,14 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     }
 
     void onResumed() {
-        this.mResumed = true;
         this.mPaused = false;
+        boolean isNonResumed = !mResumed;
+        this.mResumed = true;
         if (mCheckRunnable != null) {
             mHandler.removeCallbacks(mCheckRunnable);
         }
         synchronized (this.mLockObject) {
-            if (mResumed) {
+            if (!isNonResumed) {
                 // LogHelper.v(LogHelper.TAG, "App is still foreground.");
                 mHandler.removeCallbacks(mForegroundRunnable);
                 mHandler.postDelayed(mForegroundRunnable, getDelayTime());
