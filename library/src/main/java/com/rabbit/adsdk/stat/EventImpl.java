@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.framework.BounceRateManager;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
@@ -47,6 +48,7 @@ public class EventImpl implements IEvent {
     public void init(Context context) {
         mContext = context;
         recordActiveTime();
+        BounceRateManager.get(context).init();
     }
 
     private void recordActiveTime() {
@@ -183,6 +185,7 @@ public class EventImpl implements IEvent {
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_click", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
+        BounceRateManager.get(context).onAdClick(extra);
     }
 
     @Override
@@ -382,7 +385,7 @@ public class EventImpl implements IEvent {
         return extra;
     }
 
-    private void reportEvent(Context context, String eventId, String value, Map<String, Object> extra) {
+    public void reportEvent(Context context, String eventId, String value, Map<String, Object> extra) {
         Map<String, Object> maps = extra;
         if (isReportAppsflyer(context)) {
             InternalStat.sendAppsflyer(context, eventId, value, maps);
