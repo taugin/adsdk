@@ -272,27 +272,37 @@ public class ChangeLanguage {
         return configContext;
     }
 
+    public static String getCurrentLanguage(Context context) {
+        return getCurrentLanguage(context, false);
+    }
+
     /**
      * 获取显示语言
      *
      * @param context
      * @return
      */
-    public static String getCurrentLanguage(Context context) {
+    public static String getCurrentLanguage(Context context, boolean showChinese) {
         String currentLanguage = null;
         int index = findLocaleIndex(context);
         LocaleInfo localeInfo = sUserLocaleList.get(index);
         if (localeInfo != null && !TextUtils.isEmpty(localeInfo.display)) {
             currentLanguage = localeInfo.display;
-            if (showChineseSimple(context)) {
+            if (showChinese) {
                 if (!TextUtils.isEmpty(localeInfo.display2)) {
                     currentLanguage = currentLanguage + " (" + localeInfo.display2 + ")";
                 } else {
-                    currentLanguage = currentLanguage + " (" + Locale.getDefault().getDisplayLanguage() + ")";
+                    try {
+                        currentLanguage = currentLanguage + " (" + Locale.getDefault().getDisplayLanguage() + ")";
+                    } catch (Exception e) {
+                    }
                 }
             }
         } else {
-            currentLanguage = Locale.getDefault().getDisplayLanguage();
+            try {
+                currentLanguage = Locale.getDefault().getDisplayLanguage();
+            } catch (Exception e) {
+            }
         }
         return currentLanguage;
     }
@@ -437,7 +447,10 @@ public class ChangeLanguage {
                 if (!TextUtils.isEmpty(localeInfo.display2)) {
                     arrays[index] = arrays[index] + " (" + localeInfo.display2 + ")";
                 } else {
-                    arrays[index] = arrays[index] + " (" + Locale.getDefault().getDisplayLanguage() + ")";
+                    try {
+                        arrays[index] = arrays[index] + " (" + Locale.getDefault().getDisplayLanguage() + ")";
+                    } catch (Exception e) {
+                    }
                 }
             }
         }

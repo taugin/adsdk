@@ -124,7 +124,7 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
         mAdSdkSpinner.setOnItemSelectedListener(this);
         mAdLayoutSpinner.setOnItemSelectedListener(this);
         mAdBannerSizeSpinner.setOnItemSelectedListener(this);
-        mLanguageView.setText(ChangeLanguage.getCurrentLanguage(this));
+        mLanguageView.setText(ChangeLanguage.getCurrentLanguage(this, true));
         int position = 0;
         String tag = null;
 
