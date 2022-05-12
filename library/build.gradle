@@ -81,9 +81,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // facebook
-    implementation 'com.facebook.android:audience-network-sdk:6.10.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.11.0'
     // applovin facebook mediation
-    implementation 'com.applovin.mediation:facebook-adapter:6.10.0.2@aar'
+    implementation 'com.applovin.mediation:facebook-adapter:6.11.0.0@aar'
     // tradplus facebook mediation
     implementation 'com.tradplusad:tradplus-facebook:1.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -129,9 +129,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // unity
-    implementation 'com.unity3d.ads:unity-ads:4.1.0'
+    implementation 'com.unity3d.ads:unity-ads:4.2.1'
     // unity applovin mediation
-    implementation 'com.applovin.mediation:unityads-adapter:4.1.0.3@aar'
+    implementation 'com.applovin.mediation:unityads-adapter:4.2.1.0@aar'
     // tradplus unity mediation
     implementation 'com.tradplusad:tradplus-unity:5.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
