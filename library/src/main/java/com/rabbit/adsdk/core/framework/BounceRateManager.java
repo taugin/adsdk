@@ -57,16 +57,23 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
             mExtra = extra;
             Log.iv(Log.TAG, "App ad was clicked.");
             mAdClick = true;
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mAdClick = false;
-                    mAdClickTime = 0;
-                    mExtra = null;
-                }
-            }, getInvalidDuration() + 1000);
+            mHandler.removeCallbacks(mResetRunnable);
+            mHandler.postDelayed(mResetRunnable, getResetTime());
         }
     }
+
+    private long getResetTime() {
+        return getInvalidDuration() + 1000;
+    }
+
+    private Runnable mResetRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mAdClick = false;
+            mAdClickTime = 0;
+            mExtra = null;
+        }
+    };
 
     @Override
     public void onForeground(boolean fromBackground, WeakReference<Activity> weakReference) {
