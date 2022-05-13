@@ -297,9 +297,9 @@ public class ChangeLanguage {
      * @return
      */
     public static String getCurrentLanguage(Context context, boolean showChinese) {
-        String followSystemString = getFollowSystemTranslation();
-        String currentLanguage = null;
         int index = findLocaleIndex(context);
+        String followSystemString = getFollowSystemTranslation(index);
+        String currentLanguage = null;
         LocaleInfo localeInfo = sUserLocaleList.get(index);
         if (localeInfo != null && !TextUtils.isEmpty(localeInfo.display)) {
             if (localeInfo.locale == null) {
@@ -316,7 +316,7 @@ public class ChangeLanguage {
                     currentLanguage = currentLanguage + " (" + localeInfo.display2 + ")";
                 } else if (localeInfo.locale == null) {
                     try {
-                        currentLanguage = currentLanguage + " (" + Locale.getDefault().getDisplayLanguage() + ")";
+                        currentLanguage = currentLanguage + " (跟随系统)";
                     } catch (Exception e) {
                     }
                 }
@@ -389,7 +389,7 @@ public class ChangeLanguage {
         }
     }
 
-    private static int findLocaleIndex(String language, String country) {
+    private static int findLocaleIndexByLanguageAndCountry(String language, String country) {
         int selectIndex = -1;
         for (int index = 0; index < sUserLocaleList.size(); index++) {
             LocaleInfo info = sUserLocaleList.get(index);
@@ -425,7 +425,7 @@ public class ChangeLanguage {
             if (TextUtils.isEmpty(language)) {
                 selectIndex = 0;
             } else {
-                selectIndex = findLocaleIndex(language, country);
+                selectIndex = findLocaleIndexByLanguageAndCountry(language, country);
             }
         }
         if (selectIndex < 0) {
@@ -461,10 +461,12 @@ public class ChangeLanguage {
         }
     }
 
-    private static String getFollowSystemTranslation() {
+    /**
+     * 获取当前系统语言的在UserLocaleList里面的索引
+     * @return
+     */
+    private static String getFollowSystemTranslation(int selectIndex) {
         try {
-            Locale defaultLocale = Locale.getDefault();
-            int selectIndex = findLocaleIndex(defaultLocale.getLanguage(), defaultLocale.getCountry());
             LocaleInfo localeInfoForFollowSystem = sUserLocaleList.get(selectIndex);
             return localeInfoForFollowSystem.followSystem;
         } catch (Exception e) {
@@ -478,7 +480,8 @@ public class ChangeLanguage {
      * @param activity
      */
     public static void showLanguageDialog(Activity activity) {
-        String followSystemString = getFollowSystemTranslation();
+        final int selectIndex = findLocaleIndex(activity);
+        String followSystemString = getFollowSystemTranslation(selectIndex);
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         String arrays[] = new String[sUserLocaleList.size()];
         for (int index = 0; index < sUserLocaleList.size(); index++) {
@@ -499,14 +502,13 @@ public class ChangeLanguage {
                         arrays[index] = arrays[index] + " (" + localeInfo.display2 + ")";
                     } else if (localeInfo.locale == null) {
                         try {
-                            arrays[index] = arrays[index] + " (" + Locale.getDefault().getDisplayLanguage() + ")";
+                            arrays[index] = arrays[index] + " (跟随系统)";
                         } catch (Exception e) {
                         }
                     }
                 }
             }
         }
-        final int selectIndex = findLocaleIndex(activity);
         builder.setSingleChoiceItems(arrays, selectIndex, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
