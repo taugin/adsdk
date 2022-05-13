@@ -34,6 +34,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         String sdkArray[] = getResources().getStringArray(R.array.ad_sdk);
         String sdk = sdkArray[new Random().nextInt(sdkArray.length)];
+        sdk = "spread";
         mNativeSplashPlace = String.format(Locale.getDefault(), "native_%s", sdk.toLowerCase());
         setContentView(R.layout.act_splash);
         adContainer = findViewById(R.id.ad_container);

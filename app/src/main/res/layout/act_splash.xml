@@ -35,7 +35,9 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="8dp"
                 android:layout_toLeftOf="@+id/right_arrow"
+                android:layout_toStartOf="@+id/right_arrow"
                 android:layout_toRightOf="@+id/app_icon"
+                android:layout_toEndOf="@+id/app_icon"
                 android:text="@string/continue_to_app"
                 android:textColor="@android:color/darker_gray" />
 
@@ -46,7 +48,9 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginBottom="8dp"
                 android:layout_toLeftOf="@+id/right_arrow"
+                android:layout_toStartOf="@+id/right_arrow"
                 android:layout_toRightOf="@+id/app_icon"
+                android:layout_toEndOf="@+id/app_icon"
                 android:ellipsize="end"
                 android:gravity="start|center_vertical"
                 android:maxLines="1"
