@@ -19,8 +19,6 @@ import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 
-import com.rabbit.adsdk.AdSdk;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -248,17 +246,6 @@ public class ChangeLanguage {
     }
 
     /**
-     * 判断是否开启应用内语言设置
-     *
-     * @param context
-     * @return
-     */
-    public static boolean isLanguageSwitchStartup(Context context) {
-        String visible = AdSdk.get(context).getString("change_language_visible");
-        return TextUtils.equals(visible, "true") || BuildConfig.DEBUG;
-    }
-
-    /**
      * 创建更改过语言设置的上线文Context
      *
      * @param context
@@ -434,10 +421,6 @@ public class ChangeLanguage {
         return selectIndex;
     }
 
-    private static boolean showChineseSimple(Context context) {
-        return true;
-    }
-
     public static void showLanguageDialogForTestMode(View view) {
         final long[] mClicks = new long[10];
         view.setOnClickListener(new View.OnClickListener() {
@@ -449,15 +432,19 @@ public class ChangeLanguage {
                 mClicks[mClicks.length - 1] = SystemClock.uptimeMillis();
                 //当点击到底10次的时候，拿到点击第一次的时间，获取点击到底10次的时间，看两者之间的差值是否在5s之内，如果是连续点击成功，反之失败。
                 if (mClicks[0] >= (SystemClock.uptimeMillis() - 5000)) {
-                    showLanguageDialog();
+                    showLanguageDialog(true);
                 }
             }
         });
     }
 
     public static void showLanguageDialog() {
+        showLanguageDialog(false);
+    }
+
+    public static void showLanguageDialog(boolean showChinese) {
         if (sTopActivity != null && sTopActivity.get() != null && !sTopActivity.get().isFinishing()) {
-            showLanguageDialog(sTopActivity.get());
+            showLanguageDialog(sTopActivity.get(), showChinese);
         }
     }
 
@@ -479,7 +466,7 @@ public class ChangeLanguage {
      *
      * @param activity
      */
-    public static void showLanguageDialog(Activity activity) {
+    public static void showLanguageDialog(Activity activity, boolean showChinese) {
         final int selectIndex = findLocaleIndex(activity);
         String followSystemString = getFollowSystemTranslation(selectIndex);
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -497,7 +484,7 @@ public class ChangeLanguage {
                 } else {
                     arrays[index] = localeInfo.display;
                 }
-                if (showChineseSimple(activity)) {
+                if (showChinese) {
                     if (!TextUtils.isEmpty(localeInfo.display2)) {
                         arrays[index] = arrays[index] + " (" + localeInfo.display2 + ")";
                     } else if (localeInfo.locale == null) {
