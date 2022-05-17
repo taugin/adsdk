@@ -83,7 +83,7 @@ dependencies {
     // facebook
     implementation 'com.facebook.android:audience-network-sdk:6.11.0'
     // applovin facebook mediation
-    implementation 'com.applovin.mediation:facebook-adapter:6.11.0.0@aar'
+    implementation 'com.applovin.mediation:facebook-adapter:6.11.0.1@aar'
     // tradplus facebook mediation
     implementation 'com.tradplusad:tradplus-facebook:1.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -91,8 +91,8 @@ dependencies {
     // admob
     implementation 'com.google.android.gms:play-services-ads:20.6.0'
     // applovin admob mediation
-    implementation 'com.applovin.mediation:google-adapter:20.6.0.10@aar'
-    implementation 'com.applovin.mediation:google-ad-manager-adapter:20.6.0.9@aar'
+    implementation 'com.applovin.mediation:google-adapter:20.6.0.11@aar'
+    implementation 'com.applovin.mediation:google-ad-manager-adapter:20.6.0.10@aar'
     // tradplus admob mediation
     implementation 'com.tradplusad:tradplus-googlex:2.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////

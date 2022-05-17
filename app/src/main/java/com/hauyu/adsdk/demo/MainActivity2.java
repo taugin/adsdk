@@ -1,10 +1,12 @@
 package com.hauyu.adsdk.demo;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +68,7 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
     private Spinner mAdBannerSizeSpinner;
     private ViewGroup mSplashContainer;
     private TextView mLanguageView;
+    private TextView mDebugView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,7 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
         mLanguageView = findViewById(R.id.change_language);
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         mAdSdkSpinner = findViewById(R.id.ad_sdk_spinner);
+        mDebugView = findViewById(R.id.mediation_debugger);
         CharSequence[] entries = getResources().getStringArray(R.array.ad_sdk);
         if (entries != null) {
             final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
@@ -149,6 +153,24 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
         });
         String ram = getResources().getString(R.string.format_string, "76G");
         Log.v(Log.TAG, "ram : " + ram);
+        String debug = mDebugView.getText().toString();
+        String installPackage = getPackageManager().getInstallerPackageName(getPackageName());
+        Log.v(Log.TAG, "installPackage : " + installPackage);
+        String installApp = "";
+        if (!TextUtils.isEmpty(installPackage)) {
+            try {
+                installApp = getPackageManager().getApplicationInfo(installPackage, 0).loadLabel(getPackageManager()).toString();
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e, e);
+            }
+            if (!TextUtils.isEmpty(installApp)) {
+                installApp = "\n安装来源：" + installApp;
+            }
+            if (TextUtils.isEmpty(installApp)) {
+                installApp = "";
+            }
+        }
+        mDebugView.setText(debug + installApp);
     }
 
     @Override
