@@ -83,7 +83,7 @@ dependencies {
     // facebook
     implementation 'com.facebook.android:audience-network-sdk:6.11.0'
     // applovin facebook mediation
-    implementation 'com.applovin.mediation:facebook-adapter:6.11.0.1@aar'
+    implementation 'com.applovin.mediation:facebook-adapter:6.11.0.2@aar'
     // tradplus facebook mediation
     implementation 'com.tradplusad:tradplus-facebook:1.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -121,9 +121,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Inmobi
-    implementation 'com.inmobi.monetization:inmobi-ads:10.0.5'
+    implementation 'com.inmobi.monetization:inmobi-ads:10.0.6'
     // applovin inmobi mediation
-    implementation 'com.applovin.mediation:inmobi-adapter:10.0.5.6@aar'
+    implementation 'com.applovin.mediation:inmobi-adapter:10.0.6.0@aar'
     //tradplus inmobi mediation
     implementation 'com.tradplusad:tradplus-inmobix:23.7.7.02.1'
 //////////////////////////////////////////////////////////////////////////////////////////
