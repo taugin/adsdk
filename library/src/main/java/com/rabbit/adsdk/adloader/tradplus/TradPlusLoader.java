@@ -118,7 +118,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     reportAdLoaded();
                     notifySdkLoaderLoaded(false);
                 }
-                reportTradPlusImpressionData(tpAdInfo);
             }
 
             @Override
@@ -135,6 +134,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network));
                 reportAdImp(network);
                 notifyAdImp(network);
+                reportTradPlusImpressionData(tpAdInfo);
             }
 
             @Override
