@@ -191,7 +191,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 ((ViewGroup) viewParent).removeView(mTPBanner);
             }
             viewGroup.addView(mTPBanner);
-            mTPBanner.showAd();
+            // mTPBanner.showAd();
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
