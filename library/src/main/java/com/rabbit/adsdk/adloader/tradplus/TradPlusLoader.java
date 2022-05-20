@@ -130,7 +130,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad banner impression"));
+                String network = getNetwork(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network));
+                reportAdImp(network);
+                notifyAdImp(network);
             }
 
             @Override
@@ -192,8 +195,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             mTPBanner = null;
-            reportAdImp();
-            notifyAdImp();
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPBaner not ready");

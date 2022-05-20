@@ -412,7 +412,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdDisplayed(MaxAd ad) {
-                Log.iv(Log.TAG, formatLog("ad displayed"));
+                String network = getNetwork(ad);
+                Log.iv(Log.TAG, formatLog("ad displayed network : " + network));
+                reportAdImp(network);
+                notifyAdImp(network);
             }
 
             @Override
@@ -482,8 +485,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
             lastUseMaxAdView = maxAdView;
             maxAdView = null;
-            reportAdImp();
-            notifyAdImp();
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MaxAdView not ready");

@@ -796,10 +796,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
     }
 
-    protected void reportAdImp() {
-        reportAdImp(null);
-    }
-
     protected void reportAdImp(String network) {
         if (mStat != null) {
             BaseBindNativeView baseBindNativeView = getBaseBindNativeView();

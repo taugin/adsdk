@@ -221,7 +221,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                         network = bannerView.getResponseInfo().getMediationAdapterClassName();
                     } catch (Exception e) {
                     }
-                    reportAdImp();
+                    reportAdImp(Constant.AD_SDK_ADMOB);
                     notifyAdImp();
                     reportAdmobImpressionData(adValue, network);
                 }
@@ -336,7 +336,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdImpression() {
                     Log.iv(Log.TAG, formatLog("ad impression"));
-                    reportAdImp();
+                    reportAdImp(Constant.AD_SDK_ADMOB);
                     notifyAdImp();
                 }
             });
@@ -461,7 +461,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdImpression() {
                     Log.iv(Log.TAG, formatLog("ad impression"));
-                    reportAdImp();
+                    reportAdImp(Constant.AD_SDK_ADMOB);
                     notifyAdImp();
                 }
             });
@@ -594,7 +594,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdImpression() {
                 Log.iv(Log.TAG, formatLog("ad impression"));
-                reportAdImp();
+                reportAdImp(Constant.AD_SDK_ADMOB);
                 notifyAdImp();
             }
 
@@ -760,7 +760,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdShowedFullScreenContent() {
                     Log.iv(Log.TAG, formatLog("ad showed full screen content"));
-                    reportAdImp();
+                    reportAdImp(Constant.AD_SDK_ADMOB);
                     notifyAdImp();
                 }
 
