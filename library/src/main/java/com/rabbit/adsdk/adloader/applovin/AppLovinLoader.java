@@ -395,7 +395,11 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdLoaded(MaxAd ad) {
                 if (!isStateSuccess()) {
                     Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
+                    if (lastUseMaxAdView != null) {
+                        lastUseMaxAdView.setRevenueListener(null);
+                    }
                     maxAdView = loadingMaxAdView;
+                    setRevenueCallback(maxAdView);
                     setLoading(false, STATE_SUCCESS);
                     putCachedAdTime(loadingMaxAdView);
                     setLoadedEcpm(getLoadedEcpm(ad));
@@ -455,19 +459,23 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
         });
 
-        loadingMaxAdView.setRevenueListener(new MaxAdRevenueListener() {
-            @Override
-            public void onAdRevenuePaid(MaxAd ad) {
-                Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                reportMaxAdImpData(ad, getAdPlaceName());
-            }
-        });
-
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
         loadingMaxAdView.setPlacement(getSceneId());
         loadingMaxAdView.loadAd();
+    }
+
+    private void setRevenueCallback(MaxAdView maxAdView) {
+        if (maxAdView != null) {
+            maxAdView.setRevenueListener(new MaxAdRevenueListener() {
+                @Override
+                public void onAdRevenuePaid(MaxAd ad) {
+                    Log.iv(Log.TAG, formatLog("ad revenue paid"));
+                    reportMaxAdImpData(ad, getAdPlaceName());
+                }
+            });
+        }
     }
 
     private void showBannerForMax(ViewGroup viewGroup) {
