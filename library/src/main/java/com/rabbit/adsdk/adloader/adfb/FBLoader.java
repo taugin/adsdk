@@ -137,7 +137,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(Ad ad) {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
+                reportAdClick(Constant.AD_SDK_FACEBOOK);
                 notifyAdClick();
             }
 
@@ -271,7 +271,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(Ad ad) {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
+                reportAdClick(Constant.AD_SDK_FACEBOOK);
                 notifyAdClick();
             }
 
@@ -381,7 +381,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(Ad ad) {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
+                reportAdClick(Constant.AD_SDK_FACEBOOK);
                 notifyAdClick();
             }
 
@@ -505,7 +505,7 @@ public class FBLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(Ad ad) {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
+                reportAdClick(Constant.AD_SDK_FACEBOOK);
                 notifyAdClick();
             }
         };

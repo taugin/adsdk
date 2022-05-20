@@ -408,9 +408,7 @@ public class EventImpl implements IEvent {
         extra.put("name", name);
         extra.put("sdk", sdk);
         extra.put("type", type);
-        if (!TextUtils.isEmpty(network)) {
-            extra.put("network", network);
-        }
+        extra.put("network", network);
         extra.put("pid", pid);
         extra.put("ecpm", ecpm);
         extra.put("new_user", getUserFlag());

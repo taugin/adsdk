@@ -164,7 +164,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdOpened() {
                 Log.iv(Log.TAG, formatLog("ad opened"));
-                reportAdClick();
+                reportAdClick(Constant.AD_SDK_ADMOB);
                 notifyAdClick();
             }
 
@@ -329,7 +329,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
-                    reportAdClick();
+                    reportAdClick(Constant.AD_SDK_ADMOB);
                     notifyAdClick();
                 }
 
@@ -454,7 +454,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
-                    reportAdClick();
+                    reportAdClick(Constant.AD_SDK_ADMOB);
                     notifyAdClick();
                 }
 
@@ -582,7 +582,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked() {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
+                reportAdClick(Constant.AD_SDK_ADMOB);
                 notifyAdClick();
             }
 
@@ -753,7 +753,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
-                    reportAdClick();
+                    reportAdClick(Constant.AD_SDK_ADMOB);
                     notifyAdClick();
                 }
 

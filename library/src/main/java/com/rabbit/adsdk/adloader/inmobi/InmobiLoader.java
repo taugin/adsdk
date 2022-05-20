@@ -232,7 +232,7 @@ public class InmobiLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(InMobiNative inMobiNative) {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
+                reportAdClick(Constant.AD_SDK_INMOBI);
                 notifyAdClick();
             }
 

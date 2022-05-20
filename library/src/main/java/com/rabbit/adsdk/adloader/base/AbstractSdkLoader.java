@@ -829,10 +829,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
     }
 
-    protected void reportAdClick() {
-        reportAdClick(null);
-    }
-
     protected void reportAdClick(String network) {
         if (mStat != null) {
             mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), getEcpm(), null);

@@ -289,7 +289,7 @@ public class SpLoader extends AbstractSdkLoader {
                 } catch (Exception e) {
                     Log.v(Log.TAG, "error : " + e);
                 }
-                reportAdClick();
+                reportAdClick(Constant.AD_SDK_SPREAD);
                 notifyAdClick();
             }
         }

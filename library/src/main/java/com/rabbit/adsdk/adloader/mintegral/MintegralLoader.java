@@ -315,7 +315,7 @@ public class MintegralLoader extends AbstractSdkLoader {
             @Override
             public void onAdClick(Campaign campaign) {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
+                reportAdClick(Constant.AD_SDK_MINTEGRAL);
                 notifyAdClick();
             }
 
@@ -416,7 +416,7 @@ public class MintegralLoader extends AbstractSdkLoader {
             @Override
             public void onClick(MBridgeIds mBridgeIds) {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
+                reportAdClick(Constant.AD_SDK_MINTEGRAL);
                 notifyAdClick();
             }
 
