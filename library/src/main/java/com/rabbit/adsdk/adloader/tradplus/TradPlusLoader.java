@@ -106,7 +106,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
         setLoading(true, STATE_REQUEST);
         Activity activity = getActivity();
         TPBanner tpBanner = new TPBanner(activity);
-        tpBanner.closeAutoShow();
         tpBanner.setAdListener(new BannerAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
