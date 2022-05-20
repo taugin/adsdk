@@ -62,6 +62,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected static final int FULLSCREEN_SHOWTIME_EXPIRED = 5 * 60 * 1000;
 
+    protected static final int STATE_NONE = 0;
     protected static final int STATE_REQUEST = 1;
     protected static final int STATE_SUCCESS = 2;
     protected static final int STATE_FAILURE = 3;
@@ -80,6 +81,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private long mLastFullScreenShowTime = 0;
     private AtomicBoolean mLoadTimeout = new AtomicBoolean(false);
     private double mLoadedEcpm;
+    int mLoadState = STATE_NONE;
 
     public AbstractSdkLoader() {
         mHandler = new Handler(Looper.getMainLooper(), this);
@@ -406,11 +408,16 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return null;
     }
 
+    protected boolean isStateSuccess() {
+        return mLoadState == STATE_SUCCESS;
+    }
+
     protected synchronized boolean isLoading() {
         return mLoading;
     }
 
     protected synchronized void setLoading(boolean loading, int state) {
+        mLoadState = state;
         mLoading = loading;
         reportLoadAdTime(state);
         if (mLoading) {

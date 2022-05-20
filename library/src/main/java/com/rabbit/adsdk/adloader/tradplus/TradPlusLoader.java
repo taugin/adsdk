@@ -110,13 +110,15 @@ public class TradPlusLoader extends AbstractSdkLoader {
         tpBanner.setAdListener(new BannerAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
-                mTPBanner = tpBanner;
-                setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(mTPBanner);
-                setLoadedEcpm(getLoadedEcpm(tpAdInfo));
-                reportAdLoaded();
-                notifySdkLoaderLoaded(false);
+                if (!isStateSuccess()) {
+                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
+                    mTPBanner = tpBanner;
+                    setLoading(false, STATE_SUCCESS);
+                    putCachedAdTime(mTPBanner);
+                    setLoadedEcpm(getLoadedEcpm(tpAdInfo));
+                    reportAdLoaded();
+                    notifySdkLoaderLoaded(false);
+                }
                 reportTradPlusImpressionData(tpAdInfo);
             }
 

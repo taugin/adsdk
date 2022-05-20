@@ -393,13 +393,15 @@ public class AppLovinLoader extends AbstractSdkLoader {
         loadingMaxAdView.setListener(new MaxAdViewAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
-                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
-                maxAdView = loadingMaxAdView;
-                setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(loadingMaxAdView);
-                setLoadedEcpm(getLoadedEcpm(ad));
-                reportAdLoaded();
-                notifySdkLoaderLoaded(false);
+                if (!isStateSuccess()) {
+                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
+                    maxAdView = loadingMaxAdView;
+                    setLoading(false, STATE_SUCCESS);
+                    putCachedAdTime(loadingMaxAdView);
+                    setLoadedEcpm(getLoadedEcpm(ad));
+                    reportAdLoaded();
+                    notifySdkLoaderLoaded(false);
+                }
             }
 
             @Override
