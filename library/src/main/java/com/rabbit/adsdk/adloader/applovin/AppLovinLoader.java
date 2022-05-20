@@ -399,7 +399,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                         lastUseMaxAdView.setRevenueListener(null);
                     }
                     maxAdView = loadingMaxAdView;
-                    setRevenueCallback(maxAdView);
                     setLoading(false, STATE_SUCCESS);
                     putCachedAdTime(loadingMaxAdView);
                     setLoadedEcpm(getLoadedEcpm(ad));
@@ -471,7 +470,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             maxAdView.setRevenueListener(new MaxAdRevenueListener() {
                 @Override
                 public void onAdRevenuePaid(MaxAd ad) {
-                    Log.iv(Log.TAG, formatLog("ad revenue paid"));
+                    Log.iv(Log.TAG, formatLog("ad revenue paid" + getLoadedInfo(ad)));
                     reportMaxAdImpData(ad, getAdPlaceName());
                 }
             });
@@ -493,6 +492,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
+            setRevenueCallback(maxAdView);
             lastUseMaxAdView = maxAdView;
             maxAdView = null;
         } catch (Exception e) {
