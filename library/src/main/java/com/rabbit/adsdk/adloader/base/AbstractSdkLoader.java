@@ -822,12 +822,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 builder.append("}");
                 Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " [" + network + "] assets : " + builder.toString());
             }
-            Map<String, Object> mediaTypeExtra = null;
-            if (!TextUtils.isEmpty(network)) {
-                mediaTypeExtra = new HashMap<String, Object>();
-                mediaTypeExtra.put("network", network);
-            }
-            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), getEcpm(), mediaTypeExtra);
+            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), getEcpm(), null);
             if (nativeAssets != null) {
                 nativeAssets.clear();
             }
