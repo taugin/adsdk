@@ -106,6 +106,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         setLoading(true, STATE_REQUEST);
         Activity activity = getActivity();
         TPBanner tpBanner = new TPBanner(activity);
+        tpBanner.closeAutoShow();
         tpBanner.setAdListener(new BannerAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
@@ -117,6 +118,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     setLoadedEcpm(getLoadedEcpm(tpAdInfo));
                     reportAdLoaded();
                     notifySdkLoaderLoaded(false);
+                } else {
+                    autoRefreshBanner(tpBanner);
                 }
             }
 
@@ -178,6 +181,12 @@ public class TradPlusLoader extends AbstractSdkLoader {
         return loaded;
     }
 
+    private void autoRefreshBanner(TPBanner tpBanner) {
+        if (tpBanner != null) {
+            tpBanner.showAd();
+        }
+    }
+
     @Override
     public void showBanner(ViewGroup viewGroup) {
         printInterfaceLog(ACTION_SHOW);
@@ -191,7 +200,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 ((ViewGroup) viewParent).removeView(mTPBanner);
             }
             viewGroup.addView(mTPBanner);
-            // mTPBanner.showAd();
+            mTPBanner.showAd();
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
