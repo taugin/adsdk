@@ -182,8 +182,11 @@ public class TradPlusLoader extends AbstractSdkLoader {
     }
 
     private void autoRefreshBanner(TPBanner tpBanner) {
-        if (tpBanner != null) {
-            tpBanner.showAd();
+        try {
+            if (tpBanner != null) {
+                tpBanner.showAd();
+            }
+        } catch (Exception e) {
         }
     }
 
