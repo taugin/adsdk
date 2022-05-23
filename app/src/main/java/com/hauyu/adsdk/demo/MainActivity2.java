@@ -268,13 +268,17 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
     }
 
     private void loadBanner(TextView textView) {
-        AdParams.Builder builder = new AdParams.Builder();
-        String banner = (String) mAdBannerSizeSpinner.getSelectedItem();
-        builder.setBannerSize(AdExtra.AD_SDK_COMMON, BANNER_MAP.get(banner));
-        AdParams adParams = builder.build();
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
+        AdParams.Builder builder = new AdParams.Builder();
         String bannerPlace = String.format(Locale.getDefault(), BANNER_PREFIX, sdk.toLowerCase(Locale.getDefault()));
-        AdSdk.get(mContext).loadAdView(bannerPlace, adParams, mSimpleAdsdkListener);
+        if (AdSdk.get(mContext).isAdViewLoaded(bannerPlace)) {
+            AdSdk.get(mContext).showAdView(bannerPlace, mNativeBannerLayout);
+        } else {
+            String banner = (String) mAdBannerSizeSpinner.getSelectedItem();
+            builder.setBannerSize(AdExtra.AD_SDK_COMMON, BANNER_MAP.get(banner));
+            AdParams adParams = builder.build();
+            AdSdk.get(mContext).loadAdView(bannerPlace, adParams, new FullScreenAdListener(textView));
+        }
     }
 
     private AdParams getNativeParams() {
@@ -434,6 +438,11 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
         @Override
         public void onLoaded(String placeName, String source, String adType, String pid) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+            updateLoadStatus(textView, placeName);
+        }
+
+        @Override
+        public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
             updateLoadStatus(textView, placeName);
         }
 
