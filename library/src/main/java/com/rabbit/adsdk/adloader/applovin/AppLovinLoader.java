@@ -398,6 +398,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     if (lastUseMaxAdView != null) {
                         lastUseMaxAdView.setRevenueListener(null);
                     }
+                    if (loadingMaxAdView != null) {
+                        loadingMaxAdView.stopAutoRefresh();
+                    }
                     maxAdView = loadingMaxAdView;
                     setLoading(false, STATE_SUCCESS);
                     putCachedAdTime(loadingMaxAdView);
@@ -494,6 +497,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             }
             setRevenueCallback(maxAdView);
             lastUseMaxAdView = maxAdView;
+            if (loadingMaxAdView != null) {
+                loadingMaxAdView.startAutoRefresh();
+            }
             maxAdView = null;
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));

@@ -198,7 +198,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             mTPBanner = null;
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPBaner not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPBanner not ready");
         }
     }
 
