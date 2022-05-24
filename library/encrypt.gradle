@@ -6,10 +6,15 @@ import java.util.concurrent.TimeUnit
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
-
-/**
- // 阿里云映射的maven仓库地址
- maven { url 'https://maven.aliyun.com/repository/public' }maven { url 'https://maven.aliyun.com/repository/central' }maven { url 'https://maven.aliyun.com/repository/google' }maven { url 'https://maven.aliyun.com/repository/jcenter' }maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }maven { url 'https://maven.aliyun.com/repository/releases' }maven { url 'https://adcolony.bintray.com/AdColony' }maven { url 'https://jitpack.io' }*/
+// 阿里云映射的maven仓库地址
+// maven { url 'https://maven.aliyun.com/repository/public' }
+// maven { url 'https://maven.aliyun.com/repository/central' }
+// maven { url 'https://maven.aliyun.com/repository/google' }
+// maven { url 'https://maven.aliyun.com/repository/jcenter' }
+// maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+// maven { url 'https://maven.aliyun.com/repository/releases' }
+// maven { url 'https://adcolony.bintray.com/AdColony' }
+// maven { url 'https://jitpack.io' }
 
 /**
  * 首字母转大写
