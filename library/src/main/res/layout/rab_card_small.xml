@@ -49,8 +49,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rab_native_cover_info"
-            android:orientation="horizontal"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/rab_native_icon"
@@ -130,9 +131,9 @@
                 android:layout_width="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="8dp"
+                android:ellipsize="end"
                 android:maxWidth="120dp"
                 android:maxLines="2"
-                android:ellipsize="end"
                 android:text="Learn More" />
         </RelativeLayout>
     </RelativeLayout>
