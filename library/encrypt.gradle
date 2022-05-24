@@ -1053,6 +1053,8 @@ def signApkWithApkSigner(flavorName, packageFile, signConfig, isAab) {
     cmdlist.add("pass:" + signConfig.storePassword)
     cmdlist.add("--key-pass")
     cmdlist.add("pass:" + signConfig.keyPassword)
+    cmdlist.add("--v4-signing-enabled")
+    cmdlist.add("false")
     cmdlist.add("--out")
     cmdlist.add(packageFile)
     cmdlist.add(packageFile)
