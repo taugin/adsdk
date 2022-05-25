@@ -13,6 +13,7 @@ import com.rabbit.adsdk.core.framework.ActivityMonitor;
 import com.rabbit.adsdk.core.framework.AdLoadManager;
 import com.rabbit.adsdk.core.framework.AdPlaceLoader;
 import com.rabbit.adsdk.core.framework.LimitAdsManager;
+import com.rabbit.adsdk.core.framework.ReplaceManager;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PlaceConfig;
@@ -101,6 +102,7 @@ public class AdSdk {
         DataManager.get(mContext).init();
         ActivityMonitor.get(mOriginContext).init();
         EventImpl.get().init(mContext);
+        ReplaceManager.get(mContext).init();
     }
 
     /**
@@ -136,8 +138,11 @@ public class AdSdk {
 
     private AdPlaceLoader getAdLoader(String placeName, boolean forLoad) {
         Log.d(Log.TAG_SDK, "getAdLoader forLoad : " + forLoad);
+        // 根据规则判断是否需要替换place name
+        placeName = ReplaceManager.get(mContext).replacePlaceName(placeName, forLoad);
         // 优先处理场景被限制的情况
         String limitPlaceName = LimitAdsManager.get(mContext).addSuffixForPlaceNameIfNeed(placeName);
+
         String refPlaceName = null;
         if (TextUtils.equals(limitPlaceName, placeName)) {
             // 获取引用的PlaceName

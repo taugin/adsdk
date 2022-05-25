@@ -243,4 +243,20 @@ public class DataManager {
         }
         return scenePrefix;
     }
+
+    /**
+     * 验证广告位是否存在
+     * @param placeName
+     * @return
+     */
+    public boolean isPlaceValidate(String placeName) {
+        AdPlace adPlace = null;
+        if (mLocalPlaceConfig != null) {
+            adPlace = mLocalPlaceConfig.get(placeName);
+        }
+        if (adPlace == null) {
+            adPlace = getRemoteAdPlace(placeName);
+        }
+        return adPlace != null;
+    }
 }

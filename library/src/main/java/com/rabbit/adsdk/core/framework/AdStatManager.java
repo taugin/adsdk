@@ -43,6 +43,7 @@ public class AdStatManager {
         recordAllImpCount();
         BlockAdsManager.get(mContext).recordAdImp(sdk, placeName, network);
         LimitAdsManager.get(mContext).recordAdImp(sdk, placeName, network);
+        ReplaceManager.get(mContext).reportAdImp(placeName);
     }
 
     public void recordAdClick(String sdk, String placeName, String network) {
