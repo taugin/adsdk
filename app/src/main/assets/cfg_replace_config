@@ -2,6 +2,6 @@
   "native_applovin": {
     "place_name": "native_admob",
     "startup_delay": 0,
-    "display_times": 5
+    "display_times": 0
   }
 }
