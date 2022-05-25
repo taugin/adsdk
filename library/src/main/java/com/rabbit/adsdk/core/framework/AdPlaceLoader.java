@@ -1888,11 +1888,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             AdStatManager.get(mContext).recordAdClick(source, placeName, network);
             if (TextUtils.equals(adType, Constant.TYPE_NATIVE)
                     || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
-                String sdkName = source;
-                if (!TextUtils.isEmpty(network) && !TextUtils.equals(source, network)) {
-                    sdkName = network;
-                }
-                if (BlockAdsManager.get(mContext).replaceAdWithLoadingView(mAdContainer, placeName, sdkName, adType, network) || (mAdPlace != null && mAdPlace.isClickSwitch())) {
+                if ((mAdPlace != null && mAdPlace.isClickSwitch())) {
                     resume();
                     showNextAdView();
                 }

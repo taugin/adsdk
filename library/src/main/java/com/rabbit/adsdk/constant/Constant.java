@@ -165,11 +165,6 @@ public class Constant {
     public static final int AD_ERROR_INVALID_PID = 15;
 
     /**
-     * 被判断为作弊用户
-     */
-    public static final int AD_ERROR_BLOCK_ADS = 16;
-
-    /**
      * 判断adloader是否被过滤
      */
     public static final int AD_ERROR_DISABLE_LOADING = 17;

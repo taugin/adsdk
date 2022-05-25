@@ -41,7 +41,6 @@ public class AdStatManager {
     public void recordAdImp(String sdk, String placeName, String network) {
         Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         recordAllImpCount();
-        BlockAdsManager.get(mContext).recordAdImp(sdk, placeName, network);
         LimitAdsManager.get(mContext).recordAdImp(sdk, placeName, network);
         ReplaceManager.get(mContext).reportAdImp(placeName);
     }
@@ -49,7 +48,6 @@ public class AdStatManager {
     public void recordAdClick(String sdk, String placeName, String network) {
         Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         recordAllClkCount();
-        BlockAdsManager.get(mContext).recordAdClick(sdk, placeName, network);
         LimitAdsManager.get(mContext).recordAdClick(sdk, placeName, network);
     }
 
