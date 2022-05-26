@@ -188,7 +188,7 @@ public class ReplaceManager {
                 String prefKey = String.format(Locale.getDefault(), PREF_PLACE_NAME_IMP_TIMES, placeName);
                 long totalImpTimes = Utils.getLong(mContext, prefKey, 0);
                 Log.iv(Log.TAG, "total imp times : " + totalImpTimes + " , display times : " + displayTimes);
-                return totalImpTimes > displayTimes;
+                return totalImpTimes >= displayTimes;
             }
         }
         return false;
