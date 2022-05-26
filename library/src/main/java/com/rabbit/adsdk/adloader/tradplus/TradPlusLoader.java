@@ -323,6 +323,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         if (mTPInterstitial != null && mTPInterstitial.isReady()) {
             reportAdShow();
             notifyAdShow();
+            refreshContext();
             Activity activity = getActivity();
             mTPInterstitial.showAd(activity, getSceneId());
             updateLastShowTime();
@@ -457,6 +458,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         if (mTPReward != null) {
             reportAdShow();
             notifyAdShow();
+            refreshContext();
             Activity activity = getActivity();
             mTPReward.showAd(activity, getSceneId());
             updateLastShowTime();
@@ -692,12 +694,9 @@ public class TradPlusLoader extends AbstractSdkLoader {
     public boolean showSplash(ViewGroup viewGroup) {
         Log.iv(Log.TAG, getAdPlaceName() + " - " +getSdkName() + " show splash");
         if (mTPSplash != null && mTPSplash.isReady()) {
-            try {
-                GlobalTradPlus.getInstance().refreshContext(ActivityMonitor.get(mContext).getTopActivity());
-            } catch (Exception e) {
-            }
             reportAdShow();
             notifyAdShow();
+            refreshContext();
             mTPSplash.showAd(viewGroup);
             updateLastShowTime();
             return true;
@@ -763,6 +762,13 @@ public class TradPlusLoader extends AbstractSdkLoader {
         super.onResetSplash();
         clearCachedAdTime(mTPSplash);
         mTPSplash = null;
+    }
+
+    private void refreshContext() {
+        try {
+            GlobalTradPlus.getInstance().refreshContext(ActivityMonitor.get(mContext).getTopActivity());
+        } catch (Exception e) {
+        }
     }
 
     private void reportTradPlusImpressionData(TPAdInfo tpAdInfo) {
