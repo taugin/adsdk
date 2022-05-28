@@ -126,16 +126,18 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad click network : " + network));
-                reportAdClick(network);
+                String networkId = getAdSourceId(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network id : " + networkId));
+                reportAdClick(network, networkId);
                 notifyAdClick(network);
             }
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
+                String networkId = getAdSourceId(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network));
-                reportAdImp(network);
+                reportAdImp(network, networkId);
                 notifyAdImp(network);
                 reportTradPlusImpressionData(tpAdInfo);
             }
@@ -270,8 +272,9 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad impression network : " + network));
-                reportAdImp(network);
+                String networkId = getAdSourceId(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network id : " + networkId));
+                reportAdImp(network, networkId);
                 notifyAdImp(network);
                 reportTradPlusImpressionData(tpAdInfo);
             }
@@ -279,8 +282,9 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad click network : " + network));
-                reportAdClick(network);
+                String networkId = getAdSourceId(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network id : " + networkId));
+                reportAdClick(network, networkId);
                 notifyAdClick(network);
             }
 
@@ -381,16 +385,18 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad click network : " + network));
-                reportAdClick(network);
+                String networkId = getAdSourceId(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network id : " + networkId));
+                reportAdClick(network, networkId);
                 notifyAdClick(network);
             }
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad impression network : " + network));
-                reportAdImp(network);
+                String networkId = getAdSourceId(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network id : " + networkId));
+                reportAdImp(network, networkId);
                 notifyAdImp(network);
                 reportTradPlusImpressionData(tpAdInfo);
             }
@@ -511,16 +517,18 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad click network : " + network));
-                reportAdClick(network);
+                String networkId = getAdSourceId(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network id : " + networkId));
+                reportAdClick(network, networkId);
                 notifyAdClick(network);
             }
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad impression network : " + network));
-                reportAdImp(network);
+                String networkId = getAdSourceId(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network id : " + networkId));
+                reportAdImp(network, networkId);
                 notifyAdImp(network);
                 reportTradPlusImpressionData(tpAdInfo);
             }
@@ -643,16 +651,18 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad click network : " + network));
-                reportAdClick(network);
+                String networkId = getAdSourceId(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network id : " + networkId));
+                reportAdClick(network, networkId);
                 notifyAdClick(network);
             }
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
                 String network = getNetwork(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad impression network : " + network));
-                reportAdImp(network);
+                String networkId = getAdSourceId(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network id : " + networkId));
+                reportAdImp(network, networkId);
                 notifyAdImp(network);
                 reportTradPlusImpressionData(tpAdInfo);
             }
@@ -735,10 +745,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
     }
     ////////////////////////////////////////////////////////////////////////////
 
-    private String getNetwork(TPAdInfo tpAdInfo) {
-        return tpAdInfo != null ? tpAdInfo.adSourceName : null;
-    }
-
     @Override
     protected void onResetInterstitial() {
         super.onResetInterstitial();
@@ -800,6 +806,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
         } catch (Exception e) {
             Log.e(Log.TAG, "report trusplus error : " + e);
         }
+    }
+
+    private String getNetwork(TPAdInfo tpAdInfo) {
+        return tpAdInfo != null ? tpAdInfo.adSourceName : null;
     }
 
     private String getAdSourceId(TPAdInfo tpAdInfo) {

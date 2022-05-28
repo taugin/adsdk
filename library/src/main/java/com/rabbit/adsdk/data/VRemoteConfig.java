@@ -6,8 +6,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -23,6 +21,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Administrator on 2018/2/12.

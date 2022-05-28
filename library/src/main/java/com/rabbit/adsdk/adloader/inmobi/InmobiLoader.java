@@ -225,14 +225,14 @@ public class InmobiLoader extends AbstractSdkLoader {
             @Override
             public void onAdImpressed(InMobiNative inMobiNative) {
                 Log.iv(Log.TAG, formatLog("ad impression"));
-                reportAdImp(null);
-                notifyAdImp(null);
+                reportAdImp();
+                notifyAdImp();
             }
 
             @Override
             public void onAdClicked(InMobiNative inMobiNative) {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick(Constant.AD_SDK_INMOBI);
+                reportAdClick();
                 notifyAdClick();
             }
 

@@ -315,7 +315,7 @@ public class MintegralLoader extends AbstractSdkLoader {
             @Override
             public void onAdClick(Campaign campaign) {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick(Constant.AD_SDK_MINTEGRAL);
+                reportAdClick();
                 notifyAdClick();
             }
 
@@ -326,8 +326,8 @@ public class MintegralLoader extends AbstractSdkLoader {
             @Override
             public void onLoggingImpression(int i) {
                 Log.iv(Log.TAG, formatLog("ad impression"));
-                reportAdImp(null);
-                notifyAdImp(null);
+                reportAdImp();
+                notifyAdImp();
             }
         });
         printInterfaceLog(ACTION_LOAD);
@@ -409,14 +409,14 @@ public class MintegralLoader extends AbstractSdkLoader {
             @Override
             public void onLogImpression(MBridgeIds mBridgeIds) {
                 Log.iv(Log.TAG, formatLog("ad impression"));
-                reportAdImp("template");
-                notifyAdImp("template");
+                reportAdImp();
+                notifyAdImp();
             }
 
             @Override
             public void onClick(MBridgeIds mBridgeIds) {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick(Constant.AD_SDK_MINTEGRAL);
+                reportAdClick();
                 notifyAdClick();
             }
 

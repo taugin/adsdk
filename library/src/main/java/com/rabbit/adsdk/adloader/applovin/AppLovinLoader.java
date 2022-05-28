@@ -421,8 +421,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 String network = getNetwork(ad);
-                Log.iv(Log.TAG, formatLog("ad displayed network : " + network));
-                reportAdImp(network);
+                String networkId = getNetworkId(ad);
+                Log.iv(Log.TAG, formatLog("ad displayed network : " + network + " , network id : " + networkId));
+                reportAdImp(network, networkId);
                 notifyAdImp(network);
             }
 
@@ -439,8 +440,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(MaxAd ad) {
                 String network = getNetwork(ad);
-                Log.iv(Log.TAG, formatLog("ad click network : " + network));
-                reportAdClick(network);
+                String networkId = getNetworkId(ad);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network id : " + networkId));
+                reportAdClick(network, networkId);
                 notifyAdClick(network);
             }
 
@@ -542,8 +544,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 String network = getNetwork(ad);
-                Log.iv(Log.TAG, formatLog("ad displayed network : " + network));
-                reportAdImp(network);
+                String networkId = getNetworkId(ad);
+                Log.iv(Log.TAG, formatLog("ad displayed network : " + network + " , network id : " + networkId));
+                reportAdImp(network, networkId);
                 notifyAdImp(network);
             }
 
@@ -559,8 +562,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(MaxAd ad) {
                 String network = getNetwork(ad);
-                Log.iv(Log.TAG, formatLog("ad click network : " + network));
-                reportAdClick(network);
+                String networkId = getNetworkId(ad);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network id : " + networkId));
+                reportAdClick(network, networkId);
                 notifyAdClick(network);
             }
 
@@ -667,8 +671,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdDisplayed(MaxAd ad) {
                 String network = getNetwork(ad);
-                Log.iv(Log.TAG, formatLog("ad displayed network : " + network));
-                reportAdImp(network);
+                String networkId = getNetworkId(ad);
+                Log.iv(Log.TAG, formatLog("ad displayed network : " + network + " , network id : " + networkId));
+                reportAdImp(network, networkId);
                 notifyAdOpened();
                 notifyAdImp(network);
             }
@@ -685,8 +690,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked(MaxAd ad) {
                 String network = getNetwork(ad);
-                Log.iv(Log.TAG, formatLog("ad click network : " + network));
-                reportAdClick(network);
+                String networkId = getNetworkId(ad);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network id : " + networkId));
+                reportAdClick(network, networkId);
                 notifyAdClick(network);
             }
 
@@ -791,8 +797,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onNativeAdClicked(MaxAd maxAd) {
                 String network = getNetwork(maxAd);
-                Log.iv(Log.TAG, formatLog("ad click network : " + network));
-                reportAdClick(network);
+                String networkId = getNetworkId(maxAd);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network id : " + networkId));
+                reportAdClick(network, networkId);
                 notifyAdClick(network);
             }
         });
@@ -801,7 +808,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
                 String network = getNetwork(ad);
-                reportAdImp(network);
+                String networkId = getNetworkId(ad);
+                reportAdImp(network, networkId);
                 notifyAdImp(network);
                 reportMaxAdImpData(ad, getAdPlaceName());
             }
@@ -1022,6 +1030,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private String getNetwork(MaxAd maxAd) {
         if (maxAd != null) {
             return maxAd.getNetworkName();
+        }
+        return null;
+    }
+
+    private String getNetworkId(MaxAd maxAd) {
+        if (maxAd != null) {
+            return maxAd.getNetworkPlacement();
         }
         return null;
     }

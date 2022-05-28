@@ -13,12 +13,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.annotation.NonNull;
-
 import com.rabbit.adsdk.core.framework.ActivityMonitor;
 import com.rabbit.adsdk.log.Log;
 
 import java.lang.reflect.Field;
+
+import androidx.annotation.NonNull;
 
 /**
  * 监听Banner或native是否可见的类

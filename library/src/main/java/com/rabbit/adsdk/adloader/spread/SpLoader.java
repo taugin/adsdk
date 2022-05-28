@@ -121,7 +121,7 @@ public class SpLoader extends AbstractSdkLoader {
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadCfg);
             mSpread = null;
             notifyAdImp();
-            reportAdImp(Constant.AD_SDK_SPREAD);
+            reportAdImp();
         } else {
             Log.e(Log.TAG, formatShowErrorLog("Spread is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : Spread not ready");
@@ -264,7 +264,7 @@ public class SpLoader extends AbstractSdkLoader {
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadCfg);
             mSpread = null;
             notifyAdImp();
-            reportAdImp(Constant.AD_SDK_SPREAD);
+            reportAdImp();
         }
     }
 
@@ -289,7 +289,7 @@ public class SpLoader extends AbstractSdkLoader {
                 } catch (Exception e) {
                     Log.v(Log.TAG, "error : " + e);
                 }
-                reportAdClick(Constant.AD_SDK_SPREAD);
+                reportAdClick();
                 notifyAdClick();
             }
         }

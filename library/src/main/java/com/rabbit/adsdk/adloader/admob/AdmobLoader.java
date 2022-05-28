@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -45,6 +43,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -164,7 +164,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdOpened() {
                 Log.iv(Log.TAG, formatLog("ad opened"));
-                reportAdClick(Constant.AD_SDK_ADMOB);
+                reportAdClick();
                 notifyAdClick();
             }
 
@@ -221,7 +221,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                         network = bannerView.getResponseInfo().getMediationAdapterClassName();
                     } catch (Exception e) {
                     }
-                    reportAdImp(Constant.AD_SDK_ADMOB);
+                    reportAdImp();
                     notifyAdImp();
                     reportAdmobImpressionData(adValue, network);
                 }
@@ -329,14 +329,14 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
-                    reportAdClick(Constant.AD_SDK_ADMOB);
+                    reportAdClick();
                     notifyAdClick();
                 }
 
                 @Override
                 public void onAdImpression() {
                     Log.iv(Log.TAG, formatLog("ad impression"));
-                    reportAdImp(Constant.AD_SDK_ADMOB);
+                    reportAdImp();
                     notifyAdImp();
                 }
             });
@@ -454,14 +454,14 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
-                    reportAdClick(Constant.AD_SDK_ADMOB);
+                    reportAdClick();
                     notifyAdClick();
                 }
 
                 @Override
                 public void onAdImpression() {
                     Log.iv(Log.TAG, formatLog("ad impression"));
-                    reportAdImp(Constant.AD_SDK_ADMOB);
+                    reportAdImp();
                     notifyAdImp();
                 }
             });
@@ -582,7 +582,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked() {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick(Constant.AD_SDK_ADMOB);
+                reportAdClick();
                 notifyAdClick();
             }
 
@@ -594,7 +594,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdImpression() {
                 Log.iv(Log.TAG, formatLog("ad impression"));
-                reportAdImp(Constant.AD_SDK_ADMOB);
+                reportAdImp();
                 notifyAdImp();
             }
 
@@ -753,14 +753,14 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
-                    reportAdClick(Constant.AD_SDK_ADMOB);
+                    reportAdClick();
                     notifyAdClick();
                 }
 
                 @Override
                 public void onAdShowedFullScreenContent() {
                     Log.iv(Log.TAG, formatLog("ad showed full screen content"));
-                    reportAdImp(Constant.AD_SDK_ADMOB);
+                    reportAdImp();
                     notifyAdImp();
                 }
 

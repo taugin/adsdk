@@ -787,7 +787,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
     }
 
-    protected void reportAdImp(String network) {
+    protected void reportAdImp() {
+        reportAdImp(getSdkName(), getPid());
+    }
+
+    protected void reportAdImp(String network, String networkId) {
         if (mStat != null) {
             BaseBindNativeView baseBindNativeView = getBaseBindNativeView();
             Map<String, String> nativeAssets = null;
@@ -809,16 +813,20 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 builder.append("}");
                 Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " [" + network + "] assets : " + builder.toString());
             }
-            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), getEcpm(), null);
+            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkId, getEcpm(), null);
             if (nativeAssets != null) {
                 nativeAssets.clear();
             }
         }
     }
 
-    protected void reportAdClick(String network) {
+    protected void reportAdClick() {
+        reportAdClick(getSdkName(), getPid());
+    }
+
+    protected void reportAdClick(String network, String networkId) {
         if (mStat != null) {
-            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), getEcpm(), null);
+            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkId, getEcpm(), null);
         }
     }
 

@@ -12,7 +12,6 @@ import com.applovin.impl.sdk.nativeAd.AppLovinOptionsView;
 import com.applovin.mediation.nativeAds.MaxNativeAdView;
 import com.applovin.mediation.nativeAds.MaxNativeAdViewBinder;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
-import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
