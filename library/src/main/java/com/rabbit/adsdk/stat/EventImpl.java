@@ -164,24 +164,24 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdImp(Context context, String placeName, String sdk, String network, String type, String pid, String networkId, double ecpm, Map<String, Object> extra) {
+    public void reportAdImp(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "imp", sdk, type);
-        extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkId);
+        extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_imp", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
     }
 
     @Override
-    public void reportAdClick(Context context, String placeName, String sdk, String network, String type, String pid, String networkId, double ecpm, Map<String, Object> extra) {
+    public void reportAdClick(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "click", sdk, type);
-        extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkId);
+        extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_click", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
@@ -401,7 +401,7 @@ public class EventImpl implements IEvent {
         }
     }
 
-    private Map<String, Object> addExtra(Map<String, Object> extra, String name, String sdk, String type, String pid, double ecpm, String network, String networkId) {
+    private Map<String, Object> addExtra(Map<String, Object> extra, String name, String sdk, String type, String pid, double ecpm, String network, String networkPid) {
         if (extra == null) {
             extra = new HashMap<String, Object>();
         }
@@ -409,7 +409,7 @@ public class EventImpl implements IEvent {
         extra.put("sdk", sdk);
         extra.put("type", type);
         extra.put("network", network);
-        extra.put("network_id", networkId);
+        extra.put("network_pid", networkPid);
         extra.put("pid", pid);
         extra.put("ecpm", ecpm);
         extra.put("new_user", getUserFlag());
