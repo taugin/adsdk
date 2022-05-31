@@ -1048,7 +1048,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void onReportAdImpData(Map<String, Object> adImpData) {
         if (isReportAdImpData()) {
             InternalStat.reportEvent(getContext(), "Ad_Impression_Revenue", adImpData);
-            InternalStat.sendUmengObject(getContext(), "Ad_Impression_Revenue", adImpData);
         }
         OnAdImpressionListener l = AdLoadManager.get(mContext).getOnAdImpressionListener();
         if (l != null) {
