@@ -205,7 +205,7 @@ public class InternalStat {
             map = new HashMap<>();
         }
         map.put("entry_point", eventId);
-        Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + map);
+        Log.iv(Log.TAG_SDK, platform + " event object id : " + eventId + " , value : " + map);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
@@ -407,7 +407,11 @@ public class InternalStat {
 
     public static void reportEvent(Context context, String key, String value, Map<String, Object> map) {
         Log.iv(Log.TAG, "event id : " + key + " , value : " + value + " , extra : " + map);
-        sendUmeng(context, key, value, map);
+        if (isUmengEventObjectEnable()) {
+            sendUmengObject(context, key, map);
+        } else {
+            sendUmeng(context, key, value, map);
+        }
         sendAppsflyer(context, key, value, map, false);
         sendFirebaseAnalytics(context, key, value, map);
         sendFlurry(context, key, value, map);
@@ -586,5 +590,15 @@ public class InternalStat {
             }
             Utils.putLong(context, PREF_AD_REPORT_EVENT_RESET_DATE, nowDate);
         }
+    }
+
+    private static boolean isUmengEventObjectEnable() {
+        try {
+            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
+            Method method = clazz.getDeclaredMethod("onEventObject", Context.class, String.class, Map.class);
+            return method != null;
+        } catch (Exception | Error e) {
+        }
+        return false;
     }
 }
