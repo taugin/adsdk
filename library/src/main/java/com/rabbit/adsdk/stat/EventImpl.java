@@ -244,7 +244,7 @@ public class EventImpl implements IEvent {
         map.put("type", type);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
         if (isReportUmeng(context)) {
-            InternalStat.sendUmengEventValue(context, eventId, map, value);
+            InternalStat.sendUmengValue(context, eventId, map, value);
         }
         reportEvent(context, eventId, null, map);
     }
@@ -266,7 +266,7 @@ public class EventImpl implements IEvent {
         map.put("error", error);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
         if (isReportUmeng(context)) {
-            InternalStat.sendUmengEventValue(context, eventId, map, value);
+            InternalStat.sendUmengValue(context, eventId, map, value);
         }
         reportEvent(context, eventId, null, map);
     }

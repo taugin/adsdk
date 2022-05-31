@@ -185,6 +185,44 @@ public class InternalStat {
     }
 
     /**
+     * 发送友盟计数事件
+     *
+     * @param context
+     * @param eventId
+     * @param extra
+     */
+    public static void sendUmengObject(Context context, String eventId, Map<String, Object> extra) {
+        sendUmengObject(context, eventId, extra, true);
+    }
+
+    public static void sendUmengObject(Context context, String eventId, Map<String, Object> extra, boolean defaultValue) {
+        String platform = "umeng";
+        if (!isReportPlatform(context, eventId, platform, defaultValue)) {
+            return;
+        }
+        Map<String, Object> map = extra;
+        if (map == null) {
+            map = new HashMap<>();
+        }
+        map.put("entry_point", eventId);
+        Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + map);
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
+            Method method = clazz.getDeclaredMethod("onEventObject", Context.class, String.class, Map.class);
+            method.invoke(null, context, eventId, map);
+            reportPlatformEventCount(context, platform);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.iv(Log.TAG_SDK, "error : " + error);
+        }
+    }
+
+    /**
      * 发送友盟计算事件
      *
      * @param context
@@ -192,11 +230,11 @@ public class InternalStat {
      * @param extra
      * @param value
      */
-    public static void sendUmengEventValue(Context context, String eventId, Map<String, Object> extra, int value) {
-        sendUmengEventValue(context, eventId, extra, value, true);
+    public static void sendUmengValue(Context context, String eventId, Map<String, Object> extra, int value) {
+        sendUmengValue(context, eventId, extra, value, true);
     }
 
-    public static void sendUmengEventValue(Context context, String eventId, Map<String, Object> extra, int value, boolean defaultValue) {
+    public static void sendUmengValue(Context context, String eventId, Map<String, Object> extra, int value, boolean defaultValue) {
         String platform = "umeng";
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
