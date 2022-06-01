@@ -184,6 +184,30 @@ public class InternalStat {
         }
     }
 
+    private static void checkUmengDataType(Map<String, Object> map, Map<String, Object> extra) {
+        try {
+            if (extra != null && !extra.isEmpty() && map != null) {
+                for (Map.Entry<String, Object> entry : extra.entrySet()) {
+                    if (entry != null) {
+                        String key = entry.getKey();
+                        Object value = entry.getValue();
+                        if ((value instanceof String)
+                                || (value instanceof Integer)
+                                || (value instanceof Long)
+                                || (value instanceof Short)
+                                || (value instanceof Float)
+                                || (value instanceof Double)
+                                || (value.getClass().isArray())) {
+                            map.put(key, value);
+                        } else {
+                            map.put(key, String.valueOf(value));
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
     /**
      * 发送友盟计数事件
      *
@@ -200,11 +224,9 @@ public class InternalStat {
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
-        Map<String, Object> map = extra;
-        if (map == null) {
-            map = new HashMap<>();
-        }
+        Map<String, Object> map = new HashMap<>();
         map.put("entry_point", eventId);
+        checkUmengDataType(map, extra);
         Log.iv(Log.TAG_SDK, platform + " event object id : " + eventId + " , value : " + map);
         String error = null;
         try {
