@@ -24,7 +24,6 @@ import java.util.Map;
 
 public class App extends Application {
 
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -40,6 +39,7 @@ public class App extends Application {
                         reportTaichiEvent(getApplicationContext(), revenue.floatValue());
                     }
                 }
+                reportUmengEvent(adImpData);
             }
         });
         AdSdk.get(this).init();
@@ -62,6 +62,24 @@ public class App extends Application {
         }
     }
 
+    private void reportUmengEvent(AdImpData adImpData) {
+        if (adImpData == null) {
+            return;
+        }
+        String networkName = adImpData.getNetwork();
+        String platform = adImpData.getPlatform();
+        String unitName = platform + "_" + adImpData.getUnitName();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("ad_platform", platform);
+        params.put("ad_source", networkName);
+        params.put("ad_format", adImpData.getFormat());
+        params.put("ad_unit_name", unitName);
+        params.put("value", adImpData.getValue());
+        params.put("currency", "USD"); // All Applovin revenue is sent in USD
+        InternalStat.sendUmengObject(getApplicationContext(), "ad_impression", params);
+        Log.v(Log.TAG, "params : " + params);
+    }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -69,6 +87,7 @@ public class App extends Application {
     }
 
     private void initUmeng() {
+        UMConfigure.setLogEnabled(true);
         UMConfigure.init(this, "5f44faa1f9d1496ef418b17c", "umeng", UMConfigure.DEVICE_TYPE_PHONE, null);
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
         UMRemoteConfig.getInstance().setConfigSettings(new RemoteConfigSettings.Builder().setAutoUpdateModeEnabled(true).build());
