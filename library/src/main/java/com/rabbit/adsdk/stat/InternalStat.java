@@ -104,10 +104,9 @@ public class InternalStat {
             return;
         }
         Bundle bundle = new Bundle();
+        bundle.putString("event_id", eventId);
         if (!TextUtils.isEmpty(value)) {
             bundle.putString("entry_point", value);
-        } else {
-            bundle.putString("entry_point", eventId);
         }
         mapToBundle(extra, bundle);
         Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + bundle);
@@ -147,10 +146,9 @@ public class InternalStat {
             return;
         }
         HashMap<String, String> map = new HashMap<String, String>();
+        map.put("event_id", eventId);
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
-        } else {
-            map.put("entry_point", eventId);
         }
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, Object> entry : extra.entrySet()) {
@@ -225,7 +223,7 @@ public class InternalStat {
             return;
         }
         Map<String, Object> map = new HashMap<>();
-        map.put("entry_point", eventId);
+        map.put("event_id", eventId);
         checkUmengDataType(map, extra);
         Log.iv(Log.TAG_SDK, platform + " event object id : " + eventId + " , value : " + map);
         String error = null;
@@ -262,6 +260,7 @@ public class InternalStat {
             return;
         }
         HashMap<String, String> map = new HashMap<String, String>();
+        map.put("event_id", eventId);
         if (extra != null && !extra.isEmpty()) {
             for (Map.Entry<String, Object> entry : extra.entrySet()) {
                 if (entry != null) {
@@ -333,6 +332,7 @@ public class InternalStat {
             return;
         }
         Map<String, Object> eventValue = new HashMap<String, Object>();
+        eventValue.put("event_id", eventId);
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
         }
@@ -384,6 +384,7 @@ public class InternalStat {
             return;
         }
         Map<String, Object> eventValue = new HashMap<String, Object>();
+        eventValue.put("event_id", eventId);
         if (!TextUtils.isEmpty(value)) {
             eventValue.put("entry_point", value);
         }
