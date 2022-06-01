@@ -181,8 +181,15 @@ dependencies {
     implementation "com.smaato.android.sdk:smaato-sdk-in-app-bidding:${smaato_version}"
     // applovin Smaato mediation
     // implementation 'com.applovin.mediation:smaato-adapter:21.8.2.1'
-    // tradplus Smaato mediation
+    // applovin Smaato mediation
     implementation 'com.tradplusad:tradplus-smaato:38.7.7.02.1'
+
+    // chartboost
+    implementation 'com.chartboost:chartboost-sdk:8.4.3'
+    // applovin chartboost mediation
+    implementation 'com.applovin.mediation:chartboost-adapter:8.4.3.0@aar'
+    // applovin chartboost mediation
+    implementation 'com.tradplusad:tradplus-chartboostx:15.7.7.02.1'
 }
 
 // 发布aar
