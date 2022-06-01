@@ -206,6 +206,7 @@ public class InternalStat {
         } catch (Exception e) {
         }
     }
+
     /**
      * 发送友盟计数事件
      *
@@ -430,11 +431,7 @@ public class InternalStat {
 
     public static void reportEvent(Context context, String key, String value, Map<String, Object> map) {
         Log.iv(Log.TAG, "event id : " + key + " , value : " + value + " , extra : " + map);
-        if (isUmengEventObjectEnable()) {
-            sendUmengObject(context, key, map);
-        } else {
-            sendUmeng(context, key, value, map);
-        }
+        sendUmeng(context, key, value, map);
         sendAppsflyer(context, key, value, map, false);
         sendFirebaseAnalytics(context, key, value, map);
         sendFlurry(context, key, value, map);

@@ -251,6 +251,7 @@ public class Constant {
         }
     }
 
+    public static final String AD_IMPRESSION_REVENUE = "Ad_Impression_Revenue";
     public static final String AD_VALUE = "value";
     public static final String AD_CURRENCY = "currency";
     public static final String AD_NETWORK = "ad_network";
