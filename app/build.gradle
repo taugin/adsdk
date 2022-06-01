@@ -75,9 +75,9 @@ dependencies {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
         resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
     }
-    implementation 'com.umeng.umsdk:common:9.1.0' // (必选)
-    implementation 'com.umeng.umsdk:asms:1.1.3' // asms包依赖(必选)
-    implementation 'com.umeng.umsdk:crash:0.0.4' // native crash包依赖(必选)
+    implementation  'com.umeng.umsdk:common:9.4.7'// 必选
+    implementation  'com.umeng.umsdk:asms:1.4.1'// 必选
+    implementation 'com.umeng.umsdk:apm:1.5.2' // 错误分析升级为独立SDK，看crash数据请一定集成，可选
 }
 
 configurations.all {

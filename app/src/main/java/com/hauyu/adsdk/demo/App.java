@@ -10,8 +10,6 @@ import com.rabbit.adsdk.listener.OnAdImpressionListener;
 import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.cconfig.RemoteConfigSettings;
-import com.umeng.cconfig.UMRemoteConfig;
 import com.umeng.commonsdk.UMConfigure;
 
 import java.util.HashMap;
@@ -90,8 +88,6 @@ public class App extends Application {
         UMConfigure.setLogEnabled(true);
         UMConfigure.init(this, "5f44faa1f9d1496ef418b17c", "umeng", UMConfigure.DEVICE_TYPE_PHONE, null);
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
-        UMRemoteConfig.getInstance().setConfigSettings(new RemoteConfigSettings.Builder().setAutoUpdateModeEnabled(true).build());
-        UMRemoteConfig.getInstance().init(this);
     }
 
 }
