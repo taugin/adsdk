@@ -33,6 +33,49 @@ public class InternalStat {
     private static final String PREF_AD_REPORT_EVENT_RESET_DATE = "pref_ad_report_event_reset_date";
     private static final String PREF_AD_REPORT_EVENT_PLATFORM_LIST = "pref_ad_report_event_platform_list";
 
+    private static final String SDK_NAME_UMENG = "umeng";
+    private static final String SDK_NAME_FIREBASE = "firebase";
+    private static final String SDK_NAME_APPSFLYER = "appsflyer";
+    private static final String SDK_NAME_FLURRY = "flurry";
+
+    private static final Map<String, Boolean> sSdkIntegrated;
+
+    static {
+        sSdkIntegrated = new HashMap<>();
+        boolean sdkIntegrated;
+        try {
+            Class.forName("com.umeng.analytics.MobclickAgent");
+            sdkIntegrated = true;
+        } catch (Exception | Error e) {
+            sdkIntegrated = false;
+        }
+        sSdkIntegrated.put(SDK_NAME_UMENG, sdkIntegrated);
+
+        try {
+            Class.forName("com.google.firebase.analytics.FirebaseAnalytics");
+            sdkIntegrated = true;
+        } catch (Exception | Error e) {
+            sdkIntegrated = false;
+        }
+        sSdkIntegrated.put(SDK_NAME_FIREBASE, sdkIntegrated);
+
+        try {
+            Class.forName("com.appsflyer.AppsFlyerLib");
+            sdkIntegrated = true;
+        } catch (Exception | Error e) {
+            sdkIntegrated = false;
+        }
+        sSdkIntegrated.put(SDK_NAME_APPSFLYER, sdkIntegrated);
+
+        try {
+            Class.forName("com.flurry.android.FlurryAgent");
+            sdkIntegrated = true;
+        } catch (Exception | Error e) {
+            sdkIntegrated = false;
+        }
+        sSdkIntegrated.put(SDK_NAME_FLURRY, sdkIntegrated);
+    }
+
     /**
      * Map转Bundle
      *
@@ -99,7 +142,7 @@ public class InternalStat {
     }
 
     public static void sendFirebaseAnalytics(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
-        String platform = "firebase";
+        String platform = SDK_NAME_FIREBASE;
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
@@ -141,7 +184,7 @@ public class InternalStat {
     }
 
     public static void sendUmeng(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
-        String platform = "umeng";
+        String platform = SDK_NAME_UMENG;
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
@@ -215,16 +258,23 @@ public class InternalStat {
      * @param extra
      */
     public static void sendUmengObject(Context context, String eventId, Map<String, Object> extra) {
-        sendUmengObject(context, eventId, extra, true);
+        sendUmengObject(context, eventId, null, extra);
     }
 
-    public static void sendUmengObject(Context context, String eventId, Map<String, Object> extra, boolean defaultValue) {
-        String platform = "umeng";
+    public static void sendUmengObject(Context context, String eventId, String value, Map<String, Object> extra) {
+        sendUmengObject(context, eventId, value, extra, true);
+    }
+
+    public static void sendUmengObject(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
+        String platform = SDK_NAME_UMENG;
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
         Map<String, Object> map = new HashMap<>();
         map.put("event_id", eventId);
+        if (!TextUtils.isEmpty(value)) {
+            map.put("entry_point", value);
+        }
         checkUmengDataType(map, extra);
         Log.iv(Log.TAG_SDK, platform + " event object id : " + eventId + " , value : " + map);
         String error = null;
@@ -256,7 +306,7 @@ public class InternalStat {
     }
 
     public static void sendUmengValue(Context context, String eventId, Map<String, Object> extra, int value, boolean defaultValue) {
-        String platform = "umeng";
+        String platform = SDK_NAME_UMENG;
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
@@ -295,7 +345,7 @@ public class InternalStat {
     }
 
     private static void sendUmengError(Context context, Throwable throwable, boolean defaultValue) {
-        String platform = "umeng";
+        String platform = SDK_NAME_UMENG;
         if (!isReportPlatform(context, "umeng_error", platform, defaultValue)) {
             return;
         }
@@ -328,7 +378,7 @@ public class InternalStat {
     }
 
     public static void sendAppsflyer(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
-        String platform = "appsflyer";
+        String platform = SDK_NAME_APPSFLYER;
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
@@ -380,7 +430,7 @@ public class InternalStat {
     }
 
     public static void sendFlurry(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
-        String platform = "flurry";
+        String platform = SDK_NAME_FLURRY;
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
@@ -431,7 +481,11 @@ public class InternalStat {
 
     public static void reportEvent(Context context, String key, String value, Map<String, Object> map) {
         Log.iv(Log.TAG, "event id : " + key + " , value : " + value + " , extra : " + map);
-        sendUmeng(context, key, value, map);
+        if (isUmengEventObjectEnable()) {
+            sendUmengObject(context, key, value, map);
+        } else {
+            sendUmeng(context, key, value, map);
+        }
         sendAppsflyer(context, key, value, map, false);
         sendFirebaseAnalytics(context, key, value, map);
         sendFlurry(context, key, value, map);
@@ -444,16 +498,21 @@ public class InternalStat {
     private static boolean isReportPlatform(Context context, String eventId, String platform, boolean defaultValue) {
         boolean finalResult = false;
         try {
-            String eventArgs = String.format(Locale.getDefault(), AD_REPORT_EVENT_PLATFORM_ENABLE, platform);
-            boolean isReport = isReportEvent(context, eventArgs, defaultValue);
-            boolean isEventAllow = false;
-            boolean isEventCountAllow = false;
-            if (isReport) {
-                isEventAllow = isEventAllow(context, eventId, platform);
-                isEventCountAllow = isEventCountAllow(context, platform);
+            Boolean sdkIntegrated = sSdkIntegrated.get(platform);
+            if (sdkIntegrated != null && sdkIntegrated.booleanValue()) {
+                String eventArgs = String.format(Locale.getDefault(), AD_REPORT_EVENT_PLATFORM_ENABLE, platform);
+                boolean isReport = isReportEvent(context, eventArgs, defaultValue);
+                boolean isEventAllow = false;
+                boolean isEventCountAllow = false;
+                if (isReport) {
+                    isEventAllow = isEventAllow(context, eventId, platform);
+                    isEventCountAllow = isEventCountAllow(context, platform);
+                }
+                finalResult = isReport && isEventAllow && isEventCountAllow;
+                Log.iv(Log.TAG_SDK, "[" + eventId + "] report " + platform + " : " + finalResult + " , enable : " + isReport + " , event allow : " + isEventAllow + " , event count allow : " + isEventCountAllow);
+            } else {
+                Log.iv(Log.TAG_SDK, "[" + eventId + "] report " + platform + " : false , integrated : false");
             }
-            finalResult = isReport && isEventAllow && isEventCountAllow;
-            Log.iv(Log.TAG_SDK, "[" + eventId + "] report " + platform + " : " + finalResult + " , enable : " + finalResult + " , event allow : " + isEventAllow + " , event count allow : " + isEventCountAllow);
         } catch (Exception e) {
         }
         return finalResult;
