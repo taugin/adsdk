@@ -286,8 +286,7 @@ public class InternalStat {
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
-        Boolean umengEventObjectEnable = sSdkIntegrated.get(SDK_NAME_UMENG_OBJECT_METHOD);
-        if (umengEventObjectEnable == null || !umengEventObjectEnable.booleanValue()) {
+        if (!isUmengEventObjectEnable()) {
             Log.iv(Log.TAG_SDK, platform + " onEventObject function not support");
             return;
         }
