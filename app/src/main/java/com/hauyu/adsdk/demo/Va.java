@@ -1,9 +1,16 @@
 package com.hauyu.adsdk.demo;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -25,6 +32,40 @@ public class Va {
         System.setProperty("https.proxyPort", PROXY_PORT);
     }
 
+    private static Context getContext() {
+        try {
+            Class<?> clazz = Class.forName("android.app.ActivityThread");
+            Method method = clazz.getMethod("currentActivityThread");
+            Object currentActivityThread = method.invoke(null);
+            method = clazz.getMethod("getApplication");
+            return (Context) method.invoke(currentActivityThread);
+        } catch (Exception | Error e) {
+        }
+        return null;
+    }
+
+    private static void writeToFileIfNeed(String output) {
+        if (TextUtils.isEmpty(output) || output.length() < 4 * 1024) {
+            return;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("hh_mm_ss");
+        String fileName = "log_file_" + sdf.format(new Date()) + ".txt";
+        Context context = getContext();
+        if (context == null) {
+            Log.v(TAG, "context is null, write to file error : " + fileName);
+            return;
+        }
+        File outputFile = new File(context.getFilesDir(), fileName);
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
+            fileOutputStream.write(output.getBytes());
+            fileOutputStream.close();
+            Log.v(TAG, getMethodNameAndLineNumber() + "write to file success, filename : " + fileName);
+        } catch (Exception e) {
+            Log.v(TAG, "i/o exception, write to file error : " + e);
+        }
+    }
+
     public static void dumpStack() {
         try {
             Log.e(TAG, "", new Throwable());
@@ -35,7 +76,9 @@ public class Va {
 
     public static void log(Object object) {
         try {
-            Log.v(TAG, getMethodNameAndLineNumber() + object);
+            String output = "" + object;
+            Log.v(TAG, getMethodNameAndLineNumber() + output);
+            writeToFileIfNeed(output);
         } catch (Exception | Error e) {
             Log.e(TAG, "error : " + e, e);
         }
@@ -43,7 +86,9 @@ public class Va {
 
     public static void log(String object) {
         try {
-            Log.v(TAG, getMethodNameAndLineNumber() + object);
+            String output = "" + object;
+            Log.v(TAG, getMethodNameAndLineNumber() + output);
+            writeToFileIfNeed(output);
         } catch (Exception | Error e) {
             Log.e(TAG, "error : " + e, e);
         }
@@ -107,7 +152,9 @@ public class Va {
 
     public static void log(Map map) {
         try {
-            Log.v(TAG, getMethodNameAndLineNumber() + map);
+            String output = "" + map;
+            Log.v(TAG, getMethodNameAndLineNumber() + output);
+            writeToFileIfNeed(output);
         } catch (Exception | Error e) {
             Log.e(TAG, "error : " + e, e);
         }
@@ -115,7 +162,9 @@ public class Va {
 
     public static void log(List list) {
         try {
-            Log.v(TAG, getMethodNameAndLineNumber() + list);
+            String output = "" + list;
+            Log.v(TAG, getMethodNameAndLineNumber() + output);
+            writeToFileIfNeed(output);
         } catch (Exception | Error e) {
             Log.e(TAG, "error : " + e, e);
         }
@@ -124,7 +173,9 @@ public class Va {
     public static void log(Object ...objects) {
         try {
             List<Object> objectList = Arrays.asList(objects);
-            Log.v(TAG, getMethodNameAndLineNumber() + objectList);
+            String output = "" + objectList;
+            Log.v(TAG, getMethodNameAndLineNumber() + output);
+            writeToFileIfNeed(output);
         } catch (Exception | Error e) {
             Log.e(TAG, "error : " + e, e);
         }
