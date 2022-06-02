@@ -112,3 +112,6 @@
 #tapjoy
 -keep class com.tapjoy.** { *; }
 -dontwarn com.tapjoy.**
+
+#chartboost
+-keep class com.chartboost.** { *; }
