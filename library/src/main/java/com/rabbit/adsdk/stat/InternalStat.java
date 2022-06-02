@@ -44,18 +44,24 @@ public class InternalStat {
     static {
         sSdkIntegrated = new HashMap<>();
         boolean sdkIntegrated;
-        boolean umengEventObjectEnable;
         try {
             Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
             sdkIntegrated = true;
+        } catch (Exception | Error e) {
+            Log.iv(Log.TAG_SDK, SDK_NAME_UMENG + " error : " + e);
+            sdkIntegrated = false;
+        }
+        sSdkIntegrated.put(SDK_NAME_UMENG, sdkIntegrated);
+
+        boolean umengEventObjectEnable;
+        try {
+            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
             Method method = clazz.getDeclaredMethod("onEventObject", Context.class, String.class, Map.class);
             umengEventObjectEnable = method != null;
         } catch (Exception | Error e) {
             Log.iv(Log.TAG_SDK, SDK_NAME_UMENG + " error : " + e);
-            sdkIntegrated = false;
             umengEventObjectEnable = false;
         }
-        sSdkIntegrated.put(SDK_NAME_UMENG, sdkIntegrated);
         sSdkIntegrated.put(SDK_NAME_UMENG_OBJECT_METHOD, umengEventObjectEnable);
 
         try {
@@ -278,6 +284,10 @@ public class InternalStat {
     public static void sendUmengObject(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
         String platform = SDK_NAME_UMENG;
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
+            return;
+        }
+        Boolean umengEventObjectEnable = sSdkIntegrated.get(SDK_NAME_UMENG_OBJECT_METHOD);
+        if (umengEventObjectEnable == null || !umengEventObjectEnable.booleanValue()) {
             return;
         }
         Map<String, Object> map = new HashMap<>();
