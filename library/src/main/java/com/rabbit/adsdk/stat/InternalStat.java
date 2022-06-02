@@ -288,6 +288,7 @@ public class InternalStat {
         }
         Boolean umengEventObjectEnable = sSdkIntegrated.get(SDK_NAME_UMENG_OBJECT_METHOD);
         if (umengEventObjectEnable == null || !umengEventObjectEnable.booleanValue()) {
+            Log.iv(Log.TAG_SDK, platform + " event object not support");
             return;
         }
         Map<String, Object> map = new HashMap<>();
