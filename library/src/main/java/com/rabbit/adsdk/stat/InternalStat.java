@@ -37,24 +37,32 @@ public class InternalStat {
     private static final String SDK_NAME_FIREBASE = "firebase";
     private static final String SDK_NAME_APPSFLYER = "appsflyer";
     private static final String SDK_NAME_FLURRY = "flurry";
+    private static final String SDK_NAME_UMENG_OBJECT_METHOD = "umeng_object_method";
 
     private static final Map<String, Boolean> sSdkIntegrated;
 
     static {
         sSdkIntegrated = new HashMap<>();
         boolean sdkIntegrated;
+        boolean umengEventObjectEnable;
         try {
-            Class.forName("com.umeng.analytics.MobclickAgent");
+            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
             sdkIntegrated = true;
+            Method method = clazz.getDeclaredMethod("onEventObject", Context.class, String.class, Map.class);
+            umengEventObjectEnable = method != null;
         } catch (Exception | Error e) {
+            Log.iv(Log.TAG_SDK, SDK_NAME_UMENG + " error : " + e);
             sdkIntegrated = false;
+            umengEventObjectEnable = false;
         }
         sSdkIntegrated.put(SDK_NAME_UMENG, sdkIntegrated);
+        sSdkIntegrated.put(SDK_NAME_UMENG_OBJECT_METHOD, umengEventObjectEnable);
 
         try {
             Class.forName("com.google.firebase.analytics.FirebaseAnalytics");
             sdkIntegrated = true;
         } catch (Exception | Error e) {
+            Log.iv(Log.TAG_SDK, SDK_NAME_FIREBASE + " error : " + e);
             sdkIntegrated = false;
         }
         sSdkIntegrated.put(SDK_NAME_FIREBASE, sdkIntegrated);
@@ -63,6 +71,7 @@ public class InternalStat {
             Class.forName("com.appsflyer.AppsFlyerLib");
             sdkIntegrated = true;
         } catch (Exception | Error e) {
+            Log.iv(Log.TAG_SDK, SDK_NAME_APPSFLYER + " error : " + e);
             sdkIntegrated = false;
         }
         sSdkIntegrated.put(SDK_NAME_APPSFLYER, sdkIntegrated);
@@ -71,6 +80,7 @@ public class InternalStat {
             Class.forName("com.flurry.android.FlurryAgent");
             sdkIntegrated = true;
         } catch (Exception | Error e) {
+            Log.iv(Log.TAG_SDK, SDK_NAME_FLURRY + " error : " + e);
             sdkIntegrated = false;
         }
         sSdkIntegrated.put(SDK_NAME_FLURRY, sdkIntegrated);
@@ -672,11 +682,9 @@ public class InternalStat {
     }
 
     private static boolean isUmengEventObjectEnable() {
-        try {
-            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
-            Method method = clazz.getDeclaredMethod("onEventObject", Context.class, String.class, Map.class);
-            return method != null;
-        } catch (Exception | Error e) {
+        if (sSdkIntegrated != null) {
+            Boolean umengEventObjectEnable = sSdkIntegrated.get(SDK_NAME_UMENG_OBJECT_METHOD);
+            return umengEventObjectEnable != null && umengEventObjectEnable.booleanValue();
         }
         return false;
     }

@@ -17,6 +17,19 @@ import java.util.Locale;
 @SuppressWarnings("unchecked")
 public class DataConfigRemote {
 
+    private static final boolean sUmengRemoteConfigEnable;
+    static {
+        boolean enable;
+        try {
+            Class.forName("com.umeng.cconfig.UMRemoteConfig");
+            enable = true;
+        } catch (Exception | Error e) {
+            Log.iv(Log.TAG_SDK, "umeng error : " + e);
+            enable = false;
+        }
+        sUmengRemoteConfigEnable = enable;
+    }
+
     private Context mContext;
     private static DataConfigRemote sDataConfigRemote;
 
@@ -179,23 +192,25 @@ public class DataConfigRemote {
     }
 
     private String getConfigFromUmeng(String key) {
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.umeng.cconfig.UMRemoteConfig");
-            Method method = clazz.getMethod("getInstance");
-            Object instance = method.invoke(null);
-            method = clazz.getMethod("getConfigValue", String.class);
-            Object value = method.invoke(instance, key);
-            if (value != null) {
-                return (String) value;
+        if (sUmengRemoteConfigEnable) {
+            String error = null;
+            try {
+                Class<?> clazz = Class.forName("com.umeng.cconfig.UMRemoteConfig");
+                Method method = clazz.getMethod("getInstance");
+                Object instance = method.invoke(null);
+                method = clazz.getMethod("getConfigValue", String.class);
+                Object value = method.invoke(instance, key);
+                if (value != null) {
+                    return (String) value;
+                }
+            } catch (Exception e) {
+                error = String.valueOf(e);
+            } catch (Error e) {
+                error = String.valueOf(e);
             }
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "umeng error : " + error);
+            if (!TextUtils.isEmpty(error)) {
+                Log.iv(Log.TAG_SDK, "umeng error : " + error);
+            }
         }
         return null;
     }
