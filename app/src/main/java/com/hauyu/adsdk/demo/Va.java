@@ -52,7 +52,7 @@ public class Va {
         String fileName = "log_file_" + sdf.format(new Date()) + ".txt";
         Context context = getContext();
         if (context == null) {
-            Log.v(TAG, "context is null, write to file error : " + fileName);
+            Log.v(TAG, "write to file error : context is null");
             return;
         }
         File outputFile = new File(context.getFilesDir(), fileName);
