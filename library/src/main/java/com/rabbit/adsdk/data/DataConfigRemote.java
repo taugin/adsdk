@@ -17,7 +17,7 @@ import java.util.Locale;
 @SuppressWarnings("unchecked")
 public class DataConfigRemote {
 
-    private static final boolean sUmengRemoteConfigEnable;
+    public static final boolean sUmengRemoteConfigEnable;
     static {
         boolean enable;
         try {

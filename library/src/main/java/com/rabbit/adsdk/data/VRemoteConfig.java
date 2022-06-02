@@ -185,20 +185,22 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
     }
 
     private void activeFetchConfig() {
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.umeng.cconfig.UMRemoteConfig");
-            Method method = clazz.getMethod("getInstance");
-            Object instance = method.invoke(null);
-            method = clazz.getMethod("activeFetchConfig");
-            method.invoke(instance);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "act config error : " + error);
+        if (DataConfigRemote.sUmengRemoteConfigEnable) {
+            String error = null;
+            try {
+                Class<?> clazz = Class.forName("com.umeng.cconfig.UMRemoteConfig");
+                Method method = clazz.getMethod("getInstance");
+                Object instance = method.invoke(null);
+                method = clazz.getMethod("activeFetchConfig");
+                method.invoke(instance);
+            } catch (Exception e) {
+                error = String.valueOf(e);
+            } catch (Error e) {
+                error = String.valueOf(e);
+            }
+            if (!TextUtils.isEmpty(error)) {
+                Log.iv(Log.TAG_SDK, "act config error : " + error);
+            }
         }
     }
 }
