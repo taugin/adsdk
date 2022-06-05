@@ -80,6 +80,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         super.init(context, pidConfig);
         initBannerSize();
         if (!sAdmobInited.getAndSet(true)) {
+            MobileAds.disableMediationAdapterInitialization(mContext);
             MobileAds.initialize(getActivity());
         }
     }

@@ -37,7 +37,9 @@ import com.rabbit.adsdk.utils.Utils;
 import com.rabbit.sunny.BuildConfig;
 import com.rabbit.sunny.MView;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -81,6 +83,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private AtomicBoolean mLoadTimeout = new AtomicBoolean(false);
     private double mLoadedEcpm;
     int mLoadState = STATE_NONE;
+    // applovin SDK需要提前初始化的SDK名称列表
+    private static final List<String> sNeedInitAppLovinFirstSdks = Arrays.asList(Constant.AD_SDK_TRADPLUS, Constant.AD_SDK_APPLOVIN);
 
     public AbstractSdkLoader() {
         mHandler = new Handler(Looper.getMainLooper(), this);
@@ -91,12 +95,28 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         mManagerListener = l;
     }
 
+    /**
+     * 判断是否先初始化applovin，聚合SDK需要重载次函数，先初始化applovin
+     * @return
+     */
+    protected boolean isInitApplovin() {
+        try {
+            String sdkName = getSdkName();
+            return sNeedInitAppLovinFirstSdks.contains(sdkName);
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
     @Override
     public void init(Context context, PidConfig pidConfig) {
         mContext = context;
         mPidConfig = pidConfig;
         mStat = EventImpl.get();
-        AppLovinLoader.initApplovin(mContext);
+        if (isInitApplovin()) {
+            Log.iv(Log.TAG, "init applovin sdk first");
+            AppLovinLoader.initApplovin(mContext);
+        }
     }
 
     @Override
