@@ -259,6 +259,7 @@ public class Constant {
     public static final String AD_UNIT_ID = "ad_unit_id";
     public static final String AD_FORMAT = "ad_format";
     public static final String AD_UNIT_NAME = "ad_unit_name";
+    public static final String AD_PLACEMENT = "ad_placement";
     public static final String AD_PLATFORM = "ad_platform";
     public static final String AD_PRECISION = "ad_precision";
     public static final String AD_COUNTRY_CODE = "ad_country_code";

@@ -967,7 +967,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
             map.put(Constant.AD_NETWORK_PID, placementId);
             map.put(Constant.AD_UNIT_ID, adUnitId);
             map.put(Constant.AD_FORMAT, adFormat.getLabel());
-            map.put(Constant.AD_UNIT_NAME, placement);
+            map.put(Constant.AD_UNIT_NAME, placeName);
+            map.put(Constant.AD_PLACEMENT, placement);
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_PRECISION, precision);
             map.put(Constant.AD_COUNTRY_CODE, countryCode);

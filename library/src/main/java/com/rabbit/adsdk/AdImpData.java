@@ -70,6 +70,14 @@ public class AdImpData {
         return null;
     }
 
+    public String getPlacement() {
+        try {
+            return (String) mAdImpData.get(Constant.AD_PLACEMENT);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     public String getPlatform() {
         try {
             return (String) mAdImpData.get(Constant.AD_PLATFORM);

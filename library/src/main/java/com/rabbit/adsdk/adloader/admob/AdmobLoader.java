@@ -862,6 +862,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             map.put(Constant.AD_UNIT_ID, adUnitId);
             map.put(Constant.AD_FORMAT, adFormat);
             map.put(Constant.AD_UNIT_NAME, adUnitName);
+            map.put(Constant.AD_PLACEMENT, getSceneId());
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_SDK_VERSION, getSdkVersion());
             map.put(Constant.AD_APP_VERSION, getAppVersion());

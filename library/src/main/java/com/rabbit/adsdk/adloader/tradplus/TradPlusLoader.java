@@ -788,6 +788,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             map.put(Constant.AD_UNIT_ID, getPid());
             map.put(Constant.AD_FORMAT, getAdType());
             map.put(Constant.AD_UNIT_NAME, getAdPlaceName());
+            map.put(Constant.AD_PLACEMENT, getSceneId());
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_BIDDING, tpAdInfo.isBiddingNetwork);
             map.put(Constant.AD_PRECISION, tpAdInfo.ecpmPrecision);
