@@ -171,6 +171,8 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
             }
         }
         mDebugView.setText(debug + installApp);
+        ProxyUtils.hookClick(findViewById(R.id.mediation_debugger));
+        ProxyUtils.hookClick(findViewById(R.id.change_language));
     }
 
     @Override
