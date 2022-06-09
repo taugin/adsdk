@@ -1,0 +1,82 @@
+<html>
+<title>辅助脚本</title>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type="text/javascript">
+        window.onload = function() {
+            var element = document.getElementById('encrypt_mp')
+            element.href=encrypt_mp
+            element.text=encrypt_mp
+            element.target="_blank"
+
+            element = document.getElementById('resguard_aab')
+            element.href=resguard_aab
+            element.text=resguard_aab
+            element.target="_blank"
+
+            element = document.getElementById('resguard_apk')
+            element.href=resguard_apk
+            element.text=resguard_apk
+            element.target="_blank"
+
+            element = document.getElementById('copy_encrypt_mp')
+            element.addEventListener("click", function() {
+                copyText(copy_encrypt_mp)
+            }, false)
+
+            element = document.getElementById('copy_resguard_aab')
+            element.addEventListener("click", function() {
+                copyText(copy_resguard_aab)
+            }, false)
+
+            element = document.getElementById('copy_resguard_apk')
+            element.addEventListener("click", function() {
+                copyText(copy_resguard_apk)
+            }, false)
+        }
+
+        function copyText(content) {
+            var copyInput = document.createElement("input")
+            document.body.appendChild(copyInput)
+            copyInput.setAttribute('value', content)
+            copyInput.select()
+            document.execCommand('copy')
+            copyInput.remove()
+            alert("文本已复制 :\n" + content)
+        }
+
+        var encrypt_mp = "http://taugin.gitee.io/adsdk/encrypt.gradle"
+        var resguard_aab = "http://taugin.gitee.io/adsdk/resguard_aab.gradle"
+        var resguard_apk = "http://taugin.gitee.io/adsdk/resguard_apk.gradle"
+
+        var copy_encrypt_mp = "apply from :" + encrypt_mp
+        var copy_resguard_aab = "apply from :" + resguard_aab
+        var copy_resguard_apk = "apply from :" + resguard_apk
+    </script>
+</head>
+<body>
+<h3>脚本引用方法：</h3>
+<ul>
+    <li>
+        加密脚本：&nbsp;&nbsp;&nbsp;&nbsp;<button id='copy_encrypt_mp'>复制内容</button>
+        <br>
+        apply from : <a id='encrypt_mp'></a>
+    </li>
+    </br>
+    <li>
+        AAB混淆：&nbsp;&nbsp;&nbsp;&nbsp;<button id='copy_resguard_aab'>复制内容</button>
+        <br>
+        apply from : <a id='resguard_aab'></a></br>
+        <div><font color='#F00' size='1pt'>>>>注：此引用放置在build.gradle最下方<<<</font></div>
+    </li>
+    </br>
+    <li>
+        APK混淆：&nbsp;&nbsp;&nbsp;&nbsp;<button id='copy_resguard_apk'>复制内容</button>
+        <br>
+        apply from : <a id='resguard_apk'></a></br>
+        <div><font color='#F00' size='1pt'>>>>注：此引用放置在build.gradle最下方<<<</font></div>
+    </li>
+    </br>
+</ul>
+</body>
+</html>
