@@ -2,81 +2,106 @@
 <title>辅助脚本</title>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <script type="text/javascript">
-        window.onload = function() {
-            var element = document.getElementById('encrypt_mp')
-            element.href=encrypt_mp
-            element.text=encrypt_mp
-            element.target="_blank"
-
-            element = document.getElementById('resguard_aab')
-            element.href=resguard_aab
-            element.text=resguard_aab
-            element.target="_blank"
-
-            element = document.getElementById('resguard_apk')
-            element.href=resguard_apk
-            element.text=resguard_apk
-            element.target="_blank"
-
-            element = document.getElementById('copy_encrypt_mp')
-            element.addEventListener("click", function() {
-                copyText(copy_encrypt_mp)
-            }, false)
-
-            element = document.getElementById('copy_resguard_aab')
-            element.addEventListener("click", function() {
-                copyText(copy_resguard_aab)
-            }, false)
-
-            element = document.getElementById('copy_resguard_apk')
-            element.addEventListener("click", function() {
-                copyText(copy_resguard_apk)
-            }, false)
-        }
-
-        function copyText(content) {
-            var copyInput = document.createElement("input")
-            document.body.appendChild(copyInput)
-            copyInput.setAttribute('value', content)
-            copyInput.select()
-            document.execCommand('copy')
-            copyInput.remove()
-            alert("文本已复制 :\n" + content)
-        }
-
-        var encrypt_mp = "http://taugin.gitee.io/adsdk/encrypt.gradle"
-        var resguard_aab = "http://taugin.gitee.io/adsdk/resguard_aab.gradle"
-        var resguard_apk = "http://taugin.gitee.io/adsdk/resguard_apk.gradle"
-
-        var copy_encrypt_mp = "apply from: '" + encrypt_mp + "'"
-        var copy_resguard_aab = "apply from: '" + resguard_aab + "'"
-        var copy_resguard_apk = "apply from: '" + resguard_apk + "'"
-    </script>
+    <script src="js/vue.js"></script>
 </head>
 <body>
-<h3>脚本引用方法：</h3>
-<ul>
-    <li>
-        加密脚本：&nbsp;&nbsp;&nbsp;&nbsp;<button id='copy_encrypt_mp'>复制内容</button>
-        <br>
-        apply from : <a id='encrypt_mp'></a>
-    </li>
-    </br>
-    <li>
-        AAB混淆：&nbsp;&nbsp;&nbsp;&nbsp;<button id='copy_resguard_aab'>复制内容</button>
-        <br>
-        apply from : <a id='resguard_aab'></a></br>
-        <div><font color='#F00' size='1pt'>>>>注：此引用放置在build.gradle最下方<<<</font></div>
-    </li>
-    </br>
-    <li>
-        APK混淆：&nbsp;&nbsp;&nbsp;&nbsp;<button id='copy_resguard_apk'>复制内容</button>
-        <br>
-        apply from : <a id='resguard_apk'></a></br>
-        <div><font color='#F00' size='1pt'>>>>注：此引用放置在build.gradle最下方<<<</font></div>
-    </li>
-    </br>
-</ul>
+<div id="app">
+    <h3>脚本引用方法：</h3>
+    <ul>
+        <li v-for="gradle_url in gradle_urls">
+            {{gradle_url['label']}}&nbsp;&nbsp;&nbsp;&nbsp;<button @click="copyGradle(gradle_url['url'])">复制内容</button> <br>
+            <div>apply from: <a :href="gradle_url['url']">'{{gradle_url['url']}}'</a></div>
+            <div><font color='#F00' size='1pt'>>>>{{gradle_url['remark']}}<<<</font></div><br/>
+        </li>
+    </ul>
+<!--    <h3>仓库地址：<button @click="copyRepos(repo_urls)">复制内容</button> </h3>-->
+<!--    <ul>-->
+<!--        <li v-for="repo_url in repo_urls">-->
+<!--            {{mergeRepo(repo_url)}}-->
+<!--        </li>-->
+<!--    </ul>-->
+</div>
+<script>
+    var repo_urls = [
+        'http://nexus.webeyemobi.com/repository/maven-public/',
+        'https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea',
+        'https://artifact.bytedance.com/repository/Volcengine/',
+        'https://bitbucket.org/sdkcenter/sdkcenter/raw/release',
+        'https://sdk.tapjoy.com',
+        'https://jitpack.io',
+        'https://s3.amazonaws.com/smaato-sdk-releases/',
+        'https://artifacts.applovin.com/android',
+        'https://artifactory.verizonmedia.com/artifactory/maven'
+    ]
+    var gradle_urls = [
+        {'index':'0', 'label':'加密脚本', 'url':'http://taugin.gitee.io/adsdk/encrypt.gradle', 'remark':'注：此引用放置在build.gradle最上方'},
+        {'index':'1', 'label':'AAB混淆', 'url':'http://taugin.gitee.io/adsdk/resguard_aab.gradle', 'remark':'注：此引用放置在build.gradle最下方'},
+        {'index':'2', 'label':'APK混淆', 'url':'http://taugin.gitee.io/adsdk/resguard_apk.gradle', 'remark':'注：此引用放置在build.gradle最下方'}
+    ]
+    /**
+     * 原型：字符串格式化
+     * @param args 格式化参数值
+     */
+    String.prototype.format = function(args) {
+        var result = this;
+        if (arguments.length < 1) {
+            return result;
+        }
+
+        var data = arguments; // 如果模板参数是数组
+        if (arguments.length == 1 && typeof (args) == "object") {
+            // 如果模板参数是对象
+            data = args;
+        }
+        for ( var key in data) {
+            var value = data[key];
+            if (undefined != value) {
+                result = result.replaceAll("\{" + key + "\}", value);
+            }
+        }
+        return result;
+    }
+    function mergeRepo(url) {
+        var ss = "maven {url '{0}'}"
+        ss = ss.format(url)
+        return ss
+    }
+    function copyText(content) {
+        var copyInput = document.createElement("textarea")
+        document.body.appendChild(copyInput)
+        copyInput.value = content
+        copyInput.setAttribute('readonly', 'readonly')
+        copyInput.select()
+        document.execCommand('copy')
+        copyInput.remove()
+        alert("文本已复制 :\n" + content)
+    }
+    function copyGradle(url) {
+        var gradle = "apply from: '" + url + "'"
+        copyText(gradle)
+    }
+    function copyRepos(repo_urls) {
+        var copyRepoString = ""
+        for (index in repo_urls) {
+            copyRepoString += mergeRepo(repo_urls[index])
+            if (index < repo_urls.length - 1) {
+                copyRepoString += "\n"
+            }
+        }
+        copyText(copyRepoString)
+    }
+    var app = new Vue({
+      el: '#app',
+      data: {
+        repo_urls:repo_urls,
+        gradle_urls:gradle_urls
+      },
+      method:{
+            mergeRepo:mergeRepo,
+            copyGradle:copyGradle
+      }
+    })
+
+</script>
 </body>
 </html>
