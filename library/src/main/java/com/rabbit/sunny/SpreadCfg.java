@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class SpreadCfg implements Serializable {
 
-    public static final String AD_SPREAD_NAME = "sp" + "config";
+    public static final String AD_SPREAD_NAME = "adcfg_spread_info";
 
     private String banner;
     private String icon;

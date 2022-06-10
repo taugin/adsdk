@@ -415,7 +415,7 @@ def encryptAssetsFilesFromPackageInternal(flavorName, File outputFile, isAab) {
     encryptNames.add(adname + ".json")
     encryptNames.add("data_config" + ".dat")
     encryptNames.add("data_config" + ".json")
-    encryptNames.add("mdncfg")
+    encryptNames.add("adcfg_mediation_info")
     def configEncryptFiles = ext != null && ext.has("encryptFiles") ? ext.encryptFiles : null
     if (configEncryptFiles != null && !configEncryptFiles.isEmpty()) {
         configEncryptFiles.each {

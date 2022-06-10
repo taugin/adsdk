@@ -207,7 +207,7 @@ public class ReplaceManager {
     }
 
     public class ReplaceConfig {
-        public static final String REPLACE_CONFIG = "replacecfg";
+        public static final String REPLACE_CONFIG = "adcfg_replace_info";
         public static final String KEY_PLACE_NAME = "place_name";
         public static final String KEY_STARTUP_DELAY = "startup_delay";
         public static final String KEY_DISPLAY_TIMES = "display_times";

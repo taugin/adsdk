@@ -76,10 +76,10 @@ public class Constant {
 
     // 配置文件中使用的名字++++++
     public static final String ADREFS_NAME = "adrefs";
-    public static final String COMPLEX_PLACES = "complexcfg";
+    public static final String COMPLEX_PLACES = "adcfg_complex_info";
     public static final List<String> DEFAULT_COMPLEX_ORDER = Arrays.asList(new String[]{Constant.TYPE_INTERSTITIAL, Constant.TYPE_NATIVE, Constant.TYPE_BANNER, Constant.TYPE_REWARD});
     public static final String PREF_USER_ACTIVE_TIME = "pref_user_active_time";
-    public static final String AD_MEDIATION_CONFIG = "mdncfg";
+    public static final String AD_MEDIATION_CONFIG = "adcfg_mediation_info";
     // 配置文件中使用的名字======
 
     public static final String AF_STATUS = "af_status";
