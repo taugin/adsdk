@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply from: '../groovy/encrypt.gradle'
 ext {
     openRelease = true
-    encryptFiles = ["complex_names", "adcfg_spread_info"]
+    encryptFiles = ["data_config_back.json"]
 }
 def useProject = true;
 

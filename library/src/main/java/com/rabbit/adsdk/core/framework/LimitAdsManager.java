@@ -34,7 +34,7 @@ public class LimitAdsManager {
     private static final String DEFAULT_LIST_TEXT = "[]";
     private static final String LIMIT_TYPE_IMP = "imp";
     private static final String LIMIT_TYPE_CLK = "clk";
-    private static final String LIMIT_CFG = "adcfg_limit_info";
+    private static final String LIMIT_CFG = "cfg_limit_info";
     // 最近一次的限制时间
     private static final String PREF_LAST_LIMIT_TIME = "pref_last_limit_time";
     // 最近一次的限制类型：展示 OR 点击
