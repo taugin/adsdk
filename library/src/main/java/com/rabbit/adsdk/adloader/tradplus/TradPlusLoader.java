@@ -119,6 +119,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     reportAdLoaded();
                     notifySdkLoaderLoaded(false);
                 } else {
+                    reportAdReLoaded();
                     autoRefreshBanner(tpBanner);
                 }
             }
@@ -251,12 +252,16 @@ public class TradPlusLoader extends AbstractSdkLoader {
         mTPInterstitial.setAdListener(new InterstitialAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
-                setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(mTPInterstitial);
-                setLoadedEcpm(getLoadedEcpm(tpAdInfo));
-                reportAdLoaded();
-                notifyAdLoaded(TradPlusLoader.this);
+                if (!isStateSuccess()) {
+                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
+                    setLoading(false, STATE_SUCCESS);
+                    putCachedAdTime(mTPInterstitial);
+                    setLoadedEcpm(getLoadedEcpm(tpAdInfo));
+                    reportAdLoaded();
+                    notifyAdLoaded(TradPlusLoader.this);
+                } else {
+                    reportAdReLoaded();
+                }
             }
 
             @Override
@@ -374,12 +379,16 @@ public class TradPlusLoader extends AbstractSdkLoader {
         mTPReward.setAdListener(new RewardAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
-                putCachedAdTime(mTPReward);
-                setLoading(false, STATE_SUCCESS);
-                setLoadedEcpm(getLoadedEcpm(tpAdInfo));
-                reportAdLoaded();
-                notifyAdLoaded(TradPlusLoader.this);
+                if (!isStateSuccess()) {
+                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
+                    putCachedAdTime(mTPReward);
+                    setLoading(false, STATE_SUCCESS);
+                    setLoadedEcpm(getLoadedEcpm(tpAdInfo));
+                    reportAdLoaded();
+                    notifyAdLoaded(TradPlusLoader.this);
+                } else {
+                    reportAdReLoaded();
+                }
             }
 
             @Override
@@ -505,13 +514,17 @@ public class TradPlusLoader extends AbstractSdkLoader {
         tpNative.setAdListener(new NativeAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
-                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
-                mTPNative = tpNative;
-                setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(mTPNative);
-                setLoadedEcpm(getLoadedEcpm(tpAdInfo));
-                reportAdLoaded();
-                notifySdkLoaderLoaded(false);
+                if (!isStateSuccess()) {
+                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
+                    mTPNative = tpNative;
+                    setLoading(false, STATE_SUCCESS);
+                    putCachedAdTime(mTPNative);
+                    setLoadedEcpm(getLoadedEcpm(tpAdInfo));
+                    reportAdLoaded();
+                    notifySdkLoaderLoaded(false);
+                } else {
+                    reportAdReLoaded();
+                }
             }
 
             @Override
@@ -581,7 +594,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 reportAdShow();
                 notifyAdShow();
                 if (viewGroup != null) {
-                    viewGroup.removeAllViews();;
+                    viewGroup.removeAllViews();
+                    ;
                 }
                 mTradPlusBindView.bindNativeView(mContext, mPidConfig, params, customNativeAd);
                 customNativeAd.showAd(viewGroup, mTradPlusBindView.getCustomTPNativeAdRender(), getSceneId());
@@ -641,11 +655,15 @@ public class TradPlusLoader extends AbstractSdkLoader {
         mTPSplash.setAdListener(new SplashAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
-                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
-                setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(mTPSplash);
-                reportAdLoaded();
-                notifyAdLoaded(TradPlusLoader.this);
+                if (!isStateSuccess()) {
+                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
+                    setLoading(false, STATE_SUCCESS);
+                    putCachedAdTime(mTPSplash);
+                    reportAdLoaded();
+                    notifyAdLoaded(TradPlusLoader.this);
+                } else {
+                    reportAdReLoaded();
+                }
             }
 
             @Override
@@ -702,7 +720,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showSplash(ViewGroup viewGroup) {
-        Log.iv(Log.TAG, getAdPlaceName() + " - " +getSdkName() + " show splash");
+        Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " show splash");
         if (mTPSplash != null && mTPSplash.isReady()) {
             reportAdShow();
             notifyAdShow();
@@ -720,6 +738,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
     /**
      * 设置开屏加载的参数
+     *
      * @param tpSplash
      */
     private void setSplashParams(TPSplash tpSplash) {

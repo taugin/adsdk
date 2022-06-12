@@ -152,6 +152,18 @@ public class EventImpl implements IEvent {
     }
 
     @Override
+    public void reportAdReLoaded(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra) {
+        if (!checkArgument(context, placeName, sdk, type)) {
+            return;
+        }
+        String eventId = generateEventId(context, "reloaded", sdk, type);
+        extra = addExtra(extra, placeName, sdk, type, pid, ecpm, null, null);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        reportEvent(context, "e_ad_reloaded", placeName, extra);
+        reportEvent(context, eventId, placeName, extra);
+    }
+
+    @Override
     public void reportAdShow(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;

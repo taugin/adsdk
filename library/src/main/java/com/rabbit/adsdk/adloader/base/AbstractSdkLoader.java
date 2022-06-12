@@ -801,6 +801,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
     }
 
+    protected void reportAdReLoaded() {
+        if (mStat != null) {
+            mStat.reportAdReLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getEcpm(), null);
+        }
+    }
+
     protected void reportAdShow() {
         if (mStat != null) {
             mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getEcpm(), null);

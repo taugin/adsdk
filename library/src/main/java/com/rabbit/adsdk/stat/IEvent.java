@@ -32,6 +32,17 @@ public interface IEvent {
     public void reportAdLoaded(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra);
 
     /**
+     * 广告Reload成功
+     *
+     * @param context
+     * @param placeName
+     * @param sdk
+     * @param type
+     * @param extra
+     */
+    public void reportAdReLoaded(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra);
+
+    /**
      * 广告展示
      *
      * @param context
