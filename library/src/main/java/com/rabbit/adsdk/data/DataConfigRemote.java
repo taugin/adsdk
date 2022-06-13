@@ -18,6 +18,7 @@ import java.util.Locale;
 public class DataConfigRemote {
 
     public static final boolean sUmengRemoteConfigEnable;
+
     static {
         boolean enable;
         try {
@@ -57,19 +58,26 @@ public class DataConfigRemote {
         mContext = context;
     }
 
+    private boolean isRemoteFirst() {
+        try {
+            return TextUtils.equals("true", readConfigFromRemote("control_remote_config_first"));
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
     public String getString(String key) {
         VRemoteConfig.get(mContext).updateRemoteConfig(false);
-        boolean isLocalFirst = DataManager.get(mContext).isLocalFirst();
-        String value = null;
-        if (isLocalFirst) {
-            value = readConfigFromLocal(key);
-            if (TextUtils.isEmpty(value)) {
-                value = readConfigFromRemote(key);
-            }
-        } else {
+        String value;
+        if (isRemoteFirst()) {
             value = readConfigFromRemote(key);
             if (TextUtils.isEmpty(value)) {
                 value = readConfigFromLocal(key);
+            }
+        } else {
+            value = readConfigFromLocal(key);
+            if (TextUtils.isEmpty(value)) {
+                value = readConfigFromRemote(key);
             }
         }
         return value;

@@ -15,7 +15,6 @@ import com.rabbit.sunny.SpreadCfg;
 
 import org.json.JSONArray;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -58,29 +57,18 @@ public class DataManager {
     private Context mContext;
     private PlaceConfig mLocalPlaceConfig;
     private IParser mParser;
-    private boolean mLocalFirst = false;
 
     public void init() {
-        setLocalFirst();
         VRemoteConfig.get(mContext).init();
         parseLocalData();
         printGoogleAdvertisingId();
     }
 
-    private void setLocalFirst() {
-        try {
-            File file = new File(mContext.getExternalFilesDir("config"), "local_first");
-            mLocalFirst = file.exists();
-            Log.iv(Log.TAG, "local first : " + mLocalFirst + " , path : " + file.getAbsolutePath());
-        } catch (Exception e) {
-        }
-    }
-
     private void parseLocalData() {
-        String cfgName = getConfigName();
-        String defName = getDefaultName();
-        Log.iv(Log.TAG_SDK, "name : " + cfgName + "/" + defName);
         if (mLocalPlaceConfig == null && mParser != null) {
+            String cfgName = getConfigName();
+            String defName = getDefaultName();
+            Log.iv(Log.TAG_SDK, "name : " + cfgName + "/" + defName);
             String data = Utils.readConfig(mContext, cfgName + CONFIG_SUFFIX1);
             if (TextUtils.isEmpty(data)) {
                 data = Utils.readConfig(mContext, cfgName + CONFIG_SUFFIX2);
@@ -117,9 +105,7 @@ public class DataManager {
     }
 
     public PlaceConfig getAdConfig() {
-        if (!isLocalFirst()) {
-            parseRemoteData();
-        }
+        parseRemoteData();
         parseLocalData();
         return mLocalPlaceConfig;
     }
@@ -232,10 +218,6 @@ public class DataManager {
         }.start();
     }
 
-    public boolean isLocalFirst() {
-        return mLocalFirst;
-    }
-
     public String getScenePrefix() {
         String scenePrefix = getString(IParser.SCENE_PREFIX);
         if (TextUtils.isEmpty(scenePrefix) && mLocalPlaceConfig != null) {
@@ -246,6 +228,7 @@ public class DataManager {
 
     /**
      * 验证广告位是否存在
+     *
      * @param placeName
      * @return
      */
