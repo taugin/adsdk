@@ -47,27 +47,15 @@ allprojects {
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/releases' }
-        // maven { url 'https://dl.bintray.com/umsdk/release' }
-        maven {
-            url 'https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/'
-            credentials {
-                username "5ef3647994513bd170c627be"
-                password "xcgJSde4Zuo4"
-            }
-        }
-        maven { url 'https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea'}
         google()
         jcenter()
         mavenLocal()
         maven { url 'https://sdk.tapjoy.com/' }
-        maven { url 'https://android-sdk.is.com/'}
-        maven {
-            url "https://anythink.jfrog.io/artifactory/android_sdk"
-        }
+        maven { url 'https://android-sdk.is.com/' }
+        maven { url "https://s3.amazonaws.com/smaato-sdk-releases/" }
+        maven { url "https://anythink.jfrog.io/artifactory/android_sdk" }
         maven { url 'https://mvnrepository.com/artifact/com.inmobi.monetization/inmobi-ads' }
-        maven {
-            url "https://s3.amazonaws.com/smaato-sdk-releases/"
-        }
+        maven { url 'https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea' }
     }
 }
 

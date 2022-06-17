@@ -32,40 +32,28 @@ def toUpperCaseFirstOne(String s) {
 }
 
 try {
-    project.rootProject.allprojects.repositories.each {
-        repo ->
-            repo.maven {
-                r ->
-                    r.url = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
-                    r.credentials.username = "CP751G"
-                    r.credentials.password = "TaMWu1x2fG"
-
-            }
-            repo.maven {
-                r ->
-                    r.url = "https://repo.rdc.aliyun.com/repository/130320-snapshot-FOUUZY/"
-                    r.credentials.username = "CP751G"
-                    r.credentials.password = "TaMWu1x2fG"
-
-            }
-            repo.maven {
-                r ->
-                    r.url = "https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/"
-                    r.credentials.username = "5ef3647994513bd170c627be"
-                    r.credentials.password = "xcgJSde4Zuo4"
-
-            }
-            repo.maven {
-                r ->
-                    r.url = "https://packages.aliyun.com/maven/repository/2017289-snapshot-sJZcRc/"
-                    r.credentials.username = "5ef3647994513bd170c627be"
-                    r.credentials.password = "xcgJSde4Zuo4"
-
-            }
-            repo.maven {
-                r ->
-                    r.url = "https://taugin.gitee.io/werepo"
-            }
+    project.rootProject.allprojects.repositories.each { repo ->
+        repo.maven { r ->
+            r.url = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
+            r.credentials.username = "CP751G"
+            r.credentials.password = "TaMWu1x2fG"
+        }
+        repo.maven { r ->
+            r.url = "https://repo.rdc.aliyun.com/repository/130320-snapshot-FOUUZY/"
+            r.credentials.username = "CP751G"
+            r.credentials.password = "TaMWu1x2fG"
+        }
+        repo.maven { r ->
+            r.url = "https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/"
+            r.credentials.username = "5ef3647994513bd170c627be"
+            r.credentials.password = "xcgJSde4Zuo4"
+        }
+        repo.maven { r ->
+            r.url = "https://packages.aliyun.com/maven/repository/2017289-snapshot-sJZcRc/"
+            r.credentials.username = "5ef3647994513bd170c627be"
+            r.credentials.password = "xcgJSde4Zuo4"
+        }
+        repo.maven { r -> r.url = "https://taugin.gitee.io/werepo" }
     }
 } catch (Exception e) {
 }
