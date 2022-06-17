@@ -27,7 +27,7 @@ import com.rabbit.adsdk.AdExtra;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.AdSdk;
-import com.rabbit.adsdk.listener.OnAdDisableLoadingListener;
+import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.utils.Utils;
 
@@ -59,9 +59,9 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = getApplicationContext();
-        AdSdk.get(this).setOnAdDisableLoadingListener(new OnAdDisableLoadingListener() {
+        AdSdk.get(this).setOnAdFilterListener(new OnAdFilterListener() {
             @Override
-            public boolean onAdDisableLoading(String placeName, String sdk, String type) {
+            public boolean doFilter(String placeName, String sdk, String type) {
                 return false;
             }
         });

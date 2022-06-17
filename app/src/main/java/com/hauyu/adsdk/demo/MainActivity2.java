@@ -1,7 +1,6 @@
 package com.hauyu.adsdk.demo;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
@@ -24,7 +23,7 @@ import com.rabbit.adsdk.AdExtra;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.AdSdk;
-import com.rabbit.adsdk.listener.OnAdDisableLoadingListener;
+import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.utils.Utils;
 
@@ -145,9 +144,9 @@ public class MainActivity2 extends BaseActivity implements AdapterView.OnItemSel
         mAdBannerSizeSpinner.setSelection(position);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = getApplicationContext();
-        AdSdk.get(this).setOnAdDisableLoadingListener(new OnAdDisableLoadingListener() {
+        AdSdk.get(this).setOnAdFilterListener(new OnAdFilterListener() {
             @Override
-            public boolean onAdDisableLoading(String placeName, String sdk, String type) {
+            public boolean doFilter(String placeName, String sdk, String type) {
                 return false;
             }
         });

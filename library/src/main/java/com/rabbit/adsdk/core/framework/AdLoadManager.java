@@ -2,7 +2,7 @@ package com.rabbit.adsdk.core.framework;
 
 import android.content.Context;
 
-import com.rabbit.adsdk.listener.OnAdDisableLoadingListener;
+import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.OnAdImpressionListener;
 
 public class AdLoadManager {
@@ -33,15 +33,15 @@ public class AdLoadManager {
 
     private Context mContext;
     // 禁止广告加载过滤器
-    private OnAdDisableLoadingListener mOnAdDisableLoadingListener;
+    private OnAdFilterListener mOnAdFilterListener;
     private OnAdImpressionListener mOnAdImpressionListener;
 
-    public OnAdDisableLoadingListener getOnAdDisableLoadingListener() {
-        return mOnAdDisableLoadingListener;
+    public OnAdFilterListener getOnAdFilterListener() {
+        return mOnAdFilterListener;
     }
 
-    public void setOnAdDisableLoadingListener(OnAdDisableLoadingListener onAdDisableLoadingListener) {
-        mOnAdDisableLoadingListener = onAdDisableLoadingListener;
+    public void setOnAdFilterListener(OnAdFilterListener onAdFilterListener) {
+        mOnAdFilterListener = onAdFilterListener;
     }
 
     public OnAdImpressionListener getOnAdImpressionListener() {
