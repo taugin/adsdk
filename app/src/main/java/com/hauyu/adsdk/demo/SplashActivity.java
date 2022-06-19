@@ -1,16 +1,11 @@
 package com.hauyu.adsdk.demo;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Process;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.rabbit.adsdk.AdExtra;
 import com.rabbit.adsdk.AdParams;
@@ -140,7 +135,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startApp() {
-        Intent intent = new Intent(this, MainActivity2.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }

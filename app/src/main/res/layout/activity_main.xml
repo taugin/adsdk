@@ -1,154 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFFFF">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/change_language_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/micro"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:tag="micro"
-                android:text="@string/micro" />
+                android:layout_weight="1">
 
-            <Button
-                android:id="@+id/tiny"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_36"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:text="@string/ad_platform"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dp_12"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/ad_sdk_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:tag="ad_sdk_spinner" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:text="@string/banner_size"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dp_12"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/ad_banner_size_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:tag="ad_banner_size_spinner" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:tag="tiny"
-                android:text="@string/tiny" />
+                android:layout_height="@dimen/dp_36"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/little"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:tag="little"
-                android:text="@string/little" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_36"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:tag="small"
-                android:text="@string/small" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:text="@string/native_layout"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dp_12"
+                        android:textStyle="bold" />
 
-        </LinearLayout>
+                    <Spinner
+                        android:id="@+id/ad_layout_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="@android:style/Widget.DeviceDefault.Spinner"
+                        android:tag="ad_layout_spinner" />
+                </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_36"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/medium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:singleLine="true"
-                android:tag="medium"
-                android:text="@string/medium" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:text="@string/template"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dp_12"
+                        android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/large"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:tag="large"
-                android:text="@string/large" />
+                    <Switch
+                        android:id="@+id/mediation_template"
+                        style="@android:style/Widget.DeviceDefault.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="1"
+                        android:drawablePadding="0dp" />
+                </LinearLayout>
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/wrap"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:tag="wrap"
-                android:text="@string/wrap" />
-
-            <Button
-                android:id="@+id/full"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:tag="full"
-                android:text="@string/full" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <Button
-                android:id="@+id/head"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:singleLine="true"
-                android:tag="head"
-                android:text="@string/head" />
-
-            <Button
-                android:id="@+id/mix"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:tag="mix"
-                android:text="@string/mix" />
-
-            <Button
-                android:id="@+id/foot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:tag="foot"
-                android:text="@string/foot" />
-
-            <Button
-                android:id="@+id/round"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:tag="round"
-                android:text="@string/round" />
         </LinearLayout>
 
         <LinearLayout
@@ -159,118 +142,91 @@
             <Button
                 android:id="@+id/interstitial"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
-                android:text="插屏测试" />
+                android:text="@string/interstitial_test"
+                android:textSize="@dimen/sp_12" />
 
             <Button
-                android:id="@+id/complex"
+                android:id="@+id/splash"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
-                android:text="复合测试" />
+                android:text="@string/splash_test"
+                android:textSize="@dimen/sp_12" />
+
+            <Button
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="@string/banner_test"
+                android:textSize="@dimen/sp_12" />
 
             <Button
                 android:id="@+id/reward_video"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
-                android:text="激励视频" />
+                android:text="@string/reward_test"
+                android:textSize="@dimen/sp_12" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/change_language"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="@string/change_language" />
+
+            <Button
+                android:id="@+id/mediation_debugger"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="@string/debug" />
 
             <Button
                 android:id="@+id/native_common"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="onClick"
-                android:text="通用布局" />
+                android:text="@string/native_test"
+                android:textSize="@dimen/sp_12" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:gravity="center">
 
-            <Button
-                android:id="@+id/show_complex"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:text="展示Complex" />
-
-            <Button
-                android:id="@+id/spread_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:text="展示Spread" />
-
-            <Button
-                android:id="@+id/show_ads_in_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:text="列表广告" />
-
-            <Button
-                android:id="@+id/show_admob_splash"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:text="Admob开屏" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/reward_video_queue"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:id="@+id/native_banner_layout"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:text="加载成功数 : 0" />
-
-            <CheckBox
-                android:id="@+id/auto_reward"
-                style="@android:style/Widget.DeviceDefault.Button"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:checked="false"
-                android:gravity="center"
-                android:showText="true"
-                android:text="自动加载激励视频"
-                android:thumb="@android:color/transparent"
-                android:track="@android:color/transparent" />
-
+                android:gravity="center" />
         </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/native_banner_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center" />
     </LinearLayout>
-</ScrollView>
+
+    <FrameLayout
+        android:id="@+id/splash_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+</FrameLayout>

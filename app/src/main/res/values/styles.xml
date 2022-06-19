@@ -1,6 +1,18 @@
 <resources>
-    <style name="SplashTheme" parent="android:Theme.DeviceDefault.Light.NoActionBar">
-<!--        <item name="android:windowFullscreen">true</item>-->
-<!--        <item name="android:statusBarColor">@color/white</item>-->
+    <declare-styleable name="ScanningAnimatorView">
+        <attr name="bgImage" format="integer" />
+        <attr name="fgImage" format="integer" />
+        <attr name="saLineWidth" format="dimension" />
+        <attr name="saLineColor" format="color" />
+        <attr name="coverColor" format="color" />
+    </declare-styleable>
+
+    <style name="AppTheme" parent="android:Theme.DeviceDefault.Light.NoActionBar">
+        <!--        <item name="android:windowFullscreen">true</item>-->
+        <!--        <item name="android:statusBarColor">@color/white</item>-->
+    </style>
+    <style name="MainActivity_Theme" parent="android:Theme.DeviceDefault.Light">
+        <!--        <item name="android:windowFullscreen">true</item>-->
+        <!--        <item name="android:statusBarColor">@color/white</item>-->
     </style>
 </resources>

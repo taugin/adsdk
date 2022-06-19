@@ -1,24 +1,22 @@
 package com.hauyu.adsdk.demo;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.text.TextUtils;
+import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,32 +29,139 @@ import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.utils.Utils;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
-public class MainActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
     private static final int LAYOUT[] = new int[]{
             //R.layout.ad_common_native_card_small,
             R.layout.ad_common_native_card_medium
     };
+    private static final Map<String, Integer> BANNER_MAP;
+
+    private static final String BANNER_PREFIX = "banner_%s";
+    private static final String INTERSTITIAL_PREFIX = "interstitial_%s";
+    private static final String REWARD_PREFIX = "reward_%s";
+    private static final String NATIVE_PREFIX = "native_%s";
+    private static final String SPLASH_PREFIX = "splash_%s";
+
+    static {
+        BANNER_MAP = new HashMap<>();
+        BANNER_MAP.put("NOSET", AdExtra.COMMON_BANNER);
+        BANNER_MAP.put("BANNER", AdExtra.COMMON_BANNER);
+        BANNER_MAP.put("FULL_BANNER", AdExtra.COMMON_FULL_BANNER);
+        BANNER_MAP.put("LARGE_BANNER", AdExtra.COMMON_LARGE_BANNER);
+        BANNER_MAP.put("LEADERBOARD", AdExtra.COMMON_LEADERBOARD);
+        BANNER_MAP.put("MEDIUM_RECTANGLE", AdExtra.COMMON_MEDIUM_RECTANGLE);
+        BANNER_MAP.put("WIDE_SKYSCRAPER", AdExtra.COMMON_WIDE_SKYSCRAPER);
+        BANNER_MAP.put("SMART_BANNER", AdExtra.COMMON_SMART_BANNER);
+        BANNER_MAP.put("ADAPTIVE_BANNER", AdExtra.COMMON_ADAPTIVE_BANNER);
+    }
 
     private static final String TAG = "MA";
     private Context mContext;
     private RelativeLayout mNativeBannerLayout;
-    private Button mRewardButton;
-    private int mRewardShowTimes = 0;
-    private int mRewardGetTimes = 0;
+    private Spinner mAdSdkSpinner;
+    private Spinner mAdLayoutSpinner;
+    private Spinner mAdBannerSizeSpinner;
+    private ViewGroup mSplashContainer;
+    private TextView mLanguageView;
+    private TextView mDebugView;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, 0x1, 0, "CustomView");
+        menu.add(0, 0x2, 0, "AdListView");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item != null) {
+            if (item.getItemId() == 0x1) {
+                startActivity(new Intent(this, CustomViewActivity.class));
+            } else if (item.getItemId() == 0x2) {
+                startActivity(new Intent(this, AdListViewActivity.class));
+            }
+        }
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        CheckBox switchView = findViewById(R.id.auto_reward);
-        switchView.setOnCheckedChangeListener(this);
-        mRewardButton = findViewById(R.id.reward_video_queue);
+        ChangeLanguage.showLanguageDialogForTestMode(findViewById(R.id.change_language_layout));
+        mLanguageView = findViewById(R.id.change_language);
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
+        mAdSdkSpinner = findViewById(R.id.ad_sdk_spinner);
+        mDebugView = findViewById(R.id.mediation_debugger);
+        CharSequence[] entries = getResources().getStringArray(R.array.ad_sdk);
+        if (entries != null) {
+            final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+                    this, android.R.layout.simple_spinner_item, entries) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    TextView textView = (TextView) super.getView(position, convertView, parent);
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                    return textView;
+                }
+            };
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mAdSdkSpinner.setAdapter(adapter);
+        }
+        mAdLayoutSpinner = findViewById(R.id.ad_layout_spinner);
+        entries = getResources().getStringArray(R.array.ad_layout);
+        if (entries != null) {
+            final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+                    this, android.R.layout.simple_spinner_item, entries) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    TextView textView = (TextView) super.getView(position, convertView, parent);
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                    return textView;
+                }
+            };
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mAdLayoutSpinner.setAdapter(adapter);
+        }
+        mAdBannerSizeSpinner = findViewById(R.id.ad_banner_size_spinner);
+        entries = getResources().getStringArray(R.array.ad_banner_size);
+        if (entries != null) {
+            final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+                    this, android.R.layout.simple_spinner_item, entries) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    TextView textView = (TextView) super.getView(position, convertView, parent);
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                    return textView;
+                }
+            };
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mAdBannerSizeSpinner.setAdapter(adapter);
+        }
+        mSplashContainer = findViewById(R.id.splash_container);
+        mAdSdkSpinner.setOnItemSelectedListener(this);
+        mAdLayoutSpinner.setOnItemSelectedListener(this);
+        mAdBannerSizeSpinner.setOnItemSelectedListener(this);
+        mLanguageView.setText(ChangeLanguage.getCurrentLanguage(this, true));
+        int position = 0;
+        String tag = null;
+
+        tag = (String) mAdSdkSpinner.getTag();
+        position = (int) Utils.getLong(this, tag);
+        mAdSdkSpinner.setSelection(position);
+
+        tag = (String) mAdLayoutSpinner.getTag();
+        position = (int) Utils.getLong(this, tag);
+        mAdLayoutSpinner.setSelection(position);
+
+        tag = (String) mAdBannerSizeSpinner.getTag();
+        position = (int) Utils.getLong(this, tag);
+        mAdBannerSizeSpinner.setSelection(position);
         setTitle(getTitle() + " - " + Utils.getCountry(this));
         mContext = getApplicationContext();
         AdSdk.get(this).setOnAdFilterListener(new OnAdFilterListener() {
@@ -65,6 +170,28 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
                 return false;
             }
         });
+        String ram = getResources().getString(R.string.format_string, "76G");
+        Log.v(Log.TAG, "ram : " + ram);
+        String debug = mDebugView.getText().toString();
+        String installPackage = getPackageManager().getInstallerPackageName(getPackageName());
+        Log.v(Log.TAG, "installPackage : " + installPackage);
+        String installApp = "";
+        if (!TextUtils.isEmpty(installPackage)) {
+            try {
+                installApp = getPackageManager().getApplicationInfo(installPackage, 0).loadLabel(getPackageManager()).toString();
+            } catch (Exception e) {
+                Log.e(Log.TAG, "error : " + e, e);
+            }
+            if (!TextUtils.isEmpty(installApp)) {
+                installApp = "\n安装来源：" + installApp;
+            }
+            if (TextUtils.isEmpty(installApp)) {
+                installApp = "";
+            }
+        }
+        mDebugView.setText(debug + installApp);
+        ProxyUtils.hookClick(findViewById(R.id.mediation_debugger));
+        ProxyUtils.hookClick(findViewById(R.id.change_language));
     }
 
     @Override
@@ -76,40 +203,21 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         }
     }
 
-    private boolean hasEnable() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            long ts = System.currentTimeMillis();
-            UsageStatsManager usageStatsManager = (UsageStatsManager) getApplicationContext().getSystemService(Activity.USAGE_STATS_SERVICE);
-            List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, 0, ts);
-            if (queryUsageStats == null || queryUsageStats.isEmpty()) {
-                return false;
-            }
-            return true;
-        }
-        return true;
-    }
-
     public void onClick(View v) {
-        if (v.getId() == R.id.show_complex) {
-            if (AdSdk.get(this).isComplexAdsLoaded()) {
-                AdSdk.get(this).showComplexAds();
-            }
+        if (v.getId() == R.id.mediation_debugger) {
+            AdSdk.get(mContext).showMediationDebugger();
         } else if (v.getId() == R.id.interstitial) {
             loadInterstitial((TextView) v);
-        } else if (v.getId() == R.id.complex) {
-            loadAdComplex();
         } else if (v.getId() == R.id.native_common) {
-            loadAdViewCommon();
+            loadNative((TextView) v);
         } else if (v.getId() == R.id.reward_video) {
             loadReward((TextView) v);
-        } else if (v.getId() == R.id.reward_video_queue) {
-            AdSdk.get(mContext).showRewardedVideo("reward_video");
-        } else if (v.getId() == R.id.spread_button) {
-            showSpread();
-        } else if (v.getId() == R.id.show_ads_in_list) {
-            startActivity(new Intent(this, ListViewForAd.class));
-        } else if (v.getId() == R.id.show_admob_splash) {
+        } else if (v.getId() == R.id.banner) {
+            loadBanner((TextView) v);
+        } else if (v.getId() == R.id.splash) {
             loadSplash((TextView) v);
+        } else if (v.getId() == R.id.change_language) {
+            ChangeLanguage.showLanguageDialog(true);
         } else {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag, (TextView) v);
@@ -141,28 +249,35 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     }
 
     private void loadInterstitial(TextView textView) {
-        if (AdSdk.get(mContext).isInterstitialLoaded("interstitial")) {
-            String loadedSdk = AdSdk.get(mContext).getLoadedSdk("interstitial");
+        String sdk = (String) mAdSdkSpinner.getSelectedItem();
+        String interstitialPlace = String.format(Locale.getDefault(), INTERSTITIAL_PREFIX, sdk.toLowerCase(Locale.getDefault()));
+        if (AdSdk.get(mContext).isInterstitialLoaded(interstitialPlace)) {
+            String loadedSdk = AdSdk.get(mContext).getLoadedSdk(interstitialPlace);
             Log.v(TAG, "loaded sdk : " + loadedSdk);
-            AdSdk.get(mContext).showInterstitial("interstitial");
+            AdSdk.get(mContext).showInterstitial(interstitialPlace);
         } else {
-            AdSdk.get(mContext).loadInterstitial("interstitial", new FullScreenAdListener(textView));
+            AdSdk.get(mContext).loadInterstitial(interstitialPlace, new FullScreenAdListener(textView));
         }
     }
 
     private void loadSplash(TextView textView) {
-        if (AdSdk.get(mContext).isSplashLoaded("admob_splash")) {
-            AdSdk.get(mContext).showSplash("admob_splash");
+        String sdk = (String) mAdSdkSpinner.getSelectedItem();
+        String splashPlace = String.format(Locale.getDefault(), SPLASH_PREFIX, sdk.toLowerCase(Locale.getDefault()));
+        if (AdSdk.get(mContext).isSplashLoaded(splashPlace)) {
+            mSplashContainer.setVisibility(View.VISIBLE);
+            AdSdk.get(mContext).showSplash(splashPlace, mSplashContainer);
         } else {
-            AdSdk.get(mContext).loadSplash("admob_splash", new FullScreenAdListener(textView));
+            AdSdk.get(mContext).loadSplash(splashPlace, new FullScreenAdListener(textView));
         }
     }
 
     private void loadReward(TextView textView) {
-        if (AdSdk.get(mContext).isRewardedVideoLoaded("reward_video")) {
-            AdSdk.get(mContext).showRewardedVideo("reward_video");
+        String sdk = (String) mAdSdkSpinner.getSelectedItem();
+        String rewardPlace = String.format(Locale.getDefault(), REWARD_PREFIX, sdk.toLowerCase(Locale.getDefault()));
+        if (AdSdk.get(mContext).isRewardedVideoLoaded(rewardPlace)) {
+            AdSdk.get(mContext).showRewardedVideo(rewardPlace);
         } else {
-            AdSdk.get(mContext).loadRewardedVideo("reward_video", new FullScreenAdListener(textView) {
+            AdSdk.get(mContext).loadRewardedVideo(rewardPlace, new FullScreenAdListener(textView) {
                 @Override
                 public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
                     super.onRewarded(placeName, source, adType, pid, item);
@@ -173,93 +288,78 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         }
     }
 
-    private void loadAdComplex() {
-        if (AdSdk.get(mContext).isComplexAdsLoaded("ad_complex")) {
-            String loadedSdk = AdSdk.get(mContext).getLoadedSdk("ad_complex");
-            Log.v(TAG, "loaded sdk : " + loadedSdk);
-            AdSdk.get(mContext).showComplexAds("ad_complex");
-            return;
-        }
+    private void loadBanner(TextView textView) {
+        String sdk = (String) mAdSdkSpinner.getSelectedItem();
         AdParams.Builder builder = new AdParams.Builder();
-        String styles[] = new String[]{AdExtra.NATIVE_CARD_FULL, AdExtra.NATIVE_CARD_SMALL, AdExtra.NATIVE_CARD_MEDIUM, AdExtra.NATIVE_CARD_TINY, AdExtra.NATIVE_CARD_LARGE};
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, styles[new Random(System.currentTimeMillis()).nextInt(styles.length)]);
-        AdParams adParams = builder.build();
-        AdSdk.get(mContext).loadComplexAds("ad_complex", adParams, new SimpleAdSdkListener() {
-            @Override
-            public void onLoaded(String placeName, String source, String adType, String pid) {
-                Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
-                String loadedSdk = AdSdk.get(mContext).getLoadedSdk(placeName);
-                Log.v(TAG, "loaded sdk : " + loadedSdk);
-                AdSdk.get(mContext).showComplexAds(placeName);
-            }
-
-            @Override
-            public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
-                Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , onDestroy : " + complexAds);
-            }
-        });
+        String bannerPlace = String.format(Locale.getDefault(), BANNER_PREFIX, sdk.toLowerCase(Locale.getDefault()));
+        if (AdSdk.get(mContext).isAdViewLoaded(bannerPlace)) {
+            AdSdk.get(mContext).showAdView(bannerPlace, mNativeBannerLayout);
+        } else {
+            String banner = (String) mAdBannerSizeSpinner.getSelectedItem();
+            builder.setBannerSize(AdExtra.AD_SDK_COMMON, BANNER_MAP.get(banner));
+            AdParams adParams = builder.build();
+            AdSdk.get(mContext).loadAdView(bannerPlace, adParams, new FullScreenAdListener(textView));
+        }
     }
 
-    private void loadAdViewCommon() {
+    private AdParams getNativeParams() {
         AdParams.Builder builder = new AdParams.Builder();
-        //  设置外部布局参数
-        int layoutId = LAYOUT[new Random().nextInt(LAYOUT.length)];
-//        if (layoutId == R.layout.ad_common_native_card_small) {
-//            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_LARGE_BANNER);
-//        } else {
-//            builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.ADMOB_MEDIUM_RECTANGLE);
-//        }
-        builder.setBannerSize(AdExtra.AD_SDK_ADMOB, AdExtra.COMMON_ADAPTIVE_BANNER);
-        builder.setBannerSize(AdExtra.AD_SDK_FACEBOOK, AdExtra.FB_MEDIUM_RECTANGLE);
-        // builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, layoutId);
-        builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
-        builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
-        builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
-        builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
-        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
-        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
-        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
-        String [] values = new String[] {AdExtra.NATIVE_CARD_LITTLE, AdExtra.NATIVE_CARD_LARGE, AdExtra.NATIVE_CARD_SMALL, AdExtra.NATIVE_CARD_TINY, AdExtra.NATIVE_CARD_MEDIUM};
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, values[new Random().nextInt(values.length)]);
+        String layout = (String) mAdLayoutSpinner.getSelectedItem();
+        String layoutStyle;
+        String sdkArray[] = getResources().getStringArray(R.array.ad_layout);
+        if ("Random".equalsIgnoreCase(layout)) {
+            layoutStyle = sdkArray[new Random().nextInt(sdkArray.length - 4) + 4];
+            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layoutStyle.toLowerCase());
+        } else if ("Custom Small".equalsIgnoreCase(layout)) {
+            builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_small);
+            builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
+            builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
+            builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
+            builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
+            builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
+            builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+            builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+        } else if ("Custom Medium".equalsIgnoreCase(layout)) {
+            builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_medium);
+            builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
+            builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
+            builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
+            builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
+            builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
+            builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+            builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+        } else if ("Custom Large".equalsIgnoreCase(layout)) {
+            builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_large);
+            builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
+            builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
+            builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
+            builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
+            builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
+            builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+            builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+        } else {
+            layoutStyle = layout;
+            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layoutStyle.toLowerCase());
+        }
         builder.setNativeTemplateWidth(AdExtra.AD_SDK_COMMON, Utils.dp2px(mContext, 200));
         AdParams adParams = builder.build();
-
-        AdSdk.get(mContext).loadAdView("banner_and_native", adParams, mSimpleAdsdkListener);
+        return adParams;
     }
 
-    private void showAdView(String placeName) {
-        AdParams.Builder builder = new AdParams.Builder();
-        builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_large);
-        builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
-        builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
-        builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
-        builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
-        builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
-        builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
-        builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
-        AdParams adParams = builder.build();
-
-        RelativeLayout layout = new RelativeLayout(this);
-        layout.setGravity(Gravity.CENTER);
-        Dialog dialog = new Dialog(this);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setContentView(layout);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.width = getResources().getDisplayMetrics().widthPixels;
-        dialog.getWindow().setAttributes(params);
-        AdSdk.get(this).showAdView(placeName, null, adParams, layout);
-        dialog.show();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
+    private void loadNative(TextView textView) {
+        AdParams adParams = getNativeParams();
+        String sdk = (String) mAdSdkSpinner.getSelectedItem();
+        String nativePlace = String.format(Locale.getDefault(), NATIVE_PREFIX, sdk.toLowerCase(Locale.getDefault()));
+        Switch switchButton = findViewById(R.id.mediation_template);
+        if (switchButton.isChecked()) {
+            nativePlace += "_template";
+        }
+        if (AdSdk.get(mContext).isAdViewLoaded(nativePlace)) {
+            AdSdk.get(mContext).showAdView(nativePlace, null, adParams, mNativeBannerLayout);
+            CustomDrawable.setBackground(mNativeBannerLayout);
+            return;
+        }
+        AdSdk.get(mContext).loadAdView(nativePlace, adParams, new FullScreenAdListener(textView));
     }
 
     private void runToast(final String toast) {
@@ -336,74 +436,17 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         }
     };
 
-    private SimpleAdSdkListener mRewardListener = new SimpleAdSdkListener() {
-        @Override
-        public void onLoaded(String placeName, String source, String adType, String pid) {
-            updateRewardButton();
-        }
-
-        @Override
-        public void onImp(String placeName, String source, String adType, String network, String pid) {
-            mRewardShowTimes++;
-            updateRewardButton();
-        }
-
-        @Override
-        public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
-            mRewardGetTimes++;
-            updateRewardButton();
-        }
-
-        @Override
-        public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
-            updateRewardButton();
-        }
-
-        @Override
-        public void onUpdate(String placeName, String source, String adType, String pid) {
-            updateRewardButton();
-        }
-    };
-
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        AdSdk.get(this).stopAutoReward();
-        AdSdk.get(this).destroy("banner_and_native");
-    }
-
-    private void updateRewardButton() {
-        int loadedAdCount = AdSdk.get(this).getLoadedAdCount("reward_video");
-        Log.v(Log.TAG, "loadedAdCount : " + loadedAdCount);
-        mRewardButton.setText("加载成功数 : " + loadedAdCount + " (" + mRewardGetTimes + "/" + mRewardShowTimes + ")");
-        mRewardButton.setEnabled(loadedAdCount > 0);
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        try {
+            String prefKey = (String) parent.getTag();
+            Utils.putLong(this, prefKey, position);
+        } catch (Exception e) {
+        }
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (buttonView.getId() == R.id.auto_reward) {
-            if (isChecked) {
-                AdSdk.get(mContext).setAutoRewardListener("reward_video", mRewardListener);
-                AdSdk.get(mContext).startAutoReward("reward_video", 5000, 0);
-            } else {
-                AdSdk.get(this).stopAutoReward();
-            }
-        }
-    }
-
-    private void showSpread() {
-        AdSdk.get(this).loadComplexAds("show_spread", new SimpleAdSdkListener() {
-            @Override
-            public void onLoaded(String placeName, String source, String adType, String pid) {
-                Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
-                AdSdk.get(getApplicationContext()).showComplexAds(placeName);
-            }
-
-            @Override
-            public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
-                Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , onDestroy : " + complexAds);
-            }
-        });
+    public void onNothingSelected(AdapterView<?> parent) {
     }
 
     class FullScreenAdListener extends SimpleAdSdkListener {
@@ -420,6 +463,17 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         }
 
         @Override
+        public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
+            updateLoadStatus(textView, placeName);
+        }
+
+        @Override
+        public void onShow(String placeName, String source, String adType, String pid) {
+            Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
+            updateLoadStatus(textView, placeName);
+        }
+
+        @Override
         public void onImp(String placeName, String source, String adType, String network, String pid) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
             updateLoadStatus(textView, placeName);
@@ -429,12 +483,14 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
             updateLoadStatus(textView, placeName);
+            runToast(item.toString());
         }
 
         @Override
         public void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
             updateLoadStatus(textView, placeName);
+            mSplashContainer.setVisibility(View.GONE);
         }
 
         @Override

@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2019-3-29.
  */
 
-public class ListViewForAd extends Activity {
+public class AdListViewActivity extends Activity {
 
     private static final String AD_PLACE_NAME = "banner_and_native";
     private ListView mListView;
