@@ -31,6 +31,10 @@ public class ScanningAnimatorView extends View implements ValueAnimator.Animator
 
     public ScanningAnimatorView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initView(context, attrs);
+    }
+
+    private void initView(Context context, AttributeSet attrs) {
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs, R.styleable.ScanningAnimatorView, 0, 0);
         try {
@@ -81,7 +85,7 @@ public class ScanningAnimatorView extends View implements ValueAnimator.Animator
         if (isStarted) {
             scanningAnim.removeUpdateListener(this);
             scanningAnim.end();
-            postInvalidate();
+            postDrawView();
             isStarted = false;
         }
     }
@@ -89,12 +93,19 @@ public class ScanningAnimatorView extends View implements ValueAnimator.Animator
     @Override
     public void onAnimationUpdate(ValueAnimator valueAnimator) {
         scanningLineY = (Integer) valueAnimator.getAnimatedValue();
+        postDrawView();
+    }
+
+    private void postDrawView() {
         postInvalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+        drawView(canvas);
+    }
+
+    private void drawView(Canvas canvas) {
         int width = getWidth();
         int height = getHeight();
         int imgHeight = fgBitmap.getHeight();
@@ -137,5 +148,4 @@ public class ScanningAnimatorView extends View implements ValueAnimator.Animator
         }
 
     }
-
 }
