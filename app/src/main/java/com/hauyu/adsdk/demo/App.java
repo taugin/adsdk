@@ -1,8 +1,10 @@
 package com.hauyu.adsdk.demo;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
 import com.rabbit.adsdk.AdImpData;
@@ -99,6 +101,37 @@ public class App extends Application {
         String channel = getChannel(this);
         TCAgent.init(this, appId, channel);
         TCAgent.setReportUncaughtExceptions(true);
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                TCAgent.onPageStart(activity, activity.getClass().getSimpleName());
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+                TCAgent.onPageEnd(activity, activity.getClass().getSimpleName());
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+            }
+        });
     }
 
     private static String getChannel(Context context) {
