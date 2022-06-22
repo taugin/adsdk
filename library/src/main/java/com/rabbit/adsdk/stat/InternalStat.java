@@ -37,6 +37,7 @@ public class InternalStat {
     private static final String SDK_NAME_FIREBASE = "firebase";
     private static final String SDK_NAME_APPSFLYER = "appsflyer";
     private static final String SDK_NAME_FLURRY = "flurry";
+    private static final String SDK_NAME_TALKING_DATA = "talkingdata";
     private static final String SDK_NAME_UMENG_OBJECT_METHOD = "umeng_object_method";
 
     private static final Map<String, Boolean> sSdkIntegrated;
@@ -90,6 +91,15 @@ public class InternalStat {
             sdkIntegrated = false;
         }
         sSdkIntegrated.put(SDK_NAME_FLURRY, sdkIntegrated);
+
+        try {
+            Class.forName("com.tendcloud.tenddata.TCAgent");
+            sdkIntegrated = true;
+        } catch (Exception | Error e) {
+            Log.iv(Log.TAG_SDK, SDK_NAME_TALKING_DATA + " error : " + e);
+            sdkIntegrated = false;
+        }
+        sSdkIntegrated.put(SDK_NAME_TALKING_DATA, sdkIntegrated);
     }
 
     /**
@@ -487,6 +497,55 @@ public class InternalStat {
         }
     }
 
+    /**
+     * 发送talking data统计事件
+     *
+     * @param context
+     * @param eventId
+     * @param value
+     * @param extra
+     */
+    public static void sendTalkingData(Context context, String eventId, String value, Map<String, Object> extra) {
+        sendTalkingData(context, eventId, value, extra, true);
+    }
+
+    public static void sendTalkingData(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
+        String platform = SDK_NAME_TALKING_DATA;
+        if (!isReportPlatform(context, eventId, platform, defaultValue)) {
+            return;
+        }
+        HashMap<String, Object> map = new HashMap<String, Object>(extra);
+        map.put("event_id", eventId);
+        if (!TextUtils.isEmpty(value)) {
+            map.put("entry_point", value);
+        }
+        double eventValue = 0.0f;
+        try {
+            if (map != null) {
+                Object object = map.get("value");
+                if (object instanceof Number) {
+                    eventValue = ((Number) object).doubleValue();
+                }
+            }
+        } catch (Exception e) {
+        }
+        Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + map);
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.tendcloud.tenddata.TCAgent");
+            Method method = clazz.getDeclaredMethod("onEvent", Context.class, String.class, String.class, Map.class, double.class);
+            method.invoke(null, context, eventId, value, map, eventValue);
+            reportPlatformEventCount(context, platform);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.iv(Log.TAG_SDK, "error : " + error);
+        }
+    }
+
     public static void reportEvent(Context context, String key) {
         reportEvent(context, key, null, null);
     }
@@ -509,6 +568,7 @@ public class InternalStat {
         sendAppsflyer(context, key, value, map, false);
         sendFirebaseAnalytics(context, key, value, map);
         sendFlurry(context, key, value, map);
+        sendTalkingData(context, key, value, map);
     }
 
     public static void reportError(Context context, Throwable e) {

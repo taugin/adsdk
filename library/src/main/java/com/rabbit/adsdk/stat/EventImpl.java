@@ -364,6 +364,13 @@ public class EventImpl implements IEvent {
         return result;
     }
 
+    private boolean isReportTalkingData(Context context) {
+        String value = DataManager.get(context).getString("ad_report_talkingdata");
+        boolean result = parseReport(value, true);
+        Log.iv(Log.TAG_SDK, "is talkingdata flurry : " + result);
+        return result;
+    }
+
     private Map<String, Object> addExtraForError(Context context, Map<String, Object> extra) {
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -410,6 +417,9 @@ public class EventImpl implements IEvent {
         }
         if (isReportFlurry(context)) {
             InternalStat.sendFlurry(context, eventId, value, maps);
+        }
+        if (isReportTalkingData(context)) {
+            InternalStat.sendTalkingData(context, eventId, value, maps);
         }
     }
 

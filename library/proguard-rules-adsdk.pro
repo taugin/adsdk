@@ -115,3 +115,8 @@
 
 #chartboost
 -keep class com.chartboost.** { *; }
+
+#talking data
+-dontwarn com.tendcloud.tenddata.**
+-keep class com.tendcloud.** {*;}
+-keep public class com.tendcloud.** {  public protected *;}
