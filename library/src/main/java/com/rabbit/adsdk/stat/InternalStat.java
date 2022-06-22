@@ -514,7 +514,10 @@ public class InternalStat {
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
             return;
         }
-        HashMap<String, Object> map = new HashMap<String, Object>(extra);
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        if (extra != null && !extra.isEmpty()) {
+            map.putAll(extra);
+        }
         map.put("event_id", eventId);
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
