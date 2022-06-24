@@ -9,8 +9,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -102,7 +105,34 @@ public class ScanningAnimatorView extends View implements ValueAnimator.Animator
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawView(canvas);
+        drawView2(canvas);
+    }
+
+    private PorterDuffXfermode mPorterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
+
+    private void drawView2(Canvas canvas) {
+        int width = getWidth();
+        int height = getHeight();
+        int imgHeight = fgBitmap.getHeight();
+        int imgWidth = fgBitmap.getWidth();
+        int halfDeltaH = (height - imgHeight) / 2;
+        int halfDeltaW = (width - imgWidth) / 2;
+        canvas.drawBitmap(bgBitmap, halfDeltaW, halfDeltaH, null);
+        int layerId = 0;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            canvas.saveLayer(0, 0, width, height, null, Canvas.ALL_SAVE_FLAG);
+        } else {
+            canvas.saveLayer(0, 0, width, height, null);
+        }
+        canvas.drawColor(Color.TRANSPARENT);
+        canvas.drawBitmap(fgBitmap, halfDeltaW, halfDeltaH, null);
+        paint.setColor(coverColor);
+        paint.setXfermode(mPorterDuffXfermode);
+        canvas.drawRect(0, 0, width, scanningLineY, paint);
+        paint.setXfermode(null);
+        paint.setColor(scanningLineColor);
+        canvas.drawLine(0, scanningLineY, width, scanningLineY, paint);
+        canvas.restoreToCount(layerId);
     }
 
     private void drawView(Canvas canvas) {
