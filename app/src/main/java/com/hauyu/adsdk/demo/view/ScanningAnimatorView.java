@@ -120,9 +120,9 @@ public class ScanningAnimatorView extends View implements ValueAnimator.Animator
         canvas.drawBitmap(bgBitmap, halfDeltaW, halfDeltaH, null);
         int layerId = 0;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            canvas.saveLayer(0, 0, width, height, null, Canvas.ALL_SAVE_FLAG);
+            layerId = canvas.saveLayer(0, 0, width, height, null, Canvas.ALL_SAVE_FLAG);
         } else {
-            canvas.saveLayer(0, 0, width, height, null);
+            layerId = canvas.saveLayer(0, 0, width, height, null);
         }
         canvas.drawColor(Color.TRANSPARENT);
         canvas.drawBitmap(fgBitmap, halfDeltaW, halfDeltaH, null);
