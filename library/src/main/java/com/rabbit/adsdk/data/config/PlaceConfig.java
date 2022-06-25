@@ -21,6 +21,8 @@ public class PlaceConfig {
 
     private String scenePrefix;
 
+    private boolean disableVpnLoad = false;
+
     public List<AdPlace> getAdPlaceList() {
         return adPlaceList;
     }
@@ -51,6 +53,14 @@ public class PlaceConfig {
 
     public void setScenePrefix(String scenePrefix) {
         this.scenePrefix = scenePrefix;
+    }
+
+    public boolean isDisableVpnLoad() {
+        return disableVpnLoad;
+    }
+
+    public void setDisableVpnLoad(boolean disableVpnLoad) {
+        this.disableVpnLoad = disableVpnLoad;
     }
 
     /**

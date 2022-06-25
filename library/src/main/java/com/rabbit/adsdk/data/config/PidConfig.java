@@ -72,7 +72,7 @@ public class PidConfig {
     private int splashTimeout = 15000;
 
     // 是否禁止VPN模式加载
-    private boolean disableVpn = false;
+    private boolean disableVpnLoad = false;
 
     public String getPlaceName() {
         return placeName;
@@ -290,12 +290,12 @@ public class PidConfig {
         this.splashTimeout = splashTimeout;
     }
 
-    public boolean isDisableVpn() {
-        return disableVpn;
+    public boolean isDisableVpnLoad() {
+        return disableVpnLoad;
     }
 
-    public void setDisableVpn(boolean disableVpn) {
-        this.disableVpn = disableVpn;
+    public void setDisableVpnLoad(boolean disableVpnLoad) {
+        this.disableVpnLoad = disableVpnLoad;
     }
 
     public boolean isAdmob() {

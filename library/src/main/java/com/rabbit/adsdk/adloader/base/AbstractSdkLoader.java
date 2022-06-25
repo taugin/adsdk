@@ -405,8 +405,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     private boolean isDisableVpnLoad() {
-        boolean disableVpn = mPidConfig.isDisableVpn();
-        return disableVpn && Utils.isVPNConnected(mContext);
+        boolean disableVpnGlobal = DataManager.get(mContext).isDisableVpn();
+        boolean disableVpn = mPidConfig.isDisableVpnLoad();
+        return (disableVpnGlobal || disableVpn) && Utils.isVPNConnected(mContext);
     }
 
     private void processDisableVpn() {

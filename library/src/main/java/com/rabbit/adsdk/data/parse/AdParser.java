@@ -62,6 +62,7 @@ public class AdParser implements IParser {
             List<AdPlace> adPlaces = null;
             Map<String, String> adrefs = null;
             String scenePrefix = null;
+            boolean disableVpnLoad = false;
             if (jobj.has(ADPLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
             }
@@ -71,6 +72,9 @@ public class AdParser implements IParser {
             if (jobj.has(SCENE_PREFIX)) {
                 scenePrefix = jobj.getString(SCENE_PREFIX);
             }
+            if (jobj.has(DISABLE_VPN_LOAD)) {
+                disableVpnLoad = jobj.getInt(DISABLE_VPN_LOAD) == 1;
+            }
             if (adPlaces != null
                     || adrefs != null) {
                 placeConfig = new PlaceConfig();
@@ -79,6 +83,7 @@ public class AdParser implements IParser {
             }
             if (placeConfig != null) {
                 placeConfig.setScenePrefix(scenePrefix);
+                placeConfig.setDisableVpnLoad(disableVpnLoad);
             }
         } catch (Exception e) {
             Log.v(Log.TAG, "parseAdConfigInternal error : " + e);
@@ -301,8 +306,8 @@ public class AdParser implements IParser {
             if (jobj.has(SPLASH_TIME_OUT)) {
                 pidConfig.setSplashTimeout(jobj.getInt(SPLASH_TIME_OUT));
             }
-            if (jobj.has(DISABLE_VPN)) {
-                pidConfig.setDisableVpn(jobj.getInt(DISABLE_VPN) == 1);
+            if (jobj.has(DISABLE_VPN_LOAD)) {
+                pidConfig.setDisableVpnLoad(jobj.getInt(DISABLE_VPN_LOAD) == 1);
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

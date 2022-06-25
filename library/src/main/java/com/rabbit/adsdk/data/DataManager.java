@@ -55,7 +55,7 @@ public class DataManager {
     }
 
     private Context mContext;
-    private PlaceConfig mLocalPlaceConfig;
+    private PlaceConfig mPlaceConfig;
     private IParser mParser;
 
     public void init() {
@@ -65,7 +65,7 @@ public class DataManager {
     }
 
     private void parseLocalData() {
-        if (mLocalPlaceConfig == null && mParser != null) {
+        if (mPlaceConfig == null && mParser != null) {
             String cfgName = getConfigName();
             String defName = getDefaultName();
             Log.iv(Log.TAG_SDK, "name : " + cfgName + "/" + defName);
@@ -79,9 +79,9 @@ public class DataManager {
             if (TextUtils.isEmpty(data)) {
                 data = Utils.readConfig(mContext, defName + CONFIG_SUFFIX2);
             }
-            mLocalPlaceConfig = mParser.parseAdConfig(data);
-            if (mLocalPlaceConfig != null) {
-                mLocalPlaceConfig.setAdConfigMd5(Utils.string2MD5(data));
+            mPlaceConfig = mParser.parseAdConfig(data);
+            if (mPlaceConfig != null) {
+                mPlaceConfig.setAdConfigMd5(Utils.string2MD5(data));
                 Log.v(Log.TAG, "locale data has been set success");
             }
         }
@@ -93,11 +93,11 @@ public class DataManager {
         data = getString(DATA_CONFIG);
         data = checkLastData(data, DATA_CONFIG);
         if (!TextUtils.isEmpty(data)
-                && (mLocalPlaceConfig == null || !TextUtils.equals(mLocalPlaceConfig.getAdConfigMd5(), Utils.string2MD5(data)))) {
+                && (mPlaceConfig == null || !TextUtils.equals(mPlaceConfig.getAdConfigMd5(), Utils.string2MD5(data)))) {
             if (mParser != null) {
-                mLocalPlaceConfig = mParser.parseAdConfig(data);
-                if (mLocalPlaceConfig != null) {
-                    mLocalPlaceConfig.setAdConfigMd5(Utils.string2MD5(data));
+                mPlaceConfig = mParser.parseAdConfig(data);
+                if (mPlaceConfig != null) {
+                    mPlaceConfig.setAdConfigMd5(Utils.string2MD5(data));
                     Log.iv(Log.TAG, "remote data has been set success");
                 }
             }
@@ -107,7 +107,7 @@ public class DataManager {
     public PlaceConfig getAdConfig() {
         parseRemoteData();
         parseLocalData();
-        return mLocalPlaceConfig;
+        return mPlaceConfig;
     }
 
     private String getConfigName() {
@@ -220,10 +220,17 @@ public class DataManager {
 
     public String getScenePrefix() {
         String scenePrefix = getString(IParser.SCENE_PREFIX);
-        if (TextUtils.isEmpty(scenePrefix) && mLocalPlaceConfig != null) {
-            scenePrefix = mLocalPlaceConfig.getScenePrefix();
+        if (TextUtils.isEmpty(scenePrefix) && mPlaceConfig != null) {
+            scenePrefix = mPlaceConfig.getScenePrefix();
         }
         return scenePrefix;
+    }
+
+    public boolean isDisableVpn() {
+        if (mPlaceConfig != null) {
+            return mPlaceConfig.isDisableVpnLoad();
+        }
+        return false;
     }
 
     /**
@@ -234,8 +241,8 @@ public class DataManager {
      */
     public boolean isPlaceValidate(String placeName) {
         AdPlace adPlace = null;
-        if (mLocalPlaceConfig != null) {
-            adPlace = mLocalPlaceConfig.get(placeName);
+        if (mPlaceConfig != null) {
+            adPlace = mPlaceConfig.get(placeName);
         }
         if (adPlace == null) {
             adPlace = getRemoteAdPlace(placeName);
