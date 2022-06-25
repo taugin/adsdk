@@ -301,6 +301,9 @@ public class AdParser implements IParser {
             if (jobj.has(SPLASH_TIME_OUT)) {
                 pidConfig.setSplashTimeout(jobj.getInt(SPLASH_TIME_OUT));
             }
+            if (jobj.has(DISABLE_VPN)) {
+                pidConfig.setDisableVpn(jobj.getInt(DISABLE_VPN) == 1);
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

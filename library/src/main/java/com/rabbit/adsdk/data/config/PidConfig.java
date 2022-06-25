@@ -65,9 +65,14 @@ public class PidConfig {
 
     private String sceneId;
 
+    // 是否展示开屏图标
     private boolean showSplashIcon = true;
 
+    // 开始加载超时值
     private int splashTimeout = 15000;
+
+    // 是否禁止VPN模式加载
+    private boolean disableVpn = false;
 
     public String getPlaceName() {
         return placeName;
@@ -283,6 +288,14 @@ public class PidConfig {
 
     public void setSplashTimeout(int splashTimeout) {
         this.splashTimeout = splashTimeout;
+    }
+
+    public boolean isDisableVpn() {
+        return disableVpn;
+    }
+
+    public void setDisableVpn(boolean disableVpn) {
+        this.disableVpn = disableVpn;
     }
 
     public boolean isAdmob() {

@@ -100,6 +100,8 @@ public interface IParser {
     String SPLASH_ICON = "si";
     // 开屏加载超时时长
     String SPLASH_TIME_OUT = "sto";
+    // 是否禁止vpn模式加载
+    String DISABLE_VPN = "dv";
 
     // banner
     String BANNER = "banner";

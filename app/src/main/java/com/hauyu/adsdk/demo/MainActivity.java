@@ -75,6 +75,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, 0x1, 0, "CustomView");
         menu.add(0, 0x2, 0, "AdListView");
+        menu.add(0, 0x3, 0, "VpnChecker");
         return true;
     }
 
@@ -85,6 +86,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 startActivity(new Intent(this, CustomViewActivity.class));
             } else if (item.getItemId() == 0x2) {
                 startActivity(new Intent(this, AdListViewActivity.class));
+            } else if (item.getItemId() == 0x3) {
+                String toastString = Utils.isVPNConnected(this) ? "VPN已连接" : "VPN已断开";
+                Toast.makeText(this, toastString, Toast.LENGTH_SHORT).show();
             }
         }
         return true;

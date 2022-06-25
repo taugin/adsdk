@@ -342,6 +342,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             processExceedReqTimes();
             return false;
         }
+
+        // 是否禁止vpn模式加载
+        if (isDisableVpnLoad()) {
+            processDisableVpn();
+            return false;
+        }
         return true;
     }
 
@@ -357,7 +363,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private void processExceedReqTimes() {
         long reqTimes = AdPolicy.get(mContext).getReqTimes(getAdPlaceName(), getSdkName());
         Log.iv(Log.TAG, formatLog("exceed max req times : " + reqTimes + "/" + getMaxReqTimes()));
-        notifyAdLoadFailed(Constant.AD_ERROR_LIMIT_ADS, "limit ads");
+        notifyAdLoadFailed(Constant.AD_ERROR_EXCEED_REQ_TIME, "exceed max req times");
     }
 
     private boolean isExceedReqTimes() {
@@ -396,6 +402,16 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private void processImpByRatio() {
         Log.iv(Log.TAG, formatLog("ratio not match"));
         notifyAdLoadFailed(Constant.AD_ERROR_RATIO, "ratio not match");
+    }
+
+    private boolean isDisableVpnLoad() {
+        boolean disableVpn = mPidConfig.isDisableVpn();
+        return disableVpn && Utils.isVPNConnected(mContext);
+    }
+
+    private void processDisableVpn() {
+        Log.iv(Log.TAG, formatLog("disable vpn load"));
+        notifyAdLoadFailed(Constant.AD_ERROR_DISABLE_VPN, "disable vpn load");
     }
 
     private int getMaxReqTimes() {
@@ -1073,6 +1089,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void onReportAdImpData(Map<String, Object> adImpData) {
         if (isReportAdImpData()) {
+            if (adImpData != null) {
+                adImpData.put("vpn", Boolean.valueOf(Utils.isVPNConnected(mContext)));
+            }
             InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpData);
         }
         OnAdImpressionListener l = AdLoadManager.get(mContext).getOnAdImpressionListener();

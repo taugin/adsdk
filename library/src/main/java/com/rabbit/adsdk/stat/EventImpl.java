@@ -134,6 +134,9 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "request", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm, null, null);
+        if (extra != null) {
+            extra.put("vpn", Boolean.valueOf(Utils.isVPNConnected(context)));
+        }
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_request", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
@@ -182,6 +185,9 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "imp", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
+        if (extra != null) {
+            extra.put("vpn", Boolean.valueOf(Utils.isVPNConnected(context)));
+        }
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_imp", placeName, extra);
         reportEvent(context, eventId, placeName, extra);

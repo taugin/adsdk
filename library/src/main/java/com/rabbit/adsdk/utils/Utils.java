@@ -13,6 +13,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
@@ -757,5 +759,18 @@ public class Utils {
         } catch (Exception e) {
         }
         return 0;
+    }
+
+    public static boolean isVPNConnected(Context context) {
+        boolean isVpnConn = false;
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_VPN);
+                isVpnConn = networkInfo != null && networkInfo.isConnected();
+            }
+        } catch (Exception | Error e) {
+        }
+        return isVpnConn;
     }
 }
