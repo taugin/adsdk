@@ -116,7 +116,7 @@ public class DataConfigRemote {
         return "_" + suffix.toLowerCase(Locale.getDefault());
     }
 
-    private String getMsSuffix() {
+    private String getMediaSourceSuffix() {
         String suffix = null;
         try {
             suffix = Utils.getString(mContext, Constant.AF_MEDIA_SOURCE);
@@ -140,7 +140,7 @@ public class DataConfigRemote {
     private String readConfigFromRemote(String key) {
         String value = null;
         String dataWithSuffix = null;
-        String mediaSourceSuffix = getMsSuffix();
+        String mediaSourceSuffix = getMediaSourceSuffix();
         String attrSuffix = getAfSuffix();
         String mediaSourceKey = key + mediaSourceSuffix;
         String attrKey = key + attrSuffix;
