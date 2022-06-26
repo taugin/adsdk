@@ -1091,7 +1091,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void onReportAdImpData(Map<String, Object> adImpData) {
         if (isReportAdImpData()) {
             if (adImpData != null) {
-                adImpData.put("vpn", Boolean.valueOf(Utils.isVPNConnected(mContext)));
+                adImpData.put("vs", Boolean.valueOf(Utils.isVPNConnected(mContext)));
             }
             InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpData);
         }
