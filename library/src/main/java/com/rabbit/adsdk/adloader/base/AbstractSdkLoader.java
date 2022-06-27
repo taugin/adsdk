@@ -114,7 +114,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         mPidConfig = pidConfig;
         mStat = EventImpl.get();
         if (isInitApplovin()) {
-            Log.iv(Log.TAG, "init applovin sdk first");
             AppLovinLoader.initApplovin(mContext);
         }
     }

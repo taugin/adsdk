@@ -99,6 +99,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                         appLovinSdk.getSettings().setVerboseLogging(isShowVerbose(activity));
                     } catch (Exception e) {
                     }
+                    Log.iv(Log.TAG, "start initializing applovin sdk");
                     appLovinSdk.initializeSdk(config -> {
                         Log.iv(Log.TAG, "applovin sdk init successfully");
                         try {
