@@ -200,6 +200,9 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "click", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
+        if (extra != null) {
+            extra.put("vs", Boolean.valueOf(Utils.isVPNConnected(context)));
+        }
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_click", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
