@@ -11,9 +11,11 @@ import android.text.TextUtils;
 
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.stat.InternalStat;
 
 import java.lang.ref.WeakReference;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -131,6 +133,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     }
 
     private OnAppMonitorCallback mOnAppMonitorCallback;
+
     public void setOnAppMonitorCallback(OnAppMonitorCallback callback) {
         mOnAppMonitorCallback = callback;
     }
@@ -147,6 +150,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     private Runnable mCheckRunnable;
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private ForegroundRunnable mForegroundRunnable = new ForegroundRunnable();
+    private AtomicBoolean mFromBackground = new AtomicBoolean(true);
 
     void onPaused() {
         this.mPaused = true;
@@ -176,14 +180,17 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     final class ForegroundRunnable implements Runnable {
         private boolean mFromBackground = false;
+
         public void setFromBackground(boolean fromBackground) {
             mFromBackground = fromBackground;
         }
+
         @Override
         public void run() {
             if (mOnAppMonitorCallback != null) {
                 mOnAppMonitorCallback.onForeground(mFromBackground, mTopActivity);
             }
+            reportAppStart();
         }
     }
 
@@ -197,13 +204,13 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
         public final void run() {
             synchronized (this.mActivityMonitor.mLockObject) {
                 if (!(this.mActivityMonitor.mResumed) || !(this.mActivityMonitor.mPaused)) {
-                    // LogHelper.v(LogHelper.TAG, "App is still foreground.");
                     if (mOnAppMonitorCallback != null) {
                         mOnAppMonitorCallback.onForeground(false, mTopActivity);
                     }
+                    reportAppStart();
                 } else {
+                    setBackgroundFlag();
                     this.mActivityMonitor.mResumed = false;
-                    // LogHelper.v(LogHelper.TAG, "App went background.");
                     if (mOnAppMonitorCallback != null) {
                         mOnAppMonitorCallback.onBackground();
                     }
@@ -222,5 +229,20 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
             }
         }
         return delayTime;
+    }
+
+    private void setBackgroundFlag() {
+        if (mFromBackground != null) {
+            mFromBackground.set(true);
+        }
+    }
+
+    /**
+     * 从后台切换前台时，上报e_app_start事件
+     */
+    private void reportAppStart() {
+        if (mFromBackground != null && mFromBackground.getAndSet(false)) {
+            InternalStat.reportEvent(mContext, "e_app_start");
+        }
     }
 }
