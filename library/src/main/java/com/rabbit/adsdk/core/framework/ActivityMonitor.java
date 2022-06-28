@@ -242,7 +242,13 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
      */
     private void reportAppStart() {
         if (mFromBackground != null && mFromBackground.getAndSet(false)) {
-            InternalStat.reportEvent(mContext, "e_app_start");
+            String foregroundClass;
+            try {
+                foregroundClass = mTopActivity.get().getClass().getName();
+            } catch (Exception e) {
+                foregroundClass = null;
+            }
+            InternalStat.reportEvent(mContext, "e_app_start", foregroundClass);
         }
     }
 }
