@@ -87,6 +87,8 @@ public class Constant {
     public static final String AF_ORGANIC = "Organic";
     public static final String PREF_REMOTE_CONFIG_UPDATE_TIME = "pref_remote_config_update_time";
 
+    public static final int ONE_DAY_MS = 24 * 3600 * 1000;
+
     /**
      * ADLOADER错误
      */

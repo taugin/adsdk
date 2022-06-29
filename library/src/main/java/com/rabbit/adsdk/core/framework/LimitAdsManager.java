@@ -165,11 +165,11 @@ public class LimitAdsManager {
     }
 
     private String getUserFlag() {
-        String userFlag = EventImpl.get().getUserFlag();
-        if (TextUtils.equals(userFlag, "true")) {
+        int activeDays = EventImpl.get().getActiveDays();
+        if (activeDays == 0) {
             return "1";
         }
-        if (TextUtils.equals(userFlag, "false")) {
+        if (activeDays > 0) {
             return "0";
         }
         return "-1";

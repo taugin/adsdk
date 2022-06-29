@@ -11,9 +11,13 @@ import android.text.TextUtils;
 
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.stat.InternalStat;
+import com.rabbit.adsdk.utils.Utils;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -248,7 +252,10 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
             } catch (Exception e) {
                 foregroundClass = null;
             }
-            InternalStat.reportEvent(mContext, "e_app_start", foregroundClass);
+            Map<String, Object> extra = new HashMap<>();
+            extra.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
+            extra.put("active_days", EventImpl.get().getActiveDays() + "d");
+            InternalStat.reportEvent(mContext, "e_app_start", foregroundClass, extra);
         }
     }
 }

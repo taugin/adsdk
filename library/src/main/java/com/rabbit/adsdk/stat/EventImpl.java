@@ -61,7 +61,8 @@ public class EventImpl implements IEvent {
         }
     }
 
-    public String getUserFlag() {
+    public int getActiveDays() {
+        int activeDays = -1;
         try {
             Calendar calendar = Calendar.getInstance();
             int nowYear = calendar.get(Calendar.YEAR);
@@ -90,19 +91,15 @@ public class EventImpl implements IEvent {
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e);
             }
-            if (nowTime < activeTime) {
-                return "error";
-            }
-            if (nowTime == activeTime) {
-                return "true";
-            }
-            if (nowTime > activeTime) {
-                return "false";
+            activeDays = Long.valueOf((nowTime - activeTime) / Constant.ONE_DAY_MS).intValue();
+            if (activeDays < 0) {
+                activeDays = 0;
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
+            activeDays = -1;
         }
-        return "error";
+        return activeDays;
     }
 
     private String generateEventIdAlias(Context context, String eventId) {
@@ -135,7 +132,7 @@ public class EventImpl implements IEvent {
         String eventId = generateEventId(context, "request", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm, null, null);
         if (extra != null) {
-            extra.put("vs", Boolean.valueOf(Utils.isVPNConnected(context)));
+            extra.put("vpn_status", Utils.isVPNConnected(context) ? "on" : "off");
         }
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_request", placeName, extra);
@@ -186,7 +183,7 @@ public class EventImpl implements IEvent {
         String eventId = generateEventId(context, "imp", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
         if (extra != null) {
-            extra.put("vs", Boolean.valueOf(Utils.isVPNConnected(context)));
+            extra.put("vpn_status", Utils.isVPNConnected(context) ? "on" : "off");
         }
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_imp", placeName, extra);
@@ -201,7 +198,7 @@ public class EventImpl implements IEvent {
         String eventId = generateEventId(context, "click", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
         if (extra != null) {
-            extra.put("vs", Boolean.valueOf(Utils.isVPNConnected(context)));
+            extra.put("vpn_status", Utils.isVPNConnected(context) ? "on" : "off");
         }
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_click", placeName, extra);
@@ -443,7 +440,7 @@ public class EventImpl implements IEvent {
         extra.put("network_pid", networkPid);
         extra.put("pid", pid);
         extra.put("ecpm", ecpm);
-        extra.put("new_user", getUserFlag());
+        extra.put("active_days", getActiveDays() + "d");
         return extra;
     }
 }

@@ -97,6 +97,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     /**
      * 判断是否先初始化applovin，聚合SDK需要重载次函数，先初始化applovin
+     *
      * @return
      */
     protected boolean isInitApplovin() {
@@ -1090,7 +1091,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void onReportAdImpData(Map<String, Object> adImpData) {
         if (isReportAdImpData()) {
             if (adImpData != null) {
-                adImpData.put("vs", Boolean.valueOf(Utils.isVPNConnected(mContext)));
+                adImpData.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
+                adImpData.put("active_days", EventImpl.get().getActiveDays() + "d");
             }
             InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpData);
         }
