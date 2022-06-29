@@ -178,7 +178,6 @@ public class InternalStat {
             bundle.putString("entry_point", value);
         }
         mapToBundle(extra, bundle);
-        bundle.putString("active_days", EventImpl.get().getActiveDays() + "d");
         Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + bundle);
         String error = null;
         try {
@@ -235,7 +234,6 @@ public class InternalStat {
                 }
             }
         }
-        map.put("active_days", EventImpl.get().getActiveDays() + "d");
         Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + map);
         String error = null;
         try {
@@ -308,7 +306,6 @@ public class InternalStat {
             map.put("entry_point", value);
         }
         checkUmengDataType(map, extra);
-        map.put("active_days", EventImpl.get().getActiveDays() + "d");
         Log.iv(Log.TAG_SDK, platform + " event object id : " + eventId + " , value : " + map);
         String error = null;
         try {
@@ -360,7 +357,6 @@ public class InternalStat {
                 }
             }
         }
-        map.put("active_days", EventImpl.get().getActiveDays() + "d");
         Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + map);
         String error = null;
         try {
@@ -432,7 +428,6 @@ public class InternalStat {
                 }
             }
         }
-        eventValue.put("active_days", EventImpl.get().getActiveDays() + "d");
         Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + eventValue);
         String error = null;
         try {
@@ -485,7 +480,6 @@ public class InternalStat {
                 }
             }
         }
-        eventValue.put("active_days", EventImpl.get().getActiveDays() + "d");
         Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + eventValue);
         String error = null;
         try {
@@ -538,7 +532,6 @@ public class InternalStat {
             }
         } catch (Exception e) {
         }
-        map.put("active_days", EventImpl.get().getActiveDays() + "d");
         Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + map);
         String error = null;
         try {

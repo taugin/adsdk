@@ -254,6 +254,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
             }
             Map<String, Object> extra = new HashMap<>();
             extra.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
+            extra.put("active_days", EventImpl.get().getActiveDays() + "d");
             InternalStat.reportEvent(mContext, "e_app_start", foregroundClass, extra);
         }
     }

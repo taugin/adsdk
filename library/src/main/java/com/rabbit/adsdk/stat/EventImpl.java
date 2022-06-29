@@ -197,9 +197,6 @@ public class EventImpl implements IEvent {
         }
         String eventId = generateEventId(context, "click", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
-        if (extra != null) {
-            extra.put("vpn_status", Utils.isVPNConnected(context) ? "on" : "off");
-        }
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_click", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
@@ -440,6 +437,7 @@ public class EventImpl implements IEvent {
         extra.put("network_pid", networkPid);
         extra.put("pid", pid);
         extra.put("ecpm", ecpm);
+        extra.put("active_days", getActiveDays() + "d");
         return extra;
     }
 }
