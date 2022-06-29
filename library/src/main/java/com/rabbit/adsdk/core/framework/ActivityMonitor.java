@@ -155,6 +155,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private ForegroundRunnable mForegroundRunnable = new ForegroundRunnable();
     private AtomicBoolean mFromBackground = new AtomicBoolean(true);
+    private long mEnterBackgroundTime = 0;
 
     void onPaused() {
         this.mPaused = true;
@@ -236,16 +237,18 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     }
 
     private void setBackgroundFlag() {
+        mEnterBackgroundTime = System.currentTimeMillis();
         if (mFromBackground != null) {
             mFromBackground.set(true);
         }
     }
 
     /**
-     * 从后台切换前台时，上报e_app_start事件
+     * 从后台切换前台时，时间间隔超过30秒，上报e_app_start事件
      */
     private void reportAppStart() {
-        if (mFromBackground != null && mFromBackground.getAndSet(false)) {
+        boolean longTimeBackground = System.currentTimeMillis() - mEnterBackgroundTime >= 30000;
+        if (mFromBackground != null && mFromBackground.getAndSet(false) && longTimeBackground) {
             String foregroundClass;
             try {
                 foregroundClass = mTopActivity.get().getClass().getName();
