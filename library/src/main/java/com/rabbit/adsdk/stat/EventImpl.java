@@ -440,7 +440,6 @@ public class EventImpl implements IEvent {
         extra.put("network_pid", networkPid);
         extra.put("pid", pid);
         extra.put("ecpm", ecpm);
-        extra.put("active_days", getActiveDays() + "d");
         return extra;
     }
 }
