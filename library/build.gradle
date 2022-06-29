@@ -83,7 +83,7 @@ dependencies {
     // facebook
     implementation 'com.facebook.android:audience-network-sdk:6.11.0'
     // applovin facebook mediation
-    implementation 'com.applovin.mediation:facebook-adapter:6.11.0.2@aar'
+    implementation 'com.applovin.mediation:facebook-adapter:6.11.0.4@aar'
     // tradplus facebook mediation
     implementation 'com.tradplusad:tradplus-facebook:1.7.9.0.01'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -91,14 +91,14 @@ dependencies {
     // admob
     implementation 'com.google.android.gms:play-services-ads:21.0.0'
     // applovin admob mediation
-    implementation 'com.applovin.mediation:google-adapter:21.0.0.1@aar'
-    implementation 'com.applovin.mediation:google-ad-manager-adapter:21.0.0.1@aar'
+    implementation 'com.applovin.mediation:google-adapter:21.0.0.2@aar'
+    implementation 'com.applovin.mediation:google-ad-manager-adapter:21.0.0.2@aar'
     // tradplus admob mediation
     implementation 'com.tradplusad:tradplus-googlex:2.7.9.0.01'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // mintegral
-    def mintegral_version = "16.1.51"
+    def mintegral_version = "16.1.61"
     implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
@@ -115,7 +115,7 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbsplash:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
     // applovin mintegral mediation
-    implementation 'com.applovin.mediation:mintegral-adapter:16.1.51.1@aar'
+    implementation 'com.applovin.mediation:mintegral-adapter:16.1.61.0@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.7.9.0.01'
 //////////////////////////////////////////////////////////////////////////////////////////

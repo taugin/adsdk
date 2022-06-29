@@ -134,7 +134,7 @@ public class SmaatoMediationAdapter
     public String getAdapterVersion()
     {
         // return com.applovin.mediation.adapters.smaato.BuildConfig.VERSION_NAME;
-        return "21.8.3.0";
+        return "21.8.3.1";
     }
 
     @Override
@@ -617,6 +617,7 @@ public class SmaatoMediationAdapter
                     }
 
                     ImageView maxNativeAdMediaView = null;
+                    MaxNativeAd.MaxNativeAdImage maxNativeMainImage = null;
                     if ( assets.images().size() > 0 )
                     {
                         NativeAdAssets.Image image = assets.images().get( 0 );
@@ -624,6 +625,7 @@ public class SmaatoMediationAdapter
                         {
                             maxNativeAdMediaView = new ImageView( context );
                             maxNativeAdMediaView.setImageDrawable( image.drawable() );
+                            maxNativeMainImage = new MaxNativeAd.MaxNativeAdImage( image.drawable() );
                         }
                     }
 
@@ -635,6 +637,10 @@ public class SmaatoMediationAdapter
                             .setBody( assets.text() )
                             .setMediaView( maxNativeAdMediaView )
                             .setCallToAction( assets.cta() );
+                    if ( AppLovinSdk.VERSION_CODE >= 11_04_03_99 )
+                    {
+                        builder.setMainImage( maxNativeMainImage );
+                    }
                     MaxNativeAd maxNativeAd = new MaxSmaatoNativeAd( builder );
 
                     log( "Native ad fully loaded: " + placementId );
