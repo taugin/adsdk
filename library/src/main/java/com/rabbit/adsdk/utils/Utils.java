@@ -637,7 +637,7 @@ public class Utils {
      * @param context
      * @return
      */
-    private static String getCountryFromLocale(Context context) {
+    public static String getCountryFromLocale(Context context) {
         String country = null;
         try {
             Locale locale = null;
@@ -648,6 +648,7 @@ public class Utils {
             }
             country = locale.getCountry().toLowerCase(Locale.getDefault());
         } catch (Exception e) {
+            country = "unknown";
         }
         return country;
     }

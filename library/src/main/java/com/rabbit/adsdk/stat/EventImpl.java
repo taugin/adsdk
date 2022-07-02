@@ -445,6 +445,7 @@ public class EventImpl implements IEvent {
         extra.put("pid", pid);
         extra.put("ecpm", ecpm);
         extra.put("active_days", getActiveDays() + "d");
+        extra.put("country", Utils.getCountryFromLocale(mContext));
         return extra;
     }
 }
