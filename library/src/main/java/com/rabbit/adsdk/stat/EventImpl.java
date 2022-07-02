@@ -61,6 +61,10 @@ public class EventImpl implements IEvent {
         }
     }
 
+    /**
+     * 获取活跃天数，最多统计2年的，最大值721，超过721的全按照721统计
+     * @return
+     */
     public int getActiveDays() {
         int activeDays = -1;
         try {
@@ -94,6 +98,9 @@ public class EventImpl implements IEvent {
             activeDays = Long.valueOf((nowTime - activeTime) / Constant.ONE_DAY_MS).intValue();
             if (activeDays < 0) {
                 activeDays = 0;
+            }
+            if (activeDays > 720) {
+                activeDays = 721;
             }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
