@@ -524,10 +524,8 @@ public class InternalStat {
         }
         double eventValue = 0.0f;
         try {
-            // value可能是td的内置关键字
             if (map != null && map.containsKey("value")) {
-                Object object = map.remove("value");
-                map.put("td_value", object);
+                Object object = map.get("value");
                 if (object instanceof Number) {
                     eventValue = ((Number) object).doubleValue();
                 }
