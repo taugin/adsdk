@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
@@ -247,19 +248,17 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
      * 从后台切换前台时，时间间隔超过30秒，上报e_app_start事件
      */
     private void reportAppStart() {
-        boolean longTimeBackground = System.currentTimeMillis() - mEnterBackgroundTime >= 30000;
-        if (mFromBackground != null && mFromBackground.getAndSet(false) && longTimeBackground) {
-            String foregroundClass;
-            try {
-                foregroundClass = mTopActivity.get().getClass().getName();
-            } catch (Exception e) {
-                foregroundClass = null;
-            }
+        long todayDate = Utils.getTodayTime();
+        long lastReportData = Utils.getLong(mContext, Constant.PREF_LAST_REPORT_APP_START_DATE);
+        if (todayDate != lastReportData) {
+            Utils.putLong(mContext, Constant.PREF_LAST_REPORT_APP_START_DATE, todayDate);
+            int activeDays = EventImpl.get().getActiveDays();
             Map<String, Object> extra = new HashMap<>();
             extra.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
-            extra.put("active_days", EventImpl.get().getActiveDays() + "d");
+            extra.put("active_days", activeDays + "d");
             extra.put("country", Utils.getCountryFromLocale(mContext));
-            InternalStat.reportEvent(mContext, "e_app_start", foregroundClass, extra);
+            extra.put("retention", "retention_day_" + activeDays);
+            InternalStat.reportEvent(mContext, "e_app_start", null, extra);
         }
     }
 }

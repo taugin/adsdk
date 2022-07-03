@@ -76,7 +76,7 @@ public class EventImpl implements IEvent {
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
-            long nowTime = calendar.getTimeInMillis();
+            long nowDate = calendar.getTimeInMillis();
 
             long userActiveTime = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
             calendar = Calendar.getInstance();
@@ -88,14 +88,14 @@ public class EventImpl implements IEvent {
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
-            long activeTime = calendar.getTimeInMillis();
+            long activeDate = calendar.getTimeInMillis();
 
             try {
-                Log.iv(Log.TAG_SDK, String.format("now : %d-%02d-%02d , active : %d-%02d-%02d, nowTime : %d , activeTime : %d", nowYear, nowMonth, nowDay, activeYear, activeMonth, activeDay, nowTime, activeTime));
+                Log.iv(Log.TAG_SDK, String.format("now : %d-%02d-%02d , active : %d-%02d-%02d, nowDate : %d , activeDate : %d", nowYear, nowMonth, nowDay, activeYear, activeMonth, activeDay, nowDate, activeDate));
             } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e);
             }
-            activeDays = Long.valueOf((nowTime - activeTime) / Constant.ONE_DAY_MS).intValue();
+            activeDays = Long.valueOf((nowDate - activeDate) / Constant.ONE_DAY_MS).intValue();
             if (activeDays < 0) {
                 activeDays = 0;
             }
