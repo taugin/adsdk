@@ -60,6 +60,7 @@ public class App extends Application {
             Map<String, Object> map = new HashMap<>();
             map.put("currency", "USD");
             map.put("value", curTotalRevenue);
+            map.put("micro_value", Double.valueOf(curTotalRevenue * 1000000).intValue());
             InternalStat.reportEvent(context, taichiEvent, map);
         } else {
             Utils.putFloat(context, prefRevenue, curTotalRevenue);
@@ -79,6 +80,7 @@ public class App extends Application {
         params.put("ad_format", adImpData.getFormat());
         params.put("ad_unit_name", unitName);
         params.put("value", adImpData.getValue());
+        params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
         params.put("currency", "USD"); // All Applovin revenue is sent in USD
         InternalStat.sendUmengObject(getApplicationContext(), "ad_impression", params);
         Log.v(Log.TAG, "params : " + params);

@@ -963,6 +963,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             String precision = maxAd.getRevenuePrecision();
             Map<String, Object> map = new HashMap<>();
             map.put(Constant.AD_VALUE, revenue);
+            map.put(Constant.AD_MICRO_VALUE, Double.valueOf(revenue * 1000000).intValue());
             map.put(Constant.AD_CURRENCY, "USD");
             map.put(Constant.AD_NETWORK, networkName);
             map.put(Constant.AD_NETWORK_PID, placementId);

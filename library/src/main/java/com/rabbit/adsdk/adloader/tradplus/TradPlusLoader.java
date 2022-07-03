@@ -800,7 +800,9 @@ public class TradPlusLoader extends AbstractSdkLoader {
         try {
             double ecpm = getLoadedEcpm(tpAdInfo);
             Map<String, Object> map = new HashMap<>();
-            map.put(Constant.AD_VALUE, ecpm / 1000);
+            double revenue = ecpm / 1000;
+            map.put(Constant.AD_VALUE, revenue);
+            map.put(Constant.AD_MICRO_VALUE, Double.valueOf(revenue * 1000000).intValue());
             map.put(Constant.AD_CURRENCY, getCurrency(tpAdInfo));
             map.put(Constant.AD_NETWORK, tpAdInfo.adSourceName);
             map.put(Constant.AD_NETWORK_PID, getNetworkPid(tpAdInfo));
