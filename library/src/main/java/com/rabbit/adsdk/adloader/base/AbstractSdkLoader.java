@@ -1092,7 +1092,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (isReportAdImpData()) {
             if (adImpData != null) {
                 adImpData.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
-                adImpData.put("active_days", EventImpl.get().getActiveDays() + "d");
+                adImpData.put("active_days", EventImpl.get().getActiveDayString());
                 adImpData.put("country", Utils.getCountryFromLocale(mContext));
             }
             InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpData);

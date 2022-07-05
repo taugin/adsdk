@@ -62,7 +62,7 @@ public class EventImpl implements IEvent {
     }
 
     /**
-     * 获取活跃天数，最多统计2年的，最大值721，超过721的全按照721统计
+     * 获取活跃天数
      * @return
      */
     public int getActiveDays() {
@@ -96,17 +96,22 @@ public class EventImpl implements IEvent {
                 Log.e(Log.TAG, "error : " + e);
             }
             activeDays = Long.valueOf((nowDate - activeDate) / Constant.ONE_DAY_MS).intValue();
-            if (activeDays < 0) {
-                activeDays = 0;
-            }
-            if (activeDays > 720) {
-                activeDays = 721;
-            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
             activeDays = -1;
         }
+        if (activeDays < 0) {
+            activeDays = 0;
+        }
         return activeDays;
+    }
+
+    public String getActiveDayString() {
+        int activeDays = getActiveDays();
+        if (activeDays > 720) {
+            return "720+d";
+        }
+        return activeDays + "d";
     }
 
     private String generateEventIdAlias(Context context, String eventId) {
@@ -444,7 +449,7 @@ public class EventImpl implements IEvent {
         extra.put("network_pid", networkPid);
         extra.put("pid", pid);
         extra.put("ecpm", ecpm);
-        extra.put("active_days", getActiveDays() + "d");
+        extra.put("active_days", getActiveDayString());
         extra.put("country", Utils.getCountryFromLocale(mContext));
         return extra;
     }
