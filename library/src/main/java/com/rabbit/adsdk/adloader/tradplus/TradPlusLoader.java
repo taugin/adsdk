@@ -71,6 +71,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             if (!sAtomicBoolean.getAndSet(true)) {
                 Log.iv(Log.TAG, "init " + getSdkName() + " with app id : " + appId);
                 TradPlusSdk.initSdk(context, appId);
+                TradPlusSdk.setAutoExpiration(false);
             } else {
                 Log.iv(Log.TAG, getSdkName() + " has initialized");
             }
@@ -510,7 +511,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        TPNative tpNative = new TPNative(getActivity(), getPid());
+        TPNative tpNative = new TPNative(getActivity(), getPid(), false);
         tpNative.setAdListener(new NativeAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
@@ -863,18 +864,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
     private double getLoadedEcpm(TPAdInfo tpAdInfo) {
         double ecpm = 0f;
-        String reportEcpm;
-        if ("exact".equalsIgnoreCase(tpAdInfo.ecpmPrecision) && tpAdInfo.isBiddingNetwork && !TextUtils.isEmpty(tpAdInfo.ecpmExact)) {
-            reportEcpm = tpAdInfo.ecpmExact;
-        } else {
-            reportEcpm = tpAdInfo.ecpm;
-        }
-        try {
-            ecpm = Double.parseDouble(reportEcpm);
-        } catch (Exception e) {
+        if (tpAdInfo != null) {
             try {
                 ecpm = Double.parseDouble(tpAdInfo.ecpm);
-            } catch (Exception error) {
+            } catch (Exception e) {
             }
         }
         return ecpm;
