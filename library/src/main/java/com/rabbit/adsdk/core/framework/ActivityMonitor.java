@@ -197,6 +197,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
                 mOnAppMonitorCallback.onForeground(mFromBackground, mTopActivity);
             }
             reportAppStart();
+            reportAppActive();
         }
     }
 
@@ -214,6 +215,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
                         mOnAppMonitorCallback.onForeground(false, mTopActivity);
                     }
                     reportAppStart();
+                    reportAppActive();
                 } else {
                     setBackgroundFlag();
                     this.mActivityMonitor.mResumed = false;
@@ -248,17 +250,37 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
      * 从后台切换前台时，时间间隔超过30秒，上报e_app_start事件
      */
     private void reportAppStart() {
+        boolean longTimeBackground = System.currentTimeMillis() - mEnterBackgroundTime >= 30000;
+        if (mFromBackground != null && mFromBackground.getAndSet(false) && longTimeBackground) {
+            String foregroundClass;
+            try {
+                foregroundClass = mTopActivity.get().getClass().getName();
+            } catch (Exception e) {
+                foregroundClass = null;
+            }
+            Map<String, Object> extra = new HashMap<>();
+            extra.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
+            extra.put("active_days", EventImpl.get().getActiveDays() + "d");
+            extra.put("country", Utils.getCountryFromLocale(mContext));
+            InternalStat.reportEvent(mContext, "e_app_start", foregroundClass, extra);
+        }
+    }
+
+    /**
+     * 上报app活跃，每天上报一次
+     */
+    private void reportAppActive() {
         long todayDate = Utils.getTodayTime();
-        long lastReportData = Utils.getLong(mContext, Constant.PREF_LAST_REPORT_APP_START_DATE);
+        long lastReportData = Utils.getLong(mContext, Constant.PREF_LAST_APP_ACTIVE_DATE);
         if (todayDate != lastReportData) {
-            Utils.putLong(mContext, Constant.PREF_LAST_REPORT_APP_START_DATE, todayDate);
+            Utils.putLong(mContext, Constant.PREF_LAST_APP_ACTIVE_DATE, todayDate);
             int activeDays = EventImpl.get().getActiveDays();
             Map<String, Object> extra = new HashMap<>();
             extra.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
             extra.put("active_days", activeDays + "d");
             extra.put("country", Utils.getCountryFromLocale(mContext));
             extra.put("retention", "retention_day_" + activeDays);
-            InternalStat.reportEvent(mContext, "e_app_start", null, extra);
+            InternalStat.reportEvent(mContext, "e_app_active", null, extra);
         }
     }
 }
