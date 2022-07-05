@@ -279,7 +279,6 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
             extra.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
             extra.put("active_days", activeDays + "d");
             extra.put("country", Utils.getCountryFromLocale(mContext));
-            extra.put("retention", "retention_day_" + activeDays);
             InternalStat.reportEvent(mContext, "e_app_active", null, extra);
         }
     }
