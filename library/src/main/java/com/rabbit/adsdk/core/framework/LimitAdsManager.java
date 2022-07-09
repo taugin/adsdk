@@ -28,9 +28,9 @@ import java.util.TimeZone;
 
 public class LimitAdsManager {
     private static LimitAdsManager sLimitAdsManager;
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-    private static final SimpleDateFormat sdfSimple = new SimpleDateFormat("dd-HH:mm:ss", Locale.getDefault());
-    private static final SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+    private static final SimpleDateFormat sdfSimple = new SimpleDateFormat("dd-HH:mm:ss", Locale.ENGLISH);
+    private static final SimpleDateFormat sSimpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH);
     private static final String DEFAULT_LIST_TEXT = "[]";
     private static final String LIMIT_TYPE_IMP = "imp";
     private static final String LIMIT_TYPE_CLK = "clk";

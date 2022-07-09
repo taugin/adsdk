@@ -48,7 +48,7 @@ public class Va {
         if (TextUtils.isEmpty(output) || output.length() < 4 * 1024) {
             return;
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("HH_mm_ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH_mm_ss", Locale.ENGLISH);
         String fileName = "log_file_" + sdf.format(new Date()) + ".txt";
         Context context = getContext();
         if (context == null) {

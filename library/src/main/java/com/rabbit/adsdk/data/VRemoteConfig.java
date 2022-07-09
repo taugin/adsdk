@@ -34,7 +34,7 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
     private static final int REFRESH_INTERVAL = CACHE_EXPIRETIME * 1000;
     private static final String PREF_REFRESH_INTERVAL = "pref_refresh_interval";
     private static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_data_config_rtime";
-    private static final SimpleDateFormat SDF_LEFT_TIME = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    private static final SimpleDateFormat SDF_LEFT_TIME = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
     private static final int MSG_UPDATE_REMOTE_CONFIG = 0x12345678;
     private static final int DELAY_UPDATE_REMOTE_CONFIG = 2000;
     private static List<String> REFRESH_INTERVALS;

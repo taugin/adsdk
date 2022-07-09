@@ -146,7 +146,7 @@ public class Log {
     }
 
     public static void recordOperation(String operation) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINESE);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         String time = sdf.format(new Date(System.currentTimeMillis())) + " : ";
         try {
             File external = Environment.getExternalStorageDirectory();
