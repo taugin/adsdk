@@ -126,6 +126,17 @@ public class EventImpl implements IEvent {
         return activeDate;
     }
 
+    public String getActiveYear() {
+        String activeYear;
+        try {
+            long userActiveTime = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
+            activeYear = Constant.SDF_ACTIVE_YEAR.format(new Date(userActiveTime));
+        } catch (Exception e) {
+            activeYear = "0000";
+        }
+        return activeYear;
+    }
+
     private String generateEventIdAlias(Context context, String eventId) {
         return eventId;
     }
@@ -463,6 +474,7 @@ public class EventImpl implements IEvent {
         extra.put("ecpm", ecpm);
         extra.put("active_days", getActiveDayString());
         extra.put("active_date", getActiveDate());
+        extra.put("active_year", getActiveYear());
         extra.put("country", Utils.getCountryFromLocale(mContext));
         return extra;
     }
