@@ -123,8 +123,8 @@ public class Log {
         if (element != null && element.length >= 4) {
             String methodName = element[4].getMethodName();
             int lineNumber = element[4].getLineNumber();
-            return String.format("%s.%s : %d ---> ", getClassName(),
-                    methodName, lineNumber, Locale.CHINESE);
+            return String.format(Locale.ENGLISH, "%s.%s : %d ---> ", getClassName(),
+                    methodName, lineNumber);
         }
         return null;
     }
