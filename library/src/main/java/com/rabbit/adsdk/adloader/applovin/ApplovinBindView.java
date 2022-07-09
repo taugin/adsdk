@@ -27,7 +27,7 @@ public class ApplovinBindView extends BaseBindNativeView {
         mParams = params;
         if (pidConfig != null) {
             if (networkName != null) {
-                networkName = networkName.toLowerCase(Locale.getDefault());
+                networkName = networkName.toLowerCase(Locale.ENGLISH);
             }
             int rootLayout = getBestNativeLayout(context, pidConfig, mParams, networkName);
             if (rootLayout > 0) {

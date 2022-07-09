@@ -583,7 +583,7 @@ public class InternalStat {
         try {
             Boolean sdkIntegrated = sSdkIntegrated.get(platform);
             if (sdkIntegrated != null && sdkIntegrated.booleanValue()) {
-                String eventArgs = String.format(Locale.getDefault(), AD_REPORT_EVENT_PLATFORM_ENABLE, platform);
+                String eventArgs = String.format(Locale.ENGLISH, AD_REPORT_EVENT_PLATFORM_ENABLE, platform);
                 boolean isReport = isReportEvent(context, eventArgs, defaultValue);
                 boolean isEventAllow = false;
                 boolean isEventCountAllow = false;
@@ -611,7 +611,7 @@ public class InternalStat {
      */
     private static boolean isEventAllow(Context context, String eventId, String platform) {
         try {
-            String eventArgs = String.format(Locale.getDefault(), AD_REPORT_EVENT_PLATFORM_WHITE, platform);
+            String eventArgs = String.format(Locale.ENGLISH, AD_REPORT_EVENT_PLATFORM_WHITE, platform);
             String whiteEventString = DataManager.get(context).getString(eventArgs);
             if (!TextUtils.isEmpty(whiteEventString)) {
                 // 白名单生效
@@ -622,7 +622,7 @@ public class InternalStat {
                     return whiteEventList.contains(eventId);
                 }
             }
-            eventArgs = String.format(Locale.getDefault(), AD_REPORT_EVENT_PLATFORM_BLACK, platform);
+            eventArgs = String.format(Locale.ENGLISH, AD_REPORT_EVENT_PLATFORM_BLACK, platform);
             String blackEventString = DataManager.get(context).getString(eventArgs);
             if (!TextUtils.isEmpty(blackEventString)) {
                 // 黑名单名单生效
@@ -661,7 +661,7 @@ public class InternalStat {
      * @return
      */
     private static long getMaxEventCount(Context context, String platform) {
-        String eventArgs = String.format(Locale.getDefault(), AD_REPORT_EVENT_PLATFORM_COUNT, platform);
+        String eventArgs = String.format(Locale.ENGLISH, AD_REPORT_EVENT_PLATFORM_COUNT, platform);
         String eventCountString = DataManager.get(context).getString(eventArgs);
         long maxEventCount = DEFAULT_MAX_EVENT_COUNT;
         if (!TextUtils.isEmpty(eventCountString)) {
@@ -684,7 +684,7 @@ public class InternalStat {
     private static boolean isEventCountAllow(Context context, String platform) {
         try {
             resetPlatformEventCountIfNeed(context);
-            String eventArgs = String.format(Locale.getDefault(), PREF_AD_REPORT_EVENT_PLATFORM_COUNT, platform);
+            String eventArgs = String.format(Locale.ENGLISH, PREF_AD_REPORT_EVENT_PLATFORM_COUNT, platform);
             long curEventCount = Utils.getLong(context, eventArgs);
             long maxEventCount = getMaxEventCount(context, platform);
             Log.iv(Log.TAG_SDK, "[" + platform + "] event count : " + curEventCount + "/" + maxEventCount);
@@ -704,7 +704,7 @@ public class InternalStat {
      */
     private static void reportPlatformEventCount(Context context, String platform) {
         try {
-            String eventArgs = String.format(Locale.getDefault(), PREF_AD_REPORT_EVENT_PLATFORM_COUNT, platform);
+            String eventArgs = String.format(Locale.ENGLISH, PREF_AD_REPORT_EVENT_PLATFORM_COUNT, platform);
             long count = Utils.getLong(context, eventArgs, 0);
             count += 1;
             Utils.putLong(context, eventArgs, count);
@@ -746,7 +746,7 @@ public class InternalStat {
             Set<String> sets = Utils.getStringSet(context, PREF_AD_REPORT_EVENT_PLATFORM_LIST);
             if (sets != null && !sets.isEmpty()) {
                 for (String s : sets) {
-                    String eventArgs = String.format(Locale.getDefault(), PREF_AD_REPORT_EVENT_PLATFORM_COUNT, s);
+                    String eventArgs = String.format(Locale.ENGLISH, PREF_AD_REPORT_EVENT_PLATFORM_COUNT, s);
                     Utils.putLong(context, eventArgs, 0);
                 }
             }

@@ -625,7 +625,7 @@ public class Utils {
             if (TextUtils.isEmpty(country)) {
                 country = telephonyManager.getNetworkCountryIso();
             }
-            country = country.toLowerCase(Locale.getDefault());
+            country = country.toLowerCase(Locale.ENGLISH);
         } catch (Exception e) {
         }
         return country;
@@ -646,7 +646,7 @@ public class Utils {
             } else {
                 locale = context.getResources().getConfiguration().locale;
             }
-            country = locale.getCountry().toLowerCase(Locale.getDefault());
+            country = locale.getCountry().toLowerCase(Locale.ENGLISH);
         } catch (Exception e) {
             country = "unknown";
         }

@@ -254,7 +254,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     private void loadInterstitial(TextView textView) {
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
-        String interstitialPlace = String.format(Locale.getDefault(), INTERSTITIAL_PREFIX, sdk.toLowerCase(Locale.getDefault()));
+        String interstitialPlace = String.format(Locale.ENGLISH, INTERSTITIAL_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
         if (AdSdk.get(mContext).isInterstitialLoaded(interstitialPlace)) {
             String loadedSdk = AdSdk.get(mContext).getLoadedSdk(interstitialPlace);
             Log.v(TAG, "loaded sdk : " + loadedSdk);
@@ -266,7 +266,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     private void loadSplash(TextView textView) {
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
-        String splashPlace = String.format(Locale.getDefault(), SPLASH_PREFIX, sdk.toLowerCase(Locale.getDefault()));
+        String splashPlace = String.format(Locale.ENGLISH, SPLASH_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
         if (AdSdk.get(mContext).isSplashLoaded(splashPlace)) {
             mSplashContainer.setVisibility(View.VISIBLE);
             AdSdk.get(mContext).showSplash(splashPlace, mSplashContainer);
@@ -277,7 +277,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     private void loadReward(TextView textView) {
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
-        String rewardPlace = String.format(Locale.getDefault(), REWARD_PREFIX, sdk.toLowerCase(Locale.getDefault()));
+        String rewardPlace = String.format(Locale.ENGLISH, REWARD_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
         if (AdSdk.get(mContext).isRewardedVideoLoaded(rewardPlace)) {
             AdSdk.get(mContext).showRewardedVideo(rewardPlace);
         } else {
@@ -295,7 +295,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     private void loadBanner(TextView textView) {
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
         AdParams.Builder builder = new AdParams.Builder();
-        String bannerPlace = String.format(Locale.getDefault(), BANNER_PREFIX, sdk.toLowerCase(Locale.getDefault()));
+        String bannerPlace = String.format(Locale.ENGLISH, BANNER_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
         if (AdSdk.get(mContext).isAdViewLoaded(bannerPlace)) {
             AdSdk.get(mContext).showAdView(bannerPlace, mNativeBannerLayout);
         } else {
@@ -353,7 +353,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     private void loadNative(TextView textView) {
         AdParams adParams = getNativeParams();
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
-        String nativePlace = String.format(Locale.getDefault(), NATIVE_PREFIX, sdk.toLowerCase(Locale.getDefault()));
+        String nativePlace = String.format(Locale.ENGLISH, NATIVE_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
         Switch switchButton = findViewById(R.id.mediation_template);
         if (switchButton.isChecked()) {
             nativePlace += "_template";

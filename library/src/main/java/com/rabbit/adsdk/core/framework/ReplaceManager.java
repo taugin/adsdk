@@ -184,7 +184,7 @@ public class ReplaceManager {
         if (replaceConfig != null) {
             long displayTimes = replaceConfig.getDisplayTimes();
             if (displayTimes > 0) {
-                String prefKey = String.format(Locale.getDefault(), PREF_PLACE_NAME_IMP_TIMES, placeName);
+                String prefKey = String.format(Locale.ENGLISH, PREF_PLACE_NAME_IMP_TIMES, placeName);
                 long totalImpTimes = Utils.getLong(mContext, prefKey, 0);
                 Log.iv(Log.TAG, "total imp times : " + totalImpTimes + " , display times : " + displayTimes);
                 return totalImpTimes >= displayTimes;
@@ -199,7 +199,7 @@ public class ReplaceManager {
      */
     public void reportAdImp(String placeName) {
         try {
-            String prefKey = String.format(Locale.getDefault(), PREF_PLACE_NAME_IMP_TIMES, placeName);
+            String prefKey = String.format(Locale.ENGLISH, PREF_PLACE_NAME_IMP_TIMES, placeName);
             long lastImpTimes = Utils.getLong(mContext, prefKey, 0);
             Utils.putLong(mContext, prefKey, lastImpTimes + 1);
         } catch (Exception e) {

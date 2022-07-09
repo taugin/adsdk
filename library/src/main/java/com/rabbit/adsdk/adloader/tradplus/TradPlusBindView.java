@@ -50,7 +50,7 @@ public class TradPlusBindView extends BaseBindNativeView {
 
         private String toLower(String str) {
             if (!TextUtils.isEmpty(str)) {
-                return str.toLowerCase(Locale.getDefault());
+                return str.toLowerCase(Locale.ENGLISH);
             }
             return str;
         }

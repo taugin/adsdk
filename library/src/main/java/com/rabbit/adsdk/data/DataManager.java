@@ -114,7 +114,7 @@ public class DataManager {
         String cfgName = null;
         try {
             String pkgmd5 = Utils.string2MD5(mContext.getPackageName());
-            pkgmd5 = pkgmd5.toLowerCase(Locale.getDefault());
+            pkgmd5 = pkgmd5.toLowerCase(Locale.ENGLISH);
             String filename = pkgmd5.substring(0, 8);
             cfgName = "cfg" + filename;
         } catch (Exception e) {
@@ -124,7 +124,7 @@ public class DataManager {
     }
 
     private String getDefaultName() {
-        return String.format(Locale.getDefault(), DATA_CONFIG_FORMAT, "config");
+        return String.format(Locale.ENGLISH, DATA_CONFIG_FORMAT, "config");
     }
 
     public AdPlace getRemoteAdPlace(String key) {

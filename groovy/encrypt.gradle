@@ -723,7 +723,7 @@ def get7ZipCmd() {
         ext = ""
     }
     def tempDir = System.getProperty("java.io.tmpdir")
-    def fromPath = String.format(Locale.getDefault(), "7z/%s/7z%s", platform, ext)
+    def fromPath = String.format(Locale.ENGLISH, "7z/%s/7z%s", platform, ext)
     def destPath = new File(tempDir, fromPath).getAbsolutePath()
     def destFile = new File(destPath)
     destFile.getParentFile().mkdirs()

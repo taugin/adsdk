@@ -126,7 +126,7 @@ public class AdPolicy {
     public boolean isExceedMaxReqTimes(String placeName, String sdk, int maxReqTimes) {
         if (maxReqTimes > 0) {
             resetPlatformEventCountIfNeed(mContext);
-            String prefKeys = String.format(Locale.getDefault(), PREF_RECORD_PLACE_REQ_TIMES, placeName, sdk);
+            String prefKeys = String.format(Locale.ENGLISH, PREF_RECORD_PLACE_REQ_TIMES, placeName, sdk);
             long times = Utils.getLong(mContext, prefKeys, 0);
             Log.iv(Log.TAG_SDK, placeName + " - " + sdk + " req times : [" + times + "/" + maxReqTimes + "]");
             return times >= maxReqTimes;
@@ -142,7 +142,7 @@ public class AdPolicy {
      */
     public void recordRequestTimes(String placeName, String sdk, int maxReqTimes) {
         if (maxReqTimes > 0) {
-            String prefKeys = String.format(Locale.getDefault(), PREF_RECORD_PLACE_REQ_TIMES, placeName, sdk);
+            String prefKeys = String.format(Locale.ENGLISH, PREF_RECORD_PLACE_REQ_TIMES, placeName, sdk);
             long times = Utils.getLong(mContext, prefKeys, 0);
             times += 1;
             Utils.putLong(mContext, prefKeys, times);
@@ -151,7 +151,7 @@ public class AdPolicy {
     }
 
     public long getReqTimes(String placeName, String sdk) {
-        String prefKeys = String.format(Locale.getDefault(), PREF_RECORD_PLACE_REQ_TIMES, placeName, sdk);
+        String prefKeys = String.format(Locale.ENGLISH, PREF_RECORD_PLACE_REQ_TIMES, placeName, sdk);
         return Utils.getLong(mContext, prefKeys, 0);
     }
 

@@ -1551,8 +1551,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void showAdViewWithUI(String placeName, String source, String adType, ISdkLoader iSdkLoader) {
         Log.iv(Log.TAG, "show complex ads for banner or native");
         try {
-            sLoaderMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, placeName), iSdkLoader);
-            sParamsMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, placeName), getParams(iSdkLoader));
+            sLoaderMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), iSdkLoader);
+            sParamsMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), getParams(iSdkLoader));
             Intent intent = new Intent(mContext, RabActivity.class);
             intent.putExtra(Intent.EXTRA_TITLE, placeName);
             intent.putExtra(Intent.EXTRA_TEXT, source);

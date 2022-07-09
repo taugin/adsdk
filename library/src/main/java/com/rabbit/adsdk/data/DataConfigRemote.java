@@ -113,7 +113,7 @@ public class DataConfigRemote {
         } catch (Exception e) {
             suffix = "attr";
         }
-        return "_" + suffix.toLowerCase(Locale.getDefault());
+        return "_" + suffix.toLowerCase(Locale.ENGLISH);
     }
 
     private String getMediaSourceSuffix() {
@@ -130,7 +130,7 @@ public class DataConfigRemote {
         } catch (Exception e) {
             suffix = "ms";
         }
-        return "_" + suffix.toLowerCase(Locale.getDefault());
+        return "_" + suffix.toLowerCase(Locale.ENGLISH);
     }
 
     private String readConfigFromLocal(String key) {

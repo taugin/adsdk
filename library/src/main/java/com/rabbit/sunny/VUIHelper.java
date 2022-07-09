@@ -142,8 +142,8 @@ public class VUIHelper {
 
     private void showAdViewInternal() {
         if (mAdLayout != null) {
-            mISdkLoader = AdPlaceLoader.sLoaderMap.remove(String.format(Locale.getDefault(), "%s_%s_%s", mSource, mAdType, mPlaceName));
-            Params params = AdPlaceLoader.sParamsMap.remove(String.format(Locale.getDefault(), "%s_%s_%s", mSource, mAdType, mPlaceName));
+            mISdkLoader = AdPlaceLoader.sLoaderMap.remove(String.format(Locale.ENGLISH, "%s_%s_%s", mSource, mAdType, mPlaceName));
+            Params params = AdPlaceLoader.sParamsMap.remove(String.format(Locale.ENGLISH, "%s_%s_%s", mSource, mAdType, mPlaceName));
             if (mISdkLoader != null) {
                 try {
                     // Spread类型的广告插屏类型需要单独处理

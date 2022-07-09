@@ -161,7 +161,7 @@ public class LimitAdsManager {
         }
         String userFlag = getUserFlag();
         String datetime = sSimpleDateFormat.format(new Date());
-        return String.format(Locale.getDefault(), "%s|%s|%s|%s|%s|%d/%d", gaid, userFlag, locale, type, datetime, clkCount, impCount);
+        return String.format(Locale.ENGLISH, "%s|%s|%s|%s|%s|%d/%d", gaid, userFlag, locale, type, datetime, clkCount, impCount);
     }
 
     private String getUserFlag() {
@@ -184,7 +184,7 @@ public class LimitAdsManager {
             } else {
                 locale = context.getResources().getConfiguration().locale;
             }
-            channel = locale.getCountry().toLowerCase(Locale.getDefault());
+            channel = locale.getCountry().toLowerCase(Locale.ENGLISH);
         } catch (Exception e) {
         }
         return channel;

@@ -145,7 +145,7 @@ public class App extends Application {
             } else {
                 locale = context.getResources().getConfiguration().locale;
             }
-            channel = locale.getCountry().toLowerCase(Locale.getDefault());
+            channel = locale.getCountry().toLowerCase(Locale.ENGLISH);
         } catch (Exception e) {
             channel = Utils.getMetaData(context, "UMENG_CHANNEL");
         }

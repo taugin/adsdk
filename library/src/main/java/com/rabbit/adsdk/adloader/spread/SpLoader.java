@@ -239,8 +239,8 @@ public class SpLoader extends AbstractSdkLoader {
             notifyAdShow();
             Params params = new Params();
             params.setAdCardStyle(Constant.NATIVE_CARD_FULL);
-            AdPlaceLoader.sLoaderMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, placeName), iSdkLoader);
-            AdPlaceLoader.sParamsMap.put(String.format(Locale.getDefault(), "%s_%s_%s", source, adType, placeName), params);
+            AdPlaceLoader.sLoaderMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), iSdkLoader);
+            AdPlaceLoader.sParamsMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), params);
             Intent intent = new Intent(mContext, RabActivity.class);
             intent.putExtra(Intent.EXTRA_TITLE, placeName);
             intent.putExtra(Intent.EXTRA_TEXT, source);
