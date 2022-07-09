@@ -12,6 +12,7 @@ import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -112,6 +113,17 @@ public class EventImpl implements IEvent {
             return "720+d";
         }
         return activeDays + "d";
+    }
+
+    public String getActiveDate() {
+        String activeDate;
+        try {
+            long userActiveTime = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
+            activeDate = Constant.SDF_ACTIVE_DATE.format(new Date(userActiveTime));
+        } catch (Exception e) {
+            activeDate = "00-00";
+        }
+        return activeDate;
     }
 
     private String generateEventIdAlias(Context context, String eventId) {
@@ -450,6 +462,7 @@ public class EventImpl implements IEvent {
         extra.put("pid", pid);
         extra.put("ecpm", ecpm);
         extra.put("active_days", getActiveDayString());
+        extra.put("active_date", getActiveDate());
         extra.put("country", Utils.getCountryFromLocale(mContext));
         return extra;
     }

@@ -261,6 +261,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
             Map<String, Object> extra = new HashMap<>();
             extra.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
             extra.put("active_days", EventImpl.get().getActiveDayString());
+            extra.put("active_date", EventImpl.get().getActiveDate());
             extra.put("country", Utils.getCountryFromLocale(mContext));
             InternalStat.reportEvent(mContext, "e_app_start", foregroundClass, extra);
         }
@@ -277,6 +278,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
             Map<String, Object> extra = new HashMap<>();
             extra.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
             extra.put("active_days", EventImpl.get().getActiveDayString());
+            extra.put("active_date", EventImpl.get().getActiveDate());
             extra.put("country", Utils.getCountryFromLocale(mContext));
             InternalStat.reportEvent(mContext, "e_app_active", null, extra);
         }
