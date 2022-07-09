@@ -229,7 +229,7 @@ public class ChangeLanguage {
      * @param context
      * @return
      */
-    private static Locale getCurrentLocale(Context context) {
+    private static Locale getSystemLocale(Context context) {
         Locale locale;
         try {
             Resources resources = context.getResources();
@@ -317,6 +317,15 @@ public class ChangeLanguage {
         return currentLanguage;
     }
 
+    public static Locale getCurrentLocale(Context context) {
+        int index = findLocaleIndex(context);
+        LocaleInfo localeInfo = sUserLocaleList.get(index);
+        if (localeInfo != null) {
+            return localeInfo.locale;
+        }
+        return Locale.getDefault();
+    }
+
     /**
      * 语言设置成功后，重启应用
      *
@@ -365,7 +374,7 @@ public class ChangeLanguage {
     private static void changeLocale(Context context, Locale locale) {
         try {
             if (locale == null) {
-                locale = getCurrentLocale(context);
+                locale = getSystemLocale(context);
             }
             Resources resources = context.getResources();
             Configuration configuration = resources.getConfiguration();
@@ -450,6 +459,7 @@ public class ChangeLanguage {
 
     /**
      * 获取当前系统语言的在UserLocaleList里面的索引
+     *
      * @return
      */
     private static String getFollowSystemTranslation(int selectIndex) {
