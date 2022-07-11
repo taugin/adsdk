@@ -2,6 +2,7 @@ package com.rabbit.adsdk.adloader.admob;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -165,8 +167,9 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdOpened() {
                 Log.iv(Log.TAG, formatLog("ad opened"));
-                reportAdClick();
-                notifyAdClick();
+                String network = getBannerNetwork();
+                reportAdClick(network, null);
+                notifyAdClick(network);
             }
 
             @Override
@@ -220,6 +223,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     String network = null;
                     try {
                         network = bannerView.getResponseInfo().getMediationAdapterClassName();
+                        network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
                     reportAdImp();
@@ -330,15 +334,17 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
-                    reportAdClick();
-                    notifyAdClick();
+                    String network = getInterstitialNetwork();
+                    reportAdClick(network, null);
+                    notifyAdClick(network);
                 }
 
                 @Override
                 public void onAdImpression() {
                     Log.iv(Log.TAG, formatLog("ad impression"));
-                    reportAdImp();
-                    notifyAdImp();
+                    String network = getInterstitialNetwork();
+                    reportAdImp(network, null);
+                    notifyAdImp(network);
                 }
             });
             mInterstitialAd.setOnPaidEventListener(new OnPaidEventListener() {
@@ -347,6 +353,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     String network = null;
                     try {
                         network = mInterstitialAd.getResponseInfo().getMediationAdapterClassName();
+                        network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
                     reportAdmobImpressionData(adValue, network);
@@ -455,15 +462,17 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
-                    reportAdClick();
-                    notifyAdClick();
+                    String network = getRewardNetwork();
+                    reportAdClick(network, null);
+                    notifyAdClick(network);
                 }
 
                 @Override
                 public void onAdImpression() {
                     Log.iv(Log.TAG, formatLog("ad impression"));
-                    reportAdImp();
-                    notifyAdImp();
+                    String network = getRewardNetwork();
+                    reportAdImp(network, null);
+                    notifyAdImp(network);
                 }
             });
             mRewardedAd.setOnPaidEventListener(new OnPaidEventListener() {
@@ -472,6 +481,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     String network = null;
                     try {
                         network = mRewardedAd.getResponseInfo().getMediationAdapterClassName();
+                        network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
                     reportAdmobImpressionData(adValue, network);
@@ -583,8 +593,9 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked() {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                reportAdClick();
-                notifyAdClick();
+                String network = getNativeNetwork();
+                reportAdClick(network, null);
+                notifyAdClick(network);
             }
 
             @Override
@@ -595,8 +606,9 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdImpression() {
                 Log.iv(Log.TAG, formatLog("ad impression"));
-                reportAdImp();
-                notifyAdImp();
+                String network = getNativeNetwork();
+                reportAdImp(network, null);
+                notifyAdImp(network);
             }
 
             @Override
@@ -658,6 +670,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     String network = null;
                     try {
                         network = mNativeAd.getResponseInfo().getMediationAdapterClassName();
+                        network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
                     reportAdmobImpressionData(adValue, network);
@@ -754,15 +767,17 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
-                    reportAdClick();
-                    notifyAdClick();
+                    String network = getSplashNetwork();
+                    reportAdClick(network, null);
+                    notifyAdClick(network);
                 }
 
                 @Override
                 public void onAdShowedFullScreenContent() {
                     Log.iv(Log.TAG, formatLog("ad showed full screen content"));
-                    reportAdImp();
-                    notifyAdImp();
+                    String network = getSplashNetwork();
+                    reportAdImp(network, null);
+                    notifyAdImp(network);
                 }
 
                 @Override
@@ -781,6 +796,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     String network = null;
                     try {
                         network = mAppOpenAd.getResponseInfo().getMediationAdapterClassName();
+                        network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
                     reportAdmobImpressionData(adValue, network);
@@ -931,5 +947,65 @@ public class AdmobLoader extends AbstractSdkLoader {
             return "[" + adError.getCode() + "] " + adError.getMessage();
         }
         return null;
+    }
+
+    private String getInterstitialNetwork() {
+        try {
+            String adapterClass = mInterstitialAd.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
+            return adapterClassToNetwork(adapterClass);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    private String getSplashNetwork() {
+        try {
+            String adapterClass = mAppOpenAd.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
+            return adapterClassToNetwork(adapterClass);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    private String getNativeNetwork() {
+        try {
+            String adapterClass = mNativeAd.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
+            return adapterClassToNetwork(adapterClass);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    private String getBannerNetwork() {
+        try {
+            String adapterClass = bannerView.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
+            return adapterClassToNetwork(adapterClass);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    private String getRewardNetwork() {
+        try {
+            String adapterClass = mRewardedAd.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
+            return adapterClassToNetwork(adapterClass);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    private String adapterClassToNetwork(String className) {
+        String network = null;
+        try {
+            if (!TextUtils.isEmpty(className)) {
+                int index = className.lastIndexOf(".");
+                if (index >= 0) {
+                    String adapterName = className.substring(index + 1);
+                    network = adapterName.toLowerCase(Locale.ENGLISH).replace("mediationadapter", "");
+                }
+            }
+        } catch (Exception e) {
+        }
+        return network;
     }
 }
