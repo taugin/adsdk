@@ -20,7 +20,6 @@ import java.util.Map;
 
 public class ReplaceManager {
 
-    private static final String PREF_FIRST_ACTIVE_TIME = "pref_replace_first_active_time";
     private static final String PREF_PLACE_NAME_IMP_TIMES = "pref_replace_cfg_%s_imp_times";
     private static ReplaceManager sReplaceManager;
 
@@ -52,14 +51,6 @@ public class ReplaceManager {
     }
 
     public void init() {
-        recordFirstActiveTime();
-    }
-
-    private void recordFirstActiveTime() {
-        long firstActiveTime = Utils.getLong(mContext, PREF_FIRST_ACTIVE_TIME);
-        if (firstActiveTime <= 0) {
-            Utils.putLong(mContext, PREF_FIRST_ACTIVE_TIME, System.currentTimeMillis());
-        }
     }
 
     /**
@@ -164,7 +155,7 @@ public class ReplaceManager {
         if (replaceConfig != null) {
             long startupDelay = replaceConfig.getStartupDelay();
             if (startupDelay > 0) {
-                long firstActiveTime = Utils.getLong(mContext, PREF_FIRST_ACTIVE_TIME);
+                long firstActiveTime = DataManager.get(mContext).getFirstActiveTime();
                 long now = System.currentTimeMillis();
                 long expTime = now - firstActiveTime;
                 Log.iv(Log.TAG, "active time : " + firstActiveTime + " , now : " + now + " , expTime : " + expTime);

@@ -59,6 +59,7 @@ public class DataManager {
     private IParser mParser;
 
     public void init() {
+        recordFistActiveTime();
         VRemoteConfig.get(mContext).init();
         parseLocalData();
         printGoogleAdvertisingId();
@@ -248,5 +249,19 @@ public class DataManager {
             adPlace = getRemoteAdPlace(placeName);
         }
         return adPlace != null;
+    }
+
+    private void recordFistActiveTime() {
+        try {
+            long time = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
+            if (time <= 0) {
+                Utils.putLong(mContext, Constant.PREF_USER_ACTIVE_TIME, System.currentTimeMillis());
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public long getFirstActiveTime() {
+        return Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
     }
 }

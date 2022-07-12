@@ -48,18 +48,7 @@ public class EventImpl implements IEvent {
 
     public void init(Context context) {
         mContext = context;
-        recordActiveTime();
         BounceRateManager.get(context).init();
-    }
-
-    private void recordActiveTime() {
-        try {
-            long time = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
-            if (time <= 0) {
-                Utils.putLong(mContext, Constant.PREF_USER_ACTIVE_TIME, System.currentTimeMillis());
-            }
-        } catch (Exception e) {
-        }
     }
 
     /**
@@ -79,7 +68,7 @@ public class EventImpl implements IEvent {
             calendar.set(Calendar.MILLISECOND, 0);
             long nowDate = calendar.getTimeInMillis();
 
-            long userActiveTime = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
+            long userActiveTime = DataManager.get(mContext).getFirstActiveTime();
             calendar = Calendar.getInstance();
             calendar.setTimeInMillis(userActiveTime);
             int activeYear = calendar.get(Calendar.YEAR);
@@ -118,7 +107,7 @@ public class EventImpl implements IEvent {
     public String getActiveDate() {
         String activeDate;
         try {
-            long userActiveTime = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
+            long userActiveTime = DataManager.get(mContext).getFirstActiveTime();
             activeDate = Constant.SDF_ACTIVE_DATE.format(new Date(userActiveTime));
         } catch (Exception e) {
             activeDate = "00-00";
@@ -129,7 +118,7 @@ public class EventImpl implements IEvent {
     public String getActiveYear() {
         String activeYear;
         try {
-            long userActiveTime = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
+            long userActiveTime = DataManager.get(mContext).getFirstActiveTime();
             activeYear = Constant.SDF_ACTIVE_YEAR.format(new Date(userActiveTime));
         } catch (Exception e) {
             activeYear = "0000";
