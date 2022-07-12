@@ -13,9 +13,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="6dp"
+            android:paddingStart="6dp"
             android:paddingTop="14dp"
-            android:paddingRight="6dp"
+            android:paddingEnd="6dp"
             android:paddingBottom="14dp">
 
             <RelativeLayout
@@ -43,7 +43,7 @@
                 android:id="@+id/common_icon"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginRight="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
                 android:contentDescription="@null"
                 android:visibility="gone" />
 
@@ -58,7 +58,7 @@
                     android:id="@+id/common_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/common_sponsored_label"
+                    android:layout_toStartOf="@+id/common_sponsored_label"
                     android:ellipsize="marquee"
                     android:gravity="left|top"
                     android:singleLine="true"
@@ -101,8 +101,8 @@
                         android:layout_height="@dimen/dp_30"
                         android:background="@color/colorPrimary"
                         android:gravity="center"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:paddingRight="@dimen/dp_10"
+                        android:paddingStart="@dimen/dp_10"
+                        android:paddingEnd="@dimen/dp_10"
                         android:text="Learn More"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_14"

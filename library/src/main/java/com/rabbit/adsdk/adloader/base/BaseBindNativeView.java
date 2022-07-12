@@ -295,11 +295,11 @@ public class BaseBindNativeView {
 
     protected void replaceSrcViewToDstView(View srcView, View dstView) {
         if (srcView != null && dstView != null) {
-            int paddingLeft = srcView.getPaddingLeft();
+            int paddingStart = srcView.getPaddingStart();
             int paddingTop = srcView.getPaddingTop();
-            int paddingRight = srcView.getPaddingRight();
+            int paddingEnd = srcView.getPaddingEnd();
             int paddingBottom = srcView.getPaddingBottom();
-            dstView.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            dstView.setPadding(paddingStart, paddingTop, paddingEnd, paddingBottom);
             dstView.setId(srcView.getId());
             ViewGroup.LayoutParams layoutParams = srcView.getLayoutParams();
             if (layoutParams == null) {
