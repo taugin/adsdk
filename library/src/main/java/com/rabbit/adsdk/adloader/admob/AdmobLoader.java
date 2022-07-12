@@ -1001,7 +1001,8 @@ public class AdmobLoader extends AbstractSdkLoader {
                 int index = className.lastIndexOf(".");
                 if (index >= 0) {
                     String adapterName = className.substring(index + 1);
-                    network = adapterName.toLowerCase(Locale.ENGLISH).replace("mediationadapter", "");
+                    adapterName = adapterName.toLowerCase(Locale.ENGLISH);
+                    network = adapterName.replace("mediationadapter", "").replace("adapter", "");
                 }
             }
         } catch (Exception e) {
