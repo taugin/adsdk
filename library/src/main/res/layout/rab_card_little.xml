@@ -73,7 +73,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left">
+                    android:gravity="start">
 
                     <TextView
                         android:id="@+id/rab_native_sponsored_label"
@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toStartOf="@+id/rab_native_sponsored_label"
                         android:ellipsize="marquee"
-                        android:gravity="left|top"
+                        android:gravity="start|top"
                         android:singleLine="true"
                         android:text="Charge Master"
                         android:textColor="@color/rab_primaryColor"
@@ -116,7 +116,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="marquee"
-                        android:gravity="left|top"
+                        android:gravity="start|top"
                         android:singleLine="true"
                         android:text="detail"
                         android:textColor="@color/rab_secondaryColor"

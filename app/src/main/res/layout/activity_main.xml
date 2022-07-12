@@ -107,7 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_36"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|right"
+                    android:gravity="center_vertical|end"
                     android:orientation="horizontal">
 
                     <TextView
@@ -125,7 +125,7 @@
                         style="@android:style/Widget.DeviceDefault.Button"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="right|center_vertical"
+                        android:layout_gravity="end|center_vertical"
                         android:layout_marginStart="2dp"
                         android:layout_weight="1"
                         android:drawablePadding="0dp" />
