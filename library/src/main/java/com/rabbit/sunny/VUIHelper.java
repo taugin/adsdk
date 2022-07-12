@@ -128,7 +128,7 @@ public class VUIHelper {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
         int margin = dp2px(mActivity, 8);
         params.setMargins(margin, margin, 0, 0);
-        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_START);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         mCloseView.setOnClickListener(new View.OnClickListener() {
             @Override

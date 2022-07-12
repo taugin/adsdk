@@ -220,7 +220,7 @@ public class FBBindNativeView extends BaseBindNativeView {
                 android.widget.RelativeLayout.LayoutParams iconViewParams = new android.widget.RelativeLayout.LayoutParams(iconParams.width, iconParams.height);
                 if (iconParams instanceof ViewGroup.MarginLayoutParams) {
                     ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) iconParams;
-                    iconViewParams.setMargins(marginParams.leftMargin, marginParams.topMargin, marginParams.rightMargin, marginParams.bottomMargin);
+                    iconViewParams.setMargins(marginParams.getMarginStart(), marginParams.topMargin, marginParams.getMarginEnd(), marginParams.bottomMargin);
                 }
                 if (iconParams instanceof android.widget.RelativeLayout.LayoutParams) {
                     android.widget.RelativeLayout.LayoutParams mainImageViewRelativeLayoutParams = (android.widget.RelativeLayout.LayoutParams) iconParams;
