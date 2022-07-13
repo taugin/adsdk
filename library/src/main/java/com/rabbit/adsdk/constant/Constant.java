@@ -86,6 +86,7 @@ public class Constant {
     public static final String AF_MEDIA_SOURCE = "af_media_source";
     public static final String AF_ORGANIC = "Organic";
     public static final String PREF_REMOTE_CONFIG_UPDATE_TIME = "pref_remote_config_update_time";
+    public static final String PREF_LAST_APP_ACTIVE_YEAR_DATE = "pref_last_app_active_year_date";
 
     public static final int ONE_DAY_MS = 24 * 3600 * 1000;
 
@@ -206,6 +207,7 @@ public class Constant {
 
     public static final SimpleDateFormat SDF_ACTIVE_DATE = new SimpleDateFormat("MM-dd", Locale.ENGLISH);
     public static final SimpleDateFormat SDF_ACTIVE_YEAR = new SimpleDateFormat("yyyy", Locale.ENGLISH);
+    public static final SimpleDateFormat SDF_ACTIVE_YEAR_DATE = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
     public enum Banner {
         NOSET(Constant.NOSET),
@@ -271,6 +273,4 @@ public class Constant {
     public static final String AD_APP_VERSION = "ad_app_version";
     public static final String AD_BIDDING = "ad_bidding";
     public static final String AD_GAID = "ad_gaid";
-
-    public static final String PREF_LAST_APP_ACTIVE_DATE = "pref_last_app_active_date";
 }

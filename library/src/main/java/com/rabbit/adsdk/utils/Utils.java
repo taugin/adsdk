@@ -23,6 +23,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.log.Log;
 
 import java.io.File;
@@ -33,6 +34,7 @@ import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -744,6 +746,10 @@ public class Utils {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTimeInMillis();
+    }
+
+    public static String getTodayDate() {
+        return Constant.SDF_ACTIVE_YEAR_DATE.format(new Date());
     }
 
     public static int getScreenWidth(Context context) {
