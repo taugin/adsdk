@@ -272,10 +272,10 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
      * 上报app活跃，每天上报一次
      */
     private void reportAppActive() {
-        String todayDate = Utils.getTodayDate();
-        String lastActiveDate = Utils.getString(mContext, Constant.PREF_LAST_APP_ACTIVE_YEAR_DATE);
-        if (!TextUtils.equals(todayDate, lastActiveDate)) {
-            Utils.putString(mContext, Constant.PREF_LAST_APP_ACTIVE_YEAR_DATE, todayDate);
+        long todayDate = Utils.getTodayTime();
+        long lastReportData = Utils.getLong(mContext, Constant.PREF_LAST_APP_ACTIVE_DATE);
+        if (todayDate != lastReportData) {
+            Utils.putLong(mContext, Constant.PREF_LAST_APP_ACTIVE_DATE, todayDate);
             Map<String, Object> extra = new HashMap<>();
             extra.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
             extra.put("active_days", EventImpl.get().getActiveDayString());
