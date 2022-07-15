@@ -15,14 +15,14 @@
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:excludeFromRecents="true"
-            android:icon="@drawable/rab_tr_bg"
+            android:icon="@drawable/rab_transp_bg"
             android:label=""
             android:theme="@android:style/Theme.Translucent" />
 
         <activity
             android:name="com.rabbit.sunny.RabActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:icon="@drawable/rab_tr_bg"
+            android:icon="@drawable/rab_transp_bg"
             android:exported="false"
             android:label=""
             android:theme="@android:style/Theme.Translucent" />
