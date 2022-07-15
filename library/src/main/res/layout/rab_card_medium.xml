@@ -101,6 +101,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toStartOf="@+id/rab_native_sponsored_label"
                         android:ellipsize="marquee"
+                        android:layout_alignParentStart="true"
                         android:gravity="start|top"
                         android:maxLines="2"
                         android:text="Charge Master"

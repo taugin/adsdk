@@ -98,6 +98,7 @@
                         android:id="@+id/rab_native_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/rab_native_sponsored_label"
                         android:ellipsize="marquee"
                         android:gravity="start|top"
