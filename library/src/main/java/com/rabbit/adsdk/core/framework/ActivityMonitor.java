@@ -196,8 +196,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
             if (mOnAppMonitorCallback != null) {
                 mOnAppMonitorCallback.onForeground(mFromBackground, mTopActivity);
             }
-            reportAppStart();
-            reportAppActive();
+            onActivityOnTop();
         }
     }
 
@@ -214,8 +213,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
                     if (mOnAppMonitorCallback != null) {
                         mOnAppMonitorCallback.onForeground(false, mTopActivity);
                     }
-                    reportAppStart();
-                    reportAppActive();
+                    onActivityOnTop();
                 } else {
                     setBackgroundFlag();
                     this.mActivityMonitor.mResumed = false;
@@ -249,23 +247,28 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     /**
      * 从后台切换前台时，时间间隔超过30秒，上报e_app_start事件
      */
-    private void reportAppStart() {
+    private void onActivityOnTop() {
         boolean longTimeBackground = System.currentTimeMillis() - mEnterBackgroundTime >= 30000;
         if (mFromBackground != null && mFromBackground.getAndSet(false) && longTimeBackground) {
-            String foregroundClass;
-            try {
-                foregroundClass = mTopActivity.get().getClass().getName();
-            } catch (Exception e) {
-                foregroundClass = null;
-            }
-            Map<String, Object> extra = new HashMap<>();
-            extra.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
-            extra.put("active_days", EventImpl.get().getActiveDayString());
-            extra.put("active_date", EventImpl.get().getActiveDate());
-            extra.put("active_year", EventImpl.get().getActiveYear());
-            extra.put("country", Utils.getCountryFromLocale(mContext));
-            InternalStat.reportEvent(mContext, "e_app_start", foregroundClass, extra);
+            reportAppStart();
+            reportAppActive();
         }
+    }
+
+    private void reportAppStart() {
+        String foregroundClass;
+        try {
+            foregroundClass = mTopActivity.get().getClass().getName();
+        } catch (Exception e) {
+            foregroundClass = null;
+        }
+        Map<String, Object> extra = new HashMap<>();
+        extra.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
+        extra.put("active_days", EventImpl.get().getActiveDayString());
+        extra.put("active_date", EventImpl.get().getActiveDate());
+        extra.put("active_year", EventImpl.get().getActiveYear());
+        extra.put("country", Utils.getCountryFromLocale(mContext));
+        InternalStat.reportEvent(mContext, "e_app_start", foregroundClass, extra);
     }
 
     /**
@@ -273,8 +276,10 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
      */
     private void reportAppActive() {
         long todayDate = Utils.getTodayTime();
-        long lastReportData = Utils.getLong(mContext, Constant.PREF_LAST_APP_ACTIVE_DATE);
-        if (todayDate != lastReportData) {
+        todayDate = todayDate / 1000 * 1000;
+        long lastDate = Utils.getLong(mContext, Constant.PREF_LAST_APP_ACTIVE_DATE);
+        lastDate = lastDate / 1000 * 1000;
+        if (todayDate != lastDate) {
             Utils.putLong(mContext, Constant.PREF_LAST_APP_ACTIVE_DATE, todayDate);
             Map<String, Object> extra = new HashMap<>();
             extra.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
