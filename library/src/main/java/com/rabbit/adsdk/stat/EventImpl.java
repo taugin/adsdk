@@ -14,6 +14,7 @@ import com.rabbit.adsdk.utils.Utils;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -53,6 +54,7 @@ public class EventImpl implements IEvent {
 
     /**
      * 获取活跃天数
+     *
      * @return
      */
     public int getActiveDays() {
@@ -99,9 +101,9 @@ public class EventImpl implements IEvent {
     public String getActiveDayString() {
         int activeDays = getActiveDays();
         if (activeDays > 720) {
-            return "720+d";
+            return "maxd";
         }
-        return activeDays + "d";
+        return String.format(Locale.ENGLISH, "%03dd", activeDays);
     }
 
     public String getActiveDate() {
