@@ -1110,6 +1110,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 adImpData.put("active_date", EventImpl.get().getActiveDate());
                 adImpData.put("active_year", EventImpl.get().getActiveYear());
                 adImpData.put("country", Utils.getCountryFromLocale(mContext));
+                double adRevenue = getTotalAdRevenue(adImpData);
+                if (adRevenue > 0) {
+                    int adMicroRevenue = Double.valueOf(adRevenue * 1000000).intValue();
+                    adImpData.put("revenue", adRevenue);
+                    adImpData.put("micro_revenue", adMicroRevenue);
+                }
             }
             InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpData);
         }
@@ -1120,5 +1126,19 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             }
             l.onAdImpression(AdImpData.createAdImpData(adImpData));
         }
+    }
+
+    private double getTotalAdRevenue(Map<String, Object> adImpData) {
+        try {
+            if (adImpData != null) {
+                double revenue = (double) adImpData.get(Constant.AD_VALUE);
+                double totalRevenue = Utils.getFloat(mContext, Constant.PREF_TOTAL_AD_REVENUE, 0.0f);
+                totalRevenue += revenue;
+                Utils.putFloat(mContext, Constant.PREF_TOTAL_AD_REVENUE, Double.valueOf(totalRevenue).floatValue(), true);
+                return totalRevenue;
+            }
+        } catch (Exception e) {
+        }
+        return 0f;
     }
 }
