@@ -6,12 +6,21 @@ import java.util.Map;
 
 public class AdImpData {
     private Map<String, Object> mAdImpData;
+
     private AdImpData(Map<String, Object> adImpData) {
         mAdImpData = adImpData;
     }
 
     public static AdImpData createAdImpData(Map<String, Object> adImpData) {
         return new AdImpData(adImpData);
+    }
+
+    public String getRequestId() {
+        try {
+            return (String) mAdImpData.get(Constant.AD_REQUEST_ID);
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     public Double getValue() {

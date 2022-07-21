@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.adfb.FBLoader;
@@ -48,8 +50,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-
-import androidx.annotation.NonNull;
 
 /**
  * 每个广告位对应一个AdPlaceLoader对象
@@ -1805,7 +1805,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         @Override
         public void onImp(String placeName, String source, String adType, String network, String pid) {
             Log.iv(Log.TAG, "notify callback onImp place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , network : " + network + " , pid : " + pid);
-            AdStatManager.get(mContext).recordAdImp(source, placeName, network);
             if (mOnAdSdkLoadedListener != null) {
                 mOnAdSdkLoadedListener.onImp(placeName, source, adType, network, pid);
             }
@@ -1885,7 +1884,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         @Override
         public void onClick(String placeName, String source, String adType, String network, String pid) {
             Log.iv(Log.TAG, "notify callback onClick place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , network : " + network + " , pid : " + pid);
-            AdStatManager.get(mContext).recordAdClick(source, placeName, network);
             if (TextUtils.equals(adType, Constant.TYPE_NATIVE)
                     || TextUtils.equals(adType, Constant.TYPE_BANNER)) {
                 if ((mAdPlace != null && mAdPlace.isClickSwitch())) {

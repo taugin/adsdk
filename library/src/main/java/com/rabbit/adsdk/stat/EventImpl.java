@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.framework.AdStatManager;
 import com.rabbit.adsdk.core.framework.BounceRateManager;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
@@ -202,7 +203,7 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdImp(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra) {
+    public void reportAdImp(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, String requestId) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
@@ -211,22 +212,23 @@ public class EventImpl implements IEvent {
         if (extra != null) {
             extra.put("vpn_status", Utils.isVPNConnected(context) ? "on" : "off");
         }
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra + " , request id : " + requestId);
         reportEvent(context, "e_ad_imp", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
+        AdStatManager.get(mContext).recordAdImp(sdk, placeName, network, requestId);
     }
 
     @Override
-    public void reportAdClick(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra) {
+    public void reportAdClick(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, String requestId) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "click", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra + " , request id : " + requestId);
         reportEvent(context, "e_ad_click", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
-        BounceRateManager.get(context).onAdClick(extra);
+        AdStatManager.get(mContext).recordAdClick(sdk, placeName, network, extra, requestId);
     }
 
     @Override

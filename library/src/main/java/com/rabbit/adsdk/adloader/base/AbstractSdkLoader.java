@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -82,6 +83,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private long mLastFullScreenShowTime = 0;
     private AtomicBoolean mLoadTimeout = new AtomicBoolean(false);
     private double mAdRevenue;
+    private String mRequestId;
     int mLoadState = STATE_NONE;
     // applovin SDK需要提前初始化的SDK名称列表
     private static final List<String> sNeedInitAppLovinFirstSdks = Arrays.asList(Constant.AD_SDK_TRADPLUS, Constant.AD_SDK_APPLOVIN);
@@ -789,6 +791,17 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return mAdRevenue;
     }
 
+    protected void setRequestId() {
+        try {
+            mRequestId = UUID.randomUUID().toString();
+        } catch (Exception e) {
+        }
+    }
+
+    protected String getRequestId() {
+        return mRequestId;
+    }
+
     protected boolean isTemplateRendering() {
         if (mPidConfig != null) {
             return mPidConfig.isTemplate();
@@ -856,7 +869,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 builder.append("}");
                 Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " [" + network + "] assets : " + builder.toString());
             }
-            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getEcpm(), null);
+            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getEcpm(), null, getRequestId());
             if (nativeAssets != null) {
                 nativeAssets.clear();
             }
@@ -869,7 +882,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void reportAdClick(String network, String networkPid) {
         if (mStat != null) {
-            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getEcpm(), null);
+            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getEcpm(), null, getRequestId());
         }
     }
 
@@ -901,6 +914,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             getAdListener().onAdRequest();
         }
         AdPolicy.get(mContext).recordRequestTimes(getAdPlaceName(), getSdkName(), getMaxReqTimes());
+        setRequestId();
     }
 
     /**
@@ -1101,6 +1115,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         OnAdImpressionListener l = AdLoadManager.get(mContext).getOnAdImpressionListener();
         if (l != null) {
+            if (adImpData != null) {
+                adImpData.put(Constant.AD_REQUEST_ID, getRequestId());
+            }
             l.onAdImpression(AdImpData.createAdImpData(adImpData));
         }
     }

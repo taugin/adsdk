@@ -75,6 +75,8 @@ public class SpLoader extends AbstractSdkLoader {
         if (checkArgs(spreadCfg)) {
             setLoading(true, STATE_REQUEST);
             printInterfaceLog(ACTION_LOAD);
+            reportAdRequest();
+            notifyAdRequest();
             loadIcon(spreadCfg.getIcon());
             loadBanner(spreadCfg.getBanner());
             if (mHandler != null) {
@@ -156,6 +158,8 @@ public class SpLoader extends AbstractSdkLoader {
         if (checkArgs(spreadCfg)) {
             setLoading(true, STATE_REQUEST);
             printInterfaceLog(ACTION_LOAD);
+            reportAdRequest();
+            notifyAdRequest();
             loadIcon(spreadCfg.getIcon());
             loadBanner(spreadCfg.getBanner());
             if (mHandler != null) {
