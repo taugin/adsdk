@@ -90,5 +90,5 @@ public interface ISdkLoader {
 
     void showInterstitialWithNative(ViewGroup viewGroup, Params params);
 
-    double getLoadedEcpm();
+    double getAdRevenue();
 }

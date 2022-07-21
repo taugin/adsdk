@@ -81,7 +81,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private static final Random sRandom = new Random(System.currentTimeMillis());
     private long mLastFullScreenShowTime = 0;
     private AtomicBoolean mLoadTimeout = new AtomicBoolean(false);
-    private double mLoadedEcpm;
+    private double mAdRevenue;
     int mLoadState = STATE_NONE;
     // applovin SDK需要提前初始化的SDK名称列表
     private static final List<String> sNeedInitAppLovinFirstSdks = Arrays.asList(Constant.AD_SDK_TRADPLUS, Constant.AD_SDK_APPLOVIN);
@@ -780,13 +780,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     public void showInterstitialWithNative(ViewGroup viewGroup, Params params) {
     }
 
-    protected void setLoadedEcpm(double loadedEcpm) {
-        mLoadedEcpm = loadedEcpm;
+    protected void setAdRevenue(double adRevenue) {
+        mAdRevenue = adRevenue;
     }
 
     @Override
-    public double getLoadedEcpm() {
-        return mLoadedEcpm;
+    public double getAdRevenue() {
+        return mAdRevenue;
     }
 
     protected boolean isTemplateRendering() {
@@ -802,7 +802,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 "placeName=" + getAdPlaceName() + " , " +
                 "adType=" + getAdType() + " , " +
                 "sdkName=" + getSdkName() + " , " +
-                "loadedEcpm=" + mLoadedEcpm +
+                "adRevenue=" + mAdRevenue +
                 "}";
     }
 

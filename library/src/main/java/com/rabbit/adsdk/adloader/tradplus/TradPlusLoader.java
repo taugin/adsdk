@@ -116,7 +116,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     mTPBanner = tpBanner;
                     setLoading(false, STATE_SUCCESS);
                     putCachedAdTime(mTPBanner);
-                    setLoadedEcpm(getLoadedEcpm(tpAdInfo));
+                    setAdRevenue(getTradPlusAdRevenue(tpAdInfo));
                     reportAdLoaded();
                     notifySdkLoaderLoaded(false);
                 } else {
@@ -257,7 +257,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
                     setLoading(false, STATE_SUCCESS);
                     putCachedAdTime(mTPInterstitial);
-                    setLoadedEcpm(getLoadedEcpm(tpAdInfo));
+                    setAdRevenue(getTradPlusAdRevenue(tpAdInfo));
                     reportAdLoaded();
                     notifyAdLoaded(TradPlusLoader.this);
                 } else {
@@ -384,7 +384,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
                     putCachedAdTime(mTPReward);
                     setLoading(false, STATE_SUCCESS);
-                    setLoadedEcpm(getLoadedEcpm(tpAdInfo));
+                    setAdRevenue(getTradPlusAdRevenue(tpAdInfo));
                     reportAdLoaded();
                     notifyAdLoaded(TradPlusLoader.this);
                 } else {
@@ -520,7 +520,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     mTPNative = tpNative;
                     setLoading(false, STATE_SUCCESS);
                     putCachedAdTime(mTPNative);
-                    setLoadedEcpm(getLoadedEcpm(tpAdInfo));
+                    setAdRevenue(getTradPlusAdRevenue(tpAdInfo));
                     reportAdLoaded();
                     notifySdkLoaderLoaded(false);
                 } else {
@@ -660,6 +660,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
                     setLoading(false, STATE_SUCCESS);
                     putCachedAdTime(mTPSplash);
+                    setAdRevenue(getTradPlusAdRevenue(tpAdInfo));
                     reportAdLoaded();
                     notifyAdLoaded(TradPlusLoader.this);
                 } else {
@@ -860,6 +861,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return tpAdInfo.currency;
         }
         return "USD";
+    }
+
+    private double getTradPlusAdRevenue(TPAdInfo tpAdInfo) {
+        return getLoadedEcpm(tpAdInfo) / 1000;
     }
 
     private double getLoadedEcpm(TPAdInfo tpAdInfo) {

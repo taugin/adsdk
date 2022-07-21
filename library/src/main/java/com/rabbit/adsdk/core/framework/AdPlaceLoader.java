@@ -2132,7 +2132,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public int compare(ISdkLoader o1, ISdkLoader o2) {
                     try {
-                        return Double.compare(o2.getLoadedEcpm(), o1.getLoadedEcpm());
+                        return Double.compare(o2.getAdRevenue(), o1.getAdRevenue());
                     } catch (Exception e) {
                     }
                     return 0;

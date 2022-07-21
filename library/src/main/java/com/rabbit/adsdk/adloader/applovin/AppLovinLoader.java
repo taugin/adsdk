@@ -405,7 +405,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     maxAdView = loadingMaxAdView;
                     setLoading(false, STATE_SUCCESS);
                     putCachedAdTime(loadingMaxAdView);
-                    setLoadedEcpm(getLoadedEcpm(ad));
+                    setAdRevenue(getMaxAdRevenue(ad));
                     reportAdLoaded();
                     notifySdkLoaderLoaded(false);
                 }
@@ -527,7 +527,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
-                setLoadedEcpm(getLoadedEcpm(ad));
+                setAdRevenue(getMaxAdRevenue(ad));
                 reportAdLoaded();
                 notifyAdLoaded(AppLovinLoader.this);
             }
@@ -654,7 +654,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(rewardedAd);
-                setLoadedEcpm(getLoadedEcpm(ad));
+                setAdRevenue(getMaxAdRevenue(ad));
                 reportAdLoaded();
                 notifyAdLoaded(AppLovinLoader.this);
             }
@@ -782,7 +782,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 mTemplateNativeView = maxNativeAdView;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mMaxAd);
-                setLoadedEcpm(getLoadedEcpm(maxAd));
+                setAdRevenue(getMaxAdRevenue(maxAd));
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
             }
@@ -995,9 +995,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
     }
 
-    private double getLoadedEcpm(MaxAd maxAd) {
+    private double getMaxAdRevenue(MaxAd maxAd) {
         try {
-            return maxAd.getRevenue() * 1000;
+            return maxAd.getRevenue();
         } catch (Exception e) {
         }
         return 0f;
@@ -1010,7 +1010,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (maxAd != null) {
             networkName = maxAd.getNetworkName();
             placement = maxAd.getNetworkPlacement();
-            ecpm = String.valueOf(getLoadedEcpm(maxAd));
+            ecpm = String.valueOf(getMaxAdRevenue(maxAd));
         }
         StringBuilder builder = new StringBuilder();
         if (!TextUtils.isEmpty(networkName)) {
