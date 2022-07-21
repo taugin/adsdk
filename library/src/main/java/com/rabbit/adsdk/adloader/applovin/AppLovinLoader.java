@@ -1006,11 +1006,11 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private String getLoadedInfo(MaxAd maxAd) {
         String networkName = null;
         String placement = null;
-        String ecpm = null;
+        String adRevenue = null;
         if (maxAd != null) {
             networkName = maxAd.getNetworkName();
             placement = maxAd.getNetworkPlacement();
-            ecpm = String.valueOf(getMaxAdRevenue(maxAd));
+            adRevenue = String.valueOf(getMaxAdRevenue(maxAd));
         }
         StringBuilder builder = new StringBuilder();
         if (!TextUtils.isEmpty(networkName)) {
@@ -1025,8 +1025,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (builder.length() > 0) {
             builder.append(" , ");
         }
-        if (!TextUtils.isEmpty(ecpm)) {
-            builder.append("ad_ecpm : " + ecpm);
+        if (!TextUtils.isEmpty(adRevenue)) {
+            builder.append("ad_revenue : " + adRevenue);
         }
         if (builder.length() > 0) {
             return " - " + builder.toString();

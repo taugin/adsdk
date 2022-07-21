@@ -800,9 +800,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
     private void reportTradPlusImpressionData(TPAdInfo tpAdInfo) {
         try {
-            double ecpm = getLoadedEcpm(tpAdInfo);
             Map<String, Object> map = new HashMap<>();
-            double revenue = ecpm / 1000;
+            double revenue = getTradPlusAdRevenue(tpAdInfo);
             map.put(Constant.AD_VALUE, revenue);
             map.put(Constant.AD_MICRO_VALUE, Double.valueOf(revenue * 1000000).intValue());
             map.put(Constant.AD_CURRENCY, getCurrency(tpAdInfo));
@@ -864,10 +863,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
     }
 
     private double getTradPlusAdRevenue(TPAdInfo tpAdInfo) {
-        return getLoadedEcpm(tpAdInfo) / 1000;
-    }
-
-    private double getLoadedEcpm(TPAdInfo tpAdInfo) {
         double ecpm = 0f;
         if (tpAdInfo != null) {
             try {
@@ -875,17 +870,17 @@ public class TradPlusLoader extends AbstractSdkLoader {
             } catch (Exception e) {
             }
         }
-        return ecpm;
+        return ecpm / 1000;
     }
 
     private String getLoadedInfo(TPAdInfo tpAdInfo) {
         String networkName = null;
         String placement = null;
-        String ecpm = null;
+        String adRenvue = null;
         if (tpAdInfo != null) {
             networkName = tpAdInfo.adSourceName;
             placement = getNetworkPid(tpAdInfo);
-            ecpm = String.valueOf(getLoadedEcpm(tpAdInfo));
+            adRenvue = String.valueOf(getTradPlusAdRevenue(tpAdInfo));
         }
         StringBuilder builder = new StringBuilder();
         if (!TextUtils.isEmpty(networkName)) {
@@ -900,8 +895,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
         if (builder.length() > 0) {
             builder.append(" , ");
         }
-        if (!TextUtils.isEmpty(ecpm)) {
-            builder.append("ad_ecpm : " + ecpm);
+        if (!TextUtils.isEmpty(adRenvue)) {
+            builder.append("ad_revenue : " + adRenvue);
         }
         if (builder.length() > 0) {
             return " - " + builder.toString();
