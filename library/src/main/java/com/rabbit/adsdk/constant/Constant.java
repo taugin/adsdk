@@ -274,5 +274,4 @@ public class Constant {
     public static final String AD_REQUEST_ID = "ad_request_id";
 
     public static final String PREF_LAST_APP_ACTIVE_DATE = "pref_last_app_active_date";
-    public static final String PREF_TOTAL_AD_REVENUE = "pref_total_ad_revenue";
 }
