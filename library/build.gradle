@@ -121,9 +121,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Inmobi
-    implementation 'com.inmobi.monetization:inmobi-ads:10.0.7'
+    implementation 'com.inmobi.monetization:inmobi-ads:10.0.8'
     // applovin inmobi mediation
-    implementation 'com.applovin.mediation:inmobi-adapter:10.0.7.0@aar'
+    implementation 'com.applovin.mediation:inmobi-adapter:10.0.8.0@aar'
     //tradplus inmobi mediation
     implementation 'com.tradplusad:tradplus-inmobix:23.8.0.20.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -152,9 +152,9 @@ dependencies {
     implementation 'com.tradplusad:tradplus-ironsource:10.8.0.20.1'
 //////////////////////////////////////////////////////////////////////////////////////////
 
-    implementation 'com.adcolony:sdk:4.7.1'
+    implementation 'com.adcolony:sdk:4.8.0'
     // applovin adcolony mediation
-    implementation 'com.applovin.mediation:adcolony-adapter:4.7.1.1'
+    implementation 'com.applovin.mediation:adcolony-adapter:4.8.0.1'
     // tradplus adcolony mediation
     implementation 'com.tradplusad:tradplus-adcolony:4.8.0.20.1'
 //////////////////////////////////////////////////////////////////////////////////////////
