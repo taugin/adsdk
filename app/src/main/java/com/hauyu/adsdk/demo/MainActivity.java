@@ -1,9 +1,11 @@
 package com.hauyu.adsdk.demo;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,8 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -297,7 +301,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         AdParams.Builder builder = new AdParams.Builder();
         String bannerPlace = String.format(Locale.ENGLISH, BANNER_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
         if (AdSdk.get(mContext).isAdViewLoaded(bannerPlace)) {
-            AdSdk.get(mContext).showAdView(bannerPlace, mNativeBannerLayout);
+            FrameLayout frameLayout = new FrameLayout(this);
+            AdSdk.get(mContext).showAdView(bannerPlace, frameLayout);
+            CustomDrawable.setBackground(frameLayout);
+            showNativeAds(frameLayout);
         } else {
             String banner = (String) mAdBannerSizeSpinner.getSelectedItem();
             builder.setBannerSize(AdExtra.AD_SDK_COMMON, BANNER_MAP.get(banner));
@@ -359,11 +366,26 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             nativePlace += "_template";
         }
         if (AdSdk.get(mContext).isAdViewLoaded(nativePlace)) {
-            AdSdk.get(mContext).showAdView(nativePlace, null, adParams, mNativeBannerLayout);
-            CustomDrawable.setBackground(mNativeBannerLayout);
+            FrameLayout frameLayout = new FrameLayout(this);
+            AdSdk.get(mContext).showAdView(nativePlace, null, adParams, frameLayout);
+            CustomDrawable.setBackground(frameLayout);
+            showNativeAds(frameLayout);
             return;
         }
         AdSdk.get(mContext).loadAdView(nativePlace, adParams, new FullScreenAdListener(textView));
+    }
+
+    private void showNativeAds(ViewGroup viewGroup) {
+        Dialog dialog = new Dialog(this, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
+        dialog.setContentView(viewGroup);
+        dialog.show();
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = getResources().getDisplayMetrics().widthPixels;
+        params.height = -2;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setAttributes(params);
+        dialog.getWindow().setDimAmount(0.8f);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#88000000")));
     }
 
     private void runToast(final String toast) {
