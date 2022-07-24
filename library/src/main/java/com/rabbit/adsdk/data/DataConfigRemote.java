@@ -17,18 +17,39 @@ import java.util.Locale;
 @SuppressWarnings("unchecked")
 public class DataConfigRemote {
 
+    public static final boolean sFirebaseRemoteConfigEnable;
+
+    public static Method firebaseInstanceMethod;
+    public static Method firebaseGetStringMethod;
+
     public static final boolean sUmengRemoteConfigEnable;
+    public static Method umengInstanceMethod;
+    public static Method umengGetStringMethod;
 
     static {
         boolean enable;
         try {
-            Class.forName("com.umeng.cconfig.UMRemoteConfig");
+            Class<?> clazz = Class.forName("com.umeng.cconfig.UMRemoteConfig");
+            umengInstanceMethod = clazz.getMethod("getInstance");
+            umengGetStringMethod = clazz.getMethod("getConfigValue", String.class);
             enable = true;
         } catch (Exception | Error e) {
             Log.iv(Log.TAG_SDK, "umeng error : " + e);
             enable = false;
         }
         sUmengRemoteConfigEnable = enable;
+
+        try {
+            Class<?> clazz = Class.forName("com.google.firebase.remoteconfig.FirebaseRemoteConfig");
+            firebaseInstanceMethod = clazz.getMethod("getInstance");
+            firebaseGetStringMethod = clazz.getMethod("getString", String.class);
+            enable = true;
+        } catch (Exception | Error e) {
+            firebaseGetStringMethod = null;
+            firebaseInstanceMethod = null;
+            enable = false;
+        }
+        sFirebaseRemoteConfigEnable = enable;
     }
 
     private Context mContext;
@@ -178,23 +199,22 @@ public class DataConfigRemote {
     }
 
     private String getConfigFromFirebase(String key) {
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.google.firebase.remoteconfig.FirebaseRemoteConfig");
-            Method method = clazz.getMethod("getInstance");
-            Object instance = method.invoke(null);
-            method = clazz.getMethod("getString", String.class);
-            Object value = method.invoke(instance, key);
-            if (value != null) {
-                return (String) value;
+        if (sFirebaseRemoteConfigEnable) {
+            String error = null;
+            try {
+                Object instance = firebaseInstanceMethod.invoke(null);
+                Object value = firebaseGetStringMethod.invoke(instance, key);
+                if (value != null) {
+                    return (String) value;
+                }
+            } catch (Exception e) {
+                error = String.valueOf(e);
+            } catch (Error e) {
+                error = String.valueOf(e);
             }
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "firebase error : " + error);
+            if (!TextUtils.isEmpty(error)) {
+                Log.iv(Log.TAG_SDK, "firebase error : " + error);
+            }
         }
         return null;
     }
@@ -203,11 +223,8 @@ public class DataConfigRemote {
         if (sUmengRemoteConfigEnable) {
             String error = null;
             try {
-                Class<?> clazz = Class.forName("com.umeng.cconfig.UMRemoteConfig");
-                Method method = clazz.getMethod("getInstance");
-                Object instance = method.invoke(null);
-                method = clazz.getMethod("getConfigValue", String.class);
-                Object value = method.invoke(instance, key);
+                Object instance = umengInstanceMethod.invoke(null);
+                Object value = umengGetStringMethod.invoke(instance, key);
                 if (value != null) {
                     return (String) value;
                 }
