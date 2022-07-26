@@ -134,7 +134,7 @@ public class SmaatoMediationAdapter
     public String getAdapterVersion()
     {
         // return com.applovin.mediation.adapters.smaato.BuildConfig.VERSION_NAME;
-        return "21.8.3.1";
+        return "21.8.3.2";
     }
 
     @Override
@@ -142,7 +142,7 @@ public class SmaatoMediationAdapter
     {
         log( "Collecting signal..." );
 
-        // Update local params, since not available on init
+        updateAgeRestrictedUser( parameters );
         updateLocationCollectionEnabled( parameters );
 
         String signal = SmaatoSdk.collectSignals( getContext( activity ) );
@@ -686,6 +686,7 @@ public class SmaatoMediationAdapter
         @Override
         public void prepareViewForInteraction(final MaxNativeAdView nativeAdView)
         {
+            NativeAdRenderer nativeAdRenderer = SmaatoMediationAdapter.this.nativeAdRenderer;
             if ( nativeAdRenderer == null )
             {
                 e( "Failed to register native ad view for interaction. Native ad renderer is null" );
