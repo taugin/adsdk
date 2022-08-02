@@ -308,6 +308,16 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad interstitial show error"));
                 notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "ad interstitial show error");
             }
+
+            @Override
+            public void onAdVideoStart(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad interstitial play start"));
+            }
+
+            @Override
+            public void onAdVideoEnd(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad interstitial play end"));
+            }
         });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
@@ -442,15 +452,20 @@ public class TradPlusLoader extends AbstractSdkLoader {
             }
 
             @Override
+            public void onAdVideoStart(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad reward play start"));
+            }
+
+            @Override
+            public void onAdVideoEnd(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad reward play end"));
+            }
+
+            @Override
             public void onAdVideoError(TPAdInfo tpAdInfo, TPAdError tpAdError) {
                 Log.iv(Log.TAG, formatLog("ad reward video error"));
                 onResetReward();
                 notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "ad reward video error");
-            }
-
-            @Override
-            public void onAdPlayAgainReward(TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad reward play again"));
             }
         });
         printInterfaceLog(ACTION_LOAD);
