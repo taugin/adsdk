@@ -98,7 +98,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // mintegral
-    def mintegral_version = "16.1.81"
+    def mintegral_version = "16.1.91"
     implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
@@ -115,7 +115,7 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbsplash:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
     // applovin mintegral mediation
-    implementation 'com.applovin.mediation:mintegral-adapter:16.1.81.0@aar'
+    implementation 'com.applovin.mediation:mintegral-adapter:16.1.91.0@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.8.0.30.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -129,9 +129,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // unity
-    implementation 'com.unity3d.ads:unity-ads:4.2.1'
+    implementation 'com.unity3d.ads:unity-ads:4.3.0'
     // unity applovin mediation
-    implementation 'com.applovin.mediation:unityads-adapter:4.2.1.1@aar'
+    implementation 'com.applovin.mediation:unityads-adapter:4.3.0.0@aar'
     // tradplus unity mediation
     implementation 'com.tradplusad:tradplus-unity:5.8.0.30.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,7 @@ dependencies {
     // Tapjoy
     implementation 'com.tapjoy:tapjoy-android-sdk:12.10.0@aar'
     // applovin tapjoy mediation
-    implementation 'com.applovin.mediation:tapjoy-adapter:12.10.0.1@aar'
+    implementation 'com.applovin.mediation:tapjoy-adapter:12.10.0.2@aar'
     // tradplus tapjoy mediation
     implementation 'com.tradplusad:tradplus-tapjoy:6.8.0.30.1'
 //////////////////////////////////////////////////////////////////////////////////////////
