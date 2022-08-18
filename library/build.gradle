@@ -91,14 +91,14 @@ dependencies {
     // admob
     implementation 'com.google.android.gms:play-services-ads:21.1.0'
     // applovin admob mediation
-    implementation 'com.applovin.mediation:google-adapter:21.1.0.0@aar'
-    implementation 'com.applovin.mediation:google-ad-manager-adapter:21.1.0.0@aar'
+    implementation 'com.applovin.mediation:google-adapter:21.1.0.2@aar'
+    implementation 'com.applovin.mediation:google-ad-manager-adapter:21.1.0.2@aar'
     // tradplus admob mediation
     implementation 'com.tradplusad:tradplus-googlex:2.8.1.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // mintegral
-    def mintegral_version = "16.1.91"
+    def mintegral_version = "16.2.21"
     implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
@@ -115,15 +115,15 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbsplash:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
     // applovin mintegral mediation
-    implementation 'com.applovin.mediation:mintegral-adapter:16.1.91.0@aar'
+    implementation 'com.applovin.mediation:mintegral-adapter:16.2.21.0@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.8.1.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Inmobi
-    implementation 'com.inmobi.monetization:inmobi-ads:10.0.7'
+    implementation 'com.inmobi.monetization:inmobi-ads:10.0.9'
     // applovin inmobi mediation
-    implementation 'com.applovin.mediation:inmobi-adapter:10.0.8.1@aar'
+    implementation 'com.applovin.mediation:inmobi-adapter:10.0.9.1@aar'
     //tradplus inmobi mediation
     implementation 'com.tradplusad:tradplus-inmobix:23.8.1.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -145,9 +145,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // ironsource
-    implementation 'com.ironsource.sdk:mediationsdk:7.2.3.1'
+    implementation 'com.ironsource.sdk:mediationsdk:7.2.4'
     // applovin ironsource mediation
-    implementation 'com.applovin.mediation:ironsource-adapter:7.2.3.1.0'
+    implementation 'com.applovin.mediation:ironsource-adapter:7.2.4.0.0'
     // tradplus ironsource mediation
     implementation 'com.tradplusad:tradplus-ironsource:10.8.1.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -168,7 +168,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Smaato
-    def smaato_version = "21.8.3"
+    def smaato_version = "21.8.4"
     implementation "com.smaato.android.sdk:module-core:${smaato_version}"
     implementation "com.smaato.android.sdk:module-core-light:${smaato_version}"
     implementation "com.smaato.android.sdk:module-richmedia:${smaato_version}"
