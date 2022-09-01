@@ -165,6 +165,15 @@ public class DataManager {
     }
 
     public String getString(String key) {
+        return getString(key, false);
+    }
+
+    public String getString(String key, boolean md5) {
+        if (md5) {
+            String md5Key = Utils.string2MD5(key);
+            Log.iv(Log.TAG, key + " -> " + md5Key);
+            key = md5Key;
+        }
         return DataConfigRemote.get(mContext).getString(key);
     }
 

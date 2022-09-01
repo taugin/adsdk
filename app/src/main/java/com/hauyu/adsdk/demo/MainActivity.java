@@ -225,6 +225,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         } else if (v.getId() == R.id.splash) {
             loadSplash((TextView) v);
         } else if (v.getId() == R.id.change_language) {
+            AdSdk.get(this).getString("change_language", true);
             ChangeLanguage.showLanguageDialog(true);
         } else {
             String tag = (String) v.getTag();
