@@ -632,7 +632,7 @@ public class AdSdk {
         if (loader != null) {
             return loader.isAdPlaceError();
         }
-        return false;
+        return true;
     }
 
     public void resume(String placeName) {
