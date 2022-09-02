@@ -10,6 +10,7 @@ import com.rabbit.adsdk.data.config.PlaceConfig;
 import com.rabbit.adsdk.data.parse.AdParser;
 import com.rabbit.adsdk.data.parse.IParser;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.utils.AesUtils;
 import com.rabbit.adsdk.utils.Utils;
 import com.rabbit.sunny.SpreadCfg;
 
@@ -171,10 +172,19 @@ public class DataManager {
     public String getString(String key, boolean md5) {
         if (md5) {
             String md5Key = Utils.string2MD5(key);
-            Log.iv(Log.TAG, key + " -> " + md5Key);
+            // Log.iv(Log.TAG, key + " : " + md5Key);
             key = md5Key;
         }
-        return DataConfigRemote.get(mContext).getString(key);
+
+        // 对firebase的内容进行加密，使用固定字符串开头
+        String value = DataConfigRemote.get(mContext).getString(key);
+        if (value != null && (value.startsWith("DIAMOND:") || value.startsWith("diamond:"))) {
+            String content = value.substring("diamond:".length());
+            // Log.iv(Log.TAG, "content : " + content);
+            value = AesUtils.decrypt(Constant.KEY_PASSWORD, content);
+            // Log.iv(Log.TAG, "value : " + value);
+        }
+        return value;
     }
 
     public List<String> getPlaceList() {
