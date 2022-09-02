@@ -27,23 +27,23 @@ import java.util.Map;
 public class AdParser implements IParser {
 
     private String getContent(String content) {
-        JSONObject jobj = null;
-        JSONArray jarray = null;
+        JSONObject jObj = null;
+        JSONArray jArray = null;
         try {
-            jobj = new JSONObject(content);
+            jObj = new JSONObject(content);
         } catch (Exception e) {
             Log.v(Log.TAG, "error : not a json object");
         }
-        if (jobj != null) {
-            return jobj.toString();
+        if (jObj != null) {
+            return jObj.toString();
         }
         try {
-            jarray = new JSONArray(content);
+            jArray = new JSONArray(content);
         } catch (Exception e) {
             Log.v(Log.TAG, "error : not a json array");
         }
-        if (jarray != null) {
-            return jarray.toString();
+        if (jArray != null) {
+            return jArray.toString();
         }
         return AesUtils.decrypt(Constant.KEY_PASSWORD, content);
     }
@@ -51,8 +51,12 @@ public class AdParser implements IParser {
     @Override
     public PlaceConfig parseAdConfig(String data) {
         data = getContent(data);
-        PlaceConfig adconfig = parseAdConfigLocked(data);
-        return adconfig;
+        if (!TextUtils.isEmpty(data)) {
+            PlaceConfig adConfig = parseAdConfigLocked(data);
+            return adConfig;
+        }
+        Log.iv(Log.TAG, "ad config is empty");
+        return null;
     }
 
     private PlaceConfig parseAdConfigLocked(String data) {

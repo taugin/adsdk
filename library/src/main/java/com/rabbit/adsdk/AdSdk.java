@@ -258,7 +258,7 @@ public class AdSdk {
             loader.setAdPlaceConfig(adPlace);
             loader.init();
         }
-        Log.iv(Log.TAG, "placeName [" + placeName + "] use remote adplace : " + useRemote);
+        Log.iv(Log.TAG, "placeName [" + placeName + "] use remote ad place : " + useRemote);
         return loader;
     }
 
