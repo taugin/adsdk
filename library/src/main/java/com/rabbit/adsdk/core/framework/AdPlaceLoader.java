@@ -2119,8 +2119,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private void sortLoadedLoaders(List<ISdkLoader> list) {
         try {
-            if (mAdPlace == null || !mAdPlace.isSort()) {
-                Log.iv(Log.TAG, "disable ecpm sort on showing ads");
+            if (mAdPlace == null || !mAdPlace.isValueOrder()) {
+                Log.iv(Log.TAG, "disable value order on showing ads");
                 return;
             }
             if (list == null || list.size() < 2) {

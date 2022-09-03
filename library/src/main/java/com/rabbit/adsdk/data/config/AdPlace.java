@@ -59,7 +59,7 @@ public class AdPlace {
 
     private String sceneId;
 
-    private boolean sort;
+    private boolean valueOrder;
 
     public String getName() {
         return name;
@@ -260,12 +260,12 @@ public class AdPlace {
         this.sceneId = sceneId;
     }
 
-    public boolean isSort() {
-        return sort;
+    public boolean isValueOrder() {
+        return valueOrder;
     }
 
-    public void setSort(boolean sort) {
-        this.sort = sort;
+    public void setValueOrder(boolean valueOrder) {
+        this.valueOrder = valueOrder;
     }
 
     @Override
