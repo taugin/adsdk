@@ -2119,7 +2119,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private void sortLoadedLoaders(List<ISdkLoader> list) {
         try {
-            if (mAdPlace == null || !mAdPlace.isValueOrder()) {
+            if (mAdPlace == null || !mAdPlace.isOrder()) {
                 Log.iv(Log.TAG, "disable value order on showing ads");
                 return;
             }

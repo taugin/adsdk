@@ -55,7 +55,7 @@ public interface IParser {
     // 设置场景id
     String SCENE_ID = "scene_id";
     // 按照ecpm排序
-    String VALUE_ORDER = "value_order";
+    String ORDER = "order";
 
     // 广告平台 fb, admob
     String SDK = "sdk";
