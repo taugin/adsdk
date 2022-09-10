@@ -18,7 +18,7 @@ import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PlaceConfig;
 import com.rabbit.adsdk.listener.OnAdFilterListener;
-import com.rabbit.adsdk.listener.OnAdImpressionListener;
+import com.rabbit.adsdk.listener.OnAdEventListener;
 import com.rabbit.adsdk.listener.OnAdSdkListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
@@ -767,8 +767,8 @@ public class AdSdk {
         AdLoadManager.get(mContext).setOnAdFilterListener(l);
     }
 
-    public void setOnAdImpressionListener(OnAdImpressionListener l) {
-        AdLoadManager.get(mContext).setOnAdImpressionListener(l);
+    public void setOnAdImpressionListener(OnAdEventListener l) {
+        AdLoadManager.get(mContext).setOnAdEventListener(l);
     }
 
     public void showMediationDebugger() {

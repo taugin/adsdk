@@ -28,7 +28,7 @@ import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.data.parse.IParser;
 import com.rabbit.adsdk.listener.OnAdFilterListener;
-import com.rabbit.adsdk.listener.OnAdImpressionListener;
+import com.rabbit.adsdk.listener.OnAdEventListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.stat.IEvent;
@@ -915,6 +915,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         AdPolicy.get(mContext).recordRequestTimes(getAdPlaceName(), getSdkName(), getMaxReqTimes());
         setRequestId();
+        OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
+        if (l != null) {
+            l.onRequest(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
+        }
     }
 
     /**
@@ -924,6 +928,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (getAdListener() != null) {
             getAdListener().onAdLoaded(loader);
         }
+        OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
+        if (l != null) {
+            l.onLoaded(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
+        }
     }
 
     /**
@@ -932,6 +940,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void notifyAdShow() {
         if (getAdListener() != null) {
             getAdListener().onAdShow();
+        }
+        OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
+        if (l != null) {
+            l.onShow(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
         }
     }
 
@@ -946,6 +958,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (getAdListener() != null) {
             getAdListener().onAdImp(network);
         }
+        OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
+        if (l != null) {
+            l.onImp(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
+        }
     }
 
     protected void notifyAdClick() {
@@ -958,6 +974,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void notifyAdClick(String network) {
         if (getAdListener() != null) {
             getAdListener().onAdClick(network);
+        }
+        OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
+        if (l != null) {
+            l.onClick(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
         }
     }
 
@@ -972,11 +992,19 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (getAdListener() != null) {
             getAdListener().onAdDismiss(complexAds);
         }
+        OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
+        if (l != null) {
+            l.onDismiss(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
+        }
     }
 
     protected void notifyAdLoadFailed(int error, String msg) {
         if (getAdListener() != null && !mLoadTimeout.getAndSet(false)) {
             getAdListener().onAdLoadFailed(error, msg);
+        }
+        OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
+        if (l != null) {
+            l.onLoadFailed(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
         }
     }
 
@@ -1113,7 +1141,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             }
             InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpData);
         }
-        OnAdImpressionListener l = AdLoadManager.get(mContext).getOnAdImpressionListener();
+        OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
             if (adImpData != null) {
                 adImpData.put(Constant.AD_REQUEST_ID, getRequestId());

@@ -9,7 +9,7 @@ import android.support.multidex.MultiDex;
 
 import com.rabbit.adsdk.AdImpData;
 import com.rabbit.adsdk.AdSdk;
-import com.rabbit.adsdk.listener.OnAdImpressionListener;
+import com.rabbit.adsdk.listener.OnAdEventListener;
 import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 import com.tendcloud.tenddata.TCAgent;
@@ -34,7 +34,7 @@ public class App extends Application {
         Va.setNetworkProxy();
         initUmeng();
         initTalkingData();
-        AdSdk.get(this).setOnAdImpressionListener(new OnAdImpressionListener() {
+        AdSdk.get(this).setOnAdImpressionListener(new OnAdEventListener() {
             @Override
             public void onAdImpression(AdImpData adImpData) {
                 if (adImpData != null) {

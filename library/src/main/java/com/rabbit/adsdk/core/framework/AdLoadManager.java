@@ -3,7 +3,7 @@ package com.rabbit.adsdk.core.framework;
 import android.content.Context;
 
 import com.rabbit.adsdk.listener.OnAdFilterListener;
-import com.rabbit.adsdk.listener.OnAdImpressionListener;
+import com.rabbit.adsdk.listener.OnAdEventListener;
 
 public class AdLoadManager {
     private static AdLoadManager sAdLoadManager;
@@ -34,7 +34,7 @@ public class AdLoadManager {
     private Context mContext;
     // 禁止广告加载过滤器
     private OnAdFilterListener mOnAdFilterListener;
-    private OnAdImpressionListener mOnAdImpressionListener;
+    private OnAdEventListener mOnAdEventListener;
 
     public OnAdFilterListener getOnAdFilterListener() {
         return mOnAdFilterListener;
@@ -44,11 +44,11 @@ public class AdLoadManager {
         mOnAdFilterListener = onAdFilterListener;
     }
 
-    public OnAdImpressionListener getOnAdImpressionListener() {
-        return mOnAdImpressionListener;
+    public OnAdEventListener getOnAdEventListener() {
+        return mOnAdEventListener;
     }
 
-    public void setOnAdImpressionListener(OnAdImpressionListener l) {
-        mOnAdImpressionListener = l;
+    public void setOnAdEventListener(OnAdEventListener l) {
+        mOnAdEventListener = l;
     }
 }
