@@ -767,7 +767,7 @@ public class AdSdk {
         AdLoadManager.get(mContext).setOnAdFilterListener(l);
     }
 
-    public void setOnAdImpressionListener(OnAdEventListener l) {
+    public void setOnAdEventListener(OnAdEventListener l) {
         AdLoadManager.get(mContext).setOnAdEventListener(l);
     }
 

@@ -34,7 +34,35 @@ public class App extends Application {
         Va.setNetworkProxy();
         initUmeng();
         initTalkingData();
-        AdSdk.get(this).setOnAdImpressionListener(new OnAdEventListener() {
+        AdSdk.get(this).setOnAdEventListener(new OnAdEventListener() {
+            @Override
+            public void onRequest(String placeName, String sdkName, String adType, String pid, String requestId) {
+            }
+
+            @Override
+            public void onLoaded(String placeName, String sdkName, String adType, String pid, String requestId) {
+            }
+
+            @Override
+            public void onLoadFailed(String placeName, String sdkName, String adType, String pid, String requestId) {
+            }
+
+            @Override
+            public void onShow(String placeName, String sdkName, String adType, String pid, String requestId) {
+            }
+
+            @Override
+            public void onImp(String placeName, String sdkName, String adType, String pid, String requestId) {
+            }
+
+            @Override
+            public void onClick(String placeName, String sdkName, String adType, String pid, String requestId) {
+            }
+
+            @Override
+            public void onDismiss(String placeName, String sdkName, String adType, String pid, String requestId) {
+            }
+
             @Override
             public void onAdImpression(AdImpData adImpData) {
                 if (adImpData != null) {
