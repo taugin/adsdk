@@ -272,6 +272,7 @@ public class Constant {
     public static final String AD_BIDDING = "ad_bidding";
     public static final String AD_GAID = "ad_gaid";
     public static final String AD_REQUEST_ID = "ad_request_id";
+    public static final String AD_TYPE = "ad_type";
 
     public static final String PREF_LAST_APP_ACTIVE_DATE = "pref_last_app_active_date";
 }

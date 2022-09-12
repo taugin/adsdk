@@ -1138,6 +1138,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 adImpData.put("active_date", EventImpl.get().getActiveDate());
                 adImpData.put("active_year", EventImpl.get().getActiveYear());
                 adImpData.put("country", Utils.getCountryFromLocale(mContext));
+                adImpData.put(Constant.AD_TYPE, getAdType());
             }
             InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpData);
         }
