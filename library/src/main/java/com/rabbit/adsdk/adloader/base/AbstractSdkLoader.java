@@ -82,6 +82,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private static final Random sRandom = new Random(System.currentTimeMillis());
     private long mLastFullScreenShowTime = 0;
     private AtomicBoolean mLoadTimeout = new AtomicBoolean(false);
+    private String mAdNetwork;
     private double mAdRevenue;
     private String mRequestId;
     int mLoadState = STATE_NONE;
@@ -782,7 +783,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     public void showInterstitialWithNative(ViewGroup viewGroup, Params params) {
     }
 
-    protected void setAdRevenue(double adRevenue) {
+    protected void setAdNetworkAndRevenue(String network, double adRevenue) {
+        mAdNetwork = network;
         mAdRevenue = adRevenue;
     }
 
@@ -811,10 +813,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     @Override
     public String toString() {
-        return "SdkLoader{" +
+        return "sdk loader{" +
                 "placeName=" + getAdPlaceName() + " , " +
                 "adType=" + getAdType() + " , " +
                 "sdkName=" + getSdkName() + " , " +
+                "adNetwork=" + mAdNetwork + " , " +
                 "adRevenue=" + mAdRevenue +
                 "}";
     }

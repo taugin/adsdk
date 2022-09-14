@@ -405,7 +405,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     maxAdView = loadingMaxAdView;
                     setLoading(false, STATE_SUCCESS);
                     putCachedAdTime(loadingMaxAdView);
-                    setAdRevenue(getMaxAdRevenue(ad));
+                    String network = getNetwork(ad);
+                    setAdNetworkAndRevenue(network, getMaxAdRevenue(ad));
                     reportAdLoaded();
                     notifySdkLoaderLoaded(false);
                 }
@@ -527,7 +528,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
-                setAdRevenue(getMaxAdRevenue(ad));
+                String network = getNetwork(ad);
+                setAdNetworkAndRevenue(network, getMaxAdRevenue(ad));
                 reportAdLoaded();
                 notifyAdLoaded(AppLovinLoader.this);
             }
@@ -654,7 +656,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(rewardedAd);
-                setAdRevenue(getMaxAdRevenue(ad));
+                String network = getNetwork(ad);
+                setAdNetworkAndRevenue(network, getMaxAdRevenue(ad));
                 reportAdLoaded();
                 notifyAdLoaded(AppLovinLoader.this);
             }
@@ -782,7 +785,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 mTemplateNativeView = maxNativeAdView;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mMaxAd);
-                setAdRevenue(getMaxAdRevenue(maxAd));
+                String network = getNetwork(maxAd);
+                setAdNetworkAndRevenue(network, getMaxAdRevenue(maxAd));
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
             }
