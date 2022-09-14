@@ -32,7 +32,7 @@ public interface ISdkLoader {
     void loadInterstitial();
 
     // 展示插屏
-    boolean showInterstitial();
+    boolean showInterstitial(String sceneName);
 
     // 加载原生
     void loadNative(Params params);
@@ -46,7 +46,7 @@ public interface ISdkLoader {
 
     void loadRewardedVideo();
 
-    boolean showRewardedVideo();
+    boolean showRewardedVideo(String sceneName);
 
     public void loadSplash();
 

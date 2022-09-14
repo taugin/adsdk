@@ -31,13 +31,13 @@ public interface IAdLoader {
 
     void loadInterstitial(Activity activity);
 
-    void showInterstitial();
+    void showInterstitial(String sceneName);
 
     boolean isRewardedVideoLoaded();
 
     void loadRewardedVideo(Activity activity);
 
-    void showRewardedVideo();
+    void showRewardedVideo(String sceneName);
 
     boolean isAdViewLoaded(String adType);
 
@@ -59,7 +59,7 @@ public interface IAdLoader {
 
     void loadComplexAds(AdParams adParams);
 
-    boolean showComplexAds();
+    boolean showComplexAds(String sceneName);
 
     int getAdCount();
 

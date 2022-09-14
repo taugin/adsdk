@@ -17,8 +17,8 @@ import com.rabbit.adsdk.core.framework.ReplaceManager;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PlaceConfig;
-import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.OnAdEventListener;
+import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.OnAdSdkListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
@@ -310,9 +310,13 @@ public class AdSdk {
     }
 
     public void showInterstitial(String placeName) {
+        showInterstitial(placeName, null);
+    }
+
+    public void showInterstitial(String placeName, String sceneName) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {
-            loader.showInterstitial();
+            loader.showInterstitial(sceneName);
         }
     }
 
@@ -355,9 +359,13 @@ public class AdSdk {
     }
 
     public void showRewardedVideo(String placeName) {
+        showRewardedVideo(placeName, null);
+    }
+
+    public void showRewardedVideo(String placeName, String sceneName) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {
-            loader.showRewardedVideo();
+            loader.showRewardedVideo(sceneName);
         }
     }
 
@@ -484,9 +492,13 @@ public class AdSdk {
     }
 
     public void showComplexAds(String placeName) {
+        showComplexAds(placeName, null);
+    }
+
+    public void showComplexAds(String placeName, String sceneName) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {
-            loader.showComplexAds();
+            loader.showComplexAds(sceneName);
         }
     }
 
@@ -516,7 +528,11 @@ public class AdSdk {
         return false;
     }
 
-    public void showComplexAds() {
+    public void showGlobalComplexAds() {
+        showGlobalComplexAds(null);
+    }
+
+    public void showGlobalComplexAds(String sceneName) {
         try {
             List<String> placeList = DataManager.get(mContext).getPlaceList();
             List<AdPlaceLoader> list = new ArrayList<AdPlaceLoader>();
@@ -560,7 +576,7 @@ public class AdSdk {
                 for (AdPlaceLoader loader : list) {
                     if (loader != null && loader.isComplexAdsLoaded()) {
                         Log.iv(Log.TAG, "place name [" + loader.getPlaceName() + "] is called to show");
-                        loader.showComplexAds();
+                        loader.showComplexAds(sceneName);
                         break;
                     }
                 }

@@ -338,14 +338,14 @@ public class TradPlusLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean showInterstitial() {
+    public boolean showInterstitial(String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         if (mTPInterstitial != null && mTPInterstitial.isReady()) {
             reportAdShow();
             notifyAdShow();
             refreshContext();
             Activity activity = getActivity();
-            mTPInterstitial.showAd(activity, getSceneId());
+            mTPInterstitial.showAd(activity, TextUtils.isEmpty(sceneName) ? getSceneId() : sceneName);
             updateLastShowTime();
             return true;
         } else {
@@ -484,14 +484,14 @@ public class TradPlusLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean showRewardedVideo() {
+    public boolean showRewardedVideo(String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         if (mTPReward != null) {
             reportAdShow();
             notifyAdShow();
             refreshContext();
             Activity activity = getActivity();
-            mTPReward.showAd(activity, getSceneId());
+            mTPReward.showAd(activity, TextUtils.isEmpty(sceneName) ? getSceneId() : sceneName);
             updateLastShowTime();
             return true;
         } else {
@@ -825,7 +825,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             map.put(Constant.AD_UNIT_ID, getPid());
             map.put(Constant.AD_FORMAT, getAdType());
             map.put(Constant.AD_UNIT_NAME, getAdPlaceName());
-            map.put(Constant.AD_PLACEMENT, getSceneId());
+            map.put(Constant.AD_PLACEMENT, tpAdInfo.sceneId);
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_BIDDING, tpAdInfo.isBiddingNetwork);
             map.put(Constant.AD_PRECISION, tpAdInfo.ecpmPrecision);

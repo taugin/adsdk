@@ -264,7 +264,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         if (AdSdk.get(mContext).isInterstitialLoaded(interstitialPlace)) {
             String loadedSdk = AdSdk.get(mContext).getLoadedSdk(interstitialPlace);
             Log.v(TAG, "loaded sdk : " + loadedSdk);
-            AdSdk.get(mContext).showInterstitial(interstitialPlace);
+            AdSdk.get(mContext).showInterstitial(interstitialPlace, "test_scene_interstitial");
         } else {
             AdSdk.get(mContext).loadInterstitial(interstitialPlace, new FullScreenAdListener(textView));
         }
@@ -285,7 +285,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
         String rewardPlace = String.format(Locale.ENGLISH, REWARD_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
         if (AdSdk.get(mContext).isRewardedVideoLoaded(rewardPlace)) {
-            AdSdk.get(mContext).showRewardedVideo(rewardPlace);
+            AdSdk.get(mContext).showRewardedVideo(rewardPlace, "test_scene_reward");
         } else {
             AdSdk.get(mContext).loadRewardedVideo(rewardPlace, new FullScreenAdListener(textView) {
                 @Override

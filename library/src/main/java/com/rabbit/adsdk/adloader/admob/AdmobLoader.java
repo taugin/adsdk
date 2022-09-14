@@ -228,7 +228,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     }
                     reportAdImp();
                     notifyAdImp();
-                    reportAdmobImpressionData(adValue, network);
+                    reportAdmobImpressionData(adValue, network, null);
                 }
             });
             reportAdShow();
@@ -305,7 +305,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean showInterstitial() {
+    public boolean showInterstitial(final String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         if (mInterstitialAd != null) {
             mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -356,7 +356,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                         network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
-                    reportAdmobImpressionData(adValue, network);
+                    reportAdmobImpressionData(adValue, network, sceneName);
                 }
             });
             reportAdShow();
@@ -431,7 +431,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean showRewardedVideo() {
+    public boolean showRewardedVideo(final String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         if (mRewardedAd != null) {
             mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -484,7 +484,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                         network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
-                    reportAdmobImpressionData(adValue, network);
+                    reportAdmobImpressionData(adValue, network, sceneName);
                 }
             });
             reportAdShow();
@@ -673,7 +673,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                         network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
-                    reportAdmobImpressionData(adValue, network);
+                    reportAdmobImpressionData(adValue, network, null);
                 }
             });
             admobBindNativeView.bindNative(mParams, viewGroup, mNativeAd, mPidConfig);
@@ -799,7 +799,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                         network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
-                    reportAdmobImpressionData(adValue, network);
+                    reportAdmobImpressionData(adValue, network, null);
                 }
             });
             reportAdShow();
@@ -863,7 +863,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         mAppOpenAd = null;
     }
 
-    private void reportAdmobImpressionData(AdValue adValue, String network) {
+    private void reportAdmobImpressionData(AdValue adValue, String network, String sceneName) {
         try {
             // admob给出的是百万次展示的价值，换算ecpm需要除以1000
             double revenue = adValue.getValueMicros() / (double)1000000;
@@ -879,7 +879,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             map.put(Constant.AD_UNIT_ID, adUnitId);
             map.put(Constant.AD_FORMAT, adFormat);
             map.put(Constant.AD_UNIT_NAME, adUnitName);
-            map.put(Constant.AD_PLACEMENT, getSceneId());
+            map.put(Constant.AD_PLACEMENT, TextUtils.isEmpty(sceneName) ? getSceneId() : sceneName);
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_SDK_VERSION, getSdkVersion());
             map.put(Constant.AD_APP_VERSION, getAppVersion());

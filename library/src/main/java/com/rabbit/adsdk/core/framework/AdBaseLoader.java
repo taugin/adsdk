@@ -53,7 +53,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void showInterstitial() {
+    public void showInterstitial(String sceneName) {
     }
 
     @Override
@@ -66,7 +66,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void showRewardedVideo() {
+    public void showRewardedVideo(String sceneName) {
     }
 
     @Override
@@ -115,7 +115,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public boolean showComplexAds() {
+    public boolean showComplexAds(String sceneName) {
         return false;
     }
 

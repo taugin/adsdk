@@ -519,12 +519,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      * 展示插屏
      */
     @Override
-    public void showInterstitial() {
+    public void showInterstitial(String sceneName) {
         Log.iv(Log.TAG, "showInterstitial");
-        showInterstitialInternal();
+        showInterstitialInternal(sceneName);
     }
 
-    private void showInterstitialInternal() {
+    private void showInterstitialInternal(String sceneName) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
             return;
@@ -542,7 +542,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         sortLoadedLoaders(list);
         for (ISdkLoader loader : list) {
             if (loader != null && loader.isInterstitialType() && loader.isInterstitialLoaded()) {
-                if (loader.showInterstitial()) {
+                if (loader.showInterstitial(sceneName)) {
                     AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                     break;
                 }
@@ -731,12 +731,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      * 展示插屏
      */
     @Override
-    public void showRewardedVideo() {
+    public void showRewardedVideo(String sceneName) {
         Log.iv(Log.TAG, "showRewardedVideo");
-        showRewardedVideoInternal();
+        showRewardedVideoInternal(sceneName);
     }
 
-    private void showRewardedVideoInternal() {
+    private void showRewardedVideoInternal(String sceneName) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
             return;
@@ -754,7 +754,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         sortLoadedLoaders(list);
         for (ISdkLoader loader : list) {
             if (loader != null && loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
-                if (loader.showRewardedVideo()) {
+                if (loader.showRewardedVideo(sceneName)) {
                     AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                     break;
                 }
@@ -1497,11 +1497,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     @Override
-    public boolean showComplexAds() {
-        return showComplexAdsInternal();
+    public boolean showComplexAds(String sceneName) {
+        return showComplexAdsInternal(sceneName);
     }
 
-    private boolean showComplexAdsInternal() {
+    private boolean showComplexAdsInternal(String sceneName) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
             return false;
@@ -1524,12 +1524,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         for (ISdkLoader loader : list) {
             if (loader != null) {
                 if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
-                    if (loader.showRewardedVideo()) {
+                    if (loader.showRewardedVideo(sceneName)) {
                         AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                         return true;
                     }
                 } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
-                    if (loader.showInterstitial()) {
+                    if (loader.showInterstitial(sceneName)) {
                         AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                         return true;
                     }

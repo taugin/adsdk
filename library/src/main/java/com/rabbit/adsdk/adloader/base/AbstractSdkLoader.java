@@ -165,7 +165,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     @Override
-    public boolean showInterstitial() {
+    public boolean showInterstitial(String sceneName) {
         return false;
     }
 
@@ -193,7 +193,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     @Override
-    public boolean showRewardedVideo() {
+    public boolean showRewardedVideo(String sceneName) {
         return false;
     }
 

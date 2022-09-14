@@ -299,8 +299,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean showInterstitial() {
-        return showInterstitialForMax();
+    public boolean showInterstitial(String sceneName) {
+        return showInterstitialForMax(sceneName);
     }
 
     @Override
@@ -346,8 +346,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean showRewardedVideo() {
-        return showRewardedVideoForMax();
+    public boolean showRewardedVideo(String sceneName) {
+        return showRewardedVideoForMax(sceneName);
     }
 
     protected static final Map<Integer, MaxAdFormat> ADSIZE = new HashMap<>();
@@ -592,13 +592,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
         interstitialAd.loadAd();
     }
 
-    private boolean showInterstitialForMax() {
+    private boolean showInterstitialForMax(String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         if (interstitialAd != null && interstitialAd.isReady()) {
             Log.iv(Log.TAG, "");
             reportAdShow();
             notifyAdShow();
-            interstitialAd.showAd(getSceneId());
+            interstitialAd.showAd(TextUtils.isEmpty(sceneName) ? getSceneId() : sceneName);
             updateLastShowTime();
             return true;
         } else {
@@ -720,12 +720,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
         rewardedAd.loadAd();
     }
 
-    private boolean showRewardedVideoForMax() {
+    private boolean showRewardedVideoForMax(String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         if (rewardedAd != null && rewardedAd.isReady()) {
             reportAdShow();
             notifyAdShow();
-            rewardedAd.showAd(getSceneId());
+            rewardedAd.showAd(TextUtils.isEmpty(sceneName) ? getSceneId() : sceneName);
             updateLastShowTime();
             return true;
         } else {

@@ -230,7 +230,7 @@ public class SpLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean showInterstitial() {
+    public boolean showInterstitial(String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         showAdViewWithUI(getAdPlaceName(), getSdkName(), getAdType(), this);
         return true;

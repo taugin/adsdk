@@ -291,7 +291,7 @@ public class FBLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean showInterstitial() {
+    public boolean showInterstitial(String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         if (fbInterstitial != null && fbInterstitial.isAdLoaded()) {
             reportAdShow();
@@ -526,7 +526,7 @@ public class FBLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean showRewardedVideo() {
+    public boolean showRewardedVideo(String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         if (rewardedVideoAd != null && rewardedVideoAd.isAdLoaded() && !rewardedVideoAd.isAdInvalidated()) {
             reportAdShow();
