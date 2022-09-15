@@ -71,6 +71,14 @@ public class AdImpData {
         return null;
     }
 
+    public String getType() {
+        try {
+            return (String) mAdImpData.get(Constant.AD_TYPE);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     public String getUnitName() {
         try {
             return (String) mAdImpData.get(Constant.AD_UNIT_NAME);
