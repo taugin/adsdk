@@ -300,7 +300,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showInterstitial(String sceneName) {
-        return showInterstitialForMax(sceneName);
+        try {
+            return showInterstitialForMax(sceneName);
+        } catch (Exception e) {
+            notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, e != null ? e.getMessage() : null);
+        }
+        return false;
     }
 
     @Override
@@ -347,7 +352,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showRewardedVideo(String sceneName) {
-        return showRewardedVideoForMax(sceneName);
+        try {
+            return showRewardedVideoForMax(sceneName);
+        } catch (Exception e) {
+            notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, e != null ? e.getMessage() : null);
+        }
+        return false;
     }
 
     protected static final Map<Integer, MaxAdFormat> ADSIZE = new HashMap<>();
