@@ -486,7 +486,7 @@ public class MintegralLoader extends AbstractSdkLoader {
             mCampaign = null;
         } else {
             Log.e(Log.TAG, formatShowErrorLog("Campaign is null"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : Campaign is null");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "Campaign is null");
         }
     }
 
@@ -507,7 +507,7 @@ public class MintegralLoader extends AbstractSdkLoader {
             mTemplateView = null;
         } else {
             Log.e(Log.TAG, formatShowErrorLog("TemplateView is null"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TemplateView is null");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TemplateView is null");
         }
     }
 }

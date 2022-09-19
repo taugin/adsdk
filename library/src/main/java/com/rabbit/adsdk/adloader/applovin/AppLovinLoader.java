@@ -463,7 +463,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
                 Log.iv(Log.TAG, formatLog("ad display failed : " + error));
-                notifyAdShowFailed(Constant.AD_ERROR_SHOW, toErrorMessage(error));
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "[" + getNetwork(ad) + "]" + toErrorMessage(error));
             }
 
             @Override
@@ -519,7 +519,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             maxAdView = null;
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MaxAdView not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "MaxAdView not ready");
         }
     }
 
@@ -588,7 +588,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad display failed : " + error));
                 clearLastShowTime();
                 onResetInterstitial();
-                notifyAdShowFailed(Constant.AD_ERROR_SHOW, toErrorMessage(error));
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "[" + getNetwork(ad) + "]" + toErrorMessage(error));
             }
         });
 
@@ -618,7 +618,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         } else {
             onResetInterstitial();
             Log.e(Log.TAG, formatShowErrorLog("MaxInterstitialAd not ready"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MaxInterstitialAd not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "MaxInterstitialAd not ready");
         }
         return false;
     }
@@ -717,7 +717,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad display failed : " + error));
                 clearLastShowTime();
                 onResetReward();
-                notifyAdShowFailed(Constant.AD_ERROR_SHOW, toErrorMessage(error));
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "[" + getNetwork(ad) + "]" + toErrorMessage(error));
             }
         });
 
@@ -746,7 +746,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         } else {
             onResetReward();
             Log.e(Log.TAG, formatShowErrorLog("MaxRewardedAd not ready"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MaxRewardedAd not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "MaxRewardedAd not ready");
         }
         return false;
     }
@@ -881,11 +881,11 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     mApplovinBindView.fillNativeAssets(maxNativeAdView);
                 }
             } else {
-                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MaxNativeAdView is null");
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "MaxNativeAdView is null");
             }
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : " + e);
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, e != null ? e.getMessage() : null);
         }
         clearCachedAdTime(mMaxAd);
         mMaxAd = null;
@@ -1008,7 +1008,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad display failed : " + error));
                 clearLastShowTime();
                 onResetSplash();
-                notifyAdShowFailed(Constant.AD_ERROR_SHOW, toErrorMessage(error));
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "[" + getNetwork(ad) + "]" + toErrorMessage(error));
             }
         });
 
@@ -1038,7 +1038,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         } else {
             onResetSplash();
             Log.e(Log.TAG, formatShowErrorLog("MaxAppOpenAd not ready"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MaxAppOpenAd not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "MaxAppOpenAd not ready");
         }
         return false;
     }

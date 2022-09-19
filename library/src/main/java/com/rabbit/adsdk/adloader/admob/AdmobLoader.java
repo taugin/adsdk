@@ -241,7 +241,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             bannerView = null;
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : AdView not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "AdView not ready");
         }
     }
 
@@ -367,7 +367,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         } else {
             onResetInterstitial();
             Log.e(Log.TAG, formatShowErrorLog("InterstitialAd is null"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : InterstitialAd not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "InterstitialAd not ready");
         }
         return false;
     }
@@ -508,7 +508,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         } else {
             onResetReward();
             Log.e(Log.TAG, formatShowErrorLog("RewardedAd is null"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : RewardedAd not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "RewardedAd not ready");
         }
         return false;
     }
@@ -682,7 +682,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             mNativeAd = null;
         } else {
             Log.e(Log.TAG, formatShowErrorLog("NativeAd is null"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : NativeAd not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "NativeAd not ready");
         }
     }
 
@@ -809,7 +809,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             return true;
         } else {
             Log.e(Log.TAG, formatShowErrorLog("AppOpenAd is null"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : AppOpenAd not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "AppOpenAd not ready");
             onResetSplash();
         }
         return false;

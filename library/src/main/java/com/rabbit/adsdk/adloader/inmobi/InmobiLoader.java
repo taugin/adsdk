@@ -282,7 +282,7 @@ public class InmobiLoader extends AbstractSdkLoader {
             mInMobiNative = null;
         } else {
             Log.e(Log.TAG, formatShowErrorLog("InMobiNative is null"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : InMobiNative is null");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "InMobiNative is null");
         }
     }
 

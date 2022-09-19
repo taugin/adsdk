@@ -126,7 +126,7 @@ public class SpLoader extends AbstractSdkLoader {
             reportAdImp();
         } else {
             Log.e(Log.TAG, formatShowErrorLog("Spread is null"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : Spread not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "Spread not ready");
         }
     }
 

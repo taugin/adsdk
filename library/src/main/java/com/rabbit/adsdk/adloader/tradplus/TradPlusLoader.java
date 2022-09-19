@@ -148,7 +148,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             @Override
             public void onAdShowFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
                 Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(tpAdError), true));
-                notifyAdShowFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
+                notifyAdShowFailed(toSdkError(tpAdError), "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
             }
 
             @Override
@@ -215,7 +215,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             mTPBanner = null;
         } catch (Exception e) {
             Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPBanner not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPBanner not ready");
         }
     }
 
@@ -307,8 +307,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdVideoError(TPAdInfo tpAdInfo, TPAdError tpAdError) {
-                Log.iv(Log.TAG, formatLog("ad interstitial show error"));
-                notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "ad interstitial show error");
+                Log.iv(Log.TAG, formatLog(toErrorMessage(tpAdError)));
+                notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
             }
 
             @Override
@@ -353,7 +353,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         } else {
             onResetInterstitial();
             Log.e(Log.TAG, formatShowErrorLog("TPInterstitial not ready"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPInterstitial not ready");
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPInterstitial not ready");
         }
         return false;
     }
@@ -466,9 +466,9 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdVideoError(TPAdInfo tpAdInfo, TPAdError tpAdError) {
-                Log.iv(Log.TAG, formatLog("ad reward video error"));
+                Log.iv(Log.TAG, formatLog("ad show failed : " + toErrorMessage(tpAdError)));
                 onResetReward();
-                notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "ad reward video error");
+                notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
             }
         });
         printInterfaceLog(ACTION_LOAD);
@@ -489,7 +489,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
     @Override
     public boolean showRewardedVideo(String sceneName) {
         printInterfaceLog(ACTION_SHOW);
-        if (mTPReward != null) {
+        if (mTPReward != null && mTPReward.isReady()) {
             reportAdShow();
             notifyAdShow();
             refreshContext();
@@ -499,8 +499,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetReward();
-            Log.e(Log.TAG, formatShowErrorLog("TPReward is null"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPReward not ready");
+            Log.e(Log.TAG, formatShowErrorLog("TPReward not ready"));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPReward not ready");
         }
         return false;
     }
@@ -568,8 +568,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdShowFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
-                Log.iv(Log.TAG, formatLog("ad show error : " + toSdkError(tpAdError)));
-                notifyAdShowFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
+                Log.iv(Log.TAG, formatLog("ad show failed : " + toSdkError(tpAdError)));
+                notifyAdShowFailed(toSdkError(tpAdError), "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
             }
 
             @Override
@@ -615,7 +615,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 notifyAdShow();
                 if (viewGroup != null) {
                     viewGroup.removeAllViews();
-                    ;
                 }
                 mTradPlusBindView.bindNativeView(mContext, mPidConfig, params, customNativeAd);
                 customNativeAd.showAd(viewGroup, mTradPlusBindView.getCustomTPNativeAdRender(), getSceneId());
@@ -624,13 +623,13 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 }
             } else {
                 Log.e(Log.TAG, formatShowErrorLog("TPCustomNativeAd is null"));
-                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPCustomNativeAd not ready");
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPCustomNativeAd is null");
             }
             clearCachedAdTime(mTPNative);
             mTPNative = null;
         } else {
-            Log.e(Log.TAG, formatShowErrorLog("TPNative is null"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPNative not ready");
+            Log.e(Log.TAG, formatShowErrorLog("TPNative is ready"));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPNative not ready");
         }
     }
 
@@ -712,7 +711,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(tpAdError)));
                 clearLastShowTime();
                 onResetSplash();
-                notifyAdShowFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
+                notifyAdShowFailed(toSdkError(tpAdError), "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
             }
 
             @Override
@@ -751,8 +750,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
             updateLastShowTime();
             return true;
         } else {
-            Log.e(Log.TAG, formatShowErrorLog("TPSplash is null"));
-            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : TPSplash not ready");
+            Log.e(Log.TAG, formatShowErrorLog("TPSplash not ready"));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPSplash not ready");
             onResetSplash();
         }
         return false;
