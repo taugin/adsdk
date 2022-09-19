@@ -1015,6 +1015,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (getAdListener() != null) {
             getAdListener().onAdShowFailed(error, msg);
         }
+        OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
+        if (l != null) {
+            l.onShowFailed(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId(), msg);
+        }
     }
 
     /**
