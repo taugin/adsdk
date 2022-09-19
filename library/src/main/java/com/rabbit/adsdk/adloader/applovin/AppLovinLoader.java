@@ -17,6 +17,7 @@ import com.applovin.mediation.MaxError;
 import com.applovin.mediation.MaxReward;
 import com.applovin.mediation.MaxRewardedAdListener;
 import com.applovin.mediation.ads.MaxAdView;
+import com.applovin.mediation.ads.MaxAppOpenAd;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.mediation.ads.MaxRewardedAd;
 import com.applovin.mediation.nativeAds.MaxNativeAdListener;
@@ -54,6 +55,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private MaxAd mMaxAd;
     private Params mParams;
     private ApplovinBindView mApplovinBindView = new ApplovinBindView();
+    private MaxAppOpenAd mMaxAppOpenAd;
 
     @Override
     protected BaseBindNativeView getBaseBindNativeView() {
@@ -890,6 +892,158 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     @Override
+    public boolean isSplashLoaded() {
+        return isSplashLoadedForMax();
+    }
+
+    @Override
+    public void loadSplash() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            Log.iv(Log.TAG, formatLog("error activity context"));
+            notifyAdLoadFailed(Constant.AD_ERROR_CONTEXT, "error activity context");
+            return;
+        }
+        AppLovinSdk appLovinSdk = getInstance(activity);
+        if (appLovinSdk == null) {
+            Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
+            return;
+        }
+        if (!checkPidConfig()) {
+            Log.iv(Log.TAG, formatLog("config error"));
+            notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
+            return;
+        }
+        if (isSplashLoaded()) {
+            Log.iv(Log.TAG, formatLog("already loaded"));
+            notifyAdLoaded(this);
+            return;
+        }
+        if (isLoading()) {
+            Log.iv(Log.TAG, formatLog("already loading"));
+            notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
+            return;
+        }
+
+        // 检测通用配置是否符合
+        if (!checkCommonConfig()) {
+            return;
+        }
+        loadSplashForMax(appLovinSdk, activity);
+    }
+
+    @Override
+    public boolean showSplash(ViewGroup viewGroup) {
+        try {
+            return showSplashForMax(viewGroup);
+        } catch (Exception e) {
+            notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, e != null ? e.getMessage() : null);
+        }
+        return false;
+    }
+
+    private boolean isSplashLoadedForMax() {
+        boolean loaded = mMaxAppOpenAd != null && mMaxAppOpenAd.isReady() && !isCachedAdExpired(mMaxAppOpenAd) && !isShowTimeExpired();
+        if (loaded) {
+            Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
+        }
+        return loaded;
+    }
+
+    private void loadSplashForMax(AppLovinSdk appLovinSdk, Activity activity) {
+        setLoading(true, STATE_REQUEST);
+        mMaxAppOpenAd = new MaxAppOpenAd(getPid(), appLovinSdk);
+        mMaxAppOpenAd.setListener(new MaxAdListener() {
+            @Override
+            public void onAdLoaded(MaxAd ad) {
+                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
+                setLoading(false, STATE_SUCCESS);
+                putCachedAdTime(mMaxAppOpenAd);
+                String network = getNetwork(ad);
+                setAdNetworkAndRevenue(network, getMaxAdRevenue(ad));
+                reportAdLoaded();
+                notifyAdLoaded(AppLovinLoader.this);
+            }
+
+            @Override
+            public void onAdLoadFailed(String adUnitId, MaxError error) {
+                Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(error), true));
+                setLoading(false, STATE_FAILURE);
+                clearLastShowTime();
+                onResetSplash();
+                reportAdError(codeToError(error));
+                notifyAdLoadFailed(Constant.AD_ERROR_LOAD, toErrorMessage(error));
+            }
+
+            @Override
+            public void onAdDisplayed(MaxAd ad) {
+                String network = getNetwork(ad);
+                String networkPid = getNetworkPid(ad);
+                Log.iv(Log.TAG, formatLog("ad displayed network : " + network + " , network pid : " + networkPid));
+                reportAdImp(network, networkPid);
+                notifyAdImp(network);
+            }
+
+            @Override
+            public void onAdHidden(MaxAd ad) {
+                Log.iv(Log.TAG, formatLog("ad hidden"));
+                clearLastShowTime();
+                onResetSplash();
+                reportAdClose();
+                notifyAdDismiss();
+            }
+
+            @Override
+            public void onAdClicked(MaxAd ad) {
+                String network = getNetwork(ad);
+                String networkPid = getNetworkPid(ad);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
+                reportAdClick(network, networkPid);
+                notifyAdClick(network);
+            }
+
+            @Override
+            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+                Log.iv(Log.TAG, formatLog("ad display failed : " + error));
+                clearLastShowTime();
+                onResetSplash();
+                notifyAdShowFailed(Constant.AD_ERROR_SHOW, toErrorMessage(error));
+            }
+        });
+
+        mMaxAppOpenAd.setRevenueListener(new MaxAdRevenueListener() {
+            @Override
+            public void onAdRevenuePaid(MaxAd ad) {
+                Log.iv(Log.TAG, formatLog("ad revenue paid"));
+                reportMaxAdImpData(ad, getAdPlaceName());
+            }
+        });
+
+        printInterfaceLog(ACTION_LOAD);
+        reportAdRequest();
+        notifyAdRequest();
+        mMaxAppOpenAd.loadAd();
+    }
+
+    private boolean showSplashForMax(ViewGroup viewGroup) {
+        printInterfaceLog(ACTION_SHOW);
+        if (mMaxAppOpenAd != null && mMaxAppOpenAd.isReady()) {
+            Log.iv(Log.TAG, "");
+            reportAdShow();
+            notifyAdShow();
+            mMaxAppOpenAd.showAd(getSceneId());
+            updateLastShowTime();
+            return true;
+        } else {
+            onResetSplash();
+            Log.e(Log.TAG, formatShowErrorLog("MaxAppOpenAd not ready"));
+            notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show " + getSdkName() + " " + getAdType() + " error : MaxAppOpenAd not ready");
+        }
+        return false;
+    }
+
+    @Override
     public void resume() {
         Log.iv(Log.TAG, "resume ...");
         if (lastUseMaxAdView != null) {
@@ -929,6 +1083,16 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (rewardedAd != null) {
             rewardedAd.destroy();
             rewardedAd = null;
+        }
+    }
+
+    @Override
+    protected void onResetSplash() {
+        super.onResetSplash();
+        clearCachedAdTime(mMaxAppOpenAd);
+        if (mMaxAppOpenAd != null) {
+            mMaxAppOpenAd.destroy();
+            mMaxAppOpenAd = null;
         }
     }
 
