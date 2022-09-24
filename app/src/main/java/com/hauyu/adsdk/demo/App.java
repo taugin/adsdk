@@ -52,6 +52,10 @@ public class App extends Application {
             }
 
             @Override
+            public void onShowFailed(String placeName, String sdkName, String adType, String pid, String msg, String requestId) {
+            }
+
+            @Override
             public void onImp(String placeName, String sdkName, String adType, String pid, String requestId) {
             }
 
