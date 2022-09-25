@@ -27,8 +27,8 @@ import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.data.parse.IParser;
-import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.OnAdEventListener;
+import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.stat.IEvent;
@@ -1140,12 +1140,18 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void onReportAdImpData(Map<String, Object> adImpData) {
         if (isReportAdImpData()) {
             if (adImpData != null) {
-                adImpData.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
-                adImpData.put("active_days", EventImpl.get().getActiveDayString());
-                adImpData.put("active_date", EventImpl.get().getActiveDate());
-                adImpData.put("active_year", EventImpl.get().getActiveYear());
-                adImpData.put("country", Utils.getCountryFromLocale(mContext));
-                adImpData.put(Constant.AD_TYPE, getAdType());
+                try {
+                    adImpData.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
+                    adImpData.put("active_days", EventImpl.get().getActiveDayString());
+                    adImpData.put("active_date", EventImpl.get().getActiveDate());
+                    adImpData.put("active_year", EventImpl.get().getActiveYear());
+                    adImpData.put("country", Utils.getCountryFromLocale(mContext));
+                    adImpData.put(Constant.AD_TYPE, getAdType());
+                    if (EventImpl.get().getActiveDays() == 0) {
+                        adImpData.put(Constant.AD_PLACEMENT_NEW, adImpData.get(Constant.AD_PLACEMENT));
+                    }
+                } catch (Exception e) {
+                }
             }
             InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpData);
         }
