@@ -1149,6 +1149,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                     adImpData.put(Constant.AD_TYPE, getAdType());
                     if (EventImpl.get().getActiveDays() == 0) {
                         adImpData.put(Constant.AD_PLACEMENT_NEW, adImpData.get(Constant.AD_PLACEMENT));
+                        adImpData.put(Constant.AD_VALUE_NEW, adImpData.get(Constant.AD_VALUE));
                     }
                 } catch (Exception e) {
                 }
