@@ -134,7 +134,7 @@ public class SmaatoMediationAdapter
     public String getAdapterVersion()
     {
         // return com.applovin.mediation.adapters.smaato.BuildConfig.VERSION_NAME;
-        return "21.8.4.0";
+        return "21.8.5.0";
     }
 
     @Override
