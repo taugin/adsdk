@@ -135,6 +135,11 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public double getMaxRevenue() {
+        return 0;
+    }
+
+    @Override
     public boolean isLoading() {
         return false;
     }

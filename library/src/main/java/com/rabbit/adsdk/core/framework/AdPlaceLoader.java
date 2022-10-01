@@ -1598,6 +1598,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     @Override
+    public double getMaxRevenue() {
+        double maxValue = 0;
+        if (mAdLoaders != null && !mAdLoaders.isEmpty())
+            for (ISdkLoader loader : mAdLoaders) {
+                double tmpValue = loader.getRevenue();
+                if (tmpValue > maxValue) {
+                    maxValue = tmpValue;
+                }
+            }
+        return maxValue;
+    }
+
+    @Override
     public boolean isLoading() {
         return isAdPlaceSeqLoading();
     }
@@ -2130,7 +2143,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 @Override
                 public int compare(ISdkLoader o1, ISdkLoader o2) {
                     try {
-                        return Double.compare(o2.getAdRevenue(), o1.getAdRevenue());
+                        return Double.compare(o2.getRevenue(), o1.getRevenue());
                     } catch (Exception e) {
                     }
                     return 0;

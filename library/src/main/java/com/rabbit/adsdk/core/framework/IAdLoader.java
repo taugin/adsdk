@@ -67,6 +67,8 @@ public interface IAdLoader {
 
     String getAdMode();
 
+    double getMaxRevenue();
+
     boolean isLoading();
 
     void resume();

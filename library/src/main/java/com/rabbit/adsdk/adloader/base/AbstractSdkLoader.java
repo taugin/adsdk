@@ -789,7 +789,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     @Override
-    public double getAdRevenue() {
+    public double getRevenue() {
         return mAdRevenue;
     }
 

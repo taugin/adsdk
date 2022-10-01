@@ -635,6 +635,14 @@ public class AdSdk {
         return null;
     }
 
+    public double getMaxRevenue(String placeName) {
+        AdPlaceLoader loader = getAdLoader(placeName);
+        if (loader != null) {
+            return loader.getMaxRevenue();
+        }
+        return 0f;
+    }
+
     public boolean isLoading(String placeName) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {
