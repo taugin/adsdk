@@ -84,6 +84,16 @@ public class Va {
         }
     }
 
+    public static void log(String from, String to) {
+        try {
+            String output = from + "[->]" + to;
+            Log.v(TAG, getMethodNameAndLineNumber() + output);
+            writeToFileIfNeed(output);
+        } catch (Exception | Error e) {
+            Log.e(TAG, "error : " + e, e);
+        }
+    }
+
     public static void log(String object) {
         try {
             String output = "" + object;
