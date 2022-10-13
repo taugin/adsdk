@@ -110,7 +110,7 @@
         android:textSize="12sp"
         android:textStyle="bold" />
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/rab_native_ad_choices_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

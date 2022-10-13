@@ -26,7 +26,7 @@
                 app:layout_aspectRatio="192%"
                 app:layout_widthPercent="100%" />
 
-            <RelativeLayout
+            <FrameLayout
                 android:id="@+id/rab_native_media_cover"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -35,7 +35,7 @@
                 app:layout_aspectRatio="192%"
                 app:layout_widthPercent="100%" />
 
-            <RelativeLayout
+            <FrameLayout
                 android:id="@+id/rab_native_ad_choices_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
