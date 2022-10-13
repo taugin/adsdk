@@ -23,3 +23,6 @@
 -dontwarn com.**
 -dontwarn android.**
 -keep class com.hauyu.adsdk.demo.Va { *;}
+-classobfuscationdictionary ./proguard-keys.txt
+-packageobfuscationdictionary ./proguard-keys.txt
+-obfuscationdictionary ./proguard-keys.txt
