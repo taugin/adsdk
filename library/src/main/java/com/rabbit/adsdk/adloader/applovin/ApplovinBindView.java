@@ -2,10 +2,12 @@ package com.rabbit.adsdk.adloader.applovin;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.applovin.impl.sdk.nativeAd.AppLovinOptionsView;
@@ -66,6 +68,44 @@ public class ApplovinBindView extends BaseBindNativeView {
         return new MaxNativeAdView("", context);
     }
 
+    public void updateApplovinNative(Context context, MaxNativeAdView maxNativeAdView, PidConfig pidConfig) {
+        try {
+            if (maxNativeAdView != null) {
+                maxNativeAdView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            updateMediaViewStatus(maxNativeAdView);
+                        } catch (Exception e) {
+                        }
+                    }
+                }, 10);
+            }
+        } catch (Exception e) {
+        }
+        updateNativeStatus(context, maxNativeAdView);
+        fillNativeAssets(maxNativeAdView);
+        updateClickViewStatus(maxNativeAdView, pidConfig);
+    }
+
+    private void updateMediaViewStatus(MaxNativeAdView maxNativeAdView) {
+        try {
+            if (maxNativeAdView != null) {
+                ViewGroup viewGroup = maxNativeAdView.getMediaContentViewGroup();
+                if (viewGroup != null && viewGroup.getChildCount() > 0) {
+                    View childGroup = viewGroup.getChildAt(0);
+                    ViewGroup.LayoutParams layoutParams = childGroup.getLayoutParams();
+                    if (layoutParams instanceof FrameLayout.LayoutParams) {
+                        layoutParams.height = -2;
+                        ((FrameLayout.LayoutParams) layoutParams).gravity = Gravity.CENTER;
+                        childGroup.setLayoutParams(layoutParams);
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
     public void updateNativeStatus(Context context, MaxNativeAdView maxNativeAdView) {
         try {
             if (maxNativeAdView != null) {
@@ -85,7 +125,7 @@ public class ApplovinBindView extends BaseBindNativeView {
                             View maxOptionView = ((AppLovinOptionsView) childView).getChildAt(0);
                             ViewGroup.LayoutParams params = maxOptionView.getLayoutParams();
                             if (params != null) {
-                                int size = Utils.dp2px(context, 18);
+                                int size = Utils.dp2px(context, 16);
                                 params.width = size;
                                 params.height = size;
                                 maxOptionView.setLayoutParams(params);
@@ -95,6 +135,15 @@ public class ApplovinBindView extends BaseBindNativeView {
                         Log.e(Log.TAG, "error : " + e);
                     }
                 }
+                viewGroup = maxNativeAdView.getMediaContentViewGroup();
+                if (viewGroup instanceof FrameLayout && viewGroup.getChildCount() > 0) {
+                    View childView = viewGroup.getChildAt(0);
+                    ViewGroup.LayoutParams layoutParams = childView.getLayoutParams();
+                    if (layoutParams instanceof FrameLayout.LayoutParams) {
+                        ((FrameLayout.LayoutParams) layoutParams).gravity = Gravity.CENTER;
+                        childView.setLayoutParams(layoutParams);
+                    }
+                }
             }
         } catch (Exception e) {
         }
@@ -102,10 +151,11 @@ public class ApplovinBindView extends BaseBindNativeView {
 
     /**
      * 更新原生元素点击状态
+     *
      * @param maxNativeAdView
      * @param pidConfig
      */
-    public void updateClickViewStatus(MaxNativeAdView maxNativeAdView, PidConfig pidConfig) {
+    private void updateClickViewStatus(MaxNativeAdView maxNativeAdView, PidConfig pidConfig) {
         try {
             List<String> clickView = getClickView(pidConfig);
             if (clickView != null && !clickView.isEmpty()) {
@@ -136,7 +186,7 @@ public class ApplovinBindView extends BaseBindNativeView {
         }
     }
 
-    public void fillNativeAssets(MaxNativeAdView maxNativeAdView) {
+    private void fillNativeAssets(MaxNativeAdView maxNativeAdView) {
         try {
             putValue(AD_TITLE, maxNativeAdView.getTitleTextView().getText().toString());
         } catch (Exception e) {

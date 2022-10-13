@@ -876,9 +876,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
                 if (!isTemplateRendering()) {
-                    mApplovinBindView.updateNativeStatus(getContext(), maxNativeAdView);
-                    mApplovinBindView.updateClickViewStatus(maxNativeAdView, mPidConfig);
-                    mApplovinBindView.fillNativeAssets(maxNativeAdView);
+                    mApplovinBindView.updateApplovinNative(getContext(), maxNativeAdView, mPidConfig);
                 }
             } else {
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "MaxNativeAdView is null");
