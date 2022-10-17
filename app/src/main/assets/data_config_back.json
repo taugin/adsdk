@@ -197,7 +197,7 @@
         {
           "sdk": "applovin",
           "type": "banner",
-          "bs": "MEDIUM_RECTANGLE",
+          "size": "MEDIUM_RECTANGLE",
           "pid": "a9eeb2d3ee33003c",
           "disable": 1
         },
@@ -282,7 +282,7 @@
         {
           "sdk": "applovin",
           "type": "interstitial",
-          "bs": "MEDIUM_RECTANGLE",
+          "size": "MEDIUM_RECTANGLE",
           "pid": "6564124aafcc90d6",
           "disable": 1
         },
@@ -382,7 +382,7 @@
     {
       "name": "show_spread",
       "mode": "con",
-      "bs": 2,
+      "size": 2,
       "cc": [
         "#FF660000",
         "#4455bb22"
