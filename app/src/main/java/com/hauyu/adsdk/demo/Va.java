@@ -1,7 +1,10 @@
 package com.hauyu.adsdk.demo;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -30,6 +33,45 @@ public class Va {
         System.setProperty("http.proxyPort", PROXY_PORT);
         System.setProperty("https.proxyHost", PROXY_HOST);
         System.setProperty("https.proxyPort", PROXY_PORT);
+    }
+
+    public static void init(Application application) {
+        application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                log("onActivityCreated activity : " + activity);
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+                log("onActivityStarted activity : " + activity);
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                log("onActivityResumed activity : " + activity);
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+                log("onActivityPaused activity : " + activity);
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+                log("onActivityStopped activity : " + activity);
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+                log("onActivitySaveInstanceState activity : " + activity);
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                log("onActivityDestroyed activity : " + activity);
+            }
+        });
     }
 
     private static Context getContext() {
