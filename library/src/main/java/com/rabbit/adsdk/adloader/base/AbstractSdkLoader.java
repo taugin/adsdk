@@ -620,6 +620,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected String getSceneId() {
+        return getSceneId(null);
+    }
+
+    protected String getSceneId(String sceneName) {
+        if (!TextUtils.isEmpty(sceneName)) {
+            return sceneName;
+        }
         String sceneId = null;
         try {
             if (mPidConfig != null) {

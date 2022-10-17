@@ -612,7 +612,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             Log.iv(Log.TAG, "");
             reportAdShow();
             notifyAdShow();
-            interstitialAd.showAd(TextUtils.isEmpty(sceneName) ? getSceneId() : sceneName);
+            interstitialAd.showAd(getSceneId(sceneName));
             updateLastShowTime();
             return true;
         } else {
@@ -740,7 +740,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (rewardedAd != null && rewardedAd.isReady()) {
             reportAdShow();
             notifyAdShow();
-            rewardedAd.showAd(TextUtils.isEmpty(sceneName) ? getSceneId() : sceneName);
+            rewardedAd.showAd(getSceneId(sceneName));
             updateLastShowTime();
             return true;
         } else {
@@ -788,7 +788,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
         mMaxNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
-        mMaxNativeAdLoader.setPlacement(getSceneId());
         mMaxNativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(MaxNativeAdView maxNativeAdView, MaxAd maxAd) {
@@ -1138,7 +1137,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             String adUnitId = maxAd.getAdUnitId(); // The MAX Ad Unit ID
             MaxAdFormat adFormat = maxAd.getFormat(); // The ad format of the ad (e.g. BANNER, MREC, INTERSTITIAL, REWARDED)
             String placement = maxAd.getPlacement(); // The placement this ad's postbacks are tied to
-            placement = !TextUtils.isEmpty(placement) ? placement : getSceneId();
+            placement = getSceneId(placement);
             String placementId = maxAd.getNetworkPlacement();
             String precision = maxAd.getRevenuePrecision();
             Map<String, Object> map = new HashMap<>();

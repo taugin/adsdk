@@ -347,7 +347,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             notifyAdShow();
             refreshContext();
             Activity activity = getActivity();
-            mTPInterstitial.showAd(activity, TextUtils.isEmpty(sceneName) ? getSceneId() : sceneName);
+            mTPInterstitial.showAd(activity, getSceneId(sceneName));
             updateLastShowTime();
             return true;
         } else {
@@ -494,7 +494,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             notifyAdShow();
             refreshContext();
             Activity activity = getActivity();
-            mTPReward.showAd(activity, TextUtils.isEmpty(sceneName) ? getSceneId() : sceneName);
+            mTPReward.showAd(activity, getSceneId(sceneName));
             updateLastShowTime();
             return true;
         } else {
@@ -829,7 +829,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             map.put(Constant.AD_UNIT_ID, getPid());
             map.put(Constant.AD_FORMAT, getAdType());
             map.put(Constant.AD_UNIT_NAME, getAdPlaceName());
-            map.put(Constant.AD_PLACEMENT, !TextUtils.isEmpty(tpAdInfo.sceneId) ? tpAdInfo.sceneId : getSceneId());
+            map.put(Constant.AD_PLACEMENT, getSceneId(tpAdInfo.sceneId));
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_BIDDING, tpAdInfo.isBiddingNetwork);
             map.put(Constant.AD_PRECISION, tpAdInfo.ecpmPrecision);
