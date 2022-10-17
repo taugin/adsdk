@@ -75,7 +75,7 @@ public interface IParser {
     // ECPM
     String ECPM = "ecpm";
     // bannersize
-    String BANNER_SIZE = "bs";
+    String BANNER_SIZE = "size";
     // 可点击原生视图
     String CLICK_VIEW = "cv";
     // 可点击原生视图
