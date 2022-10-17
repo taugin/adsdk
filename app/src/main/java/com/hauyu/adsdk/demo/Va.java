@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by Administrator on 2018/3/14.
  */
 
-public class Va {
+public class Va implements Application.ActivityLifecycleCallbacks {
 
     private static final String TAG = "va";
     private static final String PROXY_HOST = "172.16.170.218";
@@ -36,42 +36,7 @@ public class Va {
     }
 
     public static void init(Application application) {
-        application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                log("onActivityCreated activity : " + activity);
-            }
-
-            @Override
-            public void onActivityStarted(Activity activity) {
-                log("onActivityStarted activity : " + activity);
-            }
-
-            @Override
-            public void onActivityResumed(Activity activity) {
-                log("onActivityResumed activity : " + activity);
-            }
-
-            @Override
-            public void onActivityPaused(Activity activity) {
-                log("onActivityPaused activity : " + activity);
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-                log("onActivityStopped activity : " + activity);
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-                log("onActivitySaveInstanceState activity : " + activity);
-            }
-
-            @Override
-            public void onActivityDestroyed(Activity activity) {
-                log("onActivityDestroyed activity : " + activity);
-            }
-        });
+        application.registerActivityLifecycleCallbacks(new Va());
     }
 
     private static Context getContext() {
@@ -271,5 +236,40 @@ public class Va {
             return className;
         }
         return null;
+    }
+
+    @Override
+    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        log("onActivityCreated activity : " + activity);
+    }
+
+    @Override
+    public void onActivityStarted(Activity activity) {
+        log("onActivityStarted activity : " + activity);
+    }
+
+    @Override
+    public void onActivityResumed(Activity activity) {
+        log("onActivityResumed activity : " + activity);
+    }
+
+    @Override
+    public void onActivityPaused(Activity activity) {
+        log("onActivityPaused activity : " + activity);
+    }
+
+    @Override
+    public void onActivityStopped(Activity activity) {
+        log("onActivityStopped activity : " + activity);
+    }
+
+    @Override
+    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+        log("onActivitySaveInstanceState activity : " + activity);
+    }
+
+    @Override
+    public void onActivityDestroyed(Activity activity) {
+        log("onActivityDestroyed activity : " + activity);
     }
 }
