@@ -5,7 +5,7 @@ import com.rabbit.adsdk.constant.Constant;
 import java.util.Map;
 
 public class AdImpData {
-    private Map<String, Object> mAdImpData;
+    private final Map<String, Object> mAdImpData;
 
     private AdImpData(Map<String, Object> adImpData) {
         mAdImpData = adImpData;

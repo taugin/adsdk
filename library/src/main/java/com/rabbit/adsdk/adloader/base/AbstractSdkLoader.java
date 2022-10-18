@@ -21,6 +21,7 @@ import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.AdPolicy;
 import com.rabbit.adsdk.core.framework.AdLoadManager;
+import com.rabbit.adsdk.core.framework.AdStatManager;
 import com.rabbit.adsdk.core.framework.LimitAdsManager;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.DataManager;
@@ -70,18 +71,18 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected static final int STATE_FAILURE = 3;
     protected static final int STATE_TIMEOUT = 4;
 
-    private static Map<Object, Long> mCachedTime = new ConcurrentHashMap<Object, Long>();
+    private static final Map<Object, Long> mCachedTime = new ConcurrentHashMap<>();
     protected PidConfig mPidConfig;
     protected Context mContext;
     protected IManagerListener mManagerListener;
     private boolean mLoading = false;
-    private Handler mHandler = null;
+    private final Handler mHandler;
     private long mRequestTime = 0;
     private int mBannerSize = Constant.NOSET;
     private IEvent mStat;
     private static final Random sRandom = new Random(System.currentTimeMillis());
     private long mLastFullScreenShowTime = 0;
-    private AtomicBoolean mLoadTimeout = new AtomicBoolean(false);
+    private final AtomicBoolean mLoadTimeout = new AtomicBoolean(false);
     private String mAdNetwork;
     private double mAdRevenue;
     private String mRequestId;
@@ -101,7 +102,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     /**
      * 判断是否先初始化applovin，聚合SDK需要重载次函数，先初始化applovin
      *
-     * @return
+     * @return true
      */
     protected boolean isInitApplovin() {
         try {
@@ -1144,30 +1145,32 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return true;
     }
 
-    protected void onReportAdImpData(Map<String, Object> adImpData) {
+    protected void onReportAdImpData(Map<String, Object> adImpMap) {
         if (isReportAdImpData()) {
-            if (adImpData != null) {
+            if (adImpMap != null) {
                 try {
-                    adImpData.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
-                    adImpData.put("active_days", EventImpl.get().getActiveDayString());
-                    adImpData.put("active_date", EventImpl.get().getActiveDate());
-                    adImpData.put("active_year", EventImpl.get().getActiveYear());
-                    adImpData.put("country", Utils.getCountryFromLocale(mContext));
-                    adImpData.put(Constant.AD_TYPE, getAdType());
+                    adImpMap.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
+                    adImpMap.put("active_days", EventImpl.get().getActiveDayString());
+                    adImpMap.put("active_date", EventImpl.get().getActiveDate());
+                    adImpMap.put("active_year", EventImpl.get().getActiveYear());
+                    adImpMap.put("country", Utils.getCountryFromLocale(mContext));
+                    adImpMap.put(Constant.AD_TYPE, getAdType());
                     if (EventImpl.get().getActiveDays() == 0) {
-                        adImpData.put(Constant.AD_PLACEMENT_NEW, adImpData.get(Constant.AD_PLACEMENT));
+                        adImpMap.put(Constant.AD_PLACEMENT_NEW, adImpMap.get(Constant.AD_PLACEMENT));
                     }
                 } catch (Exception e) {
                 }
             }
-            InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpData);
+            InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
         }
+        if (adImpMap != null) {
+            adImpMap.put(Constant.AD_REQUEST_ID, getRequestId());
+        }
+        AdImpData adImpData = AdImpData.createAdImpData(adImpMap);
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            if (adImpData != null) {
-                adImpData.put(Constant.AD_REQUEST_ID, getRequestId());
-            }
-            l.onAdImpression(AdImpData.createAdImpData(adImpData));
+            l.onAdImpression(adImpData);
         }
+        AdStatManager.get(mContext).recordAdImpression(adImpData);
     }
 }
