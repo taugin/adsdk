@@ -9,6 +9,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -580,13 +581,12 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 public View getView(int position, View convertView, ViewGroup parent) {
                     TextView adapterView = (TextView) super.getView(position, convertView, parent);
                     AdImpData adImpData = getItem(position);
-                    String str = adImpData.getUnitName()
-                            + "\n" + adImpData.getUnitId()
-                            + "\n" + adImpData.getPlatform() + "[" + adImpData.getNetwork() + "]"
-                            + "\n" + adImpData.getNetworkPid()
-                            + "\n" + adImpData.getAdType()
-                            + "\n" + adImpData.getValue();
-                    adapterView.setText(str);
+                    String str = "<font color=red><big>" + (position + 1) + ".</big></font>" + adImpData.getUnitName() + "[" + adImpData.getPlacement() + "]"
+                            + "<br>[<font color=red>" + adImpData.getPlatform() + "</font>][" + adImpData.getNetwork() + "][<font color=red>" + adImpData.getAdType() + "</font>]"
+                            + "<br>" + adImpData.getUnitId()
+                            + "<br>" + adImpData.getNetworkPid()
+                            + "<br>" + adImpData.getValue();
+                    adapterView.setText(Html.fromHtml(str));
                     return adapterView;
                 }
             };

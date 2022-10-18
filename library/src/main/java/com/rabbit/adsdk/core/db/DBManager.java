@@ -167,7 +167,7 @@ public class DBManager {
 
     public List<AdImpData> queryAllImps() {
         List<AdImpData> list = null;
-        String sql = String.format(Locale.ENGLISH, "select * from %s", DBHelper.TABLE_AD_IMPRESSION);
+        String sql = String.format(Locale.ENGLISH, "select * from %s order by %s desc", DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_IMP_TIME);
         Cursor cursor = null;
         try {
             SQLiteDatabase db = mDBHelper.getReadableDatabase();
@@ -182,6 +182,7 @@ public class DBManager {
                     objectMap.put(Constant.AD_TYPE, cursor.getString(cursor.getColumnIndex(DBHelper.AD_TYPE)));
                     objectMap.put(Constant.AD_FORMAT, cursor.getString(cursor.getColumnIndex(DBHelper.AD_UNIT_FORMAT)));
                     objectMap.put(Constant.AD_PLATFORM, cursor.getString(cursor.getColumnIndex(DBHelper.AD_PLATFORM)));
+                    objectMap.put(Constant.AD_PLACEMENT, cursor.getString(cursor.getColumnIndex(DBHelper.AD_PLACEMENT)));
                     objectMap.put(Constant.AD_NETWORK, cursor.getString(cursor.getColumnIndex(DBHelper.AD_NETWORK)));
                     objectMap.put(Constant.AD_NETWORK_PID, cursor.getString(cursor.getColumnIndex(DBHelper.AD_NETWORK_PID)));
                     objectMap.put(Constant.AD_VALUE, cursor.getDouble(cursor.getColumnIndex(DBHelper.AD_REVENUE)));
