@@ -1,5 +1,6 @@
 package com.hauyu.adsdk.demo;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -26,14 +30,18 @@ import android.widget.Toast;
 
 import com.hauyu.adsdk.demo.view.CustomDrawable;
 import com.rabbit.adsdk.AdExtra;
+import com.rabbit.adsdk.AdImpData;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.AdSdk;
+import com.rabbit.adsdk.core.db.DBManager;
+import com.rabbit.adsdk.core.framework.ActivityMonitor;
 import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.utils.Utils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -80,6 +88,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         menu.add(0, 0x1, 0, "CustomView");
         menu.add(0, 0x2, 0, "AdListView");
         menu.add(0, 0x3, 0, "VpnChecker");
+        menu.add(0, 0x4, 0, "ShowAdImp");
         return true;
     }
 
@@ -93,6 +102,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             } else if (item.getItemId() == 0x3) {
                 String toastString = Utils.isVPNConnected(this) ? "VPN已连接" : "VPN已断开";
                 Toast.makeText(this, toastString, Toast.LENGTH_SHORT).show();
+            } else if (item.getItemId() == 0x4) {
+                showAdImpression();
             }
         }
         return true;
@@ -534,5 +545,53 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
         boolean loaded = AdSdk.get(this).isComplexAdsLoaded(placeName);
         textView.setTextColor(loaded ? Color.RED : Color.BLACK);
+    }
+
+
+    public void showAdImpression() {
+        Activity activity = ActivityMonitor.get(mContext).getTopActivity();
+        Dialog dialog = new Dialog(activity, android.R.style.Theme_DeviceDefault_Light_NoActionBar);
+        dialog.setContentView(createDialogView(mContext));
+        dialog.show();
+    }
+
+    private View createDialogView(Context context) {
+        LinearLayout rootLayout = new LinearLayout(context);
+        rootLayout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout titleLayout = new LinearLayout(context);
+        rootLayout.addView(titleLayout, -1, -2);
+        titleLayout.setOrientation(LinearLayout.VERTICAL);
+        int height = Utils.dp2px(context, 24);
+        double totalRevenue = DBManager.get(context).queryAdRevenue();
+        TextView textView = null;
+        textView = new TextView(context);
+        textView.setTextColor(Color.BLACK);
+        textView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+        textView.setText("总计 : " + totalRevenue);
+        textView.setBackgroundColor(Color.GREEN);
+        titleLayout.addView(textView, -1, height);
+        ListView listView = new ListView(context);
+        rootLayout.addView(listView, -1, -1);
+        List<AdImpData> list = DBManager.get(context).queryAllImps();
+        Log.v(Log.TAG, "list : " + list);
+        if (list != null && !list.isEmpty()) {
+            ArrayAdapter<AdImpData> adapter = new ArrayAdapter<AdImpData>(context, android.R.layout.simple_list_item_1, list) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    TextView adapterView = (TextView) super.getView(position, convertView, parent);
+                    AdImpData adImpData = getItem(position);
+                    String str = adImpData.getUnitName()
+                            + "\n" + adImpData.getUnitId()
+                            + "\n" + adImpData.getPlatform() + "[" + adImpData.getNetwork() + "]"
+                            + "\n" + adImpData.getNetworkPid()
+                            + "\n" + adImpData.getAdType()
+                            + "\n" + adImpData.getValue();
+                    adapterView.setText(str);
+                    return adapterView;
+                }
+            };
+            listView.setAdapter(adapter);
+        }
+        return rootLayout;
     }
 }

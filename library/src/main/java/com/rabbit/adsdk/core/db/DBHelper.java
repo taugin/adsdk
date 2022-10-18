@@ -21,12 +21,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String AD_PLACEMENT = "ad_placement";
     public static final String AD_SDK_VERSION = "ad_sdk_version";
     public static final String AD_APP_VERSION = "ad_app_version";
-    public static final String AD_UNIT_TYPE = "ad_unit_type";
+    public static final String AD_TYPE = "ad_type";
     public static final String AD_UNIT_FORMAT = "ad_unit_format";
     public static final String AD_CURRENCY = "ad_currency";
     public static final String AD_REVENUE = "ad_revenue";
     public static final String AD_PRECISION = "ad_precision";
-    public static final String AD_NETWORK_NAME = "ad_network_name";
+    public static final String AD_NETWORK = "ad_network";
     public static final String AD_NETWORK_PID = "ad_network_pid";
     public static final String AD_PLATFORM = "ad_platform";
     public static final String AD_COUNTRY = "ad_country";
@@ -57,12 +57,12 @@ public class DBHelper extends SQLiteOpenHelper {
                     + AD_PLACEMENT + " TEXT,"
                     + AD_SDK_VERSION + " TEXT,"
                     + AD_APP_VERSION + " TEXT,"
-                    + AD_UNIT_TYPE + " TEXT,"
+                    + AD_TYPE + " TEXT,"
                     + AD_UNIT_FORMAT + " TEXT,"
                     + AD_CURRENCY + " TEXT,"
                     + AD_REVENUE + " DOUBLE,"
                     + AD_PRECISION + " TEXT,"
-                    + AD_NETWORK_NAME + " TEXT,"
+                    + AD_NETWORK + " TEXT,"
                     + AD_NETWORK_PID + " TEXT,"
                     + AD_PLATFORM + " TEXT,"
                     + AD_COUNTRY + " TEXT,"

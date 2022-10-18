@@ -109,7 +109,7 @@ public class App extends Application {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("ad_platform", platform);
         params.put("ad_source", networkName);
-        params.put("ad_format", adImpData.getFormat());
+        params.put("ad_format", adImpData.getAdFormat());
         params.put("ad_unit_name", unitName);
         params.put("value", adImpData.getValue());
         params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());

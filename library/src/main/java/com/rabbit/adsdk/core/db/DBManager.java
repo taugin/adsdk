@@ -4,15 +4,21 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import com.rabbit.adsdk.AdImpData;
+import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -105,12 +111,12 @@ public class DBManager {
             values.put(DBHelper.AD_PLACEMENT, adImpData.getPlacement());
             values.put(DBHelper.AD_SDK_VERSION, adImpData.getSdkVersion());
             values.put(DBHelper.AD_APP_VERSION, adImpData.getAppVersion());
-            values.put(DBHelper.AD_UNIT_TYPE, adImpData.getType());
-            values.put(DBHelper.AD_UNIT_FORMAT, adImpData.getFormat());
+            values.put(DBHelper.AD_TYPE, adImpData.getAdType());
+            values.put(DBHelper.AD_UNIT_FORMAT, adImpData.getAdFormat());
             values.put(DBHelper.AD_CURRENCY, adImpData.getCurrency());
             values.put(DBHelper.AD_REVENUE, adImpData.getValue());
             values.put(DBHelper.AD_PRECISION, adImpData.getPrecision());
-            values.put(DBHelper.AD_NETWORK_NAME, adImpData.getNetwork());
+            values.put(DBHelper.AD_NETWORK, adImpData.getNetwork());
             values.put(DBHelper.AD_NETWORK_PID, adImpData.getNetworkPid());
             values.put(DBHelper.AD_PLATFORM, adImpData.getPlatform());
             values.put(DBHelper.AD_COUNTRY, adImpData.getCountryCode());
@@ -128,11 +134,20 @@ public class DBManager {
         return null;
     }
 
+    public double queryAdRevenue() {
+        return queryAdRevenue(null);
+    }
+
     public double queryAdRevenue(String datetime) {
         double adRevenue = 0.0f;
-        String sql = String.format(Locale.ENGLISH, "select sum(%s) as total_revenue from %s where %s='%s'",
-                DBHelper.AD_REVENUE, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_IMP_DATE, datetime);
-        Log.iv(Log.TAG, "calculate ad revenue sql : " + sql);
+        String sql = null;
+        if (TextUtils.isEmpty(datetime)) {
+            sql = String.format(Locale.ENGLISH, "select sum(%s) as total_revenue from %s",
+                    DBHelper.AD_REVENUE, DBHelper.TABLE_AD_IMPRESSION);
+        } else {
+            sql = String.format(Locale.ENGLISH, "select sum(%s) as total_revenue from %s where %s='%s'",
+                    DBHelper.AD_REVENUE, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_IMP_DATE, datetime);
+        }
         Cursor cursor = null;
         try {
             SQLiteDatabase db = mDBHelper.getReadableDatabase();
@@ -147,7 +162,39 @@ public class DBManager {
                 cursor.close();
             }
         }
-        Log.iv(Log.TAG, "calculate ad revenue : " + adRevenue);
         return adRevenue;
+    }
+
+    public List<AdImpData> queryAllImps() {
+        List<AdImpData> list = null;
+        String sql = String.format(Locale.ENGLISH, "select * from %s", DBHelper.TABLE_AD_IMPRESSION);
+        Cursor cursor = null;
+        try {
+            SQLiteDatabase db = mDBHelper.getReadableDatabase();
+            cursor = db.rawQuery(sql, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                list = new ArrayList<>();
+                Map<String, Object> objectMap = null;
+                do {
+                    objectMap = new HashMap<>();
+                    objectMap.put(Constant.AD_UNIT_NAME, cursor.getString(cursor.getColumnIndex(DBHelper.AD_UNIT_NAME)));
+                    objectMap.put(Constant.AD_UNIT_ID, cursor.getString(cursor.getColumnIndex(DBHelper.AD_UNIT_ID)));
+                    objectMap.put(Constant.AD_TYPE, cursor.getString(cursor.getColumnIndex(DBHelper.AD_TYPE)));
+                    objectMap.put(Constant.AD_FORMAT, cursor.getString(cursor.getColumnIndex(DBHelper.AD_UNIT_FORMAT)));
+                    objectMap.put(Constant.AD_PLATFORM, cursor.getString(cursor.getColumnIndex(DBHelper.AD_PLATFORM)));
+                    objectMap.put(Constant.AD_NETWORK, cursor.getString(cursor.getColumnIndex(DBHelper.AD_NETWORK)));
+                    objectMap.put(Constant.AD_NETWORK_PID, cursor.getString(cursor.getColumnIndex(DBHelper.AD_NETWORK_PID)));
+                    objectMap.put(Constant.AD_VALUE, cursor.getDouble(cursor.getColumnIndex(DBHelper.AD_REVENUE)));
+                    list.add(AdImpData.createAdImpData(objectMap));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return list;
     }
 }

@@ -27,6 +27,17 @@
       ]
     },
     {
+      "name": "splash_applovin",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "applovin",
+          "type": "splash",
+          "pid": "d9b1e8f961849981"
+        }
+      ]
+    },
+    {
       "name": "banner_admob",
       "mode": "con",
       "pids": [

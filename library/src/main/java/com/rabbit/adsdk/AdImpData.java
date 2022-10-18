@@ -63,7 +63,7 @@ public class AdImpData {
         return null;
     }
 
-    public String getFormat() {
+    public String getAdFormat() {
         try {
             return (String) mAdImpData.get(Constant.AD_FORMAT);
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public class AdImpData {
         return null;
     }
 
-    public String getType() {
+    public String getAdType() {
         try {
             return (String) mAdImpData.get(Constant.AD_TYPE);
         } catch (Exception e) {
