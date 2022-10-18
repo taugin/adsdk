@@ -582,10 +582,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                     TextView adapterView = (TextView) super.getView(position, convertView, parent);
                     AdImpData adImpData = getItem(position);
                     String str = "<font color=red><big>" + (position + 1) + ".</big></font>" + adImpData.getUnitName() + "[" + adImpData.getPlacement() + "]"
-                            + "<br>[<font color=red>" + adImpData.getPlatform() + "</font>][" + adImpData.getNetwork() + "][<font color=red>" + adImpData.getAdType() + "</font>]"
+                            + "<br>[<font color=red>" + adImpData.getPlatform() + "</font>][<font color=red>" + adImpData.getNetwork() + "</font>][<font color=red>" + adImpData.getAdType() + "</font>]"
                             + "<br>" + adImpData.getUnitId()
                             + "<br>" + adImpData.getNetworkPid()
-                            + "<br>" + adImpData.getValue();
+                            + "<br><font color=red>Revenue:</font>" + adImpData.getValue();
                     adapterView.setText(Html.fromHtml(str));
                     return adapterView;
                 }
