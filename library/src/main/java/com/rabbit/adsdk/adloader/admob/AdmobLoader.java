@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -45,8 +47,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import androidx.annotation.NonNull;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -217,12 +217,13 @@ public class AdmobLoader extends AbstractSdkLoader {
             if (viewParent instanceof ViewGroup) {
                 ((ViewGroup) viewParent).removeView(bannerView);
             }
-            bannerView.setOnPaidEventListener(new OnPaidEventListener() {
+            final AdView finalAdView = bannerView;
+            finalAdView.setOnPaidEventListener(new OnPaidEventListener() {
                 @Override
                 public void onPaidEvent(AdValue adValue) {
                     String network = null;
                     try {
-                        network = bannerView.getResponseInfo().getMediationAdapterClassName();
+                        network = finalAdView.getResponseInfo().getMediationAdapterClassName();
                         network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
@@ -347,12 +348,13 @@ public class AdmobLoader extends AbstractSdkLoader {
                     notifyAdImp(network);
                 }
             });
-            mInterstitialAd.setOnPaidEventListener(new OnPaidEventListener() {
+            final InterstitialAd finalInterstitialAd = mInterstitialAd;
+            finalInterstitialAd.setOnPaidEventListener(new OnPaidEventListener() {
                 @Override
                 public void onPaidEvent(AdValue adValue) {
                     String network = null;
                     try {
-                        network = mInterstitialAd.getResponseInfo().getMediationAdapterClassName();
+                        network = finalInterstitialAd.getResponseInfo().getMediationAdapterClassName();
                         network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
@@ -475,12 +477,13 @@ public class AdmobLoader extends AbstractSdkLoader {
                     notifyAdImp(network);
                 }
             });
-            mRewardedAd.setOnPaidEventListener(new OnPaidEventListener() {
+            final RewardedAd finalRewardedAd = mRewardedAd;
+            finalRewardedAd.setOnPaidEventListener(new OnPaidEventListener() {
                 @Override
                 public void onPaidEvent(@NonNull AdValue adValue) {
                     String network = null;
                     try {
-                        network = mRewardedAd.getResponseInfo().getMediationAdapterClassName();
+                        network = finalRewardedAd.getResponseInfo().getMediationAdapterClassName();
                         network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
@@ -664,12 +667,13 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (mNativeAd != null) {
             reportAdShow();
             notifyAdShow();
-            mNativeAd.setOnPaidEventListener(new OnPaidEventListener() {
+            final NativeAd finalNativeAd = mNativeAd;
+            finalNativeAd.setOnPaidEventListener(new OnPaidEventListener() {
                 @Override
                 public void onPaidEvent(@NonNull AdValue adValue) {
                     String network = null;
                     try {
-                        network = mNativeAd.getResponseInfo().getMediationAdapterClassName();
+                        network = finalNativeAd.getResponseInfo().getMediationAdapterClassName();
                         network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
@@ -752,7 +756,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showSplash(ViewGroup viewGroup) {
-        Log.iv(Log.TAG, getAdPlaceName() + " - " +getSdkName() + " show splash");
+        Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " show splash");
         if (mAppOpenAd != null) {
             Activity activity = getActivity();
             FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
@@ -790,12 +794,13 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
             };
             mAppOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
-            mAppOpenAd.setOnPaidEventListener(new OnPaidEventListener() {
+            final AppOpenAd finalAppOpenAd = mAppOpenAd;
+            finalAppOpenAd.setOnPaidEventListener(new OnPaidEventListener() {
                 @Override
                 public void onPaidEvent(@NonNull AdValue adValue) {
                     String network = null;
                     try {
-                        network = mAppOpenAd.getResponseInfo().getMediationAdapterClassName();
+                        network = finalAppOpenAd.getResponseInfo().getMediationAdapterClassName();
                         network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
@@ -866,7 +871,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     private void reportAdmobImpressionData(AdValue adValue, String network, String sceneName) {
         try {
             // admob给出的是百万次展示的价值，换算ecpm需要除以1000
-            double revenue = adValue.getValueMicros() / (double)1000000;
+            double revenue = adValue.getValueMicros() / (double) 1000000;
             String networkName = network;
             String adUnitId = getPid();
             String adFormat = getAdType();
