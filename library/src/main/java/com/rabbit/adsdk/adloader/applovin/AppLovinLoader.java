@@ -501,6 +501,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         try {
             reportAdShow();
             notifyAdShow();
+            setRevenueCallback(maxAdView);
             clearCachedAdTime(maxAdView);
             viewGroup.removeAllViews();
             ViewParent viewParent = maxAdView.getParent();
@@ -511,7 +512,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
-            setRevenueCallback(maxAdView);
             lastUseMaxAdView = maxAdView;
             if (loadingMaxAdView != null) {
                 loadingMaxAdView.startAutoRefresh();
