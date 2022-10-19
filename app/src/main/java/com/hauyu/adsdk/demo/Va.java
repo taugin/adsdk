@@ -10,6 +10,7 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -83,7 +84,19 @@ public class Va implements Application.ActivityLifecycleCallbacks {
 
     public static void log(Object object) {
         try {
-            String output = "" + object;
+            String output = "" + object + "\n";
+            output += "++++++++++++++++++++++++++++++++\n";
+            Field fields[] = object.getClass().getDeclaredFields();
+            if (fields != null && fields.length > 0) {
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    String fieldName = field.getName();
+                    Object fieldValue = field.get(object);
+                    output = output + fieldName + " : " + fieldValue + "\n";
+                    field.setAccessible(false);
+                }
+            }
+            output += "================================\n";
             Log.v(TAG, getMethodNameAndLineNumber() + output);
             writeToFileIfNeed(output);
         } catch (Exception | Error e) {
