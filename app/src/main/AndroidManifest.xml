@@ -47,7 +47,7 @@
 
         <provider
             android:name=".SyncProvider"
-            android:authorities="com.hauyu.adsdk.demo.sync"
+            android:authorities="${applicationId}.sync"
             android:enabled="true"
             android:exported="true">
             <!--        android:syncable="true"-->
