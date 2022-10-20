@@ -564,17 +564,18 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         titleLayout.setOrientation(LinearLayout.VERTICAL);
         int height = Utils.dp2px(context, 24);
         double totalRevenue = DBManager.get(context).queryAdRevenue();
-        TextView textView = null;
-        textView = new TextView(context);
-        textView.setTextColor(Color.BLACK);
-        textView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-        textView.setText("总计 : " + totalRevenue);
-        textView.setBackgroundColor(Color.GREEN);
-        titleLayout.addView(textView, -1, height);
+        TextView totalTextView = null;
+        totalTextView = new TextView(context);
+        totalTextView.setGravity(Gravity.CENTER);
+        totalTextView.setTextColor(Color.BLACK);
+        totalTextView.setText("REVENUE : " + totalRevenue);
+        totalTextView.setBackgroundColor(Color.GREEN);
+        titleLayout.addView(totalTextView, -1, height);
         ListView listView = new ListView(context);
         rootLayout.addView(listView, -1, -1);
         List<AdImpData> list = DBManager.get(context).queryAllImps();
-        Log.v(Log.TAG, "list : " + list);
+        int size = list != null ? list.size() : 0;
+        totalTextView.setText(totalTextView.getText() + " , IMP : " + size + "");
         if (list != null && !list.isEmpty()) {
             ArrayAdapter<AdImpData> adapter = new ArrayAdapter<AdImpData>(context, android.R.layout.simple_list_item_1, list) {
                 @Override
@@ -582,9 +583,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                     TextView adapterView = (TextView) super.getView(position, convertView, parent);
                     AdImpData adImpData = getItem(position);
                     String str = "<font color=red><big>" + (position + 1) + ".</big></font>" + adImpData.getUnitName() + "[" + adImpData.getPlacement() + "]"
-                            + "<br>[<font color=red>" + adImpData.getPlatform() + "</font>][<font color=red>" + adImpData.getNetwork() + "</font>][<font color=red>" + adImpData.getAdType() + "</font>]"
+                            + "<br>[<font color=red>" + adImpData.getPlatform() + "</font>][<font color='#a00'>" + adImpData.getNetwork() + "</font>][<font color=red>" + adImpData.getAdType() + "</font>]"
                             + "<br>" + adImpData.getUnitId()
-                            + "<br>" + adImpData.getNetworkPid()
+                            + "<br>" + (adImpData.getNetworkPid() != null ? adImpData.getNetworkPid() : "-")
                             + "<br><font color=red>Revenue:</font>" + adImpData.getValue();
                     adapterView.setText(Html.fromHtml(str));
                     return adapterView;
