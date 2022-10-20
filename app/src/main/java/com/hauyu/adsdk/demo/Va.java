@@ -87,12 +87,13 @@ public class Va implements Application.ActivityLifecycleCallbacks {
             String output = "" + object + "\n";
             output += "++++++++++++++++++++++++++++++++\n";
             Field fields[] = object.getClass().getDeclaredFields();
+            String className = object.getClass().getSimpleName();
             if (fields != null && fields.length > 0) {
                 for (Field field : fields) {
                     field.setAccessible(true);
                     String fieldName = field.getName();
                     Object fieldValue = field.get(object);
-                    output = output + fieldName + " : " + fieldValue + "\n";
+                    output = output + "[" + className + "]" + fieldName + " : " + fieldValue + "\n";
                     field.setAccessible(false);
                 }
             }
