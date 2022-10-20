@@ -179,7 +179,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isBannerLoaded() {
-        boolean loaded = mTPBanner != null && !isCachedAdExpired(mTPBanner);
+        boolean loaded = mTPBanner != null && mTPBanner.isReady() && !isCachedAdExpired(mTPBanner);
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
@@ -189,7 +189,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
     private void autoRefreshBanner(TPBanner tpBanner) {
         try {
             if (tpBanner != null) {
-                tpBanner.showAd();
+                tpBanner.showAd(getSceneId());
             }
         } catch (Exception e) {
         }
@@ -208,7 +208,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 ((ViewGroup) viewParent).removeView(mTPBanner);
             }
             viewGroup.addView(mTPBanner);
-            mTPBanner.showAd();
+            mTPBanner.showAd(getSceneId());
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
@@ -595,10 +595,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
     @Override
     public boolean isNativeLoaded() {
-        boolean loaded = false;
-        if (mTPNative != null) {
-            loaded = !isCachedAdExpired(mTPNative);
-        }
+        boolean loaded = mTPNative != null && mTPNative.isReady() && !isCachedAdExpired(mTPNative);
         if (loaded) {
             Log.iv(Log.TAG, formatLog("ad loaded : " + loaded));
         }
@@ -608,7 +605,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
-        if (mTPNative != null) {
+        if (mTPNative != null && mTPNative.isReady()) {
             final TPCustomNativeAd customNativeAd = mTPNative.getNativeAd();
             if (customNativeAd != null) {
                 reportAdShow();
