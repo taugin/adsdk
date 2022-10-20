@@ -26,10 +26,10 @@ def isSnapshot = true
 def baseVersion = '5.7.1'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionName baseVersion + (isSnapshot ? "-SNAPSHOT" : "")
         buildConfigField "String", "SDK_VERSION_NAME", "\"${versionName}\""
         consumerProguardFiles 'proguard-rules-adsdk.pro'
