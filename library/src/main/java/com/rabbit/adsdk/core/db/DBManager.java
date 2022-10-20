@@ -198,4 +198,25 @@ public class DBManager {
         }
         return list;
     }
+
+    public double queryAverageRevenue(String pid) {
+        String sql = String.format(Locale.ENGLISH, "select avg(%s) as revenue_avg from %s where %s='%s'", DBHelper.AD_REVENUE, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_UNIT_ID, pid);
+        Cursor cursor = null;
+        double averageRevenue = 0f;
+        try {
+            SQLiteDatabase db = mDBHelper.getReadableDatabase();
+            cursor = db.rawQuery(sql, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                averageRevenue = cursor.getDouble(0);
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        Log.iv(Log.TAG, "pid [" + pid + "] avg : " + averageRevenue);
+        return averageRevenue;
+    }
 }

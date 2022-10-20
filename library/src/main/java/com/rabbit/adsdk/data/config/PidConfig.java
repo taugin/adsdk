@@ -74,6 +74,8 @@ public class PidConfig {
     // 是否禁止VPN模式加载
     private boolean disableVpnLoad = false;
 
+    private boolean useAvgValue = true;
+
     public String getPlaceName() {
         return placeName;
     }
@@ -296,6 +298,14 @@ public class PidConfig {
 
     public void setDisableVpnLoad(boolean disableVpnLoad) {
         this.disableVpnLoad = disableVpnLoad;
+    }
+
+    public boolean isUseAvgValue() {
+        return useAvgValue;
+    }
+
+    public void setUseAvgValue(boolean useAvgValue) {
+        this.useAvgValue = useAvgValue;
     }
 
     public boolean isAdmob() {

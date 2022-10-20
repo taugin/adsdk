@@ -102,6 +102,8 @@ public interface IParser {
     String SPLASH_TIME_OUT = "sto";
     // 是否禁止vpn模式加载
     String DISABLE_VPN_LOAD = "dvl";
+    // 对于admob使用平均值作为loaded value
+    String USE_AVG_VALUE = "uav";
 
     // banner
     String BANNER = "banner";

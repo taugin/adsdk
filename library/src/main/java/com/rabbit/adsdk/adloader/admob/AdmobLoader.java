@@ -35,6 +35,7 @@ import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.db.DBManager;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
@@ -178,6 +179,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 bannerView = loadingView;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(loadingView);
+                setRevenueAverage();
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
             }
@@ -286,6 +288,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 mInterstitialAd = interstitialAd;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
+                setRevenueAverage();
                 reportAdLoaded();
                 notifyAdLoaded(AdmobLoader.this);
             }
@@ -409,6 +412,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 mRewardedAd = rewardedAd;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mRewardedAd);
+                setRevenueAverage();
                 reportAdLoaded();
                 notifyAdLoaded(AdmobLoader.this);
             }
@@ -589,6 +593,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
+                setRevenueAverage();
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
             }
@@ -734,6 +739,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 mAppOpenAd = appOpenAd;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mAppOpenAd);
+                setRevenueAverage();
                 reportAdLoaded();
                 notifyAdLoaded(AdmobLoader.this);
             }
@@ -1013,5 +1019,12 @@ public class AdmobLoader extends AbstractSdkLoader {
         } catch (Exception e) {
         }
         return network;
+    }
+
+    private void setRevenueAverage() {
+        if (mPidConfig != null && mPidConfig.isUseAvgValue()) {
+            double revenue = DBManager.get(mContext).queryAverageRevenue(getPid());
+            setAdNetworkAndRevenue(getSdkName(), revenue);
+        }
     }
 }

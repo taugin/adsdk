@@ -313,6 +313,9 @@ public class AdParser implements IParser {
             if (jobj.has(DISABLE_VPN_LOAD)) {
                 pidConfig.setDisableVpnLoad(jobj.getInt(DISABLE_VPN_LOAD) == 1);
             }
+            if (jobj.has(USE_AVG_VALUE)) {
+                pidConfig.setUseAvgValue(jobj.getInt(USE_AVG_VALUE) == 1);
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
