@@ -38,6 +38,13 @@ public class RabActivity extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (mVUIHelper.onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mVUIHelper.onDestroy();

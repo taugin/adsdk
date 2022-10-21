@@ -36,6 +36,7 @@ public class VUIHelper {
     private ImageView mCloseView;
     private ISdkLoader mISdkLoader;
     private Activity mActivity;
+    private boolean mOnBackPressed = false;
 
     public VUIHelper(Activity activity) {
         mActivity = activity;
@@ -47,13 +48,17 @@ public class VUIHelper {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             mActivity.setFinishOnTouchOutside(false);
         }
+        mOnBackPressed = false;
         mHandler = new Handler();
         mActivity.requestWindowFeature(Window.FEATURE_NO_TITLE);
         updateDataAndView();
     }
 
     public void onResume() {
-        closeViewMonitor();
+    }
+
+    public boolean onBackPressed() {
+        return mOnBackPressed;
     }
 
     public void onDestroy() {
@@ -102,6 +107,20 @@ public class VUIHelper {
         Log.iv(Log.TAG, "update data and view");
         updateFullScreenState();
         showNativeAd();
+        if (mHandler != null) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    closeViewMonitor();
+                }
+            }, 500);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mOnBackPressed = true;
+                }
+            }, 5000);
+        }
     }
 
     private void parseIntent() {
