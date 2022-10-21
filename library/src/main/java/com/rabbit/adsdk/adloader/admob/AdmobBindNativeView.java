@@ -76,7 +76,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
     }
 
     private View showUnifiedAdView(View rootView, NativeAd nativeAd, PidConfig pidConfig) throws Exception {
-        NativeAdView adView = new NativeAdView(rootView.getContext());
+        NativeAdView nativeAdView = new NativeAdView(rootView.getContext());
         try {
             if (rootView.getParent() != null) {
                 ((ViewGroup) rootView.getParent()).removeView(rootView);
@@ -85,31 +85,31 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e);
         }
 
-        adView.addView(rootView);
+        nativeAdView.addView(rootView);
 
         View titleView = rootView.findViewById(mParams.getAdTitle());
-        View adCoverView = adView.findViewById(mParams.getAdCover());
-        View bodyView = adView.findViewById(mParams.getAdDetail());
-        View ctaView = adView.findViewById(mParams.getAdAction());
-        View adIconView = adView.findViewById(mParams.getAdIcon());
-        View rateBarView = adView.getStarRatingView();
+        View adCoverView = nativeAdView.findViewById(mParams.getAdCover());
+        View bodyView = nativeAdView.findViewById(mParams.getAdDetail());
+        View ctaView = nativeAdView.findViewById(mParams.getAdAction());
+        View adIconView = nativeAdView.findViewById(mParams.getAdIcon());
+        View rateBarView = nativeAdView.getStarRatingView();
         if (titleView != null && isClickable(AD_TITLE, pidConfig)) {
-            adView.setHeadlineView(titleView);
+            nativeAdView.setHeadlineView(titleView);
         }
         if (adCoverView != null && isClickable(AD_COVER, pidConfig)) {
-            adView.setImageView(adCoverView);
+            nativeAdView.setImageView(adCoverView);
         }
         if (bodyView != null && isClickable(AD_DETAIL, pidConfig)) {
-            adView.setBodyView(bodyView);
+            nativeAdView.setBodyView(bodyView);
         }
         if (ctaView != null && isClickable(AD_CTA, pidConfig)) {
-            adView.setCallToActionView(ctaView);
+            nativeAdView.setCallToActionView(ctaView);
         }
         if (adIconView != null && isClickable(AD_ICON, pidConfig)) {
-            adView.setIconView(adIconView);
+            nativeAdView.setIconView(adIconView);
         }
         if (rateBarView != null && isClickable(AD_RATE, pidConfig)) {
-            adView.setStarRatingView(rateBarView);
+            nativeAdView.setStarRatingView(rateBarView);
         }
 
         // 设置广告元素内容
@@ -149,7 +149,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
         }
 
         // 废弃ImageView作为Cover
-        ImageView coverView = (ImageView) adView.getImageView();
+        ImageView coverView = (ImageView) nativeAdView.getImageView();
         if (coverView != null) {
             coverView.setVisibility(View.GONE);
         }
@@ -159,7 +159,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
         }
 
         if (mediaView != null) {
-            adView.setMediaView(mediaView);
+            nativeAdView.setMediaView(mediaView);
         }
 
         try {
@@ -176,9 +176,9 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             Log.e(Log.TAG, "error : " + e, e);
         }
         Log.iv(Log.TAG, "clickable view : " + pidConfig.getClickView());
-        adView.setNativeAd(nativeAd);
+        nativeAdView.setNativeAd(nativeAd);
         putAdvertiserInfo(nativeAd);
-        return adView;
+        return nativeAdView;
     }
 
     private MediaView createMediaView(Context context) {
