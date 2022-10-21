@@ -91,8 +91,8 @@ dependencies {
     // admob
     implementation 'com.google.android.gms:play-services-ads:21.3.0'
     // applovin admob mediation
-    implementation 'com.applovin.mediation:google-adapter:21.3.0.0@aar'
-    implementation 'com.applovin.mediation:google-ad-manager-adapter:21.3.0.0@aar'
+    implementation 'com.applovin.mediation:google-adapter:21.3.0.1@aar'
+    implementation 'com.applovin.mediation:google-ad-manager-adapter:21.3.0.2@aar'
     // tradplus admob mediation
     implementation 'com.tradplusad:tradplus-googlex:2.8.6.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ dependencies {
     // Inmobi
     implementation 'com.inmobi.monetization:inmobi-ads:10.0.9'
     // applovin inmobi mediation
-    implementation 'com.applovin.mediation:inmobi-adapter:10.0.9.1@aar'
+    implementation 'com.applovin.mediation:inmobi-adapter:10.0.9.2@aar'
     //tradplus inmobi mediation
     implementation 'com.tradplusad:tradplus-inmobix:23.8.6.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -145,9 +145,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // ironsource
-    implementation 'com.ironsource.sdk:mediationsdk:7.2.4.1'
+    implementation 'com.ironsource.sdk:mediationsdk:7.2.5'
     // applovin ironsource mediation
-    implementation 'com.applovin.mediation:ironsource-adapter:7.2.4.1.0'
+    implementation 'com.applovin.mediation:ironsource-adapter:7.2.5.0.0'
     // tradplus ironsource mediation
     implementation 'com.tradplusad:tradplus-ironsource:10.8.6.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -185,9 +185,9 @@ dependencies {
     implementation 'com.tradplusad:tradplus-smaato:38.8.6.0.1'
 
     // chartboost
-    implementation 'com.chartboost:chartboost-sdk:9.1.0'
+    implementation 'com.chartboost:chartboost-sdk:9.1.1'
     // applovin chartboost mediation
-    implementation 'com.applovin.mediation:chartboost-adapter:9.1.0.0@aar'
+    implementation 'com.applovin.mediation:chartboost-adapter:9.1.1.0@aar'
     // applovin chartboost mediation
     implementation 'com.tradplusad:tradplus-chartboostx:15.8.6.0.1'
 }
