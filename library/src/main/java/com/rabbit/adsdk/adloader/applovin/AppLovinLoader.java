@@ -788,49 +788,51 @@ public class AppLovinLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        mMaxNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
-        mMaxNativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
-            @Override
-            public void onNativeAdLoaded(MaxNativeAdView maxNativeAdView, MaxAd maxAd) {
-                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(maxAd)));
-                mMaxAd = maxAd;
-                mTemplateNativeView = maxNativeAdView;
-                setLoading(false, STATE_SUCCESS);
-                putCachedAdTime(mMaxAd);
-                String network = getNetwork(maxAd);
-                setAdNetworkAndRevenue(network, getMaxAdRevenue(maxAd));
-                reportAdLoaded();
-                notifySdkLoaderLoaded(false);
-            }
+        if (mMaxNativeAdLoader == null) {
+            mMaxNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
+            mMaxNativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
+                @Override
+                public void onNativeAdLoaded(MaxNativeAdView maxNativeAdView, MaxAd maxAd) {
+                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(maxAd)));
+                    mMaxAd = maxAd;
+                    mTemplateNativeView = maxNativeAdView;
+                    setLoading(false, STATE_SUCCESS);
+                    putCachedAdTime(mMaxAd);
+                    String network = getNetwork(maxAd);
+                    setAdNetworkAndRevenue(network, getMaxAdRevenue(maxAd));
+                    reportAdLoaded();
+                    notifySdkLoaderLoaded(false);
+                }
 
-            @Override
-            public void onNativeAdLoadFailed(String s, MaxError maxError) {
-                Log.iv(Log.TAG, formatLog("ad load failed : " + maxError, true));
-                reportAdError(s);
-                setLoading(false, STATE_FAILURE);
-                notifyAdLoadFailed(Constant.AD_ERROR_NOFILL, toErrorMessage(maxError));
-            }
+                @Override
+                public void onNativeAdLoadFailed(String s, MaxError maxError) {
+                    Log.iv(Log.TAG, formatLog("ad load failed : " + maxError, true));
+                    reportAdError(s);
+                    setLoading(false, STATE_FAILURE);
+                    notifyAdLoadFailed(Constant.AD_ERROR_NOFILL, toErrorMessage(maxError));
+                }
 
-            @Override
-            public void onNativeAdClicked(MaxAd maxAd) {
-                String network = getNetwork(maxAd);
-                String networkPid = getNetworkPid(maxAd);
-                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                reportAdClick(network, networkPid);
-                notifyAdClick(network);
-            }
-        });
-        mMaxNativeAdLoader.setRevenueListener(new MaxAdRevenueListener() {
-            @Override
-            public void onAdRevenuePaid(MaxAd ad) {
-                Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                String network = getNetwork(ad);
-                String networkPid = getNetworkPid(ad);
-                reportAdImp(network, networkPid);
-                notifyAdImp(network);
-                reportMaxAdImpData(ad, getAdPlaceName());
-            }
-        });
+                @Override
+                public void onNativeAdClicked(MaxAd maxAd) {
+                    String network = getNetwork(maxAd);
+                    String networkPid = getNetworkPid(maxAd);
+                    Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
+                    reportAdClick(network, networkPid);
+                    notifyAdClick(network);
+                }
+            });
+            mMaxNativeAdLoader.setRevenueListener(new MaxAdRevenueListener() {
+                @Override
+                public void onAdRevenuePaid(MaxAd ad) {
+                    Log.iv(Log.TAG, formatLog("ad revenue paid"));
+                    String network = getNetwork(ad);
+                    String networkPid = getNetworkPid(ad);
+                    reportAdImp(network, networkPid);
+                    notifyAdImp(network);
+                    reportMaxAdImpData(ad, getAdPlaceName());
+                }
+            });
+        }
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
