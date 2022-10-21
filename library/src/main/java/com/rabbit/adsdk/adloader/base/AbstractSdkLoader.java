@@ -336,8 +336,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
 
         // 是否满足展示比率
-        if (!isImpByRatio()) {
-            processImpByRatio();
+        if (!isMatchRatio()) {
+            processUnMatchRatio();
             return false;
         }
 
@@ -396,14 +396,14 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         notifyAdLoadFailed(Constant.AD_ERROR_DISABLE_LOADING, "ad is disable loading");
     }
 
-    private boolean isImpByRatio() {
+    private boolean isMatchRatio() {
         int maxRatio = mPidConfig.getRatio();
         int randomRatio = sRandom.nextInt(100);
         Log.iv(Log.TAG, formatLog("random ratio : " + randomRatio + " , max ratio : " + maxRatio));
         return randomRatio < maxRatio;
     }
 
-    private void processImpByRatio() {
+    private void processUnMatchRatio() {
         Log.iv(Log.TAG, formatLog("ratio not match"));
         notifyAdLoadFailed(Constant.AD_ERROR_RATIO, "ratio not match");
     }
