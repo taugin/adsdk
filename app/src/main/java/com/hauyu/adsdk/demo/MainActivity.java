@@ -581,9 +581,11 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
                     TextView adapterView = (TextView) super.getView(position, convertView, parent);
+                    adapterView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
                     AdImpData adImpData = getItem(position);
-                    String str = "<font color=red><big>" + (position + 1) + ".</big></font>" + adImpData.getUnitName() + "[" + adImpData.getPlacement() + "]"
-                            + "<br>[<font color=red>" + adImpData.getPlatform() + "</font>][<font color='#a00'>" + adImpData.getNetwork() + "</font>][<font color=red>" + adImpData.getAdType() + "</font>]"
+                    String str = "<font color=red><big>" + (position + 1) + ".</big></font> " + adImpData.getPlacement()
+                            + "<br>[<font color=red>" + adImpData.getPlatform() + "</font>][<font color='#a00'>" + adImpData.getNetwork() + "</font>]"
+                            + "<br>[<font color=red>" + adImpData.getAdType() + "</font>]"
                             + "<br>" + adImpData.getUnitId()
                             + "<br>" + (adImpData.getNetworkPid() != null ? adImpData.getNetworkPid() : "-")
                             + "<br><font color=red>Revenue:</font>" + adImpData.getValue();
