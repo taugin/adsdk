@@ -1067,30 +1067,18 @@ public class AppLovinLoader extends AbstractSdkLoader {
     protected void onResetInterstitial() {
         super.onResetInterstitial();
         clearCachedAdTime(interstitialAd);
-        if (interstitialAd != null) {
-            interstitialAd.destroy();
-            interstitialAd = null;
-        }
     }
 
     @Override
     protected void onResetReward() {
         super.onResetReward();
         clearCachedAdTime(rewardedAd);
-        if (rewardedAd != null) {
-            rewardedAd.destroy();
-            rewardedAd = null;
-        }
     }
 
     @Override
     protected void onResetSplash() {
         super.onResetSplash();
         clearCachedAdTime(mMaxAppOpenAd);
-        if (mMaxAppOpenAd != null) {
-            mMaxAppOpenAd.destroy();
-            mMaxAppOpenAd = null;
-        }
     }
 
     private String codeToError(int code) {

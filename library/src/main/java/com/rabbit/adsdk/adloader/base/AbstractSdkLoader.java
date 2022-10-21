@@ -506,13 +506,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         // applovin interstitial reward
         if (TextUtils.equals(Constant.AD_SDK_APPLOVIN, getSdkName())
                 && (TextUtils.equals(Constant.TYPE_INTERSTITIAL, getAdType())
-                || TextUtils.equals(Constant.TYPE_REWARD, getAdType()))) {
+                || TextUtils.equals(Constant.TYPE_REWARD, getAdType())
+                || TextUtils.equals(Constant.TYPE_SPLASH, getAdType()))) {
             return true;
         }
         // tradplus interstitial reward
-        if (TextUtils.equals(Constant.AD_SDK_TRADPLUS, getSdkName())
-                && (TextUtils.equals(Constant.TYPE_INTERSTITIAL, getAdType())
-                || TextUtils.equals(Constant.TYPE_REWARD, getAdType()))) {
+        if (TextUtils.equals(Constant.AD_SDK_TRADPLUS, getSdkName())) {
             return true;
         }
         return false;

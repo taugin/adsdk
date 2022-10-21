@@ -623,7 +623,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPCustomNativeAd is null");
             }
             clearCachedAdTime(mTPNative);
-            mTPNative = null;
         } else {
             Log.e(Log.TAG, formatShowErrorLog("TPNative is ready"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPNative not ready");
@@ -786,25 +785,18 @@ public class TradPlusLoader extends AbstractSdkLoader {
     protected void onResetInterstitial() {
         super.onResetInterstitial();
         clearCachedAdTime(mTPInterstitial);
-        if (mTPInterstitial != null) {
-            mTPInterstitial = null;
-        }
     }
 
     @Override
     protected void onResetReward() {
         super.onResetReward();
         clearCachedAdTime(mTPReward);
-        if (mTPReward != null) {
-            mTPReward = null;
-        }
     }
 
     @Override
     protected void onResetSplash() {
         super.onResetSplash();
         clearCachedAdTime(mTPSplash);
-        mTPSplash = null;
     }
 
     private void refreshContext() {
