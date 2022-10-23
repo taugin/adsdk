@@ -35,11 +35,11 @@ import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
-import com.rabbit.adsdk.core.db.DBManager;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
+import com.rabbit.sunny.BuildConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -878,6 +879,9 @@ public class AdmobLoader extends AbstractSdkLoader {
         try {
             // admob给出的是百万次展示的价值，换算ecpm需要除以1000
             double revenue = adValue.getValueMicros() / (double) 1000000;
+            if (revenue <= 0f && BuildConfig.DEBUG) {
+                revenue = new Random().nextInt(50) / 1000f;
+            }
             String networkName = network;
             String adUnitId = getPid();
             String adFormat = getAdType();

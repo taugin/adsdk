@@ -220,10 +220,11 @@ public class DBManager {
                 cursor.close();
             }
         }
-        Log.iv(Log.TAG, "pid [" + pid + "] avg : " + averageRevenue + " , imp count : " + impCount + " , min count : " + minCount);
+        double finalRevenue = 0f;
         if (impCount >= minCount) {
-            return averageRevenue;
+            finalRevenue = averageRevenue;
         }
-        return 0f;
+        Log.iv(Log.TAG, "pid [" + pid + "] avg : " + averageRevenue + " , final value : " + finalRevenue + " , imp count : " + impCount + " , min count : " + minCount);
+        return finalRevenue;
     }
 }

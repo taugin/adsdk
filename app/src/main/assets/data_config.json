@@ -80,6 +80,8 @@
         {
           "sdk": "admob",
           "type": "interstitial",
+          "ecpm": 10,
+          "mac": 3,
           "pid": "ca-app-pub-3940256099942544/1033173712"
         }
       ]

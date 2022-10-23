@@ -812,6 +812,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             finalAdRevenue = getEcpm() / 1000f;
         }
         mAdRevenue = finalAdRevenue;
+        Log.iv(Log.TAG, "network : " + network + " , value : " + mAdRevenue);
     }
 
     @Override
