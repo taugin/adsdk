@@ -76,6 +76,8 @@ public class PidConfig {
 
     private boolean useAvgValue = true;
 
+    private int minAvgCount;
+
     public String getPlaceName() {
         return placeName;
     }
@@ -306,6 +308,14 @@ public class PidConfig {
 
     public void setUseAvgValue(boolean useAvgValue) {
         this.useAvgValue = useAvgValue;
+    }
+
+    public int getMinAvgCount() {
+        return minAvgCount;
+    }
+
+    public void setMinAvgCount(int minAvgCount) {
+        this.minAvgCount = minAvgCount;
     }
 
     public boolean isAdmob() {

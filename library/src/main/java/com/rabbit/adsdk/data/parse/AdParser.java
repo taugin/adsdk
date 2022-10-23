@@ -316,6 +316,9 @@ public class AdParser implements IParser {
             if (jobj.has(USE_AVG_VALUE)) {
                 pidConfig.setUseAvgValue(jobj.getInt(USE_AVG_VALUE) == 1);
             }
+            if (jobj.has(MIN_AVG_COUNT)) {
+                pidConfig.setMinAvgCount(jobj.getInt(MIN_AVG_COUNT));
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

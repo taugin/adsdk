@@ -1,5 +1,6 @@
 package com.rabbit.adsdk.core.db;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -165,6 +166,7 @@ public class DBManager {
         return adRevenue;
     }
 
+    @SuppressLint("Range")
     public List<AdImpData> queryAllImps() {
         List<AdImpData> list = null;
         String sql = String.format(Locale.ENGLISH, "select * from %s order by %s desc", DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_IMP_TIME);
@@ -199,15 +201,17 @@ public class DBManager {
         return list;
     }
 
-    public double queryAverageRevenue(String pid) {
-        String sql = String.format(Locale.ENGLISH, "select avg(%s) as revenue_avg from %s where %s='%s'", DBHelper.AD_REVENUE, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_UNIT_ID, pid);
+    public double queryAverageRevenue(String pid, int minCount) {
+        String sql = String.format(Locale.ENGLISH, "select avg(%s) as revenue_avg, count(%s) as imp_count from %s where %s='%s'", DBHelper.AD_REVENUE, DBHelper.AD_UNIT_ID, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_UNIT_ID, pid);
         Cursor cursor = null;
         double averageRevenue = 0f;
+        int impCount = 0;
         try {
             SQLiteDatabase db = mDBHelper.getReadableDatabase();
             cursor = db.rawQuery(sql, null);
             if (cursor != null && cursor.moveToFirst()) {
                 averageRevenue = cursor.getDouble(0);
+                impCount = cursor.getInt(1);
             }
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
@@ -216,7 +220,10 @@ public class DBManager {
                 cursor.close();
             }
         }
-        Log.iv(Log.TAG, "pid [" + pid + "] avg : " + averageRevenue);
-        return averageRevenue;
+        Log.iv(Log.TAG, "pid [" + pid + "] avg : " + averageRevenue + " , imp count : " + impCount + " , min count : " + minCount);
+        if (impCount >= minCount) {
+            return averageRevenue;
+        }
+        return 0f;
     }
 }

@@ -620,6 +620,17 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return null;
     }
 
+    private int getMinAvgCount() {
+        if (mPidConfig != null) {
+            return mPidConfig.getMinAvgCount();
+        }
+        return 0;
+    }
+
+    private boolean isUseAvgValue() {
+        return mPidConfig != null && mPidConfig.isUseAvgValue();
+    }
+
     protected String getSceneId() {
         return getSceneId(null);
     }
@@ -794,8 +805,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     protected void setAdNetworkAndRevenue(String network, double adRevenue) {
         mAdNetwork = network;
         double finalAdRevenue = adRevenue;
-        if (finalAdRevenue <= 0f && mPidConfig != null && mPidConfig.isUseAvgValue()) {
-            finalAdRevenue = DBManager.get(mContext).queryAverageRevenue(getPid());
+        if (finalAdRevenue <= 0f && isUseAvgValue()) {
+            finalAdRevenue = DBManager.get(mContext).queryAverageRevenue(getPid(), getMinAvgCount());
         }
         if (finalAdRevenue <= 0f) {
             finalAdRevenue = getEcpm() / 1000f;

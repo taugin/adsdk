@@ -104,6 +104,8 @@ public interface IParser {
     String DISABLE_VPN_LOAD = "dvl";
     // 对于admob使用平均值作为loaded value
     String USE_AVG_VALUE = "uav";
+    // 对于admob使用平均值的次数
+    String MIN_AVG_COUNT = "mac";
 
     // banner
     String BANNER = "banner";
