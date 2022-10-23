@@ -72,8 +72,8 @@ public interface IParser {
     String TIMEOUT = "to";
     // 延迟通知加载成功的时间
     String DELAY_LOAD_TIME = "dlt";
-    // ECPM
-    String ECPM = "ecpm";
+    // CPM
+    String CPM = "cpm";
     // bannersize
     String BANNER_SIZE = "size";
     // 可点击原生视图

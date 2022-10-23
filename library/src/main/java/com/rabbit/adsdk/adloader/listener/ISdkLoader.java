@@ -84,7 +84,7 @@ public interface ISdkLoader {
 
     int getBannerSize();
 
-    double getEcpm();
+    double getCpm();
 
     void notifyAdViewUIDismiss();
 

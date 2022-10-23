@@ -31,7 +31,7 @@ public class PidConfig {
 
     private long delayLoadTime = 0;
 
-    private double ecpm;
+    private double cpm;
 
     private String bannerSize;
 
@@ -150,12 +150,12 @@ public class PidConfig {
         this.delayLoadTime = delayLoadTime;
     }
 
-    public double getEcpm() {
-        return ecpm;
+    public double getCpm() {
+        return cpm;
     }
 
-    public void setEcpm(double ecpm) {
-        this.ecpm = ecpm;
+    public void setCpm(double cpm) {
+        this.cpm = cpm;
     }
 
     public String getBannerSize() {
@@ -373,7 +373,7 @@ public class PidConfig {
                 ", sdk=" + sdk +
                 ", pid=" + pid +
                 ", type=" + adType +
-                ", ecpm=" + ecpm +
+                ", ecpm=" + cpm +
                 ", nl=" + nativeLayout +
                 ", snl=" + subNativeLayout +
                 ", ac=" + activityContext +

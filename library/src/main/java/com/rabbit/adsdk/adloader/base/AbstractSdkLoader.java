@@ -785,9 +785,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     @Override
-    public double getEcpm() {
+    public double getCpm() {
         if (mPidConfig != null) {
-            return mPidConfig.getEcpm();
+            return mPidConfig.getCpm();
         }
         return 0;
     }
@@ -809,7 +809,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             finalAdRevenue = DBManager.get(mContext).queryAverageRevenue(getPid(), getMinAvgCount());
         }
         if (finalAdRevenue <= 0f) {
-            finalAdRevenue = getEcpm() / 1000f;
+            finalAdRevenue = getCpm() / 1000f;
         }
         mAdRevenue = finalAdRevenue;
         Log.iv(Log.TAG, "network : " + network + " , value : " + mAdRevenue);
@@ -851,25 +851,25 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void reportAdRequest() {
         if (mStat != null) {
-            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getEcpm(), null);
+            mStat.reportAdRequest(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getCpm(), null);
         }
     }
 
     protected void reportAdLoaded() {
         if (mStat != null) {
-            mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getEcpm(), null);
+            mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getCpm(), null);
         }
     }
 
     protected void reportAdReLoaded() {
         if (mStat != null) {
-            mStat.reportAdReLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getEcpm(), null);
+            mStat.reportAdReLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getCpm(), null);
         }
     }
 
     protected void reportAdShow() {
         if (mStat != null) {
-            mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getEcpm(), null);
+            mStat.reportAdShow(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getCpm(), null);
         }
     }
 
@@ -899,7 +899,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 builder.append("}");
                 Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " [" + network + "] assets : " + builder.toString());
             }
-            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getEcpm(), null, getRequestId());
+            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), null, getRequestId());
             if (nativeAssets != null) {
                 nativeAssets.clear();
             }
@@ -912,13 +912,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void reportAdClick(String network, String networkPid) {
         if (mStat != null) {
-            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getEcpm(), null, getRequestId());
+            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), null, getRequestId());
         }
     }
 
     protected void reportAdReward() {
         if (mStat != null) {
-            mStat.reportAdReward(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getEcpm(), null);
+            mStat.reportAdReward(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getCpm(), null);
         }
     }
 
@@ -926,13 +926,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (mStat != null) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("error", "[" + getSdkName() + "]" + error);
-            mStat.reportAdError(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getEcpm(), map);
+            mStat.reportAdError(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getCpm(), map);
         }
     }
 
     protected void reportAdClose() {
         if (mStat != null) {
-            mStat.reportAdClose(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getEcpm(), null);
+            mStat.reportAdClose(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getCpm(), null);
         }
     }
 

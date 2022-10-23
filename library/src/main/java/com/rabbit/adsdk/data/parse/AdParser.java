@@ -259,8 +259,8 @@ public class AdParser implements IParser {
             if (jobj.has(DELAY_LOAD_TIME)) {
                 pidConfig.setDelayLoadTime(jobj.getLong(DELAY_LOAD_TIME));
             }
-            if (jobj.has(ECPM)) {
-                pidConfig.setEcpm(jobj.getDouble(ECPM));
+            if (jobj.has(CPM)) {
+                pidConfig.setCpm(jobj.getDouble(CPM));
             }
             if (jobj.has(BANNER_SIZE)) {
                 pidConfig.setBannerSize(jobj.getString(BANNER_SIZE));
