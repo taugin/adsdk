@@ -1022,9 +1022,6 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     private void setRevenueAverage() {
-        if (mPidConfig != null && mPidConfig.isUseAvgValue()) {
-            double revenue = DBManager.get(mContext).queryAverageRevenue(getPid());
-            setAdNetworkAndRevenue(getSdkName(), revenue);
-        }
+        setAdNetworkAndRevenue(getSdkName(), 0f);
     }
 }

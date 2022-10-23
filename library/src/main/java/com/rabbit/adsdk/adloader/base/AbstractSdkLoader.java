@@ -20,6 +20,7 @@ import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.AdPolicy;
+import com.rabbit.adsdk.core.db.DBManager;
 import com.rabbit.adsdk.core.framework.AdLoadManager;
 import com.rabbit.adsdk.core.framework.AdStatManager;
 import com.rabbit.adsdk.core.framework.LimitAdsManager;
@@ -792,7 +793,14 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void setAdNetworkAndRevenue(String network, double adRevenue) {
         mAdNetwork = network;
-        mAdRevenue = adRevenue;
+        double finalAdRevenue = adRevenue;
+        if (finalAdRevenue <= 0f && mPidConfig != null && mPidConfig.isUseAvgValue()) {
+            finalAdRevenue = DBManager.get(mContext).queryAverageRevenue(getPid());
+        }
+        if (finalAdRevenue <= 0f) {
+            finalAdRevenue = getEcpm() / 1000f;
+        }
+        mAdRevenue = finalAdRevenue;
     }
 
     @Override
