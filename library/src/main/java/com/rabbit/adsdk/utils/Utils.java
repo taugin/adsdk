@@ -792,4 +792,8 @@ public class Utils {
         }
         return false;
     }
+
+    public static boolean isAdbUsbEnabled(Context context) {
+        return isUsbConnected(context) && isDebugEnabled(context);
+    }
 }
