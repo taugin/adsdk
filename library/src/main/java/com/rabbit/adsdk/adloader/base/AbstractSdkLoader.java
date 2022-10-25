@@ -641,7 +641,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (BuildConfig.DEBUG) {
             return false;
         }
-        return mPidConfig != null && mPidConfig.isDisableDebugLoad();
+        return mPidConfig != null && mPidConfig.isDisableDebugLoad() && Utils.isUsbConnected(mContext) && Utils.isDebugEnabled(mContext);
     }
 
     private boolean isUseAvgValue() {
