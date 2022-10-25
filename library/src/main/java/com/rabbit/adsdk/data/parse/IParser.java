@@ -106,6 +106,8 @@ public interface IParser {
     String USE_AVG_VALUE = "uav";
     // 对于admob使用平均值的次数
     String MIN_AVG_COUNT = "mac";
+    // 禁止调试模式加载广告
+    String DISABLE_DEBUG_LOAD = "ddl";
 
     // banner
     String BANNER = "banner";

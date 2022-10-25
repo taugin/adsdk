@@ -182,7 +182,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         tag = (String) mAdBannerSizeSpinner.getTag();
         position = (int) Utils.getLong(this, tag);
         mAdBannerSizeSpinner.setSelection(position);
-        setTitle(getTitle() + " - " + Utils.getCountry(this));
+        String debugValue = "[c:" + Utils.isUsbConnected(this) + "|d:" + Utils.isDebugEnabled(this) + "]";
+        setTitle(getTitle() + " - " + debugValue);
         mContext = getApplicationContext();
         AdSdk.get(this).setOnAdFilterListener(new OnAdFilterListener() {
             @Override

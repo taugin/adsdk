@@ -319,6 +319,9 @@ public class AdParser implements IParser {
             if (jobj.has(MIN_AVG_COUNT)) {
                 pidConfig.setMinAvgCount(jobj.getInt(MIN_AVG_COUNT));
             }
+            if (jobj.has(DISABLE_DEBUG_LOAD)) {
+                pidConfig.setDisableDebugLoad(jobj.getInt(DISABLE_DEBUG_LOAD) == 1);
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

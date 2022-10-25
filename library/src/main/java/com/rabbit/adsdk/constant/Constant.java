@@ -204,6 +204,8 @@ public class Constant {
 
     public static final int AD_ERROR_DISABLE_VPN = 23;
 
+    public static final int AD_ERROR_DISABLE_DEBUG = 24;
+
     public static final SimpleDateFormat SDF_ACTIVE_DATE = new SimpleDateFormat("MM-dd", Locale.ENGLISH);
     public static final SimpleDateFormat SDF_ACTIVE_YEAR = new SimpleDateFormat("yyyy", Locale.ENGLISH);
 

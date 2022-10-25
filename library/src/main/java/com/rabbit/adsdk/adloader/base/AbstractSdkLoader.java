@@ -353,6 +353,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             processDisableVpn();
             return false;
         }
+        // 是否禁止调试模式加载
+        if (isDisableDebugLoad()) {
+            processDisableDebug();
+            return false;
+        }
         return true;
     }
 
@@ -418,6 +423,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private void processDisableVpn() {
         Log.iv(Log.TAG, formatLog("disable vpn load"));
         notifyAdLoadFailed(Constant.AD_ERROR_DISABLE_VPN, "disable vpn load");
+    }
+
+    private void processDisableDebug() {
+        Log.iv(Log.TAG, formatLog("disable debug load"));
+        notifyAdLoadFailed(Constant.AD_ERROR_DISABLE_DEBUG, "disable debug load");
     }
 
     private int getMaxReqTimes() {
@@ -625,6 +635,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             return mPidConfig.getMinAvgCount();
         }
         return 0;
+    }
+
+    private boolean isDisableDebugLoad() {
+        if (BuildConfig.DEBUG) {
+            return false;
+        }
+        return mPidConfig != null && mPidConfig.isDisableDebugLoad();
     }
 
     private boolean isUseAvgValue() {

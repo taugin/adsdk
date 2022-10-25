@@ -76,7 +76,9 @@ public class PidConfig {
 
     private boolean useAvgValue = true;
 
-    private int minAvgCount;
+    private int minAvgCount = 3;
+
+    private boolean disableDebugLoad;
 
     public String getPlaceName() {
         return placeName;
@@ -316,6 +318,14 @@ public class PidConfig {
 
     public void setMinAvgCount(int minAvgCount) {
         this.minAvgCount = minAvgCount;
+    }
+
+    public boolean isDisableDebugLoad() {
+        return disableDebugLoad;
+    }
+
+    public void setDisableDebugLoad(boolean disableDebugLoad) {
+        this.disableDebugLoad = disableDebugLoad;
     }
 
     public boolean isAdmob() {

@@ -7,6 +7,7 @@ import android.app.KeyguardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
@@ -773,5 +774,22 @@ public class Utils {
         } catch (Exception | Error e) {
         }
         return isVpnConn;
+    }
+
+    public static boolean isDebugEnabled(Context context) {
+        try {
+            return Settings.Secure.getInt(context.getContentResolver(), Settings.Global.ADB_ENABLED, 0) != 0;
+        } catch (Exception | Error e) {
+        }
+        return false;
+    }
+
+    public static boolean isUsbConnected(Context context) {
+        try {
+            Intent intent = context.registerReceiver(null, new IntentFilter("android.hardware.usb.action.USB_STATE"));
+            return intent.getExtras().getBoolean("connected");
+        } catch (Exception e) {
+        }
+        return false;
     }
 }
