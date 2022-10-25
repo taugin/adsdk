@@ -82,7 +82,6 @@
           "type": "interstitial",
           "cpm": 10,
           "mac": 3,
-          "ddl": 1,
           "pid": "ca-app-pub-3940256099942544/1033173712"
         }
       ]
