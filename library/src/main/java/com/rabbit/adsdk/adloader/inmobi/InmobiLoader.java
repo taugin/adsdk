@@ -274,12 +274,11 @@ public class InmobiLoader extends AbstractSdkLoader {
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
-        if (mInMobiNative != null) {
+        if (mInMobiNative != null && mInMobiNative.isReady()) {
             reportAdShow();
             notifyAdShow();
             clearCachedAdTime(mInMobiNative);
             inmobiBindNativeView.bindInmobiNative(params, mContext, viewGroup, mInMobiNative, mPidConfig, null);
-            mInMobiNative = null;
         } else {
             Log.e(Log.TAG, formatShowErrorLog("InMobiNative is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "InMobiNative is null");
