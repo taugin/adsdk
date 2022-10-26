@@ -904,14 +904,6 @@ public class AdmobLoader extends AbstractSdkLoader {
             } catch (Exception e) {
             }
             map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
-            StringBuilder builder = new StringBuilder("{");
-            builder.append("\n");
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                builder.append("  " + entry.getKey() + " : " + entry.getValue());
-                builder.append("\n");
-            }
-            builder.append("}");
-            Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
             onReportAdImpData(map);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);

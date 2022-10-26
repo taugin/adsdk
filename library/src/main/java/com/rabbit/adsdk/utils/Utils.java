@@ -32,6 +32,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -830,5 +832,27 @@ public class Utils {
 
     public static boolean isAdbUsbEnabled(Context context) {
         return isUsbConnected(context) && isDebugEnabled(context);
+    }
+
+    public static String calcRoundCpm(double revenue) {
+        if (revenue < 0.01f) {
+            return String.valueOf(0);
+        }
+        if (revenue >= 0.01 && revenue < 1) {
+            return BigDecimal.valueOf(revenue).setScale(2, RoundingMode.HALF_EVEN).toPlainString();
+        }
+        if (revenue >= 1f && revenue < 10f) {
+            return BigDecimal.valueOf(revenue).setScale(1, RoundingMode.HALF_EVEN).toPlainString();
+        }
+        if (revenue >= 11f && revenue < 100f) {
+            return BigDecimal.valueOf(revenue).setScale(0, RoundingMode.HALF_EVEN).toPlainString();
+        }
+        if (revenue >= 100f && revenue < 500f) {
+            return String.valueOf(Math.round(revenue));
+        }
+        if (revenue >= 500f && revenue < 1000f) {
+            return String.valueOf(Math.round(revenue / 10) * 10);
+        }
+        return String.valueOf(Math.round(revenue / 100) * 100);
     }
 }

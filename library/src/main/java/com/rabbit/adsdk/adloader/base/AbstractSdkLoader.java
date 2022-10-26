@@ -38,6 +38,7 @@ import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 import com.rabbit.sunny.BuildConfig;
 import com.rabbit.sunny.MView;
+import com.tradplus.ads.mobileads.gdpr.Const;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -1217,6 +1218,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                     if (EventImpl.get().getActiveDays() == 0) {
                         adImpMap.put(Constant.AD_PLACEMENT_NEW, adImpMap.get(Constant.AD_PLACEMENT));
                     }
+                    try {
+                        Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
+                        String roundCpm = Utils.calcRoundCpm(adRevenue * 1000);
+                        adImpMap.put(Constant.AD_ROUND_CPM, roundCpm);
+                    } catch (Exception exception) {
+                    }
                 } catch (Exception e) {
                 }
             }
@@ -1225,11 +1232,23 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         if (adImpMap != null) {
             adImpMap.put(Constant.AD_REQUEST_ID, getRequestId());
         }
+        printImpData(adImpMap);
         AdImpData adImpData = AdImpData.createAdImpData(adImpMap);
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
             l.onAdImpression(adImpData);
         }
         AdStatManager.get(mContext).recordAdImpression(adImpData);
+    }
+
+    private void printImpData(Map<String, Object> map) {
+        StringBuilder builder = new StringBuilder("{");
+        builder.append("\n");
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            builder.append("  " + entry.getKey() + " : " + entry.getValue());
+            builder.append("\n");
+        }
+        builder.append("}");
+        Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
     }
 }
