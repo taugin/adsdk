@@ -91,7 +91,7 @@ dependencies {
     // admob
     implementation 'com.google.android.gms:play-services-ads:21.3.0'
     // applovin admob mediation
-    implementation 'com.applovin.mediation:google-adapter:21.3.0.1@aar'
+    implementation 'com.applovin.mediation:google-adapter:21.3.0.2@aar'
     implementation 'com.applovin.mediation:google-ad-manager-adapter:21.3.0.2@aar'
     // tradplus admob mediation
     implementation 'com.tradplusad:tradplus-googlex:2.8.6.0.1'
