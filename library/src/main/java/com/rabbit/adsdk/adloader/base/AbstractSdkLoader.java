@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -392,6 +393,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             // 如果配置签名加载，则必须完全匹配才返回true
             Collection<String> signList = DataManager.get(mContext).getSignList();
             String signMd5 = Utils.getSignMd5(mContext);
+            if (signMd5 != null) {
+                signMd5 = signMd5.toLowerCase(Locale.ENGLISH);
+            }
             return signList != null && signMd5 != null && signList.contains(signMd5);
         }
         return true;
