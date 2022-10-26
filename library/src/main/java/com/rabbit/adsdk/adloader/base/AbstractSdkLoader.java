@@ -40,6 +40,7 @@ import com.rabbit.sunny.BuildConfig;
 import com.rabbit.sunny.MView;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -358,6 +359,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             processDisableDebug();
             return false;
         }
+
+        // 判断仅签名加载模式
+        if (!isMatchSign()) {
+            processSignNotMatch();
+            return false;
+        }
         return true;
     }
 
@@ -378,6 +385,21 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private boolean isExceedReqTimes() {
         return AdPolicy.get(mContext).isExceedMaxReqTimes(getAdPlaceName(), getSdkName(), getMaxReqTimes());
+    }
+
+    private boolean isMatchSign() {
+        if (mPidConfig != null && mPidConfig.isOnlySignLoad()) {
+            // 如果配置签名加载，则必须完全匹配才返回true
+            Collection<String> signList = DataManager.get(mContext).getSignList();
+            String signMd5 = Utils.getSignMd5(mContext);
+            return signList != null && signMd5 != null && signList.contains(signMd5);
+        }
+        return true;
+    }
+
+    private void processSignNotMatch() {
+        Log.iv(Log.TAG, formatLog("sign not match"));
+        notifyAdLoadFailed(Constant.AD_ERROR_SIGN_NOT_MATCH, "sign not match");
     }
 
     protected void printInterfaceLog(String action) {

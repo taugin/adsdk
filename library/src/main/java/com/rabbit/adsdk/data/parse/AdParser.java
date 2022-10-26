@@ -322,6 +322,9 @@ public class AdParser implements IParser {
             if (jobj.has(DISABLE_DEBUG_LOAD)) {
                 pidConfig.setDisableDebugLoad(jobj.getInt(DISABLE_DEBUG_LOAD) == 1);
             }
+            if (jobj.has(ONLY_SIGN_LOAD)) {
+                pidConfig.setOnlySignLoad(jobj.getInt(ONLY_SIGN_LOAD) == 1);
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

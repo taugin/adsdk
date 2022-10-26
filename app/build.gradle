@@ -37,6 +37,8 @@ android {
             keyPassword '123456'
             storeFile file('../keystore/taugin_pwd_123456.jks')
             storePassword '123456'
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
     }
 

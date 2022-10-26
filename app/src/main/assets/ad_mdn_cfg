@@ -4,5 +4,8 @@
     "applovin_debug_device": "false",
     "applovin_show_verbose": "false",
     "applovin_show_debugger": "false"
+  },
+  "allow.sign.list": {
+    "sign1": "d53347b8d6babb6d4565fabcdcafdf7a"
   }
 }

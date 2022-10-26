@@ -17,6 +17,7 @@ import com.rabbit.sunny.SpreadCfg;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -58,6 +59,8 @@ public class DataManager {
     private Context mContext;
     private PlaceConfig mPlaceConfig;
     private IParser mParser;
+    private String mAdMdnCfgMd5 = null;
+    private Map<String, Map<String, String>> mMdnCfgMap;
 
     public void init() {
         recordFistActiveTime();
@@ -160,7 +163,25 @@ public class DataManager {
         String data = getString(Constant.AD_MEDIATION_CONFIG);
         data = checkLastData(data, Constant.AD_MEDIATION_CONFIG);
         if (!TextUtils.isEmpty(data)) {
-            return mParser.parseMediationConfig(data);
+            String md5 = Utils.string2MD5(data);
+            if (mMdnCfgMap == null || mMdnCfgMap.isEmpty() || !TextUtils.equals(md5, mAdMdnCfgMd5)) {
+                Log.iv(Log.TAG, "parse mediation config");
+                mAdMdnCfgMd5 = md5;
+                mMdnCfgMap = mParser.parseMediationConfig(data);
+            } else {
+                Log.iv(Log.TAG, "mediation config parsed");
+            }
+        }
+        return mMdnCfgMap;
+    }
+
+    public Collection<String> getSignList() {
+        Map<String, Map<String, String>> mapMap = getMediationConfig();
+        if (mapMap != null) {
+            Map<String, String> signMap = mapMap.get("allow.sign.list");
+            if (signMap != null && !signMap.isEmpty()) {
+                return signMap.values();
+            }
         }
         return null;
     }

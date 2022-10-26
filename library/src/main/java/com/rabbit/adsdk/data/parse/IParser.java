@@ -108,6 +108,8 @@ public interface IParser {
     String MIN_AVG_COUNT = "mac";
     // 禁止调试模式加载广告
     String DISABLE_DEBUG_LOAD = "ddl";
+    // 允许签名加载，仅配置的签名允许加载广告
+    String ONLY_SIGN_LOAD = "osl";
 
     // banner
     String BANNER = "banner";

@@ -79,6 +79,8 @@ public class PidConfig {
     private int minAvgCount = 3;
 
     private boolean disableDebugLoad;
+    
+    private boolean onlySignLoad;
 
     public String getPlaceName() {
         return placeName;
@@ -326,6 +328,14 @@ public class PidConfig {
 
     public void setDisableDebugLoad(boolean disableDebugLoad) {
         this.disableDebugLoad = disableDebugLoad;
+    }
+
+    public boolean isOnlySignLoad() {
+        return onlySignLoad;
+    }
+
+    public void setOnlySignLoad(boolean onlySignLoad) {
+        this.onlySignLoad = onlySignLoad;
     }
 
     public boolean isAdmob() {
