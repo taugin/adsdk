@@ -55,6 +55,13 @@ public class ApplovinBindView extends BaseBindNativeView {
                     FrameLayout frameLayout = new FrameLayout(context);
                     replaceSrcViewToDstView(mediaLayout, frameLayout);
                 }
+
+                View adChoiceLayout = rootView.findViewById(params.getAdChoices());
+                if (adChoiceLayout != null && !(adChoiceLayout instanceof FrameLayout)) {
+                    FrameLayout frameLayout = new FrameLayout(context);
+                    replaceSrcViewToDstView(adChoiceLayout, frameLayout);
+                }
+
                 MaxNativeAdViewBinder binder = new MaxNativeAdViewBinder.Builder(rootView)
                         .setTitleTextViewId(params.getAdTitle())
                         .setBodyTextViewId(params.getAdDetail())
