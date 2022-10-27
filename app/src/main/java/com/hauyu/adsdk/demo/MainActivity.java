@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -41,11 +43,14 @@ import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.utils.Utils;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.TreeSet;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
@@ -90,6 +95,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         menu.add(0, 0x2, 0, "AdListView");
         menu.add(0, 0x3, 0, "VpnChecker");
         menu.add(0, 0x4, 0, "ShowAdImp");
+        menu.add(0, 0x5, 0, "CheckRunningApp");
+        menu.add(0, 0x6, 0, "CheckRoundCpm");
         return true;
     }
 
@@ -105,6 +112,53 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 Toast.makeText(this, toastString, Toast.LENGTH_SHORT).show();
             } else if (item.getItemId() == 0x4) {
                 showAdImpression();
+            } else if (item.getItemId() == 0x5) {
+                Executors.newSingleThreadExecutor().submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        PackageManager packageManager = getPackageManager();
+                        List<PackageInfo> list = App.getRunningPackageList(getApplicationContext());
+                        for (PackageInfo packageInfo : list) {
+                            Log.v(Log.TAG, "app : " + packageInfo.applicationInfo.loadLabel(packageManager));
+                        }
+                    }
+                });
+            } else if (item.getItemId() == 0x6) {
+                Executors.newSingleThreadExecutor().submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.v(Log.TAG, "start check round cpm");
+                        Map<String, Integer> map = new HashMap<>();
+                        int maxImp = 1000000;
+                        double calc1 = 0f;
+                        double calc2 = 0f;
+                        Random random = new Random(System.currentTimeMillis());
+                        for (int index = 0; index < maxImp; index++) {
+                            double cpm = random.nextDouble() * 1000;
+                            calc1 += cpm;
+                            String roundCpm = Utils.calcRoundCpm(cpm);
+                            calc2 += Double.parseDouble(roundCpm);
+                            try {
+                                Integer integer = map.get(roundCpm);
+                                int times = integer != null ? integer.intValue() : 0;
+                                map.put(roundCpm, times + 1);
+                            } catch (Exception e) {
+                                Log.v(Log.TAG, "error : " + e);
+                            }
+                        }
+                        TreeSet<String> treeSet = new TreeSet<String>(new Comparator<String>() {
+                            @Override
+                            public int compare(String t1, String t2) {
+                                return Double.compare(Double.parseDouble(t1), Double.parseDouble(t2));
+                            }
+                        });
+                        treeSet.addAll(map.keySet());
+                        for (String s : treeSet) {
+                            Log.v(Log.TAG, "round cpm : " + s + " , count : " + map.get(s));
+                        }
+                        Log.v(Log.TAG, "count : " + map.size() + " , calc1 : " + calc1 + " , calc2 : " + calc2);
+                    }
+                });
             }
         }
         return true;

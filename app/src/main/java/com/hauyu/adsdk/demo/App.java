@@ -3,9 +3,16 @@ package com.hauyu.adsdk.demo;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
+import android.text.TextUtils;
 
 import com.rabbit.adsdk.AdImpData;
 import com.rabbit.adsdk.AdSdk;
@@ -16,7 +23,10 @@ import com.tendcloud.tenddata.TCAgent;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -184,4 +194,62 @@ public class App extends Application {
         return channel;
     }
 
+    public static final List<String> sSystemApps = Arrays.asList("com.android.systemui", "com.google.android.gms", "com.google.android.gsf.login", "com.google.android.packageinstaller", "android", "com.google.android.gsf", "com.android.settings");
+    public static final List<String> sKeywords = Arrays.asList("package", "input", "system", "clock", "launcher", "provider", "time");
+
+    public static List<PackageInfo> getRunningPackageList(Context context) {
+        List<PackageInfo> list = new ArrayList<>();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        PackageManager packageManager = context.getPackageManager();
+        List<ResolveInfo> allApps = packageManager.queryIntentActivities(intent, 0);
+        String processName = "";
+        String packageName = "";
+        for (ResolveInfo ri : allApps) {
+            if (ri != null) {
+                ActivityInfo activityInfo = ri.activityInfo;
+                if (activityInfo != null) {
+                    processName = activityInfo.processName;
+                    packageName = activityInfo.packageName;
+                }
+            }
+            if (excludePackageInfo(context, packageName)) {
+                continue;
+            }
+            try {
+                boolean isBackgroundAlive = false;
+                PackageInfo packageInfo = packageManager.getPackageInfo(processName, 0);
+                ApplicationInfo applicationInfo2 = packageInfo.applicationInfo;
+                boolean z4 = (applicationInfo2.flags & 1) > 0;
+                boolean z5 = (applicationInfo2.flags & 2097152) > 0;
+                boolean z6 = (applicationInfo2.flags & 8) > 0;
+                isBackgroundAlive = !z4 && !z5 && !z6;
+                if (isBackgroundAlive) {
+                    list.add(packageInfo);
+                }
+            } catch (Exception e) {
+            }
+        }
+        return list;
+    }
+
+    private static boolean excludePackageInfo(Context context, String packageName) {
+        if (TextUtils.equals(context.getPackageName(), packageName)) {
+            return true;
+        }
+        if (sSystemApps.contains(packageName)) {
+            return true;
+        }
+        for (String keyword : sKeywords) {
+            if (packageName != null && packageName.contains(keyword)) {
+                return true;
+            }
+        }
+        if (TextUtils.equals(Build.BRAND.toLowerCase(Locale.ROOT), "xiaomi")
+                && packageName != null && (packageName.startsWith("com.xiaomi") || packageName.startsWith("com.mi") || packageName.startsWith("com.miui"))) {
+            return true;
+        }
+        return false;
+    }
 }
