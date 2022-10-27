@@ -49,6 +49,12 @@ public class ApplovinBindView extends BaseBindNativeView {
                     }
                     ctaButton.setClickable(false);
                 }
+
+                View mediaLayout = rootView.findViewById(params.getAdMediaView());
+                if (mediaLayout != null && !(mediaLayout instanceof FrameLayout)) {
+                    FrameLayout frameLayout = new FrameLayout(context);
+                    replaceSrcViewToDstView(mediaLayout, frameLayout);
+                }
                 MaxNativeAdViewBinder binder = new MaxNativeAdViewBinder.Builder(rootView)
                         .setTitleTextViewId(params.getAdTitle())
                         .setBodyTextViewId(params.getAdDetail())
