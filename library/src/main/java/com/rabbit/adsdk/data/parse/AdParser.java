@@ -325,6 +325,9 @@ public class AdParser implements IParser {
             if (jobj.has(ONLY_SIGN_LOAD)) {
                 pidConfig.setOnlySignLoad(jobj.getInt(ONLY_SIGN_LOAD) == 1);
             }
+            if (jobj.has(ONLY_PACK_LOAD)) {
+                pidConfig.setOnlyPackLoad(jobj.getInt(ONLY_PACK_LOAD) == 1);
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

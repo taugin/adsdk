@@ -208,6 +208,8 @@ public class Constant {
 
     public static final int AD_ERROR_SIGN_NOT_MATCH = 25;
 
+    public static final int AD_ERROR_PACK_NOT_MATCH = 26;
+
     public static final SimpleDateFormat SDF_ACTIVE_DATE = new SimpleDateFormat("MM-dd", Locale.ENGLISH);
     public static final SimpleDateFormat SDF_ACTIVE_YEAR = new SimpleDateFormat("yyyy", Locale.ENGLISH);
 

@@ -186,6 +186,18 @@ public class DataManager {
         return null;
     }
 
+
+    public Collection<String> getPackList() {
+        Map<String, Map<String, String>> mapMap = getMediationConfig();
+        if (mapMap != null) {
+            Map<String, String> signMap = mapMap.get("allow.pack.list");
+            if (signMap != null && !signMap.isEmpty()) {
+                return signMap.values();
+            }
+        }
+        return null;
+    }
+
     public String getString(String key) {
         return getString(key, false);
     }

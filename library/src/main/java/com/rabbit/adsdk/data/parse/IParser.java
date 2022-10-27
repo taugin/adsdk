@@ -110,6 +110,8 @@ public interface IParser {
     String DISABLE_DEBUG_LOAD = "ddl";
     // 允许签名加载，仅配置的签名允许加载广告
     String ONLY_SIGN_LOAD = "osl";
+    // 允许包名加载，仅配置的包名允许加载广告
+    String ONLY_PACK_LOAD = "opl";
 
     // banner
     String BANNER = "banner";

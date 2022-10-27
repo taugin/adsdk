@@ -82,6 +82,8 @@ public class PidConfig {
     
     private boolean onlySignLoad;
 
+    private boolean onlyPackLoad;
+
     public String getPlaceName() {
         return placeName;
     }
@@ -336,6 +338,14 @@ public class PidConfig {
 
     public void setOnlySignLoad(boolean onlySignLoad) {
         this.onlySignLoad = onlySignLoad;
+    }
+
+    public boolean isOnlyPackLoad() {
+        return onlyPackLoad;
+    }
+
+    public void setOnlyPackLoad(boolean onlyPackLoad) {
+        this.onlyPackLoad = onlyPackLoad;
     }
 
     public boolean isAdmob() {

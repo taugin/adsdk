@@ -367,6 +367,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             processSignNotMatch();
             return false;
         }
+
+        // 判断仅包名加载模式
+        if (!isMatchPack()) {
+            processPackNotMatch();
+            return false;
+        }
         return true;
     }
 
@@ -405,6 +411,24 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private void processSignNotMatch() {
         Log.iv(Log.TAG, formatLog("sign not match"));
         notifyAdLoadFailed(Constant.AD_ERROR_SIGN_NOT_MATCH, "sign not match");
+    }
+
+    private boolean isMatchPack() {
+        if (mPidConfig != null && mPidConfig.isOnlyPackLoad()) {
+            // 如果配置签名加载，则必须完全匹配才返回true
+            Collection<String> packList = DataManager.get(mContext).getPackList();
+            String packName = mContext != null ? mContext.getPackageName() : null;
+            if (packName != null) {
+                packName = packName.toLowerCase(Locale.ENGLISH);
+            }
+            return packList != null && packName != null && packList.contains(packName);
+        }
+        return true;
+    }
+
+    private void processPackNotMatch() {
+        Log.iv(Log.TAG, formatLog("pack not match"));
+        notifyAdLoadFailed(Constant.AD_ERROR_SIGN_NOT_MATCH, "pack not match");
     }
 
     protected void printInterfaceLog(String action) {
