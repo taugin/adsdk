@@ -1246,6 +1246,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                         Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
                         String roundCpm = Utils.calcRoundCpm(adRevenue * 1000);
                         adImpMap.put(Constant.AD_ROUND_CPM, roundCpm);
+                        String network = (String) adImpMap.get(Constant.AD_NETWORK);
+                        adImpMap.put(String.format(Locale.ENGLISH, "%s_%s", Constant.AD_ROUND_CPM, Utils.formatNetwork(network)), roundCpm);
                     } catch (Exception exception) {
                     }
                 } catch (Exception e) {

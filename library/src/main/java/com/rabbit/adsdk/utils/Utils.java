@@ -858,4 +858,39 @@ public class Utils {
         }
         return String.valueOf(Math.round(revenue / 100) * 100);
     }
+
+    public static String formatNetwork(String network) {
+        if (network == null) {
+            return "empty";
+        }
+        network = network.toLowerCase(Locale.ENGLISH);
+        if (network.contains("applovin")) {
+            return "applovin";
+        }
+        if (network.contains("admob")) {
+            return "admob";
+        }
+        if (network.contains("mintegral")) {
+            return "mintegral";
+        }
+        if (network.contains("inmobi")) {
+            return "inmobi";
+        }
+        if (network.contains("smaato")) {
+            return "smaato";
+        }
+        if (network.contains("unity")) {
+            return "unity";
+        }
+        if (network.contains("tapjoy")) {
+            return "tapjoy";
+        }
+        if (network.contains("vungle")) {
+            return "vungle";
+        }
+        if (network.contains("ironsource")) {
+            return "ironsource";
+        }
+        return "unknown";
+    }
 }
