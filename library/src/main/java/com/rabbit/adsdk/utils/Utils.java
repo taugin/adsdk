@@ -835,8 +835,11 @@ public class Utils {
     }
 
     public static String calcRoundCpm(double revenue) {
-        if (revenue < 0.0001f) {
+        if (revenue < 0.000001) {
             return String.valueOf(0);
+        }
+        if (revenue >= 0.000001 && revenue < 0.0001) {
+            return BigDecimal.valueOf(revenue).setScale(6, RoundingMode.HALF_EVEN).toPlainString();
         }
         if (revenue >= 0.0001 && revenue < 0.01) {
             return BigDecimal.valueOf(revenue).setScale(4, RoundingMode.HALF_EVEN).toPlainString();
