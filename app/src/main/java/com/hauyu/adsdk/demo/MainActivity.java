@@ -133,8 +133,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                         double calc1 = 0f;
                         double calc2 = 0f;
                         Random random = new Random(System.currentTimeMillis());
-                        for (int index = 0; index < maxImp; index++) {
-                            double cpm = random.nextDouble() * 1000;
+                        for (double index = 0.000001; index < 10000;) {
+                            double cpm = index;//index < 500000 ? random.nextDouble() : random.nextDouble() * 1000;
                             calc1 += cpm;
                             String roundCpm = Utils.calcRoundCpm(cpm);
                             calc2 += Double.parseDouble(roundCpm);
@@ -144,6 +144,23 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                                 map.put(roundCpm, times + 1);
                             } catch (Exception e) {
                                 Log.v(Log.TAG, "error : " + e);
+                            }
+                            if (index < 0.0001f) {
+                                index += 0.000001f;
+                            } else if (index < 0.01f) {
+                                index += 0.0001f;
+                            } else if (index < 1f) {
+                                index += 0.01f;
+                            } else if (index < 10f) {
+                                index += 1f;
+                            } else if (index < 100f) {
+                                index += 1f;
+                            } else if (index < 500f) {
+                                index += 1f;
+                            } else if (index < 1000f) {
+                                index += 10f;
+                            } else if (index < 10000f) {
+                                index += 100f;
                             }
                         }
                         TreeSet<String> treeSet = new TreeSet<String>(new Comparator<String>() {
