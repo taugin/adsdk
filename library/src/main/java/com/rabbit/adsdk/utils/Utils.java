@@ -850,7 +850,7 @@ public class Utils {
         if (revenue >= 1f && revenue < 10f) {
             return BigDecimal.valueOf(revenue).setScale(1, RoundingMode.HALF_EVEN).toPlainString();
         }
-        if (revenue >= 11f && revenue < 100f) {
+        if (revenue >= 10f && revenue < 100f) {
             return BigDecimal.valueOf(revenue).setScale(0, RoundingMode.HALF_EVEN).toPlainString();
         }
         if (revenue >= 100f && revenue < 500f) {
