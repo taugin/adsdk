@@ -659,6 +659,48 @@ public class AdSdk {
         return true;
     }
 
+    public String getMaxPlaceName(String adType) {
+        try {
+            return getMaxPlaceNameInternal(adType);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    private String getMaxPlaceNameInternal(String adType) {
+        String maxPlaceName = null;
+        double maxRevenue = -1f;
+        if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
+            for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
+                String placeName = entry.getKey();
+                AdPlaceLoader adPlaceLoader = entry.getValue();
+                if (!TextUtils.isEmpty(placeName) && adPlaceLoader != null) {
+                    double tmpRevenue;
+                    if (TextUtils.equals(adType, Constant.TYPE_SPLASH) && adPlaceLoader.isSplashLoaded()) {
+                        tmpRevenue = adPlaceLoader.getMaxRevenue();
+                    } else if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL) && adPlaceLoader.isInterstitialLoaded()) {
+                        tmpRevenue = adPlaceLoader.getMaxRevenue();
+                    } else if (TextUtils.equals(adType, Constant.TYPE_REWARD) && adPlaceLoader.isRewardedVideoLoaded()) {
+                        tmpRevenue = adPlaceLoader.getMaxRevenue();
+                    } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE) && adPlaceLoader.isAdViewLoaded(adType)) {
+                        tmpRevenue = adPlaceLoader.getMaxRevenue();
+                    } else if (TextUtils.equals(adType, Constant.TYPE_BANNER) && adPlaceLoader.isAdViewLoaded(adType)) {
+                        tmpRevenue = adPlaceLoader.getMaxRevenue();
+                    } else {
+                        tmpRevenue = -1f;
+                    }
+                    if (tmpRevenue > maxRevenue) {
+                        maxRevenue = tmpRevenue;
+                        maxPlaceName = placeName;
+                    }
+                }
+            }
+        }
+        Log.iv(Log.TAG, "max place name : " + maxPlaceName + " , revenue : " + maxRevenue);
+        return maxPlaceName;
+    }
+
+
     public void resume(String placeName) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {

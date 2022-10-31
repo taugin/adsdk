@@ -346,10 +346,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                         return true;
                     }
-                    if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
-                        Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
-                        return true;
-                    }
                 }
             }
         }
@@ -770,10 +766,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     if (loader.isSplashType() && loader.isSplashLoaded()) {
-                        Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
-                        return true;
-                    }
-                    if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
                         Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                         return true;
                     }

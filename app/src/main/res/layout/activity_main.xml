@@ -96,10 +96,10 @@
 
                     <Spinner
                         android:id="@+id/ad_layout_spinner"
+                        style="@android:style/Widget.DeviceDefault.Spinner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        style="@android:style/Widget.DeviceDefault.Spinner"
                         android:tag="ad_layout_spinner" />
                 </LinearLayout>
 
@@ -213,6 +213,48 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/show_max_splash"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="展示最大开屏" />
+
+            <Button
+                android:id="@+id/show_max_interstitial"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="展示最大插屏" />
+
+            <Button
+                android:id="@+id/show_max_reward"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="展示最大激励" />
+
+            <Button
+                android:id="@+id/show_max_native"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="展示最大原生" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
 
@@ -222,6 +264,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center" />
         </LinearLayout>
+
     </LinearLayout>
 
     <FrameLayout

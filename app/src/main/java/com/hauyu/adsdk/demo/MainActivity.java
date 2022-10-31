@@ -37,6 +37,7 @@ import com.rabbit.adsdk.AdImpData;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.AdSdk;
+import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.db.DBManager;
 import com.rabbit.adsdk.core.framework.ActivityMonitor;
 import com.rabbit.adsdk.listener.OnAdFilterListener;
@@ -133,7 +134,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                         double calc1 = 0f;
                         double calc2 = 0f;
                         Random random = new Random(System.currentTimeMillis());
-                        for (double index = 0.000001; index < 10000;) {
+                        for (double index = 0.000001; index < 10000; ) {
                             double cpm = index;//index < 500000 ? random.nextDouble() : random.nextDouble() * 1000;
                             calc1 += cpm;
                             String roundCpm = Utils.calcRoundCpm(cpm);
@@ -312,6 +313,37 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             String value = AdSdk.get(this).getString("open_app", true);
             Log.v(Log.TAG, "open_app --> value : " + value);
             ChangeLanguage.showLanguageDialog(true);
+        } else if (v.getId() == R.id.show_max_interstitial) {
+            String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_INTERSTITIAL);
+            if (!TextUtils.isEmpty(maxPlaceName)) {
+                AdSdk.get(this).showInterstitial(maxPlaceName);
+            } else {
+                runToast("No loaded place name");
+            }
+        } else if (v.getId() == R.id.show_max_native) {
+            String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_NATIVE);
+            if (!TextUtils.isEmpty(maxPlaceName)) {
+                ViewGroup frameLayout = new LinearLayout(this);
+                AdSdk.get(mContext).showAdView(maxPlaceName, frameLayout);
+                showNativeAds(frameLayout);
+            } else {
+                runToast("No loaded place name");
+            }
+        } else if (v.getId() == R.id.show_max_splash) {
+            String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_SPLASH);
+            if (!TextUtils.isEmpty(maxPlaceName)) {
+                AdSdk.get(this).showSplash(maxPlaceName, mSplashContainer);
+                mSplashContainer.setVisibility(View.VISIBLE);
+            } else {
+                runToast("No loaded place name");
+            }
+        } else if (v.getId() == R.id.show_max_reward) {
+            String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_REWARD);
+            if (!TextUtils.isEmpty(maxPlaceName)) {
+                AdSdk.get(this).showRewardedVideo(maxPlaceName);
+            } else {
+                runToast("No loaded place name");
+            }
         } else {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag, (TextView) v);
