@@ -257,4 +257,24 @@ public class DBManager {
         }
         return list;
     }
+
+    public boolean isAdClicked(String requestId) {
+        String sql = String.format(Locale.ENGLISH, "select %s from %s where %s='%s' and %s>0", DBHelper.AD_REQUEST_ID, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_REQUEST_ID, requestId, DBHelper.AD_CLICK_COUNT);
+        Cursor cursor = null;
+        int count = 0;
+        try {
+            SQLiteDatabase db = mDBHelper.getReadableDatabase();
+            cursor = db.rawQuery(sql, null);
+            if (cursor != null) {
+                count = cursor.getCount();
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return count > 0;
+    }
 }

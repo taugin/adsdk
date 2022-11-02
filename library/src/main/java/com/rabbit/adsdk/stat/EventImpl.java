@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.db.DBManager;
 import com.rabbit.adsdk.core.framework.AdStatManager;
 import com.rabbit.adsdk.core.framework.BounceRateManager;
 import com.rabbit.adsdk.data.DataManager;
@@ -228,7 +229,20 @@ public class EventImpl implements IEvent {
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra + " , request id : " + requestId);
         reportEvent(context, "e_ad_click", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
+        reportAdClickDistinct(context, placeName, sdk, network, type, pid, networkPid, ecpm, extra, requestId);
         AdStatManager.get(mContext).recordAdClick(sdk, placeName, pid, network, extra, requestId);
+    }
+
+    private void reportAdClickDistinct(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, String requestId) {
+        try {
+            if (!DBManager.get(context).isAdClicked(requestId)) {
+                String eventIdDistinct = generateEventId(context, "click", sdk + "_distinct", type);
+                Log.iv(Log.TAG, "eventIdDistinct : " + eventIdDistinct);
+                extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
+                reportEvent(context, eventIdDistinct, placeName, extra);
+            }
+        } catch (Exception e) {
+        }
     }
 
     @Override
