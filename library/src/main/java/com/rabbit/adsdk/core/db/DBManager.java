@@ -227,4 +227,34 @@ public class DBManager {
         Log.iv(Log.TAG, "pid [" + pid + "] avg : " + averageRevenue + " , final value : " + finalRevenue + " , imp count : " + impCount + " , min count : " + minCount);
         return finalRevenue;
     }
+
+    public List<Map<String, Object>> queryAdRevenueAllType() {
+        List<Map<String, Object>> list = null;
+        String sql = String.format(Locale.ENGLISH, "select %s, sum(%s) as revenue_sum, count(%s) as imp_count from %s group by %s", DBHelper.AD_TYPE, DBHelper.AD_REVENUE, DBHelper.AD_TYPE, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_TYPE);
+        Cursor cursor = null;
+        try {
+            SQLiteDatabase db = mDBHelper.getReadableDatabase();
+            cursor = db.rawQuery(sql, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                list = new ArrayList<>();
+                do {
+                    Map<String, Object> allTypeMap = new HashMap<>();
+                    String adType = cursor.getString(0);
+                    double typeRevenue = cursor.getDouble(1);
+                    int typeImp = cursor.getInt(2);
+                    allTypeMap.put("ad_type", adType);
+                    allTypeMap.put("ad_type_revenue", typeRevenue);
+                    allTypeMap.put("ad_type_impression", typeImp);
+                    list.add(allTypeMap);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return list;
+    }
 }
