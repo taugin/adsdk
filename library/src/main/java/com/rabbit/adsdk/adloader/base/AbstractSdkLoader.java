@@ -38,7 +38,6 @@ import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 import com.rabbit.sunny.BuildConfig;
 import com.rabbit.sunny.MView;
-import com.tradplus.ads.mobileads.gdpr.Const;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -1239,8 +1238,14 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                     adImpMap.put("active_year", EventImpl.get().getActiveYear());
                     adImpMap.put("country", Utils.getCountryFromLocale(mContext));
                     adImpMap.put(Constant.AD_TYPE, getAdType());
-                    if (EventImpl.get().getActiveDays() == 0) {
-                        adImpMap.put(Constant.AD_PLACEMENT_NEW, adImpMap.get(Constant.AD_PLACEMENT));
+                    try {
+                        if (EventImpl.get().getActiveDays() == 0) {
+                            adImpMap.put(Constant.AD_PLACEMENT_NEW, adImpMap.get(Constant.AD_PLACEMENT));
+                            Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
+                            String roundCpm = Utils.calcRoundCpm(adRevenue * 1000);
+                            adImpMap.put(Constant.AD_ROUND_CPM_NEW, roundCpm);
+                        }
+                    } catch (Exception e) {
                     }
                     try {
                         Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
