@@ -264,6 +264,7 @@ public class Constant {
     public static final String AD_VALUE = "value";
     public static final String AD_MICRO_VALUE = "micro_value";
     public static final String AD_ROUND_CPM = "round_cpm";
+    public static final String AD_ROUND_CPM_NEW = "round_cpm_new";
     public static final String AD_CURRENCY = "currency";
     public static final String AD_NETWORK = "ad_network";
     public static final String AD_NETWORK_PID = "ad_network_pid";
