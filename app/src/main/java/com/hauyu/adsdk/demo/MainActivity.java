@@ -44,12 +44,15 @@ import com.rabbit.adsdk.listener.OnAdFilterListener;
 import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.utils.Utils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Executors;
 
@@ -661,6 +664,15 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     }
 
     private View createDialogView(Context context) {
+        List<Map<String, Object>> mapList = DBManager.get(context).queryAdRevenueAllType();
+        for (Map<String, Object> map : mapList) {
+            Set<String> set = map.keySet();
+            StringBuilder builder = new StringBuilder();
+            for (String s : set) {
+                builder.append(s).append(" : ").append(map.get(s)).append(" , ");
+            }
+            Log.v(Log.TAG, builder.toString());
+        }
         LinearLayout rootLayout = new LinearLayout(context);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout titleLayout = new LinearLayout(context);
@@ -672,9 +684,47 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         totalTextView = new TextView(context);
         totalTextView.setGravity(Gravity.CENTER);
         totalTextView.setTextColor(Color.BLACK);
-        totalTextView.setText("REVENUE : " + totalRevenue);
+        totalTextView.setText("REVENUE : " + BigDecimal.valueOf(totalRevenue).setScale(3, RoundingMode.HALF_EVEN).toPlainString());
         totalTextView.setBackgroundColor(Color.GREEN);
         titleLayout.addView(totalTextView, -1, height);
+
+        LinearLayout adTypeLayout = new LinearLayout(context);
+        adTypeLayout.setOrientation(LinearLayout.VERTICAL);
+        rootLayout.addView(adTypeLayout, -1, -2);
+
+        if (mapList != null && !mapList.isEmpty()) {
+            int size = mapList.size();
+            int sizeWithHeader = size + 1;
+            for (int index = 0; index < sizeWithHeader; index++) {
+                LinearLayout rowLayout = new LinearLayout(context);
+                adTypeLayout.addView(rowLayout, -1, -1);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, height);
+                params.weight = 1;
+                TextView typeView = new TextView(context);
+                typeView.setGravity(Gravity.CENTER);
+                TextView revenueView = new TextView(context);
+                revenueView.setGravity(Gravity.CENTER);
+                TextView impView = new TextView(context);
+                impView.setGravity(Gravity.CENTER);
+                rowLayout.addView(typeView, params);
+                rowLayout.addView(revenueView, params);
+                rowLayout.addView(impView, params);
+                if (index == 0) {
+                    typeView.setText("AdType");
+                    revenueView.setText("Revenue");
+                    impView.setText("Impression");
+                } else {
+                    Map<String, Object> map = mapList.get(index - 1);
+                    if (map != null) {
+                        double revenue = (double) map.get("ad_type_revenue");
+                        typeView.setText(String.valueOf(map.get("ad_type")));
+                        revenueView.setText(BigDecimal.valueOf(revenue).setScale(3, RoundingMode.HALF_EVEN).toPlainString());
+                        impView.setText(String.valueOf(map.get("ad_type_impression")));
+                    }
+                }
+            }
+        }
+
         ListView listView = new ListView(context);
         rootLayout.addView(listView, -1, -1);
         List<AdImpData> list = DBManager.get(context).queryAllImps();
@@ -688,6 +738,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                     adapterView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
                     AdImpData adImpData = getItem(position);
                     String str = "<font color=red><big>" + (position + 1) + ".</big></font> " + adImpData.getPlacement()
+                            + "<br>" + adImpData.getUnitName() + "<font color=red>*</font></br>"
                             + "<br>[<font color=red>" + adImpData.getPlatform() + "</font>][<font color='#a00'>" + adImpData.getNetwork() + "</font>]"
                             + "<br>[<font color=red>" + adImpData.getAdType() + "</font>]"
                             + "<br>" + adImpData.getUnitId()
