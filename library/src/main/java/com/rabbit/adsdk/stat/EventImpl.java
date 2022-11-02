@@ -228,7 +228,7 @@ public class EventImpl implements IEvent {
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra + " , request id : " + requestId);
         reportEvent(context, "e_ad_click", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
-        AdStatManager.get(mContext).recordAdClick(sdk, placeName, network, extra, requestId);
+        AdStatManager.get(mContext).recordAdClick(sdk, placeName, pid, network, extra, requestId);
     }
 
     @Override

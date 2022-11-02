@@ -53,11 +53,11 @@ public class AdStatManager {
         ReplaceManager.get(mContext).reportAdImp(placeName);
     }
 
-    public void recordAdClick(String sdk, String placeName, String network, Map<String, Object> extra, String requestId) {
+    public void recordAdClick(String sdk, String placeName, String pid, String network, Map<String, Object> extra, String requestId) {
         Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         recordAllClkCount();
         LimitAdsManager.get(mContext).recordAdClick(sdk, placeName, network);
-        BounceRateManager.get(mContext).onAdClick(extra);
+        BounceRateManager.get(mContext).onAdClick(pid, extra);
         recordAdClick(requestId);
     }
 

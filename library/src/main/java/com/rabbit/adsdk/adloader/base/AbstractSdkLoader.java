@@ -23,6 +23,7 @@ import com.rabbit.adsdk.core.AdPolicy;
 import com.rabbit.adsdk.core.db.DBManager;
 import com.rabbit.adsdk.core.framework.AdLoadManager;
 import com.rabbit.adsdk.core.framework.AdStatManager;
+import com.rabbit.adsdk.core.framework.BounceRateManager;
 import com.rabbit.adsdk.core.framework.LimitAdsManager;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.DataManager;
@@ -372,6 +373,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             processPackNotMatch();
             return false;
         }
+
+        if (isBlockMistakeClick()) {
+            processBlockMistakeClick();
+            return false;
+        }
         return true;
     }
 
@@ -427,7 +433,16 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     private void processPackNotMatch() {
         Log.iv(Log.TAG, formatLog("pack not match"));
-        notifyAdLoadFailed(Constant.AD_ERROR_SIGN_NOT_MATCH, "pack not match");
+        notifyAdLoadFailed(Constant.AD_ERROR_PACK_NOT_MATCH, "pack not match");
+    }
+
+    private boolean isBlockMistakeClick() {
+        return BounceRateManager.get(mContext).blockMistakePid(getPid());
+    }
+
+    private void processBlockMistakeClick() {
+        Log.iv(Log.TAG, formatLog("block mistake click"));
+        notifyAdLoadFailed(Constant.AD_ERROR_BLOCK_MISTAKE_CLICK, "block mistake click");
     }
 
     protected void printInterfaceLog(String action) {
