@@ -879,9 +879,9 @@ public class AdmobLoader extends AbstractSdkLoader {
     private void reportAdmobImpressionData(AdValue adValue, String network, String sceneName) {
         try {
             // admob给出的是百万次展示的价值，换算ecpm需要除以1000
-            double revenue = adValue.getValueMicros() / (double) 1000000;
+            double revenue = (double) adValue.getValueMicros() / 1000000;
             if (revenue <= 0f && BuildConfig.DEBUG) {
-                revenue = new Random().nextInt(50) / 1000f;
+                revenue = (double) new Random().nextInt(50) / 1000;
             }
             String networkName = network;
             String adUnitId = getPid();
