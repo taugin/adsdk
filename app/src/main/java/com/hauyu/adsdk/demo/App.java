@@ -46,35 +46,35 @@ public class App extends Application {
         initTalkingData();
         AdSdk.get(this).setOnAdEventListener(new OnAdEventListener() {
             @Override
-            public void onRequest(String placeName, String sdkName, String adType, String pid, String requestId) {
+            public void onRequest(String placeName, String sdkName, String adType, String pid) {
             }
 
             @Override
-            public void onLoaded(String placeName, String sdkName, String adType, String pid, String requestId) {
+            public void onLoaded(String placeName, String sdkName, String adType, String pid) {
             }
 
             @Override
-            public void onLoadFailed(String placeName, String sdkName, String adType, String pid, String requestId) {
+            public void onLoadFailed(String placeName, String sdkName, String adType, String pid) {
             }
 
             @Override
-            public void onShow(String placeName, String sdkName, String adType, String pid, String requestId) {
+            public void onShow(String placeName, String sdkName, String adType, String pid) {
             }
 
             @Override
-            public void onShowFailed(String placeName, String sdkName, String adType, String pid, String msg, String requestId) {
+            public void onShowFailed(String placeName, String sdkName, String adType, String pid, String msg) {
             }
 
             @Override
-            public void onImp(String placeName, String sdkName, String adType, String pid, String requestId) {
+            public void onDismiss(String placeName, String sdkName, String adType, String pid) {
             }
 
             @Override
-            public void onClick(String placeName, String sdkName, String adType, String pid, String requestId) {
+            public void onImp(String placeName, String sdkName, String adType, String pid) {
             }
 
             @Override
-            public void onDismiss(String placeName, String sdkName, String adType, String pid, String requestId) {
+            public void onClick(String placeName, String sdkName, String adType, String pid, String impressionId) {
             }
 
             @Override

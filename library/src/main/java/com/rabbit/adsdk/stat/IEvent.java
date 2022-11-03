@@ -62,7 +62,7 @@ public interface IEvent {
      * @param type
      * @param extra
      */
-    public void reportAdImp(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, String requestId);
+    public void reportAdImp(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra);
 
     /**
      * 广告点击

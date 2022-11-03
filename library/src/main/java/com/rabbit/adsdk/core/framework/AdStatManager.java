@@ -46,7 +46,7 @@ public class AdStatManager {
         mContext = context;
     }
 
-    public void recordAdImp(String sdk, String placeName, String network, String requestId) {
+    public void recordAdImp(String sdk, String placeName, String network) {
         Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         recordAllImpCount();
         LimitAdsManager.get(mContext).recordAdImp(sdk, placeName, network);

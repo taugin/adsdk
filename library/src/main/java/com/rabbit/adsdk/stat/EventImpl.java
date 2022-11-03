@@ -204,7 +204,7 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdImp(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, String requestId) {
+    public void reportAdImp(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
@@ -213,10 +213,10 @@ public class EventImpl implements IEvent {
         if (extra != null) {
             extra.put("vpn_status", Utils.isVPNConnected(context) ? "on" : "off");
         }
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra + " , request id : " + requestId);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_imp", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
-        AdStatManager.get(mContext).recordAdImp(sdk, placeName, network, requestId);
+        AdStatManager.get(mContext).recordAdImp(sdk, placeName, network);
     }
 
     @Override

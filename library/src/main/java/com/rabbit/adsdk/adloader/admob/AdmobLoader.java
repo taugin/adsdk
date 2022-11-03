@@ -763,6 +763,7 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showSplash(ViewGroup viewGroup) {
+        printInterfaceLog(ACTION_SHOW);
         Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " show splash");
         if (mAppOpenAd != null) {
             Activity activity = getActivity();

@@ -15,9 +15,9 @@ public class AdImpData {
         return new AdImpData(adImpData);
     }
 
-    public String getRequestId() {
+    public String getImpressionId() {
         try {
-            return (String) mAdImpData.get(Constant.AD_REQUEST_ID);
+            return (String) mAdImpData.get(Constant.AD_IMPRESSION_ID);
         } catch (Exception e) {
         }
         return null;

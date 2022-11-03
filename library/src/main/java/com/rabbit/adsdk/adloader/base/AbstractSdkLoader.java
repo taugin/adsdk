@@ -89,7 +89,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private final AtomicBoolean mLoadTimeout = new AtomicBoolean(false);
     private String mAdNetwork;
     private double mAdRevenue;
-    private String mRequestId;
+    private String mImpressionId;
     int mLoadState = STATE_NONE;
     // applovin SDK需要提前初始化的SDK名称列表
     private static final List<String> sNeedInitAppLovinFirstSdks = Arrays.asList(Constant.AD_SDK_TRADPLUS, Constant.AD_SDK_APPLOVIN);
@@ -899,15 +899,15 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return mAdRevenue;
     }
 
-    protected void setRequestId() {
+    protected void generateImpressionId() {
         try {
-            mRequestId = UUID.randomUUID().toString();
+            mImpressionId = UUID.randomUUID().toString();
         } catch (Exception e) {
         }
     }
 
-    protected String getRequestId() {
-        return mRequestId;
+    protected String getImpressionId() {
+        return mImpressionId;
     }
 
     protected boolean isTemplateRendering() {
@@ -978,7 +978,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
                 builder.append("}");
                 Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " [" + network + "] assets : " + builder.toString());
             }
-            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), null, getRequestId());
+            mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), null);
             if (nativeAssets != null) {
                 nativeAssets.clear();
             }
@@ -991,7 +991,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void reportAdClick(String network, String networkPid) {
         if (mStat != null) {
-            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), null, getRequestId());
+            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), null, getImpressionId());
         }
     }
 
@@ -1023,10 +1023,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             getAdListener().onAdRequest();
         }
         AdPolicy.get(mContext).recordRequestTimes(getAdPlaceName(), getSdkName(), getMaxReqTimes());
-        setRequestId();
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onRequest(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
+            l.onRequest(getAdPlaceName(), getSdkName(), getAdType(), getPid());
         }
     }
 
@@ -1039,7 +1038,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onLoaded(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
+            l.onLoaded(getAdPlaceName(), getSdkName(), getAdType(), getPid());
         }
     }
 
@@ -1052,7 +1051,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onShow(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
+            l.onShow(getAdPlaceName(), getSdkName(), getAdType(), getPid());
         }
     }
 
@@ -1069,7 +1068,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onImp(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
+            l.onImp(getAdPlaceName(), getSdkName(), getAdType(), getPid());
         }
     }
 
@@ -1086,7 +1085,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onClick(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
+            l.onClick(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getImpressionId());
         }
     }
 
@@ -1103,7 +1102,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onDismiss(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
+            l.onDismiss(getAdPlaceName(), getSdkName(), getAdType(), getPid());
         }
     }
 
@@ -1113,7 +1112,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onLoadFailed(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getRequestId());
+            l.onLoadFailed(getAdPlaceName(), getSdkName(), getAdType(), getPid());
         }
     }
 
@@ -1123,7 +1122,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onShowFailed(getAdPlaceName(), getSdkName(), getAdType(), getPid(), msg, getRequestId());
+            l.onShowFailed(getAdPlaceName(), getSdkName(), getAdType(), getPid(), msg);
         }
     }
 
@@ -1275,8 +1274,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             }
             InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
         }
+        generateImpressionId();
         if (adImpMap != null) {
-            adImpMap.put(Constant.AD_REQUEST_ID, getRequestId());
+            adImpMap.put(Constant.AD_IMPRESSION_ID, getImpressionId());
         }
         printImpData(adImpMap);
         AdImpData adImpData = AdImpData.createAdImpData(adImpMap);

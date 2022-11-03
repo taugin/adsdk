@@ -745,6 +745,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showSplash(ViewGroup viewGroup) {
+        printInterfaceLog(ACTION_SHOW);
         Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " show splash");
         if (mTPSplash != null && mTPSplash.isReady()) {
             reportAdShow();

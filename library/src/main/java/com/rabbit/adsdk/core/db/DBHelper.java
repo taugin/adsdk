@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String FOO = "foo";
 
     public static final String TABLE_AD_IMPRESSION = "ad_impression";
-    public static final String AD_REQUEST_ID = "ad_request_id";
+    public static final String AD_IMPRESSION_ID = "ad_request_id";
     public static final String AD_UNIT_ID = "ad_unit_id";
     public static final String AD_UNIT_NAME = "ad_unit_name";
     public static final String AD_PLACEMENT = "ad_placement";
@@ -51,7 +51,7 @@ public class DBHelper extends SQLiteOpenHelper {
             "CREATE TABLE IF NOT EXISTS " + TABLE_AD_IMPRESSION
                     + "("
                     + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + AD_REQUEST_ID + " TEXT,"
+                    + AD_IMPRESSION_ID + " TEXT,"
                     + AD_UNIT_ID + " TEXT,"
                     + AD_UNIT_NAME + " TEXT,"
                     + AD_PLACEMENT + " TEXT,"
