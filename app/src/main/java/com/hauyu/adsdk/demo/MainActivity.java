@@ -665,14 +665,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     private View createDialogView(Context context) {
         List<Map<String, Object>> mapList = DBManager.get(context).queryAdRevenueAllType();
-        for (Map<String, Object> map : mapList) {
-            Set<String> set = map.keySet();
-            StringBuilder builder = new StringBuilder();
-            for (String s : set) {
-                builder.append(s).append(" : ").append(map.get(s)).append(" , ");
-            }
-            Log.v(Log.TAG, builder.toString());
-        }
         LinearLayout rootLayout = new LinearLayout(context);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout titleLayout = new LinearLayout(context);
@@ -689,8 +681,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         titleLayout.addView(totalTextView, -1, height);
 
         LinearLayout adTypeLayout = new LinearLayout(context);
+        adTypeLayout.setBackgroundColor(Color.RED);
+        int padding = Utils.dp2px(context, 1);
+        adTypeLayout.setPadding(padding, padding, padding, padding);
         adTypeLayout.setOrientation(LinearLayout.VERTICAL);
-        rootLayout.addView(adTypeLayout, -1, -2);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-1, -2);
+        layoutParams.setMargins(padding, padding, padding, padding);
+        rootLayout.addView(adTypeLayout, layoutParams);
 
         if (mapList != null && !mapList.isEmpty()) {
             int size = mapList.size();
@@ -701,10 +698,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, height);
                 params.weight = 1;
                 TextView typeView = new TextView(context);
+                typeView.setBackgroundColor(Color.WHITE);
                 typeView.setGravity(Gravity.CENTER);
                 TextView revenueView = new TextView(context);
+                revenueView.setBackgroundColor(Color.WHITE);
                 revenueView.setGravity(Gravity.CENTER);
                 TextView impView = new TextView(context);
+                impView.setBackgroundColor(Color.WHITE);
                 impView.setGravity(Gravity.CENTER);
                 rowLayout.addView(typeView, params);
                 rowLayout.addView(revenueView, params);

@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
+import com.github.moduth.blockcanary.BlockCanary;
+import com.github.moduth.blockcanary.BlockCanaryContext;
 import com.rabbit.adsdk.AdImpData;
 import com.rabbit.adsdk.AdSdk;
 import com.rabbit.adsdk.listener.OnAdEventListener;
@@ -40,6 +42,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        BlockCanary.install(this, new BlockCanaryContext() {
+        }).start();
         ChangeLanguage.init(this);
         Va.setNetworkProxy();
         initUmeng();
