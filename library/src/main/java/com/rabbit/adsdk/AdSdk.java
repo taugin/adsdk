@@ -700,6 +700,14 @@ public class AdSdk {
         return maxPlaceName;
     }
 
+    /**
+     * 判断广告位是否可用
+     * @param placeName
+     * @return
+     */
+    public boolean isPlaceValidate(String placeName) {
+        return DataManager.get(mContext).isPlaceValidate(placeName);
+    }
 
     public void resume(String placeName) {
         AdPlaceLoader loader = getAdLoader(placeName);
