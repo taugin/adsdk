@@ -76,6 +76,7 @@
 #tradplus
 -keep public class com.tradplus.** { *; }
 -keep class com.tradplus.ads.** { *; }
+-keep class com.max.ads.** { *; }
 
 -keep public class com.anythink.**
 -keepclassmembers class com.anythink.** {
