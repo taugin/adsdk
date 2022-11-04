@@ -480,6 +480,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
+        setRevenueCallback(loadingMaxAdView);
         loadingMaxAdView.setPlacement(getSceneId());
         loadingMaxAdView.loadAd();
     }
@@ -501,7 +502,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
         try {
             reportAdShow();
             notifyAdShow();
-            setRevenueCallback(maxAdView);
             clearCachedAdTime(maxAdView);
             viewGroup.removeAllViews();
             ViewParent viewParent = maxAdView.getParent();
