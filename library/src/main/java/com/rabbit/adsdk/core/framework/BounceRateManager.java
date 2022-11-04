@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.rabbit.adsdk.AdSdk;
-import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
@@ -194,11 +193,8 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
                         long triggerCount = Utils.getLong(mContext, prefKey, 0) + +1;
                         Utils.putLong(mContext, prefKey, triggerCount);
                         Log.iv(Log.TAG, "pid : " + pid + " mistake click");
-                        Map<String, Object> extra = new HashMap<>();
-                        String gaid = Utils.getString(mContext, Constant.PREF_GAID);
-                        extra.put("gaid", gaid);
                         String msClkAdsInfo = String.format(Locale.ENGLISH, "%s|%s", pid, msclkDuration);
-                        InternalStat.reportEvent(mContext, "msclk_ads_info", msClkAdsInfo, extra);
+                        InternalStat.reportEvent(mContext, "msclk_ads_info", msClkAdsInfo);
                     }
                 }
             }
