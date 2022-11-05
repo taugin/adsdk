@@ -660,21 +660,26 @@ public class AdSdk {
     }
 
     public String getMaxPlaceName(String adType) {
+        return getMaxPlaceName(adType, null);
+    }
+
+    public String getMaxPlaceName(String adType, List<String> whiteList) {
         try {
-            return getMaxPlaceNameInternal(adType);
+            return getMaxPlaceNameInternal(adType, whiteList);
         } catch (Exception e) {
         }
         return null;
     }
 
-    private String getMaxPlaceNameInternal(String adType) {
+    private String getMaxPlaceNameInternal(String adType, List<String> whiteList) {
         String maxPlaceName = null;
         double maxRevenue = -1f;
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
             for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
                 String placeName = entry.getKey();
                 AdPlaceLoader adPlaceLoader = entry.getValue();
-                if (!TextUtils.isEmpty(placeName) && adPlaceLoader != null) {
+                if (!TextUtils.isEmpty(placeName) && adPlaceLoader != null
+                        && (whiteList == null || whiteList.isEmpty() || whiteList.contains(placeName))) {
                     double tmpRevenue;
                     if (TextUtils.equals(adType, Constant.TYPE_SPLASH) && adPlaceLoader.isSplashLoaded()) {
                         tmpRevenue = adPlaceLoader.getMaxRevenue();
@@ -702,6 +707,7 @@ public class AdSdk {
 
     /**
      * 判断广告位是否可用
+     *
      * @param placeName
      * @return
      */
