@@ -523,6 +523,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void showInterstitialInternal(String sceneName) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_INTERSTITIAL, null, Constant.AD_ERROR_LOADER);
+            }
             return;
         }
         final List<ISdkLoader> list = new ArrayList<>();
@@ -533,6 +536,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         if (list == null || list.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_INTERSTITIAL, null, Constant.AD_ERROR_NOFILL);
+            }
             return;
         }
         sortLoadedLoaders(list);
@@ -735,6 +741,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void showRewardedVideoInternal(String sceneName) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_REWARD, null, Constant.AD_ERROR_LOADER);
+            }
             return;
         }
         final List<ISdkLoader> list = new ArrayList<>();
@@ -745,6 +754,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         if (list == null || list.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_REWARD, null, Constant.AD_ERROR_NOFILL);
+            }
             return;
         }
         sortLoadedLoaders(list);
@@ -946,6 +958,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void showSplashInternal(ViewGroup viewGroup) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_SPLASH, null, Constant.AD_ERROR_LOADER);
+            }
             return;
         }
         final List<ISdkLoader> list = new ArrayList<>();
@@ -956,6 +971,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         if (list == null || list.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_SPLASH, null, Constant.AD_ERROR_NOFILL);
+            }
             return;
         }
         sortLoadedLoaders(list);
@@ -1183,10 +1201,16 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void showAdViewInternal(String adType, boolean needCounting) {
         if (mAdContainer == null) {
             Log.iv(Log.TAG, "error : ad view group is null for place name : " + getPlaceName());
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_ADVIEW, null, Constant.AD_ERROR_LOADER);
+            }
             return;
         }
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_ADVIEW, null, Constant.AD_ERROR_LOADER);
+            }
             return;
         }
         final List<ISdkLoader> list = new ArrayList<>();
@@ -1210,6 +1234,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         if (list == null || list.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_ADVIEW, null, Constant.AD_ERROR_NOFILL);
+            }
             return;
         }
         sortLoadedLoaders(list);
@@ -1496,6 +1523,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private boolean showComplexAdsInternal(String sceneName) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_COMPLEX, null, Constant.AD_ERROR_LOADER);
+            }
             return false;
         }
         final List<ISdkLoader> list = new ArrayList<>();
@@ -1510,6 +1540,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         if (list == null || list.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
+            if (mOnAdSdkListener != null) {
+                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_COMPLEX, null, Constant.AD_ERROR_NOFILL);
+            }
             return false;
         }
         sortLoadedLoaders(list);

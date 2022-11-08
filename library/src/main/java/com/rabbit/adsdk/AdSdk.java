@@ -677,7 +677,7 @@ public class AdSdk {
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
             for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
                 String placeName = entry.getKey();
-                AdPlaceLoader adPlaceLoader = entry.getValue();
+                AdPlaceLoader adPlaceLoader = getAdLoader(placeName, false);
                 if (!TextUtils.isEmpty(placeName) && adPlaceLoader != null
                         && (whiteList == null || whiteList.isEmpty() || whiteList.contains(placeName))) {
                     double tmpRevenue;
