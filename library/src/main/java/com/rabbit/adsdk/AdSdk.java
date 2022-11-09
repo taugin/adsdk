@@ -507,7 +507,7 @@ public class AdSdk {
             List<String> placeList = DataManager.get(mContext).getPlaceList();
             if (placeList != null && !placeList.isEmpty()) {
                 for (String name : placeList) {
-                    AdPlaceLoader adPlaceLoader = mAdLoaders.get(name);
+                    AdPlaceLoader adPlaceLoader = getAdLoader(name);
                     if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
                         Log.iv(Log.TAG, "place name [" + name + "] is loaded");
                         return true;
@@ -515,7 +515,7 @@ public class AdSdk {
                 }
             } else {
                 for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
-                    AdPlaceLoader adPlaceLoader = entry.getValue();
+                    AdPlaceLoader adPlaceLoader = getAdLoader(entry.getKey());
                     if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
                         Log.iv(Log.TAG, "place name [" + entry.getKey() + "] is loaded");
                         return true;
@@ -538,14 +538,15 @@ public class AdSdk {
             List<AdPlaceLoader> list = new ArrayList<AdPlaceLoader>();
             if (placeList != null && !placeList.isEmpty()) {
                 for (String name : placeList) {
-                    AdPlaceLoader adPlaceLoader = mAdLoaders.get(name);
+                    AdPlaceLoader adPlaceLoader = getAdLoader(name);
                     if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
                         list.add(adPlaceLoader);
                     }
                 }
             } else {
                 for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
-                    AdPlaceLoader adPlaceLoader = entry.getValue();
+                    String placeName = entry.getKey();
+                    AdPlaceLoader adPlaceLoader = getAdLoader(placeName);
                     if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
                         list.add(adPlaceLoader);
                     }
@@ -677,7 +678,7 @@ public class AdSdk {
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
             for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
                 String placeName = entry.getKey();
-                AdPlaceLoader adPlaceLoader = getAdLoader(placeName, false);
+                AdPlaceLoader adPlaceLoader = getAdLoader(placeName);
                 if (!TextUtils.isEmpty(placeName) && adPlaceLoader != null
                         && (whiteList == null || whiteList.isEmpty() || whiteList.contains(placeName))) {
                     double tmpRevenue;
