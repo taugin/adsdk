@@ -261,8 +261,8 @@ public class DBManager {
         return list;
     }
 
-    public boolean isAdClicked(String requestId) {
-        String sql = String.format(Locale.ENGLISH, "select %s from %s where %s='%s' and %s>0", DBHelper.AD_IMPRESSION_ID, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_IMPRESSION_ID, requestId, DBHelper.AD_CLICK_COUNT);
+    public boolean isAdClicked(String impressionId) {
+        String sql = String.format(Locale.ENGLISH, "select %s from %s where %s='%s' and %s>0", DBHelper.AD_IMPRESSION_ID, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_IMPRESSION_ID, impressionId, DBHelper.AD_CLICK_COUNT);
         Cursor cursor = null;
         int count = 0;
         try {
@@ -279,5 +279,25 @@ public class DBManager {
             }
         }
         return count > 0;
+    }
+
+    public String queryAdPlacement(String impressionId) {
+        String sql = String.format(Locale.ENGLISH, "select %s from %s where %s='%s'", DBHelper.AD_PLACEMENT, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_IMPRESSION_ID, impressionId);
+        Cursor cursor = null;
+        String adPlacement = null;
+        try {
+            SQLiteDatabase db = mDBHelper.getReadableDatabase();
+            cursor = db.rawQuery(sql, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                adPlacement = cursor.getString(0);
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return adPlacement;
     }
 }

@@ -991,7 +991,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
 
     protected void reportAdClick(String network, String networkPid) {
         if (mStat != null) {
-            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), null, getImpressionId());
+            Map<String, Object> extra = new HashMap<>();
+            String adPlacement = DBManager.get(mContext).queryAdPlacement(getImpressionId());
+            if (TextUtils.isEmpty(adPlacement)) {
+                adPlacement = getAdPlaceName();
+            }
+            extra.put("placement", adPlacement);
+            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), extra, getImpressionId());
         }
     }
 
