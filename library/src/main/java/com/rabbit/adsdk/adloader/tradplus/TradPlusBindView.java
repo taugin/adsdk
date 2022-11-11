@@ -162,7 +162,7 @@ public class TradPlusBindView extends BaseBindNativeView {
                                 putValue(AD_CHOICES, adChoiceUrl);
                             } else {
                                 FrameLayout frameLayout = new FrameLayout(mContext);
-                                int size = Utils.dp2px(mContext, 18);
+                                int size = Utils.dp2px(mContext, 20);
                                 adChoiceViewLayout.addView(frameLayout, -2, size);
                                 setAdChoicesContainer(frameLayout, false);
                             }

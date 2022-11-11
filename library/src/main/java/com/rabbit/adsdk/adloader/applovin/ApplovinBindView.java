@@ -129,7 +129,7 @@ public class ApplovinBindView extends BaseBindNativeView {
                         ViewGroup.LayoutParams params = childView.getLayoutParams();
                         if (params != null) {
                             params.width = -2;
-                            params.height = -2;
+                            params.height = Utils.dp2px(context, 20);
                             childView.setLayoutParams(params);
                         }
                     }
