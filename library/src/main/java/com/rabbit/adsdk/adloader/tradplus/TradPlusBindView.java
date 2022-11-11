@@ -16,6 +16,7 @@ import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.log.Log;
+import com.rabbit.adsdk.utils.Utils;
 import com.tradplus.ads.base.adapter.nativead.TPNativeAdView;
 import com.tradplus.ads.base.common.TPImageLoader;
 import com.tradplus.ads.mgr.nativead.TPCustomNativeAd;
@@ -161,7 +162,8 @@ public class TradPlusBindView extends BaseBindNativeView {
                                 putValue(AD_CHOICES, adChoiceUrl);
                             } else {
                                 FrameLayout frameLayout = new FrameLayout(mContext);
-                                adChoiceViewLayout.addView(frameLayout);
+                                int size = Utils.dp2px(mContext, 18);
+                                adChoiceViewLayout.addView(frameLayout, -2, size);
                                 setAdChoicesContainer(frameLayout, false);
                             }
                         }
