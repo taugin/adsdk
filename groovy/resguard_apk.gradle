@@ -150,7 +150,15 @@ andResGuard {
             "R.anim.onesignal*",
             "R.drawable.ic_os*",
             "R.raw.consumer*",
-            "R.string.location*"
+            "R.string.location*",
+            // bigo
+            "R.layout.bigo*",
+            "R.anim.bigo*",
+            "R.drawable.bigo*",
+            "R.string.bigo*",
+            "R.xml.bigo*",
+            "R.color.bigo*",
+            "R.style.bigo*"
     ]
     compressFilePattern = [
             "*.png",
