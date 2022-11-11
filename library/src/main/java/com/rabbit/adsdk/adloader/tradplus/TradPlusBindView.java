@@ -115,7 +115,9 @@ public class TradPlusBindView extends BaseBindNativeView {
                         }
                     } else if (iconTempView instanceof ImageView) {
                         adIconView = (ImageView) iconTempView;
-                        if (tpNativeAdView.getIconImage() != null) {
+                        if (tpNativeAdView.getIconView() != null) {
+                            replaceSrcViewToDstView(adIconView, tpNativeAdView.getIconView());
+                        } else if (tpNativeAdView.getIconImage() != null) {
                             adIconView.setImageDrawable(tpNativeAdView.getIconImage());
                         } else if (tpNativeAdView.getIconImageUrl() != null) {
                             TPImageLoader.getInstance().loadImage(adIconView, tpNativeAdView.getIconImageUrl());
