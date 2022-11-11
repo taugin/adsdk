@@ -19,6 +19,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -47,6 +49,8 @@ import java.util.Set;
  */
 
 public class Utils {
+
+    private static final Handler sHandler = new Handler(Looper.getMainLooper());
 
     private static char HEX_DIGITS[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'A', 'B', 'C', 'D', 'E', 'F'};
@@ -895,5 +899,11 @@ public class Utils {
             return "ironsource";
         }
         return "unknown";
+    }
+
+    public static void runOnUIThread(Runnable runnable) {
+        if (sHandler != null) {
+            sHandler.post(runnable);
+        }
     }
 }

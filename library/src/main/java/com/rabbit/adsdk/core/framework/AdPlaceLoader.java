@@ -34,6 +34,7 @@ import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.listener.OnAdSdkListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
+import com.rabbit.adsdk.utils.Utils;
 import com.rabbit.sunny.IAdvance;
 import com.rabbit.sunny.RabActivity;
 
@@ -358,30 +359,50 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public void loadInterstitial(Activity activity) {
         if (mAdPlace == null) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(null, null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(null, null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
         if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
         List<PidConfig> pidList = mAdPlace.getPidList();
         if (pidList == null || pidList.isEmpty()) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
@@ -441,9 +462,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 Log.iv(Log.TAG, mAdPlace.getName() + " seq is loading ...");
             }
         } else {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
         }
     }
 
@@ -523,9 +549,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void showInterstitialInternal(String sceneName) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_INTERSTITIAL, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_INTERSTITIAL, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
         final List<ISdkLoader> list = new ArrayList<>();
@@ -536,9 +567,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         if (list == null || list.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_INTERSTITIAL, null, Constant.AD_ERROR_NOFILL);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_INTERSTITIAL, null, Constant.AD_ERROR_NOFILL);
+                    }
+                }
+            });
             return;
         }
         sortLoadedLoaders(list);
@@ -575,30 +611,50 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public void loadRewardedVideo(Activity activity) {
         if (mAdPlace == null) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(null, null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(null, null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
         if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
         List<PidConfig> pidList = mAdPlace.getPidList();
         if (pidList == null || pidList.isEmpty()) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
@@ -658,9 +714,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 Log.iv(Log.TAG, mAdPlace.getName() + " seq is loading ...");
             }
         } else {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
         }
     }
 
@@ -741,9 +802,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void showRewardedVideoInternal(String sceneName) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_REWARD, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_REWARD, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
         final List<ISdkLoader> list = new ArrayList<>();
@@ -754,9 +820,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         if (list == null || list.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_REWARD, null, Constant.AD_ERROR_NOFILL);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_REWARD, null, Constant.AD_ERROR_NOFILL);
+                    }
+                }
+            });
             return;
         }
         sortLoadedLoaders(list);
@@ -793,30 +864,50 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public void loadSplash(Activity activity) {
         if (mAdPlace == null) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(null, null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(null, null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
         if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
         List<PidConfig> pidList = mAdPlace.getPidList();
         if (pidList == null || pidList.isEmpty()) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
@@ -876,9 +967,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 Log.iv(Log.TAG, mAdPlace.getName() + " seq is loading ...");
             }
         } else {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
         }
     }
 
@@ -958,9 +1054,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void showSplashInternal(ViewGroup viewGroup) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_SPLASH, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_SPLASH, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
         final List<ISdkLoader> list = new ArrayList<>();
@@ -971,9 +1072,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         if (list == null || list.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_SPLASH, null, Constant.AD_ERROR_NOFILL);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.TYPE_SPLASH, null, Constant.AD_ERROR_NOFILL);
+                    }
+                }
+            });
             return;
         }
         sortLoadedLoaders(list);
@@ -1026,30 +1132,50 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public void loadAdView(AdParams adParams) {
         if (mAdPlace == null) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(null, null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(null, null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
         if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
         List<PidConfig> pidList = mAdPlace.getPidList();
         if (pidList == null || pidList.isEmpty()) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
         mAdParams = adParams;
@@ -1107,9 +1233,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 Log.iv(Log.TAG, mAdPlace.getName() + " seq is loading ...");
             }
         } else {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
         }
     }
 
@@ -1201,16 +1332,26 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private void showAdViewInternal(String adType, boolean needCounting) {
         if (mAdContainer == null) {
             Log.iv(Log.TAG, "error : ad view group is null for place name : " + getPlaceName());
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_ADVIEW, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_ADVIEW, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_ADVIEW, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_ADVIEW, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
         final List<ISdkLoader> list = new ArrayList<>();
@@ -1234,9 +1375,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         if (list == null || list.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_ADVIEW, null, Constant.AD_ERROR_NOFILL);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_ADVIEW, null, Constant.AD_ERROR_NOFILL);
+                    }
+                }
+            });
             return;
         }
         sortLoadedLoaders(list);
@@ -1341,30 +1487,50 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public void loadComplexAds(AdParams adParams) {
         if (mAdPlace == null) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(null, null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(null, null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
         if (!AdPolicy.get(mContext).allowAdPlaceLoad(mAdPlace)) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
         List<PidConfig> pidList = mAdPlace.getPidList();
         if (pidList == null || pidList.isEmpty()) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return;
         }
 
@@ -1429,9 +1595,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 Log.iv(Log.TAG, mAdPlace.getName() + " seq is loading ...");
             }
         } else {
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onLoadFailed(mAdPlace.getName(), null, null, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
         }
     }
 
@@ -1523,9 +1694,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private boolean showComplexAdsInternal(String sceneName) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_COMPLEX, null, Constant.AD_ERROR_LOADER);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_COMPLEX, null, Constant.AD_ERROR_LOADER);
+                    }
+                }
+            });
             return false;
         }
         final List<ISdkLoader> list = new ArrayList<>();
@@ -1540,9 +1716,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         if (list == null || list.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is not ready for place name : " + getPlaceName());
-            if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_COMPLEX, null, Constant.AD_ERROR_NOFILL);
-            }
+            Utils.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mOnAdSdkListener != null) {
+                        mOnAdSdkListener.onShowFailed(getPlaceName(), null, Constant.PLACE_TYPE_COMPLEX, null, Constant.AD_ERROR_NOFILL);
+                    }
+                }
+            });
             return false;
         }
         sortLoadedLoaders(list);
