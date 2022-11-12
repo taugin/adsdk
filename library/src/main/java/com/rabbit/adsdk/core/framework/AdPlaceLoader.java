@@ -1803,16 +1803,26 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
                     double tmpValue = -1f;
-                    if (TextUtils.equals(adType, Constant.TYPE_BANNER) && loader.isBannerLoaded()) {
-                        tmpValue = loader.getRevenue();
-                    } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE) && loader.isNativeLoaded()) {
-                        tmpValue = loader.getRevenue();
-                    } else if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL) && loader.isInterstitialLoaded()) {
-                        tmpValue = loader.getRevenue();
-                    } else if (TextUtils.equals(adType, Constant.TYPE_REWARD) && loader.isRewardedVideoLoaded()) {
-                        tmpValue = loader.getRevenue();
-                    } else if (TextUtils.equals(adType, Constant.TYPE_SPLASH) && loader.isSplashLoaded()) {
-                        tmpValue = loader.getRevenue();
+                    if (TextUtils.equals(adType, Constant.TYPE_BANNER)) {
+                        if (loader.isBannerLoaded()) {
+                            tmpValue = loader.getRevenue();
+                        }
+                    } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
+                        if (loader.isNativeLoaded()) {
+                            tmpValue = loader.getRevenue();
+                        }
+                    } else if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
+                        if (loader.isInterstitialLoaded()) {
+                            tmpValue = loader.getRevenue();
+                        }
+                    } else if (TextUtils.equals(adType, Constant.TYPE_REWARD)) {
+                        if (loader.isRewardedVideoLoaded()) {
+                            tmpValue = loader.getRevenue();
+                        }
+                    } else if (TextUtils.equals(adType, Constant.TYPE_SPLASH)) {
+                        if (loader.isSplashLoaded()) {
+                            tmpValue = loader.getRevenue();
+                        }
                     } else {
                         tmpValue = loader.getRevenue();
                     }

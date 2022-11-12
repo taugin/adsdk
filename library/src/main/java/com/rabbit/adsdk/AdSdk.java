@@ -681,17 +681,27 @@ public class AdSdk {
                 AdPlaceLoader adPlaceLoader = getAdLoader(placeName);
                 if (!TextUtils.isEmpty(placeName) && adPlaceLoader != null
                         && (whiteList == null || whiteList.isEmpty() || whiteList.contains(placeName))) {
-                    double tmpRevenue;
-                    if (TextUtils.equals(adType, Constant.TYPE_SPLASH) && adPlaceLoader.isSplashLoaded()) {
-                        tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
-                    } else if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL) && adPlaceLoader.isInterstitialLoaded()) {
-                        tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
-                    } else if (TextUtils.equals(adType, Constant.TYPE_REWARD) && adPlaceLoader.isRewardedVideoLoaded()) {
-                        tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
-                    } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE) && adPlaceLoader.isAdViewLoaded(adType)) {
-                        tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
-                    } else if (TextUtils.equals(adType, Constant.TYPE_BANNER) && adPlaceLoader.isAdViewLoaded(adType)) {
-                        tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                    double tmpRevenue = -1f;
+                    if (TextUtils.equals(adType, Constant.TYPE_SPLASH)) {
+                        if (adPlaceLoader.isSplashLoaded()) {
+                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                        }
+                    } else if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
+                        if (adPlaceLoader.isInterstitialLoaded()) {
+                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                        }
+                    } else if (TextUtils.equals(adType, Constant.TYPE_REWARD)) {
+                        if (adPlaceLoader.isRewardedVideoLoaded()) {
+                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                        }
+                    } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
+                        if (adPlaceLoader.isAdViewLoaded(adType)) {
+                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                        }
+                    } else if (TextUtils.equals(adType, Constant.TYPE_BANNER)) {
+                        if (adPlaceLoader.isAdViewLoaded(adType)) {
+                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                        }
                     } else {
                         tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
                     }
