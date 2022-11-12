@@ -106,76 +106,75 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
         setLoading(true, STATE_REQUEST);
         Activity activity = getActivity();
-        if (mTPBanner == null) {
-            mTPBanner = new TPBanner(activity);
-            mTPBanner.closeAutoShow();
-            mTPBanner.setAdListener(new BannerAdListener() {
-                @Override
-                public void onAdLoaded(TPAdInfo tpAdInfo) {
-                    if (!isStateSuccess()) {
-                        Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
-                        setLoading(false, STATE_SUCCESS);
-                        putCachedAdTime(mTPBanner);
-                        String network = getNetwork(tpAdInfo);
-                        setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
-                        reportAdLoaded();
-                        notifySdkLoaderLoaded(false);
-                    } else {
-                        reportAdReLoaded();
-                        autoRefreshBanner(mTPBanner);
-                    }
-                }
-
-                @Override
-                public void onAdClicked(TPAdInfo tpAdInfo) {
+        TPBanner tpBanner = new TPBanner(activity);
+        tpBanner.closeAutoShow();
+        tpBanner.setAdListener(new BannerAdListener() {
+            @Override
+            public void onAdLoaded(TPAdInfo tpAdInfo) {
+                if (!isStateSuccess()) {
+                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
+                    mTPBanner = tpBanner;
+                    setLoading(false, STATE_SUCCESS);
+                    putCachedAdTime(mTPBanner);
                     String network = getNetwork(tpAdInfo);
-                    String networkPid = getNetworkPid(tpAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                    reportAdClick(network, networkPid);
-                    notifyAdClick(network);
+                    setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
+                    reportAdLoaded();
+                    notifySdkLoaderLoaded(false);
+                } else {
+                    reportAdReLoaded();
+                    autoRefreshBanner(tpBanner);
                 }
+            }
 
-                @Override
-                public void onAdImpression(TPAdInfo tpAdInfo) {
-                    String network = getNetwork(tpAdInfo);
-                    String networkPid = getNetworkPid(tpAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad impression network : " + network));
-                    reportAdImp(network, networkPid);
-                    notifyAdImp(network);
-                    reportTradPlusImpressionData(tpAdInfo);
-                }
+            @Override
+            public void onAdClicked(TPAdInfo tpAdInfo) {
+                String network = getNetwork(tpAdInfo);
+                String networkPid = getNetworkPid(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
+                reportAdClick(network, networkPid);
+                notifyAdClick(network);
+            }
 
-                @Override
-                public void onAdShowFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
-                    Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(tpAdError), true));
-                    notifyAdShowFailed(toSdkError(tpAdError), "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
-                }
+            @Override
+            public void onAdImpression(TPAdInfo tpAdInfo) {
+                String network = getNetwork(tpAdInfo);
+                String networkPid = getNetworkPid(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network));
+                reportAdImp(network, networkPid);
+                notifyAdImp(network);
+                reportTradPlusImpressionData(tpAdInfo);
+            }
 
-                @Override
-                public void onAdLoadFailed(TPAdError tpAdError) {
-                    Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
-                    setLoading(false, STATE_FAILURE);
-                    reportAdError(codeToError(tpAdError));
-                    notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
-                }
+            @Override
+            public void onAdShowFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(tpAdError), true));
+                notifyAdShowFailed(toSdkError(tpAdError), "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
+            }
 
-                @Override
-                public void onAdClosed(TPAdInfo tpAdInfo) {
-                    Log.iv(Log.TAG, formatLog("ad banner collapsed"));
-                    reportAdClose();
-                    notifyAdDismiss();
-                }
+            @Override
+            public void onAdLoadFailed(TPAdError tpAdError) {
+                Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
+                setLoading(false, STATE_FAILURE);
+                reportAdError(codeToError(tpAdError));
+                notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
+            }
 
-                @Override
-                public void onBannerRefreshed() {
-                    Log.iv(Log.TAG, formatLog("ad banner refreshed"));
-                }
-            });
-        }
+            @Override
+            public void onAdClosed(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad banner collapsed"));
+                reportAdClose();
+                notifyAdDismiss();
+            }
+
+            @Override
+            public void onBannerRefreshed() {
+                Log.iv(Log.TAG, formatLog("ad banner refreshed"));
+            }
+        });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        mTPBanner.loadAd(getPid(), getSceneId());
+        tpBanner.loadAd(getPid(), getSceneId());
     }
 
     @Override
@@ -251,79 +250,77 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        if (mTPInterstitial == null) {
-            mTPInterstitial = new TPInterstitial(activity, getPid(), false);
-            mTPInterstitial.setAdListener(new InterstitialAdListener() {
-                @Override
-                public void onAdLoaded(TPAdInfo tpAdInfo) {
-                    if (!isStateSuccess()) {
-                        Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
-                        setLoading(false, STATE_SUCCESS);
-                        putCachedAdTime(mTPInterstitial);
-                        String network = getNetwork(tpAdInfo);
-                        setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
-                        reportAdLoaded();
-                        notifyAdLoaded(TradPlusLoader.this);
-                    } else {
-                        reportAdReLoaded();
-                    }
-                }
-
-                @Override
-                public void onAdFailed(TPAdError tpAdError) {
-                    Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
-                    setLoading(false, STATE_FAILURE);
-                    clearLastShowTime();
-                    onResetInterstitial();
-                    reportAdError(codeToError(tpAdError));
-                    notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
-                }
-
-                @Override
-                public void onAdImpression(TPAdInfo tpAdInfo) {
+        mTPInterstitial = new TPInterstitial(activity, getPid(), false);
+        mTPInterstitial.setAdListener(new InterstitialAdListener() {
+            @Override
+            public void onAdLoaded(TPAdInfo tpAdInfo) {
+                if (!isStateSuccess()) {
+                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
+                    setLoading(false, STATE_SUCCESS);
+                    putCachedAdTime(mTPInterstitial);
                     String network = getNetwork(tpAdInfo);
-                    String networkPid = getNetworkPid(tpAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
-                    reportAdImp(network, networkPid);
-                    notifyAdImp(network);
-                    reportTradPlusImpressionData(tpAdInfo);
+                    setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
+                    reportAdLoaded();
+                    notifyAdLoaded(TradPlusLoader.this);
+                } else {
+                    reportAdReLoaded();
                 }
+            }
 
-                @Override
-                public void onAdClicked(TPAdInfo tpAdInfo) {
-                    String network = getNetwork(tpAdInfo);
-                    String networkPid = getNetworkPid(tpAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                    reportAdClick(network, networkPid);
-                    notifyAdClick(network);
-                }
+            @Override
+            public void onAdFailed(TPAdError tpAdError) {
+                Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
+                setLoading(false, STATE_FAILURE);
+                clearLastShowTime();
+                onResetInterstitial();
+                reportAdError(codeToError(tpAdError));
+                notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
+            }
 
-                @Override
-                public void onAdClosed(TPAdInfo tpAdInfo) {
-                    Log.iv(Log.TAG, formatLog("ad interstitial dismissed"));
-                    clearLastShowTime();
-                    onResetInterstitial();
-                    reportAdClose();
-                    notifyAdDismiss();
-                }
+            @Override
+            public void onAdImpression(TPAdInfo tpAdInfo) {
+                String network = getNetwork(tpAdInfo);
+                String networkPid = getNetworkPid(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
+                reportAdImp(network, networkPid);
+                notifyAdImp(network);
+                reportTradPlusImpressionData(tpAdInfo);
+            }
 
-                @Override
-                public void onAdVideoError(TPAdInfo tpAdInfo, TPAdError tpAdError) {
-                    Log.iv(Log.TAG, formatLog(toErrorMessage(tpAdError)));
-                    notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
-                }
+            @Override
+            public void onAdClicked(TPAdInfo tpAdInfo) {
+                String network = getNetwork(tpAdInfo);
+                String networkPid = getNetworkPid(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
+                reportAdClick(network, networkPid);
+                notifyAdClick(network);
+            }
 
-                @Override
-                public void onAdVideoStart(TPAdInfo tpAdInfo) {
-                    Log.iv(Log.TAG, formatLog("ad interstitial play start"));
-                }
+            @Override
+            public void onAdClosed(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad interstitial dismissed"));
+                clearLastShowTime();
+                onResetInterstitial();
+                reportAdClose();
+                notifyAdDismiss();
+            }
 
-                @Override
-                public void onAdVideoEnd(TPAdInfo tpAdInfo) {
-                    Log.iv(Log.TAG, formatLog("ad interstitial play end"));
-                }
-            });
-        }
+            @Override
+            public void onAdVideoError(TPAdInfo tpAdInfo, TPAdError tpAdError) {
+                Log.iv(Log.TAG, formatLog(toErrorMessage(tpAdError)));
+                notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
+            }
+
+            @Override
+            public void onAdVideoStart(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad interstitial play start"));
+            }
+
+            @Override
+            public void onAdVideoEnd(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad interstitial play end"));
+            }
+        });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
@@ -391,91 +388,89 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        if (mTPReward == null) {
-            mTPReward = new TPReward(activity, getPid(), false);
-            mTPReward.setAdListener(new RewardAdListener() {
-                @Override
-                public void onAdLoaded(TPAdInfo tpAdInfo) {
-                    if (!isStateSuccess()) {
-                        Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
-                        putCachedAdTime(mTPReward);
-                        setLoading(false, STATE_SUCCESS);
-                        String network = getNetwork(tpAdInfo);
-                        setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
-                        reportAdLoaded();
-                        notifyAdLoaded(TradPlusLoader.this);
-                    } else {
-                        reportAdReLoaded();
-                    }
-                }
-
-                @Override
-                public void onAdClicked(TPAdInfo tpAdInfo) {
+        mTPReward = new TPReward(activity, getPid(), false);
+        mTPReward.setAdListener(new RewardAdListener() {
+            @Override
+            public void onAdLoaded(TPAdInfo tpAdInfo) {
+                if (!isStateSuccess()) {
+                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
+                    putCachedAdTime(mTPReward);
+                    setLoading(false, STATE_SUCCESS);
                     String network = getNetwork(tpAdInfo);
-                    String networkPid = getNetworkPid(tpAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                    reportAdClick(network, networkPid);
-                    notifyAdClick(network);
+                    setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
+                    reportAdLoaded();
+                    notifyAdLoaded(TradPlusLoader.this);
+                } else {
+                    reportAdReLoaded();
                 }
+            }
 
-                @Override
-                public void onAdImpression(TPAdInfo tpAdInfo) {
-                    String network = getNetwork(tpAdInfo);
-                    String networkPid = getNetworkPid(tpAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
-                    reportAdImp(network, networkPid);
-                    notifyAdImp(network);
-                    reportTradPlusImpressionData(tpAdInfo);
-                }
+            @Override
+            public void onAdClicked(TPAdInfo tpAdInfo) {
+                String network = getNetwork(tpAdInfo);
+                String networkPid = getNetworkPid(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
+                reportAdClick(network, networkPid);
+                notifyAdClick(network);
+            }
 
-                @Override
-                public void onAdFailed(TPAdError tpAdError) {
-                    Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
-                    setLoading(false, STATE_FAILURE);
-                    clearLastShowTime();
-                    onResetReward();
-                    reportAdError(codeToError(tpAdError));
-                    notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
-                }
+            @Override
+            public void onAdImpression(TPAdInfo tpAdInfo) {
+                String network = getNetwork(tpAdInfo);
+                String networkPid = getNetworkPid(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
+                reportAdImp(network, networkPid);
+                notifyAdImp(network);
+                reportTradPlusImpressionData(tpAdInfo);
+            }
 
-                @Override
-                public void onAdClosed(TPAdInfo tpAdInfo) {
-                    Log.iv(Log.TAG, formatLog("ad reward closed"));
-                    clearLastShowTime();
-                    onResetReward();
-                    reportAdClose();
-                    notifyAdDismiss();
-                }
+            @Override
+            public void onAdFailed(TPAdError tpAdError) {
+                Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
+                setLoading(false, STATE_FAILURE);
+                clearLastShowTime();
+                onResetReward();
+                reportAdError(codeToError(tpAdError));
+                notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
+            }
 
-                @Override
-                public void onAdReward(TPAdInfo tpAdInfo) {
-                    Log.iv(Log.TAG, formatLog("ad reward complete"));
-                    reportAdReward();
-                    notifyRewardAdsCompleted();
-                    AdReward adReward = new AdReward();
-                    adReward.setType(tpAdInfo.rewardName);
-                    adReward.setAmount(String.valueOf(tpAdInfo.rewardNumber));
-                    notifyRewarded(adReward);
-                }
+            @Override
+            public void onAdClosed(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad reward closed"));
+                clearLastShowTime();
+                onResetReward();
+                reportAdClose();
+                notifyAdDismiss();
+            }
 
-                @Override
-                public void onAdVideoStart(TPAdInfo tpAdInfo) {
-                    Log.iv(Log.TAG, formatLog("ad reward play start"));
-                }
+            @Override
+            public void onAdReward(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad reward complete"));
+                reportAdReward();
+                notifyRewardAdsCompleted();
+                AdReward adReward = new AdReward();
+                adReward.setType(tpAdInfo.rewardName);
+                adReward.setAmount(String.valueOf(tpAdInfo.rewardNumber));
+                notifyRewarded(adReward);
+            }
 
-                @Override
-                public void onAdVideoEnd(TPAdInfo tpAdInfo) {
-                    Log.iv(Log.TAG, formatLog("ad reward play end"));
-                }
+            @Override
+            public void onAdVideoStart(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad reward play start"));
+            }
 
-                @Override
-                public void onAdVideoError(TPAdInfo tpAdInfo, TPAdError tpAdError) {
-                    Log.iv(Log.TAG, formatLog("ad show failed : " + toErrorMessage(tpAdError)));
-                    onResetReward();
-                    notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
-                }
-            });
-        }
+            @Override
+            public void onAdVideoEnd(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad reward play end"));
+            }
+
+            @Override
+            public void onAdVideoError(TPAdInfo tpAdInfo, TPAdError tpAdError) {
+                Log.iv(Log.TAG, formatLog("ad show failed : " + toErrorMessage(tpAdError)));
+                onResetReward();
+                notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
+            }
+        });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
@@ -534,65 +529,63 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        if (mTPNative == null) {
-            mTPNative = new TPNative(getActivity(), getPid(), false);
-            mTPNative.setAdListener(new NativeAdListener() {
-                @Override
-                public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
-                    if (!isStateSuccess()) {
-                        Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
-                        setLoading(false, STATE_SUCCESS);
-                        putCachedAdTime(mTPNative);
-                        String network = getNetwork(tpAdInfo);
-                        setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
-                        reportAdLoaded();
-                        notifySdkLoaderLoaded(false);
-                    } else {
-                        reportAdReLoaded();
-                    }
-                }
-
-                @Override
-                public void onAdClicked(TPAdInfo tpAdInfo) {
+        mTPNative = new TPNative(getActivity(), getPid(), false);
+        mTPNative.setAdListener(new NativeAdListener() {
+            @Override
+            public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
+                if (!isStateSuccess()) {
+                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
+                    setLoading(false, STATE_SUCCESS);
+                    putCachedAdTime(mTPNative);
                     String network = getNetwork(tpAdInfo);
-                    String networkPid = getNetworkPid(tpAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                    reportAdClick(network, networkPid);
-                    notifyAdClick(network);
+                    setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
+                    reportAdLoaded();
+                    notifySdkLoaderLoaded(false);
+                } else {
+                    reportAdReLoaded();
                 }
+            }
 
-                @Override
-                public void onAdImpression(TPAdInfo tpAdInfo) {
-                    String network = getNetwork(tpAdInfo);
-                    String networkPid = getNetworkPid(tpAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
-                    reportAdImp(network, networkPid);
-                    notifyAdImp(network);
-                    reportTradPlusImpressionData(tpAdInfo);
-                }
+            @Override
+            public void onAdClicked(TPAdInfo tpAdInfo) {
+                String network = getNetwork(tpAdInfo);
+                String networkPid = getNetworkPid(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
+                reportAdClick(network, networkPid);
+                notifyAdClick(network);
+            }
 
-                @Override
-                public void onAdShowFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
-                    Log.iv(Log.TAG, formatLog("ad show failed : " + toSdkError(tpAdError)));
-                    notifyAdShowFailed(toSdkError(tpAdError), "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
-                }
+            @Override
+            public void onAdImpression(TPAdInfo tpAdInfo) {
+                String network = getNetwork(tpAdInfo);
+                String networkPid = getNetworkPid(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
+                reportAdImp(network, networkPid);
+                notifyAdImp(network);
+                reportTradPlusImpressionData(tpAdInfo);
+            }
 
-                @Override
-                public void onAdLoadFailed(TPAdError tpAdError) {
-                    Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
-                    reportAdError(codeToError(tpAdError));
-                    setLoading(false, STATE_FAILURE);
-                    notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
-                }
+            @Override
+            public void onAdShowFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad show failed : " + toSdkError(tpAdError)));
+                notifyAdShowFailed(toSdkError(tpAdError), "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
+            }
 
-                @Override
-                public void onAdClosed(TPAdInfo tpAdInfo) {
-                    Log.iv(Log.TAG, formatLog("ad native closed"));
-                    reportAdClose();
-                    notifyAdDismiss();
-                }
-            });
-        }
+            @Override
+            public void onAdLoadFailed(TPAdError tpAdError) {
+                Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
+                reportAdError(codeToError(tpAdError));
+                setLoading(false, STATE_FAILURE);
+                notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
+            }
+
+            @Override
+            public void onAdClosed(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad native closed"));
+                reportAdClose();
+                notifyAdDismiss();
+            }
+        });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
@@ -612,6 +605,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
         if (mTPNative != null && mTPNative.isReady()) {
+            mTPNative.onDestroy();
             final TPCustomNativeAd customNativeAd = mTPNative.getNativeAd();
             if (customNativeAd != null) {
                 reportAdShow();
@@ -629,6 +623,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPCustomNativeAd is null");
             }
             clearCachedAdTime(mTPNative);
+            mTPNative = null;
         } else {
             Log.e(Log.TAG, formatShowErrorLog("TPNative is ready"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPNative not ready");
@@ -672,70 +667,68 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
-        if (mTPSplash == null) {
-            mTPSplash = new TPSplash(getActivity(), getPid());
-            mTPSplash.setAdListener(new SplashAdListener() {
-                @Override
-                public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
-                    if (!isStateSuccess()) {
-                        Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
-                        setLoading(false, STATE_SUCCESS);
-                        putCachedAdTime(mTPSplash);
-                        String network = getNetwork(tpAdInfo);
-                        setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
-                        reportAdLoaded();
-                        notifyAdLoaded(TradPlusLoader.this);
-                    } else {
-                        reportAdReLoaded();
-                    }
-                }
-
-                @Override
-                public void onAdClicked(TPAdInfo tpAdInfo) {
+        mTPSplash = new TPSplash(getActivity(), getPid());
+        mTPSplash.setAdListener(new SplashAdListener() {
+            @Override
+            public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
+                if (!isStateSuccess()) {
+                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(tpAdInfo)));
+                    setLoading(false, STATE_SUCCESS);
+                    putCachedAdTime(mTPSplash);
                     String network = getNetwork(tpAdInfo);
-                    String networkPid = getNetworkPid(tpAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                    reportAdClick(network, networkPid);
-                    notifyAdClick(network);
+                    setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
+                    reportAdLoaded();
+                    notifyAdLoaded(TradPlusLoader.this);
+                } else {
+                    reportAdReLoaded();
                 }
+            }
 
-                @Override
-                public void onAdImpression(TPAdInfo tpAdInfo) {
-                    String network = getNetwork(tpAdInfo);
-                    String networkPid = getNetworkPid(tpAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
-                    reportAdImp(network, networkPid);
-                    notifyAdImp(network);
-                    reportTradPlusImpressionData(tpAdInfo);
-                }
+            @Override
+            public void onAdClicked(TPAdInfo tpAdInfo) {
+                String network = getNetwork(tpAdInfo);
+                String networkPid = getNetworkPid(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
+                reportAdClick(network, networkPid);
+                notifyAdClick(network);
+            }
 
-                @Override
-                public void onAdShowFailed(TPAdInfo tpAdInfo, TPAdError tpAdError) {
-                    Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(tpAdError)));
-                    clearLastShowTime();
-                    onResetSplash();
-                    notifyAdShowFailed(toSdkError(tpAdError), "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
-                }
+            @Override
+            public void onAdImpression(TPAdInfo tpAdInfo) {
+                String network = getNetwork(tpAdInfo);
+                String networkPid = getNetworkPid(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
+                reportAdImp(network, networkPid);
+                notifyAdImp(network);
+                reportTradPlusImpressionData(tpAdInfo);
+            }
 
-                @Override
-                public void onAdLoadFailed(TPAdError tpAdError) {
-                    Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
-                    setLoading(false, STATE_FAILURE);
-                    onResetSplash();
-                    reportAdError(codeToError(tpAdError));
-                    notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
-                }
+            @Override
+            public void onAdShowFailed(TPAdInfo tpAdInfo, TPAdError tpAdError) {
+                Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(tpAdError)));
+                clearLastShowTime();
+                onResetSplash();
+                notifyAdShowFailed(toSdkError(tpAdError), "[" + getNetwork(tpAdInfo) + "]" + toErrorMessage(tpAdError));
+            }
 
-                @Override
-                public void onAdClosed(TPAdInfo tpAdInfo) {
-                    Log.iv(Log.TAG, formatLog("ad dismissed"));
-                    clearLastShowTime();
-                    onResetSplash();
-                    reportAdClose();
-                    notifyAdDismiss();
-                }
-            });
-        }
+            @Override
+            public void onAdLoadFailed(TPAdError tpAdError) {
+                Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(tpAdError), true));
+                setLoading(false, STATE_FAILURE);
+                onResetSplash();
+                reportAdError(codeToError(tpAdError));
+                notifyAdLoadFailed(toSdkError(tpAdError), toErrorMessage(tpAdError));
+            }
+
+            @Override
+            public void onAdClosed(TPAdInfo tpAdInfo) {
+                Log.iv(Log.TAG, formatLog("ad dismissed"));
+                clearLastShowTime();
+                onResetSplash();
+                reportAdClose();
+                notifyAdDismiss();
+            }
+        });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
@@ -794,18 +787,21 @@ public class TradPlusLoader extends AbstractSdkLoader {
     protected void onResetInterstitial() {
         super.onResetInterstitial();
         clearCachedAdTime(mTPInterstitial);
+        mTPInterstitial = null;
     }
 
     @Override
     protected void onResetReward() {
         super.onResetReward();
         clearCachedAdTime(mTPReward);
+        mTPReward = null;
     }
 
     @Override
     protected void onResetSplash() {
         super.onResetSplash();
         clearCachedAdTime(mTPSplash);
+        mTPSplash = null;
     }
 
     private void refreshContext() {
