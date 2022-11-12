@@ -253,6 +253,13 @@
                 android:text="展示最大原生" />
         </LinearLayout>
 
+        <Button
+            android:id="@+id/show_complex_ads"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_48"
+            android:onClick="onClick"
+            android:text="复合广告展示" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

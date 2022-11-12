@@ -198,6 +198,21 @@ public class DataManager {
         return null;
     }
 
+    public boolean isComplexNativeFull() {
+        String complexNativeFull = null;
+        Map<String, Map<String, String>> mapMap = getMediationConfig();
+        if (mapMap != null) {
+            Map<String, String> signMap = mapMap.get("complex.ads.config");
+            if (signMap != null && !signMap.isEmpty()) {
+                complexNativeFull = signMap.get("complex_native_full");
+            }
+        }
+        if (TextUtils.isEmpty(complexNativeFull)) {
+            complexNativeFull = "true";
+        }
+        return TextUtils.equals(complexNativeFull, "true");
+    }
+
     public String getString(String key) {
         return getString(key, false);
     }

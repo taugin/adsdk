@@ -10,5 +10,8 @@
   },
   "allow.package.list": {
     "pack1": "com.hauyu.adsdk.demo"
+  },
+  "complex.ads.config": {
+    "complex_native_full": "true"
   }
 }

@@ -347,6 +347,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             } else {
                 runToast("No loaded place name");
             }
+        } else if (v.getId() == R.id.show_complex_ads) {
+            String maxPlaceName = AdSdk.get(this).getMaxPlaceName();
+            AdSdk.get(this).showComplexAds(maxPlaceName);
         } else {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag, (TextView) v);

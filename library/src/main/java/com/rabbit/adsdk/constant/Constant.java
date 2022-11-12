@@ -46,6 +46,8 @@ public class Constant {
     public static final String NATIVE_CARD_MIX = "mix";
     public static final String NATIVE_CARD_FOOT = "foot";
 
+    public static final List<String> NATIVE_CARD_FULL_LIST = Arrays.asList(NATIVE_CARD_ROUND, NATIVE_CARD_FULL, NATIVE_CARD_WRAP, NATIVE_CARD_HEAD, NATIVE_CARD_MIX, NATIVE_CARD_FOOT);
+
     public static final String MODE_SEQ = "seq";
     public static final String MODE_CON = "con";
     public static final String MODE_RAN = "ran";

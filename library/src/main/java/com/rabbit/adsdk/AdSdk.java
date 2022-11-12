@@ -660,6 +660,10 @@ public class AdSdk {
         return true;
     }
 
+    public String getMaxPlaceName() {
+        return getMaxPlaceName(null, null);
+    }
+
     public String getMaxPlaceName(String adType) {
         return getMaxPlaceName(adType, null);
     }
@@ -703,7 +707,9 @@ public class AdSdk {
                             tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
                         }
                     } else {
-                        tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                        if (adPlaceLoader.isComplexAdsLoaded()) {
+                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                        }
                     }
                     if (tmpRevenue > maxRevenue) {
                         maxRevenue = tmpRevenue;
@@ -712,7 +718,7 @@ public class AdSdk {
                 }
             }
         }
-        Log.iv(Log.TAG, "max place name : " + maxPlaceName  + " , ad type : " + adType + " , revenue : " + maxRevenue);
+        Log.iv(Log.TAG, "max place name : " + maxPlaceName + " , ad type : " + adType + " , revenue : " + maxRevenue);
         return maxPlaceName;
     }
 

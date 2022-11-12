@@ -29,6 +29,7 @@ import com.rabbit.adsdk.adloader.tradplus.TradPlusLoader;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.AdPolicy;
 import com.rabbit.adsdk.core.ModuleLoaderHelper;
+import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PidConfig;
 import com.rabbit.adsdk.listener.OnAdSdkListener;
@@ -1416,11 +1417,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     public boolean isComplexAdsLoaded() {
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null && (loader.isBannerLoaded()
-                        || loader.isNativeLoaded()
-                        || loader.isInterstitialLoaded()
-                        || loader.isRewardedVideoLoaded())
-                        || loader.isSplashLoaded()) {
+                if (isAnyLoaderLoaded(loader)) {
                     Log.iv(Log.TAG, loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
                     return true;
                 }
@@ -1439,11 +1436,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    boolean loaded = loader.isBannerLoaded()
-                            || loader.isNativeLoaded()
-                            || loader.isInterstitialLoaded()
-                            || loader.isRewardedVideoLoaded()
-                            || loader.isSplashLoaded();
+                    boolean loaded = isAnyLoaderLoaded(loader);
                     if (loaded) {
                         return loader.getAdType();
                     }
@@ -1458,11 +1451,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    boolean loaded = loader.isBannerLoaded()
-                            || loader.isNativeLoaded()
-                            || loader.isInterstitialLoaded()
-                            || loader.isRewardedVideoLoaded()
-                            || loader.isSplashLoaded();
+                    boolean loaded = isAnyLoaderLoaded(loader);
                     if (loaded) {
                         return loader.getSdkName();
                     }
@@ -1699,11 +1688,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
         final List<ISdkLoader> list = new ArrayList<>();
         for (ISdkLoader loader : mAdLoaders) {
-            if (loader != null && ((loader.isRewardedVideoType() && loader.isRewardedVideoLoaded())
-                    || (loader.isInterstitialType() && loader.isInterstitialLoaded())
-                    || (loader.isSplashType() && loader.isSplashLoaded())
-                    || (loader.isBannerType() && loader.isBannerLoaded())
-                    || (loader.isNativeType() && loader.isNativeLoaded()))) {
+            if (isAnyLoaderLoaded(loader)) {
                 list.add(loader);
             }
         }
@@ -1751,7 +1736,15 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         Log.iv(Log.TAG, "show complex ads for banner or native");
         try {
             sLoaderMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), iSdkLoader);
-            sParamsMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), getParams(iSdkLoader));
+            Params params = getParams(iSdkLoader);
+            try {
+                if (params != null && DataManager.get(mContext).isComplexNativeFull()) {
+                    params.setAdCardStyle(Constant.NATIVE_CARD_FULL_LIST.get(new Random().nextInt(Constant.NATIVE_CARD_FULL_LIST.size())));
+                    params.setAdRootLayout(0);
+                }
+            } catch (Exception e) {
+            }
+            sParamsMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), params);
             Intent intent = new Intent(mContext, RabActivity.class);
             intent.putExtra(Intent.EXTRA_TITLE, placeName);
             intent.putExtra(Intent.EXTRA_TEXT, source);
@@ -1776,11 +1769,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         int loadedAdCount = 0;
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
             for (ISdkLoader loader : mAdLoaders) {
-                if ((loader.isBannerLoaded()
-                        || loader.isNativeLoaded()
-                        || loader.isInterstitialLoaded()
-                        || loader.isRewardedVideoLoaded()
-                        || loader.isSplashLoaded())) {
+                if (isAnyLoaderLoaded(loader)) {
                     loadedAdCount++;
                 }
             }
@@ -1824,7 +1813,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                             tmpValue = loader.getRevenue();
                         }
                     } else {
-                        tmpValue = loader.getRevenue();
+                        if (isAnyLoaderLoaded(loader)) {
+                            tmpValue = loader.getRevenue();
+                        }
                     }
                     if (tmpValue > maxValue) {
                         maxValue = tmpValue;
@@ -1832,6 +1823,17 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 }
             }
         return maxValue;
+    }
+
+    private boolean isAnyLoaderLoaded(ISdkLoader iSdkLoader) {
+        if (iSdkLoader != null) {
+            return iSdkLoader.isBannerLoaded()
+                    || iSdkLoader.isNativeLoaded()
+                    || iSdkLoader.isInterstitialLoaded()
+                    || iSdkLoader.isRewardedVideoLoaded()
+                    || iSdkLoader.isSplashLoaded();
+        }
+        return false;
     }
 
     @Override
