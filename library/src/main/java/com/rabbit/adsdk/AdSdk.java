@@ -639,7 +639,7 @@ public class AdSdk {
     public double getMaxRevenue(String placeName) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {
-            return loader.getMaxRevenue();
+            return loader.getMaxRevenue(null);
         }
         return 0f;
     }
@@ -683,17 +683,17 @@ public class AdSdk {
                         && (whiteList == null || whiteList.isEmpty() || whiteList.contains(placeName))) {
                     double tmpRevenue;
                     if (TextUtils.equals(adType, Constant.TYPE_SPLASH) && adPlaceLoader.isSplashLoaded()) {
-                        tmpRevenue = adPlaceLoader.getMaxRevenue();
+                        tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
                     } else if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL) && adPlaceLoader.isInterstitialLoaded()) {
-                        tmpRevenue = adPlaceLoader.getMaxRevenue();
+                        tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
                     } else if (TextUtils.equals(adType, Constant.TYPE_REWARD) && adPlaceLoader.isRewardedVideoLoaded()) {
-                        tmpRevenue = adPlaceLoader.getMaxRevenue();
+                        tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
                     } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE) && adPlaceLoader.isAdViewLoaded(adType)) {
-                        tmpRevenue = adPlaceLoader.getMaxRevenue();
+                        tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
                     } else if (TextUtils.equals(adType, Constant.TYPE_BANNER) && adPlaceLoader.isAdViewLoaded(adType)) {
-                        tmpRevenue = adPlaceLoader.getMaxRevenue();
+                        tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
                     } else {
-                        tmpRevenue = -1f;
+                        tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
                     }
                     if (tmpRevenue > maxRevenue) {
                         maxRevenue = tmpRevenue;
@@ -702,7 +702,7 @@ public class AdSdk {
                 }
             }
         }
-        Log.iv(Log.TAG, "max place name : " + maxPlaceName + " , revenue : " + maxRevenue);
+        Log.iv(Log.TAG, "max place name : " + maxPlaceName  + " , ad type : " + adType + " , revenue : " + maxRevenue);
         return maxPlaceName;
     }
 

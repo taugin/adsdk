@@ -1099,25 +1099,18 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mAdLoaders != null) {
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    if (TextUtils.equals(adType, Constant.TYPE_BANNER)) {
-                        boolean bannerLoaded = loader.isBannerLoaded();
-                        if (bannerLoaded) {
-                            Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
-                        }
-                        return bannerLoaded;
+                    if (TextUtils.equals(adType, Constant.TYPE_BANNER) && loader.isBannerLoaded()) {
+                        Log.iv(Log.TAG, loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        return true;
                     }
-                    if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
-                        boolean nativeLoaded = loader.isNativeLoaded();
-                        if (nativeLoaded) {
-                            Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
-                        }
-                        return nativeLoaded;
+                    if (TextUtils.equals(adType, Constant.TYPE_NATIVE) && loader.isNativeLoaded()) {
+                        Log.iv(Log.TAG, loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        return true;
                     }
-                    boolean bannerOrNativeLoaded = loader.isBannerLoaded() || loader.isNativeLoaded();
-                    if (bannerOrNativeLoaded) {
-                        Log.iv(Log.TAG, loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                    if (loader.isBannerLoaded() || loader.isNativeLoaded()) {
+                        Log.iv(Log.TAG, loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType() + " has loaded");
+                        return true;
                     }
-                    return bannerOrNativeLoaded;
                 }
             }
         }
@@ -1804,13 +1797,28 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     @Override
-    public double getMaxRevenue() {
-        double maxValue = 0;
+    public double getMaxRevenue(String adType) {
+        double maxValue = -1f;
         if (mAdLoaders != null && !mAdLoaders.isEmpty())
             for (ISdkLoader loader : mAdLoaders) {
-                double tmpValue = loader.getRevenue();
-                if (tmpValue > maxValue) {
-                    maxValue = tmpValue;
+                if (loader != null) {
+                    double tmpValue = -1f;
+                    if (TextUtils.equals(adType, Constant.TYPE_BANNER) && loader.isBannerLoaded()) {
+                        tmpValue = loader.getRevenue();
+                    } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE) && loader.isNativeLoaded()) {
+                        tmpValue = loader.getRevenue();
+                    } else if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL) && loader.isInterstitialLoaded()) {
+                        tmpValue = loader.getRevenue();
+                    } else if (TextUtils.equals(adType, Constant.TYPE_REWARD) && loader.isRewardedVideoLoaded()) {
+                        tmpValue = loader.getRevenue();
+                    } else if (TextUtils.equals(adType, Constant.TYPE_SPLASH) && loader.isSplashLoaded()) {
+                        tmpValue = loader.getRevenue();
+                    } else {
+                        tmpValue = loader.getRevenue();
+                    }
+                    if (tmpValue > maxValue) {
+                        maxValue = tmpValue;
+                    }
                 }
             }
         return maxValue;
