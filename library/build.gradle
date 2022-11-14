@@ -149,7 +149,7 @@ dependencies {
     // ironsource
     implementation 'com.ironsource.sdk:mediationsdk:7.2.5'
     // applovin ironsource mediation
-    implementation 'com.applovin.mediation:ironsource-adapter:7.2.5.0.0'
+    implementation 'com.applovin.mediation:ironsource-adapter:7.2.5.0.1'
     // tradplus ironsource mediation
     implementation 'com.tradplusad:tradplus-ironsource:10.8.7.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
