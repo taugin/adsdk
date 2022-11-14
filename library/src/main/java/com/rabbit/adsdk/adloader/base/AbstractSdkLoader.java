@@ -43,6 +43,7 @@ import com.rabbit.sunny.MView;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -89,10 +90,17 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private final AtomicBoolean mLoadTimeout = new AtomicBoolean(false);
     private String mAdNetwork;
     private double mAdRevenue;
-    private String mImpressionId;
     int mLoadState = STATE_NONE;
     // applovin SDK需要提前初始化的SDK名称列表
     private static final List<String> sNeedInitAppLovinFirstSdks = Arrays.asList(Constant.AD_SDK_TRADPLUS, Constant.AD_SDK_APPLOVIN);
+
+    private LinkedHashMap<Object, String> mImpressionIdMap = new LinkedHashMap<Object, String>(5) {
+        @Override
+        protected boolean removeEldestEntry(Entry eldest) {
+            return size() > 5;
+        }
+    };
+    private Object mClickListenerObject = null;
 
     public AbstractSdkLoader() {
         mHandler = new Handler(Looper.getMainLooper(), this);
@@ -899,15 +907,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return mAdRevenue;
     }
 
-    protected void generateImpressionId() {
-        try {
-            mImpressionId = UUID.randomUUID().toString();
-        } catch (Exception e) {
-        }
-    }
-
-    protected String getImpressionId() {
-        return mImpressionId;
+    protected String generateImpressionId() {
+        return UUID.randomUUID().toString();
     }
 
     protected boolean isTemplateRendering() {
@@ -986,18 +987,18 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected void reportAdClick() {
-        reportAdClick(getSdkName(), getPid());
+        reportAdClick(getSdkName(), getPid(), null);
     }
 
-    protected void reportAdClick(String network, String networkPid) {
+    protected void reportAdClick(String network, String networkPid, String impressionId) {
         if (mStat != null) {
             Map<String, Object> extra = new HashMap<>();
-            String adPlacement = DBManager.get(mContext).queryAdPlacement(getImpressionId());
+            String adPlacement = DBManager.get(mContext).queryAdPlacement(impressionId);
             if (TextUtils.isEmpty(adPlacement)) {
                 adPlacement = getAdPlaceName();
             }
             extra.put("placement", adPlacement);
-            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), extra, getImpressionId());
+            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), extra, impressionId);
         }
     }
 
@@ -1079,19 +1080,19 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     }
 
     protected void notifyAdClick() {
-        notifyAdClick(null);
+        notifyAdClick(null, null);
     }
 
     /**
      * banner or native click
      */
-    protected void notifyAdClick(String network) {
+    protected void notifyAdClick(String network, String impressionId) {
         if (getAdListener() != null) {
             getAdListener().onAdClick(network);
         }
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onClick(getAdPlaceName(), getSdkName(), getAdType(), getPid(), getImpressionId());
+            l.onClick(getAdPlaceName(), getSdkName(), getAdType(), getPid(), impressionId);
         }
     }
 
@@ -1248,7 +1249,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return true;
     }
 
-    protected void onReportAdImpData(Map<String, Object> adImpMap) {
+    protected void onReportAdImpData(Map<String, Object> adImpMap, String impressionId) {
         if (isReportAdImpData()) {
             if (adImpMap != null) {
                 try {
@@ -1280,9 +1281,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             }
             InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
         }
-        generateImpressionId();
         if (adImpMap != null) {
-            adImpMap.put(Constant.AD_IMPRESSION_ID, getImpressionId());
+            adImpMap.put(Constant.AD_IMPRESSION_ID, impressionId);
         }
         printImpData(adImpMap);
         AdImpData adImpData = AdImpData.createAdImpData(adImpMap);
@@ -1302,5 +1302,38 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         builder.append("}");
         Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
+    }
+
+    protected void setClickListenerObject(Object clickListenerObject) {
+        mClickListenerObject = clickListenerObject;
+    }
+
+    protected void putImpressionId(String impressionId) {
+        try {
+            if (mImpressionIdMap != null && mClickListenerObject != null && impressionId != null) {
+                mImpressionIdMap.put(mClickListenerObject, impressionId);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    protected String getImpressionId(Object clickListenerObject) {
+        String impressionId = null;
+        try {
+            if (mImpressionIdMap != null && clickListenerObject != null) {
+                impressionId = mImpressionIdMap.get(clickListenerObject);
+            }
+        } catch (Exception e) {
+        }
+        return impressionId;
+    }
+
+    protected void removeImpressionId(Object clickListenerObject) {
+        try {
+            if (mImpressionIdMap != null && clickListenerObject != null) {
+                mImpressionIdMap.remove(clickListenerObject);
+            }
+        } catch (Exception e) {
+        }
     }
 }
