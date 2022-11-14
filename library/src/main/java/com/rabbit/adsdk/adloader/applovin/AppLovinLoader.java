@@ -403,8 +403,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             int height = Utils.dp2px(mContext, 250);
             loadingMaxAdView.setLayoutParams(new ViewGroup.LayoutParams(width, height));
         }
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         MaxAdViewAdListener maxAdViewAdListener = new MaxAdViewAdListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdLoaded(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
@@ -481,14 +482,15 @@ public class AppLovinLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        setRevenueCallback(loadingMaxAdView, requestId);
+        setRevenueCallback(loadingMaxAdView, generateRequestId);
         loadingMaxAdView.setPlacement(getSceneId());
         loadingMaxAdView.loadAd();
     }
 
-    private void setRevenueCallback(MaxAdView maxAdView, final String requestId) {
+    private void setRevenueCallback(MaxAdView maxAdView, final String generateRequestId) {
         if (maxAdView != null) {
             maxAdView.setRevenueListener(new MaxAdRevenueListener() {
+                private String requestId = generateRequestId;
                 @Override
                 public void onAdRevenuePaid(MaxAd ad) {
                     Log.iv(Log.TAG, formatLog("ad revenue paid" + getLoadedInfo(ad)));
@@ -537,8 +539,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (interstitialAd == null) {
             interstitialAd = new MaxInterstitialAd(getPid(), appLovinSdk, activity);
         }
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         MaxAdListener maxAdListener = new MaxAdListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdLoaded(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
@@ -598,6 +601,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         interstitialAd.setListener(maxAdListener);
 
         interstitialAd.setRevenueListener(new MaxAdRevenueListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
@@ -638,8 +642,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private void loadRewardedVideoForMax(AppLovinSdk appLovinSdk, Activity activity) {
         setLoading(true, STATE_REQUEST);
         rewardedAd = MaxRewardedAd.getInstance(getPid(), appLovinSdk, activity);
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         MaxRewardedAdListener maxRewardedAdListener = new MaxRewardedAdListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onRewardedVideoStarted(MaxAd ad) {
                 Log.iv(Log.TAG, "");
@@ -728,6 +733,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         rewardedAd.setListener(maxRewardedAdListener);
 
         rewardedAd.setRevenueListener(new MaxAdRevenueListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
@@ -796,8 +802,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (mMaxNativeAdLoader == null) {
             mMaxNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
         }
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         MaxNativeAdListener maxNativeAdListener = new MaxNativeAdListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onNativeAdLoaded(MaxNativeAdView maxNativeAdView, MaxAd maxAd) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(maxAd)));
@@ -830,6 +837,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         };
         mMaxNativeAdLoader.setNativeAdListener(maxNativeAdListener);
         mMaxNativeAdLoader.setRevenueListener(new MaxAdRevenueListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
@@ -963,8 +971,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (mMaxAppOpenAd == null) {
             mMaxAppOpenAd = new MaxAppOpenAd(getPid(), appLovinSdk);
         }
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         MaxAdListener maxAdListener = new MaxAdListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdLoaded(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
@@ -1027,7 +1036,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                reportMaxAdImpData(ad, getAdPlaceName(), requestId);
+                reportMaxAdImpData(ad, getAdPlaceName(), generateRequestId);
             }
         });
         printInterfaceLog(ACTION_LOAD);

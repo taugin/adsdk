@@ -152,8 +152,9 @@ public class AdmobLoader extends AbstractSdkLoader {
         loadingView = new AdView(mContext);
         loadingView.setAdUnitId(mPidConfig.getPid());
         loadingView.setAdSize(size);
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         AdListener adListener = new AdListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdClosed() {
                 Log.iv(Log.TAG, formatLog("ad closed"));
@@ -200,6 +201,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         };
         loadingView.setAdListener(adListener);
         loadingView.setOnPaidEventListener(new OnPaidEventListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onPaidEvent(AdValue adValue) {
                 String network = null;
@@ -285,8 +287,9 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         InterstitialAdLoadCallback interstitialAdLoadCallback = new InterstitialAdLoadCallback() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 Log.iv(Log.TAG, formatLog("ad load success"));
@@ -414,8 +417,9 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         RewardedAdLoadCallback rewardedAdLoadCallback = new RewardedAdLoadCallback() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                 Log.iv(Log.TAG, formatLog("ad load success"));
@@ -600,9 +604,10 @@ public class AdmobLoader extends AbstractSdkLoader {
         } catch (Exception e) {
         }
         setLoading(true, STATE_REQUEST);
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         loadingBuilder = new AdLoader.Builder(mContext, mPidConfig.getPid());
         AdListener adListener = new AdListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdClicked() {
                 Log.iv(Log.TAG, formatLog("ad click"));
@@ -643,6 +648,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
         };
         loadingBuilder.forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
                 Log.iv(Log.TAG, formatLog("ad load success"));
@@ -761,8 +767,9 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         AppOpenAd.AppOpenAdLoadCallback appOpenAdLoadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdLoaded(AppOpenAd appOpenAd) {
                 Log.iv(Log.TAG, formatLog("ad load success"));

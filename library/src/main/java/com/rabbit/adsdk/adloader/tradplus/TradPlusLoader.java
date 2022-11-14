@@ -108,8 +108,9 @@ public class TradPlusLoader extends AbstractSdkLoader {
         Activity activity = getActivity();
         TPBanner tpBanner = new TPBanner(activity);
         tpBanner.closeAutoShow();
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         BannerAdListener bannerAdListener = new BannerAdListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
                 if (!isStateSuccess()) {
@@ -252,9 +253,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         mTPInterstitial = new TPInterstitial(activity, getPid(), false);
         InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
                 if (!isStateSuccess()) {
@@ -392,9 +394,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         mTPReward = new TPReward(activity, getPid(), false);
         RewardAdListener rewardAdListener = new RewardAdListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
                 if (!isStateSuccess()) {
@@ -535,9 +538,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         mTPNative = new TPNative(getActivity(), getPid(), false);
         NativeAdListener nativeAdListener = new NativeAdListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
                 if (!isStateSuccess()) {
@@ -674,9 +678,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
-        final String requestId = generateRequestId();
+        final String generateRequestId = generateRequestId();
         mTPSplash = new TPSplash(getActivity(), getPid());
         SplashAdListener splashAdListener = new SplashAdListener() {
+            private String requestId = generateRequestId;
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
                 if (!isStateSuccess()) {

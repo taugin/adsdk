@@ -237,7 +237,7 @@ public class EventImpl implements IEvent {
         try {
             if (!DBManager.get(context).isAdClicked(requestId)) {
                 String eventIdDistinct = generateEventId(context, "click", sdk + "_distinct", type);
-                Log.iv(Log.TAG, "eventIdDistinct : " + eventIdDistinct);
+                Log.iv(Log.TAG, "event id distinct : " + eventIdDistinct);
                 extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
                 reportEvent(context, eventIdDistinct, placeName, extra);
             }
