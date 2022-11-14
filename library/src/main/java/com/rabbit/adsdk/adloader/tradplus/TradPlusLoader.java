@@ -108,6 +108,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         Activity activity = getActivity();
         TPBanner tpBanner = new TPBanner(activity);
         tpBanner.closeAutoShow();
+        final String requestId = generateRequestId();
         BannerAdListener bannerAdListener = new BannerAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
@@ -131,9 +132,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String network = getNetwork(tpAdInfo);
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                String impressionId = tpAdInfo != null ? tpAdInfo.requestId : null;
-                reportAdClick(network, networkPid, impressionId);
-                notifyAdClick(network, impressionId);
+                reportAdClick(network, networkPid, requestId);
+                notifyAdClick(network, requestId);
             }
 
             @Override
@@ -143,7 +143,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network));
                 reportAdImp(network, networkPid);
                 notifyAdImp(network);
-                reportTradPlusImpressionData(tpAdInfo);
+                reportTradPlusImpressionData(tpAdInfo, requestId);
             }
 
             @Override
@@ -252,6 +252,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
+        final String requestId = generateRequestId();
         mTPInterstitial = new TPInterstitial(activity, getPid(), false);
         InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
             @Override
@@ -286,7 +287,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
                 notifyAdImp(network);
-                reportTradPlusImpressionData(tpAdInfo);
+                reportTradPlusImpressionData(tpAdInfo, requestId);
             }
 
             @Override
@@ -294,9 +295,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String network = getNetwork(tpAdInfo);
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                String impressionId = tpAdInfo != null ? tpAdInfo.requestId : null;
-                reportAdClick(network, networkPid, impressionId);
-                notifyAdClick(network, impressionId);
+                reportAdClick(network, networkPid, requestId);
+                notifyAdClick(network, requestId);
             }
 
             @Override
@@ -392,6 +392,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
+        final String requestId = generateRequestId();
         mTPReward = new TPReward(activity, getPid(), false);
         RewardAdListener rewardAdListener = new RewardAdListener() {
             @Override
@@ -414,9 +415,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String network = getNetwork(tpAdInfo);
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                String impressionId = tpAdInfo != null ? tpAdInfo.requestId : null;
-                reportAdClick(network, networkPid, impressionId);
-                notifyAdClick(network, impressionId);
+                reportAdClick(network, networkPid, requestId);
+                notifyAdClick(network, requestId);
             }
 
             @Override
@@ -426,7 +426,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
                 notifyAdImp(network);
-                reportTradPlusImpressionData(tpAdInfo);
+                reportTradPlusImpressionData(tpAdInfo, requestId);
             }
 
             @Override
@@ -535,6 +535,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
+        final String requestId = generateRequestId();
         mTPNative = new TPNative(getActivity(), getPid(), false);
         NativeAdListener nativeAdListener = new NativeAdListener() {
             @Override
@@ -557,9 +558,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String network = getNetwork(tpAdInfo);
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                String impressionId = tpAdInfo != null ? tpAdInfo.requestId : null;
-                reportAdClick(network, networkPid, impressionId);
-                notifyAdClick(network, impressionId);
+                reportAdClick(network, networkPid, requestId);
+                notifyAdClick(network, requestId);
             }
 
             @Override
@@ -569,7 +569,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
                 notifyAdImp(network);
-                reportTradPlusImpressionData(tpAdInfo);
+                reportTradPlusImpressionData(tpAdInfo, requestId);
             }
 
             @Override
@@ -674,6 +674,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
+        final String requestId = generateRequestId();
         mTPSplash = new TPSplash(getActivity(), getPid());
         SplashAdListener splashAdListener = new SplashAdListener() {
             @Override
@@ -696,9 +697,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String network = getNetwork(tpAdInfo);
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                String impressionId = tpAdInfo != null ? tpAdInfo.requestId : null;
-                reportAdClick(network, networkPid, impressionId);
-                notifyAdClick(network, impressionId);
+                reportAdClick(network, networkPid, requestId);
+                notifyAdClick(network, requestId);
             }
 
             @Override
@@ -708,7 +708,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
                 notifyAdImp(network);
-                reportTradPlusImpressionData(tpAdInfo);
+                reportTradPlusImpressionData(tpAdInfo, requestId);
             }
 
             @Override
@@ -820,7 +820,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
     }
 
-    private void reportTradPlusImpressionData(TPAdInfo tpAdInfo) {
+    private void reportTradPlusImpressionData(TPAdInfo tpAdInfo, String requestId) {
         try {
             Map<String, Object> map = new HashMap<>();
             double revenue = getTradPlusAdRevenue(tpAdInfo);
@@ -839,8 +839,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             map.put(Constant.AD_SDK_VERSION, getSdkVersion());
             map.put(Constant.AD_APP_VERSION, getAppVersion());
             map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
-            String impressionId = tpAdInfo != null ? tpAdInfo.requestId : null;
-            onReportAdImpData(map, impressionId);
+            onReportAdImpData(map, requestId);
         } catch (Exception e) {
             Log.e(Log.TAG, "report trusplus error : " + e);
         }

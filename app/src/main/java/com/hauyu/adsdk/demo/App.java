@@ -78,7 +78,7 @@ public class App extends Application {
             }
 
             @Override
-            public void onClick(String placeName, String sdkName, String adType, String pid, String impressionId) {
+            public void onClick(String placeName, String sdkName, String adType, String pid, String requestId) {
             }
 
             @Override

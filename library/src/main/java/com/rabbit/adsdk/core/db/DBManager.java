@@ -79,14 +79,14 @@ public class DBManager {
         return false;
     }
 
-    public void updateClickTimes(String impressionId) {
-        if (TextUtils.isEmpty(impressionId)) {
+    public void updateClickTimes(String requestId) {
+        if (TextUtils.isEmpty(requestId)) {
             return;
         }
-        String sql1 = String.format(Locale.ENGLISH, "update %s set %s=%s+1 where %s='%s'", DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_CLICK_COUNT, DBHelper.AD_CLICK_COUNT, DBHelper.AD_IMPRESSION_ID, impressionId);
-        String sql2 = String.format(Locale.ENGLISH, "update %s set %s=%s where %s='%s' and %s='0'", DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_CLICK_TIME, System.currentTimeMillis(), DBHelper.AD_IMPRESSION_ID, impressionId, DBHelper.AD_CLICK_TIME);
-        Log.iv(Log.TAG, "update click count sql : " + sql1);
-        Log.iv(Log.TAG, "update click time sql : " + sql2);
+        String sql1 = String.format(Locale.ENGLISH, "update %s set %s=%s+1 where %s='%s'", DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_CLICK_COUNT, DBHelper.AD_CLICK_COUNT, DBHelper.AD_REQUEST_ID, requestId);
+        String sql2 = String.format(Locale.ENGLISH, "update %s set %s=%s where %s='%s' and %s='0'", DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_CLICK_TIME, System.currentTimeMillis(), DBHelper.AD_REQUEST_ID, requestId, DBHelper.AD_CLICK_TIME);
+        // Log.iv(Log.TAG, "update click count sql : " + sql1);
+        // Log.iv(Log.TAG, "update click time sql : " + sql2);
         SQLiteDatabase db = null;
         try {
             db = mDBHelper.getReadableDatabase();
@@ -109,7 +109,7 @@ public class DBManager {
         }
         try {
             ContentValues values = new ContentValues();
-            values.put(DBHelper.AD_IMPRESSION_ID, adImpData.getImpressionId());
+            values.put(DBHelper.AD_REQUEST_ID, adImpData.getRequestId());
             values.put(DBHelper.AD_UNIT_ID, adImpData.getUnitId());
             values.put(DBHelper.AD_UNIT_NAME, adImpData.getUnitName());
             values.put(DBHelper.AD_PLACEMENT, adImpData.getPlacement());
@@ -261,8 +261,8 @@ public class DBManager {
         return list;
     }
 
-    public boolean isAdClicked(String impressionId) {
-        String sql = String.format(Locale.ENGLISH, "select %s from %s where %s='%s' and %s>0", DBHelper.AD_IMPRESSION_ID, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_IMPRESSION_ID, impressionId, DBHelper.AD_CLICK_COUNT);
+    public boolean isAdClicked(String requestId) {
+        String sql = String.format(Locale.ENGLISH, "select %s from %s where %s='%s' and %s>0", DBHelper.AD_REQUEST_ID, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_REQUEST_ID, requestId, DBHelper.AD_CLICK_COUNT);
         Cursor cursor = null;
         int count = 0;
         try {
@@ -281,8 +281,8 @@ public class DBManager {
         return count > 0;
     }
 
-    public String queryAdPlacement(String impressionId) {
-        String sql = String.format(Locale.ENGLISH, "select %s from %s where %s='%s'", DBHelper.AD_PLACEMENT, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_IMPRESSION_ID, impressionId);
+    public String queryAdPlacement(String requestId) {
+        String sql = String.format(Locale.ENGLISH, "select %s from %s where %s='%s'", DBHelper.AD_PLACEMENT, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_REQUEST_ID, requestId);
         Cursor cursor = null;
         String adPlacement = null;
         try {

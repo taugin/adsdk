@@ -43,7 +43,6 @@ import com.rabbit.sunny.MView;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -93,14 +92,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     int mLoadState = STATE_NONE;
     // applovin SDK需要提前初始化的SDK名称列表
     private static final List<String> sNeedInitAppLovinFirstSdks = Arrays.asList(Constant.AD_SDK_TRADPLUS, Constant.AD_SDK_APPLOVIN);
-
-    private LinkedHashMap<Object, String> mImpressionIdMap = new LinkedHashMap<Object, String>(5) {
-        @Override
-        protected boolean removeEldestEntry(Entry eldest) {
-            return size() > 5;
-        }
-    };
-    private Object mClickListenerObject = null;
 
     public AbstractSdkLoader() {
         mHandler = new Handler(Looper.getMainLooper(), this);
@@ -907,7 +898,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return mAdRevenue;
     }
 
-    protected String generateImpressionId() {
+    protected String generateRequestId() {
         return UUID.randomUUID().toString();
     }
 
@@ -990,15 +981,15 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         reportAdClick(getSdkName(), getPid(), null);
     }
 
-    protected void reportAdClick(String network, String networkPid, String impressionId) {
+    protected void reportAdClick(String network, String networkPid, String requestId) {
         if (mStat != null) {
             Map<String, Object> extra = new HashMap<>();
-            String adPlacement = DBManager.get(mContext).queryAdPlacement(impressionId);
+            String adPlacement = DBManager.get(mContext).queryAdPlacement(requestId);
             if (TextUtils.isEmpty(adPlacement)) {
                 adPlacement = getAdPlaceName();
             }
             extra.put("placement", adPlacement);
-            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), extra, impressionId);
+            mStat.reportAdClick(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), extra, requestId);
         }
     }
 
@@ -1086,13 +1077,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     /**
      * banner or native click
      */
-    protected void notifyAdClick(String network, String impressionId) {
+    protected void notifyAdClick(String network, String requestId) {
         if (getAdListener() != null) {
             getAdListener().onAdClick(network);
         }
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onClick(getAdPlaceName(), getSdkName(), getAdType(), getPid(), impressionId);
+            l.onClick(getAdPlaceName(), getSdkName(), getAdType(), getPid(), requestId);
         }
     }
 
@@ -1249,7 +1240,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         return true;
     }
 
-    protected void onReportAdImpData(Map<String, Object> adImpMap, String impressionId) {
+    protected void onReportAdImpData(Map<String, Object> adImpMap, String requestId) {
         if (isReportAdImpData()) {
             if (adImpMap != null) {
                 try {
@@ -1282,7 +1273,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
             InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
         }
         if (adImpMap != null) {
-            adImpMap.put(Constant.AD_IMPRESSION_ID, impressionId);
+            adImpMap.put(Constant.AD_REQUEST_ID, requestId);
         }
         printImpData(adImpMap);
         AdImpData adImpData = AdImpData.createAdImpData(adImpMap);
@@ -1302,38 +1293,5 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         builder.append("}");
         Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
-    }
-
-    protected void setClickListenerObject(Object clickListenerObject) {
-        mClickListenerObject = clickListenerObject;
-    }
-
-    protected void putImpressionId(String impressionId) {
-        try {
-            if (mImpressionIdMap != null && mClickListenerObject != null && impressionId != null) {
-                mImpressionIdMap.put(mClickListenerObject, impressionId);
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    protected String getImpressionId(Object clickListenerObject) {
-        String impressionId = null;
-        try {
-            if (mImpressionIdMap != null && clickListenerObject != null) {
-                impressionId = mImpressionIdMap.get(clickListenerObject);
-            }
-        } catch (Exception e) {
-        }
-        return impressionId;
-    }
-
-    protected void removeImpressionId(Object clickListenerObject) {
-        try {
-            if (mImpressionIdMap != null && clickListenerObject != null) {
-                mImpressionIdMap.remove(clickListenerObject);
-            }
-        } catch (Exception e) {
-        }
     }
 }

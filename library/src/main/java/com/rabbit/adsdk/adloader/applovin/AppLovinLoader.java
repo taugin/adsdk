@@ -403,11 +403,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
             int height = Utils.dp2px(mContext, 250);
             loadingMaxAdView.setLayoutParams(new ViewGroup.LayoutParams(width, height));
         }
+        final String requestId = generateRequestId();
         MaxAdViewAdListener maxAdViewAdListener = new MaxAdViewAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
+                Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
                 if (!isStateSuccess()) {
-                    Log.iv(Log.TAG, formatLog("ad load success" + getLoadedInfo(ad)));
                     if (lastUseMaxAdView != null) {
                         lastUseMaxAdView.setRevenueListener(null);
                     }
@@ -449,7 +450,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 if (lastUseMaxAdView != null) {
                     lastUseMaxAdView.stopAutoRefresh();
                 }
-                removeImpressionId(this);
             }
 
             @Override
@@ -457,9 +457,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String network = getNetwork(ad);
                 String networkPid = getNetworkPid(ad);
                 Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                String impressionId = getImpressionId(this);
-                reportAdClick(network, networkPid, impressionId);
-                notifyAdClick(network, impressionId);
+                reportAdClick(network, networkPid, requestId);
+                notifyAdClick(network, requestId);
             }
 
             @Override
@@ -478,23 +477,22 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad collapsed"));
             }
         };
-        setClickListenerObject(maxAdViewAdListener);
         loadingMaxAdView.setListener(maxAdViewAdListener);
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        setRevenueCallback(loadingMaxAdView);
+        setRevenueCallback(loadingMaxAdView, requestId);
         loadingMaxAdView.setPlacement(getSceneId());
         loadingMaxAdView.loadAd();
     }
 
-    private void setRevenueCallback(MaxAdView maxAdView) {
+    private void setRevenueCallback(MaxAdView maxAdView, final String requestId) {
         if (maxAdView != null) {
             maxAdView.setRevenueListener(new MaxAdRevenueListener() {
                 @Override
                 public void onAdRevenuePaid(MaxAd ad) {
                     Log.iv(Log.TAG, formatLog("ad revenue paid" + getLoadedInfo(ad)));
-                    reportMaxAdImpData(ad, getAdPlaceName());
+                    reportMaxAdImpData(ad, getAdPlaceName(), requestId);
                 }
             });
         }
@@ -539,6 +537,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (interstitialAd == null) {
             interstitialAd = new MaxInterstitialAd(getPid(), appLovinSdk, activity);
         }
+        final String requestId = generateRequestId();
         MaxAdListener maxAdListener = new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -577,7 +576,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 onResetInterstitial();
                 reportAdClose();
                 notifyAdDismiss();
-                removeImpressionId(this);
             }
 
             @Override
@@ -585,9 +583,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String network = getNetwork(ad);
                 String networkPid = getNetworkPid(ad);
                 Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                String impressionId = getImpressionId(this);
-                reportAdClick(network, networkPid, impressionId);
-                notifyAdClick(network, impressionId);
+                reportAdClick(network, networkPid, requestId);
+                notifyAdClick(network, requestId);
             }
 
             @Override
@@ -598,14 +595,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "[" + getNetwork(ad) + "]" + toErrorMessage(error));
             }
         };
-        setClickListenerObject(maxAdListener);
         interstitialAd.setListener(maxAdListener);
 
         interstitialAd.setRevenueListener(new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                reportMaxAdImpData(ad, getAdPlaceName());
+                reportMaxAdImpData(ad, getAdPlaceName(), requestId);
             }
         });
         printInterfaceLog(ACTION_LOAD);
@@ -642,6 +638,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private void loadRewardedVideoForMax(AppLovinSdk appLovinSdk, Activity activity) {
         setLoading(true, STATE_REQUEST);
         rewardedAd = MaxRewardedAd.getInstance(getPid(), appLovinSdk, activity);
+        final String requestId = generateRequestId();
         MaxRewardedAdListener maxRewardedAdListener = new MaxRewardedAdListener() {
             @Override
             public void onRewardedVideoStarted(MaxAd ad) {
@@ -709,7 +706,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 onResetReward();
                 reportAdClose();
                 notifyAdDismiss();
-                removeImpressionId(this);
             }
 
             @Override
@@ -717,9 +713,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String network = getNetwork(ad);
                 String networkPid = getNetworkPid(ad);
                 Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                String impressionId = getImpressionId(this);
-                reportAdClick(network, networkPid, impressionId);
-                notifyAdClick(network, impressionId);
+                reportAdClick(network, networkPid, requestId);
+                notifyAdClick(network, requestId);
             }
 
             @Override
@@ -730,14 +725,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "[" + getNetwork(ad) + "]" + toErrorMessage(error));
             }
         };
-        setClickListenerObject(maxRewardedAdListener);
         rewardedAd.setListener(maxRewardedAdListener);
 
         rewardedAd.setRevenueListener(new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                reportMaxAdImpData(ad, getAdPlaceName());
+                reportMaxAdImpData(ad, getAdPlaceName(), requestId);
             }
         });
 
@@ -802,6 +796,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (mMaxNativeAdLoader == null) {
             mMaxNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
         }
+        final String requestId = generateRequestId();
         MaxNativeAdListener maxNativeAdListener = new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(MaxNativeAdView maxNativeAdView, MaxAd maxAd) {
@@ -829,12 +824,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String network = getNetwork(maxAd);
                 String networkPid = getNetworkPid(maxAd);
                 Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                String impressionId = getImpressionId(this);
-                reportAdClick(network, networkPid, impressionId);
-                notifyAdClick(network, impressionId);
+                reportAdClick(network, networkPid, requestId);
+                notifyAdClick(network, requestId);
             }
         };
-        setClickListenerObject(maxNativeAdListener);
         mMaxNativeAdLoader.setNativeAdListener(maxNativeAdListener);
         mMaxNativeAdLoader.setRevenueListener(new MaxAdRevenueListener() {
             @Override
@@ -844,7 +837,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(ad);
                 reportAdImp(network, networkPid);
                 notifyAdImp(network);
-                reportMaxAdImpData(ad, getAdPlaceName());
+                reportMaxAdImpData(ad, getAdPlaceName(), requestId);
             }
         });
         printInterfaceLog(ACTION_LOAD);
@@ -970,6 +963,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (mMaxAppOpenAd == null) {
             mMaxAppOpenAd = new MaxAppOpenAd(getPid(), appLovinSdk);
         }
+        final String requestId = generateRequestId();
         MaxAdListener maxAdListener = new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -1008,7 +1002,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 onResetSplash();
                 reportAdClose();
                 notifyAdDismiss();
-                removeImpressionId(this);
             }
 
             @Override
@@ -1016,9 +1009,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String network = getNetwork(ad);
                 String networkPid = getNetworkPid(ad);
                 Log.iv(Log.TAG, formatLog("ad click network : " + network + " , network pid : " + networkPid));
-                String impressionId = getImpressionId(this);
-                reportAdClick(network, networkPid, impressionId);
-                notifyAdClick(network, impressionId);
+                reportAdClick(network, networkPid, requestId);
+                notifyAdClick(network, requestId);
             }
 
             @Override
@@ -1029,14 +1021,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "[" + getNetwork(ad) + "]" + toErrorMessage(error));
             }
         };
-        setClickListenerObject(maxAdListener);
         mMaxAppOpenAd.setListener(maxAdListener);
 
         mMaxAppOpenAd.setRevenueListener(new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                reportMaxAdImpData(ad, getAdPlaceName());
+                reportMaxAdImpData(ad, getAdPlaceName(), requestId);
             }
         });
         printInterfaceLog(ACTION_LOAD);
@@ -1134,7 +1125,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         return null;
     }
 
-    private void reportMaxAdImpData(MaxAd maxAd, String placeName) {
+    private void reportMaxAdImpData(MaxAd maxAd, String placeName, String requestId) {
         try {
             // applovin给出的是单次展示的价值，换算ecpm需要乘以1000
             double revenue = maxAd.getRevenue(); // In USD
@@ -1166,9 +1157,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             map.put(Constant.AD_SDK_VERSION, getSdkVersion());
             map.put(Constant.AD_APP_VERSION, getAppVersion());
             map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
-            String impressionId = generateImpressionId();
-            putImpressionId(impressionId);
-            onReportAdImpData(map, impressionId);
+            onReportAdImpData(map, requestId);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

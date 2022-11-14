@@ -71,6 +71,8 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     private AdView lastUseBannerView;
     private NativeAd lastUseNativeAd;
+
+    private String mSceneName;
     private List<NativeAd> nativeAdList = Collections.synchronizedList(new ArrayList<NativeAd>());
 
     private AdmobBindNativeView admobBindNativeView = new AdmobBindNativeView();
@@ -150,13 +152,13 @@ public class AdmobLoader extends AbstractSdkLoader {
         loadingView = new AdView(mContext);
         loadingView.setAdUnitId(mPidConfig.getPid());
         loadingView.setAdSize(size);
+        final String requestId = generateRequestId();
         AdListener adListener = new AdListener() {
             @Override
             public void onAdClosed() {
                 Log.iv(Log.TAG, formatLog("ad closed"));
                 reportAdClose();
                 notifyAdDismiss();
-                removeImpressionId(this);
             }
 
             @Override
@@ -171,9 +173,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             public void onAdOpened() {
                 Log.iv(Log.TAG, formatLog("ad opened"));
                 String network = getBannerNetwork();
-                String impressionId = getImpressionId(this);
-                reportAdClick(network, null, impressionId);
-                notifyAdClick(network, impressionId);
+                reportAdClick(network, null, requestId);
+                notifyAdClick(network, requestId);
             }
 
             @Override
@@ -197,8 +198,21 @@ public class AdmobLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad impression"));
             }
         };
-        setClickListenerObject(adListener);
         loadingView.setAdListener(adListener);
+        loadingView.setOnPaidEventListener(new OnPaidEventListener() {
+            @Override
+            public void onPaidEvent(AdValue adValue) {
+                String network = null;
+                try {
+                    network = loadingView.getResponseInfo().getMediationAdapterClassName();
+                    network = adapterClassToNetwork(network);
+                } catch (Exception e) {
+                }
+                reportAdImp();
+                notifyAdImp();
+                reportAdmobImpressionData(adValue, network, requestId, null);
+            }
+        });
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
@@ -224,21 +238,6 @@ public class AdmobLoader extends AbstractSdkLoader {
             if (viewParent instanceof ViewGroup) {
                 ((ViewGroup) viewParent).removeView(bannerView);
             }
-            final AdView finalAdView = bannerView;
-            finalAdView.setOnPaidEventListener(new OnPaidEventListener() {
-                @Override
-                public void onPaidEvent(AdValue adValue) {
-                    String network = null;
-                    try {
-                        network = finalAdView.getResponseInfo().getMediationAdapterClassName();
-                        network = adapterClassToNetwork(network);
-                    } catch (Exception e) {
-                    }
-                    reportAdImp();
-                    notifyAdImp();
-                    reportAdmobImpressionData(adValue, network, null);
-                }
-            });
             reportAdShow();
             notifyAdShow();
             viewGroup.addView(bannerView);
@@ -286,6 +285,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
+        final String requestId = generateRequestId();
         InterstitialAdLoadCallback interstitialAdLoadCallback = new InterstitialAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -293,6 +293,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 mInterstitialAd = interstitialAd;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
+                setInterstitialListener(interstitialAd, requestId);
                 setRevenueAverage();
                 reportAdLoaded();
                 notifyAdLoaded(AdmobLoader.this);
@@ -313,66 +314,69 @@ public class AdmobLoader extends AbstractSdkLoader {
         InterstitialAd.load(mContext, mPidConfig.getPid(), new AdRequest.Builder().build(), interstitialAdLoadCallback);
     }
 
-    @Override
-    public boolean showInterstitial(final String sceneName) {
-        printInterfaceLog(ACTION_SHOW);
-        if (mInterstitialAd != null) {
-            FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
-                @Override
-                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                    Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
-                    clearLastShowTime();
-                    onResetInterstitial();
-                    notifyAdShowFailed(toSdkError(adError), toErrorMessage(adError));
-                }
+    private void setInterstitialListener(final InterstitialAd interstitialAd, final String requestId) {
 
-                @Override
-                public void onAdShowedFullScreenContent() {
-                    Log.iv(Log.TAG, formatLog("ad showed full screen content"));
-                }
+        FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
+            @Override
+            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
+                clearLastShowTime();
+                onResetInterstitial();
+                notifyAdShowFailed(toSdkError(adError), toErrorMessage(adError));
+            }
 
-                @Override
-                public void onAdDismissedFullScreenContent() {
-                    Log.iv(Log.TAG, formatLog("ad dismissed full screen content"));
-                    clearLastShowTime();
-                    onResetInterstitial();
-                    reportAdClose();
-                    notifyAdDismiss();
-                    removeImpressionId(this);
-                }
+            @Override
+            public void onAdShowedFullScreenContent() {
+                Log.iv(Log.TAG, formatLog("ad showed full screen content"));
+            }
 
-                @Override
-                public void onAdClicked() {
-                    Log.iv(Log.TAG, formatLog("ad click"));
-                    String network = getInterstitialNetwork();
-                    String impressionId = getImpressionId(this);
-                    reportAdClick(network, null, impressionId);
-                    notifyAdClick(network, impressionId);
-                }
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                Log.iv(Log.TAG, formatLog("ad dismissed full screen content"));
+                clearLastShowTime();
+                onResetInterstitial();
+                reportAdClose();
+                notifyAdDismiss();
+            }
 
-                @Override
-                public void onAdImpression() {
-                    Log.iv(Log.TAG, formatLog("ad impression"));
-                    String network = getInterstitialNetwork();
-                    reportAdImp(network, null);
-                    notifyAdImp(network);
-                }
-            };
-            setClickListenerObject(fullScreenContentCallback);
-            mInterstitialAd.setFullScreenContentCallback(fullScreenContentCallback);
-            final InterstitialAd finalInterstitialAd = mInterstitialAd;
-            finalInterstitialAd.setOnPaidEventListener(new OnPaidEventListener() {
+            @Override
+            public void onAdClicked() {
+                Log.iv(Log.TAG, formatLog("ad click"));
+                String network = getInterstitialNetwork();
+                reportAdClick(network, null, requestId);
+                notifyAdClick(network, requestId);
+            }
+
+            @Override
+            public void onAdImpression() {
+                Log.iv(Log.TAG, formatLog("ad impression"));
+                String network = getInterstitialNetwork();
+                reportAdImp(network, null);
+                notifyAdImp(network);
+            }
+        };
+        if (interstitialAd != null) {
+            interstitialAd.setFullScreenContentCallback(fullScreenContentCallback);
+            interstitialAd.setOnPaidEventListener(new OnPaidEventListener() {
                 @Override
                 public void onPaidEvent(AdValue adValue) {
                     String network = null;
                     try {
-                        network = finalInterstitialAd.getResponseInfo().getMediationAdapterClassName();
+                        network = interstitialAd.getResponseInfo().getMediationAdapterClassName();
                         network = adapterClassToNetwork(network);
                     } catch (Exception e) {
                     }
-                    reportAdmobImpressionData(adValue, network, sceneName);
+                    reportAdmobImpressionData(adValue, network, requestId, mSceneName);
                 }
             });
+        }
+    }
+
+    @Override
+    public boolean showInterstitial(final String sceneName) {
+        printInterfaceLog(ACTION_SHOW);
+        mSceneName = sceneName;
+        if (mInterstitialAd != null) {
             reportAdShow();
             notifyAdShow();
             mInterstitialAd.show(getActivity());
@@ -410,17 +414,15 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
-
-        printInterfaceLog(ACTION_LOAD);
-        reportAdRequest();
-        notifyAdRequest();
-        RewardedAd.load(mContext, mPidConfig.getPid(), new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
+        final String requestId = generateRequestId();
+        RewardedAdLoadCallback rewardedAdLoadCallback = new RewardedAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                 Log.iv(Log.TAG, formatLog("ad load success"));
                 mRewardedAd = rewardedAd;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mRewardedAd);
+                setRewardListener(rewardedAd, requestId);
                 setRevenueAverage();
                 reportAdLoaded();
                 notifyAdLoaded(AdmobLoader.this);
@@ -433,7 +435,71 @@ public class AdmobLoader extends AbstractSdkLoader {
                 reportAdError(codeToError(loadAdError));
                 notifyAdLoadFailed(toSdkError(loadAdError), toErrorMessage(loadAdError));
             }
-        });
+        };
+
+        printInterfaceLog(ACTION_LOAD);
+        reportAdRequest();
+        notifyAdRequest();
+        RewardedAd.load(mContext, mPidConfig.getPid(), new AdRequest.Builder().build(), rewardedAdLoadCallback);
+    }
+
+    private void setRewardListener(final RewardedAd rewardedAd, final String requestId) {
+        FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
+            @Override
+            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
+                clearLastShowTime();
+                onResetReward();
+                notifyAdShowFailed(toSdkError(adError), toErrorMessage(adError));
+            }
+
+            @Override
+            public void onAdShowedFullScreenContent() {
+                Log.iv(Log.TAG, formatLog("ad showed full screen content"));
+                notifyAdOpened();
+                notifyRewardAdsStarted();
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                Log.iv(Log.TAG, formatLog("ad dismissed full screen content"));
+                clearLastShowTime();
+                onResetReward();
+                reportAdClose();
+                notifyAdDismiss();
+            }
+
+            @Override
+            public void onAdClicked() {
+                Log.iv(Log.TAG, formatLog("ad click"));
+                String network = getRewardNetwork();
+                reportAdClick(network, null, requestId);
+                notifyAdClick(network, requestId);
+            }
+
+            @Override
+            public void onAdImpression() {
+                Log.iv(Log.TAG, formatLog("ad impression"));
+                String network = getRewardNetwork();
+                reportAdImp(network, null);
+                notifyAdImp(network);
+            }
+        };
+        if (rewardedAd != null) {
+            rewardedAd.setFullScreenContentCallback(fullScreenContentCallback);
+            rewardedAd.setOnPaidEventListener(new OnPaidEventListener() {
+                @Override
+                public void onPaidEvent(@NonNull AdValue adValue) {
+                    String network = null;
+                    try {
+                        network = rewardedAd.getResponseInfo().getMediationAdapterClassName();
+                        network = adapterClassToNetwork(network);
+                    } catch (Exception e) {
+                    }
+                    reportAdmobImpressionData(adValue, network, requestId, mSceneName);
+                }
+            });
+        }
     }
 
     @Override
@@ -448,65 +514,8 @@ public class AdmobLoader extends AbstractSdkLoader {
     @Override
     public boolean showRewardedVideo(final String sceneName) {
         printInterfaceLog(ACTION_SHOW);
+        mSceneName = sceneName;
         if (mRewardedAd != null) {
-            FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
-                @Override
-                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                    Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
-                    clearLastShowTime();
-                    onResetReward();
-                    notifyAdShowFailed(toSdkError(adError), toErrorMessage(adError));
-                }
-
-                @Override
-                public void onAdShowedFullScreenContent() {
-                    Log.iv(Log.TAG, formatLog("ad showed full screen content"));
-                    notifyAdOpened();
-                    notifyRewardAdsStarted();
-                }
-
-                @Override
-                public void onAdDismissedFullScreenContent() {
-                    Log.iv(Log.TAG, formatLog("ad dismissed full screen content"));
-                    clearLastShowTime();
-                    onResetReward();
-                    reportAdClose();
-                    notifyAdDismiss();
-                    removeImpressionId(this);
-                }
-
-                @Override
-                public void onAdClicked() {
-                    Log.iv(Log.TAG, formatLog("ad click"));
-                    String network = getRewardNetwork();
-                    String impressionId = getImpressionId(this);
-                    reportAdClick(network, null, impressionId);
-                    notifyAdClick(network, impressionId);
-                }
-
-                @Override
-                public void onAdImpression() {
-                    Log.iv(Log.TAG, formatLog("ad impression"));
-                    String network = getRewardNetwork();
-                    reportAdImp(network, null);
-                    notifyAdImp(network);
-                }
-            };
-            setClickListenerObject(fullScreenContentCallback);
-            mRewardedAd.setFullScreenContentCallback(fullScreenContentCallback);
-            final RewardedAd finalRewardedAd = mRewardedAd;
-            finalRewardedAd.setOnPaidEventListener(new OnPaidEventListener() {
-                @Override
-                public void onPaidEvent(@NonNull AdValue adValue) {
-                    String network = null;
-                    try {
-                        network = finalRewardedAd.getResponseInfo().getMediationAdapterClassName();
-                        network = adapterClassToNetwork(network);
-                    } catch (Exception e) {
-                    }
-                    reportAdmobImpressionData(adValue, network, sceneName);
-                }
-            });
             reportAdShow();
             notifyAdShow();
             Activity activity = getActivity();
@@ -591,15 +600,15 @@ public class AdmobLoader extends AbstractSdkLoader {
         } catch (Exception e) {
         }
         setLoading(true, STATE_REQUEST);
+        final String requestId = generateRequestId();
         loadingBuilder = new AdLoader.Builder(mContext, mPidConfig.getPid());
         AdListener adListener = new AdListener() {
             @Override
             public void onAdClicked() {
                 Log.iv(Log.TAG, formatLog("ad click"));
                 String network = getNativeNetwork();
-                String impressionId = getImpressionId(this);
-                reportAdClick(network, null, impressionId);
-                notifyAdClick(network, impressionId);
+                reportAdClick(network, null, requestId);
+                notifyAdClick(network, requestId);
             }
 
             @Override
@@ -631,7 +640,6 @@ public class AdmobLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad closed"));
                 reportAdClose();
                 notifyAdDismiss();
-                removeImpressionId(this);
             }
         };
         loadingBuilder.forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
@@ -648,12 +656,12 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
+                setNativeListener(nativeAd, requestId);
                 setRevenueAverage();
                 reportAdLoaded();
                 notifySdkLoaderLoaded(false);
             }
         }).withAdListener(adListener);
-        setClickListenerObject(adListener);
 
         VideoOptions videoOptions = new VideoOptions.Builder()
                 .build();
@@ -674,6 +682,23 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
     }
 
+    private void setNativeListener(final NativeAd nativeAd, final String requestId) {
+        if (nativeAd != null) {
+            nativeAd.setOnPaidEventListener(new OnPaidEventListener() {
+                @Override
+                public void onPaidEvent(@NonNull AdValue adValue) {
+                    String network = null;
+                    try {
+                        network = nativeAd.getResponseInfo().getMediationAdapterClassName();
+                        network = adapterClassToNetwork(network);
+                    } catch (Exception e) {
+                    }
+                    reportAdmobImpressionData(adValue, network, requestId, null);
+                }
+            });
+        }
+    }
+
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
@@ -689,19 +714,6 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (mNativeAd != null) {
             reportAdShow();
             notifyAdShow();
-            final NativeAd finalNativeAd = mNativeAd;
-            finalNativeAd.setOnPaidEventListener(new OnPaidEventListener() {
-                @Override
-                public void onPaidEvent(@NonNull AdValue adValue) {
-                    String network = null;
-                    try {
-                        network = finalNativeAd.getResponseInfo().getMediationAdapterClassName();
-                        network = adapterClassToNetwork(network);
-                    } catch (Exception e) {
-                    }
-                    reportAdmobImpressionData(adValue, network, null);
-                }
-            });
             admobBindNativeView.bindNative(mParams, viewGroup, mNativeAd, mPidConfig);
             lastUseNativeAd = mNativeAd;
             clearCachedAdTime(mNativeAd);
@@ -749,6 +761,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
+        final String requestId = generateRequestId();
         AppOpenAd.AppOpenAdLoadCallback appOpenAdLoadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
             @Override
             public void onAdLoaded(AppOpenAd appOpenAd) {
@@ -756,6 +769,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 mAppOpenAd = appOpenAd;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mAppOpenAd);
+                setSplashListener(appOpenAd, requestId);
                 setRevenueAverage();
                 reportAdLoaded();
                 notifyAdLoaded(AdmobLoader.this);
@@ -777,63 +791,64 @@ public class AdmobLoader extends AbstractSdkLoader {
         AppOpenAd.load(mContext, getPid(), new AdRequest.Builder().build(), splashOrientation, appOpenAdLoadCallback);
     }
 
+    private void setSplashListener(final AppOpenAd appOpenAd, final String requestId) {
+        FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
+            @Override
+            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
+                clearLastShowTime();
+                onResetSplash();
+                notifyAdShowFailed(toSdkError(adError), toErrorMessage(adError));
+            }
+
+            @Override
+            public void onAdClicked() {
+                Log.iv(Log.TAG, formatLog("ad click"));
+                String network = getSplashNetwork();
+                reportAdClick(network, null, requestId);
+                notifyAdClick(network, requestId);
+            }
+
+            @Override
+            public void onAdShowedFullScreenContent() {
+                Log.iv(Log.TAG, formatLog("ad showed full screen content"));
+                String network = getSplashNetwork();
+                reportAdImp(network, null);
+                notifyAdImp(network);
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                Log.iv(Log.TAG, formatLog("ad dismissed full screen content"));
+                clearLastShowTime();
+                onResetSplash();
+                reportAdClose();
+                notifyAdDismiss();
+            }
+        };
+        if (appOpenAd != null) {
+            appOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
+            appOpenAd.setOnPaidEventListener(new OnPaidEventListener() {
+                @Override
+                public void onPaidEvent(@NonNull AdValue adValue) {
+                    String network = null;
+                    try {
+                        network = appOpenAd.getResponseInfo().getMediationAdapterClassName();
+                        network = adapterClassToNetwork(network);
+                    } catch (Exception e) {
+                    }
+                    reportAdmobImpressionData(adValue, network, requestId, null);
+                }
+            });
+        }
+    }
+
     @Override
     public boolean showSplash(ViewGroup viewGroup) {
         printInterfaceLog(ACTION_SHOW);
         Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " show splash");
         if (mAppOpenAd != null) {
             Activity activity = getActivity();
-            FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
-                @Override
-                public void onAdFailedToShowFullScreenContent(AdError adError) {
-                    Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
-                    clearLastShowTime();
-                    onResetSplash();
-                    notifyAdShowFailed(toSdkError(adError), toErrorMessage(adError));
-                }
-
-                @Override
-                public void onAdClicked() {
-                    Log.iv(Log.TAG, formatLog("ad click"));
-                    String network = getSplashNetwork();
-                    String impressionId = getImpressionId(this);
-                    reportAdClick(network, null, impressionId);
-                    notifyAdClick(network, impressionId);
-                }
-
-                @Override
-                public void onAdShowedFullScreenContent() {
-                    Log.iv(Log.TAG, formatLog("ad showed full screen content"));
-                    String network = getSplashNetwork();
-                    reportAdImp(network, null);
-                    notifyAdImp(network);
-                }
-
-                @Override
-                public void onAdDismissedFullScreenContent() {
-                    Log.iv(Log.TAG, formatLog("ad dismissed full screen content"));
-                    clearLastShowTime();
-                    onResetSplash();
-                    reportAdClose();
-                    notifyAdDismiss();
-                    removeImpressionId(this);
-                }
-            };
-            setClickListenerObject(fullScreenContentCallback);
-            mAppOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
-            final AppOpenAd finalAppOpenAd = mAppOpenAd;
-            finalAppOpenAd.setOnPaidEventListener(new OnPaidEventListener() {
-                @Override
-                public void onPaidEvent(@NonNull AdValue adValue) {
-                    String network = null;
-                    try {
-                        network = finalAppOpenAd.getResponseInfo().getMediationAdapterClassName();
-                        network = adapterClassToNetwork(network);
-                    } catch (Exception e) {
-                    }
-                    reportAdmobImpressionData(adValue, network, null);
-                }
-            });
             reportAdShow();
             notifyAdShow();
             mAppOpenAd.show(activity);
@@ -895,7 +910,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         mAppOpenAd = null;
     }
 
-    private void reportAdmobImpressionData(AdValue adValue, String network, String sceneName) {
+    private void reportAdmobImpressionData(AdValue adValue, String network, String requestId, String sceneName) {
         try {
             // admob给出的是百万次展示的价值，换算ecpm需要除以1000
             double revenue = (double) adValue.getValueMicros() / 1000000;
@@ -924,9 +939,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             } catch (Exception e) {
             }
             map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
-            String impressionId = generateImpressionId();
-            putImpressionId(impressionId);
-            onReportAdImpData(map, impressionId);
+            onReportAdImpData(map, requestId);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
