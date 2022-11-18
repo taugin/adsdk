@@ -224,18 +224,22 @@ public class EventImpl implements IEvent {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
+        boolean isAdClicked = DBManager.get(context).isAdClicked(impressionId);
         String eventId = generateEventId(context, "click", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
+        if (extra != null) {
+            extra.put("first", String.valueOf(!isAdClicked));
+        }
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra + " , impression id : " + impressionId);
         reportEvent(context, "e_ad_click", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
-        reportAdClickDistinct(context, placeName, sdk, network, type, pid, networkPid, ecpm, extra, impressionId);
+        reportAdClickDistinct(context, placeName, sdk, network, type, pid, networkPid, ecpm, extra, isAdClicked);
         AdStatManager.get(mContext).recordAdClick(sdk, placeName, pid, network, extra, impressionId);
     }
 
-    private void reportAdClickDistinct(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, String impressionId) {
+    private void reportAdClickDistinct(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, boolean isAdClicked) {
         try {
-            if (!DBManager.get(context).isAdClicked(impressionId)) {
+            if (!isAdClicked) {
                 String eventIdDistinct = generateEventId(context, "click", sdk + "_distinct", type);
                 Log.iv(Log.TAG, "event id distinct : " + eventIdDistinct);
                 extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
