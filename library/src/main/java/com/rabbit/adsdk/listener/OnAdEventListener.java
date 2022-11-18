@@ -9,7 +9,7 @@ public interface OnAdEventListener {
     void onShow(String placeName, String sdkName, String adType, String pid);
     void onShowFailed(String placeName, String sdkName, String adType, String pid, String msg);
     void onImp(String placeName, String sdkName, String adType, String pid);
-    void onClick(String placeName, String sdkName, String adType, String pid, String requestId);
+    void onClick(String placeName, String sdkName, String adType, String pid, String impressionId);
     void onDismiss(String placeName, String sdkName, String adType, String pid);
     void onAdImpression(AdImpData adImpData);
 }

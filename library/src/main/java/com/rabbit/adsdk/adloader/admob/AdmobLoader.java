@@ -162,7 +162,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     private class AdmobBannerListener {
-        private String requestId = null;
+        private String impressionId = null;
         AdListener adListener = new AdListener() {
             @Override
             public void onAdClosed() {
@@ -183,8 +183,8 @@ public class AdmobLoader extends AbstractSdkLoader {
             public void onAdOpened() {
                 Log.iv(Log.TAG, formatLog("ad opened"));
                 String network = getBannerNetwork();
-                reportAdClick(network, null, requestId);
-                notifyAdClick(network, requestId);
+                reportAdClick(network, null, impressionId);
+                notifyAdClick(network, impressionId);
             }
 
             @Override
@@ -212,7 +212,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         private OnPaidEventListener mOnPaidEventListener = new OnPaidEventListener() {
             @Override
             public void onPaidEvent(AdValue adValue) {
-                requestId = generateRequestId();
+                impressionId = generateImpressionId();
                 String network = null;
                 try {
                     network = loadingView.getResponseInfo().getMediationAdapterClassName();
@@ -221,7 +221,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
                 reportAdImp();
                 notifyAdImp();
-                reportAdmobImpressionData(adValue, network, requestId, null);
+                reportAdmobImpressionData(adValue, network, impressionId, null);
             }
         };
     }
@@ -300,7 +300,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     private class AdmobInterstitialListener {
-        private String requestId = null;
+        private String impressionId = null;
         InterstitialAdLoadCallback interstitialAdLoadCallback = new InterstitialAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -352,8 +352,8 @@ public class AdmobLoader extends AbstractSdkLoader {
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
                     String network = getInterstitialNetwork();
-                    reportAdClick(network, null, requestId);
-                    notifyAdClick(network, requestId);
+                    reportAdClick(network, null, impressionId);
+                    notifyAdClick(network, impressionId);
                 }
 
                 @Override
@@ -369,14 +369,14 @@ public class AdmobLoader extends AbstractSdkLoader {
                 interstitialAd.setOnPaidEventListener(new OnPaidEventListener() {
                     @Override
                     public void onPaidEvent(AdValue adValue) {
-                        requestId = generateRequestId();
+                        impressionId = generateImpressionId();
                         String network = null;
                         try {
                             network = interstitialAd.getResponseInfo().getMediationAdapterClassName();
                             network = adapterClassToNetwork(network);
                         } catch (Exception e) {
                         }
-                        reportAdmobImpressionData(adValue, network, requestId, mSceneName);
+                        reportAdmobImpressionData(adValue, network, impressionId, mSceneName);
                     }
                 });
             }
@@ -433,7 +433,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     private class AdmobRewardListener {
-        private String requestId = null;
+        private String impressionId = null;
         RewardedAdLoadCallback rewardedAdLoadCallback = new RewardedAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
@@ -486,8 +486,8 @@ public class AdmobLoader extends AbstractSdkLoader {
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
                     String network = getRewardNetwork();
-                    reportAdClick(network, null, requestId);
-                    notifyAdClick(network, requestId);
+                    reportAdClick(network, null, impressionId);
+                    notifyAdClick(network, impressionId);
                 }
 
                 @Override
@@ -503,14 +503,14 @@ public class AdmobLoader extends AbstractSdkLoader {
                 rewardedAd.setOnPaidEventListener(new OnPaidEventListener() {
                     @Override
                     public void onPaidEvent(@NonNull AdValue adValue) {
-                        requestId = generateRequestId();
+                        impressionId = generateImpressionId();
                         String network = null;
                         try {
                             network = rewardedAd.getResponseInfo().getMediationAdapterClassName();
                             network = adapterClassToNetwork(network);
                         } catch (Exception e) {
                         }
-                        reportAdmobImpressionData(adValue, network, requestId, mSceneName);
+                        reportAdmobImpressionData(adValue, network, impressionId, mSceneName);
                     }
                 });
             }
@@ -639,14 +639,14 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     private class AdmobNativeListener {
-        private String requestId = null;
+        private String impressionId = null;
         private AdListener adListener = new AdListener() {
             @Override
             public void onAdClicked() {
                 Log.iv(Log.TAG, formatLog("ad click"));
                 String network = getNativeNetwork();
-                reportAdClick(network, null, requestId);
-                notifyAdClick(network, requestId);
+                reportAdClick(network, null, impressionId);
+                notifyAdClick(network, impressionId);
             }
 
             @Override
@@ -706,14 +706,14 @@ public class AdmobLoader extends AbstractSdkLoader {
                 nativeAd.setOnPaidEventListener(new OnPaidEventListener() {
                     @Override
                     public void onPaidEvent(@NonNull AdValue adValue) {
-                        requestId = generateRequestId();
+                        impressionId = generateImpressionId();
                         String network = null;
                         try {
                             network = nativeAd.getResponseInfo().getMediationAdapterClassName();
                             network = adapterClassToNetwork(network);
                         } catch (Exception e) {
                         }
-                        reportAdmobImpressionData(adValue, network, requestId, null);
+                        reportAdmobImpressionData(adValue, network, impressionId, null);
                     }
                 });
             }
@@ -792,7 +792,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     private class AdmobSplashListener {
-        private String requestId = null;
+        private String impressionId = null;
         AppOpenAd.AppOpenAdLoadCallback appOpenAdLoadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
 
             @Override
@@ -831,8 +831,8 @@ public class AdmobLoader extends AbstractSdkLoader {
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
                     String network = getSplashNetwork();
-                    reportAdClick(network, null, requestId);
-                    notifyAdClick(network, requestId);
+                    reportAdClick(network, null, impressionId);
+                    notifyAdClick(network, impressionId);
                 }
 
                 @Override
@@ -857,14 +857,14 @@ public class AdmobLoader extends AbstractSdkLoader {
                 appOpenAd.setOnPaidEventListener(new OnPaidEventListener() {
                     @Override
                     public void onPaidEvent(@NonNull AdValue adValue) {
-                        requestId = generateRequestId();
+                        impressionId = generateImpressionId();
                         String network = null;
                         try {
                             network = appOpenAd.getResponseInfo().getMediationAdapterClassName();
                             network = adapterClassToNetwork(network);
                         } catch (Exception e) {
                         }
-                        reportAdmobImpressionData(adValue, network, requestId, null);
+                        reportAdmobImpressionData(adValue, network, impressionId, null);
                     }
                 });
             }
@@ -938,7 +938,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         mAppOpenAd = null;
     }
 
-    private void reportAdmobImpressionData(AdValue adValue, String network, String requestId, String sceneName) {
+    private void reportAdmobImpressionData(AdValue adValue, String network, String impressionId, String sceneName) {
         try {
             // admob给出的是百万次展示的价值，换算ecpm需要除以1000
             double revenue = (double) adValue.getValueMicros() / 1000000;
@@ -967,7 +967,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             } catch (Exception e) {
             }
             map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
-            onReportAdImpData(map, requestId);
+            onReportAdImpData(map, impressionId);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }

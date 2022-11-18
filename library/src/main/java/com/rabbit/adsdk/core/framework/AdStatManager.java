@@ -53,12 +53,12 @@ public class AdStatManager {
         ReplaceManager.get(mContext).reportAdImp(placeName);
     }
 
-    public void recordAdClick(String sdk, String placeName, String pid, String network, Map<String, Object> extra, String requestId) {
+    public void recordAdClick(String sdk, String placeName, String pid, String network, Map<String, Object> extra, String impressionId) {
         Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         recordAllClkCount();
         LimitAdsManager.get(mContext).recordAdClick(sdk, placeName, network);
         BounceRateManager.get(mContext).onAdClick(pid, extra);
-        recordAdClick(requestId);
+        recordAdClick(impressionId);
     }
 
     private void recordAllImpCount() {
@@ -94,11 +94,11 @@ public class AdStatManager {
         });
     }
 
-    public void recordAdClick(final String requestId) {
+    public void recordAdClick(final String impressionId) {
         sExecutorService.execute(new Runnable() {
             @Override
             public void run() {
-                DBManager.get(mContext).updateClickTimes(requestId);
+                DBManager.get(mContext).updateClickTimes(impressionId);
             }
         });
     }

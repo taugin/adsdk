@@ -220,22 +220,22 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdClick(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, String requestId) {
+    public void reportAdClick(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, String impressionId) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "click", sdk, type);
         extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra + " , request id : " + requestId);
+        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra + " , impression id : " + impressionId);
         reportEvent(context, "e_ad_click", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
-        reportAdClickDistinct(context, placeName, sdk, network, type, pid, networkPid, ecpm, extra, requestId);
-        AdStatManager.get(mContext).recordAdClick(sdk, placeName, pid, network, extra, requestId);
+        reportAdClickDistinct(context, placeName, sdk, network, type, pid, networkPid, ecpm, extra, impressionId);
+        AdStatManager.get(mContext).recordAdClick(sdk, placeName, pid, network, extra, impressionId);
     }
 
-    private void reportAdClickDistinct(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, String requestId) {
+    private void reportAdClickDistinct(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, String impressionId) {
         try {
-            if (!DBManager.get(context).isAdClicked(requestId)) {
+            if (!DBManager.get(context).isAdClicked(impressionId)) {
                 String eventIdDistinct = generateEventId(context, "click", sdk + "_distinct", type);
                 Log.iv(Log.TAG, "event id distinct : " + eventIdDistinct);
                 extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
