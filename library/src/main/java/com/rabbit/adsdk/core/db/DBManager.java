@@ -262,6 +262,9 @@ public class DBManager {
     }
 
     public boolean isAdClicked(String requestId) {
+        if (TextUtils.isEmpty(requestId)) {
+            return true;
+        }
         String sql = String.format(Locale.ENGLISH, "select %s from %s where %s='%s' and %s>0", DBHelper.AD_REQUEST_ID, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_REQUEST_ID, requestId, DBHelper.AD_CLICK_COUNT);
         Cursor cursor = null;
         int count = 0;
