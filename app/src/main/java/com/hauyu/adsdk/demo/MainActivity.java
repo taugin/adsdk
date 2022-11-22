@@ -46,13 +46,14 @@ import com.rabbit.adsdk.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Executors;
 
@@ -101,6 +102,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         menu.add(0, 0x4, 0, "ShowAdImp");
         menu.add(0, 0x5, 0, "CheckRunningApp");
         menu.add(0, 0x6, 0, "CheckRoundCpm");
+        menu.add(0, 0x7, 0, "GenerateProguard");
         return true;
     }
 
@@ -180,6 +182,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                         Log.v(Log.TAG, "count : " + map.size() + " , calc1 : " + calc1 + " , calc2 : " + calc2);
                     }
                 });
+            } else if (item.getItemId() == 0x7) {
+                generateProguardDict();
             }
         }
         return true;
@@ -754,5 +758,26 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             listView.setAdapter(adapter);
         }
         return rootLayout;
+    }
+
+    private void generateProguardDict() {
+        List<String> dict = new ArrayList<>();
+        List<String> templateDict = Arrays.asList("O", "0");
+        int len = 10;
+        Random random = new Random(System.currentTimeMillis());
+        for (; dict.size() < 30; ) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("O");
+            for (int index = 0; index < len - 1; index++) {
+                builder.append(templateDict.get(random.nextInt(templateDict.size())));
+            }
+            String output = builder.toString();
+            if (!dict.contains(output)) {
+                dict.add(output);
+            }
+        }
+        for (String s : dict) {
+            Log.v(Log.TAG, "s : " + s);
+        }
     }
 }
