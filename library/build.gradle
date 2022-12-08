@@ -75,7 +75,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // applovin
-    implementation 'com.applovin:applovin-sdk:11.5.5'
+    implementation 'com.applovin:applovin-sdk:11.6.0'
     // tradplus applovin mediation
     implementation 'com.tradplusad:tradplus-applovin:9.8.9.0.1'
     // tradplus max mediation
