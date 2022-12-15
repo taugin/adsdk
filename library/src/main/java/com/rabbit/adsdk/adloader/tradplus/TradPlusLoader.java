@@ -110,6 +110,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         tpBanner.closeAutoShow();
         BannerAdListener bannerAdListener = new BannerAdListener() {
             private String impressionId = null;
+
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
                 if (!isStateSuccess()) {
@@ -138,13 +139,15 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
-                impressionId = generateImpressionId();
-                String network = getNetwork(tpAdInfo);
-                String networkPid = getNetworkPid(tpAdInfo);
-                Log.iv(Log.TAG, formatLog("ad impression network : " + network));
-                reportAdImp(network, networkPid);
-                notifyAdImp(network);
-                reportTradPlusImpressionData(tpAdInfo, impressionId);
+                if (viewInScreen(mTPBanner)) {
+                    impressionId = generateImpressionId();
+                    String network = getNetwork(tpAdInfo);
+                    String networkPid = getNetworkPid(tpAdInfo);
+                    Log.iv(Log.TAG, formatLog("ad impression network : " + network));
+                    reportAdImp(network, networkPid);
+                    notifyAdImp(network);
+                    reportTradPlusImpressionData(tpAdInfo, impressionId);
+                }
             }
 
             @Override
@@ -256,6 +259,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         mTPInterstitial = new TPInterstitial(activity, getPid(), false);
         InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
             private String impressionId = null;
+
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
                 if (!isStateSuccess()) {
@@ -397,6 +401,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         mTPReward = new TPReward(activity, getPid(), false);
         RewardAdListener rewardAdListener = new RewardAdListener() {
             private String impressionId = null;
+
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
                 if (!isStateSuccess()) {
@@ -541,6 +546,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         mTPNative = new TPNative(getActivity(), getPid(), false);
         NativeAdListener nativeAdListener = new NativeAdListener() {
             private String impressionId = null;
+
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
                 if (!isStateSuccess()) {
@@ -681,6 +687,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         mTPSplash = new TPSplash(getActivity(), getPid());
         SplashAdListener splashAdListener = new SplashAdListener() {
             private String impressionId = null;
+
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
                 if (!isStateSuccess()) {

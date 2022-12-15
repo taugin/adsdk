@@ -5,11 +5,14 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.rabbit.adsdk.AdImpData;
@@ -1293,5 +1296,16 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         }
         builder.append("}");
         Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
+    }
+
+    protected boolean viewInScreen(View view) {
+        try {
+            DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+            Rect rect = new Rect();
+            view.getLocalVisibleRect(rect);
+            return !(rect.top < 0 || rect.bottom > dm.heightPixels);
+        } catch (Exception e) {
+        }
+        return false;
     }
 }

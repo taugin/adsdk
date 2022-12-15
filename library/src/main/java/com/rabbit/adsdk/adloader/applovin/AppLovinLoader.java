@@ -492,9 +492,11 @@ public class AppLovinLoader extends AbstractSdkLoader {
         private MaxAdRevenueListener maxAdRevenueListener = new MaxAdRevenueListener() {
             @Override
             public void onAdRevenuePaid(MaxAd ad) {
-                impressionId = generateImpressionId();
-                Log.iv(Log.TAG, formatLog("ad revenue paid" + getLoadedInfo(ad)));
-                reportMaxAdImpData(ad, getAdPlaceName(), impressionId);
+                if (viewInScreen(lastUseMaxAdView)) {
+                    impressionId = generateImpressionId();
+                    Log.iv(Log.TAG, formatLog("ad revenue paid" + getLoadedInfo(ad)));
+                    reportMaxAdImpData(ad, getAdPlaceName(), impressionId);
+                }
             }
         };
     }
