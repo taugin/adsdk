@@ -139,15 +139,13 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
-                if (viewInScreen(mTPBanner)) {
-                    impressionId = generateImpressionId();
-                    String network = getNetwork(tpAdInfo);
-                    String networkPid = getNetworkPid(tpAdInfo);
-                    Log.iv(Log.TAG, formatLog("ad impression network : " + network));
-                    reportAdImp(network, networkPid);
-                    notifyAdImp(network);
-                    reportTradPlusImpressionData(tpAdInfo, impressionId);
-                }
+                impressionId = generateImpressionId();
+                String network = getNetwork(tpAdInfo);
+                String networkPid = getNetworkPid(tpAdInfo);
+                Log.iv(Log.TAG, formatLog("ad impression network : " + network));
+                reportAdImp(network, networkPid);
+                notifyAdImp(network);
+                reportTradPlusImpressionData(tpAdInfo, impressionId);
             }
 
             @Override
