@@ -10,9 +10,16 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.SocketAddress;
+import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -23,11 +30,18 @@ import java.util.Map;
  * Created by Administrator on 2018/3/14.
  */
 
-public class Va implements Application.ActivityLifecycleCallbacks {
+public class Va extends ProxySelector implements Application.ActivityLifecycleCallbacks {
 
     private static final String TAG = "va";
-    private static final String PROXY_HOST = "172.16.170.218";
+    private static final String PROXY_HOST = "172.16.170.247";
     private static final String PROXY_PORT = "8888";
+    private static final List<Proxy> sProxyList;
+
+    static {
+        sProxyList = new ArrayList<>();
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
+        sProxyList.add(proxy);
+    }
 
     public static void setNetworkProxy() {
         System.setProperty("http.proxyHost", PROXY_HOST);
@@ -38,6 +52,21 @@ public class Va implements Application.ActivityLifecycleCallbacks {
 
     public static void init(Application application) {
         application.registerActivityLifecycleCallbacks(new Va());
+    }
+
+    public static void setAutoProxy() {
+        ProxySelector.setDefault(new Va());
+    }
+
+    @Override
+    public List<Proxy> select(URI uri) {
+        log("ProxySelector.select uri : " + uri);
+        return sProxyList;
+    }
+
+    @Override
+    public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
+        log("ProxySelector.connectFailed uri : " + uri + " , sa : " + sa + " , ioe : " + ioe);
     }
 
     private static Context getContext() {
@@ -201,7 +230,7 @@ public class Va implements Application.ActivityLifecycleCallbacks {
         }
     }
 
-    public static void log(Object ...objects) {
+    public static void log(Object... objects) {
         try {
             List<Object> objectList = Arrays.asList(objects);
             String output = "" + objectList;
