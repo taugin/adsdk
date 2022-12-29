@@ -254,7 +254,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        mTPInterstitial = new TPInterstitial(activity, getPid(), false);
+        mTPInterstitial = new TPInterstitial(activity, getPid());
         InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
             private String impressionId = null;
 
@@ -396,7 +396,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        mTPReward = new TPReward(activity, getPid(), false);
+        mTPReward = new TPReward(activity, getPid());
         RewardAdListener rewardAdListener = new RewardAdListener() {
             private String impressionId = null;
 
@@ -541,7 +541,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        mTPNative = new TPNative(getActivity(), getPid(), false);
+        mTPNative = new TPNative(getActivity(), getPid());
         NativeAdListener nativeAdListener = new NativeAdListener() {
             private String impressionId = null;
 
