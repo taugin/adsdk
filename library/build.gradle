@@ -131,9 +131,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // unity
-//    implementation 'com.unity3d.ads:unity-ads:4.4.1'
+//    implementation 'com.unity3d.ads:unity-ads:4.5.0'
 //    // unity applovin mediation
-//    implementation 'com.applovin.mediation:unityads-adapter:4.4.1.0@aar'
+//    implementation 'com.applovin.mediation:unityads-adapter:4.5.0.1@aar'
 //    // tradplus unity mediation
 //    implementation 'com.tradplusad:tradplus-unity:5.9.0.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +141,7 @@ dependencies {
     // vungle
     implementation 'com.vungle:publisher-sdk-android:6.12.0'
     // applovin vungle mediation
-    implementation 'com.applovin.mediation:vungle-adapter:6.12.0.4'
+    implementation 'com.applovin.mediation:vungle-adapter:6.12.0.5'
     // tradplus vungle mediation
     implementation 'com.tradplusad:tradplus-vunglex:7.9.0.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -149,7 +149,7 @@ dependencies {
     // ironsource
     implementation 'com.ironsource.sdk:mediationsdk:7.2.6'
     // applovin ironsource mediation
-    implementation 'com.applovin.mediation:ironsource-adapter:7.2.6.0.0'
+    implementation 'com.applovin.mediation:ironsource-adapter:7.2.6.0.1'
     // tradplus ironsource mediation
     implementation 'com.tradplusad:tradplus-ironsource:10.9.0.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
