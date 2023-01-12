@@ -256,7 +256,7 @@ public class Va extends ProxySelector implements Application.ActivityLifecycleCa
             String methodName = element[4].getMethodName();
             int lineNumber = element[4].getLineNumber();
             return String.format("%s.%s : %d ---> ", getClassName(),
-                    methodName, lineNumber, Locale.CHINESE);
+                    methodName, lineNumber, Locale.ENGLISH);
         }
         return null;
     }
