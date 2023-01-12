@@ -9,7 +9,7 @@ import com.inmobi.ads.InMobiNative;
 import com.mbridge.msdk.MBridgeSDK;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.log.Log;
-import com.tradplus.ads.mobileads.TradPlus;
+import com.tradplus.ads.base.TradPlus;
 
 /**
  * Created by Administrator on 2018-10-25.
