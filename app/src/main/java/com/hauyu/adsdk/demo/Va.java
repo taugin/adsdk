@@ -41,9 +41,11 @@ public class Va extends ProxySelector implements Application.ActivityLifecycleCa
         sProxyList = new ArrayList<>();
         Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
         sProxyList.add(proxy);
+        log("auto proxy : " + sProxyList);
     }
 
     public static void setNetworkProxy() {
+        log("set network proxy by System.setProperty url : " + PROXY_HOST + " , port : " + PROXY_PORT);
         System.setProperty("http.proxyHost", PROXY_HOST);
         System.setProperty("http.proxyPort", PROXY_PORT);
         System.setProperty("https.proxyHost", PROXY_HOST);
@@ -55,6 +57,7 @@ public class Va extends ProxySelector implements Application.ActivityLifecycleCa
     }
 
     public static void setAutoProxy() {
+        log("set auto proxy by ProxySelector.setDefault url : " + sProxyList);
         ProxySelector.setDefault(new Va());
     }
 
