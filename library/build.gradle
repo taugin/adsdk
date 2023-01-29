@@ -75,7 +75,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // applovin
-    implementation 'com.applovin:applovin-sdk:11.6.1'
+    implementation 'com.applovin:applovin-sdk:11.7.0'
     // tradplus applovin mediation
     implementation 'com.tradplusad:tradplus-applovin:9.9.1.0.1'
     // tradplus max mediation
@@ -133,7 +133,7 @@ dependencies {
     // unity
     implementation 'com.unity3d.ads:unity-ads:4.5.0'
     // unity applovin mediation
-    implementation 'com.applovin.mediation:unityads-adapter:4.5.0.1@aar'
+    implementation 'com.applovin.mediation:unityads-adapter:4.5.0.2@aar'
     // tradplus unity mediation
     implementation 'com.tradplusad:tradplus-unity:5.9.1.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -147,9 +147,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // ironsource
-    implementation 'com.ironsource.sdk:mediationsdk:7.2.6'
+    implementation 'com.ironsource.sdk:mediationsdk:7.2.7'
     // applovin ironsource mediation
-    implementation 'com.applovin.mediation:ironsource-adapter:7.2.6.0.1'
+    implementation 'com.applovin.mediation:ironsource-adapter:7.2.7.0.0'
     // tradplus ironsource mediation
     implementation 'com.tradplusad:tradplus-ironsource:10.9.1.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
