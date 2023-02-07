@@ -217,6 +217,11 @@ public class EventImpl implements IEvent {
         reportEvent(context, "e_ad_imp", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
         AdStatManager.get(mContext).recordAdImp(sdk, placeName, network);
+        if (!TextUtils.equals(sdk, Constant.AD_SDK_ADMOB) && network != null && network.toLowerCase(Locale.ENGLISH).contains(Constant.AD_SDK_ADMOB)) {
+            eventId = generateEventId(context, "imp", Constant.AD_SDK_ADMOB, type);
+            Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+            reportEvent(context, eventId, placeName, extra);
+        }
     }
 
     @Override
@@ -235,6 +240,12 @@ public class EventImpl implements IEvent {
         reportEvent(context, eventId, placeName, extra);
         reportAdClickDistinct(context, placeName, sdk, network, type, pid, networkPid, ecpm, extra, isAdClicked);
         AdStatManager.get(mContext).recordAdClick(sdk, placeName, pid, network, extra, impressionId);
+        if (!TextUtils.equals(sdk, Constant.AD_SDK_ADMOB) && network != null && network.toLowerCase(Locale.ENGLISH).contains(Constant.AD_SDK_ADMOB)) {
+            eventId = generateEventId(context, "click", Constant.AD_SDK_ADMOB, type);
+            Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
+            reportEvent(context, eventId, placeName, extra);
+            reportAdClickDistinct(context, placeName, Constant.AD_SDK_ADMOB, network, type, pid, networkPid, ecpm, extra, isAdClicked);
+        }
     }
 
     private void reportAdClickDistinct(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, boolean isAdClicked) {

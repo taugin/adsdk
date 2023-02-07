@@ -75,7 +75,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // applovin
-    implementation 'com.applovin:applovin-sdk:11.7.0'
+    implementation 'com.applovin:applovin-sdk:11.7.1'
     // tradplus applovin mediation
     implementation 'com.tradplusad:tradplus-applovin:9.9.1.0.1'
     // tradplus max mediation
@@ -187,9 +187,9 @@ dependencies {
     implementation 'com.tradplusad:tradplus-smaato:38.9.1.0.1'
 
     // chartboost
-    implementation 'com.chartboost:chartboost-sdk:9.1.1'
+    implementation 'com.chartboost:chartboost-sdk:9.2.0'
     // applovin chartboost mediation
-    implementation 'com.applovin.mediation:chartboost-adapter:9.1.1.2@aar'
+    implementation 'com.applovin.mediation:chartboost-adapter:9.2.0.0@aar'
     // applovin chartboost mediation
     implementation 'com.tradplusad:tradplus-chartboostx:15.9.1.0.1'
 }

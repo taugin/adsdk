@@ -892,7 +892,7 @@ public class Utils {
         if (network.contains("tapjoy")) {
             return "tapjoy";
         }
-        if (network.contains("vungle")) {
+        if (network.contains("vungle") || network.contains("liftoff")) {
             return "vungle";
         }
         if (network.contains("ironsource")) {
