@@ -100,7 +100,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // mintegral
-    def mintegral_version = "16.3.51"
+    def mintegral_version = "16.3.61"
     implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
@@ -117,7 +117,7 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbsplash:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
     // applovin mintegral mediation
-    implementation 'com.applovin.mediation:mintegral-adapter:16.3.51.1@aar'
+    implementation 'com.applovin.mediation:mintegral-adapter:16.3.61.0@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.9.1.30.1'
 //////////////////////////////////////////////////////////////////////////////////////////
