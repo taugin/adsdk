@@ -169,29 +169,16 @@ dependencies {
     implementation 'com.tradplusad:tradplus-tapjoy:6.9.1.30.1'
 //////////////////////////////////////////////////////////////////////////////////////////
 
-    // Smaato
-    def smaato_version = "21.8.6"
-    implementation "com.smaato.android.sdk:module-core:${smaato_version}"
-    implementation "com.smaato.android.sdk:module-core-light:${smaato_version}"
-    implementation "com.smaato.android.sdk:module-richmedia:${smaato_version}"
-    implementation "com.smaato.android.sdk:module-video:${smaato_version}"
-    implementation "com.smaato.android.sdk:smaato-sdk:${smaato_version}"
-    implementation "com.smaato.android.sdk:smaato-sdk-banner:${smaato_version}"
-    implementation "com.smaato.android.sdk:smaato-sdk-interstitial:${smaato_version}"
-    implementation "com.smaato.android.sdk:smaato-sdk-rewarded-ads:${smaato_version}"
-    implementation "com.smaato.android.sdk:smaato-sdk-native:${smaato_version}"
-    implementation "com.smaato.android.sdk:smaato-sdk-in-app-bidding:${smaato_version}"
-    // applovin Smaato mediation
-    // implementation 'com.applovin.mediation:smaato-adapter:21.8.6.0'
-    // applovin Smaato mediation
-    implementation 'com.tradplusad:tradplus-smaato:38.9.1.30.1'
-
     // chartboost
     implementation 'com.chartboost:chartboost-sdk:9.2.0'
     // applovin chartboost mediation
     implementation 'com.applovin.mediation:chartboost-adapter:9.2.0.0@aar'
     // applovin chartboost mediation
     implementation 'com.tradplusad:tradplus-chartboostx:15.9.1.30.1'
+//////////////////////////////////////////////////////////////////////////////////////////
+    // Bigo
+    implementation 'com.bigossp:bigo-ads:2.5.0'
+    implementation 'com.tradplusad:tradplus-bigo:57.9.1.30.1'
 }
 
 // 发布aar
