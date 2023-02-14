@@ -173,11 +173,14 @@ dependencies {
     implementation 'com.chartboost:chartboost-sdk:9.2.0'
     // applovin chartboost mediation
     implementation 'com.applovin.mediation:chartboost-adapter:9.2.0.0@aar'
-    // applovin chartboost mediation
+    // tradplus chartboost mediation
     implementation 'com.tradplusad:tradplus-chartboostx:15.9.2.10.1'
 //////////////////////////////////////////////////////////////////////////////////////////
     // Bigo
     implementation 'com.bigossp:bigo-ads:2.7.0'
+    // applovin Bigo mediation
+    implementation 'com.bigossp:max-mediation:2.7.0.0'
+    // tradplus Bigo mediation
     implementation 'com.tradplusad:tradplus-bigo:57.9.2.10.1'
 }
 
