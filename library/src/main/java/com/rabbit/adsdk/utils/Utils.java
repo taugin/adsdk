@@ -898,6 +898,9 @@ public class Utils {
         if (network.contains("ironsource")) {
             return "ironsource";
         }
+        if (network.contains("bigo")) {
+            return "bigo";
+        }
         return "unknown";
     }
 
