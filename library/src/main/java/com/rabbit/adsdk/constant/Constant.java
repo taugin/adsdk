@@ -236,8 +236,6 @@ public class Constant {
 
         public static Banner valueOf(int value) {    //手写的从int到enum的转换函数
             switch (value) {
-                case Constant.NOSET:
-                    return NOSET;
                 case Constant.BANNER:
                     return BANNER;
                 case Constant.FULL_BANNER:

@@ -15,6 +15,8 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.rabbit.adsdk.AdImpData;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
@@ -58,7 +60,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Created by Administrator on 2018/2/9.
  */
 
-public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback {
+public abstract class AbstractSdkLoader implements ISdkLoader {
 
     protected static final String ACTION_LOAD = "load";
 
@@ -97,7 +99,18 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
     private static final List<String> sNeedInitAppLovinFirstSdks = Arrays.asList(Constant.AD_SDK_TRADPLUS, Constant.AD_SDK_APPLOVIN);
 
     public AbstractSdkLoader() {
-        mHandler = new Handler(Looper.getMainLooper(), this);
+        mHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                if (msg != null) {
+                    if (msg.what == MSG_LOADING_TIMEOUT) {
+                        onLoadTimeout();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -677,17 +690,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader, Handler.Callback 
         setLoading(false, STATE_TIMEOUT);
         notifyAdLoadFailed(Constant.AD_ERROR_TIMEOUT, "load time out");
         mLoadTimeout.set(true);
-    }
-
-    @Override
-    public boolean handleMessage(Message msg) {
-        if (msg != null) {
-            if (msg.what == MSG_LOADING_TIMEOUT) {
-                onLoadTimeout();
-                return true;
-            }
-        }
-        return false;
     }
 
     protected String getPid() {
