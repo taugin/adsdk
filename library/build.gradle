@@ -100,7 +100,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // mintegral
-    def mintegral_version = "16.3.71"
+    def mintegral_version = "16.3.91"
     implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
@@ -117,7 +117,7 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbsplash:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
     // applovin mintegral mediation
-    implementation 'com.applovin.mediation:mintegral-adapter:16.3.71.0@aar'
+    implementation 'com.applovin.mediation:mintegral-adapter:16.3.91.1@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.9.2.10.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +141,7 @@ dependencies {
     // vungle
     implementation 'com.vungle:publisher-sdk-android:6.12.1'
     // applovin vungle mediation
-    implementation 'com.applovin.mediation:vungle-adapter:6.12.1.0'
+    implementation 'com.applovin.mediation:vungle-adapter:6.12.1.1'
     // tradplus vungle mediation
     implementation 'com.tradplusad:tradplus-vunglex:7.9.2.10.1'
 //////////////////////////////////////////////////////////////////////////////////////////
