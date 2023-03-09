@@ -22,16 +22,14 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
 
-import androidx.annotation.NonNull;
-
 /**
  * Created by Administrator on 2018/2/12.
  */
 
 public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
 
-    private static final int CACHE_EXPIRETIME = 15 * 60;
-    private static final int REFRESH_INTERVAL = CACHE_EXPIRETIME * 1000;
+    private static final int CACHE_EXPIRE_TIME = 15 * 60;
+    private static final int REFRESH_INTERVAL = CACHE_EXPIRE_TIME * 1000;
     private static final String PREF_REFRESH_INTERVAL = "pref_refresh_interval";
     private static final String PREF_REMOTE_CONFIG_REQUEST_TIME = "pref_data_config_rtime";
     private static final SimpleDateFormat SDF_LEFT_TIME = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
@@ -133,7 +131,7 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
 
     private void requestDataConfig() {
         try {
-            mInstance.fetch(CACHE_EXPIRETIME).addOnCompleteListener(this);
+            mInstance.fetch(CACHE_EXPIRE_TIME).addOnCompleteListener(this);
             Utils.putLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
             updateRefreshInterval();
         } catch (Exception e) {
@@ -158,7 +156,7 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
     }
 
     @Override
-    public void onComplete(@NonNull Task task) {
+    public void onComplete(Task task) {
         if (task == null) {
             Log.e(Log.TAG, "task == null");
             return;
