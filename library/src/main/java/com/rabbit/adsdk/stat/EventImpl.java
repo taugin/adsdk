@@ -390,7 +390,7 @@ public class EventImpl implements IEvent {
      * @return
      */
     private boolean isReportTime(Context context) {
-        String value = DataManager.get(context).getString("report_time");
+        String value = DataManager.get(context).getString("ad_report_time");
         boolean result = parseReport(value, false);
         Log.iv(Log.TAG_SDK, "is report time : " + result);
         return result;

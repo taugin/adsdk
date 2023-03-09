@@ -227,7 +227,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     private long getDelayTime() {
         long delayTime = 500;
-        String delayTimeString = DataManager.get(mContext).getString("activity_monitor_delay_time");
+        String delayTimeString = DataManager.get(mContext).getString("ad_activity_monitor_delay_time");
         if (!TextUtils.isEmpty(delayTimeString)) {
             try {
                 delayTime = Long.parseLong(delayTimeString);

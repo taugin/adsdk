@@ -132,7 +132,7 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
 
     private long getInvalidDuration() {
         long invalidDuration = 2500;
-        String durationString = DataManager.get(mContext).getString("invalid_traffic_check_duration");
+        String durationString = DataManager.get(mContext).getString("ad_invalid_traffic_check_duration");
         if (!TextUtils.isEmpty(durationString)) {
             try {
                 invalidDuration = Long.parseLong(durationString);
@@ -144,7 +144,7 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
 
     private boolean isInvalidDurationCheckEnable() {
         boolean ivtCheckEnable = true;
-        String checkEnable = DataManager.get(mContext).getString("invalid_traffic_check_enable");
+        String checkEnable = DataManager.get(mContext).getString("ad_invalid_traffic_check_enable");
         if (!TextUtils.isEmpty(checkEnable)) {
             try {
                 ivtCheckEnable = Boolean.parseBoolean(checkEnable);
