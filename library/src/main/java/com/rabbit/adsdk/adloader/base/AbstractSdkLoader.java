@@ -1230,7 +1230,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     }
 
     /**
-     * 控制是否上报广告展示价值
+     * 控制是否上报广告展示价值Ad_Impression_Revenue
      *
      * @return
      */
@@ -1288,6 +1288,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
         AdStatManager.get(mContext).recordAdImpression(adImpData);
         reportAdImpression(adImpData);
+        reportTaichiEvent(adImpData);
     }
 
     private void printImpData(Map<String, Object> map) {
@@ -1312,39 +1313,48 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         return false;
     }
 
+    /**
+     * 上报ad_impression事件，firebase通过此事件计算收入
+     *
+     * @param adImpData
+     */
     private void reportAdImpression(AdImpData adImpData) {
-        if (adImpData == null) {
-            return;
-        }
-        String networkName = adImpData.getNetwork();
-        boolean isReportFirebase = true;
-        if (isForbidReportAdImpressionAdmob()) {
-            if (networkName != null) {
-                String temp = networkName.toLowerCase(Locale.ENGLISH);
-                if (temp != null && temp.contains("admob")) {
-                    isReportFirebase = false;
-                }
-            }
-        }
-        String platform = adImpData.getPlatform();
-        String unitName = platform + "_" + adImpData.getUnitName();
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ad_platform", platform);
-        params.put("ad_source", networkName);
-        params.put("ad_format", adImpData.getAdFormat());
-        params.put("ad_unit_name", unitName);
-        params.put("value", adImpData.getValue());
-        params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
-        params.put("currency", "USD"); // All Applovin revenue is sent in USD
-        params.put("active_days", EventImpl.get().getActiveDays() + "d");
-        params.put("active_date", EventImpl.get().getActiveDate());
-        if (isReportFirebase) {
-            InternalStat.sendFirebaseAnalytics(mContext, "ad_impression", null, params);
-        }
-        InternalStat.sendUmengObject(mContext, "ad_impression", params);
-
         try {
-            if (adImpData != null && isEnableReportTaich30()) {
+            if (adImpData != null && isEnableReportAdImpression()) {
+                String networkName = adImpData.getNetwork();
+                boolean isReportFirebase = true;
+                if (isForbidReportAdImpressionAdmob()) {
+                    if (networkName != null) {
+                        String temp = networkName.toLowerCase(Locale.ENGLISH);
+                        if (temp != null && temp.contains("admob")) {
+                            isReportFirebase = false;
+                        }
+                    }
+                }
+                String platform = adImpData.getPlatform();
+                String unitName = platform + "_" + adImpData.getUnitName();
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("ad_platform", platform);
+                params.put("ad_source", networkName);
+                params.put("ad_format", adImpData.getAdFormat());
+                params.put("ad_unit_name", unitName);
+                params.put("value", adImpData.getValue());
+                params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
+                params.put("currency", "USD"); // All Applovin revenue is sent in USD
+                params.put("active_days", EventImpl.get().getActiveDays() + "d");
+                params.put("active_date", EventImpl.get().getActiveDate());
+                if (isReportFirebase) {
+                    InternalStat.sendFirebaseAnalytics(mContext, "ad_impression", null, params);
+                }
+                InternalStat.sendUmengObject(mContext, "ad_impression", params);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private void reportTaichiEvent(AdImpData adImpData) {
+        try {
+            if (adImpData != null && isEnableReportTaichi30()) {
                 Double revenue = adImpData.getValue();
                 if (revenue != null && revenue.doubleValue() > 0) {
                     reportTaichiEvent(mContext, revenue.floatValue());
@@ -1372,15 +1382,21 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         return result;
     }
 
+    /**
+     * 上报taichi事件
+     *
+     * @param context
+     * @param revenue
+     */
     private void reportTaichiEvent(Context context, float revenue) {
         String prefRevenue = "pref_total_taichi_revenue";
         String taichiEvent = "Total_Ads_Revenue_001";
         float lastTotalRevenue = Utils.getFloat(context, prefRevenue);
         float curTotalRevenue = lastTotalRevenue + revenue;
-        Log.v(Log.TAG, "lastTotalRevenue : " + lastTotalRevenue + " , curTotalRevenue : " + curTotalRevenue + " , revenue : " + revenue);
+        Log.iv(Log.TAG, "last total revenue : " + lastTotalRevenue + " , current total revenue : " + curTotalRevenue + " , revenue : " + revenue);
         if (curTotalRevenue >= 0.01f) {
             Utils.putFloat(context, prefRevenue, 0f);
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("currency", "USD");
             map.put("value", curTotalRevenue);
             map.put("micro_value", Double.valueOf(curTotalRevenue * 1000000).intValue());
@@ -1390,7 +1406,30 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
     }
 
-    private boolean isEnableReportTaich30() {
+    /**
+     * 是否允许上报ad_impression事件
+     *
+     * @return
+     */
+    private boolean isEnableReportAdImpression() {
+        boolean result = true;
+        try {
+            String str = DataManager.get(mContext).getString("ad_enable_report_ad_impression");
+            if (!TextUtils.isEmpty(str)) {
+                result = Boolean.parseBoolean(str);
+            }
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return result;
+    }
+
+    /**
+     * 是否允许上报taichi30事件
+     *
+     * @return
+     */
+    private boolean isEnableReportTaichi30() {
         boolean result = true;
         try {
             String str = DataManager.get(mContext).getString("ad_enable_report_taichi30");
