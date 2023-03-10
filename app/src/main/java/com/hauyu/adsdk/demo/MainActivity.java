@@ -331,6 +331,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_NATIVE);
             if (!TextUtils.isEmpty(maxPlaceName)) {
                 ViewGroup frameLayout = new LinearLayout(this);
+                AdParams adParams = new AdParams.Builder().setSceneName("max_native_scene_params").build();
                 AdSdk.get(mContext).showAdView(maxPlaceName, frameLayout);
                 showNativeAds(frameLayout);
             } else {
@@ -495,7 +496,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
         if (AdSdk.get(mContext).isAdViewLoaded(nativePlace)) {
             FrameLayout frameLayout = new FrameLayout(this);
-            AdSdk.get(mContext).showAdView(nativePlace, null, adParams, frameLayout);
+            AdSdk.get(mContext).showAdView(nativePlace, adParams, frameLayout);
             CustomDrawable.setBackground(frameLayout);
             showNativeAds(frameLayout);
             return;

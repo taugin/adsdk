@@ -23,7 +23,16 @@ public class AdParams {
 
     public Params getParams(String sdk) {
         if (mAdParams != null && !TextUtils.isEmpty(sdk)) {
-            return mAdParams.get(sdk);
+            Params params = mAdParams.get(sdk);
+            if (!TextUtils.equals(sdk, AdExtra.AD_SDK_COMMON)) {
+                Params commonParams = mAdParams.get(AdExtra.AD_SDK_COMMON);
+                if (commonParams != null && !TextUtils.isEmpty(commonParams.getSceneName())) {
+                    if (params != null) {
+                        params.setSceneName(commonParams.getSceneName());
+                    }
+                }
+            }
+            return params;
         }
         return null;
     }
@@ -77,6 +86,7 @@ public class AdParams {
         sdkParams.setAdChoices(commonParams.getAdChoices());
         sdkParams.setAdMediaView(commonParams.getAdMediaView());
         sdkParams.setAdSponsored(commonParams.getAdSponsored());
+        sdkParams.setSceneName(commonParams.getSceneName());
     }
 
     public static class Builder {
@@ -161,6 +171,11 @@ public class AdParams {
 
         public Builder setAdSocial(String sdk, int adSocial) {
             getParams(sdk).setAdSocial(adSocial);
+            return this;
+        }
+
+        public Builder setSceneName(String sceneName) {
+            getParams(AdExtra.AD_SDK_COMMON).setSceneName(sceneName);
             return this;
         }
 

@@ -405,6 +405,10 @@ public class AdSdk {
         showAdView(placeName, null, null, adContainer);
     }
 
+    public void showAdView(String placeName, AdParams adParams, ViewGroup adContainer) {
+        showAdView(placeName, null, adParams, adContainer);
+    }
+
     public void showAdView(String placeName, String adType, AdParams adParams, ViewGroup adContainer) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {

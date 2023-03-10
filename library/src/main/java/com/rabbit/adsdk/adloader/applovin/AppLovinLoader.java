@@ -862,7 +862,11 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(ad);
                 reportAdImp(network, networkPid);
                 notifyAdImp(network);
-                reportMaxAdImpData(ad, getAdPlaceName(), impressionId);
+                String sceneName = null;
+                if (mParams != null && !TextUtils.isEmpty(mParams.getSceneName())) {
+                    sceneName = mParams.getSceneName();
+                }
+                reportMaxAdImpData(ad, getAdPlaceName(), impressionId, sceneName);
             }
         };
     }
@@ -1152,6 +1156,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     private void reportMaxAdImpData(MaxAd maxAd, String placeName, String impressionId) {
+        reportMaxAdImpData(maxAd, placeName, impressionId, null);
+    }
+
+    private void reportMaxAdImpData(MaxAd maxAd, String placeName, String impressionId, String sceneName) {
         try {
             // applovin给出的是单次展示的价值，换算ecpm需要乘以1000
             double revenue = maxAd.getRevenue(); // In USD
@@ -1164,7 +1172,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             String adUnitId = maxAd.getAdUnitId(); // The MAX Ad Unit ID
             MaxAdFormat adFormat = maxAd.getFormat(); // The ad format of the ad (e.g. BANNER, MREC, INTERSTITIAL, REWARDED)
             String placement = maxAd.getPlacement(); // The placement this ad's postbacks are tied to
-            placement = getSceneId(placement);
+            placement = getSceneId(!TextUtils.isEmpty(sceneName) ? sceneName : placement);
             String placementId = maxAd.getNetworkPlacement();
             String precision = maxAd.getRevenuePrecision();
             Map<String, Object> map = new HashMap<>();

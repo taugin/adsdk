@@ -629,7 +629,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     viewGroup.removeAllViews();
                 }
                 mTradPlusBindView.bindNativeView(mContext, mPidConfig, params, customNativeAd);
-                customNativeAd.showAd(viewGroup, mTradPlusBindView.getCustomTPNativeAdRender(), getSceneId());
+                customNativeAd.showAd(viewGroup, mTradPlusBindView.getCustomTPNativeAdRender(), getSceneId(params != null ? params.getSceneName() : null));
                 if (viewGroup != null && viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }

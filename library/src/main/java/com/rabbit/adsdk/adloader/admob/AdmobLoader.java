@@ -713,7 +713,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                             network = adapterClassToNetwork(network);
                         } catch (Exception e) {
                         }
-                        reportAdmobImpressionData(adValue, network, impressionId, null);
+                        reportAdmobImpressionData(adValue, network, impressionId, mParams != null ? mParams.getSceneName() : null);
                     }
                 });
             }

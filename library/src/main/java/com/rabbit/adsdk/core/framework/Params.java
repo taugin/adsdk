@@ -22,6 +22,7 @@ public class Params {
     private int adChoices;
     private int adSponsored;
     private int adSocial;
+    private String sceneName;
 
     public Params() {
     }
@@ -128,5 +129,13 @@ public class Params {
 
     public void setAdSocial(int adSocial) {
         this.adSocial = adSocial;
+    }
+
+    public void setSceneName(String sceneName) {
+        this.sceneName = sceneName;
+    }
+
+    public String getSceneName() {
+        return sceneName;
     }
 }
