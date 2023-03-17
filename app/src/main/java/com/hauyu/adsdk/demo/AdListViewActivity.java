@@ -12,9 +12,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
-import com.tiger.adsdk.AdExtra;
-import com.tiger.adsdk.AdParams;
-import com.tiger.adsdk.AdSdk;
+import com.rabbit.adsdk.AdExtra;
+import com.rabbit.adsdk.AdParams;
+import com.rabbit.adsdk.AdSdk;
 
 import java.util.ArrayList;
 

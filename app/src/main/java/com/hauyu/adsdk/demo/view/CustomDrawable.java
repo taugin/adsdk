@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.hauyu.adsdk.demo.Log;
-import com.tiger.adsdk.utils.Utils;
+import com.rabbit.adsdk.utils.Utils;
 
 public class CustomDrawable extends ShapeDrawable {
     private Paint mPaint = new Paint();

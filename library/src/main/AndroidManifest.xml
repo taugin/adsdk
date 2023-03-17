@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tiger.moon">
+    package="com.android.support">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -23,10 +23,10 @@
             android:theme="@android:style/Theme.Translucent" />
 
         <activity
-            android:name="com.tiger.moon.TigActivity"
+            android:name="com.android.support.SunActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:icon="@drawable/rab_transp_bg"
             android:exported="false"
+            android:icon="@drawable/rab_transp_bg"
             android:label=""
             android:theme="@android:style/Theme.Translucent" />
 

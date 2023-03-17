@@ -32,17 +32,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hauyu.adsdk.demo.view.CustomDrawable;
-import com.tiger.adsdk.AdExtra;
-import com.tiger.adsdk.AdImpData;
-import com.tiger.adsdk.AdParams;
-import com.tiger.adsdk.AdReward;
-import com.tiger.adsdk.AdSdk;
-import com.tiger.adsdk.constant.Constant;
-import com.tiger.adsdk.core.db.DBManager;
-import com.tiger.adsdk.core.framework.ActivityMonitor;
-import com.tiger.adsdk.listener.OnAdFilterListener;
-import com.tiger.adsdk.listener.SimpleAdSdkListener;
-import com.tiger.adsdk.utils.Utils;
+import com.rabbit.adsdk.AdExtra;
+import com.rabbit.adsdk.AdImpData;
+import com.rabbit.adsdk.AdParams;
+import com.rabbit.adsdk.AdReward;
+import com.rabbit.adsdk.AdSdk;
+import com.rabbit.adsdk.constant.Constant;
+import com.rabbit.adsdk.core.db.DBManager;
+import com.rabbit.adsdk.core.framework.ActivityMonitor;
+import com.rabbit.adsdk.listener.OnAdFilterListener;
+import com.rabbit.adsdk.listener.SimpleAdSdkListener;
+import com.rabbit.adsdk.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
