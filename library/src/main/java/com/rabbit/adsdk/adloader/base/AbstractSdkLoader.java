@@ -1171,14 +1171,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         void onInitializeFailure(String error);
     }
 
-    public static enum SDKInitializeState {
-        SDK_STATE_UN_INITIALIZE,
-        SDK_STATE_INITIALIZING,
-        SDK_STATE_INITIALIZE_SUCCESS,
-        SDK_STATE_INITIALIZE_FAILURE;
-
-        private SDKInitializeState() {
-        }
+    public interface SDKInitializeState {
+        int SDK_STATE_UN_INITIALIZE = 0;
+        int SDK_STATE_INITIALIZING = 1;
+        int SDK_STATE_INITIALIZE_SUCCESS = 2;
+        int SDK_STATE_INITIALIZE_FAILURE = 3;
     }
 
     protected String formatLog(String info) {

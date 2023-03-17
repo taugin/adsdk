@@ -40,7 +40,7 @@ import java.util.Map;
 
 public class MintegralLoader extends AbstractSdkLoader {
 
-    private static SDKInitializeState sSdkInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
+    private static int sSdkInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
     private static final Handler sHandler = new Handler(Looper.getMainLooper());
     private CountDownTimer mStateChecker;
     private MBridgeSDK mintegralSdk;
