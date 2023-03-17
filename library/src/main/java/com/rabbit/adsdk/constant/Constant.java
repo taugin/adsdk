@@ -217,48 +217,28 @@ public class Constant {
     public static final SimpleDateFormat SDF_ACTIVE_DATE = new SimpleDateFormat("MM-dd", Locale.ENGLISH);
     public static final SimpleDateFormat SDF_ACTIVE_YEAR = new SimpleDateFormat("yyyy", Locale.ENGLISH);
 
-    public enum Banner {
-        NOSET(Constant.NOSET),
-        BANNER(Constant.BANNER),
-        FULL_BANNER(Constant.FULL_BANNER),
-        LARGE_BANNER(Constant.LARGE_BANNER),
-        LEADERBOARD(Constant.LEADERBOARD),
-        MEDIUM_RECTANGLE(Constant.MEDIUM_RECTANGLE),
-        WIDE_SKYSCRAPER(Constant.WIDE_SKYSCRAPER),
-        SMART_BANNER(Constant.SMART_BANNER),
-        ADAPTIVE_BANNER(Constant.ADAPTIVE_BANNER);
-
-        private int value = 0;
-
-        private Banner(int value) {     //必须是private的，否则编译错误
-            this.value = value;
-        }
-
-        public static Banner valueOf(int value) {    //手写的从int到enum的转换函数
-            switch (value) {
-                case Constant.BANNER:
-                    return BANNER;
-                case Constant.FULL_BANNER:
-                    return FULL_BANNER;
-                case Constant.LARGE_BANNER:
-                    return LARGE_BANNER;
-                case Constant.LEADERBOARD:
-                    return LEADERBOARD;
-                case Constant.MEDIUM_RECTANGLE:
-                    return MEDIUM_RECTANGLE;
-                case Constant.WIDE_SKYSCRAPER:
-                    return WIDE_SKYSCRAPER;
-                case Constant.SMART_BANNER:
-                    return SMART_BANNER;
-                case Constant.ADAPTIVE_BANNER:
-                    return ADAPTIVE_BANNER;
+    public static class Banner {
+        public static int valueOf(String bannerSize) {
+            switch (bannerSize) {
+                case "BANNER":
+                    return Constant.BANNER;
+                case "FULL_BANNER":
+                    return Constant.FULL_BANNER;
+                case "LARGE_BANNER":
+                    return Constant.LARGE_BANNER;
+                case "LEADERBOARD":
+                    return Constant.LEADERBOARD;
+                case "MEDIUM_RECTANGLE":
+                    return Constant.MEDIUM_RECTANGLE;
+                case "WIDE_SKYSCRAPER":
+                    return Constant.WIDE_SKYSCRAPER;
+                case "SMART_BANNER":
+                    return Constant.SMART_BANNER;
+                case "ADAPTIVE_BANNER":
+                    return Constant.ADAPTIVE_BANNER;
                 default:
-                    return NOSET;
+                    return Constant.NOSET;
             }
-        }
-
-        public int value() {
-            return value;
         }
     }
 

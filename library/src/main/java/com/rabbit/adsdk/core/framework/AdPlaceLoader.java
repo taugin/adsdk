@@ -213,13 +213,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (pidConfig != null) {
                 String bannerSize = pidConfig.getBannerSize();
                 if (!TextUtils.isEmpty(bannerSize)) {
-                    Constant.Banner banner = null;
+                    int banner = Constant.NOSET;
                     try {
                         banner = Constant.Banner.valueOf(bannerSize);
                     } catch (Exception e) {
                     }
-                    if (banner != null) {
-                        return banner.value();
+                    if (banner != Constant.NOSET) {
+                        return banner;
                     }
                 }
             }
@@ -228,13 +228,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mAdPlace != null) {
             String bannerSize = mAdPlace.getBannerSize();
             if (!TextUtils.isEmpty(bannerSize)) {
-                Constant.Banner banner = null;
+                int banner = Constant.NOSET;
                 try {
                     banner = Constant.Banner.valueOf(bannerSize);
                 } catch (Exception e) {
                 }
-                if (banner != null) {
-                    return banner.value();
+                if (banner != Constant.NOSET) {
+                    return banner;
                 }
             }
         }
@@ -270,13 +270,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mAdPlace != null) {
             String bannerSize = mAdPlace.getBannerSize();
             if (!TextUtils.isEmpty(bannerSize)) {
-                Constant.Banner banner = null;
+                int banner = Constant.NOSET;
                 try {
                     banner = Constant.Banner.valueOf(bannerSize);
                 } catch (Exception e) {
                 }
-                if (banner != null) {
-                    return banner.value();
+                if (banner != Constant.NOSET) {
+                    return banner;
                 }
             }
         }
