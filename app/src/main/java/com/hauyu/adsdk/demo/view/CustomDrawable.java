@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -16,7 +15,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.hauyu.adsdk.demo.Log;
-import com.rabbit.adsdk.utils.Utils;
+import com.tiger.adsdk.utils.Utils;
 
 public class CustomDrawable extends ShapeDrawable {
     private Paint mPaint = new Paint();

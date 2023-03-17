@@ -7,10 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rabbit.adsdk.AdExtra;
-import com.rabbit.adsdk.AdParams;
-import com.rabbit.adsdk.AdSdk;
-import com.rabbit.adsdk.listener.SimpleAdSdkListener;
+import com.tiger.adsdk.AdExtra;
+import com.tiger.adsdk.AdParams;
+import com.tiger.adsdk.AdSdk;
+import com.tiger.adsdk.listener.SimpleAdSdkListener;
 
 import java.util.Locale;
 import java.util.Random;
