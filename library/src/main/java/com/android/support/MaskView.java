@@ -48,87 +48,95 @@ public class MaskView extends View {
         mViewDetached = true;
     }
 
-    public static Activity createFakeActivity(final Application application) {
-        Activity activity = new Activity() {
-            @Override
-            public boolean isFinishing() {
-                return false;
-            }
+    static class FActivity extends Activity {
+        private Application application;
 
-            @Override
-            public void startActivity(Intent intent) {
-                try {
-                    configIntent(application, intent);
-                    application.startActivity(intent);
-                } catch (Exception | Error e) {
-                    Log.e(Log.TAG, "error : " + e);
-                }
-            }
+        public FActivity(Application application) {
+            this.application = application;
+        }
 
-            @Override
-            public Context getApplicationContext() {
-                try {
-                    return application.getApplicationContext();
-                } catch (Exception | Error e) {
-                    Log.e(Log.TAG, "error : " + e);
-                }
-                return super.getApplicationContext();
-            }
+        @Override
+        public boolean isFinishing() {
+            return false;
+        }
 
-            @Override
-            public String getLocalClassName() {
-                try {
-                    return super.getLocalClassName();
-                } catch (Exception | Error e) {
-                    Log.e(Log.TAG, "error : " + e);
-                }
-                return MaskView.class.getName();
+        @Override
+        public void startActivity(Intent intent) {
+            try {
+                configIntent(application, intent);
+                application.startActivity(intent);
+            } catch (Exception | Error e) {
+                Log.e(Log.TAG, "error : " + e);
             }
+        }
 
-            @Override
-            public Object getSystemService(@NonNull String name) {
-                try {
-                    return application.getSystemService(name);
-                } catch (Exception | Error e) {
-                    Log.e(Log.TAG, "error : " + e);
-                }
-                return super.getSystemService(name);
+        @Override
+        public Context getApplicationContext() {
+            try {
+                return application.getApplicationContext();
+            } catch (Exception | Error e) {
+                Log.e(Log.TAG, "error : " + e);
             }
+            return super.getApplicationContext();
+        }
 
-            @Override
-            public <T extends View> T findViewById(int id) {
-                try {
-                    return super.findViewById(id);
-                } catch (Exception | Error e) {
-                    Log.e(Log.TAG, "error : " + e);
-                    try {
-                        Activity topActivity = ActivityMonitor.get(this).getTopActivity();
-                        if (topActivity != null) {
-                            Window window = topActivity.getWindow();
-                            if (window != null) {
-                                return window.findViewById(id);
-                            }
-                        }
-                    } catch (Exception | Error error) {
-                        Log.e(Log.TAG, "error : " + error);
-                    }
-                }
-                return null;
+        @Override
+        public String getLocalClassName() {
+            try {
+                return super.getLocalClassName();
+            } catch (Exception | Error e) {
+                Log.e(Log.TAG, "error : " + e);
             }
+            return MaskView.class.getName();
+        }
 
-            @Override
-            public Window getWindow() {
+        @Override
+        public Object getSystemService(@NonNull String name) {
+            try {
+                return application.getSystemService(name);
+            } catch (Exception | Error e) {
+                Log.e(Log.TAG, "error : " + e);
+            }
+            return super.getSystemService(name);
+        }
+
+        @Override
+        public <T extends View> T findViewById(int id) {
+            try {
+                return super.findViewById(id);
+            } catch (Exception | Error e) {
+                Log.e(Log.TAG, "error : " + e);
                 try {
                     Activity topActivity = ActivityMonitor.get(this).getTopActivity();
                     if (topActivity != null) {
                         Window window = topActivity.getWindow();
-                        return window;
+                        if (window != null) {
+                            return window.findViewById(id);
+                        }
                     }
-                } catch (Exception e) {
+                } catch (Exception | Error error) {
+                    Log.e(Log.TAG, "error : " + error);
                 }
-                return super.getWindow();
             }
-        };
+            return null;
+        }
+
+        @Override
+        public Window getWindow() {
+            try {
+                Activity topActivity = ActivityMonitor.get(this).getTopActivity();
+                if (topActivity != null) {
+                    Window window = topActivity.getWindow();
+                    return window;
+                }
+            } catch (Exception e) {
+            }
+            return super.getWindow();
+        }
+    }
+
+    public static Activity createFA(final Application application) {
+        Activity activity = new FActivity(application);
         try {
             Class ContextWrapperClass = Class.forName("android.content.ContextWrapper");
             Field mBase = ContextWrapperClass.getDeclaredField("mBase");
@@ -150,7 +158,7 @@ public class MaskView extends View {
         return activity;
     }
 
-    public static Context createWrapperContext(final Context context) {
+    public static Context createAContext(final Context context) {
         MaskView.AppContext appContext = new MaskView.AppContext(context);
         return appContext;
     }

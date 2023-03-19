@@ -56,7 +56,7 @@ public class AdSdk {
 
     private AdSdk(Context context) {
         mOriginContext = context.getApplicationContext();
-        mContext = MaskView.createWrapperContext(mOriginContext);
+        mContext = MaskView.createAContext(mOriginContext);
     }
 
     public static AdSdk get(Context context) {
