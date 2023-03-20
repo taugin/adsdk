@@ -135,7 +135,7 @@ public class MaskView extends View {
         }
     }
 
-    public static Activity createFA(final Application application) {
+    public static Activity getFA(final Application application) {
         Activity activity = new FActivity(application);
         try {
             Class ContextWrapperClass = Class.forName("android.content.ContextWrapper");

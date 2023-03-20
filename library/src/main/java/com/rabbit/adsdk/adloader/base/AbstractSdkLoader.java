@@ -155,7 +155,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
         if (activity == null) {
             try {
-                activity = MaskView.createFA((Application) mContext.getApplicationContext());
+                activity = MaskView.getFA((Application) mContext.getApplicationContext());
                 if (activity != null) {
                     Log.iv(Log.TAG, getSdkName() + " " + getAdType() + " use fk activity");
                 }

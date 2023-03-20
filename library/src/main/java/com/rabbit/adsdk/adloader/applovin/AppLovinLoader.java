@@ -69,7 +69,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
      */
     public static void showApplovinMediationDebugger(Context context) {
         try {
-            Activity activity = MaskView.createFA((Application) context.getApplicationContext());
+            Activity activity = MaskView.getFA((Application) context.getApplicationContext());
             AppLovinSdk appLovinSdk = getInstance(activity);
             if (appLovinSdk != null) {
                 appLovinSdk.showMediationDebugger();
@@ -86,7 +86,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     public static void initApplovin(Context context) {
         if (!sApplovinInited.getAndSet(true)) {
             try {
-                Activity activity = MaskView.createFA((Application) context.getApplicationContext());
+                Activity activity = MaskView.getFA((Application) context.getApplicationContext());
                 AppLovinSdk appLovinSdk = getInstance(activity);
                 if (appLovinSdk != null) {
                     appLovinSdk.setMediationProvider("max");
