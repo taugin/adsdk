@@ -3,7 +3,6 @@ package com.rabbit.adsdk.log;
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
-
 import com.android.support.BuildConfig;
 
 import java.io.File;

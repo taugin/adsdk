@@ -3,6 +3,7 @@ package com.rabbit.adsdk.data;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.android.support.SpreadInfo;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.data.config.AdPlace;
@@ -12,7 +13,6 @@ import com.rabbit.adsdk.data.parse.IParser;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.AesUtils;
 import com.rabbit.adsdk.utils.Utils;
-import com.android.support.SpreadInfo;
 
 import org.json.JSONArray;
 

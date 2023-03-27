@@ -12,9 +12,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
+import com.android.support.IAdvance;
+import com.android.support.SunActivity;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
-import com.rabbit.adsdk.adloader.adfb.FBLoader;
 import com.rabbit.adsdk.adloader.admob.AdmobLoader;
 import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.adloader.base.SimpleAdBaseBaseListener;
@@ -36,8 +37,6 @@ import com.rabbit.adsdk.listener.OnAdSdkListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.utils.Utils;
-import com.android.support.IAdvance;
-import com.android.support.SunActivity;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
@@ -126,13 +125,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         if (config.isAdmob() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
                             if (!config.isDisable()) {
                                 loader = new AdmobLoader();
-                                loader.init(mContext, config);
-                                loader.setListenerManager(this);
-                                mAdLoaders.add(loader);
-                            }
-                        } else if (config.isFB() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
-                            if (!config.isDisable()) {
-                                loader = new FBLoader();
                                 loader.init(mContext, config);
                                 loader.setListenerManager(this);
                                 mAdLoaders.add(loader);

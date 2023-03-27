@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.android.support.BuildConfig;
+import com.android.support.MaskView;
 import com.rabbit.adsdk.AdImpData;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
@@ -43,7 +44,6 @@ import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.stat.IEvent;
 import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
-import com.android.support.MaskView;
 
 import java.util.Arrays;
 import java.util.Collection;

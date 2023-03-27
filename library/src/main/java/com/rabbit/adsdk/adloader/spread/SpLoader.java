@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.support.SpreadInfo;
+import com.android.support.SunActivity;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.adloader.listener.ISdkLoader;
@@ -18,8 +20,6 @@ import com.rabbit.adsdk.data.DataManager;
 import com.rabbit.adsdk.http.Http;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
-import com.android.support.SpreadInfo;
-import com.android.support.SunActivity;
 
 import java.util.ArrayList;
 import java.util.List;

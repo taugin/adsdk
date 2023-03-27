@@ -19,11 +19,6 @@ public class AdExtra {
     public static final String AD_SDK_ADMOB = Constant.AD_SDK_ADMOB;
 
     /**
-     * FB SDK 名字
-     */
-    public static final String AD_SDK_FACEBOOK = Constant.AD_SDK_FACEBOOK;
-
-    /**
      * ADMOB banner尺寸 320 x 50
      */
     public static final int ADMOB_BANNER = Constant.BANNER;

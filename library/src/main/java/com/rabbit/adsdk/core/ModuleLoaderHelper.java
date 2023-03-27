@@ -3,7 +3,6 @@ package com.rabbit.adsdk.core;
 import android.text.TextUtils;
 
 import com.applovin.sdk.AppLovinSdk;
-import com.facebook.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.inmobi.ads.InMobiNative;
 import com.mbridge.msdk.MBridgeSDK;
@@ -21,9 +20,6 @@ public class ModuleLoaderHelper {
 
         if (TextUtils.equals(Constant.AD_SDK_ADMOB, sdk)) {
             return hasAdmobModule();
-        }
-        if (TextUtils.equals(Constant.AD_SDK_FACEBOOK, sdk)) {
-            return hasFBModule();
         }
         if (TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk)) {
             return hasApplovinModule();
@@ -46,16 +42,6 @@ public class ModuleLoaderHelper {
     private static boolean hasAdmobModule() {
         try {
             MobileAds.class.getName();
-            return true;
-        } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        }
-        return false;
-    }
-
-    private static boolean hasFBModule() {
-        try {
-            InterstitialAd.class.getName();
             return true;
         } catch (Exception | Error e) {
             Log.e(Log.TAG, "error : " + e, e);

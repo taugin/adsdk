@@ -2,6 +2,7 @@ package com.rabbit.adsdk.data.parse;
 
 import android.text.TextUtils;
 
+import com.android.support.SpreadInfo;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PidConfig;
@@ -9,7 +10,6 @@ import com.rabbit.adsdk.data.config.PlaceConfig;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.AesUtils;
 import com.rabbit.adsdk.utils.Utils;
-import com.android.support.SpreadInfo;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

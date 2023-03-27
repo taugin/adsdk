@@ -352,10 +352,6 @@ public class PidConfig {
         return TextUtils.equals(Constant.AD_SDK_ADMOB, sdk);
     }
 
-    public boolean isFB() {
-        return TextUtils.equals(Constant.AD_SDK_FACEBOOK, sdk);
-    }
-
     public boolean isApplovin() {
         return TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk);
     }

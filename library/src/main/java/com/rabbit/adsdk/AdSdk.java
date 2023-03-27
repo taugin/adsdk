@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.android.support.BuildConfig;
+import com.android.support.MaskView;
 import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.ActivityMonitor;
@@ -24,7 +25,6 @@ import com.rabbit.adsdk.listener.OnAdSdkListener;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.utils.Utils;
-import com.android.support.MaskView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
