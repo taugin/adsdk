@@ -83,11 +83,11 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // facebook
-    implementation 'com.facebook.android:audience-network-sdk:6.12.0'
+    // implementation 'com.facebook.android:audience-network-sdk:6.12.0'
     // applovin facebook mediation
-    implementation 'com.applovin.mediation:facebook-adapter:6.12.0.2@aar'
+    // implementation 'com.applovin.mediation:facebook-adapter:6.12.0.2@aar'
     // tradplus facebook mediation
-    implementation 'com.tradplusad:tradplus-facebook:1.9.3.10.1'
+    // implementation 'com.tradplusad:tradplus-facebook:1.9.3.10.1'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // admob 版本从21.4.0开始，强制需要在AndroidManifest里面添加admob app id，目前admob版本暂时不升级
