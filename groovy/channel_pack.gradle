@@ -70,9 +70,9 @@ def getAxmlFileName() {
 
 afterEvaluate {
     println ":${project.name}:ChannelPackVersion [" + getChannelPackVersion() + "]"
-    project.configurations.provided.setCanBeResolved(true)
+    project.configurations.compileOnly.setCanBeResolved(true)
     project.configurations.api.setCanBeResolved(true)
-    project.dependencies.add("provided", getAxmlImplementation())
+    project.dependencies.add("compileOnly", getAxmlImplementation())
 // Windows
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
@@ -1362,7 +1362,7 @@ def getAXMLEditJarFile() {
     } else {
         System.err.println ":${project.name}:getAXMLEditJarFile Can not find AXMLEditor.jar in [" + rootDir + "]"
     }
-    aXmlEditJarFile = project.configurations.provided*.toURI().find {
+    aXmlEditJarFile = project.configurations.compileOnly*.toURI().find {
         URI uri ->
             new File(uri).name == getAxmlFileName()
     }
@@ -1370,7 +1370,7 @@ def getAXMLEditJarFile() {
         println ":${project.name}:getAXMLEditJarFile aXmlEditJarFile : [" + aXmlEditJarFile + "]"
         return new File(aXmlEditJarFile).getAbsolutePath()
     } else {
-        System.err.println ":${project.name}:getAXMLEditJarFile Can not find dependencies [provided '" + getAxmlImplementation() + "] in app.dependencies"
+        System.err.println ":${project.name}:getAXMLEditJarFile Can not find dependencies [compileOnly '" + getAxmlImplementation() + "] in app.dependencies"
     }
     return null
 }

@@ -18,12 +18,15 @@
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
-#-renamesourcefileattribute SourceFile
--include ../library/proguard-rules-adsdk.pro
+#################################################################
+-renamesourcefileattribute SourceFile
+-repackageclasses
+-classobfuscationdictionary ./proguard-keys.txt
+-packageobfuscationdictionary ./proguard-keys.txt
+-obfuscationdictionary ./proguard-keys.txt
+#################################################################
 -dontwarn android.support.**
 -dontwarn com.**
 -dontwarn android.**
 -keep class com.hauyu.adsdk.demo.Va { *;}
--classobfuscationdictionary ./proguard-keys.txt
--packageobfuscationdictionary ./proguard-keys.txt
--obfuscationdictionary ./proguard-keys.txt
+

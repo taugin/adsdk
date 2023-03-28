@@ -94,9 +94,9 @@ def getAxmlFileName() {
 }
 
 project.afterEvaluate {
-    project.configurations.provided.setCanBeResolved(true)
+    project.configurations.compileOnly.setCanBeResolved(true)
     project.configurations.api.setCanBeResolved(true)
-    project.dependencies.add("provided", getAxmlImplementation())
+    project.dependencies.add("compileOnly", getAxmlImplementation())
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
             def productFlavor = toUpperCaseFirstOne(flavor.name)
@@ -701,14 +701,14 @@ def getAXMLEditJarFile() {
     } else {
         System.err.println ":${project.name}:getAXMLEditorFile Can not find AXMLEditor.jar in [" + rootDir + "]"
     }
-    aXmlEditJarFile = project.configurations.provided*.toURI().find {
+    aXmlEditJarFile = project.configurations.compileOnly*.toURI().find {
         URI uri ->
             new File(uri).name == getAxmlFileName()
     }
     if (aXmlEditJarFile != null && new File(aXmlEditJarFile).exists()) {
         return new File(aXmlEditJarFile).getAbsolutePath()
     } else {
-        System.err.println ":${project.name}:getAXMLEditorFile Can not find dependencies [provided '" + getAxmlImplementation() + "] in app.dependencies"
+        System.err.println ":${project.name}:getAXMLEditorFile Can not find dependencies [compileOnly '" + getAxmlImplementation() + "] in app.dependencies"
     }
     return null
 }
