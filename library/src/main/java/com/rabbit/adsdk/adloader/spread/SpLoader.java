@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.support.SpreadInfo;
 import com.android.support.SunActivity;
 import com.rabbit.adsdk.adloader.base.AbstractSdkLoader;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
@@ -17,6 +16,7 @@ import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.AdPlaceLoader;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.DataManager;
+import com.rabbit.adsdk.data.config.SpreadConfig;
 import com.rabbit.adsdk.http.Http;
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
@@ -33,7 +33,7 @@ import java.util.Random;
 public class SpLoader extends AbstractSdkLoader {
 
     private static final int MOCK_LOADING_TIME = 200;
-    private SpreadInfo mSpread;
+    private SpreadConfig mSpread;
     private Params mParams;
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private SpreadBindNativeView spreadBindNativeView = new SpreadBindNativeView();
@@ -71,19 +71,19 @@ public class SpLoader extends AbstractSdkLoader {
             return;
         }
 
-        final SpreadInfo spreadInfo = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
-        if (checkArgs(spreadInfo)) {
+        final SpreadConfig spreadConfig = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
+        if (checkArgs(spreadConfig)) {
             setLoading(true, STATE_REQUEST);
             printInterfaceLog(ACTION_LOAD);
             reportAdRequest();
             notifyAdRequest();
-            loadIcon(spreadInfo.getIcon());
-            loadBanner(spreadInfo.getBanner());
+            loadIcon(spreadConfig.getIcon());
+            loadBanner(spreadConfig.getBanner());
             if (mHandler != null) {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mSpread = spreadInfo;
+                        mSpread = spreadConfig;
                         setLoading(false, STATE_SUCCESS);
                         reportAdLoaded();
                         notifySdkLoaderLoaded(false);
@@ -118,9 +118,9 @@ public class SpLoader extends AbstractSdkLoader {
         if (mSpread != null) {
             notifyAdShow();
             reportAdShow();
-            SpreadInfo spreadInfo = mSpread;
-            spreadBindNativeView.setClickListener(new ClickClass(spreadInfo));
-            spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadInfo);
+            SpreadConfig spreadConfig = mSpread;
+            spreadBindNativeView.setClickListener(new ClickClass(spreadConfig));
+            spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadConfig);
             mSpread = null;
             notifyAdImp();
             reportAdImp();
@@ -154,19 +154,19 @@ public class SpLoader extends AbstractSdkLoader {
             return;
         }
 
-        final SpreadInfo spreadInfo = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
-        if (checkArgs(spreadInfo)) {
+        final SpreadConfig spreadConfig = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
+        if (checkArgs(spreadConfig)) {
             setLoading(true, STATE_REQUEST);
             printInterfaceLog(ACTION_LOAD);
             reportAdRequest();
             notifyAdRequest();
-            loadIcon(spreadInfo.getIcon());
-            loadBanner(spreadInfo.getBanner());
+            loadIcon(spreadConfig.getIcon());
+            loadBanner(spreadConfig.getBanner());
             if (mHandler != null) {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mSpread = spreadInfo;
+                        mSpread = spreadConfig;
                         setLoading(false, STATE_SUCCESS);
                         reportAdLoaded();
                         notifySdkLoaderLoaded(false);
@@ -185,14 +185,14 @@ public class SpLoader extends AbstractSdkLoader {
      * @param spList
      * @return
      */
-    private SpreadInfo checkSpConfig(List<SpreadInfo> spList) {
+    private SpreadConfig checkSpConfig(List<SpreadConfig> spList) {
         if (spList == null || spList.isEmpty()) {
             return null;
         }
-        List<SpreadInfo> availableSp = new ArrayList<SpreadInfo>();
-        for (SpreadInfo config : spList) {
+        List<SpreadConfig> availableSp = new ArrayList<SpreadConfig>();
+        for (SpreadConfig config : spList) {
             // 参数有效，并且未安装
-            if (checkArgs(config) && !Utils.isInstalled(mContext, config.getPkgname()) && !config.isDisable()) {
+            if (checkArgs(config) && !Utils.isInstalled(mContext, config.getPackageName()) && !config.isDisable()) {
                 availableSp.add(config);
             }
         }
@@ -206,19 +206,19 @@ public class SpLoader extends AbstractSdkLoader {
     /**
      * 检查参数合法性
      *
-     * @param spreadInfo
+     * @param spreadConfig
      * @return
      */
-    private boolean checkArgs(SpreadInfo spreadInfo) {
-        if (spreadInfo == null) {
+    private boolean checkArgs(SpreadConfig spreadConfig) {
+        if (spreadConfig == null) {
             return false;
         }
-        if (TextUtils.isEmpty(spreadInfo.getBanner())
-                || TextUtils.isEmpty(spreadInfo.getIcon())
-                || TextUtils.isEmpty(spreadInfo.getTitle())
-                || TextUtils.isEmpty(spreadInfo.getPkgname())
-                || TextUtils.isEmpty(spreadInfo.getDetail())
-                || TextUtils.isEmpty(spreadInfo.getCta())) {
+        if (TextUtils.isEmpty(spreadConfig.getBanner())
+                || TextUtils.isEmpty(spreadConfig.getIcon())
+                || TextUtils.isEmpty(spreadConfig.getTitle())
+                || TextUtils.isEmpty(spreadConfig.getPackageName())
+                || TextUtils.isEmpty(spreadConfig.getDetail())
+                || TextUtils.isEmpty(spreadConfig.getCta())) {
             return false;
         }
         return true;
@@ -263,9 +263,9 @@ public class SpLoader extends AbstractSdkLoader {
             mParams = params;
         }
         if (mSpread != null) {
-            SpreadInfo spreadInfo = mSpread;
-            spreadBindNativeView.setClickListener(new ClickClass(spreadInfo));
-            spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadInfo);
+            SpreadConfig spreadConfig = mSpread;
+            spreadBindNativeView.setClickListener(new ClickClass(spreadConfig));
+            spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadConfig);
             mSpread = null;
             notifyAdImp();
             reportAdImp();
@@ -273,18 +273,18 @@ public class SpLoader extends AbstractSdkLoader {
     }
 
     public class ClickClass implements View.OnClickListener {
-        private SpreadInfo mSpreadInfo;
+        private SpreadConfig mSpreadConfig;
 
-        public ClickClass(SpreadInfo spreadInfo) {
-            mSpreadInfo = spreadInfo;
+        public ClickClass(SpreadConfig spreadConfig) {
+            mSpreadConfig = spreadConfig;
         }
 
         @Override
         public void onClick(View v) {
-            if (mSpreadInfo != null) {
-                String url = mSpreadInfo.getLinkUrl();
+            if (mSpreadConfig != null) {
+                String url = mSpreadConfig.getLinkUrl();
                 if (TextUtils.isEmpty(url)) {
-                    url = "market://details?id=" + mSpreadInfo.getPkgname();
+                    url = "market://details?id=" + mSpreadConfig.getPackageName();
                 }
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

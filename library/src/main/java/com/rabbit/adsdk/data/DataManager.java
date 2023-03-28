@@ -3,7 +3,7 @@ package com.rabbit.adsdk.data;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.android.support.SpreadInfo;
+import com.rabbit.adsdk.data.config.SpreadConfig;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.data.config.AdPlace;
@@ -150,9 +150,9 @@ public class DataManager {
         return null;
     }
 
-    public List<SpreadInfo> getRemoteSpread() {
-        String data = getString(SpreadInfo.AD_SPREAD_NAME);
-        data = checkLastData(data, SpreadInfo.AD_SPREAD_NAME);
+    public List<SpreadConfig> getRemoteSpread() {
+        String data = getString(SpreadConfig.AD_SPREAD_NAME);
+        data = checkLastData(data, SpreadConfig.AD_SPREAD_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseSpread(data);
         }

@@ -1,19 +1,17 @@
-package com.android.support;
-
-import java.io.Serializable;
+package com.rabbit.adsdk.data.config;
 
 /**
  * Created by Administrator on 2018-10-19.
  */
 
-public class SpreadInfo implements Serializable {
+public class SpreadConfig {
 
     public static final String AD_SPREAD_NAME = "ad_spread_cfg";
 
     private String banner;
     private String icon;
     private String title;
-    private String pkgname;
+    private String packageName;
     private String detail;
     private String linkUrl;
     private String cta;
@@ -43,12 +41,12 @@ public class SpreadInfo implements Serializable {
         this.title = title;
     }
 
-    public String getPkgname() {
-        return pkgname;
+    public String getPackageName() {
+        return packageName;
     }
 
-    public void setPkgname(String pkgname) {
-        this.pkgname = pkgname;
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
     public String getDetail() {

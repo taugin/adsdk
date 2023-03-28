@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.support.SpreadInfo;
+import com.rabbit.adsdk.data.config.SpreadConfig;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
@@ -31,7 +31,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         mClickClass = clickListener;
     }
 
-    public void bindNative(Params params, ViewGroup adContainer, PidConfig pidConfig, SpreadInfo spreadInfo) {
+    public void bindNative(Params params, ViewGroup adContainer, PidConfig pidConfig, SpreadConfig spreadConfig) {
         mParams = params;
         if (mParams == null) {
             Log.e(Log.TAG, "bindNative mParams == null###");
@@ -43,14 +43,14 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         }
         int rootLayout = getBestNativeLayout(adContainer.getContext(), pidConfig, mParams, Constant.AD_SDK_SPREAD);
         if (rootLayout > 0) {
-            bindNativeViewWithRootView(adContainer, rootLayout, pidConfig, spreadInfo);
+            bindNativeViewWithRootView(adContainer, rootLayout, pidConfig, spreadConfig);
             updateCtaButtonBackground(adContainer, pidConfig, mParams);
         } else {
             Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
         }
     }
 
-    private void bindNativeViewWithRootView(ViewGroup adContainer, int rootLayout, PidConfig pidConfig, SpreadInfo spreadInfo) {
+    private void bindNativeViewWithRootView(ViewGroup adContainer, int rootLayout, PidConfig pidConfig, SpreadConfig spreadConfig) {
         if (adContainer == null) {
             throw new AndroidRuntimeException("adContainer is null");
         }
@@ -60,7 +60,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         View view = null;
         try {
             View rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
-            view = showUnifiedAdView(rootView, pidConfig, spreadInfo);
+            view = showUnifiedAdView(rootView, pidConfig, spreadConfig);
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
@@ -76,7 +76,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         }
     }
 
-    private View showUnifiedAdView(View rootView, PidConfig pidConfig, final SpreadInfo spreadInfo) throws Exception {
+    private View showUnifiedAdView(View rootView, PidConfig pidConfig, final SpreadConfig spreadConfig) throws Exception {
         try {
             if (rootView.getParent() != null) {
                 ((ViewGroup) rootView.getParent()).removeView(rootView);
@@ -93,31 +93,31 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         final View adIconView = rootView.findViewById(mParams.getAdIcon());
 
         // 设置广告元素内容
-        if (!TextUtils.isEmpty(spreadInfo.getTitle())) {
+        if (!TextUtils.isEmpty(spreadConfig.getTitle())) {
             if (titleView instanceof TextView) {
-                ((TextView) titleView).setText(spreadInfo.getTitle());
+                ((TextView) titleView).setText(spreadConfig.getTitle());
                 titleView.setVisibility(View.VISIBLE);
                 titleView.setOnClickListener(mClickClass);
             }
         }
 
-        if (!TextUtils.isEmpty(spreadInfo.getDetail())) {
+        if (!TextUtils.isEmpty(spreadConfig.getDetail())) {
             if (detailView instanceof TextView) {
-                ((TextView) detailView).setText(spreadInfo.getDetail());
+                ((TextView) detailView).setText(spreadConfig.getDetail());
                 detailView.setVisibility(View.VISIBLE);
                 detailView.setOnClickListener(mClickClass);
             }
         }
 
-        if (!TextUtils.isEmpty(spreadInfo.getCta())) {
+        if (!TextUtils.isEmpty(spreadConfig.getCta())) {
             if (ctaView instanceof TextView) {
-                ((TextView) ctaView).setText(spreadInfo.getCta());
+                ((TextView) ctaView).setText(spreadConfig.getCta());
                 ctaView.setVisibility(View.VISIBLE);
                 ctaView.setOnClickListener(mClickClass);
             }
         }
 
-        String iconUrl = spreadInfo.getIcon();
+        String iconUrl = spreadConfig.getIcon();
         if (iconUrl != null) {
             if (adIconView instanceof ImageView) {
                 loadAndShowImage((ImageView) adIconView, iconUrl);
@@ -128,10 +128,10 @@ public class SpreadBindNativeView extends BaseBindNativeView {
 
         ImageView mediaView = rootView.findViewById(mParams.getAdCover());
         if (mediaView != null) {
-            loadAndShowImage(mediaView, spreadInfo.getBanner());
+            loadAndShowImage(mediaView, spreadConfig.getBanner());
             mediaView.setOnClickListener(mClickClass);
         }
-        putAdvertiserInfo(spreadInfo);
+        putAdvertiserInfo(spreadConfig);
         return rootView;
     }
 
@@ -154,25 +154,25 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         }
     }
 
-    private void putAdvertiserInfo(SpreadInfo spreadInfo) {
+    private void putAdvertiserInfo(SpreadConfig spreadConfig) {
         try {
-            putValue(AD_TITLE, spreadInfo.getTitle());
+            putValue(AD_TITLE, spreadConfig.getTitle());
         } catch (Exception e) {
         }
         try {
-            putValue(AD_DETAIL, spreadInfo.getDetail());
+            putValue(AD_DETAIL, spreadConfig.getDetail());
         } catch (Exception e) {
         }
         try {
-            putValue(AD_COVER, spreadInfo.getBanner());
+            putValue(AD_COVER, spreadConfig.getBanner());
         } catch (Exception e) {
         }
         try {
-            putValue(AD_CTA, spreadInfo.getCta());
+            putValue(AD_CTA, spreadConfig.getCta());
         } catch (Exception e) {
         }
         try {
-            putValue(AD_ICON, spreadInfo.getIcon());
+            putValue(AD_ICON, spreadConfig.getIcon());
         } catch (Exception e) {
         }
     }

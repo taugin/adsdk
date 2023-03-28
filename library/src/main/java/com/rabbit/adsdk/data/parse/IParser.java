@@ -1,6 +1,6 @@
 package com.rabbit.adsdk.data.parse;
 
-import com.android.support.SpreadInfo;
+import com.rabbit.adsdk.data.config.SpreadConfig;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PlaceConfig;
 
@@ -130,5 +130,5 @@ public interface IParser {
 
     Map<String, Map<String, String>> parseMediationConfig(String data);
 
-    List<SpreadInfo> parseSpread(String data);
+    List<SpreadConfig> parseSpread(String data);
 }
