@@ -22,9 +22,4 @@
 #-keepattributes SourceFile,LineNumberTable
 
 -include proguard-rules-adsdk.pro
--keep class com.inner.adsdk.* {public *;}
--keep class com.inner.adsdk.listener.* {public *;}
--keep class com.inner.adsdk.common.* {public *; protected *;}
--keep class com.inner.adsdk.log.* {public *;}
--keep class com.inner.adsdk.stat.* {public *;}
--keep class com.inner.adsdk.utils.Utils {public *;}
+-keep class com.rabbit.** {public *;}

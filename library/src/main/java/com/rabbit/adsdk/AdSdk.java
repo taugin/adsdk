@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.android.support.BuildConfig;
-import com.android.support.MaskView;
+import com.android.support.VUIHelper;
 import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.ActivityMonitor;
@@ -56,7 +56,7 @@ public class AdSdk {
 
     private AdSdk(Context context) {
         mOriginContext = context.getApplicationContext();
-        mContext = MaskView.createAContext(mOriginContext);
+        mContext = VUIHelper.createAContext(mOriginContext);
     }
 
     public static AdSdk get(Context context) {

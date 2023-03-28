@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.android.support.MaskView;
+import com.android.support.VUIHelper;
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
 import com.applovin.mediation.MaxAdListener;
@@ -69,7 +69,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
      */
     public static void showApplovinMediationDebugger(Context context) {
         try {
-            Activity activity = MaskView.getFA((Application) context.getApplicationContext());
+            Activity activity = VUIHelper.getFA((Application) context.getApplicationContext());
             AppLovinSdk appLovinSdk = getInstance(activity);
             if (appLovinSdk != null) {
                 appLovinSdk.showMediationDebugger();
@@ -86,7 +86,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     public static void initApplovin(Context context) {
         if (!sApplovinInited.getAndSet(true)) {
             try {
-                Activity activity = MaskView.getFA((Application) context.getApplicationContext());
+                Activity activity = VUIHelper.getFA((Application) context.getApplicationContext());
                 AppLovinSdk appLovinSdk = getInstance(activity);
                 if (appLovinSdk != null) {
                     appLovinSdk.setMediationProvider("max");

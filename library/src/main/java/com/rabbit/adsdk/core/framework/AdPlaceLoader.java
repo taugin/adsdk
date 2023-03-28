@@ -12,8 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.android.support.IAdvance;
-import com.android.support.SunActivity;
+import com.android.support.FragmentActivity;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.admob.AdmobLoader;
@@ -39,8 +38,6 @@ import com.rabbit.adsdk.stat.EventImpl;
 import com.rabbit.adsdk.utils.Utils;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -1383,14 +1380,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (needCounting) {
                         AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                     }
-                    addDotView(viewGroup);
                     break;
                 } else if (loader.isNativeType() && loader.isNativeLoaded()) {
                     loader.showNative(viewGroup, getParams(loader));
                     if (needCounting) {
                         AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                     }
-                    addDotView(viewGroup);
                     break;
                 }
             }
@@ -1737,7 +1732,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             } catch (Exception e) {
             }
             sParamsMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), params);
-            Intent intent = new Intent(mContext, SunActivity.class);
+            Intent intent = new Intent(mContext, FragmentActivity.class);
             intent.putExtra(Intent.EXTRA_TITLE, placeName);
             intent.putExtra(Intent.EXTRA_TEXT, source);
             intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
@@ -2214,41 +2209,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             Log.iv(Log.TAG, "ai empty view group");
             return;
         }
-
-        if (!isDotViewVisible()) {
-            Log.iv(Log.TAG, "ai not visible");
-            return;
-        }
         resume();
         showNextAdView();
         autoSwitchAdView();
-    }
-
-    private void addDotView(ViewGroup viewGroup) {
-        try {
-            Class<?> viewClass = Class.forName(IAdvance.ACT_VIEW_NAME);
-            Constructor c = viewClass.getConstructor(new Class[]{Context.class});
-            mDotView = (View) c.newInstance(new Object[]{mContext});
-        } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
-        }
-        if (mDotView != null) {
-            viewGroup.addView(mDotView, 0, 0);
-        }
-    }
-
-    private boolean isDotViewVisible() {
-        boolean isVisible = false;
-        if (mDotView != null) {
-            try {
-                Class<?> viewClass = Class.forName(IAdvance.ACT_VIEW_NAME);
-                Method m = viewClass.getMethod("isVisible");
-                isVisible = (boolean) m.invoke(mDotView);
-            } catch (Exception | Error e) {
-                Log.e(Log.TAG, "error : " + e, e);
-            }
-        }
-        return isVisible;
     }
 
     private static boolean equalsLoader(ISdkLoader l1, ISdkLoader l2) {

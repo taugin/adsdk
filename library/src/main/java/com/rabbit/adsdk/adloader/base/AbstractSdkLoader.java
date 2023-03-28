@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.android.support.BuildConfig;
-import com.android.support.MaskView;
+import com.android.support.VUIHelper;
 import com.rabbit.adsdk.AdImpData;
 import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
@@ -155,7 +155,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
         if (activity == null) {
             try {
-                activity = MaskView.getFA((Application) mContext.getApplicationContext());
+                activity = VUIHelper.getFA((Application) mContext.getApplicationContext());
                 if (activity != null) {
                     Log.iv(Log.TAG, getSdkName() + " " + getAdType() + " use fk activity");
                 }
