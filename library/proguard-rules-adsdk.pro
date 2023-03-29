@@ -26,6 +26,11 @@
 #activity子类public和protected不混淆
 #-keep class * extends android.app.Activity {public *; protected *;}
 
+#################################################################
+-renamesourcefileattribute SourceFile
+-repackageclasses
+#################################################################
+
 #umeng
 -keep class com.umeng.** {*;}
 -keep class com.uc.** {*;}

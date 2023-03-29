@@ -115,18 +115,34 @@ public class DataManager {
         return mPlaceConfig;
     }
 
-    private String getConfigName() {
-        String cfgName = null;
+    private String getMd5SubString() {
         try {
             String pkgmd5 = Utils.string2MD5(mContext.getPackageName());
             pkgmd5 = pkgmd5.toLowerCase(Locale.ENGLISH);
-            String filename = pkgmd5.substring(0, 8);
-            cfgName = "cfg" + filename;
+            return pkgmd5.substring(0, 8);
+        } catch (Exception e) {
+        }
+        return "_sdk_ads";
+    }
+
+    private String getConfigName() {
+        String cfgName = null;
+        try {
+            cfgName = "cfg" + getMd5SubString();
         } catch (Exception e) {
             Log.v(Log.TAG, "error : " + e);
         }
         return cfgName;
     }
+
+    private String getMediationConfigKey() {
+        try {
+            return "mdn" + new StringBuilder(getMd5SubString()).reverse().toString();
+        } catch (Exception e) {
+        }
+        return "mdn_sdk_cfg";
+    }
+
 
     private String getDefaultName() {
         return String.format(Locale.ENGLISH, DATA_CONFIG_FORMAT, "config");
@@ -160,8 +176,8 @@ public class DataManager {
     }
 
     public Map<String, Map<String, String>> getMediationConfig() {
-        String data = getString(Constant.AD_MEDIATION_CONFIG);
-        data = checkLastData(data, Constant.AD_MEDIATION_CONFIG);
+        String data = getString(getMediationConfigKey());
+        data = checkLastData(data, getMediationConfigKey());
         if (!TextUtils.isEmpty(data)) {
             String md5 = Utils.string2MD5(data);
             if (mMdnCfgMap == null || mMdnCfgMap.isEmpty() || !TextUtils.equals(md5, mAdMdnCfgMd5)) {
