@@ -356,14 +356,6 @@ public class PidConfig {
         return TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk);
     }
 
-    public boolean isMintegral() {
-        return TextUtils.equals(Constant.AD_SDK_MINTEGRAL, sdk);
-    }
-
-    public boolean isInmobi() {
-        return TextUtils.equals(Constant.AD_SDK_INMOBI, sdk);
-    }
-
     public boolean isTradPlus() {
         return TextUtils.equals(Constant.AD_SDK_TRADPLUS, sdk);
     }

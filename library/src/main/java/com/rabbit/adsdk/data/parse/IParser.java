@@ -1,8 +1,8 @@
 package com.rabbit.adsdk.data.parse;
 
-import com.rabbit.adsdk.data.config.SpreadConfig;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PlaceConfig;
+import com.rabbit.adsdk.data.config.SpreadConfig;
 
 import java.util.List;
 import java.util.Map;

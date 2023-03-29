@@ -3,11 +3,11 @@ package com.rabbit.adsdk.data;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.rabbit.adsdk.data.config.SpreadConfig;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.data.config.AdPlace;
 import com.rabbit.adsdk.data.config.PlaceConfig;
+import com.rabbit.adsdk.data.config.SpreadConfig;
 import com.rabbit.adsdk.data.parse.AdParser;
 import com.rabbit.adsdk.data.parse.IParser;
 import com.rabbit.adsdk.log.Log;

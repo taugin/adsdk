@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.rabbit.adsdk.data.config.SpreadConfig;
 import com.rabbit.adsdk.adloader.base.BaseBindNativeView;
 import com.rabbit.adsdk.constant.Constant;
 import com.rabbit.adsdk.core.framework.Params;
 import com.rabbit.adsdk.data.config.PidConfig;
+import com.rabbit.adsdk.data.config.SpreadConfig;
 import com.rabbit.adsdk.http.Http;
 import com.rabbit.adsdk.http.OnImageCallback;
 import com.rabbit.adsdk.log.Log;

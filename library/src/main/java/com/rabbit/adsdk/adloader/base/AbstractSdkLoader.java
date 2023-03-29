@@ -87,7 +87,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     private boolean mLoading = false;
     private final Handler mHandler;
     private long mRequestTime = 0;
-    private int mBannerSize = Constant.NOSET;
+    private int mBannerSize = Constant.NO_SET;
     private IEvent mStat;
     private static final Random sRandom = new Random(System.currentTimeMillis());
     private long mLastFullScreenShowTime = 0;

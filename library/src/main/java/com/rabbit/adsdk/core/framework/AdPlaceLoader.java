@@ -18,12 +18,10 @@ import com.rabbit.adsdk.AdReward;
 import com.rabbit.adsdk.adloader.admob.AdmobLoader;
 import com.rabbit.adsdk.adloader.applovin.AppLovinLoader;
 import com.rabbit.adsdk.adloader.base.SimpleAdBaseBaseListener;
-import com.rabbit.adsdk.adloader.inmobi.InmobiLoader;
 import com.rabbit.adsdk.adloader.listener.IManagerListener;
 import com.rabbit.adsdk.adloader.listener.ISdkLoader;
 import com.rabbit.adsdk.adloader.listener.OnAdBaseListener;
 import com.rabbit.adsdk.adloader.listener.OnAdSdkInternalListener;
-import com.rabbit.adsdk.adloader.mintegral.MintegralLoader;
 import com.rabbit.adsdk.adloader.spread.SpLoader;
 import com.rabbit.adsdk.adloader.tradplus.TradPlusLoader;
 import com.rabbit.adsdk.constant.Constant;
@@ -133,20 +131,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                                 loader.setListenerManager(this);
                                 mAdLoaders.add(loader);
                             }
-                        } else if (config.isMintegral() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
-                            if (!config.isDisable()) {
-                                loader = new MintegralLoader();
-                                loader.init(mContext, config);
-                                loader.setListenerManager(this);
-                                mAdLoaders.add(loader);
-                            }
-                        } else if (config.isInmobi() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
-                            if (!config.isDisable()) {
-                                loader = new InmobiLoader();
-                                loader.init(mContext, config);
-                                loader.setListenerManager(this);
-                                mAdLoaders.add(loader);
-                            }
                         } else if (config.isTradPlus() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
                             if (!config.isDisable()) {
                                 loader = new TradPlusLoader();
@@ -202,12 +186,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (pidConfig != null) {
                 String bannerSize = pidConfig.getBannerSize();
                 if (!TextUtils.isEmpty(bannerSize)) {
-                    int banner = Constant.NOSET;
+                    int banner = Constant.NO_SET;
                     try {
                         banner = Constant.Banner.valueOf(bannerSize);
                     } catch (Exception e) {
                     }
-                    if (banner != Constant.NOSET) {
+                    if (banner != Constant.NO_SET) {
                         return banner;
                     }
                 }
@@ -217,12 +201,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mAdPlace != null) {
             String bannerSize = mAdPlace.getBannerSize();
             if (!TextUtils.isEmpty(bannerSize)) {
-                int banner = Constant.NOSET;
+                int banner = Constant.NO_SET;
                 try {
                     banner = Constant.Banner.valueOf(bannerSize);
                 } catch (Exception e) {
                 }
-                if (banner != Constant.NOSET) {
+                if (banner != Constant.NO_SET) {
                     return banner;
                 }
             }
@@ -247,7 +231,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         } catch (Exception e2) {
             Log.e(Log.TAG, "error : " + e2);
         }
-        return Constant.NOSET;
+        return Constant.NO_SET;
     }
 
     /**
@@ -259,12 +243,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (mAdPlace != null) {
             String bannerSize = mAdPlace.getBannerSize();
             if (!TextUtils.isEmpty(bannerSize)) {
-                int banner = Constant.NOSET;
+                int banner = Constant.NO_SET;
                 try {
                     banner = Constant.Banner.valueOf(bannerSize);
                 } catch (Exception e) {
                 }
-                if (banner != Constant.NOSET) {
+                if (banner != Constant.NO_SET) {
                     return banner;
                 }
             }
@@ -282,7 +266,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 }
             }
         }
-        return Constant.NOSET;
+        return Constant.NO_SET;
     }
 
     private String getPidByLoader(ISdkLoader loader) {

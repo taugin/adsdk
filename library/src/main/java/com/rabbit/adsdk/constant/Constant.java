@@ -14,15 +14,13 @@ public class Constant {
     public static final String AD_SDK_ADMOB = "admob";
     public static final String AD_SDK_SPREAD = "spread";
     public static final String AD_SDK_APPLOVIN = "applovin";
-    public static final String AD_SDK_MINTEGRAL = "mintegral";
-    public static final String AD_SDK_INMOBI = "inmobi";
     public static final String AD_SDK_TRADPLUS = "tradplus";
 
     public static final String AD_SDK_PREFIX = "pref_hauyu_";
 
     public static final String PREF_GAID = "pref_gaid";
 
-    public static final int NOSET = -1;
+    public static final int NO_SET = -1;
     public static final int BANNER = 1000;
     public static final int FULL_BANNER = 1001;
     public static final int LARGE_BANNER = 1002;
@@ -63,17 +61,9 @@ public class Constant {
     public static final String PLACE_TYPE_SPLASH = "splash";
     public static final String PLACE_TYPE_COMPLEX = "complex";
 
-    public static final String ECPM = "ecpm";
-
     public static final String KEY_PASSWORD = "123456789";
 
-    public static final String ACCOUNT_ID = "account_id";
-    public static final String UNIT_ID = "unit_id";
-    public static final String PLACEMENT_ID = "placement_id";
-    public static final String APP_KEY = "app_key";
     public static final String APP_ID = "app_id";
-    public static final String WIDTH = "width";
-    public static final String HEIGHT = "height";
 
     // 配置文件中使用的名字++++++
     public static final String ADREFS_NAME = "adrefs";
@@ -236,7 +226,7 @@ public class Constant {
                 case "ADAPTIVE_BANNER":
                     return Constant.ADAPTIVE_BANNER;
                 default:
-                    return Constant.NOSET;
+                    return Constant.NO_SET;
             }
         }
     }
