@@ -6,7 +6,7 @@ package com.rabbit.adsdk.data.config;
 
 public class SpreadConfig {
 
-    public static final String AD_SPREAD_NAME = "ad_spread_cfg";
+    public static final String AD_SPREAD_NAME = "cfg_spread";
 
     private String banner;
     private String icon;
