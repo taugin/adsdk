@@ -1,6 +1,6 @@
 {
   "scene_prefix": "adsdk_demo_",
-  "adplaces": [
+  "all_places": [
     {
       "name": "splash_admob",
       "mode": "con",

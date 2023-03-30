@@ -57,7 +57,7 @@ public class Constant {
 
     public static final String PLACE_TYPE_ADVIEW = "adview";
     public static final String PLACE_TYPE_INTERSTITIAL = "interstitial";
-    public static final String PLACE_TYPE_REWARDEDVIDEO = "reward";
+    public static final String PLACE_TYPE_REWARD_VIDEO = "reward";
     public static final String PLACE_TYPE_SPLASH = "splash";
     public static final String PLACE_TYPE_COMPLEX = "complex";
 
@@ -66,11 +66,10 @@ public class Constant {
     public static final String APP_ID = "app_id";
 
     // 配置文件中使用的名字++++++
-    public static final String ADREFS_NAME = "adrefs";
+    public static final String SHARE_PLACE = "share_place";
     public static final String COMPLEX_PLACES = "cfg_complex_info";
     public static final List<String> DEFAULT_COMPLEX_ORDER = Arrays.asList(new String[]{Constant.TYPE_INTERSTITIAL, Constant.TYPE_NATIVE, Constant.TYPE_BANNER, Constant.TYPE_REWARD});
     public static final String PREF_USER_ACTIVE_TIME = "pref_user_active_time";
-    public static final String AD_MEDIATION_CONFIG = "ad_mdn_cfg";
     // 配置文件中使用的名字======
 
     public static final String AF_STATUS = "af_status";
@@ -232,6 +231,7 @@ public class Constant {
     }
 
     public static final String AD_IMPRESSION_REVENUE = "Ad_Impression_Revenue";
+    public static final String AD_TOTAL_ADS_REVENUE_001 = "Total_Ads_Revenue_001";
     public static final String AD_VALUE = "value";
     public static final String AD_MICRO_VALUE = "micro_value";
     public static final String AD_ROUND_CPM = "round_cpm";

@@ -640,7 +640,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         if (processAdPlaceCache()) {
             return;
         }
-        setPlaceType(Constant.PLACE_TYPE_REWARDEDVIDEO);
+        setPlaceType(Constant.PLACE_TYPE_REWARD_VIDEO);
         loadRewardedVideoInternal();
     }
 
@@ -1926,7 +1926,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             loadAdViewInternal();
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_INTERSTITIAL)) {
             loadInterstitialInternal();
-        } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_REWARDEDVIDEO)) {
+        } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_REWARD_VIDEO)) {
             loadRewardedVideoInternal();
         } else if (TextUtils.equals(mPlaceType, Constant.PLACE_TYPE_SPLASH)) {
             loadSplashInternal();

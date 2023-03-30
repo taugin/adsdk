@@ -96,7 +96,6 @@ public class DataManager {
         Log.iv(Log.TAG_SDK, "remote data reading");
         String data = null;
         data = getString(DATA_CONFIG);
-        data = checkLastData(data, DATA_CONFIG);
         if (!TextUtils.isEmpty(data)
                 && (mPlaceConfig == null || !TextUtils.equals(mPlaceConfig.getAdConfigMd5(), Utils.string2MD5(data)))) {
             if (mParser != null) {
@@ -150,7 +149,6 @@ public class DataManager {
 
     public AdPlace getRemoteAdPlace(String key) {
         String data = getString(key);
-        data = checkLastData(data, key);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseAdPlace(data);
         }
@@ -158,17 +156,15 @@ public class DataManager {
     }
 
     public Map<String, String> getRemoteAdRefs() {
-        String data = getString(Constant.ADREFS_NAME);
-        data = checkLastData(data, Constant.ADREFS_NAME);
+        String data = getString(Constant.SHARE_PLACE);
         if (!TextUtils.isEmpty(data)) {
-            return mParser.parseAdRefs(data);
+            return mParser.parseSharePlace(data);
         }
         return null;
     }
 
     public List<SpreadConfig> getRemoteSpread() {
         String data = getString(SpreadConfig.AD_SPREAD_NAME);
-        data = checkLastData(data, SpreadConfig.AD_SPREAD_NAME);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseSpread(data);
         }
@@ -176,8 +172,8 @@ public class DataManager {
     }
 
     public Map<String, Map<String, String>> getMediationConfig() {
-        String data = getString(getMediationConfigKey());
-        data = checkLastData(data, getMediationConfigKey());
+        String mediationConfigKey = getMediationConfigKey();
+        String data = getString(mediationConfigKey);
         if (!TextUtils.isEmpty(data)) {
             String md5 = Utils.string2MD5(data);
             if (mMdnCfgMap == null || mMdnCfgMap.isEmpty() || !TextUtils.equals(md5, mAdMdnCfgMd5)) {
@@ -271,17 +267,6 @@ public class DataManager {
         } catch (Exception e) {
         }
         return list;
-    }
-
-    /**
-     * 获取默认数据
-     *
-     * @param data
-     * @param key
-     * @return
-     */
-    private String checkLastData(String data, String key) {
-        return data;
     }
 
     private void printGoogleAdvertisingId() {

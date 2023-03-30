@@ -15,9 +15,9 @@ import java.util.Map;
 public interface IParser {
 
     // 广告位汇总
-    String ADPLACES = "adplaces";
+    String ALL_PLACES = "all_places";
     // 广告位引用影射表
-    String ADREFS = "adrefs";
+    String SHARE_PLACE = "share_place";
     // 场景前缀
     String SCENE_PREFIX = "scene_prefix";
     // 自定义广告位名称
@@ -126,7 +126,7 @@ public interface IParser {
 
     AdPlace parseAdPlace(String data);
 
-    Map<String, String> parseAdRefs(String data);
+    Map<String, String> parseSharePlace(String data);
 
     Map<String, Map<String, String>> parseMediationConfig(String data);
 

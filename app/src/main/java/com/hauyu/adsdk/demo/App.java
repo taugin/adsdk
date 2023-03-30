@@ -17,10 +17,7 @@ import androidx.multidex.MultiDex;
 
 import com.github.moduth.blockcanary.BlockCanary;
 import com.github.moduth.blockcanary.BlockCanaryContext;
-import com.rabbit.adsdk.AdImpData;
 import com.rabbit.adsdk.AdSdk;
-import com.rabbit.adsdk.listener.OnAdEventListener;
-import com.rabbit.adsdk.stat.InternalStat;
 import com.rabbit.adsdk.utils.Utils;
 import com.tendcloud.tenddata.TCAgent;
 import com.umeng.analytics.MobclickAgent;
@@ -28,10 +25,8 @@ import com.umeng.commonsdk.UMConfigure;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 
 /**
@@ -49,89 +44,9 @@ public class App extends Application {
         Va.setNetworkProxy();
         initUmeng();
         initTalkingData();
-        AdSdk.get(this).setOnAdEventListener(new OnAdEventListener() {
-            @Override
-            public void onRequest(String placeName, String sdkName, String adType, String pid) {
-            }
-
-            @Override
-            public void onLoaded(String placeName, String sdkName, String adType, String pid) {
-            }
-
-            @Override
-            public void onLoadFailed(String placeName, String sdkName, String adType, String pid) {
-            }
-
-            @Override
-            public void onShow(String placeName, String sdkName, String adType, String pid) {
-            }
-
-            @Override
-            public void onShowFailed(String placeName, String sdkName, String adType, String pid, String msg) {
-            }
-
-            @Override
-            public void onDismiss(String placeName, String sdkName, String adType, String pid) {
-            }
-
-            @Override
-            public void onImp(String placeName, String sdkName, String adType, String pid) {
-            }
-
-            @Override
-            public void onClick(String placeName, String sdkName, String adType, String pid, String impressionId) {
-            }
-
-            @Override
-            public void onAdImpression(AdImpData adImpData) {
-                if (adImpData != null) {
-                    Double revenue = adImpData.getValue();
-                    if (revenue != null && revenue.doubleValue() > 0) {
-                        reportTaichiEvent(getApplicationContext(), revenue.floatValue());
-                    }
-                }
-                reportUmengEvent(adImpData);
-            }
-        });
         AdSdk.get(this).init();
     }
 
-    private void reportTaichiEvent(Context context, float revenue) {
-        String prefRevenue = "pref_total_taichi_revenue";
-        String taichiEvent = "Total_Ads_Revenue_001";
-        float lastTotalRevenue = Utils.getFloat(context, prefRevenue);
-        float curTotalRevenue = lastTotalRevenue + revenue;
-        Log.d(Log.TAG, "lastTotalRevenue : " + lastTotalRevenue + " , curTotalRevenue : " + curTotalRevenue + " , revenue : " + revenue);
-        if (curTotalRevenue >= 0.01f) {
-            Utils.putFloat(context, prefRevenue, 0f);
-            Map<String, Object> map = new HashMap<>();
-            map.put("currency", "USD");
-            map.put("value", curTotalRevenue);
-            map.put("micro_value", Double.valueOf(curTotalRevenue * 1000000).intValue());
-            InternalStat.reportEvent(context, taichiEvent, map);
-        } else {
-            Utils.putFloat(context, prefRevenue, curTotalRevenue);
-        }
-    }
-
-    private void reportUmengEvent(AdImpData adImpData) {
-        if (adImpData == null) {
-            return;
-        }
-        String networkName = adImpData.getNetwork();
-        String platform = adImpData.getPlatform();
-        String unitName = platform + "_" + adImpData.getUnitName();
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ad_platform", platform);
-        params.put("ad_source", networkName);
-        params.put("ad_format", adImpData.getAdFormat());
-        params.put("ad_unit_name", unitName);
-        params.put("value", adImpData.getValue());
-        params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
-        params.put("currency", "USD"); // All Applovin revenue is sent in USD
-        InternalStat.sendUmengObject(getApplicationContext(), "ad_impression", params);
-        Log.v(Log.TAG, "params : " + params);
-    }
 
     @Override
     protected void attachBaseContext(Context base) {

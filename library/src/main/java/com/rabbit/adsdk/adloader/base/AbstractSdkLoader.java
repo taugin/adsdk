@@ -1387,7 +1387,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
      */
     private void reportTaichiEvent(Context context, float revenue) {
         String prefRevenue = "pref_total_taichi_revenue";
-        String taichiEvent = "Total_Ads_Revenue_001";
         float lastTotalRevenue = Utils.getFloat(context, prefRevenue);
         float curTotalRevenue = lastTotalRevenue + revenue;
         Log.iv(Log.TAG, "last total revenue : " + lastTotalRevenue + " , current total revenue : " + curTotalRevenue + " , revenue : " + revenue);
@@ -1397,7 +1396,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             map.put("currency", "USD");
             map.put("value", curTotalRevenue);
             map.put("micro_value", Double.valueOf(curTotalRevenue * 1000000).intValue());
-            InternalStat.reportEvent(context, taichiEvent, map);
+            InternalStat.reportEvent(context, Constant.AD_TOTAL_ADS_REVENUE_001, map);
         } else {
             Utils.putFloat(context, prefRevenue, curTotalRevenue);
         }

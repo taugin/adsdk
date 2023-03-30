@@ -64,14 +64,14 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(data);
             List<AdPlace> adPlaces = null;
-            Map<String, String> adrefs = null;
+            Map<String, String> sharePlace = null;
             String scenePrefix = null;
             boolean disableVpnLoad = false;
-            if (jobj.has(ADPLACES)) {
-                adPlaces = parseAdPlaces(jobj.getString(ADPLACES));
+            if (jobj.has(ALL_PLACES)) {
+                adPlaces = parseAdPlaces(jobj.getString(ALL_PLACES));
             }
-            if (jobj.has(ADREFS)) {
-                adrefs = parseAdRefs(jobj.getString(ADREFS));
+            if (jobj.has(SHARE_PLACE)) {
+                sharePlace = parseSharePlace(jobj.getString(SHARE_PLACE));
             }
             if (jobj.has(SCENE_PREFIX)) {
                 scenePrefix = jobj.getString(SCENE_PREFIX);
@@ -80,10 +80,10 @@ public class AdParser implements IParser {
                 disableVpnLoad = jobj.getInt(DISABLE_VPN_LOAD) == 1;
             }
             if (adPlaces != null
-                    || adrefs != null) {
+                    || sharePlace != null) {
                 placeConfig = new PlaceConfig();
                 placeConfig.setAdPlaceList(adPlaces);
-                placeConfig.setAdRefs(adrefs);
+                placeConfig.setAdRefs(sharePlace);
             }
             if (placeConfig != null) {
                 placeConfig.setScenePrefix(scenePrefix);
@@ -335,7 +335,7 @@ public class AdParser implements IParser {
     }
 
     @Override
-    public Map<String, String> parseAdRefs(String data) {
+    public Map<String, String> parseSharePlace(String data) {
         Map<String, String> adRefs = null;
         try {
             data = getContent(data);
