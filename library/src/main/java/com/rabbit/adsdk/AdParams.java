@@ -37,6 +37,13 @@ public class AdParams {
         return null;
     }
 
+    public void setSceneName(String sceneName) {
+        try {
+            getParams(AdExtra.AD_SDK_COMMON).setSceneName(sceneName);
+        } catch (Exception e) {
+        }
+    }
+
     private void fillCommonIfNeed() {
         if (mAdParams == null || mAdParams.isEmpty()) {
             return;
