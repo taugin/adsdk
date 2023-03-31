@@ -186,6 +186,11 @@ public class AdParams {
             return this;
         }
 
+        public Builder setAdCardStyle(String cardStyle) {
+            getParams(AdExtra.AD_SDK_COMMON).setAdCardStyle(cardStyle);
+            return this;
+        }
+
         public AdParams build() {
             return new AdParams(mAdParams);
         }
