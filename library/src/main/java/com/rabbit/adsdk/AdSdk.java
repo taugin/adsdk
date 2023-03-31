@@ -381,6 +381,10 @@ public class AdSdk {
         return false;
     }
 
+    public void loadAdView(String placeName) {
+        loadAdView(placeName, new AdParams.Builder().build(), null);
+    }
+
     public void loadAdView(String placeName, OnAdSdkListener l) {
         loadAdView(placeName, new AdParams.Builder().build(), l);
     }
