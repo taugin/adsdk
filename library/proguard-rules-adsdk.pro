@@ -130,3 +130,9 @@
 #bigo
 -keep class sg.bigo.** {*;}
 -keep class com.iab.omid.** {*;}
+
+#保留v、d、e的log移除w、i的log, 主要是移除firebase的log
+-assumenosideeffects class android.util.Log{
+    public static *** i(...);
+    public static *** w(...);
+}
