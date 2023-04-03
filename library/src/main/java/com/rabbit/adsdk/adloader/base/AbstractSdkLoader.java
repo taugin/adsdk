@@ -1232,7 +1232,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
      * @return
      */
     protected boolean isReportAdImpData() {
-        String value = DataManager.get(mContext).getString("ad_report_ad_imp_revenue");
+        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_imp_revenue");
         if (!TextUtils.isEmpty(value)) {
             try {
                 return Boolean.parseBoolean(value);
@@ -1369,7 +1369,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     private boolean isForbidReportAdImpressionAdmob() {
         boolean result = false;
         try {
-            String str = DataManager.get(mContext).getString("ad_forbid_report_ad_impression_admob");
+            String str = DataManager.get(mContext).getString("ad_forbid_report_admob");
             if (!TextUtils.isEmpty(str)) {
                 result = Boolean.parseBoolean(str);
             }

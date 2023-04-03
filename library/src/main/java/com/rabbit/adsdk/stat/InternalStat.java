@@ -612,7 +612,7 @@ public class InternalStat {
     private static boolean isEventAllow(Context context, String eventId, String platform) {
         try {
             String eventArgs = String.format(Locale.ENGLISH, AD_REPORT_EVENT_PLATFORM_WHITE, platform);
-            String whiteEventString = DataManager.get(context).getString(eventArgs);
+            String whiteEventString = getAdReportString(context, eventArgs);
             if (!TextUtils.isEmpty(whiteEventString)) {
                 // 白名单生效
                 String[] whiteEventArray = whiteEventString.split(",");
@@ -623,7 +623,7 @@ public class InternalStat {
                 }
             }
             eventArgs = String.format(Locale.ENGLISH, AD_REPORT_EVENT_PLATFORM_BLACK, platform);
-            String blackEventString = DataManager.get(context).getString(eventArgs);
+            String blackEventString = getAdReportString(context, eventArgs);
             if (!TextUtils.isEmpty(blackEventString)) {
                 // 黑名单名单生效
                 String[] blackEventArray = blackEventString.split(",");
@@ -639,7 +639,7 @@ public class InternalStat {
     }
 
     private static boolean isReportEvent(Context context, String reportPlatform, boolean defaultValue) {
-        String value = DataManager.get(context).getString(reportPlatform);
+        String value = getAdReportString(context, reportPlatform);
         return parseReport(value, defaultValue);
     }
 
@@ -662,7 +662,7 @@ public class InternalStat {
      */
     private static long getMaxEventCount(Context context, String platform) {
         String eventArgs = String.format(Locale.ENGLISH, AD_REPORT_EVENT_PLATFORM_COUNT, platform);
-        String eventCountString = DataManager.get(context).getString(eventArgs);
+        String eventCountString = getAdReportString(context, eventArgs);
         long maxEventCount = DEFAULT_MAX_EVENT_COUNT;
         if (!TextUtils.isEmpty(eventCountString)) {
             try {
@@ -760,5 +760,21 @@ public class InternalStat {
             return umengEventObjectEnable != null && umengEventObjectEnable.booleanValue();
         }
         return false;
+    }
+
+    private static String MD5_PREFIX = null;
+
+    public static String getAdReportString(Context context, String key) {
+        try {
+            if (TextUtils.isEmpty(MD5_PREFIX)) {
+                MD5_PREFIX = Utils.string2MD5(context.getPackageName()).substring(0, 8);
+            }
+        } catch (Exception e) {
+            MD5_PREFIX = "";
+        }
+        if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(MD5_PREFIX)) {
+            key = key.replace("ad_report", "ar" + MD5_PREFIX);
+        }
+        return DataManager.get(context).getString(key);
     }
 }

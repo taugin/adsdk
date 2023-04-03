@@ -390,42 +390,42 @@ public class EventImpl implements IEvent {
      * @return
      */
     private boolean isReportTime(Context context) {
-        String value = DataManager.get(context).getString("ad_report_time");
+        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_time");
         boolean result = parseReport(value, false);
         Log.iv(Log.TAG_SDK, "is report time : " + result);
         return result;
     }
 
     private boolean isReportAppsflyer(Context context) {
-        String value = DataManager.get(context).getString("ad_report_appsflyer");
+        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_appsflyer");
         boolean result = parseReport(value, false);
         Log.iv(Log.TAG_SDK, "is report appsflyer : " + result);
         return result;
     }
 
     private boolean isReportUmeng(Context context) {
-        String value = DataManager.get(context).getString("ad_report_umeng");
+        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_umeng");
         boolean result = parseReport(value, true);
         Log.iv(Log.TAG_SDK, "is report umeng : " + result);
         return result;
     }
 
     private boolean isReportFirebase(Context context) {
-        String value = DataManager.get(context).getString("ad_report_firebase");
+        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_firebase");
         boolean result = parseReport(value, true);
         Log.iv(Log.TAG_SDK, "is report firebase : " + result);
         return result;
     }
 
     private boolean isReportFlurry(Context context) {
-        String value = DataManager.get(context).getString("ad_report_flurry");
+        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_flurry");
         boolean result = parseReport(value, true);
         Log.iv(Log.TAG_SDK, "is report flurry : " + result);
         return result;
     }
 
     private boolean isReportTalkingData(Context context) {
-        String value = DataManager.get(context).getString("ad_report_talkingdata");
+        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_td");
         boolean result = parseReport(value, true);
         Log.iv(Log.TAG_SDK, "is talkingdata flurry : " + result);
         return result;
