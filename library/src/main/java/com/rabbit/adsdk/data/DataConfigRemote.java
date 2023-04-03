@@ -161,24 +161,18 @@ public class DataConfigRemote {
     private String readConfigFromRemote(String key) {
         String value = null;
         String dataWithSuffix = null;
-        String mediaSourceSuffix = getMediaSourceSuffix();
         String attrSuffix = getAfSuffix();
-        String mediaSourceKey = key + mediaSourceSuffix;
         String attrKey = key + attrSuffix;
-        Log.iv(Log.TAG_SDK, "media suffix : " + mediaSourceSuffix + " , attr suffix : " + attrSuffix);
+        Log.iv(Log.TAG_SDK, "attr suffix : " + attrSuffix);
         // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
-        String mediaData = getRemoteConfig(mediaSourceKey);
         String attrData = getRemoteConfig(attrKey);
-        if (!TextUtils.isEmpty(mediaData)) {
-            dataWithSuffix = mediaData;
-        } else {
+        if (!TextUtils.isEmpty(attrData)) {
             dataWithSuffix = attrData;
         }
         if (TextUtils.isEmpty(dataWithSuffix)) {
             value = getRemoteConfig(key);
         } else {
-            String source = !TextUtils.isEmpty(mediaData) ? getMediaSource() : getAfStatus();
-            Log.iv(Log.TAG, "remote config : " + key + "[" + source + "]");
+            Log.iv(Log.TAG, "remote config : " + key + "[" + getAfStatus() + "]");
             value = dataWithSuffix;
         }
         return value;
