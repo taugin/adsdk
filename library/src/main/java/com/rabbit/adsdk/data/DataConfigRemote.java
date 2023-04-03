@@ -8,7 +8,6 @@ import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
 
 import java.lang.reflect.Method;
-import java.util.Locale;
 
 /**
  * Created by Administrator on 2018/2/12.
@@ -25,6 +24,8 @@ public class DataConfigRemote {
     public static final boolean sUmengRemoteConfigEnable;
     public static Method umengInstanceMethod;
     public static Method umengGetStringMethod;
+    private static boolean sRemoteFirst = false;
+    private static long ssRemoteFirstTime = 0;
 
     static {
         boolean enable;
@@ -79,18 +80,21 @@ public class DataConfigRemote {
         mContext = context;
     }
 
-    private boolean isRemoteFirst() {
-        try {
-            return TextUtils.equals("true", readConfigFromRemote("control_remote_config_first"));
-        } catch (Exception e) {
+    public boolean getRemoteFirst() {
+        if (System.currentTimeMillis() - ssRemoteFirstTime > 15 * 60 * 1000) {
+            try {
+                sRemoteFirst = TextUtils.equals("true", readConfigFromRemote("control_remote_config_first"));
+                ssRemoteFirstTime = System.currentTimeMillis();
+            } catch (Exception e) {
+            }
         }
-        return false;
+        return sRemoteFirst;
     }
 
     public String getString(String key) {
         VRemoteConfig.get(mContext).updateRemoteConfig(false);
         String value;
-        if (isRemoteFirst()) {
+        if (sRemoteFirst) {
             value = readConfigFromRemote(key);
             if (TextUtils.isEmpty(value)) {
                 value = readConfigFromLocal(key);
@@ -112,46 +116,16 @@ public class DataConfigRemote {
         return null;
     }
 
-    private String getMediaSource() {
-        try {
-            return Utils.getString(mContext, Constant.AF_MEDIA_SOURCE);
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
     private String getAfSuffix() {
-        String suffix = null;
+        String suffix = "";
         try {
-            suffix = Utils.getString(mContext, Constant.AF_STATUS, Constant.AF_ORGANIC);
+            String attr = Utils.getString(mContext, Constant.AF_STATUS, Constant.AF_ORGANIC);
+            if (!TextUtils.equals(attr, Constant.AF_ORGANIC)) {
+                suffix = "_ano";
+            }
         } catch (Exception e) {
         }
-        if (TextUtils.isEmpty(suffix)) {
-            suffix = "attr";
-        }
-        try {
-            suffix = suffix.replaceAll("[^0-9a-zA-Z_]+", "");
-        } catch (Exception e) {
-            suffix = "attr";
-        }
-        return "_" + suffix.toLowerCase(Locale.ENGLISH);
-    }
-
-    private String getMediaSourceSuffix() {
-        String suffix = null;
-        try {
-            suffix = Utils.getString(mContext, Constant.AF_MEDIA_SOURCE);
-        } catch (Exception e) {
-        }
-        if (TextUtils.isEmpty(suffix)) {
-            suffix = "ms";
-        }
-        try {
-            suffix = suffix.replaceAll("[^0-9a-zA-Z_]+", "");
-        } catch (Exception e) {
-            suffix = "ms";
-        }
-        return "_" + suffix.toLowerCase(Locale.ENGLISH);
+        return suffix;
     }
 
     private String readConfigFromLocal(String key) {
@@ -163,7 +137,6 @@ public class DataConfigRemote {
         String dataWithSuffix = null;
         String attrSuffix = getAfSuffix();
         String attrKey = key + attrSuffix;
-        Log.iv(Log.TAG_SDK, "attr suffix : " + attrSuffix);
         // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
         String attrData = getRemoteConfig(attrKey);
         if (!TextUtils.isEmpty(attrData)) {

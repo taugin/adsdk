@@ -109,7 +109,7 @@ afterEvaluate {
     }
 }
 apply from: '../groovy/resguard_apk.gradle'
-// apply plugin: 'com.google.gms.google-services'
+ apply plugin: 'com.google.gms.google-services'
 
 //android.applicationVariants.all{ variant ->
 //    String dirPath = "${buildDir}/intermediates/merged_assets/${variant.name}/${variant.mergeAssetsProvider.name}/out/src"
