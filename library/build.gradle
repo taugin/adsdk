@@ -179,9 +179,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Bigo
-    implementation 'com.bigossp:bigo-ads:2.7.3'
+    implementation 'com.bigossp:bigo-ads:2.8.0'
     // applovin Bigo mediation
-    implementation 'com.bigossp:max-mediation:2.7.3.0'
+    implementation 'com.bigossp:max-mediation:2.8.0.0'
     // tradplus Bigo mediation
     implementation 'com.tradplusad:tradplus-bigo:57.9.3.10.1'
 }
