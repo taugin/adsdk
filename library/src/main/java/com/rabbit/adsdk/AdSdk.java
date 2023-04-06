@@ -129,11 +129,7 @@ public class AdSdk {
     }
 
     public String getString(String key) {
-        return getString(key, false);
-    }
-
-    public String getString(String key, boolean md5) {
-        return DataManager.get(mContext).getString(key, md5);
+        return DataManager.get(mContext).getString(key);
     }
 
     private AdPlaceLoader getAdLoader(String placeName) {
