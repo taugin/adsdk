@@ -33,7 +33,7 @@ public class Log {
             internal = debugFile.exists();
         } catch (Exception e) {
         }
-        INTERNAL_LOG_ENABLE = DB ? DB : internal;
+        INTERNAL_LOG_ENABLE = DB ? true : internal;
     }
 
     private static boolean isLoggable(String tag, int level) {
