@@ -230,7 +230,7 @@ public class DataManager {
             key = key.substring(4);
             String md5Key = Utils.string2MD5(key);
             // Log.iv(Log.TAG, key + " : " + md5Key);
-            key = md5Key;
+            key = "k" + md5Key;
         }
         // 对firebase的内容进行加密，使用固定字符串开头
         String value = DataConfigRemote.get(mContext).getString(key);
