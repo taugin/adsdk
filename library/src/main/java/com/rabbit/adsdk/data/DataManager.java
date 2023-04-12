@@ -226,13 +226,6 @@ public class DataManager {
     }
 
     public String getString(String key) {
-        if (!TextUtils.isEmpty(key) && key.startsWith("md5:")) {
-            key = key.substring(4);
-            String md5Key = Utils.string2MD5(key);
-            // Log.iv(Log.TAG, key + " : " + md5Key);
-            key = "k" + md5Key;
-        }
-        // 对firebase的内容进行加密，使用固定字符串开头
         String value = DataConfigRemote.get(mContext).getString(key);
         if (value != null && (value.startsWith("DIAMOND:") || value.startsWith("diamond:"))) {
             String content = value.substring("diamond:".length());
