@@ -756,9 +756,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean showSplash(ViewGroup viewGroup) {
+    public boolean showSplash(ViewGroup viewGroup, String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " show splash");
+        mSceneName = sceneName;
         if (mTPSplash != null && mTPSplash.isReady()) {
             reportAdShow();
             notifyAdShow();
@@ -842,7 +843,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             map.put(Constant.AD_UNIT_ID, getPid());
             map.put(Constant.AD_FORMAT, getAdType());
             map.put(Constant.AD_UNIT_NAME, getAdPlaceName());
-            map.put(Constant.AD_PLACEMENT, getSceneId(tpAdInfo.sceneId));
+            map.put(Constant.AD_PLACEMENT, getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : tpAdInfo.sceneId));
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_BIDDING, tpAdInfo.isBiddingNetwork);
             map.put(Constant.AD_PRECISION, tpAdInfo.ecpmPrecision);

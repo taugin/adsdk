@@ -72,7 +72,6 @@ public class AdmobLoader extends AbstractSdkLoader {
     private AdView lastUseBannerView;
     private NativeAd lastUseNativeAd;
 
-    private String mSceneName;
     private List<NativeAd> nativeAdList = Collections.synchronizedList(new ArrayList<NativeAd>());
 
     private AdmobBindNativeView admobBindNativeView = new AdmobBindNativeView();
@@ -864,7 +863,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                             network = adapterClassToNetwork(network);
                         } catch (Exception e) {
                         }
-                        reportAdmobImpressionData(adValue, network, impressionId, null);
+                        reportAdmobImpressionData(adValue, network, impressionId, mSceneName);
                     }
                 });
             }
@@ -872,9 +871,10 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean showSplash(ViewGroup viewGroup) {
+    public boolean showSplash(ViewGroup viewGroup, String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " show splash");
+        mSceneName = sceneName;
         if (mAppOpenAd != null) {
             Activity activity = getActivity();
             reportAdShow();

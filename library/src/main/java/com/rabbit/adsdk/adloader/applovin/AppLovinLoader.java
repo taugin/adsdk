@@ -965,7 +965,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public boolean showSplash(ViewGroup viewGroup) {
+    public boolean showSplash(ViewGroup viewGroup, String sceneName) {
+        mSceneName = sceneName;
         try {
             return showSplashForMax(viewGroup);
         } catch (Exception e) {
@@ -1061,7 +1062,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdRevenuePaid(MaxAd ad) {
                 impressionId = generateImpressionId();
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                reportMaxAdImpData(ad, getAdPlaceName(), impressionId);
+                reportMaxAdImpData(ad, getAdPlaceName(), impressionId, mSceneName);
             }
         };
     }

@@ -43,6 +43,7 @@ public class VUIHelper {
     private ISdkLoader mISdkLoader;
     private Activity mActivity;
     private boolean mOnBackPressed = false;
+    private String mSceneName;
 
     public VUIHelper(Activity activity) {
         mActivity = activity;
@@ -132,6 +133,7 @@ public class VUIHelper {
             mPlaceName = intent.getStringExtra(Intent.EXTRA_TITLE);
             mSource = intent.getStringExtra(Intent.EXTRA_TEXT);
             mAdType = intent.getStringExtra(Intent.EXTRA_TEMPLATE);
+            mSceneName = intent.getStringExtra(Intent.EXTRA_REFERRER_NAME);
         }
     }
 
@@ -166,6 +168,9 @@ public class VUIHelper {
         if (mAdLayout != null) {
             mISdkLoader = AdPlaceLoader.sLoaderMap.remove(String.format(Locale.ENGLISH, "%s_%s_%s", mSource, mAdType, mPlaceName));
             Params params = AdPlaceLoader.sParamsMap.remove(String.format(Locale.ENGLISH, "%s_%s_%s", mSource, mAdType, mPlaceName));
+            if (params != null) {
+                params.setSceneName(mSceneName);
+            }
             if (mISdkLoader != null) {
                 try {
                     // Spread类型的广告插屏类型需要单独处理

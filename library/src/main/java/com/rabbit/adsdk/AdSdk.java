@@ -456,13 +456,17 @@ public class AdSdk {
     }
 
     public void showSplash(String placeName) {
-        showSplash(placeName, null);
+        showSplash(placeName, null, null);
     }
 
     public void showSplash(String placeName, ViewGroup viewGroup) {
+        showSplash(placeName, viewGroup, null);
+    }
+
+    public void showSplash(String placeName, ViewGroup viewGroup, String sceneName) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {
-            loader.showSplash(viewGroup);
+            loader.showSplash(viewGroup, sceneName);
         }
     }
 /////////////////////////////////////////////////////////////////////////////

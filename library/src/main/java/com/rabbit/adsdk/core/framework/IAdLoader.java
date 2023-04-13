@@ -49,7 +49,7 @@ public interface IAdLoader {
 
     void loadSplash(Activity activity);
 
-    void showSplash(ViewGroup viewGroup);
+    void showSplash(ViewGroup viewGroup, String sceneName);
 
     boolean isComplexAdsLoaded();
 

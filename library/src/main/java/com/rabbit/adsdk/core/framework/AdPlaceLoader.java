@@ -1020,12 +1020,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      * 展示插屏
      */
     @Override
-    public void showSplash(ViewGroup viewGroup) {
+    public void showSplash(ViewGroup viewGroup, String sceneName) {
         Log.iv(Log.TAG, "showSplash");
-        showSplashInternal(viewGroup);
+        showSplashInternal(viewGroup, sceneName);
     }
 
-    private void showSplashInternal(ViewGroup viewGroup) {
+    private void showSplashInternal(ViewGroup viewGroup, String sceneName) {
         if (mAdLoaders == null || mAdLoaders.isEmpty()) {
             Log.iv(Log.TAG, "error : ad loaders is empty for place name : " + getPlaceName());
             Utils.runOnUIThread(new Runnable() {
@@ -1059,7 +1059,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         sortLoadedLoaders(list);
         for (ISdkLoader loader : list) {
             if (loader != null && loader.isSplashType() && loader.isSplashLoaded()) {
-                if (loader.showSplash(viewGroup)) {
+                if (loader.showSplash(viewGroup, sceneName)) {
                     AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                     break;
                 }
@@ -1689,13 +1689,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         return true;
                     }
                 } else if (loader.isSplashType() && loader.isSplashLoaded()) {
-                    if (loader.showSplash(null)) {
+                    if (loader.showSplash(null, sceneName)) {
                         AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                         return true;
                     }
                 } else if ((loader.isBannerType() && loader.isBannerLoaded())
                         || (loader.isNativeType() && loader.isNativeLoaded())) {
-                    showAdViewWithUI(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(), loader);
+                    showAdViewWithUI(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(), loader, sceneName);
                     return true;
                 }
             }
@@ -1703,7 +1703,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return false;
     }
 
-    private void showAdViewWithUI(String placeName, String source, String adType, ISdkLoader iSdkLoader) {
+    private void showAdViewWithUI(String placeName, String source, String adType, ISdkLoader iSdkLoader, String sceneName) {
         Log.iv(Log.TAG, "show complex ads for banner or native");
         try {
             sLoaderMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), iSdkLoader);
@@ -1720,6 +1720,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             intent.putExtra(Intent.EXTRA_TITLE, placeName);
             intent.putExtra(Intent.EXTRA_TEXT, source);
             intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
+            intent.putExtra(Intent.EXTRA_REFERRER_NAME, sceneName);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
         } catch (Exception e) {

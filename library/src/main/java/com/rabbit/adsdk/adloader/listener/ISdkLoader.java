@@ -50,7 +50,7 @@ public interface ISdkLoader {
 
     public void loadSplash();
 
-    public boolean showSplash(ViewGroup viewGroup);
+    public boolean showSplash(ViewGroup viewGroup, String sceneName);
 
     boolean isInterstitialLoaded();
 

@@ -92,7 +92,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void showSplash(ViewGroup viewGroup) {
+    public void showSplash(ViewGroup viewGroup, String sceneName) {
     }
 
     @Override

@@ -340,7 +340,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         } else if (v.getId() == R.id.show_max_splash) {
             String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_SPLASH);
             if (!TextUtils.isEmpty(maxPlaceName)) {
-                AdSdk.get(this).showSplash(maxPlaceName, mSplashContainer);
+                mSplashContainer.setVisibility(View.VISIBLE);
+                AdSdk.get(this).showSplash(maxPlaceName, mSplashContainer, "scene_max_splash_123321");
                 mSplashContainer.setVisibility(View.VISIBLE);
             } else {
                 runToast("No loaded place name");
@@ -354,8 +355,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             }
         } else if (v.getId() == R.id.show_complex_ads) {
             String maxPlaceName = AdSdk.get(this).getMaxPlaceName();
-            AdSdk.get(this).showComplexAds(maxPlaceName);
-        } else {
+            AdSdk.get(this).showComplexAds(maxPlaceName, "scene_complex_ads_789987");
+        } else if (v.getId() == R.id.native_interstitial) {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag, (TextView) v);
         }
@@ -363,7 +364,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     private void loadAdViewByLayout(String tag, TextView textView) {
         if (AdSdk.get(this).isComplexAdsLoaded("for_native_layout")) {
-            AdSdk.get(this).showComplexAds("for_native_layout");
+            AdSdk.get(this).showComplexAds("for_native_layout", "scene_for_native_layout");
         } else {
             AdParams.Builder builder = new AdParams.Builder();
             builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, tag);
@@ -402,7 +403,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         String splashPlace = String.format(Locale.ENGLISH, SPLASH_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
         if (AdSdk.get(mContext).isSplashLoaded(splashPlace)) {
             mSplashContainer.setVisibility(View.VISIBLE);
-            AdSdk.get(mContext).showSplash(splashPlace, mSplashContainer);
+            AdSdk.get(mContext).showSplash(splashPlace, mSplashContainer, "scene_show_splash_456654");
         } else {
             AdSdk.get(mContext).loadSplash(splashPlace, new FullScreenAdListener(textView));
         }
