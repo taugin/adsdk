@@ -25,7 +25,7 @@ public class DataConfigRemote {
     public static Method umengInstanceMethod;
     public static Method umengGetStringMethod;
     private static boolean sRemoteFirst = false;
-    private static long ssRemoteFirstTime = 0;
+    private static long sRemoteFirstTime = 0;
 
     static {
         boolean enable;
@@ -81,10 +81,10 @@ public class DataConfigRemote {
     }
 
     public boolean getRemoteFirst() {
-        if (System.currentTimeMillis() - ssRemoteFirstTime > 15 * 60 * 1000) {
+        if (System.currentTimeMillis() - sRemoteFirstTime > 15 * 60 * 1000) {
             try {
                 sRemoteFirst = TextUtils.equals("true", readConfigFromRemote("control_remote_config_first"));
-                ssRemoteFirstTime = System.currentTimeMillis();
+                sRemoteFirstTime = System.currentTimeMillis();
             } catch (Exception e) {
             }
         }
@@ -94,7 +94,7 @@ public class DataConfigRemote {
     public String getString(String key) {
         VRemoteConfig.get(mContext).updateRemoteConfig(false);
         String value;
-        if (sRemoteFirst) {
+        if (getRemoteFirst()) {
             value = readConfigFromRemote(key);
             if (TextUtils.isEmpty(value)) {
                 value = readConfigFromLocal(key);
