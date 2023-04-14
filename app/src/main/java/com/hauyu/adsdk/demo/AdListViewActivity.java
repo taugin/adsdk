@@ -6,15 +6,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import com.rabbit.adsdk.AdExtra;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdSdk;
+import com.rabbit.adsdk.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -24,10 +25,11 @@ import java.util.ArrayList;
 
 public class AdListViewActivity extends Activity {
 
-    private static final String AD_PLACE_NAME = "banner_and_native";
+    private static final String AD_PLACE_NAME = "native_admob";
     private ListView mListView;
     private AdAdapter mAdAdapter;
     private AdParams adParams;
+    private int mScrollState = ListView.OnScrollListener.SCROLL_STATE_IDLE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class AdListViewActivity extends Activity {
         Item item = null;
         for (int index = 0; index < 50; index++) {
             item = new Item();
-            if (index % 10 == 0) {
+            if (index % 3 == 0) {
                 item.type = 0;
             } else {
                 item.name = String.valueOf("item_" + index);
@@ -48,11 +50,25 @@ public class AdListViewActivity extends Activity {
         }
         mListView.setAdapter(mAdAdapter);
         loadAds();
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                mScrollState = scrollState;
+                Log.v(Log.TAG, "mScrollState : " + mScrollState);
+                if (mScrollState == ListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    mAdAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            }
+        });
     }
 
     private void loadAds() {
         AdParams.Builder builder = new AdParams.Builder();
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_SMALL);
+        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_TINY);
         adParams = builder.build();
         AdSdk.get(this).loadAdView(AD_PLACE_NAME, adParams);
     }
@@ -73,7 +89,7 @@ public class AdListViewActivity extends Activity {
                 } else {
                     adLayout = (FrameLayout) convertView;
                 }
-                if (adLayout.getChildCount() <= 0) {
+                if (adLayout.getChildCount() <= 0 && mScrollState == ListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (AdSdk.get(getContext()).isAdViewLoaded(AD_PLACE_NAME)) {
                         AdSdk.get(getContext()).showAdView(AD_PLACE_NAME, adLayout);
                     }
@@ -85,6 +101,7 @@ public class AdListViewActivity extends Activity {
                 TextView textView = null;
                 if (convertView == null) {
                     convertView = textView = (TextView) LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, null);
+                    textView.setLayoutParams(new ViewGroup.LayoutParams(-1, Utils.dp2px(getContext(), 120)));
                 } else {
                     textView = (TextView) convertView;
                 }
