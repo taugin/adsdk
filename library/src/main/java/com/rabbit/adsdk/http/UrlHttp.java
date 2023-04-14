@@ -6,6 +6,7 @@ import com.rabbit.adsdk.log.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
@@ -25,7 +26,6 @@ class UrlHttp {
 
     private Request mRequest;
 
-
     public Response execute(Request request) {
         mRequest = request;
         if (mRequest == null) {
@@ -34,6 +34,26 @@ class UrlHttp {
         HttpURLConnection conn = createConnection(mRequest.getUrl());
         configConnection(conn);
         addHeader(conn, mRequest.getHeader());
+        byte[] data = mRequest.getData();
+        try {
+            conn.setRequestMethod(mRequest.getMethod());
+        } catch (Exception e) {
+            try {
+                conn.setRequestMethod(Request.GET);
+            } catch (Exception error) {
+            }
+        }
+        try {
+            if (Request.POST.equalsIgnoreCase(mRequest.getMethod()) && data != null) {
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+                OutputStream os = conn.getOutputStream();
+                os.write(data);
+                os.flush();
+                os.close();
+            }
+        } catch (Exception e) {
+        }
         return request(conn);
     }
 

@@ -13,7 +13,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -71,15 +70,26 @@ public class Http {
         mContext = context;
     }
 
-    public void request(String url, Map<String, String> header, OnCallback callback) {
+    public void get(String url, Map<String, String> headers, OnCallback callback) {
         final Request r = new Request();
         r.setCallback(callback);
-        r.setHeader(header);
+        r.setHeader(headers);
         r.setUrl(url);
-        requestHttpInternal(r, header);
+        r.setMethod(Request.GET);
+        requestHttpInternal(r);
     }
 
-    private void requestHttpInternal(final Request request, Map<String, String> header) {
+    public void post(String url, Map<String, String> headers, byte[] data, OnCallback callback) {
+        final Request r = new Request();
+        r.setCallback(callback);
+        r.setHeader(headers);
+        r.setUrl(url);
+        r.setMethod(Request.POST);
+        r.setData(data);
+        requestHttpInternal(r);
+    }
+
+    private void requestHttpInternal(final Request request) {
         if (request == null) {
             deliverFailure(request, -1, "unknown");
             return;
@@ -189,7 +199,7 @@ public class Http {
             String content = null;
             try {
                 content = new String(response.getContent(), charset);
-            } catch (UnsupportedEncodingException e) {
+            } catch (Exception e) {
                 Log.e(Log.TAG, "error : " + e);
             }
             deliverStringSuccess(content, (OnStringCallback) callback);
@@ -260,9 +270,9 @@ public class Http {
         r.setHeader(header);
         r.setUrl(url);
         r.setCache(true);
-        requestHttpInternal(r, header);
+        r.setHeader(header);
+        requestHttpInternal(r);
     }
-
 
     public static String parseCharset(Map<String, String> headers, String defaultCharset) {
         String contentType = (String) headers.get("Content-Type");

@@ -7,6 +7,8 @@ import java.util.Map;
  */
 
 class Request {
+    public static final String GET = "GET";
+    public static final String POST = "POST";
     private String url;
     private Map<String, String> header;
     private int connectTimeout;
@@ -14,6 +16,8 @@ class Request {
     private OnCallback callback;
     private long startTime;
     private boolean cache;
+    private byte[] data;
+    private String method = GET;
 
     public String getUrl() {
         return url;
@@ -69,6 +73,22 @@ class Request {
 
     public void setCache(boolean cache) {
         this.cache = cache;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
     }
 
     @Override

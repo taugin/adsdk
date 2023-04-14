@@ -103,6 +103,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         menu.add(0, 0x5, 0, "CheckRunningApp");
         menu.add(0, 0x6, 0, "CheckRoundCpm");
         menu.add(0, 0x7, 0, "GenerateProguard");
+        menu.add(0, 0x8, 0, "ParseRss");
         return true;
     }
 
@@ -184,6 +185,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 });
             } else if (item.getItemId() == 0x7) {
                 generateProguardDict();
+            } else if (item.getItemId() == 0x8) {
+                RssParser.doUrl(this);
             }
         }
         return true;
