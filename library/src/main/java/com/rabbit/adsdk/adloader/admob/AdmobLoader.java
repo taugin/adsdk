@@ -72,6 +72,12 @@ public class AdmobLoader extends AbstractSdkLoader {
     private AdView lastUseBannerView;
     private NativeAd lastUseNativeAd;
 
+    private AdmobBannerListener admobBannerListener;
+    private AdmobNativeListener admobNativeListener;
+    private AdmobSplashListener admobSplashListener;
+    private AdmobRewardListener admobRewardListener;
+    private AdmobInterstitialListener admobInterstitialListener;
+
     private List<NativeAd> nativeAdList = Collections.synchronizedList(new ArrayList<NativeAd>());
 
     private AdmobBindNativeView admobBindNativeView = new AdmobBindNativeView();
@@ -151,17 +157,16 @@ public class AdmobLoader extends AbstractSdkLoader {
         loadingView = new AdView(mContext);
         loadingView.setAdUnitId(mPidConfig.getPid());
         loadingView.setAdSize(size);
-        AdmobBannerListener adListener = new AdmobBannerListener();
-        loadingView.setAdListener(adListener.adListener);
-        loadingView.setOnPaidEventListener(adListener.mOnPaidEventListener);
+        admobBannerListener = new AdmobBannerListener();
+        loadingView.setAdListener(admobBannerListener.adListener);
+        loadingView.setOnPaidEventListener(admobBannerListener.mOnPaidEventListener);
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
         loadingView.loadAd(new AdRequest.Builder().build());
     }
 
-    private class AdmobBannerListener {
-        private String impressionId = null;
+    private class AdmobBannerListener extends AbstractAdListener {
         AdListener adListener = new AdListener() {
             @Override
             public void onAdClosed() {
@@ -291,15 +296,14 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
-        AdmobInterstitialListener admobInterstitialListener = new AdmobInterstitialListener();
+        admobInterstitialListener = new AdmobInterstitialListener();
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
         InterstitialAd.load(mContext, mPidConfig.getPid(), new AdRequest.Builder().build(), admobInterstitialListener.interstitialAdLoadCallback);
     }
 
-    private class AdmobInterstitialListener {
-        private String impressionId = null;
+    private class AdmobInterstitialListener extends AbstractAdListener {
         InterstitialAdLoadCallback interstitialAdLoadCallback = new InterstitialAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -375,7 +379,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                             network = adapterClassToNetwork(network);
                         } catch (Exception e) {
                         }
-                        reportAdmobImpressionData(adValue, network, impressionId, mSceneName);
+                        reportAdmobImpressionData(adValue, network, impressionId, sceneName);
                     }
                 });
             }
@@ -385,7 +389,9 @@ public class AdmobLoader extends AbstractSdkLoader {
     @Override
     public boolean showInterstitial(final String sceneName) {
         printInterfaceLog(ACTION_SHOW);
-        mSceneName = sceneName;
+        if (admobInterstitialListener != null) {
+            admobInterstitialListener.sceneName = sceneName;
+        }
         if (mInterstitialAd != null) {
             reportAdShow();
             notifyAdShow();
@@ -424,15 +430,14 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
-        AdmobRewardListener admobRewardListener = new AdmobRewardListener();
+        admobRewardListener = new AdmobRewardListener();
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
         RewardedAd.load(mContext, mPidConfig.getPid(), new AdRequest.Builder().build(), admobRewardListener.rewardedAdLoadCallback);
     }
 
-    private class AdmobRewardListener {
-        private String impressionId = null;
+    private class AdmobRewardListener extends AbstractAdListener {
         RewardedAdLoadCallback rewardedAdLoadCallback = new RewardedAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
@@ -509,7 +514,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                             network = adapterClassToNetwork(network);
                         } catch (Exception e) {
                         }
-                        reportAdmobImpressionData(adValue, network, impressionId, mSceneName);
+                        reportAdmobImpressionData(adValue, network, impressionId, sceneName);
                     }
                 });
             }
@@ -528,7 +533,9 @@ public class AdmobLoader extends AbstractSdkLoader {
     @Override
     public boolean showRewardedVideo(final String sceneName) {
         printInterfaceLog(ACTION_SHOW);
-        mSceneName = sceneName;
+        if (admobRewardListener != null) {
+            admobRewardListener.sceneName = sceneName;
+        }
         if (mRewardedAd != null) {
             reportAdShow();
             notifyAdShow();
@@ -615,7 +622,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         setLoading(true, STATE_REQUEST);
         loadingBuilder = new AdLoader.Builder(mContext, mPidConfig.getPid());
-        AdmobNativeListener admobNativeListener = new AdmobNativeListener();
+        admobNativeListener = new AdmobNativeListener();
         loadingBuilder.forNativeAd(admobNativeListener.onNativeAdLoadedListener).withAdListener(admobNativeListener.adListener);
 
         VideoOptions videoOptions = new VideoOptions.Builder()
@@ -637,7 +644,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
     }
 
-    private class AdmobNativeListener {
+    private class AdmobNativeListener extends AbstractAdListener {
         private String impressionId = null;
         private AdListener adListener = new AdListener() {
             @Override
@@ -712,7 +719,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                             network = adapterClassToNetwork(network);
                         } catch (Exception e) {
                         }
-                        reportAdmobImpressionData(adValue, network, impressionId, mParams != null ? mParams.getSceneName() : null);
+                        reportAdmobImpressionData(adValue, network, impressionId, sceneName);
                     }
                 });
             }
@@ -725,6 +732,9 @@ public class AdmobLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (params != null) {
             mParams = params;
+        }
+        if (params != null && admobNativeListener != null) {
+            admobNativeListener.sceneName = params.getSceneName();
         }
         if (isLoadMultipleNative()) {
             try {
@@ -786,11 +796,11 @@ public class AdmobLoader extends AbstractSdkLoader {
         reportAdRequest();
         notifyAdRequest();
         int splashOrientation = mPidConfig.getSplashOrientation();
-        AdmobSplashListener admobSplashListener = new AdmobSplashListener();
+        admobSplashListener = new AdmobSplashListener();
         AppOpenAd.load(mContext, getPid(), new AdRequest.Builder().build(), splashOrientation, admobSplashListener.appOpenAdLoadCallback);
     }
 
-    private class AdmobSplashListener {
+    private class AdmobSplashListener extends AbstractAdListener {
         private String impressionId = null;
         AppOpenAd.AppOpenAdLoadCallback appOpenAdLoadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
 
@@ -863,7 +873,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                             network = adapterClassToNetwork(network);
                         } catch (Exception e) {
                         }
-                        reportAdmobImpressionData(adValue, network, impressionId, mSceneName);
+                        reportAdmobImpressionData(adValue, network, impressionId, sceneName);
                     }
                 });
             }
@@ -874,7 +884,9 @@ public class AdmobLoader extends AbstractSdkLoader {
     public boolean showSplash(ViewGroup viewGroup, String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " show splash");
-        mSceneName = sceneName;
+        if (admobSplashListener != null) {
+            admobSplashListener.sceneName = sceneName;
+        }
         if (mAppOpenAd != null) {
             Activity activity = getActivity();
             reportAdShow();

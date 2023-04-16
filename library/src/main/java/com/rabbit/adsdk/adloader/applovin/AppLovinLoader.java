@@ -56,6 +56,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private Params mParams;
     private ApplovinBindView mApplovinBindView = new ApplovinBindView();
     private MaxAppOpenAd mMaxAppOpenAd;
+    private MaxNativeListener maxNativeListener;
+    private MaxSplashListener maxSplashListener;
 
     @Override
     protected BaseBindNativeView getBaseBindNativeView() {
@@ -413,8 +415,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         loadingMaxAdView.loadAd();
     }
 
-    private class MaxBannerListener {
-        private String impressionId = null;
+    private class MaxBannerListener extends AbstractAdListener {
         MaxAdViewAdListener maxAdViewAdListener = new MaxAdViewAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -549,8 +550,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         interstitialAd.loadAd();
     }
 
-    private class MaxInterstitialListener {
-        private String impressionId = null;
+    private class MaxInterstitialListener extends AbstractAdListener {
         MaxAdListener maxAdListener = new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -656,8 +656,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         rewardedAd.loadAd();
     }
 
-    private class MaxRewardListener {
-        private String impressionId = null;
+    private class MaxRewardListener extends AbstractAdListener {
         MaxRewardedAdListener maxRewardedAdListener = new MaxRewardedAdListener() {
             @Override
             public void onRewardedVideoStarted(MaxAd ad) {
@@ -810,7 +809,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (mMaxNativeAdLoader == null) {
             mMaxNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
         }
-        MaxNativeListener maxNativeListener = new MaxNativeListener();
+        maxNativeListener = new MaxNativeListener();
         mMaxNativeAdLoader.setNativeAdListener(maxNativeListener.maxNativeAdListener);
         mMaxNativeAdLoader.setRevenueListener(maxNativeListener.maxAdRevenueListener);
         printInterfaceLog(ACTION_LOAD);
@@ -820,8 +819,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         mMaxNativeAdLoader.loadAd();
     }
 
-    private class MaxNativeListener {
-        private String impressionId = null;
+    private class MaxNativeListener extends AbstractAdListener {
         MaxNativeAdListener maxNativeAdListener = new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(MaxNativeAdView maxNativeAdView, MaxAd maxAd) {
@@ -862,10 +860,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(ad);
                 reportAdImp(network, networkPid);
                 notifyAdImp(network);
-                String sceneName = null;
-                if (mParams != null && !TextUtils.isEmpty(mParams.getSceneName())) {
-                    sceneName = mParams.getSceneName();
-                }
                 reportMaxAdImpData(ad, getAdPlaceName(), impressionId, sceneName);
             }
         };
@@ -884,6 +878,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
     public void showNative(ViewGroup viewGroup, Params params) {
         if (params != null) {
             mParams = params;
+        }
+        if (params != null && maxNativeListener != null) {
+            maxNativeListener.sceneName = params.getSceneName();
         }
         printInterfaceLog(ACTION_SHOW);
         try {
@@ -966,7 +963,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showSplash(ViewGroup viewGroup, String sceneName) {
-        mSceneName = sceneName;
+        if (maxSplashListener != null) {
+            maxSplashListener.sceneName = sceneName;
+        }
         try {
             return showSplashForMax(viewGroup);
         } catch (Exception e) {
@@ -988,7 +987,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (mMaxAppOpenAd == null) {
             mMaxAppOpenAd = new MaxAppOpenAd(getPid(), appLovinSdk);
         }
-        MaxSplashListener maxSplashListener = new MaxSplashListener();
+        maxSplashListener = new MaxSplashListener();
         mMaxAppOpenAd.setListener(maxSplashListener.maxAdListener);
         mMaxAppOpenAd.setRevenueListener(maxSplashListener.maxAdRevenueListener);
         printInterfaceLog(ACTION_LOAD);
@@ -997,8 +996,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         mMaxAppOpenAd.loadAd();
     }
 
-    private class MaxSplashListener {
-        private String impressionId = null;
+    private class MaxSplashListener extends AbstractAdListener {
         MaxAdListener maxAdListener = new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -1062,7 +1060,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdRevenuePaid(MaxAd ad) {
                 impressionId = generateImpressionId();
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                reportMaxAdImpData(ad, getAdPlaceName(), impressionId, mSceneName);
+                reportMaxAdImpData(ad, getAdPlaceName(), impressionId, sceneName);
             }
         };
     }

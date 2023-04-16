@@ -46,6 +46,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
     private TPNative mTPNative;
     private TPSplash mTPSplash;
     private TradPlusBindView mTradPlusBindView = new TradPlusBindView();
+    private String mSceneName = null;
 
     @Override
     protected BaseBindNativeView getBaseBindNativeView() {

@@ -95,7 +95,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     private String mAdNetwork;
     private double mAdRevenue;
     int mLoadState = STATE_NONE;
-    protected String mSceneName;
     // applovin SDK需要提前初始化的SDK名称列表
     private static final List<String> sNeedInitAppLovinFirstSdks = Arrays.asList(Constant.AD_SDK_TRADPLUS, Constant.AD_SDK_APPLOVIN);
 
@@ -1437,5 +1436,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             Log.e(Log.TAG, "error : " + e);
         }
         return result;
+    }
+
+    public class AbstractAdListener {
+        public String impressionId = null;
+        public String sceneName = null;
     }
 }
