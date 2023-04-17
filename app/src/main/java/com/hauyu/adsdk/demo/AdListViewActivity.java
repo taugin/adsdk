@@ -15,9 +15,12 @@ import android.widget.TextView;
 import com.rabbit.adsdk.AdExtra;
 import com.rabbit.adsdk.AdParams;
 import com.rabbit.adsdk.AdSdk;
+import com.rabbit.adsdk.listener.OnAdSdkListener;
+import com.rabbit.adsdk.listener.SimpleAdSdkListener;
 import com.rabbit.adsdk.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Administrator on 2019-3-29.
@@ -30,6 +33,7 @@ public class AdListViewActivity extends Activity {
     private AdAdapter mAdAdapter;
     private AdParams adParams;
     private int mScrollState = ListView.OnScrollListener.SCROLL_STATE_IDLE;
+    private AtomicBoolean atomicBoolean = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +43,14 @@ public class AdListViewActivity extends Activity {
         mAdAdapter = new AdAdapter(this);
         Item item = null;
         for (int index = 0; index < 50; index++) {
-            item = new Item();
-            if (index % 3 == 0) {
+            if (index > 0 && index % 3 == 0) {
+                item = new Item();
                 item.type = 0;
-            } else {
-                item.name = String.valueOf("item_" + index);
-                item.type = 1;
+                mAdAdapter.add(item);
             }
+            item = new Item();
+            item.name = String.valueOf("item_" + index);
+            item.type = 1;
             mAdAdapter.add(item);
         }
         mListView.setAdapter(mAdAdapter);
@@ -68,10 +73,19 @@ public class AdListViewActivity extends Activity {
 
     private void loadAds() {
         AdParams.Builder builder = new AdParams.Builder();
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_TINY);
+        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_SMALL);
         adParams = builder.build();
-        AdSdk.get(this).loadAdView(AD_PLACE_NAME, adParams);
+        AdSdk.get(this).loadAdView(AD_PLACE_NAME, adParams, onAdSdkListener);
     }
+
+    private OnAdSdkListener onAdSdkListener = new SimpleAdSdkListener() {
+        @Override
+        public void onLoaded(String placeName, String source, String adType, String pid) {
+            if (!atomicBoolean.getAndSet(true)) {
+                mAdAdapter.notifyDataSetChanged();
+            }
+        }
+    };
 
     private class AdAdapter extends ArrayAdapter<Item> {
 
@@ -81,6 +95,7 @@ public class AdListViewActivity extends Activity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            Log.v(Log.TAG, "position : " + position);
             Item item = getItem(position);
             if (item.type == 0) {
                 FrameLayout adLayout = null;
@@ -89,13 +104,13 @@ public class AdListViewActivity extends Activity {
                 } else {
                     adLayout = (FrameLayout) convertView;
                 }
-                if (adLayout.getChildCount() <= 0 && mScrollState == ListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                if (adLayout.getChildCount() <= 0 && (position == 3 || mScrollState == ListView.OnScrollListener.SCROLL_STATE_IDLE)) {
                     if (AdSdk.get(getContext()).isAdViewLoaded(AD_PLACE_NAME)) {
                         AdSdk.get(getContext()).showAdView(AD_PLACE_NAME, adLayout);
                     }
                 }
                 if (!AdSdk.get(getContext()).isAdViewLoaded(AD_PLACE_NAME)) {
-                    AdSdk.get(getContext()).loadAdView(AD_PLACE_NAME, adParams);
+                    AdSdk.get(getContext()).loadAdView(AD_PLACE_NAME, adParams, onAdSdkListener);
                 }
             } else {
                 TextView textView = null;

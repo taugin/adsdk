@@ -20,9 +20,11 @@ public class RssParser {
     public static final String TAG = "RssParser";
 
     public static void doUrl(Context context) {
+        String url = "http://rss.cnn.com/rss/cnn_topstories.rss";
         Map<String, String> map = new HashMap<>();
         map.put("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12");
-        Http.get(context).get("http://rss.cnn.com/rss/cnn_topstories.rss", map, new OnStringCallback() {
+        Log.v(TAG, "rss url : " + url);
+        Http.get(context).get(url, map, new OnStringCallback() {
             @Override
             public void onSuccess(String content) {
                 Log.v(TAG, "content : " + content);
