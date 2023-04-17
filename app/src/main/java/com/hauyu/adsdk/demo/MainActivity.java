@@ -326,7 +326,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         } else if (v.getId() == R.id.show_max_interstitial) {
             String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_INTERSTITIAL);
             if (!TextUtils.isEmpty(maxPlaceName)) {
-                AdSdk.get(this).showInterstitial(maxPlaceName);
+                AdSdk.get(this).showInterstitial(maxPlaceName, "scene_max_interstitial");
             } else {
                 runToast("No loaded place name");
             }
@@ -334,8 +334,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_NATIVE);
             if (!TextUtils.isEmpty(maxPlaceName)) {
                 ViewGroup frameLayout = new LinearLayout(this);
-                AdParams adParams = new AdParams.Builder().setSceneName("max_native_scene_params").build();
-                AdSdk.get(mContext).showAdView(maxPlaceName, frameLayout);
+                AdParams adParams = new AdParams.Builder().setSceneName("scene_show_max_native").build();
+                AdSdk.get(mContext).showAdView(maxPlaceName, adParams, frameLayout);
                 showNativeAds(frameLayout);
             } else {
                 runToast("No loaded place name");
@@ -352,7 +352,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         } else if (v.getId() == R.id.show_max_reward) {
             String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_REWARD);
             if (!TextUtils.isEmpty(maxPlaceName)) {
-                AdSdk.get(this).showRewardedVideo(maxPlaceName);
+                AdSdk.get(this).showRewardedVideo(maxPlaceName, "scene_max_reward");
             } else {
                 runToast("No loaded place name");
             }
@@ -500,6 +500,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
         if (AdSdk.get(mContext).isAdViewLoaded(nativePlace)) {
             FrameLayout frameLayout = new FrameLayout(this);
+            adParams.setSceneName("scene_show_native");
             AdSdk.get(mContext).showAdView(nativePlace, adParams, frameLayout);
             CustomDrawable.setBackground(frameLayout);
             showNativeAds(frameLayout);
@@ -543,7 +544,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             String loadedSdk = AdSdk.get(mContext).getLoadedSdk(placeName);
             Log.v(TAG, "loaded sdk : " + loadedSdk);
             if (AdExtra.AD_TYPE_BANNER.equalsIgnoreCase(adType) || AdExtra.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
-                // showAdView(placeName);
                 AdSdk.get(getBaseContext()).showAdView(placeName, mNativeBannerLayout);
             } else if (AdExtra.AD_TYPE_INTERSTITIAL.equalsIgnoreCase(adType)) {
                 AdSdk.get(getBaseContext()).showInterstitial(placeName);
@@ -755,7 +755,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                             + "<br>[<font color=red>" + adImpData.getAdType() + "</font>]"
                             + "<br>" + adImpData.getUnitId()
                             + "<br>" + (adImpData.getNetworkPid() != null ? adImpData.getNetworkPid() : "-")
-                            + "<br><font color=red>Revenue:</font>" + adImpData.getValue();
+                            + "<br><font color=red>Revenue:</font>" + adImpData.getValue()
+                            + "<br><font color=red>Scene:</font>" + adImpData.getPlacement();
                     adapterView.setText(Html.fromHtml(str));
                     return adapterView;
                 }
