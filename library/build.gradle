@@ -126,7 +126,7 @@ dependencies {
     // Inmobi
     implementation 'com.inmobi.monetization:inmobi-ads:10.1.3'
     // applovin inmobi mediation
-    implementation 'com.applovin.mediation:inmobi-adapter:10.1.3.0@aar'
+    implementation 'com.applovin.mediation:inmobi-adapter:10.1.3.4@aar'
     //tradplus inmobi mediation
     implementation 'com.tradplusad:tradplus-inmobix:23.9.4.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
