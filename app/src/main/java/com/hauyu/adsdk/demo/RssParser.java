@@ -3,6 +3,7 @@ package com.hauyu.adsdk.demo;
 import android.content.Context;
 import android.util.Log;
 
+import com.hauyu.adsdk.demo.utils.DateUtils;
 import com.rabbit.adsdk.http.Http;
 import com.rabbit.adsdk.http.OnStringCallback;
 
@@ -32,7 +33,7 @@ public class RssParser {
                     parse(content);
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
