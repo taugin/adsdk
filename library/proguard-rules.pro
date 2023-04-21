@@ -22,4 +22,5 @@
 #-keepattributes SourceFile,LineNumberTable
 
 -include proguard-rules-adsdk.pro
+-keepparameternames
 -keep class com.rabbit.** {public *;}
