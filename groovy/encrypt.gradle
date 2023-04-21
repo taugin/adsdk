@@ -430,10 +430,14 @@ def encryptAssetsFilesFromPackageInternal(flavorName, File outputFile, isAab) {
     def encryptFiles = readEncryptFileFromApk(workDir, encryptNames, outputFile, isAab)
 
     println "> Task :${project.name}:encryptRelease encryptFiles : " + encryptFiles
-    encryptFileForAssets(workDir, encryptFiles)
-    updateEncryptFileToApk(workDir, encryptFiles, outputFile)
-    deleteTempAssetsFile(workDir, encryptNames, isAab)
-    signPackageFilePackage(flavorName, outputFile.getAbsolutePath(), isAab)
+    if (encryptFiles != null && !encryptFiles.isEmpty()) {
+        encryptFileForAssets(workDir, encryptFiles)
+        updateEncryptFileToApk(workDir, encryptFiles, outputFile)
+        deleteTempAssetsFile(workDir, encryptNames, isAab)
+        signPackageFilePackage(flavorName, outputFile.getAbsolutePath(), isAab)
+    } else {
+        println "> Task :${project.name}:encryptRelease No files need encrypt"
+    }
 }
 
 /**
