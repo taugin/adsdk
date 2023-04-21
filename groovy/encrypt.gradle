@@ -451,11 +451,11 @@ def readEncryptFileFromApk(workDir, encryptNames, outputFile, isAab) {
     def copyNames = []
     def assetsFolder = isAab ? "base/assets" : "assets";
     def assetsDir = new File(workDir, assetsFolder)
-    assetsDir.mkdirs()
     encryptNames.each {
         def assetsFile = assetsFolder + "/" + it
         def content = readContentFromApk(outputFile, assetsFile)
         if (content != null && content.trim().length() > 0) {
+            assetsDir.mkdirs()
             def outputFilePath = new File(assetsDir, it)
             copyNames.add(assetsFile)
             try {
