@@ -60,7 +60,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private OnAdSdkListener mOnAdSdkListener;
     private OnAdSdkListener mOnAdSdkLoadedListener;
     private OnAdSdkInternalListener mOnAdPlaceLoaderListener = new AdPlaceLoaderListener();
-    private AdParams mAdParams;
+    // 加载native时的参数
+    private AdParams mAdLoadParams;
+    // 展示native时的参数
+    private AdParams mAdShowParams;
     private boolean mHasNotifyLoaded = false;
     // banner和native的listener集合
     private Map<ISdkLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<ISdkLoader, OnAdBaseListener>();
@@ -153,12 +156,19 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     private Params getParams(ISdkLoader loader) {
+        return getParams(loader, null);
+    }
+
+    private Params getParams(ISdkLoader loader, AdParams adParams) {
         Params params = null;
+        if (adParams == null) {
+            adParams = mAdLoadParams;
+        }
         try {
-            if (mAdParams != null) {
-                params = mAdParams.getParams(loader.getSdkName());
+            if (adParams != null) {
+                params = adParams.getParams(loader.getSdkName());
                 if (params == null) {
-                    params = mAdParams.getParams(Constant.AD_SDK_COMMON);
+                    params = adParams.getParams(Constant.AD_SDK_COMMON);
                 }
             }
             if (params == null) {
@@ -230,41 +240,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             }
         } catch (Exception e2) {
             Log.e(Log.TAG, "error : " + e2);
-        }
-        return Constant.NO_SET;
-    }
-
-    /**
-     * 获取通用的banner大小
-     *
-     * @return
-     */
-    private int getCommonBannerSize() {
-        if (mAdPlace != null) {
-            String bannerSize = mAdPlace.getBannerSize();
-            if (!TextUtils.isEmpty(bannerSize)) {
-                int banner = Constant.NO_SET;
-                try {
-                    banner = Constant.Banner.valueOf(bannerSize);
-                } catch (Exception e) {
-                }
-                if (banner != Constant.NO_SET) {
-                    return banner;
-                }
-            }
-        }
-
-        if (mAdParams != null) {
-            Params params = mAdParams.getParams(Constant.AD_SDK_COMMON);
-            if (params != null) {
-                Map<String, Integer> bannerMap = params.getBannerSize();
-                if (bannerMap != null && bannerMap.containsKey(Constant.AD_SDK_COMMON)) {
-                    Integer integer = bannerMap.get(Constant.AD_SDK_COMMON);
-                    if (integer != null) {
-                        return integer.intValue();
-                    }
-                }
-            }
         }
         return Constant.NO_SET;
     }
@@ -1145,7 +1120,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             });
             return;
         }
-        mAdParams = adParams;
+        mAdLoadParams = adParams;
         resetAdLoaded();
         // 处理场景缓存
         if (processAdPlaceCache()) {
@@ -1287,11 +1262,8 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      */
     @Override
     public void showAdView(ViewGroup adContainer, String adType, AdParams adParams) {
-        if (adParams != null) {
-            mAdParams = adParams;
-        }
+        mAdShowParams = adParams;
         mAdContainer = new WeakReference<ViewGroup>(adContainer);
-
         showAdViewInternal(adType, true);
         autoSwitchAdView();
     }
@@ -1366,7 +1338,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     }
                     break;
                 } else if (loader.isNativeType() && loader.isNativeLoaded()) {
-                    loader.showNative(viewGroup, getParams(loader));
+                    loader.showNative(viewGroup, getParams(loader, mAdShowParams));
                     if (needCounting) {
                         AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
                     }
@@ -1487,7 +1459,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             return;
         }
 
-        mAdParams = adParams;
+        mAdLoadParams = adParams;
         resetAdLoaded();
         // 处理场景缓存
         if (processAdPlaceCache()) {
