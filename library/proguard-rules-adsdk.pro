@@ -64,19 +64,26 @@
 #mintegral
 -keepattributes Signature
 -keepattributes *Annotation*
--keep class com.mintegral.** {*; }
--keep interface com.mintegral.** {*; }
 -keep class com.mbridge.** {*; }
 -keep interface com.mbridge.** {*; }
--keep interface androidx.** { *; }
--keep class androidx.** { *; }
--keep public class * extends androidx.** { *; }
--dontwarn com.mintegral.**
 -dontwarn com.mbridge.**
--keep class **.R$* { public static final int mintegral*; }
--keep class **.R$* { public static final int mbridge*; }
--keep class com.alphab.** {*; }
--keep interface com.alphab.** {*; }
+-keepclassmembers class **.R$* { public static final int mbridge*; }
+
+-keep public class com.mbridge.* extends androidx.** { *; }
+-keep public class androidx.viewpager.widget.PagerAdapter{*;}
+-keep public class androidx.viewpager.widget.ViewPager$OnPageChangeListener{*;}
+-keep interface androidx.annotation.IntDef{*;}
+-keep interface androidx.annotation.Nullable{*;}
+-keep interface androidx.annotation.CheckResult{*;}
+-keep interface androidx.annotation.NonNull{*;}
+-keep public class androidx.fragment.app.Fragment{*;}
+-keep public class androidx.core.content.FileProvider{*;}
+-keep public class androidx.core.app.NotificationCompat{*;}
+-keep public class androidx.appcompat.widget.AppCompatImageView {*;}
+-keep public class androidx.recyclerview.*{*;}
+-keep class com.mbridge.msdk.foundation.tools.FastKV{*;}
+-keep class com.mbridge.msdk.foundation.tools.FastKV$Builder{*;}
+
 
 #tradplus
 -keep public class com.tradplus.** { *; }
