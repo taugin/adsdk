@@ -2,6 +2,7 @@ package com.rabbit.adsdk;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -33,6 +34,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -53,6 +55,8 @@ public class AdSdk {
     private long mRewardLoadInterval = 5000;
     // 激励视频场景名称
     private String mRewardPlaceName = null;
+
+    private AtomicBoolean mInitialized = new AtomicBoolean(false);
 
     private AdSdk(Context context) {
         mOriginContext = context.getApplicationContext();
@@ -103,6 +107,22 @@ public class AdSdk {
         ActivityMonitor.get(mOriginContext).init();
         EventImpl.get().init(mContext);
         ReplaceManager.get(mContext).init();
+        if (mInitialized != null) {
+            mInitialized.set(true);
+        }
+    }
+
+    private void checkInitialize() {
+        if (mInitialized == null || !mInitialized.get()) {
+            try {
+                if (0 != (mContext.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
+                    throw new IllegalStateException("You must call AdSdk.get(context).init() first");
+                } else {
+                    Log.e(Log.TAG, "You must call AdSdk.get(context).init() first");
+                }
+            } catch (Exception e) {
+            }
+        }
     }
 
     /**
@@ -129,6 +149,7 @@ public class AdSdk {
     }
 
     public String getString(String key) {
+        checkInitialize();
         return DataManager.get(mContext).getString(key);
     }
 
@@ -137,6 +158,7 @@ public class AdSdk {
     }
 
     private AdPlaceLoader getAdLoader(String placeName, boolean forLoad) {
+        checkInitialize();
         Log.d(Log.TAG_SDK, "getAdLoader forLoad : " + forLoad);
         // 根据规则判断是否需要替换place name
         placeName = ReplaceManager.get(mContext).replacePlaceName(placeName, forLoad);

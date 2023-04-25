@@ -806,9 +806,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
-        if (mMaxNativeAdLoader == null) {
-            mMaxNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
-        }
+        mMaxNativeAdLoader = new MaxNativeAdLoader(getPid(), getInstance(activity), activity);
         maxNativeListener = new MaxNativeListener();
         mMaxNativeAdLoader.setNativeAdListener(maxNativeListener.maxNativeAdListener);
         mMaxNativeAdLoader.setRevenueListener(maxNativeListener.maxAdRevenueListener);

@@ -23,7 +23,7 @@ static def getConfigKey() {
 }
 
 def isSnapshot = true
-def baseVersion = '6.1.4'
+def baseVersion = '6.1.5'
 
 android {
     compileSdkVersion 31
@@ -76,7 +76,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // applovin
-    implementation 'com.applovin:applovin-sdk:11.8.2'
+    implementation 'com.applovin:applovin-sdk:11.9.0'
     // tradplus applovin mediation
     implementation 'com.tradplusad:tradplus-applovin:9.9.5.0.1'
     // tradplus max mediation
