@@ -59,7 +59,7 @@ public class AdPlace {
 
     private String sceneId;
 
-    private boolean order;
+    private boolean order = true;
 
     public String getName() {
         return name;
