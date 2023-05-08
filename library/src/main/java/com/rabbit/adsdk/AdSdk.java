@@ -42,6 +42,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AdSdk {
 
+    public static final String AD_TYPE_BANNER = Constant.TYPE_BANNER;
+    public static final String AD_TYPE_NATIVE = Constant.TYPE_NATIVE;
+    public static final String AD_TYPE_INTERSTITIAL = Constant.TYPE_INTERSTITIAL;
+    public static final String AD_TYPE_REWARD = Constant.TYPE_REWARD;
+    public static final String AD_TYPE_SPLASH = Constant.TYPE_SPLASH;
+
+    public static final String PLACE_TYPE_ADVIEW = Constant.PLACE_TYPE_ADVIEW;
+    public static final String PLACE_TYPE_INTERSTITIAL = Constant.PLACE_TYPE_INTERSTITIAL;
+    public static final String PLACE_TYPE_REWARD_VIDEO = Constant.PLACE_TYPE_REWARD_VIDEO;
+    public static final String PLACE_TYPE_SPLASH = Constant.PLACE_TYPE_SPLASH;
+    public static final String PLACE_TYPE_COMPLEX = Constant.PLACE_TYPE_COMPLEX;
+
     private static AdSdk sAdSdk;
 
     private Context mContext;
