@@ -155,11 +155,11 @@ dependencies {
     implementation 'com.tradplusad:tradplus-ironsource:10.9.5.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
 
-    implementation 'com.adcolony:sdk:4.8.0'
+    // implementation 'com.adcolony:sdk:4.8.0'
     // applovin adcolony mediation
-    implementation 'com.applovin.mediation:adcolony-adapter:4.8.0.3'
+    // implementation 'com.applovin.mediation:adcolony-adapter:4.8.0.3'
     // tradplus adcolony mediation
-    implementation 'com.tradplusad:tradplus-adcolony:4.9.5.0.1'
+    // implementation 'com.tradplusad:tradplus-adcolony:4.9.5.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Tapjoy
@@ -171,11 +171,11 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // chartboost
-    implementation 'com.chartboost:chartboost-sdk:9.2.0'
+    // implementation 'com.chartboost:chartboost-sdk:9.2.0'
     // applovin chartboost mediation
-    implementation 'com.applovin.mediation:chartboost-adapter:9.2.0.0@aar'
+    // implementation 'com.applovin.mediation:chartboost-adapter:9.2.0.0@aar'
     // tradplus chartboost mediation
-    implementation 'com.tradplusad:tradplus-chartboostx:15.9.5.0.1'
+    // implementation 'com.tradplusad:tradplus-chartboostx:15.9.5.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Bigo
