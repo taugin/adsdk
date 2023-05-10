@@ -12,5 +12,7 @@ public interface OnAdFilterListener {
      * @param type
      * @return
      */
-    boolean doFilter(String placeName, String sdk, String type);
+    default boolean doFilter(String placeName, String sdk, String type) {
+        return false;
+    }
 }
