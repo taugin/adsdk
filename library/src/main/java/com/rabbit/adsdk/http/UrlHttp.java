@@ -24,6 +24,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 class UrlHttp {
 
+    private static final String DEFAULT_CONTENT_CHARSET = "ISO-8859-1";
     private Request mRequest;
 
     public Response execute(Request request) {
@@ -62,10 +63,17 @@ class UrlHttp {
         response.setStatusCode(HttpURLConnection.HTTP_NOT_FOUND);
         try {
             conn.connect();
-            response.setHeader(convertHeader(conn));
-            int respCode = conn.getResponseCode();
-            response.setStatusCode(respCode);
-            if (respCode == HttpURLConnection.HTTP_OK) {
+            Map<String, String> headers = convertHeader(conn);
+            response.setHeader(headers);
+            int statusCode = conn.getResponseCode();
+            response.setStatusCode(statusCode);
+            String contentEncoding = conn.getContentEncoding();
+            response.setContentEncoding(contentEncoding);
+            response.setDate(conn.getDate());
+            if (headers != null) {
+                response.setCharset(parseCharset(headers));
+            }
+            if (statusCode == HttpURLConnection.HTTP_OK) {
                 InputStream is = conn.getInputStream();
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 byte[] buf = new byte[1024];
@@ -137,5 +145,26 @@ class UrlHttp {
                 }
             }
         }
+    }
+
+    public static String parseCharset(Map<String, String> headers) {
+        String charset = null;
+        String contentType = headers.get("Content-Type");
+        if (!TextUtils.isEmpty(contentType)) {
+            String[] params = contentType.split(";");
+            if (params != null && params.length > 0) {
+                for (int i = 1; i < params.length; ++i) {
+                    String[] pair = params[i].trim().split("=");
+                    if (pair.length == 2 && pair[0].equals("charset")) {
+                        charset = pair[1];
+                    }
+                }
+            }
+        }
+
+        if (TextUtils.isEmpty(charset)) {
+            charset = DEFAULT_CONTENT_CHARSET;
+        }
+        return charset;
     }
 }

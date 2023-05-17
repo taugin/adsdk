@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 
 import com.rabbit.adsdk.log.Log;
 import com.rabbit.adsdk.utils.Utils;
@@ -13,7 +14,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,8 +41,6 @@ public class Http {
         }
     };
     private static final ExecutorService sService = Executors.newFixedThreadPool(2, sFactory);
-    private static final Map<String, Request> sDownloadMap = new HashMap<String, Request>();
-    private static final String DEFAULT_CONTENT_CHARSET = "ISO-8859-1";
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private Context mContext;
@@ -193,8 +191,7 @@ public class Http {
                 deliverFailure(request, response.getStatusCode(), response.getError());
             }
         } else if (callback instanceof OnStringCallback) {
-            Map<String, String> header = response.getHeader();
-            String charset = parseCharset(header, DEFAULT_CONTENT_CHARSET);
+            String charset = response.getCharset();
             Log.iv(Log.TAG, "charset : " + charset);
             String content = null;
             try {
@@ -272,21 +269,5 @@ public class Http {
         r.setCache(true);
         r.setHeader(header);
         requestHttpInternal(r);
-    }
-
-    public static String parseCharset(Map<String, String> headers, String defaultCharset) {
-        String contentType = (String) headers.get("Content-Type");
-        if (contentType != null) {
-            String[] params = contentType.split(";");
-
-            for (int i = 1; i < params.length; ++i) {
-                String[] pair = params[i].trim().split("=");
-                if (pair.length == 2 && pair[0].equals("charset")) {
-                    return pair[1];
-                }
-            }
-        }
-
-        return defaultCharset;
     }
 }

@@ -913,4 +913,8 @@ public class AdSdk {
     public void showMediationDebugger() {
         AppLovinLoader.showApplovinMediationDebugger(mContext);
     }
+
+    public long getCurrentTimeMillis() {
+        return DataManager.get(mContext).getElapsedTimeMillis();
+    }
 }

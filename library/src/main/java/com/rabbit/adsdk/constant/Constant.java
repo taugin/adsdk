@@ -204,6 +204,9 @@ public class Constant {
 
     public static final SimpleDateFormat SDF_ACTIVE_DATE = new SimpleDateFormat("MM-dd", Locale.ENGLISH);
     public static final SimpleDateFormat SDF_ACTIVE_YEAR = new SimpleDateFormat("yyyy", Locale.ENGLISH);
+    public static final SimpleDateFormat SDF_WHOLE_TIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+    public static final String PREF_LAST_ELAPSED_TIME = "pref_last_elapsed_time";
+    public static final String PREF_LAST_CURRENT_TIME = "pref_last_current_time";
 
     public static class Banner {
         public static int valueOf(String bannerSize) {

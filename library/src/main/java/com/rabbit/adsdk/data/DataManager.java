@@ -1,6 +1,7 @@
 package com.rabbit.adsdk.data;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
@@ -327,5 +328,36 @@ public class DataManager {
 
     public long getFirstActiveTime() {
         return Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
+    }
+
+    public long getElapsedTimeMillis() {
+        long elapsedTime = SystemClock.elapsedRealtime();
+        long currentTime = System.currentTimeMillis();
+        long lastElapsedTime = Utils.getLong(mContext, Constant.PREF_LAST_ELAPSED_TIME, 0);
+        long lastCurrentTime = Utils.getLong(mContext, Constant.PREF_LAST_CURRENT_TIME, 0);
+        if (lastElapsedTime <= 0) {
+            // 首次获取时间
+            Utils.putLong(mContext, Constant.PREF_LAST_ELAPSED_TIME, elapsedTime);
+            Utils.putLong(mContext, Constant.PREF_LAST_CURRENT_TIME, currentTime);
+            return currentTime;
+        }
+        if (elapsedTime < lastElapsedTime) {
+            // 重启手机后，首次获取时间
+            Utils.putLong(mContext, Constant.PREF_LAST_ELAPSED_TIME, elapsedTime);
+            return lastCurrentTime;
+        }
+        long finalTime;
+        long elapsedDiff = elapsedTime - lastElapsedTime;
+        long currentDiff = currentTime - lastCurrentTime;
+        long deviation = Math.abs(currentDiff - elapsedDiff);
+        if (deviation < 10000) {
+            finalTime = currentTime;
+        } else {
+            finalTime = lastCurrentTime + elapsedDiff;
+        }
+        Utils.putLong(mContext, Constant.PREF_LAST_ELAPSED_TIME, elapsedTime);
+        Utils.putLong(mContext, Constant.PREF_LAST_CURRENT_TIME, finalTime);
+        // Log.iv(Log.TAG, "elapsed diff : " + elapsedDiff + " , current diff : " + currentDiff + " , deviation : " + deviation + " , final time : " + Constant.SDF_WHOLE_TIME.format(finalTime));
+        return finalTime;
     }
 }

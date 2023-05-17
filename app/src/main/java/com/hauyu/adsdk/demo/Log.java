@@ -36,8 +36,16 @@ public class Log {
             android.util.Log.d(tag, extraString + message);
         }
     }
-
     public static void v(String tag, String message) {
+        tag = checkLogTag(tag);
+        if (isLoggable(tag, VERBOSE)) {
+            String extraString = getMethodNameAndLineNumber();
+            tag = privateTag() ? tag : getTag();
+            android.util.Log.v(tag, extraString + message);
+        }
+    }
+
+    public static void iv(String tag, String message) {
         tag = checkLogTag(tag);
         if (isLoggable(tag, VERBOSE)) {
             String extraString = getMethodNameAndLineNumber();

@@ -46,6 +46,7 @@ import com.rabbit.adsdk.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -54,6 +55,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.TreeSet;
 import java.util.concurrent.Executors;
 
@@ -70,6 +73,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     private static final String REWARD_PREFIX = "reward_%s";
     private static final String NATIVE_PREFIX = "native_%s";
     private static final String SPLASH_PREFIX = "splash_%s";
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 
     static {
         BANNER_MAP = new HashMap<>();
@@ -93,6 +97,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     private ViewGroup mSplashContainer;
     private TextView mLanguageView;
     private TextView mDebugView;
+    private TextView mTimeView;
+    private Timer mTimer;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -198,6 +204,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         setContentView(R.layout.activity_main);
         ChangeLanguage.showLanguageDialogForTestMode(findViewById(R.id.change_language_layout));
         mLanguageView = findViewById(R.id.change_language);
+        mTimeView = findViewById(R.id.time_view);
         mNativeBannerLayout = findViewById(R.id.native_banner_layout);
         mAdSdkSpinner = findViewById(R.id.ad_sdk_spinner);
         mDebugView = findViewById(R.id.mediation_debugger);
@@ -295,6 +302,28 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         mDebugView.setText(debug + installApp);
         ProxyUtils.hookClick(findViewById(R.id.mediation_debugger));
         ProxyUtils.hookClick(findViewById(R.id.change_language));
+        timer();
+    }
+
+    private void timer() {
+        TimerTask tTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                long time = AdSdk.get(getApplicationContext()).getCurrentTimeMillis();
+                mTimeView.setText(sdf.format(time));
+            }
+        };
+        mTimer = new Timer();
+        mTimer.schedule(tTask, 0, 1000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mTimer != null) {
+            mTimer.cancel();
+        }
     }
 
     @Override

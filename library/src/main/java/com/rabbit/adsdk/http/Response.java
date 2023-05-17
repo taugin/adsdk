@@ -12,6 +12,9 @@ class Response {
     private Map<String, String> header;
     private String error;
     private boolean cache;
+    private long date;
+    private String contentEncoding;
+    private String charset;
 
     public int getStatusCode() {
         return statusCode;
@@ -51,5 +54,29 @@ class Response {
 
     public void setCache(boolean cache) {
         this.cache = cache;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public String getContentEncoding() {
+        return contentEncoding;
+    }
+
+    public void setContentEncoding(String contentEncoding) {
+        this.contentEncoding = contentEncoding;
+    }
+
+    public String getCharset() {
+        return charset;
+    }
+
+    public void setCharset(String charset) {
+        this.charset = charset;
     }
 }
