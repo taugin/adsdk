@@ -1343,7 +1343,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
                 if (isReportFirebase) {
                     InternalStat.sendFirebaseAnalytics(mContext, "ad_impression", null, params);
                 }
-                InternalStat.sendUmengObject(mContext, "ad_impression", params);
             }
         } catch (Exception e) {
         }
