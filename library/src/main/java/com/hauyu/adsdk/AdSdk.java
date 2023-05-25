@@ -8,7 +8,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.android.support.BuildConfig;
+import com.android.widget.BuildConfig;
 import com.hauyu.adsdk.adloader.applovin.AppLovinLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;

@@ -21,6 +21,6 @@
 #-renamesourcefileattribute SourceFile
 #-keepattributes SourceFile,LineNumberTable
 
--include proguard-rules-adsdk.pro
 -keepparameternames
--keep class com.hauyu.* {public *;}
+-dontoptimize
+-keep class com.hauyu.adsdk.* {public *;}

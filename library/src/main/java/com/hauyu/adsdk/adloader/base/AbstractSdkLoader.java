@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.android.support.BuildConfig;
+import com.android.widget.BuildConfig;
 import com.hauyu.adsdk.VUIHelper;
 import com.hauyu.adsdk.AdImpData;
 import com.hauyu.adsdk.AdReward;

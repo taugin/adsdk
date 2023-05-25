@@ -10,7 +10,7 @@ import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 
-import com.android.support.BuildConfig;
+import com.android.widget.BuildConfig;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
