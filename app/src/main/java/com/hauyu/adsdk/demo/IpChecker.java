@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.rabbit.adsdk.http.Http;
-import com.rabbit.adsdk.http.OnStringCallback;
-import com.rabbit.adsdk.utils.Utils;
+import com.hauyu.adsdk.http.Http;
+import com.hauyu.adsdk.http.OnStringCallback;
+import com.hauyu.adsdk.Utils;
 
 import org.json.JSONObject;
 

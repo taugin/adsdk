@@ -197,7 +197,7 @@ uploadArchives {
                 authentication(userName: username, password: password)
             }
             pom.version = android.defaultConfig.versionName
-            pom.artifactId = "rabbit"
+            pom.artifactId = "adsdk"
             pom.groupId = "com.hauyu"
             pom.packaging = "aar"
         }

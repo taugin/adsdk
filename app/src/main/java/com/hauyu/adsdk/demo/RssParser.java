@@ -3,9 +3,8 @@ package com.hauyu.adsdk.demo;
 import android.content.Context;
 import android.util.Log;
 
-import com.hauyu.adsdk.demo.utils.DateUtils;
-import com.rabbit.adsdk.http.Http;
-import com.rabbit.adsdk.http.OnStringCallback;
+import com.hauyu.adsdk.http.Http;
+import com.hauyu.adsdk.http.OnStringCallback;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

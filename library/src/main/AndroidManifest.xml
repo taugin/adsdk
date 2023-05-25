@@ -23,7 +23,7 @@
             android:theme="@android:style/Theme.Translucent" />
 
         <activity
-            android:name="com.android.support.FragmentActivity"
+            android:name="com.android.support.com.android.widget.FragmentActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:exported="false"
             android:icon="@drawable/rab_transp_bg"

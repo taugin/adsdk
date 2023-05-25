@@ -17,8 +17,8 @@ import androidx.multidex.MultiDex;
 
 import com.github.moduth.blockcanary.BlockCanary;
 import com.github.moduth.blockcanary.BlockCanaryContext;
-import com.rabbit.adsdk.AdSdk;
-import com.rabbit.adsdk.utils.Utils;
+import com.hauyu.adsdk.AdSdk;
+import com.hauyu.adsdk.Utils;
 import com.tendcloud.tenddata.TCAgent;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;

@@ -23,4 +23,4 @@
 
 -include proguard-rules-adsdk.pro
 -keepparameternames
--keep class com.rabbit.** {public *;}
+-keep class com.hauyu.* {public *;}
