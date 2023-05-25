@@ -128,7 +128,7 @@ public class DataManager {
     private String getConfigName() {
         String cfgName = null;
         try {
-            cfgName = "cfg" + getMd5SubString();
+            cfgName = "c" + getMd5SubString() + "fg";
         } catch (Exception e) {
             Log.v(Log.TAG, "error : " + e);
         }
@@ -137,7 +137,7 @@ public class DataManager {
 
     private String getMediationConfigKey() {
         try {
-            return "mdn" + new StringBuilder(getMd5SubString()).reverse().toString();
+            return "m" + new StringBuilder(getMd5SubString()).reverse().toString() + "dn";
         } catch (Exception e) {
         }
         return "mdn_sdk_cfg";

@@ -312,10 +312,10 @@ def getApplicationId(flavor) {
 def generateAdFileByUser(flavor) {
     def appId = getApplicationId(flavor)
     def packagenameMd5 = Aes.string2MD5(appId)
-    def adConfigName = "cfg" + packagenameMd5.substring(0, 8) + ".[dat/json]"
+    def adConfigName = "c" + packagenameMd5.substring(0, 8) + "fg" + ".[dat/json]"
     println("+++++++++++++++++++++++++++++++++++++++++++")
     println "generateAdFileName : " + adConfigName
-    println "generateMDFileName : " + "mdn" + packagenameMd5.substring(0, 8).reverse()
+    println "generateMDFileName : " + "m" + packagenameMd5.substring(0, 8).reverse() + "dn"
     println("-------------------------------------------")
 }
 
@@ -404,15 +404,15 @@ def encryptAssetsFilesFromPackageInternal(flavorName, File outputFile, isAab) {
     def appId = getApplicationId(flavorName)
     def packageMd5 = Aes.string2MD5(appId)
     def md5sub = packageMd5.substring(0, 8)
-    def adName = "cfg" + md5sub
+    def adName = "c" + md5sub + "fg"
     def encryptNames = []
     encryptNames.add(adName + ".dat")
     encryptNames.add(adName + ".json")
     encryptNames.add("data_config" + ".dat")
     encryptNames.add("data_config" + ".json")
     encryptNames.add("ad_mdn_cfg")
-    encryptNames.add("cfg_spread")
-    encryptNames.add("mdn" + md5sub.reverse())
+    encryptNames.add("cfg_spread_info")
+    encryptNames.add("m" + md5sub.reverse() + "dn")
     def configEncryptFiles = ext != null && ext.has("encryptFiles") ? ext.encryptFiles : null
     if (configEncryptFiles != null && !configEncryptFiles.isEmpty()) {
         configEncryptFiles.each {

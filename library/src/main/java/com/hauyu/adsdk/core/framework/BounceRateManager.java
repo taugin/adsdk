@@ -204,7 +204,7 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
 
     public boolean blockMistakePid(String pid) {
         parseMsClkConfig();
-        if (mMsClkCfgMap != null && !mMsClkCfgMap.isEmpty()) {
+        if (!TextUtils.isEmpty(pid) && mMsClkCfgMap != null && !mMsClkCfgMap.isEmpty()) {
             String pidMd5 = Utils.string2MD5(pid);
             MsClkCfg msClkCfg = mMsClkCfgMap.get(pidMd5);
             if (msClkCfg != null) {
@@ -262,7 +262,6 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
             } catch (Exception e) {
             }
         }
-        Log.iv(Log.TAG, "ms clk cfg map : " + mMsClkCfgMap);
     }
 
     private class MsClkCfg {

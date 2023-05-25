@@ -99,7 +99,7 @@ public class Utils {
         try {
             return byte2MD5(source.getBytes(encode));
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.e(Log.TAG, "error : " + e, e);
         }
         return "";
     }

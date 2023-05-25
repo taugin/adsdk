@@ -6,7 +6,7 @@ package com.hauyu.adsdk.data.config;
 
 public class SpreadConfig {
 
-    public static final String AD_SPREAD_NAME = "cfg_spread";
+    public static final String AD_SPREAD_NAME = "cfg_spread_info";
 
     private String banner;
     private String icon;
