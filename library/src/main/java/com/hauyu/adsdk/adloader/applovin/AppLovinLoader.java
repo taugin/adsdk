@@ -210,8 +210,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         String sdkKey = getSdkKey(activity);
         if (TextUtils.isEmpty(sdkKey)) {
-            Log.iv(Log.TAG, "applovin init applovin.sdk.key is null");
-            return null;
+            sdkKey = "L7OrRia7Fum7esJFM51m6xd799x4HmN4iNA6H9I7PhlFH_NqVTDDu87T7R58p4gAR3xJNedZzM-0HBT1XwUEv7";
         }
         if (sAppLovinSdkSettings == null) {
             sAppLovinSdkSettings = new AppLovinSdkSettings(activity);
