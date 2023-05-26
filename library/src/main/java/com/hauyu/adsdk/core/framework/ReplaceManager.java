@@ -67,7 +67,7 @@ public class ReplaceManager {
      */
     public String replacePlaceName(String placeName, boolean forLoad) {
         String finalPlaceName = placeName;
-        Log.iv(Log.TAG, "start to replace name : " + placeName);
+        // Log.iv(Log.TAG, "start to replace name : " + placeName);
         if (mReplaceCache != null) {
             finalPlaceName = mReplaceCache.get(placeName);
         }
@@ -95,7 +95,7 @@ public class ReplaceManager {
                 finalPlaceName = placeName;
             }
         }
-        Log.iv(Log.TAG, "end to replace name : " + placeName + " --> " + finalPlaceName);
+        // Log.iv(Log.TAG, "end to replace name : " + placeName + " --> " + finalPlaceName);
         return finalPlaceName;
     }
 
@@ -139,7 +139,7 @@ public class ReplaceManager {
                                 }
                             }
                         }
-                        Log.iv(Log.TAG, "mReplaceConfig : " + mReplaceConfig);
+                        // Log.iv(Log.TAG, "mReplaceConfig : " + mReplaceConfig);
                     }
                 } catch (Exception e) {
                 }

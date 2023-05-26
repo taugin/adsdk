@@ -587,7 +587,6 @@ public class Utils {
                 value = appInfo.metaData.get(name).toString();
             }
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
         }
         return value;
     }
