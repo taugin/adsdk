@@ -6,12 +6,16 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.Utils;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -26,7 +30,7 @@ import java.util.TimeZone;
  * Created by Administrator on 2018/2/12.
  */
 
-public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
+public class VRemoteConfig implements Handler.Callback {
 
     private static final int CACHE_EXPIRE_TIME = 15 * 60;
     private static final int REFRESH_INTERVAL = CACHE_EXPIRE_TIME * 1000;
@@ -131,10 +135,27 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
 
     private void requestDataConfig() {
         try {
-            mInstance.fetch(CACHE_EXPIRE_TIME).addOnCompleteListener(this);
+            mInstance.fetch(CACHE_EXPIRE_TIME).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull @NotNull Task<Void> task) {
+                    if (task == null) {
+                        Log.e(Log.TAG, "task == null");
+                        return;
+                    }
+                    if (task.isSuccessful()) {
+                        Log.iv(Log.TAG, "onComplete successfully");
+                        if (mInstance != null) {
+                            mInstance.fetchAndActivate();
+                        }
+                        Utils.putLong(mContext, Constant.PREF_REMOTE_CONFIG_UPDATE_TIME, System.currentTimeMillis());
+                    } else {
+                        Log.e(Log.TAG, "error : " + task.getException());
+                    }
+                }
+            });
             Utils.putLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
             updateRefreshInterval();
-        } catch (Exception e) {
+        } catch (Exception | Error e) {
             Log.e(Log.TAG, "error : " + e);
         }
     }
@@ -144,7 +165,7 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
         try {
             String str = REFRESH_INTERVALS.get(mRandom.nextInt(REFRESH_INTERVALS.size()));
             interval = Long.parseLong(str);
-        } catch (Exception e) {
+        } catch (Exception | Error e) {
             interval = REFRESH_INTERVAL;
         }
         Utils.putLong(mContext, PREF_REFRESH_INTERVAL, interval);
@@ -155,28 +176,11 @@ public class VRemoteConfig implements OnCompleteListener, Handler.Callback {
         return interval;
     }
 
-    @Override
-    public void onComplete(Task task) {
-        if (task == null) {
-            Log.e(Log.TAG, "task == null");
-            return;
-        }
-        if (task.isSuccessful()) {
-            Log.iv(Log.TAG, "onComplete successfully");
-            if (mInstance != null) {
-                mInstance.fetchAndActivate();
-            }
-            Utils.putLong(mContext, Constant.PREF_REMOTE_CONFIG_UPDATE_TIME, System.currentTimeMillis());
-        } else {
-            Log.e(Log.TAG, "error : " + task.getException());
-        }
-    }
-
     private void ensureFirebase() {
         if (mInstance == null) {
             try {
                 mInstance = FirebaseRemoteConfig.getInstance();
-            } catch (Exception e) {
+            } catch (Exception | Error e) {
                 Log.e(Log.TAG, "error : miss google-services.json");
             }
         }

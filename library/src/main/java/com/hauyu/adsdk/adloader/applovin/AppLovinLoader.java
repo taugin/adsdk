@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.hauyu.adsdk.VUIHelper;
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
 import com.applovin.mediation.MaxAdListener;
@@ -28,6 +27,8 @@ import com.applovin.sdk.AppLovinErrorCodes;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkSettings;
 import com.hauyu.adsdk.AdReward;
+import com.hauyu.adsdk.Utils;
+import com.hauyu.adsdk.VUIHelper;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.constant.Constant;
@@ -35,7 +36,6 @@ import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.Utils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -76,7 +76,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (appLovinSdk != null) {
                 appLovinSdk.showMediationDebugger();
             }
-        } catch (Exception e) {
+        } catch (Exception | Error e) {
         }
     }
 
@@ -122,6 +122,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     @Override
     public void init(Context context, PidConfig pidConfig) {
         super.init(context, pidConfig);
+        initBannerSize();
     }
 
     public String getSdkName() {
@@ -365,9 +366,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     protected static final Map<Integer, MaxAdFormat> ADSIZE = new HashMap<>();
 
-    static {
-        ADSIZE.put(Constant.BANNER, MaxAdFormat.BANNER);
-        ADSIZE.put(Constant.MEDIUM_RECTANGLE, MaxAdFormat.MREC);
+    private void initBannerSize() {
+        try {
+            ADSIZE.put(Constant.BANNER, MaxAdFormat.BANNER);
+            ADSIZE.put(Constant.MEDIUM_RECTANGLE, MaxAdFormat.MREC);
+        } catch (Exception | Error e) {
+        }
     }
 
     private MaxInterstitialAd interstitialAd;

@@ -5,6 +5,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.PlaceConfig;
@@ -13,7 +14,6 @@ import com.hauyu.adsdk.data.parse.AdParser;
 import com.hauyu.adsdk.data.parse.IParser;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.utils.AesUtils;
-import com.hauyu.adsdk.Utils;
 
 import org.json.JSONArray;
 
@@ -277,7 +277,7 @@ public class DataManager {
                     String gaidmd5 = Utils.string2MD5(gaid);
                     Log.iv(Log.TAG, "google advertising id (gaid) : " + gaid + " , is limit ad tracking : " + isLimited + " , gaid2 : " + gaidmd5);
                     Utils.putString(mContext, Constant.PREF_GAID, gaid);
-                } catch (Exception e) {
+                } catch (Exception | Error e) {
                     Log.e(Log.TAG, "error : " + e);
                 }
             }

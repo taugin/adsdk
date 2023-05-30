@@ -36,7 +36,7 @@ public class ModuleLoaderHelper {
             MobileAds.class.getName();
             return true;
         } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.e(Log.TAG, "error : " + e);
         }
         return false;
     }
@@ -46,7 +46,7 @@ public class ModuleLoaderHelper {
             AppLovinSdk.class.getName();
             return true;
         } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.e(Log.TAG, "error : " + e);
         }
         return false;
     }
@@ -56,7 +56,7 @@ public class ModuleLoaderHelper {
             TradPlus.class.getName();
             return true;
         } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.e(Log.TAG, "error : " + e);
         }
         return false;
     }
