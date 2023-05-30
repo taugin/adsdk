@@ -70,7 +70,9 @@ dependencies {
     if (useProject) {
         implementation project(":library")
     } else {
-        implementation 'com.hauyu:rabbit:+'
+        implementation 'com.hauyu:adsdk:7.0.2-SNAPSHOT@aar'
+        implementation 'androidx.percentlayout:percentlayout:1.0.0'
+        implementation 'com.github.megatronking.stringfog:xor:1.1.0'
     }
     configurations.all {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
@@ -87,7 +89,7 @@ dependencies {
 configurations.all {
     // resolutionStrategy.force 'com.google.android.gms:play-services-base:15.0.1'
     // resolutionStrategy.force 'com.google.firebase:firebase-analytics:15.0.2'
-    resolutionStrategy.force 'androidx.core:core:1.6.0'
+    // resolutionStrategy.force 'androidx.core:core:1.6.0'
 }
 
 afterEvaluate {
@@ -109,7 +111,7 @@ afterEvaluate {
     }
 }
 apply from: '../groovy/resguard_apk.gradle'
- apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
 
 //android.applicationVariants.all{ variant ->
 //    String dirPath = "${buildDir}/intermediates/merged_assets/${variant.name}/${variant.mergeAssetsProvider.name}/out/src"

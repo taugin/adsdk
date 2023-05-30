@@ -652,6 +652,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
         @Override
         public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
+            Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , error : " + error);
             updateLoadStatus(textView, placeName);
         }
 
