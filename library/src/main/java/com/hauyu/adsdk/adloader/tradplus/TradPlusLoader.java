@@ -882,9 +882,9 @@ public class TradPlusLoader extends AbstractSdkLoader {
     }
 
     private String getCurrency(TPAdInfo tpAdInfo) {
-        if (tpAdInfo != null && !TextUtils.isEmpty(tpAdInfo.currency)) {
-            return tpAdInfo.currency;
-        }
+//        if (tpAdInfo != null && !TextUtils.isEmpty(tpAdInfo.currency)) {
+//            return tpAdInfo.currency;
+//        }
         return "USD";
     }
 
