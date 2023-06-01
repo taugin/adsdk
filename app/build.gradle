@@ -110,19 +110,24 @@ afterEvaluate {
         }
     }
 }
-apply from: '../groovy/resguard_apk.gradle'
 apply plugin: 'com.google.gms.google-services'
+/**
+ * 判断是否编译aab文件
+ * @return
+ */
+def isBuildAabFile() {
+    try {
+        def result = getGradle().getStartParameter().getTaskRequests()[0]["args"][0].toString().toLowerCase(Locale.ENGLISH)
+        return result.contains("bundle")
+    } catch (Exception e) {
+    }
+    return false
+}
 
-//android.applicationVariants.all{ variant ->
-//    String dirPath = "${buildDir}/intermediates/merged_assets/${variant.name}/${variant.mergeAssetsProvider.name}/out/src"
-//    println "+++++++++++++++++ dirPath1 : " + dirPath
-//    variant.mergeAssets.doLast{
-//        def sourceDir = "${buildDir}/../"   // 资源存放目录，这里是app下
-//        print "================================ : " + "${sourceDir} \n"  // 打印路径
-//        print "================================ : " + "${outputDir} \n"  // 打印路径
-//        copy { // 将from目录下的资源拷贝到into 下目录去
-//            from "${sourceDir}/res"
-//            into "${outputDir}/res"
-//        }
-//    }
-//}
+if (isBuildAabFile()) {
+    println "apply from aab.gradle"
+    apply from: '../groovy/resguard_aab.gradle'
+} else {
+    println "apply from apk.gradle"
+    apply from: '../groovy/resguard_apk.gradle'
+}
