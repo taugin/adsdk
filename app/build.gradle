@@ -31,6 +31,8 @@ android {
         }
     }
 
+    setProperty("archivesBaseName", "app-bundle-custom")
+
     signingConfigs {
         config {
             keyAlias 'taugin'

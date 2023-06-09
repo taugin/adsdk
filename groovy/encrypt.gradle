@@ -269,6 +269,79 @@ def printEncryptInfo() {
     ext.out = []
     println ">>>>>>>>>>>>>>>>>>>>>>>>>>处理的加密文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 }
+afterEvaluate {
+    task transformAab2Apk {
+        transformAab2ApkLocked()
+    }
+    transformAab2Apk.setGroup("adsdk")
+}
+
+def transformAab2ApkLocked() {
+    def outputAabFile = null
+    String flavorName = null;
+    android.applicationVariants.all { variant ->
+        if (variant.buildType.name == 'release') {
+            variant.outputs.all {
+                if (variant.productFlavors != null && variant.productFlavors.size() > 0) {
+                    flavorName = variant.productFlavors[0].name
+                }
+                outputAabFile = outputFile
+            }
+        }
+    }
+    def finalBundleName = null
+    try {
+        finalBundleName = aabResGuard.obfuscatedBundleFileName
+    } catch (Exception e) {
+    }
+    def finalBundleFile = outputAabFile
+    if (finalBundleName != null && finalBundleName.length() > 0) {
+        finalBundleFile = new File(outputAabFile.getParent(), finalBundleName)
+    }
+    println "finalBundleFile : " + finalBundleFile
+    def signConfig = getSignConfig(flavorName)
+    if (signConfig == null) {
+        System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] signConfig is Null"
+        return
+    }
+    if (!signConfig.hasProperty("storeFile")
+            || !signConfig.hasProperty("storePassword")
+            || !signConfig.hasProperty("keyAlias")
+            || !signConfig.hasProperty("keyPassword")) {
+        System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] signConfig is not completion"
+        return
+    }
+    def bundleToolPath =  rootProject.buildscript.configurations.classpath.find {
+        it.name.startsWith("bundletool")
+    }
+    if (bundleToolPath == null || !bundleToolPath.exists()) {
+        System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundle tool is Null"
+        return
+    }
+    def storeFile = signConfig.storeFile
+    def storePassword = signConfig.storePassword
+    def keyAlias = signConfig.keyAlias
+    def keyPassword = signConfig.keyPassword
+    def finalApksFile = new File(finalBundleFile.getParent(), finalBundleFile.getName() + ".apks")
+    def cmdList = ["java", "-jar", bundleToolPath,
+                "build-apks",
+                "--bundle=" + finalBundleFile,
+                "--output=" + finalApksFile,
+                "--overwrite", "--verbose",
+                "--ks=" + storeFile,
+                "--ks-pass=pass:" + storePassword,
+                "--ks-key-alias=" + keyAlias,
+                "--key-pass=pass:" + keyPassword,
+                "--mode=universal"]
+    def cmdString = cmdList.join(" ")
+    println "cmd string : " + cmdString
+    try {
+        def result = cmdString.execute().text.trim()
+        println "execute complete : " + result
+    } catch (Exception e) {
+        println "error : " + e
+    }
+}
 /**
  * 打开Release目录
  * @param flavor
