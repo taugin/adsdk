@@ -180,42 +180,19 @@ static def getDate() {
     return formattedDate
 }
 
-gradle.addBuildListener(new BuildListener() {
-    @Override
-    void buildStarted(Gradle gradle) {
-
-    }
-
-    @Override
-    void settingsEvaluated(Settings settings) {
-
-    }
-
-    @Override
-    void projectsLoaded(Gradle gradle) {
-
-    }
-
-    @Override
-    void projectsEvaluated(Gradle gradle) {
-
-    }
-
-    @Override
-    void buildFinished(BuildResult result) {
-        if (org.gradle.internal.os.OperatingSystem.current().isWindows()
-                && result.gradle.taskGraph.allTasks.size() > 0
-                && isContainBundleRelease(result)) {
-            try {
-                def outputPath = new File(project.buildDir, "outputs/bundle")
-                def cmd = "explorer.exe " + outputPath
-                cmd.execute()
-                println "> Task :${project.name}:openBundleDir [${outputPath}]"
-            } catch (Exception e) {
-            }
+gradle.buildFinished {
+    if (org.gradle.internal.os.OperatingSystem.current().isWindows()
+            && it.gradle.taskGraph.allTasks.size() > 0
+            && isContainBundleRelease(it)) {
+        try {
+            def outputPath = new File(project.buildDir, "outputs/bundle")
+            def cmd = "explorer.exe " + outputPath
+            cmd.execute()
+            println "> Task :${project.name}:openBundleDir [${outputPath}]"
+        } catch (Exception e) {
         }
     }
-})
+}
 
 def isContainBundleRelease(BuildResult result) {
     def taskList = result.gradle.taskGraph.allTasks
