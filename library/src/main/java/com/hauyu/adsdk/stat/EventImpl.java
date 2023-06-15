@@ -217,7 +217,10 @@ public class EventImpl implements IEvent {
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_imp", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
-        AdStatManager.get(mContext).recordAdImp(sdk, placeName, network);
+        try {
+            AdStatManager.get(mContext).recordAdImp(sdk, placeName, network);
+        } catch (Exception e) {
+        }
         if (!TextUtils.equals(sdk, Constant.AD_SDK_ADMOB) && network != null && network.toLowerCase(Locale.ENGLISH).contains(Constant.AD_SDK_ADMOB)) {
             eventId = generateEventId(context, "imp", Constant.AD_SDK_ADMOB, type);
             Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
@@ -240,7 +243,10 @@ public class EventImpl implements IEvent {
         reportEvent(context, "e_ad_click", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
         reportAdClickDistinct(context, placeName, sdk, network, type, pid, networkPid, ecpm, extra, isAdClicked);
-        AdStatManager.get(mContext).recordAdClick(sdk, placeName, pid, network, extra, impressionId);
+        try {
+            AdStatManager.get(mContext).recordAdClick(sdk, placeName, pid, network, extra, impressionId);
+        } catch (Exception e) {
+        }
         if (!TextUtils.equals(sdk, Constant.AD_SDK_ADMOB) && network != null && network.toLowerCase(Locale.ENGLISH).contains(Constant.AD_SDK_ADMOB)) {
             eventId = generateEventId(context, "click", Constant.AD_SDK_ADMOB, type);
             Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
@@ -391,42 +397,42 @@ public class EventImpl implements IEvent {
      * @return
      */
     private boolean isReportTime(Context context) {
-        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_time");
+        String value = InternalStat.getAdReportString(context, "ad_report_bool_time");
         boolean result = parseReport(value, false);
         Log.iv(Log.TAG_SDK, "is report time : " + result);
         return result;
     }
 
     private boolean isReportAppsflyer(Context context) {
-        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_appsflyer");
+        String value = InternalStat.getAdReportString(context, "ad_report_bool_appsflyer");
         boolean result = parseReport(value, false);
         Log.iv(Log.TAG_SDK, "is report appsflyer : " + result);
         return result;
     }
 
     private boolean isReportUmeng(Context context) {
-        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_umeng");
+        String value = InternalStat.getAdReportString(context, "ad_report_bool_umeng");
         boolean result = parseReport(value, true);
         Log.iv(Log.TAG_SDK, "is report umeng : " + result);
         return result;
     }
 
     private boolean isReportFirebase(Context context) {
-        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_firebase");
+        String value = InternalStat.getAdReportString(context, "ad_report_bool_firebase");
         boolean result = parseReport(value, true);
         Log.iv(Log.TAG_SDK, "is report firebase : " + result);
         return result;
     }
 
     private boolean isReportFlurry(Context context) {
-        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_flurry");
+        String value = InternalStat.getAdReportString(context, "ad_report_bool_flurry");
         boolean result = parseReport(value, true);
         Log.iv(Log.TAG_SDK, "is report flurry : " + result);
         return result;
     }
 
     private boolean isReportTalkingData(Context context) {
-        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_td");
+        String value = InternalStat.getAdReportString(context, "ad_report_bool_td");
         boolean result = parseReport(value, true);
         Log.iv(Log.TAG_SDK, "is talkingdata flurry : " + result);
         return result;
