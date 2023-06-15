@@ -98,19 +98,19 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_AD_IMPRESSION_TABLE);
             db.execSQL(CREATE_DATETIME_UNIQUE_INDEX);
         } catch (SQLException e) {
-            Log.d(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(Log.TAG, "oldVersion : " + oldVersion + " , newVersion : " + newVersion);
+        Log.iv(Log.TAG, "oldVersion : " + oldVersion + " , newVersion : " + newVersion);
         if (newVersion > oldVersion) {
             try {
                 db.execSQL(DROP_ORG_TABLE);
                 db.execSQL(DROP_DATETIME_UNIQUE_INDEX);
             } catch (SQLException e) {
-                Log.d(Log.TAG, "error : " + e);
+                Log.iv(Log.TAG, "error : " + e);
             } finally {
                 onCreate(db);
             }

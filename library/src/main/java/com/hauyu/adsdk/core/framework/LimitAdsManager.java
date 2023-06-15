@@ -73,7 +73,7 @@ public class LimitAdsManager {
         try {
             appendAdImpTimestamp();
         } catch (Exception e) {
-            Log.e(Log.TAG_SDK, "error : " + e);
+            Log.iv(Log.TAG_SDK, "error : " + e);
         }
     }
 
@@ -82,7 +82,7 @@ public class LimitAdsManager {
         try {
             appendAdClkTimestamp();
         } catch (Exception e) {
-            Log.e(Log.TAG_SDK, "error : " + e);
+            Log.iv(Log.TAG_SDK, "error : " + e);
         }
     }
 
@@ -282,7 +282,7 @@ public class LimitAdsManager {
                 }
             }
         } catch (Exception e) {
-            Log.e(Log.TAG_SDK, "error : " + e);
+            Log.iv(Log.TAG_SDK, "error : " + e);
         }
         return placeNameWithSuffix;
     }
@@ -325,7 +325,7 @@ public class LimitAdsManager {
             int size = linkedList.size();
             Log.iv(Log.TAG_SDK, "get link list from sp size : " + size);
         } catch (Exception e) {
-            Log.e(Log.TAG_SDK, "error : " + e);
+            Log.iv(Log.TAG_SDK, "error : " + e);
             Utils.putString(mContext, prefName, DEFAULT_LIST_TEXT);
         }
         return linkedList;
@@ -345,7 +345,7 @@ public class LimitAdsManager {
                 }
             }
         } catch (Exception e) {
-            Log.e(Log.TAG_SDK, "error : " + e);
+            Log.iv(Log.TAG_SDK, "error : " + e);
         }
     }
 

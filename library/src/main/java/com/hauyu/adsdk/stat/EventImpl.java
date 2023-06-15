@@ -88,11 +88,11 @@ public class EventImpl implements IEvent {
             try {
                 Log.iv(Log.TAG_SDK, String.format("now : %d-%02d-%02d , active : %d-%02d-%02d, nowDate : %d , activeDate : %d", nowYear, nowMonth, nowDay, activeYear, activeMonth, activeDay, nowDate, activeDate));
             } catch (Exception e) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.iv(Log.TAG, "error : " + e);
             }
             activeDays = Long.valueOf((nowDate - activeDate) / Constant.ONE_DAY_MS).intValue();
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
             activeDays = -1;
         }
         if (activeDays < 0) {
@@ -371,7 +371,7 @@ public class EventImpl implements IEvent {
             try {
                 return Boolean.parseBoolean(value);
             } catch (Exception e) {
-                Log.e(Log.TAG, "parseReport error : " + e);
+                Log.iv(Log.TAG, "parseReport error : " + e);
             }
         }
         return defaultValue;

@@ -68,7 +68,7 @@ public class TradPlusBindView extends BaseBindNativeView {
                 if (adRootLayout > 0) {
                     return (ViewGroup) LayoutInflater.from(mContext).inflate(adRootLayout, null);
                 } else {
-                    Log.e(Log.TAG, "Can not find " + mPidConfig.getSdk() + " native layout###");
+                    Log.iv(Log.TAG, "Can not find " + mPidConfig.getSdk() + " native layout###");
                 }
             } catch (Exception e) {
             }
@@ -178,7 +178,7 @@ public class TradPlusBindView extends BaseBindNativeView {
                 }
                 return viewGroup;
             } catch (Exception e) {
-                Log.e(Log.TAG, "show native ad view error : " + e);
+                Log.iv(Log.TAG, "show native ad view error : " + e);
             }
             return null;
         }
@@ -196,7 +196,7 @@ public class TradPlusBindView extends BaseBindNativeView {
                 return true;
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "show native ad choice view error : " + e);
+            Log.iv(Log.TAG, "show native ad choice view error : " + e);
         }
         return false;
     }

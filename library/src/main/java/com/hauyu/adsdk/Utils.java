@@ -76,7 +76,7 @@ public class Utils {
         try {
             md5 = MessageDigest.getInstance("MD5");
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
             return "";
         }
         byte[] md5Bytes = md5.digest(byteArray);
@@ -99,7 +99,7 @@ public class Utils {
         try {
             return byte2MD5(source.getBytes(encode));
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return "";
     }
@@ -304,7 +304,7 @@ public class Utils {
             is.close();
             fos.close();
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -322,7 +322,7 @@ public class Utils {
             fis.close();
             return toHexString(md5.digest());
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return null;
     }
@@ -341,7 +341,7 @@ public class Utils {
             fis.close();
             return toHexString(md5.digest());
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return null;
     }
@@ -405,7 +405,7 @@ public class Utils {
             is.close();
             return builder.toString();
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return null;
     }
@@ -466,7 +466,7 @@ public class Utils {
                 return true;
             }
         } catch (PackageManager.NameNotFoundException e) {
-            // Log.d(Log.TAG, "error : " + e);
+            // Log.iv(Log.TAG, "error : " + e);
         }
         return false;
     }
@@ -510,7 +510,7 @@ public class Utils {
             String currentPackageName = cn.getPackageName();
             isTop = currentPackageName != null && currentPackageName.equals(packageName);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return isTop;
     }
@@ -559,7 +559,7 @@ public class Utils {
         try {
             return getPackageInfo(context).versionCode;
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return -1;
     }
@@ -572,7 +572,7 @@ public class Utils {
                     PackageManager.GET_CONFIGURATIONS);
             return pi;
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return pi;
     }
@@ -691,7 +691,7 @@ public class Utils {
                 intent.setClassName(context.getPackageName(), className);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return intent;
     }
@@ -715,9 +715,9 @@ public class Utils {
                 actName = info.activityInfo.name;
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
-        Log.v(Log.TAG, "actName : " + actName);
+        Log.iv(Log.TAG, "actName : " + actName);
         return actName;
     }
 
@@ -745,7 +745,7 @@ public class Utils {
         try {
             md5 = MessageDigest.getInstance("MD5");
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
             return "";
         }
         byte[] md5Bytes = md5.digest(byteArray);
@@ -769,7 +769,7 @@ public class Utils {
             String signStr = char2Md5(sign.toByteArray());
             return signStr;
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return "";
     }

@@ -75,7 +75,7 @@ public class ApplovinBindView extends BaseBindNativeView {
                 updateCtaButtonBackground(maxNativeAdView, pidConfig, mParams);
                 return maxNativeAdView;
             } else {
-                Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
+                Log.iv(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
             }
         }
         return new MaxNativeAdView("", context);
@@ -145,7 +145,7 @@ public class ApplovinBindView extends BaseBindNativeView {
                             }
                         }
                     } catch (Exception e) {
-                        Log.e(Log.TAG, "error : " + e);
+                        Log.iv(Log.TAG, "error : " + e);
                     }
                 }
                 viewGroup = maxNativeAdView.getMediaContentViewGroup();

@@ -178,7 +178,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 Log.iv(Log.TAG, "use default ad params");
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return params;
     }
@@ -229,7 +229,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 return banner.intValue();
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
 
         try {
@@ -239,7 +239,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 return banner.intValue();
             }
         } catch (Exception e2) {
-            Log.e(Log.TAG, "error : " + e2);
+            Log.iv(Log.TAG, "error : " + e2);
         }
         return Constant.NO_SET;
     }
@@ -1696,7 +1696,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -2178,7 +2178,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                         && TextUtils.equals(l1.getPidConfig().getPid(), l2.getPidConfig().getPid());
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return false;
     }

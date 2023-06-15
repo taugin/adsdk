@@ -125,7 +125,7 @@ public class AdSdk {
                 if (0 != (mContext.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
                     throw new IllegalStateException("You must call AdSdk.get(context).init() first");
                 } else {
-                    Log.e(Log.TAG, "You must call AdSdk.get(context).init() first");
+                    Log.iv(Log.TAG, "You must call AdSdk.get(context).init() first");
                 }
             } catch (Exception e) {
             }
@@ -166,7 +166,7 @@ public class AdSdk {
 
     private AdPlaceLoader getAdLoader(String placeName, boolean forLoad) {
         checkInitialize();
-        Log.d(Log.TAG_SDK, "getAdLoader forLoad : " + forLoad);
+        Log.iv(Log.TAG_SDK, "getAdLoader forLoad : " + forLoad);
         // 根据规则判断是否需要替换place name
         placeName = ReplaceManager.get(mContext).replacePlaceName(placeName, forLoad);
         // 优先处理场景被限制的情况
@@ -560,7 +560,7 @@ public class AdSdk {
                 }
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return false;
     }
@@ -620,7 +620,7 @@ public class AdSdk {
                 }
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 

@@ -50,18 +50,18 @@ public class SpLoader extends AbstractSdkLoader {
     @Override
     public void loadNative(Params params) {
         if (mPidConfig == null) {
-            Log.e(Log.TAG, "pid config is null");
+            Log.iv(Log.TAG, "pid config is null");
         }
         if (!TextUtils.equals(mPidConfig.getSdk(), getSdkName())) {
-            Log.e(Log.TAG, "sdk not equals");
+            Log.iv(Log.TAG, "sdk not equals");
         }
         if (isNativeLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
@@ -125,7 +125,7 @@ public class SpLoader extends AbstractSdkLoader {
             notifyAdImp();
             reportAdImp();
         } else {
-            Log.e(Log.TAG, formatShowErrorLog("Spread is null"));
+            Log.iv(Log.TAG, formatShowErrorLog("Spread is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "Spread not ready");
         }
     }
@@ -133,18 +133,18 @@ public class SpLoader extends AbstractSdkLoader {
     @Override
     public void loadInterstitial() {
         if (mPidConfig == null) {
-            Log.e(Log.TAG, "pid config is null");
+            Log.iv(Log.TAG, "pid config is null");
         }
         if (!TextUtils.equals(mPidConfig.getSdk(), getSdkName())) {
-            Log.e(Log.TAG, "sdk not equals");
+            Log.iv(Log.TAG, "sdk not equals");
         }
         if (isInterstitialLoaded()) {
-            Log.d(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, "already loaded : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
-            Log.d(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
+            Log.iv(Log.TAG, "already loading : " + getAdPlaceName() + " - " + getSdkName() + " - " + getAdType());
             notifyAdLoadFailed(Constant.AD_ERROR_LOADING, "already loading");
             return;
         }
@@ -252,7 +252,7 @@ public class SpLoader extends AbstractSdkLoader {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -291,7 +291,7 @@ public class SpLoader extends AbstractSdkLoader {
                 try {
                     v.getContext().startActivity(intent);
                 } catch (Exception e) {
-                    Log.v(Log.TAG, "error : " + e);
+                    Log.iv(Log.TAG, "error : " + e);
                 }
                 reportAdClick();
                 notifyAdClick();

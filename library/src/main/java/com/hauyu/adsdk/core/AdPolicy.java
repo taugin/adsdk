@@ -65,7 +65,7 @@ public class AdPolicy {
         }
         long loadCount = Utils.getLong(mContext, getShowCountKey(placeName), 0);
         Utils.putLong(mContext, getShowCountKey(placeName), loadCount + 1);
-        Log.d(Log.TAG_SDK, "[" + placeName + "]" + " show count : " + (loadCount + 1));
+        Log.iv(Log.TAG_SDK, "[" + placeName + "]" + " show count : " + (loadCount + 1));
     }
 
     public boolean reachMaxShowCount(String placeName, int maxCount) {

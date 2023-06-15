@@ -52,7 +52,7 @@ public class ComponentActivity extends Activity {
         try {
             super.setRequestedOrientation(requestedOrientation);
         } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -70,7 +70,7 @@ public class ComponentActivity extends Activity {
                 });
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -175,13 +175,13 @@ public class ComponentActivity extends Activity {
     }
 
     private void finishActivityWithDelay() {
-        Log.v(Log.TAG, "");
+        Log.iv(Log.TAG, "");
         try {
             finish();
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 }

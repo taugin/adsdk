@@ -77,7 +77,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, getSdkName() + " has initialized");
             }
         } else {
-            Log.e(Log.TAG, getSdkName() + " app id is empty");
+            Log.iv(Log.TAG, getSdkName() + " app id is empty");
         }
     }
 
@@ -219,7 +219,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             }
             mTPBanner = null;
         } catch (Exception e) {
-            Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
+            Log.iv(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPBanner not ready");
         }
     }
@@ -361,7 +361,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetInterstitial();
-            Log.e(Log.TAG, formatShowErrorLog("TPInterstitial not ready"));
+            Log.iv(Log.TAG, formatShowErrorLog("TPInterstitial not ready"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPInterstitial not ready");
         }
         return false;
@@ -512,7 +512,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetReward();
-            Log.e(Log.TAG, formatShowErrorLog("TPReward not ready"));
+            Log.iv(Log.TAG, formatShowErrorLog("TPReward not ready"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPReward not ready");
         }
         return false;
@@ -635,13 +635,13 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
             } else {
-                Log.e(Log.TAG, formatShowErrorLog("TPCustomNativeAd is null"));
+                Log.iv(Log.TAG, formatShowErrorLog("TPCustomNativeAd is null"));
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPCustomNativeAd is null");
             }
             clearCachedAdTime(mTPNative);
             mTPNative = null;
         } else {
-            Log.e(Log.TAG, formatShowErrorLog("TPNative is ready"));
+            Log.iv(Log.TAG, formatShowErrorLog("TPNative is ready"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPNative not ready");
         }
     }
@@ -769,7 +769,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             updateLastShowTime();
             return true;
         } else {
-            Log.e(Log.TAG, formatShowErrorLog("TPSplash not ready"));
+            Log.iv(Log.TAG, formatShowErrorLog("TPSplash not ready"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPSplash not ready");
             onResetSplash();
         }
@@ -853,7 +853,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             onReportAdImpData(map, impressionId);
         } catch (Exception e) {
-            Log.e(Log.TAG, "report trusplus error : " + e);
+            Log.iv(Log.TAG, "report trusplus error : " + e);
         }
     }
 

@@ -139,7 +139,7 @@ public class VRemoteConfig implements Handler.Callback {
                 @Override
                 public void onComplete(@NonNull @NotNull Task<Void> task) {
                     if (task == null) {
-                        Log.e(Log.TAG, "task == null");
+                        Log.iv(Log.TAG, "task == null");
                         return;
                     }
                     if (task.isSuccessful()) {
@@ -149,14 +149,14 @@ public class VRemoteConfig implements Handler.Callback {
                         }
                         Utils.putLong(mContext, Constant.PREF_REMOTE_CONFIG_UPDATE_TIME, System.currentTimeMillis());
                     } else {
-                        Log.e(Log.TAG, "error : " + task.getException());
+                        Log.iv(Log.TAG, "error : " + task.getException());
                     }
                 }
             });
             Utils.putLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
             updateRefreshInterval();
         } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -181,7 +181,7 @@ public class VRemoteConfig implements Handler.Callback {
             try {
                 mInstance = FirebaseRemoteConfig.getInstance();
             } catch (Exception | Error e) {
-                Log.e(Log.TAG, "error : miss google-services.json");
+                Log.iv(Log.TAG, "error : miss google-services.json");
             }
         }
     }

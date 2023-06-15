@@ -82,7 +82,7 @@ public class VUIHelper {
                 });
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -238,13 +238,13 @@ public class VUIHelper {
     }
 
     private void fa() {
-        Log.v(Log.TAG, "");
+        Log.iv(Log.TAG, "");
         try {
             mActivity.finish();
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -266,7 +266,7 @@ public class VUIHelper {
                 configIntent(application, intent);
                 application.startActivity(intent);
             } catch (Exception | Error e) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.iv(Log.TAG, "error : " + e);
             }
         }
 
@@ -275,7 +275,7 @@ public class VUIHelper {
             try {
                 return application.getApplicationContext();
             } catch (Exception | Error e) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.iv(Log.TAG, "error : " + e);
             }
             return super.getApplicationContext();
         }
@@ -285,7 +285,7 @@ public class VUIHelper {
             try {
                 return super.getLocalClassName();
             } catch (Exception | Error e) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.iv(Log.TAG, "error : " + e);
             }
             return VUIHelper.class.getName();
         }
@@ -295,7 +295,7 @@ public class VUIHelper {
             try {
                 return application.getSystemService(name);
             } catch (Exception | Error e) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.iv(Log.TAG, "error : " + e);
             }
             return super.getSystemService(name);
         }
@@ -305,7 +305,7 @@ public class VUIHelper {
             try {
                 return super.findViewById(id);
             } catch (Exception | Error e) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.iv(Log.TAG, "error : " + e);
                 try {
                     Activity topActivity = ActivityMonitor.get(this).getTopActivity();
                     if (topActivity != null) {
@@ -315,7 +315,7 @@ public class VUIHelper {
                         }
                     }
                 } catch (Exception | Error error) {
-                    Log.e(Log.TAG, "error : " + error);
+                    Log.iv(Log.TAG, "error : " + error);
                 }
             }
             return null;
@@ -353,7 +353,7 @@ public class VUIHelper {
             mWindowManager.setAccessible(true);
             mWindowManager.set(activity, wm);
         } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return activity;
     }

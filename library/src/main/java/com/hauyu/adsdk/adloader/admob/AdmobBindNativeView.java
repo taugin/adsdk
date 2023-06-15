@@ -33,11 +33,11 @@ public class AdmobBindNativeView extends BaseBindNativeView {
     public void bindNative(Params params, ViewGroup adContainer, NativeAd nativeAd, PidConfig pidConfig) {
         mParams = params;
         if (mParams == null) {
-            Log.e(Log.TAG, "bindNative mParams == null###");
+            Log.iv(Log.TAG, "bindNative mParams == null###");
             return;
         }
         if (adContainer == null) {
-            Log.e(Log.TAG, "bindNative adContainer == null###");
+            Log.iv(Log.TAG, "bindNative adContainer == null###");
             return;
         }
         int rootLayout = getBestNativeLayout(adContainer.getContext(), pidConfig, mParams, Constant.AD_SDK_ADMOB);
@@ -45,7 +45,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             bindNativeViewWithRootView(adContainer, rootLayout, nativeAd, pidConfig);
             updateCtaButtonBackground(adContainer, pidConfig, mParams);
         } else {
-            Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
+            Log.iv(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
         }
     }
 
@@ -61,7 +61,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             View rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
             view = showUnifiedAdView(rootView, nativeAd, pidConfig);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         try {
             adContainer.removeAllViews();
@@ -71,7 +71,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
                 adContainer.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -82,7 +82,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
                 ((ViewGroup) rootView.getParent()).removeView(rootView);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
 
         nativeAdView.addView(rootView);
@@ -173,7 +173,7 @@ public class AdmobBindNativeView extends BaseBindNativeView {
                 }
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         Log.iv(Log.TAG, "clickable view : " + pidConfig.getClickView());
         nativeAdView.setNativeAd(nativeAd);
@@ -186,9 +186,9 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             MediaView mediaView = new MediaView(context);
             return mediaView;
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         } catch (Error e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return null;
     }

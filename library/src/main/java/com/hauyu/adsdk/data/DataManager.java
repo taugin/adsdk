@@ -88,7 +88,7 @@ public class DataManager {
             mPlaceConfig = mParser.parseAdConfig(data);
             if (mPlaceConfig != null) {
                 mPlaceConfig.setAdConfigMd5(Utils.string2MD5(data));
-                Log.v(Log.TAG, "locale data has been set success");
+                Log.iv(Log.TAG, "locale data has been set success");
             }
         }
     }
@@ -130,7 +130,7 @@ public class DataManager {
         try {
             cfgName = "c" + getMd5SubString() + "fg";
         } catch (Exception e) {
-            Log.v(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return cfgName;
     }
@@ -278,7 +278,7 @@ public class DataManager {
                     Log.iv(Log.TAG, "google advertising id (gaid) : " + gaid + " , is limit ad tracking : " + isLimited + " , gaid2 : " + gaidmd5);
                     Utils.putString(mContext, Constant.PREF_GAID, gaid);
                 } catch (Exception | Error e) {
-                    Log.e(Log.TAG, "error : " + e);
+                    Log.iv(Log.TAG, "error : " + e);
                 }
             }
         }.start();

@@ -107,7 +107,7 @@ public class Http {
                         response = urlHttp.execute(r);
                         response.setCache(false);
                     } catch (Exception e) {
-                        Log.e(Log.TAG, "error : " + e);
+                        Log.iv(Log.TAG, "error : " + e);
                     }
                 }
                 if (response != null && response.getStatusCode() == 200) {
@@ -148,7 +148,7 @@ public class Http {
             fos.write(buf);
             fos.close();
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -172,7 +172,7 @@ public class Http {
             response.setCache(true);
             return response;
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return null;
     }
@@ -186,7 +186,7 @@ public class Http {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0, content.length);
                 deliverBitmapSuccess(bitmap, (OnImageCallback) callback);
             } catch (Exception e) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.iv(Log.TAG, "error : " + e);
                 deliverFailure(request, response.getStatusCode(), response.getError());
             }
         } else if (callback instanceof OnStringCallback) {
@@ -196,7 +196,7 @@ public class Http {
             try {
                 content = new String(response.getContent(), charset);
             } catch (Exception e) {
-                Log.e(Log.TAG, "error : " + e);
+                Log.iv(Log.TAG, "error : " + e);
             }
             deliverStringSuccess(content, (OnStringCallback) callback);
         }

@@ -574,7 +574,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             }
             return SystemClock.elapsedRealtime() - cachedTime > getMaxCachedTime();
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return false;
     }
@@ -633,7 +633,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         try {
             String pref = getSdkName() + "_" + mPidConfig.getPid();
             Utils.putLong(mContext, pref, System.currentTimeMillis());
-            Log.d(Log.TAG, pref + " : " + System.currentTimeMillis());
+            Log.iv(Log.TAG, pref + " : " + System.currentTimeMillis());
         } catch (Exception e) {
         }
     }
@@ -1373,7 +1373,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
                 result = Boolean.parseBoolean(str);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return result;
     }
@@ -1414,7 +1414,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
                 result = Boolean.parseBoolean(str);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return result;
     }
@@ -1432,7 +1432,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
                 result = Boolean.parseBoolean(str);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return result;
     }

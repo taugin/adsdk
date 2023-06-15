@@ -34,11 +34,11 @@ public class SpreadBindNativeView extends BaseBindNativeView {
     public void bindNative(Params params, ViewGroup adContainer, PidConfig pidConfig, SpreadConfig spreadConfig) {
         mParams = params;
         if (mParams == null) {
-            Log.e(Log.TAG, "bindNative mParams == null###");
+            Log.iv(Log.TAG, "bindNative mParams == null###");
             return;
         }
         if (adContainer == null) {
-            Log.e(Log.TAG, "bindNative adContainer == null###");
+            Log.iv(Log.TAG, "bindNative adContainer == null###");
             return;
         }
         int rootLayout = getBestNativeLayout(adContainer.getContext(), pidConfig, mParams, Constant.AD_SDK_SPREAD);
@@ -46,7 +46,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             bindNativeViewWithRootView(adContainer, rootLayout, pidConfig, spreadConfig);
             updateCtaButtonBackground(adContainer, pidConfig, mParams);
         } else {
-            Log.e(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
+            Log.iv(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
         }
     }
 
@@ -62,7 +62,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             View rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
             view = showUnifiedAdView(rootView, pidConfig, spreadConfig);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         try {
             adContainer.removeAllViews();
@@ -72,7 +72,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
                 adContainer.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e, e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -82,7 +82,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
                 ((ViewGroup) rootView.getParent()).removeView(rootView);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
 
         View titleView = rootView.findViewById(mParams.getAdTitle());

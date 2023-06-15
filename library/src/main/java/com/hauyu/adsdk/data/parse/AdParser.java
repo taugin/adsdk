@@ -32,7 +32,7 @@ public class AdParser implements IParser {
         try {
             jObj = new JSONObject(content);
         } catch (Exception e) {
-            Log.v(Log.TAG, "error : not a json object");
+            Log.iv(Log.TAG, "error : not a json object");
         }
         if (jObj != null) {
             return jObj.toString();
@@ -40,7 +40,7 @@ public class AdParser implements IParser {
         try {
             jArray = new JSONArray(content);
         } catch (Exception e) {
-            Log.v(Log.TAG, "error : not a json array");
+            Log.iv(Log.TAG, "error : not a json array");
         }
         if (jArray != null) {
             return jArray.toString();
@@ -90,7 +90,7 @@ public class AdParser implements IParser {
                 placeConfig.setDisableVpnLoad(disableVpnLoad);
             }
         } catch (Exception e) {
-            Log.v(Log.TAG, "parseAdConfigInternal error : " + e);
+            Log.iv(Log.TAG, "parseAdConfigInternal error : " + e);
         }
         return placeConfig;
     }
@@ -125,7 +125,7 @@ public class AdParser implements IParser {
                 }
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return list;
     }
@@ -329,7 +329,7 @@ public class AdParser implements IParser {
                 pidConfig.setOnlyPackLoad(jobj.getInt(ONLY_PACK_LOAD) == 1);
             }
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return pidConfig;
     }
@@ -352,7 +352,7 @@ public class AdParser implements IParser {
                 }
             }
         } catch (Exception e) {
-            Log.v(Log.TAG, "parseAdRefs error : " + e);
+            Log.iv(Log.TAG, "parseAdRefs error : " + e);
         }
         return adRefs;
     }
@@ -385,7 +385,7 @@ public class AdParser implements IParser {
                     }
                 }
             } catch (Exception e) {
-                Log.v(Log.TAG, "parseSpread error : " + e);
+                Log.iv(Log.TAG, "parseSpread error : " + e);
             }
         }
         return spreads;
@@ -422,7 +422,7 @@ public class AdParser implements IParser {
                 }
             }
         } catch (Exception e) {
-            Log.v(Log.TAG, "parseSpConfig error : " + e);
+            Log.iv(Log.TAG, "parseSpConfig error : " + e);
         }
         return spreadConfig;
     }
@@ -444,7 +444,7 @@ public class AdParser implements IParser {
                 }
             }
         } catch (Exception e) {
-            Log.v(Log.TAG, "parseMediationConfig error : " + e);
+            Log.iv(Log.TAG, "parseMediationConfig error : " + e);
         }
         return config;
     }
@@ -460,7 +460,7 @@ public class AdParser implements IParser {
                 map.put(key, jobj.getString(key));
             }
         } catch (Exception e) {
-            Log.v(Log.TAG, "jsonToMap error : " + e);
+            Log.iv(Log.TAG, "jsonToMap error : " + e);
         }
         return map;
     }

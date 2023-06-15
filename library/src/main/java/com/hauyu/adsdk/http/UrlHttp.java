@@ -87,7 +87,7 @@ class UrlHttp {
             }
             conn.disconnect();
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
             if (e instanceof SocketTimeoutException) {
                 response.setStatusCode(HttpURLConnection.HTTP_CLIENT_TIMEOUT);
                 response.setError(e.getMessage());
@@ -121,7 +121,7 @@ class UrlHttp {
             URLConnection conn = url.openConnection();
             return (HttpURLConnection) conn;
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return null;
     }

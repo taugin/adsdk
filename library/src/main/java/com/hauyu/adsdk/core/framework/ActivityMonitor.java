@@ -65,7 +65,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
                 ((Application) mContext).registerActivityLifecycleCallbacks(this);
             }
         } catch (Exception | Error e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
@@ -176,7 +176,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
         }
         synchronized (this.mLockObject) {
             if (mResumed) {
-                // Log.v(Log.TAG, "App is still foreground.");
+                // Log.iv(Log.TAG, "App is still foreground.");
                 mHandler.removeCallbacks(mForegroundRunnable);
                 mForegroundRunnable.setFromBackground(isFromBackground);
                 mHandler.postDelayed(mForegroundRunnable, getDelayTime());

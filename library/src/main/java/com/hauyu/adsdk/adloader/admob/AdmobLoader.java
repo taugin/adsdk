@@ -258,7 +258,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             lastUseBannerView = bannerView;
             bannerView = null;
         } catch (Exception e) {
-            Log.e(Log.TAG, formatShowErrorLog(String.valueOf(e)));
+            Log.iv(Log.TAG, formatShowErrorLog(String.valueOf(e)));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "AdView not ready");
         }
     }
@@ -400,7 +400,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetInterstitial();
-            Log.e(Log.TAG, formatShowErrorLog("InterstitialAd is null"));
+            Log.iv(Log.TAG, formatShowErrorLog("InterstitialAd is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "InterstitialAd not ready");
         }
         return false;
@@ -557,7 +557,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             return true;
         } else {
             onResetReward();
-            Log.e(Log.TAG, formatShowErrorLog("RewardedAd is null"));
+            Log.iv(Log.TAG, formatShowErrorLog("RewardedAd is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "RewardedAd not ready");
         }
         return false;
@@ -750,7 +750,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             clearCachedAdTime(mNativeAd);
             mNativeAd = null;
         } else {
-            Log.e(Log.TAG, formatShowErrorLog("NativeAd is null"));
+            Log.iv(Log.TAG, formatShowErrorLog("NativeAd is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "NativeAd not ready");
         }
     }
@@ -895,7 +895,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             updateLastShowTime();
             return true;
         } else {
-            Log.e(Log.TAG, formatShowErrorLog("AppOpenAd is null"));
+            Log.iv(Log.TAG, formatShowErrorLog("AppOpenAd is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "AppOpenAd not ready");
             onResetSplash();
         }
@@ -981,7 +981,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             onReportAdImpData(map, impressionId);
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
