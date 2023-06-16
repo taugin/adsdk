@@ -10,7 +10,6 @@ import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 
-import com.android.widget.BuildConfig;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -40,6 +39,7 @@ import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.Utils;
+import com.unity.ads.BuildConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;

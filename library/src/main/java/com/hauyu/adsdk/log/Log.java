@@ -3,7 +3,8 @@ package com.hauyu.adsdk.log;
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
-import com.android.widget.BuildConfig;
+
+import com.unity.ads.BuildConfig;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -21,8 +22,8 @@ public class Log {
     private static final int WARN = android.util.Log.WARN;
     private static final boolean INTERNAL_LOG_ENABLE;
 
-    public static final String TAG = "rabbit";
-    public static final String TAG_SDK = "rabbit2";
+    public static final String TAG = "hauyu";
+    public static final String TAG_SDK = "hauyu2";
     public static final boolean DB = BuildConfig.DEBUG;
 
     static {

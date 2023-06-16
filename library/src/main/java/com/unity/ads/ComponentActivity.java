@@ -1,4 +1,4 @@
-package com.android.widget;
+package com.unity.ads;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

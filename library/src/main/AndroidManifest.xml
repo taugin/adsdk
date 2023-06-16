@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.widget">
+    package="com.unity.ads">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,15 +12,7 @@
             android:required="false" />
 
         <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:excludeFromRecents="true"
-            android:icon="@drawable/rab_transp_bg"
-            android:label=""
-            android:theme="@android:style/Theme.Translucent" />
-
-        <activity
-            android:name="com.android.widget.ComponentActivity"
+            android:name="com.unity.ads.ComponentActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:exported="false"
             android:icon="@drawable/rab_transp_bg"

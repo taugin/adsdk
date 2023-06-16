@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.android.widget.ComponentActivity;
+import com.unity.ads.ComponentActivity;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.admob.AdmobLoader;

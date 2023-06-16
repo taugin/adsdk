@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.android.widget.BuildConfig;
 import com.hauyu.adsdk.VUIHelper;
 import com.hauyu.adsdk.AdImpData;
 import com.hauyu.adsdk.AdReward;
@@ -44,6 +43,7 @@ import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.stat.IEvent;
 import com.hauyu.adsdk.InternalStat;
 import com.hauyu.adsdk.Utils;
+import com.unity.ads.BuildConfig;
 
 import java.util.Arrays;
 import java.util.Collection;
