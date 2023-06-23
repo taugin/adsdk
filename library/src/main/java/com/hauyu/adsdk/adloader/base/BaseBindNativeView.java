@@ -20,7 +20,7 @@ import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.Utils;
-import com.unity3d.ads.R;
+import com.unity3d.widget.R;
 
 import java.util.HashMap;
 import java.util.List;

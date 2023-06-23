@@ -43,7 +43,7 @@ import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.stat.IEvent;
 import com.hauyu.adsdk.InternalStat;
 import com.hauyu.adsdk.Utils;
-import com.unity3d.ads.BuildConfig;
+import com.unity3d.widget.BuildConfig;
 
 import java.util.Arrays;
 import java.util.Collection;
