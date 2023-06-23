@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.unity.ads.ComponentActivity;
+import com.unity3d.widget.ViewActivity;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
@@ -245,7 +245,7 @@ public class SpLoader extends AbstractSdkLoader {
             params.setAdCardStyle(Constant.NATIVE_CARD_FULL);
             AdPlaceLoader.sLoaderMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), iSdkLoader);
             AdPlaceLoader.sParamsMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), params);
-            Intent intent = new Intent(mContext, ComponentActivity.class);
+            Intent intent = new Intent(mContext, ViewActivity.class);
             intent.putExtra(Intent.EXTRA_TITLE, placeName);
             intent.putExtra(Intent.EXTRA_TEXT, source);
             intent.putExtra(Intent.EXTRA_TEMPLATE, adType);

@@ -1,4 +1,4 @@
-package com.unity.ads;
+package com.unity3d.widget;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -28,7 +28,7 @@ import com.hauyu.adsdk.Utils;
  * Created by Administrator on 2018-10-16.
  */
 
-public class ComponentActivity extends Activity {
+public class ViewActivity extends Activity {
     private VUIHelper mVUIHelper = new VUIHelper(this);
 
     @SuppressLint("SourceLockedOrientationActivity")

@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.unity.ads.ComponentActivity;
+import com.unity3d.widget.ViewActivity;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.adloader.admob.AdmobLoader;
@@ -1688,7 +1688,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             } catch (Exception e) {
             }
             sParamsMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), params);
-            Intent intent = new Intent(mContext, ComponentActivity.class);
+            Intent intent = new Intent(mContext, ViewActivity.class);
             intent.putExtra(Intent.EXTRA_TITLE, placeName);
             intent.putExtra(Intent.EXTRA_TEXT, source);
             intent.putExtra(Intent.EXTRA_TEMPLATE, adType);

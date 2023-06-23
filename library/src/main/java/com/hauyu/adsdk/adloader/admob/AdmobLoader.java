@@ -39,7 +39,7 @@ import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.Utils;
-import com.unity.ads.BuildConfig;
+import com.unity3d.ads.BuildConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;

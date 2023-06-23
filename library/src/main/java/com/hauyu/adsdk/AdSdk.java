@@ -20,7 +20,7 @@ import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.EventImpl;
-import com.unity.ads.BuildConfig;
+import com.unity3d.ads.BuildConfig;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

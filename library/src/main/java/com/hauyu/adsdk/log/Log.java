@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Environment;
 
 
-import com.unity.ads.BuildConfig;
+import com.unity3d.ads.BuildConfig;
 
 import java.io.File;
 import java.io.FileWriter;
