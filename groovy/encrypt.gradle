@@ -130,10 +130,18 @@ project.afterEvaluate {
             String generateAdFile = String.format("generateAdFile%s", productFlavor)
             def generateAdFileTask = project.tasks.create(generateAdFile, {
                 doLast {
-                    generateAdFileByUser(Flavor.name)
+                    generateAdFileByUser(flavor.name)
                 }
             })
             generateAdFileTask.setGroup("adsdk")
+
+            String firebaseDebugView = String.format("firebaseDebugView%s", productFlavor)
+            def firebaseDebugViewTask = project.tasks.create(firebaseDebugView, {
+                doLast {
+                    firebaseDebugViewByUser(flavor)
+                }
+            })
+            firebaseDebugViewTask.setGroup("adsdk")
         }
     } else { // 无产品风味
         def encryptReleaseTask = project.tasks.create("encryptRelease", {
@@ -167,6 +175,14 @@ project.afterEvaluate {
             }
         })
         generateAdFileTask.setGroup("adsdk")
+
+        String firebaseDebugView = String.format("firebaseDebugView")
+        def firebaseDebugViewTask = project.tasks.create(firebaseDebugView, {
+            doLast {
+                firebaseDebugViewByUser(null)
+            }
+        })
+        firebaseDebugViewTask.setGroup("adsdk")
     }
 
     def setHauYuLogVerboseTask = project.tasks.create("setHauYuLogVerbose", {
@@ -269,6 +285,7 @@ def printEncryptInfo() {
     ext.out = []
     println ">>>>>>>>>>>>>>>>>>>>>>>>>>处理的加密文件<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 }
+
 afterEvaluate {
     task transformAab2Apk {
         transformAab2ApkLocked()
@@ -311,7 +328,7 @@ def transformAab2ApkLocked() {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] signConfig is not completion"
         return
     }
-    def bundleToolPath =  rootProject.buildscript.configurations.classpath.find {
+    def bundleToolPath = rootProject.buildscript.configurations.classpath.find {
         it.name.startsWith("bundletool")
     }
     if (bundleToolPath == null || !bundleToolPath.exists()) {
@@ -324,15 +341,15 @@ def transformAab2ApkLocked() {
     def keyPassword = signConfig.keyPassword
     def finalApksFile = new File(finalBundleFile.getParent(), finalBundleFile.getName() + ".apks")
     def cmdList = ["java", "-jar", bundleToolPath,
-                "build-apks",
-                "--bundle=" + finalBundleFile,
-                "--output=" + finalApksFile,
-                "--overwrite", "--verbose",
-                "--ks=" + storeFile,
-                "--ks-pass=pass:" + storePassword,
-                "--ks-key-alias=" + keyAlias,
-                "--key-pass=pass:" + keyPassword,
-                "--mode=universal"]
+                   "build-apks",
+                   "--bundle=" + finalBundleFile,
+                   "--output=" + finalApksFile,
+                   "--overwrite", "--verbose",
+                   "--ks=" + storeFile,
+                   "--ks-pass=pass:" + storePassword,
+                   "--ks-key-alias=" + keyAlias,
+                   "--key-pass=pass:" + keyPassword,
+                   "--mode=universal"]
     def cmdString = cmdList.join(" ")
     println "cmd string : " + cmdString
     try {
@@ -390,6 +407,14 @@ def generateAdFileByUser(flavor) {
     println "generateAdFileName : " + adConfigName
     println "generateMDFileName : " + "m" + packagenameMd5.substring(0, 8).reverse() + "dn"
     println("-------------------------------------------")
+}
+
+def firebaseDebugViewByUser(flavor) {
+    def applicationId = getApplicationId(flavor)
+    println "firebaseDebugViewByUser applicationId : " + applicationId
+    def cmdString = "adb shell setprop debug.firebase.analytics.app " + applicationId
+    cmdString.execute().text.trim()
+    println "firebase debug view result : success"
 }
 
 /**
