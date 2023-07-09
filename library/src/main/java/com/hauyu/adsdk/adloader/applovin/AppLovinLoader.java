@@ -88,26 +88,25 @@ public class AppLovinLoader extends AbstractSdkLoader {
     public static void initApplovin(Context context) {
         if (!sApplovinInited.getAndSet(true)) {
             try {
-                Activity activity = VUIHelper.getFA((Application) context.getApplicationContext());
-                AppLovinSdk appLovinSdk = getInstance(activity);
+                AppLovinSdk appLovinSdk = getInstance(context);
                 if (appLovinSdk != null) {
                     appLovinSdk.setMediationProvider("max");
-                    if (isDebugDevice(activity)) {
-                        String gaid = Utils.getString(activity, Constant.PREF_GAID);
+                    if (isDebugDevice(context)) {
+                        String gaid = Utils.getString(context, Constant.PREF_GAID);
                         Log.iv(Log.TAG, "applovin debug mode gaid : " + gaid);
                         if (!TextUtils.isEmpty(gaid)) {
                             appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList(new String[]{gaid}));
                         }
                     }
                     try {
-                        appLovinSdk.getSettings().setVerboseLogging(isShowVerbose(activity));
+                        appLovinSdk.getSettings().setVerboseLogging(isShowVerbose(context));
                     } catch (Exception e) {
                     }
                     Log.iv(Log.TAG, "start initializing applovin sdk");
                     appLovinSdk.initializeSdk(config -> {
                         Log.iv(Log.TAG, "applovin sdk init successfully");
                         try {
-                            if (isShowDebugger(activity)) {
+                            if (isShowDebugger(context)) {
                                 appLovinSdk.showMediationDebugger();
                             }
                         } catch (Exception e) {
@@ -204,19 +203,15 @@ public class AppLovinLoader extends AbstractSdkLoader {
         return applovinSdkKey;
     }
 
-    private static AppLovinSdk getInstance(Activity activity) {
-        if (activity == null) {
-            Log.iv(Log.TAG, "applovin init activity is null");
-            return null;
-        }
-        String sdkKey = getSdkKey(activity);
+    private static AppLovinSdk getInstance(Context context) {
+        String sdkKey = getSdkKey(context);
         if (TextUtils.isEmpty(sdkKey)) {
             sdkKey = "L7OrRia7Fum7esJFM51m6xd799x4HmN4iNA6H9I7PhlFH_NqVTDDu87T7R58p4gAR3xJNedZzM-0HBT1XwUEv7";
         }
         if (sAppLovinSdkSettings == null) {
-            sAppLovinSdkSettings = new AppLovinSdkSettings(activity);
+            sAppLovinSdkSettings = new AppLovinSdkSettings(context);
         }
-        return AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, activity);
+        return AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, context);
     }
 
     @Override
