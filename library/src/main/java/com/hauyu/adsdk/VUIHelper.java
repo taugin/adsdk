@@ -20,8 +20,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.NonNull;
-
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.core.framework.AdPlaceLoader;
@@ -291,7 +289,7 @@ public class VUIHelper {
         }
 
         @Override
-        public Object getSystemService(@NonNull String name) {
+        public Object getSystemService(String name) {
             try {
                 return application.getSystemService(name);
             } catch (Exception | Error e) {

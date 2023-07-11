@@ -18,11 +18,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.Nullable;
-
+import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.VUIHelper;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.Utils;
 
 /**
  * Created by Administrator on 2018-10-16.
@@ -33,7 +31,7 @@ public class ViewActivity extends Activity {
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
             Intent intent = this.getIntent();
@@ -183,5 +181,13 @@ public class ViewActivity extends Activity {
         } catch (Error e) {
             Log.iv(Log.TAG, "error : " + e);
         }
+    }
+
+    public static String getVersion() {
+        return BuildConfig.SDK_VERSION_NAME;
+    }
+
+    public static boolean isDebuggable() {
+        return BuildConfig.DEBUG;
     }
 }

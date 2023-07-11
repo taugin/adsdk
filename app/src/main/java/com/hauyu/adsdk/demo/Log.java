@@ -19,12 +19,8 @@ public class Log {
     private static final int WARN = android.util.Log.WARN;
 
     public static final String TAG = "demo";
-    public static final boolean DEBUGABLE = BuildConfig.DEBUG;
 
     private static boolean isLoggable(String tag, int level) {
-        if (DEBUGABLE) {
-            return true;
-        }
         return android.util.Log.isLoggable(tag, level);
     }
 

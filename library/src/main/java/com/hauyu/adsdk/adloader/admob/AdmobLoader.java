@@ -8,8 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.annotation.NonNull;
-
+import com.android.widget.ViewActivity;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -32,14 +31,13 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.hauyu.adsdk.AdReward;
+import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.Utils;
-import com.unity3d.ads.BuildConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -176,7 +174,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+            public void onAdFailedToLoad(LoadAdError loadAdError) {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(loadAdError), true));
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(loadAdError));
@@ -306,7 +304,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     private class AdmobInterstitialListener extends AbstractAdListener {
         InterstitialAdLoadCallback interstitialAdLoadCallback = new InterstitialAdLoadCallback() {
             @Override
-            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+            public void onAdLoaded(InterstitialAd interstitialAd) {
                 Log.iv(Log.TAG, formatLog("ad load success"));
                 mInterstitialAd = interstitialAd;
                 setLoading(false, STATE_SUCCESS);
@@ -318,7 +316,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+            public void onAdFailedToLoad(LoadAdError loadAdError) {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(loadAdError), true));
                 setLoading(false, STATE_FAILURE);
                 mInterstitialAd = null;
@@ -330,7 +328,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         private void setInterstitialListener(final InterstitialAd interstitialAd) {
             FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
                 @Override
-                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                public void onAdFailedToShowFullScreenContent(AdError adError) {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
                     clearLastShowTime();
                     onResetInterstitial();
@@ -440,7 +438,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     private class AdmobRewardListener extends AbstractAdListener {
         RewardedAdLoadCallback rewardedAdLoadCallback = new RewardedAdLoadCallback() {
             @Override
-            public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+            public void onAdLoaded(RewardedAd rewardedAd) {
                 Log.iv(Log.TAG, formatLog("ad load success"));
                 mRewardedAd = rewardedAd;
                 setLoading(false, STATE_SUCCESS);
@@ -452,7 +450,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+            public void onAdFailedToLoad(LoadAdError loadAdError) {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(loadAdError), true));
                 setLoading(false, STATE_FAILURE);
                 reportAdError(codeToError(loadAdError));
@@ -463,7 +461,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         private void setRewardListener(final RewardedAd rewardedAd) {
             FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
                 @Override
-                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                public void onAdFailedToShowFullScreenContent(AdError adError) {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
                     clearLastShowTime();
                     onResetReward();
@@ -506,7 +504,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 rewardedAd.setFullScreenContentCallback(fullScreenContentCallback);
                 rewardedAd.setOnPaidEventListener(new OnPaidEventListener() {
                     @Override
-                    public void onPaidEvent(@NonNull AdValue adValue) {
+                    public void onPaidEvent(AdValue adValue) {
                         impressionId = generateImpressionId();
                         String network = null;
                         try {
@@ -542,7 +540,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             Activity activity = getActivity();
             mRewardedAd.show(activity, new OnUserEarnedRewardListener() {
                 @Override
-                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                public void onUserEarnedReward(RewardItem rewardItem) {
                     Log.iv(Log.TAG, formatLog("ad earned reward"));
                     reportAdReward();
                     AdReward item = new AdReward();
@@ -669,7 +667,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+            public void onAdFailedToLoad(LoadAdError loadAdError) {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(loadAdError), true));
                 if (loadAdError != null && loadAdError.getCode() == AdRequest.ERROR_CODE_NO_FILL) {
                     updateLastNoFillTime();
@@ -688,7 +686,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         };
         private NativeAd.OnNativeAdLoadedListener onNativeAdLoadedListener = new NativeAd.OnNativeAdLoadedListener() {
             @Override
-            public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+            public void onNativeAdLoaded(NativeAd nativeAd) {
                 Log.iv(Log.TAG, formatLog("ad load success"));
                 if (isLoadMultipleNative()) {
                     try {
@@ -711,7 +709,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             if (nativeAd != null) {
                 nativeAd.setOnPaidEventListener(new OnPaidEventListener() {
                     @Override
-                    public void onPaidEvent(@NonNull AdValue adValue) {
+                    public void onPaidEvent(AdValue adValue) {
                         impressionId = generateImpressionId();
                         String network = null;
                         try {
@@ -817,7 +815,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
 
             @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+            public void onAdFailedToLoad(LoadAdError loadAdError) {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(loadAdError), true));
                 setLoading(false, STATE_FAILURE);
                 onResetSplash();
@@ -865,7 +863,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 appOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
                 appOpenAd.setOnPaidEventListener(new OnPaidEventListener() {
                     @Override
-                    public void onPaidEvent(@NonNull AdValue adValue) {
+                    public void onPaidEvent(AdValue adValue) {
                         impressionId = generateImpressionId();
                         String network = null;
                         try {
@@ -954,7 +952,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         try {
             // admob给出的是百万次展示的价值，换算ecpm需要除以1000
             double revenue = (double) adValue.getValueMicros() / 1000000;
-            if (revenue <= 0f && BuildConfig.DEBUG) {
+            if (revenue <= 0f && ViewActivity.isDebuggable()) {
                 revenue = (double) new Random().nextInt(50) / 1000;
             }
             String networkName = network;

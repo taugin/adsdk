@@ -6,16 +6,12 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.log.Log;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -137,7 +133,7 @@ public class VRemoteConfig implements Handler.Callback {
         try {
             mInstance.fetch(CACHE_EXPIRE_TIME).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
-                public void onComplete(@NonNull @NotNull Task<Void> task) {
+                public void onComplete(Task<Void> task) {
                     if (task == null) {
                         Log.iv(Log.TAG, "task == null");
                         return;

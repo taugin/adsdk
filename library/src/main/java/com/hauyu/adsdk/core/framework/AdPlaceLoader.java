@@ -10,11 +10,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-
 import com.android.widget.ViewActivity;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdReward;
+import com.hauyu.adsdk.OnAdSdkListener;
+import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.adloader.admob.AdmobLoader;
 import com.hauyu.adsdk.adloader.applovin.AppLovinLoader;
 import com.hauyu.adsdk.adloader.base.SimpleAdBaseBaseListener;
@@ -30,10 +30,8 @@ import com.hauyu.adsdk.core.ModuleLoaderHelper;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.PidConfig;
-import com.hauyu.adsdk.OnAdSdkListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.EventImpl;
-import com.hauyu.adsdk.Utils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -2249,7 +2247,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         REQUEST, LOADED, ERROR
     }
 
-    @NonNull
     @Override
     public String toString() {
         return getPlaceName();

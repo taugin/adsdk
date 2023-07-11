@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.android.widget.ViewActivity;
 import com.hauyu.adsdk.adloader.applovin.AppLovinLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;
@@ -20,7 +21,6 @@ import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.PlaceConfig;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.EventImpl;
-import com.android.widget.BuildConfig;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -102,7 +102,7 @@ public class AdSdk {
      * @return
      */
     public String getSdkVersion() {
-        return BuildConfig.SDK_VERSION_NAME;
+        return ViewActivity.getVersion();
     }
 
     /**

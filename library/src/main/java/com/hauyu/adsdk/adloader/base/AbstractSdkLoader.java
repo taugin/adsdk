@@ -15,11 +15,14 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-
-import com.hauyu.adsdk.VUIHelper;
+import com.android.widget.ViewActivity;
 import com.hauyu.adsdk.AdImpData;
 import com.hauyu.adsdk.AdReward;
+import com.hauyu.adsdk.InternalStat;
+import com.hauyu.adsdk.OnAdEventListener;
+import com.hauyu.adsdk.OnAdFilterListener;
+import com.hauyu.adsdk.Utils;
+import com.hauyu.adsdk.VUIHelper;
 import com.hauyu.adsdk.adloader.applovin.AppLovinLoader;
 import com.hauyu.adsdk.adloader.listener.IManagerListener;
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
@@ -36,14 +39,9 @@ import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.data.config.AdPlace;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.data.parse.IParser;
-import com.hauyu.adsdk.OnAdEventListener;
-import com.hauyu.adsdk.OnAdFilterListener;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.stat.IEvent;
-import com.hauyu.adsdk.InternalStat;
-import com.hauyu.adsdk.Utils;
-import com.android.widget.BuildConfig;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -101,7 +99,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     public AbstractSdkLoader() {
         mHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
             @Override
-            public boolean handleMessage(@NonNull Message msg) {
+            public boolean handleMessage(Message msg) {
                 if (msg != null) {
                     if (msg.what == MSG_LOADING_TIMEOUT) {
                         onLoadTimeout();
@@ -749,7 +747,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     }
 
     protected String getSdkVersion() {
-        return BuildConfig.SDK_VERSION_NAME;
+        return ViewActivity.getVersion();
     }
 
     protected String getAppVersion() {
