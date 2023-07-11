@@ -10,13 +10,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mbridge.msdk.out.Campaign;
-import com.mbridge.msdk.widget.MBAdChoice;
+import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.Utils;
 import com.tradplus.ads.base.adapter.nativead.TPNativeAdView;
 import com.tradplus.ads.base.common.TPImageLoader;
 import com.tradplus.ads.mgr.nativead.TPCustomNativeAd;
@@ -37,10 +35,10 @@ public class TradPlusBindView extends BaseBindNativeView {
     }
 
     public class CustomTPNativeAdRender extends TPNativeAdRender {
-        private Context mContext;
-        private PidConfig mPidConfig;
-        private Params mParams;
-        private TPCustomNativeAd mTPCustomNativeAd;
+        final private Context mContext;
+        final private PidConfig mPidConfig;
+        final private Params mParams;
+        final private TPCustomNativeAd mTPCustomNativeAd;
 
         public CustomTPNativeAdRender(Context context, PidConfig pidConfig, Params params, TPCustomNativeAd customNativeAd) {
             mContext = context;
@@ -189,13 +187,13 @@ public class TradPlusBindView extends BaseBindNativeView {
             Object obj = customNativeAd.getCustomNetworkObj();
             if (obj instanceof com.mbridge.msdk.out.Campaign) {
                 // 设置mintegral的ad choice
-                com.mbridge.msdk.out.Campaign campaign = (Campaign) obj;
-                MBAdChoice mbAdChoice = new MBAdChoice(viewGroup.getContext());
+                com.mbridge.msdk.out.Campaign campaign = (com.mbridge.msdk.out.Campaign) obj;
+                com.mbridge.msdk.widget.MBAdChoice mbAdChoice = new com.mbridge.msdk.widget.MBAdChoice(viewGroup.getContext());
                 mbAdChoice.setCampaign(campaign);
                 viewGroup.addView(mbAdChoice);
                 return true;
             }
-        } catch (Exception e) {
+        } catch (Exception | Error e) {
             Log.iv(Log.TAG, "show native ad choice view error : " + e);
         }
         return false;

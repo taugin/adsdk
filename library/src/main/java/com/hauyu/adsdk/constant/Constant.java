@@ -36,6 +36,7 @@ public class Constant {
     public static final String NATIVE_CARD_SMALL = "small";
     public static final String NATIVE_CARD_MEDIUM = "medium";
     public static final String NATIVE_CARD_LARGE = "large";
+    public static final String NATIVE_CARD_RECT = "rect";
     public static final String NATIVE_CARD_ROUND = "round";
     public static final String NATIVE_CARD_FULL = "full";
     public static final String NATIVE_CARD_WRAP = "wrap";

@@ -59,6 +59,7 @@ public class BaseBindNativeView {
         LAYOUT_MAPS.put(Constant.NATIVE_CARD_SMALL, R.layout.rab_card_small);
         LAYOUT_MAPS.put(Constant.NATIVE_CARD_MEDIUM, R.layout.rab_card_medium);
         LAYOUT_MAPS.put(Constant.NATIVE_CARD_LARGE, R.layout.rab_card_large);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_RECT, R.layout.rab_card_rect);
         LAYOUT_MAPS.put(Constant.NATIVE_CARD_WRAP, R.layout.rab_card_wrap);
         LAYOUT_MAPS.put(Constant.NATIVE_CARD_ROUND, R.layout.rab_card_round);
         LAYOUT_MAPS.put(Constant.NATIVE_CARD_FULL, R.layout.rab_card_full);
