@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">عرض AdSdk</string>
+    <string name="app_name_label" translatable="false">عرض AdSdk</string>
     <string name="continue_to_app">الاستمرار في التقديم</string>
     <string name="advertisement">يعلن</string>
     <string name="loading">تحميل...</string>

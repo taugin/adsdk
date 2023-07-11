@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">AdSdkDemo</string>
+    <string name="app_name_label" translatable="false">AdSdkDemo</string>
     <string name="app_name_vivo" translatable="false">AdSdkVivo</string>
     <string name="app_name_oppo" translatable="false">AdSdkOppo</string>
     <string name="continue_to_app">Continue to app</string>
