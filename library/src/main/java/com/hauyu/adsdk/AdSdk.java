@@ -121,11 +121,7 @@ public class AdSdk {
 
     private void checkInitialize() {
         if (mInitialized == null || !mInitialized.get()) {
-            boolean debuggable = false;
-            try {
-                debuggable = 0 != (mContext.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE);
-            } catch (Exception e) {
-            }
+            boolean debuggable = Utils.isDebuggable(mContext);
             if (debuggable) {
                 throw new IllegalStateException("You must call AdSdk.get(context).init() first");
             } else {

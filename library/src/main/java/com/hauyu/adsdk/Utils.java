@@ -895,4 +895,13 @@ public class Utils {
             sHandler.post(runnable);
         }
     }
+
+    public static boolean isDebuggable(Context context) {
+        boolean debuggable = false;
+        try {
+            debuggable = 0 != (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE);
+        } catch (Exception e) {
+        }
+        return debuggable;
+    }
 }
