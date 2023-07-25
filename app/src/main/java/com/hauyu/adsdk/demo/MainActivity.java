@@ -15,11 +15,13 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -31,18 +33,18 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hauyu.adsdk.demo.view.CustomDrawable;
 import com.hauyu.adsdk.AdExtra;
 import com.hauyu.adsdk.AdImpData;
 import com.hauyu.adsdk.AdParams;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.core.db.DBManager;
-import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.OnAdFilterListener;
 import com.hauyu.adsdk.SimpleAdSdkListener;
 import com.hauyu.adsdk.Utils;
+import com.hauyu.adsdk.constant.Constant;
+import com.hauyu.adsdk.core.db.DBManager;
+import com.hauyu.adsdk.core.framework.ActivityMonitor;
+import com.hauyu.adsdk.demo.view.CustomDrawable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -59,6 +61,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
 import java.util.concurrent.Executors;
+
+import me.samlss.broccoli.Broccoli;
+import me.samlss.broccoli.BroccoliGradientDrawable;
+import me.samlss.broccoli.PlaceholderParameter;
 
 public class MainActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
@@ -99,6 +105,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     private TextView mDebugView;
     private TextView mTimeView;
     private Timer mTimer;
+    private CharSequence[] mEntries;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -223,7 +230,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             mAdSdkSpinner.setAdapter(adapter);
         }
         mAdLayoutSpinner = findViewById(R.id.ad_layout_spinner);
-        entries = getResources().getStringArray(R.array.ad_layout);
+        mEntries = entries = getResources().getStringArray(R.array.ad_layout);
         if (entries != null) {
             final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
                     this, android.R.layout.simple_spinner_item, entries) {
@@ -236,6 +243,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             };
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mAdLayoutSpinner.setAdapter(adapter);
+            mAdLayoutSpinner.setOnItemSelectedListener(this);
         }
         mAdBannerSizeSpinner = findViewById(R.id.ad_banner_size_spinner);
         entries = getResources().getStringArray(R.array.ad_banner_size);
@@ -626,6 +634,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent == mAdLayoutSpinner) {
+            onSpanItemSelect(parent, view, position, id);
+            return;
+        }
         try {
             String prefKey = (String) parent.getTag();
             Utils.putLong(this, prefKey, position);
@@ -635,6 +647,28 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+    }
+
+    private void onSpanItemSelect(AdapterView<?> parent, View view, int position, long id) {
+        String layout = mEntries[position].toString();
+        int resLayout = 0;
+        if ("Random".equalsIgnoreCase(layout)) {
+        } else if ("Custom Small".equalsIgnoreCase(layout)) {
+            resLayout = R.layout.ad_common_native_card_small;
+        } else if ("Custom Medium".equalsIgnoreCase(layout)) {
+            resLayout = R.layout.ad_common_native_card_medium;
+        } else if ("Custom Large".equalsIgnoreCase(layout)) {
+            resLayout = R.layout.ad_common_native_card_large;
+        } else {
+            layout = layout.toLowerCase(Locale.ENGLISH);
+            resLayout = getResources().getIdentifier("rab_card_" + layout, "layout", getPackageName());
+        }
+        mNativeBannerLayout.removeAllViews();
+        if (resLayout != 0) {
+            View adView = LayoutInflater.from(this).inflate(resLayout, null);
+            mNativeBannerLayout.addView(adView);
+            showBroccoli(adView);
+        }
     }
 
     class FullScreenAdListener extends SimpleAdSdkListener {
@@ -814,6 +848,24 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
         for (String s : dict) {
             Log.v(Log.TAG, "s : " + s);
+        }
+    }
+
+    public static void showBroccoli(View adLayoutView) {
+        try {
+            Broccoli broccoli = new Broccoli();
+            broccoli.addPlaceholders(adLayoutView.findViewById(R.id.rab_native_icon)
+                    , adLayoutView.findViewById(R.id.rab_native_title)
+                    , adLayoutView.findViewById(R.id.rab_native_detail)
+                    , adLayoutView.findViewById(R.id.rab_native_action_btn));
+
+            broccoli.addPlaceholder(new PlaceholderParameter.Builder()
+                    .setDrawable(new BroccoliGradientDrawable(Color.parseColor("#DDDDDD"),
+                            Color.parseColor("#CCCCCC"), 0, 1000, new LinearInterpolator()))
+                    .setView(adLayoutView.findViewById(R.id.rab_native_cover_info))
+                    .build());
+            broccoli.show();
+        } catch (Exception e) {
         }
     }
 }

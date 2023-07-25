@@ -48,9 +48,7 @@
             android:id="@+id/rab_native_header_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginBottom="4dp"
             android:orientation="horizontal">
 
@@ -60,7 +58,7 @@
                 android:layout_height="48dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
                 android:contentDescription="@null" />
 
             <LinearLayout
@@ -80,17 +78,17 @@
                         android:id="@+id/rab_native_sponsored_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
                         android:layout_alignTop="@+id/rab_native_title"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="4dp"
                         android:layout_marginEnd="4dp"
                         android:background="@drawable/rab_badge_bg"
                         android:gravity="center"
-                        android:paddingBottom="2dp"
                         android:paddingStart="4dp"
-                        android:paddingEnd="4dp"
                         android:paddingTop="2dp"
+                        android:paddingEnd="4dp"
+                        android:paddingBottom="2dp"
                         android:text="AD"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="8sp" />
@@ -99,9 +97,9 @@
                         android:id="@+id/rab_native_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/rab_native_sponsored_label"
                         android:ellipsize="marquee"
-                        android:layout_alignParentStart="true"
                         android:gravity="start|top"
                         android:maxLines="2"
                         android:text="Charge Master"
@@ -129,9 +127,7 @@
             android:id="@+id/rab_native_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:ellipsize="marquee"
             android:gravity="start|center_vertical"
             android:maxLines="3"
@@ -143,12 +139,9 @@
             android:id="@+id/rab_native_action_btn"
             style="@style/RabButtonMediumStyle"
             android:layout_width="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:maxLines="2"
+            android:layout_marginTop="8dp"
             android:ellipsize="end"
+            android:maxLines="2"
             android:text="Learn More" />
     </LinearLayout>
 </FrameLayout>
