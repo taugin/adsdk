@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
-                android:layout_weight="1">
+                android:layout_weight="0.8">
 
                 <ImageView
                     android:id="@+id/rab_native_image_cover"
@@ -48,23 +48,24 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="2dp"
-                android:layout_weight="1"
+                android:layout_weight="1.2"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/rab_native_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_toStartOf="@+id/common_sponsored_label"
                     android:layout_weight="1"
                     android:ellipsize="end"
-                    android:gravity="start|top"
+                    android:gravity="start|center_vertical"
                     android:includeFontPadding="false"
-                    android:singleLine="true"
+                    android:lines="2"
+                    android:maxLines="2"
                     android:text="Charge Master"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
@@ -83,10 +84,9 @@
                 <TextView
                     android:id="@+id/rab_native_detail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:gravity="start|center_vertical"
                     android:includeFontPadding="false"
@@ -97,22 +97,22 @@
                     android:textSize="12sp" />
 
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="bottom">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_weight="1">
 
                     <TextView
                         android:id="@+id/rab_native_action_btn"
                         style="@style/RabButtonTinyStyle"
                         android:layout_width="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:layout_marginEnd="30dp"
+                        android:layout_alignParentTop="true"
                         android:background="@drawable/rab_action_bg"
                         android:ellipsize="end"
                         android:gravity="center"
                         android:lines="1"
-                        android:maxWidth="120dp"
                         android:text="Learn More"
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
@@ -134,8 +134,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="4dp"
             android:background="@drawable/rab_badge_bg"
             android:gravity="center"
             android:paddingStart="4dp"

@@ -20,7 +20,7 @@
 
     <style name="RabButtonTinyStyle" parent="RabButtonBaseStyle">
         <item name="android:background">@drawable/rab_green_bg</item>
-        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
     <style name="RabButtonMicroStyle" parent="RabButtonBaseStyle">

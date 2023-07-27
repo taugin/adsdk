@@ -109,13 +109,13 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="2dp">
 
                     <TextView
                         android:id="@+id/rab_native_detail"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:ellipsize="marquee"
                         android:gravity="start|top"
                         android:singleLine="true"
