@@ -121,6 +121,12 @@ public class TradPlusBindView extends BaseBindNativeView {
                         } else if (tpNativeAdView.getIconImageUrl() != null) {
                             TPImageLoader.getInstance().loadImage(adIconView, tpNativeAdView.getIconImageUrl());
                             putValue(AD_ICON, tpNativeAdView.getIconImageUrl());
+                        } else {
+                            try {
+                                setDefaultAdIcon(mPidConfig.getSdk(), adIconView);
+                            } catch (Exception e) {
+                                Log.iv(Log.TAG, "error : " + e);
+                            }
                         }
                     }
                     TextView titleView = viewGroup.findViewById(mParams.getAdTitle());
@@ -131,8 +137,12 @@ public class TradPlusBindView extends BaseBindNativeView {
 
                     TextView subTitleView = viewGroup.findViewById(mParams.getAdDetail());
                     putValue(AD_DETAIL, tpNativeAdView.getSubTitle());
-                    if (subTitleView != null && tpNativeAdView.getSubTitle() != null) {
-                        subTitleView.setText(tpNativeAdView.getSubTitle());
+                    if (subTitleView != null) {
+                        if (!TextUtils.isEmpty(tpNativeAdView.getSubTitle())) {
+                            subTitleView.setText(tpNativeAdView.getSubTitle());
+                        } else {
+                            subTitleView.setText(tpNativeAdView.getTitle());
+                        }
                     }
 
                     TextView callToActionView = viewGroup.findViewById(mParams.getAdAction());

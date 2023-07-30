@@ -113,9 +113,10 @@ public class AdmobBindNativeView extends BaseBindNativeView {
         }
 
         // 设置广告元素内容
-        if (!TextUtils.isEmpty(nativeAd.getHeadline())) {
+        String titleText = nativeAd.getHeadline();
+        if (!TextUtils.isEmpty(titleText)) {
             if (titleView instanceof TextView) {
-                ((TextView) titleView).setText(nativeAd.getHeadline());
+                ((TextView) titleView).setText(titleText);
                 titleView.setVisibility(View.VISIBLE);
             }
         }
@@ -123,6 +124,11 @@ public class AdmobBindNativeView extends BaseBindNativeView {
         if (!TextUtils.isEmpty(nativeAd.getBody())) {
             if (bodyView instanceof TextView) {
                 ((TextView) bodyView).setText(nativeAd.getBody());
+                bodyView.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (bodyView instanceof TextView) {
+                ((TextView) bodyView).setText(titleText);
                 bodyView.setVisibility(View.VISIBLE);
             }
         }
@@ -139,6 +145,14 @@ public class AdmobBindNativeView extends BaseBindNativeView {
             if (adIconView instanceof ImageView) {
                 ((ImageView) adIconView).setImageDrawable(image.getDrawable());
                 adIconView.setVisibility(View.VISIBLE);
+            }
+        } else {
+            try {
+                if (adIconView instanceof ImageView) {
+                    setDefaultAdIcon(pidConfig.getSdk(), (ImageView) adIconView);
+                }
+            } catch (Exception e) {
+                Log.iv(Log.TAG, "error : " + e);
             }
         }
 

@@ -2,12 +2,14 @@ package com.hauyu.adsdk.adloader.applovin;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.applovin.impl.sdk.nativeAd.AppLovinOptionsView;
@@ -97,6 +99,7 @@ public class ApplovinBindView extends BaseBindNativeView {
         } catch (Exception e) {
         }
         updateNativeStatus(context, maxNativeAdView);
+        updateNativeDetail(maxNativeAdView);
         fillNativeAssets(maxNativeAdView);
         updateClickViewStatus(maxNativeAdView, pidConfig);
     }
@@ -196,6 +199,26 @@ public class ApplovinBindView extends BaseBindNativeView {
                 }
             }
         } catch (Exception e) {
+        }
+    }
+
+    private void updateNativeDetail(MaxNativeAdView maxNativeAdView) {
+        try {
+            String title = maxNativeAdView.getTitleTextView().getText().toString();
+            String detail = maxNativeAdView.getBodyTextView().getText().toString();
+            if (TextUtils.isEmpty(detail)) {
+                maxNativeAdView.getBodyTextView().setText(title);
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            ImageView imageView = maxNativeAdView.getIconImageView();
+            if (imageView.getDrawable() == null) {
+                setDefaultAdIcon("applovin", imageView);
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
