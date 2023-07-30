@@ -44,6 +44,22 @@
                     android:layout_centerInParent="true"
                     android:contentDescription="@null"
                     android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/rab_native_sponsored_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="end|bottom"
+                    android:background="@drawable/rab_badge_tiny_bg"
+                    android:gravity="center"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:text="AD"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
 
             <LinearLayout
@@ -100,7 +116,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="4dp"
-                    android:layout_marginEnd="30dp"
                     android:layout_weight="1">
 
                     <TextView
@@ -129,18 +144,5 @@
             android:layout_gravity="end"
             android:padding="4dp" />
 
-        <TextView
-            android:id="@+id/rab_native_sponsored_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:background="@drawable/rab_badge_bg"
-            android:gravity="center"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            android:text="AD"
-            android:textColor="@android:color/black"
-            android:textSize="12sp"
-            android:textStyle="bold" />
     </FrameLayout>
 </FrameLayout>
