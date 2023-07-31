@@ -112,6 +112,8 @@ public interface IParser {
     String ONLY_SIGN_LOAD = "osl";
     // 允许包名加载，仅配置的包名允许加载广告
     String ONLY_PACK_LOAD = "opl";
+    // 配置tradplus的自动加载
+    String AUTO_LOAD = "al";
 
     // banner
     String BANNER = "banner";

@@ -328,6 +328,9 @@ public class AdParser implements IParser {
             if (jobj.has(ONLY_PACK_LOAD)) {
                 pidConfig.setOnlyPackLoad(jobj.getInt(ONLY_PACK_LOAD) == 1);
             }
+            if (jobj.has(AUTO_LOAD)) {
+                pidConfig.setAutoLoad(jobj.getInt(AUTO_LOAD) == 1);
+            }
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }

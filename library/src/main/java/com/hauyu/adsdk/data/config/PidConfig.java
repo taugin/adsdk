@@ -84,6 +84,8 @@ public class PidConfig {
 
     private boolean onlyPackLoad;
 
+    private boolean autoLoad;
+
     public String getPlaceName() {
         return placeName;
     }
@@ -346,6 +348,14 @@ public class PidConfig {
 
     public void setOnlyPackLoad(boolean onlyPackLoad) {
         this.onlyPackLoad = onlyPackLoad;
+    }
+
+    public boolean isAutoLoad() {
+        return autoLoad;
+    }
+
+    public void setAutoLoad(boolean autoLoad) {
+        this.autoLoad = autoLoad;
     }
 
     public boolean isAdmob() {

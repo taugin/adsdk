@@ -33,8 +33,11 @@ import com.tradplus.ads.open.reward.TPReward;
 import com.tradplus.ads.open.splash.SplashAdListener;
 import com.tradplus.ads.open.splash.TPSplash;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TradPlusLoader extends AbstractSdkLoader {
@@ -47,6 +50,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
     private TPSplash mTPSplash;
     private TradPlusBindView mTradPlusBindView = new TradPlusBindView();
     private String mSceneName = null;
+    private static Set<String> sNonAutoLoadList = new HashSet<>();
 
     @Override
     protected BaseBindNativeView getBaseBindNativeView() {
@@ -106,6 +110,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
+        updateAutoLoadConfig();
         Activity activity = getActivity();
         TPBanner tpBanner = new TPBanner(activity);
         tpBanner.closeAutoShow();
@@ -255,6 +260,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
+        updateAutoLoadConfig();
         mTPInterstitial = new TPInterstitial(activity, getPid());
         InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
             private String impressionId = null;
@@ -397,6 +403,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
+        updateAutoLoadConfig();
         mTPReward = new TPReward(activity, getPid());
         RewardAdListener rewardAdListener = new RewardAdListener() {
             private String impressionId = null;
@@ -542,6 +549,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return;
         }
         setLoading(true, STATE_REQUEST);
+        updateAutoLoadConfig();
         mTPNative = new TPNative(getActivity(), getPid());
         NativeAdListener nativeAdListener = new NativeAdListener() {
             private String impressionId = null;
@@ -683,6 +691,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
 
         setLoading(true, STATE_REQUEST);
+        updateAutoLoadConfig();
         mTPSplash = new TPSplash(getActivity(), getPid());
         SplashAdListener splashAdListener = new SplashAdListener() {
             private String impressionId = null;
@@ -897,6 +906,33 @@ public class TradPlusLoader extends AbstractSdkLoader {
             }
         }
         return ecpm / 1000;
+    }
+
+    private void updateAutoLoadConfig() {
+        try {
+            boolean autoLoad = false;
+            String adUnit = getPid();
+            if (mPidConfig != null) {
+                autoLoad = mPidConfig.isAutoLoad();
+            }
+            if (!TextUtils.isEmpty(adUnit)) {
+                if (autoLoad) {
+                    sNonAutoLoadList.remove(adUnit);
+                } else {
+                    sNonAutoLoadList.add(adUnit);
+                }
+                if (!sNonAutoLoadList.isEmpty()) {
+                    Map<String, Object> settingsParams = new HashMap<>();
+                    String[] nonAutoLoadUnit = new String[sNonAutoLoadList.size()];
+                    sNonAutoLoadList.toArray(nonAutoLoadUnit);
+                    Log.iv(Log.TAG, "non auto load unit : " + Arrays.asList(nonAutoLoadUnit));
+                    settingsParams.put("autoload_close", nonAutoLoadUnit);
+                    TradPlusSdk.setSettingDataParam(settingsParams);
+                }
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "update auto load config error : " + e);
+        }
     }
 
     private String getLoadedInfo(TPAdInfo tpAdInfo) {
