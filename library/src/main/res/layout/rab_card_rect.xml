@@ -15,9 +15,6 @@
             android:id="@+id/rab_native_header_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -110,9 +107,7 @@
             android:id="@+id/rab_native_cover_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp">
+            android:layout_marginTop="4dp">
 
             <ImageView
                 android:id="@+id/rab_native_image_cover"
@@ -146,10 +141,7 @@
             android:id="@+id/rab_native_action_btn"
             style="@style/RabButtonMediumStyle"
             android:layout_width="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="Learn More" />

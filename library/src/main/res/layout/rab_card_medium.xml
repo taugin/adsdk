@@ -47,9 +47,8 @@
         <RelativeLayout
             android:id="@+id/rab_native_header_info"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -58,12 +57,12 @@
                 android:layout_height="48dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="4dp"
                 android:contentDescription="@null" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/rab_native_icon"
                 android:gravity="center_vertical"
@@ -112,6 +111,7 @@
                     android:id="@+id/rab_native_social"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
                     android:ellipsize="marquee"
                     android:gravity="start|top"
                     android:singleLine="true"
@@ -119,27 +119,27 @@
                     android:textSize="12sp"
                     android:visibility="gone" />
 
+                <TextView
+                    android:id="@+id/rab_native_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="1dp"
+                    android:ellipsize="marquee"
+                    android:gravity="start|center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@color/rab_secondaryColor"
+                    android:textSize="15sp"
+                    android:visibility="visible" />
             </LinearLayout>
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/rab_native_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:ellipsize="marquee"
-            android:gravity="start|center_vertical"
-            android:maxLines="3"
-            android:textColor="@color/rab_secondaryColor"
-            android:textSize="15sp"
-            android:visibility="visible" />
 
         <TextView
             android:id="@+id/rab_native_action_btn"
             style="@style/RabButtonMediumStyle"
             android:layout_width="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="Learn More" />
