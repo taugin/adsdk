@@ -93,7 +93,7 @@
                     android:ellipsize="marquee"
                     android:gravity="start|top"
                     android:singleLine="true"
-                    android:textColor="@color/rab_secondaryColor"
+                    android:textColor="@color/rabTextSecondaryColor"
                     android:textSize="12sp"
                     android:visibility="gone" />
 
@@ -109,7 +109,7 @@
                     android:lines="2"
                     android:maxLines="2"
                     android:minHeight="24dp"
-                    android:textColor="@color/rab_secondaryColor"
+                    android:textColor="@color/rabTextSecondaryColor"
                     android:textSize="12sp" />
 
                 <RelativeLayout

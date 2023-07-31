@@ -3,13 +3,13 @@
     <item android:state_pressed="true">
         <shape>
             <corners android:radius="4dp" />
-            <solid android:color="@color/rab_colorBtnBluePressed" />
+            <solid android:color="@color/rabActionBtnPressedColor" />
         </shape>
     </item>
     <item>
         <shape>
             <corners android:radius="4dp" />
-            <solid android:color="@color/rab_colorBtnBlue" />
+            <solid android:color="@color/rabActionBtnColor" />
         </shape>
     </item>
 </selector>

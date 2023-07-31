@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="rab_primaryColor">@android:color/black</color>
-    <color name="rab_secondaryColor">@android:color/darker_gray</color>
-    <color name="rab_colorBtnBlue">#FF4080FF</color>
-    <color name="rab_colorBtnBluePressed">#FF3973E5</color>
-    <color name="rab_colorCloseBtn">#AAEEEEEE</color>
-    <color name="rab_colorCloseBtnPressed">#AACCCCCC</color>
+    <color name="rabTextPrimaryColor">@android:color/black</color>
+    <color name="rabTextSecondaryColor">@android:color/darker_gray</color>
+    <color name="rabActionBtnColor">#FF4080FF</color>
+    <color name="rabActionBtnPressedColor">#FF3973E5</color>
+    <color name="rabCloseBtnColor">#AAEEEEEE</color>
+    <color name="rabCloseBtnPressedColor">#AACCCCCC</color>
+    <color name="rabDefaultIconColor">#FF4080FF</color>
 </resources>

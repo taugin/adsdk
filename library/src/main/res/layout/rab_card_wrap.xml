@@ -117,7 +117,7 @@
                         android:layout_weight="1"
                         android:maxLines="2"
                         android:text="Charge Master"
-                        android:textColor="@color/rab_primaryColor"
+                        android:textColor="@color/rabTextPrimaryColor"
                         android:textSize="18sp" />
 
                     <TextView
@@ -168,7 +168,7 @@
                     android:gravity="center"
                     android:maxLines="3"
                     android:text="detail"
-                    android:textColor="@color/rab_secondaryColor"
+                    android:textColor="@color/rabTextSecondaryColor"
                     android:textSize="15sp"
                     android:visibility="visible" />
             </LinearLayout>

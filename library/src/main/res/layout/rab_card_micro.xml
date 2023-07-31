@@ -52,7 +52,7 @@
                 android:ellipsize="marquee"
                 android:gravity="start|top"
                 android:singleLine="true"
-                android:textColor="@color/rab_secondaryColor"
+                android:textColor="@color/rabTextSecondaryColor"
                 android:textSize="12sp"
                 android:visibility="gone" />
 
@@ -67,7 +67,7 @@
                 android:maxLines="2"
                 android:minHeight="24dp"
                 android:text="Charge Master"
-                android:textColor="@color/rab_secondaryColor"
+                android:textColor="@color/rabTextSecondaryColor"
                 android:textSize="12sp" />
         </LinearLayout>
 
