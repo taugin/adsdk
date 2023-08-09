@@ -58,7 +58,7 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
     }
 
     public void init() {
-        ActivityMonitor.get(mContext).setOnAppMonitorCallback(this);
+        ActivityMonitor.get(mContext).addOnAppMonitorCallback(this);
     }
 
     public void onAdClick(String pid, Map<String, Object> extra) {

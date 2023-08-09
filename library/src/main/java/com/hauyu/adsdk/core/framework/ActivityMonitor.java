@@ -9,15 +9,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.hauyu.adsdk.InternalStat;
+import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.EventImpl;
-import com.hauyu.adsdk.InternalStat;
-import com.hauyu.adsdk.Utils;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -137,16 +139,32 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
         return null;
     }
 
-    private OnAppMonitorCallback mOnAppMonitorCallback;
+    List<OnAppMonitorCallback> mOnAppMonitorCallbacks = new ArrayList<>();
 
-    public void setOnAppMonitorCallback(OnAppMonitorCallback callback) {
-        mOnAppMonitorCallback = callback;
+    public void addOnAppMonitorCallback(OnAppMonitorCallback callback) {
+        try {
+            if (mOnAppMonitorCallbacks != null) {
+                mOnAppMonitorCallbacks.add(callback);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public void removeOnAppMonitorCallback(OnAppMonitorCallback callback) {
+        try {
+            if (mOnAppMonitorCallbacks != null) {
+                mOnAppMonitorCallbacks.remove(callback);
+            }
+        } catch (Exception e) {
+        }
     }
 
     public interface OnAppMonitorCallback {
-        void onForeground(boolean fromBackground, WeakReference<Activity> activityWeakReference);
+        default void onForeground(boolean fromBackground, WeakReference<Activity> activityWeakReference) {
+        }
 
-        void onBackground();
+        default void onBackground() {
+        }
     }
 
     private final Object mLockObject = new Object();
@@ -193,8 +211,12 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
         @Override
         public void run() {
-            if (mOnAppMonitorCallback != null) {
-                mOnAppMonitorCallback.onForeground(mFromBackground, mTopActivity);
+            if (mOnAppMonitorCallbacks != null && !mOnAppMonitorCallbacks.isEmpty()) {
+                for (OnAppMonitorCallback callback : mOnAppMonitorCallbacks) {
+                    if (callback != null) {
+                        callback.onForeground(mFromBackground, mTopActivity);
+                    }
+                }
             }
             onActivityOnTop();
         }
@@ -210,15 +232,21 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
         public final void run() {
             synchronized (this.mActivityMonitor.mLockObject) {
                 if (!(this.mActivityMonitor.mResumed) || !(this.mActivityMonitor.mPaused)) {
-                    if (mOnAppMonitorCallback != null) {
-                        mOnAppMonitorCallback.onForeground(false, mTopActivity);
+                    if (mOnAppMonitorCallbacks != null && !mOnAppMonitorCallbacks.isEmpty()) {
+                        for (OnAppMonitorCallback callback : mOnAppMonitorCallbacks) {
+                            if (callback != null) {
+                                callback.onForeground(false, mTopActivity);
+                            }
+                        }
                     }
                     onActivityOnTop();
                 } else {
                     setBackgroundFlag();
                     this.mActivityMonitor.mResumed = false;
-                    if (mOnAppMonitorCallback != null) {
-                        mOnAppMonitorCallback.onBackground();
+                    for (OnAppMonitorCallback callback : mOnAppMonitorCallbacks) {
+                        if (callback != null) {
+                            callback.onBackground();
+                        }
                     }
                 }
             }
