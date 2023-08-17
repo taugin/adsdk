@@ -191,6 +191,7 @@ public class DBManager {
                     objectMap.put(Constant.AD_NETWORK, cursor.getString(cursor.getColumnIndex(DBHelper.AD_NETWORK)));
                     objectMap.put(Constant.AD_NETWORK_PID, cursor.getString(cursor.getColumnIndex(DBHelper.AD_NETWORK_PID)));
                     objectMap.put(Constant.AD_VALUE, cursor.getDouble(cursor.getColumnIndex(DBHelper.AD_REVENUE)));
+                    objectMap.put(Constant.AD_IMP_TIME, cursor.getLong(cursor.getColumnIndex(DBHelper.AD_IMP_TIME)));
                     list.add(AdImpData.createAdImpData(objectMap));
                 } while (cursor.moveToNext());
             }
@@ -231,7 +232,7 @@ public class DBManager {
         return finalRevenue;
     }
 
-    public List<Map<String, Object>> queryAdRevenueAllType() {
+    public List<Map<String, Object>> queryAllAdType() {
         List<Map<String, Object>> list = null;
         String sql = String.format(Locale.ENGLISH, "select %s, sum(%s) as revenue_sum, count(%s) as imp_count from %s group by %s", DBHelper.AD_TYPE, DBHelper.AD_REVENUE, DBHelper.AD_TYPE, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_TYPE);
         Cursor cursor = null;

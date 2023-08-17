@@ -740,7 +740,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     }
 
     private View createDialogView(Context context) {
-        List<Map<String, Object>> mapList = DBManager.get(context).queryAdRevenueAllType();
+        List<Map<String, Object>> mapList = DBManager.get(context).queryAllAdType();
         LinearLayout rootLayout = new LinearLayout(context);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout titleLayout = new LinearLayout(context);

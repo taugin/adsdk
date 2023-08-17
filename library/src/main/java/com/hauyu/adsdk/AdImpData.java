@@ -151,6 +151,14 @@ public class AdImpData {
         return false;
     }
 
+    public long getAdImpTime() {
+        try {
+            return (long) mAdImpData.get(Constant.AD_IMP_TIME);
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
     @Override
     public String toString() {
         return "AdImpData{" +

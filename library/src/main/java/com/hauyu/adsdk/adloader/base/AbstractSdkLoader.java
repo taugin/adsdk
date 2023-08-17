@@ -1274,6 +1274,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
         if (adImpMap != null) {
             adImpMap.put(Constant.AD_IMPRESSION_ID, impressionId);
+            adImpMap.put(Constant.AD_IMP_TIME, System.currentTimeMillis());
         }
         printImpData(adImpMap);
         AdImpData adImpData = AdImpData.createAdImpData(adImpMap);
