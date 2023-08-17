@@ -24,7 +24,7 @@
                 android:layout_height="48dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="4dp"
                 android:contentDescription="@null" />
 
             <LinearLayout
