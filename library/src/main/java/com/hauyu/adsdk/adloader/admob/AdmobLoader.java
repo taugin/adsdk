@@ -65,7 +65,6 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     private AdLoader.Builder loadingBuilder;
     private NativeAd mNativeAd;
-    private Params mParams;
 
     private AdView lastUseBannerView;
     private NativeAd lastUseNativeAd;
@@ -589,8 +588,6 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     @Override
     public void loadNative(Params params) {
-        mParams = params;
-
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
             notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
@@ -728,9 +725,6 @@ public class AdmobLoader extends AbstractSdkLoader {
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
-        if (params != null) {
-            mParams = params;
-        }
         if (params != null && admobNativeListener != null) {
             admobNativeListener.sceneName = params.getSceneName();
         }
@@ -743,7 +737,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (mNativeAd != null) {
             reportAdShow();
             notifyAdShow();
-            admobBindNativeView.bindNative(mParams, viewGroup, mNativeAd, mPidConfig);
+            admobBindNativeView.bindNative(params, viewGroup, mNativeAd, mPidConfig);
             lastUseNativeAd = mNativeAd;
             clearCachedAdTime(mNativeAd);
             mNativeAd = null;

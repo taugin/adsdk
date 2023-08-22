@@ -53,7 +53,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private MaxNativeAdLoader mMaxNativeAdLoader;
     private MaxNativeAdView mTemplateNativeView;
     private MaxAd mMaxAd;
-    private Params mParams;
     private ApplovinBindView mApplovinBindView = new ApplovinBindView();
     private MaxAppOpenAd mMaxAppOpenAd;
     private MaxNativeListener maxNativeListener;
@@ -770,7 +769,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public void loadNative(Params params) {
-        mParams = params;
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
@@ -872,9 +870,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
-        if (params != null) {
-            mParams = params;
-        }
         if (params != null && maxNativeListener != null) {
             maxNativeListener.sceneName = params.getSceneName();
         }
@@ -884,8 +879,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (isTemplateRendering()) {
                 maxNativeAdView = mTemplateNativeView;
             } else {
-                if (mMaxNativeAdLoader != null && mParams != null && mMaxAd != null) {
-                    maxNativeAdView = mApplovinBindView.bindMaxNativeAdView(getContext(), mParams, mPidConfig, mMaxAd.getNetworkName());
+                if (mMaxNativeAdLoader != null && params != null && mMaxAd != null) {
+                    maxNativeAdView = mApplovinBindView.bindMaxNativeAdView(getContext(), params, mPidConfig, mMaxAd.getNetworkName());
                     mMaxNativeAdLoader.render(maxNativeAdView, mMaxAd);
                 }
             }
