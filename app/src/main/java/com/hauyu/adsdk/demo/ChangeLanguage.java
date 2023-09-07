@@ -42,7 +42,7 @@ public class ChangeLanguage {
     private static final String PREF_LANGUAGE_SWITCH_COUNTRY = "pref_language_switch_country";
     private static final String TAG = "ChangeLanguage";
 
-    private static class LocaleInfo {
+    public static class LocaleInfo {
         /**
          * 表示国际化语言，当locale为null时，表示跟随系统语言
          */
@@ -68,6 +68,38 @@ public class ChangeLanguage {
             this.locale = locale;
             this.display = display;
             this.display2 = display2;
+            this.followSystem = followSystem;
+        }
+
+        public Locale getLocale() {
+            return locale;
+        }
+
+        public void setLocale(Locale locale) {
+            this.locale = locale;
+        }
+
+        public String getDisplay() {
+            return display;
+        }
+
+        public void setDisplay(String display) {
+            this.display = display;
+        }
+
+        public String getDisplay2() {
+            return display2;
+        }
+
+        public void setDisplay2(String display2) {
+            this.display2 = display2;
+        }
+
+        public String getFollowSystem() {
+            return followSystem;
+        }
+
+        public void setFollowSystem(String followSystem) {
             this.followSystem = followSystem;
         }
     }
@@ -151,7 +183,12 @@ public class ChangeLanguage {
         sLocaleList.add(new LocaleInfo(new Locale("fa"), "فارسی", "波斯语", "سیستم را دنبال کنید"));
         sLocaleList.add(new LocaleInfo(new Locale("pl"), "Polski", "波兰语", "Śledź system"));
         sLocaleList.add(new LocaleInfo(new Locale("fil"), "Pilipinas", "菲律宾语", "Sundin ang sistema"));
+        sLocaleList.add(new LocaleInfo(Locale.SIMPLIFIED_CHINESE, "简体中文", "简体中文", "跟随系统"));
         sUserLocaleList = sLocaleList;
+    }
+
+    public static List<LocaleInfo> getLocaleList() {
+        return sUserLocaleList;
     }
 
     /**
@@ -204,7 +241,7 @@ public class ChangeLanguage {
      * @param context
      * @param userSetLocale
      */
-    private static void setSelectLocale(Context context, Locale userSetLocale) {
+    public static void setSelectLocale(Context context, Locale userSetLocale) {
         if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(SP_LANGUAGE_SWITCH_NAME, Context.MODE_PRIVATE);
             if (userSetLocale != null) {
@@ -229,7 +266,7 @@ public class ChangeLanguage {
      * @param context
      * @return
      */
-    private static Locale getSystemLocale(Context context) {
+    private static Locale getCurrentLocale(Context context) {
         Locale locale;
         try {
             Resources resources = context.getResources();
@@ -284,46 +321,37 @@ public class ChangeLanguage {
      * @return
      */
     public static String getCurrentLanguage(Context context, boolean showChinese) {
+        String currentLanguageDisplay = null;
         int index = findLocaleIndex(context);
-        String followSystemString = getFollowSystemTranslation(index);
-        String currentLanguage = null;
+        String followSystemString = getFollowSystemTranslation(context, index);
         LocaleInfo localeInfo = sUserLocaleList.get(index);
         if (localeInfo != null && !TextUtils.isEmpty(localeInfo.display)) {
             if (localeInfo.locale == null) {
                 if (!TextUtils.isEmpty(followSystemString)) {
-                    currentLanguage = followSystemString;
+                    currentLanguageDisplay = followSystemString;
                 } else {
-                    currentLanguage = localeInfo.display;
+                    currentLanguageDisplay = localeInfo.display;
                 }
             } else {
-                currentLanguage = localeInfo.display;
+                currentLanguageDisplay = localeInfo.display;
             }
             if (showChinese) {
                 if (!TextUtils.isEmpty(localeInfo.display2)) {
-                    currentLanguage = currentLanguage + " (" + localeInfo.display2 + ")";
+                    currentLanguageDisplay = currentLanguageDisplay + " (" + localeInfo.display2 + ")";
                 } else if (localeInfo.locale == null) {
                     try {
-                        currentLanguage = currentLanguage + " (跟随系统)";
+                        currentLanguageDisplay = currentLanguageDisplay + " (跟随系统)";
                     } catch (Exception e) {
                     }
                 }
             }
         } else {
             try {
-                currentLanguage = Locale.getDefault().getDisplayLanguage();
+                currentLanguageDisplay = Locale.getDefault().getDisplayLanguage();
             } catch (Exception e) {
             }
         }
-        return currentLanguage;
-    }
-
-    public static Locale getCurrentLocale(Context context) {
-        int index = findLocaleIndex(context);
-        LocaleInfo localeInfo = sUserLocaleList.get(index);
-        if (localeInfo != null) {
-            return localeInfo.locale;
-        }
-        return Locale.getDefault();
+        return currentLanguageDisplay;
     }
 
     /**
@@ -332,7 +360,7 @@ public class ChangeLanguage {
      * @param activity
      * @param clazz
      */
-    private static void restartApp(Activity activity, final Class<?> clazz) {
+    public static void restartApp(Activity activity, final Class<?> clazz) {
         try {
             for (Activity act : sActivityList) {
                 act.finish();
@@ -360,7 +388,7 @@ public class ChangeLanguage {
                     android.os.Process.killProcess(android.os.Process.myPid());
                     System.exit(0);
                 }
-            }, 100);
+            }, 500);
         } catch (Exception e2) {
         }
     }
@@ -371,10 +399,10 @@ public class ChangeLanguage {
      * @param context
      * @param locale
      */
-    private static void changeLocale(Context context, Locale locale) {
+    public static void changeLocale(Context context, Locale locale) {
         try {
             if (locale == null) {
-                locale = getSystemLocale(context);
+                locale = getCurrentLocale(context);
             }
             Resources resources = context.getResources();
             Configuration configuration = resources.getConfiguration();
@@ -408,7 +436,7 @@ public class ChangeLanguage {
      * @param context
      * @return
      */
-    private static int findLocaleIndex(Context context) {
+    public static int findLocaleIndex(Context context) {
         int selectIndex = -1;
         if (context != null) {
             String language = null;
@@ -462,9 +490,26 @@ public class ChangeLanguage {
      *
      * @return
      */
-    private static String getFollowSystemTranslation(int selectIndex) {
+    public static String getFollowSystemTranslation(Context context, int selectIndex) {
         try {
             LocaleInfo localeInfoForFollowSystem = sUserLocaleList.get(selectIndex);
+            Locale locale = getCurrentLocale(context);
+            String currentLanguage = null;
+            String currentLanguageDisplay = null;
+            if (locale != null) {
+                currentLanguage = locale.getLanguage();
+            }
+            for (LocaleInfo lInfo : sUserLocaleList) {
+                try {
+                    if (lInfo != null && TextUtils.equals(lInfo.getLocale().getLanguage(), currentLanguage)) {
+                        currentLanguageDisplay = lInfo.followSystem;
+                    }
+                } catch (Exception e) {
+                }
+            }
+            if (!TextUtils.isEmpty(currentLanguageDisplay)) {
+                return currentLanguageDisplay;
+            }
             return localeInfoForFollowSystem.followSystem;
         } catch (Exception e) {
         }
@@ -478,7 +523,7 @@ public class ChangeLanguage {
      */
     public static void showLanguageDialog(Activity activity, boolean showChinese) {
         final int selectIndex = findLocaleIndex(activity);
-        String followSystemString = getFollowSystemTranslation(selectIndex);
+        String followSystemString = getFollowSystemTranslation(activity, selectIndex);
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         String arrays[] = new String[sUserLocaleList.size()];
         for (int index = 0; index < sUserLocaleList.size(); index++) {
