@@ -287,35 +287,66 @@ def printEncryptInfo() {
 }
 
 afterEvaluate {
-    task transformAab2Apk {
-        transformAab2ApkLocked()
+    if (!ext.has("aab2apk") || ext["aab2apk"] != true) {
+        return
     }
-    transformAab2Apk.setGroup("adsdk")
-}
-
-def transformAab2ApkLocked() {
-    def outputAabFile = null
-    String flavorName = null;
-    android.applicationVariants.all { variant ->
-        if (variant.buildType.name == 'release') {
-            variant.outputs.all {
-                if (variant.productFlavors != null && variant.productFlavors.size() > 0) {
-                    flavorName = variant.productFlavors[0].name
-                }
-                outputAabFile = outputFile
+    try {
+        def taskName = getGradle().getStartParameter().getTaskRequests()[0]["args"][0].toString()
+        def aTask = project.tasks.findByName(taskName)
+        if (aTask != null) {
+            aTask.doLast {
+                transformAab2ApkFlavor()
             }
         }
-    }
-    def finalBundleName = null
-    try {
-        finalBundleName = aabResGuard.obfuscatedBundleFileName
     } catch (Exception e) {
     }
-    def finalBundleFile = outputAabFile
-    if (finalBundleName != null && finalBundleName.length() > 0) {
-        finalBundleFile = new File(outputAabFile.getParent(), finalBundleName)
+}
+
+def transformAab2ApkFlavor() {
+    if (project.android.productFlavors.size() > 0) {// 如果有产品风味
+        project.android.productFlavors.each { flavor ->
+            def productFlavor = toUpperCaseFirstOne(flavor.name)
+            def outputFile = Global.flavorMap.get(flavor.name)
+            def aabOutputAabFileName = outputFile.getName()
+            transformAab2ApkLocked(productFlavor, aabOutputAabFileName)
+        }
+    } else {
+        def outputFile = Global.flavorMap.get("")
+        def aabOutputAabFileName = outputFile.getName()
+        transformAab2ApkLocked(null, aabOutputAabFileName)
     }
-    println "finalBundleFile : " + finalBundleFile
+}
+
+def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
+    if (aabOutputAabFileName != null) {
+        aabOutputAabFileName = aabOutputAabFileName.replace(".apk", ".aab")
+    }
+
+    def obfuscatedBundleFileName = null
+    try {
+        obfuscatedBundleFileName = aabResGuard.obfuscatedBundleFileName
+    } catch (Exception e) {
+    }
+
+    def finalBundleName = null
+    if (obfuscatedBundleFileName != null && !obfuscatedBundleFileName.trim().isEmpty()) {
+        finalBundleName = obfuscatedBundleFileName
+    } else {
+        finalBundleName = aabOutputAabFileName
+    }
+    def outputAabFile = null
+    def buildDir = getBuildDir()
+    if (flavorName != null && !flavorName.trim().isEmpty()) {
+        outputAabFile = new File(buildDir, "outputs" + File.separatorChar + "bundle" + File.separatorChar + flavorName + "Release" + File.separatorChar + finalBundleName)
+    } else {
+        outputAabFile = new File(buildDir, "outputs" + File.separatorChar + "bundle" + File.separatorChar + "release" + File.separatorChar + finalBundleName)
+    }
+    def finalBundleFile = outputAabFile
+    println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] finalBundleFile : " + finalBundleFile
+    if (finalBundleFile == null || !finalBundleFile.exists()) {
+        System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] finalBundleFile is not exist"
+        return
+    }
     def signConfig = getSignConfig(flavorName)
     if (signConfig == null) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] signConfig is Null"
