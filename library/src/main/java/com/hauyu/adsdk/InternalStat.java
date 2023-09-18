@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.log.Log;
 
@@ -39,9 +40,30 @@ public class InternalStat {
     private static final String SDK_NAME_TALKING_DATA = "talkingdata";
     private static final String SDK_NAME_UMENG_OBJECT_METHOD = "umeng_object_method";
 
+    private static final List<String> sUmengWhiteList;
+
     private static final Map<String, Boolean> sSdkIntegrated;
 
     static {
+        sUmengWhiteList = Arrays.asList(
+                Constant.AD_IMPRESSION_REVENUE,
+                "imp_splash_admob",
+                "imp_interstitial_admob",
+                "imp_native_admob",
+                "imp_banner_admob",
+                "imp_reward_admob",
+                "click_splash_admob",
+                "click_interstitial_admob",
+                "click_native_admob",
+                "click_banner_admob",
+                "click_reward_admob",
+                "click_splash_admob_distinct",
+                "click_interstitial_admob_distinct",
+                "click_native_admob_distinct",
+                "click_banner_admob_distinct",
+                "click_reward_admob_distinct"
+        );
+
         sSdkIntegrated = new HashMap<>();
         boolean sdkIntegrated;
         try {
@@ -563,9 +585,9 @@ public class InternalStat {
     public static void reportEvent(Context context, String key, String value, Map<String, Object> map) {
         Log.iv(Log.TAG, "event id : " + key + " , value : " + value + " , extra : " + map);
         if (isUmengEventObjectEnable()) {
-            sendUmengObject(context, key, value, map);
+            sendUmengObject(context, key, value, map, isInUmengWhiteList(key));
         } else {
-            sendUmeng(context, key, value, map);
+            sendUmeng(context, key, value, map, isInUmengWhiteList(key));
         }
         sendAppsflyer(context, key, value, map, false);
         sendFirebaseAnalytics(context, key, value, map);
@@ -575,6 +597,14 @@ public class InternalStat {
 
     public static void reportError(Context context, Throwable e) {
         sendUmengError(context, e, true);
+    }
+
+    private static boolean isInUmengWhiteList(String key) {
+        try {
+            return sUmengWhiteList.contains(key);
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     private static boolean isReportPlatform(Context context, String eventId, String platform, boolean defaultValue) {
