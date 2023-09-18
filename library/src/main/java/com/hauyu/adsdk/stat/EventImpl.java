@@ -6,13 +6,13 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import com.hauyu.adsdk.InternalStat;
+import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.db.DBManager;
 import com.hauyu.adsdk.core.framework.AdStatManager;
 import com.hauyu.adsdk.core.framework.BounceRateManager;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.Utils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -480,7 +480,7 @@ public class EventImpl implements IEvent {
             InternalStat.sendFirebaseAnalytics(context, eventId, value, maps);
         }
         if (isReportUmeng(context)) {
-            InternalStat.sendUmeng(context, eventId, value, maps);
+            InternalStat.sendUmeng(context, eventId, value, maps, InternalStat.isInUmengWhiteList(eventId));
         }
         if (isReportFlurry(context)) {
             InternalStat.sendFlurry(context, eventId, value, maps);

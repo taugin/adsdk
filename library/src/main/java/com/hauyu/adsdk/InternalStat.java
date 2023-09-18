@@ -599,7 +599,7 @@ public class InternalStat {
         sendUmengError(context, e, true);
     }
 
-    private static boolean isInUmengWhiteList(String key) {
+    public static boolean isInUmengWhiteList(String key) {
         try {
             return sUmengWhiteList.contains(key);
         } catch (Exception e) {
