@@ -386,7 +386,7 @@ public class EventImpl implements IEvent {
     private boolean isReportError(Context context) {
         String value = DataManager.get(context).getString("report_error");
         boolean result = parseReport(value, false);
-        Log.iv(Log.TAG_SDK, "is report error : " + result);
+        // Log.iv(Log.TAG_SDK, "is report error : " + result);
         return result;
     }
 
@@ -399,42 +399,42 @@ public class EventImpl implements IEvent {
     private boolean isReportTime(Context context) {
         String value = InternalStat.getAdReportString(context, "ad_report_bool_time");
         boolean result = parseReport(value, false);
-        Log.iv(Log.TAG_SDK, "is report time : " + result);
+        // Log.iv(Log.TAG_SDK, "is report time : " + result);
         return result;
     }
 
     private boolean isReportAppsflyer(Context context) {
         String value = InternalStat.getAdReportString(context, "ad_report_bool_appsflyer");
         boolean result = parseReport(value, false);
-        Log.iv(Log.TAG_SDK, "is report appsflyer : " + result);
+        // Log.iv(Log.TAG_SDK, "is report appsflyer : " + result);
         return result;
     }
 
     private boolean isReportUmeng(Context context) {
         String value = InternalStat.getAdReportString(context, "ad_report_bool_umeng");
         boolean result = parseReport(value, true);
-        Log.iv(Log.TAG_SDK, "is report umeng : " + result);
+        // Log.iv(Log.TAG_SDK, "is report umeng : " + result);
         return result;
     }
 
     private boolean isReportFirebase(Context context) {
         String value = InternalStat.getAdReportString(context, "ad_report_bool_firebase");
         boolean result = parseReport(value, true);
-        Log.iv(Log.TAG_SDK, "is report firebase : " + result);
+        // Log.iv(Log.TAG_SDK, "is report firebase : " + result);
         return result;
     }
 
     private boolean isReportFlurry(Context context) {
         String value = InternalStat.getAdReportString(context, "ad_report_bool_flurry");
         boolean result = parseReport(value, true);
-        Log.iv(Log.TAG_SDK, "is report flurry : " + result);
+        // Log.iv(Log.TAG_SDK, "is report flurry : " + result);
         return result;
     }
 
     private boolean isReportTalkingData(Context context) {
         String value = InternalStat.getAdReportString(context, "ad_report_bool_td");
         boolean result = parseReport(value, true);
-        Log.iv(Log.TAG_SDK, "is talkingdata flurry : " + result);
+        // Log.iv(Log.TAG_SDK, "is talkingdata flurry : " + result);
         return result;
     }
 
