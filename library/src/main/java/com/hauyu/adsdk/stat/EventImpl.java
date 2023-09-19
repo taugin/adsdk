@@ -11,6 +11,7 @@ import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.db.DBManager;
 import com.hauyu.adsdk.core.framework.AdStatManager;
 import com.hauyu.adsdk.core.framework.BounceRateManager;
+import com.hauyu.adsdk.core.framework.FBStatManager;
 import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.log.Log;
 
@@ -253,6 +254,14 @@ public class EventImpl implements IEvent {
             reportEvent(context, eventId, placeName, extra);
             reportAdClickDistinct(context, placeName, Constant.AD_SDK_ADMOB, network, type, pid, networkPid, ecpm, extra, isAdClicked);
         }
+        String placement = null;
+        if (extra != null) {
+            try {
+                placement = (String) extra.get("placement");
+            } catch (Exception e) {
+            }
+        }
+        FBStatManager.get(context).reportFirebaseClick(type, network, placement);
     }
 
     private void reportAdClickDistinct(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, boolean isAdClicked) {
@@ -477,7 +486,7 @@ public class EventImpl implements IEvent {
             InternalStat.sendAppsflyer(context, eventId, value, maps);
         }
         if (isReportFirebase(context)) {
-            InternalStat.sendFirebaseAnalytics(context, eventId, value, maps);
+            InternalStat.sendFirebaseAnalytics(context, eventId, value, maps, InternalStat.isInFirebaseWhiteList(eventId));
         }
         if (isReportUmeng(context)) {
             InternalStat.sendUmeng(context, eventId, value, maps, InternalStat.isInUmengWhiteList(eventId));

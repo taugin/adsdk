@@ -42,6 +42,8 @@ public class InternalStat {
 
     private static final List<String> sUmengWhiteList;
 
+    private static final List<String> sFirebaseWhiteList;
+
     private static final Map<String, Boolean> sSdkIntegrated;
 
     static {
@@ -62,6 +64,17 @@ public class InternalStat {
                 "click_native_admob_distinct",
                 "click_banner_admob_distinct",
                 "click_reward_admob_distinct"
+        );
+
+        sFirebaseWhiteList = Arrays.asList(
+                Constant.AD_IMPRESSION,
+                Constant.AD_IMPRESSION_REVENUE,
+                "Total_Ads_Revenue_*",
+                "gav_*",
+                "gav_imp_new_total",
+                "gav_imp_new_type_*",
+                "gav_imp_new_network_*",
+                "gav_imp_new_scene_*"
         );
 
         sSdkIntegrated = new HashMap<>();
@@ -608,7 +621,23 @@ public class InternalStat {
     }
 
     public static boolean isInFirebaseWhiteList(String key) {
-        return true;
+        if (TextUtils.isEmpty(key)) {
+            return false;
+        }
+        try {
+            if (sFirebaseWhiteList != null && !sFirebaseWhiteList.isEmpty()) {
+                if (sFirebaseWhiteList.contains(key)) {
+                    return true;
+                }
+                for (String item : sFirebaseWhiteList) {
+                    if (item != null && item.contains("*") && key.startsWith(item.replace("*", ""))) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     private static boolean isReportPlatform(Context context, String eventId, String platform, boolean defaultValue) {

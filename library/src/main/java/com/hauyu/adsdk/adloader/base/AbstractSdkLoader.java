@@ -33,6 +33,7 @@ import com.hauyu.adsdk.core.db.DBManager;
 import com.hauyu.adsdk.core.framework.AdLoadManager;
 import com.hauyu.adsdk.core.framework.AdStatManager;
 import com.hauyu.adsdk.core.framework.BounceRateManager;
+import com.hauyu.adsdk.core.framework.FBStatManager;
 import com.hauyu.adsdk.core.framework.LimitAdsManager;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.DataManager;
@@ -1271,6 +1272,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
                 }
             }
             InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
+            FBStatManager.get(mContext).reportFirebaseImpression(adImpMap);
         }
         if (adImpMap != null) {
             adImpMap.put(Constant.AD_IMPRESSION_ID, impressionId);
@@ -1340,7 +1342,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
                 params.put("active_days", EventImpl.get().getActiveDays() + "d");
                 params.put("active_date", EventImpl.get().getActiveDate());
                 if (isReportFirebase) {
-                    InternalStat.sendFirebaseAnalytics(mContext, "ad_impression", null, params);
+                    InternalStat.sendFirebaseAnalytics(mContext, Constant.AD_IMPRESSION, null, params);
                 }
             }
         } catch (Exception e) {
