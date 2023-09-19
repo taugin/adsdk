@@ -292,10 +292,12 @@ afterEvaluate {
     }
     try {
         def taskName = getGradle().getStartParameter().getTaskRequests()[0]["args"][0].toString()
-        def aTask = project.tasks.findByName(taskName)
-        if (aTask != null) {
-            aTask.doLast {
-                transformAab2ApkFlavor()
+        if (taskName != null && taskName.toLowerCase(Locale.ENGLISH).contains("bundle")) {
+            def aTask = project.tasks.findByName(taskName)
+            if (aTask != null) {
+                aTask.doLast {
+                    transformAab2ApkFlavor()
+                }
             }
         }
     } catch (Exception e) {
