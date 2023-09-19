@@ -1245,7 +1245,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         if (isReportAdImpData()) {
             if (adImpMap != null) {
                 try {
-                    adImpMap.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
+                    // adImpMap.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
                     adImpMap.put("active_days", EventImpl.get().getActiveDayString());
                     adImpMap.put("active_date", EventImpl.get().getActiveDate());
                     adImpMap.put("active_year", EventImpl.get().getActiveYear());

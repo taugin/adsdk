@@ -89,6 +89,8 @@ dependencies {
     implementation 'com.github.markzhai:blockcanary-android:1.5.0'
     // view预加载占位符，参考文章：https://www.jianshu.com/p/49439c425ae3
     implementation 'me.samlss:broccoli:1.0.0'
+    // firebase
+    implementation 'com.google.firebase:firebase-analytics:21.0.0'
 }
 
 configurations.all {

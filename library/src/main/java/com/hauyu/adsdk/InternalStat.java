@@ -207,11 +207,17 @@ public class InternalStat {
             return;
         }
         Bundle bundle = new Bundle();
-        bundle.putString("event_id", eventId);
         if (!TextUtils.isEmpty(value)) {
             bundle.putString("entry_point", value);
         }
         mapToBundle(extra, bundle);
+        if (bundle != null && bundle.size() > 25) {
+            try {
+                bundle.remove(Constant.AD_PLACEMENT_NEW);
+                bundle.remove(Constant.AD_ROUND_CPM_NEW);
+            } catch (Exception e) {
+            }
+        }
         Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + bundle);
         String error = null;
         try {

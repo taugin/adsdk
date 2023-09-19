@@ -58,18 +58,14 @@ public class FBStatManager {
         if (isNewUser()) {
             String impTotalPattern = "gav_imp_new_total";
             sendFirebaseGavImpEvent(impTotalPattern, adRevenue);
-            String impTypePattern = String.format(Locale.ENGLISH, "gav_imp_new_type_%s", adType);
-            sendFirebaseGavImpEvent(impTypePattern, adRevenue);
-            String impNetworkPattern = String.format(Locale.ENGLISH, "gav_imp_new_network_%s", formatNetwork);
+            String impNetworkPattern = String.format(Locale.ENGLISH, "gav_imp_new_network_%s_%s", formatNetwork, adType);
             sendFirebaseGavImpEvent(impNetworkPattern, adRevenue);
             String impScenePattern = String.format(Locale.ENGLISH, "gav_imp_new_scene_%s", sceneName);
             sendFirebaseGavImpEvent(impScenePattern, adRevenue);
         }
         String impTotalPattern = "gav_imp_active_total";
         sendFirebaseGavImpEvent(impTotalPattern, adRevenue);
-        String impTypePattern = String.format(Locale.ENGLISH, "gav_imp_active_type_%s", adType);
-        sendFirebaseGavImpEvent(impTypePattern, adRevenue);
-        String impNetworkPattern = String.format(Locale.ENGLISH, "gav_imp_active_network_%s", formatNetwork);
+        String impNetworkPattern = String.format(Locale.ENGLISH, "gav_imp_active_network_%s_%s", formatNetwork, adType);
         sendFirebaseGavImpEvent(impNetworkPattern, adRevenue);
         String impScenePattern = String.format(Locale.ENGLISH, "gav_imp_active_scene_%s", sceneName);
         sendFirebaseGavImpEvent(impScenePattern, adRevenue);
@@ -93,18 +89,14 @@ public class FBStatManager {
         if (isNewUser()) {
             String clkTotalPattern = "gav_clk_new_total";
             sendFirebaseGavClkEvent(clkTotalPattern);
-            String clkTypePattern = String.format(Locale.ENGLISH, "gav_clk_new_type_%s", adType);
-            sendFirebaseGavClkEvent(clkTypePattern);
-            String clkNetworkPattern = String.format(Locale.ENGLISH, "gav_clk_new_network_%s", formatNetwork);
+            String clkNetworkPattern = String.format(Locale.ENGLISH, "gav_clk_new_network_%s_%s", formatNetwork, adType);
             sendFirebaseGavClkEvent(clkNetworkPattern);
             String clkScenePattern = String.format(Locale.ENGLISH, "gav_clk_new_scene_%s", sceneName);
             sendFirebaseGavClkEvent(clkScenePattern);
         }
         String clkTotalPattern = "gav_clk_active_total";
         sendFirebaseGavClkEvent(clkTotalPattern);
-        String clkTypePattern = String.format(Locale.ENGLISH, "gav_clk_active_type_%s", adType);
-        sendFirebaseGavClkEvent(clkTypePattern);
-        String clkNetworkPattern = String.format(Locale.ENGLISH, "gav_clk_active_network_%s", formatNetwork);
+        String clkNetworkPattern = String.format(Locale.ENGLISH, "gav_clk_active_network_%s_%s", formatNetwork, adType);
         sendFirebaseGavClkEvent(clkNetworkPattern);
         String clkScenePattern = String.format(Locale.ENGLISH, "gav_clk_active_scene_%s", sceneName);
         sendFirebaseGavClkEvent(clkScenePattern);
