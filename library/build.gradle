@@ -120,9 +120,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Inmobi
-    implementation 'com.inmobi.monetization:inmobi-ads:10.1.4'
+    implementation 'com.inmobi.monetization:inmobi-ads-kotlin:10.5.8'
     // applovin inmobi mediation
-    implementation 'com.applovin.mediation:inmobi-adapter:10.1.4.3@aar'
+    implementation 'com.applovin.mediation:inmobi-adapter:10.5.8.0@aar'
     //tradplus inmobi mediation
     implementation 'com.tradplusad:tradplus-inmobix:23.10.1.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -144,9 +144,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // ironSource
-    implementation 'com.ironsource.sdk:mediationsdk:7.5.0'
+    implementation 'com.ironsource.sdk:mediationsdk:7.5.1'
     // Vungle applovin mediation
-    implementation 'com.applovin.mediation:ironsource-adapter:7.5.0.0.0@aar'
+    implementation 'com.applovin.mediation:ironsource-adapter:7.5.1.0.1@aar'
     // tradplus mediation
     implementation 'com.tradplusad:tradplus-ironsource:10.10.1.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
