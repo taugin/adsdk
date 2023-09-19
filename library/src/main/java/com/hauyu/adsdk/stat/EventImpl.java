@@ -483,7 +483,7 @@ public class EventImpl implements IEvent {
             InternalStat.sendUmeng(context, eventId, value, maps, InternalStat.isInUmengWhiteList(eventId));
         }
         if (isReportFlurry(context)) {
-            InternalStat.sendFlurry(context, eventId, value, maps);
+            InternalStat.sendFlurry(context, eventId, value, maps, InternalStat.isInFirebaseWhiteList(eventId));
         }
         if (isReportTalkingData(context)) {
             InternalStat.sendTalkingData(context, eventId, value, maps);

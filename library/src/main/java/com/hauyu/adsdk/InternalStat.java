@@ -590,7 +590,7 @@ public class InternalStat {
             sendUmeng(context, key, value, map, isInUmengWhiteList(key));
         }
         sendAppsflyer(context, key, value, map, false);
-        sendFirebaseAnalytics(context, key, value, map);
+        sendFirebaseAnalytics(context, key, value, map, isInFirebaseWhiteList(key));
         sendFlurry(context, key, value, map);
         sendTalkingData(context, key, value, map);
     }
@@ -605,6 +605,10 @@ public class InternalStat {
         } catch (Exception e) {
         }
         return false;
+    }
+
+    public static boolean isInFirebaseWhiteList(String key) {
+        return true;
     }
 
     private static boolean isReportPlatform(Context context, String eventId, String platform, boolean defaultValue) {
