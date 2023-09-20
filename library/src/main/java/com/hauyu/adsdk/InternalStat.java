@@ -129,7 +129,7 @@ public class InternalStat {
         sSdkIntegrated.put(SDK_NAME_FLURRY, sdkIntegrated);
 
         try {
-            Class.forName("com.tendcloud.tenddata.TCAgent");
+            Class.forName("com.tendcloud.tenddata.TalkingDataSDK");
             sdkIntegrated = true;
         } catch (Exception | Error e) {
             Log.iv(Log.TAG_SDK, SDK_NAME_TALKING_DATA + " error : " + e);
