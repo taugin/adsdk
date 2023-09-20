@@ -69,6 +69,8 @@ public class InternalStat {
         sFirebaseWhiteList = Arrays.asList(
                 Constant.AD_IMPRESSION,
                 Constant.AD_IMPRESSION_REVENUE,
+                "app_first_open_ano",
+                "app_first_open_ao",
                 "Total_Ads_Revenue_*",
                 "gav_*",
                 "gav_imp_new_total",

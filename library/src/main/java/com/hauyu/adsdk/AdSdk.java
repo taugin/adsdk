@@ -119,13 +119,13 @@ public class AdSdk {
         }
     }
 
-    private void checkInitialize() {
+    private void checkInitialize(String message) {
         if (mInitialized == null || !mInitialized.get()) {
             boolean debuggable = Utils.isDebuggable(mContext);
             if (debuggable) {
-                throw new IllegalStateException("You must call AdSdk.get(context).init() first");
+                throw new IllegalStateException("You must call AdSdk.get(context).init() first before " + message);
             } else {
-                Log.iv(Log.TAG, "You must call AdSdk.get(context).init() first");
+                Log.iv(Log.TAG, "You must call AdSdk.get(context).init() first before " + message);
             }
         }
     }
@@ -154,7 +154,7 @@ public class AdSdk {
     }
 
     public String getString(String key) {
-        checkInitialize();
+        checkInitialize("call AdSdk.get(context).getString(\"" + key + "\")");
         return DataManager.get(mContext).getString(key);
     }
 
@@ -163,7 +163,7 @@ public class AdSdk {
     }
 
     private AdPlaceLoader getAdLoader(String placeName, boolean forLoad) {
-        checkInitialize();
+        checkInitialize("call getAdLoader(\"" + placeName + "\")");
         Log.iv(Log.TAG_SDK, "getAdLoader forLoad : " + forLoad);
         // 根据规则判断是否需要替换place name
         placeName = ReplaceManager.get(mContext).replacePlaceName(placeName, forLoad);
