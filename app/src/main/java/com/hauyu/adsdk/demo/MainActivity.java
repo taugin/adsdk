@@ -2,6 +2,7 @@ package com.hauyu.adsdk.demo;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -203,6 +204,19 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             }
         }
         return true;
+    }
+
+
+    public static void disableSyncProvider(Context context) {
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            ComponentName componentName = new ComponentName(context, SplashActivity.class);
+            int enableStatus = packageManager.getComponentEnabledSetting(componentName);
+            if (enableStatus != PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
+                packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+            }
+        } catch (Exception | Error e) {
+        }
     }
 
     @Override

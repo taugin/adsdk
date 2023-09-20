@@ -84,9 +84,9 @@ dependencies {
     implementation  'com.umeng.umsdk:common:9.4.7'// 必选
     implementation  'com.umeng.umsdk:asms:1.4.1'// 必选
     implementation 'com.umeng.umsdk:apm:1.5.2' // 错误分析升级为独立SDK，看crash数据请一定集成，可选
-    implementation 'com.talkingdata:talkingdata:4.0.69-1'
+    implementation 'com.talkingdata:talkingdata:5.0.12-1'
 
-    implementation 'com.github.markzhai:blockcanary-android:1.5.0'
+    // implementation 'com.github.markzhai:blockcanary-android:1.5.0'
     // view预加载占位符，参考文章：https://www.jianshu.com/p/49439c425ae3
     implementation 'me.samlss:broccoli:1.0.0'
     // firebase

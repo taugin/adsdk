@@ -15,11 +15,9 @@ import android.text.TextUtils;
 
 import androidx.multidex.MultiDex;
 
-import com.github.moduth.blockcanary.BlockCanary;
-import com.github.moduth.blockcanary.BlockCanaryContext;
 import com.hauyu.adsdk.AdSdk;
 import com.hauyu.adsdk.Utils;
-import com.tendcloud.tenddata.TCAgent;
+import com.tendcloud.tenddata.TalkingDataSDK;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
@@ -38,8 +36,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        BlockCanary.install(this, new BlockCanaryContext() {
-        }).start();
+//        BlockCanary.install(this, new BlockCanaryContext() {
+//        }).start();
         ChangeLanguage.init(this);
         Va.setNetworkProxy();
         initUmeng();
@@ -63,8 +61,8 @@ public class App extends Application {
     private void initTalkingData() {
         String appId = "72EC6DEE7A914070B029C48AAAA7CAD9";
         String channel = getChannel(this);
-        TCAgent.init(this, appId, channel);
-        TCAgent.setReportUncaughtExceptions(true);
+        TalkingDataSDK.setReportUncaughtExceptions(true);
+        TalkingDataSDK.init(this, appId, channel, "");
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -76,12 +74,14 @@ public class App extends Application {
 
             @Override
             public void onActivityResumed(Activity activity) {
-                TCAgent.onPageStart(activity, activity.getClass().getSimpleName());
+                TalkingDataSDK.onPageBegin(activity, activity.getClass().getSimpleName());
+                MobclickAgent.onResume(activity);
             }
 
             @Override
             public void onActivityPaused(Activity activity) {
-                TCAgent.onPageEnd(activity, activity.getClass().getSimpleName());
+                TalkingDataSDK.onPageEnd(activity, activity.getClass().getSimpleName());
+                MobclickAgent.onPause(activity);
             }
 
             @Override
