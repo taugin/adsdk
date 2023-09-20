@@ -560,26 +560,15 @@ public class InternalStat {
         if (extra != null && !extra.isEmpty()) {
             map.putAll(extra);
         }
-        map.put("event_id", eventId);
         if (!TextUtils.isEmpty(value)) {
             map.put("entry_point", value);
-        }
-        double eventValue = 0.0f;
-        try {
-            if (map != null && map.containsKey("value")) {
-                Object object = map.get("value");
-                if (object instanceof Number) {
-                    eventValue = ((Number) object).doubleValue();
-                }
-            }
-        } catch (Exception e) {
         }
         Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + map);
         String error = null;
         try {
-            Class<?> clazz = Class.forName("com.tendcloud.tenddata.TCAgent");
-            Method method = clazz.getDeclaredMethod("onEvent", Context.class, String.class, String.class, Map.class, double.class);
-            method.invoke(null, context, eventId, value, map, eventValue);
+            Class<?> clazz = Class.forName("com.tendcloud.tenddata.TalkingDataSDK");
+            Method method = clazz.getDeclaredMethod("onEvent", Context.class, String.class, Map.class);
+            method.invoke(null, context, eventId, map);
             reportPlatformEventCount(context, platform);
         } catch (Exception e) {
             error = String.valueOf(e);
