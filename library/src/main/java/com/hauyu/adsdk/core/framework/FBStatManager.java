@@ -93,16 +93,16 @@ public class FBStatManager {
         if (isNewUser()) {
             String clkTotalPattern = "gav_clk_new_total";
             sendFirebaseGavClkEvent(clkTotalPattern);
-            String clkNetworkPattern = String.format(Locale.ENGLISH, "gav_clk_new_network_%s_%s", formatNetwork, adType);
+            String clkNetworkPattern = String.format(Locale.ENGLISH, "gav_cnn_%s_%s", formatNetwork, adType);
             sendFirebaseGavClkEvent(clkNetworkPattern);
-            String clkScenePattern = String.format(Locale.ENGLISH, "gav_clk_new_scene_%s", sceneName);
+            String clkScenePattern = String.format(Locale.ENGLISH, "gav_cns_%s", sceneName);
             sendFirebaseGavClkEvent(clkScenePattern);
         }
         String clkTotalPattern = "gav_clk_active_total";
         sendFirebaseGavClkEvent(clkTotalPattern);
-        String clkNetworkPattern = String.format(Locale.ENGLISH, "gav_clk_active_network_%s_%s", formatNetwork, adType);
+        String clkNetworkPattern = String.format(Locale.ENGLISH, "gav_can_%s_%s", formatNetwork, adType);
         sendFirebaseGavClkEvent(clkNetworkPattern);
-        String clkScenePattern = String.format(Locale.ENGLISH, "gav_clk_active_scene_%s", sceneName);
+        String clkScenePattern = String.format(Locale.ENGLISH, "gav_cas_%s", sceneName);
         sendFirebaseGavClkEvent(clkScenePattern);
     }
 
