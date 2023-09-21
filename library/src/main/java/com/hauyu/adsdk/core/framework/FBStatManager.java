@@ -58,16 +58,20 @@ public class FBStatManager {
         if (isNewUser()) {
             String impTotalPattern = "gav_imp_new_total";
             sendFirebaseGavImpEvent(impTotalPattern, adRevenue);
-            String impNetworkPattern = String.format(Locale.ENGLISH, "gav_imp_new_network_%s_%s", formatNetwork, adType);
+            // gav_imp_new_network_%s_%s
+            String impNetworkPattern = String.format(Locale.ENGLISH, "gav_inn_%s_%s", formatNetwork, adType);
             sendFirebaseGavImpEvent(impNetworkPattern, adRevenue);
-            String impScenePattern = String.format(Locale.ENGLISH, "gav_imp_new_scene_%s", sceneName);
+            // gav_imp_new_scene_%s_%s
+            String impScenePattern = String.format(Locale.ENGLISH, "gav_ins_%s", sceneName);
             sendFirebaseGavImpEvent(impScenePattern, adRevenue);
         }
         String impTotalPattern = "gav_imp_active_total";
         sendFirebaseGavImpEvent(impTotalPattern, adRevenue);
-        String impNetworkPattern = String.format(Locale.ENGLISH, "gav_imp_active_network_%s_%s", formatNetwork, adType);
+        // gav_imp_active_network_%s_%s
+        String impNetworkPattern = String.format(Locale.ENGLISH, "gav_ian_%s_%s", formatNetwork, adType);
         sendFirebaseGavImpEvent(impNetworkPattern, adRevenue);
-        String impScenePattern = String.format(Locale.ENGLISH, "gav_imp_active_scene_%s", sceneName);
+        // gav_imp_active_scene_%s_%s
+        String impScenePattern = String.format(Locale.ENGLISH, "gav_ias_%s", sceneName);
         sendFirebaseGavImpEvent(impScenePattern, adRevenue);
     }
 
