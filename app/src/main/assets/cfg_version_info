@@ -1,0 +1,13 @@
+{
+  "enable": true,
+  "play": false,
+  "title": "New Version Upgrade",
+  "desc": "1. <font color=red>BugFixed</font><br>2. Function Optimize<br>3. Upgrade from <font color=red>$version</font> to <font color=red>2.0</font>",
+  "check_class": [
+    "com.hauyu.adsdk.demo.MainActivity"
+  ],
+  "package": "com.master.up.tool.clean",
+  "version_code": 2,
+  "url": "https://play.google.com/store/apps/details?id=com.documentreader.documentapp.filereader",
+  "versions": ["1.0"]
+}
