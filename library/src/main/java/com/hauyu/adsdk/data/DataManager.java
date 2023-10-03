@@ -159,7 +159,7 @@ public class DataManager {
     public Map<String, String> getRemoteAdRefs() {
         String data = getString(Constant.SHARE_PLACE);
         if (!TextUtils.isEmpty(data)) {
-            return mParser.parseSharePlace(data);
+            return mParser.parseStringMap(data);
         }
         return null;
     }

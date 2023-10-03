@@ -3,18 +3,26 @@
     "banner": "https://lh3.googleusercontent.com/p41Qo8tQWr3LaEOMG2bupfS_xFtlIYkuMj2q13Z4-2aBs0U_5lmEbtYYclhLFA6BYNQ=h500-rw",
     "icon": "https://lh3.googleusercontent.com/248FIMyXW92jakHTFpU2LY73r7ELv-WRlWHRH3ooLzGHfqqqXzoYaXiRhdfYwDrms1hV=s180-rw",
     "title": "Fast QRScanner",
-    "pkgname":"com.qrscanner.barcode.tag.reader",
+    "package": "com.qrscanner.barcode.tag.reader",
     "detail": "Smart & Fast QRScanner Free is the fastest scanner.",
-    "linkurl": "",
-    "cta": "INSTALL"
+    "url": "https://d-27.winudf.com/b/apk/Y29tLnFyc2Nhbm5lci5iYXJjb2RlLnRhZy5yZWFkZXJfMTAwMDhfMmE0ZTM1N2E?_fn=U21hcnQgJiBGYXN0IFFSU2Nhbm5lciBGcmVlXzEuMC44X0Fwa3B1cmUuYXBr&_p=Y29tLnFyc2Nhbm5lci5iYXJjb2RlLnRhZy5yZWFkZXI%3D&download_id=1273006044412006&is_hot=false&k=59b9f7b4b8dec7bff85e142bc20ef08d651d6851",
+    "cta": "INSTALL",
+    "cta_locale": {
+      "zh": "安装",
+      "en": "Install"
+    }
   },
   {
     "banner": "https://lh3.googleusercontent.com/yzikk1UIB5XHEi7W3cQK5a1hkmC0EuWlIwLRRLKjphjHpuf6rLirp3K3saExTunGPQ=h500-rw",
     "icon": "https://lh3.googleusercontent.com/nAlSM6DdF4J8QOG4FopKS55ovfZ7iqYsWNDAO-2mSX0PncdFtLDPvDxBQR3dsJT1eQ=s180-rw",
     "title": "Equalizer Pro & Bass Booster",
-    "pkgname":"com.music.bass.equalizer.volume.booster.pro",
+    "package": "com.music.bass.equalizer.volume.booster.pro",
     "detail": "Equalizer Pro & Bass Booster Best Equalizer",
-    "linkurl": "",
-    "cta": "INSTALL"
+    "url": "https://d-03.winudf.com/b/apk/Y29tLm11c2ljLmJhc3MuZXF1YWxpemVyLnZvbHVtZS5ib29zdGVyLnByb18xMDAxOV83MGE1ZWRiNA?_fn=RXF1YWxpemVyIFBybyAmIEJhc3MgQm9vc3Rlcl8xLjAuMTlfQXBrcHVyZS5hcGs&_p=Y29tLm11c2ljLmJhc3MuZXF1YWxpemVyLnZvbHVtZS5ib29zdGVyLnBybw%3D%3D&download_id=1878400773705656&is_hot=false&k=7c6388120b3c554b54496ffdc434fb87651d681f",
+    "cta": "INSTALL",
+    "cta_locale": {
+      "zh": "安装",
+      "en": "Install"
+    }
   }
 ]

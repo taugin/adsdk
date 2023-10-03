@@ -1,6 +1,8 @@
 package com.hauyu.adsdk.adloader.spread;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
@@ -18,6 +21,9 @@ import com.hauyu.adsdk.data.config.SpreadConfig;
 import com.hauyu.adsdk.http.Http;
 import com.hauyu.adsdk.http.OnImageCallback;
 import com.hauyu.adsdk.log.Log;
+
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/4/26.
@@ -111,7 +117,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
 
         if (!TextUtils.isEmpty(spreadConfig.getCta())) {
             if (ctaView instanceof TextView) {
-                ((TextView) ctaView).setText(spreadConfig.getCta());
+                ((TextView) ctaView).setText(getCTAText(rootView.getContext(), spreadConfig));
                 ctaView.setVisibility(View.VISIBLE);
                 ctaView.setOnClickListener(mClickClass);
             }
@@ -133,6 +139,42 @@ public class SpreadBindNativeView extends BaseBindNativeView {
         }
         putAdvertiserInfo(spreadConfig);
         return rootView;
+    }
+
+    private String getCTAText(Context context, SpreadConfig spreadConfig) {
+        if (spreadConfig == null) {
+            return null;
+        }
+        String ctaText = spreadConfig.getCta();
+        try {
+            Map<String, String> map = spreadConfig.getCtaLocale();
+            if (map != null) {
+                String language = getLanguage(context);
+                if (!TextUtils.isEmpty(language)) {
+                    String ctaLocale = map.get(language);
+                    if (!TextUtils.isEmpty(ctaLocale)) {
+                        ctaText = ctaLocale;
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+        return ctaText;
+    }
+
+    private static String getLanguage(Context context) {
+        String language = null;
+        try {
+            Locale locale = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                locale = context.getResources().getConfiguration().getLocales().get(0);
+            } else {
+                locale = context.getResources().getConfiguration().locale;
+            }
+            language = locale.getLanguage().toLowerCase(Locale.ENGLISH);
+        } catch (Exception e) {
+        }
+        return language;
     }
 
     private void loadAndShowImage(final ImageView imageView, String url) {

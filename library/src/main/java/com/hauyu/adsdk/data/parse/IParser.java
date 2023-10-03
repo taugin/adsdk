@@ -119,16 +119,17 @@ public interface IParser {
     String BANNER = "banner";
     String ICON = "icon";
     String TITLE = "title";
-    String PKGNAME = "pkgname";
+    String PACKAGE = "package";
     String DETAIL = "detail";
-    String LINKURL = "linkurl";
+    String URL = "url";
     String CTA = "cta";
+    String CTA_LOCALE = "cta_locale";
 
     PlaceConfig parseAdConfig(String data);
 
     AdPlace parseAdPlace(String data);
 
-    Map<String, String> parseSharePlace(String data);
+    Map<String, String> parseStringMap(String data);
 
     Map<String, Map<String, String>> parseMediationConfig(String data);
 

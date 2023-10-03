@@ -1,5 +1,7 @@
 package com.hauyu.adsdk.data.config;
 
+import java.util.Map;
+
 /**
  * Created by Administrator on 2018-10-19.
  */
@@ -16,6 +18,7 @@ public class SpreadConfig {
     private String linkUrl;
     private String cta;
     private boolean disable;
+    private Map<String, String> ctaLocale;
 
     public String getBanner() {
         return banner;
@@ -79,6 +82,14 @@ public class SpreadConfig {
 
     public void setDisable(boolean disable) {
         this.disable = disable;
+    }
+
+    public Map<String, String> getCtaLocale() {
+        return ctaLocale;
+    }
+
+    public void setCtaLocale(Map<String, String> ctaLocale) {
+        this.ctaLocale = ctaLocale;
     }
 
     @Override

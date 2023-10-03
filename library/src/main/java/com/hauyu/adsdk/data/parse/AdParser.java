@@ -71,7 +71,7 @@ public class AdParser implements IParser {
                 adPlaces = parseAdPlaces(jobj.getString(ALL_PLACES));
             }
             if (jobj.has(SHARE_PLACE)) {
-                sharePlace = parseSharePlace(jobj.getString(SHARE_PLACE));
+                sharePlace = parseStringMap(jobj.getString(SHARE_PLACE));
             }
             if (jobj.has(SCENE_PREFIX)) {
                 scenePrefix = jobj.getString(SCENE_PREFIX);
@@ -338,26 +338,26 @@ public class AdParser implements IParser {
     }
 
     @Override
-    public Map<String, String> parseSharePlace(String data) {
-        Map<String, String> adRefs = null;
+    public Map<String, String> parseStringMap(String data) {
+        Map<String, String> map = null;
         try {
             data = getContent(data);
-            JSONObject jobj = new JSONObject(data);
-            adRefs = new HashMap<String, String>();
-            Iterator<String> iterator = jobj.keys();
+            JSONObject jsonObject = new JSONObject(data);
+            map = new HashMap<String, String>();
+            Iterator<String> iterator = jsonObject.keys();
             String key = null;
             String value = null;
             while (iterator.hasNext()) {
                 key = iterator.next();
-                value = jobj.getString(key);
+                value = jsonObject.getString(key);
                 if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
-                    adRefs.put(key, value);
+                    map.put(key, value);
                 }
             }
         } catch (Exception e) {
-            Log.iv(Log.TAG, "parseAdRefs error : " + e);
+            Log.iv(Log.TAG, "parseStringMap error : " + e);
         }
-        return adRefs;
+        return map;
     }
 
     @Override
@@ -408,20 +408,23 @@ public class AdParser implements IParser {
                 if (jobj.has(TITLE)) {
                     spreadConfig.setTitle(jobj.getString(TITLE));
                 }
-                if (jobj.has(PKGNAME)) {
-                    spreadConfig.setPackageName(jobj.getString(PKGNAME));
+                if (jobj.has(PACKAGE)) {
+                    spreadConfig.setPackageName(jobj.getString(PACKAGE));
                 }
                 if (jobj.has(DETAIL)) {
                     spreadConfig.setDetail(jobj.getString(DETAIL));
                 }
-                if (jobj.has(LINKURL)) {
-                    spreadConfig.setLinkUrl(jobj.getString(LINKURL));
+                if (jobj.has(URL)) {
+                    spreadConfig.setLinkUrl(jobj.getString(URL));
                 }
                 if (jobj.has(CTA)) {
                     spreadConfig.setCta(jobj.getString(CTA));
                 }
                 if (jobj.has(DISABLE)) {
                     spreadConfig.setDisable(jobj.getInt(DISABLE) == 1);
+                }
+                if (jobj.has(CTA_LOCALE)) {
+                    spreadConfig.setCtaLocale(parseStringMap(jobj.getString(CTA_LOCALE)));
                 }
             }
         } catch (Exception e) {

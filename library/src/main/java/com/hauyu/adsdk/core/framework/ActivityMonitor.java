@@ -73,6 +73,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityCreated(final Activity activity, Bundle savedInstanceState) {
+        VersionManager.get(activity).checkVersion(activity);
     }
 
     @Override
