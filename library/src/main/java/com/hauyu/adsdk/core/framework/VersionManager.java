@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hauyu.adsdk.AdSdk;
+import com.hauyu.adsdk.InternalStat;
 import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.log.Log;
 
@@ -149,6 +150,7 @@ public class VersionManager {
                     mContext.startActivity(intent);
                 } catch (Exception e) {
                     Log.iv(Log.TAG_SDK, "error : " + e);
+                    InternalStat.reportEvent(mContext, "report_upgrade_error", "" + e);
                 }
             }
         });
