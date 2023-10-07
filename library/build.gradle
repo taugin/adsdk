@@ -88,10 +88,10 @@ dependencies {
     // tradplus facebook mediation
     // implementation 'com.tradplusad:tradplus-facebook:1.10.3.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
-    implementation 'com.google.android.gms:play-services-ads:22.2.0'
+    implementation 'com.google.android.gms:play-services-ads:22.4.0'
     // admob applovin mediation
-    implementation 'com.applovin.mediation:google-adapter:22.2.0.2@aar'
-    implementation 'com.applovin.mediation:google-ad-manager-adapter:22.2.0.1@aar'
+    implementation 'com.applovin.mediation:google-adapter:22.4.0.0@aar'
+    implementation 'com.applovin.mediation:google-ad-manager-adapter:22.4.0.0@aar'
     // tradplus mediation
     implementation 'com.tradplusad:tradplus-googlex:2.10.3.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
