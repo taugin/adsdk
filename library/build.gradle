@@ -26,10 +26,10 @@ def isSnapshot = true
 def baseVersion = '7.2.4'
 
 android {
-    compileSdkVersion 33
+    compileSdk 33
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionName baseVersion + (isSnapshot ? "-SNAPSHOT" : "")
         buildConfigField "String", "SDK_VERSION_NAME", "\"${versionName}\""
         consumerProguardFiles 'proguard-rules-adsdk.pro'
@@ -182,97 +182,36 @@ dependencies {
     implementation 'com.tradplusad:tradplus-bigo:57.10.3.0.1'
 }
 
-// 发布aar
-apply plugin: 'maven'
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            def url_release = "https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/"
-            def url_snapshot = "https://packages.aliyun.com/maven/repository/2017289-snapshot-sJZcRc/"
-            def username = "5ef3647994513bd170c627be"
-            def password = "xcgJSde4Zuo4"
-            repository(url: isSnapshot ? url_snapshot : url_release) {
-                authentication(userName: username, password: password)
-            }
-            pom.version = android.defaultConfig.versionName
-            pom.artifactId = "adsdk"
-            pom.groupId = "com.hauyu"
-            pom.packaging = "aar"
-        }
-
-    }
-}
-
-/*
-apply plugin: 'maven-publish'
-afterEvaluate {
-    publishing {
-        publications {
-            android.libraryVariants.all { variant ->
-                if (variant.name.contains("Release")) {
-                    "maven${variant.name.cimplementationtalize()}Aar"(MavenPublication) {
-                        def taskName = "bundle${variant.name.cimplementationtalize()}Aar"
-                        println "taskName : " + taskName
-                        artifact tasks.findByName(taskName)
-                        groupId 'com.hauyu'
-                        artifactId 'adsdk' + (variant.productFlavors[0].versionCode == 0 ? "" : variant.productFlavors[0].versionCode)
-                        version android.defaultConfig.versionName
-                        pom.withXml {
-                            def dependenciesNode = asNode().appendNode('dependencies')
-                            configurations.implementation.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
-                                if (dp.version != "unspecified") { // 过滤项目内library引用
-                                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                                    dependencyNode.appendNode('groupId', dp.group)
-                                    dependencyNode.appendNode('artifactId', dp.name)
-                                    dependencyNode.appendNode('version', dp.version)
-
-                                    // for exclusions
-                                    if (dp.excludeRules.size() > 0) {
-                                        def exclusions = dependencyNode.appendNode('exclusions')
-                                        dp.excludeRules.each { ExcludeRule ex ->
-                                            def exclusion = exclusions.appendNode('exclusion')
-                                            exclusion.appendNode('groupId', ex.group != null ? ex.group : "*")
-                                            exclusion.appendNode('artifactId', ex.module)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
-        repositories {
-            def url_release = "https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/"
-            def url_snapshot = "https://packages.aliyun.com/maven/repository/2017289-snapshot-sJZcRc/"
-            maven {
-                url isSnapshot ? url_snapshot : url_release
-                credentials {
-                    username = "5ef3647994513bd170c627be"
-                    password = "xcgJSde4Zuo4"
-                }
-            }
-        }
-//        repositories2 {
-//            def url_release = "https://repo.rdc.aliyun.com/repository/130320-release-ATpVKH/"
-//            def url_snapshot = "https://repo.rdc.aliyun.com/repository/130320-snapshot-FOUUZY/"
-//            maven {
-//                url isSnapshot ? url_snapshot : url_release
-//                credentials {
-//                    username = "CP751G"
-//                    password = "TaMWu1x2fG"
-//                }
-//            }
-//        }
-    }
-}
-*/
-
 apply plugin: 'maven-publish'
 publishing {
     publications {
-        maven(MavenPublication) {
+        AdSdk(MavenPublication) {
+            groupId 'com.hauyu'
+            artifactId 'adsdk'
+            version android.defaultConfig.versionName
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
+    repositories {
+        def url_release = "https://packages.aliyun.com/maven/repository/2017289-release-sRvHjt/"
+        def url_snapshot = "https://packages.aliyun.com/maven/repository/2017289-snapshot-sJZcRc/"
+        def username1 = "5ef3647994513bd170c627be"
+        def password1 = "xcgJSde4Zuo4"
+        maven {
+            url isSnapshot ? url_snapshot : url_release
+            credentials {
+                username = username1
+                password = password1
+            }
+        }
+    }
+}
+
+publishing {
+    publications {
+        AXMLEditor(MavenPublication) {
             groupId 'cn.wjdiankong'
             artifactId 'axmleditor'
             version '1.0.4'
