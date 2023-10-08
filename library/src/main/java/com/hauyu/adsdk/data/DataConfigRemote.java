@@ -109,11 +109,12 @@ public class DataConfigRemote {
     }
 
     private String getAfStatus() {
+        String afStatus = null;
         try {
-            return Utils.getString(mContext, Constant.AF_STATUS, Constant.AF_ORGANIC);
+            afStatus = Utils.getString(mContext, Constant.AF_STATUS, Constant.AF_ORGANIC);
         } catch (Exception e) {
         }
-        return null;
+        return TextUtils.equals(afStatus, Constant.AF_STATUS) ? "auo" : "ano";
     }
 
     private String getAfSuffix() {
