@@ -90,8 +90,8 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
     implementation 'com.google.android.gms:play-services-ads:22.4.0'
     // admob applovin mediation
-    implementation 'com.applovin.mediation:google-adapter:22.4.0.0@aar'
-    implementation 'com.applovin.mediation:google-ad-manager-adapter:22.4.0.0@aar'
+    implementation 'com.applovin.mediation:google-adapter:22.4.0.1@aar'
+    implementation 'com.applovin.mediation:google-ad-manager-adapter:22.4.0.1@aar'
     // tradplus mediation
     implementation 'com.tradplusad:tradplus-googlex:2.10.3.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -128,9 +128,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // unity
-    implementation 'com.unity3d.ads:unity-ads:4.9.0'
+    implementation 'com.unity3d.ads:unity-ads:4.8.0'
     // unity applovin mediation
-    implementation 'com.applovin.mediation:unityads-adapter:4.9.0.0@aar'
+    implementation 'com.applovin.mediation:unityads-adapter:4.9.0.1@aar'
     // tradplus unity mediation
     implementation 'com.tradplusad:tradplus-unity:5.10.3.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
