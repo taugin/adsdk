@@ -76,7 +76,7 @@ public class PidConfig {
 
     private boolean useAvgValue = true;
 
-    private int minAvgCount = 3;
+    private int minAvgCount = 1;
 
     private boolean disableDebugLoad;
 
