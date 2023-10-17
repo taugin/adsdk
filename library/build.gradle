@@ -97,7 +97,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // mintegral
-    def mintegral_version = "16.5.21"
+    def mintegral_version = "16.5.31"
     implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
@@ -114,7 +114,7 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbsplash:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
     // applovin mintegral mediation
-    implementation 'com.applovin.mediation:mintegral-adapter:16.5.21.0@aar'
+    implementation 'com.applovin.mediation:mintegral-adapter:16.5.31.0@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.10.3.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -128,9 +128,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // unity
-    implementation 'com.unity3d.ads:unity-ads:4.8.0'
+    implementation 'com.unity3d.ads:unity-ads:4.9.1'
     // unity applovin mediation
-    implementation 'com.applovin.mediation:unityads-adapter:4.9.0.1@aar'
+    implementation 'com.applovin.mediation:unityads-adapter:4.9.1.0@aar'
     // tradplus unity mediation
     implementation 'com.tradplusad:tradplus-unity:5.10.3.0.1'
 //////////////////////////////////////////////////////////////////////////////////////////
