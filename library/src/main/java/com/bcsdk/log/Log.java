@@ -3,8 +3,6 @@ package com.bcsdk.log;
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
-import com.android.view.widget.BuildConfig;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
@@ -22,7 +20,6 @@ public class Log {
     private static final boolean INTERNAL_LOG_ENABLE;
 
     public static final String TAG = "bcsdk";
-    public static final boolean DB = BuildConfig.DEBUG;
 
     static {
         boolean internal = false;
@@ -32,13 +29,10 @@ public class Log {
             internal = debugFile.exists();
         } catch (Exception e) {
         }
-        INTERNAL_LOG_ENABLE = DB ? DB : internal;
+        INTERNAL_LOG_ENABLE = internal;
     }
 
     private static boolean isLoggable(String tag, int level) {
-        if (DB) {
-            return true;
-        }
         return android.util.Log.isLoggable(tag, level);
     }
 
