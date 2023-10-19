@@ -2,13 +2,12 @@ package com.hauyu.adsdk;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.android.widget.ViewActivity;
+import com.vagee.widget.ViewActivity;
 import com.hauyu.adsdk.adloader.applovin.AppLovinLoader;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.ActivityMonitor;

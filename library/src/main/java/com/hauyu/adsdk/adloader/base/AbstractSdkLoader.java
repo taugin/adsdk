@@ -16,7 +16,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.widget.ViewActivity;
+import com.vagee.widget.ViewActivity;
 import com.hauyu.adsdk.AdImpData;
 import com.hauyu.adsdk.AdReward;
 import com.hauyu.adsdk.InternalStat;

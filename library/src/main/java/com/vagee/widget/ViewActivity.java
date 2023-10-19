@@ -1,4 +1,4 @@
-package com.android.widget;
+package com.vagee.widget;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
