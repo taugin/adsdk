@@ -39,15 +39,15 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
     }
 
     public String getAttribution() {
-        return Utils.getString(mContext, Constant.AF_STATUS, null);
+        return Utils.getString(mContext, Constant.AT_STATUS, null);
     }
 
     public String getMediaSource() {
-        return Utils.getString(mContext, Constant.AF_MEDIA_SOURCE);
+        return Utils.getString(mContext, Constant.AT_MEDIA_SOURCE);
     }
 
     public boolean isFromClick() {
-        return Utils.getBoolean(mContext, Constant.AF_FROM_CLICK);
+        return Utils.getBoolean(mContext, Constant.AT_FROM_CLICK);
     }
 
     private static void createInstance(Context context) {
@@ -69,16 +69,16 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
     }
 
     public void init() {
-        if (TextUtils.isEmpty(Utils.getString(mContext, Constant.AF_STATUS))) {
+        if (TextUtils.isEmpty(Utils.getString(mContext, Constant.AT_STATUS))) {
             try {
                 obtainReferrer();
             } catch (Exception e) {
-                Utils.putString(mContext, Constant.AF_STATUS, Constant.AF_ORGANIC);
+                Utils.putString(mContext, Constant.AT_STATUS, Constant.AT_ORGANIC);
                 OnDataListener l = BcSdk.getOnDataListener();
                 if (l != null) {
                     l.onReportEvent(mContext, "at_status", "error", null);
                     l.onReportEvent(mContext, "at_referrer_exception", (e != null ? e.getLocalizedMessage() : "null"), null);
-                    l.onReferrerResult(Constant.AF_ORGANIC, null, false);
+                    l.onReferrerResult(Constant.AT_ORGANIC, null, false);
                 }
             }
         }
@@ -144,7 +144,7 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
 
     @Override
     public void run() {
-        if (TextUtils.isEmpty(Utils.getString(mContext, Constant.AF_STATUS))) {
+        if (TextUtils.isEmpty(Utils.getString(mContext, Constant.AT_STATUS))) {
             reportReferrer("referrer_client_no_reply");
         }
     }
@@ -216,9 +216,9 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
             if (map != null) {
                 fromClick = map.containsKey("gclid") || map.containsKey("af_tranid") || map.containsKey("adjust_reftag");
             }
-            Utils.putString(mContext, Constant.AF_STATUS, atStatus);
-            Utils.putString(mContext, Constant.AF_MEDIA_SOURCE, mediaSource);
-            Utils.putBoolean(mContext, Constant.AF_FROM_CLICK, fromClick);
+            Utils.putString(mContext, Constant.AT_STATUS, atStatus);
+            Utils.putString(mContext, Constant.AT_MEDIA_SOURCE, mediaSource);
+            Utils.putBoolean(mContext, Constant.AT_FROM_CLICK, fromClick);
 
             ReportRunnable reportRunnable = new ReportRunnable(mContext, atStatus, mediaSource, reportReferrer, map);
             if (mHandler != null) {

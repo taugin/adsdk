@@ -6,10 +6,10 @@ package com.bcsdk.core.constant;
 
 public class Constant {
     public static final String GOOGLE_PLAY_PKGNAME = "com.android.vending";
-    public static final String AF_STATUS = "af_status";
-    public static final String AF_MEDIA_SOURCE = "af_media_source";
-    public static final String AF_FROM_CLICK = "af_from_click";
-    public static final String AF_ORGANIC = "Organic";
+    public static final String AT_STATUS = "at_af_status";
+    public static final String AT_MEDIA_SOURCE = "at_af_media_source";
+    public static final String AT_FROM_CLICK = "at_af_from_click";
+    public static final String AT_ORGANIC = "Organic";
     public static final String PREF_REFERER_REPORT = "pref_referer_report";
     public static final String PREF_FIRST_START = "pref_first_start";
     public static final String EXTRA_PERMISSIONS = "extra_permissions";
