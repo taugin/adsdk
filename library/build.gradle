@@ -113,6 +113,7 @@ dependencies {
     // applovin mintegral mediation
     implementation 'com.applovin.mediation:mintegral-adapter:16.5.71.0@aar'
     // tradplus mintegral mediation
+<<<<<<< HEAD
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.10.7.10.1'
     // google mintegral mediation
     implementation 'com.google.ads.mediation:mintegral:16.5.51.0'
