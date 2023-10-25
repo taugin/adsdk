@@ -86,7 +86,7 @@ dependencies {
     // facebook
     // implementation 'com.facebook.android:audience-network-sdk:6.16.0'
     // applovin facebook mediation
-    // implementation 'com.applovin.mediation:facebook-adapter:6.16.0.0@aar'
+    // implementation 'com.applovin.mediation:facebook-adapter:6.16.0.1@aar'
     // tradplus facebook mediation
     // implementation 'com.tradplusad:tradplus-facebook:1.10.4.0.1'
     // google facebook mediation
@@ -156,9 +156,9 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // ironSource
-    implementation 'com.ironsource.sdk:mediationsdk:7.5.1'
+    implementation 'com.ironsource.sdk:mediationsdk:7.5.2'
     // Vungle applovin mediation
-    implementation 'com.applovin.mediation:ironsource-adapter:7.5.1.0.1@aar'
+    implementation 'com.applovin.mediation:ironsource-adapter:7.5.2.0.0@aar'
     // tradplus mediation
     implementation 'com.tradplusad:tradplus-ironsource:10.10.4.0.1'
     // google ironsource mediation
