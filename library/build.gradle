@@ -122,13 +122,13 @@ dependencies {
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.10.4.0.1'
     // google mintegral mediation
-    implementation 'com.google.ads.mediation:mintegral:16.5.21.0'
+    implementation 'com.google.ads.mediation:mintegral:16.5.31.0'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Inmobi
-    implementation 'com.inmobi.monetization:inmobi-ads-kotlin:10.5.9'
+    implementation 'com.inmobi.monetization:inmobi-ads-kotlin:10.6.0'
     // applovin inmobi mediation
-    implementation 'com.applovin.mediation:inmobi-adapter:10.5.9.0@aar'
+    implementation 'com.applovin.mediation:inmobi-adapter:10.6.0.0@aar'
     //tradplus inmobi mediation
     implementation 'com.tradplusad:tradplus-inmobix:23.10.4.0.1'
     // google inmobi mediation
