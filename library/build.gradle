@@ -1,13 +1,10 @@
 apply plugin: 'com.android.library'
 
 apply plugin: 'stringfog'
+import com.github.megatronking.stringfog.plugin.kg.HardCodeKeyGenerator
 stringfog {
     // 这是加解密 key，可以自由定义。
-//    def random = ["a", "b", "c", "d", "e", "f", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-//    Collections.shuffle(random)
-//    key random.join()
-    key getConfigKey()
-    println "fogkey : " + key
+    kg new HardCodeKeyGenerator(getConfigKey())
     // 开关
     enable true
     // 加解密库的实现类路径，需和上面配置的加解密算法库一致。
@@ -23,7 +20,7 @@ static def getConfigKey() {
 }
 
 def isSnapshot = true
-def baseVersion = '7.3.0'
+def baseVersion = '7.3.1'
 
 android {
     compileSdk 33
@@ -59,7 +56,7 @@ dependencies {
     // firebase
     implementation 'com.google.firebase:firebase-config:21.1.1'
     // stringfog
-    implementation 'com.github.megatronking.stringfog:xor:1.1.0'
+    implementation 'com.github.megatronking.stringfog:xor:4.0.1'
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
