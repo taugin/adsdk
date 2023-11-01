@@ -23,6 +23,7 @@ import java.util.Set;
 
 public class InternalStat {
 
+    private static Object mFacebookObject = null;
     private static final long DEFAULT_MAX_EVENT_COUNT = 10000;
     private static final String AD_REPORT_EVENT_PLATFORM_ENABLE = "ad_report_event_%s";
     private static final String AD_REPORT_EVENT_PLATFORM_WHITE = "ad_report_event_%s_white";
@@ -38,6 +39,7 @@ public class InternalStat {
     private static final String SDK_NAME_APPSFLYER = "appsflyer";
     private static final String SDK_NAME_FLURRY = "flurry";
     private static final String SDK_NAME_TALKING_DATA = "talkingdata";
+    private static final String SDK_NAME_FACEBOOK = "facebook";
     private static final String SDK_NAME_UMENG_OBJECT_METHOD = "umeng_object_method";
 
     private static final List<String> sUmengWhiteList;
@@ -78,10 +80,10 @@ public class InternalStat {
         sSdkIntegrated = new HashMap<>();
         boolean sdkIntegrated;
         try {
-            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
+            Class.forName("com.umeng.analytics.MobclickAgent");
             sdkIntegrated = true;
         } catch (Exception | Error e) {
-            Log.iv(Log.TAG_SDK, SDK_NAME_UMENG + " error : " + e);
+            Log.iv(Log.TAG_SDK, SDK_NAME_UMENG + " init error : " + e);
             sdkIntegrated = false;
         }
         sSdkIntegrated.put(SDK_NAME_UMENG, sdkIntegrated);
@@ -92,7 +94,7 @@ public class InternalStat {
             Method method = clazz.getDeclaredMethod("onEventObject", Context.class, String.class, Map.class);
             umengEventObjectEnable = method != null;
         } catch (Exception | Error e) {
-            Log.iv(Log.TAG_SDK, SDK_NAME_UMENG + " error : " + e);
+            Log.iv(Log.TAG_SDK, SDK_NAME_UMENG + " init error : " + e);
             umengEventObjectEnable = false;
         }
         sSdkIntegrated.put(SDK_NAME_UMENG_OBJECT_METHOD, umengEventObjectEnable);
@@ -101,7 +103,7 @@ public class InternalStat {
             Class.forName("com.google.firebase.analytics.FirebaseAnalytics");
             sdkIntegrated = true;
         } catch (Exception | Error e) {
-            Log.iv(Log.TAG_SDK, SDK_NAME_FIREBASE + " error : " + e);
+            Log.iv(Log.TAG_SDK, SDK_NAME_FIREBASE + " init error : " + e);
             sdkIntegrated = false;
         }
         sSdkIntegrated.put(SDK_NAME_FIREBASE, sdkIntegrated);
@@ -110,7 +112,7 @@ public class InternalStat {
             Class.forName("com.appsflyer.AppsFlyerLib");
             sdkIntegrated = true;
         } catch (Exception | Error e) {
-            Log.iv(Log.TAG_SDK, SDK_NAME_APPSFLYER + " error : " + e);
+            Log.iv(Log.TAG_SDK, SDK_NAME_APPSFLYER + " init error : " + e);
             sdkIntegrated = false;
         }
         sSdkIntegrated.put(SDK_NAME_APPSFLYER, sdkIntegrated);
@@ -119,7 +121,7 @@ public class InternalStat {
             Class.forName("com.flurry.android.FlurryAgent");
             sdkIntegrated = true;
         } catch (Exception | Error e) {
-            Log.iv(Log.TAG_SDK, SDK_NAME_FLURRY + " error : " + e);
+            Log.iv(Log.TAG_SDK, SDK_NAME_FLURRY + " init error : " + e);
             sdkIntegrated = false;
         }
         sSdkIntegrated.put(SDK_NAME_FLURRY, sdkIntegrated);
@@ -128,10 +130,19 @@ public class InternalStat {
             Class.forName("com.tendcloud.tenddata.TalkingDataSDK");
             sdkIntegrated = true;
         } catch (Exception | Error e) {
-            Log.iv(Log.TAG_SDK, SDK_NAME_TALKING_DATA + " error : " + e);
+            Log.iv(Log.TAG_SDK, SDK_NAME_TALKING_DATA + " init error : " + e);
             sdkIntegrated = false;
         }
         sSdkIntegrated.put(SDK_NAME_TALKING_DATA, sdkIntegrated);
+
+        try {
+            Class.forName("com.facebook.appevents.AppEventsLogger");
+            sdkIntegrated = true;
+        } catch (Exception | Error e) {
+            Log.iv(Log.TAG_SDK, SDK_NAME_FACEBOOK + " init error : " + e);
+            sdkIntegrated = false;
+        }
+        sSdkIntegrated.put(SDK_NAME_FACEBOOK, sdkIntegrated);
     }
 
     /**
@@ -235,6 +246,64 @@ public class InternalStat {
         }
     }
 
+    private static void initFacebook(Context context) {
+        if (mFacebookObject != null) {
+            return;
+        }
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.facebook.appevents.AppEventsLogger");
+            Method method = clazz.getMethod("newLogger", Context.class);
+            mFacebookObject = method.invoke(null, context);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.iv(Log.TAG_SDK, "facebook new logger error : " + error);
+        }
+    }
+
+    public static void sendFacebook(Context context, String eventId, String value, Map<String, Object> extra) {
+        sendFacebook(context, eventId, value, extra, true);
+    }
+
+    public static void sendFacebook(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
+        String platform = SDK_NAME_FACEBOOK;
+        Log.iv(Log.TAG_SDK, "[" + eventId + "] report " + platform + " default enable : " + defaultValue);
+        if (!isReportPlatform(context, eventId, platform, defaultValue)) {
+            return;
+        }
+        initFacebook(context);
+        if (mFacebookObject == null) {
+            return;
+        }
+        Bundle bundle = new Bundle();
+
+        if (!TextUtils.isEmpty(value)) {
+            bundle.putString("entry_point", value);
+        } else {
+            bundle.putString("entry_point", eventId);
+        }
+        mapToBundle(extra, bundle);
+        Log.iv(Log.TAG, platform + " event id : " + eventId + " , value : " + bundle);
+
+        String error = null;
+        try {
+            Class<?> clazz = Class.forName("com.facebook.appevents.AppEventsLogger");
+            Method method = clazz.getMethod("logEvent", String.class, Bundle.class);
+            method.invoke(mFacebookObject, eventId, bundle);
+        } catch (Exception e) {
+            error = String.valueOf(e);
+        } catch (Error e) {
+            error = String.valueOf(e);
+        }
+        if (!TextUtils.isEmpty(error)) {
+            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
+        }
+    }
+
     /**
      * 发送友盟计数事件
      *
@@ -285,7 +354,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "error : " + error);
+            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
         }
     }
 
@@ -357,7 +426,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "error : " + error);
+            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
         }
     }
 
@@ -408,7 +477,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "Report Event sendUmengEventValue error : " + error);
+            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
         }
     }
 
@@ -429,7 +498,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "error : " + error);
+            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
         }
     }
 
@@ -481,7 +550,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "error : " + error);
+            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
         }
     }
 
@@ -531,7 +600,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "Report Event sendFlurry error : " + error);
+            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
         }
     }
 
@@ -572,7 +641,7 @@ public class InternalStat {
             error = String.valueOf(e);
         }
         if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "error : " + error);
+            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
         }
     }
 
