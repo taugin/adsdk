@@ -222,7 +222,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
         public final void run() {
             synchronized (mActivityMonitor.mLockObject) {
-                if (!(mActivityMonitor.mResumed) || !(this.mActivityMonitor.mPaused)) {
+                if (!(mActivityMonitor.mResumed) || !(mActivityMonitor.mPaused)) {
                     if (mOnAppMonitorCallbacks != null && !mOnAppMonitorCallbacks.isEmpty()) {
                         for (OnAppMonitorCallback callback : mOnAppMonitorCallbacks) {
                             if (callback != null) {
