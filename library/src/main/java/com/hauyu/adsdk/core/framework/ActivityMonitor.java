@@ -203,6 +203,9 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
         @Override
         public void run() {
+            if (mHandler != null && mCheckRunnable != null) {
+                mHandler.removeCallbacks(mCheckRunnable);
+            }
             if (mOnAppMonitorCallbacks != null && !mOnAppMonitorCallbacks.isEmpty()) {
                 for (OnAppMonitorCallback callback : mOnAppMonitorCallbacks) {
                     if (callback != null) {
