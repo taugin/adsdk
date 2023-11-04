@@ -98,7 +98,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // mintegral
-    def mintegral_version = "16.5.31"
+    def mintegral_version = "16.5.41"
     implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
@@ -115,11 +115,11 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbsplash:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
     // applovin mintegral mediation
-    implementation 'com.applovin.mediation:mintegral-adapter:16.5.31.0@aar'
+    implementation 'com.applovin.mediation:mintegral-adapter:16.5.41.0@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.10.4.0.1'
     // google mintegral mediation
-    implementation 'com.google.ads.mediation:mintegral:16.5.31.0'
+    implementation 'com.google.ads.mediation:mintegral:16.5.41.0'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Inmobi
