@@ -135,19 +135,19 @@ public class DataConfigRemote {
 
     private String readConfigFromRemote(String key) {
         String value = null;
-        String dataWithSuffix = null;
+        String finalData = null;
         String attrSuffix = getAfSuffix();
         String attrKey = key + attrSuffix;
         // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
         String attrData = getRemoteConfig(attrKey);
         if (!TextUtils.isEmpty(attrData)) {
-            dataWithSuffix = attrData;
+            finalData = attrData;
         }
-        if (!TextUtils.equals(key, attrKey) && TextUtils.isEmpty(dataWithSuffix)) {
+        if (!TextUtils.equals(key, attrKey) && TextUtils.isEmpty(finalData)) {
             value = getRemoteConfig(key);
         } else {
             Log.iv(Log.TAG, "remote config : " + key + "[" + getAfStatus() + "]");
-            value = dataWithSuffix;
+            value = finalData;
         }
         return value;
     }
