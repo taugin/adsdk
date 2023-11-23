@@ -143,7 +143,7 @@ public class DataConfigRemote {
         if (!TextUtils.isEmpty(attrData)) {
             dataWithSuffix = attrData;
         }
-        if (TextUtils.isEmpty(dataWithSuffix)) {
+        if (!TextUtils.equals(key, attrKey) && TextUtils.isEmpty(dataWithSuffix)) {
             value = getRemoteConfig(key);
         } else {
             Log.iv(Log.TAG, "remote config : " + key + "[" + getAfStatus() + "]");
