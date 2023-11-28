@@ -863,6 +863,9 @@ public class Utils {
         if (network.contains("admob")) {
             return "admob";
         }
+        if (network.contains("facebook")) {
+            return "facebook";
+        }
         if (network.contains("mintegral")) {
             return "mintegral";
         }
