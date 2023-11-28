@@ -863,7 +863,7 @@ public class Utils {
         if (network.contains("admob")) {
             return "admob";
         }
-        if (network.contains("facebook") || network.contains("meta audience network")) {
+        if (network.contains("facebook") || network.contains("meta audience network") || network.contains("audience-network")) {
             return "facebook";
         }
         if (network.contains("mintegral")) {
