@@ -117,7 +117,11 @@ afterEvaluate {
         }
     }
 }
-apply plugin: 'com.google.gms.google-services'
+if (new File(new File(project.getRootDir(), "app"), "google-services.json").exists() && android.defaultConfig.applicationId == "com.hauyu.adsdk.demo") {
+    apply plugin: 'com.google.gms.google-services'
+    println "apply plugin : ===================== com.google.gms.google-services ======================="
+    googleServices { disableVersionCheck = false }
+}
 /**
  * 判断是否编译aab文件
  * @return
