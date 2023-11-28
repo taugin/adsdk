@@ -3,9 +3,9 @@ package com.hauyu.adsdk.data;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.Utils;
 
 import java.lang.reflect.Method;
 
@@ -135,19 +135,19 @@ public class DataConfigRemote {
 
     private String readConfigFromRemote(String key) {
         String value = null;
-        String finalData = null;
         String attrSuffix = getAfSuffix();
         String attrKey = key + attrSuffix;
         // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
         String attrData = getRemoteConfig(attrKey);
         if (!TextUtils.isEmpty(attrData)) {
-            finalData = attrData;
-        }
-        if (!TextUtils.equals(key, attrKey) && TextUtils.isEmpty(finalData)) {
-            value = getRemoteConfig(key);
+            value = attrData;
         } else {
+            if (!TextUtils.equals(key, attrKey)) {
+                value = getRemoteConfig(key);
+            }
+        }
+        if (!TextUtils.isEmpty(value)) {
             Log.iv(Log.TAG, "remote config : " + key + "[" + getAfStatus() + "]");
-            value = finalData;
         }
         return value;
     }
