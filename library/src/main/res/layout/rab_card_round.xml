@@ -84,23 +84,23 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_gravity="center_horizontal">
+                    android:layout_marginEnd="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginEnd="4dp"
+                        android:layout_weight="0"
                         android:background="@drawable/rab_badge_bg"
                         android:gravity="center"
-                        android:paddingBottom="2dp"
                         android:paddingStart="4dp"
-                        android:paddingEnd="4dp"
                         android:paddingTop="2dp"
+                        android:paddingEnd="4dp"
+                        android:paddingBottom="2dp"
                         android:text="AD"
-                        android:layout_weight="0"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="8sp"
                         android:visibility="invisible" />
@@ -111,9 +111,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center_horizontal"
+                        android:layout_weight="1"
                         android:ellipsize="marquee"
                         android:gravity="center"
-                        android:layout_weight="1"
                         android:maxLines="2"
                         android:text="Charge Master"
                         android:textColor="@color/rabTextPrimaryColor"
@@ -123,8 +123,8 @@
                         android:id="@+id/rab_native_sponsored_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="4dp"
                         android:layout_weight="0"
                         android:background="@drawable/rab_badge_bg"
                         android:gravity="center"
@@ -133,8 +133,9 @@
                         android:paddingEnd="4dp"
                         android:paddingBottom="2dp"
                         android:text="AD"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="8sp" />
+                        android:textColor="@android:color/black"
+                        android:textSize="8sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <TextView

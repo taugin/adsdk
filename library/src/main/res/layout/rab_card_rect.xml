@@ -59,8 +59,9 @@
                         android:paddingEnd="4dp"
                         android:paddingBottom="2dp"
                         android:text="AD"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="8sp" />
+                        android:textColor="@android:color/black"
+                        android:textSize="8sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/rab_native_title"
