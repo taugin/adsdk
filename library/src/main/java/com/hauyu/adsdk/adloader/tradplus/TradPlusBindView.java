@@ -183,6 +183,7 @@ public class TradPlusBindView extends BaseBindNativeView {
                     setSubTitleView(subTitleView, isClickable(AD_DETAIL, mPidConfig));
                     setCallToActionView(callToActionView, isClickable(AD_CTA, mPidConfig));
                     updateCtaButtonBackground(viewGroup, mPidConfig, mParams);
+                    updateAdViewStatus(viewGroup, mParams);
                 }
                 return viewGroup;
             } catch (Exception e) {

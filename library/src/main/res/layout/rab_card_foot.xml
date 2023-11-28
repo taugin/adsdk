@@ -197,6 +197,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:padding="8dp" />
+            android:padding="4dp" />
     </RelativeLayout>
 </FrameLayout>

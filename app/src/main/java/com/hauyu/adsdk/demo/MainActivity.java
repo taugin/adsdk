@@ -385,7 +385,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_NATIVE);
             if (!TextUtils.isEmpty(maxPlaceName)) {
                 ViewGroup frameLayout = new LinearLayout(this);
-                AdParams adParams = new AdParams.Builder().setSceneName("scene_show_max_native").build();
+                AdParams adParams = getNativeParams();
+                adParams.setSceneName("scene_show_max_native");
                 AdSdk.get(mContext).showAdView(maxPlaceName, adParams, frameLayout);
                 showNativeAds(frameLayout);
             } else {

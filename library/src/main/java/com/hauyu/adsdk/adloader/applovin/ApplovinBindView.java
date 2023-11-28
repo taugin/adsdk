@@ -75,6 +75,7 @@ public class ApplovinBindView extends BaseBindNativeView {
                         .build();
                 MaxNativeAdView maxNativeAdView = new MaxNativeAdView(binder, context);
                 updateCtaButtonBackground(maxNativeAdView, pidConfig, mParams);
+                updateAdViewStatus(maxNativeAdView, mParams);
                 return maxNativeAdView;
             } else {
                 Log.iv(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");

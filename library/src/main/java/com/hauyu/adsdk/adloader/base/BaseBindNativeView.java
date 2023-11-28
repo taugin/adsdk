@@ -7,8 +7,6 @@ import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.graphics.drawable.shapes.RectShape;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.graphics.drawable.shapes.Shape;
 import android.text.TextUtils;
@@ -22,12 +20,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.android.widget.R;
+import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.Utils;
-import com.android.widget.R;
 
 import java.util.HashMap;
 import java.util.List;
@@ -331,7 +329,7 @@ public class BaseBindNativeView {
             imageView.setImageBitmap(bitmap);
 
             int corner = Utils.dp2px(imageView.getContext(), 4);
-            float[] outerR = new float[] {corner, corner, corner, corner, corner, corner, corner, corner};
+            float[] outerR = new float[]{corner, corner, corner, corner, corner, corner, corner, corner};
             Shape shape = new RoundRectShape(outerR, null, null);
             ShapeDrawable shapeNormal = new ShapeDrawable(shape);
             shapeNormal.getPaint().setColor(imageView.getContext().getResources().getColor(R.color.rabDefaultIconColor));
@@ -339,5 +337,62 @@ public class BaseBindNativeView {
         } catch (Exception e) {
             Log.iv(Log.TAG, platform + " set default ad icon error : " + e);
         }
+    }
+
+    protected void updateAdViewStatus(final View view, final Params params) {
+        if (view == null || params == null) {
+            return;
+        }
+        try {
+            view.post(() -> updateFacebookChoiceView(view, params));
+        } catch (Exception e) {
+        }
+    }
+
+    private void updateFacebookChoiceView(View view, Params params) {
+        try {
+            if (view != null && params != null) {
+                int adChoiceId = params.getAdChoices();
+                if (adChoiceId > 0) {
+                    View adChoiceView = view.findViewById(adChoiceId);
+                    if (adChoiceView instanceof ViewGroup) {
+                        setAdChoiceBgColor((ViewGroup) adChoiceView, "com.facebook.ads.AdOptionsView", Color.parseColor("#88CCCCCC"));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    private void setAdChoiceBgColor(ViewGroup viewGroup, String className, int color) {
+        if (viewGroup == null) {
+            return;
+        }
+        String name = getClassName(viewGroup);
+        if (TextUtils.equals(name, className)) {
+            viewGroup.setBackgroundColor(color);
+            return;
+        }
+        int count = viewGroup.getChildCount();
+        for (int index = 0; index < count; index++) {
+            View subView = viewGroup.getChildAt(index);
+            String viewClassName = getClassName(subView);
+            if (TextUtils.equals(viewClassName, className)) {
+                subView.setBackgroundColor(color);
+                return;
+            }
+            if (subView instanceof ViewGroup) {
+                setAdChoiceBgColor((ViewGroup) subView, className, color);
+            }
+        }
+    }
+
+    private String getClassName(View view) {
+        try {
+            return view.getClass().getName();
+        } catch (Exception e) {
+        }
+        return null;
     }
 }
