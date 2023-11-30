@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -23,7 +24,6 @@ import com.hauyu.adsdk.OnAdEventListener;
 import com.hauyu.adsdk.OnAdFilterListener;
 import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.VUIHelper;
-import com.hauyu.adsdk.adloader.applovin.AppLovinLoader;
 import com.hauyu.adsdk.adloader.listener.IManagerListener;
 import com.hauyu.adsdk.adloader.listener.ISdkLoader;
 import com.hauyu.adsdk.adloader.listener.OnAdBaseListener;
@@ -44,10 +44,8 @@ import com.hauyu.adsdk.log.Log;
 import com.hauyu.adsdk.stat.EventImpl;
 import com.hauyu.adsdk.stat.IEvent;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -93,9 +91,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     private final AtomicBoolean mLoadTimeout = new AtomicBoolean(false);
     private String mAdNetwork;
     private double mAdRevenue;
-    int mLoadState = STATE_NONE;
-    // applovin SDK需要提前初始化的SDK名称列表
-    private static final List<String> sNeedInitAppLovinFirstSdks = Arrays.asList(Constant.AD_SDK_TRADPLUS, Constant.AD_SDK_APPLOVIN);
+    private int mLoadState = STATE_NONE;
+
+    private long mCostTime = 0;
 
     public AbstractSdkLoader() {
         mHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
@@ -117,28 +115,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         mManagerListener = l;
     }
 
-    /**
-     * 判断是否先初始化applovin，聚合SDK需要重载次函数，先初始化applovin
-     *
-     * @return true
-     */
-    protected boolean isInitApplovin() {
-        try {
-            String sdkName = getSdkName();
-            return sNeedInitAppLovinFirstSdks.contains(sdkName);
-        } catch (Exception e) {
-        }
-        return false;
-    }
-
     @Override
     public void init(Context context, PidConfig pidConfig) {
         mContext = context;
         mPidConfig = pidConfig;
         mStat = EventImpl.get();
-        if (isInitApplovin()) {
-            AppLovinLoader.initApplovin(mContext);
-        }
     }
 
     @Override
@@ -759,6 +740,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         if (state == STATE_REQUEST) {
             mRequestTime = SystemClock.elapsedRealtime();
         } else if (state == STATE_SUCCESS) {
+            mCostTime = SystemClock.elapsedRealtime() - mRequestTime;
             if (mRequestTime > 0) {
                 try {
                     int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
@@ -900,6 +882,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     @Override
     public double getRevenue() {
         return mAdRevenue;
+    }
+
+    @Override
+    public long getCostTime() {
+        return mCostTime;
     }
 
     protected String generateImpressionId() {
@@ -1162,19 +1149,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         if (getAdListener() != null) {
             getAdListener().onRewardAdsStarted();
         }
-    }
-
-    public static interface SDKInitializeListener {
-        void onInitializeSuccess(String appId, String appSecret);
-
-        void onInitializeFailure(String error);
-    }
-
-    public interface SDKInitializeState {
-        int SDK_STATE_UN_INITIALIZE = 0;
-        int SDK_STATE_INITIALIZING = 1;
-        int SDK_STATE_INITIALIZE_SUCCESS = 2;
-        int SDK_STATE_INITIALIZE_FAILURE = 3;
     }
 
     protected String formatLog(String info) {
@@ -1441,5 +1415,119 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     public class AbstractAdListener {
         public String impressionId = null;
         public String sceneName = null;
+    }
+
+
+    public interface SDKInitializeListener {
+        void onInitializeSuccess();
+
+        void onInitializeFailure(String error);
+    }
+
+    public interface SDKInitializeState {
+        int SDK_STATE_UN_INITIALIZE = 0;
+        int SDK_STATE_INITIALIZING = 1;
+        int SDK_STATE_INITIALIZE_SUCCESS = 2;
+        int SDK_STATE_INITIALIZE_FAILURE = 3;
+    }
+
+    private CountDownTimer mStateChecker;
+
+    protected int getSdkInitializeState() {
+        return SDKInitializeState.SDK_STATE_UN_INITIALIZE;
+    }
+
+    protected void setSdkInitializeState(int state) {
+    }
+
+    protected void initializeSdk(SDKInitializeListener sdkInitializeListener) {
+    }
+
+    private long getInitTimeout() {
+        return 30000;
+    }
+
+    private void checkSdkInitializeState(final SDKInitializeListener sdkInitializeListener) {
+        if (mStateChecker == null) {
+            Log.iv(Log.TAG, getSdkName() + " sdk init start checking");
+            mStateChecker = new CountDownTimer(getInitTimeout(), 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    Log.iv(Log.TAG, getSdkName() + " sdk init state check");
+                    if (getSdkInitializeState() == SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS) {
+                        if (mStateChecker != null) {
+                            mStateChecker.cancel();
+                            mStateChecker = null;
+                        }
+                        if (sdkInitializeListener != null) {
+                            sdkInitializeListener.onInitializeSuccess();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    Log.iv(Log.TAG, getSdkName() + " sdk init timeout");
+                    mStateChecker = null;
+                    if (sdkInitializeListener != null) {
+                        sdkInitializeListener.onInitializeFailure("timeout");
+                    }
+                }
+            };
+            mStateChecker.start();
+        } else {
+            Log.iv(Log.TAG, getSdkName() + " sdk initializing");
+            if (sdkInitializeListener != null) {
+                sdkInitializeListener.onInitializeFailure("initializing");
+            }
+        }
+    }
+
+    protected void configSdkInit(final SDKInitializeListener sdkInitializeListener) {
+        if (getSdkInitializeState() == SDKInitializeState.SDK_STATE_INITIALIZING) {
+            checkSdkInitializeState(sdkInitializeListener);
+        } else {
+            if (getSdkInitializeState() == SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS) {
+                if (sdkInitializeListener != null) {
+                    sdkInitializeListener.onInitializeSuccess();
+                }
+                return;
+            }
+            setSdkInitializeState(SDKInitializeState.SDK_STATE_INITIALIZING);
+            if (mHandler != null) {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setSdkInitializeState(SDKInitializeState.SDK_STATE_UN_INITIALIZE);
+                        if (sdkInitializeListener != null) {
+                            sdkInitializeListener.onInitializeFailure("timeout");
+                        }
+                    }
+                }, getInitTimeout());
+            }
+            initializeSdk(new SDKInitializeListener() {
+                @Override
+                public void onInitializeSuccess() {
+                    if (mHandler != null) {
+                        mHandler.removeCallbacksAndMessages(null);
+                    }
+                    setSdkInitializeState(SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS);
+                    if (sdkInitializeListener != null) {
+                        sdkInitializeListener.onInitializeSuccess();
+                    }
+                }
+
+                @Override
+                public void onInitializeFailure(String error) {
+                    if (mHandler != null) {
+                        mHandler.removeCallbacksAndMessages(null);
+                    }
+                    setSdkInitializeState(SDKInitializeState.SDK_STATE_INITIALIZE_FAILURE);
+                    if (sdkInitializeListener != null) {
+                        sdkInitializeListener.onInitializeFailure(error);
+                    }
+                }
+            });
+        }
     }
 }

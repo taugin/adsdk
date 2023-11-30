@@ -44,12 +44,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Administrator on 2018/7/16.
+ * 由于bidding需要获取到令牌，因此要先完成applovin的初始化，然后再进行广告加载
  */
 
 public class AppLovinLoader extends AbstractSdkLoader {
 
     private static AtomicBoolean sApplovinInited = new AtomicBoolean(false);
     private static AppLovinSdkSettings sAppLovinSdkSettings;
+
+    private static int sSDKInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
     private MaxNativeAdLoader mMaxNativeAdLoader;
     private MaxNativeAdView mTemplateNativeView;
     private MaxAd mMaxAd;
@@ -84,28 +87,31 @@ public class AppLovinLoader extends AbstractSdkLoader {
      *
      * @return
      */
-    public static void initApplovin(Context context) {
+    private void initApplovin(SDKInitializeListener sdkInitializeListener) {
         if (!sApplovinInited.getAndSet(true)) {
             try {
-                AppLovinSdk appLovinSdk = getInstance(context);
+                AppLovinSdk appLovinSdk = getInstance(mContext);
                 if (appLovinSdk != null) {
                     appLovinSdk.setMediationProvider("max");
-                    if (isDebugDevice(context)) {
-                        String gaid = Utils.getString(context, Constant.PREF_GAID);
+                    if (isDebugDevice(mContext)) {
+                        String gaid = Utils.getString(mContext, Constant.PREF_GAID);
                         Log.iv(Log.TAG, "applovin debug mode gaid : " + gaid);
                         if (!TextUtils.isEmpty(gaid)) {
                             appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList(new String[]{gaid}));
                         }
                     }
                     try {
-                        appLovinSdk.getSettings().setVerboseLogging(isShowVerbose(context));
+                        appLovinSdk.getSettings().setVerboseLogging(isShowVerbose(mContext));
                     } catch (Exception e) {
                     }
                     Log.iv(Log.TAG, "start initializing applovin sdk");
                     appLovinSdk.initializeSdk(config -> {
                         Log.iv(Log.TAG, "applovin sdk init successfully");
+                        if (sdkInitializeListener != null) {
+                            sdkInitializeListener.onInitializeSuccess();
+                        }
                         try {
-                            if (isShowDebugger(context)) {
+                            if (isShowDebugger(mContext)) {
                                 appLovinSdk.showMediationDebugger();
                             }
                         } catch (Exception e) {
@@ -113,6 +119,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     });
                 }
             } catch (Exception e) {
+                if (sdkInitializeListener != null) {
+                    sdkInitializeListener.onInitializeFailure("" + e);
+                }
+            }
+        } else {
+            if (sdkInitializeListener != null) {
+                sdkInitializeListener.onInitializeSuccess();
             }
         }
     }
@@ -214,12 +227,42 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     @Override
+    protected void initializeSdk(SDKInitializeListener sdkInitializeListener) {
+        initApplovin(sdkInitializeListener);
+    }
+
+    @Override
+    protected int getSdkInitializeState() {
+        return sSDKInitializeState;
+    }
+
+    @Override
+    protected void setSdkInitializeState(int state) {
+        sSDKInitializeState = state;
+    }
+
+    @Override
     public boolean isBannerLoaded() {
         return isBannerLoadedForMax();
     }
 
     @Override
-    public void loadBanner(int adSize) {
+    public void loadBanner(final int adSize) {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess() {
+                loadBannerInternal(adSize);
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.iv(Log.TAG, formatLog("init error : " + error));
+                notifyAdLoadFailed(Constant.AD_ERROR_INITIALIZE, "init error : " + error);
+            }
+        });
+    }
+
+    private void loadBannerInternal(int adSize) {
         AppLovinSdk appLovinSdk = getInstance(getActivity());
         if (appLovinSdk == null) {
             Log.iv(Log.TAG, formatLog("error applovin_sdk_key"));
@@ -261,6 +304,21 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public void loadInterstitial() {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess() {
+                loadInterstitialInternal();
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.iv(Log.TAG, formatLog("init error : " + error));
+                notifyAdLoadFailed(Constant.AD_ERROR_INITIALIZE, "init error : " + error);
+            }
+        });
+    }
+
+    private void loadInterstitialInternal() {
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
@@ -313,6 +371,21 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public void loadRewardedVideo() {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess() {
+                loadRewardedVideoInternal();
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.iv(Log.TAG, formatLog("init error : " + error));
+                notifyAdLoadFailed(Constant.AD_ERROR_INITIALIZE, "init error : " + error);
+            }
+        });
+    }
+
+    private void loadRewardedVideoInternal() {
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
@@ -768,7 +841,22 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void loadNative(Params params) {
+    public void loadNative(final Params params) {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess() {
+                loadNativeInternal(params);
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.iv(Log.TAG, formatLog("init error : " + error));
+                notifyAdLoadFailed(Constant.AD_ERROR_INITIALIZE, "init error : " + error);
+            }
+        });
+    }
+
+    private void loadNativeInternal(Params params) {
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));
@@ -917,6 +1005,21 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public void loadSplash() {
+        configSdkInit(new SDKInitializeListener() {
+            @Override
+            public void onInitializeSuccess() {
+                loadSplashInternal();
+            }
+
+            @Override
+            public void onInitializeFailure(String error) {
+                Log.iv(Log.TAG, formatLog("init error : " + error));
+                notifyAdLoadFailed(Constant.AD_ERROR_INITIALIZE, "init error : " + error);
+            }
+        });
+    }
+
+    private void loadSplashInternal() {
         Activity activity = getActivity();
         if (activity == null) {
             Log.iv(Log.TAG, formatLog("error activity context"));

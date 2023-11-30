@@ -91,4 +91,6 @@ public interface ISdkLoader {
     void showInterstitialWithNative(ViewGroup viewGroup, Params params);
 
     double getRevenue();
+
+    long getCostTime();
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.hauyu.adsdk.AdReward;
+import com.hauyu.adsdk.Utils;
 import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.constant.Constant;
@@ -15,7 +16,6 @@ import com.hauyu.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.core.framework.Params;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
-import com.hauyu.adsdk.Utils;
 import com.tradplus.ads.base.GlobalTradPlus;
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
@@ -40,6 +40,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * 由于tradplus的adapter在加载每家network之前，会先行初始化network，因此tradplus的初始化不需要等待成功
+ */
 public class TradPlusLoader extends AbstractSdkLoader {
 
     private static AtomicBoolean sAtomicBoolean = new AtomicBoolean(false);
@@ -65,6 +68,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
     @Override
     public void init(Context context, PidConfig pidConfig) {
         super.init(context, pidConfig);
+        initTradPlus();
+    }
+
+    private void initTradPlus() {
         String appId = null;
         if (mPidConfig != null) {
             Map<String, String> extra = mPidConfig.getExtra();
@@ -75,7 +82,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         if (!TextUtils.isEmpty(appId)) {
             if (!sAtomicBoolean.getAndSet(true)) {
                 Log.iv(Log.TAG, "init " + getSdkName() + " with app id : " + appId);
-                TradPlusSdk.initSdk(context, appId);
+                TradPlusSdk.initSdk(mContext, appId);
                 TradPlusSdk.setAutoExpiration(false);
             } else {
                 Log.iv(Log.TAG, getSdkName() + " has initialized");
@@ -85,9 +92,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
     }
 
-
     @Override
-    public void loadBanner(int adSize) {
+    public void loadBanner(final int adSize) {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
             notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
@@ -228,7 +234,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPBanner not ready");
         }
     }
-
 
     @Override
     public void loadInterstitial() {
@@ -525,9 +530,8 @@ public class TradPlusLoader extends AbstractSdkLoader {
         return false;
     }
 
-
     @Override
-    public void loadNative(Params params) {
+    public void loadNative(final Params params) {
         if (!checkPidConfig()) {
             Log.iv(Log.TAG, formatLog("config error"));
             notifyAdLoadFailed(Constant.AD_ERROR_CONFIG, "config error");
@@ -666,6 +670,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
         return loaded;
     }
+
 
     @Override
     public void loadSplash() {

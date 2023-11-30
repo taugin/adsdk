@@ -48,7 +48,11 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         // 所有加载成功的loader都将通知给adplaceloader
         OnAdSdkInternalListener placeLoaderListener = getOnAdPlaceLoaderListener();
         if (placeLoaderListener != null) {
-            placeLoaderListener.onLoaded(placeName, source, adType, pid);
+            long costTime = 0;
+            if (loader != null) {
+                costTime = loader.getCostTime();
+            }
+            placeLoaderListener.onLoaded(placeName, source, adType, pid, costTime);
         }
     }
 
