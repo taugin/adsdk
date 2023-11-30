@@ -448,7 +448,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(ad);
                 Log.iv(Log.TAG, formatLog("ad displayed network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network);
+                notifyAdImp(network, sceneName);
             }
 
             @Override
@@ -576,7 +576,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(ad);
                 Log.iv(Log.TAG, formatLog("ad displayed network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network);
+                notifyAdImp(network, sceneName);
             }
 
             @Override
@@ -711,7 +711,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad displayed network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
                 notifyAdOpened();
-                notifyAdImp(network);
+                notifyAdImp(network, sceneName);
             }
 
             @Override
@@ -853,7 +853,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String network = getNetwork(ad);
                 String networkPid = getNetworkPid(ad);
                 reportAdImp(network, networkPid);
-                notifyAdImp(network);
+                notifyAdImp(network, sceneName);
                 reportMaxAdImpData(ad, getAdPlaceName(), impressionId, sceneName);
             }
         };
@@ -958,7 +958,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             maxSplashListener.sceneName = sceneName;
         }
         try {
-            return showSplashForMax(viewGroup);
+            return showSplashForMax(viewGroup, sceneName);
         } catch (Exception e) {
             notifyAdShowFailed(Constant.AD_ERROR_UNKNOWN, e != null ? e.getMessage() : null);
         }
@@ -1016,7 +1016,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(ad);
                 Log.iv(Log.TAG, formatLog("ad displayed network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network);
+                notifyAdImp(network, sceneName);
             }
 
             @Override
@@ -1056,13 +1056,13 @@ public class AppLovinLoader extends AbstractSdkLoader {
         };
     }
 
-    private boolean showSplashForMax(ViewGroup viewGroup) {
+    private boolean showSplashForMax(ViewGroup viewGroup, String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         if (mMaxAppOpenAd != null && mMaxAppOpenAd.isReady()) {
             Log.iv(Log.TAG, "");
             reportAdShow();
             notifyAdShow();
-            mMaxAppOpenAd.showAd(getSceneId());
+            mMaxAppOpenAd.showAd(getSceneId(sceneName));
             updateLastShowTime();
             return true;
         } else {

@@ -1984,13 +1984,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onImp(String placeName, String source, String adType, String network, String pid) {
-            Log.iv(Log.TAG, "notify callback onImp place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , network : " + network + " , pid : " + pid);
+        public void onImpression(String placeName, String source, String adType, String network, String pid, String sceneName) {
+            Log.iv(Log.TAG, "notify callback onImp place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , network : " + network + " , pid : " + pid + " , scene name : " + sceneName);
             if (mOnAdSdkLoadedListener != null) {
-                mOnAdSdkLoadedListener.onImp(placeName, source, adType, network, pid);
+                mOnAdSdkLoadedListener.onImpression(placeName, source, adType, network, pid, sceneName);
             }
             if (mOnAdSdkListener != null) {
-                mOnAdSdkListener.onImp(placeName, source, adType, network, pid);
+                mOnAdSdkListener.onImpression(placeName, source, adType, network, pid, sceneName);
             }
         }
 

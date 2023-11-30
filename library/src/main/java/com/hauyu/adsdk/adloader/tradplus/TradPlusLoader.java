@@ -150,7 +150,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network);
+                notifyAdImp(network, getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : (tpAdInfo != null ? tpAdInfo.sceneId : "")));
                 reportTradPlusImpressionData(tpAdInfo, impressionId);
             }
 
@@ -297,7 +297,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network);
+                notifyAdImp(network, getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : (tpAdInfo != null ? tpAdInfo.sceneId : "")));
                 reportTradPlusImpressionData(tpAdInfo, impressionId);
             }
 
@@ -439,7 +439,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network);
+                notifyAdImp(network, getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : (tpAdInfo != null ? tpAdInfo.sceneId : "")));
                 reportTradPlusImpressionData(tpAdInfo, impressionId);
             }
 
@@ -585,7 +585,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network);
+                notifyAdImp(network, getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : (tpAdInfo != null ? tpAdInfo.sceneId : "")));
                 reportTradPlusImpressionData(tpAdInfo, impressionId);
             }
 
@@ -727,7 +727,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network);
+                notifyAdImp(network, getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : (tpAdInfo != null ? tpAdInfo.sceneId : "")));
                 reportTradPlusImpressionData(tpAdInfo, impressionId);
             }
 

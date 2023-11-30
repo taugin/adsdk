@@ -16,7 +16,7 @@ public interface OnAdEventListener {
     default void onShowFailed(String placeName, String sdkName, String adType, String pid, String msg) {
     }
 
-    default void onImp(String placeName, String sdkName, String adType, String pid) {
+    default void onImpression(String placeName, String sdkName, String adType, String pid, String sceneName) {
     }
 
     default void onClick(String placeName, String sdkName, String adType, String pid, String impressionId) {
@@ -25,6 +25,6 @@ public interface OnAdEventListener {
     default void onDismiss(String placeName, String sdkName, String adType, String pid) {
     }
 
-    default void onAdImpression(AdImpData adImpData) {
+    default void onAdImpData(AdImpData adImpData) {
     }
 }

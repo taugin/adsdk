@@ -112,8 +112,10 @@ public class SpLoader extends AbstractSdkLoader {
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
+        String sceneName = null;
         if (params != null) {
             mParams = params;
+            sceneName = params.getSceneName();
         }
         if (mSpread != null) {
             notifyAdShow();
@@ -122,7 +124,7 @@ public class SpLoader extends AbstractSdkLoader {
             spreadBindNativeView.setClickListener(new ClickClass(spreadConfig));
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadConfig);
             mSpread = null;
-            notifyAdImp();
+            notifyAdImp(null, sceneName);
             reportAdImp();
         } else {
             Log.iv(Log.TAG, formatShowErrorLog("Spread is null"));
@@ -259,15 +261,17 @@ public class SpLoader extends AbstractSdkLoader {
     @Override
     public void showInterstitialWithNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
+        String sceneName = null;
         if (params != null) {
             mParams = params;
+            sceneName = params.getSceneName();
         }
         if (mSpread != null) {
             SpreadConfig spreadConfig = mSpread;
             spreadBindNativeView.setClickListener(new ClickClass(spreadConfig));
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadConfig);
             mSpread = null;
-            notifyAdImp();
+            notifyAdImp(null, sceneName);
             reportAdImp();
         }
     }

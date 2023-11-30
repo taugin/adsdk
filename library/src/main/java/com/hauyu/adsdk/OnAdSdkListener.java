@@ -17,7 +17,7 @@ public interface OnAdSdkListener {
     default void onShow(String placeName, String source, String adType, String pid) {
     }
 
-    default void onImp(String placeName, String source, String adType, String network, String pid) {
+    default void onImpression(String placeName, String source, String adType, String network, String pid, String sceneName) {
     }
 
     default void onClick(String placeName, String source, String adType, String network, String pid) {

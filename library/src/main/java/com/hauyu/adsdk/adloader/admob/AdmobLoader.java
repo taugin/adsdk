@@ -371,7 +371,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, formatLog("ad impression"));
                     String network = getInterstitialNetwork();
                     reportAdImp(network, null);
-                    notifyAdImp(network);
+                    notifyAdImp(network, sceneName);
                 }
             };
             if (interstitialAd != null) {
@@ -506,7 +506,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, formatLog("ad impression"));
                     String network = getRewardNetwork();
                     reportAdImp(network, null);
-                    notifyAdImp(network);
+                    notifyAdImp(network, sceneName);
                 }
             };
             if (rewardedAd != null) {
@@ -670,7 +670,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad impression"));
                 String network = getNativeNetwork();
                 reportAdImp(network, null);
-                notifyAdImp(network);
+                notifyAdImp(network, sceneName);
             }
 
             @Override
@@ -851,7 +851,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, formatLog("ad showed full screen content"));
                     String network = getSplashNetwork();
                     reportAdImp(network, null);
-                    notifyAdImp(network);
+                    notifyAdImp(network, sceneName);
                 }
 
                 @Override

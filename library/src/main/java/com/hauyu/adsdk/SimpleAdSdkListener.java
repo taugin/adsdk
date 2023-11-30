@@ -22,7 +22,7 @@ public class SimpleAdSdkListener implements OnAdSdkListener {
     }
 
     @Override
-    public void onImp(String placeName, String source, String adType, String network, String pid) {
+    public void onImpression(String placeName, String source, String adType, String network, String pid, String sceneName) {
     }
 
     @Override

@@ -61,10 +61,10 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onAdImp(String network) {
+    public void onAdImp(String network, String sceneName) {
         OnAdSdkInternalListener placeLoaderListener = getOnAdPlaceLoaderListener();
         if (placeLoaderListener != null) {
-            placeLoaderListener.onImp(placeName, source, adType, network, pid);
+            placeLoaderListener.onImpression(placeName, source, adType, network, pid, sceneName);
         }
     }
 

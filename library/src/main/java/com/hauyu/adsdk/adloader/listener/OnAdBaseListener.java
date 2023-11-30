@@ -27,7 +27,7 @@ public interface OnAdBaseListener {
     /**
      * banner or native impression
      */
-    public void onAdImp(String network);
+    public void onAdImp(String network, String sceneName);
 
     /**
      * banner or native click

@@ -611,7 +611,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
 
         @Override
-        public void onImp(String placeName, String source, String adType, String network, String pid) {
+        public void onImpression(String placeName, String source, String adType, String network, String pid, String sceneName) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
         }
 
@@ -712,7 +712,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
 
         @Override
-        public void onImp(String placeName, String source, String adType, String network, String pid) {
+        public void onImpression(String placeName, String source, String adType, String network, String pid, String sceneName) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
             updateLoadStatus(textView, placeName);
         }

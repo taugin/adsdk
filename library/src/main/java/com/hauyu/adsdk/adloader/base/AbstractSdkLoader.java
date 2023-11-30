@@ -1058,19 +1058,19 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     }
 
     protected void notifyAdImp() {
-        notifyAdImp(null);
+        notifyAdImp(null, null);
     }
 
     /**
      * banner or native impression
      */
-    protected void notifyAdImp(String network) {
+    protected void notifyAdImp(String network, String sceneName) {
         if (getAdListener() != null) {
-            getAdListener().onAdImp(network);
+            getAdListener().onAdImp(network, sceneName);
         }
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onImp(getAdPlaceName(), getSdkName(), getAdType(), getPid());
+            l.onImpression(getAdPlaceName(), getSdkName(), getAdType(), getPid(), sceneName);
         }
     }
 
@@ -1282,7 +1282,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         AdImpData adImpData = AdImpData.createAdImpData(adImpMap);
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onAdImpression(adImpData);
+            l.onAdImpData(adImpData);
         }
         AdStatManager.get(mContext).recordAdImpression(adImpData);
         reportAdImpression(adImpData);
