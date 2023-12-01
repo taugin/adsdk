@@ -45,16 +45,24 @@
 #appsflyer Analytics
 -keep class com.appsflyer.** {*;}
 
-#Firebase Analytics
--keep class com.google.firebase.analytics.FirebaseAnalytics{*;}
-
 #Facebook Analytics
 -keep class com.facebook.appevents.AppEventsLogger {*;}
+
+#Facebook audience network
+-keep class com.facebook.ads.** {*;}
+-dontwarn com.facebook.ads.**
+
+#Mopub
 -dontwarn com.adywind.nativeads.**
 -dontwarn com.mopub.**
 
 #Firebase Analytics
+-keep class com.google.firebase.analytics.FirebaseAnalytics{*;}
+
+#Firebase Remote Config
 -keep class com.google.firebase.remoteconfig.FirebaseRemoteConfig{*;}
+
+#Flurry
 -keep class com.flurry.** {*;}
 
 # 保留applovin下的所有类及其内部类
@@ -90,6 +98,7 @@
 -keep class com.tradplus.ads.** { *; }
 -keep class com.max.ads.** { *; }
 
+#topon
 -keep public class com.anythink.**
 -keepclassmembers class com.anythink.** {
    *;
