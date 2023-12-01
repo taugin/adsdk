@@ -3,6 +3,9 @@ package com.hauyu.adsdk.adloader.applovin;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +53,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class AppLovinLoader extends AbstractSdkLoader {
 
     private static AtomicBoolean sApplovinInited = new AtomicBoolean(false);
+
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     private static AppLovinSdkSettings sAppLovinSdkSettings;
 
     private static int sSDKInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
@@ -104,9 +109,19 @@ public class AppLovinLoader extends AbstractSdkLoader {
                         appLovinSdk.getSettings().setVerboseLogging(isShowVerbose(mContext));
                     } catch (Exception e) {
                     }
-                    Log.iv(Log.TAG, "start initializing applovin sdk");
+                    Log.iv(Log.TAG, "start initializing " + getSdkName() + " sdk");
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (sdkInitializeListener != null) {
+                                sdkInitializeListener.onInitializeSuccess();
+                            }
+                        }
+                    }, 15000);
+                    final long startInit = SystemClock.elapsedRealtime();
                     appLovinSdk.initializeSdk(config -> {
-                        Log.iv(Log.TAG, "applovin sdk init successfully");
+                        Log.iv(Log.TAG, getSdkName() + " sdk init successfully cost time : " + (SystemClock.elapsedRealtime() - startInit));
+                        mHandler.removeCallbacksAndMessages(null);
                         if (sdkInitializeListener != null) {
                             sdkInitializeListener.onInitializeSuccess();
                         }
@@ -233,6 +248,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     protected int getSdkInitializeState() {
+        if (sSDKInitializeState != SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS) {
+            AppLovinSdk appLovinSdk = getInstance(mContext);
+            if (appLovinSdk != null && appLovinSdk.isInitialized()) {
+                return SDKInitializeState.SDK_STATE_INITIALIZE_SUCCESS;
+            }
+        }
         return sSDKInitializeState;
     }
 

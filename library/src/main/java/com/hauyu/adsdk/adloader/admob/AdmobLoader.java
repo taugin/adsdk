@@ -2,6 +2,9 @@ package com.hauyu.adsdk.adloader.admob;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -59,6 +62,8 @@ public class AdmobLoader extends AbstractSdkLoader {
     protected static final Map<Integer, AdSize> ADSIZE = new HashMap<>();
     private static AtomicBoolean sAdmobInited = new AtomicBoolean(false);
     private static int sSDKInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
+
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     private AdView bannerView;
     private AdView loadingView;
     private InterstitialAd mInterstitialAd;
@@ -122,10 +127,20 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     private void initAdmob(SDKInitializeListener sdkInitializeListener) {
         if (!sAdmobInited.getAndSet(true)) {
-            Log.iv(Log.TAG, "start initializing admob sdk");
+            Log.iv(Log.TAG, "start initializing " + getSdkName() + " sdk");
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (sdkInitializeListener != null) {
+                        sdkInitializeListener.onInitializeSuccess();
+                    }
+                }
+            }, 15000);
+            final long startInit = SystemClock.elapsedRealtime();
             MobileAds.initialize(getActivity(), initializationStatus -> {
-                Log.iv(Log.TAG, "admob sdk init successfully");
+                Log.iv(Log.TAG, getSdkName() + " sdk init successfully cost time : " + (SystemClock.elapsedRealtime() - startInit));
                 try {
+                    mHandler.removeCallbacksAndMessages(null);
                     Map<String, AdapterStatus> statusMap = initializationStatus.getAdapterStatusMap();
                     for (String adapterClass : statusMap.keySet()) {
                         AdapterStatus status = statusMap.get(adapterClass);
