@@ -358,14 +358,14 @@ public class BaseBindNativeView {
             if (view != null && params != null) {
                 if (admob) {
                     if (view instanceof ViewGroup) {
-                        setAdChoiceBgColor((ViewGroup) view, "com.facebook.ads.AdOptionsView", Color.parseColor("#EECCCCCC"));
+                        setAdChoiceBgColor((ViewGroup) view, "com.facebook.ads.AdOptionsView", Color.parseColor("#CCDDDDDD"));
                     }
                 } else {
                     int adChoiceId = params.getAdChoices();
                     if (adChoiceId > 0) {
                         View adChoiceView = view.findViewById(adChoiceId);
                         if (adChoiceView instanceof ViewGroup) {
-                            setAdChoiceBgColor((ViewGroup) adChoiceView, "com.facebook.ads.AdOptionsView", Color.parseColor("#EECCCCCC"));
+                            setAdChoiceBgColor((ViewGroup) adChoiceView, "com.facebook.ads.AdOptionsView", Color.parseColor("#CCDDDDDD"));
                         }
                     }
                 }
