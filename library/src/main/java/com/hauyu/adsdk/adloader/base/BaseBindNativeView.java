@@ -340,23 +340,33 @@ public class BaseBindNativeView {
     }
 
     protected void updateAdViewStatus(final View view, final Params params) {
+        updateAdViewStatus(view, params, false);
+    }
+
+    protected void updateAdViewStatus(final View view, final Params params, boolean admob) {
         if (view == null || params == null) {
             return;
         }
         try {
-            view.post(() -> updateFacebookChoiceView(view, params));
+            view.post(() -> updateFacebookChoiceView(view, params, admob));
         } catch (Exception e) {
         }
     }
 
-    private void updateFacebookChoiceView(View view, Params params) {
+    private void updateFacebookChoiceView(View view, Params params, boolean admob) {
         try {
             if (view != null && params != null) {
-                int adChoiceId = params.getAdChoices();
-                if (adChoiceId > 0) {
-                    View adChoiceView = view.findViewById(adChoiceId);
-                    if (adChoiceView instanceof ViewGroup) {
-                        setAdChoiceBgColor((ViewGroup) adChoiceView, "com.facebook.ads.AdOptionsView", Color.parseColor("#EECCCCCC"));
+                if (admob) {
+                    if (view instanceof ViewGroup) {
+                        setAdChoiceBgColor((ViewGroup) view, "com.facebook.ads.AdOptionsView", Color.parseColor("#EECCCCCC"));
+                    }
+                } else {
+                    int adChoiceId = params.getAdChoices();
+                    if (adChoiceId > 0) {
+                        View adChoiceView = view.findViewById(adChoiceId);
+                        if (adChoiceView instanceof ViewGroup) {
+                            setAdChoiceBgColor((ViewGroup) adChoiceView, "com.facebook.ads.AdOptionsView", Color.parseColor("#EECCCCCC"));
+                        }
                     }
                 }
             }

@@ -8,7 +8,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
         android:paddingTop="8dp"
@@ -23,14 +22,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:layout_toStartOf="@+id/rab_native_action_btn_layout"
             android:layout_toEndOf="@+id/rab_native_icon"
             android:layout_weight="1"
+            android:minHeight="56dp"
             android:orientation="vertical">
 
             <TextView
@@ -41,6 +40,7 @@
                 android:ellipsize="end"
                 android:gravity="start|top"
                 android:maxLines="2"
+                android:minHeight="24dp"
                 android:text="Charge Master"
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
