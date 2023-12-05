@@ -20,7 +20,7 @@ static def getConfigKey() {
 }
 
 def isSnapshot = true
-def baseVersion = '7.4.3'
+def baseVersion = '7.4.4'
 
 android {
     compileSdk 33
@@ -73,7 +73,7 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // applovin
-    implementation 'com.applovin:applovin-sdk:12.0.0'
+    implementation 'com.applovin:applovin-sdk:12.1.0'
     // tradplus applovin mediation
     implementation 'com.tradplusad:tradplus-applovin:9.10.6.20.1'
     // google applovin mediation
@@ -89,9 +89,10 @@ dependencies {
      // google facebook mediation
      implementation 'com.google.ads.mediation:facebook:6.16.0.0'
 //////////////////////////////////////////////////////////////////////////////////////////
+
     implementation 'com.google.android.gms:play-services-ads:22.5.0'
     // admob applovin mediation
-    implementation 'com.applovin.mediation:google-adapter:22.5.0.0@aar'
+    implementation 'com.applovin.mediation:google-adapter:22.5.0.1@aar'
     implementation 'com.applovin.mediation:google-ad-manager-adapter:22.5.0.0@aar'
     // tradplus mediation
     implementation 'com.tradplusad:tradplus-googlex:2.10.6.20.1'
@@ -122,14 +123,14 @@ dependencies {
     implementation 'com.google.ads.mediation:mintegral:16.5.51.0'
 //////////////////////////////////////////////////////////////////////////////////////////
 
-    // Inmobi
-    implementation 'com.inmobi.monetization:inmobi-ads-kotlin:10.6.2'
-    // applovin inmobi mediation
-    implementation 'com.applovin.mediation:inmobi-adapter:10.6.2.0@aar'
-    //tradplus inmobi mediation
-    implementation 'com.tradplusad:tradplus-inmobix:23.10.6.20.1'
-    // google inmobi mediation
-    implementation 'com.google.ads.mediation:inmobi:10.6.0.0'
+//    // Inmobi
+//    implementation 'com.inmobi.monetization:inmobi-ads-kotlin:10.6.2'
+//    // applovin inmobi mediation
+//    implementation 'com.applovin.mediation:inmobi-adapter:10.6.2.0@aar'
+//    //tradplus inmobi mediation
+//    implementation 'com.tradplusad:tradplus-inmobix:23.10.6.20.1'
+//    // google inmobi mediation
+//    implementation 'com.google.ads.mediation:inmobi:10.6.0.0'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // unity
