@@ -166,7 +166,7 @@ aabResGuard {
     //是否允许过滤文件, 被过滤的文件将不会被打包到aab
     enableFilterFiles = true
     // filterList = ['*/armeabi/*', '*/armeabi-v7a/*', '*/arm64-v8a/*', 'META-INF/*']
-    filterList = ["BUNDLE-METADATA/**/proguard.map", "BUNDLE-METADATA/**/dependencies.pb"]
+    filterList = ["BUNDLE-METADATA/**/dependencies.pb"]
     // switch of filter strings
     enableFilterStrings = false
     // strings will be filtered in this file, 过滤文案列表路径，默认在mapping同目录查找
