@@ -910,4 +910,12 @@ public class AdSdk {
     public long getCurrentTimeMillis() {
         return DataManager.get(mContext).getElapsedTimeMillis();
     }
+
+    public void setAdmobInTestMode(boolean inTestMode) {
+        DataManager.get(mContext).setAdmobInTestMode(inTestMode);
+    }
+
+    public void setApplovinInTestMode(boolean inTestMode) {
+        DataManager.get(mContext).setApplovinInTestMode(inTestMode);
+    }
 }

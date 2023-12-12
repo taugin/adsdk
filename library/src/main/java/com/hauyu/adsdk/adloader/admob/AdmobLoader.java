@@ -24,6 +24,7 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.appopen.AppOpenAd;
 import com.google.android.gms.ads.initialization.AdapterStatus;
@@ -40,10 +41,12 @@ import com.hauyu.adsdk.adloader.base.AbstractSdkLoader;
 import com.hauyu.adsdk.adloader.base.BaseBindNativeView;
 import com.hauyu.adsdk.constant.Constant;
 import com.hauyu.adsdk.core.framework.Params;
+import com.hauyu.adsdk.data.DataManager;
 import com.hauyu.adsdk.data.config.PidConfig;
 import com.hauyu.adsdk.log.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -153,9 +156,23 @@ public class AdmobLoader extends AbstractSdkLoader {
                     sdkInitializeListener.onInitializeSuccess();
                 }
             });
+            setTestMode();
         } else {
             if (sdkInitializeListener != null) {
                 sdkInitializeListener.onInitializeSuccess();
+            }
+        }
+    }
+
+    private void setTestMode() {
+        if (DataManager.get(mContext).isAdmobInTestMode()) {
+            String androidId = Utils.getAndroidId(mContext);
+            if (!TextUtils.isEmpty(androidId)) {
+                List<String> testDeviceIds = Arrays.asList(Utils.string2MD5(androidId).toUpperCase(Locale.ENGLISH));
+                Log.iv(Log.TAG, "admob set test device id : " + testDeviceIds);
+                RequestConfiguration configuration =
+                        new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+                MobileAds.setRequestConfiguration(configuration);
             }
         }
     }

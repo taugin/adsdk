@@ -162,18 +162,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
      * @return
      */
     private static boolean isDebugDevice(Context context) {
-        boolean isDebug = false;
-        Map<String, Map<String, String>> config = DataManager.get(context).getMediationConfig();
-        if (config != null) {
-            Map<String, String> applovinConfig = config.get("applovin.sdk.config");
-            if (applovinConfig != null) {
-                try {
-                    isDebug = Boolean.parseBoolean(applovinConfig.get("applovin_debug_device"));
-                } catch (Exception e) {
-                }
-            }
-        }
-        return isDebug;
+        return DataManager.get(context).isApplovinInTestMode();
     }
 
     /**

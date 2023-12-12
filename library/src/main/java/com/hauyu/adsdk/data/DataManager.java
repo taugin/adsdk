@@ -63,11 +63,30 @@ public class DataManager {
     private String mAdMdnCfgMd5 = null;
     private Map<String, Map<String, String>> mMdnCfgMap;
 
+    private boolean mAdmobInTestMode;
+    private boolean mApplovinInTestMode;
+
     public void init() {
         recordFistActiveTime();
         VRemoteConfig.get(mContext).init();
         parseLocalData();
         printGoogleAdvertisingId();
+    }
+
+    public void setAdmobInTestMode(boolean inTestMode) {
+        mAdmobInTestMode = inTestMode;
+    }
+
+    public boolean isAdmobInTestMode() {
+        return mAdmobInTestMode;
+    }
+
+    public void setApplovinInTestMode(boolean inTestMode) {
+        mApplovinInTestMode = inTestMode;
+    }
+
+    public boolean isApplovinInTestMode() {
+        return mApplovinInTestMode;
     }
 
     private void parseLocalData() {
