@@ -88,6 +88,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:22.5.0'
     // admob applovin mediation
     implementation 'com.applovin.mediation:google-adapter:22.5.0.1@aar'
+    // admanager applovin mediation
     implementation 'com.applovin.mediation:google-ad-manager-adapter:22.5.0.0@aar'
     // tradplus mediation
     implementation 'com.tradplusad:tradplus-googlex:2.10.7.10.1'
@@ -113,20 +114,9 @@ dependencies {
     // applovin mintegral mediation
     implementation 'com.applovin.mediation:mintegral-adapter:16.5.71.0@aar'
     // tradplus mintegral mediation
-<<<<<<< HEAD
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.10.7.10.1'
     // google mintegral mediation
     implementation 'com.google.ads.mediation:mintegral:16.5.51.0'
-//////////////////////////////////////////////////////////////////////////////////////////
-
-//    // Inmobi
-//    implementation 'com.inmobi.monetization:inmobi-ads-kotlin:10.6.2'
-//    // applovin inmobi mediation
-//    implementation 'com.applovin.mediation:inmobi-adapter:10.6.2.0@aar'
-//    //tradplus inmobi mediation
-//    implementation 'com.tradplusad:tradplus-inmobix:23.10.7.10.1'
-//    // google inmobi mediation
-//    implementation 'com.google.ads.mediation:inmobi:10.6.0.0'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // unity
@@ -157,31 +147,6 @@ dependencies {
     implementation 'com.tradplusad:tradplus-ironsource:10.10.7.10.1'
     // google ironsource mediation
     implementation 'com.google.ads.mediation:ironsource:7.5.2.0'
-//////////////////////////////////////////////////////////////////////////////////////////
-
-    // implementation 'com.adcolony:sdk:4.8.0'
-    // applovin adcolony mediation
-    // implementation 'com.applovin.mediation:adcolony-adapter:4.8.0.3'
-    // tradplus adcolony mediation
-    // implementation 'com.tradplusad:tradplus-adcolony:4.10.7.10.1'
-//////////////////////////////////////////////////////////////////////////////////////////
-
-    // Tapjoy
-    // implementation 'com.tapjoy:tapjoy-android-sdk:13.1.2@aar'
-    // applovin tapjoy mediation
-    // implementation 'com.applovin.mediation:tapjoy-adapter:13.1.2.0@aar'
-    // tradplus tapjoy mediation
-    // implementation 'com.tradplusad:tradplus-tapjoy:6.10.7.10.1'
-    // google tapjoy mediation
-    // implementation 'com.google.ads.mediation:tapjoy:13.1.2.0'
-//////////////////////////////////////////////////////////////////////////////////////////
-
-    // chartboost
-    // implementation 'com.chartboost:chartboost-sdk:9.2.0'
-    // applovin chartboost mediation
-    // implementation 'com.applovin.mediation:chartboost-adapter:9.2.0.0@aar'
-    // tradplus chartboost mediation
-    // implementation 'com.tradplusad:tradplus-chartboostx:15.10.7.10.1'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Bigo
