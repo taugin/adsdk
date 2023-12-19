@@ -15,8 +15,8 @@ import android.text.TextUtils;
 
 import androidx.multidex.MultiDex;
 
-import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.Utils;
+import com.komob.adsdk.AdSdk;
+import com.komob.adsdk.utils.Utils;
 import com.tendcloud.tenddata.TalkingDataSDK;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;

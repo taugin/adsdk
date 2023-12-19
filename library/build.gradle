@@ -14,7 +14,7 @@ stringfog {
 }
 
 def isSnapshot = true
-def baseVersion = '7.4.6'
+def baseVersion = '1.0.0'
 
 android {
     compileSdk 33
@@ -163,7 +163,7 @@ apply plugin: 'maven-publish'
 publishing {
     publications {
         AdSdk(MavenPublication) {
-            groupId 'com.hauyu'
+            groupId 'com.komob'
             artifactId 'adsdk'
             version android.defaultConfig.versionName
             afterEvaluate {

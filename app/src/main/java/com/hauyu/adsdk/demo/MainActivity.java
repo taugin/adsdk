@@ -34,17 +34,17 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hauyu.adsdk.AdExtra;
-import com.hauyu.adsdk.AdImpData;
-import com.hauyu.adsdk.AdParams;
-import com.hauyu.adsdk.AdReward;
-import com.hauyu.adsdk.AdSdk;
-import com.hauyu.adsdk.OnAdFilterListener;
-import com.hauyu.adsdk.SimpleAdSdkListener;
-import com.hauyu.adsdk.Utils;
-import com.hauyu.adsdk.constant.Constant;
-import com.hauyu.adsdk.core.db.DBManager;
-import com.hauyu.adsdk.core.framework.ActivityMonitor;
+import com.komob.adsdk.AdExtra;
+import com.komob.adsdk.AdImpData;
+import com.komob.adsdk.AdParams;
+import com.komob.adsdk.AdReward;
+import com.komob.adsdk.AdSdk;
+import com.komob.adsdk.OnAdFilterListener;
+import com.komob.adsdk.SimpleAdSdkListener;
+import com.komob.adsdk.utils.Utils;
+import com.komob.adsdk.constant.Constant;
+import com.komob.adsdk.core.db.DBManager;
+import com.komob.adsdk.core.framework.ActivityMonitor;
 import com.hauyu.adsdk.demo.view.CustomDrawable;
 
 import java.math.BigDecimal;

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="rabTextPrimaryColor">@android:color/black</color>
-    <color name="rabTextSecondaryColor">@android:color/darker_gray</color>
-    <color name="rabActionBtnColor">#FF4080FF</color>
-    <color name="rabActionBtnPressedColor">#FF3973E5</color>
-    <color name="rabCloseBtnColor">#AAEEEEEE</color>
-    <color name="rabCloseBtnPressedColor">#AACCCCCC</color>
-    <color name="rabDefaultIconColor">#FF4080FF</color>
+    <color name="komTextPrimaryColor">@android:color/black</color>
+    <color name="komTextSecondaryColor">@android:color/darker_gray</color>
+    <color name="komActionBtnColor">#FF4080FF</color>
+    <color name="komActionBtnPressedColor">#FF3973E5</color>
+    <color name="komCloseBtnColor">#AAEEEEEE</color>
+    <color name="komCloseBtnPressedColor">#AACCCCCC</color>
+    <color name="komDefaultIconColor">#FF4080FF</color>
 </resources>

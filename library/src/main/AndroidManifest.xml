@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vagee.widget">
+    package="com.komob.api">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,15 +12,14 @@
             android:required="false" />
 
         <activity
-            android:name=".ViewActivity"
+            android:name=".AdViewUI"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:exported="false"
-            android:icon="@drawable/rab_transp_bg"
             android:label=""
             android:theme="@android:style/Theme.Translucent" />
 
         <activity
-            android:name=".PermissionUI"
+            android:name=".PermUI"
             android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleTask"

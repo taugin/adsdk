@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="RabButtonBaseStyle">
+    <style name="KomButtonBaseStyle">
         <item name="android:paddingStart">10dp</item>
         <item name="android:paddingEnd">10dp</item>
         <item name="android:layout_centerVertical">true</item>
@@ -14,38 +14,38 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="RabButtonStyle" parent="RabButtonBaseStyle">
-        <item name="android:background">@drawable/rab_action_bg</item>
+    <style name="KomButtonStyle" parent="KomButtonBaseStyle">
+        <item name="android:background">@drawable/kom_action_bg</item>
     </style>
 
-    <style name="RabButtonTinyStyle" parent="RabButtonBaseStyle">
-        <item name="android:background">@drawable/rab_green_bg</item>
+    <style name="KomButtonTinyStyle" parent="KomButtonBaseStyle">
+        <item name="android:background">@drawable/kom_green_bg</item>
         <item name="android:layout_height">match_parent</item>
     </style>
 
-    <style name="RabButtonMicroStyle" parent="RabButtonBaseStyle">
-        <item name="android:background">@drawable/rab_green_bg</item>
+    <style name="KomButtonMicroStyle" parent="KomButtonBaseStyle">
+        <item name="android:background">@drawable/kom_green_bg</item>
         <item name="android:layout_height">48dp</item>
     </style>
 
-    <style name="RabButtonSmallStyle" parent="RabButtonBaseStyle">
-        <item name="android:background">@drawable/rab_action_bg</item>
+    <style name="KomButtonSmallStyle" parent="KomButtonBaseStyle">
+        <item name="android:background">@drawable/kom_action_bg</item>
         <item name="android:layout_height">40dp</item>
     </style>
 
-    <style name="RabButtonMediumStyle" parent="RabButtonBaseStyle">
-        <item name="android:background">@drawable/rab_action_bg</item>
+    <style name="KomButtonMediumStyle" parent="KomButtonBaseStyle">
+        <item name="android:background">@drawable/kom_action_bg</item>
     </style>
 
-    <style name="RabButtonLargeStyle" parent="RabButtonBaseStyle">
-        <item name="android:background">@drawable/rab_action_bg</item>
+    <style name="KomButtonLargeStyle" parent="KomButtonBaseStyle">
+        <item name="android:background">@drawable/kom_action_bg</item>
     </style>
 
-    <style name="RabButtonFullStyle" parent="RabButtonBaseStyle">
-        <item name="android:background">@drawable/rab_green_bg</item>
+    <style name="KomButtonFullStyle" parent="KomButtonBaseStyle">
+        <item name="android:background">@drawable/kom_green_bg</item>
     </style>
 
-    <style name="RabButtonFullStyle_Flat" parent="RabButtonBaseStyle">
-        <item name="android:background">@drawable/rab_green_bg</item>
+    <style name="KomButtonFullStyle_Flat" parent="KomButtonBaseStyle">
+        <item name="android:background">@drawable/kom_green_bg</item>
     </style>
 </resources>
