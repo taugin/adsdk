@@ -42,7 +42,7 @@ import java.util.Random;
  * Created by Administrator on 2018/2/11.
  */
 
-public class Utils {
+public class BcUtils {
     private static char HEX_DIGITS[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'A', 'B', 'C', 'D', 'E', 'F'};
 
@@ -204,7 +204,7 @@ public class Utils {
         if (isContainKey(context, key)) {
             return key;
         }
-        return "pref_" + Utils.string2MD5(key);
+        return "pref_" + BcUtils.string2MD5(key);
     }
 
     private static boolean isContainKey(Context context, String key) {
@@ -451,7 +451,7 @@ public class Utils {
     public static Intent getLaunchIntent(Context context) {
         Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
         if (intent == null) {
-            Intent queryIntent = new Intent(Utils.getShortcutAction(context));
+            Intent queryIntent = new Intent(BcUtils.getShortcutAction(context));
             queryIntent.setPackage(context.getPackageName());
             List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(queryIntent, 0);
             if (list != null && !list.isEmpty()) {

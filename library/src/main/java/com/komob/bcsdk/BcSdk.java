@@ -11,7 +11,7 @@ import com.komob.api.PermUI;
 import com.komob.bcsdk.constant.Constant;
 import com.komob.bcsdk.log.Log;
 import com.komob.bcsdk.manager.ReferrerManager;
-import com.komob.bcsdk.utils.Utils;
+import com.komob.bcsdk.utils.BcUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +58,7 @@ public class BcSdk {
      * @param context
      */
     public static void startNotificationListener(Context context) {
-        Utils.enterNotificationSettings(context);
+        BcUtils.enterNotificationSettings(context);
     }
 
     /**
@@ -68,15 +68,15 @@ public class BcSdk {
      * @return
      */
     public static boolean isNotificationListenerEnabled(Context context) {
-        return Utils.notificationListenersEnable(context);
+        return BcUtils.notificationListenersEnable(context);
     }
 
     public static void startUsageSettings(Context context) {
-        Utils.enterUsageSettings(context);
+        BcUtils.enterUsageSettings(context);
     }
 
     public static void startOverlayDrawSettings(Context context) {
-        Utils.openOverlaySettings(context);
+        BcUtils.openOverlaySettings(context);
     }
 
     public static void setOnPermissionListener(OnPermissionListener l) {
@@ -236,7 +236,7 @@ public class BcSdk {
             return;
         }
         List<String> permissions = Arrays.asList(Manifest.permission.SYSTEM_ALERT_WINDOW);
-        if (Utils.canDrawOverlays(context)) {
+        if (BcUtils.canDrawOverlays(context)) {
             if (listener != null) {
                 onPermissionListener.onOverlayDrawResult(true);
             }
@@ -253,7 +253,7 @@ public class BcSdk {
             } catch (Exception e) {
                 Log.iv(Log.TAG, "error : " + e);
                 if (onPermissionListener != null) {
-                    onPermissionListener.onOverlayDrawResult(Utils.canDrawOverlays(context));
+                    onPermissionListener.onOverlayDrawResult(BcUtils.canDrawOverlays(context));
                 }
             }
         }
@@ -275,7 +275,7 @@ public class BcSdk {
             return;
         }
         List<String> permissions = Arrays.asList(Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE);
-        if (Utils.notificationListenersEnable(context)) {
+        if (BcUtils.notificationListenersEnable(context)) {
             if (listener != null) {
                 onPermissionListener.onNotificationListenerResult(true);
             }
@@ -292,7 +292,7 @@ public class BcSdk {
             } catch (Exception e) {
                 Log.iv(Log.TAG, "error : " + e);
                 if (onPermissionListener != null) {
-                    onPermissionListener.onNotificationListenerResult(Utils.notificationListenersEnable(context));
+                    onPermissionListener.onNotificationListenerResult(BcUtils.notificationListenersEnable(context));
                 }
             }
         }
@@ -314,7 +314,7 @@ public class BcSdk {
             return;
         }
         List<String> permissions = Arrays.asList(Manifest.permission.PACKAGE_USAGE_STATS);
-        if (Utils.isAccessUsageEnable(context)) {
+        if (BcUtils.isAccessUsageEnable(context)) {
             if (listener != null) {
                 onPermissionListener.onUsageAccessResult(true);
             }
@@ -331,7 +331,7 @@ public class BcSdk {
             } catch (Exception e) {
                 Log.iv(Log.TAG, "error : " + e);
                 if (onPermissionListener != null) {
-                    onPermissionListener.onUsageAccessResult(Utils.isAccessUsageEnable(context));
+                    onPermissionListener.onUsageAccessResult(BcUtils.isAccessUsageEnable(context));
                 }
             }
         }
@@ -342,9 +342,9 @@ public class BcSdk {
     }
 
     private static void recordFirstStart(Context context) {
-        long firstTime = Utils.getLong(context, Constant.PREF_FIRST_START, 0);
+        long firstTime = BcUtils.getLong(context, Constant.PREF_FIRST_START, 0);
         if (firstTime <= 0) {
-            Utils.putLong(context, Constant.PREF_FIRST_START, System.currentTimeMillis());
+            BcUtils.putLong(context, Constant.PREF_FIRST_START, System.currentTimeMillis());
         }
     }
 }

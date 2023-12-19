@@ -30,7 +30,7 @@ import com.komob.adsdk.InternalStat;
 import com.komob.bcsdk.BcSdk;
 import com.komob.bcsdk.constant.Constant;
 import com.komob.bcsdk.log.Log;
-import com.komob.bcsdk.utils.Utils;
+import com.komob.bcsdk.utils.BcUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +61,7 @@ public class PermUI extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DEBUG_LOG = Utils.isDebuggable(this);
+        DEBUG_LOG = BcUtils.isDebuggable(this);
         if (DEBUG_LOG) {
             Log.iv(Log.TAG, "");
         }
@@ -124,9 +124,9 @@ public class PermUI extends Activity {
                 intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                 intent.setData(Uri.parse("package:" + getPackageName()));
             } else {
-                intent = Utils.getIntentUnderM(this);
+                intent = BcUtils.getIntentUnderM(this);
             }
-            if (intent == null || !Utils.canStart(this, intent)) {
+            if (intent == null || !BcUtils.canStart(this, intent)) {
                 intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                 intent.setData(Uri.parse("package:" + getPackageName()));
             }
@@ -146,7 +146,7 @@ public class PermUI extends Activity {
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 intent.setData(Uri.parse("package:" + getPackageName()));
-                if (!Utils.canPerformIntent(this, intent)) {
+                if (!BcUtils.canPerformIntent(this, intent)) {
                     intent.setData(null);
                 }
             }
@@ -164,7 +164,7 @@ public class PermUI extends Activity {
         }
         try {
             Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
-            if (!Utils.canPerformIntent(this, intent)) {
+            if (!BcUtils.canPerformIntent(this, intent)) {
                 intent = new Intent();
                 ComponentName cn = new ComponentName("com.android.settings", "com.android.settings.Settings$NotificationAccessSettingsActivity");
                 intent.setComponent(cn);
@@ -296,7 +296,7 @@ public class PermUI extends Activity {
         if (DEBUG_LOG) {
             Log.iv(Log.TAG, "");
         }
-        boolean grant = Utils.canDrawOverlays(this);
+        boolean grant = BcUtils.canDrawOverlays(this);
         if (BcSdk.getPermissionListener() != null) {
             BcSdk.getPermissionListener().onOverlayDrawResult(grant);
         }
@@ -307,7 +307,7 @@ public class PermUI extends Activity {
         if (DEBUG_LOG) {
             Log.iv(Log.TAG, "");
         }
-        boolean grant = Utils.isAccessUsageEnable(this);
+        boolean grant = BcUtils.isAccessUsageEnable(this);
         if (BcSdk.getPermissionListener() != null) {
             BcSdk.getPermissionListener().onUsageAccessResult(grant);
         }
@@ -318,7 +318,7 @@ public class PermUI extends Activity {
         if (DEBUG_LOG) {
             Log.iv(Log.TAG, "");
         }
-        boolean grant = Utils.notificationListenersEnable(this);
+        boolean grant = BcUtils.notificationListenersEnable(this);
         if (BcSdk.getPermissionListener() != null) {
             BcSdk.getPermissionListener().onNotificationListenerResult(grant);
         }
@@ -338,7 +338,7 @@ public class PermUI extends Activity {
             label = pm.getApplicationInfo(getPackageName(), 0).loadLabel(pm).toString();
         } catch (Exception | Error e) {
         }
-        String content = Utils.getStringValue(this, "bsc_permission_content", label);
+        String content = BcUtils.getStringValue(this, "bsc_permission_content", label);
         SpannableStringBuilder spanBuilder = null;
         try {
             int index = content.indexOf(label);
@@ -361,28 +361,28 @@ public class PermUI extends Activity {
 
         TextView titleView = new TextView(context);
         LinearLayout.LayoutParams titleLayoutParams = new LinearLayout.LayoutParams(-1, -2);
-        titleLayoutParams.topMargin = Utils.dp2px(context, 14);
-        titleLayoutParams.bottomMargin = Utils.dp2px(context, 14);
+        titleLayoutParams.topMargin = BcUtils.dp2px(context, 14);
+        titleLayoutParams.bottomMargin = BcUtils.dp2px(context, 14);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            titleLayoutParams.setMarginStart(Utils.dp2px(context, 24));
-            titleLayoutParams.setMarginEnd(Utils.dp2px(context, 24));
+            titleLayoutParams.setMarginStart(BcUtils.dp2px(context, 24));
+            titleLayoutParams.setMarginEnd(BcUtils.dp2px(context, 24));
         } else {
-            titleLayoutParams.leftMargin = Utils.dp2px(context, 24);
-            titleLayoutParams.rightMargin = Utils.dp2px(context, 24);
+            titleLayoutParams.leftMargin = BcUtils.dp2px(context, 24);
+            titleLayoutParams.rightMargin = BcUtils.dp2px(context, 24);
         }
         rootLayout.addView(titleView, titleLayoutParams);
-        titleView.setText(Utils.getStringValue(this, "bsc_permission_title"));
+        titleView.setText(BcUtils.getStringValue(this, "bsc_permission_title"));
         titleView.setTextColor(Color.BLACK);
         titleView.setTextSize(18);
 
         TextView descView = new TextView(context);
         LinearLayout.LayoutParams descLayoutParams = new LinearLayout.LayoutParams(-1, -2);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            descLayoutParams.setMarginStart(Utils.dp2px(context, 24));
-            descLayoutParams.setMarginEnd(Utils.dp2px(context, 24));
+            descLayoutParams.setMarginStart(BcUtils.dp2px(context, 24));
+            descLayoutParams.setMarginEnd(BcUtils.dp2px(context, 24));
         } else {
-            descLayoutParams.leftMargin = Utils.dp2px(context, 24);
-            descLayoutParams.rightMargin = Utils.dp2px(context, 24);
+            descLayoutParams.leftMargin = BcUtils.dp2px(context, 24);
+            descLayoutParams.rightMargin = BcUtils.dp2px(context, 24);
         }
         rootLayout.addView(descView, descLayoutParams);
         updatePermissionContent(descView);
@@ -391,24 +391,24 @@ public class PermUI extends Activity {
 
         LinearLayout buttonLayout = new LinearLayout(context);
         LinearLayout.LayoutParams buttonLayoutParams = new LinearLayout.LayoutParams(-1, -2);
-        buttonLayoutParams.topMargin = Utils.dp2px(context, 14);
-        buttonLayoutParams.bottomMargin = Utils.dp2px(context, 8);
+        buttonLayoutParams.topMargin = BcUtils.dp2px(context, 14);
+        buttonLayoutParams.bottomMargin = BcUtils.dp2px(context, 8);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            buttonLayoutParams.setMarginStart(Utils.dp2px(context, 12));
-            buttonLayoutParams.setMarginEnd(Utils.dp2px(context, 12));
+            buttonLayoutParams.setMarginStart(BcUtils.dp2px(context, 12));
+            buttonLayoutParams.setMarginEnd(BcUtils.dp2px(context, 12));
         } else {
-            buttonLayoutParams.leftMargin = Utils.dp2px(context, 12);
-            buttonLayoutParams.rightMargin = Utils.dp2px(context, 12);
+            buttonLayoutParams.leftMargin = BcUtils.dp2px(context, 12);
+            buttonLayoutParams.rightMargin = BcUtils.dp2px(context, 12);
         }
         rootLayout.addView(buttonLayout, buttonLayoutParams);
         buttonLayout.setGravity(Gravity.RIGHT);
         buttonLayout.setWeightSum(3.5f);
 
         TextView cancelButton = new TextView(context);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, Utils.dp2px(context, 42));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, BcUtils.dp2px(context, 42));
         params.weight = 1;
         buttonLayout.addView(cancelButton, params);
-        cancelButton.setText(Utils.getStringValue(this, "bsc_cancel"));
+        cancelButton.setText(BcUtils.getStringValue(this, "bsc_cancel"));
         cancelButton.setBackgroundResource(android.R.drawable.list_selector_background);
         cancelButton.setTextColor(Color.DKGRAY);
         cancelButton.setGravity(Gravity.CENTER);
@@ -423,7 +423,7 @@ public class PermUI extends Activity {
 
         TextView settingsButton = new TextView(context);
         buttonLayout.addView(settingsButton, params);
-        settingsButton.setText(Utils.getStringValue(this, "bsc_settings"));
+        settingsButton.setText(BcUtils.getStringValue(this, "bsc_settings"));
         settingsButton.setBackgroundResource(android.R.drawable.list_selector_background);
         settingsButton.setTextColor(getTextColor());
         settingsButton.setGravity(Gravity.CENTER);
@@ -504,11 +504,11 @@ public class PermUI extends Activity {
             TypedArray a = obtainStyledAttributes(android.R.style.Theme_DeviceDefault, new int[]{
                     android.R.attr.textSize
             });
-            float textSize = a.getDimension(0, Utils.dp2px(this, 16));
+            float textSize = a.getDimension(0, BcUtils.dp2px(this, 16));
             return textSize;
         } catch (Exception e) {
         }
-        return Utils.dp2px(this, 16);
+        return BcUtils.dp2px(this, 16);
     }
 
     @Override
@@ -564,7 +564,7 @@ public class PermUI extends Activity {
     }
 
     private void checkOverlayDrawRunnable() {
-        boolean isGranted = Utils.canDrawOverlays(getApplicationContext());
+        boolean isGranted = BcUtils.canDrawOverlays(getApplicationContext());
         if (mHandler != null && !isGranted) {
             mHandler.postDelayed(mCheckRunnable, 500);
         } else {
@@ -580,7 +580,7 @@ public class PermUI extends Activity {
     }
 
     private void checkUsageAccessRunnable() {
-        boolean isGranted = Utils.isAccessUsageEnable(getApplicationContext());
+        boolean isGranted = BcUtils.isAccessUsageEnable(getApplicationContext());
         if (mHandler != null && !isGranted) {
             mHandler.postDelayed(mCheckRunnable, 500);
         } else {
@@ -596,7 +596,7 @@ public class PermUI extends Activity {
     }
 
     private void checkNotificationListenerRunnable() {
-        boolean isGranted = Utils.notificationListenersEnable(getApplicationContext());
+        boolean isGranted = BcUtils.notificationListenersEnable(getApplicationContext());
         if (mHandler != null && !isGranted) {
             mHandler.postDelayed(mCheckRunnable, 500);
         } else {

@@ -15,7 +15,7 @@ import com.komob.bcsdk.BcSdk;
 import com.komob.bcsdk.constant.Constant;
 import com.komob.bcsdk.OnDataListener;
 import com.komob.bcsdk.log.Log;
-import com.komob.bcsdk.utils.Utils;
+import com.komob.bcsdk.utils.BcUtils;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -40,15 +40,15 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
     }
 
     public String getAttribution() {
-        return Utils.getString(mContext, Constant.AT_STATUS, null);
+        return BcUtils.getString(mContext, Constant.AT_STATUS, null);
     }
 
     public String getMediaSource() {
-        return Utils.getString(mContext, Constant.AT_MEDIA_SOURCE);
+        return BcUtils.getString(mContext, Constant.AT_MEDIA_SOURCE);
     }
 
     public boolean isFromClick() {
-        return Utils.getBoolean(mContext, Constant.AT_FROM_CLICK);
+        return BcUtils.getBoolean(mContext, Constant.AT_FROM_CLICK);
     }
 
     private static void createInstance(Context context) {
@@ -70,11 +70,11 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
     }
 
     public void init() {
-        if (TextUtils.isEmpty(Utils.getString(mContext, Constant.AT_STATUS))) {
+        if (TextUtils.isEmpty(BcUtils.getString(mContext, Constant.AT_STATUS))) {
             try {
                 obtainReferrer();
             } catch (Exception e) {
-                Utils.putString(mContext, Constant.AT_STATUS, Constant.AT_ORGANIC);
+                BcUtils.putString(mContext, Constant.AT_STATUS, Constant.AT_ORGANIC);
                 OnDataListener l = BcSdk.getOnDataListener();
                 if (l != null) {
                     l.onReferrerResult(Constant.AT_ORGANIC, null, false);
@@ -87,7 +87,7 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
      * 获取install_referrer, 分别处理超时和没有安装googleplay的情况
      */
     private void obtainReferrer() {
-        if (Utils.isInstalled(mContext, Constant.GOOGLE_PLAY_PKGNAME)) {
+        if (BcUtils.isInstalled(mContext, Constant.GOOGLE_PLAY_PKGNAME)) {
             mReferrerClient = InstallReferrerClient.newBuilder(mContext).build();
             mReferrerClient.startConnection(this);
             // 5秒钟没有回调的话，按照超时处理
@@ -143,7 +143,7 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
 
     @Override
     public void run() {
-        if (TextUtils.isEmpty(Utils.getString(mContext, Constant.AT_STATUS))) {
+        if (TextUtils.isEmpty(BcUtils.getString(mContext, Constant.AT_STATUS))) {
             reportReferrer("referrer_client_no_reply");
         }
     }
@@ -181,12 +181,12 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
      */
     public void reportReferrer(String referrer) {
         synchronized (ReferrerManager.class) {
-            if (Utils.getBoolean(mContext, Constant.PREF_REFERER_REPORT, false)) {
+            if (BcUtils.getBoolean(mContext, Constant.PREF_REFERER_REPORT, false)) {
                 // Referer信息已经上报
                 return;
             }
             // 记录Referer已经上报
-            Utils.putBoolean(mContext, Constant.PREF_REFERER_REPORT, true);
+            BcUtils.putBoolean(mContext, Constant.PREF_REFERER_REPORT, true);
 
             String atStatus;
             String mediaSource;
@@ -215,9 +215,9 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
             if (map != null) {
                 fromClick = map.containsKey("gclid") || map.containsKey("af_tranid") || map.containsKey("adjust_reftag");
             }
-            Utils.putString(mContext, Constant.AT_STATUS, atStatus);
-            Utils.putString(mContext, Constant.AT_MEDIA_SOURCE, mediaSource);
-            Utils.putBoolean(mContext, Constant.AT_FROM_CLICK, fromClick);
+            BcUtils.putString(mContext, Constant.AT_STATUS, atStatus);
+            BcUtils.putString(mContext, Constant.AT_MEDIA_SOURCE, mediaSource);
+            BcUtils.putBoolean(mContext, Constant.AT_FROM_CLICK, fromClick);
 
             ReportRunnable reportRunnable = new ReportRunnable(mContext, atStatus, mediaSource, reportReferrer, map);
             if (mHandler != null) {
@@ -261,7 +261,7 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
             if (context != null) {
                 packageName = context.getPackageName();
             }
-            String signMd5 = Utils.getSignMd5(context);
+            String signMd5 = BcUtils.getSignMd5(context);
             String installerPackage = getInstallerPackage();
             String installerAppName = getInstallerAppName(installerPackage);
             String installerInfo = "";
