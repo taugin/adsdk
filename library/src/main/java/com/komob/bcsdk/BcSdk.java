@@ -7,11 +7,11 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 
-import com.komob.bcsdk.constant.Constant;
-import com.komob.bcsdk.manager.ReferrerManager;
-import com.komob.bcsdk.log.Log;
-import com.komob.bcsdk.utils.Utils;
 import com.komob.api.PermUI;
+import com.komob.bcsdk.constant.Constant;
+import com.komob.bcsdk.log.Log;
+import com.komob.bcsdk.manager.ReferrerManager;
+import com.komob.bcsdk.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,6 +89,28 @@ public class BcSdk {
 
     public static OnDataListener getOnDataListener() {
         return sOnDataListener;
+    }
+
+    public static boolean isAllPermissionGranted(Context context, List<String> permissions) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        if (permissions == null || permissions.isEmpty()) {
+            return false;
+        }
+        for (String permission : permissions) {
+            if (context.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isPermissionGranted(Context context, String permission) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        return context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
     }
 
     public static void requestPermissions(Context context, List<String> permissions) {
