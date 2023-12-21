@@ -163,7 +163,7 @@ apply plugin: 'maven-publish'
 publishing {
     publications {
         AdSdk(MavenPublication) {
-            groupId 'com.komob'
+            groupId 'com.humob'
             artifactId 'adsdk'
             version android.defaultConfig.versionName
             afterEvaluate {

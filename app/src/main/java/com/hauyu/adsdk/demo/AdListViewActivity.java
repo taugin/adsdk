@@ -12,12 +12,12 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.komob.adsdk.AdExtra;
-import com.komob.adsdk.AdParams;
-import com.komob.adsdk.AdSdk;
-import com.komob.adsdk.OnAdSdkListener;
-import com.komob.adsdk.SimpleAdSdkListener;
-import com.komob.adsdk.utils.Utils;
+import com.humob.adsdk.AdExtra;
+import com.humob.adsdk.AdParams;
+import com.humob.adsdk.AdSdk;
+import com.humob.adsdk.OnAdSdkListener;
+import com.humob.adsdk.SimpleAdSdkListener;
+import com.humob.adsdk.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;

@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.komob.adsdk.http.Http;
-import com.komob.adsdk.http.OnStringCallback;
-import com.komob.adsdk.utils.Utils;
+import com.humob.adsdk.http.Http;
+import com.humob.adsdk.http.OnStringCallback;
+import com.humob.adsdk.utils.Utils;
 
 import org.json.JSONObject;
 
