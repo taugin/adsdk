@@ -31,6 +31,9 @@
 -repackageclasses
 #################################################################
 
+-keep public class com.android.installreferrer.** { *; }
+-keepclasseswithmembernames public class * extends android.app.Activity {public *;protected *;}
+
 #umeng
 -keep class com.umeng.** {*;}
 -keep class com.uc.** {*;}
