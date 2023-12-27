@@ -122,7 +122,7 @@ dependencies {
     // unity
     implementation 'com.unity3d.ads:unity-ads:4.9.2'
     // unity applovin mediation
-    implementation 'com.applovin.mediation:unityads-adapter:4.9.2.0@aar'
+    implementation 'com.applovin.mediation:unityads-adapter:4.9.2.1@aar'
     // tradplus unity mediation
     implementation 'com.tradplusad:tradplus-unity:5.10.8.0.1'
     // google unity mediation
