@@ -44,6 +44,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+
 // 广告依赖文件
 apply from: '../groovy/ads.gradle'
 
