@@ -1,5 +1,6 @@
 // 这是第三方广告平台的依赖文件
-// 更新时间:2023-12-29
+// 更新时间:2024-01-02
+// 1. 更新bigo版本
 dependencies {
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
     // firebase
@@ -105,11 +106,11 @@ dependencies {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // Bigo
-    implementation 'com.bigossp:bigo-ads:4.2.0'
+    implementation 'com.bigossp:bigo-ads:4.3.2'
     // applovin Bigo mediation
-    implementation 'com.bigossp:max-mediation:4.2.0.0'
+    implementation 'com.bigossp:max-mediation:4.3.2.1'
     // tradplus Bigo mediation
     implementation 'com.tradplusad:tradplus-bigo:57.10.8.0.1'
     // google bigo mediation
-    implementation 'com.bigossp:admob-mediation:4.2.0.0'
+    implementation 'com.bigossp:admob-mediation:4.3.2.1'
 }
