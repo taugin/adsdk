@@ -41,6 +41,7 @@ import com.komob.adsdk.AdReward;
 import com.komob.adsdk.AdSdk;
 import com.komob.adsdk.OnAdFilterListener;
 import com.komob.adsdk.SimpleAdSdkListener;
+import com.komob.adsdk.ump.UmpConsentHelper;
 import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.db.DBManager;
@@ -118,6 +119,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         menu.add(0, 0x6, 0, "CheckRoundCpm");
         menu.add(0, 0x7, 0, "GenerateProguard");
         menu.add(0, 0x8, 0, "ParseRss");
+        menu.add(0, 0x9, 0, "AdmobUMP");
+        menu.add(0, 0x10, 0, "ResetUMP");
+        menu.add(0, 0x11, 0, "ShowUMP");
         return true;
     }
 
@@ -201,6 +205,14 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 generateProguardDict();
             } else if (item.getItemId() == 0x8) {
                 RssParser.doUrl(this);
+            } else if (item.getItemId() == 0x9) {
+                UmpConsentHelper.requestUmp(this);
+            } else if (item.getItemId() == 0x10) {
+                UmpConsentHelper.resetConsentInformation(this);
+            } else if (item.getItemId() == 0x11) {
+                if (UmpConsentHelper.isPrivacyOptionsRequired(this)) {
+                    UmpConsentHelper.showPrivacyOptionsForm(this);
+                }
             }
         }
         return true;
