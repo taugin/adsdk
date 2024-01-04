@@ -9,17 +9,23 @@
     <h3>脚本引用方法：</h3>
     <ul>
         <li v-for="gradle_url in gradle_urls">
-            {{gradle_url['label']}}&nbsp;&nbsp;&nbsp;&nbsp;<button @click="copyGradle(gradle_url['url'])">复制内容</button> <br>
+            {{gradle_url['label']}}&nbsp;&nbsp;&nbsp;&nbsp;<button
+                @click="copyGradle(gradle_url['url'])">复制内容
+        </button>
+            <br>
             <div>apply from: <a :href="gradle_url['url']">'{{gradle_url['url']}}'</a></div>
-            <div><font color='#F00' size='1pt'>>>>{{gradle_url['remark']}}<<<</font></div><br/>
+            <div><span style="color: #F00; ">>>>{{gradle_url['remark']}}<<<</span></div>
+            <br/>
         </li>
     </ul>
-<!--    <h3>仓库地址：<button @click="copyRepos(repo_urls)">复制内容</button> </h3>-->
-<!--    <ul>-->
-<!--        <li v-for="repo_url in repo_urls">-->
-<!--            {{mergeRepo(repo_url)}}-->
-<!--        </li>-->
-<!--    </ul>-->
+    <h3>仓库地址：
+        <button @click="copyRepos(repo_urls)">复制内容</button>
+    </h3>
+    <ul>
+        <li v-for="repo_url in repo_urls">
+            {{mergeRepo(repo_url)}}
+        </li>
+    </ul>
 </div>
 <script>
     var repo_urls = [
@@ -35,8 +41,9 @@
     ]
     var gradle_urls = [
         {'index':'0', 'label':'加密脚本', 'url':'http://taugin.gitee.io/adsdk/encrypt.gradle', 'remark':'注：此引用放置在build.gradle最上方'},
-        {'index':'1', 'label':'AAB混淆', 'url':'http://taugin.gitee.io/adsdk/resguard_aab.gradle', 'remark':'注：此引用放置在build.gradle最下方'},
-        {'index':'2', 'label':'APK混淆', 'url':'http://taugin.gitee.io/adsdk/resguard_apk.gradle', 'remark':'注：此引用放置在build.gradle最下方'}
+        {'index':'1', 'label':'广告依赖', 'url':'http://taugin.gitee.io/adsdk/ads.gradle', 'remark':'注：此引用放置在dependencies最上方'},
+        {'index':'2', 'label':'AAB混淆', 'url':'http://taugin.gitee.io/adsdk/resguard_aab.gradle', 'remark':'注：此引用放置在build.gradle最下方'},
+        {'index':'3', 'label':'APK混淆', 'url':'http://taugin.gitee.io/adsdk/resguard_apk.gradle', 'remark':'注：此引用放置在build.gradle最下方'}
     ]
     /**
      * 原型：字符串格式化
