@@ -206,7 +206,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             } else if (item.getItemId() == 0x8) {
                 RssParser.doUrl(this);
             } else if (item.getItemId() == 0x9) {
-                UmpConsentHelper.requestUmp(this);
+                UmpConsentHelper.requestUmpConsent(this, null);
             } else if (item.getItemId() == 0x10) {
                 UmpConsentHelper.resetConsentInformation(this);
             } else if (item.getItemId() == 0x11) {
