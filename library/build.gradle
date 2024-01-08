@@ -4,7 +4,7 @@ apply plugin: 'stringfog'
 import com.github.megatronking.stringfog.plugin.kg.HardCodeKeyGenerator
 stringfog {
     // 这是加解密 key，可以自由定义。
-    kg new HardCodeKeyGenerator("ads-sdk")
+    kg new HardCodeKeyGenerator("kom-ads-sdk")
     // 开关
     enable true
     // 加解密库的实现类路径，需和上面配置的加解密算法库一致。
