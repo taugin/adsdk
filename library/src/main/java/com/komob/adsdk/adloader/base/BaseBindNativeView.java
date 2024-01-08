@@ -20,12 +20,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.komob.adsdk.utils.Utils;
-import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.framework.Params;
-import com.komob.adsdk.log.Log;
 import com.komob.adsdk.data.config.PidConfig;
-import com.komob.api.R;
+import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.Utils;
+import com.komob.api.AdViewUI;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,19 +57,7 @@ public class BaseBindNativeView {
 
     static {
         LAYOUT_MAPS = new HashMap<String, Integer>();
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MICRO, R.layout.kom_layout_micro);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_TINY, R.layout.kom_layout_tiny);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_LITTLE, R.layout.kom_layout_little);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_SMALL, R.layout.kom_layout_small);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MEDIUM, R.layout.kom_layout_medium);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_LARGE, R.layout.kom_layout_large);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_RECT, R.layout.kom_layout_rect);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_WRAP, R.layout.kom_layout_wrap);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_ROUND, R.layout.kom_layout_round);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_FULL, R.layout.kom_layout_full);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MIX, R.layout.kom_layout_mix);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_FOOT, R.layout.kom_layout_foot);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_HEAD, R.layout.kom_layout_head);
+        AdViewUI.bindLayoutMap(LAYOUT_MAPS);
     }
 
     private Random mRandom = new Random(System.currentTimeMillis());
@@ -244,7 +232,7 @@ public class BaseBindNativeView {
             try {
                 layoutId = LAYOUT_MAPS.get(template);
             } catch (Exception e) {
-                layoutId = R.layout.kom_layout_little;
+                layoutId = AdViewUI.getLayoutLittle();
             }
         }
         return layoutId;
@@ -267,17 +255,7 @@ public class BaseBindNativeView {
     }
 
     protected void bindParamsViewId(Params params) {
-        if (params == null) {
-            return;
-        }
-        params.setAdTitle(R.id.kom_native_title);
-        params.setAdSocial(R.id.kom_native_social);
-        params.setAdDetail(R.id.kom_native_detail);
-        params.setAdIcon(R.id.kom_native_icon);
-        params.setAdAction(R.id.kom_native_action_btn);
-        params.setAdCover(R.id.kom_native_image_cover);
-        params.setAdChoices(R.id.kom_native_ad_choices_container);
-        params.setAdMediaView(R.id.kom_native_media_cover);
+        AdViewUI.bindLayoutId(params);
     }
 
     protected void centerChildView(ViewGroup viewGroup) {
@@ -331,7 +309,7 @@ public class BaseBindNativeView {
             float[] outerR = new float[]{corner, corner, corner, corner, corner, corner, corner, corner};
             Shape shape = new RoundRectShape(outerR, null, null);
             ShapeDrawable shapeNormal = new ShapeDrawable(shape);
-            shapeNormal.getPaint().setColor(imageView.getContext().getResources().getColor(R.color.komDefaultIconColor));
+            shapeNormal.getPaint().setColor(imageView.getContext().getResources().getColor(AdViewUI.getDefaultIconColor()));
             imageView.setBackground(shapeNormal);
         } catch (Exception e) {
             Log.iv(Log.TAG, platform + " set default ad icon error : " + e);
