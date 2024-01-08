@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.constant.Constant;
+import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.utils.Utils;
 
@@ -41,8 +41,6 @@ public class InternalStat {
     private static final String SDK_NAME_FLURRY = "flurry";
     private static final String SDK_NAME_TALKING_DATA = "talkingdata";
     private static final String SDK_NAME_FACEBOOK = "facebook";
-    private static final String SDK_NAME_UMENG_OBJECT_METHOD = "umeng_object_method";
-
     private static final List<String> sUmengWhiteList;
 
     private static final List<String> sFirebaseWhiteList;
@@ -88,17 +86,6 @@ public class InternalStat {
             sdkIntegrated = false;
         }
         sSdkIntegrated.put(SDK_NAME_UMENG, sdkIntegrated);
-
-        boolean umengEventObjectEnable;
-        try {
-            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
-            Method method = clazz.getDeclaredMethod("onEventObject", Context.class, String.class, Map.class);
-            umengEventObjectEnable = method != null;
-        } catch (Exception | Error e) {
-            Log.iv(Log.TAG_SDK, SDK_NAME_UMENG + " init error : " + e);
-            umengEventObjectEnable = false;
-        }
-        sSdkIntegrated.put(SDK_NAME_UMENG_OBJECT_METHOD, umengEventObjectEnable);
 
         try {
             Class.forName("com.google.firebase.analytics.FirebaseAnalytics");
@@ -305,60 +292,6 @@ public class InternalStat {
         }
     }
 
-    /**
-     * 发送友盟计数事件
-     *
-     * @param context
-     * @param eventId
-     * @param value
-     * @param extra
-     */
-    public static void sendUmeng(Context context, String eventId, String value, Map<String, Object> extra) {
-        sendUmeng(context, eventId, value, extra, true);
-    }
-
-    public static void sendUmeng(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
-        String platform = SDK_NAME_UMENG;
-        if (!isReportPlatform(context, eventId, platform, defaultValue)) {
-            return;
-        }
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("event_id", eventId);
-        if (!TextUtils.isEmpty(value)) {
-            map.put("entry_point", value);
-        }
-        if (extra != null && !extra.isEmpty()) {
-            for (Map.Entry<String, Object> entry : extra.entrySet()) {
-                if (entry != null) {
-                    String key = entry.getKey();
-                    Object valueObj = entry.getValue();
-                    if (!TextUtils.isEmpty(key) && valueObj != null) {
-                        if (valueObj instanceof String) {
-                            map.put(entry.getKey(), valueObj.toString());
-                        } else {
-                            map.put(entry.getKey(), String.valueOf(valueObj));
-                        }
-                    }
-                }
-            }
-        }
-        Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + map);
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
-            Method method = clazz.getDeclaredMethod("onEvent", Context.class, String.class, Map.class);
-            method.invoke(null, context, eventId, map);
-            reportPlatformEventCount(context, platform);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
-        }
-    }
-
     private static void checkUmengDataType(Map<String, Object> map, Map<String, Object> extra) {
         try {
             if (extra != null && !extra.isEmpty() && map != null) {
@@ -391,21 +324,17 @@ public class InternalStat {
      * @param eventId
      * @param extra
      */
-    public static void sendUmengObject(Context context, String eventId, Map<String, Object> extra) {
-        sendUmengObject(context, eventId, null, extra);
+    public static void sendUmeng(Context context, String eventId, Map<String, Object> extra) {
+        sendUmeng(context, eventId, null, extra);
     }
 
-    public static void sendUmengObject(Context context, String eventId, String value, Map<String, Object> extra) {
-        sendUmengObject(context, eventId, value, extra, true);
+    public static void sendUmeng(Context context, String eventId, String value, Map<String, Object> extra) {
+        sendUmeng(context, eventId, value, extra, true);
     }
 
-    public static void sendUmengObject(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
+    public static void sendUmeng(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
         String platform = SDK_NAME_UMENG;
         if (!isReportPlatform(context, eventId, platform, defaultValue)) {
-            return;
-        }
-        if (!isUmengEventObjectEnable()) {
-            Log.iv(Log.TAG_SDK, platform + " onEventObject function not support");
             return;
         }
         Map<String, Object> map = new HashMap<>();
@@ -414,7 +343,7 @@ public class InternalStat {
             map.put("entry_point", value);
         }
         checkUmengDataType(map, extra);
-        Log.iv(Log.TAG_SDK, platform + " event object id : " + eventId + " , value : " + map);
+        Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + map);
         String error = null;
         try {
             Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
@@ -660,11 +589,7 @@ public class InternalStat {
 
     public static void reportEvent(Context context, String key, String value, Map<String, Object> map) {
         Log.iv(Log.TAG, "event id : " + key + " , value : " + value + " , extra : " + map);
-        if (isUmengEventObjectEnable()) {
-            sendUmengObject(context, key, value, map, isInUmengWhiteList(key));
-        } else {
-            sendUmeng(context, key, value, map, isInUmengWhiteList(key));
-        }
+        sendUmeng(context, key, value, map, isInUmengWhiteList(key));
         sendAppsflyer(context, key, value, map, false);
         sendFirebaseAnalytics(context, key, value, map, isInFirebaseWhiteList(key));
         sendFlurry(context, key, value, map);
@@ -877,14 +802,6 @@ public class InternalStat {
             }
             Utils.putLong(context, PREF_AD_REPORT_EVENT_RESET_DATE, nowDate);
         }
-    }
-
-    private static boolean isUmengEventObjectEnable() {
-        if (sSdkIntegrated != null) {
-            Boolean umengEventObjectEnable = sSdkIntegrated.get(SDK_NAME_UMENG_OBJECT_METHOD);
-            return umengEventObjectEnable != null && umengEventObjectEnable.booleanValue();
-        }
-        return false;
     }
 
     private static String MD5_PREFIX = null;
