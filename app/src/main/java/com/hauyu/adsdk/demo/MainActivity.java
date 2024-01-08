@@ -881,15 +881,15 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     public static void showBroccoli(View adLayoutView) {
         try {
             Broccoli broccoli = new Broccoli();
-            broccoli.addPlaceholders(adLayoutView.findViewById(R.id.rab_native_icon)
-                    , adLayoutView.findViewById(R.id.rab_native_title)
-                    , adLayoutView.findViewById(R.id.rab_native_detail)
-                    , adLayoutView.findViewById(R.id.rab_native_action_btn));
+            broccoli.addPlaceholders(adLayoutView.findViewById(R.id.kom_native_icon)
+                    , adLayoutView.findViewById(R.id.kom_native_title)
+                    , adLayoutView.findViewById(R.id.kom_native_detail)
+                    , adLayoutView.findViewById(R.id.kom_native_action_btn));
 
             broccoli.addPlaceholder(new PlaceholderParameter.Builder()
                     .setDrawable(new BroccoliGradientDrawable(Color.parseColor("#DDDDDD"),
                             Color.parseColor("#CCCCCC"), 0, 1000, new LinearInterpolator()))
-                    .setView(adLayoutView.findViewById(R.id.rab_native_cover_info))
+                    .setView(adLayoutView.findViewById(R.id.kom_native_cover_info))
                     .build());
             broccoli.show();
         } catch (Exception e) {

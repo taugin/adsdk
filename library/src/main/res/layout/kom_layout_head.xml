@@ -25,7 +25,7 @@
             android:paddingBottom="18dp">
 
             <ImageView
-                android:id="@+id/rab_native_icon"
+                android:id="@+id/kom_native_icon"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginBottom="10dp"
@@ -57,7 +57,7 @@
                     android:visibility="invisible" />
 
                 <TextView
-                    android:id="@+id/rab_native_title"
+                    android:id="@+id/kom_native_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -71,7 +71,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/rab_native_sponsored_label"
+                    android:id="@+id/kom_native_sponsored_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -91,7 +91,7 @@
         </LinearLayout>
 
         <androidx.percentlayout.widget.PercentRelativeLayout
-            android:id="@+id/rab_native_cover_info"
+            android:id="@+id/kom_native_cover_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/icon_layout"
@@ -99,7 +99,7 @@
             android:padding="2dp">
 
             <ImageView
-                android:id="@+id/rab_native_image_cover"
+                android:id="@+id/kom_native_image_cover"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@null"
@@ -108,7 +108,7 @@
                 app:layout_widthPercent="100%" />
 
             <FrameLayout
-                android:id="@+id/rab_native_media_cover"
+                android:id="@+id/kom_native_media_cover"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:contentDescription="@null"
@@ -121,17 +121,17 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rab_native_cover_info"
+            android:layout_below="@+id/kom_native_cover_info"
             android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="8dp">
 
             <LinearLayout
-                android:id="@+id/rab_native_header_info"
+                android:id="@+id/kom_native_header_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/rab_native_action_layout"
+                android:layout_above="@+id/kom_native_action_layout"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
@@ -148,7 +148,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/rab_native_social"
+                        android:id="@+id/kom_native_social"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="marquee"
@@ -161,7 +161,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/rab_native_detail"
+                    android:id="@+id/kom_native_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -178,14 +178,14 @@
 
 
             <LinearLayout
-                android:id="@+id/rab_native_action_layout"
+                android:id="@+id/kom_native_action_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/rab_native_action_btn"
+                    android:id="@+id/kom_native_action_btn"
                     style="@style/KomButtonFullStyle_Flat"
                     android:layout_width="match_parent"
                     android:layout_gravity="center"
@@ -200,7 +200,7 @@
                     android:text="Learn More" />
 
                 <TextView
-                    android:id="@+id/rab_native_cancel_btn"
+                    android:id="@+id/kom_native_cancel_btn"
                     style="@style/KomButtonFullStyle_Flat"
                     android:layout_width="match_parent"
                     android:layout_gravity="center"
@@ -218,7 +218,7 @@
         </RelativeLayout>
 
         <FrameLayout
-            android:id="@+id/rab_native_ad_choices_container"
+            android:id="@+id/kom_native_ad_choices_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

@@ -270,14 +270,14 @@ public class BaseBindNativeView {
         if (params == null) {
             return;
         }
-        params.setAdTitle(R.id.rab_native_title);
-        params.setAdSocial(R.id.rab_native_social);
-        params.setAdDetail(R.id.rab_native_detail);
-        params.setAdIcon(R.id.rab_native_icon);
-        params.setAdAction(R.id.rab_native_action_btn);
-        params.setAdCover(R.id.rab_native_image_cover);
-        params.setAdChoices(R.id.rab_native_ad_choices_container);
-        params.setAdMediaView(R.id.rab_native_media_cover);
+        params.setAdTitle(R.id.kom_native_title);
+        params.setAdSocial(R.id.kom_native_social);
+        params.setAdDetail(R.id.kom_native_detail);
+        params.setAdIcon(R.id.kom_native_icon);
+        params.setAdAction(R.id.kom_native_action_btn);
+        params.setAdCover(R.id.kom_native_image_cover);
+        params.setAdChoices(R.id.kom_native_ad_choices_container);
+        params.setAdMediaView(R.id.kom_native_media_cover);
     }
 
     protected void centerChildView(ViewGroup viewGroup) {

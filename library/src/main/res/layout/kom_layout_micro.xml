@@ -14,7 +14,7 @@
         android:paddingBottom="8dp">
 
         <ImageView
-            android:id="@+id/rab_native_icon"
+            android:id="@+id/kom_native_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_centerVertical="true"
@@ -27,13 +27,13 @@
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:layout_toStartOf="@+id/rab_native_action_btn_layout"
-            android:layout_toEndOf="@+id/rab_native_icon"
+            android:layout_toEndOf="@+id/kom_native_icon"
             android:layout_weight="1"
             android:minHeight="56dp"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/rab_native_title"
+                android:id="@+id/kom_native_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@+id/common_sponsored_label"
@@ -46,7 +46,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/rab_native_social"
+                android:id="@+id/kom_native_social"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:ellipsize="marquee"
@@ -57,7 +57,7 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/rab_native_detail"
+                android:id="@+id/kom_native_detail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="1dp"
@@ -79,7 +79,7 @@
             android:layout_centerVertical="true">
 
             <TextView
-                android:id="@+id/rab_native_action_btn"
+                android:id="@+id/kom_native_action_btn"
                 style="@style/KomButtonMicroStyle"
                 android:layout_width="wrap_content"
                 android:layout_alignParentStart="true"
@@ -96,7 +96,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/rab_native_sponsored_label"
+        android:id="@+id/kom_native_sponsored_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -110,7 +110,7 @@
         android:textStyle="bold" />
 
     <FrameLayout
-        android:id="@+id/rab_native_ad_choices_container"
+        android:id="@+id/kom_native_ad_choices_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
