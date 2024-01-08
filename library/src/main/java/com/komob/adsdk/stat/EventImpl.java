@@ -6,7 +6,6 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import com.komob.adsdk.InternalStat;
-import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.db.DBManager;
 import com.komob.adsdk.core.framework.AdStatManager;
@@ -14,6 +13,7 @@ import com.komob.adsdk.core.framework.BounceRateManager;
 import com.komob.adsdk.core.framework.FBStatManager;
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.Utils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -433,17 +433,9 @@ public class EventImpl implements IEvent {
         return result;
     }
 
-    private boolean isReportFlurry(Context context) {
-        String value = InternalStat.getAdReportString(context, "ad_report_bool_flurry");
-        boolean result = parseReport(value, true);
-        // Log.iv(Log.TAG_SDK, "is report flurry : " + result);
-        return result;
-    }
-
     private boolean isReportTalkingData(Context context) {
         String value = InternalStat.getAdReportString(context, "ad_report_bool_td");
         boolean result = parseReport(value, true);
-        // Log.iv(Log.TAG_SDK, "is talkingdata flurry : " + result);
         return result;
     }
 
@@ -490,9 +482,6 @@ public class EventImpl implements IEvent {
         }
         if (isReportUmeng(context)) {
             InternalStat.sendUmeng(context, eventId, value, maps, InternalStat.isInUmengWhiteList(eventId));
-        }
-        if (isReportFlurry(context)) {
-            InternalStat.sendFlurry(context, eventId, value, maps, InternalStat.isInFirebaseWhiteList(eventId));
         }
         if (isReportTalkingData(context)) {
             InternalStat.sendTalkingData(context, eventId, value, maps);

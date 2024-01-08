@@ -38,7 +38,6 @@ public class InternalStat {
     private static final String SDK_NAME_UMENG = "umeng";
     private static final String SDK_NAME_FIREBASE = "firebase";
     private static final String SDK_NAME_APPSFLYER = "appsflyer";
-    private static final String SDK_NAME_FLURRY = "flurry";
     private static final String SDK_NAME_TALKING_DATA = "talkingdata";
     private static final String SDK_NAME_FACEBOOK = "facebook";
     private static final List<String> sUmengWhiteList;
@@ -104,15 +103,6 @@ public class InternalStat {
             sdkIntegrated = false;
         }
         sSdkIntegrated.put(SDK_NAME_APPSFLYER, sdkIntegrated);
-
-        try {
-            Class.forName("com.flurry.android.FlurryAgent");
-            sdkIntegrated = true;
-        } catch (Exception | Error e) {
-            Log.iv(Log.TAG_SDK, SDK_NAME_FLURRY + " init error : " + e);
-            sdkIntegrated = false;
-        }
-        sSdkIntegrated.put(SDK_NAME_FLURRY, sdkIntegrated);
 
         try {
             Class.forName("com.tendcloud.tenddata.TalkingDataSDK");
@@ -485,56 +475,6 @@ public class InternalStat {
     }
 
     /**
-     * 发送flurry统计事件
-     *
-     * @param context
-     * @param eventId
-     * @param value
-     * @param extra
-     */
-    public static void sendFlurry(Context context, String eventId, String value, Map<String, Object> extra) {
-        sendFlurry(context, eventId, value, extra, true);
-    }
-
-    public static void sendFlurry(Context context, String eventId, String value, Map<String, Object> extra, boolean defaultValue) {
-        String platform = SDK_NAME_FLURRY;
-        if (!isReportPlatform(context, eventId, platform, defaultValue)) {
-            return;
-        }
-        Map<String, Object> eventValue = new HashMap<String, Object>();
-        eventValue.put("event_id", eventId);
-        if (!TextUtils.isEmpty(value)) {
-            eventValue.put("entry_point", value);
-        }
-        if (extra != null && !extra.isEmpty()) {
-            for (Map.Entry<String, Object> entry : extra.entrySet()) {
-                if (entry != null) {
-                    String key = entry.getKey();
-                    Object valueObj = entry.getValue();
-                    if (!TextUtils.isEmpty(key) && valueObj != null) {
-                        eventValue.put(key, valueObj);
-                    }
-                }
-            }
-        }
-        Log.iv(Log.TAG_SDK, platform + " event id : " + eventId + " , value : " + eventValue);
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.flurry.android.FlurryAgent");
-            Method method = clazz.getDeclaredMethod("logEvent", String.class, Map.class);
-            method.invoke(null, eventId, eventValue);
-            reportPlatformEventCount(context, platform);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
-        }
-    }
-
-    /**
      * 发送talking data统计事件
      *
      * @param context
@@ -592,7 +532,6 @@ public class InternalStat {
         sendUmeng(context, key, value, map, isInUmengWhiteList(key));
         sendAppsflyer(context, key, value, map, false);
         sendFirebaseAnalytics(context, key, value, map, isInFirebaseWhiteList(key));
-        sendFlurry(context, key, value, map);
         sendTalkingData(context, key, value, map);
     }
 
