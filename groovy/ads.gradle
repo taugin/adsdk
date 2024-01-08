@@ -28,7 +28,7 @@ dependencies {
     // tradplus applovin mediation
     implementation 'com.tradplusad:tradplus-applovin:9.10.8.0.1'
     // google applovin mediation
-    implementation 'com.google.ads.mediation:applovin:11.11.3.0'
+    implementation 'com.google.ads.mediation:applovin:12.1.0.0'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // facebook
@@ -68,11 +68,11 @@ dependencies {
     implementation "com.mbridge.msdk.oversea:mbsplash:${mintegral_version}"
     implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
     // applovin mintegral mediation
-    implementation 'com.applovin.mediation:mintegral-adapter:16.5.91.0@aar'
+    implementation 'com.applovin.mediation:mintegral-adapter:16.5.91.1@aar'
     // tradplus mintegral mediation
     implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.10.8.0.1'
     // google mintegral mediation
-    implementation 'com.google.ads.mediation:mintegral:16.5.51.0'
+    implementation 'com.google.ads.mediation:mintegral:16.5.91.0'
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // unity
