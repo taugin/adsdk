@@ -539,7 +539,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(ad);
                 Log.iv(Log.TAG, formatLog("ad displayed network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network, sceneName);
+                notifyAdImp(network, getFinalSceneName(ad, sceneName));
             }
 
             @Override
@@ -667,7 +667,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(ad);
                 Log.iv(Log.TAG, formatLog("ad displayed network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network, sceneName);
+                notifyAdImp(network, getFinalSceneName(ad, sceneName));
             }
 
             @Override
@@ -802,7 +802,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad displayed network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
                 notifyAdOpened();
-                notifyAdImp(network, sceneName);
+                notifyAdImp(network, getFinalSceneName(ad, sceneName));
             }
 
             @Override
@@ -959,7 +959,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String network = getNetwork(ad);
                 String networkPid = getNetworkPid(ad);
                 reportAdImp(network, networkPid);
-                notifyAdImp(network, sceneName);
+                notifyAdImp(network, getFinalSceneName(ad, sceneName));
                 reportMaxAdImpData(ad, getAdPlaceName(), impressionId, sceneName);
             }
         };
@@ -1137,7 +1137,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(ad);
                 Log.iv(Log.TAG, formatLog("ad displayed network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network, sceneName);
+                notifyAdImp(network, getFinalSceneName(ad, sceneName));
             }
 
             @Override
@@ -1270,6 +1270,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
         reportMaxAdImpData(maxAd, placeName, impressionId, null);
     }
 
+    private String getFinalSceneName(MaxAd maxAd, String sceneName) {
+        String placement = maxAd.getPlacement(); // The placement this ad's postbacks are tied to
+        placement = getSceneId(!TextUtils.isEmpty(sceneName) ? sceneName : placement);
+        return placement;
+    }
+
     private void reportMaxAdImpData(MaxAd maxAd, String placeName, String impressionId, String sceneName) {
         try {
             // applovin给出的是单次展示的价值，换算ecpm需要乘以1000
@@ -1282,8 +1288,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             String networkName = maxAd.getNetworkName(); // Display name of the network that showed the ad (e.g. "AdColony")
             String adUnitId = maxAd.getAdUnitId(); // The MAX Ad Unit ID
             MaxAdFormat adFormat = maxAd.getFormat(); // The ad format of the ad (e.g. BANNER, MREC, INTERSTITIAL, REWARDED)
-            String placement = maxAd.getPlacement(); // The placement this ad's postbacks are tied to
-            placement = getSceneId(!TextUtils.isEmpty(sceneName) ? sceneName : placement);
+            String placement = getFinalSceneName(maxAd, sceneName); // The placement this ad's postbacks are tied to
             String placementId = maxAd.getNetworkPlacement();
             String precision = maxAd.getRevenuePrecision();
             Map<String, Object> map = new HashMap<>();
