@@ -30,15 +30,15 @@ import com.applovin.sdk.AppLovinErrorCodes;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkSettings;
 import com.komob.adsdk.AdReward;
-import com.komob.adsdk.utils.Utils;
-import com.komob.adsdk.utils.VUIHelper;
 import com.komob.adsdk.adloader.base.AbstractSdkLoader;
+import com.komob.adsdk.adloader.base.BaseBindNativeView;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.DataManager;
-import com.komob.adsdk.log.Log;
-import com.komob.adsdk.adloader.base.BaseBindNativeView;
 import com.komob.adsdk.data.config.PidConfig;
+import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.Utils;
+import com.komob.adsdk.utils.VUIHelper;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -65,6 +65,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private MaxAppOpenAd mMaxAppOpenAd;
     private MaxNativeListener maxNativeListener;
     private MaxSplashListener maxSplashListener;
+    private MaxInterstitialListener maxInterstitialListener;
+    private MaxRewardListener maxRewardListener;
 
     @Override
     protected BaseBindNativeView getBaseBindNativeView() {
@@ -366,6 +368,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showInterstitial(String sceneName) {
+        if (maxInterstitialListener != null) {
+            maxInterstitialListener.sceneName = sceneName;
+        }
         try {
             return showInterstitialForMax(sceneName);
         } catch (Exception e) {
@@ -433,6 +438,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public boolean showRewardedVideo(String sceneName) {
+        if (maxRewardListener != null) {
+            maxRewardListener.sceneName = sceneName;
+        }
         try {
             return showRewardedVideoForMax(sceneName);
         } catch (Exception e) {
@@ -621,7 +629,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (interstitialAd == null) {
             interstitialAd = new MaxInterstitialAd(getPid(), appLovinSdk, activity);
         }
-        MaxInterstitialListener maxInterstitialListener = new MaxInterstitialListener();
+        maxInterstitialListener = new MaxInterstitialListener();
         interstitialAd.setListener(maxInterstitialListener.maxAdListener);
         interstitialAd.setRevenueListener(maxInterstitialListener.maxAdRevenueListener);
         printInterfaceLog(ACTION_LOAD);
@@ -727,7 +735,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private void loadRewardedVideoForMax(AppLovinSdk appLovinSdk, Activity activity) {
         setLoading(true, STATE_REQUEST);
         rewardedAd = MaxRewardedAd.getInstance(getPid(), appLovinSdk, activity);
-        MaxRewardListener maxRewardListener = new MaxRewardListener();
+        maxRewardListener = new MaxRewardListener();
         rewardedAd.setListener(maxRewardListener.maxRewardedAdListener);
         rewardedAd.setRevenueListener(maxRewardListener.maxAdRevenueListener);
         printInterfaceLog(ACTION_LOAD);
