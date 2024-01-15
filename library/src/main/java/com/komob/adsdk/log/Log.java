@@ -19,8 +19,8 @@ public class Log {
     private static final int WARN = android.util.Log.WARN;
     private static final boolean INTERNAL_LOG_ENABLE;
 
-    public static final String TAG = "hauyu";
-    public static final String TAG_SDK = "hauyu2";
+    public static final String TAG = "komob";
+    public static final String TAG_SDK = "komob2";
 
     static {
         boolean internal = false;
