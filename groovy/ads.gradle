@@ -75,6 +75,16 @@ dependencies {
     implementation 'com.google.ads.mediation:mintegral:16.5.91.0'
 //////////////////////////////////////////////////////////////////////////////////////////
 
+    // Inmobi
+    implementation 'com.inmobi.monetization:inmobi-ads-kotlin:10.6.3'
+    // applovin inmobi mediation
+    implementation 'com.applovin.mediation:inmobi-adapter:10.6.3.0@aar'
+    //tradplus inmobi mediation
+    implementation 'com.tradplusad:tradplus-inmobix:23.10.9.0.1'
+    // google inmobi mediation
+    implementation 'com.google.ads.mediation:inmobi:10.6.2.0'
+//////////////////////////////////////////////////////////////////////////////////////////
+
     // unity
     implementation 'com.unity3d.ads:unity-ads:4.9.2'
     // unity applovin mediation
