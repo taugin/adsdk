@@ -1,6 +1,5 @@
 // 这是第三方广告平台的依赖文件
-// 更新时间:2024-01-04
-// 1. 更新bigo版本
+// 更新时间:2024-01-29
 dependencies {
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
     // firebase
