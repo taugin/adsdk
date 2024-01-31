@@ -281,7 +281,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(loadingView);
                 setRevenueAverage();
-                reportAdLoaded();
+                reportAdLoaded(getBannerNetwork());
                 notifySdkLoaderLoaded(false);
             }
 
@@ -411,7 +411,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 putCachedAdTime(interstitialAd);
                 setInterstitialListener(interstitialAd);
                 setRevenueAverage();
-                reportAdLoaded();
+                reportAdLoaded(getInterstitialNetwork());
                 notifyAdLoaded(AdmobLoader.this);
             }
 
@@ -560,7 +560,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 putCachedAdTime(mRewardedAd);
                 setRewardListener(rewardedAd);
                 setRevenueAverage();
-                reportAdLoaded();
+                reportAdLoaded(getRewardNetwork());
                 notifyAdLoaded(AdmobLoader.this);
             }
 
@@ -828,7 +828,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 putCachedAdTime(nativeAd);
                 setNativeListener(nativeAd);
                 setRevenueAverage();
-                reportAdLoaded();
+                reportAdLoaded(getNativeNetwork());
                 notifySdkLoaderLoaded(false);
             }
         };
@@ -950,7 +950,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 putCachedAdTime(mAppOpenAd);
                 setSplashListener(appOpenAd);
                 setRevenueAverage();
-                reportAdLoaded();
+                reportAdLoaded(getSplashNetwork());
                 notifyAdLoaded(AdmobLoader.this);
             }
 

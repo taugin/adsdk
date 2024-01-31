@@ -918,8 +918,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     }
 
     protected void reportAdLoaded() {
+        reportAdLoaded(null);
+    }
+
+    protected void reportAdLoaded(String network) {
         if (mStat != null) {
-            mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), getAdType(), getPid(), getCpm(), null);
+            mStat.reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), getCpm(), null);
         }
     }
 

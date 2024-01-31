@@ -170,12 +170,12 @@ public class EventImpl implements IEvent {
     }
 
     @Override
-    public void reportAdLoaded(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra) {
+    public void reportAdLoaded(Context context, String placeName, String sdk, String network, String type, String pid, double ecpm, Map<String, Object> extra) {
         if (!checkArgument(context, placeName, sdk, type)) {
             return;
         }
         String eventId = generateEventId(context, "loaded", sdk, type);
-        extra = addExtra(extra, placeName, sdk, type, pid, ecpm, null, null);
+        extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, null);
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
         reportEvent(context, "e_ad_loaded", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
