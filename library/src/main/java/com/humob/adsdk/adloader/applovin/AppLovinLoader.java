@@ -520,7 +520,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     putCachedAdTime(loadingMaxAdView);
                     String network = getNetwork(ad);
                     setAdNetworkAndRevenue(network, getMaxAdRevenue(ad));
-                    reportAdLoaded();
+                    reportAdLoaded(network);
                     notifySdkLoaderLoaded(false);
                 }
             }
@@ -647,7 +647,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 putCachedAdTime(interstitialAd);
                 String network = getNetwork(ad);
                 setAdNetworkAndRevenue(network, getMaxAdRevenue(ad));
-                reportAdLoaded();
+                reportAdLoaded(network);
                 notifyAdLoaded(AppLovinLoader.this);
             }
 
@@ -781,7 +781,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 putCachedAdTime(rewardedAd);
                 String network = getNetwork(ad);
                 setAdNetworkAndRevenue(network, getMaxAdRevenue(ad));
-                reportAdLoaded();
+                reportAdLoaded(network);
                 notifyAdLoaded(AppLovinLoader.this);
             }
 
@@ -930,7 +930,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 putCachedAdTime(mMaxAd);
                 String network = getNetwork(maxAd);
                 setAdNetworkAndRevenue(network, getMaxAdRevenue(maxAd));
-                reportAdLoaded();
+                reportAdLoaded(network);
                 notifySdkLoaderLoaded(false);
             }
 
@@ -1117,7 +1117,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 putCachedAdTime(mMaxAppOpenAd);
                 String network = getNetwork(ad);
                 setAdNetworkAndRevenue(network, getMaxAdRevenue(ad));
-                reportAdLoaded();
+                reportAdLoaded(network);
                 notifyAdLoaded(AppLovinLoader.this);
             }
 

@@ -29,7 +29,7 @@ public interface IEvent {
      * @param type
      * @param extra
      */
-    public void reportAdLoaded(Context context, String placeName, String sdk, String type, String pid, double ecpm, Map<String, Object> extra);
+    public void reportAdLoaded(Context context, String placeName, String sdk, String network, String type, String pid, double ecpm, Map<String, Object> extra);
 
     /**
      * 广告Reload成功

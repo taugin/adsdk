@@ -132,7 +132,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     putCachedAdTime(mTPBanner);
                     String network = getNetwork(tpAdInfo);
                     setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
-                    reportAdLoaded();
+                    reportAdLoaded(network);
                     notifySdkLoaderLoaded(false);
                 } else {
                     reportAdReLoaded();
@@ -278,7 +278,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     putCachedAdTime(mTPInterstitial);
                     String network = getNetwork(tpAdInfo);
                     setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
-                    reportAdLoaded();
+                    reportAdLoaded(network);
                     notifyAdLoaded(TradPlusLoader.this);
                 } else {
                     reportAdReLoaded();
@@ -421,7 +421,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     setLoading(false, STATE_SUCCESS);
                     String network = getNetwork(tpAdInfo);
                     setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
-                    reportAdLoaded();
+                    reportAdLoaded(network);
                     notifyAdLoaded(TradPlusLoader.this);
                 } else {
                     reportAdReLoaded();
@@ -566,7 +566,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     putCachedAdTime(mTPNative);
                     String network = getNetwork(tpAdInfo);
                     setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
-                    reportAdLoaded();
+                    reportAdLoaded(network);
                     notifySdkLoaderLoaded(false);
                 } else {
                     reportAdReLoaded();
@@ -709,7 +709,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     putCachedAdTime(mTPSplash);
                     String network = getNetwork(tpAdInfo);
                     setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
-                    reportAdLoaded();
+                    reportAdLoaded(network);
                     notifyAdLoaded(TradPlusLoader.this);
                 } else {
                     reportAdReLoaded();
