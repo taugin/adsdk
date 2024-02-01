@@ -1,12 +1,7 @@
 package com.hauyu.adsdk.demo;
 
 import android.annotation.SuppressLint;
-import android.os.Environment;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 public class Log {
@@ -32,6 +27,7 @@ public class Log {
             android.util.Log.d(tag, extraString + message);
         }
     }
+
     public static void v(String tag, String message) {
         tag = checkLogTag(tag);
         if (isLoggable(tag, VERBOSE)) {
@@ -99,39 +95,45 @@ public class Log {
 
     @SuppressLint("DefaultLocale")
     private static String getMethodNameAndLineNumber() {
-        StackTraceElement element[] = Thread.currentThread().getStackTrace();
-        if (element != null && element.length >= 4) {
-            String methodName = element[4].getMethodName();
-            int lineNumber = element[4].getLineNumber();
-            return String.format(Locale.ENGLISH, "%s.%s : %d ---> ", getClassName(),
-                    methodName, lineNumber);
+        try {
+            StackTraceElement element[] = Thread.currentThread().getStackTrace();
+            if (element != null && element.length > 4) {
+                String methodName = element[4].getMethodName();
+                int lineNumber = element[4].getLineNumber();
+                return String.format("%s.%s : %d ---> ", getClassName(),
+                        methodName, lineNumber, Locale.ENGLISH);
+            }
+        } catch (Exception e) {
         }
-        return null;
+        return "";
     }
 
     private static String getTag() {
-        StackTraceElement element[] = Thread.currentThread().getStackTrace();
-        if (element != null && element.length >= 4) {
-            String className = element[4].getClassName();
-            if (className == null) {
-                return null;
+        try {
+            StackTraceElement element[] = Thread.currentThread().getStackTrace();
+            if (element != null && element.length > 4) {
+                String className = element[4].getClassName();
+                if (className == null) {
+                    return null;
+                }
+                int index = className.lastIndexOf(".");
+                if (index != -1) {
+                    className = className.substring(index + 1);
+                }
+                index = className.indexOf('$');
+                if (index != -1) {
+                    className = className.substring(0, index);
+                }
+                return className;
             }
-            int index = className.lastIndexOf(".");
-            if (index != -1) {
-                className = className.substring(index + 1);
-            }
-            index = className.indexOf('$');
-            if (index != -1) {
-                className = className.substring(0, index);
-            }
-            return className;
+        } catch (Exception e) {
         }
-        return null;
+        return TAG;
     }
 
     private static String getClassName() {
         StackTraceElement element[] = Thread.currentThread().getStackTrace();
-        if (element != null && element.length >= 4) {
+        if (element != null && element.length > 5) {
             String className = element[5].getClassName();
             if (className == null) {
                 return null;
@@ -146,28 +148,6 @@ public class Log {
             }
             return className;
         }
-        return null;
-    }
-
-    public static void recordOperation(String operation) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-        String time = sdf.format(new Date(System.currentTimeMillis())) + " : ";
-        try {
-            File external = Environment.getExternalStorageDirectory();
-            String dir = external.getAbsoluteFile() + File.separator
-                    + "mysee/log";
-            File dirFile = new File(dir);
-            if (!dirFile.exists()) {
-                dirFile.mkdirs();
-            }
-            if (external != null) {
-                FileWriter fp = new FileWriter(
-                        dir + File.separator + "log.txt", true);
-                fp.write(time + operation + "\n");
-                fp.close();
-            }
-        } catch (Exception e) {
-            android.util.Log.d(Log.TAG, "error : " + e);
-        }
+        return "";
     }
 }
