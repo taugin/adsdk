@@ -93,15 +93,14 @@ public class Log {
         return tag;
     }
 
-    @SuppressLint("DefaultLocale")
     private static String getMethodNameAndLineNumber() {
         try {
             StackTraceElement element[] = Thread.currentThread().getStackTrace();
             if (element != null && element.length > 4) {
                 String methodName = element[4].getMethodName();
                 int lineNumber = element[4].getLineNumber();
-                return String.format("%s.%s : %d ---> ", getClassName(),
-                        methodName, lineNumber, Locale.ENGLISH);
+                return String.format(Locale.ENGLISH, "%s.%s : %d ---> ", getClassName(),
+                        methodName, lineNumber);
             }
         } catch (Exception e) {
         }
@@ -132,21 +131,24 @@ public class Log {
     }
 
     private static String getClassName() {
-        StackTraceElement element[] = Thread.currentThread().getStackTrace();
-        if (element != null && element.length > 5) {
-            String className = element[5].getClassName();
-            if (className == null) {
-                return null;
+        try {
+            StackTraceElement element[] = Thread.currentThread().getStackTrace();
+            if (element != null && element.length > 5) {
+                String className = element[5].getClassName();
+                if (className == null) {
+                    return null;
+                }
+                int index = className.lastIndexOf(".");
+                if (index != -1) {
+                    className = className.substring(index + 1);
+                }
+                index = className.indexOf('$');
+                if (index != -1) {
+                    className = className.substring(0, index);
+                }
+                return className;
             }
-            int index = className.lastIndexOf(".");
-            if (index != -1) {
-                className = className.substring(index + 1);
-            }
-            index = className.indexOf('$');
-            if (index != -1) {
-                className = className.substring(0, index);
-            }
-            return className;
+        } catch (Exception e) {
         }
         return "";
     }
