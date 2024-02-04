@@ -1116,7 +1116,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 map.put(Constant.AD_PRECISION, precisionTypes[adValue.getPrecisionType()]);
             } catch (Exception e) {
             }
-            map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
+            // map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             onReportAdImpData(map, impressionId);
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);

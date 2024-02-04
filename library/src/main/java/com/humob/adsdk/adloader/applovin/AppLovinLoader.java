@@ -1306,7 +1306,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             map.put(Constant.AD_COUNTRY_CODE, countryCode);
             map.put(Constant.AD_SDK_VERSION, getSdkVersion());
             map.put(Constant.AD_APP_VERSION, getAppVersion());
-            map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
+            // map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             onReportAdImpData(map, impressionId);
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);

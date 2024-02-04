@@ -864,7 +864,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             map.put(Constant.AD_PRECISION, tpAdInfo.ecpmPrecision);
             map.put(Constant.AD_SDK_VERSION, getSdkVersion());
             map.put(Constant.AD_APP_VERSION, getAppVersion());
-            map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
+            // map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             onReportAdImpData(map, impressionId);
         } catch (Exception e) {
             Log.iv(Log.TAG, "report trusplus error : " + e);
