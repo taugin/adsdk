@@ -1,5 +1,4 @@
-// 这是第三方广告平台的依赖文件
-// 更新时间:2024-01-29
+// This is a dependency file for a third-party advertising platform
 
 def ADMOB = 'admob'
 def TRADPLUS = 'tradplus'
