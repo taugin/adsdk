@@ -15,6 +15,19 @@ public class Constant {
     public static final String AD_SDK_SPREAD = "spread";
     public static final String AD_SDK_APPLOVIN = "applovin";
     public static final String AD_SDK_TRADPLUS = "tradplus";
+    public static final String AD_NETWORK_ADMOB = "admob";
+    public static final String AD_NETWORK_APPLOVIN = "applovin";
+    public static final String AD_NETWORK_FACEBOOK = "facebook";
+    public static final String AD_NETWORK_MINTEGRAL = "mintegral";
+    public static final String AD_NETWORK_INMOBI = "inmobi";
+    public static final String AD_NETWORK_SMAATO = "smaato";
+    public static final String AD_NETWORK_UNITY = "unity";
+    public static final String AD_NETWORK_TAPJOY = "tapjoy";
+    public static final String AD_NETWORK_VUNGLE = "vungle";
+    public static final String AD_NETWORK_IRONSOURCE = "ironsource";
+    public static final String AD_NETWORK_BIGO = "bigo";
+    public static final String AD_NETWORK_UNKNOWN = "unknown";
+    public static final String AD_NETWORK_EMPTY = "empty";
 
     public static final String AD_SDK_PREFIX = "pref_hauyu_";
 
@@ -259,6 +272,4 @@ public class Constant {
     public static final String AD_GAID = "ad_gaid";
     public static final String AD_IMPRESSION_ID = "ad_impression_id";
     public static final String AD_IMP_TIME = "ad_imp_time";
-
-    public static final String PREF_LAST_APP_ACTIVE_DATE = "pref_last_app_active_date";
 }

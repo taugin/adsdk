@@ -280,7 +280,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 bannerView = loadingView;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(loadingView);
-                setRevenueAverage();
+                setRevenueAverage(getBannerNetwork());
                 reportAdLoaded(getBannerNetwork());
                 notifySdkLoaderLoaded(false);
             }
@@ -410,7 +410,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
                 setInterstitialListener(interstitialAd);
-                setRevenueAverage();
+                setRevenueAverage(getInterstitialNetwork());
                 reportAdLoaded(getInterstitialNetwork());
                 notifyAdLoaded(AdmobLoader.this);
             }
@@ -559,7 +559,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mRewardedAd);
                 setRewardListener(rewardedAd);
-                setRevenueAverage();
+                setRevenueAverage(getRewardNetwork());
                 reportAdLoaded(getRewardNetwork());
                 notifyAdLoaded(AdmobLoader.this);
             }
@@ -827,7 +827,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
                 setNativeListener(nativeAd);
-                setRevenueAverage();
+                setRevenueAverage(getNativeNetwork());
                 reportAdLoaded(getNativeNetwork());
                 notifySdkLoaderLoaded(false);
             }
@@ -949,7 +949,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mAppOpenAd);
                 setSplashListener(appOpenAd);
-                setRevenueAverage();
+                setRevenueAverage(getSplashNetwork());
                 reportAdLoaded(getSplashNetwork());
                 notifyAdLoaded(AdmobLoader.this);
             }
@@ -1231,7 +1231,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         return network;
     }
 
-    private void setRevenueAverage() {
-        setAdNetworkAndRevenue(getSdkName(), 0f);
+    private void setRevenueAverage(String network) {
+        setAdNetworkAndRevenue(network, 0f);
     }
 }

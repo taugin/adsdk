@@ -27,6 +27,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.log.Log;
 
 import java.io.File;
@@ -854,43 +855,43 @@ public class Utils {
 
     public static String formatNetwork(String network) {
         if (network == null) {
-            return "empty";
+            return Constant.AD_NETWORK_EMPTY;
         }
         network = network.toLowerCase(Locale.ENGLISH);
         if (network.contains("applovin")) {
-            return "applovin";
+            return Constant.AD_NETWORK_APPLOVIN;
         }
         if (network.contains("admob")) {
-            return "admob";
+            return Constant.AD_NETWORK_ADMOB;
         }
         if (network.contains("facebook") || network.contains("meta audience network") || network.contains("audience-network")) {
-            return "facebook";
+            return Constant.AD_NETWORK_FACEBOOK;
         }
         if (network.contains("mintegral")) {
-            return "mintegral";
+            return Constant.AD_NETWORK_MINTEGRAL;
         }
         if (network.contains("inmobi")) {
-            return "inmobi";
+            return Constant.AD_NETWORK_INMOBI;
         }
         if (network.contains("smaato")) {
-            return "smaato";
+            return Constant.AD_NETWORK_SMAATO;
         }
         if (network.contains("unity")) {
-            return "unity";
+            return Constant.AD_NETWORK_UNITY;
         }
         if (network.contains("tapjoy")) {
-            return "tapjoy";
+            return Constant.AD_NETWORK_TAPJOY;
         }
         if (network.contains("vungle") || network.contains("liftoff")) {
-            return "vungle";
+            return Constant.AD_NETWORK_VUNGLE;
         }
         if (network.contains("ironsource")) {
-            return "ironsource";
+            return Constant.AD_NETWORK_IRONSOURCE;
         }
         if (network.contains("bigo")) {
-            return "bigo";
+            return Constant.AD_NETWORK_BIGO;
         }
-        return "unknown";
+        return Constant.AD_NETWORK_UNKNOWN;
     }
 
     public static void runOnUIThread(Runnable runnable) {
