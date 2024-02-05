@@ -584,7 +584,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 if (viewInScreen(lastUseMaxAdView)) {
                     impressionId = generateImpressionId();
                     Log.iv(Log.TAG, formatLog("ad revenue paid" + getLoadedInfo(ad)));
-                    reportMaxAdImpData(ad, getAdPlaceName(), impressionId);
+                    reportMaxAdImpData(ad, getAdPlaceName(), impressionId, sceneName);
                 }
             }
         };
@@ -702,7 +702,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdRevenuePaid(MaxAd ad) {
                 impressionId = generateImpressionId();
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                reportMaxAdImpData(ad, getAdPlaceName(), impressionId);
+                reportMaxAdImpData(ad, getAdPlaceName(), impressionId, sceneName);
             }
         };
     }
@@ -837,7 +837,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdRevenuePaid(MaxAd ad) {
                 impressionId = generateImpressionId();
                 Log.iv(Log.TAG, formatLog("ad revenue paid"));
-                reportMaxAdImpData(ad, getAdPlaceName(), impressionId);
+                reportMaxAdImpData(ad, getAdPlaceName(), impressionId, sceneName);
             }
         };
     }
@@ -1264,10 +1264,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
             return "[" + error.getCode() + "] " + error.getMessage();
         }
         return null;
-    }
-
-    private void reportMaxAdImpData(MaxAd maxAd, String placeName, String impressionId) {
-        reportMaxAdImpData(maxAd, placeName, impressionId, null);
     }
 
     private String getFinalSceneName(MaxAd maxAd, String sceneName) {
