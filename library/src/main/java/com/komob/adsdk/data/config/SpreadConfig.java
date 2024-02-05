@@ -19,6 +19,7 @@ public class SpreadConfig {
     private String cta;
     private boolean disable;
     private Map<String, String> ctaLocale;
+    private long loadingTime;
 
     public String getBanner() {
         return banner;
@@ -90,6 +91,14 @@ public class SpreadConfig {
 
     public void setCtaLocale(Map<String, String> ctaLocale) {
         this.ctaLocale = ctaLocale;
+    }
+
+    public long getLoadingTime() {
+        return loadingTime;
+    }
+
+    public void setLoadingTime(long loadingTime) {
+        this.loadingTime = loadingTime;
     }
 
     @Override

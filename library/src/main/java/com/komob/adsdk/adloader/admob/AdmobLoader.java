@@ -1090,16 +1090,22 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     private void reportAdmobImpressionData(AdValue adValue, String network, String impressionId, String sceneName) {
         try {
+            Map<String, Object> map = new HashMap<>();
+            try {
+                String[] precisionTypes = new String[]{"unknown", "estimated", "publisher_provided", "precise"};
+                map.put(Constant.AD_PRECISION, precisionTypes[adValue.getPrecisionType()]);
+            } catch (Exception e) {
+            }
             // admob给出的是百万次展示的价值，换算ecpm需要除以1000
             double revenue = (double) adValue.getValueMicros() / 1000000;
             if (revenue <= 0f && AdViewUI.isDebuggable()) {
                 revenue = (double) new Random().nextInt(50) / 1000;
+                map.put(Constant.AD_PRECISION, "random");
             }
             String networkName = network;
             String adUnitId = getPid();
             String adFormat = getAdType();
             String adUnitName = getAdPlaceName();
-            Map<String, Object> map = new HashMap<>();
             map.put(Constant.AD_VALUE, revenue);
             map.put(Constant.AD_MICRO_VALUE, Double.valueOf(revenue * 1000000).intValue());
             map.put(Constant.AD_CURRENCY, "USD");
@@ -1111,11 +1117,6 @@ public class AdmobLoader extends AbstractSdkLoader {
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_SDK_VERSION, getSdkVersion());
             map.put(Constant.AD_APP_VERSION, getAppVersion());
-            try {
-                String[] precisionTypes = new String[]{"unknown", "estimated", "publisher_provided", "precise"};
-                map.put(Constant.AD_PRECISION, precisionTypes[adValue.getPrecisionType()]);
-            } catch (Exception e) {
-            }
             // map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             onReportAdImpData(map, impressionId);
         } catch (Exception e) {

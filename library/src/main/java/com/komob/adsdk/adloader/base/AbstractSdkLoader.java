@@ -879,6 +879,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         Log.iv(Log.TAG, "set revenue place name : " + getAdPlaceName() + " , sdk : " + getSdkName() + " , network : " + network + " , type : " + getAdType() + " , value : " + mAdRevenue);
     }
 
+    protected void setSpreadRevenue(String network, double adRevenue) {
+        mAdNetwork = network;
+        mAdRevenue = adRevenue;
+    }
+
     @Override
     public double getRevenue() {
         return mAdRevenue;
