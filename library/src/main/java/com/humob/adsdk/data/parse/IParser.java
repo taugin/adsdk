@@ -124,6 +124,7 @@ public interface IParser {
     String URL = "url";
     String CTA = "cta";
     String CTA_LOCALE = "cta_locale";
+    String LOADING_TIME = "loading_time";
 
     PlaceConfig parseAdConfig(String data);
 

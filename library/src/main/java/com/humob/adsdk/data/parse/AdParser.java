@@ -2,7 +2,6 @@ package com.humob.adsdk.data.parse;
 
 import android.text.TextUtils;
 
-import com.humob.adsdk.utils.Utils;
 import com.humob.adsdk.constant.Constant;
 import com.humob.adsdk.data.config.AdPlace;
 import com.humob.adsdk.data.config.PidConfig;
@@ -10,6 +9,7 @@ import com.humob.adsdk.data.config.PlaceConfig;
 import com.humob.adsdk.data.config.SpreadConfig;
 import com.humob.adsdk.log.Log;
 import com.humob.adsdk.utils.AesUtils;
+import com.humob.adsdk.utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -425,6 +425,9 @@ public class AdParser implements IParser {
                 }
                 if (jobj.has(CTA_LOCALE)) {
                     spreadConfig.setCtaLocale(parseStringMap(jobj.getString(CTA_LOCALE)));
+                }
+                if (jobj.has(LOADING_TIME)) {
+                    spreadConfig.setLoadingTime(jobj.getLong(LOADING_TIME));
                 }
             }
         } catch (Exception e) {

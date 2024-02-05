@@ -8,18 +8,18 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.humob.adsdk.utils.Utils;
 import com.humob.adsdk.adloader.base.AbstractSdkLoader;
+import com.humob.adsdk.adloader.base.BaseBindNativeView;
 import com.humob.adsdk.adloader.listener.ISdkLoader;
 import com.humob.adsdk.constant.Constant;
 import com.humob.adsdk.core.framework.AdPlaceLoader;
 import com.humob.adsdk.core.framework.Params;
 import com.humob.adsdk.data.DataManager;
-import com.humob.adsdk.log.Log;
-import com.humob.api.AdActivity;
-import com.humob.adsdk.adloader.base.BaseBindNativeView;
 import com.humob.adsdk.data.config.SpreadConfig;
 import com.humob.adsdk.http.Http;
+import com.humob.adsdk.log.Log;
+import com.humob.adsdk.utils.Utils;
+import com.humob.api.AdActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,16 +79,19 @@ public class SpLoader extends AbstractSdkLoader {
             notifyAdRequest();
             loadIcon(spreadConfig.getIcon());
             loadBanner(spreadConfig.getBanner());
+            long cfgLoadingTime = spreadConfig.getLoadingTime();
+            final long loadingTime = cfgLoadingTime > 0 ? cfgLoadingTime : MOCK_LOADING_TIME;
             if (mHandler != null) {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         mSpread = spreadConfig;
                         setLoading(false, STATE_SUCCESS);
+                        setSpreadRevenue(getSdkName(), getCpm() / 1000f);
                         reportAdLoaded();
                         notifySdkLoaderLoaded(false);
                     }
-                }, MOCK_LOADING_TIME);
+                }, loadingTime);
             }
         } else {
             reportAdError(String.valueOf("ERROR_LOAD"));
@@ -164,16 +167,19 @@ public class SpLoader extends AbstractSdkLoader {
             notifyAdRequest();
             loadIcon(spreadConfig.getIcon());
             loadBanner(spreadConfig.getBanner());
+            long cfgLoadingTime = spreadConfig.getLoadingTime();
+            final long loadingTime = cfgLoadingTime > 0 ? cfgLoadingTime : MOCK_LOADING_TIME;
             if (mHandler != null) {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         mSpread = spreadConfig;
                         setLoading(false, STATE_SUCCESS);
+                        setSpreadRevenue(getSdkName(), getCpm() / 1000f);
                         reportAdLoaded();
                         notifySdkLoaderLoaded(false);
                     }
-                }, MOCK_LOADING_TIME);
+                }, loadingTime);
             }
         } else {
             reportAdError(String.valueOf("ERROR_LOAD"));
