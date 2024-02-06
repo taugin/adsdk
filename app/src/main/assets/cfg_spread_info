@@ -3,7 +3,7 @@
     "banner": "https://lh3.googleusercontent.com/p41Qo8tQWr3LaEOMG2bupfS_xFtlIYkuMj2q13Z4-2aBs0U_5lmEbtYYclhLFA6BYNQ=h500-rw",
     "icon": "https://lh3.googleusercontent.com/248FIMyXW92jakHTFpU2LY73r7ELv-WRlWHRH3ooLzGHfqqqXzoYaXiRhdfYwDrms1hV=s180-rw",
     "title": "Fast QRScanner",
-    "package": "com.qrscanner.barcode.tag.reader",
+    "bundle": "com.qrscanner.barcode.tag.reader",
     "detail": "Smart & Fast QRScanner Free is the fastest scanner.",
     "cta": "INSTALL",
     "cta_locale": {
@@ -16,7 +16,7 @@
     "banner": "https://lh3.googleusercontent.com/yzikk1UIB5XHEi7W3cQK5a1hkmC0EuWlIwLRRLKjphjHpuf6rLirp3K3saExTunGPQ=h500-rw",
     "icon": "https://lh3.googleusercontent.com/nAlSM6DdF4J8QOG4FopKS55ovfZ7iqYsWNDAO-2mSX0PncdFtLDPvDxBQR3dsJT1eQ=s180-rw",
     "title": "Equalizer Pro & Bass Booster",
-    "package": "com.music.bass.equalizer.volume.booster.pro",
+    "bundle": "com.music.bass.equalizer.volume.booster.pro",
     "detail": "Equalizer Pro & Bass Booster Best Equalizer",
     "cta": "INSTALL",
     "cta_locale": {

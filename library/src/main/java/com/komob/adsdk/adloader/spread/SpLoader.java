@@ -1,6 +1,9 @@
 package com.komob.adsdk.adloader.spread;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,23 +11,30 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.komob.adsdk.InternalStat;
 import com.komob.adsdk.adloader.base.AbstractSdkLoader;
 import com.komob.adsdk.adloader.base.BaseBindNativeView;
 import com.komob.adsdk.adloader.listener.ISdkLoader;
 import com.komob.adsdk.constant.Constant;
+import com.komob.adsdk.core.db.DBManager;
 import com.komob.adsdk.core.framework.AdPlaceLoader;
 import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.DataManager;
+import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.data.config.SpreadConfig;
 import com.komob.adsdk.http.Http;
 import com.komob.adsdk.log.Log;
+import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.utils.Utils;
 import com.komob.api.AdViewUI;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Administrator on 2018-10-19.
@@ -32,6 +42,7 @@ import java.util.Random;
 
 public class SpLoader extends AbstractSdkLoader {
 
+    private static AtomicBoolean sRegister = new AtomicBoolean(false);
     private static final int MOCK_LOADING_TIME = 200;
     private SpreadConfig mSpread;
     private Params mParams;
@@ -40,6 +51,14 @@ public class SpLoader extends AbstractSdkLoader {
 
     protected BaseBindNativeView getBaseBindNativeView() {
         return spreadBindNativeView;
+    }
+
+    @Override
+    public void init(Context context, PidConfig pidConfig) {
+        super.init(context, pidConfig);
+        if (!sRegister.getAndSet(true)) {
+            register(context);
+        }
     }
 
     @Override
@@ -127,8 +146,8 @@ public class SpLoader extends AbstractSdkLoader {
             spreadBindNativeView.setClickListener(new ClickClass(spreadConfig));
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadConfig);
             mSpread = null;
+            reportAdSpreadImp(spreadConfig);
             notifyAdImp(null, sceneName);
-            reportAdImp();
         } else {
             Log.iv(Log.TAG, formatShowErrorLog("Spread is null"));
             notifyAdShowFailed(Constant.AD_ERROR_SHOW, "Spread not ready");
@@ -200,7 +219,7 @@ public class SpLoader extends AbstractSdkLoader {
         List<SpreadConfig> availableSp = new ArrayList<SpreadConfig>();
         for (SpreadConfig config : spList) {
             // 参数有效，并且未安装
-            if (checkArgs(config) && !Utils.isInstalled(mContext, config.getPackageName()) && !config.isDisable()) {
+            if (checkArgs(config) && !Utils.isInstalled(mContext, config.getBundle()) && !config.isDisable()) {
                 availableSp.add(config);
             }
         }
@@ -224,7 +243,7 @@ public class SpLoader extends AbstractSdkLoader {
         if (TextUtils.isEmpty(spreadConfig.getBanner())
                 || TextUtils.isEmpty(spreadConfig.getIcon())
                 || TextUtils.isEmpty(spreadConfig.getTitle())
-                || TextUtils.isEmpty(spreadConfig.getPackageName())
+                || TextUtils.isEmpty(spreadConfig.getBundle())
                 || TextUtils.isEmpty(spreadConfig.getDetail())
                 || TextUtils.isEmpty(spreadConfig.getCta())) {
             return false;
@@ -277,8 +296,8 @@ public class SpLoader extends AbstractSdkLoader {
             spreadBindNativeView.setClickListener(new ClickClass(spreadConfig));
             spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadConfig);
             mSpread = null;
+            reportAdSpreadImp(spreadConfig);
             notifyAdImp(null, sceneName);
-            reportAdImp();
         }
     }
 
@@ -293,19 +312,123 @@ public class SpLoader extends AbstractSdkLoader {
         public void onClick(View v) {
             if (mSpreadConfig != null) {
                 String url = mSpreadConfig.getLinkUrl();
-                if (TextUtils.isEmpty(url)) {
-                    url = "market://details?id=" + mSpreadConfig.getPackageName();
+                String packageName = mSpreadConfig.getBundle();
+                String referrer = null;
+                try {
+                    referrer = generateReferrer(v.getContext());
+                } catch (Exception e) {
+                    Log.iv(Log.TAG, "error : " + e);
                 }
+                if (TextUtils.isEmpty(url)) {
+                    url = "market://details?id=" + packageName;
+                    if (!TextUtils.isEmpty(referrer)) {
+                        url = url + "&" + referrer;
+                    }
+                }
+                Log.iv(Log.TAG, "spread url : " + url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (mSpreadConfig.isPlay() && Utils.isInstalled(v.getContext(), "com.android.vending")) {
+                    intent.setPackage("com.android.vending");
+                }
                 try {
                     v.getContext().startActivity(intent);
                 } catch (Exception e) {
                     Log.iv(Log.TAG, "error : " + e);
                 }
-                reportAdClick();
+                try {
+                    DBManager.get(v.getContext()).insertOrUpdateClick(packageName, System.currentTimeMillis());
+                } catch (Exception e) {
+                }
+                reportAdSpreadClk(mSpreadConfig);
                 notifyAdClick();
             }
         }
     }
+
+    private static String generateReferrer(Context context) {
+        String packageName = context.getPackageName();
+        return String.format(Locale.ENGLISH, "referrer=utm_source%%3D%s%%26utm_medium%%3Dcpc%%26utm_campaign%%3Dspread", packageName);
+    }
+
+    private void reportAdSpreadImp(SpreadConfig spreadConfig) {
+        try {
+            String packageName = null;
+            if (spreadConfig != null) {
+                packageName = spreadConfig.getBundle();
+            }
+            Map<String, Object> extra = new HashMap<>();
+            extra.put("bundle", packageName);
+            EventImpl.get().reportAdImp(mContext, getAdPlaceName(), getSdkName(), null, getAdType(), getPid(), null, getCpm(), extra);
+        } catch (Exception e) {
+        }
+    }
+
+    private void reportAdSpreadClk(SpreadConfig spreadConfig) {
+        try {
+            String packageName = null;
+            if (spreadConfig != null) {
+                packageName = spreadConfig.getBundle();
+            }
+            Map<String, Object> extra = new HashMap<>();
+            extra.put("bundle", packageName);
+            EventImpl.get().reportAdClick(mContext, getAdPlaceName(), getSdkName(), null, getAdType(), getPid(), null, getCpm(), extra, null);
+        } catch (Exception e) {
+        }
+    }
+
+    private static void reportAdSpreadInstalled(Context context, String packageName) {
+        try {
+            InternalStat.reportEvent(context, "ad_spread_installed", packageName);
+        } catch (Exception e) {
+        }
+    }
+
+    private static void register(Context context) {
+        try {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+            filter.addAction(Intent.ACTION_PACKAGE_ADDED);
+            filter.addDataScheme("package");
+            context.registerReceiver(sBroadcastReceiver, filter);
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    private static String parsePackageName(Intent intent) {
+        try {
+            String data = intent.getDataString();
+            return data.substring("package:".length());
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    private static BroadcastReceiver sBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (context == null || intent == null) {
+                return;
+            }
+            try {
+                String action = intent.getAction();
+                if (TextUtils.equals(action, Intent.ACTION_PACKAGE_ADDED)) {
+                    String packageName = parsePackageName(intent);
+                    DBManager.SpreadClickInfo spreadClickInfo = DBManager.get(context).queryClickSpread(packageName);
+                    if (spreadClickInfo != null) {
+                        int _id = spreadClickInfo._id;
+                        Log.iv(Log.TAG, "install package name : " + packageName + " , _id : " + _id);
+                        if (_id >= 0) {
+                            DBManager.get(context).updateInstallTime(_id, System.currentTimeMillis(), spreadClickInfo.installCount + 1);
+                            reportAdSpreadInstalled(context, packageName);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.iv(Log.TAG, "error : " + e);
+            }
+        }
+    };
 }

@@ -13,13 +13,14 @@ public class SpreadConfig {
     private String banner;
     private String icon;
     private String title;
-    private String packageName;
+    private String bundle;
     private String detail;
     private String linkUrl;
     private String cta;
     private boolean disable;
     private Map<String, String> ctaLocale;
     private long loadingTime;
+    private boolean play;
 
     public String getBanner() {
         return banner;
@@ -45,12 +46,12 @@ public class SpreadConfig {
         this.title = title;
     }
 
-    public String getPackageName() {
-        return packageName;
+    public String getBundle() {
+        return bundle;
     }
 
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
+    public void setBundle(String bundle) {
+        this.bundle = bundle;
     }
 
     public String getDetail() {
@@ -99,6 +100,14 @@ public class SpreadConfig {
 
     public void setLoadingTime(long loadingTime) {
         this.loadingTime = loadingTime;
+    }
+
+    public boolean isPlay() {
+        return play;
+    }
+
+    public void setPlay(boolean play) {
+        this.play = play;
     }
 
     @Override
