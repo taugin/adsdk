@@ -1,10 +1,10 @@
 [
   {
-    "banner": "https://lh3.googleusercontent.com/p41Qo8tQWr3LaEOMG2bupfS_xFtlIYkuMj2q13Z4-2aBs0U_5lmEbtYYclhLFA6BYNQ=h500-rw",
-    "icon": "https://lh3.googleusercontent.com/248FIMyXW92jakHTFpU2LY73r7ELv-WRlWHRH3ooLzGHfqqqXzoYaXiRhdfYwDrms1hV=s180-rw",
-    "title": "Fast QRScanner",
-    "bundle": "com.qrscanner.barcode.tag.reader",
-    "detail": "Smart & Fast QRScanner Free is the fastest scanner.",
+    "banner": "https://play-lh.googleusercontent.com/U-j8bBMhoOnAKgLWFOtnIHG5TLgKlA-9oblh7VOQzBXKGnsgXYAqfYwceY5NUTZSlw",
+    "icon": "https://play-lh.googleusercontent.com/JfC28TP-Tc_ZZ9uwB7rurdYl3pat5NSvvBcfigTVlcblbzYTQpZkRzK4wG_9SBtGCyhm=w240-h480",
+    "title": "Easy Weather - Daily Forecast",
+    "bundle": "com.easy.weather.daily.sunny.app",
+    "detail": "Easy Weather - Daily Forecast",
     "cta": "INSTALL",
     "cta_locale": {
       "zh": "安装",
@@ -13,11 +13,11 @@
     "loading_time": 5000
   },
   {
-    "banner": "https://lh3.googleusercontent.com/yzikk1UIB5XHEi7W3cQK5a1hkmC0EuWlIwLRRLKjphjHpuf6rLirp3K3saExTunGPQ=h500-rw",
-    "icon": "https://lh3.googleusercontent.com/nAlSM6DdF4J8QOG4FopKS55ovfZ7iqYsWNDAO-2mSX0PncdFtLDPvDxBQR3dsJT1eQ=s180-rw",
-    "title": "Equalizer Pro & Bass Booster",
-    "bundle": "com.music.bass.equalizer.volume.booster.pro",
-    "detail": "Equalizer Pro & Bass Booster Best Equalizer",
+    "banner": "https://play-lh.googleusercontent.com/8WUOPpMjsU14b2_Z8HhvytDeBJnngi_ZthX2PxDvnKlrQ5GsiSpDJgAhK93fxFmIK6dp",
+    "icon": "https://play-lh.googleusercontent.com/8Z5-HuhfAPHZXm0IANnwKwiBlEpuSijULQY_mGF_Jn4uJWh3mC8n1TJ4JQggVemXK3Df=w240-h480",
+    "title": "Daily KJV Bible",
+    "bundle": "com.daily.kjvbible.devotion",
+    "detail": "Daily KJV Bible",
     "cta": "INSTALL",
     "cta_locale": {
       "zh": "安装",
