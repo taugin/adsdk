@@ -408,8 +408,8 @@ public class AdParser implements IParser {
                 if (jobj.has(TITLE)) {
                     spreadConfig.setTitle(jobj.getString(TITLE));
                 }
-                if (jobj.has(PACKAGE)) {
-                    spreadConfig.setPackageName(jobj.getString(PACKAGE));
+                if (jobj.has(BUNDLE)) {
+                    spreadConfig.setBundle(jobj.getString(BUNDLE));
                 }
                 if (jobj.has(DETAIL)) {
                     spreadConfig.setDetail(jobj.getString(DETAIL));
@@ -428,6 +428,9 @@ public class AdParser implements IParser {
                 }
                 if (jobj.has(LOADING_TIME)) {
                     spreadConfig.setLoadingTime(jobj.getLong(LOADING_TIME));
+                }
+                if (jobj.has(PLAY)) {
+                    spreadConfig.setPlay(jobj.getBoolean(PLAY));
                 }
             }
         } catch (Exception e) {

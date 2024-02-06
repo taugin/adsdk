@@ -60,7 +60,7 @@ public class SplashActivity extends BaseActivity {
             Log.v(TAG, "no need retry");
             return;
         }
-        AdParams adParams = new AdParams.Builder().setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_ROUND).build();
+        AdParams adParams = new AdParams.Builder().setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_ROUND).setSceneName("ss_splash_spread").build();
         AdSdk.get(this).loadAdView(mNativeSplashPlace, adParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String placeName, String source, String adType, String pid) {

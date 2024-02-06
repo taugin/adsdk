@@ -66,7 +66,8 @@ public class InternalStat {
                 "click_interstitial_admob_distinct",
                 "click_native_admob_distinct",
                 "click_banner_admob_distinct",
-                "click_reward_admob_distinct"
+                "click_reward_admob_distinct",
+                "ad_spread_installed"
         );
 
         sFirebaseWhiteList = Arrays.asList(

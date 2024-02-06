@@ -119,12 +119,13 @@ public interface IParser {
     String BANNER = "banner";
     String ICON = "icon";
     String TITLE = "title";
-    String PACKAGE = "package";
+    String BUNDLE = "bundle";
     String DETAIL = "detail";
     String URL = "url";
     String CTA = "cta";
     String CTA_LOCALE = "cta_locale";
     String LOADING_TIME = "loading_time";
+    String PLAY = "play";
 
     PlaceConfig parseAdConfig(String data);
 
