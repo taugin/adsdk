@@ -146,7 +146,7 @@ dependencies {
         }
         if (isContains(include_platform_list, ADMOB)) {
             // google inmobi mediation
-            implementation 'com.google.ads.mediation:inmobi:10.6.2.0'
+            implementation 'com.google.ads.mediation:inmobi:10.6.3.0'
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////
