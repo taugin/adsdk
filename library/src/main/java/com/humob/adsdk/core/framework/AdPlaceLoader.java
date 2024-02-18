@@ -118,34 +118,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 ISdkLoader loader = null;
                 for (PidConfig config : pidList) {
                     if (config != null) {
-                        if (config.isAdmob() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
-                            if (!config.isDisable()) {
-                                loader = new AdmobLoader();
-                                loader.init(mContext, config);
-                                loader.setListenerManager(this);
-                                mAdLoaders.add(loader);
-                            }
-                        } else if (config.isApplovin() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
-                            if (!config.isDisable()) {
-                                loader = new AppLovinLoader();
-                                loader.init(mContext, config);
-                                loader.setListenerManager(this);
-                                mAdLoaders.add(loader);
-                            }
-                        } else if (config.isTradPlus() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
-                            if (!config.isDisable()) {
-                                loader = new TradPlusLoader();
-                                loader.init(mContext, config);
-                                loader.setListenerManager(this);
-                                mAdLoaders.add(loader);
-                            }
-                        } else if (config.isSpread() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
-                            if (!config.isDisable()) {
-                                loader = new SpLoader();
-                                loader.init(mContext, config);
-                                loader.setListenerManager(this);
-                                mAdLoaders.add(loader);
-                            }
+                        loader = ModuleLoaderHelper.generateSdkLoader(config);
+                        if (loader != null) {
+                            loader.init(mContext, config);
+                            loader.setListenerManager(this);
+                            mAdLoaders.add(loader);
                         }
                     }
                 }

@@ -20,7 +20,7 @@ public class SpreadConfig {
     private boolean disable;
     private Map<String, String> ctaLocale;
     private long loadingTime;
-    private boolean play;
+    private boolean play = true;
 
     public String getBanner() {
         return banner;
