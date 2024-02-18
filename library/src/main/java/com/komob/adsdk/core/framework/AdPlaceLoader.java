@@ -10,20 +10,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.komob.api.AdViewUI;
 import com.komob.adsdk.AdParams;
 import com.komob.adsdk.AdReward;
 import com.komob.adsdk.OnAdSdkListener;
-import com.komob.adsdk.utils.Utils;
-import com.komob.adsdk.adloader.admob.AdmobLoader;
-import com.komob.adsdk.adloader.applovin.AppLovinLoader;
 import com.komob.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.komob.adsdk.adloader.listener.IManagerListener;
 import com.komob.adsdk.adloader.listener.ISdkLoader;
 import com.komob.adsdk.adloader.listener.OnAdBaseListener;
 import com.komob.adsdk.adloader.listener.OnAdSdkInternalListener;
-import com.komob.adsdk.adloader.spread.SpLoader;
-import com.komob.adsdk.adloader.tradplus.TradPlusLoader;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.AdPolicy;
 import com.komob.adsdk.core.ModuleLoaderHelper;
@@ -32,6 +26,8 @@ import com.komob.adsdk.data.config.AdPlace;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.stat.EventImpl;
+import com.komob.adsdk.utils.Utils;
+import com.komob.api.AdViewUI;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -118,34 +114,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 ISdkLoader loader = null;
                 for (PidConfig config : pidList) {
                     if (config != null) {
-                        if (config.isAdmob() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
-                            if (!config.isDisable()) {
-                                loader = new AdmobLoader();
-                                loader.init(mContext, config);
-                                loader.setListenerManager(this);
-                                mAdLoaders.add(loader);
-                            }
-                        } else if (config.isApplovin() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
-                            if (!config.isDisable()) {
-                                loader = new AppLovinLoader();
-                                loader.init(mContext, config);
-                                loader.setListenerManager(this);
-                                mAdLoaders.add(loader);
-                            }
-                        } else if (config.isTradPlus() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
-                            if (!config.isDisable()) {
-                                loader = new TradPlusLoader();
-                                loader.init(mContext, config);
-                                loader.setListenerManager(this);
-                                mAdLoaders.add(loader);
-                            }
-                        } else if (config.isSpread() && ModuleLoaderHelper.isModuleLoaded(config.getSdk())) {
-                            if (!config.isDisable()) {
-                                loader = new SpLoader();
-                                loader.init(mContext, config);
-                                loader.setListenerManager(this);
-                                mAdLoaders.add(loader);
-                            }
+                        loader = ModuleLoaderHelper.generateSdkLoader(config);
+                        if (loader != null) {
+                            loader.init(mContext, config);
+                            loader.setListenerManager(this);
+                            mAdLoaders.add(loader);
                         }
                     }
                 }
