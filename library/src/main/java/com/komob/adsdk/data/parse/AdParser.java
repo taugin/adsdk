@@ -241,6 +241,13 @@ public class AdParser implements IParser {
                 }
                 pidConfig.setPid(pid);
             }
+            if (jobj.has(APP_ID)) {
+                String appId = jobj.getString(APP_ID);
+                if (appId != null) {
+                    appId = appId.trim();
+                }
+                pidConfig.setAppId(appId);
+            }
             if (jobj.has(TYPE)) {
                 pidConfig.setAdType(jobj.getString(TYPE));
             }

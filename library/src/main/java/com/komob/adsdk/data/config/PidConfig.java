@@ -86,6 +86,8 @@ public class PidConfig {
 
     private boolean autoLoad;
 
+    private String appId;
+
     public String getPlaceName() {
         return placeName;
     }
@@ -356,6 +358,14 @@ public class PidConfig {
 
     public void setAutoLoad(boolean autoLoad) {
         this.autoLoad = autoLoad;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
     public boolean isAdmob() {

@@ -49,10 +49,14 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
         OnAdSdkInternalListener placeLoaderListener = getOnAdPlaceLoaderListener();
         if (placeLoaderListener != null) {
             long costTime = 0;
+            String network = null;
+            double revenue = 0;
             if (loader != null) {
                 costTime = loader.getCostTime();
+                network = loader.getNetwork();
+                revenue = loader.getRevenue();
             }
-            placeLoaderListener.onLoaded(placeName, source, adType, pid, costTime);
+            placeLoaderListener.onLoaded(placeName, source, adType, pid, network, revenue, costTime);
         }
     }
 

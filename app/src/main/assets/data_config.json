@@ -23,9 +23,7 @@
           "sdk": "tradplus",
           "type": "splash",
           "pid": "089E30435C67FDCD23111559B8074610",
-          "extra": {
-            "app_id": "BA819D2F55B23ED81FD43E632EFF0FE7"
-          }
+          "aid": "BA819D2F55B23ED81FD43E632EFF0FE7"
         }
       ]
     },
@@ -70,9 +68,7 @@
           "sdk": "tradplus",
           "type": "banner",
           "pid": "49AC8EA783C45A3246354B34A1B1E742",
-          "extra": {
-            "app_id": "BA819D2F55B23ED81FD43E632EFF0FE7"
-          }
+          "aid": "BA819D2F55B23ED81FD43E632EFF0FE7"
         }
       ]
     },
@@ -108,9 +104,7 @@
           "sdk": "tradplus",
           "type": "interstitial",
           "pid": "390467770FD3681386CF5C74E7244B30",
-          "extra": {
-            "app_id": "BA819D2F55B23ED81FD43E632EFF0FE7"
-          }
+          "aid": "BA819D2F55B23ED81FD43E632EFF0FE7"
         }
       ]
     },
@@ -154,9 +148,7 @@
           "sdk": "tradplus",
           "type": "reward",
           "pid": "A5AF90C502A014B3BDCF2B267ADA6007",
-          "extra": {
-            "app_id": "BA819D2F55B23ED81FD43E632EFF0FE7"
-          }
+          "aid": "BA819D2F55B23ED81FD43E632EFF0FE7"
         }
       ]
     },
@@ -205,9 +197,7 @@
           "sdk": "tradplus",
           "type": "native",
           "pid": "C0A4A6BA231CA19D882F007E143818EA",
-          "extra": {
-            "app_id": "BA819D2F55B23ED81FD43E632EFF0FE7"
-          }
+          "aid": "BA819D2F55B23ED81FD43E632EFF0FE7"
         }
       ]
     },

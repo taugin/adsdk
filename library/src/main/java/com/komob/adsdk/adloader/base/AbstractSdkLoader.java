@@ -21,8 +21,6 @@ import com.komob.adsdk.AdReward;
 import com.komob.adsdk.InternalStat;
 import com.komob.adsdk.OnAdEventListener;
 import com.komob.adsdk.OnAdFilterListener;
-import com.komob.adsdk.utils.Utils;
-import com.komob.adsdk.utils.VUIHelper;
 import com.komob.adsdk.adloader.listener.IManagerListener;
 import com.komob.adsdk.adloader.listener.ISdkLoader;
 import com.komob.adsdk.adloader.listener.OnAdBaseListener;
@@ -36,13 +34,15 @@ import com.komob.adsdk.core.framework.FBStatManager;
 import com.komob.adsdk.core.framework.LimitAdsManager;
 import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.DataManager;
-import com.komob.adsdk.log.Log;
-import com.komob.api.AdViewUI;
 import com.komob.adsdk.data.config.AdPlace;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.data.parse.IParser;
+import com.komob.adsdk.log.Log;
 import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.stat.IEvent;
+import com.komob.adsdk.utils.Utils;
+import com.komob.adsdk.utils.VUIHelper;
+import com.komob.api.AdViewUI;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -679,6 +679,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         return null;
     }
 
+    protected String getAppId() {
+        if (mPidConfig != null) {
+            return mPidConfig.getAppId();
+        }
+        return null;
+    }
+
     private int getMinAvgCount() {
         if (mPidConfig != null) {
             return mPidConfig.getMinAvgCount();
@@ -892,6 +899,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     @Override
     public long getCostTime() {
         return mCostTime;
+    }
+
+    @Override
+    public String getNetwork() {
+        return mAdNetwork;
     }
 
     protected String generateImpressionId() {

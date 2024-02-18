@@ -93,4 +93,6 @@ public interface ISdkLoader {
     double getRevenue();
 
     long getCostTime();
+
+    String getNetwork();
 }

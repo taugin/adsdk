@@ -74,9 +74,12 @@ public class TradPlusLoader extends AbstractSdkLoader {
     private void initTradPlus() {
         String appId = null;
         if (mPidConfig != null) {
-            Map<String, String> extra = mPidConfig.getExtra();
-            if (extra != null) {
-                appId = extra.get(Constant.APP_ID);
+            appId = getAppId();
+            if (TextUtils.isEmpty(appId)) {
+                Map<String, String> extra = mPidConfig.getExtra();
+                if (extra != null) {
+                    appId = extra.get(Constant.APP_ID);
+                }
             }
         }
         if (!TextUtils.isEmpty(appId)) {
