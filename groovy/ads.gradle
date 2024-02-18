@@ -135,10 +135,10 @@ dependencies {
 
     if (isContains(include_platform_list, INMOBI)) {
         // Inmobi
-        implementation 'com.inmobi.monetization:inmobi-ads-kotlin:10.6.3'
+        implementation 'com.inmobi.monetization:inmobi-ads-kotlin:10.6.6'
         if (isContains(include_platform_list, APPLOVIN)) {
             // applovin inmobi mediation
-            implementation 'com.applovin.mediation:inmobi-adapter:10.6.3.1@aar'
+            implementation 'com.applovin.mediation:inmobi-adapter:10.6.6.0@aar'
         }
         if (isContains(include_platform_list, TRADPLUS)) {
             //tradplus inmobi mediation
