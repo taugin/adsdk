@@ -184,6 +184,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
                 public void onSuccess(Bitmap bitmap) {
                     if (imageView != null) {
                         imageView.setImageBitmap(bitmap);
+                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     }
                 }
 

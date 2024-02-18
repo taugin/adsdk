@@ -90,30 +90,35 @@ public class SpLoader extends AbstractSdkLoader {
         }
 
         final SpreadConfig spreadConfig = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
-        if (checkArgs(spreadConfig)) {
-            setLoading(true, STATE_REQUEST);
-            printInterfaceLog(ACTION_LOAD);
-            reportAdRequest();
-            notifyAdRequest();
-            loadIcon(spreadConfig.getIcon());
-            loadBanner(spreadConfig.getBanner());
-            long cfgLoadingTime = spreadConfig.getLoadingTime();
-            final long loadingTime = cfgLoadingTime > 0 ? cfgLoadingTime : MOCK_LOADING_TIME;
-            if (mHandler != null) {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSpread = spreadConfig;
-                        setLoading(false, STATE_SUCCESS);
-                        setSpreadRevenue(getSdkName(), getCpm() / 1000f);
-                        reportAdLoaded();
-                        notifySdkLoaderLoaded(false);
-                    }
-                }, loadingTime);
-            }
-        } else {
-            reportAdError(String.valueOf("ERROR_LOAD"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "error load");
+        if (!checkArgs(spreadConfig)) {
+            notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "spread contains error");
+            return;
+        }
+
+        if (Utils.isInstalled(mContext, spreadConfig.getBundle())) {
+            notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "app has installed");
+            return;
+        }
+
+        setLoading(true, STATE_REQUEST);
+        printInterfaceLog(ACTION_LOAD);
+        reportAdRequest();
+        notifyAdRequest();
+        loadIcon(spreadConfig.getIcon());
+        loadBanner(spreadConfig.getBanner());
+        long cfgLoadingTime = spreadConfig.getLoadingTime();
+        final long loadingTime = cfgLoadingTime > 0 ? cfgLoadingTime : MOCK_LOADING_TIME;
+        if (mHandler != null) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mSpread = spreadConfig;
+                    setLoading(false, STATE_SUCCESS);
+                    setSpreadRevenue(getSdkName(), getCpm() / 1000f);
+                    reportAdLoaded();
+                    notifySdkLoaderLoaded(false);
+                }
+            }, loadingTime);
         }
     }
 
@@ -178,30 +183,34 @@ public class SpLoader extends AbstractSdkLoader {
         }
 
         final SpreadConfig spreadConfig = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
-        if (checkArgs(spreadConfig)) {
-            setLoading(true, STATE_REQUEST);
-            printInterfaceLog(ACTION_LOAD);
-            reportAdRequest();
-            notifyAdRequest();
-            loadIcon(spreadConfig.getIcon());
-            loadBanner(spreadConfig.getBanner());
-            long cfgLoadingTime = spreadConfig.getLoadingTime();
-            final long loadingTime = cfgLoadingTime > 0 ? cfgLoadingTime : MOCK_LOADING_TIME;
-            if (mHandler != null) {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSpread = spreadConfig;
-                        setLoading(false, STATE_SUCCESS);
-                        setSpreadRevenue(getSdkName(), getCpm() / 1000f);
-                        reportAdLoaded();
-                        notifySdkLoaderLoaded(false);
-                    }
-                }, loadingTime);
-            }
-        } else {
-            reportAdError(String.valueOf("ERROR_LOAD"));
-            notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "error load");
+        if (!checkArgs(spreadConfig)) {
+            notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "spread contains error");
+            return;
+        }
+
+        if (Utils.isInstalled(mContext, spreadConfig.getBundle())) {
+            notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "app has installed");
+            return;
+        }
+        setLoading(true, STATE_REQUEST);
+        printInterfaceLog(ACTION_LOAD);
+        reportAdRequest();
+        notifyAdRequest();
+        loadIcon(spreadConfig.getIcon());
+        loadBanner(spreadConfig.getBanner());
+        long cfgLoadingTime = spreadConfig.getLoadingTime();
+        final long loadingTime = cfgLoadingTime > 0 ? cfgLoadingTime : MOCK_LOADING_TIME;
+        if (mHandler != null) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mSpread = spreadConfig;
+                    setLoading(false, STATE_SUCCESS);
+                    setSpreadRevenue(getSdkName(), getCpm() / 1000f);
+                    reportAdLoaded();
+                    notifySdkLoaderLoaded(false);
+                }
+            }, loadingTime);
         }
     }
 
@@ -218,7 +227,7 @@ public class SpLoader extends AbstractSdkLoader {
         List<SpreadConfig> availableSp = new ArrayList<SpreadConfig>();
         for (SpreadConfig config : spList) {
             // 参数有效，并且未安装
-            if (checkArgs(config) && !Utils.isInstalled(mContext, config.getBundle()) && !config.isDisable()) {
+            if (checkArgs(config) && !config.isDisable()) {
                 availableSp.add(config);
             }
         }
@@ -287,6 +296,7 @@ public class SpLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         String sceneName = null;
         if (params != null) {
+            params.setAdCardStyle(Constant.NATIVE_CARD_FULL_LIST.get(new Random().nextInt(Constant.NATIVE_CARD_FULL_LIST.size())));
             mParams = params;
             sceneName = params.getSceneName();
         }
