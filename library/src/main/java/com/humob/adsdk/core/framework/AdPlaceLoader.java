@@ -1945,14 +1945,14 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onLoaded(String placeName, String source, String adType, String pid, long costTime) {
+        public void onLoaded(String placeName, String source, String adType, String pid, String network, double revenue, long costTime) {
             resetRetryTimes(placeName, source, adType);
             if (hasNotifyLoaded()) {
                 Log.iv(Log.TAG, "place name : " + placeName + " , sdk : " + source + " , type : " + adType + " is loaded, but has already notified ******************");
                 return;
             }
             notifyAdLoaded();
-            Log.iv(Log.TAG, "notify callback onLoaded place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid + " , cost time : " + costTime);
+            Log.iv(Log.TAG, "notify callback onLoaded place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid + " , network : " + network + " , revenue : " + revenue + " , cost time : " + costTime);
             if (mOnAdSdkLoadedListener != null) {
                 mOnAdSdkLoadedListener.onLoaded(placeName, source, adType, pid);
             }

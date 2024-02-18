@@ -92,6 +92,8 @@ public interface IParser {
     String SPLASH_ORIENTATION = "so";
     // 广告位的附加参数
     String EXTRA = "extra";
+    // APPID
+    String APP_ID = "aid";
     // 是否为模板渲染
     String TEMPLATE = "template";
     // 设置广告单元最大请求次数

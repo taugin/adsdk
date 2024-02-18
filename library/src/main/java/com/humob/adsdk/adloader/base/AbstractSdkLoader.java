@@ -679,6 +679,13 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         return null;
     }
 
+    protected String getAppId() {
+        if (mPidConfig != null) {
+            return mPidConfig.getAppId();
+        }
+        return null;
+    }
+
     private int getMinAvgCount() {
         if (mPidConfig != null) {
             return mPidConfig.getMinAvgCount();
@@ -892,6 +899,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     @Override
     public long getCostTime() {
         return mCostTime;
+    }
+
+    @Override
+    public String getNetwork() {
+        return mAdNetwork;
     }
 
     protected String generateImpressionId() {
