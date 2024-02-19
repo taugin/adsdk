@@ -357,7 +357,8 @@ public class SpLoader extends AbstractSdkLoader {
 
     private static String generateReferrer(Context context) {
         String packageName = context.getPackageName();
-        return String.format(Locale.ENGLISH, "referrer=utm_source%%3D%s%%26utm_medium%%3Dcpc%%26utm_campaign%%3Dspread", packageName);
+        String gclid = Utils.string2MD5(packageName);
+        return String.format(Locale.ENGLISH, "referrer=utm_source%%3D%s%%26utm_medium%%3Dcpc%%26utm_campaign%%3Dspread%%26gclid%%3D%s", packageName, gclid);
     }
 
     private void reportAdSpreadImp(SpreadConfig spreadConfig) {
