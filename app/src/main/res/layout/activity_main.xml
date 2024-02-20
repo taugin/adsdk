@@ -229,6 +229,48 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/load_all_splash"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="2dp"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="加载所有开屏" />
+
+                <Button
+                    android:id="@+id/load_all_interstitial"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="2dp"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="加载所有插屏" />
+
+                <Button
+                    android:id="@+id/load_all_reward"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="2dp"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="加载所有激励" />
+
+                <Button
+                    android:id="@+id/load_all_native"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="2dp"
+                    android:layout_weight="1"
+                    android:onClick="onClick"
+                    android:text="加载所有原生" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
                     android:id="@+id/show_max_splash"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

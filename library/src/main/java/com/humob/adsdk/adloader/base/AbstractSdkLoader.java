@@ -44,8 +44,12 @@ import com.humob.adsdk.data.parse.IParser;
 import com.humob.adsdk.stat.EventImpl;
 import com.humob.adsdk.stat.IEvent;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -95,7 +99,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
 
     private long mCostTime = 0;
 
+    private static List<ISdkLoader> mAdLoaders = new ArrayList<ISdkLoader>();
+
     public AbstractSdkLoader() {
+        mAdLoaders.add(this);
         mHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -891,6 +898,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         mAdRevenue = adRevenue;
     }
 
+    private void resetAdNetworkAndRevenue() {
+        mAdNetwork = null;
+        mAdRevenue = 0f;
+    }
+
     @Override
     public double getRevenue() {
         return mAdRevenue;
@@ -904,6 +916,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     @Override
     public String getNetwork() {
         return mAdNetwork;
+    }
+
+    @Override
+    public void notifyBidResult(String platform, String adType, String firstNetwork, double firstPrice, String secondNetwork, double secondPrice) {
+        // Log.iv(Log.TAG, "platform : " + platform + " , ad type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
     }
 
     protected String generateImpressionId() {
@@ -1282,6 +1299,12 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         AdStatManager.get(mContext).recordAdImpression(adImpData);
         reportAdImpression(adImpData);
         reportTaichiEvent(adImpData);
+        try {
+            notifyBidResultInternal(adImpData);
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        resetAdNetworkAndRevenue();
     }
 
     private void printImpData(Map<String, Object> map) {
@@ -1293,6 +1316,53 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
         builder.append("}");
         Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
+    }
+
+    private void notifyBidResultInternal(AdImpData adImpData) {
+        String adType = adImpData.getAdType();
+        String platform = adImpData.getPlatform();
+        String network = Utils.formatNetwork(adImpData.getNetwork());
+        double topRevenue = adImpData.getValue();
+        String secondNetwork = null;
+        double secondPrice = 0f;
+        List<ISdkLoader> varList = find(adType);
+        if (varList != null && !varList.isEmpty()) {
+            if (varList.size() >= 2) {
+                secondNetwork = Utils.formatNetwork(varList.get(1).getNetwork());
+                secondPrice = varList.get(1).getRevenue();
+            }
+            for (ISdkLoader iSdkLoader : varList) {
+                if (iSdkLoader != null) {
+                    iSdkLoader.notifyBidResult(platform, adType, network, topRevenue, secondNetwork, secondPrice);
+                }
+            }
+        }
+    }
+
+    private List<ISdkLoader> find(String adType) {
+        if (TextUtils.isEmpty(adType)) {
+            return null;
+        }
+        if (mAdLoaders == null || mAdLoaders.isEmpty()) {
+            return null;
+        }
+        List<ISdkLoader> varList = new ArrayList<>();
+        for (ISdkLoader iSdkLoader : mAdLoaders) {
+            if (iSdkLoader != null && TextUtils.equals(iSdkLoader.getAdType(), adType)) {
+                varList.add(iSdkLoader);
+            }
+        }
+        Collections.sort(varList, new Comparator<ISdkLoader>() {
+            @Override
+            public int compare(ISdkLoader o1, ISdkLoader o2) {
+                try {
+                    return Double.compare(o2.getRevenue(), o1.getRevenue());
+                } catch (Exception e) {
+                }
+                return 0;
+            }
+        });
+        return varList;
     }
 
     protected boolean viewInScreen(View view) {

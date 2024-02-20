@@ -95,6 +95,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         BANNER_MAP.put("ADAPTIVE_BANNER", AdExtra.COMMON_ADAPTIVE_BANNER);
     }
 
+    private static final List<String> sAllSdk = Arrays.asList("tradplus", "applovin", "admob", "bigo");
+
     private static final String TAG = "MA";
     private Context mContext;
     private RelativeLayout mNativeBannerLayout;
@@ -414,6 +416,26 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         } else if (v.getId() == R.id.native_interstitial) {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag, (TextView) v);
+        } else if (v.getId() == R.id.load_all_interstitial) {
+            for (String sdk : sAllSdk) {
+                String placeName = String.format(Locale.ENGLISH, INTERSTITIAL_PREFIX, sdk);
+                AdSdk.get(mContext).loadInterstitial(placeName);
+            }
+        } else if (v.getId() == R.id.load_all_native) {
+            for (String sdk : sAllSdk) {
+                String placeName = String.format(Locale.ENGLISH, NATIVE_PREFIX, sdk);
+                AdSdk.get(mContext).loadAdView(placeName);
+            }
+        } else if (v.getId() == R.id.load_all_splash) {
+            for (String sdk : sAllSdk) {
+                String placeName = String.format(Locale.ENGLISH, SPLASH_PREFIX, sdk);
+                AdSdk.get(mContext).loadSplash(placeName);
+            }
+        } else if (v.getId() == R.id.load_all_reward) {
+            for (String sdk : sAllSdk) {
+                String placeName = String.format(Locale.ENGLISH, REWARD_PREFIX, sdk);
+                AdSdk.get(mContext).loadRewardedVideo(placeName);
+            }
         }
     }
 
