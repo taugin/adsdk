@@ -6,7 +6,6 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.google.android.gms.ads.AdRequest;
 import com.humob.adsdk.adloader.base.AbstractSdkLoader;
 import com.humob.adsdk.adloader.base.BaseBindNativeView;
 import com.humob.adsdk.constant.Constant;
@@ -481,17 +480,29 @@ public class BigoLoader extends AbstractSdkLoader {
     private String codeToError(AdError adError) {
         if (adError != null) {
             int code = adError.getCode();
-            if (code == AdRequest.ERROR_CODE_INTERNAL_ERROR) {
-                return "ERROR_CODE_INTERNAL_ERROR[" + code + "]";
+            if (code == AdError.ERROR_CODE_UNINITIALIZED) {
+                return "ERROR_CODE_UNINITIALIZED[" + code + "]";
             }
-            if (code == AdRequest.ERROR_CODE_INVALID_REQUEST) {
+            if (code == AdError.ERROR_CODE_INVALID_REQUEST) {
                 return "ERROR_CODE_INVALID_REQUEST[" + code + "]";
             }
-            if (code == AdRequest.ERROR_CODE_NETWORK_ERROR) {
+            if (code == AdError.ERROR_CODE_AD_DISABLE) {
+                return "ERROR_CODE_AD_DISABLE[" + code + "]";
+            }
+            if (code == AdError.ERROR_CODE_NETWORK_ERROR) {
                 return "ERROR_CODE_NETWORK_ERROR[" + code + "]";
             }
-            if (code == AdRequest.ERROR_CODE_NO_FILL) {
+            if (code == AdError.ERROR_CODE_NO_FILL) {
                 return "ERROR_CODE_NO_FILL[" + code + "]";
+            }
+            if (code == AdError.ERROR_CODE_INTERNAL_ERROR) {
+                return "ERROR_CODE_INTERNAL_ERROR[" + code + "]";
+            }
+            if (code == AdError.ERROR_CODE_ASSETS_ERROR) {
+                return "ERROR_CODE_ASSETS_ERROR[" + code + "]";
+            }
+            if (code == AdError.ERROR_CODE_APP_ID_UNMATCHED) {
+                return "ERROR_CODE_APP_ID_UNMATCHED[" + code + "]";
             }
             return "UNKNOWN[" + code + "]";
         }
@@ -501,16 +512,16 @@ public class BigoLoader extends AbstractSdkLoader {
     protected int toSdkError(AdError adError) {
         if (adError != null) {
             int code = adError.getCode();
-            if (code == AdRequest.ERROR_CODE_INTERNAL_ERROR) {
+            if (code == AdError.ERROR_CODE_INTERNAL_ERROR) {
                 return Constant.AD_ERROR_INTERNAL;
             }
-            if (code == AdRequest.ERROR_CODE_INVALID_REQUEST) {
+            if (code == AdError.ERROR_CODE_INVALID_REQUEST) {
                 return Constant.AD_ERROR_INVALID_REQUEST;
             }
-            if (code == AdRequest.ERROR_CODE_NETWORK_ERROR) {
+            if (code == AdError.ERROR_CODE_NETWORK_ERROR) {
                 return Constant.AD_ERROR_NETWORK;
             }
-            if (code == AdRequest.ERROR_CODE_NO_FILL) {
+            if (code == AdError.ERROR_CODE_NO_FILL) {
                 return Constant.AD_ERROR_NOFILL;
             }
         }
