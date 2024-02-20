@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -357,7 +358,7 @@ public class SpLoader extends AbstractSdkLoader {
 
     private static String generateReferrer(Context context) {
         String packageName = context.getPackageName();
-        String gclid = Utils.string2MD5(packageName);
+        String gclid = Utils.string2MD5(UUID.randomUUID().toString());
         return String.format(Locale.ENGLISH, "referrer=utm_source%%3D%s%%26utm_medium%%3Dcpc%%26utm_campaign%%3Dspread%%26gclid%%3D%s", packageName, gclid);
     }
 
