@@ -92,6 +92,9 @@ dependencies {
     implementation 'me.samlss:broccoli:1.0.0'
     // firebase
     implementation 'com.google.firebase:firebase-analytics:21.0.0'
+
+    // 调试数据库，在浏览器打开网址, adb logcat -s DebugDB查看
+    debugImplementation('com.amitshekhar.android:debug-db:1.0.1')
 }
 
 configurations.all {
