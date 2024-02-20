@@ -6,6 +6,7 @@ import com.applovin.sdk.AppLovinSdk;
 import com.google.android.gms.ads.MobileAds;
 import com.komob.adsdk.adloader.admob.AdmobLoader;
 import com.komob.adsdk.adloader.applovin.AppLovinLoader;
+import com.komob.adsdk.adloader.bigo.BigoLoader;
 import com.komob.adsdk.adloader.listener.ISdkLoader;
 import com.komob.adsdk.adloader.spread.SpLoader;
 import com.komob.adsdk.adloader.tradplus.TradPlusLoader;
@@ -16,6 +17,8 @@ import com.tradplus.ads.base.TradPlus;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import sg.bigo.ads.BigoAdSdk;
 
 /**
  * Created by Administrator on 2018-10-25.
@@ -30,6 +33,7 @@ public class ModuleLoaderHelper {
         sSdkLoaderMap.put(Constant.AD_SDK_APPLOVIN, AppLovinLoader.class);
         sSdkLoaderMap.put(Constant.AD_SDK_TRADPLUS, TradPlusLoader.class);
         sSdkLoaderMap.put(Constant.AD_SDK_SPREAD, SpLoader.class);
+        sSdkLoaderMap.put(Constant.AD_NETWORK_BIGO, BigoLoader.class);
     }
 
     public static boolean isModuleLoaded(String sdk) {
@@ -42,6 +46,9 @@ public class ModuleLoaderHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_TRADPLUS, sdk)) {
             return hasTradPlusModule();
+        }
+        if (TextUtils.equals(Constant.AD_NETWORK_BIGO, sdk)) {
+            return hasBigoModule();
         }
         if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
             return true;
@@ -91,6 +98,16 @@ public class ModuleLoaderHelper {
     private static boolean hasTradPlusModule() {
         try {
             TradPlus.class.getName();
+            return true;
+        } catch (Exception | Error e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return false;
+    }
+
+    private static boolean hasBigoModule() {
+        try {
+            BigoAdSdk.class.getName();
             return true;
         } catch (Exception | Error e) {
             Log.iv(Log.TAG, "error : " + e);

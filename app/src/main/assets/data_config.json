@@ -202,6 +202,30 @@
       ]
     },
     {
+      "name": "interstitial_bigo",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "bigo",
+          "type": "interstitial",
+          "pid": "10182906-10018951",
+          "aid": "10182906"
+        }
+      ]
+    },
+    {
+      "name": "native_bigo",
+      "mode": "con",
+      "pids": [
+        {
+          "sdk": "bigo",
+          "type": "native",
+          "pid": "10182906-10084565",
+          "aid": "10182906"
+        }
+      ]
+    },
+    {
       "name": "native_spread",
       "mode": "con",
       "pids": [
