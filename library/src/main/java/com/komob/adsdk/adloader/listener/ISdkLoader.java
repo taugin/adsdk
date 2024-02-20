@@ -95,4 +95,6 @@ public interface ISdkLoader {
     long getCostTime();
 
     String getNetwork();
+
+    void notifyBidResult(String platform, String adType, String firstNetwork, double firstPrice, String secondNetwork, double secondPrice);
 }
