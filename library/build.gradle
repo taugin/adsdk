@@ -14,7 +14,7 @@ stringfog {
 }
 
 def isSnapshot = true
-def baseVersion = '1.0.9'
+def baseVersion = '1.1.0'
 
 android {
     compileSdk 33
