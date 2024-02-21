@@ -441,7 +441,17 @@ public class BigoLoader extends AbstractSdkLoader {
     protected void onResetInterstitial() {
         super.onResetInterstitial();
         clearCachedAdTime(mInterstitialAd);
-        mInterstitialAd = null;
+        if (mInterstitialAd != null) {
+            mInterstitialAd.destroy();
+            mInterstitialAd = null;
+        }
+    }
+
+    private void resetNative() {
+        if (mNativeAd != null) {
+            mNativeAd.destroy();
+            mNativeAd = null;
+        }
     }
 
     private void reportBigoImpressionData(double revenue, String network, String impressionId, String sceneName) {
@@ -552,6 +562,12 @@ public class BigoLoader extends AbstractSdkLoader {
             if (adBid != null) {
                 adBid.notifyLoss(firstPrice, firstNetwork, AdBid.LOSS_REASON_LOWER_THAN_HIGHEST_PRICE);
                 Log.iv(Log.TAG, "bid loss platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
+            }
+            // 竞价失败的时候，销毁缓存的广告，保证下载继续加载
+            if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
+                onResetInterstitial();
+            } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
+                resetNative();
             }
         }
     }
