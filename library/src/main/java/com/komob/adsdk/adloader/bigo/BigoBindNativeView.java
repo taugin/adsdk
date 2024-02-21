@@ -1,6 +1,7 @@
 package com.komob.adsdk.adloader.bigo;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AndroidRuntimeException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,14 +107,24 @@ public class BigoBindNativeView extends BaseBindNativeView {
             iconView = new ImageView(rootView.getContext());
             replaceSrcViewToDstView(adCoverView, iconView);
         }
+
+        setDefaultAdIcon(pidConfig.getSdk(), iconView);
+
         titleView.setTag(AdTag.TITLE);
         titleView.setText(nativeAd.getTitle());
 
         bodyView.setTag(AdTag.DESCRIPTION);
-        bodyView.setText(nativeAd.getDescription());
+        String desc = nativeAd.getDescription();
+        if (TextUtils.isEmpty(desc)) {
+            desc = nativeAd.getTitle();
+        }
+        bodyView.setText(desc);
 
         ctaView.setTag(AdTag.CALL_TO_ACTION);
-        ctaView.setText(nativeAd.getCallToAction());
+        String cta = nativeAd.getCallToAction();
+        if (!TextUtils.isEmpty(cta)) {
+            ctaView.setText(cta);
+        }
 
         List<View> clickableViews = new ArrayList<>();
         if (titleView != null && isClickable(AD_TITLE, pidConfig)) {
