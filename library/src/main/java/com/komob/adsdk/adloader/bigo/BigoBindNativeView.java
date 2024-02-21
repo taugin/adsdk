@@ -42,7 +42,7 @@ public class BigoBindNativeView extends BaseBindNativeView {
             Log.iv(Log.TAG, "bindNative adContainer == null###");
             return;
         }
-        int rootLayout = getBestNativeLayout(adContainer.getContext(), pidConfig, mParams, Constant.AD_SDK_ADMOB);
+        int rootLayout = getBestNativeLayout(adContainer.getContext(), pidConfig, mParams, Constant.AD_NETWORK_BIGO);
         if (rootLayout > 0) {
             bindNativeViewWithRootView(adContainer, rootLayout, nativeAd, pidConfig);
             updateCtaButtonBackground(adContainer, pidConfig, mParams);
@@ -94,6 +94,7 @@ public class BigoBindNativeView extends BaseBindNativeView {
         if (adChoiceLayout != null && !(adChoiceLayout instanceof FrameLayout)) {
             FrameLayout frameLayout = new FrameLayout(rootView.getContext());
             replaceSrcViewToDstView(adChoiceLayout, frameLayout);
+            adChoiceLayout = frameLayout;
         }
         AdOptionsView adOptionsView = createOptionsView(rootView.getContext());
         if (adChoiceLayout instanceof ViewGroup && adOptionsView != null) {
