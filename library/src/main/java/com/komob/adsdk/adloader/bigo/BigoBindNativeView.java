@@ -131,10 +131,10 @@ public class BigoBindNativeView extends BaseBindNativeView {
             clickableViews.add(titleView);
         }
         if (bodyView != null && isClickable(AD_DETAIL, pidConfig)) {
-            clickableViews.add(titleView);
+            clickableViews.add(bodyView);
         }
         if (adIconView != null && isClickable(AD_ICON, pidConfig)) {
-            clickableViews.add(titleView);
+            clickableViews.add(adIconView);
         }
         if (ctaView != null && isClickable(AD_CTA, pidConfig)) {
             clickableViews.add(ctaView);
