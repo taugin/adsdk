@@ -88,6 +88,8 @@ public class PidConfig {
 
     private String appId;
 
+    private boolean bidOnce = true;
+
     public String getPlaceName() {
         return placeName;
     }
@@ -366,6 +368,14 @@ public class PidConfig {
 
     public void setAppId(String appId) {
         this.appId = appId;
+    }
+
+    public boolean isBidOnce() {
+        return bidOnce;
+    }
+
+    public void setBidOnce(boolean bidOnce) {
+        this.bidOnce = bidOnce;
     }
 
     public boolean isAdmob() {

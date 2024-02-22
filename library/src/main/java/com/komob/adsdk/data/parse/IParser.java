@@ -116,6 +116,8 @@ public interface IParser {
     String ONLY_PACK_LOAD = "opl";
     // 配置tradplus的自动加载
     String AUTO_LOAD = "al";
+    // 是否是单次竞价，每次竞价失败都会重新加载
+    String BID_ONCE = "bid_once";
 
     // banner
     String BANNER = "banner";
