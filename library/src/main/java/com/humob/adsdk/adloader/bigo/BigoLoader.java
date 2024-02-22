@@ -554,20 +554,29 @@ public class BigoLoader extends AbstractSdkLoader {
         if (TextUtils.equals(getSdkName(), platform)) {
             AdBid adBid = sBidMap.remove(adType);
             if (adBid != null) {
-                adBid.notifyWin(secondPrice, TextUtils.equals(secondNetwork, Constant.AD_NETWORK_EMPTY) ? null : secondNetwork);
-                Log.iv(Log.TAG, "bid win platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
+                secondNetwork = TextUtils.equals(secondNetwork, Constant.AD_NETWORK_EMPTY) ? null : secondNetwork;
+                adBid.notifyWin(secondPrice, secondNetwork);
+                Log.iv(Log.TAG, getSdkName() + " bid win platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
             }
         } else {
-            AdBid adBid = sBidMap.get(adType);
-            if (adBid != null) {
-                adBid.notifyLoss(firstPrice, firstNetwork, AdBid.LOSS_REASON_LOWER_THAN_HIGHEST_PRICE);
-                Log.iv(Log.TAG, "bid loss platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
-            }
-            // 竞价失败的时候，销毁缓存的广告，保证下载继续加载
-            if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
-                onResetInterstitial();
-            } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
-                resetNative();
+            if (getPidConfig() != null && getPidConfig().isBidOnce()) {
+                AdBid adBid = sBidMap.remove(adType);
+                if (adBid != null) {
+                    adBid.notifyLoss(firstPrice, firstNetwork, AdBid.LOSS_REASON_LOWER_THAN_HIGHEST_PRICE);
+                    Log.iv(Log.TAG, getSdkName() + " bid loss platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
+                }
+                // 竞价失败的时候，销毁缓存的广告，保证下载继续加载
+                if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
+                    onResetInterstitial();
+                } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
+                    resetNative();
+                }
+            } else {
+                AdBid adBid = sBidMap.get(adType);
+                if (adBid != null) {
+                    adBid.notifyLoss(firstPrice, firstNetwork, AdBid.LOSS_REASON_LOWER_THAN_HIGHEST_PRICE);
+                    Log.iv(Log.TAG, getSdkName() + " bid loss platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
+                }
             }
         }
     }
