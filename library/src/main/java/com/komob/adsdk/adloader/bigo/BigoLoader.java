@@ -563,7 +563,7 @@ public class BigoLoader extends AbstractSdkLoader {
             if (getPidConfig() != null && getPidConfig().isRealTimeBidding()) {
                 if (mAdBid != null) {
                     mAdBid.notifyLoss(firstPrice, firstNetwork, AdBid.LOSS_REASON_LOWER_THAN_HIGHEST_PRICE);
-                    Log.iv(Log.TAG, getSdkName() + " bid loss platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
+                    Log.iv(Log.TAG, getSdkName() + " bid loss platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice + " , bigo : " + getRevenue());
                     mAdBid = null;
                     // 竞价失败的时候，销毁缓存的广告，保证下载继续加载
                     if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
