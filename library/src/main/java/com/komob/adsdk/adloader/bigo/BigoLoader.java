@@ -40,13 +40,14 @@ import sg.bigo.ads.api.NativeAdRequest;
 public class BigoLoader extends AbstractSdkLoader {
 
     private static AtomicBoolean sBigoInited = new AtomicBoolean(false);
-    private static Map<String, AdBid> sBidMap = new HashMap<>();
     private static int sSDKInitializeState = SDKInitializeState.SDK_STATE_UN_INITIALIZE;
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private InterstitialAd mInterstitialAd;
     private NativeAd mNativeAd;
     private NativeAd lastUseNativeAd;
+    // 保存加载成功的竞价信息
+    private AdBid mAdBid;
 
     private BigoNativeListener bigoNativeListener;
     private BigoInterstitialListener bigoInterstitialListener;
@@ -193,8 +194,8 @@ public class BigoLoader extends AbstractSdkLoader {
                 setInterstitialListener(mInterstitialAd);
                 double price = 0f;
                 try {
-                    sBidMap.put(getAdType(), mInterstitialAd.getBid());
-                    price = mInterstitialAd.getBid().getPrice() / 1000;
+                    mAdBid = mInterstitialAd.getBid();
+                    price = mAdBid.getPrice() / 1000;
                 } catch (Exception e) {
                 }
                 setRevenueAverage(price);
@@ -398,8 +399,8 @@ public class BigoLoader extends AbstractSdkLoader {
                 setAdListener(nativeAd);
                 double price = 0f;
                 try {
-                    sBidMap.put(getAdType(), mNativeAd.getBid());
-                    price = mNativeAd.getBid().getPrice() / 1000;
+                    mAdBid = mNativeAd.getBid();
+                    price = mAdBid.getPrice() / 1000;
                 } catch (Exception e) {
                 }
                 setRevenueAverage(price);
@@ -552,29 +553,28 @@ public class BigoLoader extends AbstractSdkLoader {
     @Override
     public void notifyBidResult(String platform, String adType, String firstNetwork, double firstPrice, String secondNetwork, double secondPrice) {
         if (TextUtils.equals(getSdkName(), platform)) {
-            AdBid adBid = sBidMap.remove(adType);
-            if (adBid != null) {
+            if (mAdBid != null) {
                 secondNetwork = TextUtils.equals(secondNetwork, Constant.AD_NETWORK_EMPTY) ? null : secondNetwork;
-                adBid.notifyWin(secondPrice, secondNetwork);
+                mAdBid.notifyWin(secondPrice, secondNetwork);
                 Log.iv(Log.TAG, getSdkName() + " bid win platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
+                mAdBid = null;
             }
         } else {
             if (getPidConfig() != null && getPidConfig().isRealTimeBidding()) {
-                AdBid adBid = sBidMap.remove(adType);
-                if (adBid != null) {
-                    adBid.notifyLoss(firstPrice, firstNetwork, AdBid.LOSS_REASON_LOWER_THAN_HIGHEST_PRICE);
+                if (mAdBid != null) {
+                    mAdBid.notifyLoss(firstPrice, firstNetwork, AdBid.LOSS_REASON_LOWER_THAN_HIGHEST_PRICE);
                     Log.iv(Log.TAG, getSdkName() + " bid loss platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
-                }
-                // 竞价失败的时候，销毁缓存的广告，保证下载继续加载
-                if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
-                    onResetInterstitial();
-                } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
-                    resetNative();
+                    mAdBid = null;
+                    // 竞价失败的时候，销毁缓存的广告，保证下载继续加载
+                    if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
+                        onResetInterstitial();
+                    } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
+                        resetNative();
+                    }
                 }
             } else {
-                AdBid adBid = sBidMap.get(adType);
-                if (adBid != null) {
-                    adBid.notifyLoss(firstPrice, firstNetwork, AdBid.LOSS_REASON_LOWER_THAN_HIGHEST_PRICE);
+                if (mAdBid != null) {
+                    mAdBid.notifyLoss(firstPrice, firstNetwork, AdBid.LOSS_REASON_LOWER_THAN_HIGHEST_PRICE);
                     Log.iv(Log.TAG, getSdkName() + " bid loss platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
                 }
             }
