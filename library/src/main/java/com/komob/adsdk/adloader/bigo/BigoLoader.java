@@ -559,7 +559,7 @@ public class BigoLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, getSdkName() + " bid win platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
             }
         } else {
-            if (getPidConfig() != null && getPidConfig().isBidOnce()) {
+            if (getPidConfig() != null && getPidConfig().isRealTimeBidding()) {
                 AdBid adBid = sBidMap.remove(adType);
                 if (adBid != null) {
                     adBid.notifyLoss(firstPrice, firstNetwork, AdBid.LOSS_REASON_LOWER_THAN_HIGHEST_PRICE);

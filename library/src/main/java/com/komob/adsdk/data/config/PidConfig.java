@@ -88,7 +88,7 @@ public class PidConfig {
 
     private String appId;
 
-    private boolean bidOnce = true;
+    private boolean realTimeBidding = true;
 
     public String getPlaceName() {
         return placeName;
@@ -370,12 +370,12 @@ public class PidConfig {
         this.appId = appId;
     }
 
-    public boolean isBidOnce() {
-        return bidOnce;
+    public boolean isRealTimeBidding() {
+        return realTimeBidding;
     }
 
-    public void setBidOnce(boolean bidOnce) {
-        this.bidOnce = bidOnce;
+    public void setRealTimeBidding(boolean realTimeBidding) {
+        this.realTimeBidding = realTimeBidding;
     }
 
     public boolean isAdmob() {
