@@ -96,5 +96,5 @@ public interface ISdkLoader {
 
     String getNetwork();
 
-    void notifyBidResult(String platform, String adType, String firstNetwork, double firstPrice, String secondNetwork, double secondPrice);
+    void notifyBidResult(String adType, String firstPlatform, String firstNetwork, double firstPrice, String secondPlatform, String secondNetwork, double secondPrice);
 }
