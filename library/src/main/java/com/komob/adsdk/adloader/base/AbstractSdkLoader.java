@@ -919,8 +919,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     }
 
     @Override
-    public void notifyBidResult(String platform, String adType, String firstNetwork, double firstPrice, String secondNetwork, double secondPrice) {
-        // Log.iv(Log.TAG, "platform : " + platform + " , ad type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
+    public void notifyBidResult(String adType, String firstPlatform, String firstNetwork, double firstPrice, String secondPlatform, String secondNetwork, double secondPrice) {
+        // Log.iv(Log.TAG, "firstPlatform : " + firstPlatform + " , ad type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
     }
 
     protected String generateImpressionId() {
@@ -1323,17 +1323,20 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         String platform = adImpData.getPlatform();
         String network = Utils.formatNetwork(adImpData.getNetwork());
         double topRevenue = adImpData.getValue();
+        String secondPlatform = null;
         String secondNetwork = null;
         double secondPrice = 0f;
         List<ISdkLoader> varList = find(adType);
         if (varList != null && !varList.isEmpty()) {
             if (varList.size() >= 2) {
-                secondNetwork = Utils.formatNetwork(varList.get(1).getNetwork());
-                secondPrice = varList.get(1).getRevenue();
+                ISdkLoader iSdkLoader = varList.get(1);
+                secondPlatform = iSdkLoader.getSdkName();
+                secondNetwork = Utils.formatNetwork(iSdkLoader.getNetwork());
+                secondPrice = iSdkLoader.getRevenue();
             }
             for (ISdkLoader iSdkLoader : varList) {
                 if (iSdkLoader != null) {
-                    iSdkLoader.notifyBidResult(platform, adType, network, topRevenue, secondNetwork, secondPrice);
+                    iSdkLoader.notifyBidResult(adType, platform, network, topRevenue, secondPlatform, secondNetwork, secondPrice);
                 }
             }
         }

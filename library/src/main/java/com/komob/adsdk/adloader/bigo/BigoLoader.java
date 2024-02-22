@@ -551,19 +551,19 @@ public class BigoLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void notifyBidResult(String platform, String adType, String firstNetwork, double firstPrice, String secondNetwork, double secondPrice) {
-        if (TextUtils.equals(getSdkName(), platform)) {
+    public void notifyBidResult(String adType, String firstPlatform, String firstNetwork, double firstPrice, String secondPlatform, String secondNetwork, double secondPrice) {
+        if (TextUtils.equals(getSdkName(), firstPlatform)) {
             if (mAdBid != null) {
                 secondNetwork = TextUtils.equals(secondNetwork, Constant.AD_NETWORK_EMPTY) ? null : secondNetwork;
                 mAdBid.notifyWin(secondPrice, secondNetwork);
-                Log.iv(Log.TAG, getSdkName() + " bid win platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
+                Log.iv(Log.TAG, getSdkName() + " bid win type : " + adType + " , first : " + firstPlatform + "|" + firstNetwork + "|" + firstPrice + " , second : " + secondPlatform + "|" + secondNetwork + "|" + secondPrice);
                 mAdBid = null;
             }
         } else {
             if (getPidConfig() != null && getPidConfig().isRealTimeBidding()) {
                 if (mAdBid != null) {
                     mAdBid.notifyLoss(firstPrice, firstNetwork, AdBid.LOSS_REASON_LOWER_THAN_HIGHEST_PRICE);
-                    Log.iv(Log.TAG, getSdkName() + " bid loss platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice + " , bigo : " + getRevenue());
+                    Log.iv(Log.TAG, getSdkName() + " bid loss type : " + adType + " , first : " + firstPlatform + "|" + firstNetwork + "|" + firstPrice + " , second : " + secondPlatform + "|" + secondNetwork + "|" + secondPrice + " , bigo : " + getRevenue());
                     mAdBid = null;
                     // 竞价失败的时候，销毁缓存的广告，保证下载继续加载
                     if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
@@ -575,7 +575,7 @@ public class BigoLoader extends AbstractSdkLoader {
             } else {
                 if (mAdBid != null) {
                     mAdBid.notifyLoss(firstPrice, firstNetwork, AdBid.LOSS_REASON_LOWER_THAN_HIGHEST_PRICE);
-                    Log.iv(Log.TAG, getSdkName() + " bid loss platform : " + platform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
+                    Log.iv(Log.TAG, getSdkName() + " bid loss platform : " + firstPlatform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
                 }
             }
         }
