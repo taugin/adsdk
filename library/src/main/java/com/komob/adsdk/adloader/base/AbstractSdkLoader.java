@@ -1330,9 +1330,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         if (varList != null && !varList.isEmpty()) {
             if (varList.size() >= 2) {
                 ISdkLoader iSdkLoader = varList.get(1);
-                secondPlatform = iSdkLoader.getSdkName();
-                secondNetwork = Utils.formatNetwork(iSdkLoader.getNetwork());
                 secondPrice = iSdkLoader.getRevenue();
+                if (secondPrice > 0f) {
+                    secondPlatform = iSdkLoader.getSdkName();
+                    secondNetwork = Utils.formatNetwork(iSdkLoader.getNetwork());
+                }
             }
             for (ISdkLoader iSdkLoader : varList) {
                 if (iSdkLoader != null) {
