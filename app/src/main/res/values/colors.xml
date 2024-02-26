@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- native按钮和文本的颜色 -->
     <color name="komActionBtnColor">#FF0202</color>
     <color name="komActionBtnPressedColor">#FB7171</color>
+
+    <color name="colorAccent">#ffee4b5e</color>
+    <color name="colorPrimary">#ffee4b5e</color>
+    <color name="colorPrimaryDark">#ffee4b5e</color>
+    <color name="td_whiteFa">#fffafafa</color>
+    <color name="ad_text_sub">#7a000000</color>
 </resources>

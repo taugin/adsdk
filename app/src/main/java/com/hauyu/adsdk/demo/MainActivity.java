@@ -584,6 +584,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     }
 
     private void showNativeAds(ViewGroup viewGroup) {
+        int padding = Utils.dp2px(getApplicationContext(), 4);
+        viewGroup.setPadding(padding, padding, padding, padding);
         Dialog dialog = new Dialog(this, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
         dialog.setContentView(viewGroup);
         dialog.show();
@@ -593,7 +595,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setAttributes(params);
         dialog.getWindow().setDimAmount(0.8f);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#88000000")));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFFFF")));
     }
 
     private void runToast(final String toast) {
