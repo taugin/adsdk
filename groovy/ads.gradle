@@ -61,7 +61,7 @@ dependencies {
         }
         if (isContains(include_platform_list, ADMOB)) {
             // google applovin mediation
-            implementation 'com.google.ads.mediation:applovin:12.1.0.0'
+            implementation 'com.google.ads.mediation:applovin:12.1.0.1'
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +102,7 @@ dependencies {
 
     if (isContains(include_platform_list, MINTEGRAL)) {
         // mintegral
-        def mintegral_version = "16.6.21"
+        def mintegral_version = "16.6.41"
         implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
         implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
         implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
@@ -120,7 +120,7 @@ dependencies {
         implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
         if (isContains(include_platform_list, APPLOVIN)) {
             // applovin mintegral mediation
-            implementation 'com.applovin.mediation:mintegral-adapter:16.6.21.0@aar'
+            implementation 'com.applovin.mediation:mintegral-adapter:16.6.41.0@aar'
         }
         if (isContains(include_platform_list, TRADPLUS)) {
             // tradplus mintegral mediation
@@ -128,7 +128,7 @@ dependencies {
         }
         if (isContains(include_platform_list, ADMOB)) {
             // google mintegral mediation
-            implementation 'com.google.ads.mediation:mintegral:16.6.21.0'
+            implementation 'com.google.ads.mediation:mintegral:16.6.34.0'
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -146,17 +146,17 @@ dependencies {
         }
         if (isContains(include_platform_list, ADMOB)) {
             // google inmobi mediation
-            implementation 'com.google.ads.mediation:inmobi:10.6.3.0'
+            implementation 'com.google.ads.mediation:inmobi:10.6.6.0'
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////
 
     if (isContains(include_platform_list, UNITY)) {
         // unity
-        implementation 'com.unity3d.ads:unity-ads:4.9.2'
+        implementation 'com.unity3d.ads:unity-ads:4.9.3'
         if (isContains(include_platform_list, APPLOVIN)) {
             // unity applovin mediation
-            implementation 'com.applovin.mediation:unityads-adapter:4.9.2.1@aar'
+            implementation 'com.applovin.mediation:unityads-adapter:4.9.3.0@aar'
         }
         if (isContains(include_platform_list, TRADPLUS)) {
             // tradplus unity mediation
@@ -189,10 +189,10 @@ dependencies {
 
     if (isContains(include_platform_list, IRONSOURCE)) {
         // ironSource
-        implementation 'com.ironsource.sdk:mediationsdk:7.6.0'
+        implementation 'com.ironsource.sdk:mediationsdk:7.7.0'
         if (isContains(include_platform_list, APPLOVIN)) {
             // Vungle applovin mediation
-            implementation 'com.applovin.mediation:ironsource-adapter:7.6.0.0.0@aar'
+            implementation 'com.applovin.mediation:ironsource-adapter:7.7.0.0.0@aar'
         }
         if (isContains(include_platform_list, TRADPLUS)) {
             // tradplus mediation
@@ -200,7 +200,7 @@ dependencies {
         }
         if (isContains(include_platform_list, ADMOB)) {
             // google ironsource mediation
-            implementation 'com.google.ads.mediation:ironsource:7.6.0.0'
+            implementation 'com.google.ads.mediation:ironsource:7.7.0.1'
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////
