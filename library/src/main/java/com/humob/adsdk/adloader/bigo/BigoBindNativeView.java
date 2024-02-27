@@ -125,6 +125,8 @@ public class BigoBindNativeView extends BaseBindNativeView {
         String cta = nativeAd.getCallToAction();
         if (!TextUtils.isEmpty(cta)) {
             ctaView.setText(cta);
+        } else {
+            ctaView.setText(getActionText(ctaView.getContext()));
         }
 
         List<View> clickableViews = new ArrayList<>();

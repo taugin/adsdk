@@ -147,8 +147,12 @@ public class TradPlusBindView extends BaseBindNativeView {
 
                     TextView callToActionView = viewGroup.findViewById(mParams.getAdAction());
                     putValue(AD_CTA, tpNativeAdView.getCallToAction());
-                    if (callToActionView != null && tpNativeAdView.getCallToAction() != null) {
-                        callToActionView.setText(tpNativeAdView.getCallToAction());
+                    if (callToActionView != null) {
+                        if (!TextUtils.isEmpty(tpNativeAdView.getCallToAction())) {
+                            callToActionView.setText(tpNativeAdView.getCallToAction());
+                        } else {
+                            callToActionView.setText(getActionText(callToActionView.getContext()));
+                        }
                     }
 
                     // facebook会需要一个adchoice的容器来填充adchoice

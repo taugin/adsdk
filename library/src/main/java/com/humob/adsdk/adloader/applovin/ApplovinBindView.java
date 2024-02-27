@@ -207,8 +207,12 @@ public class ApplovinBindView extends BaseBindNativeView {
         try {
             String title = maxNativeAdView.getTitleTextView().getText().toString();
             String detail = maxNativeAdView.getBodyTextView().getText().toString();
+            String action = maxNativeAdView.getCallToActionButton().getText().toString();
             if (TextUtils.isEmpty(detail)) {
                 maxNativeAdView.getBodyTextView().setText(title);
+            }
+            if (TextUtils.isEmpty(action)) {
+                maxNativeAdView.getCallToActionButton().setText(getActionText(maxNativeAdView.getContext()));
             }
         } catch (Exception e) {
         }

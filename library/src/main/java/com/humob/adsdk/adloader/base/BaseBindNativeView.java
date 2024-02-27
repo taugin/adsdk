@@ -9,6 +9,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.graphics.drawable.shapes.Shape;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Pair;
@@ -28,6 +29,7 @@ import com.humob.api.AdActivity;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -381,5 +383,37 @@ public class BaseBindNativeView {
         } catch (Exception e) {
         }
         return null;
+    }
+
+    protected String getActionText(Context context) {
+        Locale locale = getLocale(context);
+        if (locale != null) {
+            if (Locale.SIMPLIFIED_CHINESE.equals(locale)) {
+                return "了解更多";
+            }
+            if (Locale.TRADITIONAL_CHINESE.equals(locale)) {
+                return "了解更多";
+            }
+            if (Locale.JAPANESE.equals(locale) || Locale.JAPAN.equals(locale)) {
+                return "詳しくは";
+            }
+            if (Locale.KOREA.equals(locale) || Locale.KOREAN.equals(locale)) {
+                return "더 알아보기";
+            }
+        }
+        return "LEARN MORE";
+    }
+
+    protected Locale getLocale(Context context) {
+        Locale locale = null;
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                locale = context.getResources().getConfiguration().getLocales().get(0);
+            } else {
+                locale = context.getResources().getConfiguration().locale;
+            }
+        } catch (Exception e) {
+        }
+        return locale;
     }
 }

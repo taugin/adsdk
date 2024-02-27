@@ -115,29 +115,28 @@ public class AdmobBindNativeView extends BaseBindNativeView {
 
         // 设置广告元素内容
         String titleText = nativeAd.getHeadline();
-        if (!TextUtils.isEmpty(titleText)) {
-            if (titleView instanceof TextView) {
+        if (titleView instanceof TextView) {
+            if (!TextUtils.isEmpty(titleText)) {
                 ((TextView) titleView).setText(titleText);
                 titleView.setVisibility(View.VISIBLE);
             }
         }
 
-        if (!TextUtils.isEmpty(nativeAd.getBody())) {
-            if (bodyView instanceof TextView) {
+        if (bodyView instanceof TextView) {
+            bodyView.setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(nativeAd.getBody())) {
                 ((TextView) bodyView).setText(nativeAd.getBody());
-                bodyView.setVisibility(View.VISIBLE);
-            }
-        } else {
-            if (bodyView instanceof TextView) {
+            } else {
                 ((TextView) bodyView).setText(titleText);
-                bodyView.setVisibility(View.VISIBLE);
             }
         }
 
-        if (!TextUtils.isEmpty(nativeAd.getCallToAction())) {
-            if (ctaView instanceof TextView) {
+        if (ctaView instanceof TextView) {
+            ctaView.setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(nativeAd.getCallToAction())) {
                 ((TextView) ctaView).setText(nativeAd.getCallToAction());
-                ctaView.setVisibility(View.VISIBLE);
+            } else {
+                ((TextView) ctaView).setText(getActionText(ctaView.getContext()));
             }
         }
 
