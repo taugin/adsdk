@@ -388,20 +388,34 @@ public class BaseBindNativeView {
     protected String getActionText(Context context) {
         Locale locale = getLocale(context);
         if (locale != null) {
-            if (Locale.SIMPLIFIED_CHINESE.equals(locale)) {
+            if (isLocaleEquals(Locale.SIMPLIFIED_CHINESE, locale)) {
                 return "了解更多";
             }
-            if (Locale.TRADITIONAL_CHINESE.equals(locale)) {
+            if (isLocaleEquals(Locale.TRADITIONAL_CHINESE, locale)) {
                 return "了解更多";
             }
-            if (Locale.JAPANESE.equals(locale) || Locale.JAPAN.equals(locale)) {
+            if (isLocaleEquals(Locale.JAPANESE, locale) || isLocaleEquals(Locale.JAPAN, locale)) {
                 return "詳しくは";
             }
-            if (Locale.KOREA.equals(locale) || Locale.KOREAN.equals(locale)) {
+            if (isLocaleEquals(Locale.KOREA, locale) || isLocaleEquals(Locale.KOREAN, locale)) {
                 return "더 알아보기";
             }
         }
         return "LEARN MORE";
+    }
+
+    private boolean isLocaleEquals(Locale locale1, Locale locale2) {
+        if (locale1 == null || locale2 == null) {
+            return false;
+        }
+        String language1 = locale1.getLanguage();
+        String language2 = locale2.getLanguage();
+        String country1 = locale1.getCountry();
+        String country2 = locale2.getCountry();
+        if (language1 == null || language2 == null || country1 == null || country2 == null) {
+            return false;
+        }
+        return language1.equalsIgnoreCase(language2) && country1.equalsIgnoreCase(country2);
     }
 
     protected Locale getLocale(Context context) {
