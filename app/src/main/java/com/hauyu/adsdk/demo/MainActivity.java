@@ -41,6 +41,7 @@ import com.komob.adsdk.AdReward;
 import com.komob.adsdk.AdSdk;
 import com.komob.adsdk.OnAdFilterListener;
 import com.komob.adsdk.SimpleAdSdkListener;
+import com.komob.adsdk.data.SpreadManager;
 import com.komob.adsdk.ump.UmpConsentHelper;
 import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.constant.Constant;
@@ -448,6 +449,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 String placeName = String.format(Locale.ENGLISH, REWARD_PREFIX, sdk);
                 AdSdk.get(mContext).loadRewardedVideo(placeName);
             }
+        } else if (v.getId() == R.id.show_spread_list) {
+            SpreadManager.get(this).showSpread();
         }
     }
 
