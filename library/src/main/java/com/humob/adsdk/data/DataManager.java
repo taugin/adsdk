@@ -191,6 +191,14 @@ public class DataManager {
         return null;
     }
 
+    public List<SpreadConfig> getSpreadList() {
+        String data = getString(SpreadManager.AD_SPREAD_LIST);
+        if (!TextUtils.isEmpty(data)) {
+            return mParser.parseSpread(data);
+        }
+        return null;
+    }
+
     public Map<String, Map<String, String>> getMediationConfig() {
         String mediationConfigKey = getMediationConfigKey();
         String data = getString(mediationConfigKey);

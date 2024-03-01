@@ -34,6 +34,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hauyu.adsdk.demo.view.CustomDrawable;
 import com.humob.adsdk.AdExtra;
 import com.humob.adsdk.AdImpData;
 import com.humob.adsdk.AdParams;
@@ -41,11 +42,11 @@ import com.humob.adsdk.AdReward;
 import com.humob.adsdk.AdSdk;
 import com.humob.adsdk.OnAdFilterListener;
 import com.humob.adsdk.SimpleAdSdkListener;
-import com.humob.adsdk.utils.Utils;
 import com.humob.adsdk.constant.Constant;
 import com.humob.adsdk.core.db.DBManager;
 import com.humob.adsdk.core.framework.ActivityMonitor;
-import com.hauyu.adsdk.demo.view.CustomDrawable;
+import com.humob.adsdk.data.SpreadManager;
+import com.humob.adsdk.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -120,6 +121,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         menu.add(0, 0x6, 0, "CheckRoundCpm");
         menu.add(0, 0x7, 0, "GenerateProguard");
         menu.add(0, 0x8, 0, "ParseRss");
+        menu.add(0, 0x9, 0, "AdmobUMP");
+        menu.add(0, 0x10, 0, "ResetUMP");
+        menu.add(0, 0x11, 0, "ShowUMP");
         return true;
     }
 
@@ -436,6 +440,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 String placeName = String.format(Locale.ENGLISH, REWARD_PREFIX, sdk);
                 AdSdk.get(mContext).loadRewardedVideo(placeName);
             }
+        } else if (v.getId() == R.id.show_spread_list) {
+            SpreadManager.get(this).showSpread();
         }
     }
 
@@ -893,15 +899,15 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     public static void showBroccoli(View adLayoutView) {
         try {
             Broccoli broccoli = new Broccoli();
-            broccoli.addPlaceholders(adLayoutView.findViewById(R.id.rab_native_icon)
-                    , adLayoutView.findViewById(R.id.rab_native_title)
-                    , adLayoutView.findViewById(R.id.rab_native_detail)
-                    , adLayoutView.findViewById(R.id.rab_native_action_btn));
+            broccoli.addPlaceholders(adLayoutView.findViewById(R.id.kom_native_icon)
+                    , adLayoutView.findViewById(R.id.kom_native_title)
+                    , adLayoutView.findViewById(R.id.kom_native_detail)
+                    , adLayoutView.findViewById(R.id.kom_native_action_btn));
 
             broccoli.addPlaceholder(new PlaceholderParameter.Builder()
                     .setDrawable(new BroccoliGradientDrawable(Color.parseColor("#DDDDDD"),
                             Color.parseColor("#CCCCCC"), 0, 1000, new LinearInterpolator()))
-                    .setView(adLayoutView.findViewById(R.id.rab_native_cover_info))
+                    .setView(adLayoutView.findViewById(R.id.kom_native_cover_info))
                     .build());
             broccoli.show();
         } catch (Exception e) {

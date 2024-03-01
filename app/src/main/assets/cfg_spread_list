@@ -1,0 +1,28 @@
+[
+  {
+    "banner": "https://play-lh.googleusercontent.com/U-j8bBMhoOnAKgLWFOtnIHG5TLgKlA-9oblh7VOQzBXKGnsgXYAqfYwceY5NUTZSlw",
+    "icon": "https://play-lh.googleusercontent.com/JfC28TP-Tc_ZZ9uwB7rurdYl3pat5NSvvBcfigTVlcblbzYTQpZkRzK4wG_9SBtGCyhm=w240-h480",
+    "title": "Easy Weather - Daily Forecast",
+    "bundle": "com.easy.weather.daily.sunny.app",
+    "detail": "Easy Weather - Daily Forecast",
+    "cta": "INSTALL",
+    "cta_locale": {
+      "zh": "安装",
+      "en": "Install"
+    },
+    "loading_time": 5000
+  },
+  {
+    "banner": "https://play-lh.googleusercontent.com/8WUOPpMjsU14b2_Z8HhvytDeBJnngi_ZthX2PxDvnKlrQ5GsiSpDJgAhK93fxFmIK6dp",
+    "icon": "https://play-lh.googleusercontent.com/8Z5-HuhfAPHZXm0IANnwKwiBlEpuSijULQY_mGF_Jn4uJWh3mC8n1TJ4JQggVemXK3Df=w240-h480",
+    "title": "Daily KJV Bible",
+    "bundle": "com.daily.kjvbible.devotion",
+    "detail": "Daily KJV Bible",
+    "cta": "INSTALL",
+    "cta_locale": {
+      "zh": "安装",
+      "en": "Install"
+    },
+    "loading_time": 5000
+  }
+]
