@@ -45,7 +45,6 @@ import com.humob.adsdk.SimpleAdSdkListener;
 import com.humob.adsdk.constant.Constant;
 import com.humob.adsdk.core.db.DBManager;
 import com.humob.adsdk.core.framework.ActivityMonitor;
-import com.humob.adsdk.data.SpreadManager;
 import com.humob.adsdk.utils.Utils;
 
 import java.math.BigDecimal;
@@ -441,7 +440,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 AdSdk.get(mContext).loadRewardedVideo(placeName);
             }
         } else if (v.getId() == R.id.show_spread_list) {
-            SpreadManager.get(this).showSpread();
+            AdSdk.get(this).showSpreadUI();
         }
     }
 

@@ -13,6 +13,7 @@ import com.humob.adsdk.core.framework.AdPlaceLoader;
 import com.humob.adsdk.core.framework.LimitAdsManager;
 import com.humob.adsdk.core.framework.ReplaceManager;
 import com.humob.adsdk.data.DataManager;
+import com.humob.adsdk.data.SpreadManager;
 import com.humob.adsdk.log.Log;
 import com.humob.adsdk.utils.Utils;
 import com.humob.adsdk.utils.VUIHelper;
@@ -918,5 +919,17 @@ public class AdSdk {
 
     public void setApplovinInTestMode(boolean inTestMode) {
         DataManager.get(mContext).setApplovinInTestMode(inTestMode);
+    }
+
+    public boolean hasSpreadApp() {
+        return SpreadManager.get(mContext).hasSpreadApp();
+    }
+
+    public int getSpreadAppCount() {
+        return SpreadManager.get(mContext).getSpreadAppCount();
+    }
+
+    public void showSpreadUI() {
+        SpreadManager.get(mContext).showSpreadUI();
     }
 }

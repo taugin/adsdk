@@ -74,7 +74,8 @@ public class SpreadManager {
                     && !TextUtils.isEmpty(spreadConfig.getIcon())
                     && !TextUtils.isEmpty(spreadConfig.getTitle())
                     && !TextUtils.isEmpty(spreadConfig.getBundle())
-                    && !TextUtils.isEmpty(spreadConfig.getCta())) {
+                    && !TextUtils.isEmpty(spreadConfig.getCta())
+                    && !Utils.isInstalled(mContext, spreadConfig.getBundle())) {
                 checkedList.add(spreadConfig);
             }
         }
@@ -86,7 +87,12 @@ public class SpreadManager {
         return list != null && !list.isEmpty();
     }
 
-    public void showSpread() {
+    public int getSpreadAppCount() {
+        List<SpreadConfig> list = getSpreadList();
+        return list != null ? list.size() : 0;
+    }
+
+    public void showSpreadUI() {
         List<SpreadConfig> list = getSpreadList();
         if (list == null || list.isEmpty()) {
             return;
@@ -256,7 +262,6 @@ public class SpreadManager {
         return locale;
     }
 
-
     private static void reportAdSpreadInstalled(Context context, String packageName) {
         try {
             InternalStat.reportEvent(context, "ad_spread_installed", packageName);
@@ -312,7 +317,6 @@ public class SpreadManager {
             }
         }
     };
-
 
     class ViewHolder {
         ImageView iconView;
