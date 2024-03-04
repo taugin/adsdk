@@ -12,14 +12,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.humob.adsdk.adloader.base.BaseBindNativeView;
 import com.humob.adsdk.constant.Constant;
 import com.humob.adsdk.core.framework.Params;
-import com.humob.adsdk.log.Log;
-import com.humob.adsdk.adloader.base.BaseBindNativeView;
 import com.humob.adsdk.data.config.PidConfig;
 import com.humob.adsdk.data.config.SpreadConfig;
 import com.humob.adsdk.http.Http;
 import com.humob.adsdk.http.OnImageCallback;
+import com.humob.adsdk.log.Log;
 
 import java.util.Locale;
 import java.util.Map;
@@ -190,6 +190,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
 
                 @Override
                 public void onFailure(int code, String error) {
+                    Log.iv(Log.TAG, "code : " + code + " , error : " + error);
                 }
             });
         } catch (Exception e) {

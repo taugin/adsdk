@@ -83,7 +83,9 @@ public class Http {
                 return headers;
             }
         };
-        mRequestQueue.add(stringRequest);
+        if (mRequestQueue != null) {
+            mRequestQueue.add(stringRequest);
+        }
     }
 
     public void post(String url, Map<String, String> headers, byte[] data, OnStringCallback callback) {
@@ -121,7 +123,9 @@ public class Http {
                 return data;
             }
         };
-        mRequestQueue.add(stringRequest);
+        if (mRequestQueue != null) {
+            mRequestQueue.add(stringRequest);
+        }
     }
 
     private String getCacheFilePath(String url) {
@@ -190,6 +194,8 @@ public class Http {
                 }
             }
         });
-        mRequestQueue.add(imageRequest);
+        if (mRequestQueue != null) {
+            mRequestQueue.add(imageRequest);
+        }
     }
 }

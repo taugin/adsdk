@@ -466,7 +466,7 @@ public class Utils {
             if (info != null) {
                 return true;
             }
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (Exception | Error e) {
             // Log.iv(Log.TAG, "error : " + e);
         }
         return false;
