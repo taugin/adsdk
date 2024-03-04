@@ -67,6 +67,7 @@ public class InternalStat {
                 "click_native_admob_distinct",
                 "click_banner_admob_distinct",
                 "click_reward_admob_distinct",
+                "ad_sponsored_click",
                 "ad_spread_installed"
         );
 

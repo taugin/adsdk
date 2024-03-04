@@ -176,6 +176,7 @@ public class SpreadManager {
             } catch (Exception e) {
                 Log.iv(Log.TAG, "error : " + e);
             }
+            InternalStat.reportEvent(mContext, "ad_sponsored_click", packageName);
         }
     }
 
