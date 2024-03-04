@@ -102,7 +102,7 @@ dependencies {
 
     if (isContains(include_platform_list, MINTEGRAL)) {
         // mintegral
-        def mintegral_version = "16.6.41"
+        def mintegral_version = "16.6.51"
         implementation "com.mbridge.msdk.oversea:videojs:${mintegral_version}"
         implementation "com.mbridge.msdk.oversea:mbjscommon:${mintegral_version}"
         implementation "com.mbridge.msdk.oversea:playercommon:${mintegral_version}"
@@ -120,7 +120,7 @@ dependencies {
         implementation "com.mbridge.msdk.oversea:newinterstitial:${mintegral_version}"
         if (isContains(include_platform_list, APPLOVIN)) {
             // applovin mintegral mediation
-            implementation 'com.applovin.mediation:mintegral-adapter:16.6.41.0@aar'
+            implementation 'com.applovin.mediation:mintegral-adapter:16.6.51.0@aar'
         }
         if (isContains(include_platform_list, TRADPLUS)) {
             // tradplus mintegral mediation
