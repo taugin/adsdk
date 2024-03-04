@@ -1,9 +1,7 @@
 package com.komob.adsdk.adloader.spread;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,15 +9,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.komob.adsdk.InternalStat;
 import com.komob.adsdk.adloader.base.AbstractSdkLoader;
 import com.komob.adsdk.adloader.base.BaseBindNativeView;
 import com.komob.adsdk.adloader.listener.ISdkLoader;
 import com.komob.adsdk.constant.Constant;
-import com.komob.adsdk.core.db.DBManager;
 import com.komob.adsdk.core.framework.AdPlaceLoader;
 import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.DataManager;
+import com.komob.adsdk.data.SpreadManager;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.data.config.SpreadConfig;
 import com.komob.adsdk.http.Http;
@@ -34,8 +31,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Administrator on 2018-10-19.
@@ -43,7 +38,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SpLoader extends AbstractSdkLoader {
 
-    private static AtomicBoolean sRegister = new AtomicBoolean(false);
     private static final int MOCK_LOADING_TIME = 200;
     private SpreadConfig mSpread;
     private Params mParams;
@@ -57,9 +51,6 @@ public class SpLoader extends AbstractSdkLoader {
     @Override
     public void init(Context context, PidConfig pidConfig) {
         super.init(context, pidConfig);
-        if (!sRegister.getAndSet(true)) {
-            register(context);
-        }
     }
 
     @Override
@@ -326,7 +317,7 @@ public class SpLoader extends AbstractSdkLoader {
                 String packageName = mSpreadConfig.getBundle();
                 String referrer = null;
                 try {
-                    referrer = generateReferrer(v.getContext());
+                    referrer = SpreadManager.get(mContext).generateReferrer(v.getContext(), "spread");
                 } catch (Exception e) {
                     Log.iv(Log.TAG, "error : " + e);
                 }
@@ -344,12 +335,9 @@ public class SpLoader extends AbstractSdkLoader {
                 }
                 try {
                     v.getContext().startActivity(intent);
+                    SpreadManager.get(v.getContext()).insertOrUpdateClick(packageName, System.currentTimeMillis());
                 } catch (Exception e) {
                     Log.iv(Log.TAG, "error : " + e);
-                }
-                try {
-                    DBManager.get(v.getContext()).insertOrUpdateClick(packageName, System.currentTimeMillis());
-                } catch (Exception e) {
                 }
                 reportAdSpreadClk(mSpreadConfig);
                 notifyAdClick();
@@ -357,11 +345,6 @@ public class SpLoader extends AbstractSdkLoader {
         }
     }
 
-    private static String generateReferrer(Context context) {
-        String packageName = context.getPackageName();
-        String gclid = Utils.string2MD5(UUID.randomUUID().toString());
-        return String.format(Locale.ENGLISH, "referrer=utm_source%%3D%s%%26utm_medium%%3Dcpc%%26utm_campaign%%3Dspread%%26gclid%%3D%s", packageName, gclid);
-    }
 
     private void reportAdSpreadImp(SpreadConfig spreadConfig) {
         try {
@@ -388,59 +371,4 @@ public class SpLoader extends AbstractSdkLoader {
         } catch (Exception e) {
         }
     }
-
-    private static void reportAdSpreadInstalled(Context context, String packageName) {
-        try {
-            InternalStat.reportEvent(context, "ad_spread_installed", packageName);
-        } catch (Exception e) {
-        }
-    }
-
-    private static void register(Context context) {
-        try {
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-            filter.addAction(Intent.ACTION_PACKAGE_ADDED);
-            filter.addDataScheme("package");
-            context.registerReceiver(sBroadcastReceiver, filter);
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-    }
-
-    private static String parsePackageName(Intent intent) {
-        try {
-            String data = intent.getDataString();
-            return data.substring("package:".length());
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-        return null;
-    }
-
-    private static BroadcastReceiver sBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (context == null || intent == null) {
-                return;
-            }
-            try {
-                String action = intent.getAction();
-                if (TextUtils.equals(action, Intent.ACTION_PACKAGE_ADDED)) {
-                    String packageName = parsePackageName(intent);
-                    DBManager.SpreadClickInfo spreadClickInfo = DBManager.get(context).queryClickSpread(packageName);
-                    if (spreadClickInfo != null) {
-                        int _id = spreadClickInfo._id;
-                        Log.iv(Log.TAG, "install package name : " + packageName + " , _id : " + _id);
-                        if (_id >= 0) {
-                            DBManager.get(context).updateInstallTime(_id, System.currentTimeMillis(), spreadClickInfo.installCount + 1);
-                            reportAdSpreadInstalled(context, packageName);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                Log.iv(Log.TAG, "error : " + e);
-            }
-        }
-    };
 }
