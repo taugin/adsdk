@@ -178,7 +178,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
 
     private void loadAndShowImage(final ImageView imageView, String url) {
         try {
-            Http.get(imageView.getContext()).loadImage(url, null, new OnImageCallback() {
+            Http.get(imageView.getContext()).loadImage(url, ImageView.ScaleType.CENTER_CROP, new OnImageCallback() {
 
                 @Override
                 public void onSuccess(Bitmap bitmap) {
