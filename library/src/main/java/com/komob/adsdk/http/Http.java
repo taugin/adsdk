@@ -5,15 +5,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 
-import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -43,6 +45,8 @@ public class Http {
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private Context mContext;
+
+    private Map<String, Request> mReqMap = new ConcurrentHashMap<>();
 
     private static Http sHttp;
 
@@ -88,10 +92,24 @@ public class Http {
 
     private void requestHttpInternal(final Request request) {
         if (request == null) {
-            deliverFailure(request, -1, "unknown");
+            deliverFailure(null, -1, "unknown");
             return;
         }
-        Log.iv(Log.TAG, "url : " + request.getUrl());
+        String url = request.getUrl();
+        if (TextUtils.isEmpty(url)) {
+            deliverFailure(request, -1, "url is empty");
+            return;
+        }
+        Request loadingRequest = mReqMap.get(url);
+        if (loadingRequest != null) {
+            long lastStartTime = loadingRequest.getStartTime();
+            if (lastStartTime > 0 && System.currentTimeMillis() - lastStartTime < 60000) {
+                return;
+            }
+        }
+        request.setStartTime(System.currentTimeMillis());
+        mReqMap.put(url, request);
+        Log.iv(Log.TAG, "url : " + url);
         final Request r = request;
         sService.execute(new Runnable() {
             @Override
@@ -117,6 +135,7 @@ public class Http {
                 } else {
                     deliverFailure(r, -1, "unknown");
                 }
+                mReqMap.remove(url);
             }
         });
     }
@@ -153,24 +172,26 @@ public class Http {
     }
 
     private Response readDataFromCache(Request request) {
-        Log.iv(Log.TAG, "read data from cache");
+        // Log.iv(Log.TAG, "read data from cache");
         try {
             String filePath = getCacheFilePath(request.getUrl());
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            FileInputStream fis = new FileInputStream(filePath);
-            byte buf[] = new byte[1024];
-            int len = 0;
-            while ((len = fis.read(buf)) > 0) {
-                baos.write(buf, 0, len);
+            if (new File(filePath).exists()) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                FileInputStream fis = new FileInputStream(filePath);
+                byte buf[] = new byte[1024];
+                int len = 0;
+                while ((len = fis.read(buf)) > 0) {
+                    baos.write(buf, 0, len);
+                }
+                fis.close();
+                buf = baos.toByteArray();
+                baos.close();
+                Response response = new Response();
+                response.setStatusCode(200);
+                response.setContent(buf);
+                response.setCache(true);
+                return response;
             }
-            fis.close();
-            buf = baos.toByteArray();
-            baos.close();
-            Response response = new Response();
-            response.setStatusCode(200);
-            response.setContent(buf);
-            response.setCache(true);
-            return response;
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }
@@ -178,7 +199,6 @@ public class Http {
     }
 
     private void parseResponse(final Request request, Response response) {
-        Log.iv(Log.TAG, "parse response : " + request.getUrl());
         final OnCallback callback = request.getCallback();
         if (callback instanceof OnImageCallback) {
             try {
