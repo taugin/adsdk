@@ -3,50 +3,31 @@ package com.komob.adsdk.http;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.TextUtils;
+import android.widget.ImageView;
 
+import com.komob.adsdk.http.volley.AuthFailureError;
+import com.komob.adsdk.http.volley.Request;
+import com.komob.adsdk.http.volley.RequestQueue;
+import com.komob.adsdk.http.volley.Response;
+import com.komob.adsdk.http.volley.VolleyError;
+import com.komob.adsdk.http.volley.toolbox.ImageRequest;
+import com.komob.adsdk.http.volley.toolbox.StringRequest;
+import com.komob.adsdk.http.volley.toolbox.Volley;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.utils.Utils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Administrator on 2018/1/17.
  */
 
 public class Http {
-    private static ThreadFactory sFactory = new ThreadFactory() {
-        private final String namePrefix = "sdk-";
-        private final AtomicInteger threadNumber = new AtomicInteger(1);
-
-        @Override
-        public Thread newThread(Runnable r) {
-            Thread t = new Thread(r,
-                    namePrefix + threadNumber.getAndIncrement());
-            if (t.isDaemon())
-                t.setDaemon(false);
-            if (t.getPriority() != Thread.NORM_PRIORITY)
-                t.setPriority(Thread.NORM_PRIORITY);
-            return t;
-        }
-    };
-    private static final ExecutorService sService = Executors.newFixedThreadPool(2, sFactory);
-
-    private Handler mHandler = new Handler(Looper.getMainLooper());
     private Context mContext;
 
-    private Map<String, Request> mReqMap = new ConcurrentHashMap<>();
+    private RequestQueue mRequestQueue;
 
     private static Http sHttp;
 
@@ -69,75 +50,78 @@ public class Http {
 
     private Http(Context context) {
         mContext = context;
+        mRequestQueue = Volley.newRequestQueue(context);
     }
 
-    public void get(String url, Map<String, String> headers, OnCallback callback) {
-        final Request r = new Request();
-        r.setCallback(callback);
-        r.setHeader(headers);
-        r.setUrl(url);
-        r.setMethod(Request.GET);
-        requestHttpInternal(r);
-    }
-
-    public void post(String url, Map<String, String> headers, byte[] data, OnCallback callback) {
-        final Request r = new Request();
-        r.setCallback(callback);
-        r.setHeader(headers);
-        r.setUrl(url);
-        r.setMethod(Request.POST);
-        r.setData(data);
-        requestHttpInternal(r);
-    }
-
-    private void requestHttpInternal(final Request request) {
-        if (request == null) {
-            deliverFailure(null, -1, "unknown");
-            return;
-        }
-        String url = request.getUrl();
-        if (TextUtils.isEmpty(url)) {
-            deliverFailure(request, -1, "url is empty");
-            return;
-        }
-        Request loadingRequest = mReqMap.get(url);
-        if (loadingRequest != null) {
-            long lastStartTime = loadingRequest.getStartTime();
-            if (lastStartTime > 0 && System.currentTimeMillis() - lastStartTime < 60000) {
-                return;
-            }
-        }
-        request.setStartTime(System.currentTimeMillis());
-        mReqMap.put(url, request);
-        Log.iv(Log.TAG, "url : " + url);
-        final Request r = request;
-        sService.execute(new Runnable() {
+    public void get(String url, Map<String, String> headers, OnStringCallback callback) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void run() {
-                Response response = null;
-                if (r.isCache()) {
-                    response = readDataFromCache(r);
-                    Log.iv(Log.TAG, "read data from cache : " + (response != null));
+            public void onResponse(String response) {
+                if (callback != null) {
+                    callback.onSuccess(response);
                 }
-                if (response == null) {
-                    try {
-                        UrlHttp urlHttp = new UrlHttp();
-                        response = urlHttp.execute(r);
-                        response.setCache(false);
-                    } catch (Exception e) {
-                        Log.iv(Log.TAG, "error : " + e);
-                    }
-                }
-                if (response != null && response.getStatusCode() == 200) {
-                    parseResponse(r, response);
-                } else if (response != null) {
-                    deliverFailure(r, response.getStatusCode(), response.getError());
-                } else {
-                    deliverFailure(r, -1, "unknown");
-                }
-                mReqMap.remove(url);
             }
-        });
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (callback != null) {
+                    String errorMessage = null;
+                    if (error != null) {
+                        errorMessage = error.getMessage();
+                    }
+                    int statusCode = -1;
+                    try {
+                        statusCode = error.networkResponse.statusCode;
+                    } catch (Exception e) {
+                    }
+                    callback.onFailure(statusCode, errorMessage);
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return headers;
+            }
+        };
+        mRequestQueue.add(stringRequest);
+    }
+
+    public void post(String url, Map<String, String> headers, byte[] data, OnStringCallback callback) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (callback != null) {
+                    callback.onSuccess(response);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (callback != null) {
+                    String errorMessage = null;
+                    if (error != null) {
+                        errorMessage = error.getMessage();
+                    }
+                    int statusCode = -1;
+                    try {
+                        statusCode = error.networkResponse.statusCode;
+                    } catch (Exception e) {
+                    }
+                    callback.onFailure(statusCode, errorMessage);
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return data;
+            }
+        };
+        mRequestQueue.add(stringRequest);
     }
 
     private String getCacheFilePath(String url) {
@@ -153,44 +137,27 @@ public class Http {
         return null;
     }
 
-    private void writeDataToCache(Request request, Response response) {
-        Log.iv(Log.TAG, "write data to cache");
+    private void writeDataToCache(String url, Bitmap bitmap) {
         try {
-            byte buf[] = response.getContent();
-            String filePath = getCacheFilePath(request.getUrl());
+            String filePath = getCacheFilePath(url);
             File file = new File(filePath);
             if (file.exists()) {
                 file.delete();
             }
             file.createNewFile();
             FileOutputStream fos = new FileOutputStream(filePath);
-            fos.write(buf);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 80, fos);
             fos.close();
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }
     }
 
-    private Response readDataFromCache(Request request) {
-        // Log.iv(Log.TAG, "read data from cache");
+    private Bitmap readDataFromCache(String url) {
         try {
-            String filePath = getCacheFilePath(request.getUrl());
+            String filePath = getCacheFilePath(url);
             if (new File(filePath).exists()) {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                FileInputStream fis = new FileInputStream(filePath);
-                byte buf[] = new byte[1024];
-                int len = 0;
-                while ((len = fis.read(buf)) > 0) {
-                    baos.write(buf, 0, len);
-                }
-                fis.close();
-                buf = baos.toByteArray();
-                baos.close();
-                Response response = new Response();
-                response.setStatusCode(200);
-                response.setContent(buf);
-                response.setCache(true);
-                return response;
+                return BitmapFactory.decodeFile(filePath);
             }
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
@@ -198,95 +165,31 @@ public class Http {
         return null;
     }
 
-    private void parseResponse(final Request request, Response response) {
-        final OnCallback callback = request.getCallback();
-        if (callback instanceof OnImageCallback) {
-            try {
-                byte[] content = response.getContent();
-                Bitmap bitmap = BitmapFactory.decodeByteArray(content, 0, content.length);
-                deliverBitmapSuccess(bitmap, (OnImageCallback) callback);
-            } catch (Exception e) {
-                Log.iv(Log.TAG, "error : " + e);
-                deliverFailure(request, response.getStatusCode(), response.getError());
+    public void loadImage(String url, ImageView.ScaleType scaleType, OnImageCallback onImageCallback) {
+        ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap bitmap) {
+                if (onImageCallback != null) {
+                    onImageCallback.onSuccess(bitmap);
+                }
             }
-        } else if (callback instanceof OnStringCallback) {
-            String charset = response.getCharset();
-            Log.iv(Log.TAG, "charset : " + charset);
-            String content = null;
-            try {
-                content = new String(response.getContent(), charset);
-            } catch (Exception e) {
-                Log.iv(Log.TAG, "error : " + e);
+        }, 0, 0, scaleType, Bitmap.Config.RGB_565, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (onImageCallback != null) {
+                    String errorMessage = null;
+                    if (error != null) {
+                        errorMessage = error.getMessage();
+                    }
+                    int statusCode = -1;
+                    try {
+                        statusCode = error.networkResponse.statusCode;
+                    } catch (Exception e) {
+                    }
+                    onImageCallback.onFailure(statusCode, errorMessage);
+                }
             }
-            deliverStringSuccess(content, (OnStringCallback) callback);
-        }
-        if (request.isCache() && !response.isCache()) {
-            writeDataToCache(request, response);
-        }
-    }
-
-    private void deliverStringSuccess(final String content, final OnStringCallback callback) {
-        if (mHandler != null) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (callback != null) {
-                        callback.onSuccess(content);
-                    }
-                }
-            });
-        }
-    }
-
-    private void deliverBitmapSuccess(final Bitmap bitmap, final OnImageCallback callback) {
-        if (mHandler != null) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (callback != null) {
-                        callback.onSuccess(bitmap);
-                    }
-                }
-            });
-        }
-    }
-
-    private void deliverFailure(final Request request, final int code, final String error) {
-        if (mHandler != null) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (request != null && request.getCallback() != null) {
-                        request.getCallback().onFailure(code, error);
-                    }
-                }
-            });
-        }
-    }
-
-    private String addQuery(String url, String query) {
-        try {
-            if (url.indexOf("?") > 0) {
-                if (url.endsWith("&")) {
-                    url = url + query;
-                } else {
-                    url = url + "&" + query;
-                }
-            } else {
-                url = url + "?" + query;
-            }
-        } catch (Exception e) {
-        }
-        return url;
-    }
-
-    public void loadImage(String url, Map<String, String> header, OnCallback callback) {
-        final Request r = new Request();
-        r.setCallback(callback);
-        r.setHeader(header);
-        r.setUrl(url);
-        r.setCache(true);
-        r.setHeader(header);
-        requestHttpInternal(r);
+        });
+        mRequestQueue.add(imageRequest);
     }
 }
