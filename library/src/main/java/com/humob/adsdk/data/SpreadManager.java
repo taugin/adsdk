@@ -2,8 +2,10 @@ package com.humob.adsdk.data;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +18,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.humob.adsdk.InternalStat;
+import com.humob.adsdk.core.db.DBManager;
 import com.humob.adsdk.core.framework.ActivityMonitor;
 import com.humob.adsdk.data.config.SpreadConfig;
 import com.humob.adsdk.http.Http;
@@ -54,6 +58,7 @@ public class SpreadManager {
 
     private SpreadManager(Context context) {
         mContext = context;
+        register(context);
     }
 
     private Context mContext;
@@ -149,7 +154,7 @@ public class SpreadManager {
             String packageName = spreadConfig.getBundle();
             String referrer = null;
             try {
-                referrer = generateReferrer(context);
+                referrer = generateReferrer(context, "sponsored");
             } catch (Exception e) {
                 Log.iv(Log.TAG, "error : " + e);
             }
@@ -167,16 +172,21 @@ public class SpreadManager {
             }
             try {
                 context.startActivity(intent);
+                SpreadManager.get(mContext).insertOrUpdateClick(packageName, System.currentTimeMillis());
             } catch (Exception e) {
                 Log.iv(Log.TAG, "error : " + e);
             }
         }
     }
 
-    private static String generateReferrer(Context context) {
+    public void insertOrUpdateClick(String bundle, long clickTime) {
+        DBManager.get(mContext).insertOrUpdateClick(bundle, clickTime);
+    }
+
+    public String generateReferrer(Context context, String campaign) {
         String packageName = context.getPackageName();
         String gclid = Utils.string2MD5(UUID.randomUUID().toString());
-        return String.format(Locale.ENGLISH, "referrer=utm_source%%3D%s%%26utm_medium%%3Dcpc%%26utm_campaign%%3Dsponsored%%26gclid%%3D%s", packageName, gclid);
+        return String.format(Locale.ENGLISH, "referrer=utm_source%%3D%s%%26utm_medium%%3Dcpc%%26utm_campaign%%3D%s%%26gclid%%3D%s", packageName, campaign, gclid);
     }
 
     private void loadAndShowImage(final ImageView imageView, String url) {
@@ -244,6 +254,64 @@ public class SpreadManager {
         }
         return locale;
     }
+
+
+    private static void reportAdSpreadInstalled(Context context, String packageName) {
+        try {
+            InternalStat.reportEvent(context, "ad_spread_installed", packageName);
+        } catch (Exception e) {
+        }
+    }
+
+    private void register(Context context) {
+        try {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+            filter.addAction(Intent.ACTION_PACKAGE_ADDED);
+            filter.addDataScheme("package");
+            context.registerReceiver(sBroadcastReceiver, filter);
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    private static String parsePackageName(Intent intent) {
+        try {
+            String data = intent.getDataString();
+            return data.substring("package:".length());
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
+
+    private static BroadcastReceiver sBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (context == null || intent == null) {
+                return;
+            }
+            try {
+                String action = intent.getAction();
+                Log.iv(Log.TAG, "action : " + action + " , data : " + intent.getDataString());
+                if (TextUtils.equals(action, Intent.ACTION_PACKAGE_ADDED)) {
+                    String packageName = parsePackageName(intent);
+                    DBManager.SpreadClickInfo spreadClickInfo = DBManager.get(context).queryClickSpread(packageName);
+                    if (spreadClickInfo != null) {
+                        int _id = spreadClickInfo._id;
+                        Log.iv(Log.TAG, "install package name : " + packageName + " , _id : " + _id);
+                        if (_id >= 0) {
+                            DBManager.get(context).updateInstallTime(_id, System.currentTimeMillis(), spreadClickInfo.installCount + 1);
+                            reportAdSpreadInstalled(context, packageName);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.iv(Log.TAG, "error : " + e);
+            }
+        }
+    };
+
 
     class ViewHolder {
         ImageView iconView;

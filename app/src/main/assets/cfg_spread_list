@@ -24,5 +24,32 @@
       "en": "Install"
     },
     "loading_time": 5000
+  },
+  {
+    "banner": "https://play-lh.googleusercontent.com/Xc-vjnJhZMDLVl_hq1UQjnOKBsTsY85rTkLR-EPv9xWbISayPxPeAudhwlCYk1RTw7A",
+    "icon": "https://play-lh.googleusercontent.com/p0AUAoSQo24pQoTg8lKrpVCtkHRMZsa7uqa0iphwo7fFMccfmiSAMb3h7gmhUezW93o",
+    "title": "Cube File Manager",
+    "bundle": "com.cube.file.explorer",
+    "detail": "Explore file on device easily",
+    "cta": "INSTALL",
+    "loading_time": 5000
+  },
+  {
+    "banner": "https://play-lh.googleusercontent.com/UUF7IdOK0aplzrXHMV4SM9gdL88S3Bz9jWeSY9dhQNvjBrUysPnno3rY8DlkXkslgt4",
+    "icon": "https://play-lh.googleusercontent.com/QhpuNoxA7N_cgwl35QxUi9JO9vQhnaCiG08KvCFERkYxCKWpvq3BpFxb_llVuHMFyC14",
+    "title": "ChatBird - AI Chat Bot",
+    "bundle": "com.chat.ai.message.bot.smart",
+    "detail": "AI assistant, answer any question.",
+    "cta": "INSTALL",
+    "loading_time": 5000
+  },
+  {
+    "banner": "https://play-lh.googleusercontent.com/R6rO1pQORmcwIGUVS4b36na4W8lwisQNa9BXsIRkiaqwnnhtCBfergj0Qk78qY_Clhw",
+    "icon": "https://play-lh.googleusercontent.com/dyeO023c-nMXe4Cu8HMQpekPQ7b33PMnYbZElzp8onoCRhxahRGh4pIQqy-qcLRAtls",
+    "title": "ShortsWave",
+    "bundle": "com.shorts.wave.drama",
+    "detail": "Dive into a World of Brief Dramatic Excellence",
+    "cta": "INSTALL",
+    "loading_time": 5000
   }
 ]
