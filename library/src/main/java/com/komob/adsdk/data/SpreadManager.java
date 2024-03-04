@@ -210,6 +210,7 @@ public class SpreadManager {
 
                 @Override
                 public void onFailure(int code, String error) {
+                    Log.iv(Log.TAG, "code : " + code + " , error : " + error);
                 }
             });
         } catch (Exception e) {

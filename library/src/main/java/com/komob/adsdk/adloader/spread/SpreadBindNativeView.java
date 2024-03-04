@@ -12,14 +12,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.komob.adsdk.adloader.base.BaseBindNativeView;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.framework.Params;
-import com.komob.adsdk.log.Log;
-import com.komob.adsdk.adloader.base.BaseBindNativeView;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.data.config.SpreadConfig;
 import com.komob.adsdk.http.Http;
 import com.komob.adsdk.http.OnImageCallback;
+import com.komob.adsdk.log.Log;
 
 import java.util.Locale;
 import java.util.Map;
@@ -190,6 +190,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
 
                 @Override
                 public void onFailure(int code, String error) {
+                    Log.iv(Log.TAG, "code : " + code + " , error : " + error);
                 }
             });
         } catch (Exception e) {
