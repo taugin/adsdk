@@ -7,21 +7,22 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.komob.adsdk.adloader.applovin.AppLovinLoader;
+import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.framework.ActivityMonitor;
 import com.komob.adsdk.core.framework.AdLoadManager;
 import com.komob.adsdk.core.framework.AdPlaceLoader;
 import com.komob.adsdk.core.framework.LimitAdsManager;
 import com.komob.adsdk.core.framework.ReplaceManager;
 import com.komob.adsdk.data.DataManager;
+import com.komob.adsdk.data.SpreadManager;
+import com.komob.adsdk.data.config.AdPlace;
+import com.komob.adsdk.data.config.PlaceConfig;
 import com.komob.adsdk.log.Log;
+import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.utils.VUIHelper;
 import com.komob.api.AdViewUI;
-import com.komob.adsdk.adloader.applovin.AppLovinLoader;
-import com.komob.adsdk.constant.Constant;
-import com.komob.adsdk.data.config.AdPlace;
-import com.komob.adsdk.data.config.PlaceConfig;
-import com.komob.adsdk.stat.EventImpl;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -918,5 +919,17 @@ public class AdSdk {
 
     public void setApplovinInTestMode(boolean inTestMode) {
         DataManager.get(mContext).setApplovinInTestMode(inTestMode);
+    }
+
+    public boolean hasSpreadApp() {
+        return SpreadManager.get(mContext).hasSpreadApp();
+    }
+
+    public int getSpreadAppCount() {
+        return SpreadManager.get(mContext).getSpreadAppCount();
+    }
+
+    public void showSpreadUI() {
+        SpreadManager.get(mContext).showSpreadUI();
     }
 }

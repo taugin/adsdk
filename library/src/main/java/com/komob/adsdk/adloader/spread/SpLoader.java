@@ -317,7 +317,7 @@ public class SpLoader extends AbstractSdkLoader {
                 String packageName = mSpreadConfig.getBundle();
                 String referrer = null;
                 try {
-                    referrer = SpreadManager.get(mContext).generateReferrer(v.getContext(), "spread");
+                    referrer = SpreadManager.get(mContext).generateReferrer(v.getContext(), "placement");
                 } catch (Exception e) {
                     Log.iv(Log.TAG, "error : " + e);
                 }

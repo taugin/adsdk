@@ -34,6 +34,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hauyu.adsdk.demo.view.CustomDrawable;
 import com.komob.adsdk.AdExtra;
 import com.komob.adsdk.AdImpData;
 import com.komob.adsdk.AdParams;
@@ -41,13 +42,11 @@ import com.komob.adsdk.AdReward;
 import com.komob.adsdk.AdSdk;
 import com.komob.adsdk.OnAdFilterListener;
 import com.komob.adsdk.SimpleAdSdkListener;
-import com.komob.adsdk.data.SpreadManager;
-import com.komob.adsdk.ump.UmpConsentHelper;
-import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.db.DBManager;
 import com.komob.adsdk.core.framework.ActivityMonitor;
-import com.hauyu.adsdk.demo.view.CustomDrawable;
+import com.komob.adsdk.ump.UmpConsentHelper;
+import com.komob.adsdk.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -450,7 +449,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 AdSdk.get(mContext).loadRewardedVideo(placeName);
             }
         } else if (v.getId() == R.id.show_spread_list) {
-            SpreadManager.get(this).showSpread();
+            AdSdk.get(this).showSpreadUI();
         }
     }
 

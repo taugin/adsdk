@@ -25,15 +25,12 @@ import com.komob.adsdk.data.config.SpreadConfig;
 import com.komob.adsdk.http.Http;
 import com.komob.adsdk.http.OnImageCallback;
 import com.komob.adsdk.log.Log;
-import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.utils.Utils;
 import com.komob.api.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 
 public class SpreadManager {
@@ -77,7 +74,8 @@ public class SpreadManager {
                     && !TextUtils.isEmpty(spreadConfig.getIcon())
                     && !TextUtils.isEmpty(spreadConfig.getTitle())
                     && !TextUtils.isEmpty(spreadConfig.getBundle())
-                    && !TextUtils.isEmpty(spreadConfig.getCta())) {
+                    && !TextUtils.isEmpty(spreadConfig.getCta())
+                    && !Utils.isInstalled(mContext, spreadConfig.getBundle())) {
                 checkedList.add(spreadConfig);
             }
         }
@@ -89,7 +87,12 @@ public class SpreadManager {
         return list != null && !list.isEmpty();
     }
 
-    public void showSpread() {
+    public int getSpreadAppCount() {
+        List<SpreadConfig> list = getSpreadList();
+        return list != null ? list.size() : 0;
+    }
+
+    public void showSpreadUI() {
         List<SpreadConfig> list = getSpreadList();
         if (list == null || list.isEmpty()) {
             return;
