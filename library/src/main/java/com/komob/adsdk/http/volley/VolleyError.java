@@ -20,7 +20,7 @@ package com.komob.adsdk.http.volley;
  * Exception style class encapsulating Volley errors
  */
 @SuppressWarnings("serial")
-public class VolleyError extends Exception {
+public class VolleyError extends Throwable {
     public final NetworkResponse networkResponse;
     private long networkTimeMs;
 
