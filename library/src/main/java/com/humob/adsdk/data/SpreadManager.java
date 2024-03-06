@@ -31,6 +31,7 @@ import com.humob.api.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.UUID;
 
 public class SpreadManager {
@@ -103,10 +104,12 @@ public class SpreadManager {
         if (activity == null || activity.isFinishing()) {
             return;
         }
+        boolean useSingleColumn = new Random().nextBoolean();
         View view = LayoutInflater.from(mContext).inflate(R.layout.kom_layout_grid, null);
         TextView titleView = view.findViewById(R.id.kom_title_view);
         titleView.setText(getSponsoredText(mContext));
         GridView gridView = view.findViewById(R.id.kom_spread_grid);
+        gridView.setNumColumns(useSingleColumn ? 1 : 3);
         ArrayAdapter<SpreadConfig> adapter = new ArrayAdapter<SpreadConfig>(mContext, 0, list) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -114,25 +117,52 @@ public class SpreadManager {
                 if (convertView == null) {
                     convertView = LayoutInflater.from(mContext).inflate(R.layout.kom_layout_item, null);
                     viewHolder = new ViewHolder();
-                    viewHolder.iconView = convertView.findViewById(R.id.kom_app_icon);
-                    viewHolder.nameView = convertView.findViewById(R.id.kom_app_name);
-                    viewHolder.actionView = convertView.findViewById(R.id.kom_action_view);
+                    if (useSingleColumn) {
+                        convertView.findViewById(R.id.kom_layout_single).setVisibility(View.VISIBLE);
+                        convertView.findViewById(R.id.kom_layout_multiple).setVisibility(View.GONE);
+                        viewHolder.iconViewSingle = convertView.findViewById(R.id.kom_app_icon_single);
+                        viewHolder.nameViewSingle = convertView.findViewById(R.id.kom_app_name_single);
+                        viewHolder.detailViewSingle = convertView.findViewById(R.id.kom_app_detail_single);
+                        viewHolder.actionViewSingle = convertView.findViewById(R.id.kom_action_view_single);
+                    } else {
+                        convertView.findViewById(R.id.kom_layout_single).setVisibility(View.GONE);
+                        convertView.findViewById(R.id.kom_layout_multiple).setVisibility(View.VISIBLE);
+                        viewHolder.iconViewMultiple = convertView.findViewById(R.id.kom_app_icon_multiple);
+                        viewHolder.nameViewMultiple = convertView.findViewById(R.id.kom_app_name_multiple);
+                        viewHolder.actionViewMultiple = convertView.findViewById(R.id.kom_action_view_multiple);
+                    }
                     convertView.setTag(viewHolder);
                 } else {
                     viewHolder = (ViewHolder) convertView.getTag();
                 }
                 final SpreadConfig spreadConfig = getItem(position);
-                viewHolder.actionView.setTag(spreadConfig);
-                viewHolder.actionView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        clickSponsoredApp(mContext, spreadConfig);
+                if (useSingleColumn) {
+                    viewHolder.actionViewSingle.setTag(spreadConfig);
+                    viewHolder.actionViewSingle.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            clickSponsoredApp(mContext, spreadConfig);
+                        }
+                    });
+                    if (spreadConfig != null) {
+                        viewHolder.actionViewSingle.setText(spreadConfig.getCta());
+                        viewHolder.nameViewSingle.setText(spreadConfig.getTitle());
+                        viewHolder.detailViewSingle.setText(spreadConfig.getDetail());
+                        loadAndShowImage(viewHolder.iconViewSingle, spreadConfig.getIcon());
                     }
-                });
-                if (spreadConfig != null) {
-                    viewHolder.actionView.setText(spreadConfig.getCta());
-                    viewHolder.nameView.setText(spreadConfig.getTitle());
-                    loadAndShowImage(viewHolder.iconView, spreadConfig.getIcon());
+                } else {
+                    viewHolder.actionViewMultiple.setTag(spreadConfig);
+                    viewHolder.actionViewMultiple.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            clickSponsoredApp(mContext, spreadConfig);
+                        }
+                    });
+                    if (spreadConfig != null) {
+                        viewHolder.actionViewMultiple.setText(spreadConfig.getCta());
+                        viewHolder.nameViewMultiple.setText(spreadConfig.getTitle());
+                        loadAndShowImage(viewHolder.iconViewMultiple, spreadConfig.getIcon());
+                    }
                 }
                 return convertView;
             }
@@ -321,8 +351,13 @@ public class SpreadManager {
     };
 
     class ViewHolder {
-        ImageView iconView;
-        TextView nameView;
-        TextView actionView;
+        ImageView iconViewMultiple;
+        TextView nameViewMultiple;
+        TextView actionViewMultiple;
+
+        ImageView iconViewSingle;
+        TextView nameViewSingle;
+        TextView detailViewSingle;
+        TextView actionViewSingle;
     }
 }
