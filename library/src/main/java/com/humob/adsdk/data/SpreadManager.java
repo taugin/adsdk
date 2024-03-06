@@ -75,7 +75,8 @@ public class SpreadManager {
                     && !TextUtils.isEmpty(spreadConfig.getTitle())
                     && !TextUtils.isEmpty(spreadConfig.getBundle())
                     && !TextUtils.isEmpty(spreadConfig.getCta())
-                    && !Utils.isInstalled(mContext, spreadConfig.getBundle())) {
+                    && !Utils.isInstalled(mContext, spreadConfig.getBundle())
+                    && !TextUtils.equals(spreadConfig.getBundle(), mContext.getPackageName())) {
                 checkedList.add(spreadConfig);
             }
         }
