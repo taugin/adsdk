@@ -676,7 +676,7 @@ public class AdSdk {
     public double getMaxRevenue(String placeName) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {
-            return loader.getMaxRevenue(null);
+            return loader.getMaxRevenue(null, true);
         }
         return 0f;
     }
@@ -705,15 +705,24 @@ public class AdSdk {
         return getMaxPlaceName(adType, null);
     }
 
+    public String getMaxPlaceName(String adType, boolean containSlave) {
+        return getMaxPlaceNameInternal(adType, null, containSlave);
+    }
+
+
     public String getMaxPlaceName(String adType, List<String> whiteList) {
+        return getMaxPlaceName(adType, whiteList, true);
+    }
+
+    public String getMaxPlaceName(String adType, List<String> whiteList, boolean containSlave) {
         try {
-            return getMaxPlaceNameInternal(adType, whiteList);
+            return getMaxPlaceNameInternal(adType, whiteList, containSlave);
         } catch (Exception e) {
         }
         return null;
     }
 
-    private String getMaxPlaceNameInternal(String adType, List<String> whiteList) {
+    private String getMaxPlaceNameInternal(String adType, List<String> whiteList, boolean containSlave) {
         String maxPlaceName = null;
         double maxRevenue = -1f;
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
@@ -725,27 +734,27 @@ public class AdSdk {
                     double tmpRevenue = -1f;
                     if (TextUtils.equals(adType, Constant.TYPE_SPLASH)) {
                         if (adPlaceLoader.isSplashLoaded()) {
-                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
                         }
                     } else if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
                         if (adPlaceLoader.isInterstitialLoaded()) {
-                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
                         }
                     } else if (TextUtils.equals(adType, Constant.TYPE_REWARD)) {
                         if (adPlaceLoader.isRewardedVideoLoaded()) {
-                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
                         }
                     } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
                         if (adPlaceLoader.isAdViewLoaded(adType)) {
-                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
                         }
                     } else if (TextUtils.equals(adType, Constant.TYPE_BANNER)) {
                         if (adPlaceLoader.isAdViewLoaded(adType)) {
-                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
                         }
                     } else {
                         if (adPlaceLoader.isComplexAdsLoaded()) {
-                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType);
+                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
                         }
                     }
                     if (tmpRevenue > maxRevenue) {

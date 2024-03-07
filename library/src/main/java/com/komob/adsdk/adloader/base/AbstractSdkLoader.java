@@ -923,6 +923,14 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         // Log.iv(Log.TAG, "firstPlatform : " + firstPlatform + " , ad type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
     }
 
+    @Override
+    public boolean isSlaveAds() {
+        if (mPidConfig != null) {
+            return mPidConfig.isSlaveAds();
+        }
+        return false;
+    }
+
     protected String generateImpressionId() {
         return UUID.randomUUID().toString();
     }

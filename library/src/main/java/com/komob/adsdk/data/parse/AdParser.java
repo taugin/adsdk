@@ -341,6 +341,9 @@ public class AdParser implements IParser {
             if (jobj.has(REALTIME_BIDDING)) {
                 pidConfig.setRealTimeBidding(jobj.getInt(REALTIME_BIDDING) == 1);
             }
+            if (jobj.has(SLAVE_ADS)) {
+                pidConfig.setSlaveAds(jobj.getInt(SLAVE_ADS) == 1);
+            }
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }

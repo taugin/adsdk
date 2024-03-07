@@ -97,4 +97,6 @@ public interface ISdkLoader {
     String getNetwork();
 
     void notifyBidResult(String adType, String firstPlatform, String firstNetwork, double firstPrice, String secondPlatform, String secondNetwork, double secondPrice);
+
+    boolean isSlaveAds();
 }

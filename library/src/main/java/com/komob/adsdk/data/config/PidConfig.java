@@ -90,6 +90,8 @@ public class PidConfig {
 
     private boolean realTimeBidding = true;
 
+    private boolean slaveAds = false;
+
     public String getPlaceName() {
         return placeName;
     }
@@ -376,6 +378,14 @@ public class PidConfig {
 
     public void setRealTimeBidding(boolean realTimeBidding) {
         this.realTimeBidding = realTimeBidding;
+    }
+
+    public boolean isSlaveAds() {
+        return slaveAds;
+    }
+
+    public void setSlaveAds(boolean slaveAds) {
+        this.slaveAds = slaveAds;
     }
 
     public boolean isAdmob() {
