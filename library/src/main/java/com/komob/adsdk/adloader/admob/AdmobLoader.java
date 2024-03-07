@@ -379,7 +379,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isInterstitialLoaded()) {
             Log.iv(Log.TAG, formatLog("already loaded"));
-            notifyAdLoaded(this);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -412,7 +412,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setInterstitialListener(interstitialAd);
                 setRevenueAverage(getInterstitialNetwork());
                 reportAdLoaded(getInterstitialNetwork());
-                notifyAdLoaded(AdmobLoader.this);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override
@@ -528,7 +528,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isRewardedVideoLoaded()) {
             Log.iv(Log.TAG, formatLog("already loaded"));
-            notifyAdLoaded(this);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -561,7 +561,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setRewardListener(rewardedAd);
                 setRevenueAverage(getRewardNetwork());
                 reportAdLoaded(getRewardNetwork());
-                notifyAdLoaded(AdmobLoader.this);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override
@@ -915,7 +915,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
         if (isSplashLoaded()) {
             Log.iv(Log.TAG, formatLog("already loaded"));
-            notifyAdLoaded(this);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -951,7 +951,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setSplashListener(appOpenAd);
                 setRevenueAverage(getSplashNetwork());
                 reportAdLoaded(getSplashNetwork());
-                notifyAdLoaded(AdmobLoader.this);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override

@@ -9,7 +9,7 @@ import com.komob.adsdk.AdReward;
 public interface OnAdSdkInternalListener {
     void onRequest(String placeName, String source, String adType, String pid);
 
-    void onLoaded(String placeName, String source, String adType, String pid, String network, double revenue, long costTime);
+    void onLoaded(String placeName, String source, String adType, String pid, String network, double revenue, long costTime, boolean cached);
 
     void onLoading(String placeName, String source, String adType, String pid);
 

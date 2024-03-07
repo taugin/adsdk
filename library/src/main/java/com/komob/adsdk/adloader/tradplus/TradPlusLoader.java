@@ -254,7 +254,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
         if (isInterstitialLoaded()) {
             Log.iv(Log.TAG, formatLog("already loaded"));
-            notifyAdLoaded(this);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -282,7 +282,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     String network = getNetwork(tpAdInfo);
                     setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
                     reportAdLoaded(network);
-                    notifyAdLoaded(TradPlusLoader.this);
+                    notifySdkLoaderLoaded(false);
                 } else {
                     reportAdReLoaded();
                 }
@@ -397,7 +397,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
         if (isRewardedVideoLoaded()) {
             Log.iv(Log.TAG, formatLog("already loaded"));
-            notifyAdLoaded(this);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -425,7 +425,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     String network = getNetwork(tpAdInfo);
                     setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
                     reportAdLoaded(network);
-                    notifyAdLoaded(TradPlusLoader.this);
+                    notifySdkLoaderLoaded(false);
                 } else {
                     reportAdReLoaded();
                 }
@@ -684,7 +684,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
         }
         if (isSplashLoaded()) {
             Log.iv(Log.TAG, formatLog("already loaded"));
-            notifyAdLoaded(this);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -713,7 +713,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     String network = getNetwork(tpAdInfo);
                     setAdNetworkAndRevenue(network, getTradPlusAdRevenue(tpAdInfo));
                     reportAdLoaded(network);
-                    notifyAdLoaded(TradPlusLoader.this);
+                    notifySdkLoaderLoaded(false);
                 } else {
                     reportAdReLoaded();
                 }

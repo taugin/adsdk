@@ -99,4 +99,8 @@ public interface ISdkLoader {
     void notifyBidResult(String adType, String firstPlatform, String firstNetwork, double firstPrice, String secondPlatform, String secondNetwork, double secondPrice);
 
     boolean isSlaveAds();
+
+    void setCached(boolean cached);
+
+    boolean isCached();
 }
