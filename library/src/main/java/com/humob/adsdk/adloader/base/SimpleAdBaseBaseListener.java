@@ -51,12 +51,14 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
             long costTime = 0;
             String network = null;
             double revenue = 0;
+            boolean cached = false;
             if (loader != null) {
                 costTime = loader.getCostTime();
                 network = loader.getNetwork();
                 revenue = loader.getRevenue();
+                cached = loader.isCached();
             }
-            placeLoaderListener.onLoaded(placeName, source, adType, pid, network, revenue, costTime);
+            placeLoaderListener.onLoaded(placeName, source, adType, pid, network, revenue, costTime, cached);
         }
     }
 

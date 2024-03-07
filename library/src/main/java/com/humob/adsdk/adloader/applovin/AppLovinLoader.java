@@ -350,7 +350,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (isInterstitialLoaded()) {
             Log.iv(Log.TAG, formatLog("already loaded"));
-            notifyAdLoaded(this);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -420,7 +420,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (isRewardedVideoLoaded()) {
             Log.iv(Log.TAG, formatLog("already loaded"));
-            notifyAdLoaded(this);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -648,7 +648,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String network = getNetwork(ad);
                 setAdNetworkAndRevenue(network, getMaxAdRevenue(ad));
                 reportAdLoaded(network);
-                notifyAdLoaded(AppLovinLoader.this);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override
@@ -782,7 +782,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String network = getNetwork(ad);
                 setAdNetworkAndRevenue(network, getMaxAdRevenue(ad));
                 reportAdLoaded(network);
-                notifyAdLoaded(AppLovinLoader.this);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override
@@ -1057,7 +1057,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         }
         if (isSplashLoaded()) {
             Log.iv(Log.TAG, formatLog("already loaded"));
-            notifyAdLoaded(this);
+            notifySdkLoaderLoaded(true);
             return;
         }
         if (isLoading()) {
@@ -1118,7 +1118,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 String network = getNetwork(ad);
                 setAdNetworkAndRevenue(network, getMaxAdRevenue(ad));
                 reportAdLoaded(network);
-                notifyAdLoaded(AppLovinLoader.this);
+                notifySdkLoaderLoaded(false);
             }
 
             @Override

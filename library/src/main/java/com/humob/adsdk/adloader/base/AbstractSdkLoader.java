@@ -99,6 +99,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
 
     private long mCostTime = 0;
 
+    private boolean mCached = false;
+
     private static List<ISdkLoader> mAdLoaders = new ArrayList<ISdkLoader>();
 
     public AbstractSdkLoader() {
@@ -821,6 +823,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
      * @param cached
      */
     protected void notifySdkLoaderLoaded(boolean cached) {
+        setCached(cached);
         delayNotifyAdLoaded(mNotifyLoadRunnable, cached);
     }
 
@@ -929,6 +932,16 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             return mPidConfig.isSlaveAds();
         }
         return false;
+    }
+
+    @Override
+    public boolean isCached() {
+        return mCached;
+    }
+
+    @Override
+    public void setCached(boolean cached) {
+        mCached = cached;
     }
 
     protected String generateImpressionId() {
@@ -1067,7 +1080,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     /**
      * banner or native loaded
      */
-    protected void notifyAdLoaded(ISdkLoader loader) {
+    private void notifyAdLoaded(ISdkLoader loader) {
         if (getAdListener() != null) {
             getAdListener().onAdLoaded(loader);
         }
