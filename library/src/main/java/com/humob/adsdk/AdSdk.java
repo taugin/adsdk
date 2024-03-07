@@ -698,15 +698,15 @@ public class AdSdk {
     }
 
     public String getMaxPlaceName() {
-        return getMaxPlaceName(null, null);
+        return getMaxPlaceName(null, null, true);
     }
 
     public String getMaxPlaceName(String adType) {
-        return getMaxPlaceName(adType, null);
+        return getMaxPlaceName(adType, null, true);
     }
 
     public String getMaxPlaceName(String adType, boolean containSlave) {
-        return getMaxPlaceNameInternal(adType, null, containSlave);
+        return getMaxPlaceName(adType, null, containSlave);
     }
 
 
