@@ -1705,39 +1705,41 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     }
 
     @Override
-    public double getMaxRevenue(String adType) {
+    public double getMaxRevenue(String adType, boolean containSlave) {
         double maxValue = -1f;
         if (mAdLoaders != null && !mAdLoaders.isEmpty())
             for (ISdkLoader loader : mAdLoaders) {
                 if (loader != null) {
-                    double tmpValue = -1f;
-                    if (TextUtils.equals(adType, Constant.TYPE_BANNER)) {
-                        if (loader.isBannerLoaded()) {
-                            tmpValue = loader.getRevenue();
+                    if (containSlave || !loader.isSlaveAds()) {
+                        double tmpValue = -1f;
+                        if (TextUtils.equals(adType, Constant.TYPE_BANNER)) {
+                            if (loader.isBannerLoaded()) {
+                                tmpValue = loader.getRevenue();
+                            }
+                        } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
+                            if (loader.isNativeLoaded()) {
+                                tmpValue = loader.getRevenue();
+                            }
+                        } else if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
+                            if (loader.isInterstitialLoaded()) {
+                                tmpValue = loader.getRevenue();
+                            }
+                        } else if (TextUtils.equals(adType, Constant.TYPE_REWARD)) {
+                            if (loader.isRewardedVideoLoaded()) {
+                                tmpValue = loader.getRevenue();
+                            }
+                        } else if (TextUtils.equals(adType, Constant.TYPE_SPLASH)) {
+                            if (loader.isSplashLoaded()) {
+                                tmpValue = loader.getRevenue();
+                            }
+                        } else {
+                            if (isAnyLoaderLoaded(loader)) {
+                                tmpValue = loader.getRevenue();
+                            }
                         }
-                    } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
-                        if (loader.isNativeLoaded()) {
-                            tmpValue = loader.getRevenue();
+                        if (tmpValue > maxValue) {
+                            maxValue = tmpValue;
                         }
-                    } else if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
-                        if (loader.isInterstitialLoaded()) {
-                            tmpValue = loader.getRevenue();
-                        }
-                    } else if (TextUtils.equals(adType, Constant.TYPE_REWARD)) {
-                        if (loader.isRewardedVideoLoaded()) {
-                            tmpValue = loader.getRevenue();
-                        }
-                    } else if (TextUtils.equals(adType, Constant.TYPE_SPLASH)) {
-                        if (loader.isSplashLoaded()) {
-                            tmpValue = loader.getRevenue();
-                        }
-                    } else {
-                        if (isAnyLoaderLoaded(loader)) {
-                            tmpValue = loader.getRevenue();
-                        }
-                    }
-                    if (tmpValue > maxValue) {
-                        maxValue = tmpValue;
                     }
                 }
             }
@@ -1924,12 +1926,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         @Override
         public void onLoaded(String placeName, String source, String adType, String pid, String network, double revenue, long costTime) {
             resetRetryTimes(placeName, source, adType);
+            Log.iv(Log.TAG, "notify callback onLoaded place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid + " , network : " + network + " , revenue : " + revenue + " , cost time : " + costTime);
             if (hasNotifyLoaded()) {
                 Log.iv(Log.TAG, "place name : " + placeName + " , sdk : " + source + " , type : " + adType + " is loaded, but has already notified ******************");
                 return;
             }
             notifyAdLoaded();
-            Log.iv(Log.TAG, "notify callback onLoaded place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid + " , network : " + network + " , revenue : " + revenue + " , cost time : " + costTime);
             if (mOnAdSdkLoadedListener != null) {
                 mOnAdSdkLoadedListener.onLoaded(placeName, source, adType, pid);
             }
@@ -2248,7 +2250,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     return 0;
                 }
             });
-            Log.iv(Log.TAG, "loaded loader list : " + list);
+            String logText = "network sort result : \n";
+            for (ISdkLoader iSdkLoader : list) {
+                if (iSdkLoader != null) {
+                    logText += iSdkLoader.getAdPlaceName() + "|" + iSdkLoader.getAdType() + "|" + iSdkLoader.getSdkName() + "|" + iSdkLoader.getNetwork() + "|" + iSdkLoader.getRevenue() + "\n";
+                }
+            }
+            Log.iv(Log.TAG, logText);
         } catch (Exception e) {
         }
     }

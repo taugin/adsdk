@@ -135,7 +135,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public double getMaxRevenue(String adType) {
+    public double getMaxRevenue(String adType, boolean containSlave) {
         return 0;
     }
 

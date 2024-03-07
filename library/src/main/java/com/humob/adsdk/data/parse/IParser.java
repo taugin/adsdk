@@ -118,6 +118,8 @@ public interface IParser {
     String AUTO_LOAD = "al";
     // 是否是单次竞价，每次竞价失败都会重新加载
     String REALTIME_BIDDING = "rtb";
+    // 是否是备用广告
+    String SLAVE_ADS = "slave";
 
     // banner
     String BANNER = "banner";
