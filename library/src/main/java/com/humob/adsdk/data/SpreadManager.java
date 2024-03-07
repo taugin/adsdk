@@ -63,6 +63,7 @@ public class SpreadManager {
     }
 
     private Context mContext;
+    private Random mRandom = new Random(System.currentTimeMillis());
 
     private List<SpreadConfig> getSpreadList() {
         List<SpreadConfig> list = DataManager.get(mContext).getSpreadList();
@@ -104,7 +105,7 @@ public class SpreadManager {
         if (activity == null || activity.isFinishing()) {
             return;
         }
-        boolean useSingleColumn = new Random().nextBoolean();
+        boolean useSingleColumn = mRandom != null ? mRandom.nextBoolean() : new Random().nextBoolean();
         View view = LayoutInflater.from(mContext).inflate(R.layout.kom_layout_grid, null);
         TextView titleView = view.findViewById(R.id.kom_title_view);
         titleView.setText(getSponsoredText(mContext));
