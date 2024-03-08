@@ -135,10 +135,10 @@ dependencies {
 
     if (isContains(include_platform_list, INMOBI)) {
         // Inmobi
-        implementation 'com.inmobi.monetization:inmobi-ads-kotlin:10.6.6'
+        implementation 'com.inmobi.monetization:inmobi-ads-kotlin:10.6.7'
         if (isContains(include_platform_list, APPLOVIN)) {
             // applovin inmobi mediation
-            implementation 'com.applovin.mediation:inmobi-adapter:10.6.6.0@aar'
+            implementation 'com.applovin.mediation:inmobi-adapter:10.6.7.0@aar'
         }
         if (isContains(include_platform_list, TRADPLUS)) {
             //tradplus inmobi mediation
@@ -146,7 +146,7 @@ dependencies {
         }
         if (isContains(include_platform_list, ADMOB)) {
             // google inmobi mediation
-            implementation 'com.google.ads.mediation:inmobi:10.6.6.0'
+            implementation 'com.google.ads.mediation:inmobi:10.6.7.0'
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -189,10 +189,10 @@ dependencies {
 
     if (isContains(include_platform_list, IRONSOURCE)) {
         // ironSource
-        implementation 'com.ironsource.sdk:mediationsdk:7.7.0'
+        implementation 'com.ironsource.sdk:mediationsdk:7.8.1'
         if (isContains(include_platform_list, APPLOVIN)) {
             // Vungle applovin mediation
-            implementation 'com.applovin.mediation:ironsource-adapter:7.7.0.0.0@aar'
+            implementation 'com.applovin.mediation:ironsource-adapter:7.8.0.0.0@aar'
         }
         if (isContains(include_platform_list, TRADPLUS)) {
             // tradplus mediation
@@ -200,7 +200,7 @@ dependencies {
         }
         if (isContains(include_platform_list, ADMOB)) {
             // google ironsource mediation
-            implementation 'com.google.ads.mediation:ironsource:7.7.0.1'
+            implementation 'com.google.ads.mediation:ironsource:7.8.1.1'
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////
