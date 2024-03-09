@@ -192,7 +192,7 @@ dependencies {
         implementation 'com.ironsource.sdk:mediationsdk:7.8.1'
         if (isContains(include_platform_list, APPLOVIN)) {
             // Vungle applovin mediation
-            implementation 'com.applovin.mediation:ironsource-adapter:7.8.0.0.0@aar'
+            implementation 'com.applovin.mediation:ironsource-adapter:7.8.1.0.0@aar'
         }
         if (isContains(include_platform_list, TRADPLUS)) {
             // tradplus mediation
