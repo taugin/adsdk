@@ -83,13 +83,12 @@ public class SpLoader extends AbstractSdkLoader {
         }
 
         final SpreadConfig spreadConfig = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
-        if (!checkArgs(spreadConfig)) {
-            notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "spread contains error");
+        if (spreadConfig == null) {
+            notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "no available spread");
             return;
         }
-
-        if (Utils.isInstalled(mContext, spreadConfig.getBundle())) {
-            notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "app has installed");
+        if (!checkArgs(spreadConfig)) {
+            notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "spread contains error");
             return;
         }
 
@@ -176,15 +175,16 @@ public class SpLoader extends AbstractSdkLoader {
         }
 
         final SpreadConfig spreadConfig = checkSpConfig(DataManager.get(mContext).getRemoteSpread());
+        if (spreadConfig == null) {
+            notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "no available spread");
+            return;
+        }
+
         if (!checkArgs(spreadConfig)) {
             notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "spread contains error");
             return;
         }
 
-        if (Utils.isInstalled(mContext, spreadConfig.getBundle())) {
-            notifyAdLoadFailed(Constant.AD_ERROR_LOAD, "app has installed");
-            return;
-        }
         setLoading(true, STATE_REQUEST);
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
@@ -220,7 +220,7 @@ public class SpLoader extends AbstractSdkLoader {
         List<SpreadConfig> availableSp = new ArrayList<SpreadConfig>();
         for (SpreadConfig config : spList) {
             // 参数有效，并且未安装
-            if (checkArgs(config) && !config.isDisable()) {
+            if (checkArgs(config) && !config.isDisable() && !Utils.isInstalled(mContext, config.getBundle())) {
                 availableSp.add(config);
             }
         }
