@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/kom_layout_single"
+        android:id="@+id/kom_group_single"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -98,7 +98,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/kom_layout_multiple"
+        android:id="@+id/kom_group_multiple"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

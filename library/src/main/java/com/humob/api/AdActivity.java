@@ -237,8 +237,8 @@ public class AdActivity extends Activity {
     public static int kom_layout_item = R.layout.kom_layout_item;
     public static int kom_title_view = R.id.kom_title_view;
     public static int kom_spread_grid = R.id.kom_spread_grid;
-    public static int kom_layout_single = R.id.kom_layout_single;
-    public static int kom_layout_multiple = R.id.kom_layout_multiple;
+    public static int kom_group_single = R.id.kom_group_single;
+    public static int kom_group_multiple = R.id.kom_group_multiple;
     public static int kom_app_icon_single = R.id.kom_app_icon_single;
     public static int kom_app_name_single = R.id.kom_app_name_single;
     public static int kom_app_detail_single = R.id.kom_app_detail_single;

@@ -119,15 +119,15 @@ public class SpreadManager {
                     convertView = LayoutInflater.from(mContext).inflate(AdActivity.kom_layout_item, null);
                     viewHolder = new ViewHolder();
                     if (useSingleColumn) {
-                        convertView.findViewById(AdActivity.kom_layout_single).setVisibility(View.VISIBLE);
-                        convertView.findViewById(AdActivity.kom_layout_multiple).setVisibility(View.GONE);
+                        convertView.findViewById(AdActivity.kom_group_single).setVisibility(View.VISIBLE);
+                        convertView.findViewById(AdActivity.kom_group_multiple).setVisibility(View.GONE);
                         viewHolder.iconViewSingle = convertView.findViewById(AdActivity.kom_app_icon_single);
                         viewHolder.nameViewSingle = convertView.findViewById(AdActivity.kom_app_name_single);
                         viewHolder.detailViewSingle = convertView.findViewById(AdActivity.kom_app_detail_single);
                         viewHolder.actionViewSingle = convertView.findViewById(AdActivity.kom_action_view_single);
                     } else {
-                        convertView.findViewById(AdActivity.kom_layout_single).setVisibility(View.GONE);
-                        convertView.findViewById(AdActivity.kom_layout_multiple).setVisibility(View.VISIBLE);
+                        convertView.findViewById(AdActivity.kom_group_single).setVisibility(View.GONE);
+                        convertView.findViewById(AdActivity.kom_group_multiple).setVisibility(View.VISIBLE);
                         viewHolder.iconViewMultiple = convertView.findViewById(AdActivity.kom_app_icon_multiple);
                         viewHolder.nameViewMultiple = convertView.findViewById(AdActivity.kom_app_name_multiple);
                         viewHolder.actionViewMultiple = convertView.findViewById(AdActivity.kom_action_view_multiple);
