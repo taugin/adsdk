@@ -132,6 +132,7 @@ public interface IParser {
     String CTA_LOCALE = "cta_locale";
     String LOADING_TIME = "loading_time";
     String PLAY = "play";
+    String ORGANIC = "organic";
 
     PlaceConfig parseAdConfig(String data);
 
