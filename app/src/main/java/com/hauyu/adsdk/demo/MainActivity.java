@@ -705,7 +705,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             resLayout = R.layout.ad_common_native_card_large;
         } else {
             layout = layout.toLowerCase(Locale.ENGLISH);
-            resLayout = getResources().getIdentifier("rab_card_" + layout, "layout", getPackageName());
+            resLayout = getResources().getIdentifier("kom_card_" + layout, "layout", getPackageName());
         }
         mNativeBannerLayout.removeAllViews();
         if (resLayout != 0) {

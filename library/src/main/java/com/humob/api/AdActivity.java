@@ -219,17 +219,32 @@ public class AdActivity extends Activity {
         if (params == null) {
             return;
         }
-        params.setAdTitle(R.id.rab_native_title);
-        params.setAdSocial(R.id.rab_native_social);
-        params.setAdDetail(R.id.rab_native_detail);
-        params.setAdIcon(R.id.rab_native_icon);
-        params.setAdAction(R.id.rab_native_action_btn);
-        params.setAdCover(R.id.rab_native_image_cover);
-        params.setAdChoices(R.id.rab_native_ad_choices_container);
-        params.setAdMediaView(R.id.rab_native_media_cover);
+        params.setAdTitle(R.id.kom_native_title);
+        params.setAdSocial(R.id.kom_native_social);
+        params.setAdDetail(R.id.kom_native_detail);
+        params.setAdIcon(R.id.kom_native_icon);
+        params.setAdAction(R.id.kom_native_action_btn);
+        params.setAdCover(R.id.kom_native_image_cover);
+        params.setAdChoices(R.id.kom_native_ad_choices_container);
+        params.setAdMediaView(R.id.kom_native_media_cover);
     }
 
     public static int getDefaultIconColor() {
         return R.color.komDefaultIconColor;
     }
+
+    public static int kom_layout_grid = R.layout.kom_layout_grid;
+    public static int kom_layout_item = R.layout.kom_layout_item;
+    public static int kom_title_view = R.id.kom_title_view;
+    public static int kom_spread_grid = R.id.kom_spread_grid;
+    public static int kom_layout_single = R.id.kom_layout_single;
+    public static int kom_layout_multiple = R.id.kom_layout_multiple;
+    public static int kom_app_icon_single = R.id.kom_app_icon_single;
+    public static int kom_app_name_single = R.id.kom_app_name_single;
+    public static int kom_app_detail_single = R.id.kom_app_detail_single;
+    public static int kom_action_view_single = R.id.kom_action_view_single;
+    public static int kom_app_icon_multiple = R.id.kom_app_icon_multiple;
+    public static int kom_app_name_multiple = R.id.kom_app_name_multiple;
+    public static int kom_action_view_multiple = R.id.kom_action_view_multiple;
+    public static int kom_arrow_back = R.id.kom_arrow_back;
 }
