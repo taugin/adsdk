@@ -20,9 +20,9 @@ import android.widget.RelativeLayout;
 
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.framework.Params;
+import com.komob.adsdk.log.Log;
 import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.utils.VUIHelper;
-import com.komob.adsdk.log.Log;
 
 import java.util.Map;
 
@@ -232,4 +232,19 @@ public class AdViewUI extends Activity {
     public static int getDefaultIconColor() {
         return R.color.komDefaultIconColor;
     }
+
+    public static int kom_layout_grid = R.layout.kom_layout_grid;
+    public static int kom_layout_item = R.layout.kom_layout_item;
+    public static int kom_title_view = R.id.kom_title_view;
+    public static int kom_spread_grid = R.id.kom_spread_grid;
+    public static int kom_layout_single = R.id.kom_layout_single;
+    public static int kom_layout_multiple = R.id.kom_layout_multiple;
+    public static int kom_app_icon_single = R.id.kom_app_icon_single;
+    public static int kom_app_name_single = R.id.kom_app_name_single;
+    public static int kom_app_detail_single = R.id.kom_app_detail_single;
+    public static int kom_action_view_single = R.id.kom_action_view_single;
+    public static int kom_app_icon_multiple = R.id.kom_app_icon_multiple;
+    public static int kom_app_name_multiple = R.id.kom_app_name_multiple;
+    public static int kom_action_view_multiple = R.id.kom_action_view_multiple;
+    public static int kom_arrow_back = R.id.kom_arrow_back;
 }

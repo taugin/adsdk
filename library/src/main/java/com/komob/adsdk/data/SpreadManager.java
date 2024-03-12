@@ -26,7 +26,7 @@ import com.komob.adsdk.http.Http;
 import com.komob.adsdk.http.OnImageCallback;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.utils.Utils;
-import com.komob.api.R;
+import com.komob.api.AdViewUI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,31 +106,31 @@ public class SpreadManager {
             return;
         }
         boolean useSingleColumn = mRandom != null ? mRandom.nextBoolean() : new Random().nextBoolean();
-        View view = LayoutInflater.from(mContext).inflate(R.layout.kom_layout_grid, null);
-        TextView titleView = view.findViewById(R.id.kom_title_view);
+        View view = LayoutInflater.from(mContext).inflate(AdViewUI.kom_layout_grid, null);
+        TextView titleView = view.findViewById(AdViewUI.kom_title_view);
         titleView.setText(getSponsoredText(mContext));
-        GridView gridView = view.findViewById(R.id.kom_spread_grid);
+        GridView gridView = view.findViewById(AdViewUI.kom_spread_grid);
         gridView.setNumColumns(useSingleColumn ? 1 : 3);
         ArrayAdapter<SpreadConfig> adapter = new ArrayAdapter<SpreadConfig>(mContext, 0, list) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 ViewHolder viewHolder = null;
                 if (convertView == null) {
-                    convertView = LayoutInflater.from(mContext).inflate(R.layout.kom_layout_item, null);
+                    convertView = LayoutInflater.from(mContext).inflate(AdViewUI.kom_layout_item, null);
                     viewHolder = new ViewHolder();
                     if (useSingleColumn) {
-                        convertView.findViewById(R.id.kom_layout_single).setVisibility(View.VISIBLE);
-                        convertView.findViewById(R.id.kom_layout_multiple).setVisibility(View.GONE);
-                        viewHolder.iconViewSingle = convertView.findViewById(R.id.kom_app_icon_single);
-                        viewHolder.nameViewSingle = convertView.findViewById(R.id.kom_app_name_single);
-                        viewHolder.detailViewSingle = convertView.findViewById(R.id.kom_app_detail_single);
-                        viewHolder.actionViewSingle = convertView.findViewById(R.id.kom_action_view_single);
+                        convertView.findViewById(AdViewUI.kom_layout_single).setVisibility(View.VISIBLE);
+                        convertView.findViewById(AdViewUI.kom_layout_multiple).setVisibility(View.GONE);
+                        viewHolder.iconViewSingle = convertView.findViewById(AdViewUI.kom_app_icon_single);
+                        viewHolder.nameViewSingle = convertView.findViewById(AdViewUI.kom_app_name_single);
+                        viewHolder.detailViewSingle = convertView.findViewById(AdViewUI.kom_app_detail_single);
+                        viewHolder.actionViewSingle = convertView.findViewById(AdViewUI.kom_action_view_single);
                     } else {
-                        convertView.findViewById(R.id.kom_layout_single).setVisibility(View.GONE);
-                        convertView.findViewById(R.id.kom_layout_multiple).setVisibility(View.VISIBLE);
-                        viewHolder.iconViewMultiple = convertView.findViewById(R.id.kom_app_icon_multiple);
-                        viewHolder.nameViewMultiple = convertView.findViewById(R.id.kom_app_name_multiple);
-                        viewHolder.actionViewMultiple = convertView.findViewById(R.id.kom_action_view_multiple);
+                        convertView.findViewById(AdViewUI.kom_layout_single).setVisibility(View.GONE);
+                        convertView.findViewById(AdViewUI.kom_layout_multiple).setVisibility(View.VISIBLE);
+                        viewHolder.iconViewMultiple = convertView.findViewById(AdViewUI.kom_app_icon_multiple);
+                        viewHolder.nameViewMultiple = convertView.findViewById(AdViewUI.kom_app_name_multiple);
+                        viewHolder.actionViewMultiple = convertView.findViewById(AdViewUI.kom_action_view_multiple);
                     }
                     convertView.setTag(viewHolder);
                 } else {
@@ -172,7 +172,7 @@ public class SpreadManager {
         Dialog dialog = new Dialog(activity, android.R.style.Theme_Material_Light_NoActionBar);
         dialog.setContentView(view);
         dialog.show();
-        View backView = view.findViewById(R.id.kom_arrow_back);
+        View backView = view.findViewById(AdViewUI.kom_arrow_back);
         backView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
