@@ -315,24 +315,27 @@ public class SpLoader extends AbstractSdkLoader {
             if (mSpreadConfig != null) {
                 String url = mSpreadConfig.getLinkUrl();
                 String packageName = mSpreadConfig.getBundle();
+                boolean organic = mSpreadConfig.isOrganic();
+                boolean isPlay = mSpreadConfig.isPlay();
                 String referrer = null;
                 try {
                     referrer = SpreadManager.get(mContext).generateReferrer(v.getContext(), "placement");
                 } catch (Exception e) {
                     Log.iv(Log.TAG, "error : " + e);
                 }
+                Intent intent = new Intent(Intent.ACTION_VIEW);
                 if (TextUtils.isEmpty(url)) {
                     url = "market://details?id=" + packageName;
-                    if (!TextUtils.isEmpty(referrer)) {
+                    if (!organic && !TextUtils.isEmpty(referrer)) {
                         url = url + "&" + referrer;
+                    }
+                    if (isPlay && Utils.isInstalled(mContext, "com.android.vending")) {
+                        intent.setPackage("com.android.vending");
                     }
                 }
                 Log.iv(Log.TAG, "spread url : " + url);
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intent.setData(Uri.parse(url));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                if (mSpreadConfig.isPlay() && Utils.isInstalled(v.getContext(), "com.android.vending")) {
-                    intent.setPackage("com.android.vending");
-                }
                 try {
                     v.getContext().startActivity(intent);
                     SpreadManager.get(v.getContext()).insertOrUpdateClick(packageName, System.currentTimeMillis());

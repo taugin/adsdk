@@ -190,24 +190,27 @@ public class SpreadManager {
         if (spreadConfig != null) {
             String url = spreadConfig.getLinkUrl();
             String packageName = spreadConfig.getBundle();
+            boolean organic = spreadConfig.isOrganic();
+            boolean isPlay = spreadConfig.isPlay();
             String referrer = null;
             try {
                 referrer = generateReferrer(context, "sponsored");
             } catch (Exception e) {
                 Log.iv(Log.TAG, "error : " + e);
             }
+            Intent intent = new Intent(Intent.ACTION_VIEW);
             if (TextUtils.isEmpty(url)) {
                 url = "market://details?id=" + packageName;
-                if (!TextUtils.isEmpty(referrer)) {
+                if (!organic && !TextUtils.isEmpty(referrer)) {
                     url = url + "&" + referrer;
+                }
+                if (isPlay && Utils.isInstalled(context, "com.android.vending")) {
+                    intent.setPackage("com.android.vending");
                 }
             }
             Log.iv(Log.TAG, "spread url : " + url);
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            intent.setData(Uri.parse(url));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if (spreadConfig.isPlay() && Utils.isInstalled(context, "com.android.vending")) {
-                intent.setPackage("com.android.vending");
-            }
             try {
                 context.startActivity(intent);
                 SpreadManager.get(mContext).insertOrUpdateClick(packageName, System.currentTimeMillis());
