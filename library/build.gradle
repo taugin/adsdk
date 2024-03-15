@@ -46,6 +46,7 @@ android {
 }
 
 // 广告依赖文件
+// ext['network'] = ['admob', 'applovin', 'tradplus', 'bigo', 'mintegral']
 apply from: '../groovy/ads.gradle'
 
 apply plugin: 'maven-publish'

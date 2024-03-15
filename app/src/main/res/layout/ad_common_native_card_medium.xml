@@ -14,12 +14,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@color/white">
+            android:background="@android:color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@android:color/white"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -138,7 +138,7 @@
             android:elevation="4dp"
             android:gravity="center"
             android:text="Learn More"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/sp_20"
             android:textStyle="bold" />
     </LinearLayout>

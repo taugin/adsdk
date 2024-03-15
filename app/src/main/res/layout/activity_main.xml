@@ -337,7 +337,7 @@
                     android:id="@+id/native_banner_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    android:background="@android:color/white"
                     android:gravity="center"
                     android:padding="4dp" />
             </LinearLayout>

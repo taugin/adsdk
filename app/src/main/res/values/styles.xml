@@ -9,11 +9,11 @@
 
     <style name="AppTheme" parent="android:Theme.DeviceDefault.NoActionBar">
         <!--        <item name="android:windowFullscreen">true</item>-->
-        <!--        <item name="android:statusBarColor">@color/white</item>-->
+        <!--        <item name="android:statusBarColor">@android:color/white</item>-->
     </style>
 
     <style name="MainActivity_Theme" parent="android:Theme.DeviceDefault.Light">
         <!--        <item name="android:windowFullscreen">true</item>-->
-        <!--        <item name="android:statusBarColor">@color/white</item>-->
+        <!--        <item name="android:statusBarColor">@android:color/white</item>-->
     </style>
 </resources>

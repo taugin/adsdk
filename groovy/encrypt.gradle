@@ -71,6 +71,7 @@ class Global {
     static def sJarSignerFile = null
     static def sApkSignerFile = null
     static def sZipAlignFile = null
+    static def sBundleToolFile = null
 }
 
 def getAxmlGroupId() {
@@ -93,10 +94,32 @@ def getAxmlFileName() {
     return getAxmlArtifactId() + "-" + getAxmlVersion() + ".jar"
 }
 
+
+def getBundleToolGroupId() {
+    return "com.android.tools"
+}
+
+def getBundleToolArtifactId() {
+    return "bundletool"
+}
+
+def getBundleToolVersion() {
+    return "1.6.1"
+}
+
+def getBundleToolImplementation() {
+    return getBundleToolGroupId() + ":" + getBundleToolArtifactId() + ":" + getBundleToolVersion()
+}
+
+def getBundleToolFileName() {
+    return getBundleToolArtifactId() + "-" + getBundleToolVersion() + ".jar"
+}
+
 project.afterEvaluate {
     project.configurations.compileOnly.setCanBeResolved(true)
     project.configurations.api.setCanBeResolved(true)
     project.dependencies.add("compileOnly", getAxmlImplementation())
+    project.dependencies.add("compileOnly", getBundleToolImplementation())
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
             def productFlavor = toUpperCaseFirstOne(flavor.name)
@@ -361,10 +384,8 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] signConfig is not completion"
         return
     }
-    def bundleToolPath = rootProject.buildscript.configurations.classpath.find {
-        it.name.startsWith("bundletool")
-    }
-    if (bundleToolPath == null || !bundleToolPath.exists()) {
+    def bundleToolPath = Global.sBundleToolFile
+    if (bundleToolPath == null || !new File(bundleToolPath).exists()) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundle tool is Null"
         return
     }
@@ -372,7 +393,9 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
     def storePassword = signConfig.storePassword
     def keyAlias = signConfig.keyAlias
     def keyPassword = signConfig.keyPassword
-    def finalApksFile = new File(finalBundleFile.getParent(), finalBundleFile.getName() + ".apks")
+    def finalBundleFileName = finalBundleFile.getName()
+    finalBundleFileName = finalBundleFileName.substring(0, finalBundleFileName.lastIndexOf(".aab"))
+    def finalApksFile = new File(finalBundleFile.getParent(), finalBundleFileName + ".apks")
     def cmdList = ["java", "-jar", bundleToolPath,
                    "build-apks",
                    "--bundle=" + finalBundleFile,
@@ -480,6 +503,7 @@ def getSignConfig(flavor) {
  */
 def encryptAssetsFilesFromApk(flavor, isAab) {
     Global.sAxmlEditorFilePath = getAXMLEditJarFile()
+    Global.sBundleToolFile = getBundleToolJarFile()
     Global.s7ZipCommandPath = get7ZipCmd()
     Global.sAaptFile = getAaptFile()
     Global.sJarSignerFile = getJarSigner()
@@ -847,6 +871,32 @@ def getAXMLEditJarFile() {
         return new File(aXmlEditJarFile).getAbsolutePath()
     } else {
         System.err.println ":${project.name}:getAXMLEditorFile Can not find dependencies [compileOnly '" + getAxmlImplementation() + "] in app.dependencies"
+    }
+    return null
+}
+
+
+/**
+ * 获取axmleditor文件路径
+ * @param flavorName
+ * @return
+ */
+def getBundleToolJarFile() {
+    def rootDir = getRootDir()
+    def bundleToolJarFile = new File(rootDir, "bundletool.jar")
+    if (bundleToolJarFile.exists()) {
+        return bundleToolJarFile.getAbsolutePath()
+    } else {
+        System.err.println ":${project.name}:getBundleToolJarFile Can not find bundletool.jar in [" + rootDir + "]"
+    }
+    bundleToolJarFile = project.configurations.compileOnly*.toURI().find {
+        URI uri ->
+            new File(uri).name == getBundleToolFileName()
+    }
+    if (bundleToolJarFile != null && new File(bundleToolJarFile).exists()) {
+        return new File(bundleToolJarFile).getAbsolutePath()
+    } else {
+        System.err.println ":${project.name}:getBundleToolJarFile Can not find dependencies [compileOnly '" + getBundleToolImplementation() + "] in app.dependencies"
     }
     return null
 }

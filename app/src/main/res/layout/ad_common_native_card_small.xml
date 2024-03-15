@@ -104,7 +104,7 @@
                         android:paddingStart="@dimen/dp_10"
                         android:paddingEnd="@dimen/dp_10"
                         android:text="Learn More"
-                        android:textColor="@color/white"
+                        android:textColor="@android:color/white"
                         android:textSize="@dimen/sp_14"
                         android:textStyle="bold" />
 
