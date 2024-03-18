@@ -186,6 +186,10 @@ gradle.buildFinished {
             && isContainBundleRelease(it)) {
         try {
             def outputPath = new File(project.buildDir, "outputs/bundle")
+            def outputReleasePath = new File(outputPath, "release")
+            if (outputReleasePath.exists()) {
+                outputPath = outputReleasePath
+            }
             def cmd = "explorer.exe " + outputPath
             cmd.execute()
             println "> Task :${project.name}:openBundleDir [${outputPath}]"
