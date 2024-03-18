@@ -333,13 +333,13 @@ def transformAab2ApkFlavor() {
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
             def productFlavor = toUpperCaseFirstOne(flavor.name)
-            def outputFile = Global.flavorMap.get(flavor.name)
-            def aabOutputAabFileName = outputFile.getName()
+            def baseName = getArchivesBaseName()
+            def aabOutputAabFileName = baseName + "-" + flavor.name + "-release.aab"
             transformAab2ApkLocked(productFlavor, aabOutputAabFileName)
         }
     } else {
-        def outputFile = Global.flavorMap.get("")
-        def aabOutputAabFileName = outputFile.getName()
+        def baseName = getArchivesBaseName()
+        def aabOutputAabFileName = baseName + "-release.aab"
         transformAab2ApkLocked(null, aabOutputAabFileName)
     }
 }
