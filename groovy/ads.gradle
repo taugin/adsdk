@@ -54,7 +54,7 @@ dependencies {
 
     if (isContains(include_platform_list, APPLOVIN)) {
         // applovin
-        implementation 'com.applovin:applovin-sdk:12.3.0'
+        implementation 'com.applovin:applovin-sdk:12.3.1'
         if (isContains(include_platform_list, TRADPLUS)) {
             // tradplus applovin mediation
             implementation 'com.tradplusad:tradplus-applovin:9.11.2.0.1'
@@ -164,7 +164,7 @@ dependencies {
         }
         if (isContains(include_platform_list, ADMOB)) {
             // google unity mediation
-            implementation 'com.google.ads.mediation:unity:4.9.2.0'
+            implementation 'com.google.ads.mediation:unity:4.9.3.0'
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////
