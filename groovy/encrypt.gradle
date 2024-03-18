@@ -94,27 +94,6 @@ def getAxmlFileName() {
     return getAxmlArtifactId() + "-" + getAxmlVersion() + ".jar"
 }
 
-
-def getBundleToolGroupId() {
-    return "com.android.tools"
-}
-
-def getBundleToolArtifactId() {
-    return "bundletool"
-}
-
-def getBundleToolVersion() {
-    return "1.6.1"
-}
-
-def getBundleToolImplementation() {
-    return getBundleToolGroupId() + ":" + getBundleToolArtifactId() + ":" + getBundleToolVersion()
-}
-
-def getBundleToolFileName() {
-    return getBundleToolArtifactId() + "-" + getBundleToolVersion() + ".jar"
-}
-
 project.afterEvaluate {
     project.configurations.compileOnly.setCanBeResolved(true)
     project.configurations.api.setCanBeResolved(true)
@@ -309,12 +288,6 @@ def printEncryptInfo() {
 }
 
 afterEvaluate {
-    if (!ext.has("aab2apk") || ext["aab2apk"] != true) {
-        return
-    }
-    project.configurations.compileOnly.setCanBeResolved(true)
-    project.configurations.api.setCanBeResolved(true)
-    project.dependencies.add("compileOnly", getBundleToolImplementation())
     try {
         def taskName = getGradle().getStartParameter().getTaskRequests()[0]["args"][0].toString()
         if (taskName != null && taskName.toLowerCase(Locale.ENGLISH).contains("bundle")) {
@@ -334,6 +307,9 @@ afterEvaluate {
 }
 
 def transformAab2ApkFlavor() {
+    if (!ext.has("aab2apk") || ext["aab2apk"] != true) {
+        return
+    }
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
             def productFlavor = toUpperCaseFirstOne(flavor.name)
@@ -390,7 +366,12 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] signConfig is not completion"
         return
     }
-    def bundleToolPath = Global.sBundleToolFile
+    def bundleToolPath = new File(gradle.gradleHomeDir, "bundletool-1.6.1.jar").getAbsolutePath()
+    if (!new File(bundleToolPath).exists()) {
+        println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Downloading bundletool-all-0.10.3.jar "
+        def bundleToolUrl = "https://taugin.gitee.io/adsdk/libs/bundletool-all-0.10.3.jar"
+        new File(bundleToolPath) << new URL(bundleToolUrl).openStream()
+    }
     if (bundleToolPath == null || !new File(bundleToolPath).exists()) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundle tool is Null"
         return
@@ -882,32 +863,6 @@ def getAXMLEditJarFile() {
         return new File(aXmlEditJarFile).getAbsolutePath()
     } else {
         System.err.println ":${project.name}:getAXMLEditorFile Can not find dependencies [compileOnly '" + getAxmlImplementation() + "] in app.dependencies"
-    }
-    return null
-}
-
-
-/**
- * 获取axmleditor文件路径
- * @param flavorName
- * @return
- */
-def getBundleToolJarFile() {
-    def rootDir = getRootDir()
-    def bundleToolJarFile = new File(rootDir, "bundletool.jar")
-    if (bundleToolJarFile.exists()) {
-        return bundleToolJarFile.getAbsolutePath()
-    } else {
-        System.err.println ":${project.name}:getBundleToolJarFile Can not find bundletool.jar in [" + rootDir + "]"
-    }
-    bundleToolJarFile = project.configurations.compileOnly*.toURI().find {
-        URI uri ->
-            new File(uri).name == getBundleToolFileName()
-    }
-    if (bundleToolJarFile != null && new File(bundleToolJarFile).exists()) {
-        return new File(bundleToolJarFile).getAbsolutePath()
-    } else {
-        System.err.println ":${project.name}:getBundleToolJarFile Can not find dependencies [compileOnly '" + getBundleToolImplementation() + "] in app.dependencies"
     }
     return null
 }
