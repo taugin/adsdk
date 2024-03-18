@@ -307,6 +307,7 @@ afterEvaluate {
 
 def transformAab2ApkFlavor() {
     if (!ext.has("aab2apk") || ext["aab2apk"] != true) {
+        println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] aab to apk is not set"
         return
     }
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
