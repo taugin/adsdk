@@ -366,10 +366,12 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] signConfig is not completion"
         return
     }
-    def bundleToolPath = new File(gradle.gradleHomeDir, "bundletool-1.6.1.jar").getAbsolutePath()
+    def bundleFileName = "bundletool-all-1.6.1.jar"
+    def bundleToolPath = new File(gradle.gradleUserHomeDir, bundleFileName).getAbsolutePath()
+    println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundleToolPath : " + bundleToolPath
     if (!new File(bundleToolPath).exists()) {
-        println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Downloading bundletool-all-0.10.3.jar "
-        def bundleToolUrl = "https://taugin.gitee.io/adsdk/libs/bundletool-all-0.10.3.jar"
+        println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Downloading " + bundleFileName
+        def bundleToolUrl = "https://taugin.gitee.io/adsdk/libs/" + bundleFileName
         new File(bundleToolPath) << new URL(bundleToolUrl).openStream()
     }
     if (bundleToolPath == null || !new File(bundleToolPath).exists()) {
