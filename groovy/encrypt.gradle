@@ -71,7 +71,6 @@ class Global {
     static def sJarSignerFile = null
     static def sApkSignerFile = null
     static def sZipAlignFile = null
-    static def sBundleToolFile = null
 }
 
 def getAxmlGroupId() {
@@ -495,7 +494,6 @@ def getSignConfig(flavor) {
  */
 def encryptAssetsFilesFromApk(flavor, isAab) {
     Global.sAxmlEditorFilePath = getAXMLEditJarFile()
-    Global.sBundleToolFile = getBundleToolJarFile()
     Global.s7ZipCommandPath = get7ZipCmd()
     Global.sAaptFile = getAaptFile()
     Global.sJarSignerFile = getJarSigner()
