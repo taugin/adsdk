@@ -119,7 +119,6 @@ project.afterEvaluate {
     project.configurations.compileOnly.setCanBeResolved(true)
     project.configurations.api.setCanBeResolved(true)
     project.dependencies.add("compileOnly", getAxmlImplementation())
-    project.dependencies.add("compileOnly", getBundleToolImplementation())
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
             def productFlavor = toUpperCaseFirstOne(flavor.name)
@@ -313,6 +312,9 @@ afterEvaluate {
     if (!ext.has("aab2apk") || ext["aab2apk"] != true) {
         return
     }
+    project.configurations.compileOnly.setCanBeResolved(true)
+    project.configurations.api.setCanBeResolved(true)
+    project.dependencies.add("compileOnly", getBundleToolImplementation())
     try {
         def taskName = getGradle().getStartParameter().getTaskRequests()[0]["args"][0].toString()
         if (taskName != null && taskName.toLowerCase(Locale.ENGLISH).contains("bundle")) {
@@ -394,8 +396,9 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
     def keyAlias = signConfig.keyAlias
     def keyPassword = signConfig.keyPassword
     def finalBundleFileName = finalBundleFile.getName()
-    finalBundleFileName = finalBundleFileName.substring(0, finalBundleFileName.lastIndexOf(".aab"))
-    def finalApksFile = new File(finalBundleFile.getParent(), finalBundleFileName + ".apks")
+    def finalApkFileName = finalBundleFileName.substring(0, finalBundleFileName.lastIndexOf(".aab"))
+    def finalApksFile = new File(finalBundleFile.getParent(), finalApkFileName + ".apks")
+    def finalApkFile = new File(finalBundleFile.getParent(), finalApkFileName + ".apk")
     def cmdList = ["java", "-jar", bundleToolPath,
                    "build-apks",
                    "--bundle=" + finalBundleFile,
@@ -407,10 +410,14 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
                    "--key-pass=pass:" + keyPassword,
                    "--mode=universal"]
     def cmdString = cmdList.join(" ")
-    println "cmd string : " + cmdString
+    println ":${project.name}:transformAab2ApkLocked Command [" + optimizeCommand(cmdString) + "]"
     try {
         def result = cmdString.execute().text.trim()
-        println "execute complete : " + result
+        println ":${project.name}:transformAab2ApkLocked Result [" +result + "]"
+        extractFileFromZip(finalApksFile, "universal.apk", finalApkFile)
+        if (finalApkFile.exists()) {
+            finalApksFile.delete()
+        }
     } catch (Exception e) {
         println "error : " + e
     }
@@ -1386,6 +1393,31 @@ def readContentFromApk(packageFile, filePath) {
         e.printStackTrace()
     }
     return content
+}
+
+def extractFileFromZip(packageFile, filePath, outputFile) {
+    def extraSuccess = false
+    try {
+        ZipFile zipFile = new ZipFile(packageFile)
+        ZipEntry zipEntry = zipFile.getEntry(filePath)
+        if (zipEntry != null) {
+            InputStream is = zipFile.getInputStream(zipEntry)
+            byte[] buf = new byte[1024]
+            def length = 0
+            FileOutputStream fos = new FileOutputStream(outputFile)
+            while ((length = is.read(buf)) > 0) {
+                fos.write(buf, 0, length)
+            }
+            is.close()
+            fos.close()
+        }
+        zipFile.close()
+        extraSuccess = true
+    } catch (Exception e) {
+        extraSuccess = false
+        e.printStackTrace()
+    }
+    return extraSuccess
 }
 
 def optimizeCommand(cmdString, delimiter = " ") {
