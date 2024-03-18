@@ -367,12 +367,19 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
         return
     }
     def bundleFileName = "bundletool-all-1.6.1.jar"
-    def bundleToolPath = new File(gradle.gradleUserHomeDir, bundleFileName).getAbsolutePath()
+    def bundleToolDir = new File(gradle.gradleUserHomeDir, "bundletool")
+    bundleToolDir.mkdirs()
+    def bundleToolPath = new File(bundleToolDir, bundleFileName).getAbsolutePath()
+    def bundleToolPathCompleteFile = new File(bundleToolDir, bundleFileName + ".lock").getAbsolutePath()
     println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundleToolPath : " + bundleToolPath
-    if (!new File(bundleToolPath).exists()) {
+    if (!new File(bundleToolPath).exists() || !new File(bundleToolPathCompleteFile).exists()) {
         println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Downloading " + bundleFileName
         def bundleToolUrl = "https://taugin.gitee.io/adsdk/libs/" + bundleFileName
-        new File(bundleToolPath) << new URL(bundleToolUrl).openStream()
+        try {
+            downloadFile(bundleToolUrl, bundleToolPath, "> Task :${project.name}:transformAab2Apk [" + flavorName + "] " + bundleFileName)
+            new File(bundleToolPathCompleteFile).createNewFile()
+        } catch(Exception e) {
+        }
     }
     if (bundleToolPath == null || !new File(bundleToolPath).exists()) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundle tool is Null"
@@ -408,6 +415,35 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
     } catch (Exception e) {
         println "error : " + e
     }
+}
+
+def downloadFile(srcUrl, outputFilePath, progressText) {
+    if (new File(outputFilePath).exists()) {
+        new File(outputFilePath).delete()
+    }
+    def url = new URL(srcUrl)
+    def connection = url.openConnection()
+    def fileSize = connection.contentLength
+    def inputStream = connection.inputStream
+    def outputStream = new FileOutputStream(outputFilePath)
+    byte[] buffer = new byte[4096]
+    int bytesRead
+    int totalBytesRead = 0
+
+    while ((bytesRead = inputStream.read(buffer)) != -1) {
+        outputStream.write(buffer, 0, bytesRead)
+        totalBytesRead += bytesRead
+        if (fileSize > 0) {
+            def progress = (totalBytesRead * 100 / fileSize) as int
+            System.out.print("\r\033[K" + progressText + " Downloading... $progress% complete")
+        } else {
+            System.out.print("\r\033[K" + progressText + " Downloading... $totalBytesRead complete")
+        }
+        System.out.flush()
+    }
+    inputStream.close()
+    outputStream.close()
+    println("\n" + progressText + " Download complete!")
 }
 /**
  * 打开Release目录
