@@ -206,6 +206,15 @@ project.afterEvaluate {
     })
     delDebugFileTask.setGroup("adsdk")
 
+
+    String aab2apkTaskName = String.format("aab2abk")
+    def aab2apkTask = project.tasks.create(aab2apkTaskName, {
+        doLast {
+            transformAab2ApkFlavor()
+        }
+    })
+    aab2apkTask.setGroup("adsdk")
+
     android.applicationVariants.all { variant ->
         variant.outputs.all { output ->
             if (variant.buildType.name == 'release') {
@@ -297,7 +306,11 @@ afterEvaluate {
             def aTask = project.tasks.findByName(taskName)
             if (aTask != null) {
                 aTask.doLast {
-                    transformAab2ApkFlavor()
+                    if (ext.has("aab2apk") && ext["aab2apk"] == true) {
+                        transformAab2ApkFlavor()
+                    } else {
+                        println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] aab to apk is not set"
+                    }
                 }
             }
         }
@@ -306,10 +319,6 @@ afterEvaluate {
 }
 
 def transformAab2ApkFlavor() {
-    if (!ext.has("aab2apk") || ext["aab2apk"] != true) {
-        println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] aab to apk is not set"
-        return
-    }
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
             def productFlavor = toUpperCaseFirstOne(flavor.name)
@@ -349,7 +358,7 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
         outputAabFile = new File(buildDir, "outputs" + File.separatorChar + "bundle" + File.separatorChar + "release" + File.separatorChar + finalBundleName)
     }
     def finalBundleFile = outputAabFile
-    println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] finalBundleFile : " + finalBundleFile
+    println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] finalBundleFile : [" + finalBundleFile + "]"
     if (finalBundleFile == null || !finalBundleFile.exists()) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] finalBundleFile is not exist"
         return
@@ -371,14 +380,14 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
     bundleToolDir.mkdirs()
     def bundleToolPath = new File(bundleToolDir, bundleFileName).getAbsolutePath()
     def bundleToolPathCompleteFile = new File(bundleToolDir, bundleFileName + ".lock").getAbsolutePath()
-    println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundleToolPath : " + bundleToolPath
+    println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundleToolPath : [" + bundleToolPath + "]"
     if (!new File(bundleToolPath).exists() || !new File(bundleToolPathCompleteFile).exists()) {
-        println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Downloading " + bundleFileName
+        println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Downloading : [" + bundleFileName + "]"
         def bundleToolUrl = "https://taugin.gitee.io/adsdk/libs/" + bundleFileName
         try {
             downloadFile(bundleToolUrl, bundleToolPath, "> Task :${project.name}:transformAab2Apk [" + flavorName + "] " + bundleFileName)
             new File(bundleToolPathCompleteFile).createNewFile()
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
     }
     if (bundleToolPath == null || !new File(bundleToolPath).exists()) {
@@ -404,11 +413,12 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
                    "--key-pass=pass:" + keyPassword,
                    "--mode=universal"]
     def cmdString = cmdList.join(" ")
-    println ":${project.name}:transformAab2ApkLocked Command [" + optimizeCommand(cmdString) + "]"
+    println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Command : [" + optimizeCommand(cmdString) + "]"
     try {
         def result = cmdString.execute().text.trim()
-        println ":${project.name}:transformAab2ApkLocked Result [" +result + "]"
+        println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Result : [" + result + "]"
         extractFileFromZip(finalApksFile, "universal.apk", finalApkFile)
+        println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] finalApkFile : [" + finalApkFile + "]"
         if (finalApkFile.exists()) {
             finalApksFile.delete()
         }
