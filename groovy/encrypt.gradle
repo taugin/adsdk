@@ -306,16 +306,24 @@ afterEvaluate {
             def aTask = project.tasks.findByName(taskName)
             if (aTask != null) {
                 aTask.doLast {
-                    if (ext.has("aab2apk") && ext["aab2apk"] == true) {
+                    if (isAAB2ApkAllow()) {
                         transformAab2ApkFlavor()
                     } else {
-                        println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] aab to apk is not set"
+                        println "> Task :${project.name}:transformAab2Apk aab to apk is not set"
                     }
                 }
             }
         }
     } catch (Exception e) {
     }
+}
+
+def isAAB2ApkAllow() {
+    def aab2apk = false
+    if (ext.has("aab2apk")) {
+        aab2apk = ext.get("aab2apk")
+    }
+    return aab2apk
 }
 
 def transformAab2ApkFlavor() {
