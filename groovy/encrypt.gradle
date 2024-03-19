@@ -380,7 +380,7 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
     bundleToolDir.mkdirs()
     def bundleToolPath = new File(bundleToolDir, bundleFileName).getAbsolutePath()
     def bundleToolPathCompleteFile = new File(bundleToolDir, bundleFileName + ".lock").getAbsolutePath()
-    println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundleToolPath : [" + bundleToolPath + "]"
+    println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundleToolPath : [" + bundleToolPath + "] exist : " + new File(bundleToolPath).exists()
     if (!new File(bundleToolPath).exists() || !new File(bundleToolPathCompleteFile).exists()) {
         println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Downloading : [" + bundleFileName + "]"
         def bundleToolUrl = "https://taugin.gitee.io/adsdk/libs/" + bundleFileName
@@ -388,6 +388,10 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
             downloadFile(bundleToolUrl, bundleToolPath, "> Task :${project.name}:transformAab2Apk [" + flavorName + "] " + bundleFileName)
             new File(bundleToolPathCompleteFile).createNewFile()
         } catch (Exception e) {
+            System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] download file error : " + e
+            if (new File(bundleToolPath).exists()) {
+                new File(bundleToolPath).delete()
+            }
         }
     }
     if (bundleToolPath == null || !new File(bundleToolPath).exists()) {
@@ -417,10 +421,14 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
     try {
         def result = cmdString.execute().text.trim()
         println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Result : [" + result + "]"
-        extractFileFromZip(finalApksFile, "universal.apk", finalApkFile)
-        println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] finalApkFile : [" + finalApkFile + "]"
-        if (finalApkFile.exists()) {
-            finalApksFile.delete()
+        if (finalApksFile != null && finalApksFile.exists()) {
+            extractFileFromZip(finalApksFile, "universal.apk", finalApkFile)
+            println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] finalApkFile : [" + finalApkFile + "]"
+            if (finalApkFile.exists()) {
+                finalApksFile.delete()
+            }
+        } else {
+            println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] transform aab to apk failed"
         }
     } catch (Exception e) {
         println "error : " + e
@@ -438,21 +446,28 @@ def downloadFile(srcUrl, outputFilePath, progressText) {
     def outputStream = new FileOutputStream(outputFilePath)
     byte[] buffer = new byte[4096]
     int bytesRead
-    int totalBytesRead = 0
-
-    while ((bytesRead = inputStream.read(buffer)) != -1) {
-        outputStream.write(buffer, 0, bytesRead)
-        totalBytesRead += bytesRead
-        if (fileSize > 0) {
-            def progress = (totalBytesRead * 100 / fileSize) as int
-            System.out.print("\r\033[K" + progressText + " Downloading... $progress% complete")
-        } else {
-            System.out.print("\r\033[K" + progressText + " Downloading... $totalBytesRead complete")
+    long totalBytesRead = 0
+    try {
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead)
+            totalBytesRead += bytesRead
+            if (fileSize > 0) {
+                def progress = (totalBytesRead * 100 / fileSize) as int
+                System.out.print("\r\033[K" + progressText + " Downloading... [$totalBytesRead/$fileSize] $progress% complete")
+            } else {
+                System.out.print("\r\033[K" + progressText + " Downloading... $totalBytesRead complete")
+            }
+            System.out.flush()
         }
-        System.out.flush()
+    } catch (Exception e) {
+        throw e
+    } finally {
+        try {
+            inputStream.close()
+            outputStream.close()
+        } catch (Exception error) {
+        }
     }
-    inputStream.close()
-    outputStream.close()
     println("\n" + progressText + " Download complete!")
 }
 /**
