@@ -47,6 +47,7 @@ andResGuard {
             "R.string.google_storage_bucket",
             "R.string.project_id",
             "R.string.com.crashlytics.android.build_id",
+            "R.string.com.google.firebase.crashlytics.mapping_file_id",
             "R.dimen.rc_*",
             //getui(个推)
             "R.drawable.push",
