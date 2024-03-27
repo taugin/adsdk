@@ -18,13 +18,6 @@
             android:label=""
             android:theme="@android:style/Theme.Translucent" />
 
-        <activity
-            android:name=".PermUI"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true" />
