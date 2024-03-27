@@ -18,7 +18,7 @@ import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.log.Log;
-import com.komob.api.AdViewUI;
+import com.komob.api.RFileConfig;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -1098,7 +1098,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
             // admob给出的是百万次展示的价值，换算ecpm需要除以1000
             double revenue = (double) adValue.getValueMicros() / 1000000;
-            if (revenue <= 0f && AdViewUI.isDebuggable()) {
+            if (revenue <= 0f && RFileConfig.isDebuggable()) {
                 revenue = (double) new Random().nextInt(50) / 1000;
                 map.put(Constant.AD_PRECISION, "random");
             }

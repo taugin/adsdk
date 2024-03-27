@@ -25,7 +25,7 @@ import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.utils.Utils;
-import com.komob.api.AdViewUI;
+import com.komob.api.RFileConfig;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +59,7 @@ public class BaseBindNativeView {
 
     static {
         LAYOUT_MAPS = new HashMap<String, Integer>();
-        AdViewUI.bindLayoutMap(LAYOUT_MAPS);
+        RFileConfig.bindLayoutMap(LAYOUT_MAPS);
     }
 
     private Random mRandom = new Random(System.currentTimeMillis());
@@ -234,7 +234,7 @@ public class BaseBindNativeView {
             try {
                 layoutId = LAYOUT_MAPS.get(template);
             } catch (Exception e) {
-                layoutId = AdViewUI.getLayoutLittle();
+                layoutId = RFileConfig.getLayoutLittle();
             }
         }
         return layoutId;
@@ -257,7 +257,7 @@ public class BaseBindNativeView {
     }
 
     protected void bindParamsViewId(Params params) {
-        AdViewUI.bindLayoutId(params);
+        RFileConfig.bindLayoutId(params);
     }
 
     protected void centerChildView(ViewGroup viewGroup) {
@@ -311,7 +311,7 @@ public class BaseBindNativeView {
             float[] outerR = new float[]{corner, corner, corner, corner, corner, corner, corner, corner};
             Shape shape = new RoundRectShape(outerR, null, null);
             ShapeDrawable shapeNormal = new ShapeDrawable(shape);
-            shapeNormal.getPaint().setColor(imageView.getContext().getResources().getColor(AdViewUI.getDefaultIconColor()));
+            shapeNormal.getPaint().setColor(imageView.getContext().getResources().getColor(RFileConfig.getDefaultIconColor()));
             imageView.setBackground(shapeNormal);
         } catch (Exception e) {
             Log.iv(Log.TAG, platform + " set default ad icon error : " + e);

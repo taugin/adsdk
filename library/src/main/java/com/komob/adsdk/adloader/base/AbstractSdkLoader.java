@@ -41,8 +41,7 @@ import com.komob.adsdk.log.Log;
 import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.stat.IEvent;
 import com.komob.adsdk.utils.Utils;
-import com.komob.adsdk.utils.VUIHelper;
-import com.komob.api.AdViewUI;
+import com.komob.api.RFileConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -144,7 +143,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
         if (activity == null) {
             try {
-                activity = VUIHelper.getFA((Application) mContext.getApplicationContext());
+                activity = RFileConfig.getFA((Application) mContext.getApplicationContext());
                 if (activity != null) {
                     Log.iv(Log.TAG, getSdkName() + " " + getAdType() + " use fk activity");
                 }
@@ -745,7 +744,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     }
 
     protected String getSdkVersion() {
-        return AdViewUI.getVersion();
+        return RFileConfig.getVersion();
     }
 
     protected String getAppVersion() {

@@ -10,7 +10,7 @@
       "zh": "安装",
       "en": "Install"
     },
-    "loading_time": 5000
+    "loading_time": 1000
   },
   {
     "banner": "https://play-lh.googleusercontent.com/8WUOPpMjsU14b2_Z8HhvytDeBJnngi_ZthX2PxDvnKlrQ5GsiSpDJgAhK93fxFmIK6dp",
@@ -23,6 +23,6 @@
       "zh": "安装",
       "en": "Install"
     },
-    "loading_time": 5000
+    "loading_time": 1000
   }
 ]

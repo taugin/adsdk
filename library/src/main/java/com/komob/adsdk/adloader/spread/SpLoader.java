@@ -13,7 +13,6 @@ import com.komob.adsdk.adloader.base.AbstractSdkLoader;
 import com.komob.adsdk.adloader.base.BaseBindNativeView;
 import com.komob.adsdk.adloader.listener.ISdkLoader;
 import com.komob.adsdk.constant.Constant;
-import com.komob.adsdk.core.framework.AdPlaceLoader;
 import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.data.SpreadManager;
@@ -23,12 +22,10 @@ import com.komob.adsdk.http.Http;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.utils.Utils;
-import com.komob.api.AdViewUI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -271,16 +268,9 @@ public class SpLoader extends AbstractSdkLoader {
             notifyAdShow();
             Params params = new Params();
             params.setAdCardStyle(Constant.NATIVE_CARD_FULL);
-            AdPlaceLoader.sLoaderMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), iSdkLoader);
-            AdPlaceLoader.sParamsMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), params);
-            Intent intent = new Intent(mContext, AdViewUI.class);
-            intent.putExtra(Intent.EXTRA_TITLE, placeName);
-            intent.putExtra(Intent.EXTRA_TEXT, source);
-            intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);
+            SpreadManager.get(mContext).showFullScreenAds(iSdkLoader, params);
         } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
+            Log.e(Log.TAG, "error : " + e, e);
         }
     }
 

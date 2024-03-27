@@ -21,8 +21,7 @@ import com.komob.adsdk.data.config.PlaceConfig;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.utils.Utils;
-import com.komob.adsdk.utils.VUIHelper;
-import com.komob.api.AdViewUI;
+import com.komob.api.RFileConfig;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -69,7 +68,7 @@ public class AdSdk {
 
     private AdSdk(Context context) {
         mOriginContext = context.getApplicationContext();
-        mContext = VUIHelper.createAContext(mOriginContext);
+        mContext = RFileConfig.createAContext(mOriginContext);
     }
 
     public static AdSdk get(Context context) {
@@ -104,7 +103,7 @@ public class AdSdk {
      * @return
      */
     public String getSdkVersion() {
-        return AdViewUI.getVersion();
+        return RFileConfig.getVersion();
     }
 
     /**

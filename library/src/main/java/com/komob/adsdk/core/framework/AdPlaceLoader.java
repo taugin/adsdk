@@ -2,7 +2,6 @@ package com.komob.adsdk.core.framework;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -22,21 +21,19 @@ import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.AdPolicy;
 import com.komob.adsdk.core.ModuleLoaderHelper;
 import com.komob.adsdk.data.DataManager;
+import com.komob.adsdk.data.SpreadManager;
 import com.komob.adsdk.data.config.AdPlace;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.utils.Utils;
-import com.komob.api.AdViewUI;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,8 +43,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Runnable, Handler.Callback {
-    public static Map<String, ISdkLoader> sLoaderMap = new HashMap<String, ISdkLoader>();
-    public static Map<String, Params> sParamsMap = new HashMap<String, Params>();
     private List<ISdkLoader> mAdLoaders = new ArrayList<ISdkLoader>();
     private AdPlace mAdPlace;
     private Context mContext;
@@ -1638,7 +1633,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     }
                 } else if ((loader.isBannerType() && loader.isBannerLoaded())
                         || (loader.isNativeType() && loader.isNativeLoaded())) {
-                    showAdViewWithUI(loader.getAdPlaceName(), loader.getSdkName(), loader.getAdType(), loader, sceneName);
+                    showAdViewWithUI(loader, sceneName);
                     return true;
                 }
             }
@@ -1646,10 +1641,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return false;
     }
 
-    private void showAdViewWithUI(String placeName, String source, String adType, ISdkLoader iSdkLoader, String sceneName) {
+    private void showAdViewWithUI(ISdkLoader iSdkLoader, String sceneName) {
         Log.iv(Log.TAG, "show complex ads for banner or native");
         try {
-            sLoaderMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), iSdkLoader);
             Params params = getParams(iSdkLoader);
             try {
                 if (params != null && DataManager.get(mContext).isComplexNativeFull()) {
@@ -1658,14 +1652,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 }
             } catch (Exception e) {
             }
-            sParamsMap.put(String.format(Locale.ENGLISH, "%s_%s_%s", source, adType, placeName), params);
-            Intent intent = new Intent(mContext, AdViewUI.class);
-            intent.putExtra(Intent.EXTRA_TITLE, placeName);
-            intent.putExtra(Intent.EXTRA_TEXT, source);
-            intent.putExtra(Intent.EXTRA_TEMPLATE, adType);
-            intent.putExtra(Intent.EXTRA_REFERRER_NAME, sceneName);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);
+            if (params != null) {
+                params.setSceneName(sceneName);
+            }
+            SpreadManager.get(mContext).showFullScreenAds(iSdkLoader, params);
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }

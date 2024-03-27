@@ -12,7 +12,7 @@ import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.utils.Utils;
-import com.komob.api.AdViewUI;
+import com.komob.api.RFileConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -462,7 +462,7 @@ public class BigoLoader extends AbstractSdkLoader {
                 map.put(Constant.AD_PRECISION, "precise");
             } catch (Exception e) {
             }
-            if (revenue <= 0f && AdViewUI.isDebuggable()) {
+            if (revenue <= 0f && RFileConfig.isDebuggable()) {
                 revenue = (double) new Random().nextInt(50) / 1000;
                 map.put(Constant.AD_PRECISION, "random");
             }

@@ -38,7 +38,7 @@ import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.utils.Utils;
-import com.komob.adsdk.utils.VUIHelper;
+import com.komob.api.RFileConfig;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -80,7 +80,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
      */
     public static void showApplovinMediationDebugger(Context context) {
         try {
-            Activity activity = VUIHelper.getFA((Application) context.getApplicationContext());
+            Activity activity = RFileConfig.getFA((Application) context.getApplicationContext());
             AppLovinSdk appLovinSdk = getInstance(activity);
             if (appLovinSdk != null) {
                 appLovinSdk.showMediationDebugger();
