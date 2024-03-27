@@ -131,27 +131,8 @@ public class AdSdk {
         }
     }
 
-    /**
-     * 设置appsflyer归因
-     *
-     * @param afStatus
-     * @param mediaSource
-     */
-    public void setAttribution(String afStatus, String mediaSource) {
-        if (!TextUtils.isEmpty(afStatus)) {
-            Utils.putString(mContext, Constant.AF_STATUS, afStatus);
-        }
-        if (!TextUtils.isEmpty(mediaSource)) {
-            Utils.putString(mContext, Constant.AF_MEDIA_SOURCE, mediaSource);
-        }
-    }
-
-    public String getAttribution() {
-        return Utils.getString(mContext, Constant.AF_STATUS);
-    }
-
-    public String getMediaSource() {
-        return Utils.getString(mContext, Constant.AF_MEDIA_SOURCE);
+    public void setUserStatus(boolean status) {
+        Utils.putBoolean(mContext, Constant.PREF_USER_STATUS, status);
     }
 
     public String getString(String key) {
