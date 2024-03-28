@@ -11,7 +11,6 @@ import com.komob.adsdk.AdImpData;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.log.Log;
-import com.komob.adsdk.stat.EventImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -129,13 +128,24 @@ public class DBManager {
             sSdf.setTimeZone(TimeZone.getDefault());
             values.put(DBHelper.AD_IMP_DATE, sSdf.format(new Date(now)));
             values.put(DBHelper.AD_IMP_TIME, now);
-            values.put(DBHelper.AD_ACTIVE_DATE, EventImpl.get().getActiveDate());
+            values.put(DBHelper.AD_ACTIVE_DATE, getActiveDate());
             values.put(DBHelper.AD_ACTIVE_TIME, DataManager.get(mContext).getFirstActiveTime());
             values.put(DBHelper.AD_CLICK_COUNT, 0);
             return values;
         } catch (Exception e) {
         }
         return null;
+    }
+
+    private String getActiveDate() {
+        String activeDate;
+        try {
+            long userActiveTime = DataManager.get(mContext).getFirstActiveTime();
+            activeDate = Constant.SDF_ACTIVE_DATE.format(new Date(userActiveTime));
+        } catch (Exception e) {
+            activeDate = "00-00";
+        }
+        return activeDate;
     }
 
     public double queryAdRevenue() {

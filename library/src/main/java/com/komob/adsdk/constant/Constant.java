@@ -247,7 +247,6 @@ public class Constant {
 
     public static final String AD_IMPRESSION = "ad_impression";
     public static final String AD_IMPRESSION_REVENUE = "Ad_Impression_Revenue";
-    public static final String AD_TOTAL_ADS_REVENUE_001 = "Total_Ads_Revenue_001";
     public static final String AD_VALUE = "value";
     public static final String AD_MICRO_VALUE = "micro_value";
     public static final String AD_ROUND_CPM = "round_cpm";

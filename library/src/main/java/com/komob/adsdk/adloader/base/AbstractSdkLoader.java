@@ -523,7 +523,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     protected synchronized void setLoading(boolean loading, int state) {
         mLoadState = state;
         mLoading = loading;
-        reportLoadAdTime(state);
         if (mLoading) {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
@@ -749,35 +748,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
 
     protected String getAppVersion() {
         return Utils.getVersionName(mContext);
-    }
-
-    private void reportLoadAdTime(int state) {
-        if (state == STATE_REQUEST) {
-            mRequestTime = SystemClock.elapsedRealtime();
-        } else if (state == STATE_SUCCESS) {
-            mCostTime = SystemClock.elapsedRealtime() - mRequestTime;
-            if (mRequestTime > 0) {
-                try {
-                    int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
-                    mStat.reportAdLoadSuccessTime(mContext, getAdPlaceName(), getSdkName(), getAdType(), time);
-                } catch (Exception e) {
-                }
-                mRequestTime = 0;
-            }
-        } else {
-            if (mRequestTime > 0) {
-                try {
-                    String error = "STATE_FAILURE";
-                    if (state == STATE_TIMEOUT) {
-                        error = "STATE_TIMEOUT";
-                    }
-                    int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
-                    mStat.reportAdLoadFailureTime(mContext, getAdPlaceName(), getSdkName(), getAdType(), error, time);
-                } catch (Exception e) {
-                }
-                mRequestTime = 0;
-            }
-        }
     }
 
     /**
@@ -1278,9 +1248,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             if (adImpMap != null) {
                 try {
                     // adImpMap.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
-                    adImpMap.put("active_days", EventImpl.get().getActiveDayString());
-                    adImpMap.put("active_date", EventImpl.get().getActiveDate());
-                    adImpMap.put("active_year", EventImpl.get().getActiveYear());
                     adImpMap.put("country", Utils.getCountryFromLocale(mContext));
                     adImpMap.put(Constant.AD_TYPE, getAdType());
                     try {
@@ -1318,7 +1285,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
         AdStatManager.get(mContext).recordAdImpression(adImpData);
         reportAdImpression(adImpData);
-        reportTaichiEvent(adImpData);
         try {
             notifyBidResultInternal(adImpData);
         } catch (Exception e) {
@@ -1429,22 +1395,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
                 params.put("value", adImpData.getValue());
                 params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
                 params.put("currency", "USD"); // All Applovin revenue is sent in USD
-                params.put("active_days", EventImpl.get().getActiveDays() + "d");
-                params.put("active_date", EventImpl.get().getActiveDate());
                 if (isReportFirebase) {
                     InternalStat.sendFirebaseAnalytics(mContext, Constant.AD_IMPRESSION, null, params);
-                }
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    private void reportTaichiEvent(AdImpData adImpData) {
-        try {
-            if (adImpData != null && isEnableReportTaichi30()) {
-                Double revenue = adImpData.getValue();
-                if (revenue != null && revenue.doubleValue() > 0) {
-                    reportTaichiEvent(mContext, revenue.floatValue());
                 }
             }
         } catch (Exception e) {
@@ -1467,29 +1419,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             Log.iv(Log.TAG, "error : " + e);
         }
         return result;
-    }
-
-    /**
-     * 上报taichi事件
-     *
-     * @param context
-     * @param revenue
-     */
-    private void reportTaichiEvent(Context context, float revenue) {
-        String prefRevenue = "pref_total_taichi_revenue";
-        float lastTotalRevenue = Utils.getFloat(context, prefRevenue);
-        float curTotalRevenue = lastTotalRevenue + revenue;
-        Log.iv(Log.TAG, "last total revenue : " + lastTotalRevenue + " , current total revenue : " + curTotalRevenue + " , revenue : " + revenue);
-        if (curTotalRevenue >= 0.01f) {
-            Utils.putFloat(context, prefRevenue, 0f);
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("currency", "USD");
-            map.put("value", curTotalRevenue);
-            map.put("micro_value", Double.valueOf(curTotalRevenue * 1000000).intValue());
-            InternalStat.reportEvent(context, Constant.AD_TOTAL_ADS_REVENUE_001, map);
-        } else {
-            Utils.putFloat(context, prefRevenue, curTotalRevenue);
-        }
     }
 
     /**
