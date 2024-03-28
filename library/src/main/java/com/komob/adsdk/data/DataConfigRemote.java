@@ -3,9 +3,9 @@ package com.komob.adsdk.data;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.log.Log;
-import com.komob.adsdk.utils.Utils;
 
 import java.lang.reflect.Method;
 
@@ -21,11 +21,25 @@ public class DataConfigRemote {
     public static Method firebaseInstanceMethod;
     public static Method firebaseGetStringMethod;
 
+    public static final boolean sUmengRemoteConfigEnable;
+    public static Method umengInstanceMethod;
+    public static Method umengGetStringMethod;
     private static boolean sRemoteFirst = false;
     private static long sRemoteFirstTime = 0;
 
     static {
         boolean enable;
+        try {
+            Class<?> clazz = Class.forName("com.umeng.cconfig.UMRemoteConfig");
+            umengInstanceMethod = clazz.getMethod("getInstance");
+            umengGetStringMethod = clazz.getMethod("getConfigValue", String.class);
+            enable = true;
+        } catch (Exception | Error e) {
+            Log.iv(Log.TAG_SDK, "umeng error : " + e);
+            enable = false;
+        }
+        sUmengRemoteConfigEnable = enable;
+
         try {
             Class<?> clazz = Class.forName("com.google.firebase.remoteconfig.FirebaseRemoteConfig");
             firebaseInstanceMethod = clazz.getMethod("getInstance");
@@ -94,13 +108,34 @@ public class DataConfigRemote {
         return value;
     }
 
+    private String getAfStatus() {
+        String afStatus = null;
+        try {
+            afStatus = Utils.getString(mContext, Constant.AF_STATUS, Constant.AF_ORGANIC);
+        } catch (Exception e) {
+        }
+        return TextUtils.equals(afStatus, Constant.AF_ORGANIC) ? "auo" : "ano";
+    }
+
+    private String getAfSuffix() {
+        String suffix = "";
+        try {
+            String attr = Utils.getString(mContext, Constant.AF_STATUS, Constant.AF_ORGANIC);
+            if (!TextUtils.equals(attr, Constant.AF_ORGANIC)) {
+                suffix = "_ano";
+            }
+        } catch (Exception e) {
+        }
+        return suffix;
+    }
+
     private String readConfigFromLocal(String key) {
         return Utils.readConfig(mContext, key);
     }
 
     private String readConfigFromRemote(String key) {
         String value = null;
-        String attrSuffix = Utils.getBoolean(mContext, Constant.PREF_USER_STATUS, false) ? "_ano" : "";
+        String attrSuffix = getAfSuffix();
         String attrKey = key + attrSuffix;
         // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
         String attrData = getRemoteConfig(attrKey);
@@ -111,11 +146,19 @@ public class DataConfigRemote {
                 value = getRemoteConfig(key);
             }
         }
+        if (!TextUtils.isEmpty(value)) {
+            Log.iv(Log.TAG, "remote config : " + key + "[" + getAfStatus() + "]");
+        }
         return value;
     }
 
     private String getRemoteConfig(String key) {
-        String remoteValue = getConfigFromFirebase(key);
+        String remoteValue = getConfigFromUmeng(key);
+        if (!TextUtils.isEmpty(remoteValue)) {
+            Log.iv(Log.TAG, "umeng config | " + key + " : " + remoteValue);
+            return remoteValue;
+        }
+        remoteValue = getConfigFromFirebase(key);
         if (!TextUtils.isEmpty(remoteValue)) {
             Log.iv(Log.TAG, "firebase config | " + key + " : " + remoteValue);
             return remoteValue;
@@ -139,6 +182,27 @@ public class DataConfigRemote {
             }
             if (!TextUtils.isEmpty(error)) {
                 Log.iv(Log.TAG_SDK, "firebase error : " + error);
+            }
+        }
+        return null;
+    }
+
+    private String getConfigFromUmeng(String key) {
+        if (sUmengRemoteConfigEnable) {
+            String error = null;
+            try {
+                Object instance = umengInstanceMethod.invoke(null);
+                Object value = umengGetStringMethod.invoke(instance, key);
+                if (value != null) {
+                    return (String) value;
+                }
+            } catch (Exception e) {
+                error = String.valueOf(e);
+            } catch (Error e) {
+                error = String.valueOf(e);
+            }
+            if (!TextUtils.isEmpty(error)) {
+                Log.iv(Log.TAG_SDK, "umeng error : " + error);
             }
         }
         return null;
