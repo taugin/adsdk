@@ -100,7 +100,7 @@ public class DataConfigRemote {
 
     private String readConfigFromRemote(String key) {
         String value = null;
-        String attrSuffix = Utils.getBoolean(mContext, Constant.PREF_USER_STATUS, false) ? "_ano" : "";
+        String attrSuffix = "";
         String attrKey = key + attrSuffix;
         // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
         String attrData = getRemoteConfig(attrKey);

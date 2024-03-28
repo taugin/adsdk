@@ -4,16 +4,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.text.TextUtils;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.Utils;
 
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -111,7 +109,6 @@ public class VRemoteConfig implements Handler.Callback {
             synchronized (mInstance) {
                 if (isNeedRequest()) {
                     requestDataConfig();
-                    activeFetchConfig();
                 }
             }
         }
@@ -178,26 +175,6 @@ public class VRemoteConfig implements Handler.Callback {
                 mInstance = FirebaseRemoteConfig.getInstance();
             } catch (Exception | Error e) {
                 Log.iv(Log.TAG, "error : miss google-services.json");
-            }
-        }
-    }
-
-    private void activeFetchConfig() {
-        if (DataConfigRemote.sUmengRemoteConfigEnable) {
-            String error = null;
-            try {
-                Class<?> clazz = Class.forName("com.umeng.cconfig.UMRemoteConfig");
-                Method method = clazz.getMethod("getInstance");
-                Object instance = method.invoke(null);
-                method = clazz.getMethod("activeFetchConfig");
-                method.invoke(instance);
-            } catch (Exception e) {
-                error = String.valueOf(e);
-            } catch (Error e) {
-                error = String.valueOf(e);
-            }
-            if (!TextUtils.isEmpty(error)) {
-                Log.iv(Log.TAG_SDK, "act config error : " + error);
             }
         }
     }

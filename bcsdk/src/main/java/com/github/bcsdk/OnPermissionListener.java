@@ -1,4 +1,4 @@
-package com.komob.bcsdk;
+package com.github.bcsdk;
 
 import java.util.List;
 

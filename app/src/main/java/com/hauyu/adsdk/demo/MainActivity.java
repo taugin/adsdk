@@ -450,6 +450,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             }
         } else if (v.getId() == R.id.show_spread_list) {
             AdSdk.get(this).showSpreadUI();
+        } else if (v.getId() == R.id.bcsdk_demo) {
+            startActivity(new Intent(this, BcSdkActivity.class));
         }
     }
 

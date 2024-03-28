@@ -73,6 +73,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     if (useProject) {
         implementation project(":library")
+        implementation project(":bcsdk")
     } else {
         implementation 'com.hauyu:adsdk:7.0.2-SNAPSHOT@aar'
         implementation 'androidx.percentlayout:percentlayout:1.0.0'
@@ -95,6 +96,7 @@ dependencies {
 
     // 调试数据库，在浏览器打开网址, adb logcat -s DebugDB查看
     debugImplementation('com.amitshekhar.android:debug-db:1.0.1')
+    implementation 'com.android.installreferrer:installreferrer:1.0'
 }
 
 configurations.all {

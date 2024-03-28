@@ -1,4 +1,4 @@
-package com.komob.bcsdk.log;
+package com.github.bcsdk.log;
 
 import android.annotation.SuppressLint;
 import android.os.Environment;

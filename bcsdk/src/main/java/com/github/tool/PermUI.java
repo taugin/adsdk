@@ -1,4 +1,4 @@
-package com.komob.api;
+package com.github.tool;
 
 import android.Manifest;
 import android.app.Activity;
@@ -26,11 +26,10 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.komob.adsdk.InternalStat;
-import com.komob.bcsdk.BcSdk;
-import com.komob.bcsdk.constant.Constant;
-import com.komob.bcsdk.log.Log;
-import com.komob.bcsdk.utils.BcUtils;
+import com.github.bcsdk.BcSdk;
+import com.github.bcsdk.constant.Constant;
+import com.github.bcsdk.log.Log;
+import com.github.bcsdk.utils.BcUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -417,7 +416,6 @@ public class PermUI extends Activity {
             @Override
             public void onClick(View v) {
                 finishActivityForPermission(grantList, deniedList);
-                InternalStat.reportEvent(getBaseContext(), "bs_click_cancel", null, null);
             }
         });
 
@@ -437,7 +435,6 @@ public class PermUI extends Activity {
                     startActivityForResult(intent, REQUEST_CODE_GOTO_SETTINGS);
                 } catch (Exception e) {
                     finishActivityForPermission(grantList, deniedList, true);
-                    InternalStat.reportEvent(getBaseContext(), "bs_click_settings", null, null);
                 }
             }
         });

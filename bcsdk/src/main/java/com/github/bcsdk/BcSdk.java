@@ -1,4 +1,4 @@
-package com.komob.bcsdk;
+package com.github.bcsdk;
 
 import android.Manifest;
 import android.content.Context;
@@ -7,11 +7,11 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 
-import com.komob.api.PermUI;
-import com.komob.bcsdk.constant.Constant;
-import com.komob.bcsdk.log.Log;
-import com.komob.bcsdk.manager.ReferrerManager;
-import com.komob.bcsdk.utils.BcUtils;
+import com.github.bcsdk.constant.Constant;
+import com.github.bcsdk.log.Log;
+import com.github.bcsdk.manager.ReferrerManager;
+import com.github.bcsdk.utils.BcUtils;
+import com.github.tool.PermUI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,22 +22,19 @@ import java.util.List;
  */
 
 public class BcSdk {
-
     public static final int REQUEST_NOTIFICATION_LISTENER = 10000;
     public static final int REQUEST_USAGE_PRIVILEGE = 10001;
     public static final int REQUEST_OVERLAY_DRAW = 10002;
 
     private static OnPermissionListener sOnPermissionListener;
-    private static OnDataListener sOnDataListener;
 
     public static void init(Context context) {
         init(context, null);
     }
 
-    public static void init(Context context, OnDataListener l) {
-        sOnDataListener = l;
+    public static void init(Context context, ReferrerManager.OnDataListener l) {
         initialize(context);
-        ReferrerManager.get(context).init();
+        ReferrerManager.get(context).init(l);
     }
 
     public static String getAttribution(Context context) {
@@ -85,10 +82,6 @@ public class BcSdk {
 
     public static OnPermissionListener getPermissionListener() {
         return sOnPermissionListener;
-    }
-
-    public static OnDataListener getOnDataListener() {
-        return sOnDataListener;
     }
 
     public static boolean isAllPermissionGranted(Context context, List<String> permissions) {

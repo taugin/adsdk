@@ -1,4 +1,4 @@
-package com.komob.bcsdk.utils;
+package com.github.bcsdk.utils;
 
 import android.app.Activity;
 import android.app.Service;
@@ -22,8 +22,8 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.TextUtils;
 
-import com.komob.bcsdk.BcSdk;
-import com.komob.bcsdk.log.Log;
+import com.github.bcsdk.BcSdk;
+import com.github.bcsdk.log.Log;
 
 import java.io.File;
 import java.io.FileInputStream;

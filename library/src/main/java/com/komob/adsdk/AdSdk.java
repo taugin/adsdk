@@ -124,19 +124,15 @@ public class AdSdk {
         if (mInitialized == null || !mInitialized.get()) {
             boolean debuggable = Utils.isDebuggable(mContext);
             if (debuggable) {
-                throw new IllegalStateException("You must call AdSdk.get(context).init() first before " + message);
+                throw new IllegalStateException("You must call init() first before " + message);
             } else {
-                Log.iv(Log.TAG, "You must call AdSdk.get(context).init() first before " + message);
+                Log.iv(Log.TAG, "You must call init() first before " + message);
             }
         }
     }
 
-    public void setUserStatus(boolean status) {
-        Utils.putBoolean(mContext, Constant.PREF_USER_STATUS, status);
-    }
-
     public String getString(String key) {
-        checkInitialize("call AdSdk.get(context).getString(\"" + key + "\")");
+        checkInitialize("call getString(\"" + key + "\")");
         return DataManager.get(mContext).getString(key);
     }
 
