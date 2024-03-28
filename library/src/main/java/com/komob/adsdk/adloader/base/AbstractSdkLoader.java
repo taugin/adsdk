@@ -1227,52 +1227,34 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         return false;
     }
 
-    /**
-     * 控制是否上报广告展示价值Ad_Impression_Revenue
-     *
-     * @return
-     */
-    protected boolean isReportAdImpData() {
-        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_imp_revenue");
-        if (!TextUtils.isEmpty(value)) {
-            try {
-                return Boolean.parseBoolean(value);
-            } catch (Exception e) {
-            }
-        }
-        return true;
-    }
-
     protected void onReportAdImpData(Map<String, Object> adImpMap, String impressionId) {
-        if (isReportAdImpData()) {
-            if (adImpMap != null) {
+        if (adImpMap != null) {
+            try {
+                // adImpMap.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
+                adImpMap.put("country", Utils.getCountryFromLocale(mContext));
+                adImpMap.put(Constant.AD_TYPE, getAdType());
                 try {
-                    // adImpMap.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
-                    adImpMap.put("country", Utils.getCountryFromLocale(mContext));
-                    adImpMap.put(Constant.AD_TYPE, getAdType());
-                    try {
-                        if (EventImpl.get().getActiveDays() == 0) {
-                            adImpMap.put(Constant.AD_PLACEMENT_NEW, adImpMap.get(Constant.AD_PLACEMENT));
-                            Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
-                            String roundCpm = Utils.calcRoundCpm(adRevenue * 1000);
-                            adImpMap.put(Constant.AD_ROUND_CPM_NEW, roundCpm);
-                        }
-                    } catch (Exception e) {
-                    }
-                    try {
+                    if (EventImpl.get().getActiveDays() == 0) {
+                        adImpMap.put(Constant.AD_PLACEMENT_NEW, adImpMap.get(Constant.AD_PLACEMENT));
                         Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
                         String roundCpm = Utils.calcRoundCpm(adRevenue * 1000);
-                        adImpMap.put(Constant.AD_ROUND_CPM, roundCpm);
-                        String network = (String) adImpMap.get(Constant.AD_NETWORK);
-                        adImpMap.put(String.format(Locale.ENGLISH, "%s_%s", Constant.AD_ROUND_CPM, Utils.formatNetwork(network)), roundCpm);
-                    } catch (Exception exception) {
+                        adImpMap.put(Constant.AD_ROUND_CPM_NEW, roundCpm);
                     }
                 } catch (Exception e) {
                 }
+                try {
+                    Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
+                    String roundCpm = Utils.calcRoundCpm(adRevenue * 1000);
+                    adImpMap.put(Constant.AD_ROUND_CPM, roundCpm);
+                    String network = (String) adImpMap.get(Constant.AD_NETWORK);
+                    adImpMap.put(String.format(Locale.ENGLISH, "%s_%s", Constant.AD_ROUND_CPM, Utils.formatNetwork(network)), roundCpm);
+                } catch (Exception exception) {
+                }
+            } catch (Exception e) {
             }
-            InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
-            FBStatManager.get(mContext).reportFirebaseImpression(adImpMap);
         }
+        InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
+        FBStatManager.get(mContext).reportFirebaseImpression(adImpMap);
         if (adImpMap != null) {
             adImpMap.put(Constant.AD_IMPRESSION_ID, impressionId);
             adImpMap.put(Constant.AD_IMP_TIME, System.currentTimeMillis());
@@ -1374,17 +1356,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
      */
     private void reportAdImpression(AdImpData adImpData) {
         try {
-            if (adImpData != null && isEnableReportAdImpression()) {
+            if (adImpData != null) {
                 String networkName = adImpData.getNetwork();
-                boolean isReportFirebase = true;
-                if (isForbidReportAdImpressionAdmob()) {
-                    if (networkName != null) {
-                        String temp = networkName.toLowerCase(Locale.ENGLISH);
-                        if (temp != null && temp.contains("admob")) {
-                            isReportFirebase = false;
-                        }
-                    }
-                }
                 String platform = adImpData.getPlatform();
                 String unitName = platform + "_" + adImpData.getUnitName();
                 Map<String, Object> params = new HashMap<String, Object>();
@@ -1395,66 +1368,10 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
                 params.put("value", adImpData.getValue());
                 params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
                 params.put("currency", "USD"); // All Applovin revenue is sent in USD
-                if (isReportFirebase) {
-                    InternalStat.sendFirebaseAnalytics(mContext, Constant.AD_IMPRESSION, null, params);
-                }
+                InternalStat.sendFirebaseAnalytics(mContext, Constant.AD_IMPRESSION, null, params);
             }
         } catch (Exception e) {
         }
-    }
-
-    /**
-     * 是否禁止上报admob广告展示价值，默认不禁止，只有当admob与firebase关联时，才需要禁止
-     *
-     * @return
-     */
-    private boolean isForbidReportAdImpressionAdmob() {
-        boolean result = false;
-        try {
-            String str = DataManager.get(mContext).getString("ad_forbid_report_admob");
-            if (!TextUtils.isEmpty(str)) {
-                result = Boolean.parseBoolean(str);
-            }
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-        return result;
-    }
-
-    /**
-     * 是否允许上报ad_impression事件
-     *
-     * @return
-     */
-    private boolean isEnableReportAdImpression() {
-        boolean result = true;
-        try {
-            String str = DataManager.get(mContext).getString("ad_enable_report_ad_impression");
-            if (!TextUtils.isEmpty(str)) {
-                result = Boolean.parseBoolean(str);
-            }
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-        return result;
-    }
-
-    /**
-     * 是否允许上报taichi30事件
-     *
-     * @return
-     */
-    private boolean isEnableReportTaichi30() {
-        boolean result = true;
-        try {
-            String str = DataManager.get(mContext).getString("ad_enable_report_taichi30");
-            if (!TextUtils.isEmpty(str)) {
-                result = Boolean.parseBoolean(str);
-            }
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-        return result;
     }
 
     public class AbstractAdListener {
