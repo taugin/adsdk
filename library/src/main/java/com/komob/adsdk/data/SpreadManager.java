@@ -194,7 +194,6 @@ public class SpreadManager {
         if (spreadConfig != null) {
             String url = spreadConfig.getLinkUrl();
             String packageName = spreadConfig.getBundle();
-            boolean organic = spreadConfig.isOrganic();
             boolean isPlay = spreadConfig.isPlay();
             String referrer = null;
             try {
@@ -205,7 +204,7 @@ public class SpreadManager {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             if (TextUtils.isEmpty(url)) {
                 url = "market://details?id=" + packageName;
-                if (!organic && !TextUtils.isEmpty(referrer)) {
+                if (!TextUtils.isEmpty(referrer)) {
                     url = url + "&" + referrer;
                 }
                 if (isPlay && Utils.isInstalled(context, "com.android.vending")) {

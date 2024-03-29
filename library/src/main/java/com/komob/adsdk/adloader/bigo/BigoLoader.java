@@ -471,7 +471,6 @@ public class BigoLoader extends AbstractSdkLoader {
             String adFormat = getAdType();
             String adUnitName = getAdPlaceName();
             map.put(Constant.AD_VALUE, revenue);
-            map.put(Constant.AD_MICRO_VALUE, Double.valueOf(revenue * 1000000).intValue());
             map.put(Constant.AD_CURRENCY, "USD");
             map.put(Constant.AD_NETWORK, networkName);
             map.put(Constant.AD_UNIT_ID, adUnitId);
@@ -481,7 +480,6 @@ public class BigoLoader extends AbstractSdkLoader {
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_SDK_VERSION, getSdkVersion());
             map.put(Constant.AD_APP_VERSION, getAppVersion());
-            // map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             onReportAdImpData(map, impressionId);
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);

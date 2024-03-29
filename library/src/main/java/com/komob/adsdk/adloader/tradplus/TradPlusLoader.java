@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.komob.adsdk.AdReward;
-import com.komob.adsdk.utils.Utils;
+import com.komob.adsdk.adloader.base.AbstractSdkLoader;
+import com.komob.adsdk.adloader.base.BaseBindNativeView;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.framework.ActivityMonitor;
 import com.komob.adsdk.core.framework.Params;
-import com.komob.adsdk.log.Log;
-import com.komob.adsdk.adloader.base.AbstractSdkLoader;
-import com.komob.adsdk.adloader.base.BaseBindNativeView;
 import com.komob.adsdk.data.config.PidConfig;
+import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.Utils;
 import com.tradplus.ads.base.GlobalTradPlus;
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
@@ -75,12 +75,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
         String appId = null;
         if (mPidConfig != null) {
             appId = getAppId();
-            if (TextUtils.isEmpty(appId)) {
-                Map<String, String> extra = mPidConfig.getExtra();
-                if (extra != null) {
-                    appId = extra.get(Constant.APP_ID);
-                }
-            }
         }
         if (!TextUtils.isEmpty(appId)) {
             if (!sAtomicBoolean.getAndSet(true)) {
@@ -854,7 +848,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
             Map<String, Object> map = new HashMap<>();
             double revenue = getTradPlusAdRevenue(tpAdInfo);
             map.put(Constant.AD_VALUE, revenue);
-            map.put(Constant.AD_MICRO_VALUE, Double.valueOf(revenue * 1000000).intValue());
             map.put(Constant.AD_CURRENCY, getCurrency(tpAdInfo));
             map.put(Constant.AD_NETWORK, tpAdInfo.adSourceName);
             map.put(Constant.AD_NETWORK_PID, getNetworkPid(tpAdInfo));
@@ -867,7 +860,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
             map.put(Constant.AD_PRECISION, tpAdInfo.ecpmPrecision);
             map.put(Constant.AD_SDK_VERSION, getSdkVersion());
             map.put(Constant.AD_APP_VERSION, getAppVersion());
-            // map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             onReportAdImpData(map, impressionId);
         } catch (Exception e) {
             Log.iv(Log.TAG, "report trusplus error : " + e);

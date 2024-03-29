@@ -21,7 +21,6 @@ public class SpreadConfig {
     private Map<String, String> ctaLocale;
     private long loadingTime;
     private boolean play = true;
-    private boolean organic = false;
 
     public String getBanner() {
         return banner;
@@ -109,14 +108,6 @@ public class SpreadConfig {
 
     public void setPlay(boolean play) {
         this.play = play;
-    }
-
-    public boolean isOrganic() {
-        return organic;
-    }
-
-    public void setOrganic(boolean organic) {
-        this.organic = organic;
     }
 
     @Override

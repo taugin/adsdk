@@ -77,8 +77,6 @@ public class Constant {
 
     public static final String KEY_PASSWORD = "123456789";
 
-    public static final String APP_ID = "app_id";
-
     // 配置文件中使用的名字++++++
     public static final String SHARE_PLACE = "share_place";
     public static final String COMPLEX_PLACES = "cfg_complex_info";
@@ -86,7 +84,6 @@ public class Constant {
     public static final String PREF_USER_ACTIVE_TIME = "pref_user_active_time";
     // 配置文件中使用的名字======
 
-    public static final String PREF_USER_STATUS = "pref_user_status";
     public static final String PREF_REMOTE_CONFIG_UPDATE_TIME = "pref_remote_config_update_time";
 
     public static final int ONE_DAY_MS = 24 * 3600 * 1000;
@@ -215,8 +212,6 @@ public class Constant {
     public static final int AD_ERROR_BLOCK_MISTAKE_CLICK = 27;
 
     public static final SimpleDateFormat SDF_ACTIVE_DATE = new SimpleDateFormat("MM-dd", Locale.ENGLISH);
-    public static final SimpleDateFormat SDF_ACTIVE_YEAR = new SimpleDateFormat("yyyy", Locale.ENGLISH);
-    public static final SimpleDateFormat SDF_WHOLE_TIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
     public static final String PREF_LAST_ELAPSED_TIME = "pref_last_elapsed_time";
     public static final String PREF_LAST_CURRENT_TIME = "pref_last_current_time";
 
@@ -248,9 +243,6 @@ public class Constant {
     public static final String AD_IMPRESSION = "ad_impression";
     public static final String AD_IMPRESSION_REVENUE = "Ad_Impression_Revenue";
     public static final String AD_VALUE = "value";
-    public static final String AD_MICRO_VALUE = "micro_value";
-    public static final String AD_ROUND_CPM = "round_cpm";
-    public static final String AD_ROUND_CPM_NEW = "round_cpm_new";
     public static final String AD_CURRENCY = "currency";
     public static final String AD_NETWORK = "ad_network";
     public static final String AD_NETWORK_PID = "ad_network_pid";
@@ -259,14 +251,12 @@ public class Constant {
     public static final String AD_FORMAT = "ad_format";
     public static final String AD_UNIT_NAME = "ad_unit_name";
     public static final String AD_PLACEMENT = "ad_placement";
-    public static final String AD_PLACEMENT_NEW = "ad_placement_new";
     public static final String AD_PLATFORM = "ad_platform";
     public static final String AD_PRECISION = "ad_precision";
     public static final String AD_COUNTRY_CODE = "ad_country_code";
     public static final String AD_SDK_VERSION = "ad_sdk_version";
     public static final String AD_APP_VERSION = "ad_app_version";
     public static final String AD_BIDDING = "ad_bidding";
-    public static final String AD_GAID = "ad_gaid";
     public static final String AD_IMPRESSION_ID = "ad_impression_id";
     public static final String AD_IMP_TIME = "ad_imp_time";
 }

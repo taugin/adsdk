@@ -445,9 +445,6 @@ public class AdParser implements IParser {
                 if (jobj.has(PLAY)) {
                     spreadConfig.setPlay(jobj.getBoolean(PLAY));
                 }
-                if (jobj.has(ORGANIC)) {
-                    spreadConfig.setOrganic(jobj.getBoolean(ORGANIC));
-                }
             }
         } catch (Exception e) {
             Log.iv(Log.TAG, "parseSpConfig error : " + e);

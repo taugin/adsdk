@@ -305,7 +305,6 @@ public class SpLoader extends AbstractSdkLoader {
             if (mSpreadConfig != null) {
                 String url = mSpreadConfig.getLinkUrl();
                 String packageName = mSpreadConfig.getBundle();
-                boolean organic = mSpreadConfig.isOrganic();
                 boolean isPlay = mSpreadConfig.isPlay();
                 String referrer = null;
                 try {
@@ -316,7 +315,7 @@ public class SpLoader extends AbstractSdkLoader {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 if (TextUtils.isEmpty(url)) {
                     url = "market://details?id=" + packageName;
-                    if (!organic && !TextUtils.isEmpty(referrer)) {
+                    if (!TextUtils.isEmpty(referrer)) {
                         url = url + "&" + referrer;
                     }
                     if (isPlay && Utils.isInstalled(mContext, "com.android.vending")) {

@@ -1230,26 +1230,8 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     protected void onReportAdImpData(Map<String, Object> adImpMap, String impressionId) {
         if (adImpMap != null) {
             try {
-                // adImpMap.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
                 adImpMap.put("country", Utils.getCountryFromLocale(mContext));
                 adImpMap.put(Constant.AD_TYPE, getAdType());
-                try {
-                    if (EventImpl.get().getActiveDays() == 0) {
-                        adImpMap.put(Constant.AD_PLACEMENT_NEW, adImpMap.get(Constant.AD_PLACEMENT));
-                        Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
-                        String roundCpm = Utils.calcRoundCpm(adRevenue * 1000);
-                        adImpMap.put(Constant.AD_ROUND_CPM_NEW, roundCpm);
-                    }
-                } catch (Exception e) {
-                }
-                try {
-                    Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
-                    String roundCpm = Utils.calcRoundCpm(adRevenue * 1000);
-                    adImpMap.put(Constant.AD_ROUND_CPM, roundCpm);
-                    String network = (String) adImpMap.get(Constant.AD_NETWORK);
-                    adImpMap.put(String.format(Locale.ENGLISH, "%s_%s", Constant.AD_ROUND_CPM, Utils.formatNetwork(network)), roundCpm);
-                } catch (Exception exception) {
-                }
             } catch (Exception e) {
             }
         }

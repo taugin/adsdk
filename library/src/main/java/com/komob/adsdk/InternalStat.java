@@ -19,7 +19,6 @@ import java.util.Map;
 
 public class InternalStat {
 
-    private static Object mFacebookObject = null;
     private static final String SDK_NAME_FIREBASE = "firebase";
     private static final List<String> sFirebaseWhiteList;
 
@@ -138,25 +137,6 @@ public class InternalStat {
         }
         if (!TextUtils.isEmpty(error)) {
             Log.iv(Log.TAG_SDK, "error : " + error);
-        }
-    }
-
-    private static void initFacebook(Context context) {
-        if (mFacebookObject != null) {
-            return;
-        }
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.facebook.appevents.AppEventsLogger");
-            Method method = clazz.getMethod("newLogger", Context.class);
-            mFacebookObject = method.invoke(null, context);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "facebook new logger error : " + error);
         }
     }
 

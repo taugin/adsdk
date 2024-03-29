@@ -1289,7 +1289,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
             String precision = maxAd.getRevenuePrecision();
             Map<String, Object> map = new HashMap<>();
             map.put(Constant.AD_VALUE, revenue);
-            map.put(Constant.AD_MICRO_VALUE, Double.valueOf(revenue * 1000000).intValue());
             map.put(Constant.AD_CURRENCY, "USD");
             map.put(Constant.AD_NETWORK, networkName);
             map.put(Constant.AD_NETWORK_PID, placementId);
@@ -1302,7 +1301,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
             map.put(Constant.AD_COUNTRY_CODE, countryCode);
             map.put(Constant.AD_SDK_VERSION, getSdkVersion());
             map.put(Constant.AD_APP_VERSION, getAppVersion());
-            // map.put(Constant.AD_GAID, Utils.getString(mContext, Constant.PREF_GAID));
             onReportAdImpData(map, impressionId);
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);

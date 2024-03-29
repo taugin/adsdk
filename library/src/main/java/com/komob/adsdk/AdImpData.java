@@ -135,14 +135,6 @@ public class AdImpData {
         return null;
     }
 
-    public String getGaid() {
-        try {
-            return (String) mAdImpData.get(Constant.AD_GAID);
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
     public boolean isBidding() {
         try {
             return (boolean) mAdImpData.get(Constant.AD_BIDDING);
