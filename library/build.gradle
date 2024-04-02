@@ -45,8 +45,17 @@ android {
     }
 }
 
+def ADMOB = 'admob'
+def APPLOVIN = 'applovin'
+def FACEBOOK = 'facebook'
+def MINTEGRAL = 'mintegral'
+def INMOBI = 'inmobi'
+def UNITY = 'unity'
+def VUNGLE = 'vungle'
+def IRONSOURCE = 'ironsource'
+def BIGO = 'bigo'
 // 广告依赖文件
-// ext['network'] = ['admob', 'applovin', 'tradplus', 'bigo', 'mintegral']
+ext['network'] = [ADMOB, APPLOVIN, FACEBOOK, MINTEGRAL, INMOBI, UNITY, VUNGLE, IRONSOURCE, BIGO]
 apply from: '../groovy/ads.gradle'
 
 apply plugin: 'maven-publish'

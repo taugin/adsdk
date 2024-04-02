@@ -9,11 +9,9 @@ import com.mix.ads.adloader.applovin.AppLovinLoader;
 import com.mix.ads.adloader.bigo.BigoLoader;
 import com.mix.ads.adloader.listener.ISdkLoader;
 import com.mix.ads.adloader.spread.SpLoader;
-import com.mix.ads.adloader.tradplus.TradPlusLoader;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.data.config.PidConfig;
 import com.mix.ads.log.Log;
-import com.tradplus.ads.base.TradPlus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +29,6 @@ public class ModuleLoaderHelper {
     static {
         sSdkLoaderMap.put(Constant.AD_SDK_ADMOB, AdmobLoader.class);
         sSdkLoaderMap.put(Constant.AD_SDK_APPLOVIN, AppLovinLoader.class);
-        sSdkLoaderMap.put(Constant.AD_SDK_TRADPLUS, TradPlusLoader.class);
         sSdkLoaderMap.put(Constant.AD_SDK_SPREAD, SpLoader.class);
         sSdkLoaderMap.put(Constant.AD_NETWORK_BIGO, BigoLoader.class);
     }
@@ -43,9 +40,6 @@ public class ModuleLoaderHelper {
         }
         if (TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk)) {
             return hasApplovinModule();
-        }
-        if (TextUtils.equals(Constant.AD_SDK_TRADPLUS, sdk)) {
-            return hasTradPlusModule();
         }
         if (TextUtils.equals(Constant.AD_NETWORK_BIGO, sdk)) {
             return hasBigoModule();
@@ -88,16 +82,6 @@ public class ModuleLoaderHelper {
     private static boolean hasApplovinModule() {
         try {
             AppLovinSdk.class.getName();
-            return true;
-        } catch (Exception | Error e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-        return false;
-    }
-
-    private static boolean hasTradPlusModule() {
-        try {
-            TradPlus.class.getName();
             return true;
         } catch (Exception | Error e) {
             Log.iv(Log.TAG, "error : " + e);
