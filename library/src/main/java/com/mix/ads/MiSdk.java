@@ -25,8 +25,6 @@ import com.mix.mob.MisConfig;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -218,20 +216,7 @@ public class MiSdk {
      * @return 引用pid名字
      */
     private String getAdRefPlaceName(String placeName) {
-        String adrefPlaceName = placeName;
-        // 获取通过代码设置的别名
-        adrefPlaceName = getAdPlaceAlias(placeName);
-        if (!TextUtils.isEmpty(adrefPlaceName)) {
-            return adrefPlaceName;
-        }
-        Map<String, String> adRefs = DataManager.get(mContext).getRemoteAdRefs();
-        PlaceConfig localConfig = DataManager.get(mContext).getAdConfig();
-        if (adRefs == null && localConfig != null) {
-            adRefs = localConfig.getAdRefs();
-        }
-        if (adRefs != null && adRefs.containsKey(placeName)) {
-            adrefPlaceName = adRefs.get(placeName);
-        }
+        String adrefPlaceName = getAdPlaceAlias(placeName);
         if (!TextUtils.isEmpty(adrefPlaceName)) {
             return adrefPlaceName;
         }
@@ -517,22 +502,11 @@ public class MiSdk {
 
     public boolean isComplexAdsLoaded() {
         try {
-            List<String> placeList = DataManager.get(mContext).getPlaceList();
-            if (placeList != null && !placeList.isEmpty()) {
-                for (String name : placeList) {
-                    AdPlaceLoader adPlaceLoader = getAdLoader(name);
-                    if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
-                        Log.iv(Log.TAG, "place name [" + name + "] is loaded");
-                        return true;
-                    }
-                }
-            } else {
-                for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
-                    AdPlaceLoader adPlaceLoader = getAdLoader(entry.getKey());
-                    if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
-                        Log.iv(Log.TAG, "place name [" + entry.getKey() + "] is loaded");
-                        return true;
-                    }
+            for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
+                AdPlaceLoader adPlaceLoader = getAdLoader(entry.getKey());
+                if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
+                    Log.iv(Log.TAG, "place name [" + entry.getKey() + "] is loaded");
+                    return true;
                 }
             }
         } catch (Exception e) {
@@ -547,46 +521,15 @@ public class MiSdk {
 
     public void showGlobalComplexAds(String sceneName) {
         try {
-            List<String> placeList = DataManager.get(mContext).getPlaceList();
             List<AdPlaceLoader> list = new ArrayList<AdPlaceLoader>();
-            if (placeList != null && !placeList.isEmpty()) {
-                for (String name : placeList) {
-                    AdPlaceLoader adPlaceLoader = getAdLoader(name);
-                    if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
-                        list.add(adPlaceLoader);
-                    }
-                }
-            } else {
-                for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
-                    String placeName = entry.getKey();
-                    AdPlaceLoader adPlaceLoader = getAdLoader(placeName);
-                    if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
-                        list.add(adPlaceLoader);
-                    }
+            for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
+                String placeName = entry.getKey();
+                AdPlaceLoader adPlaceLoader = getAdLoader(placeName);
+                if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
+                    list.add(adPlaceLoader);
                 }
             }
             if (list != null && !list.isEmpty()) {
-                if (placeList == null || placeList.isEmpty()) {
-                    List<String> finalCpxOrderList = Constant.DEFAULT_COMPLEX_ORDER;
-                    Collections.sort(list, new Comparator<AdPlaceLoader>() {
-                        @Override
-                        public int compare(AdPlaceLoader adPlaceLoader, AdPlaceLoader t1) {
-                            try {
-                                if (adPlaceLoader != null && t1 != null) {
-                                    String type1 = adPlaceLoader.getLoadedType();
-                                    String type2 = t1.getLoadedType();
-                                    int index1 = finalCpxOrderList.indexOf(type1);
-                                    int index2 = finalCpxOrderList.indexOf(type2);
-                                    Integer integerType1 = Integer.valueOf(index1);
-                                    Integer integerType2 = Integer.valueOf(index2);
-                                    return integerType1.compareTo(integerType2);
-                                }
-                            } catch (Exception e) {
-                            }
-                            return 0;
-                        }
-                    });
-                }
                 for (AdPlaceLoader loader : list) {
                     if (loader != null && loader.isComplexAdsLoaded()) {
                         Log.iv(Log.TAG, "place name [" + loader.getPlaceName() + "] is called to show");

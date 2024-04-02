@@ -24,8 +24,8 @@ import android.widget.TextView;
 
 import com.mix.ads.MiSdk;
 import com.mix.ads.MiStat;
-import com.mix.ads.utils.Utils;
 import com.mix.ads.log.Log;
+import com.mix.ads.utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

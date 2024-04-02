@@ -7,10 +7,10 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.mix.ads.MiSdk;
+import com.mix.ads.MiStat;
 import com.mix.ads.data.DataManager;
 import com.mix.ads.log.Log;
 import com.mix.ads.stat.EventImpl;
-import com.mix.ads.MiStat;
 import com.mix.ads.utils.Utils;
 
 import org.json.JSONArray;

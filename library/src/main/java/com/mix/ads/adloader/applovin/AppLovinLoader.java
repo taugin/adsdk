@@ -102,14 +102,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     appLovinSdk.setMediationProvider("max");
                     if (isDebugDevice(mContext)) {
                         String gaid = Utils.getString(mContext, Constant.PREF_GAID);
-                        Log.iv(Log.TAG, "applovin debug mode gaid : " + gaid);
                         if (!TextUtils.isEmpty(gaid)) {
                             appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList(new String[]{gaid}));
                         }
-                    }
-                    try {
-                        appLovinSdk.getSettings().setVerboseLogging(isShowVerbose(mContext));
-                    } catch (Exception e) {
                     }
                     Log.iv(Log.TAG, "start initializing " + getSdkName() + " sdk");
                     mHandler.postDelayed(new Runnable() {
@@ -126,12 +121,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
                         mHandler.removeCallbacksAndMessages(null);
                         if (sdkInitializeListener != null) {
                             sdkInitializeListener.onInitializeSuccess();
-                        }
-                        try {
-                            if (isShowDebugger(mContext)) {
-                                appLovinSdk.showMediationDebugger();
-                            }
-                        } catch (Exception e) {
                         }
                     });
                 }
@@ -167,54 +156,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
         return DataManager.get(context).isApplovinInTestMode();
     }
 
-    /**
-     * 是否输出verbose信息
-     *
-     * @param context
-     * @return
-     */
-    private static boolean isShowVerbose(Context context) {
-        boolean isShowVerbose = false;
-        Map<String, Map<String, String>> config = DataManager.get(context).getMediationConfig();
-        if (config != null) {
-            Map<String, String> applovinConfig = config.get("applovin.sdk.config");
-            if (applovinConfig != null) {
-                try {
-                    isShowVerbose = Boolean.parseBoolean(applovinConfig.get("applovin_show_verbose"));
-                } catch (Exception e) {
-                }
-            }
-        }
-        return isShowVerbose;
-    }
-
-    private static boolean isShowDebugger(Context context) {
-        boolean isShowVerbose = false;
-        Map<String, Map<String, String>> config = DataManager.get(context).getMediationConfig();
-        if (config != null) {
-            Map<String, String> applovinConfig = config.get("applovin.sdk.config");
-            if (applovinConfig != null) {
-                try {
-                    isShowVerbose = Boolean.parseBoolean(applovinConfig.get("applovin_show_debugger"));
-                } catch (Exception e) {
-                }
-            }
-        }
-        return isShowVerbose;
-    }
-
     private static String getSdkKey(Context context) {
-        String applovinSdkKey = null;
-        Map<String, Map<String, String>> config = DataManager.get(context).getMediationConfig();
-        if (config != null) {
-            Map<String, String> applovinConfig = config.get("applovin.sdk.config");
-            if (applovinConfig == null) {
-                applovinConfig = config.get("com.mopub.mobileads.AppLovinAdapterConfiguration");
-            }
-            if (applovinConfig != null) {
-                applovinSdkKey = applovinConfig.get("sdk_key");
-            }
-        }
+        String applovinSdkKey = DataManager.get(context).getApplovinSdkKey();
         if (TextUtils.isEmpty(applovinSdkKey)) {
             applovinSdkKey = Utils.getMetaData(context, "applovin.sdk.key");
         }
@@ -229,6 +172,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (sAppLovinSdkSettings == null) {
             sAppLovinSdkSettings = new AppLovinSdkSettings(context);
         }
+        Log.iv(Log.TAG_SDK, "applovin sdk key : " + sdkKey);
         return AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, context);
     }
 

@@ -20,7 +20,6 @@ import com.mix.ads.adloader.listener.OnAdSdkInternalListener;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.core.AdPolicy;
 import com.mix.ads.core.ModuleLoaderHelper;
-import com.mix.ads.data.DataManager;
 import com.mix.ads.data.SpreadManager;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.data.config.PidConfig;
@@ -1645,7 +1644,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         try {
             Params params = getParams(iSdkLoader);
             try {
-                if (params != null && DataManager.get(mContext).isComplexNativeFull()) {
+                if (params != null) {
                     params.setAdCardStyle(Constant.NATIVE_CARD_FULL_LIST.get(new Random().nextInt(Constant.NATIVE_CARD_FULL_LIST.size())));
                     params.setAdRootLayout(0);
                 }

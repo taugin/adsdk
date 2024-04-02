@@ -5,13 +5,12 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import com.mix.ads.MiSdk;
+import com.mix.ads.MiStat;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.data.DataManager;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.data.config.PlaceConfig;
 import com.mix.ads.log.Log;
-import com.mix.ads.stat.EventImpl;
-import com.mix.ads.MiStat;
 import com.mix.ads.utils.Utils;
 
 import org.json.JSONArray;
@@ -165,7 +164,7 @@ public class LimitAdsManager {
     }
 
     private String getUserFlag() {
-        int activeDays = EventImpl.get().getActiveDays();
+        int activeDays = DataManager.get(mContext).getActiveDays();
         if (activeDays == 0) {
             return "1";
         }

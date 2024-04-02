@@ -5,7 +5,6 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
-import com.mix.ads.utils.Utils;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.data.config.PlaceConfig;
@@ -14,14 +13,14 @@ import com.mix.ads.data.parse.AdParser;
 import com.mix.ads.data.parse.IParser;
 import com.mix.ads.log.Log;
 import com.mix.ads.utils.AesUtils;
+import com.mix.ads.utils.Utils;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2018/2/12.
@@ -58,11 +57,9 @@ public class DataManager {
     }
 
     private Context mContext;
-    private PlaceConfig mPlaceConfig;
+    private PlaceConfig mLocalPlaceConfig;
+    private PlaceConfig mRemotePlaceConfig;
     private IParser mParser;
-    private String mAdMdnCfgMd5 = null;
-    private Map<String, Map<String, String>> mMdnCfgMap;
-
     private boolean mAdmobInTestMode;
     private boolean mApplovinInTestMode;
 
@@ -90,7 +87,7 @@ public class DataManager {
     }
 
     private void parseLocalData() {
-        if (mPlaceConfig == null && mParser != null) {
+        if (mLocalPlaceConfig == null && mParser != null) {
             String cfgName = getConfigName();
             String defName = getDefaultName();
             Log.iv(Log.TAG_SDK, "name : " + cfgName + "/" + defName);
@@ -104,25 +101,22 @@ public class DataManager {
             if (TextUtils.isEmpty(data)) {
                 data = Utils.readConfig(mContext, defName + CONFIG_SUFFIX2);
             }
-            mPlaceConfig = mParser.parseAdConfig(data);
-            if (mPlaceConfig != null) {
-                mPlaceConfig.setAdConfigMd5(Utils.string2MD5(data));
+            mLocalPlaceConfig = mParser.parseAdConfig(data);
+            if (mLocalPlaceConfig != null) {
+                mLocalPlaceConfig.setAdConfigMd5(Utils.string2MD5(data));
                 Log.iv(Log.TAG, "locale data has been set success");
             }
         }
     }
 
     private void parseRemoteData() {
-        Log.iv(Log.TAG_SDK, "remote data reading");
-        String data = null;
-        data = getString(DATA_CONFIG);
+        String data = getString(DATA_CONFIG);
         if (!TextUtils.isEmpty(data)
-                && (mPlaceConfig == null || !TextUtils.equals(mPlaceConfig.getAdConfigMd5(), Utils.string2MD5(data)))) {
+                && (mRemotePlaceConfig == null || !TextUtils.equals(mRemotePlaceConfig.getAdConfigMd5(), Utils.string2MD5(data)))) {
             if (mParser != null) {
-                mPlaceConfig = mParser.parseAdConfig(data);
-                if (mPlaceConfig != null) {
-                    mPlaceConfig.setAdConfigMd5(Utils.string2MD5(data));
-                    Log.iv(Log.TAG, "remote data has been set success");
+                mRemotePlaceConfig = mParser.parseAdConfig(data);
+                if (mRemotePlaceConfig != null) {
+                    mRemotePlaceConfig.setAdConfigMd5(Utils.string2MD5(data));
                 }
             }
         }
@@ -131,7 +125,10 @@ public class DataManager {
     public PlaceConfig getAdConfig() {
         parseRemoteData();
         parseLocalData();
-        return mPlaceConfig;
+        if (mRemotePlaceConfig != null) {
+            return mRemotePlaceConfig;
+        }
+        return mLocalPlaceConfig;
     }
 
     private String getMd5SubString() {
@@ -141,7 +138,7 @@ public class DataManager {
             return pkgmd5.substring(0, 8);
         } catch (Exception e) {
         }
-        return "_sdk_ads";
+        return "";
     }
 
     private String getConfigName() {
@@ -149,7 +146,6 @@ public class DataManager {
         try {
             cfgName = "c" + getMd5SubString() + "fg";
         } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
         }
         return cfgName;
     }
@@ -175,14 +171,6 @@ public class DataManager {
         return null;
     }
 
-    public Map<String, String> getRemoteAdRefs() {
-        String data = getString(Constant.SHARE_PLACE);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseStringMap(data);
-        }
-        return null;
-    }
-
     public List<SpreadConfig> getRemoteSpread() {
         String data = getString(SpreadConfig.AD_SPREAD_NAME);
         if (!TextUtils.isEmpty(data)) {
@@ -197,60 +185,6 @@ public class DataManager {
             return mParser.parseSpread(data);
         }
         return null;
-    }
-
-    public Map<String, Map<String, String>> getMediationConfig() {
-        String mediationConfigKey = getMediationConfigKey();
-        String data = getString(mediationConfigKey);
-        if (!TextUtils.isEmpty(data)) {
-            String md5 = Utils.string2MD5(data);
-            if (mMdnCfgMap == null || mMdnCfgMap.isEmpty() || !TextUtils.equals(md5, mAdMdnCfgMd5)) {
-                Log.iv(Log.TAG, "parse mediation config");
-                mAdMdnCfgMd5 = md5;
-                mMdnCfgMap = mParser.parseMediationConfig(data);
-            } else {
-                Log.iv(Log.TAG, "mediation config parsed");
-            }
-        }
-        return mMdnCfgMap;
-    }
-
-    public Collection<String> getSignList() {
-        Map<String, Map<String, String>> mapMap = getMediationConfig();
-        if (mapMap != null) {
-            Map<String, String> signMap = mapMap.get("allow.sign.list");
-            if (signMap != null && !signMap.isEmpty()) {
-                return signMap.values();
-            }
-        }
-        return null;
-    }
-
-
-    public Collection<String> getPackList() {
-        Map<String, Map<String, String>> mapMap = getMediationConfig();
-        if (mapMap != null) {
-            Map<String, String> signMap = mapMap.get("allow.pack.list");
-            if (signMap != null && !signMap.isEmpty()) {
-                return signMap.values();
-            }
-        }
-        return null;
-    }
-
-    public boolean isComplexNativeFull() {
-        String complexNativeFull = null;
-        Map<String, Map<String, String>> mapMap = getMediationConfig();
-        if (mapMap != null) {
-            Map<String, String> signMap = mapMap.get("complex.ads.config");
-            if (signMap != null && !signMap.isEmpty()) {
-                complexNativeFull = signMap.get("complex_native_full");
-            }
-        }
-        if (TextUtils.isEmpty(complexNativeFull)) {
-            complexNativeFull = "true";
-        }
-        return TextUtils.equals(complexNativeFull, "true");
     }
 
     public String getString(String key) {
@@ -269,10 +203,6 @@ public class DataManager {
             // Log.iv(Log.TAG, "value : " + value);
         }
         return value;
-    }
-
-    public List<String> getPlaceList() {
-        return parseStringList(DataManager.get(mContext).getString(Constant.COMPLEX_PLACES));
     }
 
     private List<String> parseStringList(String str) {
@@ -311,19 +241,24 @@ public class DataManager {
         }.start();
     }
 
-    public String getScenePrefix() {
-        String scenePrefix = getString(IParser.SCENE_PREFIX);
-        if (TextUtils.isEmpty(scenePrefix) && mPlaceConfig != null) {
-            scenePrefix = mPlaceConfig.getScenePrefix();
-        }
-        return scenePrefix;
-    }
-
     public boolean isDisableVpn() {
-        if (mPlaceConfig != null) {
-            return mPlaceConfig.isDisableVpnLoad();
+        if (mRemotePlaceConfig != null) {
+            return mRemotePlaceConfig.isDisableVpnLoad();
+        }
+        if (mLocalPlaceConfig != null) {
+            return mLocalPlaceConfig.isDisableVpnLoad();
         }
         return false;
+    }
+
+    public String getApplovinSdkKey() {
+        if (mRemotePlaceConfig != null && !TextUtils.isEmpty(mRemotePlaceConfig.getApplovinSdkKey())) {
+            return mRemotePlaceConfig.getApplovinSdkKey();
+        }
+        if (mLocalPlaceConfig != null && !TextUtils.isEmpty(mLocalPlaceConfig.getApplovinSdkKey())) {
+            return mLocalPlaceConfig.getApplovinSdkKey();
+        }
+        return null;
     }
 
     /**
@@ -334,8 +269,8 @@ public class DataManager {
      */
     public boolean isPlaceValidate(String placeName) {
         AdPlace adPlace = null;
-        if (mPlaceConfig != null) {
-            adPlace = mPlaceConfig.get(placeName);
+        if (mLocalPlaceConfig != null) {
+            adPlace = mLocalPlaceConfig.get(placeName);
         }
         if (adPlace == null) {
             adPlace = getRemoteAdPlace(placeName);
@@ -386,5 +321,46 @@ public class DataManager {
         Utils.putLong(mContext, Constant.PREF_LAST_CURRENT_TIME, finalTime);
         // Log.iv(Log.TAG, "elapsed diff : " + elapsedDiff + " , current diff : " + currentDiff + " , deviation : " + deviation + " , final time : " + Constant.SDF_WHOLE_TIME.format(finalTime));
         return finalTime;
+    }
+
+    public int getActiveDays() {
+        int activeDays = -1;
+        try {
+            Calendar calendar = Calendar.getInstance();
+            int nowYear = calendar.get(Calendar.YEAR);
+            int nowMonth = calendar.get(Calendar.MONTH) + 1;
+            int nowDay = calendar.get(Calendar.DAY_OF_MONTH);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            long nowDate = calendar.getTimeInMillis();
+
+            long userActiveTime = getFirstActiveTime();
+            calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(userActiveTime);
+            int activeYear = calendar.get(Calendar.YEAR);
+            int activeMonth = calendar.get(Calendar.MONTH) + 1;
+            int activeDay = calendar.get(Calendar.DAY_OF_MONTH);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            long activeDate = calendar.getTimeInMillis();
+
+            try {
+                Log.iv(Log.TAG_SDK, String.format("now : %d-%02d-%02d , active : %d-%02d-%02d, nowDate : %d , activeDate : %d", nowYear, nowMonth, nowDay, activeYear, activeMonth, activeDay, nowDate, activeDate));
+            } catch (Exception e) {
+                Log.iv(Log.TAG, "error : " + e);
+            }
+            activeDays = Long.valueOf((nowDate - activeDate) / Constant.ONE_DAY_MS).intValue();
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+            activeDays = -1;
+        }
+        if (activeDays < 0) {
+            activeDays = 0;
+        }
+        return activeDays;
     }
 }

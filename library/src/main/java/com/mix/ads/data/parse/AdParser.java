@@ -64,30 +64,24 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(data);
             List<AdPlace> adPlaces = null;
-            Map<String, String> sharePlace = null;
-            String scenePrefix = null;
+            String applovinSdkKey = null;
             boolean disableVpnLoad = false;
             if (jobj.has(ALL_PLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ALL_PLACES));
             }
-            if (jobj.has(SHARE_PLACE)) {
-                sharePlace = parseStringMap(jobj.getString(SHARE_PLACE));
-            }
-            if (jobj.has(SCENE_PREFIX)) {
-                scenePrefix = jobj.getString(SCENE_PREFIX);
+            if (jobj.has(APPLOVIN_SDK_KEY)) {
+                applovinSdkKey = jobj.getString(APPLOVIN_SDK_KEY);
             }
             if (jobj.has(DISABLE_VPN_LOAD)) {
                 disableVpnLoad = jobj.getInt(DISABLE_VPN_LOAD) == 1;
             }
-            if (adPlaces != null
-                    || sharePlace != null) {
+            if (adPlaces != null) {
                 placeConfig = new PlaceConfig();
                 placeConfig.setAdPlaceList(adPlaces);
-                placeConfig.setAdRefs(sharePlace);
             }
             if (placeConfig != null) {
-                placeConfig.setScenePrefix(scenePrefix);
                 placeConfig.setDisableVpnLoad(disableVpnLoad);
+                placeConfig.setApplovinSdkKey(applovinSdkKey);
             }
         } catch (Exception e) {
             Log.iv(Log.TAG, "parseAdConfigInternal error : " + e);
@@ -450,28 +444,6 @@ public class AdParser implements IParser {
             Log.iv(Log.TAG, "parseSpConfig error : " + e);
         }
         return spreadConfig;
-    }
-
-    @Override
-    public Map<String, Map<String, String>> parseMediationConfig(String data) {
-        Map<String, Map<String, String>> config = null;
-        data = getContent(data);
-        try {
-            JSONObject jobj = new JSONObject(data);
-            int size = jobj.length();
-            if (size > 0) {
-                config = new HashMap<String, Map<String, String>>();
-                Iterator<String> keys = jobj.keys();
-                while (keys.hasNext()) {
-                    String key = keys.next();
-                    String valueObj = jobj.getString(key);
-                    config.put(key, jsonToMap(valueObj));
-                }
-            }
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "parseMediationConfig error : " + e);
-        }
-        return config;
     }
 
     private Map<String, String> jsonToMap(String data) {

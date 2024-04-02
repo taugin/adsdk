@@ -44,12 +44,10 @@ import com.mix.ads.utils.Utils;
 import com.mix.mob.MisConfig;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -365,18 +363,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             return false;
         }
 
-        // 判断仅签名加载模式
-        if (!isMatchSign()) {
-            processSignNotMatch();
-            return false;
-        }
-
-        // 判断仅包名加载模式
-        if (!isMatchPack()) {
-            processPackNotMatch();
-            return false;
-        }
-
         if (isBlockMistakeClick()) {
             processBlockMistakeClick();
             return false;
@@ -403,40 +389,9 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         return AdPolicy.get(mContext).isExceedMaxReqTimes(getAdPlaceName(), getSdkName(), getMaxReqTimes());
     }
 
-    private boolean isMatchSign() {
-        if (mPidConfig != null && mPidConfig.isOnlySignLoad()) {
-            // 如果配置签名加载，则必须完全匹配才返回true
-            Collection<String> signList = DataManager.get(mContext).getSignList();
-            String signMd5 = Utils.getSignMd5(mContext);
-            if (signMd5 != null) {
-                signMd5 = signMd5.toLowerCase(Locale.ENGLISH);
-            }
-            return signList != null && signMd5 != null && signList.contains(signMd5);
-        }
-        return true;
-    }
-
     private void processSignNotMatch() {
         Log.iv(Log.TAG, formatLog("sign not match"));
         notifyAdLoadFailed(Constant.AD_ERROR_SIGN_NOT_MATCH, "sign not match");
-    }
-
-    private boolean isMatchPack() {
-        if (mPidConfig != null && mPidConfig.isOnlyPackLoad()) {
-            // 如果配置签名加载，则必须完全匹配才返回true
-            Collection<String> packList = DataManager.get(mContext).getPackList();
-            String packName = mContext != null ? mContext.getPackageName() : null;
-            if (packName != null) {
-                packName = packName.toLowerCase(Locale.ENGLISH);
-            }
-            return packList != null && packName != null && packList.contains(packName);
-        }
-        return true;
-    }
-
-    private void processPackNotMatch() {
-        Log.iv(Log.TAG, formatLog("pack not match"));
-        notifyAdLoadFailed(Constant.AD_ERROR_PACK_NOT_MATCH, "pack not match");
     }
 
     private boolean isBlockMistakeClick() {
@@ -728,12 +683,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
                 }
             }
             if (TextUtils.isEmpty(sceneId)) {
-                String scenePrefix = DataManager.get(mContext).getScenePrefix();
-                if (!TextUtils.isEmpty(scenePrefix)) {
-                    sceneId = scenePrefix + getAdPlaceName();
-                } else {
-                    sceneId = getAdPlaceName();
-                }
+                sceneId = getAdPlaceName();
             }
         } catch (Exception e) {
             sceneId = getAdPlaceName();
@@ -1236,7 +1186,14 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             }
         }
         MiStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
-        FBStatManager.get(mContext).reportFirebaseImpression(adImpMap);
+        try {
+            String adNetwork = (String) adImpMap.get(Constant.AD_NETWORK);
+            String adType = (String) adImpMap.get(Constant.AD_TYPE);
+            String placement = (String) adImpMap.get(Constant.AD_PLACEMENT);
+            Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
+            FBStatManager.get(mContext).reportFirebaseImpression(adNetwork, adType, placement, adRevenue);
+        } catch (Exception e) {
+        }
         if (adImpMap != null) {
             adImpMap.put(Constant.AD_IMPRESSION_ID, impressionId);
             adImpMap.put(Constant.AD_IMP_TIME, System.currentTimeMillis());

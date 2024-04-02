@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -15,13 +14,11 @@ public class PlaceConfig {
     // 广告配置
     private List<AdPlace> adPlaceList;
 
-    private Map<String, String> adRefs; // 广告场景相互引用
-
     private String adConfigMd5;
 
-    private String scenePrefix;
-
     private boolean disableVpnLoad = false;
+
+    private String applovinSdkKey;
 
     public List<AdPlace> getAdPlaceList() {
         return adPlaceList;
@@ -29,14 +26,6 @@ public class PlaceConfig {
 
     public void setAdPlaceList(List<AdPlace> adPlaceList) {
         this.adPlaceList = adPlaceList;
-    }
-
-    public Map<String, String> getAdRefs() {
-        return adRefs;
-    }
-
-    public void setAdRefs(Map<String, String> adRefs) {
-        this.adRefs = adRefs;
     }
 
     public String getAdConfigMd5() {
@@ -47,20 +36,20 @@ public class PlaceConfig {
         this.adConfigMd5 = adConfigMd5;
     }
 
-    public String getScenePrefix() {
-        return scenePrefix;
-    }
-
-    public void setScenePrefix(String scenePrefix) {
-        this.scenePrefix = scenePrefix;
-    }
-
     public boolean isDisableVpnLoad() {
         return disableVpnLoad;
     }
 
     public void setDisableVpnLoad(boolean disableVpnLoad) {
         this.disableVpnLoad = disableVpnLoad;
+    }
+
+    public String getApplovinSdkKey() {
+        return applovinSdkKey;
+    }
+
+    public void setApplovinSdkKey(String applovinSdkKey) {
+        this.applovinSdkKey = applovinSdkKey;
     }
 
     /**

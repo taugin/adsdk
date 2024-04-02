@@ -2,8 +2,8 @@ package com.mix.ads;
 
 import android.text.TextUtils;
 
-import com.mix.ads.core.framework.Params;
 import com.mix.ads.constant.Constant;
+import com.mix.ads.core.framework.Params;
 
 import java.util.HashMap;
 import java.util.Map;

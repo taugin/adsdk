@@ -9,11 +9,9 @@ import com.mix.ads.core.db.DBManager;
 import com.mix.ads.core.framework.AdStatManager;
 import com.mix.ads.core.framework.BounceRateManager;
 import com.mix.ads.core.framework.FBStatManager;
-import com.mix.ads.data.DataManager;
 import com.mix.ads.log.Log;
 import com.mix.ads.utils.Utils;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -184,46 +182,5 @@ public class EventImpl implements IEvent {
         extra.put("ecpm", ecpm);
         extra.put("country", Utils.getCountryFromLocale(mContext));
         return extra;
-    }
-
-    public int getActiveDays() {
-        int activeDays = -1;
-        try {
-            Calendar calendar = Calendar.getInstance();
-            int nowYear = calendar.get(Calendar.YEAR);
-            int nowMonth = calendar.get(Calendar.MONTH) + 1;
-            int nowDay = calendar.get(Calendar.DAY_OF_MONTH);
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
-            long nowDate = calendar.getTimeInMillis();
-
-            long userActiveTime = DataManager.get(mContext).getFirstActiveTime();
-            calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(userActiveTime);
-            int activeYear = calendar.get(Calendar.YEAR);
-            int activeMonth = calendar.get(Calendar.MONTH) + 1;
-            int activeDay = calendar.get(Calendar.DAY_OF_MONTH);
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
-            long activeDate = calendar.getTimeInMillis();
-
-            try {
-                Log.iv(Log.TAG_SDK, String.format("now : %d-%02d-%02d , active : %d-%02d-%02d, nowDate : %d , activeDate : %d", nowYear, nowMonth, nowDay, activeYear, activeMonth, activeDay, nowDate, activeDate));
-            } catch (Exception e) {
-                Log.iv(Log.TAG, "error : " + e);
-            }
-            activeDays = Long.valueOf((nowDate - activeDate) / Constant.ONE_DAY_MS).intValue();
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-            activeDays = -1;
-        }
-        if (activeDays < 0) {
-            activeDays = 0;
-        }
-        return activeDays;
     }
 }

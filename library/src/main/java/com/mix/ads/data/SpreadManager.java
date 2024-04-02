@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.UUID;
 
 public class SpreadManager {
 
@@ -230,8 +229,7 @@ public class SpreadManager {
 
     public String generateReferrer(Context context, String campaign) {
         String packageName = context.getPackageName();
-        String gclid = Utils.string2MD5(UUID.randomUUID().toString());
-        return String.format(Locale.ENGLISH, "referrer=utm_source%%3D%s%%26utm_medium%%3Dcpc%%26utm_campaign%%3D%s%%26gclid%%3D%s", packageName, campaign, gclid);
+        return String.format(Locale.ENGLISH, "referrer=utm_source%%3D%s%%26utm_medium%%3Dcpc%%26utm_campaign%%3D%s%%26", packageName, campaign);
     }
 
     private void loadAndShowImage(final ImageView imageView, String url) {

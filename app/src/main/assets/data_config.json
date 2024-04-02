@@ -1,8 +1,4 @@
 {
-  "scene_prefix": "adsdk_demo_",
-  "share_place": {
-    "for_native_layout": "native_admob"
-  },
   "all_places": [
     {
       "name": "splash_admob",

@@ -10,11 +10,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mix.ads.utils.Utils;
-import com.mix.ads.core.framework.Params;
-import com.mix.ads.log.Log;
 import com.mix.ads.adloader.base.BaseBindNativeView;
+import com.mix.ads.core.framework.Params;
 import com.mix.ads.data.config.PidConfig;
+import com.mix.ads.log.Log;
+import com.mix.ads.utils.Utils;
 import com.tradplus.ads.base.adapter.nativead.TPNativeAdView;
 import com.tradplus.ads.base.common.TPImageLoader;
 import com.tradplus.ads.mgr.nativead.TPCustomNativeAd;

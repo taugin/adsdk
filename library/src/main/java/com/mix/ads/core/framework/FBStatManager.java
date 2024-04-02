@@ -4,9 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.mix.ads.MiStat;
+import com.mix.ads.data.DataManager;
 import com.mix.ads.utils.Utils;
-import com.mix.ads.constant.Constant;
-import com.mix.ads.stat.EventImpl;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -40,21 +39,17 @@ public class FBStatManager {
 
 
     private boolean isNewUser() {
-        return EventImpl.get().getActiveDays() == 0;
+        return DataManager.get(mContext).getActiveDays() == 0;
     }
 
-    public void reportFirebaseImpression(Map<String, Object> adImpMap) {
-        String network = (String) adImpMap.get(Constant.AD_NETWORK);
+    public void reportFirebaseImpression(String network, String adType, String sceneName, Double adRevenue) {
         String formatNetwork = Utils.formatNetwork(network);
-        String adType = (String) adImpMap.get(Constant.AD_TYPE);
         if (TextUtils.isEmpty(adType)) {
             adType = "unknown";
         }
-        String sceneName = (String) adImpMap.get(Constant.AD_PLACEMENT);
         if (TextUtils.isEmpty(sceneName)) {
             sceneName = "unknown";
         }
-        Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
         if (isNewUser()) {
             String impTotalPattern = "gav_imp_new_total";
             sendFirebaseGavImpEvent(impTotalPattern, adRevenue);

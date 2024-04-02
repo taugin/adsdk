@@ -13,13 +13,10 @@ import java.util.Map;
  */
 
 public interface IParser {
-
     // 广告位汇总
     String ALL_PLACES = "all_places";
-    // 广告位引用影射表
-    String SHARE_PLACE = "share_place";
     // 场景前缀
-    String SCENE_PREFIX = "scene_prefix";
+    String APPLOVIN_SDK_KEY = "applovin_sdk_key";
     // 自定义广告位名称
     String NAME = "name";
     // 广告的加载模式 seq, ran, con
@@ -138,8 +135,6 @@ public interface IParser {
     AdPlace parseAdPlace(String data);
 
     Map<String, String> parseStringMap(String data);
-
-    Map<String, Map<String, String>> parseMediationConfig(String data);
 
     List<SpreadConfig> parseSpread(String data);
 }

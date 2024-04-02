@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.view.ViewGroup;
 
 import com.mix.ads.MiParams;
-import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.OnAdSdkListener;
+import com.mix.ads.data.config.AdPlace;
 
 /**
  * Created by wangchao1 on 2018/5/1.
