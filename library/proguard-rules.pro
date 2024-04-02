@@ -23,4 +23,4 @@
 
 -keepparameternames
 -dontoptimize
--keep class com.hauyu.adsdk.* {public *;}
+-keep class com.mix.ads.* {public *;}
