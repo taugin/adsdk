@@ -4,7 +4,7 @@ package com.mix.ads;
  * Created by Administrator on 2018/6/28.
  */
 
-public class AdReward {
+public class MiReward {
     private String amount;
     private String type;
 

@@ -3,7 +3,7 @@ package com.mix.ads.core.framework;
 import android.app.Activity;
 import android.view.ViewGroup;
 
-import com.mix.ads.AdParams;
+import com.mix.ads.MiParams;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.OnAdSdkListener;
 
@@ -41,9 +41,9 @@ public interface IAdLoader {
 
     boolean isAdViewLoaded(String adType);
 
-    void loadAdView(AdParams adParams);
+    void loadAdView(MiParams miParams);
 
-    void showAdView(ViewGroup adContainer, String adType, AdParams adParams);
+    void showAdView(ViewGroup adContainer, String adType, MiParams miParams);
 
     boolean isSplashLoaded();
 
@@ -57,7 +57,7 @@ public interface IAdLoader {
 
     String getLoadedSdk();
 
-    void loadComplexAds(AdParams adParams);
+    void loadComplexAds(MiParams miParams);
 
     boolean showComplexAds(String sceneName);
 

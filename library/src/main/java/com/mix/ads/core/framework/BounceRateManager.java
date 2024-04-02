@@ -6,11 +6,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.mix.ads.AdSdk;
+import com.mix.ads.MiSdk;
 import com.mix.ads.data.DataManager;
 import com.mix.ads.log.Log;
 import com.mix.ads.stat.EventImpl;
-import com.mix.ads.InternalStat;
+import com.mix.ads.MiStat;
 import com.mix.ads.utils.Utils;
 
 import org.json.JSONArray;
@@ -194,7 +194,7 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
                         Utils.putLong(mContext, prefKey, triggerCount);
                         Log.iv(Log.TAG, "pid : " + pid + " mistake click");
                         String msClkAdsInfo = String.format(Locale.ENGLISH, "%s|%s", pid, msclkDuration);
-                        InternalStat.reportEvent(mContext, "msclk_ads_info", msClkAdsInfo);
+                        MiStat.reportEvent(mContext, "msclk_ads_info", msClkAdsInfo);
                     }
                 }
             }
@@ -223,7 +223,7 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
     }
 
     private void parseMsClkConfig() {
-        String msclkConfigContent = AdSdk.get(mContext).getString(MSCLK_CFG);
+        String msclkConfigContent = MiSdk.get(mContext).getString(MSCLK_CFG);
         if (!TextUtils.isEmpty(msclkConfigContent)) {
             String contentMD5 = Utils.string2MD5(msclkConfigContent);
             if (mMsClkCfgMap != null && !mMsClkCfgMap.isEmpty() && TextUtils.equals(contentMD5, mMsClkCfgMd5)) {

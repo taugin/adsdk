@@ -1,4 +1,4 @@
-package com.mix.api;
+package com.mix.mob;
 
 import android.app.Activity;
 import android.app.Application;
@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by Administrator on 2018-10-16.
  */
 
-public class RFileConfig {
+public class MisConfig {
     public static String getVersion() {
         return BuildConfig.SDK_VERSION_NAME;
     }

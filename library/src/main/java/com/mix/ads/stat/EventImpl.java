@@ -3,7 +3,7 @@ package com.mix.ads.stat;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.mix.ads.InternalStat;
+import com.mix.ads.MiStat;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.core.db.DBManager;
 import com.mix.ads.core.framework.AdStatManager;
@@ -168,7 +168,7 @@ public class EventImpl implements IEvent {
 
     public void reportEvent(Context context, String eventId, String value, Map<String, Object> extra) {
         Map<String, Object> maps = extra;
-        InternalStat.sendFirebaseAnalytics(context, eventId, value, maps, InternalStat.isInFirebaseWhiteList(eventId));
+        MiStat.sendFirebaseAnalytics(context, eventId, value, maps, MiStat.isInFirebaseWhiteList(eventId));
     }
 
     private Map<String, Object> addExtra(Map<String, Object> extra, String name, String sdk, String type, String pid, double ecpm, String network, String networkPid) {

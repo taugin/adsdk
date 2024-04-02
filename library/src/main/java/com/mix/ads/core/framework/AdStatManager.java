@@ -2,7 +2,7 @@ package com.mix.ads.core.framework;
 
 import android.content.Context;
 
-import com.mix.ads.AdImpData;
+import com.mix.ads.MiImpData;
 import com.mix.ads.core.db.DBManager;
 import com.mix.ads.log.Log;
 import com.mix.ads.utils.Utils;
@@ -84,12 +84,12 @@ public class AdStatManager {
         return Utils.getLong(mContext, PREF_ALL_CLK_COUNT, 0);
     }
 
-    public void recordAdImpression(final AdImpData adImpData) {
+    public void recordAdImpression(final MiImpData miImpData) {
         sExecutorService.execute(new Runnable() {
             @Override
             public void run() {
-                if (adImpData != null) {
-                    DBManager.get(mContext).insertAdImpression(adImpData);
+                if (miImpData != null) {
+                    DBManager.get(mContext).insertAdImpression(miImpData);
                 }
             }
         });

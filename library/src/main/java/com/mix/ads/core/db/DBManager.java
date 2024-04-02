@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import com.mix.ads.AdImpData;
+import com.mix.ads.MiImpData;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.data.DataManager;
 import com.mix.ads.log.Log;
@@ -56,7 +56,7 @@ public class DBManager {
         mDBHelper = new DBHelper(context);
     }
 
-    public boolean insertAdImpression(AdImpData mpImpData) {
+    public boolean insertAdImpression(MiImpData mpImpData) {
         if (mpImpData == null) {
             return false;
         }
@@ -102,27 +102,27 @@ public class DBManager {
         }
     }
 
-    private ContentValues impDateToContentValues(AdImpData adImpData) {
-        if (adImpData == null) {
+    private ContentValues impDateToContentValues(MiImpData miImpData) {
+        if (miImpData == null) {
             return null;
         }
         try {
             ContentValues values = new ContentValues();
-            values.put(DBHelper.AD_IMPRESSION_ID, adImpData.getImpressionId());
-            values.put(DBHelper.AD_UNIT_ID, adImpData.getUnitId());
-            values.put(DBHelper.AD_UNIT_NAME, adImpData.getUnitName());
-            values.put(DBHelper.AD_PLACEMENT, adImpData.getPlacement());
-            values.put(DBHelper.AD_SDK_VERSION, adImpData.getSdkVersion());
-            values.put(DBHelper.AD_APP_VERSION, adImpData.getAppVersion());
-            values.put(DBHelper.AD_TYPE, adImpData.getAdType());
-            values.put(DBHelper.AD_UNIT_FORMAT, adImpData.getAdFormat());
-            values.put(DBHelper.AD_CURRENCY, adImpData.getCurrency());
-            values.put(DBHelper.AD_REVENUE, adImpData.getValue());
-            values.put(DBHelper.AD_PRECISION, adImpData.getPrecision());
-            values.put(DBHelper.AD_NETWORK, adImpData.getNetwork());
-            values.put(DBHelper.AD_NETWORK_PID, adImpData.getNetworkPid());
-            values.put(DBHelper.AD_PLATFORM, adImpData.getPlatform());
-            values.put(DBHelper.AD_COUNTRY, adImpData.getCountryCode());
+            values.put(DBHelper.AD_IMPRESSION_ID, miImpData.getImpressionId());
+            values.put(DBHelper.AD_UNIT_ID, miImpData.getUnitId());
+            values.put(DBHelper.AD_UNIT_NAME, miImpData.getUnitName());
+            values.put(DBHelper.AD_PLACEMENT, miImpData.getPlacement());
+            values.put(DBHelper.AD_SDK_VERSION, miImpData.getSdkVersion());
+            values.put(DBHelper.AD_APP_VERSION, miImpData.getAppVersion());
+            values.put(DBHelper.AD_TYPE, miImpData.getAdType());
+            values.put(DBHelper.AD_UNIT_FORMAT, miImpData.getAdFormat());
+            values.put(DBHelper.AD_CURRENCY, miImpData.getCurrency());
+            values.put(DBHelper.AD_REVENUE, miImpData.getValue());
+            values.put(DBHelper.AD_PRECISION, miImpData.getPrecision());
+            values.put(DBHelper.AD_NETWORK, miImpData.getNetwork());
+            values.put(DBHelper.AD_NETWORK_PID, miImpData.getNetworkPid());
+            values.put(DBHelper.AD_PLATFORM, miImpData.getPlatform());
+            values.put(DBHelper.AD_COUNTRY, miImpData.getCountryCode());
 
             long now = System.currentTimeMillis();
             sSdf.setTimeZone(TimeZone.getDefault());
@@ -180,8 +180,8 @@ public class DBManager {
     }
 
     @SuppressLint("Range")
-    public List<AdImpData> queryAllImps() {
-        List<AdImpData> list = null;
+    public List<MiImpData> queryAllImps() {
+        List<MiImpData> list = null;
         String sql = String.format(Locale.ENGLISH, "select * from %s order by %s desc", DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_IMP_TIME);
         Cursor cursor = null;
         try {
@@ -202,7 +202,7 @@ public class DBManager {
                     objectMap.put(Constant.AD_NETWORK_PID, cursor.getString(cursor.getColumnIndex(DBHelper.AD_NETWORK_PID)));
                     objectMap.put(Constant.AD_VALUE, cursor.getDouble(cursor.getColumnIndex(DBHelper.AD_REVENUE)));
                     objectMap.put(Constant.AD_IMP_TIME, cursor.getLong(cursor.getColumnIndex(DBHelper.AD_IMP_TIME)));
-                    list.add(AdImpData.createAdImpData(objectMap));
+                    list.add(MiImpData.createAdImpData(objectMap));
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {

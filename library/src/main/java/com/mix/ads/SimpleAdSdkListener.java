@@ -42,7 +42,7 @@ public class SimpleAdSdkListener implements OnAdSdkListener {
     }
 
     @Override
-    public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
+    public void onRewarded(String placeName, String source, String adType, String pid, MiReward item) {
     }
 
     @Override

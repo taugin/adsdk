@@ -35,11 +35,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hauyu.adsdk.demo.view.CustomDrawable;
-import com.mix.ads.AdExtra;
-import com.mix.ads.AdImpData;
-import com.mix.ads.AdParams;
-import com.mix.ads.AdReward;
-import com.mix.ads.AdSdk;
+import com.mix.ads.MiExtra;
+import com.mix.ads.MiImpData;
+import com.mix.ads.MiParams;
+import com.mix.ads.MiReward;
+import com.mix.ads.MiSdk;
 import com.mix.ads.OnAdFilterListener;
 import com.mix.ads.SimpleAdSdkListener;
 import com.mix.ads.constant.Constant;
@@ -85,15 +85,15 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     static {
         BANNER_MAP = new HashMap<>();
-        BANNER_MAP.put("NOSET", AdExtra.COMMON_BANNER);
-        BANNER_MAP.put("BANNER", AdExtra.COMMON_BANNER);
-        BANNER_MAP.put("FULL_BANNER", AdExtra.COMMON_FULL_BANNER);
-        BANNER_MAP.put("LARGE_BANNER", AdExtra.COMMON_LARGE_BANNER);
-        BANNER_MAP.put("LEADERBOARD", AdExtra.COMMON_LEADERBOARD);
-        BANNER_MAP.put("MEDIUM_RECTANGLE", AdExtra.COMMON_MEDIUM_RECTANGLE);
-        BANNER_MAP.put("WIDE_SKYSCRAPER", AdExtra.COMMON_WIDE_SKYSCRAPER);
-        BANNER_MAP.put("SMART_BANNER", AdExtra.COMMON_SMART_BANNER);
-        BANNER_MAP.put("ADAPTIVE_BANNER", AdExtra.COMMON_ADAPTIVE_BANNER);
+        BANNER_MAP.put("NOSET", MiExtra.COMMON_BANNER);
+        BANNER_MAP.put("BANNER", MiExtra.COMMON_BANNER);
+        BANNER_MAP.put("FULL_BANNER", MiExtra.COMMON_FULL_BANNER);
+        BANNER_MAP.put("LARGE_BANNER", MiExtra.COMMON_LARGE_BANNER);
+        BANNER_MAP.put("LEADERBOARD", MiExtra.COMMON_LEADERBOARD);
+        BANNER_MAP.put("MEDIUM_RECTANGLE", MiExtra.COMMON_MEDIUM_RECTANGLE);
+        BANNER_MAP.put("WIDE_SKYSCRAPER", MiExtra.COMMON_WIDE_SKYSCRAPER);
+        BANNER_MAP.put("SMART_BANNER", MiExtra.COMMON_SMART_BANNER);
+        BANNER_MAP.put("ADAPTIVE_BANNER", MiExtra.COMMON_ADAPTIVE_BANNER);
     }
 
     private static final List<String> sAllSdk = Arrays.asList("tradplus", "applovin", "admob", "bigo");
@@ -310,7 +310,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         String debugValue = "[c:" + Utils.isUsbConnected(this) + "|d:" + Utils.isDebugEnabled(this) + "]";
         setTitle(getTitle() + " - " + debugValue);
         mContext = getApplicationContext();
-        AdSdk.get(this).setOnAdFilterListener(new OnAdFilterListener() {
+        MiSdk.get(this).setOnAdFilterListener(new OnAdFilterListener() {
             @Override
             public boolean doFilter(String placeName, String sdk, String type) {
                 return false;
@@ -346,7 +346,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
             @Override
             public void run() {
-                long time = AdSdk.get(getApplicationContext()).getCurrentTimeMillis();
+                long time = MiSdk.get(getApplicationContext()).getCurrentTimeMillis();
                 mTimeView.setText(sdf.format(time));
             }
         };
@@ -373,7 +373,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     public void onClick(View v) {
         if (v.getId() == R.id.mediation_debugger) {
-            AdSdk.get(mContext).showMediationDebugger();
+            MiSdk.get(mContext).showMediationDebugger();
         } else if (v.getId() == R.id.interstitial) {
             loadInterstitial((TextView) v);
         } else if (v.getId() == R.id.native_common) {
@@ -385,88 +385,88 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         } else if (v.getId() == R.id.splash) {
             loadSplash((TextView) v);
         } else if (v.getId() == R.id.change_language) {
-            String value = AdSdk.get(this).getString("md5:open_app");
+            String value = MiSdk.get(this).getString("md5:open_app");
             Log.v(Log.TAG, "open_app --> value : " + value);
             ChangeLanguage.showLanguageDialog(true);
         } else if (v.getId() == R.id.show_max_interstitial) {
-            String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_INTERSTITIAL);
+            String maxPlaceName = MiSdk.get(this).getMaxPlaceName(Constant.TYPE_INTERSTITIAL);
             if (!TextUtils.isEmpty(maxPlaceName)) {
-                AdSdk.get(this).showInterstitial(maxPlaceName, "scene_max_interstitial");
+                MiSdk.get(this).showInterstitial(maxPlaceName, "scene_max_interstitial");
             } else {
                 runToast("No loaded place name");
             }
         } else if (v.getId() == R.id.show_max_native) {
-            String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_NATIVE);
+            String maxPlaceName = MiSdk.get(this).getMaxPlaceName(Constant.TYPE_NATIVE);
             if (!TextUtils.isEmpty(maxPlaceName)) {
                 ViewGroup frameLayout = new LinearLayout(this);
-                AdParams adParams = getNativeParams();
-                adParams.setSceneName("scene_show_max_native");
-                AdSdk.get(mContext).showAdView(maxPlaceName, adParams, frameLayout);
+                MiParams miParams = getNativeParams();
+                miParams.setSceneName("scene_show_max_native");
+                MiSdk.get(mContext).showAdView(maxPlaceName, miParams, frameLayout);
                 showNativeAds(frameLayout);
             } else {
                 runToast("No loaded place name");
             }
         } else if (v.getId() == R.id.show_max_splash) {
-            String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_SPLASH);
+            String maxPlaceName = MiSdk.get(this).getMaxPlaceName(Constant.TYPE_SPLASH);
             if (!TextUtils.isEmpty(maxPlaceName)) {
                 mSplashContainer.setVisibility(View.VISIBLE);
-                AdSdk.get(this).showSplash(maxPlaceName, mSplashContainer, "scene_max_splash_123321");
+                MiSdk.get(this).showSplash(maxPlaceName, mSplashContainer, "scene_max_splash_123321");
                 mSplashContainer.setVisibility(View.VISIBLE);
             } else {
                 runToast("No loaded place name");
             }
         } else if (v.getId() == R.id.show_max_reward) {
-            String maxPlaceName = AdSdk.get(this).getMaxPlaceName(Constant.TYPE_REWARD);
+            String maxPlaceName = MiSdk.get(this).getMaxPlaceName(Constant.TYPE_REWARD);
             if (!TextUtils.isEmpty(maxPlaceName)) {
-                AdSdk.get(this).showRewardedVideo(maxPlaceName, "scene_max_reward");
+                MiSdk.get(this).showRewardedVideo(maxPlaceName, "scene_max_reward");
             } else {
                 runToast("No loaded place name");
             }
         } else if (v.getId() == R.id.show_complex_ads) {
-            String maxPlaceName = AdSdk.get(this).getMaxPlaceName();
-            AdSdk.get(this).showComplexAds(maxPlaceName, "scene_complex_ads_789987");
+            String maxPlaceName = MiSdk.get(this).getMaxPlaceName();
+            MiSdk.get(this).showComplexAds(maxPlaceName, "scene_complex_ads_789987");
         } else if (v.getId() == R.id.native_interstitial) {
             String tag = (String) v.getTag();
             loadAdViewByLayout(tag, (TextView) v);
         } else if (v.getId() == R.id.load_all_interstitial) {
             for (String sdk : sAllSdk) {
                 String placeName = String.format(Locale.ENGLISH, INTERSTITIAL_PREFIX, sdk);
-                AdSdk.get(mContext).loadInterstitial(placeName);
+                MiSdk.get(mContext).loadInterstitial(placeName);
             }
         } else if (v.getId() == R.id.load_all_native) {
             for (String sdk : sAllSdk) {
                 String placeName = String.format(Locale.ENGLISH, NATIVE_PREFIX, sdk);
-                AdSdk.get(mContext).loadAdView(placeName);
+                MiSdk.get(mContext).loadAdView(placeName);
             }
         } else if (v.getId() == R.id.load_all_splash) {
             for (String sdk : sAllSdk) {
                 String placeName = String.format(Locale.ENGLISH, SPLASH_PREFIX, sdk);
-                AdSdk.get(mContext).loadSplash(placeName);
+                MiSdk.get(mContext).loadSplash(placeName);
             }
         } else if (v.getId() == R.id.load_all_reward) {
             for (String sdk : sAllSdk) {
                 String placeName = String.format(Locale.ENGLISH, REWARD_PREFIX, sdk);
-                AdSdk.get(mContext).loadRewardedVideo(placeName);
+                MiSdk.get(mContext).loadRewardedVideo(placeName);
             }
         } else if (v.getId() == R.id.show_spread_list) {
-            AdSdk.get(this).showSpreadUI();
+            MiSdk.get(this).showSpreadUI();
         } else if (v.getId() == R.id.bcsdk_demo) {
             startActivity(new Intent(this, BcSdkActivity.class));
         }
     }
 
     private void loadAdViewByLayout(String tag, TextView textView) {
-        if (AdSdk.get(this).isComplexAdsLoaded("for_native_layout")) {
-            AdSdk.get(this).showComplexAds("for_native_layout", "scene_for_native_layout");
+        if (MiSdk.get(this).isComplexAdsLoaded("for_native_layout")) {
+            MiSdk.get(this).showComplexAds("for_native_layout", "scene_for_native_layout");
         } else {
-            AdParams.Builder builder = new AdParams.Builder();
-            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, tag);
-            AdParams adParams = builder.build();
-            AdSdk.get(mContext).loadComplexAds("for_native_layout", adParams, new SimpleAdSdkListener() {
+            MiParams.Builder builder = new MiParams.Builder();
+            builder.setAdCardStyle(MiExtra.AD_SDK_COMMON, tag);
+            MiParams miParams = builder.build();
+            MiSdk.get(mContext).loadComplexAds("for_native_layout", miParams, new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String placeName, String source, String adType, String pid) {
                     Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
-                    String loadedSdk = AdSdk.get(mContext).getLoadedSdk(placeName);
+                    String loadedSdk = MiSdk.get(mContext).getLoadedSdk(placeName);
                     Log.v(TAG, "loaded sdk : " + loadedSdk);
                     updateLoadStatus(textView, placeName);
                 }
@@ -482,35 +482,35 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     private void loadInterstitial(TextView textView) {
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
         String interstitialPlace = String.format(Locale.ENGLISH, INTERSTITIAL_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
-        if (AdSdk.get(mContext).isInterstitialLoaded(interstitialPlace)) {
-            String loadedSdk = AdSdk.get(mContext).getLoadedSdk(interstitialPlace);
+        if (MiSdk.get(mContext).isInterstitialLoaded(interstitialPlace)) {
+            String loadedSdk = MiSdk.get(mContext).getLoadedSdk(interstitialPlace);
             Log.v(TAG, "loaded sdk : " + loadedSdk);
-            AdSdk.get(mContext).showInterstitial(interstitialPlace, "test_scene_interstitial");
+            MiSdk.get(mContext).showInterstitial(interstitialPlace, "test_scene_interstitial");
         } else {
-            AdSdk.get(mContext).loadInterstitial(interstitialPlace, new FullScreenAdListener(textView));
+            MiSdk.get(mContext).loadInterstitial(interstitialPlace, new FullScreenAdListener(textView));
         }
     }
 
     private void loadSplash(TextView textView) {
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
         String splashPlace = String.format(Locale.ENGLISH, SPLASH_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
-        if (AdSdk.get(mContext).isSplashLoaded(splashPlace)) {
+        if (MiSdk.get(mContext).isSplashLoaded(splashPlace)) {
             mSplashContainer.setVisibility(View.VISIBLE);
-            AdSdk.get(mContext).showSplash(splashPlace, mSplashContainer, "scene_show_splash_456654");
+            MiSdk.get(mContext).showSplash(splashPlace, mSplashContainer, "scene_show_splash_456654");
         } else {
-            AdSdk.get(mContext).loadSplash(splashPlace, new FullScreenAdListener(textView));
+            MiSdk.get(mContext).loadSplash(splashPlace, new FullScreenAdListener(textView));
         }
     }
 
     private void loadReward(TextView textView) {
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
         String rewardPlace = String.format(Locale.ENGLISH, REWARD_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
-        if (AdSdk.get(mContext).isRewardedVideoLoaded(rewardPlace)) {
-            AdSdk.get(mContext).showRewardedVideo(rewardPlace, "test_scene_reward");
+        if (MiSdk.get(mContext).isRewardedVideoLoaded(rewardPlace)) {
+            MiSdk.get(mContext).showRewardedVideo(rewardPlace, "test_scene_reward");
         } else {
-            AdSdk.get(mContext).loadRewardedVideo(rewardPlace, new FullScreenAdListener(textView) {
+            MiSdk.get(mContext).loadRewardedVideo(rewardPlace, new FullScreenAdListener(textView) {
                 @Override
-                public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
+                public void onRewarded(String placeName, String source, String adType, String pid, MiReward item) {
                     super.onRewarded(placeName, source, adType, pid, item);
                     Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , item : " + item);
                     runToast(item.toString());
@@ -521,82 +521,82 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     private void loadBanner(TextView textView) {
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
-        AdParams.Builder builder = new AdParams.Builder();
+        MiParams.Builder builder = new MiParams.Builder();
         String bannerPlace = String.format(Locale.ENGLISH, BANNER_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
-        if (AdSdk.get(mContext).isAdViewLoaded(bannerPlace)) {
+        if (MiSdk.get(mContext).isAdViewLoaded(bannerPlace)) {
             FrameLayout frameLayout = new FrameLayout(this);
-            AdSdk.get(mContext).showAdView(bannerPlace, frameLayout);
+            MiSdk.get(mContext).showAdView(bannerPlace, frameLayout);
             CustomDrawable.setBackground(frameLayout);
             showNativeAds(frameLayout);
         } else {
             String banner = (String) mAdBannerSizeSpinner.getSelectedItem();
-            builder.setBannerSize(AdExtra.AD_SDK_COMMON, BANNER_MAP.get(banner));
-            AdParams adParams = builder.build();
-            AdSdk.get(mContext).loadAdView(bannerPlace, adParams, new FullScreenAdListener(textView));
+            builder.setBannerSize(MiExtra.AD_SDK_COMMON, BANNER_MAP.get(banner));
+            MiParams miParams = builder.build();
+            MiSdk.get(mContext).loadAdView(bannerPlace, miParams, new FullScreenAdListener(textView));
         }
     }
 
-    private AdParams getNativeParams() {
-        AdParams.Builder builder = new AdParams.Builder();
+    private MiParams getNativeParams() {
+        MiParams.Builder builder = new MiParams.Builder();
         String layout = (String) mAdLayoutSpinner.getSelectedItem();
         String layoutStyle;
         String sdkArray[] = getResources().getStringArray(R.array.ad_layout);
         if ("Random".equalsIgnoreCase(layout)) {
             layoutStyle = sdkArray[new Random().nextInt(sdkArray.length - 4) + 4];
-            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layoutStyle.toLowerCase());
+            builder.setAdCardStyle(MiExtra.AD_SDK_COMMON, layoutStyle.toLowerCase());
         } else if ("Custom Small".equalsIgnoreCase(layout)) {
-            builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_small);
-            builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
-            builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
-            builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
-            builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
-            builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
-            builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
-            builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+            builder.setAdRootLayout(MiExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_small);
+            builder.setAdTitle(MiExtra.AD_SDK_COMMON, R.id.common_title);
+            builder.setAdDetail(MiExtra.AD_SDK_COMMON, R.id.common_detail);
+            builder.setAdIcon(MiExtra.AD_SDK_COMMON, R.id.common_icon);
+            builder.setAdAction(MiExtra.AD_SDK_COMMON, R.id.common_action_btn);
+            builder.setAdCover(MiExtra.AD_SDK_COMMON, R.id.common_image_cover);
+            builder.setAdChoices(MiExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+            builder.setAdMediaView(MiExtra.AD_SDK_COMMON, R.id.common_media_cover);
         } else if ("Custom Medium".equalsIgnoreCase(layout)) {
-            builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_medium);
-            builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
-            builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
-            builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
-            builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
-            builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
-            builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
-            builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+            builder.setAdRootLayout(MiExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_medium);
+            builder.setAdTitle(MiExtra.AD_SDK_COMMON, R.id.common_title);
+            builder.setAdDetail(MiExtra.AD_SDK_COMMON, R.id.common_detail);
+            builder.setAdIcon(MiExtra.AD_SDK_COMMON, R.id.common_icon);
+            builder.setAdAction(MiExtra.AD_SDK_COMMON, R.id.common_action_btn);
+            builder.setAdCover(MiExtra.AD_SDK_COMMON, R.id.common_image_cover);
+            builder.setAdChoices(MiExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+            builder.setAdMediaView(MiExtra.AD_SDK_COMMON, R.id.common_media_cover);
         } else if ("Custom Large".equalsIgnoreCase(layout)) {
-            builder.setAdRootLayout(AdExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_large);
-            builder.setAdTitle(AdExtra.AD_SDK_COMMON, R.id.common_title);
-            builder.setAdDetail(AdExtra.AD_SDK_COMMON, R.id.common_detail);
-            builder.setAdIcon(AdExtra.AD_SDK_COMMON, R.id.common_icon);
-            builder.setAdAction(AdExtra.AD_SDK_COMMON, R.id.common_action_btn);
-            builder.setAdCover(AdExtra.AD_SDK_COMMON, R.id.common_image_cover);
-            builder.setAdChoices(AdExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
-            builder.setAdMediaView(AdExtra.AD_SDK_COMMON, R.id.common_media_cover);
+            builder.setAdRootLayout(MiExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_large);
+            builder.setAdTitle(MiExtra.AD_SDK_COMMON, R.id.common_title);
+            builder.setAdDetail(MiExtra.AD_SDK_COMMON, R.id.common_detail);
+            builder.setAdIcon(MiExtra.AD_SDK_COMMON, R.id.common_icon);
+            builder.setAdAction(MiExtra.AD_SDK_COMMON, R.id.common_action_btn);
+            builder.setAdCover(MiExtra.AD_SDK_COMMON, R.id.common_image_cover);
+            builder.setAdChoices(MiExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
+            builder.setAdMediaView(MiExtra.AD_SDK_COMMON, R.id.common_media_cover);
         } else {
             layoutStyle = layout;
-            builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, layoutStyle.toLowerCase());
+            builder.setAdCardStyle(MiExtra.AD_SDK_COMMON, layoutStyle.toLowerCase());
         }
-        builder.setNativeTemplateWidth(AdExtra.AD_SDK_COMMON, Utils.dp2px(mContext, 200));
-        AdParams adParams = builder.build();
-        return adParams;
+        builder.setNativeTemplateWidth(MiExtra.AD_SDK_COMMON, Utils.dp2px(mContext, 200));
+        MiParams miParams = builder.build();
+        return miParams;
     }
 
     private void loadNative(TextView textView) {
-        AdParams adParams = getNativeParams();
+        MiParams miParams = getNativeParams();
         String sdk = (String) mAdSdkSpinner.getSelectedItem();
         String nativePlace = String.format(Locale.ENGLISH, NATIVE_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
         Switch switchButton = findViewById(R.id.mediation_template);
         if (switchButton.isChecked()) {
             nativePlace += "_template";
         }
-        if (AdSdk.get(mContext).isAdViewLoaded(nativePlace)) {
+        if (MiSdk.get(mContext).isAdViewLoaded(nativePlace)) {
             FrameLayout frameLayout = new FrameLayout(this);
-            adParams.setSceneName("scene_show_native");
-            AdSdk.get(mContext).showAdView(nativePlace, adParams, frameLayout);
+            miParams.setSceneName("scene_show_native");
+            MiSdk.get(mContext).showAdView(nativePlace, miParams, frameLayout);
             CustomDrawable.setBackground(frameLayout);
             showNativeAds(frameLayout);
             return;
         }
-        AdSdk.get(mContext).loadAdView(nativePlace, adParams, new FullScreenAdListener(textView));
+        MiSdk.get(mContext).loadAdView(nativePlace, miParams, new FullScreenAdListener(textView));
     }
 
     private void showNativeAds(ViewGroup viewGroup) {
@@ -633,14 +633,14 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         @Override
         public void onLoaded(String placeName, String source, String adType, String pid) {
             Log.d(Log.TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
-            String loadedSdk = AdSdk.get(mContext).getLoadedSdk(placeName);
+            String loadedSdk = MiSdk.get(mContext).getLoadedSdk(placeName);
             Log.v(TAG, "loaded sdk : " + loadedSdk);
-            if (AdExtra.AD_TYPE_BANNER.equalsIgnoreCase(adType) || AdExtra.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
-                AdSdk.get(getBaseContext()).showAdView(placeName, mNativeBannerLayout);
-            } else if (AdExtra.AD_TYPE_INTERSTITIAL.equalsIgnoreCase(adType)) {
-                AdSdk.get(getBaseContext()).showInterstitial(placeName);
-            } else if (AdExtra.AD_TYPE_REWARD.equalsIgnoreCase(adType)) {
-                AdSdk.get(getBaseContext()).showRewardedVideo(placeName);
+            if (MiExtra.AD_TYPE_BANNER.equalsIgnoreCase(adType) || MiExtra.AD_TYPE_NATIVE.equalsIgnoreCase(adType)) {
+                MiSdk.get(getBaseContext()).showAdView(placeName, mNativeBannerLayout);
+            } else if (MiExtra.AD_TYPE_INTERSTITIAL.equalsIgnoreCase(adType)) {
+                MiSdk.get(getBaseContext()).showInterstitial(placeName);
+            } else if (MiExtra.AD_TYPE_REWARD.equalsIgnoreCase(adType)) {
+                MiSdk.get(getBaseContext()).showRewardedVideo(placeName);
             }
             CustomDrawable.setBackground(mNativeBannerLayout);
         }
@@ -671,7 +671,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
 
         @Override
-        public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
+        public void onRewarded(String placeName, String source, String adType, String pid, MiReward item) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , item : " + item);
             runToast(item.toString());
         }
@@ -758,7 +758,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
 
         @Override
-        public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
+        public void onRewarded(String placeName, String source, String adType, String pid, MiReward item) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType);
             updateLoadStatus(textView, placeName);
             runToast(item.toString());
@@ -782,7 +782,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         if (textView == null) {
             return;
         }
-        boolean loaded = AdSdk.get(this).isComplexAdsLoaded(placeName);
+        boolean loaded = MiSdk.get(this).isComplexAdsLoaded(placeName);
         textView.setTextColor(loaded ? Color.RED : Color.BLACK);
     }
 
@@ -858,24 +858,24 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
         ListView listView = new ListView(context);
         rootLayout.addView(listView, -1, -1);
-        List<AdImpData> list = DBManager.get(context).queryAllImps();
+        List<MiImpData> list = DBManager.get(context).queryAllImps();
         int size = list != null ? list.size() : 0;
         totalTextView.setText(totalTextView.getText() + " , IMP : " + size + "");
         if (list != null && !list.isEmpty()) {
-            ArrayAdapter<AdImpData> adapter = new ArrayAdapter<AdImpData>(context, android.R.layout.simple_list_item_1, list) {
+            ArrayAdapter<MiImpData> adapter = new ArrayAdapter<MiImpData>(context, android.R.layout.simple_list_item_1, list) {
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
                     TextView adapterView = (TextView) super.getView(position, convertView, parent);
                     adapterView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
-                    AdImpData adImpData = getItem(position);
-                    String str = "<font color=red><big>" + (position + 1) + ".</big></font> " + adImpData.getPlacement()
-                            + "<br>" + adImpData.getUnitName() + "<font color=red>*</font></br>"
-                            + "<br>[<font color=red>" + adImpData.getPlatform() + "</font>][<font color='#a00'>" + adImpData.getNetwork() + "</font>]"
-                            + "<br>[<font color=red>" + adImpData.getAdType() + "</font>]"
-                            + "<br>" + adImpData.getUnitId()
-                            + "<br>" + (adImpData.getNetworkPid() != null ? adImpData.getNetworkPid() : "-")
-                            + "<br><font color=red>Revenue:</font>" + adImpData.getValue()
-                            + "<br><font color=red>Scene:</font>" + adImpData.getPlacement();
+                    MiImpData miImpData = getItem(position);
+                    String str = "<font color=red><big>" + (position + 1) + ".</big></font> " + miImpData.getPlacement()
+                            + "<br>" + miImpData.getUnitName() + "<font color=red>*</font></br>"
+                            + "<br>[<font color=red>" + miImpData.getPlatform() + "</font>][<font color='#a00'>" + miImpData.getNetwork() + "</font>]"
+                            + "<br>[<font color=red>" + miImpData.getAdType() + "</font>]"
+                            + "<br>" + miImpData.getUnitId()
+                            + "<br>" + (miImpData.getNetworkPid() != null ? miImpData.getNetworkPid() : "-")
+                            + "<br><font color=red>Revenue:</font>" + miImpData.getValue()
+                            + "<br><font color=red>Scene:</font>" + miImpData.getPlacement();
                     adapterView.setText(Html.fromHtml(str));
                     return adapterView;
                 }

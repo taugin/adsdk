@@ -29,7 +29,7 @@ import com.applovin.mediation.nativeAds.MaxNativeAdView;
 import com.applovin.sdk.AppLovinErrorCodes;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkSettings;
-import com.mix.ads.AdReward;
+import com.mix.ads.MiReward;
 import com.mix.ads.adloader.base.AbstractSdkLoader;
 import com.mix.ads.adloader.base.BaseBindNativeView;
 import com.mix.ads.constant.Constant;
@@ -38,7 +38,7 @@ import com.mix.ads.data.DataManager;
 import com.mix.ads.data.config.PidConfig;
 import com.mix.ads.log.Log;
 import com.mix.ads.utils.Utils;
-import com.mix.api.RFileConfig;
+import com.mix.mob.MisConfig;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -80,7 +80,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
      */
     public static void showApplovinMediationDebugger(Context context) {
         try {
-            Activity activity = RFileConfig.getFA((Application) context.getApplicationContext());
+            Activity activity = MisConfig.getFA((Application) context.getApplicationContext());
             AppLovinSdk appLovinSdk = getInstance(activity);
             if (appLovinSdk != null) {
                 appLovinSdk.showMediationDebugger();
@@ -761,11 +761,11 @@ public class AppLovinLoader extends AbstractSdkLoader {
             @Override
             public void onUserRewarded(MaxAd ad, MaxReward reward) {
                 Log.iv(Log.TAG, "");
-                AdReward item = null;
+                MiReward item = null;
                 try {
                     String currencyName = reward.getLabel();
                     String amountGivenString = String.valueOf(reward.getAmount());
-                    item = new AdReward();
+                    item = new MiReward();
                     item.setAmount(amountGivenString);
                     item.setType(currencyName);
                 } catch (Exception e) {

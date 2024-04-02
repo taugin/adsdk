@@ -11,14 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.mix.ads.AdReward;
+import com.mix.ads.MiReward;
 import com.mix.ads.utils.Utils;
 import com.mix.ads.adloader.base.AbstractSdkLoader;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.core.framework.Params;
 import com.mix.ads.data.DataManager;
 import com.mix.ads.log.Log;
-import com.mix.api.RFileConfig;
+import com.mix.mob.MisConfig;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -658,7 +658,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 public void onUserEarnedReward(RewardItem rewardItem) {
                     Log.iv(Log.TAG, formatLog("ad earned reward"));
                     reportAdReward();
-                    AdReward item = new AdReward();
+                    MiReward item = new MiReward();
                     if (rewardItem != null) {
                         item.setAmount(String.valueOf(rewardItem.getAmount()));
                         item.setType(rewardItem.getType());
@@ -1098,7 +1098,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
             // admob给出的是百万次展示的价值，换算ecpm需要除以1000
             double revenue = (double) adValue.getValueMicros() / 1000000;
-            if (revenue <= 0f && RFileConfig.isDebuggable()) {
+            if (revenue <= 0f && MisConfig.isDebuggable()) {
                 revenue = (double) new Random().nextInt(50) / 1000;
                 map.put(Constant.AD_PRECISION, "random");
             }

@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by Administrator on 2018-12-19.
  */
 
-public class InternalStat {
+public class MiStat {
 
     private static final String SDK_NAME_FIREBASE = "firebase";
     private static final List<String> sFirebaseWhiteList;

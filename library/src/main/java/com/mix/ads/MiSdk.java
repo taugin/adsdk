@@ -21,7 +21,7 @@ import com.mix.ads.data.config.PlaceConfig;
 import com.mix.ads.log.Log;
 import com.mix.ads.stat.EventImpl;
 import com.mix.ads.utils.Utils;
-import com.mix.api.RFileConfig;
+import com.mix.mob.MisConfig;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Created by Administrator on 2018/2/9.
  */
 
-public class AdSdk {
+public class MiSdk {
 
     public static final String AD_TYPE_BANNER = Constant.TYPE_BANNER;
     public static final String AD_TYPE_NATIVE = Constant.TYPE_NATIVE;
@@ -50,7 +50,7 @@ public class AdSdk {
     public static final String PLACE_TYPE_SPLASH = Constant.PLACE_TYPE_SPLASH;
     public static final String PLACE_TYPE_COMPLEX = Constant.PLACE_TYPE_COMPLEX;
 
-    private static AdSdk sAdSdk;
+    private static MiSdk sMiSdk;
 
     private Context mContext;
     private Context mOriginContext;
@@ -66,27 +66,27 @@ public class AdSdk {
 
     private AtomicBoolean mInitialized = new AtomicBoolean(false);
 
-    private AdSdk(Context context) {
+    private MiSdk(Context context) {
         mOriginContext = context.getApplicationContext();
-        mContext = RFileConfig.createAContext(mOriginContext);
+        mContext = MisConfig.createAContext(mOriginContext);
     }
 
-    public static AdSdk get(Context context) {
-        if (sAdSdk == null) {
+    public static MiSdk get(Context context) {
+        if (sMiSdk == null) {
             create(context);
         }
-        if (sAdSdk != null) {
+        if (sMiSdk != null) {
             if (context instanceof Activity) {
-                sAdSdk.setActivity((Activity) context);
+                sMiSdk.setActivity((Activity) context);
             }
         }
-        return sAdSdk;
+        return sMiSdk;
     }
 
     private static void create(Context context) {
-        synchronized (AdSdk.class) {
-            if (sAdSdk == null) {
-                sAdSdk = new AdSdk(context);
+        synchronized (MiSdk.class) {
+            if (sMiSdk == null) {
+                sMiSdk = new MiSdk(context);
             }
         }
     }
@@ -103,7 +103,7 @@ public class AdSdk {
      * @return
      */
     public String getSdkVersion() {
-        return RFileConfig.getVersion();
+        return MisConfig.getVersion();
     }
 
     /**
@@ -383,22 +383,22 @@ public class AdSdk {
     }
 
     public void loadAdView(String placeName) {
-        loadAdView(placeName, new AdParams.Builder().build(), null);
+        loadAdView(placeName, new MiParams.Builder().build(), null);
     }
 
     public void loadAdView(String placeName, OnAdSdkListener l) {
-        loadAdView(placeName, new AdParams.Builder().build(), l);
+        loadAdView(placeName, new MiParams.Builder().build(), l);
     }
 
-    public void loadAdView(String placeName, AdParams adParams) {
-        loadAdView(placeName, adParams, null);
+    public void loadAdView(String placeName, MiParams miParams) {
+        loadAdView(placeName, miParams, null);
     }
 
-    public void loadAdView(String placeName, AdParams adParams, OnAdSdkListener l) {
+    public void loadAdView(String placeName, MiParams miParams, OnAdSdkListener l) {
         AdPlaceLoader loader = getAdLoader(placeName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l, false);
-            loader.loadAdView(adParams);
+            loader.loadAdView(miParams);
         } else {
             if (l != null) {
                 l.onLoadFailed(placeName, null, null, null, Constant.AD_ERROR_LOADER);
@@ -410,14 +410,14 @@ public class AdSdk {
         showAdView(placeName, null, null, adContainer);
     }
 
-    public void showAdView(String placeName, AdParams adParams, ViewGroup adContainer) {
-        showAdView(placeName, null, adParams, adContainer);
+    public void showAdView(String placeName, MiParams miParams, ViewGroup adContainer) {
+        showAdView(placeName, null, miParams, adContainer);
     }
 
-    public void showAdView(String placeName, String adType, AdParams adParams, ViewGroup adContainer) {
+    public void showAdView(String placeName, String adType, MiParams miParams, ViewGroup adContainer) {
         AdPlaceLoader loader = getAdLoader(placeName);
         if (loader != null) {
-            loader.showAdView(adContainer, adType, adParams);
+            loader.showAdView(adContainer, adType, miParams);
         }
     }
 
@@ -492,11 +492,11 @@ public class AdSdk {
         loadComplexAds(placeName, null, l);
     }
 
-    public void loadComplexAds(String placeName, AdParams adParams, OnAdSdkListener l) {
+    public void loadComplexAds(String placeName, MiParams miParams, OnAdSdkListener l) {
         AdPlaceLoader loader = getAdLoader(placeName, true);
         if (loader != null) {
             loader.setOnAdSdkListener(l, false);
-            loader.loadComplexAds(adParams);
+            loader.loadComplexAds(miParams);
         } else {
             if (l != null) {
                 l.onLoadFailed(placeName, null, null, null, Constant.AD_ERROR_LOADER);
@@ -834,7 +834,7 @@ public class AdSdk {
     private Runnable mRewardLoadRunnable = new Runnable() {
         @Override
         public void run() {
-            if (!AdSdk.get(mContext).isRewardedVideoLoaded(mRewardPlaceName)
+            if (!MiSdk.get(mContext).isRewardedVideoLoaded(mRewardPlaceName)
                     && ActivityMonitor.get(mContext).appOnTop()
                     && Utils.isScreenOn(mContext)) {
                 loadRewardAuto();

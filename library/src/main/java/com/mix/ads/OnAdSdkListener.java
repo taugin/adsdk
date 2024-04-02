@@ -32,7 +32,7 @@ public interface OnAdSdkListener {
     default void onShowFailed(String placeName, String source, String adType, String pid, int error) {
     }
 
-    default void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
+    default void onRewarded(String placeName, String source, String adType, String pid, MiReward item) {
     }
 
     default void onCompleted(String placeName, String source, String adType, String pid) {

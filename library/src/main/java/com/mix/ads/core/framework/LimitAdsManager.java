@@ -4,14 +4,14 @@ import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.mix.ads.AdSdk;
+import com.mix.ads.MiSdk;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.data.DataManager;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.data.config.PlaceConfig;
 import com.mix.ads.log.Log;
 import com.mix.ads.stat.EventImpl;
-import com.mix.ads.InternalStat;
+import com.mix.ads.MiStat;
 import com.mix.ads.utils.Utils;
 
 import org.json.JSONArray;
@@ -147,7 +147,7 @@ public class LimitAdsManager {
         int clkCount = (int) AdStatManager.get(mContext).getAllClkCount();
         String reportInfo = getLimitInfo(impCount, clkCount, type);
         Log.iv(Log.TAG_SDK, "limit ads info : " + reportInfo);
-        InternalStat.reportEvent(mContext, "limit_ads_info", reportInfo);
+        MiStat.reportEvent(mContext, "limit_ads_info", reportInfo);
     }
 
     private String getLimitInfo(int impCount, int clkCount, String type) {
@@ -353,7 +353,7 @@ public class LimitAdsManager {
      * 解析配置
      */
     private void parseLimitConfig() {
-        String limitConfigContent = AdSdk.get(mContext).getString(LIMIT_CFG);
+        String limitConfigContent = MiSdk.get(mContext).getString(LIMIT_CFG);
         if (!TextUtils.isEmpty(limitConfigContent)) {
             String contentMD5 = Utils.string2MD5(limitConfigContent);
             if (mLimitConfig != null && TextUtils.equals(contentMD5, mLimitConfig.getContentMD5())) {

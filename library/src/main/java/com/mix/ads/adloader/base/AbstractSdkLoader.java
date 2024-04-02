@@ -16,9 +16,9 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mix.ads.AdImpData;
-import com.mix.ads.AdReward;
-import com.mix.ads.InternalStat;
+import com.mix.ads.MiImpData;
+import com.mix.ads.MiReward;
+import com.mix.ads.MiStat;
 import com.mix.ads.OnAdEventListener;
 import com.mix.ads.OnAdFilterListener;
 import com.mix.ads.adloader.listener.IManagerListener;
@@ -41,7 +41,7 @@ import com.mix.ads.log.Log;
 import com.mix.ads.stat.EventImpl;
 import com.mix.ads.stat.IEvent;
 import com.mix.ads.utils.Utils;
-import com.mix.api.RFileConfig;
+import com.mix.mob.MisConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -143,7 +143,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
         if (activity == null) {
             try {
-                activity = RFileConfig.getFA((Application) mContext.getApplicationContext());
+                activity = MisConfig.getFA((Application) mContext.getApplicationContext());
                 if (activity != null) {
                     Log.iv(Log.TAG, getSdkName() + " " + getAdType() + " use fk activity");
                 }
@@ -743,7 +743,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     }
 
     protected String getSdkVersion() {
-        return RFileConfig.getVersion();
+        return MisConfig.getVersion();
     }
 
     protected String getAppVersion() {
@@ -1155,7 +1155,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     /**
      * reward
      */
-    protected void notifyRewarded(AdReward reward) {
+    protected void notifyRewarded(MiReward reward) {
         if (getAdListener() != null) {
             getAdListener().onRewarded(reward);
         }
@@ -1235,22 +1235,22 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             } catch (Exception e) {
             }
         }
-        InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
+        MiStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
         FBStatManager.get(mContext).reportFirebaseImpression(adImpMap);
         if (adImpMap != null) {
             adImpMap.put(Constant.AD_IMPRESSION_ID, impressionId);
             adImpMap.put(Constant.AD_IMP_TIME, System.currentTimeMillis());
         }
         printImpData(adImpMap);
-        AdImpData adImpData = AdImpData.createAdImpData(adImpMap);
+        MiImpData miImpData = MiImpData.createAdImpData(adImpMap);
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
-            l.onAdImpData(adImpData);
+            l.onAdImpData(miImpData);
         }
-        AdStatManager.get(mContext).recordAdImpression(adImpData);
-        reportAdImpression(adImpData);
+        AdStatManager.get(mContext).recordAdImpression(miImpData);
+        reportAdImpression(miImpData);
         try {
-            notifyBidResultInternal(adImpData);
+            notifyBidResultInternal(miImpData);
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }
@@ -1268,11 +1268,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         Log.iv(Log.TAG, getSdkName() + " imp data : " + builder.toString());
     }
 
-    private void notifyBidResultInternal(AdImpData adImpData) {
-        String adType = adImpData.getAdType();
-        String platform = adImpData.getPlatform();
-        String network = Utils.formatNetwork(adImpData.getNetwork());
-        double topRevenue = adImpData.getValue();
+    private void notifyBidResultInternal(MiImpData miImpData) {
+        String adType = miImpData.getAdType();
+        String platform = miImpData.getPlatform();
+        String network = Utils.formatNetwork(miImpData.getNetwork());
+        double topRevenue = miImpData.getValue();
         String secondPlatform = null;
         String secondNetwork = null;
         double secondPrice = 0f;
@@ -1334,23 +1334,23 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     /**
      * 上报ad_impression事件，firebase通过此事件计算收入
      *
-     * @param adImpData
+     * @param miImpData
      */
-    private void reportAdImpression(AdImpData adImpData) {
+    private void reportAdImpression(MiImpData miImpData) {
         try {
-            if (adImpData != null) {
-                String networkName = adImpData.getNetwork();
-                String platform = adImpData.getPlatform();
-                String unitName = platform + "_" + adImpData.getUnitName();
+            if (miImpData != null) {
+                String networkName = miImpData.getNetwork();
+                String platform = miImpData.getPlatform();
+                String unitName = platform + "_" + miImpData.getUnitName();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("ad_platform", platform);
                 params.put("ad_source", networkName);
-                params.put("ad_format", adImpData.getAdFormat());
+                params.put("ad_format", miImpData.getAdFormat());
                 params.put("ad_unit_name", unitName);
-                params.put("value", adImpData.getValue());
-                params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
+                params.put("value", miImpData.getValue());
+                params.put("micro_value", Double.valueOf(miImpData.getValue() * 1000000).intValue());
                 params.put("currency", "USD"); // All Applovin revenue is sent in USD
-                InternalStat.sendFirebaseAnalytics(mContext, Constant.AD_IMPRESSION, null, params);
+                MiStat.sendFirebaseAnalytics(mContext, Constant.AD_IMPRESSION, null, params);
             }
         } catch (Exception e) {
         }

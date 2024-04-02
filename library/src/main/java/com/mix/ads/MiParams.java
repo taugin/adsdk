@@ -12,11 +12,11 @@ import java.util.Map;
  * Created by Administrator on 2018/4/3.
  */
 
-public class AdParams {
+public class MiParams {
 
     private Map<String, Params> mAdParams;
 
-    private AdParams(Map<String, Params> params) {
+    private MiParams(Map<String, Params> params) {
         this.mAdParams = params;
         fillCommonIfNeed();
     }
@@ -24,8 +24,8 @@ public class AdParams {
     public Params getParams(String sdk) {
         if (mAdParams != null && !TextUtils.isEmpty(sdk)) {
             Params params = mAdParams.get(sdk);
-            if (!TextUtils.equals(sdk, AdExtra.AD_SDK_COMMON)) {
-                Params commonParams = mAdParams.get(AdExtra.AD_SDK_COMMON);
+            if (!TextUtils.equals(sdk, MiExtra.AD_SDK_COMMON)) {
+                Params commonParams = mAdParams.get(MiExtra.AD_SDK_COMMON);
                 if (commonParams != null && !TextUtils.isEmpty(commonParams.getSceneName())) {
                     if (params != null) {
                         params.setSceneName(commonParams.getSceneName());
@@ -39,7 +39,7 @@ public class AdParams {
 
     public void setSceneName(String sceneName) {
         try {
-            getParams(AdExtra.AD_SDK_COMMON).setSceneName(sceneName);
+            getParams(MiExtra.AD_SDK_COMMON).setSceneName(sceneName);
         } catch (Exception e) {
         }
     }
@@ -182,17 +182,17 @@ public class AdParams {
         }
 
         public Builder setSceneName(String sceneName) {
-            getParams(AdExtra.AD_SDK_COMMON).setSceneName(sceneName);
+            getParams(MiExtra.AD_SDK_COMMON).setSceneName(sceneName);
             return this;
         }
 
         public Builder setAdCardStyle(String cardStyle) {
-            getParams(AdExtra.AD_SDK_COMMON).setAdCardStyle(cardStyle);
+            getParams(MiExtra.AD_SDK_COMMON).setAdCardStyle(cardStyle);
             return this;
         }
 
-        public AdParams build() {
-            return new AdParams(mAdParams);
+        public MiParams build() {
+            return new MiParams(mAdParams);
         }
     }
 }

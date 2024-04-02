@@ -22,8 +22,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mix.ads.AdSdk;
-import com.mix.ads.InternalStat;
+import com.mix.ads.MiSdk;
+import com.mix.ads.MiStat;
 import com.mix.ads.utils.Utils;
 import com.mix.ads.log.Log;
 
@@ -150,7 +150,7 @@ public class VersionManager {
                     mContext.startActivity(intent);
                 } catch (Exception e) {
                     Log.iv(Log.TAG_SDK, "error : " + e);
-                    InternalStat.reportEvent(mContext, "report_upgrade_error", "" + e);
+                    MiStat.reportEvent(mContext, "report_upgrade_error", "" + e);
                 }
             }
         });
@@ -293,7 +293,7 @@ public class VersionManager {
     }
 
     private void parseVersionConfig() {
-        String versionInfoString = AdSdk.get(mContext).getString(CFG_VERSION_INFO);
+        String versionInfoString = MiSdk.get(mContext).getString(CFG_VERSION_INFO);
         if (!TextUtils.isEmpty(versionInfoString)) {
             String contentMD5 = Utils.string2MD5(versionInfoString);
             if (mVersionInfo != null && TextUtils.equals(contentMD5, mMD5)) {

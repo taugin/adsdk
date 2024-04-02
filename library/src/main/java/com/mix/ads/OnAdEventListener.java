@@ -25,6 +25,6 @@ public interface OnAdEventListener {
     default void onDismiss(String placeName, String sdkName, String adType, String pid) {
     }
 
-    default void onAdImpData(AdImpData adImpData) {
+    default void onAdImpData(MiImpData miImpData) {
     }
 }

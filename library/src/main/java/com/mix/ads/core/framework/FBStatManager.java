@@ -3,7 +3,7 @@ package com.mix.ads.core.framework;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.mix.ads.InternalStat;
+import com.mix.ads.MiStat;
 import com.mix.ads.utils.Utils;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.stat.EventImpl;
@@ -79,7 +79,7 @@ public class FBStatManager {
         Map<String, Object> map = new HashMap<>();
         map.put("currency", "USD");
         map.put("value", adRevenue != null ? adRevenue.doubleValue() : 0f);
-        InternalStat.sendFirebaseAnalytics(mContext, eventName, null, map, InternalStat.isInFirebaseWhiteList(eventName));
+        MiStat.sendFirebaseAnalytics(mContext, eventName, null, map, MiStat.isInFirebaseWhiteList(eventName));
     }
 
     public void reportFirebaseClick(String adType, String network, String sceneName) {
@@ -107,6 +107,6 @@ public class FBStatManager {
     }
 
     private void sendFirebaseGavClkEvent(String eventName) {
-        InternalStat.sendFirebaseAnalytics(mContext, eventName, null, null, InternalStat.isInFirebaseWhiteList(eventName));
+        MiStat.sendFirebaseAnalytics(mContext, eventName, null, null, MiStat.isInFirebaseWhiteList(eventName));
     }
 }

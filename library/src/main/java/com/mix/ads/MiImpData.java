@@ -4,15 +4,15 @@ import com.mix.ads.constant.Constant;
 
 import java.util.Map;
 
-public class AdImpData {
+public class MiImpData {
     private final Map<String, Object> mAdImpData;
 
-    private AdImpData(Map<String, Object> adImpData) {
+    private MiImpData(Map<String, Object> adImpData) {
         mAdImpData = adImpData;
     }
 
-    public static AdImpData createAdImpData(Map<String, Object> adImpData) {
-        return new AdImpData(adImpData);
+    public static MiImpData createAdImpData(Map<String, Object> adImpData) {
+        return new MiImpData(adImpData);
     }
 
     public String getImpressionId() {

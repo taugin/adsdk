@@ -9,8 +9,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mix.ads.AdParams;
-import com.mix.ads.AdReward;
+import com.mix.ads.MiParams;
+import com.mix.ads.MiReward;
 import com.mix.ads.OnAdSdkListener;
 import com.mix.ads.adloader.base.SimpleAdBaseBaseListener;
 import com.mix.ads.adloader.listener.IManagerListener;
@@ -49,9 +49,9 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private OnAdSdkListener mOnAdSdkLoadedListener;
     private OnAdSdkInternalListener mOnAdPlaceLoaderListener = new AdPlaceLoaderListener();
     // 加载native时的参数
-    private AdParams mAdLoadParams;
+    private MiParams mMiLoadParams;
     // 展示native时的参数
-    private AdParams mAdShowParams;
+    private MiParams mAdShowParams;
     private boolean mHasNotifyLoaded = false;
     // banner和native的listener集合
     private Map<ISdkLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<ISdkLoader, OnAdBaseListener>();
@@ -124,16 +124,16 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return getParams(loader, null);
     }
 
-    private Params getParams(ISdkLoader loader, AdParams adParams) {
+    private Params getParams(ISdkLoader loader, MiParams miParams) {
         Params params = null;
-        if (adParams == null) {
-            adParams = mAdLoadParams;
+        if (miParams == null) {
+            miParams = mMiLoadParams;
         }
         try {
-            if (adParams != null) {
-                params = adParams.getParams(loader.getSdkName());
+            if (miParams != null) {
+                params = miParams.getParams(loader.getSdkName());
                 if (params == null) {
-                    params = adParams.getParams(Constant.AD_SDK_COMMON);
+                    params = miParams.getParams(Constant.AD_SDK_COMMON);
                 }
             }
             if (params == null) {
@@ -1034,10 +1034,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     /**
      * 加载banner和native广告
      *
-     * @param adParams
+     * @param miParams
      */
     @Override
-    public void loadAdView(AdParams adParams) {
+    public void loadAdView(MiParams miParams) {
         if (mAdPlace == null) {
             Utils.runOnUIThread(new Runnable() {
                 @Override
@@ -1085,7 +1085,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             });
             return;
         }
-        mAdLoadParams = adParams;
+        mMiLoadParams = miParams;
         resetAdLoaded();
         // 处理场景缓存
         if (processAdPlaceCache()) {
@@ -1223,11 +1223,11 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
      * 展示广告(banner or native)
      *
      * @param adContainer
-     * @param adParams
+     * @param miParams
      */
     @Override
-    public void showAdView(ViewGroup adContainer, String adType, AdParams adParams) {
-        mAdShowParams = adParams;
+    public void showAdView(ViewGroup adContainer, String adType, MiParams miParams) {
+        mAdShowParams = miParams;
         mAdContainer = new WeakReference<ViewGroup>(adContainer);
         showAdViewInternal(adType, true);
         autoSwitchAdView();
@@ -1372,10 +1372,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     /**
      * 加载混合广告
      *
-     * @param adParams
+     * @param miParams
      */
     @Override
-    public void loadComplexAds(AdParams adParams) {
+    public void loadComplexAds(MiParams miParams) {
         if (mAdPlace == null) {
             Utils.runOnUIThread(new Runnable() {
                 @Override
@@ -1424,7 +1424,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             return;
         }
 
-        mAdLoadParams = adParams;
+        mMiLoadParams = miParams;
         resetAdLoaded();
         // 处理场景缓存
         if (processAdPlaceCache()) {
@@ -1985,7 +1985,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onRewarded(String placeName, String source, String adType, String pid, AdReward item) {
+        public void onRewarded(String placeName, String source, String adType, String pid, MiReward item) {
             Log.iv(Log.TAG, "notify callback onRewarded place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid);
             if (mOnAdSdkLoadedListener != null) {
                 mOnAdSdkLoadedListener.onRewarded(placeName, source, adType, pid, item);

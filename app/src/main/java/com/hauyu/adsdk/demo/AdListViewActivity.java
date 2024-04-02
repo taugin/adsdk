@@ -12,9 +12,9 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.mix.ads.AdExtra;
-import com.mix.ads.AdParams;
-import com.mix.ads.AdSdk;
+import com.mix.ads.MiExtra;
+import com.mix.ads.MiParams;
+import com.mix.ads.MiSdk;
 import com.mix.ads.OnAdSdkListener;
 import com.mix.ads.SimpleAdSdkListener;
 import com.mix.ads.utils.Utils;
@@ -31,7 +31,7 @@ public class AdListViewActivity extends Activity {
     private static final String AD_PLACE_NAME = "native_admob";
     private ListView mListView;
     private AdAdapter mAdAdapter;
-    private AdParams adParams;
+    private MiParams miParams;
     private int mScrollState = ListView.OnScrollListener.SCROLL_STATE_IDLE;
     private AtomicBoolean atomicBoolean = new AtomicBoolean(false);
 
@@ -72,10 +72,10 @@ public class AdListViewActivity extends Activity {
     }
 
     private void loadAds() {
-        AdParams.Builder builder = new AdParams.Builder();
-        builder.setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_SMALL);
-        adParams = builder.build();
-        AdSdk.get(this).loadAdView(AD_PLACE_NAME, adParams, onAdSdkListener);
+        MiParams.Builder builder = new MiParams.Builder();
+        builder.setAdCardStyle(MiExtra.AD_SDK_COMMON, MiExtra.NATIVE_CARD_SMALL);
+        miParams = builder.build();
+        MiSdk.get(this).loadAdView(AD_PLACE_NAME, miParams, onAdSdkListener);
     }
 
     private OnAdSdkListener onAdSdkListener = new SimpleAdSdkListener() {
@@ -105,12 +105,12 @@ public class AdListViewActivity extends Activity {
                     adLayout = (FrameLayout) convertView;
                 }
                 if (adLayout.getChildCount() <= 0 && (position == 3 || mScrollState == ListView.OnScrollListener.SCROLL_STATE_IDLE)) {
-                    if (AdSdk.get(getContext()).isAdViewLoaded(AD_PLACE_NAME)) {
-                        AdSdk.get(getContext()).showAdView(AD_PLACE_NAME, adLayout);
+                    if (MiSdk.get(getContext()).isAdViewLoaded(AD_PLACE_NAME)) {
+                        MiSdk.get(getContext()).showAdView(AD_PLACE_NAME, adLayout);
                     }
                 }
-                if (!AdSdk.get(getContext()).isAdViewLoaded(AD_PLACE_NAME)) {
-                    AdSdk.get(getContext()).loadAdView(AD_PLACE_NAME, adParams, onAdSdkListener);
+                if (!MiSdk.get(getContext()).isAdViewLoaded(AD_PLACE_NAME)) {
+                    MiSdk.get(getContext()).loadAdView(AD_PLACE_NAME, miParams, onAdSdkListener);
                 }
             } else {
                 TextView textView = null;

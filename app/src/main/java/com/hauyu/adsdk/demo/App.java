@@ -17,7 +17,7 @@ import androidx.multidex.MultiDex;
 
 import com.github.bcsdk.BcSdk;
 import com.github.bcsdk.manager.ReferrerManager;
-import com.mix.ads.AdSdk;
+import com.mix.ads.MiSdk;
 import com.mix.ads.utils.Utils;
 import com.tendcloud.tenddata.TalkingDataSDK;
 import com.umeng.analytics.MobclickAgent;
@@ -44,7 +44,7 @@ public class App extends Application {
         Va.setNetworkProxy();
         initUmeng();
         initTalkingData();
-        AdSdk.get(this).init();
+        MiSdk.get(this).init();
         BcSdk.init(this, new ReferrerManager.OnDataListener() {
             @Override
             public void onReferrerResult(String status, String mediaSource, boolean fromClick) {

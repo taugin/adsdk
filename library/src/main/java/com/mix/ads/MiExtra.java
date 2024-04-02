@@ -6,7 +6,7 @@ import com.mix.ads.constant.Constant;
  * Created by Administrator on 2018/2/11.
  */
 
-public class AdExtra {
+public class MiExtra {
 
     /**
      * COMMON SDK 名字

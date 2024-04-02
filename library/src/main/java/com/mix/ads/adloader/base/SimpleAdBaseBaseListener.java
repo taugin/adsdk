@@ -1,6 +1,6 @@
 package com.mix.ads.adloader.base;
 
-import com.mix.ads.AdReward;
+import com.mix.ads.MiReward;
 import com.mix.ads.adloader.listener.IManagerListener;
 import com.mix.ads.adloader.listener.ISdkLoader;
 import com.mix.ads.adloader.listener.OnAdBaseListener;
@@ -125,7 +125,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onRewarded(AdReward reward) {
+    public void onRewarded(MiReward reward) {
         OnAdSdkInternalListener placeLoaderListener = getOnAdPlaceLoaderListener();
         if (placeLoaderListener != null) {
             placeLoaderListener.onRewarded(placeName, source, adType, pid, reward);

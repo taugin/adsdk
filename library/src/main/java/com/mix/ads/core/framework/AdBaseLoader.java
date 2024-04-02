@@ -3,7 +3,7 @@ package com.mix.ads.core.framework;
 import android.app.Activity;
 import android.view.ViewGroup;
 
-import com.mix.ads.AdParams;
+import com.mix.ads.MiParams;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.OnAdSdkListener;
 
@@ -75,11 +75,11 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void loadAdView(AdParams adParams) {
+    public void loadAdView(MiParams miParams) {
     }
 
     @Override
-    public void showAdView(ViewGroup adContainer, String adType, AdParams adParams) {
+    public void showAdView(ViewGroup adContainer, String adType, MiParams miParams) {
     }
 
     @Override
@@ -111,7 +111,7 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
-    public void loadComplexAds(AdParams adParams) {
+    public void loadComplexAds(MiParams miParams) {
     }
 
     @Override

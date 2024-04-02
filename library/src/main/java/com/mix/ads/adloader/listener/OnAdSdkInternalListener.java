@@ -1,6 +1,6 @@
 package com.mix.ads.adloader.listener;
 
-import com.mix.ads.AdReward;
+import com.mix.ads.MiReward;
 
 /**
  * Listener for AdPlaceLoader
@@ -25,7 +25,7 @@ public interface OnAdSdkInternalListener {
 
     void onShowFailed(String placeName, String source, String adType, String pid, int error, String msg);
 
-    void onRewarded(String placeName, String source, String adType, String pid, AdReward item);
+    void onRewarded(String placeName, String source, String adType, String pid, MiReward item);
 
     void onCompleted(String placeName, String source, String adType, String pid);
 

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.mix.ads.AdReward;
+import com.mix.ads.MiReward;
 import com.mix.ads.adloader.base.AbstractSdkLoader;
 import com.mix.ads.adloader.base.BaseBindNativeView;
 import com.mix.ads.constant.Constant;
@@ -469,10 +469,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 Log.iv(Log.TAG, formatLog("ad reward complete"));
                 reportAdReward();
                 notifyRewardAdsCompleted();
-                AdReward adReward = new AdReward();
-                adReward.setType(tpAdInfo.rewardName);
-                adReward.setAmount(String.valueOf(tpAdInfo.rewardNumber));
-                notifyRewarded(adReward);
+                MiReward miReward = new MiReward();
+                miReward.setType(tpAdInfo.rewardName);
+                miReward.setAmount(String.valueOf(tpAdInfo.rewardNumber));
+                notifyRewarded(miReward);
             }
 
             @Override

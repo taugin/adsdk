@@ -7,9 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mix.ads.AdExtra;
-import com.mix.ads.AdParams;
-import com.mix.ads.AdSdk;
+import com.mix.ads.MiExtra;
+import com.mix.ads.MiParams;
+import com.mix.ads.MiSdk;
 import com.mix.ads.SimpleAdSdkListener;
 
 import java.util.Locale;
@@ -60,8 +60,8 @@ public class SplashActivity extends BaseActivity {
             Log.v(TAG, "no need retry");
             return;
         }
-        AdParams adParams = new AdParams.Builder().setAdCardStyle(AdExtra.AD_SDK_COMMON, AdExtra.NATIVE_CARD_ROUND).setSceneName("ss_splash_spread").build();
-        AdSdk.get(this).loadAdView(mNativeSplashPlace, adParams, new SimpleAdSdkListener() {
+        MiParams miParams = new MiParams.Builder().setAdCardStyle(MiExtra.AD_SDK_COMMON, MiExtra.NATIVE_CARD_ROUND).setSceneName("ss_splash_spread").build();
+        MiSdk.get(this).loadAdView(mNativeSplashPlace, miParams, new SimpleAdSdkListener() {
             @Override
             public void onLoaded(String placeName, String source, String adType, String pid) {
                 if (!isFinishing()) {
@@ -72,7 +72,7 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
-                if (AdSdk.get(getApplicationContext()).isAdPlaceError(placeName)) {
+                if (MiSdk.get(getApplicationContext()).isAdPlaceError(placeName)) {
                     Log.v(TAG, "splash error " + retryTimes);
                     if (retryTimes > 1) {
                         loadNativeSplashRetryDelay(retryTimes - 1, enterApp);
@@ -104,7 +104,7 @@ public class SplashActivity extends BaseActivity {
             adContainer.setVisibility(View.VISIBLE);
             adContainerLayout.setVisibility(View.VISIBLE);
             splashLayout.setVisibility(View.GONE);
-            AdSdk.get(this).showAdView(mNativeSplashPlace, adContainer);
+            MiSdk.get(this).showAdView(mNativeSplashPlace, adContainer);
         }
     }
 

@@ -1,6 +1,6 @@
 package com.mix.ads.adloader.listener;
 
-import com.mix.ads.AdReward;
+import com.mix.ads.MiReward;
 
 /**
  * Listener for ad sdk
@@ -56,7 +56,7 @@ public interface OnAdBaseListener {
     /**
      * reward
      */
-    public void onRewarded(AdReward reward);
+    public void onRewarded(MiReward reward);
 
     /**
      * reward complete

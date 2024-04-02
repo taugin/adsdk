@@ -12,7 +12,7 @@ import com.mix.ads.constant.Constant;
 import com.mix.ads.core.framework.Params;
 import com.mix.ads.log.Log;
 import com.mix.ads.utils.Utils;
-import com.mix.api.RFileConfig;
+import com.mix.mob.MisConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -462,7 +462,7 @@ public class BigoLoader extends AbstractSdkLoader {
                 map.put(Constant.AD_PRECISION, "precise");
             } catch (Exception e) {
             }
-            if (revenue <= 0f && RFileConfig.isDebuggable()) {
+            if (revenue <= 0f && MisConfig.isDebuggable()) {
                 revenue = (double) new Random().nextInt(50) / 1000;
                 map.put(Constant.AD_PRECISION, "random");
             }

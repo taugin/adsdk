@@ -19,7 +19,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mix.ads.InternalStat;
+import com.mix.ads.MiStat;
 import com.mix.ads.adloader.listener.ISdkLoader;
 import com.mix.ads.core.db.DBManager;
 import com.mix.ads.core.framework.ActivityMonitor;
@@ -30,7 +30,7 @@ import com.mix.ads.http.OnImageCallback;
 import com.mix.ads.log.Log;
 import com.mix.ads.utils.Utils;
 import com.mix.ads.utils.VUIHelper;
-import com.mix.api.RFileConfig;
+import com.mix.mob.MisConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,31 +110,31 @@ public class SpreadManager {
             return;
         }
         boolean useSingleColumn = mRandom != null ? mRandom.nextBoolean() : new Random().nextBoolean();
-        View view = LayoutInflater.from(mContext).inflate(RFileConfig.mis_layout_grid, null);
-        TextView titleView = view.findViewById(RFileConfig.mis_title_view);
+        View view = LayoutInflater.from(mContext).inflate(MisConfig.mis_layout_grid, null);
+        TextView titleView = view.findViewById(MisConfig.mis_title_view);
         titleView.setText(getSponsoredText(mContext));
-        GridView gridView = view.findViewById(RFileConfig.mis_spread_grid);
+        GridView gridView = view.findViewById(MisConfig.mis_spread_grid);
         gridView.setNumColumns(useSingleColumn ? 1 : 3);
         ArrayAdapter<SpreadConfig> adapter = new ArrayAdapter<SpreadConfig>(mContext, 0, list) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 ViewHolder viewHolder = null;
                 if (convertView == null) {
-                    convertView = LayoutInflater.from(mContext).inflate(RFileConfig.mis_layout_item, null);
+                    convertView = LayoutInflater.from(mContext).inflate(MisConfig.mis_layout_item, null);
                     viewHolder = new ViewHolder();
                     if (useSingleColumn) {
-                        convertView.findViewById(RFileConfig.mis_group_single).setVisibility(View.VISIBLE);
-                        convertView.findViewById(RFileConfig.mis_group_multiple).setVisibility(View.GONE);
-                        viewHolder.iconViewSingle = convertView.findViewById(RFileConfig.mis_app_icon_single);
-                        viewHolder.nameViewSingle = convertView.findViewById(RFileConfig.mis_app_name_single);
-                        viewHolder.detailViewSingle = convertView.findViewById(RFileConfig.mis_app_detail_single);
-                        viewHolder.actionViewSingle = convertView.findViewById(RFileConfig.mis_action_view_single);
+                        convertView.findViewById(MisConfig.mis_group_single).setVisibility(View.VISIBLE);
+                        convertView.findViewById(MisConfig.mis_group_multiple).setVisibility(View.GONE);
+                        viewHolder.iconViewSingle = convertView.findViewById(MisConfig.mis_app_icon_single);
+                        viewHolder.nameViewSingle = convertView.findViewById(MisConfig.mis_app_name_single);
+                        viewHolder.detailViewSingle = convertView.findViewById(MisConfig.mis_app_detail_single);
+                        viewHolder.actionViewSingle = convertView.findViewById(MisConfig.mis_action_view_single);
                     } else {
-                        convertView.findViewById(RFileConfig.mis_group_single).setVisibility(View.GONE);
-                        convertView.findViewById(RFileConfig.mis_group_multiple).setVisibility(View.VISIBLE);
-                        viewHolder.iconViewMultiple = convertView.findViewById(RFileConfig.mis_app_icon_multiple);
-                        viewHolder.nameViewMultiple = convertView.findViewById(RFileConfig.mis_app_name_multiple);
-                        viewHolder.actionViewMultiple = convertView.findViewById(RFileConfig.mis_action_view_multiple);
+                        convertView.findViewById(MisConfig.mis_group_single).setVisibility(View.GONE);
+                        convertView.findViewById(MisConfig.mis_group_multiple).setVisibility(View.VISIBLE);
+                        viewHolder.iconViewMultiple = convertView.findViewById(MisConfig.mis_app_icon_multiple);
+                        viewHolder.nameViewMultiple = convertView.findViewById(MisConfig.mis_app_name_multiple);
+                        viewHolder.actionViewMultiple = convertView.findViewById(MisConfig.mis_action_view_multiple);
                     }
                     convertView.setTag(viewHolder);
                 } else {
@@ -176,7 +176,7 @@ public class SpreadManager {
         Dialog dialog = new Dialog(activity, android.R.style.Theme_Material_Light_NoActionBar);
         dialog.setContentView(view);
         dialog.show();
-        View backView = view.findViewById(RFileConfig.mis_arrow_back);
+        View backView = view.findViewById(MisConfig.mis_arrow_back);
         backView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,7 +220,7 @@ public class SpreadManager {
             } catch (Exception e) {
                 Log.iv(Log.TAG, "error : " + e);
             }
-            InternalStat.reportEvent(mContext, "ad_sponsored_click", packageName);
+            MiStat.reportEvent(mContext, "ad_sponsored_click", packageName);
         }
     }
 
@@ -303,7 +303,7 @@ public class SpreadManager {
 
     private static void reportAdSpreadInstalled(Context context, String packageName) {
         try {
-            InternalStat.reportEvent(context, "ad_spread_installed", packageName);
+            MiStat.reportEvent(context, "ad_spread_installed", packageName);
         } catch (Exception e) {
         }
     }

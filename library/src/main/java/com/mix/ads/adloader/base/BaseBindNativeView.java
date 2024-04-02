@@ -25,7 +25,7 @@ import com.mix.ads.core.framework.Params;
 import com.mix.ads.data.config.PidConfig;
 import com.mix.ads.log.Log;
 import com.mix.ads.utils.Utils;
-import com.mix.api.RFileConfig;
+import com.mix.mob.MisConfig;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +59,7 @@ public class BaseBindNativeView {
 
     static {
         LAYOUT_MAPS = new HashMap<String, Integer>();
-        RFileConfig.bindLayoutMap(LAYOUT_MAPS);
+        MisConfig.bindLayoutMap(LAYOUT_MAPS);
     }
 
     private Random mRandom = new Random(System.currentTimeMillis());
@@ -234,7 +234,7 @@ public class BaseBindNativeView {
             try {
                 layoutId = LAYOUT_MAPS.get(template);
             } catch (Exception e) {
-                layoutId = RFileConfig.getLayoutLittle();
+                layoutId = MisConfig.getLayoutLittle();
             }
         }
         return layoutId;
@@ -257,7 +257,7 @@ public class BaseBindNativeView {
     }
 
     protected void bindParamsViewId(Params params) {
-        RFileConfig.bindLayoutId(params);
+        MisConfig.bindLayoutId(params);
     }
 
     protected void centerChildView(ViewGroup viewGroup) {
@@ -311,7 +311,7 @@ public class BaseBindNativeView {
             float[] outerR = new float[]{corner, corner, corner, corner, corner, corner, corner, corner};
             Shape shape = new RoundRectShape(outerR, null, null);
             ShapeDrawable shapeNormal = new ShapeDrawable(shape);
-            shapeNormal.getPaint().setColor(imageView.getContext().getResources().getColor(RFileConfig.getDefaultIconColor()));
+            shapeNormal.getPaint().setColor(imageView.getContext().getResources().getColor(MisConfig.getDefaultIconColor()));
             imageView.setBackground(shapeNormal);
         } catch (Exception e) {
             Log.iv(Log.TAG, platform + " set default ad icon error : " + e);
