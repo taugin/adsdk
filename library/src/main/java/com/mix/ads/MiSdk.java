@@ -12,6 +12,7 @@ import com.mix.ads.constant.Constant;
 import com.mix.ads.core.framework.ActivityMonitor;
 import com.mix.ads.core.framework.AdLoadManager;
 import com.mix.ads.core.framework.AdPlaceLoader;
+import com.mix.ads.core.framework.FBStatManager;
 import com.mix.ads.core.framework.LimitAdsManager;
 import com.mix.ads.core.framework.ReplaceManager;
 import com.mix.ads.data.DataManager;
@@ -109,6 +110,7 @@ public class MiSdk {
      */
     public void init() {
         Log.iv(Log.TAG, "sdk version : " + getSdkVersion());
+        FBStatManager.get(mContext).init();
         DataManager.get(mContext).init();
         ActivityMonitor.get(mOriginContext).init();
         EventImpl.get().init(mContext);

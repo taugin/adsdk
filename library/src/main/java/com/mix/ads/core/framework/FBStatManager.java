@@ -2,7 +2,10 @@ package com.mix.ads.core.framework;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Base64;
 
+import com.android.installreferrer.api.InstallReferrerClient;
+import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.mix.ads.MiStat;
 import com.mix.ads.data.DataManager;
 import com.mix.ads.utils.Utils;
@@ -10,8 +13,11 @@ import com.mix.ads.utils.Utils;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FBStatManager {
+    private static final String MEDIUM = new String(Base64.decode("b3JnYW5pYw==", 0));
+    private static final String PREF_INSTALL_REFERRER = "pref_install_referrer";
     private static FBStatManager sFBStatManager;
 
     public static FBStatManager get(Context context) {
@@ -35,6 +41,70 @@ public class FBStatManager {
 
     private FBStatManager(Context context) {
         mContext = context;
+    }
+
+    public void init() {
+        requestInstallReferrer();
+    }
+
+    private void requestInstallReferrer() {
+        if (!Utils.getBoolean(mContext, PREF_INSTALL_REFERRER, false)) {
+            Utils.putBoolean(mContext, PREF_INSTALL_REFERRER, true);
+            final InstallReferrerClient installReferrerClient = InstallReferrerClient.newBuilder(mContext).build();
+            installReferrerClient.startConnection(new InstallReferrerStateListener() {
+                @Override
+                public void onInstallReferrerSetupFinished(int responseCode) {
+                    String referrer = null;
+                    if (responseCode == InstallReferrerClient.InstallReferrerResponse.OK) {
+                        try {
+                            referrer = installReferrerClient.getInstallReferrer().getInstallReferrer();
+                        } catch (Exception e) {
+                        }
+                    }
+                    reportAppInstall(referrer);
+                }
+
+                @Override
+                public void onInstallReferrerServiceDisconnected() {
+                    reportAppInstall(null);
+                }
+            });
+        }
+    }
+
+    private void reportAppInstall(String referrer) {
+        Map<String, Object> map = referrerToMap(referrer);
+        boolean isOrganic = isOrganic(map);
+        MiStat.reportEvent(mContext, isOrganic ? "app_first_open_ao" : "app_first_open_ano");
+    }
+
+    private Map<String, Object> referrerToMap(String referrer) {
+        if (TextUtils.isEmpty(referrer)) {
+            return null;
+        }
+        Map<String, Object> ref = null;
+        String[] split = referrer.split("&");
+        if (split != null && split.length > 0) {
+            ref = new HashMap<String, Object>();
+            for (String s : split) {
+                String[] tmp = s.split("=");
+                if (tmp != null && tmp.length == 2) {
+                    ref.put(tmp[0], tmp[1]);
+                }
+            }
+        }
+        return ref;
+    }
+
+    private boolean isOrganic(Map<String, Object> ref) {
+        if (ref != null) {
+            try {
+                String medium = (String) ref.get("utm_medium");
+                return MEDIUM.equalsIgnoreCase(medium);
+            } catch (Exception e) {
+            }
+        }
+        return false;
     }
 
 
