@@ -3,8 +3,8 @@ package com.hauyu.adsdk.demo;
 import android.content.Context;
 import android.util.Log;
 
-import com.komob.adsdk.http.Http;
-import com.komob.adsdk.http.OnStringCallback;
+import com.mix.ads.http.Http;
+import com.mix.ads.http.OnStringCallback;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

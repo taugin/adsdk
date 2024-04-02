@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/mis_native_icon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@null"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@android:color/white"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/mis_native_cover_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="0.8">
+
+                <ImageView
+                    android:id="@+id/mis_native_image_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@null"
+                    android:scaleType="fitCenter" />
+
+                <FrameLayout
+                    android:id="@+id/mis_native_media_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@null"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/mis_native_sponsored_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="end|bottom"
+                    android:background="@drawable/mis_badge_tiny_bg"
+                    android:gravity="center"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:text="AD"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1.2"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/mis_native_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toStartOf="@+id/common_sponsored_label"
+                    android:layout_weight="1"
+                    android:autoSizeMaxTextSize="16sp"
+                    android:autoSizeMinTextSize="14sp"
+                    android:autoSizeTextType="uniform"
+                    android:ellipsize="end"
+                    android:gravity="start|center_vertical"
+                    android:includeFontPadding="false"
+                    android:lines="2"
+                    android:maxLines="2"
+                    android:text="Charge Master"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/mis_native_social"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:ellipsize="marquee"
+                    android:gravity="start|top"
+                    android:singleLine="true"
+                    android:textColor="@color/misTextSecondaryColor"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/mis_native_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="start|center_vertical"
+                    android:includeFontPadding="false"
+                    android:lines="2"
+                    android:maxLines="2"
+                    android:minHeight="24dp"
+                    android:textColor="@color/misTextSecondaryColor"
+                    android:textSize="12sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/mis_native_action_btn"
+                        style="@style/MisButtonTinyStyle"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/mis_action_bg"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="Learn More"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/mis_native_ad_choices_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:padding="1dp" />
+
+    </FrameLayout>
+</FrameLayout>

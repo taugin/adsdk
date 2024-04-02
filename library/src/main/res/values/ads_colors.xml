@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="komTextPrimaryColor">@android:color/black</color>
-    <color name="komTextSecondaryColor">@android:color/darker_gray</color>
-    <color name="komActionBtnColor">#FF4080FF</color>
-    <color name="komActionBtnPressedColor">#FF3973E5</color>
-    <color name="komCloseBtnColor">#AAEEEEEE</color>
-    <color name="komCloseBtnPressedColor">#AACCCCCC</color>
-    <color name="komDefaultIconColor">#FF4080FF</color>
+    <color name="misTextPrimaryColor">@android:color/black</color>
+    <color name="misTextSecondaryColor">@android:color/darker_gray</color>
+    <color name="misActionBtnColor">#FF4080FF</color>
+    <color name="misActionBtnPressedColor">#FF3973E5</color>
+    <color name="misCloseBtnColor">#AAEEEEEE</color>
+    <color name="misCloseBtnPressedColor">#AACCCCCC</color>
+    <color name="misDefaultIconColor">#FF4080FF</color>
 </resources>

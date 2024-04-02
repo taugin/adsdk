@@ -35,18 +35,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hauyu.adsdk.demo.view.CustomDrawable;
-import com.komob.adsdk.AdExtra;
-import com.komob.adsdk.AdImpData;
-import com.komob.adsdk.AdParams;
-import com.komob.adsdk.AdReward;
-import com.komob.adsdk.AdSdk;
-import com.komob.adsdk.OnAdFilterListener;
-import com.komob.adsdk.SimpleAdSdkListener;
-import com.komob.adsdk.constant.Constant;
-import com.komob.adsdk.core.db.DBManager;
-import com.komob.adsdk.core.framework.ActivityMonitor;
-import com.komob.adsdk.ump.UmpConsentHelper;
-import com.komob.adsdk.utils.Utils;
+import com.mix.ads.AdExtra;
+import com.mix.ads.AdImpData;
+import com.mix.ads.AdParams;
+import com.mix.ads.AdReward;
+import com.mix.ads.AdSdk;
+import com.mix.ads.OnAdFilterListener;
+import com.mix.ads.SimpleAdSdkListener;
+import com.mix.ads.constant.Constant;
+import com.mix.ads.core.db.DBManager;
+import com.mix.ads.core.framework.ActivityMonitor;
+import com.mix.ads.ump.UmpConsentHelper;
+import com.mix.ads.utils.Utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -909,15 +909,15 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     public static void showBroccoli(View adLayoutView) {
         try {
             Broccoli broccoli = new Broccoli();
-            broccoli.addPlaceholders(adLayoutView.findViewById(R.id.kom_native_icon)
-                    , adLayoutView.findViewById(R.id.kom_native_title)
-                    , adLayoutView.findViewById(R.id.kom_native_detail)
-                    , adLayoutView.findViewById(R.id.kom_native_action_btn));
+            broccoli.addPlaceholders(adLayoutView.findViewById(R.id.mis_native_icon)
+                    , adLayoutView.findViewById(R.id.mis_native_title)
+                    , adLayoutView.findViewById(R.id.mis_native_detail)
+                    , adLayoutView.findViewById(R.id.mis_native_action_btn));
 
             broccoli.addPlaceholder(new PlaceholderParameter.Builder()
                     .setDrawable(new BroccoliGradientDrawable(Color.parseColor("#DDDDDD"),
                             Color.parseColor("#CCCCCC"), 0, 1000, new LinearInterpolator()))
-                    .setView(adLayoutView.findViewById(R.id.kom_native_cover_info))
+                    .setView(adLayoutView.findViewById(R.id.mis_native_cover_info))
                     .build());
             broccoli.show();
         } catch (Exception e) {

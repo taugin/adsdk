@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="KomButtonBaseStyle">
+    <style name="MisButtonBaseStyle">
         <item name="android:paddingStart">10dp</item>
         <item name="android:paddingEnd">10dp</item>
         <item name="android:layout_centerVertical">true</item>
@@ -14,38 +14,38 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="KomButtonStyle" parent="KomButtonBaseStyle">
-        <item name="android:background">@drawable/kom_action_bg</item>
+    <style name="MisButtonStyle" parent="MisButtonBaseStyle">
+        <item name="android:background">@drawable/mis_action_bg</item>
     </style>
 
-    <style name="KomButtonTinyStyle" parent="KomButtonBaseStyle">
-        <item name="android:background">@drawable/kom_green_bg</item>
+    <style name="MisButtonTinyStyle" parent="MisButtonBaseStyle">
+        <item name="android:background">@drawable/mis_green_bg</item>
         <item name="android:layout_height">match_parent</item>
     </style>
 
-    <style name="KomButtonMicroStyle" parent="KomButtonBaseStyle">
-        <item name="android:background">@drawable/kom_green_bg</item>
+    <style name="MisButtonMicroStyle" parent="MisButtonBaseStyle">
+        <item name="android:background">@drawable/mis_green_bg</item>
         <item name="android:layout_height">48dp</item>
     </style>
 
-    <style name="KomButtonSmallStyle" parent="KomButtonBaseStyle">
-        <item name="android:background">@drawable/kom_action_bg</item>
+    <style name="MisButtonSmallStyle" parent="MisButtonBaseStyle">
+        <item name="android:background">@drawable/mis_action_bg</item>
         <item name="android:layout_height">40dp</item>
     </style>
 
-    <style name="KomButtonMediumStyle" parent="KomButtonBaseStyle">
-        <item name="android:background">@drawable/kom_action_bg</item>
+    <style name="MisButtonMediumStyle" parent="MisButtonBaseStyle">
+        <item name="android:background">@drawable/mis_action_bg</item>
     </style>
 
-    <style name="KomButtonLargeStyle" parent="KomButtonBaseStyle">
-        <item name="android:background">@drawable/kom_action_bg</item>
+    <style name="MisButtonLargeStyle" parent="MisButtonBaseStyle">
+        <item name="android:background">@drawable/mis_action_bg</item>
     </style>
 
-    <style name="KomButtonFullStyle" parent="KomButtonBaseStyle">
-        <item name="android:background">@drawable/kom_green_bg</item>
+    <style name="MisButtonFullStyle" parent="MisButtonBaseStyle">
+        <item name="android:background">@drawable/mis_green_bg</item>
     </style>
 
-    <style name="KomButtonFullStyle_Flat" parent="KomButtonBaseStyle">
-        <item name="android:background">@drawable/kom_green_bg</item>
+    <style name="Mis" parent="MisButtonBaseStyle">
+        <item name="android:background">@drawable/mis_green_bg</item>
     </style>
 </resources>

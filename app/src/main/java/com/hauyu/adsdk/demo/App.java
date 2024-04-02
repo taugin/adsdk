@@ -17,8 +17,8 @@ import androidx.multidex.MultiDex;
 
 import com.github.bcsdk.BcSdk;
 import com.github.bcsdk.manager.ReferrerManager;
-import com.komob.adsdk.AdSdk;
-import com.komob.adsdk.utils.Utils;
+import com.mix.ads.AdSdk;
+import com.mix.ads.utils.Utils;
 import com.tendcloud.tenddata.TalkingDataSDK;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;

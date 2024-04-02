@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/mis_group_single"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="4dp">
+
+        <RelativeLayout
+            android:id="@+id/mis_icon_layout_single"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp">
+
+            <ImageView
+                android:id="@+id/mis_app_icon_single"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginVertical="8dp"
+                android:src="@android:drawable/sym_def_app_icon" />
+
+            <TextView
+                android:id="@+id/mis_sponsored_label_single"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/mis_app_icon_single"
+                android:background="@drawable/mis_badge_bg"
+                android:gravity="center"
+                android:lines="1"
+                android:paddingStart="4dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="4dp"
+                android:paddingBottom="2dp"
+                android:text="AD"
+                android:textColor="@android:color/black"
+                android:textSize="8sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="4dp"
+            android:layout_toStartOf="@+id/mis_action_view_single"
+            android:layout_toEndOf="@+id/mis_icon_layout_single"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/mis_app_name_single"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="Android App Name"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/mis_app_detail_single"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:lines="2"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="Android App Name"
+                android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/mis_action_view_single"
+            style="@style/MisButtonTinyStyle"
+            android:layout_width="96dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/mis_action_bg"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="INSTALL" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/mis_group_multiple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="2dp"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/mis_app_icon_multiple"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:src="@android:drawable/sym_def_app_icon" />
+
+            <TextView
+                android:id="@+id/mis_sponsored_label_multiple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_toEndOf="@+id/mis_app_icon_multiple"
+                android:background="@drawable/mis_badge_bg"
+                android:gravity="center"
+                android:paddingStart="4dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="4dp"
+                android:paddingBottom="2dp"
+                android:text="AD"
+                android:textColor="@android:color/black"
+                android:textSize="8sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/mis_app_name_multiple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="2"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="Android App Name"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/mis_action_view_multiple"
+            style="@style/MisButtonTinyStyle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/mis_action_bg"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="INSTALL" />
+    </LinearLayout>
+</FrameLayout>
