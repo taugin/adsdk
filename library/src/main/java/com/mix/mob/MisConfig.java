@@ -16,6 +16,7 @@ import com.mix.ads.log.Log;
 import com.mix.ads.utils.VUIHelper;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,6 +24,25 @@ import java.util.Map;
  */
 
 public class MisConfig {
+    private static final Map<String, Integer> LAYOUT_MAPS;
+
+    static {
+        LAYOUT_MAPS = new HashMap<String, Integer>();
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MICRO, R.layout.mis_card_micro);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_TINY, R.layout.mis_card_tiny);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_LITTLE, R.layout.mis_card_little);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_SMALL, R.layout.mis_card_small);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MEDIUM, R.layout.mis_card_medium);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_LARGE, R.layout.mis_card_large);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_RECT, R.layout.mis_card_rect);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_WRAP, R.layout.mis_card_wrap);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_ROUND, R.layout.mis_card_round);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_FULL, R.layout.mis_card_full);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MIX, R.layout.mis_card_mix);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_FOOT, R.layout.mis_card_foot);
+        LAYOUT_MAPS.put(Constant.NATIVE_CARD_HEAD, R.layout.mis_card_head);
+    }
+
     public static String getVersion() {
         return BuildConfig.SDK_VERSION_NAME;
     }
@@ -31,24 +51,13 @@ public class MisConfig {
         return BuildConfig.DEBUG;
     }
 
-    public static void bindLayoutMap(Map<String, Integer> LAYOUT_MAPS) {
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MICRO, R.layout.mis_layout_micro);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_TINY, R.layout.mis_layout_tiny);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_LITTLE, R.layout.mis_layout_little);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_SMALL, R.layout.mis_layout_small);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MEDIUM, R.layout.mis_layout_medium);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_LARGE, R.layout.mis_layout_large);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_RECT, R.layout.mis_layout_rect);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_WRAP, R.layout.mis_layout_wrap);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_ROUND, R.layout.mis_layout_round);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_FULL, R.layout.mis_layout_full);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MIX, R.layout.mis_layout_mix);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_FOOT, R.layout.mis_layout_foot);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_HEAD, R.layout.mis_layout_head);
+    public static int getLayout(String cardStyle) {
+        return LAYOUT_MAPS.get(cardStyle);
     }
 
+
     public static int getLayoutLittle() {
-        return R.layout.mis_layout_little;
+        return R.layout.mis_card_little;
     }
 
     public static void bindLayoutId(Params params) {
@@ -69,8 +78,8 @@ public class MisConfig {
         return R.color.misDefaultIconColor;
     }
 
-    public static int mis_layout_grid = R.layout.mis_layout_grid;
-    public static int mis_layout_item = R.layout.mis_layout_item;
+    public static int mis_card_grid = R.layout.mis_card_grid;
+    public static int mis_card_item = R.layout.mis_card_item;
     public static int mis_title_view = R.id.mis_title_view;
     public static int mis_spread_grid = R.id.mis_spread_grid;
     public static int mis_group_single = R.id.mis_group_single;

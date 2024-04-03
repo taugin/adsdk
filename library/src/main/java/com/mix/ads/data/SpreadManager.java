@@ -109,7 +109,7 @@ public class SpreadManager {
             return;
         }
         boolean useSingleColumn = mRandom != null ? mRandom.nextBoolean() : new Random().nextBoolean();
-        View view = LayoutInflater.from(mContext).inflate(MisConfig.mis_layout_grid, null);
+        View view = LayoutInflater.from(mContext).inflate(MisConfig.mis_card_grid, null);
         TextView titleView = view.findViewById(MisConfig.mis_title_view);
         titleView.setText(getSponsoredText(mContext));
         GridView gridView = view.findViewById(MisConfig.mis_spread_grid);
@@ -119,7 +119,7 @@ public class SpreadManager {
             public View getView(int position, View convertView, ViewGroup parent) {
                 ViewHolder viewHolder = null;
                 if (convertView == null) {
-                    convertView = LayoutInflater.from(mContext).inflate(MisConfig.mis_layout_item, null);
+                    convertView = LayoutInflater.from(mContext).inflate(MisConfig.mis_card_item, null);
                     viewHolder = new ViewHolder();
                     if (useSingleColumn) {
                         convertView.findViewById(MisConfig.mis_group_single).setVisibility(View.VISIBLE);

@@ -46,21 +46,11 @@ public class BaseBindNativeView {
     protected static final String AD_DETAIL = "detail";
     protected static final String AD_CTA = "cta";
     protected static final String AD_CHOICES = "choice";
-    protected static final String AD_SPONSORED = "sponsored";
     protected static final String AD_SOCIAL = "social";
     protected static final String AD_RATE = "rate";
     protected static final String AD_ADVERTISER = "advertiser";
     protected static final String AD_PRICE = "price";
     protected static final String AD_STORE = "store";
-    protected static final String AD_VIDEO = "video";
-    protected static final String AD_BACKGROUND = "background";
-
-    private static final Map<String, Integer> LAYOUT_MAPS;
-
-    static {
-        LAYOUT_MAPS = new HashMap<String, Integer>();
-        MisConfig.bindLayoutMap(LAYOUT_MAPS);
-    }
 
     private Random mRandom = new Random(System.currentTimeMillis());
 
@@ -183,7 +173,7 @@ public class BaseBindNativeView {
                 String layout = layoutFlag.get(mRandom.nextInt(layoutFlag.size()));
                 if (!TextUtils.isEmpty(layout)) {
                     Log.iv(Log.TAG, "layout flag : " + layout);
-                    Integer nativeLayout = LAYOUT_MAPS.get(layout);
+                    Integer nativeLayout = MisConfig.getLayout(layout);
                     if (nativeLayout != null) {
                         return nativeLayout.intValue();
                     }
@@ -232,7 +222,7 @@ public class BaseBindNativeView {
         int layoutId = getNativeLayout(context, pidConfig);
         if (layoutId == 0) {
             try {
-                layoutId = LAYOUT_MAPS.get(template);
+                layoutId = MisConfig.getLayout(template);
             } catch (Exception e) {
                 layoutId = MisConfig.getLayoutLittle();
             }
@@ -246,7 +236,7 @@ public class BaseBindNativeView {
             if (subNativeLayout != null) {
                 String layout = subNativeLayout.get(sdk);
                 if (!TextUtils.isEmpty(layout)) {
-                    Integer nativeLayout = LAYOUT_MAPS.get(layout);
+                    Integer nativeLayout = MisConfig.getLayout(layout);
                     if (nativeLayout != null) {
                         return new Pair<>(layout, nativeLayout.intValue());
                     }
