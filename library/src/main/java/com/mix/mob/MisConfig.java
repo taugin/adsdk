@@ -204,31 +204,6 @@ public class MisConfig {
         return activity;
     }
 
-    public static Context createAContext(final Context context) {
-        AppContext appContext = new AppContext(context);
-        return appContext;
-    }
-
-    private static class AppContext extends Application {
-
-        public AppContext(Context base) {
-            super();
-            attachBaseContext(base);
-        }
-
-        @Override
-        public void startActivity(Intent intent) {
-            configIntent(getBaseContext(), intent);
-            super.startActivity(intent);
-        }
-
-        @Override
-        public void startActivity(Intent intent, Bundle options) {
-            configIntent(getBaseContext(), intent);
-            super.startActivity(intent, options);
-        }
-    }
-
     private static void configIntent(Context context, Intent intent) {
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

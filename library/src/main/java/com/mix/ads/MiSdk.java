@@ -52,7 +52,6 @@ public class MiSdk {
     private static MiSdk sMiSdk;
 
     private Context mContext;
-    private Context mOriginContext;
     private Map<String, AdPlaceLoader> mAdLoaders = new HashMap<String, AdPlaceLoader>();
     private WeakReference<Activity> mActivity;
     // 激励视频自动加载回调
@@ -66,8 +65,7 @@ public class MiSdk {
     private AtomicBoolean mInitialized = new AtomicBoolean(false);
 
     private MiSdk(Context context) {
-        mOriginContext = context.getApplicationContext();
-        mContext = MisConfig.createAContext(mOriginContext);
+        mContext = context.getApplicationContext();
     }
 
     public static MiSdk get(Context context) {
@@ -112,7 +110,7 @@ public class MiSdk {
         Log.iv(Log.TAG, "sdk version : " + getSdkVersion());
         FBStatManager.get(mContext).init();
         DataManager.get(mContext).init();
-        ActivityMonitor.get(mOriginContext).init();
+        ActivityMonitor.get(mContext).init();
         EventImpl.get().init(mContext);
         ReplaceManager.get(mContext).init();
         if (mInitialized != null) {
