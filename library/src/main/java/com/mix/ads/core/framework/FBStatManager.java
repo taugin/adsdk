@@ -13,7 +13,6 @@ import com.mix.ads.utils.Utils;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FBStatManager {
     private static final String MEDIUM = new String(Base64.decode("b3JnYW5pYw==", 0));
@@ -48,34 +47,40 @@ public class FBStatManager {
     }
 
     private void requestInstallReferrer() {
-        if (!Utils.getBoolean(mContext, PREF_INSTALL_REFERRER, false)) {
-            Utils.putBoolean(mContext, PREF_INSTALL_REFERRER, true);
-            final InstallReferrerClient installReferrerClient = InstallReferrerClient.newBuilder(mContext).build();
-            installReferrerClient.startConnection(new InstallReferrerStateListener() {
-                @Override
-                public void onInstallReferrerSetupFinished(int responseCode) {
-                    String referrer = null;
-                    if (responseCode == InstallReferrerClient.InstallReferrerResponse.OK) {
+        try {
+            if (!Utils.getBoolean(mContext, PREF_INSTALL_REFERRER, false)) {
+                Utils.putBoolean(mContext, PREF_INSTALL_REFERRER, true);
+                final InstallReferrerClient installReferrerClient = InstallReferrerClient.newBuilder(mContext).build();
+                installReferrerClient.startConnection(new InstallReferrerStateListener() {
+                    @Override
+                    public void onInstallReferrerSetupFinished(int responseCode) {
+                        String referrer = null;
                         try {
-                            referrer = installReferrerClient.getInstallReferrer().getInstallReferrer();
+                            if (responseCode == InstallReferrerClient.InstallReferrerResponse.OK) {
+                                try {
+                                    referrer = installReferrerClient.getInstallReferrer().getInstallReferrer();
+                                } catch (Exception e) {
+                                }
+                            }
                         } catch (Exception e) {
                         }
+                        reportAppInstall(referrer);
                     }
-                    reportAppInstall(referrer);
-                }
 
-                @Override
-                public void onInstallReferrerServiceDisconnected() {
-                    reportAppInstall(null);
-                }
-            });
+                    @Override
+                    public void onInstallReferrerServiceDisconnected() {
+                        reportAppInstall(null);
+                    }
+                });
+            }
+        } catch (Exception e) {
         }
     }
 
     private void reportAppInstall(String referrer) {
         Map<String, Object> map = referrerToMap(referrer);
         boolean isOrganic = isOrganic(map);
-        MiStat.reportEvent(mContext, isOrganic ? "app_first_open_ao" : "app_first_open_ano");
+        MiStat.sendFirebaseAnalytics(mContext, isOrganic ? "app_first_open_ao" : "app_first_open_ano", null, null);
     }
 
     private Map<String, Object> referrerToMap(String referrer) {
@@ -144,7 +149,7 @@ public class FBStatManager {
         Map<String, Object> map = new HashMap<>();
         map.put("currency", "USD");
         map.put("value", adRevenue != null ? adRevenue.doubleValue() : 0f);
-        MiStat.sendFirebaseAnalytics(mContext, eventName, null, map, MiStat.isInFirebaseWhiteList(eventName));
+        MiStat.sendFirebaseAnalytics(mContext, eventName, null, map);
     }
 
     public void reportFirebaseClick(String adType, String network, String sceneName) {
@@ -172,6 +177,6 @@ public class FBStatManager {
     }
 
     private void sendFirebaseGavClkEvent(String eventName) {
-        MiStat.sendFirebaseAnalytics(mContext, eventName, null, null, MiStat.isInFirebaseWhiteList(eventName));
+        MiStat.sendFirebaseAnalytics(mContext, eventName, null, null);
     }
 }

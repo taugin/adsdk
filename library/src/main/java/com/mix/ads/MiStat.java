@@ -25,7 +25,15 @@ public class MiStat {
     private static final Map<String, Boolean> sSdkIntegrated;
 
     static {
-        sFirebaseWhiteList = Arrays.asList(Constant.AD_IMPRESSION, Constant.AD_IMPRESSION_REVENUE, "app_first_open_ano", "app_first_open_ao", "ad_spread_installed", "Total_Ads_Revenue_*", "gav_*");
+        sFirebaseWhiteList = Arrays.asList(
+                Constant.AD_IMPRESSION,
+                Constant.AD_IMPRESSION_REVENUE,
+                "app_first_open_ano",
+                "app_first_open_ao",
+                "ad_spread_installed",
+                "Total_Ads_Revenue_*",
+                "gav_*"
+        );
 
         sSdkIntegrated = new HashMap<>();
         boolean sdkIntegrated;
