@@ -25,7 +25,6 @@ import com.mix.ads.adloader.listener.IManagerListener;
 import com.mix.ads.adloader.listener.ISdkLoader;
 import com.mix.ads.adloader.listener.OnAdBaseListener;
 import com.mix.ads.constant.Constant;
-import com.mix.ads.core.AdPolicy;
 import com.mix.ads.core.db.DBManager;
 import com.mix.ads.core.framework.AdLoadManager;
 import com.mix.ads.core.framework.AdStatManager;
@@ -345,12 +344,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             return false;
         }
 
-        // 超出最大请求次数
-        if (isExceedReqTimes()) {
-            processExceedReqTimes();
-            return false;
-        }
-
         // 是否禁止vpn模式加载
         if (isDisableVpnLoad()) {
             processDisableVpn();
@@ -376,21 +369,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
 
     private boolean isLimitExclude() {
         return LimitAdsManager.get(mContext).isLimitExclude(getSdkName());
-    }
-
-    private void processExceedReqTimes() {
-        long reqTimes = AdPolicy.get(mContext).getReqTimes(getAdPlaceName(), getSdkName());
-        Log.iv(Log.TAG, formatLog("exceed max req times : " + reqTimes + "/" + getMaxReqTimes()));
-        notifyAdLoadFailed(Constant.AD_ERROR_EXCEED_REQ_TIME, "exceed max req times");
-    }
-
-    private boolean isExceedReqTimes() {
-        return AdPolicy.get(mContext).isExceedMaxReqTimes(getAdPlaceName(), getSdkName(), getMaxReqTimes());
-    }
-
-    private void processSignNotMatch() {
-        Log.iv(Log.TAG, formatLog("sign not match"));
-        notifyAdLoadFailed(Constant.AD_ERROR_SIGN_NOT_MATCH, "sign not match");
     }
 
     private boolean isBlockMistakeClick() {
@@ -922,10 +900,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
     }
 
-    protected void reportAdClick() {
-        reportAdClick(getSdkName(), getPid(), null);
-    }
-
     protected void reportAdClick(String network, String networkPid, String impressionId) {
         if (mStat != null) {
             Map<String, Object> extra = new HashMap<>();
@@ -965,7 +939,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         if (getAdListener() != null) {
             getAdListener().onAdRequest();
         }
-        AdPolicy.get(mContext).recordRequestTimes(getAdPlaceName(), getSdkName(), getMaxReqTimes());
         OnAdEventListener l = AdLoadManager.get(mContext).getOnAdEventListener();
         if (l != null) {
             l.onRequest(getAdPlaceName(), getSdkName(), getAdType(), getPid());

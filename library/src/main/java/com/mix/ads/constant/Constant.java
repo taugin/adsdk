@@ -193,12 +193,6 @@ public class Constant {
      */
     public static final int AD_ERROR_LIMIT_ADS = 22;
 
-    /**
-     * 超出最大请求次数
-     */
-    public static final int AD_ERROR_EXCEED_REQ_TIME = 23;
-
-
     public static final int AD_ERROR_DISABLE_VPN = 23;
 
     public static final int AD_ERROR_DISABLE_DEBUG = 24;
