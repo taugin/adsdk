@@ -166,7 +166,7 @@ public class EventImpl implements IEvent {
 
     public void reportEvent(Context context, String eventId, String value, Map<String, Object> extra) {
         Map<String, Object> maps = extra;
-        MiStat.sendFirebaseAnalytics(context, eventId, value, maps, MiStat.isInFirebaseWhiteList(eventId));
+        MiStat.sendFirebaseAnalytics(context, eventId, value, maps);
     }
 
     private Map<String, Object> addExtra(Map<String, Object> extra, String name, String sdk, String type, String pid, double ecpm, String network, String networkPid) {

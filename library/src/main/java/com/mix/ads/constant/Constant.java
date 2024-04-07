@@ -1,8 +1,8 @@
 package com.mix.ads.constant;
 
+import com.mix.ads.MiError;
+
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -66,119 +66,32 @@ public class Constant {
     public static final String PREF_REMOTE_CONFIG_UPDATE_TIME = "pref_remote_config_update_time";
 
     public static final int ONE_DAY_MS = 24 * 3600 * 1000;
+    public static final MiError AD_ERROR_LOADER = MiError.valueOf("sdk loader error");
+    public static final MiError AD_ERROR_UNKNOWN = MiError.valueOf("unknown error");;
+    public static final MiError AD_ERROR_CONFIG = MiError.valueOf("sdk config error");;
+    public static final MiError AD_ERROR_FILLTIME = MiError.valueOf("sdk fill time error");;
+    public static final MiError AD_ERROR_LOADING = MiError.valueOf("ad is loading");;
+    public static final MiError AD_ERROR_LOAD = MiError.valueOf("sdk load error");;
+    public static final MiError AD_ERROR_TIMEOUT = MiError.valueOf("load timeout");;
+    public static final MiError AD_ERROR_CONTEXT = MiError.valueOf("sdk context error");;
+    public static final MiError AD_ERROR_UNSUPPORT = MiError.valueOf("sdk unsupport error");;
+    public static final MiError AD_ERROR_TOO_FREQUENCY = MiError.valueOf("load too frequency error");;
+    public static final MiError AD_ERROR_NETWORK = MiError.valueOf("sdk network error");;
+    public static final MiError AD_ERROR_INVALID_REQUEST = MiError.valueOf("sdk invalid request error");;
+    public static final MiError AD_ERROR_INTERNAL = MiError.valueOf("sdk internal error");;
+    public static final MiError AD_ERROR_NOFILL = MiError.valueOf("sdk no fill error");;
+    public static final MiError AD_ERROR_DISABLE_LOADING = MiError.valueOf("sdk disable error");;
+    public static final MiError AD_ERROR_RATIO = MiError.valueOf("sdk ratio error");;
+    public static final MiError AD_ERROR_INITIALIZE = MiError.valueOf("sdk initialize error");;
 
-    /**
-     * ADLOADER错误
-     */
-    public static final int AD_ERROR_LOADER = -1;
-    /**
-     * 未知错误
-     */
-    public static final int AD_ERROR_UNKNOWN = 0;
-    /**
-     * 配置错误
-     */
-    public static final int AD_ERROR_CONFIG = 1;
-    /**
-     * 无填充
-     */
-    public static final int AD_ERROR_FILLTIME = 2;
-    /**
-     * 正在加载中
-     */
-    public static final int AD_ERROR_LOADING = 3;
-    /**
-     * 加载失败
-     */
-    public static final int AD_ERROR_LOAD = 4;
-    /**
-     * 超时
-     */
-    public static final int AD_ERROR_TIMEOUT = 5;
-    /**
-     * 上下文错误
-     */
-    public static final int AD_ERROR_CONTEXT = 6;
-    /**
-     * 不支持
-     */
-    public static final int AD_ERROR_UNSUPPORT = 7;
+    public static final MiError AD_ERROR_SHOW = MiError.valueOf("sdk show error");;
+    public static final MiError AD_ERROR_LIMIT_ADS = MiError.valueOf("sdk limit error");;
 
-    /**
-     * 加载太频繁
-     */
-    public static final int AD_ERROR_TOO_FREQUENCY = 8;
+    public static final MiError AD_ERROR_DISABLE_VPN = MiError.valueOf("sdk disable load vpn error");;
 
-    /**
-     * 网络错误
-     */
-    public static final int AD_ERROR_NETWORK = 9;
+    public static final MiError AD_ERROR_DISABLE_DEBUG = MiError.valueOf("sdk disable debug error");;
 
-    /**
-     * 无效请求
-     */
-    public static final int AD_ERROR_INVALID_REQUEST = 10;
-
-    /**
-     * 内部错误
-     */
-    public static final int AD_ERROR_INTERNAL = 11;
-
-    /**
-     * 无填充
-     */
-    public static final int AD_ERROR_NOFILL = 12;
-
-    /**
-     * 服务器错误
-     */
-    public static final int AD_ERROR_SERVER = 13;
-
-    /**
-     * 中介错误
-     */
-    public static final int AD_ERROR_MEDIATION = 14;
-
-    /**
-     * 无效的pid
-     */
-    public static final int AD_ERROR_INVALID_PID = 15;
-
-    /**
-     * 判断adloader是否被过滤
-     */
-    public static final int AD_ERROR_DISABLE_LOADING = 17;
-
-    /**
-     * 判断adloader是否满足展示比率
-     */
-    public static final int AD_ERROR_RATIO = 18;
-
-    /**
-     * 停止队列模式加载
-     */
-    public static final int AD_ERROR_QUEUE = 19;
-
-    /**
-     * 初始化失败
-     */
-    public static final int AD_ERROR_INITIALIZE = 20;
-
-    /**
-     * 展示失败
-     */
-    public static final int AD_ERROR_SHOW = 21;
-
-    /**
-     * 排除变现平台
-     */
-    public static final int AD_ERROR_LIMIT_ADS = 22;
-
-    public static final int AD_ERROR_DISABLE_VPN = 23;
-
-    public static final int AD_ERROR_DISABLE_DEBUG = 24;
-
-    public static final int AD_ERROR_BLOCK_MISTAKE_CLICK = 27;
+    public static final MiError AD_ERROR_BLOCK_MISTAKE_CLICK = MiError.valueOf("sdk block mistake click error");;
 
     public static final SimpleDateFormat SDF_ACTIVE_DATE = new SimpleDateFormat("MM-dd", Locale.ENGLISH);
     public static final String PREF_LAST_ELAPSED_TIME = "pref_last_elapsed_time";

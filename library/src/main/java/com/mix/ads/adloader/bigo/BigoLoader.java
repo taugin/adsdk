@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.mix.ads.MiError;
 import com.mix.ads.adloader.base.AbstractSdkLoader;
 import com.mix.ads.adloader.base.BaseBindNativeView;
 import com.mix.ads.constant.Constant;
@@ -518,7 +519,7 @@ public class BigoLoader extends AbstractSdkLoader {
         return "ERROR[NULL]";
     }
 
-    protected int toSdkError(AdError adError) {
+    protected MiError toSdkError(AdError adError) {
         if (adError != null) {
             int code = adError.getCode();
             if (code == AdError.ERROR_CODE_INTERNAL_ERROR) {

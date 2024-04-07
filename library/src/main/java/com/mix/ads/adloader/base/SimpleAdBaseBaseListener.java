@@ -1,5 +1,6 @@
 package com.mix.ads.adloader.base;
 
+import com.mix.ads.MiError;
 import com.mix.ads.MiReward;
 import com.mix.ads.adloader.listener.IManagerListener;
 import com.mix.ads.adloader.listener.ISdkLoader;
@@ -95,7 +96,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onAdLoadFailed(int error, String msg) {
+    public void onAdLoadFailed(MiError error, String msg) {
         /**
          * 错误回调不需要判断是否是当前loader
          */
@@ -110,7 +111,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onAdShowFailed(int error, String msg) {
+    public void onAdShowFailed(MiError error, String msg) {
         /**
          * 错误回调不需要判断是否是当前loader
          */

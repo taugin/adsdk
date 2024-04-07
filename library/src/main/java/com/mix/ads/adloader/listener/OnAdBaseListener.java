@@ -1,5 +1,6 @@
 package com.mix.ads.adloader.listener;
 
+import com.mix.ads.MiError;
 import com.mix.ads.MiReward;
 
 /**
@@ -41,12 +42,12 @@ public interface OnAdBaseListener {
     /**
      * banner or native fail
      */
-    public void onAdLoadFailed(int error, String msg);
+    public void onAdLoadFailed(MiError error, String msg);
 
     /**
      * banner or native show failed
      */
-    public void onAdShowFailed(int error, String msg);
+    public void onAdShowFailed(MiError error, String msg);
 
     /**
      * banner or native opened

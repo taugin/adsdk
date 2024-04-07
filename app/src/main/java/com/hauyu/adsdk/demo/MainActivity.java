@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hauyu.adsdk.demo.view.CustomDrawable;
+import com.mix.ads.MiError;
 import com.mix.ads.MiExtra;
 import com.mix.ads.MiImpData;
 import com.mix.ads.MiParams;
@@ -648,7 +649,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
 
         @Override
-        public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
+        public void onLoadFailed(String placeName, String source, String adType, String pid, MiError error) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , error : " + error);
         }
 
@@ -721,7 +722,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
 
         @Override
-        public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
+        public void onLoadFailed(String placeName, String source, String adType, String pid, MiError error) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , error : " + error);
             updateLoadStatus(textView, placeName);
         }

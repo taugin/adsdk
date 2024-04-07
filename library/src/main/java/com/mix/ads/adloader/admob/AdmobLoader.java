@@ -34,6 +34,7 @@ import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.mix.ads.MiError;
 import com.mix.ads.MiReward;
 import com.mix.ads.adloader.base.AbstractSdkLoader;
 import com.mix.ads.adloader.base.BaseBindNativeView;
@@ -1142,7 +1143,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         return "ERROR[NULL]";
     }
 
-    protected int toSdkError(AdError adError) {
+    protected MiError toSdkError(AdError adError) {
         if (adError != null) {
             int code = adError.getCode();
             if (code == AdRequest.ERROR_CODE_INTERNAL_ERROR) {

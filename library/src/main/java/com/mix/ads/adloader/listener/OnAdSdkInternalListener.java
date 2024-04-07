@@ -1,5 +1,6 @@
 package com.mix.ads.adloader.listener;
 
+import com.mix.ads.MiError;
 import com.mix.ads.MiReward;
 
 /**
@@ -21,9 +22,9 @@ public interface OnAdSdkInternalListener {
 
     void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds);
 
-    void onLoadFailed(String placeName, String source, String adType, String pid, int error, String msg);
+    void onLoadFailed(String placeName, String source, String adType, String pid, MiError error, String msg);
 
-    void onShowFailed(String placeName, String source, String adType, String pid, int error, String msg);
+    void onShowFailed(String placeName, String source, String adType, String pid, MiError error, String msg);
 
     void onRewarded(String placeName, String source, String adType, String pid, MiReward item);
 

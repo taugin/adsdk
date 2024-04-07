@@ -26,10 +26,10 @@ public interface OnAdSdkListener {
     default void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds) {
     }
 
-    default void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
+    default void onLoadFailed(String placeName, String source, String adType, String pid, MiError error) {
     }
 
-    default void onShowFailed(String placeName, String source, String adType, String pid, int error) {
+    default void onShowFailed(String placeName, String source, String adType, String pid, MiError error) {
     }
 
     default void onRewarded(String placeName, String source, String adType, String pid, MiReward item) {

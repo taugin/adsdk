@@ -16,6 +16,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mix.ads.MiError;
 import com.mix.ads.MiImpData;
 import com.mix.ads.MiReward;
 import com.mix.ads.MiStat;
@@ -1011,7 +1012,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
     }
 
-    protected void notifyAdLoadFailed(int error, String msg) {
+    protected void notifyAdLoadFailed(MiError error, String msg) {
         if (getAdListener() != null && !mLoadTimeout.getAndSet(false)) {
             getAdListener().onAdLoadFailed(error, msg);
         }
@@ -1021,7 +1022,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
     }
 
-    protected void notifyAdShowFailed(int error, String msg) {
+    protected void notifyAdShowFailed(MiError error, String msg) {
         if (getAdListener() != null) {
             getAdListener().onAdShowFailed(error, msg);
         }
