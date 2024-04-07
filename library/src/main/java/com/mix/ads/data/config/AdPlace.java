@@ -18,10 +18,6 @@ public class AdPlace {
 
     private List<PidConfig> pidList;
 
-    private int maxCount = 100;
-
-    private int percent = 100;
-
     private boolean clickSwitch;
 
     private long autoInterval;
@@ -45,15 +41,9 @@ public class AdPlace {
 
     private long seqTimeout = 300000;
 
-    private int queueSize = 2;
-
-    private List<String> nativeLayout;
-
     private List<String> ctaColor;
 
     private List<String> clickView;
-
-    private List<String> clickViewRender;
 
     private int retryTimes = 0;
 
@@ -94,22 +84,6 @@ public class AdPlace {
                 }
             }
         }
-    }
-
-    public int getMaxCount() {
-        return maxCount;
-    }
-
-    public void setMaxCount(int maxCount) {
-        this.maxCount = maxCount;
-    }
-
-    public int getPercent() {
-        return percent;
-    }
-
-    public void setPercent(int percent) {
-        this.percent = percent;
     }
 
     public boolean isClickSwitch() {
@@ -204,22 +178,6 @@ public class AdPlace {
         this.seqTimeout = seqTimeout;
     }
 
-    public int getQueueSize() {
-        return queueSize;
-    }
-
-    public void setQueueSize(int queueSize) {
-        this.queueSize = queueSize;
-    }
-
-    public List<String> getNativeLayout() {
-        return nativeLayout;
-    }
-
-    public void setNativeLayout(List<String> nativeLayout) {
-        this.nativeLayout = nativeLayout;
-    }
-
     public List<String> getCtaColor() {
         return ctaColor;
     }
@@ -234,14 +192,6 @@ public class AdPlace {
 
     public void setClickView(List<String> clickView) {
         this.clickView = clickView;
-    }
-
-    public List<String> getClickViewRender() {
-        return clickViewRender;
-    }
-
-    public void setClickViewRender(List<String> clickViewRender) {
-        this.clickViewRender = clickViewRender;
     }
 
     public int getRetryTimes() {
@@ -274,14 +224,11 @@ public class AdPlace {
                 "name=" + name +
                 ", mode=" + mode +
                 ", list=" + pidList +
-                ", mc=" + maxCount +
-                ", p=" + percent +
                 ", as=" + clickSwitch +
                 ", ai=" + autoInterval +
                 ", bs=" + bannerSize +
                 ", uv=" + uniqueValue +
                 ", loo=" + loadOnlyOnce +
-                ", nl=" + nativeLayout +
                 '}';
     }
 }

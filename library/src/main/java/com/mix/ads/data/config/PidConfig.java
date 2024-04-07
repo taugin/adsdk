@@ -37,21 +37,13 @@ public class PidConfig {
 
     private List<String> clickView;
 
-    private List<String> clickViewRender;
-
     private int cnt;
-
-    private List<String> nativeLayout;
 
     private List<String> ctaColor;
 
     private AdPlace adPlace;
 
-    private boolean activityContext;
-
     private int ratio = 100;
-
-    private Map<String, String> subNativeLayout;
 
     private int splashOrientation = 1;
 
@@ -65,12 +57,6 @@ public class PidConfig {
 
     private String sceneId;
 
-    // 是否展示开屏图标
-    private boolean showSplashIcon = true;
-
-    // 开始加载超时值
-    private int splashTimeout = 15000;
-
     // 是否禁止VPN模式加载
     private boolean disableVpnLoad = false;
 
@@ -79,12 +65,6 @@ public class PidConfig {
     private int minAvgCount = 3;
 
     private boolean disableDebugLoad;
-
-    private boolean onlySignLoad;
-
-    private boolean onlyPackLoad;
-
-    private boolean autoLoad;
 
     private String appId;
 
@@ -188,28 +168,12 @@ public class PidConfig {
         this.clickView = clickView;
     }
 
-    public List<String> getClickViewRender() {
-        return clickViewRender;
-    }
-
-    public void setClickViewRender(List<String> clickViewRender) {
-        this.clickViewRender = clickViewRender;
-    }
-
     public int getCnt() {
         return cnt;
     }
 
     public void setCnt(int cnt) {
         this.cnt = cnt;
-    }
-
-    public List<String> getNativeLayout() {
-        return nativeLayout;
-    }
-
-    public void setNativeLayout(List<String> nativeLayout) {
-        this.nativeLayout = nativeLayout;
     }
 
     public List<String> getCtaColor() {
@@ -228,28 +192,12 @@ public class PidConfig {
         this.adPlace = adPlace;
     }
 
-    public boolean isActivityContext() {
-        return activityContext;
-    }
-
-    public void setActivityContext(boolean activityContext) {
-        this.activityContext = activityContext;
-    }
-
     public int getRatio() {
         return ratio;
     }
 
     public void setRatio(int ratio) {
         this.ratio = ratio;
-    }
-
-    public Map<String, String> getSubNativeLayout() {
-        return subNativeLayout;
-    }
-
-    public void setSubNativeLayout(Map<String, String> subNativeLayout) {
-        this.subNativeLayout = subNativeLayout;
     }
 
     public int getSplashOrientation() {
@@ -292,22 +240,6 @@ public class PidConfig {
         this.sceneId = sceneId;
     }
 
-    public boolean isShowSplashIcon() {
-        return showSplashIcon;
-    }
-
-    public void setShowSplashIcon(boolean showSplashIcon) {
-        this.showSplashIcon = showSplashIcon;
-    }
-
-    public int getSplashTimeout() {
-        return splashTimeout;
-    }
-
-    public void setSplashTimeout(int splashTimeout) {
-        this.splashTimeout = splashTimeout;
-    }
-
     public boolean isDisableVpnLoad() {
         return disableVpnLoad;
     }
@@ -338,30 +270,6 @@ public class PidConfig {
 
     public void setDisableDebugLoad(boolean disableDebugLoad) {
         this.disableDebugLoad = disableDebugLoad;
-    }
-
-    public boolean isOnlySignLoad() {
-        return onlySignLoad;
-    }
-
-    public void setOnlySignLoad(boolean onlySignLoad) {
-        this.onlySignLoad = onlySignLoad;
-    }
-
-    public boolean isOnlyPackLoad() {
-        return onlyPackLoad;
-    }
-
-    public void setOnlyPackLoad(boolean onlyPackLoad) {
-        this.onlyPackLoad = onlyPackLoad;
-    }
-
-    public boolean isAutoLoad() {
-        return autoLoad;
-    }
-
-    public void setAutoLoad(boolean autoLoad) {
-        this.autoLoad = autoLoad;
     }
 
     public String getAppId() {
@@ -396,10 +304,6 @@ public class PidConfig {
         return TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk);
     }
 
-    public boolean isTradPlus() {
-        return TextUtils.equals(Constant.AD_SDK_TRADPLUS, sdk);
-    }
-
     public boolean isSpread() {
         return TextUtils.equals(Constant.AD_SDK_SPREAD, sdk);
     }
@@ -432,9 +336,6 @@ public class PidConfig {
                 ", pid=" + pid +
                 ", type=" + adType +
                 ", ecpm=" + cpm +
-                ", nl=" + nativeLayout +
-                ", snl=" + subNativeLayout +
-                ", ac=" + activityContext +
                 ", bs=" + bannerSize +
                 ", dis=" + disable +
                 '}';

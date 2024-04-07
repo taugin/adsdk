@@ -520,10 +520,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
                 || TextUtils.equals(Constant.TYPE_SPLASH, getAdType()))) {
             return true;
         }
-        // tradplus interstitial reward
-        if (TextUtils.equals(Constant.AD_SDK_TRADPLUS, getSdkName())) {
-            return true;
-        }
         return false;
     }
 

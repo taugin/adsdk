@@ -137,23 +137,11 @@ public class AdParser implements IParser {
             if (jobj.has(MODE)) {
                 adPlace.setMode(jobj.getString(MODE));
             }
-            if (jobj.has(MAXSHOW)) {
-                adPlace.setMaxCount(jobj.getInt(MAXSHOW));
-            }
-            if (jobj.has(PERCENT)) {
-                adPlace.setPercent(jobj.getInt(PERCENT));
-            }
-            if (jobj.has(NATIVE_LAYOUT)) {
-                adPlace.setNativeLayout(parseStringList(jobj.getString(NATIVE_LAYOUT)));
-            }
             if (jobj.has(CTA_COLOR)) {
                 adPlace.setCtaColor(parseStringList(jobj.getString(CTA_COLOR)));
             }
             if (jobj.has(CLICK_VIEW)) {
                 adPlace.setClickView(parseStringList(jobj.getString(CLICK_VIEW)));
-            }
-            if (jobj.has(CLICK_VIEW_RENDER)) {
-                adPlace.setClickViewRender(parseStringList(jobj.getString(CLICK_VIEW_RENDER)));
             }
             if (jobj.has(PIDS)) {
                 adPlace.setPidList(parsePidList(adPlace, jobj.getString(PIDS)));
@@ -269,26 +257,14 @@ public class AdParser implements IParser {
             if (jobj.has(LOAD_NATIVE_COUNT)) {
                 pidConfig.setCnt(jobj.getInt(LOAD_NATIVE_COUNT));
             }
-            if (jobj.has(NATIVE_LAYOUT)) {
-                pidConfig.setNativeLayout(parseStringList(jobj.getString(NATIVE_LAYOUT)));
-            }
             if (jobj.has(CTA_COLOR)) {
                 pidConfig.setCtaColor(parseStringList(jobj.getString(CTA_COLOR)));
             }
             if (jobj.has(CLICK_VIEW)) {
                 pidConfig.setClickView(parseStringList(jobj.getString(CLICK_VIEW)));
             }
-            if (jobj.has(CLICK_VIEW_RENDER)) {
-                pidConfig.setClickViewRender(parseStringList(jobj.getString(CLICK_VIEW_RENDER)));
-            }
-            if (jobj.has(ACTIVITY_CONTEXT)) {
-                pidConfig.setActivityContext(jobj.getInt(ACTIVITY_CONTEXT) == 1);
-            }
             if (jobj.has(RATIO)) {
                 pidConfig.setRatio(jobj.getInt(RATIO));
-            }
-            if (jobj.has(SUB_NATIVE_LAYOUT)) {
-                pidConfig.setSubNativeLayout(jsonToMap(jobj.getString(SUB_NATIVE_LAYOUT)));
             }
             if (jobj.has(SPLASH_ORIENTATION)) {
                 pidConfig.setSplashOrientation(jobj.getInt(SPLASH_ORIENTATION));
@@ -305,12 +281,6 @@ public class AdParser implements IParser {
             if (jobj.has(SCENE_ID)) {
                 pidConfig.setSceneId(jobj.getString(SCENE_ID));
             }
-            if (jobj.has(SPLASH_ICON)) {
-                pidConfig.setShowSplashIcon(jobj.getInt(SPLASH_ICON) == 1);
-            }
-            if (jobj.has(SPLASH_TIME_OUT)) {
-                pidConfig.setSplashTimeout(jobj.getInt(SPLASH_TIME_OUT));
-            }
             if (jobj.has(DISABLE_VPN_LOAD)) {
                 pidConfig.setDisableVpnLoad(jobj.getInt(DISABLE_VPN_LOAD) == 1);
             }
@@ -322,15 +292,6 @@ public class AdParser implements IParser {
             }
             if (jobj.has(DISABLE_DEBUG_LOAD)) {
                 pidConfig.setDisableDebugLoad(jobj.getInt(DISABLE_DEBUG_LOAD) == 1);
-            }
-            if (jobj.has(ONLY_SIGN_LOAD)) {
-                pidConfig.setOnlySignLoad(jobj.getInt(ONLY_SIGN_LOAD) == 1);
-            }
-            if (jobj.has(ONLY_PACK_LOAD)) {
-                pidConfig.setOnlyPackLoad(jobj.getInt(ONLY_PACK_LOAD) == 1);
-            }
-            if (jobj.has(AUTO_LOAD)) {
-                pidConfig.setAutoLoad(jobj.getInt(AUTO_LOAD) == 1);
             }
             if (jobj.has(REALTIME_BIDDING)) {
                 pidConfig.setRealTimeBidding(jobj.getInt(REALTIME_BIDDING) == 1);

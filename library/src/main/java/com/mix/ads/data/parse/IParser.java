@@ -27,10 +27,6 @@ public interface IParser {
     String AUTO_INTERVAL = "ai";
     // 开启或关闭单次加载通知
     String LOAD_ONLY_ONCE = "loo";
-    // 24小时最大展示次数
-    String MAXSHOW = "maxshow";
-    // 展示的百分比
-    String PERCENT = "percent";
     // 具体广告位配置
     String PIDS = "pids";
     // 场景缓存, 避免多次加载
@@ -43,8 +39,6 @@ public interface IParser {
     String WATERFALL_INTERVAL = "wfi";
     // 顺序加载超时值
     String SEQ_TIMEOUT = "sto";
-    // 全屏布局样式 针对GT全屏模式下的布局样式
-    String NATIVE_LAYOUT = "nl";
     // cta按钮颜色
     String CTA_COLOR = "cc";
     // 场景加载失败，自动重试
@@ -75,16 +69,10 @@ public interface IParser {
     String BANNER_SIZE = "size";
     // 可点击原生视图
     String CLICK_VIEW = "cv";
-    // 可点击原生视图
-    String CLICK_VIEW_RENDER = "cvr";
     // 加载原生个数
     String LOAD_NATIVE_COUNT = "lnc";
-    // 使用activity上下文
-    String ACTIVITY_CONTEXT = "ac";
     // 展示比例
     String RATIO = "ratio";
-    // 子原生布局
-    String SUB_NATIVE_LAYOUT = "snl";
     // admob开屏方向 1：竖屏，2：横屏
     String SPLASH_ORIENTATION = "so";
     // 广告位的附加参数
@@ -95,10 +83,6 @@ public interface IParser {
     String TEMPLATE = "template";
     // 设置广告单元最大请求次数
     String MAX_REQ_TIME = "mrt";
-    // 开屏图标
-    String SPLASH_ICON = "si";
-    // 开屏加载超时时长
-    String SPLASH_TIME_OUT = "sto";
     // 是否禁止vpn模式加载
     String DISABLE_VPN_LOAD = "dvl";
     // 对于admob使用平均值作为loaded value
@@ -107,12 +91,6 @@ public interface IParser {
     String MIN_AVG_COUNT = "mac";
     // 禁止调试模式加载广告
     String DISABLE_DEBUG_LOAD = "ddl";
-    // 允许签名加载，仅配置的签名允许加载广告
-    String ONLY_SIGN_LOAD = "osl";
-    // 允许包名加载，仅配置的包名允许加载广告
-    String ONLY_PACK_LOAD = "opl";
-    // 配置tradplus的自动加载
-    String AUTO_LOAD = "al";
     // 是否是单次竞价，每次竞价失败都会重新加载
     String REALTIME_BIDDING = "rtb";
     // 是否是备用广告
