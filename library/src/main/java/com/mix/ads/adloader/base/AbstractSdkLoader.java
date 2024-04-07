@@ -36,7 +36,6 @@ import com.mix.ads.core.framework.Params;
 import com.mix.ads.data.DataManager;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.data.config.PidConfig;
-import com.mix.ads.data.parse.IParser;
 import com.mix.ads.log.Log;
 import com.mix.ads.stat.EventImpl;
 import com.mix.ads.stat.IEvent;
@@ -919,30 +918,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
 
     protected void reportAdImp(String network, String networkPid) {
         if (mStat != null) {
-            BaseBindNativeView baseBindNativeView = getBaseBindNativeView();
-            Map<String, String> nativeAssets = null;
-            if (baseBindNativeView != null) {
-                nativeAssets = baseBindNativeView.getAdvMap();
-            }
-            if (nativeAssets != null && !nativeAssets.isEmpty()) {
-                if (!TextUtils.isEmpty(network)) {
-                    nativeAssets.put(IParser.SDK, network);
-                } else {
-                    nativeAssets.put(IParser.SDK, getSdkName());
-                }
-                StringBuilder builder = new StringBuilder("{");
-                builder.append("\n");
-                for (Map.Entry<String, String> entry : nativeAssets.entrySet()) {
-                    builder.append("  " + entry.getKey() + " : " + entry.getValue());
-                    builder.append("\n");
-                }
-                builder.append("}");
-                Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " - " + getAdType() + " [" + network + "] assets : " + builder.toString());
-            }
             mStat.reportAdImp(mContext, getAdPlaceName(), getSdkName(), network, getAdType(), getPid(), networkPid, getCpm(), null);
-            if (nativeAssets != null) {
-                nativeAssets.clear();
-            }
         }
     }
 

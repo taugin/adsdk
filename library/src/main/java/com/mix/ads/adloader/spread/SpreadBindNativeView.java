@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mix.ads.adloader.base.BaseBindNativeView;
-import com.mix.ads.constant.Constant;
 import com.mix.ads.core.framework.Params;
 import com.mix.ads.data.config.PidConfig;
 import com.mix.ads.data.config.SpreadConfig;
@@ -46,7 +45,7 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             Log.iv(Log.TAG, "bindNative adContainer == null###");
             return;
         }
-        int rootLayout = getBestNativeLayout(adContainer.getContext(), pidConfig, mParams, Constant.AD_SDK_SPREAD);
+        int rootLayout = mParams.getNativeRootLayout();
         if (rootLayout > 0) {
             bindNativeViewWithRootView(adContainer, rootLayout, pidConfig, spreadConfig);
             updateCtaButtonBackground(adContainer, pidConfig, mParams);
@@ -136,7 +135,6 @@ public class SpreadBindNativeView extends BaseBindNativeView {
             loadAndShowImage(mediaView, spreadConfig.getBanner());
             mediaView.setOnClickListener(mClickClass);
         }
-        putAdvertiserInfo(spreadConfig);
         return rootView;
     }
 
@@ -193,29 +191,6 @@ public class SpreadBindNativeView extends BaseBindNativeView {
                     Log.iv(Log.TAG, "code : " + code + " , error : " + error);
                 }
             });
-        } catch (Exception e) {
-        }
-    }
-
-    private void putAdvertiserInfo(SpreadConfig spreadConfig) {
-        try {
-            putValue(AD_TITLE, spreadConfig.getTitle());
-        } catch (Exception e) {
-        }
-        try {
-            putValue(AD_DETAIL, spreadConfig.getDetail());
-        } catch (Exception e) {
-        }
-        try {
-            putValue(AD_COVER, spreadConfig.getBanner());
-        } catch (Exception e) {
-        }
-        try {
-            putValue(AD_CTA, spreadConfig.getCta());
-        } catch (Exception e) {
-        }
-        try {
-            putValue(AD_ICON, spreadConfig.getIcon());
         } catch (Exception e) {
         }
     }

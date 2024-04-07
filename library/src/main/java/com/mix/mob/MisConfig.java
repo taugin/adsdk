@@ -23,24 +23,6 @@ import java.util.Map;
  */
 
 public class MisConfig {
-    private static final Map<String, Integer> LAYOUT_MAPS;
-
-    static {
-        LAYOUT_MAPS = new HashMap<String, Integer>();
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MICRO, R.layout.mis_card_1);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_TINY, R.layout.mis_card_2);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_LITTLE, R.layout.mis_card_3);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_SMALL, R.layout.mis_card_4);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MEDIUM, R.layout.mis_card_5);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_LARGE, R.layout.mis_card_6);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_RECT, R.layout.mis_card_7);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_WRAP, R.layout.mis_card_8);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_ROUND, R.layout.mis_card_9);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_FULL, R.layout.mis_card_10);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_MIX, R.layout.mis_card_11);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_FOOT, R.layout.mis_card_12);
-        LAYOUT_MAPS.put(Constant.NATIVE_CARD_HEAD, R.layout.mis_card_13);
-    }
 
     public static String getVersion() {
         return BuildConfig.SDK_VERSION_NAME;
@@ -49,49 +31,6 @@ public class MisConfig {
     public static boolean isDebuggable() {
         return BuildConfig.DEBUG;
     }
-
-    public static int getLayout(String cardStyle) {
-        return LAYOUT_MAPS.get(cardStyle);
-    }
-
-
-    public static int getLayoutLittle() {
-        return R.layout.mis_card_3;
-    }
-
-    public static void bindLayoutId(Params params) {
-        if (params == null) {
-            return;
-        }
-        params.setAdTitle(R.id.mis_native_title);
-        params.setAdSocial(R.id.mis_native_social);
-        params.setAdDetail(R.id.mis_native_detail);
-        params.setAdIcon(R.id.mis_native_icon);
-        params.setAdAction(R.id.mis_native_action_btn);
-        params.setAdCover(R.id.mis_native_image_cover);
-        params.setAdChoices(R.id.mis_native_ad_choices_container);
-        params.setAdMediaView(R.id.mis_native_media_cover);
-    }
-
-    public static int getDefaultIconColor() {
-        return R.color.misDefaultIconColor;
-    }
-
-    public static int mis_card_grid = R.layout.mis_card_grid;
-    public static int mis_card_item = R.layout.mis_card_item;
-    public static int mis_title_view = R.id.mis_title_view;
-    public static int mis_spread_grid = R.id.mis_spread_grid;
-    public static int mis_group_single = R.id.mis_group_single;
-    public static int mis_group_multiple = R.id.mis_group_multiple;
-    public static int mis_app_icon_single = R.id.mis_app_icon_single;
-    public static int mis_app_name_single = R.id.mis_app_name_single;
-    public static int mis_app_detail_single = R.id.mis_app_detail_single;
-    public static int mis_action_view_single = R.id.mis_action_view_single;
-    public static int mis_app_icon_multiple = R.id.mis_app_icon_multiple;
-    public static int mis_app_name_multiple = R.id.mis_app_name_multiple;
-    public static int mis_action_view_multiple = R.id.mis_action_view_multiple;
-    public static int mis_arrow_back = R.id.mis_arrow_back;
-
 
     static class F0O0O0O extends Activity {
         private Application application;

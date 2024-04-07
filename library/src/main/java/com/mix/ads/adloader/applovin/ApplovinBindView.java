@@ -33,7 +33,7 @@ public class ApplovinBindView extends BaseBindNativeView {
             if (networkName != null) {
                 networkName = networkName.toLowerCase(Locale.ENGLISH);
             }
-            int rootLayout = getBestNativeLayout(context, pidConfig, mParams, networkName);
+            int rootLayout = mParams.getNativeRootLayout();
             if (rootLayout > 0) {
                 View rootView = LayoutInflater.from(context).inflate(rootLayout, null);
                 View ctaButton = rootView.findViewById(params.getAdAction());
@@ -101,7 +101,6 @@ public class ApplovinBindView extends BaseBindNativeView {
         }
         updateNativeStatus(context, maxNativeAdView);
         updateNativeDetail(maxNativeAdView);
-        fillNativeAssets(maxNativeAdView);
         updateClickViewStatus(maxNativeAdView, pidConfig);
     }
 
@@ -224,25 +223,6 @@ public class ApplovinBindView extends BaseBindNativeView {
             }
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
-        }
-    }
-
-    private void fillNativeAssets(MaxNativeAdView maxNativeAdView) {
-        try {
-            putValue(AD_TITLE, maxNativeAdView.getTitleTextView().getText().toString());
-        } catch (Exception e) {
-        }
-        try {
-            putValue(AD_DETAIL, maxNativeAdView.getBodyTextView().getText().toString());
-        } catch (Exception e) {
-        }
-        try {
-            putValue(AD_CTA, maxNativeAdView.getCallToActionButton().getText().toString());
-        } catch (Exception e) {
-        }
-        try {
-            putValue(AD_SOCIAL, maxNativeAdView.getAdvertiserTextView().getText().toString());
-        } catch (Exception e) {
         }
     }
 }

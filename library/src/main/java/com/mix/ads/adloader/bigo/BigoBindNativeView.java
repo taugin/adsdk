@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mix.ads.adloader.base.BaseBindNativeView;
-import com.mix.ads.constant.Constant;
 import com.mix.ads.core.framework.Params;
 import com.mix.ads.data.config.PidConfig;
 import com.mix.ads.log.Log;
@@ -42,7 +41,7 @@ public class BigoBindNativeView extends BaseBindNativeView {
             Log.iv(Log.TAG, "bindNative adContainer == null###");
             return;
         }
-        int rootLayout = getBestNativeLayout(adContainer.getContext(), pidConfig, mParams, Constant.AD_NETWORK_BIGO);
+        int rootLayout = mParams.getNativeRootLayout();
         if (rootLayout > 0) {
             bindNativeViewWithRootView(adContainer, rootLayout, nativeAd, pidConfig);
             updateCtaButtonBackground(adContainer, pidConfig, mParams);
@@ -57,7 +56,7 @@ public class BigoBindNativeView extends BaseBindNativeView {
             throw new AndroidRuntimeException("adContainer is null");
         }
         if (rootLayout <= 0) {
-            throw new AndroidRuntimeException("rootLayout is 0x0");
+            throw new AndroidRuntimeException("rootLayout is 0");
         }
         View view = null;
         try {
@@ -143,9 +142,6 @@ public class BigoBindNativeView extends BaseBindNativeView {
             clickableViews.add(ctaView);
         }
         nativeAd.registerViewForInteraction((ViewGroup) rootView, mediaView, iconView, adOptionsView, clickableViews);
-
-        Log.iv(Log.TAG, "clickable view : " + pidConfig.getClickView());
-        putAdvertiserInfo(nativeAd);
         return rootView;
     }
 
@@ -171,28 +167,5 @@ public class BigoBindNativeView extends BaseBindNativeView {
             Log.iv(Log.TAG, "error : " + e);
         }
         return null;
-    }
-
-    private void putAdvertiserInfo(NativeAd nativeAd) {
-        try {
-            putValue(AD_TITLE, nativeAd.getTitle());
-        } catch (Exception e) {
-        }
-        try {
-            putValue(AD_DETAIL, nativeAd.getDescription());
-        } catch (Exception e) {
-        }
-        try {
-            putValue(AD_ADVERTISER, nativeAd.getAdvertiser());
-        } catch (Exception e) {
-        }
-        try {
-            putValue(AD_PRICE, String.valueOf(nativeAd.getBid().getPrice() / 1000));
-        } catch (Exception e) {
-        }
-        try {
-            putValue(AD_CTA, nativeAd.getCallToAction());
-        } catch (Exception e) {
-        }
     }
 }

@@ -52,18 +52,6 @@ public class BaseBindNativeView {
     protected static final String AD_PRICE = "price";
     protected static final String AD_STORE = "store";
 
-    private Random mRandom = new Random(System.currentTimeMillis());
-
-    private Map<String, String> mAdvMap = new HashMap<>();
-
-    public Map<String, String> getAdvMap() {
-        return mAdvMap;
-    }
-
-    protected void putValue(String key, String value) {
-        mAdvMap.put(key, value);
-    }
-
     protected void updateCtaButtonBackground(View view, PidConfig pidConfig, Params params) {
         if (pidConfig == null || view == null || params == null) {
             return;
@@ -108,81 +96,6 @@ public class BaseBindNativeView {
         }
     }
 
-    /**
-     * 获取最佳布局
-     *
-     * @param context
-     * @param pidConfig
-     * @param params
-     * @param network
-     * @return
-     */
-    protected int getBestNativeLayout(Context context, PidConfig pidConfig, Params params, String network) {
-        boolean useCardStyle;
-        int adRootLayout;
-        int rootLayout = params.getNativeRootLayout();
-        String template = params.getNativeCardStyle();
-        if (rootLayout > 0) {
-            useCardStyle = false;
-            template = "custom";
-        } else {
-            useCardStyle = true;
-            rootLayout = getAdViewLayout(context, template, pidConfig);
-            bindParamsViewId(params);
-            if (TextUtils.isEmpty(template)) {
-                template = "default";
-            }
-        }
-
-        String layout = "none";
-        if (useCardStyle && !TextUtils.isEmpty(network)) {
-            try {
-                Pair<String, Integer> pair = getSubNativeLayout(pidConfig, network);
-                adRootLayout = pair.second;
-                layout = pair.first;
-            } catch (Exception e) {
-                adRootLayout = 0;
-            }
-            if (adRootLayout > 0) {
-                bindParamsViewId(params);
-            } else {
-                adRootLayout = rootLayout;
-            }
-        } else {
-            adRootLayout = rootLayout;
-        }
-        try {
-            Log.iv(Log.TAG, "bind native layout [" + pidConfig.getSdk() + " : " + template + "] [" + network + " : " + (adRootLayout > 0 ? layout : "none") + "] - [" + pidConfig.getPlaceName() + "]");
-        } catch (Exception e) {
-        }
-        return adRootLayout;
-    }
-
-    private int getNativeLayout(Context context, PidConfig pidConfig) {
-        if (pidConfig != null && context != null) {
-            List<String> layoutFlag = pidConfig.getNativeLayout();
-            // 获取 layout flag
-            if (layoutFlag == null || layoutFlag.isEmpty()) {
-                try {
-                    layoutFlag = pidConfig.getAdPlace().getNativeLayout();
-                } catch (Exception e) {
-                    Log.iv(Log.TAG, "nl error : " + e);
-                }
-            }
-            if (layoutFlag != null && !layoutFlag.isEmpty()) {
-                String layout = layoutFlag.get(mRandom.nextInt(layoutFlag.size()));
-                if (!TextUtils.isEmpty(layout)) {
-                    Log.iv(Log.TAG, "layout flag : " + layout);
-                    Integer nativeLayout = MisConfig.getLayout(layout);
-                    if (nativeLayout != null) {
-                        return nativeLayout.intValue();
-                    }
-                }
-            }
-        }
-        return 0;
-    }
-
     protected boolean isClickable(String view, PidConfig pidConfig) {
         if (pidConfig == null) {
             return false;
@@ -204,68 +117,6 @@ public class BaseBindNativeView {
             }
         }
         return clickView;
-    }
-
-    protected List<String> getClickViewRender(PidConfig pidConfig) {
-        List<String> clickViewRender = pidConfig.getClickViewRender();
-        // 获取clickviews
-        if (clickViewRender == null || clickViewRender.isEmpty()) {
-            try {
-                clickViewRender = pidConfig.getAdPlace().getClickViewRender();
-            } catch (Exception e) {
-            }
-        }
-        return clickViewRender;
-    }
-
-    private int getAdViewLayout(Context context, String template, PidConfig pidConfig) {
-        int layoutId = getNativeLayout(context, pidConfig);
-        if (layoutId == 0) {
-            try {
-                layoutId = MisConfig.getLayout(template);
-            } catch (Exception e) {
-                layoutId = MisConfig.getLayoutLittle();
-            }
-        }
-        return layoutId;
-    }
-
-    private Pair<String, Integer> getSubNativeLayout(PidConfig pidConfig, String sdk) {
-        if (pidConfig != null && !TextUtils.isEmpty(sdk)) {
-            Map<String, String> subNativeLayout = pidConfig.getSubNativeLayout();
-            if (subNativeLayout != null) {
-                String layout = subNativeLayout.get(sdk);
-                if (!TextUtils.isEmpty(layout)) {
-                    Integer nativeLayout = MisConfig.getLayout(layout);
-                    if (nativeLayout != null) {
-                        return new Pair<>(layout, nativeLayout.intValue());
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    protected void bindParamsViewId(Params params) {
-        MisConfig.bindLayoutId(params);
-    }
-
-    protected void centerChildView(ViewGroup viewGroup) {
-        try {
-            if (viewGroup instanceof LinearLayout) {
-                ((LinearLayout) viewGroup).setGravity(Gravity.CENTER);
-            } else if (viewGroup instanceof RelativeLayout) {
-                ((RelativeLayout) viewGroup).setGravity(Gravity.CENTER);
-            } else if (viewGroup instanceof FrameLayout) {
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) viewGroup.getLayoutParams();
-                if (params == null) {
-                    params = new FrameLayout.LayoutParams(-1, -2);
-                }
-                params.gravity = Gravity.CENTER;
-                viewGroup.setLayoutParams(params);
-            }
-        } catch (Exception e) {
-        }
     }
 
     protected void replaceSrcViewToDstView(View srcView, View dstView) {
@@ -301,7 +152,7 @@ public class BaseBindNativeView {
             float[] outerR = new float[]{corner, corner, corner, corner, corner, corner, corner, corner};
             Shape shape = new RoundRectShape(outerR, null, null);
             ShapeDrawable shapeNormal = new ShapeDrawable(shape);
-            shapeNormal.getPaint().setColor(imageView.getContext().getResources().getColor(MisConfig.getDefaultIconColor()));
+            shapeNormal.getPaint().setColor(Color.parseColor("#FF4080FF"));
             imageView.setBackground(shapeNormal);
         } catch (Exception e) {
             Log.iv(Log.TAG, platform + " set default ad icon error : " + e);

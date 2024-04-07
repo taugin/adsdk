@@ -11,11 +11,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,7 +26,6 @@ import com.mix.ads.http.OnImageCallback;
 import com.mix.ads.log.Log;
 import com.mix.ads.utils.Utils;
 import com.mix.ads.utils.VUIHelper;
-import com.mix.mob.MisConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,107 +81,6 @@ public class SpreadManager {
             }
         }
         return checkedList;
-    }
-
-    public boolean hasSpreadApp() {
-        List<SpreadConfig> list = getSpreadList();
-        return list != null && !list.isEmpty();
-    }
-
-    public int getSpreadAppCount() {
-        List<SpreadConfig> list = getSpreadList();
-        return list != null ? list.size() : 0;
-    }
-
-    public void showSpreadUI() {
-        List<SpreadConfig> list = getSpreadList();
-        if (list == null || list.isEmpty()) {
-            return;
-        }
-
-        Activity activity = ActivityMonitor.get(mContext).getTopActivity();
-        if (activity == null || activity.isFinishing()) {
-            return;
-        }
-        boolean useSingleColumn = mRandom != null ? mRandom.nextBoolean() : new Random().nextBoolean();
-        View view = LayoutInflater.from(mContext).inflate(MisConfig.mis_card_grid, null);
-        TextView titleView = view.findViewById(MisConfig.mis_title_view);
-        titleView.setText(getSponsoredText(mContext));
-        GridView gridView = view.findViewById(MisConfig.mis_spread_grid);
-        gridView.setNumColumns(useSingleColumn ? 1 : 3);
-        ArrayAdapter<SpreadConfig> adapter = new ArrayAdapter<SpreadConfig>(mContext, 0, list) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                ViewHolder viewHolder = null;
-                if (convertView == null) {
-                    convertView = LayoutInflater.from(mContext).inflate(MisConfig.mis_card_item, null);
-                    viewHolder = new ViewHolder();
-                    if (useSingleColumn) {
-                        convertView.findViewById(MisConfig.mis_group_single).setVisibility(View.VISIBLE);
-                        convertView.findViewById(MisConfig.mis_group_multiple).setVisibility(View.GONE);
-                        viewHolder.iconViewSingle = convertView.findViewById(MisConfig.mis_app_icon_single);
-                        viewHolder.nameViewSingle = convertView.findViewById(MisConfig.mis_app_name_single);
-                        viewHolder.detailViewSingle = convertView.findViewById(MisConfig.mis_app_detail_single);
-                        viewHolder.actionViewSingle = convertView.findViewById(MisConfig.mis_action_view_single);
-                    } else {
-                        convertView.findViewById(MisConfig.mis_group_single).setVisibility(View.GONE);
-                        convertView.findViewById(MisConfig.mis_group_multiple).setVisibility(View.VISIBLE);
-                        viewHolder.iconViewMultiple = convertView.findViewById(MisConfig.mis_app_icon_multiple);
-                        viewHolder.nameViewMultiple = convertView.findViewById(MisConfig.mis_app_name_multiple);
-                        viewHolder.actionViewMultiple = convertView.findViewById(MisConfig.mis_action_view_multiple);
-                    }
-                    convertView.setTag(viewHolder);
-                } else {
-                    viewHolder = (ViewHolder) convertView.getTag();
-                }
-                final SpreadConfig spreadConfig = getItem(position);
-                if (useSingleColumn) {
-                    viewHolder.actionViewSingle.setTag(spreadConfig);
-                    viewHolder.actionViewSingle.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            clickSponsoredApp(mContext, spreadConfig);
-                        }
-                    });
-                    if (spreadConfig != null) {
-                        viewHolder.actionViewSingle.setText(spreadConfig.getCta());
-                        viewHolder.nameViewSingle.setText(spreadConfig.getTitle());
-                        viewHolder.detailViewSingle.setText(spreadConfig.getDetail());
-                        loadAndShowImage(viewHolder.iconViewSingle, spreadConfig.getIcon());
-                    }
-                } else {
-                    viewHolder.actionViewMultiple.setTag(spreadConfig);
-                    viewHolder.actionViewMultiple.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            clickSponsoredApp(mContext, spreadConfig);
-                        }
-                    });
-                    if (spreadConfig != null) {
-                        viewHolder.actionViewMultiple.setText(spreadConfig.getCta());
-                        viewHolder.nameViewMultiple.setText(spreadConfig.getTitle());
-                        loadAndShowImage(viewHolder.iconViewMultiple, spreadConfig.getIcon());
-                    }
-                }
-                return convertView;
-            }
-        };
-        gridView.setAdapter(adapter);
-        Dialog dialog = new Dialog(activity, android.R.style.Theme_Material_Light_NoActionBar);
-        dialog.setContentView(view);
-        dialog.show();
-        View backView = view.findViewById(MisConfig.mis_arrow_back);
-        backView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    if (dialog != null && dialog.isShowing()) {
-                        dialog.dismiss();
-                    }
-                } catch (Exception e) {
-                }
-            }
-        });
     }
 
     private void clickSponsoredApp(Context context, SpreadConfig spreadConfig) {

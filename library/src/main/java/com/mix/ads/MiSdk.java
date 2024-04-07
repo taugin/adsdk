@@ -16,7 +16,6 @@ import com.mix.ads.core.framework.FBStatManager;
 import com.mix.ads.core.framework.LimitAdsManager;
 import com.mix.ads.core.framework.ReplaceManager;
 import com.mix.ads.data.DataManager;
-import com.mix.ads.data.SpreadManager;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.data.config.PlaceConfig;
 import com.mix.ads.log.Log;
@@ -847,17 +846,5 @@ public class MiSdk {
 
     public void setApplovinInTestMode(boolean inTestMode) {
         DataManager.get(mContext).setApplovinInTestMode(inTestMode);
-    }
-
-    public boolean hasSpreadApp() {
-        return SpreadManager.get(mContext).hasSpreadApp();
-    }
-
-    public int getSpreadAppCount() {
-        return SpreadManager.get(mContext).getSpreadAppCount();
-    }
-
-    public void showSpreadUI() {
-        SpreadManager.get(mContext).showSpreadUI();
     }
 }
