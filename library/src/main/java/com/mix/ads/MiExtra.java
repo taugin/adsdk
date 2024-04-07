@@ -74,66 +74,6 @@ public class MiExtra {
     public static final int FB_MEDIUM_RECTANGLE = Constant.MEDIUM_RECTANGLE;
 
     /**
-     * 原生广告模板值
-     */
-    public static final String NATIVE_CARD_SMALL = Constant.NATIVE_CARD_SMALL;
-
-    /**
-     * 原生广告模板值
-     */
-    public static final String NATIVE_CARD_MEDIUM = Constant.NATIVE_CARD_MEDIUM;
-
-    /**
-     * 原生广告模板值
-     */
-    public static final String NATIVE_CARD_LARGE = Constant.NATIVE_CARD_LARGE;
-
-    /**
-     * 原生广告模板值
-     */
-    public static final String NATIVE_CARD_FULL = Constant.NATIVE_CARD_FULL;
-
-    /**
-     * 原生广告模板值
-     */
-    public static final String NATIVE_CARD_TINY = Constant.NATIVE_CARD_TINY;
-
-    /**
-     * 原生广告模板值
-     */
-    public static final String NATIVE_CARD_MICRO = Constant.NATIVE_CARD_MICRO;
-
-    /**
-     * 原生广告模板值
-     */
-    public static final String NATIVE_CARD_WRAP = Constant.NATIVE_CARD_WRAP;
-
-    /**
-     * 原生广告模板值
-     */
-    public static final String NATIVE_CARD_HEAD = Constant.NATIVE_CARD_HEAD;
-
-    /**
-     * 原生广告模板值
-     */
-    public static final String NATIVE_CARD_MIX = Constant.NATIVE_CARD_MIX;
-
-    /**
-     * 原生广告模板值
-     */
-    public static final String NATIVE_CARD_FOOT = Constant.NATIVE_CARD_FOOT;
-
-    /**
-     * 原生广告模板值
-     */
-    public static final String NATIVE_CARD_ROUND = Constant.NATIVE_CARD_ROUND;
-
-    /**
-     * 原生广告模板值
-     */
-    public static final String NATIVE_CARD_LITTLE = Constant.NATIVE_CARD_LITTLE;
-
-    /**
      * BANNER类型
      */
     public static final String AD_TYPE_BANNER = Constant.TYPE_BANNER;

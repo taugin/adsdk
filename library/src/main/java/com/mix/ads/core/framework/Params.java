@@ -1,8 +1,5 @@
 package com.mix.ads.core.framework;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by Administrator on 2018/4/3.
  */
@@ -10,9 +7,7 @@ import java.util.Map;
 public class Params {
 
     private int mNativeRootLayout;
-    private String mNativeCardStyle;
-    private Map<String, Integer> mBannerSize = new HashMap<String, Integer>();
-    private int mNativeTemplateWidth;
+    private int mBannerSize = -1;
     private int adTitle;
     private int adIcon;
     private int adCover;
@@ -35,28 +30,12 @@ public class Params {
         return mNativeRootLayout;
     }
 
-    public void setAdCardStyle(String tid) {
-        mNativeCardStyle = tid;
+    public void setBannerSize(int size) {
+        mBannerSize = size;
     }
 
-    public String getNativeCardStyle() {
-        return mNativeCardStyle;
-    }
-
-    public void setBannerSize(String sdk, int size) {
-        mBannerSize.put(sdk, size);
-    }
-
-    public Map<String, Integer> getBannerSize() {
+    public int getBannerSize() {
         return mBannerSize;
-    }
-
-    public int getNativeTemplateWidth() {
-        return mNativeTemplateWidth;
-    }
-
-    public void setNativeTemplateWidth(int mNativeTemplateWidth) {
-        this.mNativeTemplateWidth = mNativeTemplateWidth;
     }
 
     public int getAdTitle() {

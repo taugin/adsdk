@@ -8,7 +8,6 @@ import com.mix.ads.adloader.admob.AdmobLoader;
 import com.mix.ads.adloader.applovin.AppLovinLoader;
 import com.mix.ads.adloader.bigo.BigoLoader;
 import com.mix.ads.adloader.listener.ISdkLoader;
-import com.mix.ads.adloader.spread.SpLoader;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.data.config.PidConfig;
 import com.mix.ads.log.Log;
@@ -29,7 +28,6 @@ public class ModuleLoaderHelper {
     static {
         sSdkLoaderMap.put(Constant.AD_SDK_ADMOB, AdmobLoader.class);
         sSdkLoaderMap.put(Constant.AD_SDK_APPLOVIN, AppLovinLoader.class);
-        sSdkLoaderMap.put(Constant.AD_SDK_SPREAD, SpLoader.class);
         sSdkLoaderMap.put(Constant.AD_NETWORK_BIGO, BigoLoader.class);
     }
 
@@ -43,9 +41,6 @@ public class ModuleLoaderHelper {
         }
         if (TextUtils.equals(Constant.AD_NETWORK_BIGO, sdk)) {
             return hasBigoModule();
-        }
-        if (TextUtils.equals(Constant.AD_SDK_SPREAD, sdk)) {
-            return true;
         }
         return false;
     }

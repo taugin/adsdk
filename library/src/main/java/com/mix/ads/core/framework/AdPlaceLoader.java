@@ -19,7 +19,6 @@ import com.mix.ads.adloader.listener.OnAdBaseListener;
 import com.mix.ads.adloader.listener.OnAdSdkInternalListener;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.core.ModuleLoaderHelper;
-import com.mix.ads.data.SpreadManager;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.data.config.PidConfig;
 import com.mix.ads.log.Log;
@@ -118,26 +117,18 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
     }
 
-    private Params getParams(ISdkLoader loader) {
-        return getParams(loader, null);
-    }
-
-    private Params getParams(ISdkLoader loader, MiParams miParams) {
+    private Params getParams(MiParams miParams) {
         Params params = null;
         if (miParams == null) {
             miParams = mMiLoadParams;
         }
         try {
             if (miParams != null) {
-                params = miParams.getParams(loader.getSdkName());
-                if (params == null) {
-                    params = miParams.getParams(Constant.AD_SDK_COMMON);
-                }
+                params = miParams.getParams();
             }
             if (params == null) {
                 params = new Params();
-                params.setAdCardStyle(Constant.NATIVE_CARD_FULL);
-                params.setBannerSize(Constant.AD_SDK_ADMOB, Constant.MEDIUM_RECTANGLE);
+                params.setBannerSize(Constant.MEDIUM_RECTANGLE);
                 Log.iv(Log.TAG, "use default ad params");
             }
         } catch (Exception e) {
@@ -186,21 +177,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         try {
-            Map<String, Integer> map = getParams(loader).getBannerSize();
-            Integer banner = map.get(loader.getSdkName());
-            if (banner != null) {
-                return banner.intValue();
-            }
+            return getParams(null).getBannerSize();
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }
 
         try {
-            Map<String, Integer> map = getParams(loader).getBannerSize();
-            Integer banner = map.get(Constant.AD_SDK_COMMON);
-            if (banner != null) {
-                return banner.intValue();
-            }
+            return getParams(null).getBannerSize();
         } catch (Exception e2) {
             Log.iv(Log.TAG, "error : " + e2);
         }
@@ -1068,7 +1051,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (loader.isBannerType()) {
                         loader.loadBanner(getBannerSize(loader));
                     } else if (loader.isNativeType()) {
-                        loader.loadNative(getParams(loader));
+                        loader.loadNative(getParams(null));
                     } else {
                         Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                     }
@@ -1108,7 +1091,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
                 } else if (loader.isNativeType()) {
-                    loader.loadNative(getParams(loader));
+                    loader.loadNative(getParams(null));
                 } else {
                     Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 }
@@ -1145,7 +1128,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (loader.isBannerType()) {
                 loader.loadBanner(getBannerSize(loader));
             } else if (loader.isNativeType()) {
-                loader.loadNative(getParams(loader));
+                loader.loadNative(getParams(null));
             } else {
                 Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getAdType());
                 simpleAdBaseBaseListener.onAdLoadFailed(Constant.AD_ERROR_CONFIG, "error config");
@@ -1247,7 +1230,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     loader.showBanner(viewGroup);
                     break;
                 } else if (loader.isNativeType() && loader.isNativeLoaded()) {
-                    loader.showNative(viewGroup, getParams(loader, mAdShowParams));
+                    loader.showNative(viewGroup, getParams(mAdShowParams));
                     break;
                 }
             }
@@ -1389,7 +1372,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (loader.isBannerType()) {
                         loader.loadBanner(getBannerSize(loader));
                     } else if (loader.isNativeType()) {
-                        loader.loadNative(getParams(loader));
+                        loader.loadNative(getParams(null));
                     } else if (loader.isInterstitialType()) {
                         loader.loadInterstitial();
                     } else if (loader.isRewardedVideoType()) {
@@ -1454,7 +1437,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (loader.isBannerType()) {
                 loader.loadBanner(getBannerSize(loader));
             } else if (loader.isNativeType()) {
-                loader.loadNative(getParams(loader));
+                loader.loadNative(getParams(null));
             } else if (loader.isInterstitialType()) {
                 loader.loadInterstitial();
             } else if (loader.isRewardedVideoType()) {
@@ -1491,7 +1474,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 if (loader.isBannerType()) {
                     loader.loadBanner(getBannerSize(loader));
                 } else if (loader.isNativeType()) {
-                    loader.loadNative(getParams(loader));
+                    loader.loadNative(getParams(null));
                 } else if (loader.isInterstitialType()) {
                     loader.loadInterstitial();
                 } else if (loader.isRewardedVideoType()) {
@@ -1556,34 +1539,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     if (loader.showSplash(null, sceneName)) {
                         return true;
                     }
-                } else if ((loader.isBannerType() && loader.isBannerLoaded())
-                        || (loader.isNativeType() && loader.isNativeLoaded())) {
-                    showAdViewWithUI(loader, sceneName);
-                    return true;
+                } else {
+                    Log.iv(Log.TAG, "not supported ad type : " + loader.getAdPlaceName() + " - " + loader.getSdkName() + " - " + loader.getAdType());
                 }
             }
         }
         return false;
-    }
-
-    private void showAdViewWithUI(ISdkLoader iSdkLoader, String sceneName) {
-        Log.iv(Log.TAG, "show complex ads for banner or native");
-        try {
-            Params params = getParams(iSdkLoader);
-            try {
-                if (params != null) {
-                    params.setAdCardStyle(Constant.NATIVE_CARD_FULL_LIST.get(new Random().nextInt(Constant.NATIVE_CARD_FULL_LIST.size())));
-                    params.setAdRootLayout(0);
-                }
-            } catch (Exception e) {
-            }
-            if (params != null) {
-                params.setSceneName(sceneName);
-            }
-            SpreadManager.get(mContext).showFullScreenAds(iSdkLoader, params);
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
     }
 
     @Override

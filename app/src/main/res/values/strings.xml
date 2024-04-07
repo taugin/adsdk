@@ -37,29 +37,14 @@
     <string name="format_string" translatable="false">%1$s RAM</string>
 
     <string-array name="ad_sdk" translatable="false">
-        <item>TradPlus</item>
         <item>Applovin</item>
         <item>Admob</item>
-        <item>Spread</item>
+        <item>Bigo</item>
     </string-array>
     <string-array name="ad_layout" translatable="false">
-        <item>Random</item>
         <item>Custom Small</item>
         <item>Custom Medium</item>
         <item>Custom Large</item>
-        <item>Micro</item>
-        <item>Tiny</item>
-        <item>Little</item>
-        <item>Small</item>
-        <item>Medium</item>
-        <item>Rect</item>
-        <item>Large</item>
-        <item>Wrap</item>
-        <item>Full</item>
-        <item>Head</item>
-        <item>Mix</item>
-        <item>Foot</item>
-        <item>Round</item>
     </string-array>
 
     <string-array name="ad_banner_size" translatable="false">

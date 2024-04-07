@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.mix.ads.MiExtra;
 import com.mix.ads.MiParams;
 import com.mix.ads.MiSdk;
 import com.mix.ads.OnAdSdkListener;
@@ -73,7 +72,6 @@ public class AdListViewActivity extends Activity {
 
     private void loadAds() {
         MiParams.Builder builder = new MiParams.Builder();
-        builder.setAdCardStyle(MiExtra.AD_SDK_COMMON, MiExtra.NATIVE_CARD_SMALL);
         miParams = builder.build();
         MiSdk.get(this).loadAdView(AD_PLACE_NAME, miParams, onAdSdkListener);
     }

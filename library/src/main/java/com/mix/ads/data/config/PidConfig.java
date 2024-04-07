@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.mix.ads.constant.Constant;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -47,13 +46,8 @@ public class PidConfig {
 
     private int splashOrientation = 1;
 
-    private Map<String, String> extra;
-
     // 是否为模板广告
     private boolean template;
-
-    // 最大请求次数
-    private int maxReqTimes;
 
     private String sceneId;
 
@@ -208,28 +202,12 @@ public class PidConfig {
         this.splashOrientation = splashOrientation;
     }
 
-    public Map<String, String> getExtra() {
-        return extra;
-    }
-
-    public void setExtra(Map<String, String> extra) {
-        this.extra = extra;
-    }
-
     public boolean isTemplate() {
         return template;
     }
 
     public void setTemplate(boolean template) {
         this.template = template;
-    }
-
-    public int getMaxReqTimes() {
-        return maxReqTimes;
-    }
-
-    public void setMaxReqTimes(int maxReqTimes) {
-        this.maxReqTimes = maxReqTimes;
     }
 
     public String getSceneId() {
@@ -302,10 +280,6 @@ public class PidConfig {
 
     public boolean isApplovin() {
         return TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk);
-    }
-
-    public boolean isSpread() {
-        return TextUtils.equals(Constant.AD_SDK_SPREAD, sdk);
     }
 
     public boolean isBannerType() {

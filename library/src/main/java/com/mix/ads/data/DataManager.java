@@ -8,18 +8,12 @@ import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.data.config.PlaceConfig;
-import com.mix.ads.data.config.SpreadConfig;
 import com.mix.ads.data.parse.AdParser;
 import com.mix.ads.data.parse.IParser;
 import com.mix.ads.log.Log;
-import com.mix.ads.utils.AesUtils;
 import com.mix.ads.utils.Utils;
 
-import org.json.JSONArray;
-
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -171,56 +165,8 @@ public class DataManager {
         return null;
     }
 
-    public List<SpreadConfig> getRemoteSpread() {
-        String data = getString(SpreadConfig.AD_SPREAD_NAME);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseSpread(data);
-        }
-        return null;
-    }
-
-    public List<SpreadConfig> getSpreadList() {
-        String data = getString(SpreadManager.AD_SPREAD_LIST);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseSpread(data);
-        }
-        return null;
-    }
-
     public String getString(String key) {
-        if (!TextUtils.isEmpty(key) && key.startsWith("md5:")) {
-            key = key.substring(4);
-            String md5Key = "md" + Utils.string2MD5(key);
-            // Log.iv(Log.TAG, key + " : " + md5Key);
-            key = md5Key;
-        }
-        // 对firebase的内容进行加密，使用固定字符串开头
-        String value = DataConfigRemote.get(mContext).getString(key);
-        if (value != null && (value.startsWith("DIAMOND:") || value.startsWith("diamond:"))) {
-            String content = value.substring("diamond:".length());
-            // Log.iv(Log.TAG, "content : " + content);
-            value = AesUtils.decrypt(Constant.KEY_PASSWORD, content);
-            // Log.iv(Log.TAG, "value : " + value);
-        }
-        return value;
-    }
-
-    private List<String> parseStringList(String str) {
-        List<String> list = null;
-        try {
-            JSONArray jarray = new JSONArray(str);
-            if (jarray != null && jarray.length() > 0) {
-                list = new ArrayList<String>(jarray.length());
-                for (int index = 0; index < jarray.length(); index++) {
-                    String s = jarray.getString(index);
-                    if (!TextUtils.isEmpty(s)) {
-                        list.add(s);
-                    }
-                }
-            }
-        } catch (Exception e) {
-        }
-        return list;
+        return DataConfigRemote.get(mContext).getString(key);
     }
 
     private void printGoogleAdvertisingId() {
@@ -231,8 +177,7 @@ public class DataManager {
                     AdvertisingIdClient.Info info = AdvertisingIdClient.getAdvertisingIdInfo(mContext);
                     String gaid = info.getId();
                     boolean isLimited = info.isLimitAdTrackingEnabled();
-                    String gaidmd5 = Utils.string2MD5(gaid);
-                    Log.iv(Log.TAG, "google advertising id (gaid) : " + gaid + " , is limit ad tracking : " + isLimited + " , gaid2 : " + gaidmd5);
+                    Log.iv(Log.TAG, "google advertising id (gaid) : " + gaid + " , is limit ad tracking : " + isLimited);
                     Utils.putString(mContext, Constant.PREF_GAID, gaid);
                 } catch (Exception | Error e) {
                     Log.iv(Log.TAG, "error : " + e);

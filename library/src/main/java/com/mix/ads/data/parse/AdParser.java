@@ -6,7 +6,6 @@ import com.mix.ads.constant.Constant;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.data.config.PidConfig;
 import com.mix.ads.data.config.PlaceConfig;
-import com.mix.ads.data.config.SpreadConfig;
 import com.mix.ads.log.Log;
 import com.mix.ads.utils.AesUtils;
 import com.mix.ads.utils.Utils;
@@ -269,14 +268,8 @@ public class AdParser implements IParser {
             if (jobj.has(SPLASH_ORIENTATION)) {
                 pidConfig.setSplashOrientation(jobj.getInt(SPLASH_ORIENTATION));
             }
-            if (jobj.has(EXTRA)) {
-                pidConfig.setExtra(jsonToMap(jobj.getString(EXTRA)));
-            }
             if (jobj.has(TEMPLATE)) {
                 pidConfig.setTemplate(jobj.getInt(TEMPLATE) == 1);
-            }
-            if (jobj.has(MAX_REQ_TIME)) {
-                pidConfig.setMaxReqTimes(jobj.getInt(MAX_REQ_TIME));
             }
             if (jobj.has(SCENE_ID)) {
                 pidConfig.setSceneId(jobj.getString(SCENE_ID));
@@ -326,85 +319,6 @@ public class AdParser implements IParser {
             Log.iv(Log.TAG, "parseStringMap error : " + e);
         }
         return map;
-    }
-
-    @Override
-    public List<SpreadConfig> parseSpread(String data) {
-        List<SpreadConfig> spreads = null;
-        data = getContent(data);
-        try {
-            JSONObject jobj = new JSONObject(data);
-            SpreadConfig spreadConfig = parseSpConfigLocked(jobj);
-            spreads = new ArrayList<SpreadConfig>(1);
-            spreads.add(spreadConfig);
-        } catch (Exception e) {
-        }
-        if (spreads == null || spreads.isEmpty()) {
-            try {
-                JSONArray jarray = new JSONArray(data);
-                int len = jarray.length();
-                if (len > 0) {
-                    spreads = new ArrayList<SpreadConfig>(len);
-                    JSONObject jobj = null;
-                    SpreadConfig spreadConfig = null;
-                    for (int index = 0; index < len; index++) {
-                        jobj = jarray.getJSONObject(index);
-                        spreadConfig = parseSpConfigLocked(jobj);
-                        if (spreadConfig != null) {
-                            spreads.add(spreadConfig);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                Log.iv(Log.TAG, "parseSpread error : " + e);
-            }
-        }
-        return spreads;
-    }
-
-    private SpreadConfig parseSpConfigLocked(JSONObject jobj) {
-        SpreadConfig spreadConfig = null;
-        try {
-            if (jobj != null) {
-                spreadConfig = new SpreadConfig();
-                if (jobj.has(BANNER)) {
-                    spreadConfig.setBanner(jobj.getString(BANNER));
-                }
-                if (jobj.has(ICON)) {
-                    spreadConfig.setIcon(jobj.getString(ICON));
-                }
-                if (jobj.has(TITLE)) {
-                    spreadConfig.setTitle(jobj.getString(TITLE));
-                }
-                if (jobj.has(BUNDLE)) {
-                    spreadConfig.setBundle(jobj.getString(BUNDLE));
-                }
-                if (jobj.has(DETAIL)) {
-                    spreadConfig.setDetail(jobj.getString(DETAIL));
-                }
-                if (jobj.has(URL)) {
-                    spreadConfig.setLinkUrl(jobj.getString(URL));
-                }
-                if (jobj.has(CTA)) {
-                    spreadConfig.setCta(jobj.getString(CTA));
-                }
-                if (jobj.has(DISABLE)) {
-                    spreadConfig.setDisable(jobj.getInt(DISABLE) == 1);
-                }
-                if (jobj.has(CTA_LOCALE)) {
-                    spreadConfig.setCtaLocale(parseStringMap(jobj.getString(CTA_LOCALE)));
-                }
-                if (jobj.has(LOADING_TIME)) {
-                    spreadConfig.setLoadingTime(jobj.getLong(LOADING_TIME));
-                }
-                if (jobj.has(PLAY)) {
-                    spreadConfig.setPlay(jobj.getBoolean(PLAY));
-                }
-            }
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "parseSpConfig error : " + e);
-        }
-        return spreadConfig;
     }
 
     private Map<String, String> jsonToMap(String data) {

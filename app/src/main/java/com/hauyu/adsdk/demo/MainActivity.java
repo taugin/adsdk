@@ -91,7 +91,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         BANNER_MAP.put("ADAPTIVE_BANNER", MiExtra.COMMON_ADAPTIVE_BANNER);
     }
 
-    private static final List<String> sAllSdk = Arrays.asList("tradplus", "applovin", "admob", "bigo");
+    private static final List<String> sAllSdk = Arrays.asList("applovin", "admob", "bigo");
 
     private static final String TAG = "MA";
     private Context mContext;
@@ -452,9 +452,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         if (MiSdk.get(this).isComplexAdsLoaded("for_native_layout")) {
             MiSdk.get(this).showComplexAds("for_native_layout", "scene_for_native_layout");
         } else {
-            MiParams.Builder builder = new MiParams.Builder();
-            builder.setAdCardStyle(MiExtra.AD_SDK_COMMON, tag);
-            MiParams miParams = builder.build();
+            MiParams miParams = getNativeParams();
             MiSdk.get(mContext).loadComplexAds("for_native_layout", miParams, new SimpleAdSdkListener() {
                 @Override
                 public void onLoaded(String placeName, String source, String adType, String pid) {
@@ -523,7 +521,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             showNativeAds(frameLayout);
         } else {
             String banner = (String) mAdBannerSizeSpinner.getSelectedItem();
-            builder.setBannerSize(MiExtra.AD_SDK_COMMON, BANNER_MAP.get(banner));
+            builder.setBannerSize(BANNER_MAP.get(banner));
             MiParams miParams = builder.build();
             MiSdk.get(mContext).loadAdView(bannerPlace, miParams, new FullScreenAdListener(textView));
         }
@@ -532,43 +530,34 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     private MiParams getNativeParams() {
         MiParams.Builder builder = new MiParams.Builder();
         String layout = (String) mAdLayoutSpinner.getSelectedItem();
-        String layoutStyle;
-        String sdkArray[] = getResources().getStringArray(R.array.ad_layout);
-        if ("Random".equalsIgnoreCase(layout)) {
-            layoutStyle = sdkArray[new Random().nextInt(sdkArray.length - 4) + 4];
-            builder.setAdCardStyle(MiExtra.AD_SDK_COMMON, layoutStyle.toLowerCase());
-        } else if ("Custom Small".equalsIgnoreCase(layout)) {
-            builder.setAdRootLayout(MiExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_small);
-            builder.setAdTitle(MiExtra.AD_SDK_COMMON, R.id.common_title);
-            builder.setAdDetail(MiExtra.AD_SDK_COMMON, R.id.common_detail);
-            builder.setAdIcon(MiExtra.AD_SDK_COMMON, R.id.common_icon);
-            builder.setAdAction(MiExtra.AD_SDK_COMMON, R.id.common_action_btn);
-            builder.setAdCover(MiExtra.AD_SDK_COMMON, R.id.common_image_cover);
-            builder.setAdChoices(MiExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
-            builder.setAdMediaView(MiExtra.AD_SDK_COMMON, R.id.common_media_cover);
+        if ("Custom Small".equalsIgnoreCase(layout)) {
+            builder.setAdRootLayout(R.layout.ad_common_native_card_small);
+            builder.setAdTitle(R.id.common_title);
+            builder.setAdDetail(R.id.common_detail);
+            builder.setAdIcon(R.id.common_icon);
+            builder.setAdAction(R.id.common_action_btn);
+            builder.setAdCover(R.id.common_image_cover);
+            builder.setAdChoices(R.id.common_ad_choices_container);
+            builder.setAdMediaView(R.id.common_media_cover);
         } else if ("Custom Medium".equalsIgnoreCase(layout)) {
-            builder.setAdRootLayout(MiExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_medium);
-            builder.setAdTitle(MiExtra.AD_SDK_COMMON, R.id.common_title);
-            builder.setAdDetail(MiExtra.AD_SDK_COMMON, R.id.common_detail);
-            builder.setAdIcon(MiExtra.AD_SDK_COMMON, R.id.common_icon);
-            builder.setAdAction(MiExtra.AD_SDK_COMMON, R.id.common_action_btn);
-            builder.setAdCover(MiExtra.AD_SDK_COMMON, R.id.common_image_cover);
-            builder.setAdChoices(MiExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
-            builder.setAdMediaView(MiExtra.AD_SDK_COMMON, R.id.common_media_cover);
+            builder.setAdRootLayout(R.layout.ad_common_native_card_medium);
+            builder.setAdTitle(R.id.common_title);
+            builder.setAdDetail(R.id.common_detail);
+            builder.setAdIcon(R.id.common_icon);
+            builder.setAdAction(R.id.common_action_btn);
+            builder.setAdCover(R.id.common_image_cover);
+            builder.setAdChoices(R.id.common_ad_choices_container);
+            builder.setAdMediaView(R.id.common_media_cover);
         } else if ("Custom Large".equalsIgnoreCase(layout)) {
-            builder.setAdRootLayout(MiExtra.AD_SDK_COMMON, R.layout.ad_common_native_card_large);
-            builder.setAdTitle(MiExtra.AD_SDK_COMMON, R.id.common_title);
-            builder.setAdDetail(MiExtra.AD_SDK_COMMON, R.id.common_detail);
-            builder.setAdIcon(MiExtra.AD_SDK_COMMON, R.id.common_icon);
-            builder.setAdAction(MiExtra.AD_SDK_COMMON, R.id.common_action_btn);
-            builder.setAdCover(MiExtra.AD_SDK_COMMON, R.id.common_image_cover);
-            builder.setAdChoices(MiExtra.AD_SDK_COMMON, R.id.common_ad_choices_container);
-            builder.setAdMediaView(MiExtra.AD_SDK_COMMON, R.id.common_media_cover);
-        } else {
-            layoutStyle = layout;
-            builder.setAdCardStyle(MiExtra.AD_SDK_COMMON, layoutStyle.toLowerCase());
+            builder.setAdRootLayout(R.layout.ad_common_native_card_large);
+            builder.setAdTitle(R.id.common_title);
+            builder.setAdDetail(R.id.common_detail);
+            builder.setAdIcon(R.id.common_icon);
+            builder.setAdAction(R.id.common_action_btn);
+            builder.setAdCover(R.id.common_image_cover);
+            builder.setAdChoices(R.id.common_ad_choices_container);
+            builder.setAdMediaView(R.id.common_media_cover);
         }
-        builder.setNativeTemplateWidth(MiExtra.AD_SDK_COMMON, Utils.dp2px(mContext, 200));
         MiParams miParams = builder.build();
         return miParams;
     }

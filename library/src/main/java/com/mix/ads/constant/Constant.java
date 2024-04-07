@@ -12,7 +12,6 @@ import java.util.Locale;
 public class Constant {
     public static final String AD_SDK_COMMON = "common";
     public static final String AD_SDK_ADMOB = "admob";
-    public static final String AD_SDK_SPREAD = "spread";
     public static final String AD_SDK_APPLOVIN = "applovin";
     public static final String AD_NETWORK_ADMOB = "admob";
     public static final String AD_NETWORK_APPLOVIN = "applovin";
@@ -30,7 +29,7 @@ public class Constant {
 
     public static final String AD_SDK_PREFIX = "pref_mis_";
 
-    public static final String PREF_GAID = "pref_gaid";
+    public static final String PREF_GAID = "pref_google_advertise_id";
 
     public static final int NO_SET = -1;
     public static final int BANNER = 1000;
@@ -41,22 +40,6 @@ public class Constant {
     public static final int WIDE_SKYSCRAPER = 1005;
     public static final int SMART_BANNER = 1006;
     public static final int ADAPTIVE_BANNER = 1007;
-
-    public static final String NATIVE_CARD_MICRO = "micro";
-    public static final String NATIVE_CARD_TINY = "tiny";
-    public static final String NATIVE_CARD_LITTLE = "little";
-    public static final String NATIVE_CARD_SMALL = "small";
-    public static final String NATIVE_CARD_MEDIUM = "medium";
-    public static final String NATIVE_CARD_LARGE = "large";
-    public static final String NATIVE_CARD_RECT = "rect";
-    public static final String NATIVE_CARD_ROUND = "round";
-    public static final String NATIVE_CARD_FULL = "full";
-    public static final String NATIVE_CARD_WRAP = "wrap";
-    public static final String NATIVE_CARD_HEAD = "head";
-    public static final String NATIVE_CARD_MIX = "mix";
-    public static final String NATIVE_CARD_FOOT = "foot";
-
-    public static final List<String> NATIVE_CARD_FULL_LIST = Arrays.asList(NATIVE_CARD_ROUND, NATIVE_CARD_FULL, NATIVE_CARD_WRAP, NATIVE_CARD_HEAD, NATIVE_CARD_MIX, NATIVE_CARD_FOOT);
 
     public static final String MODE_SEQ = "seq";
     public static final String MODE_CON = "con";
@@ -77,7 +60,6 @@ public class Constant {
     public static final String KEY_PASSWORD = "123456789";
 
     // 配置文件中使用的名字++++++
-    public static final List<String> DEFAULT_COMPLEX_ORDER = Arrays.asList(new String[]{Constant.TYPE_INTERSTITIAL, Constant.TYPE_NATIVE, Constant.TYPE_BANNER, Constant.TYPE_REWARD});
     public static final String PREF_USER_ACTIVE_TIME = "pref_user_active_time";
     // 配置文件中使用的名字======
 
@@ -195,10 +177,6 @@ public class Constant {
     public static final int AD_ERROR_DISABLE_VPN = 23;
 
     public static final int AD_ERROR_DISABLE_DEBUG = 24;
-
-    public static final int AD_ERROR_SIGN_NOT_MATCH = 25;
-
-    public static final int AD_ERROR_PACK_NOT_MATCH = 26;
 
     public static final int AD_ERROR_BLOCK_MISTAKE_CLICK = 27;
 

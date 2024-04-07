@@ -7,11 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mix.ads.MiExtra;
-import com.mix.ads.MiParams;
-import com.mix.ads.MiSdk;
-import com.mix.ads.SimpleAdSdkListener;
-
 import java.util.Locale;
 import java.util.Random;
 
@@ -50,89 +45,9 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void initAds(boolean fromPrivacy) {
-        setTimeOutState(fromPrivacy ? 10000 : 8000);
-        loadNativeSplashRetry(1, true);
+        startApp();
     }
 
-    private void loadNativeSplashRetry(final int retryTimes, final boolean enterApp) {
-        Log.v(TAG, "load splash time : " + retryTimes);
-        if (retryTimes <= 0 || isFinishing()) {
-            Log.v(TAG, "no need retry");
-            return;
-        }
-        MiParams miParams = new MiParams.Builder().setAdCardStyle(MiExtra.AD_SDK_COMMON, MiExtra.NATIVE_CARD_ROUND).setSceneName("ss_splash_spread").build();
-        MiSdk.get(this).loadAdView(mNativeSplashPlace, miParams, new SimpleAdSdkListener() {
-            @Override
-            public void onLoaded(String placeName, String source, String adType, String pid) {
-                if (!isFinishing()) {
-                    removeState();
-                    showNativeSplash();
-                }
-            }
-
-            @Override
-            public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
-                if (MiSdk.get(getApplicationContext()).isAdPlaceError(placeName)) {
-                    Log.v(TAG, "splash error " + retryTimes);
-                    if (retryTimes > 1) {
-                        loadNativeSplashRetryDelay(retryTimes - 1, enterApp);
-                    } else if (enterApp) {
-                        removeState();
-                        if (!isFinishing()) {
-                            Log.d(TAG, "splash error to open app");
-                            startApp();
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private void loadNativeSplashRetryDelay(final int retryTimes, final boolean enterApp) {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadNativeSplashRetry(retryTimes, enterApp);
-            }
-        }, 1000);
-    }
-
-    private void showNativeSplash() {
-        Log.v(TAG, "show splash");
-        if (adContainer != null) {
-            appInfoLayout.setVisibility(View.VISIBLE);
-            adContainer.setVisibility(View.VISIBLE);
-            adContainerLayout.setVisibility(View.VISIBLE);
-            splashLayout.setVisibility(View.GONE);
-            MiSdk.get(this).showAdView(mNativeSplashPlace, adContainer);
-        }
-    }
-
-    /**
-     * 设置三秒超时
-     */
-    private void setTimeOutState(int delay) {
-        Log.d(TAG, "set time out state");
-        if (mHandler != null) {
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    removeState();
-                    if (!isFinishing()) {
-                        Log.d(TAG, "time out start app");
-                        startApp();
-                    }
-                }
-            }, delay);
-        }
-    }
-
-    private void removeState() {
-        Log.d(TAG, "remote state");
-        if (mHandler != null) {
-            mHandler.removeCallbacksAndMessages(null);
-        }
-    }
 
     private void startApp() {
         Intent intent = new Intent(this, MainActivity.class);

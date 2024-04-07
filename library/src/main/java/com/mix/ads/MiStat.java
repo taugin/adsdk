@@ -4,13 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.mix.ads.constant.Constant;
 import com.mix.ads.log.Log;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,18 +18,15 @@ import java.util.Map;
 public class MiStat {
 
     private static final String SDK_NAME_FIREBASE = "firebase";
-    private static final List<String> sFirebaseWhiteList;
 
     private static final Map<String, Boolean> sSdkIntegrated;
 
     static {
-        sFirebaseWhiteList = Arrays.asList(
-                Constant.AD_IMPRESSION,
-                Constant.AD_IMPRESSION_REVENUE,
+        Arrays.asList(
+                "ad_impression",
+                "Ad_Impression_Revenue",
                 "app_first_open_ano",
                 "app_first_open_ao",
-                "ad_spread_installed",
-                "Total_Ads_Revenue_*",
                 "gav_*"
         );
 
@@ -155,26 +150,6 @@ public class MiStat {
 
     public static void reportEvent(Context context, String key, String value, Map<String, Object> map) {
         Log.iv(Log.TAG, "event id : " + key + " , value : " + value + " , extra : " + map);
-        sendFirebaseAnalytics(context, key, value, map, isInFirebaseWhiteList(key));
-    }
-
-    public static boolean isInFirebaseWhiteList(String key) {
-        if (TextUtils.isEmpty(key)) {
-            return false;
-        }
-        try {
-            if (sFirebaseWhiteList != null && !sFirebaseWhiteList.isEmpty()) {
-                if (sFirebaseWhiteList.contains(key)) {
-                    return true;
-                }
-                for (String item : sFirebaseWhiteList) {
-                    if (item != null && item.contains("*") && key.startsWith(item.replace("*", ""))) {
-                        return true;
-                    }
-                }
-            }
-        } catch (Exception e) {
-        }
-        return false;
+        sendFirebaseAnalytics(context, key, value, map, true);
     }
 }

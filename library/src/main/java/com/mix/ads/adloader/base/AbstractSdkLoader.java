@@ -430,13 +430,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         notifyAdLoadFailed(Constant.AD_ERROR_DISABLE_DEBUG, "disable debug load");
     }
 
-    private int getMaxReqTimes() {
-        if (mPidConfig != null) {
-            return mPidConfig.getMaxReqTimes();
-        }
-        return 0;
-    }
-
     private OnAdBaseListener getAdListener() {
         if (mManagerListener != null) {
             return mManagerListener.getAdBaseListener(this);
@@ -506,7 +499,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     }
 
     /**
-     * max、tradplus平台是聚合平台，
+     * max平台是聚合平台，
      * 平台本身就具有判断广告过期的条件，
      * 因此对于这些平台降忽略对插屏和激励视频过期时间的判断
      *
