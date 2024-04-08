@@ -444,8 +444,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 String placeName = String.format(Locale.ENGLISH, REWARD_PREFIX, sdk);
                 MiSdk.get(mContext).loadRewardedVideo(placeName);
             }
-        } else if (v.getId() == R.id.bcsdk_demo) {
-            startActivity(new Intent(this, BcSdkActivity.class));
         }
     }
 

@@ -78,9 +78,12 @@ public class FBStatManager {
     }
 
     private void reportAppInstall(String referrer) {
-        Map<String, Object> map = referrerToMap(referrer);
-        boolean isOrganic = isOrganic(map);
-        MiStat.sendFirebaseAnalytics(mContext, isOrganic ? "app_first_open_ao" : "app_first_open_ano", null, null);
+        try {
+            Map<String, Object> map = referrerToMap(referrer);
+            boolean isOrganic = isOrganic(map);
+            MiStat.sendFirebaseAnalytics(mContext, isOrganic ? "app_first_open_ao" : "app_first_open_ano", null, null);
+        } catch (Exception e) {
+        }
     }
 
     private Map<String, Object> referrerToMap(String referrer) {

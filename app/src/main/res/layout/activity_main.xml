@@ -321,12 +321,6 @@
                 android:onClick="onClick"
                 android:text="原生插屏展示" />
 
-            <Button
-                android:id="@+id/bcsdk_demo"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_48"
-                android:onClick="onClick"
-                android:text="BcSdk测试" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -15,8 +15,6 @@ import android.text.TextUtils;
 
 import androidx.multidex.MultiDex;
 
-import com.github.bcsdk.BcSdk;
-import com.github.bcsdk.manager.ReferrerManager;
 import com.mix.ads.MiSdk;
 import com.mix.ads.utils.Utils;
 import com.tendcloud.tenddata.TalkingDataSDK;
@@ -45,12 +43,6 @@ public class App extends Application {
         initUmeng();
         initTalkingData();
         MiSdk.get(this).init();
-        BcSdk.init(this, new ReferrerManager.OnDataListener() {
-            @Override
-            public void onReferrerResult(String status, String mediaSource, boolean fromClick) {
-                Log.iv(Log.TAG, "status : " + status + " , ms : " + mediaSource + " , from click : " + fromClick);
-            }
-        });
     }
 
 
