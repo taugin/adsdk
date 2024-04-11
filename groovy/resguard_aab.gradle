@@ -183,32 +183,3 @@ static def getDate() {
     def formattedDate = date.format('yyyyMMdd')
     return formattedDate
 }
-
-gradle.buildFinished {
-    if (org.gradle.internal.os.OperatingSystem.current().isWindows()
-            && it.gradle.taskGraph.allTasks.size() > 0
-            && isContainBundleRelease(it)) {
-        try {
-            def outputPath = new File(project.buildDir, "outputs/bundle")
-            def outputReleasePath = new File(outputPath, "release")
-            if (outputReleasePath.exists()) {
-                outputPath = outputReleasePath
-            }
-            def cmd = "explorer.exe " + outputPath
-            cmd.execute()
-            println "> Task :${project.name}:openBundleDir [${outputPath}]"
-        } catch (Exception e) {
-        }
-    }
-}
-
-def isContainBundleRelease(BuildResult result) {
-    def taskList = result.gradle.taskGraph.allTasks
-    for (Task task : taskList) {
-        def taskName = task.getName()
-        if (taskName != null && taskName.startsWith("sign") && taskName.endsWith("ReleaseBundle")) {
-            return true;
-        }
-    }
-    return false
-}

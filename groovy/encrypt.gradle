@@ -311,11 +311,39 @@ afterEvaluate {
                     } else {
                         println "> Task :${project.name}:transformAab2Apk aab to apk is not set"
                     }
+                    openBundleReleaseDir(taskName)
                 }
             }
         }
     } catch (Exception e) {
     }
+}
+
+def openBundleReleaseDir(String taskName) {
+    if (!ext.has("openRelease") || ext["openRelease"] != true) {
+        return
+    }
+    if (isContainBundleRelease(taskName)) {
+        try {
+            def openCmd = org.gradle.internal.os.OperatingSystem.current().isWindows() ? "explorer.exe" : "open"
+            def outputPath = new File(project.buildDir, "outputs/bundle")
+            def outputReleasePath = new File(outputPath, "release")
+            if (outputReleasePath.exists()) {
+                outputPath = outputReleasePath
+            }
+            def cmd = openCmd + " " + outputPath
+            cmd.execute()
+            println "> Task :${project.name}:openBundleDir [${outputPath}]"
+        } catch (Exception e) {
+        }
+    }
+}
+
+def isContainBundleRelease(String taskName) {
+    if (taskName != null && taskName.contains("Release")) {
+        return true;
+    }
+    return false;
 }
 
 def isAAB2ApkAllow() {
