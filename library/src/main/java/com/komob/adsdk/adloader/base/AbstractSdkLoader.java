@@ -1420,17 +1420,27 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
                     }
                 }
                 String platform = adImpData.getPlatform();
-                String unitName = platform + "_" + adImpData.getUnitName();
+                String unitName = adImpData.getUnitName();
+                String placement = adImpData.getPlacement();
+                String adType = adImpData.getAdType();
+                String networkPid = adImpData.getNetworkPid();
+                String unitId = adImpData.getUnitId();
+                String adPrecision = adImpData.getPrecision();
+                boolean adBidding = adImpData.isBidding();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("ad_platform", platform);
                 params.put("ad_source", networkName);
                 params.put("ad_format", adImpData.getAdFormat());
+                params.put("ad_type", adType);
                 params.put("ad_unit_name", unitName);
+                params.put("ad_placement", placement);
+                params.put("ad_network_pid", networkPid);
+                params.put("ad_unit_id", unitId);
+                params.put("ad_precision", adPrecision);
+                params.put("ad_bidding", adBidding);
                 params.put("value", adImpData.getValue());
                 params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
                 params.put("currency", "USD"); // All Applovin revenue is sent in USD
-                params.put("active_days", EventImpl.get().getActiveDays() + "d");
-                params.put("active_date", EventImpl.get().getActiveDate());
                 if (isReportFirebase) {
                     InternalStat.sendFirebaseAnalytics(mContext, Constant.AD_IMPRESSION, null, params);
                 }
