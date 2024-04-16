@@ -1237,12 +1237,24 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             if (miImpData != null) {
                 String networkName = miImpData.getNetwork();
                 String platform = miImpData.getPlatform();
-                String unitName = platform + "_" + miImpData.getUnitName();
+                String unitName = miImpData.getUnitName();
+                String placement = miImpData.getPlacement();
+                String adType = miImpData.getAdType();
+                String networkPid = miImpData.getNetworkPid();
+                String unitId = miImpData.getUnitId();
+                String adPrecision = miImpData.getPrecision();
+                boolean adBidding = miImpData.isBidding();
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("ad_platform", platform);
                 params.put("ad_source", networkName);
                 params.put("ad_format", miImpData.getAdFormat());
+                params.put("ad_type", adType);
                 params.put("ad_unit_name", unitName);
+                params.put("ad_placement", placement);
+                params.put("ad_network_pid", networkPid);
+                params.put("ad_unit_id", unitId);
+                params.put("ad_precision", adPrecision);
+                params.put("ad_bidding", adBidding);
                 params.put("value", miImpData.getValue());
                 params.put("micro_value", Double.valueOf(miImpData.getValue() * 1000000).intValue());
                 params.put("currency", "USD"); // All Applovin revenue is sent in USD
