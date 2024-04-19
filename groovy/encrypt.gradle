@@ -347,7 +347,7 @@ def isContainBundleRelease(String taskName) {
 }
 
 def isAAB2ApkAllow() {
-    def aab2apk = false
+    def aab2apk = true
     if (ext.has("aab2apk")) {
         aab2apk = ext.get("aab2apk")
     }
