@@ -69,13 +69,11 @@ public class Constant {
     public static final MiError AD_ERROR_LOADER = MiError.valueOf("sdk loader error");
     public static final MiError AD_ERROR_UNKNOWN = MiError.valueOf("unknown error");;
     public static final MiError AD_ERROR_CONFIG = MiError.valueOf("sdk config error");;
-    public static final MiError AD_ERROR_FILLTIME = MiError.valueOf("sdk fill time error");;
     public static final MiError AD_ERROR_LOADING = MiError.valueOf("ad is loading");;
     public static final MiError AD_ERROR_LOAD = MiError.valueOf("sdk load error");;
     public static final MiError AD_ERROR_TIMEOUT = MiError.valueOf("load timeout");;
     public static final MiError AD_ERROR_CONTEXT = MiError.valueOf("sdk context error");;
     public static final MiError AD_ERROR_UNSUPPORT = MiError.valueOf("sdk unsupport error");;
-    public static final MiError AD_ERROR_TOO_FREQUENCY = MiError.valueOf("load too frequency error");;
     public static final MiError AD_ERROR_NETWORK = MiError.valueOf("sdk network error");;
     public static final MiError AD_ERROR_INVALID_REQUEST = MiError.valueOf("sdk invalid request error");;
     public static final MiError AD_ERROR_INTERNAL = MiError.valueOf("sdk internal error");;
@@ -83,14 +81,10 @@ public class Constant {
     public static final MiError AD_ERROR_DISABLE_LOADING = MiError.valueOf("sdk disable error");;
     public static final MiError AD_ERROR_RATIO = MiError.valueOf("sdk ratio error");;
     public static final MiError AD_ERROR_INITIALIZE = MiError.valueOf("sdk initialize error");;
-
     public static final MiError AD_ERROR_SHOW = MiError.valueOf("sdk show error");;
     public static final MiError AD_ERROR_LIMIT_ADS = MiError.valueOf("sdk limit error");;
-
     public static final MiError AD_ERROR_DISABLE_VPN = MiError.valueOf("sdk disable load vpn error");;
-
     public static final MiError AD_ERROR_DISABLE_DEBUG = MiError.valueOf("sdk disable debug error");;
-
     public static final MiError AD_ERROR_BLOCK_MISTAKE_CLICK = MiError.valueOf("sdk block mistake click error");;
 
     public static final SimpleDateFormat SDF_ACTIVE_DATE = new SimpleDateFormat("MM-dd", Locale.ENGLISH);
