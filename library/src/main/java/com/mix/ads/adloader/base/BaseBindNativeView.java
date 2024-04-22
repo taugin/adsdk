@@ -12,26 +12,17 @@ import android.graphics.drawable.shapes.Shape;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Pair;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.mix.ads.core.framework.Params;
 import com.mix.ads.data.config.PidConfig;
 import com.mix.ads.log.Log;
 import com.mix.ads.utils.Utils;
-import com.mix.mob.MisConfig;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
 
 /**
  * Created by Administrator on 2018-12-12.

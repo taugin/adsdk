@@ -3,7 +3,6 @@ package com.mix.ads.data.parse;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.data.config.PlaceConfig;
 
-import java.util.List;
 import java.util.Map;
 
 
