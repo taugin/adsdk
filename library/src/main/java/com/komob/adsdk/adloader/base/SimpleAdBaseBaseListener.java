@@ -1,6 +1,7 @@
 package com.komob.adsdk.adloader.base;
 
 import com.komob.adsdk.AdReward;
+import com.komob.adsdk.AdError;
 import com.komob.adsdk.adloader.listener.IManagerListener;
 import com.komob.adsdk.adloader.listener.ISdkLoader;
 import com.komob.adsdk.adloader.listener.OnAdBaseListener;
@@ -95,7 +96,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onAdLoadFailed(int error, String msg) {
+    public void onAdLoadFailed(AdError error, String msg) {
         /**
          * 错误回调不需要判断是否是当前loader
          */
@@ -110,7 +111,7 @@ public class SimpleAdBaseBaseListener implements OnAdBaseListener {
     }
 
     @Override
-    public void onAdShowFailed(int error, String msg) {
+    public void onAdShowFailed(AdError error, String msg) {
         /**
          * 错误回调不需要判断是否是当前loader
          */

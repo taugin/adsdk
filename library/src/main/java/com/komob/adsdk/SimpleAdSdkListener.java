@@ -34,11 +34,11 @@ public class SimpleAdSdkListener implements OnAdSdkListener {
     }
 
     @Override
-    public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
+    public void onLoadFailed(String placeName, String source, String adType, String pid, AdError error) {
     }
 
     @Override
-    public void onShowFailed(String placeName, String source, String adType, String pid, int error) {
+    public void onShowFailed(String placeName, String source, String adType, String pid, AdError error) {
     }
 
     @Override

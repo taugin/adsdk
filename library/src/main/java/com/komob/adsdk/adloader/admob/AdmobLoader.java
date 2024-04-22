@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.komob.adsdk.AdReward;
+import com.komob.adsdk.AdError;
 import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.adloader.base.AbstractSdkLoader;
 import com.komob.adsdk.constant.Constant;
@@ -19,7 +20,6 @@ import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.log.Log;
 import com.komob.api.RFileConfig;
-import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -428,7 +428,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         private void setInterstitialListener(final InterstitialAd interstitialAd) {
             FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
                 @Override
-                public void onAdFailedToShowFullScreenContent(AdError adError) {
+                public void onAdFailedToShowFullScreenContent(com.google.android.gms.ads.AdError adError) {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
                     clearLastShowTime();
                     onResetInterstitial();
@@ -576,7 +576,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         private void setRewardListener(final RewardedAd rewardedAd) {
             FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
                 @Override
-                public void onAdFailedToShowFullScreenContent(AdError adError) {
+                public void onAdFailedToShowFullScreenContent(com.google.android.gms.ads.AdError adError) {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
                     clearLastShowTime();
                     onResetReward();
@@ -967,7 +967,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         private void setSplashListener(final AppOpenAd appOpenAd) {
             FullScreenContentCallback fullScreenContentCallback = new FullScreenContentCallback() {
                 @Override
-                public void onAdFailedToShowFullScreenContent(AdError adError) {
+                public void onAdFailedToShowFullScreenContent(com.google.android.gms.ads.AdError adError) {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError)));
                     clearLastShowTime();
                     onResetSplash();
@@ -1124,7 +1124,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         }
     }
 
-    private String codeToError(AdError adError) {
+    private String codeToError(com.google.android.gms.ads.AdError adError) {
         if (adError != null) {
             int code = adError.getCode();
             if (code == AdRequest.ERROR_CODE_INTERNAL_ERROR) {
@@ -1144,7 +1144,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         return "ERROR[NULL]";
     }
 
-    protected int toSdkError(AdError adError) {
+    protected AdError toSdkError(com.google.android.gms.ads.AdError adError) {
         if (adError != null) {
             int code = adError.getCode();
             if (code == AdRequest.ERROR_CODE_INTERNAL_ERROR) {
@@ -1163,7 +1163,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         return Constant.AD_ERROR_UNKNOWN;
     }
 
-    private String toErrorMessage(AdError adError) {
+    private String toErrorMessage(com.google.android.gms.ads.AdError adError) {
         if (adError != null) {
             return "[" + adError.getCode() + "] " + adError.getMessage();
         }

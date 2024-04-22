@@ -8,14 +8,15 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.komob.adsdk.AdReward;
-import com.komob.adsdk.utils.Utils;
+import com.komob.adsdk.AdError;
+import com.komob.adsdk.adloader.base.AbstractSdkLoader;
+import com.komob.adsdk.adloader.base.BaseBindNativeView;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.framework.ActivityMonitor;
 import com.komob.adsdk.core.framework.Params;
-import com.komob.adsdk.log.Log;
-import com.komob.adsdk.adloader.base.AbstractSdkLoader;
-import com.komob.adsdk.adloader.base.BaseBindNativeView;
 import com.komob.adsdk.data.config.PidConfig;
+import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.Utils;
 import com.tradplus.ads.base.GlobalTradPlus;
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
@@ -981,9 +982,26 @@ public class TradPlusLoader extends AbstractSdkLoader {
         return null;
     }
 
-    private int toSdkError(TPAdError tpAdError) {
+    private AdError toSdkError(TPAdError tpAdError) {
         if (tpAdError != null) {
-            return tpAdError.getErrorCode();
+            int errorCode = tpAdError.getErrorCode();
+            String message = tpAdError.getErrorMsg();
+            if (errorCode == 1) {
+                return Constant.AD_ERROR_SUCCESS;
+            }
+            if (errorCode == 2) {
+                return Constant.AD_ERROR_INTERNAL;
+            }
+            if (errorCode == 3) {
+                return Constant.AD_ERROR_TIMEOUT;
+            }
+            if (errorCode == 4) {
+                return Constant.AD_ERROR_TOO_FREQUENCY;
+            }
+            if (errorCode == 5) {
+                return Constant.AD_ERROR_NOFILL;
+            }
+            return AdError.valueOf(message);
         }
         return Constant.AD_ERROR_UNKNOWN;
     }

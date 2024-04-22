@@ -1,6 +1,7 @@
 package com.komob.adsdk.adloader.listener;
 
 import com.komob.adsdk.AdReward;
+import com.komob.adsdk.AdError;
 
 /**
  * Listener for AdPlaceLoader
@@ -21,9 +22,9 @@ public interface OnAdSdkInternalListener {
 
     void onDismiss(String placeName, String source, String adType, String pid, boolean complexAds);
 
-    void onLoadFailed(String placeName, String source, String adType, String pid, int error, String msg);
+    void onLoadFailed(String placeName, String source, String adType, String pid, AdError error, String msg);
 
-    void onShowFailed(String placeName, String source, String adType, String pid, int error, String msg);
+    void onShowFailed(String placeName, String source, String adType, String pid, AdError error, String msg);
 
     void onRewarded(String placeName, String source, String adType, String pid, AdReward item);
 

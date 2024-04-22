@@ -1,5 +1,7 @@
 package com.komob.adsdk.constant;
 
+import com.komob.adsdk.AdError;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -93,128 +95,32 @@ public class Constant {
 
     public static final int ONE_DAY_MS = 24 * 3600 * 1000;
 
-    /**
-     * ADLOADER错误
-     */
-    public static final int AD_ERROR_LOADER = -1;
-    /**
-     * 未知错误
-     */
-    public static final int AD_ERROR_UNKNOWN = 0;
-    /**
-     * 配置错误
-     */
-    public static final int AD_ERROR_CONFIG = 1;
-    /**
-     * 无填充
-     */
-    public static final int AD_ERROR_FILLTIME = 2;
-    /**
-     * 正在加载中
-     */
-    public static final int AD_ERROR_LOADING = 3;
-    /**
-     * 加载失败
-     */
-    public static final int AD_ERROR_LOAD = 4;
-    /**
-     * 超时
-     */
-    public static final int AD_ERROR_TIMEOUT = 5;
-    /**
-     * 上下文错误
-     */
-    public static final int AD_ERROR_CONTEXT = 6;
-    /**
-     * 不支持
-     */
-    public static final int AD_ERROR_UNSUPPORT = 7;
+    public static final AdError AD_ERROR_UNKNOWN = AdError.valueOf("unknown error");
+    public static final AdError AD_ERROR_SUCCESS = AdError.valueOf("success");
+    public static final AdError AD_ERROR_LOADER = AdError.valueOf("sdk loader error");
+    public static final AdError AD_ERROR_CONFIG = AdError.valueOf("sdk config error");
+    public static final AdError AD_ERROR_LOADING = AdError.valueOf("ad is loading");
+    public static final AdError AD_ERROR_LOAD = AdError.valueOf("sdk load error");
+    public static final AdError AD_ERROR_TIMEOUT = AdError.valueOf("load timeout");
+    public static final AdError AD_ERROR_CONTEXT = AdError.valueOf("sdk context error");
+    public static final AdError AD_ERROR_UNSUPPORT = AdError.valueOf("sdk unsupport error");
+    public static final AdError AD_ERROR_NETWORK = AdError.valueOf("sdk network error");
+    public static final AdError AD_ERROR_INVALID_REQUEST = AdError.valueOf("sdk invalid request error");
+    public static final AdError AD_ERROR_INTERNAL = AdError.valueOf("sdk internal error");
+    public static final AdError AD_ERROR_TOO_FREQUENCY = AdError.valueOf("load too frequency error");
+    public static final AdError AD_ERROR_NOFILL = AdError.valueOf("sdk no fill error");
+    public static final AdError AD_ERROR_DISABLE_LOADING = AdError.valueOf("sdk disable error");
+    public static final AdError AD_ERROR_RATIO = AdError.valueOf("sdk ratio error");
+    public static final AdError AD_ERROR_INITIALIZE = AdError.valueOf("sdk initialize error");
+    public static final AdError AD_ERROR_SHOW = AdError.valueOf("sdk show error");
+    public static final AdError AD_ERROR_LIMIT_ADS = AdError.valueOf("sdk limit error");
+    public static final AdError AD_ERROR_DISABLE_VPN = AdError.valueOf("sdk disable load vpn error");
+    public static final AdError AD_ERROR_DISABLE_DEBUG = AdError.valueOf("sdk disable debug error");
+    public static final AdError AD_ERROR_BLOCK_MISTAKE_CLICK = AdError.valueOf("sdk block mistake click error");
+    public static final AdError AD_ERROR_PACK_NOT_MATCH = AdError.valueOf("pack not match");
+    public static final AdError AD_ERROR_SIGN_NOT_MATCH = AdError.valueOf("sign not match");
+    public static final AdError AD_ERROR_EXCEED_REQ_TIME = AdError.valueOf("exceed max req times");
 
-    /**
-     * 加载太频繁
-     */
-    public static final int AD_ERROR_TOO_FREQUENCY = 8;
-
-    /**
-     * 网络错误
-     */
-    public static final int AD_ERROR_NETWORK = 9;
-
-    /**
-     * 无效请求
-     */
-    public static final int AD_ERROR_INVALID_REQUEST = 10;
-
-    /**
-     * 内部错误
-     */
-    public static final int AD_ERROR_INTERNAL = 11;
-
-    /**
-     * 无填充
-     */
-    public static final int AD_ERROR_NOFILL = 12;
-
-    /**
-     * 服务器错误
-     */
-    public static final int AD_ERROR_SERVER = 13;
-
-    /**
-     * 中介错误
-     */
-    public static final int AD_ERROR_MEDIATION = 14;
-
-    /**
-     * 无效的pid
-     */
-    public static final int AD_ERROR_INVALID_PID = 15;
-
-    /**
-     * 判断adloader是否被过滤
-     */
-    public static final int AD_ERROR_DISABLE_LOADING = 17;
-
-    /**
-     * 判断adloader是否满足展示比率
-     */
-    public static final int AD_ERROR_RATIO = 18;
-
-    /**
-     * 停止队列模式加载
-     */
-    public static final int AD_ERROR_QUEUE = 19;
-
-    /**
-     * 初始化失败
-     */
-    public static final int AD_ERROR_INITIALIZE = 20;
-
-    /**
-     * 展示失败
-     */
-    public static final int AD_ERROR_SHOW = 21;
-
-    /**
-     * 排除变现平台
-     */
-    public static final int AD_ERROR_LIMIT_ADS = 22;
-
-    /**
-     * 超出最大请求次数
-     */
-    public static final int AD_ERROR_EXCEED_REQ_TIME = 23;
-
-
-    public static final int AD_ERROR_DISABLE_VPN = 23;
-
-    public static final int AD_ERROR_DISABLE_DEBUG = 24;
-
-    public static final int AD_ERROR_SIGN_NOT_MATCH = 25;
-
-    public static final int AD_ERROR_PACK_NOT_MATCH = 26;
-
-    public static final int AD_ERROR_BLOCK_MISTAKE_CLICK = 27;
 
     public static final SimpleDateFormat SDF_ACTIVE_DATE = new SimpleDateFormat("MM-dd", Locale.ENGLISH);
     public static final SimpleDateFormat SDF_ACTIVE_YEAR = new SimpleDateFormat("yyyy", Locale.ENGLISH);

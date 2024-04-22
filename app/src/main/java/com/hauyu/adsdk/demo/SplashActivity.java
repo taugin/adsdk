@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.komob.adsdk.AdExtra;
 import com.komob.adsdk.AdParams;
 import com.komob.adsdk.AdSdk;
+import com.komob.adsdk.AdError;
 import com.komob.adsdk.SimpleAdSdkListener;
 
 import java.util.Locale;
@@ -71,7 +72,7 @@ public class SplashActivity extends BaseActivity {
             }
 
             @Override
-            public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
+            public void onLoadFailed(String placeName, String source, String adType, String pid, AdError error) {
                 if (AdSdk.get(getApplicationContext()).isAdPlaceError(placeName)) {
                     Log.v(TAG, "splash error " + retryTimes);
                     if (retryTimes > 1) {

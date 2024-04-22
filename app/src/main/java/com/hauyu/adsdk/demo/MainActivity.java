@@ -40,6 +40,7 @@ import com.komob.adsdk.AdImpData;
 import com.komob.adsdk.AdParams;
 import com.komob.adsdk.AdReward;
 import com.komob.adsdk.AdSdk;
+import com.komob.adsdk.AdError;
 import com.komob.adsdk.OnAdFilterListener;
 import com.komob.adsdk.SimpleAdSdkListener;
 import com.komob.adsdk.constant.Constant;
@@ -664,7 +665,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
 
         @Override
-        public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
+        public void onLoadFailed(String placeName, String source, String adType, String pid, AdError error) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , error : " + error);
         }
 
@@ -738,7 +739,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
 
         @Override
-        public void onLoadFailed(String placeName, String source, String adType, String pid, int error) {
+        public void onLoadFailed(String placeName, String source, String adType, String pid, AdError error) {
             Log.d(TAG, "placeName : " + placeName + " , source : " + source + " , adType : " + adType + " , error : " + error);
             updateLoadStatus(textView, placeName);
         }

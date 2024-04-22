@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.komob.adsdk.AdParams;
 import com.komob.adsdk.AdReward;
+import com.komob.adsdk.AdError;
 import com.komob.adsdk.OnAdSdkListener;
 import com.komob.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.komob.adsdk.adloader.listener.IManagerListener;
@@ -413,7 +414,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
-                public void onAdLoadFailed(int error, String msg) {
+                public void onAdLoadFailed(AdError error, String msg) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next interstitial");
                         loadInterstitialSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
@@ -666,7 +667,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
 
                 @Override
-                public void onAdLoadFailed(int error, String msg) {
+                public void onAdLoadFailed(AdError error, String msg) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next rewardedvideo");
                         loadRewardedVideoSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
@@ -918,7 +919,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
-                public void onAdLoadFailed(int error, String msg) {
+                public void onAdLoadFailed(AdError error, String msg) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next splash");
                         loadSplashSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
@@ -1179,7 +1180,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
-                public void onAdLoadFailed(int error, String msg) {
+                public void onAdLoadFailed(AdError error, String msg) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next adview");
                         loadAdViewSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
@@ -1506,7 +1507,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             SimpleAdBaseBaseListener simpleAdBaseBaseListener = new SimpleAdBaseBaseListener(loader.getAdPlaceName(),
                     loader.getSdkName(), loader.getAdType(), getPidByLoader(loader), this) {
                 @Override
-                public void onAdLoadFailed(int error, String msg) {
+                public void onAdLoadFailed(AdError error, String msg) {
                     if (iterator.hasNext()) {
                         Log.iv(Log.TAG, "load next complex");
                         loadComplexAdsSequenceInternalWithDelay(iterator, mAdPlace.getWaterfallInt());
@@ -1962,7 +1963,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onLoadFailed(String placeName, String source, String adType, String pid, int error, String msg) {
+        public void onLoadFailed(String placeName, String source, String adType, String pid, AdError error, String msg) {
             Log.iv(Log.TAG, "notify callback onLoadFailed place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid + " , error : " + msg);
             recordErrorTimes(placeName, source, adType);
             if (mOnAdSdkLoadedListener != null) {
@@ -1975,7 +1976,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         }
 
         @Override
-        public void onShowFailed(String placeName, String source, String adType, String pid, int error, String msg) {
+        public void onShowFailed(String placeName, String source, String adType, String pid, AdError error, String msg) {
             Log.iv(Log.TAG, "notify callback onShowFailed place name : " + placeName + " , sdk : " + source + " , type : " + adType + " , pid : " + pid + " , error : " + msg);
             if (mOnAdSdkLoadedListener != null) {
                 mOnAdSdkLoadedListener.onShowFailed(placeName, source, adType, pid, error);

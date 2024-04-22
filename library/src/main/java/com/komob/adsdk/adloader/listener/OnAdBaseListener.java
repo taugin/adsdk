@@ -1,6 +1,7 @@
 package com.komob.adsdk.adloader.listener;
 
 import com.komob.adsdk.AdReward;
+import com.komob.adsdk.AdError;
 
 /**
  * Listener for ad sdk
@@ -41,12 +42,12 @@ public interface OnAdBaseListener {
     /**
      * banner or native fail
      */
-    public void onAdLoadFailed(int error, String msg);
+    public void onAdLoadFailed(AdError error, String msg);
 
     /**
      * banner or native show failed
      */
-    public void onAdShowFailed(int error, String msg);
+    public void onAdShowFailed(AdError error, String msg);
 
     /**
      * banner or native opened

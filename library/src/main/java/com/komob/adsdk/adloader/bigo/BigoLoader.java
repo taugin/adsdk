@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.komob.adsdk.AdError;
 import com.komob.adsdk.adloader.base.AbstractSdkLoader;
 import com.komob.adsdk.adloader.base.BaseBindNativeView;
 import com.komob.adsdk.constant.Constant;
@@ -22,7 +23,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import sg.bigo.ads.BigoAdSdk;
 import sg.bigo.ads.api.AdBid;
 import sg.bigo.ads.api.AdConfig;
-import sg.bigo.ads.api.AdError;
 import sg.bigo.ads.api.AdInteractionListener;
 import sg.bigo.ads.api.AdLoadListener;
 import sg.bigo.ads.api.InterstitialAd;
@@ -177,7 +177,7 @@ public class BigoLoader extends AbstractSdkLoader {
     private class BigoInterstitialListener extends AbstractAdListener {
         private AdLoadListener adLoadListener = new AdLoadListener<InterstitialAd>() {
             @Override
-            public void onError(AdError error) {
+            public void onError(sg.bigo.ads.api.AdError error) {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(error), true));
                 setLoading(false, STATE_FAILURE);
                 mInterstitialAd = null;
@@ -228,7 +228,7 @@ public class BigoLoader extends AbstractSdkLoader {
                 }
 
                 @Override
-                public void onAdError(AdError adError) {
+                public void onAdError(sg.bigo.ads.api.AdError adError) {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError), true));
                     clearLastShowTime();
                     onResetInterstitial();
@@ -351,7 +351,7 @@ public class BigoLoader extends AbstractSdkLoader {
                 }
 
                 @Override
-                public void onAdError(AdError adError) {
+                public void onAdError(sg.bigo.ads.api.AdError adError) {
                     Log.iv(Log.TAG, formatLog("ad show failed : " + codeToError(adError), true));
                     notifyAdShowFailed(toSdkError(adError), "[" + getSdkName() + "]" + toErrorMessage(adError));
                 }
@@ -380,9 +380,9 @@ public class BigoLoader extends AbstractSdkLoader {
 
         private AdLoadListener adLoadListener = new AdLoadListener<NativeAd>() {
             @Override
-            public void onError(AdError adError) {
+            public void onError(sg.bigo.ads.api.AdError adError) {
                 Log.iv(Log.TAG, formatLog("ad load failed : " + codeToError(adError), true));
-                if (adError != null && adError.getCode() == AdError.ERROR_CODE_NO_FILL) {
+                if (adError != null && adError.getCode() == sg.bigo.ads.api.AdError.ERROR_CODE_NO_FILL) {
                     updateLastNoFillTime();
                 }
                 setLoading(false, STATE_FAILURE);
@@ -488,31 +488,31 @@ public class BigoLoader extends AbstractSdkLoader {
         }
     }
 
-    private String codeToError(AdError adError) {
+    private String codeToError(sg.bigo.ads.api.AdError adError) {
         if (adError != null) {
             int code = adError.getCode();
-            if (code == AdError.ERROR_CODE_UNINITIALIZED) {
+            if (code == sg.bigo.ads.api.AdError.ERROR_CODE_UNINITIALIZED) {
                 return "ERROR_CODE_UNINITIALIZED[" + code + "]";
             }
-            if (code == AdError.ERROR_CODE_INVALID_REQUEST) {
+            if (code == sg.bigo.ads.api.AdError.ERROR_CODE_INVALID_REQUEST) {
                 return "ERROR_CODE_INVALID_REQUEST[" + code + "]";
             }
-            if (code == AdError.ERROR_CODE_AD_DISABLE) {
+            if (code == sg.bigo.ads.api.AdError.ERROR_CODE_AD_DISABLE) {
                 return "ERROR_CODE_AD_DISABLE[" + code + "]";
             }
-            if (code == AdError.ERROR_CODE_NETWORK_ERROR) {
+            if (code == sg.bigo.ads.api.AdError.ERROR_CODE_NETWORK_ERROR) {
                 return "ERROR_CODE_NETWORK_ERROR[" + code + "]";
             }
-            if (code == AdError.ERROR_CODE_NO_FILL) {
+            if (code == sg.bigo.ads.api.AdError.ERROR_CODE_NO_FILL) {
                 return "ERROR_CODE_NO_FILL[" + code + "]";
             }
-            if (code == AdError.ERROR_CODE_INTERNAL_ERROR) {
+            if (code == sg.bigo.ads.api.AdError.ERROR_CODE_INTERNAL_ERROR) {
                 return "ERROR_CODE_INTERNAL_ERROR[" + code + "]";
             }
-            if (code == AdError.ERROR_CODE_ASSETS_ERROR) {
+            if (code == sg.bigo.ads.api.AdError.ERROR_CODE_ASSETS_ERROR) {
                 return "ERROR_CODE_ASSETS_ERROR[" + code + "]";
             }
-            if (code == AdError.ERROR_CODE_APP_ID_UNMATCHED) {
+            if (code == sg.bigo.ads.api.AdError.ERROR_CODE_APP_ID_UNMATCHED) {
                 return "ERROR_CODE_APP_ID_UNMATCHED[" + code + "]";
             }
             return "UNKNOWN[" + code + "]";
@@ -520,26 +520,26 @@ public class BigoLoader extends AbstractSdkLoader {
         return "ERROR[NULL]";
     }
 
-    protected int toSdkError(AdError adError) {
+    protected AdError toSdkError(sg.bigo.ads.api.AdError adError) {
         if (adError != null) {
             int code = adError.getCode();
-            if (code == AdError.ERROR_CODE_INTERNAL_ERROR) {
+            if (code == sg.bigo.ads.api.AdError.ERROR_CODE_INTERNAL_ERROR) {
                 return Constant.AD_ERROR_INTERNAL;
             }
-            if (code == AdError.ERROR_CODE_INVALID_REQUEST) {
+            if (code == sg.bigo.ads.api.AdError.ERROR_CODE_INVALID_REQUEST) {
                 return Constant.AD_ERROR_INVALID_REQUEST;
             }
-            if (code == AdError.ERROR_CODE_NETWORK_ERROR) {
+            if (code == sg.bigo.ads.api.AdError.ERROR_CODE_NETWORK_ERROR) {
                 return Constant.AD_ERROR_NETWORK;
             }
-            if (code == AdError.ERROR_CODE_NO_FILL) {
+            if (code == sg.bigo.ads.api.AdError.ERROR_CODE_NO_FILL) {
                 return Constant.AD_ERROR_NOFILL;
             }
         }
         return Constant.AD_ERROR_UNKNOWN;
     }
 
-    private String toErrorMessage(AdError adError) {
+    private String toErrorMessage(sg.bigo.ads.api.AdError adError) {
         if (adError != null) {
             return "[" + adError.getCode() + "] " + adError.getMessage();
         }

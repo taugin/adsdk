@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.komob.adsdk.AdImpData;
 import com.komob.adsdk.AdReward;
 import com.komob.adsdk.InternalStat;
+import com.komob.adsdk.AdError;
 import com.komob.adsdk.OnAdEventListener;
 import com.komob.adsdk.OnAdFilterListener;
 import com.komob.adsdk.adloader.listener.IManagerListener;
@@ -1153,7 +1154,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
     }
 
-    protected void notifyAdLoadFailed(int error, String msg) {
+    protected void notifyAdLoadFailed(AdError error, String msg) {
         if (getAdListener() != null && !mLoadTimeout.getAndSet(false)) {
             getAdListener().onAdLoadFailed(error, msg);
         }
@@ -1163,7 +1164,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
     }
 
-    protected void notifyAdShowFailed(int error, String msg) {
+    protected void notifyAdShowFailed(AdError error, String msg) {
         if (getAdListener() != null) {
             getAdListener().onAdShowFailed(error, msg);
         }
