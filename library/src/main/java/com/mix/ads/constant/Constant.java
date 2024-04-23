@@ -31,6 +31,8 @@ public class Constant {
 
     public static final String PREF_GAID = "pref_google_advertise_id";
 
+    public static final String PREF_FIREBASE_CONFIG_SUFFIX = "pref_firebase_config_suffix";
+
     public static final int NO_SET = -1;
     public static final int BANNER = 1000;
     public static final int FULL_BANNER = 1001;

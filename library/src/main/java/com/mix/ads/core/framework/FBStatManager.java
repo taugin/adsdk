@@ -7,6 +7,7 @@ import android.util.Base64;
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.mix.ads.MiStat;
+import com.mix.ads.constant.Constant;
 import com.mix.ads.data.DataManager;
 import com.mix.ads.utils.Utils;
 
@@ -15,7 +16,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class FBStatManager {
-    private static final String MEDIUM = new String(Base64.decode("b3JnYW5pYw==", 0));
+    private static final String ORGANIC = new String(Base64.decode("b3JnYW5pYw==", 0));
     private static final String PREF_INSTALL_REFERRER = "pref_install_referrer";
     private static FBStatManager sFBStatManager;
 
@@ -82,6 +83,9 @@ public class FBStatManager {
             Map<String, Object> map = referrerToMap(referrer);
             boolean isOrganic = isOrganic(map);
             MiStat.sendFirebaseAnalytics(mContext, isOrganic ? "app_first_open_ao" : "app_first_open_ano", null, null);
+            if (!isOrganic) {
+                Utils.putString(mContext, Constant.PREF_FIREBASE_CONFIG_SUFFIX, "ano");
+            }
         } catch (Exception e) {
         }
     }
@@ -108,7 +112,7 @@ public class FBStatManager {
         if (ref != null) {
             try {
                 String medium = (String) ref.get("utm_medium");
-                return MEDIUM.equalsIgnoreCase(medium);
+                return ORGANIC.equalsIgnoreCase(medium);
             } catch (Exception e) {
             }
         }

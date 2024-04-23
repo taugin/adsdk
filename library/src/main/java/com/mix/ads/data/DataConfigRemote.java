@@ -3,6 +3,7 @@ package com.mix.ads.data;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.mix.ads.constant.Constant;
 import com.mix.ads.log.Log;
 import com.mix.ads.utils.Utils;
 
@@ -99,7 +100,8 @@ public class DataConfigRemote {
 
     private String readConfigFromRemote(String key) {
         String value = null;
-        String attrSuffix = "";
+        String suffix = Utils.getString(mContext, Constant.PREF_FIREBASE_CONFIG_SUFFIX);
+        String attrSuffix = !TextUtils.isEmpty(suffix) ? ("_" + suffix) : "";
         String attrKey = key + attrSuffix;
         // 首先获取带有归因的配置，如果归因配置为空，则使用默认配置
         String attrData = getRemoteConfig(attrKey);
