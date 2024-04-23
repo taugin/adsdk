@@ -2252,10 +2252,10 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                     return 0;
                 }
             });
-            String logText = "network sort result : \n";
+            String logText = "";
             for (ISdkLoader iSdkLoader : list) {
                 if (iSdkLoader != null) {
-                    logText += iSdkLoader.getAdPlaceName() + "|" + iSdkLoader.getAdType() + "|" + iSdkLoader.getSdkName() + "|" + iSdkLoader.getNetwork() + "|" + iSdkLoader.getRevenue() + "\n";
+                    logText += "[network sort]" + iSdkLoader.getAdPlaceName() + "|" + iSdkLoader.getAdType() + "|" + iSdkLoader.getSdkName() + "|" + iSdkLoader.getNetwork() + "|" + iSdkLoader.getRevenue() + "\n";
                 }
             }
             Log.iv(Log.TAG, logText);

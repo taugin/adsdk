@@ -450,7 +450,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     }
 
     protected void printInterfaceLog(String action) {
-        Log.iv(Log.TAG, action + " | " + getSdkName() + " | " + getAdType() + " | " + getAdPlaceName() + " | " + getPid());
+        Log.iv(Log.TAG, action + "|" + getSdkName() + "|" + getAdType() + "|" + getAdPlaceName() + "|" + getPid());
     }
 
     /**
