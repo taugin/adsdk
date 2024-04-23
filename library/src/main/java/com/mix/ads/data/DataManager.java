@@ -144,15 +144,6 @@ public class DataManager {
         return cfgName;
     }
 
-    private String getMediationConfigKey() {
-        try {
-            return "m" + new StringBuilder(getMd5SubString()).reverse().toString() + "dn";
-        } catch (Exception e) {
-        }
-        return "mdn_sdk_cfg";
-    }
-
-
     private String getDefaultName() {
         return String.format(Locale.ENGLISH, DATA_CONFIG_FORMAT, "config");
     }
