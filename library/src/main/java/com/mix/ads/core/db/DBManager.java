@@ -312,4 +312,100 @@ public class DBManager {
         }
         return adPlacement;
     }
+
+    public void insertOrUpdateClick(String bundle, long clickTime) {
+        SpreadClickInfo spreadClickInfo = queryClickSpread(bundle);
+        if (spreadClickInfo != null) {
+            updateClickInfo(spreadClickInfo._id, clickTime, spreadClickInfo.clickCount + 1);
+        } else {
+            insertClickInfo(bundle, clickTime);
+        }
+    }
+
+    private void insertClickInfo(String bundle, long clickTime) {
+        SQLiteDatabase db = null;
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.AD_SPREAD_BUNDLE, bundle);
+        values.put(DBHelper.AD_SPREAD_CLICK_TIME, clickTime);
+        values.put(DBHelper.AD_SPREAD_CLICK_COUNT, 1);
+        try {
+            db = mDBHelper.getReadableDatabase();
+            db.beginTransaction();
+            db.insertOrThrow(DBHelper.TABLE_AD_SPREAD, DBHelper.FOO, values);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+            }
+        }
+    }
+
+    private void updateClickInfo(int _id, long clickTime, int clickCount) {
+        SQLiteDatabase db = null;
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.AD_SPREAD_CLICK_TIME, clickTime);
+        values.put(DBHelper.AD_SPREAD_CLICK_COUNT, clickCount);
+        try {
+            db = mDBHelper.getReadableDatabase();
+            db.beginTransaction();
+            db.update(DBHelper.TABLE_AD_SPREAD, values, DBHelper._ID + "=?", new String[]{String.valueOf(_id)});
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+            }
+        }
+    }
+
+    @SuppressLint("Range")
+    public SpreadClickInfo queryClickSpread(String bundle) {
+        Cursor cursor = null;
+        SpreadClickInfo spreadClickInfo = null;
+        try {
+            SQLiteDatabase db = mDBHelper.getReadableDatabase();
+            cursor = db.query(true, DBHelper.TABLE_AD_SPREAD, null, DBHelper.AD_SPREAD_BUNDLE + "=?", new String[]{bundle}, null, null, null, null);
+            if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+                spreadClickInfo = new SpreadClickInfo();
+                spreadClickInfo._id = cursor.getInt(cursor.getColumnIndex(DBHelper._ID));
+                spreadClickInfo.clickCount = cursor.getInt(cursor.getColumnIndex(DBHelper.AD_SPREAD_CLICK_COUNT));
+                spreadClickInfo.installCount = cursor.getInt(cursor.getColumnIndex(DBHelper.AD_SPREAD_INSTALL_COUNT));
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return spreadClickInfo;
+    }
+
+    public void updateInstallTime(int _id, long installTime, int installCount) {
+        SQLiteDatabase db = null;
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.AD_SPREAD_INSTALL_TIME, installTime);
+        values.put(DBHelper.AD_SPREAD_INSTALL_COUNT, installCount);
+        try {
+            db = mDBHelper.getReadableDatabase();
+            db.beginTransaction();
+            db.update(DBHelper.TABLE_AD_SPREAD, values, DBHelper._ID + "=?", new String[]{String.valueOf(_id)});
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+            }
+        }
+    }
+
+    public class SpreadClickInfo {
+        public int _id;
+        public int clickCount;
+        public int installCount;
+    }
 }

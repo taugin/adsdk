@@ -2,7 +2,9 @@ package com.mix.ads.data.parse;
 
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.data.config.PlaceConfig;
+import com.mix.ads.data.config.SpreadConfig;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -90,7 +92,24 @@ public interface IParser {
     // 是否是备用广告
     String SLAVE_ADS = "slave";
 
+    // banner
+    String BANNER = "banner";
+    String ICON = "icon";
+    String TITLE = "title";
+    String BUNDLE = "bundle";
+    String DETAIL = "detail";
+    String URL = "url";
+    String CTA = "cta";
+    String CTA_LOCALE = "cta_locale";
+    String LOADING_TIME = "loading_time";
+    String PLAY = "play";
+    String SCORE = "score";
+
     PlaceConfig parseAdConfig(String data);
+
     AdPlace parseAdPlace(String data);
+
     Map<String, String> parseStringMap(String data);
+
+    List<SpreadConfig> parseSpread(String data);
 }

@@ -39,7 +39,7 @@
     <string-array name="ad_sdk" translatable="false">
         <item>Applovin</item>
         <item>Admob</item>
-        <item>Bigo</item>
+        <item>Spread</item>
     </string-array>
     <string-array name="ad_layout" translatable="false">
         <item>Custom Small</item>

@@ -13,6 +13,7 @@ public class Constant {
     public static final String AD_SDK_COMMON = "common";
     public static final String AD_SDK_ADMOB = "admob";
     public static final String AD_SDK_APPLOVIN = "applovin";
+    public static final String AD_SDK_SPREAD = "spread";
     public static final String AD_NETWORK_ADMOB = "admob";
     public static final String AD_NETWORK_APPLOVIN = "applovin";
     public static final String AD_NETWORK_FACEBOOK = "facebook";

@@ -282,6 +282,10 @@ public class PidConfig {
         return TextUtils.equals(Constant.AD_SDK_APPLOVIN, sdk);
     }
 
+    public boolean isSpread() {
+        return TextUtils.equals(Constant.AD_SDK_SPREAD, sdk);
+    }
+
     public boolean isBannerType() {
         return TextUtils.equals(Constant.TYPE_BANNER, adType);
     }
