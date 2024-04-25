@@ -34,8 +34,11 @@ import com.komob.adsdk.utils.Utils;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 public class BaseIntView {
+
+    private static Random sRandom = new Random(System.currentTimeMillis());
 
     protected ViewGroup mRootView;
     protected TextView mTitleView;
@@ -67,21 +70,20 @@ public class BaseIntView {
         }
     }
 
-    protected ImageView generateCloseView(Context context) {
+    protected ImageView generateCloseView(Context context, int imageColor, int normalColor, int pressedColor) {
         ImageView imageView = new ImageView(context);
         imageView.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-        imageView.setColorFilter(Color.BLACK);
+        imageView.setColorFilter(imageColor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             imageView.setElevation(15f);
         }
         Shape shape = new OvalShape();
-
-        ShapeDrawable shapePressed = new ShapeDrawable(shape);
-        shapePressed.getPaint().setColor(Color.parseColor("#88FFFFFF"));
+        ShapeDrawable shapeNormal = new ShapeDrawable(shape);
+        shapeNormal.getPaint().setColor(normalColor);
 
         shape = new OvalShape();
-        ShapeDrawable shapeNormal = new ShapeDrawable(shape);
-        shapeNormal.getPaint().setColor(Color.parseColor("#FFFFFFFF"));
+        ShapeDrawable shapePressed = new ShapeDrawable(shape);
+        shapePressed.getPaint().setColor(pressedColor);
 
         StateListDrawable drawable = new StateListDrawable();
         drawable.addState(new int[]{android.R.attr.state_pressed}, shapePressed);
@@ -147,8 +149,29 @@ public class BaseIntView {
         return ctaText;
     }
 
+    protected void scaleView(View view) {
+        if (view != null) {
+            view.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 0.9f, 1.0f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                        scaleAnimation.setRepeatCount(Animation.INFINITE);
+                        scaleAnimation.setDuration(1000);
+                        scaleAnimation.setRepeatMode(Animation.REVERSE);
+                        view.startAnimation(scaleAnimation);
+                    } catch (Exception e) {
+                    }
+                }
+            });
+        }
+    }
+
     public static BaseIntView generate(Context context) {
-        return new IntView1(context);
+        if (sRandom.nextBoolean()) {
+            return new IntView2().init(context);
+        }
+        return new IntView1().init(context);
     }
 
     public View render(SpreadConfig spreadConfig) {
@@ -215,11 +238,10 @@ public class BaseIntView {
 }
 
 class IntView1 extends BaseIntView {
-    public IntView1(Context context) {
-        init(context);
+    public IntView1() {
     }
 
-    private void init(Context context) {
+    public IntView1 init(Context context) {
         mRootView = new RelativeLayout(context);
         mRootView.setBackgroundColor(Color.WHITE);
         LinearLayout adLayout = new LinearLayout(context);
@@ -228,7 +250,7 @@ class IntView1 extends BaseIntView {
         mRootView.addView(adLayout, -1, -1);
 
         // Close View
-        mCloseView = generateCloseView(context);
+        mCloseView = generateCloseView(context, Color.BLACK, Color.parseColor("#FFFFFFFF"), Color.parseColor("#88FFFFFF"));
         int size = Utils.dp2px(context, 24);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(size, size);
         int margin = Utils.dp2px(context, 8);
@@ -340,23 +362,162 @@ class IntView1 extends BaseIntView {
         adLayout.addView(mActionView, actionParams);
         mActionView.setBackground(generateBackground(context, Color.parseColor("#FF4080FF"), Color.parseColor("#FF3973E5")));
         scaleView(mActionView);
+        return this;
     }
+}
 
-    private void scaleView(View view) {
-        if (view != null) {
-            view.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 0.9f, 1.0f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                        scaleAnimation.setRepeatCount(Animation.INFINITE);
-                        scaleAnimation.setDuration(1000);
-                        scaleAnimation.setRepeatMode(Animation.REVERSE);
-                        view.startAnimation(scaleAnimation);
-                    } catch (Exception e) {
-                    }
-                }
-            });
+class IntView2 extends BaseIntView {
+    public IntView2 init(Context context) {
+        mRootView = new RelativeLayout(context);
+        mRootView.setBackgroundColor(Color.WHITE);
+        LinearLayout adLayout = new LinearLayout(context);
+        adLayout.setOrientation(LinearLayout.VERTICAL);
+        adLayout.setGravity(Gravity.CENTER);
+        mRootView.addView(adLayout, -1, -1);
+
+        // Close View
+        // Close View
+        mCloseView = generateCloseView(context, Color.BLACK, Color.parseColor("#FFFFFFFF"), Color.parseColor("#88FFFFFF"));
+        int size = Utils.dp2px(context, 24);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(size, size);
+        int margin = Utils.dp2px(context, 8);
+        layoutParams.setMargins(margin, margin, 0, 0);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        mRootView.addView(mCloseView, layoutParams);
+
+        // AD Label
+        TextView adLabel = new TextView(context);
+        adLabel.setText("AD");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            adLabel.setElevation(15f);
         }
+        adLabel.setTextColor(Color.WHITE);
+        adLabel.setTypeface(null, Typeface.BOLD);
+        adLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 8);
+        adLabel.setGravity(Gravity.CENTER);
+        int adLabelHPadding = Utils.dp2px(context, 4);
+        int adLabelVPadding = Utils.dp2px(context, 2);
+        adLabel.setPadding(adLabelHPadding, adLabelVPadding, adLabelHPadding, adLabelVPadding);
+        adLabel.setBackground(generateBackground(context, Color.GRAY, Color.GRAY));
+        RelativeLayout.LayoutParams adLabelLayoutParams = new RelativeLayout.LayoutParams(-2, -2);
+        int adLabelHMargin = Utils.dp2px(context, 8);
+        int adLabelVMargin = Utils.dp2px(context, 12);
+        adLabelLayoutParams.setMargins(0, adLabelVMargin, adLabelHMargin, 0);
+        adLabelLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
+        adLabelLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        mRootView.addView(adLabel, adLabelLayoutParams);
+
+        LinearLayout topLayout = new LinearLayout(context);
+        topLayout.setOrientation(LinearLayout.VERTICAL);
+        topLayout.setGravity(Gravity.CENTER);
+        LinearLayout.LayoutParams topParams = new LinearLayout.LayoutParams(-1, -1);
+        topParams.weight = 1;
+        adLayout.addView(topLayout, topParams);
+
+        LinearLayout bottomLayout = new LinearLayout(context);
+        bottomLayout.setOrientation(LinearLayout.VERTICAL);
+        bottomLayout.setGravity(Gravity.CENTER);
+        LinearLayout.LayoutParams bottomParams = new LinearLayout.LayoutParams(-1, -1);
+        bottomParams.weight = 1;
+        adLayout.addView(bottomLayout, bottomParams);
+
+        // Title detail layout
+        LinearLayout textLayout = new LinearLayout(context);
+        textLayout.setGravity(Gravity.CENTER);
+        textLayout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(-1, -1);
+        textParams.weight = 1;
+        topLayout.addView(textLayout, textParams);
+
+        // Icon View
+        mIconView = new ImageView(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mIconView.setElevation(15f);
+        }
+        int iconSize = Utils.dp2px(context, 64);
+        ViewGroup.MarginLayoutParams iconViewParams = new ViewGroup.MarginLayoutParams(iconSize, iconSize);
+        int iconMargin = Utils.dp2px(context, 20);
+        iconViewParams.setMargins(iconMargin, iconMargin, iconMargin, iconMargin);
+        textLayout.addView(mIconView, iconViewParams);
+
+        // Title View
+        mTitleView = new TextView(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mTitleView.setElevation(15f);
+        }
+        mTitleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        mTitleView.setTypeface(null, Typeface.BOLD);
+        mTitleView.setGravity(Gravity.CENTER);
+        mTitleView.setTextColor(Color.BLACK);
+        mTitleView.setMaxLines(2);
+        mTitleView.setLines(2);
+        mTitleView.setEllipsize(TextUtils.TruncateAt.END);
+        LinearLayout.MarginLayoutParams titleViewParams = new LinearLayout.MarginLayoutParams(-2, -2);
+        titleViewParams.setMargins(iconMargin, iconMargin, iconMargin, iconMargin);
+        textLayout.addView(mTitleView, titleViewParams);
+
+        // Detail View
+        mDetailView = new TextView(context);
+        mDetailView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        mDetailView.setGravity(Gravity.CENTER);
+        mDetailView.setTextColor(Color.BLACK);
+        mDetailView.setMaxLines(3);
+        mDetailView.setLines(3);
+        mDetailView.setEllipsize(TextUtils.TruncateAt.END);
+        LinearLayout.MarginLayoutParams detailViewParams = new LinearLayout.MarginLayoutParams(-2, -2);
+        detailViewParams.setMargins(iconMargin, iconMargin, iconMargin, iconMargin);
+        textLayout.addView(mDetailView, detailViewParams);
+
+        // Media View
+        mMediaView = new ImageView(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mMediaView.setElevation(15f);
+        }
+        int mediaMargin = Utils.dp2px(context, 8);
+        int mediaViewWidth = context.getResources().getDisplayMetrics().widthPixels;
+        int mediaViewHeight = (int) ((mediaViewWidth - mediaMargin * 2) / 1.92f);
+        LinearLayout.MarginLayoutParams mediaViewParams = new LinearLayout.MarginLayoutParams(-1, mediaViewHeight);
+        mediaViewParams.setMargins(mediaMargin, mediaMargin, mediaMargin, mediaMargin);
+        bottomLayout.addView(mMediaView, mediaViewParams);
+
+        // Action View
+        mActionView = new TextView(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mActionView.setElevation(15f);
+        }
+        mActionView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        mActionView.setTypeface(null, Typeface.BOLD);
+        mActionView.setGravity(Gravity.CENTER);
+        mActionView.setTextColor(Color.WHITE);
+        int actionViewHeight = Utils.dp2px(context, 56);
+        ViewGroup.MarginLayoutParams actionParams = new ViewGroup.MarginLayoutParams(-1, actionViewHeight);
+        int hMargin = Utils.dp2px(context, 36);
+        int vMargin = Utils.dp2px(context, 18);
+        actionParams.leftMargin = hMargin;
+        actionParams.rightMargin = hMargin;
+        actionParams.bottomMargin = vMargin;
+        actionParams.topMargin = vMargin;
+        bottomLayout.addView(mActionView, actionParams);
+        mActionView.setBackground(generateBackground(context, Color.parseColor("#FF4080FF"), Color.parseColor("#FF3973E5")));
+        scaleView(mActionView);
+
+        // RatingBar
+        mRatingBar = new RatingBar(context);
+        mRatingBar.setMax(5);
+        mRatingBar.setNumStars(5);
+        mRatingBar.setStepSize(0.1f);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mRatingBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#FF4080FF")));
+            mRatingBar.setSecondaryProgressTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        }
+        mRatingBar.setRating(3.5f);
+        mRatingBar.setIsIndicator(true);
+        LinearLayout.MarginLayoutParams ratingBarViewParams = new LinearLayout.MarginLayoutParams(-2, -2);
+        ratingBarViewParams.setMargins(iconMargin, 0, iconMargin, iconMargin);
+        bottomLayout.addView(mRatingBar, ratingBarViewParams);
+        mRatingBar.setScaleX(0.5f);
+        mRatingBar.setScaleY(0.5f);
+        return this;
     }
 }
