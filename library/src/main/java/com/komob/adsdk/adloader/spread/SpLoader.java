@@ -257,40 +257,24 @@ public class SpLoader extends AbstractSdkLoader {
     @Override
     public boolean showInterstitial(String sceneName) {
         printInterfaceLog(ACTION_SHOW);
-        showAdViewWithUI(getAdPlaceName(), getSdkName(), getAdType(), this);
-        return true;
-    }
-
-    private void showAdViewWithUI(String placeName, String source, String adType, ISdkLoader iSdkLoader) {
-        Log.iv(Log.TAG, "show spread ads with ui");
         try {
-            reportAdShow();
-            notifyAdShow();
-            Params params = new Params();
-            params.setAdCardStyle(Constant.NATIVE_CARD_FULL);
-            SpreadManager.get(mContext).showFullScreenAds(iSdkLoader, params);
+            if (mSpread != null) {
+                reportAdShow();
+                notifyAdShow();
+                if (!SpreadManager.get(mContext).showSpreadIntAds(mSpread, new ClickClass(mSpread), this)) {
+                    notifyAdShowFailed(Constant.AD_ERROR_SHOW, "show spread interstitial error");
+                    return false;
+                } else {
+                    reportAdSpreadImp(mSpread);
+                    notifyAdImp(null, sceneName);
+                }
+                mSpread = null;
+                return true;
+            }
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }
-    }
-
-    @Override
-    public void showInterstitialWithNative(ViewGroup viewGroup, Params params) {
-        printInterfaceLog(ACTION_SHOW);
-        String sceneName = null;
-        if (params != null) {
-            params.setAdCardStyle(Constant.NATIVE_CARD_FULL_LIST.get(new Random().nextInt(Constant.NATIVE_CARD_FULL_LIST.size())));
-            mParams = params;
-            sceneName = params.getSceneName();
-        }
-        if (mSpread != null) {
-            SpreadConfig spreadConfig = mSpread;
-            spreadBindNativeView.setClickListener(new ClickClass(spreadConfig));
-            spreadBindNativeView.bindNative(mParams, viewGroup, mPidConfig, spreadConfig);
-            mSpread = null;
-            reportAdSpreadImp(spreadConfig);
-            notifyAdImp(null, sceneName);
-        }
+        return true;
     }
 
     public class ClickClass implements View.OnClickListener {

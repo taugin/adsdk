@@ -1,29 +1,19 @@
 package com.komob.adsdk.utils;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.Shape;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.komob.adsdk.adloader.listener.ISdkLoader;
-import com.komob.adsdk.core.framework.ActivityMonitor;
 import com.komob.adsdk.core.framework.Params;
-import com.komob.adsdk.log.Log;
-
-import java.lang.reflect.Field;
 
 public class VUIHelper {
 
@@ -67,16 +57,6 @@ public class VUIHelper {
 
     private boolean showAdViewInternal(ViewGroup adRootLayout, ISdkLoader iSdkLoader, Params params) {
         if (adRootLayout != null && iSdkLoader != null) {
-            try {
-                // Spread类型的广告插屏类型需要单独处理
-                if (iSdkLoader.getPidConfig().isSpread()
-                        && iSdkLoader.isInterstitialType()
-                        && iSdkLoader.isInterstitialLoaded()) {
-                    iSdkLoader.showInterstitialWithNative(adRootLayout, params);
-                    return true;
-                }
-            } catch (Exception e) {
-            }
             if (iSdkLoader.isBannerType() && iSdkLoader.isBannerLoaded()) {
                 iSdkLoader.showBanner(adRootLayout);
                 return true;

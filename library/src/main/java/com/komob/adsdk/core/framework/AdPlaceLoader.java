@@ -1,7 +1,9 @@
 package com.komob.adsdk.core.framework;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -9,9 +11,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.komob.adsdk.AdError;
 import com.komob.adsdk.AdParams;
 import com.komob.adsdk.AdReward;
-import com.komob.adsdk.AdError;
 import com.komob.adsdk.OnAdSdkListener;
 import com.komob.adsdk.adloader.base.SimpleAdBaseBaseListener;
 import com.komob.adsdk.adloader.listener.IManagerListener;
@@ -22,12 +24,12 @@ import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.AdPolicy;
 import com.komob.adsdk.core.ModuleLoaderHelper;
 import com.komob.adsdk.data.DataManager;
-import com.komob.adsdk.data.SpreadManager;
 import com.komob.adsdk.data.config.AdPlace;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.utils.Utils;
+import com.komob.adsdk.utils.VUIHelper;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -1656,9 +1658,46 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (params != null) {
                 params.setSceneName(sceneName);
             }
-            SpreadManager.get(mContext).showFullScreenAds(iSdkLoader, params);
+            showNativeInterstitialAds(iSdkLoader, params);
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    private void showNativeInterstitialAds(ISdkLoader iSdkLoader, Params params) {
+        Activity activity = ActivityMonitor.get(mContext).getTopActivity();
+        if (activity == null || activity.isFinishing()) {
+            return;
+        }
+        try {
+            final Dialog dialog = new Dialog(activity, android.R.style.Theme_Material_Light_NoActionBar);
+            VUIHelper vuiHelper = new VUIHelper();
+            View adRootView = vuiHelper.generateNativeView(mContext, iSdkLoader, params, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+            });
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    try {
+                        if (iSdkLoader != null) {
+                            iSdkLoader.notifyAdViewUIDismiss();
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+            });
+            dialog.setContentView(adRootView);
+            dialog.setCancelable(false);
+            dialog.show();
+        } catch (Exception e) {
         }
     }
 

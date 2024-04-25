@@ -21,6 +21,8 @@ import android.widget.TextView;
 
 import com.komob.adsdk.InternalStat;
 import com.komob.adsdk.adloader.listener.ISdkLoader;
+import com.komob.adsdk.adloader.spread.BaseIntView;
+import com.komob.adsdk.adloader.spread.SpLoader;
 import com.komob.adsdk.core.db.DBManager;
 import com.komob.adsdk.core.framework.ActivityMonitor;
 import com.komob.adsdk.core.framework.Params;
@@ -369,25 +371,40 @@ public class SpreadManager {
         TextView actionViewSingle;
     }
 
-    public void showFullScreenAds(ISdkLoader iSdkLoader, Params params) {
+    private boolean checkSpConfig(SpreadConfig spreadConfig) {
+        return (spreadConfig != null
+                && !TextUtils.isEmpty(spreadConfig.getIcon())
+                && !TextUtils.isEmpty(spreadConfig.getTitle())
+                && !TextUtils.isEmpty(spreadConfig.getBundle())
+                && !TextUtils.isEmpty(spreadConfig.getCta())
+                && !Utils.isInstalled(mContext, spreadConfig.getBundle())
+                && !TextUtils.equals(spreadConfig.getBundle(), mContext.getPackageName()));
+    }
+
+    public boolean showSpreadIntAds(SpreadConfig spreadConfig, SpLoader.ClickClass clickClass, ISdkLoader iSdkLoader) {
         Activity activity = ActivityMonitor.get(mContext).getTopActivity();
         if (activity == null || activity.isFinishing()) {
-            return;
+            return false;
+        }
+        if (!checkSpConfig(spreadConfig)) {
+            return false;
         }
         try {
             final Dialog dialog = new Dialog(activity, android.R.style.Theme_Material_Light_NoActionBar);
-            VUIHelper vuiHelper = new VUIHelper();
-            View adRootView = vuiHelper.generateNativeView(mContext, iSdkLoader, params, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        if (dialog != null) {
-                            dialog.dismiss();
+            View viewRoot = BaseIntView.generate(activity)
+                    .setActionClickListener(clickClass)
+                    .setCloseClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                }
+                            } catch (Exception e) {
+                            }
                         }
-                    } catch (Exception e) {
-                    }
-                }
-            });
+                    })
+                    .render(spreadConfig);
             dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
@@ -399,10 +416,12 @@ public class SpreadManager {
                     }
                 }
             });
-            dialog.setContentView(adRootView);
+            dialog.setContentView(viewRoot);
             dialog.setCancelable(false);
             dialog.show();
+            return true;
         } catch (Exception e) {
         }
+        return false;
     }
 }

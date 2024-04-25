@@ -412,42 +412,19 @@ public class AdParser implements IParser {
         try {
             if (jobj != null) {
                 spreadConfig = new SpreadConfig();
-                if (jobj.has(BANNER)) {
-                    spreadConfig.setBanner(jobj.getString(BANNER));
-                }
-                if (jobj.has(ICON)) {
-                    spreadConfig.setIcon(jobj.getString(ICON));
-                }
-                if (jobj.has(TITLE)) {
-                    spreadConfig.setTitle(jobj.getString(TITLE));
-                }
-                if (jobj.has(BUNDLE)) {
-                    spreadConfig.setBundle(jobj.getString(BUNDLE));
-                }
-                if (jobj.has(DETAIL)) {
-                    spreadConfig.setDetail(jobj.getString(DETAIL));
-                }
-                if (jobj.has(URL)) {
-                    spreadConfig.setLinkUrl(jobj.getString(URL));
-                }
-                if (jobj.has(CTA)) {
-                    spreadConfig.setCta(jobj.getString(CTA));
-                }
-                if (jobj.has(DISABLE)) {
-                    spreadConfig.setDisable(jobj.getInt(DISABLE) == 1);
-                }
-                if (jobj.has(CTA_LOCALE)) {
-                    spreadConfig.setCtaLocale(parseStringMap(jobj.getString(CTA_LOCALE)));
-                }
-                if (jobj.has(LOADING_TIME)) {
-                    spreadConfig.setLoadingTime(jobj.getLong(LOADING_TIME));
-                }
-                if (jobj.has(PLAY)) {
-                    spreadConfig.setPlay(jobj.getBoolean(PLAY));
-                }
-                if (jobj.has(ORGANIC)) {
-                    spreadConfig.setOrganic(jobj.getBoolean(ORGANIC));
-                }
+                spreadConfig.setBanner(jobj.optString(BANNER));
+                spreadConfig.setIcon(jobj.optString(ICON));
+                spreadConfig.setTitle(jobj.optString(TITLE));
+                spreadConfig.setBundle(jobj.optString(BUNDLE));
+                spreadConfig.setDetail(jobj.optString(DETAIL));
+                spreadConfig.setLinkUrl(jobj.optString(URL));
+                spreadConfig.setCta(jobj.optString(CTA));
+                spreadConfig.setDisable(jobj.optInt(DISABLE) == 1);
+                spreadConfig.setCtaLocale(parseStringMap(jobj.optString(CTA_LOCALE)));
+                spreadConfig.setLoadingTime(jobj.optLong(LOADING_TIME));
+                spreadConfig.setPlay(jobj.optBoolean(PLAY, true));
+                spreadConfig.setOrganic(jobj.optBoolean(ORGANIC, true));
+                spreadConfig.setScore(jobj.optDouble(SCORE, 4.2F));
             }
         } catch (Exception e) {
             Log.iv(Log.TAG, "parseSpConfig error : " + e);

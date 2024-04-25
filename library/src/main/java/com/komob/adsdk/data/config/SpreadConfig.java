@@ -22,6 +22,7 @@ public class SpreadConfig {
     private long loadingTime;
     private boolean play = true;
     private boolean organic = false;
+    private double score;
 
     public String getBanner() {
         return banner;
@@ -117,6 +118,14 @@ public class SpreadConfig {
 
     public void setOrganic(boolean organic) {
         this.organic = organic;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 
     @Override
