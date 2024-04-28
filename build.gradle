@@ -26,6 +26,8 @@ buildscript {
         classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.20'
         // classpath "com.bytedance.android:aabresguard-plugin:0.1.8"
         classpath "com.bytedance.android:aabresguard-plugin:0.1.10"
+        // firebase crashlytics
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.5'
     }
 }
 

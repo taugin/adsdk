@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.firebase.crashlytics'
 apply from: '../groovy/encrypt.gradle'
 ext {
     openRelease = true
@@ -20,14 +21,14 @@ android {
             app_channels = ['vivo', 'oppo']
             channel_key = ["MY_LEBIAN", "MY_CUSTOM_CHANNEL_KEY"]
             channel_cfg = [
-                    "oppo": ["label"    : "@string/app_name_oppo",
-                             "icon"     : "@drawable/short_cut_icon",
-                             "roundIcon": "@drawable/ic_launcher_round",
-                             "app_name" : "AdsdkOppo"],
-                    "vivo": ["label"    : "@string/app_name_vivo",
-                             "icon"     : "@drawable/sysclear_short_cut_icon",
-                             "roundIcon": "@drawable/ic_launcher_round",
-                             "app_name" : "AdsdkVivo"]
+                    "oppo": ["label"     : "@string/app_name_oppo",
+                             "icon"      : "@drawable/short_cut_icon",
+                             "roundIcon" : "@drawable/ic_launcher_round",
+                             "app_name"  : "AdsdkOppo"],
+                    "vivo": ["label"     : "@string/app_name_vivo",
+                             "icon"      : "@drawable/sysclear_short_cut_icon",
+                             "roundIcon" : "@drawable/ic_launcher_round",
+                             "app_name"  : "AdsdkVivo"]
             ]
         }
     }
@@ -69,30 +70,26 @@ repositories {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.aar'], dir: 'libs')
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     if (useProject) {
         implementation project(":library")
-    } else {
-        implementation 'com.hauyu:adsdk:7.0.2-SNAPSHOT@aar'
-        implementation 'androidx.percentlayout:percentlayout:1.0.0'
-        implementation 'com.github.megatronking.stringfog:xor:1.1.0'
     }
+
     configurations.all {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
         resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
     }
-    implementation 'com.umeng.umsdk:common:9.4.7'// 必选
-    implementation 'com.umeng.umsdk:asms:1.4.1'// 必选
-    implementation 'com.umeng.umsdk:apm:1.5.2' // 错误分析升级为独立SDK，看crash数据请一定集成，可选
+
     implementation 'com.talkingdata:talkingdata:5.0.12-1'
 
     // implementation 'com.github.markzhai:blockcanary-android:1.5.0'
     // view预加载占位符，参考文章：https://www.jianshu.com/p/49439c425ae3
     implementation 'me.samlss:broccoli:1.0.0'
-    implementation 'androidx.percentlayout:percentlayout:1.0.0'
     // firebase
     implementation 'com.google.firebase:firebase-analytics:21.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.3.7'
 
     // 调试数据库，在浏览器打开网址, adb logcat -s DebugDB查看
     debugImplementation('com.amitshekhar.android:debug-db:1.0.1')
