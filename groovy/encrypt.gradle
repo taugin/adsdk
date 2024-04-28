@@ -558,8 +558,8 @@ def generateAdFileByUser(flavor) {
 
 def firebaseDebugViewByUser(flavor) {
     def applicationId = getApplicationId(flavor)
-    println "firebaseDebugViewByUser applicationId : " + applicationId
     def cmdString = "adb shell setprop debug.firebase.analytics.app " + applicationId
+    println "firebase debug view cmdstr : [" + cmdString + "]"
     cmdString.execute().text.trim()
     println "firebase debug view result : success"
 }
