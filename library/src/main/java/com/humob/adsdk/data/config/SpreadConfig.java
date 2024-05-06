@@ -20,7 +20,7 @@ public class SpreadConfig {
     private boolean disable;
     private Map<String, String> ctaLocale;
     private long loadingTime;
-    private boolean play = true;
+    private String store;
     private boolean organic = false;
 
     public String getBanner() {
@@ -103,12 +103,12 @@ public class SpreadConfig {
         this.loadingTime = loadingTime;
     }
 
-    public boolean isPlay() {
-        return play;
+    public String getStore() {
+        return store;
     }
 
-    public void setPlay(boolean play) {
-        this.play = play;
+    public void setStore(String store) {
+        this.store = store;
     }
 
     public boolean isOrganic() {
@@ -126,6 +126,7 @@ public class SpreadConfig {
                 ", icon='" + icon + '\'' +
                 ", title='" + title + '\'' +
                 ", detail='" + detail + '\'' +
+                ", store='" + store + '\'' +
                 ", linkUrl='" + linkUrl + '\'' +
                 ", cta='" + cta + '\'' +
                 '}';

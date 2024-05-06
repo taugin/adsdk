@@ -1,10 +1,25 @@
 [
   {
+    "banner": "https://m.media-amazon.com/images/I/71yBEp6UzeL._SL500_UX1920_CR0%2C0%2C1920%2C1080_.jpg",
+    "icon": "https://m.media-amazon.com/images/I/61c+ihfPI5L.png",
+    "title": "Pretty Cleaner",
+    "bundle": "com.tool.pretty.cleaner.advance",
+    "store": "com.amazon.venezia",
+    "detail": "Clean up junk files: It can help you delete junk files, empty folders, cache, etc. on your phone to free up storage space.",
+    "cta": "INSTALL",
+    "cta_locale": {
+      "zh": "安装",
+      "en": "Install"
+    },
+    "loading_time": 5000
+  },
+  {
     "banner": "https://play-lh.googleusercontent.com/U-j8bBMhoOnAKgLWFOtnIHG5TLgKlA-9oblh7VOQzBXKGnsgXYAqfYwceY5NUTZSlw",
     "icon": "https://play-lh.googleusercontent.com/JfC28TP-Tc_ZZ9uwB7rurdYl3pat5NSvvBcfigTVlcblbzYTQpZkRzK4wG_9SBtGCyhm=w240-h480",
     "title": "Easy Weather - Daily Forecast",
     "bundle": "com.easy.weather.daily.sunny.app",
     "detail": "Easy Weather - Daily Forecast",
+    "store": "com.android.vending",
     "cta": "INSTALL",
     "cta_locale": {
       "zh": "安装",
@@ -18,6 +33,7 @@
     "title": "Daily KJV Bible",
     "bundle": "com.daily.kjvbible.devotion",
     "detail": "Daily KJV Bible",
+    "store": "com.android.vending",
     "cta": "INSTALL",
     "cta_locale": {
       "zh": "安装",
@@ -31,6 +47,7 @@
     "title": "Cube File Manager",
     "bundle": "com.cube.file.explorer",
     "detail": "Explore file on device easily",
+    "store": "com.android.vending",
     "cta": "INSTALL",
     "loading_time": 5000
   },
@@ -40,6 +57,7 @@
     "title": "ChatBird - AI Chat Bot",
     "bundle": "com.chat.ai.message.bot.smart",
     "detail": "AI assistant, answer any question.",
+    "store": "com.android.vending",
     "cta": "INSTALL",
     "loading_time": 5000
   },
@@ -49,6 +67,7 @@
     "title": "ShortsWave",
     "bundle": "com.shorts.wave.drama",
     "detail": "Dive into a World of Brief Dramatic Excellence",
+    "store": "com.android.vending",
     "cta": "INSTALL",
     "loading_time": 5000
   }

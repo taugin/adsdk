@@ -74,7 +74,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
-                android:lines="2"
+                android:maxLines="2"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:text="Android App Name"

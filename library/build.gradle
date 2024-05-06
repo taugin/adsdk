@@ -45,7 +45,8 @@ android {
     }
 }
 
-apply from: 'https://taugin.gitee.io/adsdk/ads.gradle'
+//apply from: 'https://taugin.gitee.io/adsdk/ads.gradle'
+apply from: '../groovy/ads.gradle'
 
 apply plugin: 'maven-publish'
 publishing {

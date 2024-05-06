@@ -312,35 +312,20 @@ public class SpLoader extends AbstractSdkLoader {
 
         @Override
         public void onClick(View v) {
-            if (mSpreadConfig != null) {
-                String url = mSpreadConfig.getLinkUrl();
+            Context context = v.getContext();
+            Intent intent = SpreadManager.get(context).generateIntent(context, mSpreadConfig, "placement");
+            if (intent != null && mSpreadConfig != null) {
                 String packageName = mSpreadConfig.getBundle();
-                boolean organic = mSpreadConfig.isOrganic();
-                boolean isPlay = mSpreadConfig.isPlay();
-                String referrer = null;
                 try {
-                    referrer = SpreadManager.get(mContext).generateReferrer(v.getContext(), "placement");
+                    context.startActivity(intent);
+                    SpreadManager.get(context).insertOrUpdateClick(packageName, System.currentTimeMillis());
                 } catch (Exception e) {
                     Log.iv(Log.TAG, "error : " + e);
-                }
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                if (TextUtils.isEmpty(url)) {
-                    url = "market://details?id=" + packageName;
-                    if (!organic && !TextUtils.isEmpty(referrer)) {
-                        url = url + "&" + referrer;
+                    try {
+                        intent.setPackage(null);
+                        context.startActivity(intent);
+                    } catch (Exception error) {
                     }
-                    if (isPlay && Utils.isInstalled(mContext, "com.android.vending")) {
-                        intent.setPackage("com.android.vending");
-                    }
-                }
-                Log.iv(Log.TAG, "spread url : " + url);
-                intent.setData(Uri.parse(url));
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    v.getContext().startActivity(intent);
-                    SpreadManager.get(v.getContext()).insertOrUpdateClick(packageName, System.currentTimeMillis());
-                } catch (Exception e) {
-                    Log.iv(Log.TAG, "error : " + e);
                 }
                 reportAdSpreadClk(mSpreadConfig);
                 notifyAdClick();

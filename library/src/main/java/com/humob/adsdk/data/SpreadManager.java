@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -187,38 +188,56 @@ public class SpreadManager {
     }
 
     private void clickSponsoredApp(Context context, SpreadConfig spreadConfig) {
-        if (spreadConfig != null) {
-            String url = spreadConfig.getLinkUrl();
+        Intent intent = generateIntent(context, spreadConfig, "sponsored");
+        if (intent != null && spreadConfig != null) {
             String packageName = spreadConfig.getBundle();
-            boolean organic = spreadConfig.isOrganic();
-            boolean isPlay = spreadConfig.isPlay();
-            String referrer = null;
-            try {
-                referrer = generateReferrer(context, "sponsored");
-            } catch (Exception e) {
-                Log.iv(Log.TAG, "error : " + e);
-            }
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            if (TextUtils.isEmpty(url)) {
-                url = "market://details?id=" + packageName;
-                if (!organic && !TextUtils.isEmpty(referrer)) {
-                    url = url + "&" + referrer;
-                }
-                if (isPlay && Utils.isInstalled(context, "com.android.vending")) {
-                    intent.setPackage("com.android.vending");
-                }
-            }
-            Log.iv(Log.TAG, "spread url : " + url);
-            intent.setData(Uri.parse(url));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 context.startActivity(intent);
                 SpreadManager.get(mContext).insertOrUpdateClick(packageName, System.currentTimeMillis());
+                InternalStat.reportEvent(mContext, "ad_sponsored_click", packageName);
             } catch (Exception e) {
                 Log.iv(Log.TAG, "error : " + e);
+                try {
+                    intent.setPackage(null);
+                    context.startActivity(intent);
+                } catch (Exception error) {
+                }
             }
-            InternalStat.reportEvent(mContext, "ad_sponsored_click", packageName);
         }
+    }
+
+    public Intent generateIntent(Context context, SpreadConfig spreadConfig, String campaign) {
+        try {
+            if (spreadConfig != null) {
+                String url = spreadConfig.getLinkUrl();
+                String packageName = spreadConfig.getBundle();
+                boolean organic = spreadConfig.isOrganic();
+                String store = spreadConfig.getStore();
+                String referrer = null;
+                try {
+                    referrer = generateReferrer(context, campaign);
+                } catch (Exception e) {
+                    Log.iv(Log.TAG, "error : " + e);
+                }
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                if (TextUtils.isEmpty(url)) {
+                    url = "market://details?id=" + packageName;
+                    if (!organic && !TextUtils.isEmpty(referrer)) {
+                        url = url + "&" + referrer;
+                    }
+                }
+                if (!TextUtils.isEmpty(store) && Utils.isInstalled(context, store)) {
+                    intent.setPackage(store);
+                }
+                Log.iv(Log.TAG, "spread url : " + url);
+                intent.setData(Uri.parse(url));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                return intent;
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return null;
     }
 
     public void insertOrUpdateClick(String bundle, long clickTime) {
