@@ -355,16 +355,18 @@ public class AdParser implements IParser {
         Map<String, String> map = null;
         try {
             data = getContent(data);
-            JSONObject jsonObject = new JSONObject(data);
-            map = new HashMap<String, String>();
-            Iterator<String> iterator = jsonObject.keys();
-            String key = null;
-            String value = null;
-            while (iterator.hasNext()) {
-                key = iterator.next();
-                value = jsonObject.getString(key);
-                if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
-                    map.put(key, value);
+            if (!TextUtils.isEmpty(data)) {
+                JSONObject jsonObject = new JSONObject(data);
+                map = new HashMap<String, String>();
+                Iterator<String> iterator = jsonObject.keys();
+                String key = null;
+                String value = null;
+                while (iterator.hasNext()) {
+                    key = iterator.next();
+                    value = jsonObject.getString(key);
+                    if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
+                        map.put(key, value);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -422,7 +424,7 @@ public class AdParser implements IParser {
                 spreadConfig.setDisable(jobj.optInt(DISABLE) == 1);
                 spreadConfig.setCtaLocale(parseStringMap(jobj.optString(CTA_LOCALE)));
                 spreadConfig.setLoadingTime(jobj.optLong(LOADING_TIME));
-                spreadConfig.setPlay(jobj.optBoolean(PLAY, true));
+                spreadConfig.setStore(jobj.optString(STORE));
                 spreadConfig.setOrganic(jobj.optBoolean(ORGANIC, true));
                 spreadConfig.setScore(jobj.optDouble(SCORE, 4.2F));
             }

@@ -5,6 +5,7 @@
     "title": "Easy Weather - Daily Forecast",
     "bundle": "com.easy.weather.daily.sunny.app",
     "detail": "Easy Weather - Daily Forecast",
+    "store": "com.android.vending",
     "cta": "INSTALL",
     "cta_locale": {
       "zh": "安装",
@@ -18,6 +19,7 @@
     "title": "Daily KJV Bible",
     "bundle": "com.daily.kjvbible.devotion",
     "detail": "Daily KJV Bible",
+    "store": "com.android.vending",
     "cta": "INSTALL",
     "cta_locale": {
       "zh": "安装",

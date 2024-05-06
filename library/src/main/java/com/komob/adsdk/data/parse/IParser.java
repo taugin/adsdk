@@ -131,7 +131,7 @@ public interface IParser {
     String CTA = "cta";
     String CTA_LOCALE = "cta_locale";
     String LOADING_TIME = "loading_time";
-    String PLAY = "play";
+    String STORE = "store";
     String ORGANIC = "organic";
     String SCORE = "score";
 
