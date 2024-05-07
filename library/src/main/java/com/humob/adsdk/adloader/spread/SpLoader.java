@@ -2,7 +2,6 @@ package com.humob.adsdk.adloader.spread;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -246,7 +245,8 @@ public class SpLoader extends AbstractSdkLoader {
                 || TextUtils.isEmpty(spreadConfig.getTitle())
                 || TextUtils.isEmpty(spreadConfig.getBundle())
                 || TextUtils.isEmpty(spreadConfig.getDetail())
-                || TextUtils.isEmpty(spreadConfig.getCta())) {
+                || TextUtils.isEmpty(spreadConfig.getCta())
+                || (!TextUtils.isEmpty(spreadConfig.getStore()) && !Utils.isInstalled(mContext, spreadConfig.getStore()))) {
             return false;
         }
         return true;

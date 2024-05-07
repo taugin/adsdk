@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -79,7 +78,8 @@ public class SpreadManager {
                     && !TextUtils.isEmpty(spreadConfig.getBundle())
                     && !TextUtils.isEmpty(spreadConfig.getCta())
                     && !Utils.isInstalled(mContext, spreadConfig.getBundle())
-                    && !TextUtils.equals(spreadConfig.getBundle(), mContext.getPackageName())) {
+                    && !TextUtils.equals(spreadConfig.getBundle(), mContext.getPackageName())
+                    && (TextUtils.isEmpty(spreadConfig.getStore()) || Utils.isInstalled(mContext, spreadConfig.getStore()))) {
                 checkedList.add(spreadConfig);
             }
         }
