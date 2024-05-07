@@ -3,6 +3,7 @@
     "banner": "https://m.media-amazon.com/images/I/71yBEp6UzeL._SL500_UX1920_CR0%2C0%2C1920%2C1080_.jpg",
     "icon": "https://m.media-amazon.com/images/I/61c+ihfPI5L.png",
     "title": "Pretty Cleaner",
+    "url": "amzn://apps/android?p=com.tool.pretty.cleaner.advance",
     "bundle": "com.tool.pretty.cleaner.advance",
     "store": "com.amazon.venezia",
     "detail": "Clean up junk files: It can help you delete junk files, empty folders, cache, etc. on your phone to free up storage space.",
