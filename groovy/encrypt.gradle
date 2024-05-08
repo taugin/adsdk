@@ -357,11 +357,11 @@ def isAAB2ApkAllow() {
 }
 
 def getChannelList() {
-    def channel_list = null
+    def channelList = null
     if (ext.has("channels")) {
-        channel_list = ext.get("channels")
+        channelList = ext.get("channels")
     }
-    return channel_list
+    return channelList
 }
 
 def getChannelFileName() {
