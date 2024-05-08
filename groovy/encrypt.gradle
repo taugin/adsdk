@@ -354,6 +354,14 @@ def isAAB2ApkAllow() {
     return aab2apk
 }
 
+def getChannelList() {
+    def channel_list = null
+    if (ext.has("channels")) {
+        channel_list = ext.get("channels")
+    }
+    return channel_list
+}
+
 def transformAab2ApkFlavor() {
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
@@ -434,6 +442,10 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundle tool is Null"
         return
     }
+    executeTransformAab2Apk(signConfig, finalBundleFile, bundleToolPath, flavorName)
+}
+
+def executeTransformAab2Apk(signConfig, finalBundleFile, bundleToolPath, flavorName) {
     def storeFile = signConfig.storeFile
     def storePassword = signConfig.storePassword
     def keyAlias = signConfig.keyAlias
