@@ -5,6 +5,7 @@ ext {
     openRelease = true
     aab2apk = true
     encryptFiles = ["data_config_back.json"]
+    channels = ["umeng", "talking"]
 }
 def useProject = true;
 

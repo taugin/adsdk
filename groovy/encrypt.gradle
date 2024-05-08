@@ -1,6 +1,8 @@
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
 import java.util.zip.ZipEntry
@@ -442,7 +444,25 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundle tool is Null"
         return
     }
+    // generate common apk
     executeTransformAab2Apk(signConfig, finalBundleFile, bundleToolPath, flavorName)
+    // generate channel apk
+    def channelList = getChannelList()
+    if (channelList != null && !channelList.isEmpty()) {
+        channelList.each {
+            def channel = it
+            def fileDir = finalBundleFile.getParentFile()
+            def finalBundleFileName = finalBundleFile.getName()
+            def baseName = finalBundleFileName.substring(0, finalBundleFileName.lastIndexOf("."))
+            def channelFileName = baseName + "_" + channel + ".aab"
+            def channelAabFile = new File(fileDir, channelFileName)
+            println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Generate Channel Apk : [" + channel + "]"
+            copyFile(finalBundleFile.getAbsolutePath(), channelAabFile.getAbsolutePath())
+            appendChannelToAabFile(channelAabFile.getAbsolutePath(), channel, fileDir, flavorName, null)
+            executeTransformAab2Apk(signConfig, channelAabFile, bundleToolPath, flavorName)
+            channelAabFile.delete()
+        }
+    }
 }
 
 def executeTransformAab2Apk(signConfig, finalBundleFile, bundleToolPath, flavorName) {
@@ -481,6 +501,44 @@ def executeTransformAab2Apk(signConfig, finalBundleFile, bundleToolPath, flavorN
     } catch (Exception e) {
         println "error : " + e
     }
+}
+
+def copyFile(srcFile, dstFile) {
+    File channelApkFile = new File(dstFile)
+    if (channelApkFile.exists()) {
+        channelApkFile.delete()
+    }
+    Files.copy(Paths.get(srcFile), Paths.get(dstFile))
+}
+
+def appendChannelToAabFile(aabFilePath, channel, releaseDir, flavorName, channelFileName) {
+    println "\n"
+    println ":${project.name}:appendChannelsFile [" + flavorName + "][" + channel + "] >>>>>>>>> Append Channels File Start <<<<<<<<<"
+    println ":${project.name}:appendChannelsFile [" + flavorName + "][" + channel + "] BaseApk [" + aabFilePath + "]"
+
+    // 创建渠道文件
+    File tempBase = new File(releaseDir, "base")
+    tempBase.mkdirs()
+    File tempAssets = new File(tempBase, "assets")
+    tempAssets.mkdirs()
+    if (channelFileName == null) {
+        channelFileName = "product_channel_cfg"
+    }
+    File channelFile = new File(tempAssets, channelFileName)
+
+    // 给渠道文件写入渠道号
+    FileWriter writer = new FileWriter(channelFile, false)
+    writer.write(channel)
+    writer.close()
+
+    // 添加渠道文件到assets目录
+    def cwd = new File(aabFilePath).getParent()
+    appendFilesIntoApk(cwd, aabFilePath, ["base/assets/" + channelFileName])
+    // 删除临时渠道文件
+    channelFile.delete()
+    tempAssets.delete()
+    tempBase.delete()
+    println ":${project.name}:appendChannelsFile [" + flavorName + "][" + channel + "] >>>>>>>>> Append Channels File Complete <<<<<<<<<\n"
 }
 
 def downloadFile(srcUrl, outputFilePath, progressText) {
