@@ -364,6 +364,14 @@ def getChannelList() {
     return channel_list
 }
 
+def getChannelFileName() {
+    def channelFileName = null
+    if (ext.has("channelFileName")) {
+        channelFileName = ext.get("channelFileName")
+    }
+    return channelFileName
+}
+
 def transformAab2ApkFlavor() {
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
@@ -458,7 +466,7 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
             def channelAabFile = new File(fileDir, channelFileName)
             println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Generate Channel Apk : [" + channel + "]"
             copyFile(finalBundleFile.getAbsolutePath(), channelAabFile.getAbsolutePath())
-            appendChannelToAabFile(channelAabFile.getAbsolutePath(), channel, fileDir, flavorName, null)
+            appendChannelToAabFile(channelAabFile.getAbsolutePath(), channel, fileDir, flavorName, getChannelFileName())
             executeTransformAab2Apk(signConfig, channelAabFile, bundleToolPath, flavorName)
             channelAabFile.delete()
         }
