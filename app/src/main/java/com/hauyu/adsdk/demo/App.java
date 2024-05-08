@@ -17,6 +17,7 @@ import androidx.multidex.MultiDex;
 
 import com.komob.adsdk.AdSdk;
 import com.komob.adsdk.utils.Utils;
+import com.komob.bcsdk.BcSdk;
 import com.tendcloud.tenddata.TalkingDataSDK;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -43,6 +44,7 @@ public class App extends Application {
         initUmeng();
         initTalkingData();
         AdSdk.get(this).init();
+        BcSdk.init(this);
     }
 
 

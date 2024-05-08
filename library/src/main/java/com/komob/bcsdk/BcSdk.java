@@ -31,13 +31,13 @@ public class BcSdk {
     private static OnDataListener sOnDataListener;
 
     public static void init(Context context) {
-        init(context, null);
+        init(context, null, null);
     }
 
-    public static void init(Context context, OnDataListener l) {
+    public static void init(Context context, OnDataListener l, String channel) {
         sOnDataListener = l;
         initialize(context);
-        ReferrerManager.get(context).init();
+        ReferrerManager.get(context).init(channel);
     }
 
     public static String getAttribution(Context context) {

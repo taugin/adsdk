@@ -8,12 +8,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.android.installreferrer.api.InstallReferrerClient;
-import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.komob.adsdk.InternalStat;
 import com.komob.bcsdk.BcSdk;
-import com.komob.bcsdk.constant.Constant;
 import com.komob.bcsdk.OnDataListener;
+import com.komob.bcsdk.constant.Constant;
 import com.komob.bcsdk.log.Log;
 import com.komob.bcsdk.utils.BcUtils;
 
@@ -25,7 +23,7 @@ import java.util.Map;
  * Created by Administrator on 2018-12-29.
  */
 
-public class ReferrerManager implements InstallReferrerStateListener, Runnable {
+public class ReferrerManager implements Runnable {
     private static final String AT_ORGANIC = "Organic";
     private static final String AT_NON_ORGANIC = "Non-organic";
     private static ReferrerManager sReferrerManager;
@@ -61,7 +59,6 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
 
     private static final int DELAY_REFERRER_CLIENT = 5 * 1000;
     private Context mContext;
-    private InstallReferrerClient mReferrerClient;
     private Handler mHandler;
 
     private ReferrerManager(Context context) {
@@ -69,10 +66,14 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
         mHandler = new Handler(Looper.getMainLooper());
     }
 
-    public void init() {
+    public void init(String channel) {
         if (TextUtils.isEmpty(BcUtils.getString(mContext, Constant.AT_STATUS))) {
             try {
-                obtainReferrer();
+                if (TextUtils.equals(channel, "samsung")) {
+                    obtainSamsungReferrer();
+                } else {
+                    obtainGoogleReferrer();
+                }
             } catch (Exception e) {
                 BcUtils.putString(mContext, Constant.AT_STATUS, Constant.AT_ORGANIC);
                 OnDataListener l = BcSdk.getOnDataListener();
@@ -86,13 +87,87 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
     /**
      * 获取install_referrer, 分别处理超时和没有安装googleplay的情况
      */
-    private void obtainReferrer() {
+    private void obtainGoogleReferrer() {
         if (BcUtils.isInstalled(mContext, Constant.GOOGLE_PLAY_PKGNAME)) {
-            mReferrerClient = InstallReferrerClient.newBuilder(mContext).build();
-            mReferrerClient.startConnection(this);
-            // 5秒钟没有回调的话，按照超时处理
-            mHandler.removeCallbacks(this);
-            mHandler.postDelayed(this, DELAY_REFERRER_CLIENT);
+            try {
+                final com.android.installreferrer.api.InstallReferrerClient referrerClient = com.android.installreferrer.api.InstallReferrerClient.newBuilder(mContext).build();
+                referrerClient.startConnection(new com.android.installreferrer.api.InstallReferrerStateListener() {
+                    @Override
+                    public void onInstallReferrerSetupFinished(int responseCode) {
+                        String referrer = null;
+                        switch (responseCode) {
+                            case com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse.OK:
+                                try {
+                                    referrer = referrerClient.getInstallReferrer().getInstallReferrer();
+                                } catch (Exception e) {
+                                    Log.e(Log.TAG, "error : " + e, e);
+                                }
+                                break;
+                        }
+                        mHandler.removeCallbacks(ReferrerManager.this);
+                        reportReferrer(referrer);
+                        try {
+                            if (referrerClient != null) {
+                                referrerClient.endConnection();
+                            }
+                        } catch (Exception e) {
+                        }
+                    }
+
+                    @Override
+                    public void onInstallReferrerServiceDisconnected() {
+                        Log.iv(Log.TAG, "onInstallReferrerServiceDisconnected");
+                    }
+                });
+                // 5秒钟没有回调的话，按照超时处理
+                mHandler.removeCallbacks(this);
+                mHandler.postDelayed(this, DELAY_REFERRER_CLIENT);
+            } catch (Exception | Error e) {
+                reportReferrer("referrer_referrer_not_found");
+            }
+        } else {
+            reportReferrer("referrer_unknown_no_google_play");
+        }
+    }
+
+    private void obtainSamsungReferrer() {
+        if (BcUtils.isInstalled(mContext, Constant.GOOGLE_PLAY_PKGNAME)) {
+            try {
+                final com.samsung.android.sdk.sinstallreferrer.api.InstallReferrerClient referrerClient = com.samsung.android.sdk.sinstallreferrer.api.InstallReferrerClient.newBuilder(mContext).build();
+                referrerClient.startConnection(new com.samsung.android.sdk.sinstallreferrer.api.InstallReferrerStateListener() {
+                    @Override
+                    public void onInstallReferrerSetupFinished(int responseCode) {
+                        String referrer = null;
+                        switch (responseCode) {
+                            case com.samsung.android.sdk.sinstallreferrer.api.InstallReferrerClient.InstallReferrerResponse.OK:
+                                try {
+                                    referrer = referrerClient.getInstallReferrer().getInstallReferrer();
+                                } catch (Exception e) {
+                                    Log.e(Log.TAG, "error : " + e, e);
+                                }
+                                break;
+                        }
+                        mHandler.removeCallbacks(ReferrerManager.this);
+                        reportReferrer(referrer);
+                        try {
+                            if (referrerClient != null) {
+                                referrerClient.endConnection();
+                            }
+                        } catch (Exception e) {
+                        }
+                    }
+
+                    @Override
+                    public void onInstallReferrerServiceDisconnected() {
+                        Log.iv(Log.TAG, "onInstallReferrerServiceDisconnected");
+                    }
+                });
+                // 5秒钟没有回调的话，按照超时处理
+                mHandler.removeCallbacks(this);
+                mHandler.postDelayed(this, DELAY_REFERRER_CLIENT);
+            } catch (Exception | Error e) {
+                reportReferrer("referrer_referrer_not_found");
+            }
         } else {
             reportReferrer("referrer_unknown_no_google_play");
         }
@@ -127,7 +202,7 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
             } catch (Exception e) {
             }
         }
-        return false;
+        return true;
     }
 
     private String getSource(Map<String, Object> ref) {
@@ -146,32 +221,6 @@ public class ReferrerManager implements InstallReferrerStateListener, Runnable {
         if (TextUtils.isEmpty(BcUtils.getString(mContext, Constant.AT_STATUS))) {
             reportReferrer("referrer_client_no_reply");
         }
-    }
-
-    @Override
-    public void onInstallReferrerSetupFinished(int responseCode) {
-        String referrer = null;
-        switch (responseCode) {
-            case InstallReferrerClient.InstallReferrerResponse.OK:
-                try {
-                    referrer = mReferrerClient.getInstallReferrer().getInstallReferrer();
-                } catch (Exception e) {
-                    Log.e(Log.TAG, "error : " + e, e);
-                }
-                break;
-        }
-        mHandler.removeCallbacks(this);
-        reportReferrer(referrer);
-        try {
-            if (mReferrerClient != null) {
-                mReferrerClient.endConnection();
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    @Override
-    public void onInstallReferrerServiceDisconnected() {
     }
 
     /**
