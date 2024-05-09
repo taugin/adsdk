@@ -27,7 +27,6 @@ import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.data.config.AdPlace;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.log.Log;
-import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.utils.VUIHelper;
 
@@ -2193,15 +2192,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 if (mAdPlace != null && !TextUtils.isEmpty(mAdPlace.getName())) {
                     Log.iv(Log.TAG, mAdPlace.getName() + " remove seq loading timeout");
                 }
-            }
-        }
-        if (mAdPlace != null && !TextUtils.isEmpty(mAdPlace.getName())) {
-            if (seqState == SeqState.REQUEST) {
-                EventImpl.get().reportAdPlaceSeqRequest(mContext, mAdPlace.getName());
-            } else if (seqState == SeqState.LOADED) {
-                EventImpl.get().reportAdPlaceSeqLoaded(mContext, mAdPlace.getName());
-            } else if (seqState == SeqState.ERROR) {
-                EventImpl.get().reportAdPlaceSeqError(mContext, mAdPlace.getName());
             }
         }
     }

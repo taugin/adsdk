@@ -316,71 +316,6 @@ public class EventImpl implements IEvent {
         reportEvent(context, eventId, placeName, extra);
     }
 
-    @Override
-    public void reportAdLoadSuccessTime(Context context, String placeName, String sdk, String type, int value) {
-        if (!isReportTime(context)) {
-            return;
-        }
-        String eventId = "load_ad_success_time";
-        eventId = generateEventIdAlias(context, eventId);
-        if (!checkArgument(context, eventId, sdk, type)) {
-            return;
-        }
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", placeName);
-        map.put("sdk", sdk);
-        map.put("type", type);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , value : " + value);
-        if (isReportUmeng(context)) {
-            InternalStat.sendUmengValue(context, eventId, map, value);
-        }
-        reportEvent(context, eventId, null, map);
-    }
-
-    @Override
-    public void reportAdLoadFailureTime(Context context, String placeName, String sdk, String type, String error, int value) {
-        if (!isReportTime(context)) {
-            return;
-        }
-        if (!checkArgument(context, error, sdk, type)) {
-            return;
-        }
-        String eventId = "load_ad_failure_time";
-        eventId = generateEventIdAlias(context, eventId);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", placeName);
-        map.put("sdk", sdk);
-        map.put("type", type);
-        map.put("error", error);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , sdk : " + sdk + " , type : " + type + " , error : " + error + " , value : " + value);
-        if (isReportUmeng(context)) {
-            InternalStat.sendUmengValue(context, eventId, map, value);
-        }
-        reportEvent(context, eventId, null, map);
-    }
-
-    @Override
-    public void reportKVEvent(Context context, String key, String value, Map<String, Object> extra) {
-        if (context == null) {
-            return;
-        }
-        String eventId = generateEventIdAlias(context, key);
-        Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + value + " , extra : " + extra);
-        reportEvent(context, eventId, value, extra);
-    }
-
-    @Override
-    public void reportAdPlaceSeqRequest(Context context, String placeName) {
-    }
-
-    @Override
-    public void reportAdPlaceSeqLoaded(Context context, String placeName) {
-    }
-
-    @Override
-    public void reportAdPlaceSeqError(Context context, String placeName) {
-    }
-
     private boolean parseReport(String value, boolean defaultValue) {
         if (!TextUtils.isEmpty(value)) {
             try {
@@ -399,42 +334,26 @@ public class EventImpl implements IEvent {
         return result;
     }
 
-    /**
-     * 默认不再上报成功和失败时间
-     *
-     * @param context
-     * @return
-     */
-    private boolean isReportTime(Context context) {
-        String value = InternalStat.getAdReportString(context, "ad_report_bool_time");
-        boolean result = parseReport(value, false);
-        // Log.iv(Log.TAG_SDK, "is report time : " + result);
-        return result;
-    }
-
     private boolean isReportAppsflyer(Context context) {
-        String value = InternalStat.getAdReportString(context, "ad_report_bool_appsflyer");
+        String value = DataManager.get(context).getString("ad_report_bool_appsflyer");
         boolean result = parseReport(value, false);
-        // Log.iv(Log.TAG_SDK, "is report appsflyer : " + result);
         return result;
     }
 
     private boolean isReportUmeng(Context context) {
-        String value = InternalStat.getAdReportString(context, "ad_report_bool_umeng");
+        String value = DataManager.get(context).getString("ad_report_bool_umeng");
         boolean result = parseReport(value, true);
-        // Log.iv(Log.TAG_SDK, "is report umeng : " + result);
         return result;
     }
 
     private boolean isReportFirebase(Context context) {
-        String value = InternalStat.getAdReportString(context, "ad_report_bool_firebase");
+        String value = DataManager.get(context).getString("ad_report_bool_firebase");
         boolean result = parseReport(value, true);
-        // Log.iv(Log.TAG_SDK, "is report firebase : " + result);
         return result;
     }
 
     private boolean isReportTalkingData(Context context) {
-        String value = InternalStat.getAdReportString(context, "ad_report_bool_td");
+        String value = DataManager.get(context).getString("ad_report_bool_td");
         boolean result = parseReport(value, true);
         return result;
     }

@@ -86,7 +86,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     protected IManagerListener mManagerListener;
     private boolean mLoading = false;
     private final Handler mHandler;
-    private long mRequestTime = 0;
     private int mBannerSize = Constant.NO_SET;
     private IEvent mStat;
     private static final Random sRandom = new Random(System.currentTimeMillis());
@@ -501,7 +500,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     protected synchronized void setLoading(boolean loading, int state) {
         mLoadState = state;
         mLoading = loading;
-        reportLoadAdTime(state);
         if (mLoading) {
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_LOADING_TIMEOUT);
@@ -727,35 +725,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
 
     protected String getAppVersion() {
         return Utils.getVersionName(mContext);
-    }
-
-    private void reportLoadAdTime(int state) {
-        if (state == STATE_REQUEST) {
-            mRequestTime = SystemClock.elapsedRealtime();
-        } else if (state == STATE_SUCCESS) {
-            mCostTime = SystemClock.elapsedRealtime() - mRequestTime;
-            if (mRequestTime > 0) {
-                try {
-                    int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
-                    mStat.reportAdLoadSuccessTime(mContext, getAdPlaceName(), getSdkName(), getAdType(), time);
-                } catch (Exception e) {
-                }
-                mRequestTime = 0;
-            }
-        } else {
-            if (mRequestTime > 0) {
-                try {
-                    String error = "STATE_FAILURE";
-                    if (state == STATE_TIMEOUT) {
-                        error = "STATE_TIMEOUT";
-                    }
-                    int time = Math.round((SystemClock.elapsedRealtime() - mRequestTime) / (float) 100);
-                    mStat.reportAdLoadFailureTime(mContext, getAdPlaceName(), getSdkName(), getAdType(), error, time);
-                } catch (Exception e) {
-                }
-                mRequestTime = 0;
-            }
-        }
     }
 
     /**
@@ -1235,55 +1204,37 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         return false;
     }
 
-    /**
-     * 控制是否上报广告展示价值Ad_Impression_Revenue
-     *
-     * @return
-     */
-    protected boolean isReportAdImpData() {
-        String value = InternalStat.getAdReportString(mContext, "ad_report_bool_imp_revenue");
-        if (!TextUtils.isEmpty(value)) {
-            try {
-                return Boolean.parseBoolean(value);
-            } catch (Exception e) {
-            }
-        }
-        return true;
-    }
-
     protected void onReportAdImpData(Map<String, Object> adImpMap, String impressionId) {
-        if (isReportAdImpData()) {
-            if (adImpMap != null) {
+        if (adImpMap != null) {
+            try {
+                // adImpMap.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
+                adImpMap.put("active_days", EventImpl.get().getActiveDayString());
+                adImpMap.put("active_date", EventImpl.get().getActiveDate());
+                adImpMap.put("active_year", EventImpl.get().getActiveYear());
+                adImpMap.put("country", Utils.getCountryFromLocale(mContext));
+                adImpMap.put(Constant.AD_TYPE, getAdType());
                 try {
-                    // adImpMap.put("vpn_status", Utils.isVPNConnected(mContext) ? "on" : "off");
-                    adImpMap.put("active_days", EventImpl.get().getActiveDayString());
-                    adImpMap.put("active_date", EventImpl.get().getActiveDate());
-                    adImpMap.put("active_year", EventImpl.get().getActiveYear());
-                    adImpMap.put("country", Utils.getCountryFromLocale(mContext));
-                    adImpMap.put(Constant.AD_TYPE, getAdType());
-                    try {
-                        if (EventImpl.get().getActiveDays() == 0) {
-                            adImpMap.put(Constant.AD_PLACEMENT_NEW, adImpMap.get(Constant.AD_PLACEMENT));
-                            Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
-                            String roundCpm = Utils.calcRoundCpm(adRevenue * 1000);
-                            adImpMap.put(Constant.AD_ROUND_CPM_NEW, roundCpm);
-                        }
-                    } catch (Exception e) {
-                    }
-                    try {
+                    if (EventImpl.get().getActiveDays() == 0) {
+                        adImpMap.put(Constant.AD_PLACEMENT_NEW, adImpMap.get(Constant.AD_PLACEMENT));
                         Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
                         String roundCpm = Utils.calcRoundCpm(adRevenue * 1000);
-                        adImpMap.put(Constant.AD_ROUND_CPM, roundCpm);
-                        String network = (String) adImpMap.get(Constant.AD_NETWORK);
-                        adImpMap.put(String.format(Locale.ENGLISH, "%s_%s", Constant.AD_ROUND_CPM, Utils.formatNetwork(network)), roundCpm);
-                    } catch (Exception exception) {
+                        adImpMap.put(Constant.AD_ROUND_CPM_NEW, roundCpm);
                     }
                 } catch (Exception e) {
                 }
+                try {
+                    Double adRevenue = (Double) adImpMap.get(Constant.AD_VALUE);
+                    String roundCpm = Utils.calcRoundCpm(adRevenue * 1000);
+                    adImpMap.put(Constant.AD_ROUND_CPM, roundCpm);
+                    String network = (String) adImpMap.get(Constant.AD_NETWORK);
+                    adImpMap.put(String.format(Locale.ENGLISH, "%s_%s", Constant.AD_ROUND_CPM, Utils.formatNetwork(network)), roundCpm);
+                } catch (Exception exception) {
+                }
+            } catch (Exception e) {
             }
-            InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
-            FBStatManager.get(mContext).reportFirebaseImpression(adImpMap);
         }
+        InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
+        FBStatManager.get(mContext).reportFirebaseImpression(adImpMap);
         if (adImpMap != null) {
             adImpMap.put(Constant.AD_IMPRESSION_ID, impressionId);
             adImpMap.put(Constant.AD_IMP_TIME, System.currentTimeMillis());
