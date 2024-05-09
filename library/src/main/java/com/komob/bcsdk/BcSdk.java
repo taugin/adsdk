@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Environment;
 
 import com.komob.api.PermUI;
-import com.komob.bcsdk.constant.Constant;
 import com.komob.bcsdk.log.Log;
 import com.komob.bcsdk.manager.ReferrerManager;
 import com.komob.bcsdk.utils.BcUtils;
@@ -36,7 +35,6 @@ public class BcSdk {
 
     public static void init(Context context, OnDataListener l, String channel) {
         sOnDataListener = l;
-        initialize(context);
         ReferrerManager.get(context).init(channel);
     }
 
@@ -164,8 +162,8 @@ public class BcSdk {
             intent.setPackage(context.getPackageName());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             // 调用系统授权界面
-            intent.putStringArrayListExtra(Constant.EXTRA_PERMISSIONS, allReq);
-            intent.putExtra(Constant.EXTRA_GOTO_SETTINGS, gotoSettings);
+            intent.putStringArrayListExtra(PermUI.EXTRA_PERMISSIONS, allReq);
+            intent.putExtra(PermUI.EXTRA_GOTO_SETTINGS, gotoSettings);
             context.startActivity(intent);
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
@@ -203,8 +201,8 @@ public class BcSdk {
                     intent.setPackage(context.getPackageName());
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     // 调用系统授权界面
-                    intent.putStringArrayListExtra(Constant.EXTRA_PERMISSIONS, allReq);
-                    intent.putExtra(Constant.EXTRA_AUTO_CHECK, autoCheck);
+                    intent.putStringArrayListExtra(PermUI.EXTRA_PERMISSIONS, allReq);
+                    intent.putExtra(PermUI.EXTRA_AUTO_CHECK, autoCheck);
                     context.startActivity(intent);
                 } catch (Exception e) {
                     Log.iv(Log.TAG, "error : " + e);
@@ -247,8 +245,8 @@ public class BcSdk {
                 intent.setPackage(context.getPackageName());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 // 调用系统授权界面
-                intent.putStringArrayListExtra(Constant.EXTRA_PERMISSIONS, allReq);
-                intent.putExtra(Constant.EXTRA_AUTO_CHECK, autoCheck);
+                intent.putStringArrayListExtra(PermUI.EXTRA_PERMISSIONS, allReq);
+                intent.putExtra(PermUI.EXTRA_AUTO_CHECK, autoCheck);
                 context.startActivity(intent);
             } catch (Exception e) {
                 Log.iv(Log.TAG, "error : " + e);
@@ -286,8 +284,8 @@ public class BcSdk {
                 intent.setPackage(context.getPackageName());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 // 调用系统授权界面
-                intent.putStringArrayListExtra(Constant.EXTRA_PERMISSIONS, allReq);
-                intent.putExtra(Constant.EXTRA_AUTO_CHECK, autoCheck);
+                intent.putStringArrayListExtra(PermUI.EXTRA_PERMISSIONS, allReq);
+                intent.putExtra(PermUI.EXTRA_AUTO_CHECK, autoCheck);
                 context.startActivity(intent);
             } catch (Exception e) {
                 Log.iv(Log.TAG, "error : " + e);
@@ -325,8 +323,8 @@ public class BcSdk {
                 intent.setPackage(context.getPackageName());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 // 调用系统授权界面
-                intent.putStringArrayListExtra(Constant.EXTRA_PERMISSIONS, allReq);
-                intent.putExtra(Constant.EXTRA_AUTO_CHECK, autoCheck);
+                intent.putStringArrayListExtra(PermUI.EXTRA_PERMISSIONS, allReq);
+                intent.putExtra(PermUI.EXTRA_AUTO_CHECK, autoCheck);
                 context.startActivity(intent);
             } catch (Exception e) {
                 Log.iv(Log.TAG, "error : " + e);
@@ -334,17 +332,6 @@ public class BcSdk {
                     onPermissionListener.onUsageAccessResult(BcUtils.isAccessUsageEnable(context));
                 }
             }
-        }
-    }
-
-    private static void initialize(Context context) {
-        recordFirstStart(context);
-    }
-
-    private static void recordFirstStart(Context context) {
-        long firstTime = BcUtils.getLong(context, Constant.PREF_FIRST_START, 0);
-        if (firstTime <= 0) {
-            BcUtils.putLong(context, Constant.PREF_FIRST_START, System.currentTimeMillis());
         }
     }
 }

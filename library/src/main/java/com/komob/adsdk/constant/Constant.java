@@ -88,10 +88,8 @@ public class Constant {
     public static final String PREF_USER_ACTIVE_TIME = "pref_user_active_time";
     // 配置文件中使用的名字======
 
-    public static final String AF_STATUS = "af_status";
-    public static final String AF_MEDIA_SOURCE = "af_media_source";
-    public static final String AF_ORGANIC = "Organic";
     public static final String PREF_REMOTE_CONFIG_UPDATE_TIME = "pref_remote_config_update_time";
+    public static final String PREF_REMOTE_CONFIG_SUFFIX = "pref_remote_config_suffix";
 
     public static final int ONE_DAY_MS = 24 * 3600 * 1000;
 

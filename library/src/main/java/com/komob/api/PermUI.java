@@ -41,6 +41,10 @@ import java.util.List;
 
 public class PermUI extends Activity {
 
+    public static final String EXTRA_PERMISSIONS = "extra_permissions";
+    public static final String EXTRA_GOTO_SETTINGS = "extra_goto_settings";
+    public static final String EXTRA_AUTO_CHECK = "extra_auto_check";
+    
     private static final int REQUEST_CODE_GOTO_SETTINGS = 0x1230;
     private static final int REQUEST_CODE_RUNTIME_PERMISSION = 0x1231;
     private static final int REQUEST_CODE_MANAGE_EXTERNAL_STORAGE = 0x1232;
@@ -68,9 +72,9 @@ public class PermUI extends Activity {
         Intent intent = getIntent();
         List<String> reqList = null;
         if (intent != null) {
-            reqList = intent.getStringArrayListExtra(Constant.EXTRA_PERMISSIONS);
-            mGoToSettings = intent.getBooleanExtra(Constant.EXTRA_GOTO_SETTINGS, false);
-            mAutoCheck = intent.getBooleanExtra(Constant.EXTRA_AUTO_CHECK, false);
+            reqList = intent.getStringArrayListExtra(EXTRA_PERMISSIONS);
+            mGoToSettings = intent.getBooleanExtra(EXTRA_GOTO_SETTINGS, false);
+            mAutoCheck = intent.getBooleanExtra(EXTRA_AUTO_CHECK, false);
         }
         if (reqList == null || reqList.isEmpty()) {
             finishActivityForPermission(null, null, false);

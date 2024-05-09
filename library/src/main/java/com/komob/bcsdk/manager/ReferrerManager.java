@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import com.komob.adsdk.InternalStat;
 import com.komob.bcsdk.BcSdk;
 import com.komob.bcsdk.OnDataListener;
-import com.komob.bcsdk.constant.Constant;
 import com.komob.bcsdk.log.Log;
 import com.komob.bcsdk.utils.BcUtils;
 
@@ -24,6 +23,12 @@ import java.util.Map;
  */
 
 public class ReferrerManager implements Runnable {
+    public static final String GOOGLE_PLAY_PKGNAME = "com.android.vending";
+    public static final String AT_STATUS = "at_af_status";
+    public static final String AT_MEDIA_SOURCE = "at_af_media_source";
+    public static final String AT_FROM_CLICK = "at_af_from_click";
+    public static final String PREF_REFERER_REPORT = "pref_referer_report";
+    public static final String PREF_REMOTE_CONFIG_SUFFIX = "pref_remote_config_suffix";
     private static final String AT_ORGANIC = "Organic";
     private static final String AT_NON_ORGANIC = "Non-organic";
     private static ReferrerManager sReferrerManager;
@@ -38,15 +43,15 @@ public class ReferrerManager implements Runnable {
     }
 
     public String getAttribution() {
-        return BcUtils.getString(mContext, Constant.AT_STATUS, null);
+        return BcUtils.getString(mContext, AT_STATUS, null);
     }
 
     public String getMediaSource() {
-        return BcUtils.getString(mContext, Constant.AT_MEDIA_SOURCE);
+        return BcUtils.getString(mContext, AT_MEDIA_SOURCE);
     }
 
     public boolean isFromClick() {
-        return BcUtils.getBoolean(mContext, Constant.AT_FROM_CLICK);
+        return BcUtils.getBoolean(mContext, AT_FROM_CLICK);
     }
 
     private static void createInstance(Context context) {
@@ -67,7 +72,7 @@ public class ReferrerManager implements Runnable {
     }
 
     public void init(String channel) {
-        if (TextUtils.isEmpty(BcUtils.getString(mContext, Constant.AT_STATUS))) {
+        if (TextUtils.isEmpty(BcUtils.getString(mContext, AT_STATUS))) {
             try {
                 if (TextUtils.equals(channel, "samsung")) {
                     obtainSamsungReferrer();
@@ -75,10 +80,10 @@ public class ReferrerManager implements Runnable {
                     obtainGoogleReferrer();
                 }
             } catch (Exception e) {
-                BcUtils.putString(mContext, Constant.AT_STATUS, Constant.AT_ORGANIC);
+                BcUtils.putString(mContext, AT_STATUS, AT_ORGANIC);
                 OnDataListener l = BcSdk.getOnDataListener();
                 if (l != null) {
-                    l.onReferrerResult(Constant.AT_ORGANIC, null, false);
+                    l.onReferrerResult(AT_ORGANIC, null, false);
                 }
             }
         }
@@ -88,7 +93,7 @@ public class ReferrerManager implements Runnable {
      * 获取install_referrer, 分别处理超时和没有安装googleplay的情况
      */
     private void obtainGoogleReferrer() {
-        if (BcUtils.isInstalled(mContext, Constant.GOOGLE_PLAY_PKGNAME)) {
+        if (BcUtils.isInstalled(mContext, GOOGLE_PLAY_PKGNAME)) {
             try {
                 final com.android.installreferrer.api.InstallReferrerClient referrerClient = com.android.installreferrer.api.InstallReferrerClient.newBuilder(mContext).build();
                 referrerClient.startConnection(new com.android.installreferrer.api.InstallReferrerStateListener() {
@@ -131,7 +136,7 @@ public class ReferrerManager implements Runnable {
     }
 
     private void obtainSamsungReferrer() {
-        if (BcUtils.isInstalled(mContext, Constant.GOOGLE_PLAY_PKGNAME)) {
+        if (BcUtils.isInstalled(mContext, GOOGLE_PLAY_PKGNAME)) {
             try {
                 final com.samsung.android.sdk.sinstallreferrer.api.InstallReferrerClient referrerClient = com.samsung.android.sdk.sinstallreferrer.api.InstallReferrerClient.newBuilder(mContext).build();
                 referrerClient.startConnection(new com.samsung.android.sdk.sinstallreferrer.api.InstallReferrerStateListener() {
@@ -218,7 +223,7 @@ public class ReferrerManager implements Runnable {
 
     @Override
     public void run() {
-        if (TextUtils.isEmpty(BcUtils.getString(mContext, Constant.AT_STATUS))) {
+        if (TextUtils.isEmpty(BcUtils.getString(mContext, AT_STATUS))) {
             reportReferrer("referrer_client_no_reply");
         }
     }
@@ -230,12 +235,12 @@ public class ReferrerManager implements Runnable {
      */
     public void reportReferrer(String referrer) {
         synchronized (ReferrerManager.class) {
-            if (BcUtils.getBoolean(mContext, Constant.PREF_REFERER_REPORT, false)) {
+            if (BcUtils.getBoolean(mContext, PREF_REFERER_REPORT, false)) {
                 // Referer信息已经上报
                 return;
             }
             // 记录Referer已经上报
-            BcUtils.putBoolean(mContext, Constant.PREF_REFERER_REPORT, true);
+            BcUtils.putBoolean(mContext, PREF_REFERER_REPORT, true);
 
             String atStatus;
             String mediaSource;
@@ -264,9 +269,12 @@ public class ReferrerManager implements Runnable {
             if (map != null) {
                 fromClick = map.containsKey("gclid") || map.containsKey("af_tranid") || map.containsKey("adjust_reftag");
             }
-            BcUtils.putString(mContext, Constant.AT_STATUS, atStatus);
-            BcUtils.putString(mContext, Constant.AT_MEDIA_SOURCE, mediaSource);
-            BcUtils.putBoolean(mContext, Constant.AT_FROM_CLICK, fromClick);
+            BcUtils.putString(mContext, AT_STATUS, atStatus);
+            BcUtils.putString(mContext, AT_MEDIA_SOURCE, mediaSource);
+            BcUtils.putBoolean(mContext, AT_FROM_CLICK, fromClick);
+            if (!isOrganic) {
+                BcUtils.putString(mContext, PREF_REMOTE_CONFIG_SUFFIX, "_ano");
+            }
 
             ReportRunnable reportRunnable = new ReportRunnable(mContext, atStatus, mediaSource, reportReferrer, map);
             if (mHandler != null) {
