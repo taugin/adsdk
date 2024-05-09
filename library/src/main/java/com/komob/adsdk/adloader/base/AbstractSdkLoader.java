@@ -16,10 +16,10 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.komob.adsdk.AdError;
 import com.komob.adsdk.AdImpData;
 import com.komob.adsdk.AdReward;
 import com.komob.adsdk.InternalStat;
-import com.komob.adsdk.AdError;
 import com.komob.adsdk.OnAdEventListener;
 import com.komob.adsdk.OnAdFilterListener;
 import com.komob.adsdk.adloader.listener.IManagerListener;
@@ -32,7 +32,6 @@ import com.komob.adsdk.core.framework.AdLoadManager;
 import com.komob.adsdk.core.framework.AdStatManager;
 import com.komob.adsdk.core.framework.BounceRateManager;
 import com.komob.adsdk.core.framework.FBStatManager;
-import com.komob.adsdk.core.framework.LimitAdsManager;
 import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.data.config.AdPlace;
@@ -256,13 +255,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
 
     @Override
     public String getAdPlaceName() {
-        String adPlaceName = null;
-        if (mManagerListener != null) {
-            adPlaceName = mManagerListener.getOriginPlaceName();
-        }
-        if (!TextUtils.isEmpty(adPlaceName)) {
-            return adPlaceName;
-        }
         if (mPidConfig != null) {
             return mPidConfig.getPlaceName();
         }
@@ -331,12 +323,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
      * @return
      */
     protected boolean checkCommonConfig() {
-        // 排除异常平台
-        if (isLimitExclude()) {
-            processLimitAds();
-            return false;
-        }
-
         // 检测广告是否被禁止加载
         if (isAdFiltered()) {
             processAdFilter();
@@ -383,15 +369,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             return false;
         }
         return true;
-    }
-
-    private void processLimitAds() {
-        Log.iv(Log.TAG, formatLog("limit ads"));
-        notifyAdLoadFailed(Constant.AD_ERROR_LIMIT_ADS, "limit ads");
-    }
-
-    private boolean isLimitExclude() {
-        return LimitAdsManager.get(mContext).isLimitExclude(getSdkName());
     }
 
     private void processExceedReqTimes() {

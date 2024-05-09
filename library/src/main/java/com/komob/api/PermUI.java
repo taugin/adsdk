@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 import com.komob.adsdk.InternalStat;
 import com.komob.bcsdk.BcSdk;
-import com.komob.bcsdk.constant.Constant;
 import com.komob.bcsdk.log.Log;
 import com.komob.bcsdk.utils.BcUtils;
 

@@ -12,7 +12,6 @@ import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.framework.ActivityMonitor;
 import com.komob.adsdk.core.framework.AdLoadManager;
 import com.komob.adsdk.core.framework.AdPlaceLoader;
-import com.komob.adsdk.core.framework.LimitAdsManager;
 import com.komob.adsdk.core.framework.ReplaceManager;
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.data.SpreadManager;
@@ -24,9 +23,6 @@ import com.komob.adsdk.utils.Utils;
 import com.komob.api.RFileConfig;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,97 +141,30 @@ public class AdSdk {
         Log.iv(Log.TAG_SDK, "getAdLoader forLoad : " + forLoad);
         // 根据规则判断是否需要替换place name
         placeName = ReplaceManager.get(mContext).replacePlaceName(placeName, forLoad);
-        // 优先处理场景被限制的情况
-        String limitPlaceName = LimitAdsManager.get(mContext).addSuffixForPlaceNameIfNeed(placeName);
-
-        String refPlaceName = null;
-        if (TextUtils.equals(limitPlaceName, placeName)) {
-            // 获取引用的PlaceName
-            refPlaceName = getAdRefPlaceName(placeName);
-        } else {
-            refPlaceName = limitPlaceName;
-        }
-
-        Log.iv(Log.TAG_SDK, "place name : " + placeName + " , refPlaceName : " + refPlaceName);
-        boolean useShareObject = false;
-        // 如果共享loader对象
-        if (!TextUtils.equals(placeName, refPlaceName) && isRefShare(refPlaceName)) {
-            useShareObject = true;
-        }
-        if (useShareObject) {
-            // 将共享对象赋值给新的场景
-            if (mAdLoaders.containsKey(refPlaceName) && !mAdLoaders.containsKey(placeName)) {
-                mAdLoaders.put(placeName, mAdLoaders.get(refPlaceName));
-            }
-        }
         AdPlaceLoader loader = mAdLoaders.get(placeName);
-        if (!forLoad) {
-            if (useShareObject && !TextUtils.equals(placeName, refPlaceName) && loader != null) {
-                loader.setOriginPlaceName(placeName);
-            }
+        if (!forLoad && loader != null) {
             return loader;
         }
+        boolean useRemote = false;
         // 首先获取远程针对广告位的配置是否存在
-        AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(refPlaceName);
+        AdPlace adPlace = DataManager.get(mContext).getRemoteAdPlace(placeName);
         // 如果远程无配置，则读取本地或者远程整体广告位配置
         if (adPlace == null) {
             PlaceConfig localConfig = DataManager.get(mContext).getAdConfig();
             if (localConfig != null) {
                 adPlace = localConfig.get(placeName);
             }
+        } else {
+            useRemote = true;
         }
         // loader为null，或者AdPlace内容有变化，则重新加载loader
         if (loader == null || loader.needReload(adPlace)) {
-            loader = createAdPlaceLoader(refPlaceName, adPlace);
+            loader = createAdPlaceLoader(placeName, adPlace, useRemote);
             if (loader != null) {
-                if (!TextUtils.equals(placeName, refPlaceName)) {
-                    loader.setOriginPlaceName(placeName);
-                }
                 mAdLoaders.put(placeName, loader);
-                if (useShareObject && !mAdLoaders.containsKey(refPlaceName)) {
-                    mAdLoaders.put(refPlaceName, loader);
-                }
             }
         }
         return loader;
-    }
-
-    private boolean isRefShare(String placeName) {
-        PlaceConfig localConfig = DataManager.get(mContext).getAdConfig();
-        if (localConfig != null) {
-            AdPlace adPlace = localConfig.get(placeName);
-            if (adPlace != null) {
-                return adPlace.isRefShare();
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 获取引用pid名字
-     *
-     * @param placeName
-     * @return 引用pid名字
-     */
-    private String getAdRefPlaceName(String placeName) {
-        String adrefPlaceName = placeName;
-        // 获取通过代码设置的别名
-        adrefPlaceName = getAdPlaceAlias(placeName);
-        if (!TextUtils.isEmpty(adrefPlaceName)) {
-            return adrefPlaceName;
-        }
-        Map<String, String> adRefs = DataManager.get(mContext).getRemoteAdRefs();
-        PlaceConfig localConfig = DataManager.get(mContext).getAdConfig();
-        if (adRefs == null && localConfig != null) {
-            adRefs = localConfig.getAdRefs();
-        }
-        if (adRefs != null && adRefs.containsKey(placeName)) {
-            adrefPlaceName = adRefs.get(placeName);
-        }
-        if (!TextUtils.isEmpty(adrefPlaceName)) {
-            return adrefPlaceName;
-        }
-        return placeName;
     }
 
     /**
@@ -245,13 +174,11 @@ public class AdSdk {
      * @param adPlace
      * @return
      */
-    private AdPlaceLoader createAdPlaceLoader(String placeName, AdPlace adPlace) {
+    private AdPlaceLoader createAdPlaceLoader(String placeName, AdPlace adPlace, boolean useRemote) {
         AdPlaceLoader loader = null;
-        boolean useRemote = true;
         PlaceConfig localConfig = DataManager.get(mContext).getAdConfig();
         if (localConfig != null && adPlace == null) {
             adPlace = localConfig.get(placeName);
-            useRemote = false;
         }
         Log.iv(Log.TAG, "placeName : " + placeName + " , adPlace : " + adPlace);
         if (adPlace != null) {
@@ -517,87 +444,17 @@ public class AdSdk {
 
     public boolean isComplexAdsLoaded() {
         try {
-            List<String> placeList = DataManager.get(mContext).getPlaceList();
-            if (placeList != null && !placeList.isEmpty()) {
-                for (String name : placeList) {
-                    AdPlaceLoader adPlaceLoader = getAdLoader(name);
-                    if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
-                        Log.iv(Log.TAG, "place name [" + name + "] is loaded");
-                        return true;
-                    }
-                }
-            } else {
-                for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
-                    AdPlaceLoader adPlaceLoader = getAdLoader(entry.getKey());
-                    if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
-                        Log.iv(Log.TAG, "place name [" + entry.getKey() + "] is loaded");
-                        return true;
-                    }
+            for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
+                AdPlaceLoader adPlaceLoader = getAdLoader(entry.getKey());
+                if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
+                    Log.iv(Log.TAG, "place name [" + entry.getKey() + "] is loaded");
+                    return true;
                 }
             }
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }
         return false;
-    }
-
-    public void showGlobalComplexAds() {
-        showGlobalComplexAds(null);
-    }
-
-    public void showGlobalComplexAds(String sceneName) {
-        try {
-            List<String> placeList = DataManager.get(mContext).getPlaceList();
-            List<AdPlaceLoader> list = new ArrayList<AdPlaceLoader>();
-            if (placeList != null && !placeList.isEmpty()) {
-                for (String name : placeList) {
-                    AdPlaceLoader adPlaceLoader = getAdLoader(name);
-                    if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
-                        list.add(adPlaceLoader);
-                    }
-                }
-            } else {
-                for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
-                    String placeName = entry.getKey();
-                    AdPlaceLoader adPlaceLoader = getAdLoader(placeName);
-                    if (adPlaceLoader != null && adPlaceLoader.isComplexAdsLoaded()) {
-                        list.add(adPlaceLoader);
-                    }
-                }
-            }
-            if (list != null && !list.isEmpty()) {
-                if (placeList == null || placeList.isEmpty()) {
-                    List<String> finalCpxOrderList = Constant.DEFAULT_COMPLEX_ORDER;
-                    Collections.sort(list, new Comparator<AdPlaceLoader>() {
-                        @Override
-                        public int compare(AdPlaceLoader adPlaceLoader, AdPlaceLoader t1) {
-                            try {
-                                if (adPlaceLoader != null && t1 != null) {
-                                    String type1 = adPlaceLoader.getLoadedType();
-                                    String type2 = t1.getLoadedType();
-                                    int index1 = finalCpxOrderList.indexOf(type1);
-                                    int index2 = finalCpxOrderList.indexOf(type2);
-                                    Integer integerType1 = Integer.valueOf(index1);
-                                    Integer integerType2 = Integer.valueOf(index2);
-                                    return integerType1.compareTo(integerType2);
-                                }
-                            } catch (Exception e) {
-                            }
-                            return 0;
-                        }
-                    });
-                }
-                for (AdPlaceLoader loader : list) {
-                    if (loader != null && loader.isComplexAdsLoaded()) {
-                        Log.iv(Log.TAG, "place name [" + loader.getPlaceName() + "] is called to show");
-                        loader.showComplexAds(sceneName);
-                        break;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
     }
 
     /**
@@ -784,51 +641,6 @@ public class AdSdk {
             context = mContext;
         }
         return context;
-    }
-
-    /**
-     * 动态设置广告场景的别名
-     *
-     * @param srcAdPlace
-     * @param dstAdPlace
-     */
-    public void setAdPlaceAlias(String srcAdPlace, String dstAdPlace) {
-        if (!TextUtils.isEmpty(srcAdPlace) && !TextUtils.isEmpty(dstAdPlace)) {
-            Utils.putString(mContext, Constant.AD_SDK_PREFIX + srcAdPlace, dstAdPlace);
-            removeObjectFromAdLoaders(srcAdPlace);
-        }
-    }
-
-    /**
-     * 清除广告位别名
-     *
-     * @param srcAdPlace
-     */
-    public void clearAdPlaceAlias(String srcAdPlace) {
-        if (!TextUtils.isEmpty(srcAdPlace)) {
-            Utils.clearPrefs(mContext, Constant.AD_SDK_PREFIX + srcAdPlace);
-            removeObjectFromAdLoaders(srcAdPlace);
-        }
-    }
-
-    private void removeObjectFromAdLoaders(String srcAdPlace) {
-        try {
-            mAdLoaders.remove(srcAdPlace);
-        } catch (Exception | Error e) {
-        }
-    }
-
-    /**
-     * 读取广告场景的别名
-     *
-     * @param srcAdPlace
-     * @return
-     */
-    private String getAdPlaceAlias(String srcAdPlace) {
-        if (!TextUtils.isEmpty(srcAdPlace)) {
-            return Utils.getString(mContext, Constant.AD_SDK_PREFIX + srcAdPlace, null);
-        }
-        return null;
     }
 
     private Runnable mRewardLoadRunnable = new Runnable() {

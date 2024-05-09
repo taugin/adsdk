@@ -32,7 +32,6 @@ public class AdParser implements IParser {
         try {
             jObj = new JSONObject(content);
         } catch (Exception e) {
-            Log.iv(Log.TAG, "error : not a json object");
         }
         if (jObj != null) {
             return jObj.toString();
@@ -40,7 +39,6 @@ public class AdParser implements IParser {
         try {
             jArray = new JSONArray(content);
         } catch (Exception e) {
-            Log.iv(Log.TAG, "error : not a json array");
         }
         if (jArray != null) {
             return jArray.toString();
@@ -64,14 +62,10 @@ public class AdParser implements IParser {
         try {
             JSONObject jobj = new JSONObject(data);
             List<AdPlace> adPlaces = null;
-            Map<String, String> sharePlace = null;
             String scenePrefix = null;
             boolean disableVpnLoad = false;
             if (jobj.has(ALL_PLACES)) {
                 adPlaces = parseAdPlaces(jobj.getString(ALL_PLACES));
-            }
-            if (jobj.has(SHARE_PLACE)) {
-                sharePlace = parseStringMap(jobj.getString(SHARE_PLACE));
             }
             if (jobj.has(SCENE_PREFIX)) {
                 scenePrefix = jobj.getString(SCENE_PREFIX);
@@ -79,11 +73,9 @@ public class AdParser implements IParser {
             if (jobj.has(DISABLE_VPN_LOAD)) {
                 disableVpnLoad = jobj.getInt(DISABLE_VPN_LOAD) == 1;
             }
-            if (adPlaces != null
-                    || sharePlace != null) {
+            if (adPlaces != null) {
                 placeConfig = new PlaceConfig();
                 placeConfig.setAdPlaceList(adPlaces);
-                placeConfig.setAdRefs(sharePlace);
             }
             if (placeConfig != null) {
                 placeConfig.setScenePrefix(scenePrefix);
@@ -178,9 +170,6 @@ public class AdParser implements IParser {
             }
             if (jobj.has(DELAY_NOTIFY_TIME)) {
                 adPlace.setDelayNotifyTime(jobj.getLong(DELAY_NOTIFY_TIME));
-            }
-            if (jobj.has(REF_SHARE)) {
-                adPlace.setRefShare(jobj.getInt(REF_SHARE) == 1);
             }
             if (jobj.has(WATERFALL_INTERVAL)) {
                 adPlace.setWaterfallInt(jobj.getLong(WATERFALL_INTERVAL));

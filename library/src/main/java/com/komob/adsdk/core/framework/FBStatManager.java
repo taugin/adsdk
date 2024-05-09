@@ -4,9 +4,9 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.komob.adsdk.InternalStat;
-import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.stat.EventImpl;
+import com.komob.adsdk.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Locale;

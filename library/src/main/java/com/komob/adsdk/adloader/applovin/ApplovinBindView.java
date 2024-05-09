@@ -15,11 +15,11 @@ import android.widget.TextView;
 import com.applovin.impl.sdk.nativeAd.AppLovinOptionsView;
 import com.applovin.mediation.nativeAds.MaxNativeAdView;
 import com.applovin.mediation.nativeAds.MaxNativeAdViewBinder;
-import com.komob.adsdk.utils.Utils;
-import com.komob.adsdk.core.framework.Params;
-import com.komob.adsdk.log.Log;
 import com.komob.adsdk.adloader.base.BaseBindNativeView;
+import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.config.PidConfig;
+import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.Utils;
 
 import java.util.List;
 import java.util.Locale;

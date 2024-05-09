@@ -2,8 +2,8 @@ package com.komob.adsdk;
 
 import android.text.TextUtils;
 
-import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.constant.Constant;
+import com.komob.adsdk.core.framework.Params;
 
 import java.util.HashMap;
 import java.util.Map;

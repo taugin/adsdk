@@ -10,11 +10,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.komob.adsdk.utils.Utils;
-import com.komob.adsdk.core.framework.Params;
-import com.komob.adsdk.log.Log;
 import com.komob.adsdk.adloader.base.BaseBindNativeView;
+import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.config.PidConfig;
+import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.Utils;
 import com.tradplus.ads.base.adapter.nativead.TPNativeAdView;
 import com.tradplus.ads.base.common.TPImageLoader;
 import com.tradplus.ads.mgr.nativead.TPCustomNativeAd;

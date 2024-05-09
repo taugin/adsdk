@@ -7,10 +7,10 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.komob.adsdk.AdSdk;
+import com.komob.adsdk.InternalStat;
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.stat.EventImpl;
-import com.komob.adsdk.InternalStat;
 import com.komob.adsdk.utils.Utils;
 
 import org.json.JSONArray;

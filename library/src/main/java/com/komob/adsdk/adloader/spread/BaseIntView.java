@@ -25,7 +25,6 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.komob.adsdk.data.config.SpreadConfig;
 import com.komob.adsdk.http.Http;
 import com.komob.adsdk.http.OnImageCallback;

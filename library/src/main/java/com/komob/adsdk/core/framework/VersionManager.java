@@ -24,8 +24,8 @@ import android.widget.TextView;
 
 import com.komob.adsdk.AdSdk;
 import com.komob.adsdk.InternalStat;
-import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

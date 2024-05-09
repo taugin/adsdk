@@ -61,7 +61,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private Map<ISdkLoader, OnAdBaseListener> mAdViewListener = new ConcurrentHashMap<ISdkLoader, OnAdBaseListener>();
     private WeakReference<Activity> mActivity;
     private WeakReference<ViewGroup> mAdContainer;
-    private String mOriginPlaceName;
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private View mDotView;
     private boolean mAdPlaceSeqLoading = false;
@@ -81,11 +80,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     @Override
     public void setAdPlaceConfig(AdPlace adPlace) {
         mAdPlace = adPlace;
-    }
-
-    @Override
-    public void setOriginPlaceName(String placeName) {
-        mOriginPlaceName = placeName;
     }
 
     @Override
@@ -499,7 +493,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         for (ISdkLoader loader : list) {
             if (loader != null && loader.isInterstitialType() && loader.isInterstitialLoaded()) {
                 if (loader.showInterstitial(sceneName)) {
-                    AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                    AdPolicy.get(mContext).reportAdPlaceShow(getPlaceName(), mAdPlace);
                     break;
                 }
             }
@@ -752,7 +746,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         for (ISdkLoader loader : list) {
             if (loader != null && loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
                 if (loader.showRewardedVideo(sceneName)) {
-                    AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                    AdPolicy.get(mContext).reportAdPlaceShow(getPlaceName(), mAdPlace);
                     break;
                 }
             }
@@ -1004,7 +998,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         for (ISdkLoader loader : list) {
             if (loader != null && loader.isSplashType() && loader.isSplashLoaded()) {
                 if (loader.showSplash(viewGroup, sceneName)) {
-                    AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                    AdPolicy.get(mContext).reportAdPlaceShow(getPlaceName(), mAdPlace);
                     break;
                 }
             }
@@ -1303,13 +1297,13 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
                 if (loader.isBannerType() && loader.isBannerLoaded()) {
                     loader.showBanner(viewGroup);
                     if (needCounting) {
-                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                        AdPolicy.get(mContext).reportAdPlaceShow(getPlaceName(), mAdPlace);
                     }
                     break;
                 } else if (loader.isNativeType() && loader.isNativeLoaded()) {
                     loader.showNative(viewGroup, getParams(loader, mAdShowParams));
                     if (needCounting) {
-                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                        AdPolicy.get(mContext).reportAdPlaceShow(getPlaceName(), mAdPlace);
                     }
                     break;
                 }
@@ -1621,17 +1615,17 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             if (loader != null) {
                 if (loader.isRewardedVideoType() && loader.isRewardedVideoLoaded()) {
                     if (loader.showRewardedVideo(sceneName)) {
-                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                        AdPolicy.get(mContext).reportAdPlaceShow(getPlaceName(), mAdPlace);
                         return true;
                     }
                 } else if (loader.isInterstitialType() && loader.isInterstitialLoaded()) {
                     if (loader.showInterstitial(sceneName)) {
-                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                        AdPolicy.get(mContext).reportAdPlaceShow(getPlaceName(), mAdPlace);
                         return true;
                     }
                 } else if (loader.isSplashType() && loader.isSplashLoaded()) {
                     if (loader.showSplash(null, sceneName)) {
-                        AdPolicy.get(mContext).reportAdPlaceShow(getOriginPlaceName(), mAdPlace);
+                        AdPolicy.get(mContext).reportAdPlaceShow(getPlaceName(), mAdPlace);
                         return true;
                     }
                 } else if ((loader.isBannerType() && loader.isBannerLoaded())
@@ -1857,11 +1851,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     private void resetAdLoaded() {
         mHasNotifyLoaded = false;
-    }
-
-    @Override
-    public String getOriginPlaceName() {
-        return mOriginPlaceName;
     }
 
     private void setPlaceType(String placeType) {

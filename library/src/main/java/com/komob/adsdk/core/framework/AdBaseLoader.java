@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.view.ViewGroup;
 
 import com.komob.adsdk.AdParams;
-import com.komob.adsdk.data.config.AdPlace;
 import com.komob.adsdk.OnAdSdkListener;
+import com.komob.adsdk.data.config.AdPlace;
 
 /**
  * Created by wangchao1 on 2018/5/1.
@@ -18,10 +18,6 @@ public class AdBaseLoader implements IAdLoader {
 
     @Override
     public void setAdPlaceConfig(AdPlace adPlace) {
-    }
-
-    @Override
-    public void setOriginPlaceName(String placeName) {
     }
 
     @Override

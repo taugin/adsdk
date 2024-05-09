@@ -5,7 +5,6 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
-import com.komob.adsdk.utils.Utils;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.data.config.AdPlace;
 import com.komob.adsdk.data.config.PlaceConfig;
@@ -14,6 +13,7 @@ import com.komob.adsdk.data.parse.AdParser;
 import com.komob.adsdk.data.parse.IParser;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.utils.AesUtils;
+import com.komob.adsdk.utils.Utils;
 
 import org.json.JSONArray;
 
@@ -175,14 +175,6 @@ public class DataManager {
         return null;
     }
 
-    public Map<String, String> getRemoteAdRefs() {
-        String data = getString(Constant.SHARE_PLACE);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseStringMap(data);
-        }
-        return null;
-    }
-
     public List<SpreadConfig> getRemoteSpread() {
         String data = getString(SpreadConfig.AD_SPREAD_NAME);
         if (!TextUtils.isEmpty(data)) {
@@ -269,10 +261,6 @@ public class DataManager {
             // Log.iv(Log.TAG, "value : " + value);
         }
         return value;
-    }
-
-    public List<String> getPlaceList() {
-        return parseStringList(DataManager.get(mContext).getString(Constant.COMPLEX_PLACES));
     }
 
     private List<String> parseStringList(String str) {

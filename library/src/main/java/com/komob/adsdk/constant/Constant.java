@@ -31,8 +31,6 @@ public class Constant {
     public static final String AD_NETWORK_UNKNOWN = "unknown";
     public static final String AD_NETWORK_EMPTY = "empty";
 
-    public static final String AD_SDK_PREFIX = "pref_hauyu_";
-
     public static final String PREF_GAID = "pref_gaid";
 
     public static final int NO_SET = -1;
@@ -81,13 +79,7 @@ public class Constant {
 
     public static final String APP_ID = "app_id";
 
-    // 配置文件中使用的名字++++++
-    public static final String SHARE_PLACE = "share_place";
-    public static final String COMPLEX_PLACES = "cfg_complex_info";
-    public static final List<String> DEFAULT_COMPLEX_ORDER = Arrays.asList(new String[]{Constant.TYPE_INTERSTITIAL, Constant.TYPE_NATIVE, Constant.TYPE_BANNER, Constant.TYPE_REWARD});
     public static final String PREF_USER_ACTIVE_TIME = "pref_user_active_time";
-    // 配置文件中使用的名字======
-
     public static final String PREF_REMOTE_CONFIG_UPDATE_TIME = "pref_remote_config_update_time";
     public static final String PREF_REMOTE_CONFIG_SUFFIX = "pref_remote_config_suffix";
 

@@ -21,7 +21,5 @@ public interface IManagerListener {
 
     Activity getActivity();
 
-    String getOriginPlaceName();
-
     String getAdMode();
 }

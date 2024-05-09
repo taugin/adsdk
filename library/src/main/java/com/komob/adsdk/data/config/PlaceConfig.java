@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2018/2/9.
@@ -14,8 +13,6 @@ public class PlaceConfig {
 
     // 广告配置
     private List<AdPlace> adPlaceList;
-
-    private Map<String, String> adRefs; // 广告场景相互引用
 
     private String adConfigMd5;
 
@@ -29,14 +26,6 @@ public class PlaceConfig {
 
     public void setAdPlaceList(List<AdPlace> adPlaceList) {
         this.adPlaceList = adPlaceList;
-    }
-
-    public Map<String, String> getAdRefs() {
-        return adRefs;
-    }
-
-    public void setAdRefs(Map<String, String> adRefs) {
-        this.adRefs = adRefs;
     }
 
     public String getAdConfigMd5() {

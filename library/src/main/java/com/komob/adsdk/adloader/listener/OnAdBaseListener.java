@@ -1,7 +1,7 @@
 package com.komob.adsdk.adloader.listener;
 
-import com.komob.adsdk.AdReward;
 import com.komob.adsdk.AdError;
+import com.komob.adsdk.AdReward;
 
 /**
  * Listener for ad sdk
