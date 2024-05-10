@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -157,6 +158,12 @@ public class VersionManager {
         if (dialog != null) {
             dialog.setCancelable(mVersionInfo.cancelable);
             dialog.show();
+            try {
+                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                params.width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.9f);
+                dialog.getWindow().setAttributes(params);
+            } catch (Exception e) {
+            }
         }
     }
 
