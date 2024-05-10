@@ -347,8 +347,13 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
             @Override
             public void run() {
-                long time = AdSdk.get(getApplicationContext()).getCurrentTimeMillis();
-                mTimeView.setText(sdf.format(time));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        long time = AdSdk.get(getApplicationContext()).getCurrentTimeMillis();
+                        mTimeView.setText(sdf.format(time));
+                    }
+                });
             }
         };
         mTimer = new Timer();
