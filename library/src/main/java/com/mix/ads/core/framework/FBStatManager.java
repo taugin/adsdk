@@ -1,6 +1,8 @@
 package com.mix.ads.core.framework;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Base64;
 
@@ -38,6 +40,7 @@ public class FBStatManager {
     }
 
     private Context mContext;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     private FBStatManager(Context context) {
         mContext = context;
@@ -70,24 +73,44 @@ public class FBStatManager {
 
                     @Override
                     public void onInstallReferrerServiceDisconnected() {
-                        reportAppInstall(null);
                     }
                 });
+                mHandler.postDelayed(mTimeoutRunnable, 5000);
             }
         } catch (Exception e) {
         }
     }
 
+    private Runnable mTimeoutRunnable = new Runnable() {
+        @Override
+        public void run() {
+            reportAppInstall(null);
+        }
+    };
+
     private void reportAppInstall(String referrer) {
+        try {
+            mHandler.removeCallbacks(mTimeoutRunnable);
+        } catch (Exception e) {
+        }
         try {
             Map<String, Object> map = referrerToMap(referrer);
             boolean isOrganic = isOrganic(map);
-            MiStat.sendFirebaseAnalytics(mContext, isOrganic ? "app_first_open_ao" : "app_first_open_ano", null, null);
             if (!isOrganic) {
                 Utils.putString(mContext, Constant.PREF_FIREBASE_CONFIG_SUFFIX, "ano");
             }
+            reportAttrDelayed(isOrganic);
         } catch (Exception e) {
         }
+    }
+
+    private void reportAttrDelayed(boolean isOrganic) {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MiStat.sendFirebaseAnalytics(mContext, isOrganic ? "app_first_open_ao" : "app_first_open_ano", null, null);
+            }
+        }, 4000);
     }
 
     private Map<String, Object> referrerToMap(String referrer) {
