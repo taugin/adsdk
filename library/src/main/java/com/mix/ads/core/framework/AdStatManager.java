@@ -50,14 +50,12 @@ public class AdStatManager {
     public void recordAdImp(String sdk, String placeName, String network) {
         Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         recordAllImpCount();
-        LimitAdsManager.get(mContext).recordAdImp(sdk, placeName, network);
         ReplaceManager.get(mContext).reportAdImp(placeName);
     }
 
     public void recordAdClick(String sdk, String placeName, String pid, String network, Map<String, Object> extra, String impressionId) {
         Log.iv(Log.TAG_SDK, "sdk : " + sdk + " , place name : " + placeName + " , network : " + network);
         recordAllClkCount();
-        LimitAdsManager.get(mContext).recordAdClick(sdk, placeName, network);
         BounceRateManager.get(mContext).onAdClick(pid, extra);
         recordAdClick(impressionId);
     }

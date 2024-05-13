@@ -31,7 +31,6 @@ import com.mix.ads.core.framework.AdLoadManager;
 import com.mix.ads.core.framework.AdStatManager;
 import com.mix.ads.core.framework.BounceRateManager;
 import com.mix.ads.core.framework.FBStatManager;
-import com.mix.ads.core.framework.LimitAdsManager;
 import com.mix.ads.core.framework.Params;
 import com.mix.ads.data.DataManager;
 import com.mix.ads.data.config.AdPlace;
@@ -327,12 +326,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
      * @return
      */
     protected boolean checkCommonConfig() {
-        // 排除异常平台
-        if (isLimitExclude()) {
-            processLimitAds();
-            return false;
-        }
-
         // 检测广告是否被禁止加载
         if (isAdFiltered()) {
             processAdFilter();
@@ -361,15 +354,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             return false;
         }
         return true;
-    }
-
-    private void processLimitAds() {
-        Log.iv(Log.TAG, formatLog("limit ads"));
-        notifyAdLoadFailed(Constant.AD_ERROR_LIMIT_ADS, "limit ads");
-    }
-
-    private boolean isLimitExclude() {
-        return LimitAdsManager.get(mContext).isLimitExclude(getSdkName());
     }
 
     private boolean isBlockMistakeClick() {

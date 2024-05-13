@@ -21,9 +21,6 @@ import com.mix.ads.utils.Utils;
 import java.util.Locale;
 
 public class SpreadManager {
-
-    public static final String AD_SPREAD_LIST = "cfg_spread_list";
-
     private static SpreadManager sSpreadManager;
 
     public static SpreadManager get(Context context) {

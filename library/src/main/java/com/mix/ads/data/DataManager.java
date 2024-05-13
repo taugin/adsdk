@@ -5,7 +5,6 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
-import com.mix.ads.adloader.spread.SpreadManager;
 import com.mix.ads.constant.Constant;
 import com.mix.ads.data.config.AdPlace;
 import com.mix.ads.data.config.PlaceConfig;
@@ -161,14 +160,6 @@ public class DataManager {
 
     public List<SpreadConfig> getRemoteSpread() {
         String data = getString(SpreadConfig.AD_SPREAD_NAME);
-        if (!TextUtils.isEmpty(data)) {
-            return mParser.parseSpread(data);
-        }
-        return null;
-    }
-
-    public List<SpreadConfig> getSpreadList() {
-        String data = getString(SpreadManager.AD_SPREAD_LIST);
         if (!TextUtils.isEmpty(data)) {
             return mParser.parseSpread(data);
         }

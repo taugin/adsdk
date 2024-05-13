@@ -30,8 +30,6 @@ public class AdPlace {
 
     private long delayNotifyTime;
 
-    private boolean refShare;
-
     /**
      * 瀑布流请求间隔
      */
@@ -144,14 +142,6 @@ public class AdPlace {
 
     public void setDelayNotifyTime(long delayNotifyTime) {
         this.delayNotifyTime = delayNotifyTime;
-    }
-
-    public boolean isRefShare() {
-        return refShare;
-    }
-
-    public void setRefShare(boolean refShare) {
-        this.refShare = refShare;
     }
 
     public long getWaterfallInt() {

@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.mix.ads.MiError;
@@ -57,7 +56,6 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
     private WeakReference<ViewGroup> mAdContainer;
     private String mOriginPlaceName;
     private Handler mHandler = new Handler(Looper.getMainLooper());
-    private View mDotView;
     private boolean mAdPlaceSeqLoading = false;
     private String mPlaceType = null;
     private int mErrorTimes = 0;

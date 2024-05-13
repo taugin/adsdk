@@ -33,8 +33,6 @@ public interface IParser {
     String PLACE_CACHE = "pc";
     // 延迟通知加载成功的时间
     String DELAY_NOTIFY_TIME = "dnt";
-    // 是否共享广告场景的广告
-    String REF_SHARE = "rs";
     // waterfall 请求间隔, line item失败到下个line item请求的间隔
     String WATERFALL_INTERVAL = "wfi";
     // 顺序加载超时值
