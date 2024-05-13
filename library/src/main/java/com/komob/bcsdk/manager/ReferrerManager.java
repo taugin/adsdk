@@ -24,6 +24,7 @@ import java.util.Map;
 
 public class ReferrerManager implements Runnable {
     public static final String GOOGLE_PLAY_PKGNAME = "com.android.vending";
+    public static final String SAMSUNG_STORE_PKGNAME = "com.sec.android.app.samsungapps";
     public static final String AT_STATUS = "at_af_status";
     public static final String AT_MEDIA_SOURCE = "at_af_media_source";
     public static final String AT_FROM_CLICK = "at_af_from_click";
@@ -136,7 +137,7 @@ public class ReferrerManager implements Runnable {
     }
 
     private void obtainSamsungReferrer() {
-        if (BcUtils.isInstalled(mContext, GOOGLE_PLAY_PKGNAME)) {
+        if (BcUtils.isInstalled(mContext, SAMSUNG_STORE_PKGNAME)) {
             try {
                 final com.samsung.android.sdk.sinstallreferrer.api.InstallReferrerClient referrerClient = com.samsung.android.sdk.sinstallreferrer.api.InstallReferrerClient.newBuilder(mContext).build();
                 referrerClient.startConnection(new com.samsung.android.sdk.sinstallreferrer.api.InstallReferrerStateListener() {
@@ -174,7 +175,7 @@ public class ReferrerManager implements Runnable {
                 reportReferrer("referrer_referrer_not_found");
             }
         } else {
-            reportReferrer("referrer_unknown_no_google_play");
+            reportReferrer("referrer_unknown_no_samsung_store");
         }
     }
 
@@ -244,16 +245,7 @@ public class ReferrerManager implements Runnable {
 
             String atStatus;
             String mediaSource;
-            String reportReferrer;
-            if (TextUtils.equals(referrer, "referrer_unknown_no_google_play")) {
-                reportReferrer = "referrer_unknown_no_google_play";
-                referrer = "utm_source=noplay&utm_medium=cpc";
-            } else if (TextUtils.equals(referrer, "referrer_client_no_reply")) {
-                reportReferrer = "referrer_client_no_reply";
-                referrer = "utm_source=noreply&utm_medium=organic";
-            } else {
-                reportReferrer = "client_referrer";
-            }
+            String reportReferrer = referrer;
             if (isNonOrganic()) {
                 referrer = "utm_source=google-ads&utm_medium=cpc&gclid=custom";
             }
