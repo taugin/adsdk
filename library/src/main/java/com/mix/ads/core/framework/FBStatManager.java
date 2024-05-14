@@ -75,6 +75,7 @@ public class FBStatManager {
                     public void onInstallReferrerServiceDisconnected() {
                     }
                 });
+                mHandler.removeCallbacks(mTimeoutRunnable);
                 mHandler.postDelayed(mTimeoutRunnable, 5000);
             }
         } catch (Exception e) {
@@ -104,7 +105,7 @@ public class FBStatManager {
         }
     }
 
-    private void reportAttrDelayed(boolean isOrganic) {
+    private void reportAttrDelayed(final boolean isOrganic) {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
