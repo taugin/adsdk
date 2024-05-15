@@ -156,7 +156,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
         default void onForeground(boolean fromBackground, WeakReference<Activity> activityWeakReference) {
         }
 
-        default void onBackground() {
+        default void onBackground(WeakReference<Activity> activityWeakReference) {
         }
     }
 
@@ -236,7 +236,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
                     mActivityMonitor.mResumed = false;
                     for (OnAppMonitorCallback callback : mOnAppMonitorCallbacks) {
                         if (callback != null) {
-                            callback.onBackground();
+                            callback.onBackground(mTopActivity);
                         }
                     }
                 }
