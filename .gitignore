@@ -12,3 +12,4 @@
 package-list
 *.js
 *.css
+/groovy
