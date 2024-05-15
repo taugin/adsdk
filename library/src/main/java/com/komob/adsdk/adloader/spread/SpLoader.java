@@ -309,12 +309,15 @@ public class SpLoader extends AbstractSdkLoader {
 
     private void reportAdSpreadImp(SpreadConfig spreadConfig) {
         try {
-            String packageName = null;
+            String bundle = null;
+            String remark = null;
             if (spreadConfig != null) {
-                packageName = spreadConfig.getBundle();
+                bundle = spreadConfig.getBundle();
+                remark = spreadConfig.getRemark();
             }
             Map<String, Object> extra = new HashMap<>();
-            extra.put("bundle", packageName);
+            extra.put("bundle", bundle);
+            extra.put("remark", remark);
             EventImpl.get().reportAdImp(mContext, getAdPlaceName(), getSdkName(), null, getAdType(), getPid(), null, getCpm(), extra);
         } catch (Exception e) {
         }
@@ -322,12 +325,15 @@ public class SpLoader extends AbstractSdkLoader {
 
     private void reportAdSpreadClk(SpreadConfig spreadConfig) {
         try {
-            String packageName = null;
+            String bundle = null;
+            String remark = null;
             if (spreadConfig != null) {
-                packageName = spreadConfig.getBundle();
+                bundle = spreadConfig.getBundle();
+                remark = spreadConfig.getRemark();
             }
             Map<String, Object> extra = new HashMap<>();
-            extra.put("bundle", packageName);
+            extra.put("bundle", bundle);
+            extra.put("remark", remark);
             EventImpl.get().reportAdClick(mContext, getAdPlaceName(), getSdkName(), null, getAdType(), getPid(), null, getCpm(), extra, null);
         } catch (Exception e) {
         }

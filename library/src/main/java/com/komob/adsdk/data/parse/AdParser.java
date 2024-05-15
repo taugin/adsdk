@@ -416,6 +416,7 @@ public class AdParser implements IParser {
                 spreadConfig.setStore(jobj.optString(STORE));
                 spreadConfig.setOrganic(jobj.optBoolean(ORGANIC, true));
                 spreadConfig.setScore(jobj.optDouble(SCORE, 4.2F));
+                spreadConfig.setRemark(jobj.optString(REMARK));
             }
         } catch (Exception e) {
             Log.iv(Log.TAG, "parseSpConfig error : " + e);

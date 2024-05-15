@@ -24,6 +24,8 @@ public class SpreadConfig {
     private boolean organic = false;
     private double score;
 
+    private String remark;
+
     public String getBanner() {
         return banner;
     }
@@ -126,6 +128,14 @@ public class SpreadConfig {
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Override

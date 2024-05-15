@@ -130,6 +130,7 @@ public interface IParser {
     String STORE = "store";
     String ORGANIC = "organic";
     String SCORE = "score";
+    String REMARK = "remark";
 
     PlaceConfig parseAdConfig(String data);
 
