@@ -106,7 +106,7 @@ public class SpLoader extends AbstractSdkLoader {
                     mSpread = spreadConfig;
                     setLoading(false, STATE_SUCCESS);
                     setSpreadRevenue(getSdkName(), getCpm() / 1000f);
-                    reportAdLoaded();
+                    reportAdSpreadLoaded(spreadConfig);
                     notifySdkLoaderLoaded(false);
                 }
             }, loadingTime);
@@ -199,7 +199,7 @@ public class SpLoader extends AbstractSdkLoader {
                     mSpread = spreadConfig;
                     setLoading(false, STATE_SUCCESS);
                     setSpreadRevenue(getSdkName(), getCpm() / 1000f);
-                    reportAdLoaded();
+                    reportAdSpreadLoaded(spreadConfig);
                     notifySdkLoaderLoaded(false);
                 }
             }, loadingTime);
@@ -333,15 +333,33 @@ public class SpLoader extends AbstractSdkLoader {
         }
     }
 
+    private void reportAdSpreadLoaded(SpreadConfig spreadConfig) {
+        try {
+            String bundle = null;
+            String remark = null;
+            if (spreadConfig != null) {
+                bundle = spreadConfig.getBundle();
+                remark = spreadConfig.getRemark();
+            }
+            Map<String, Object> extra = new HashMap<>();
+            extra.put("bundle", bundle);
+            extra.put("remark", remark);
+            EventImpl.get().reportAdLoaded(mContext, getAdPlaceName(), getSdkName(), null, getAdType(), getPid(), getCpm(), extra);
+        } catch (Exception e) {
+        }
+    }
 
     private void reportAdSpreadImp(SpreadConfig spreadConfig) {
         try {
-            String packageName = null;
+            String bundle = null;
+            String remark = null;
             if (spreadConfig != null) {
-                packageName = spreadConfig.getBundle();
+                bundle = spreadConfig.getBundle();
+                remark = spreadConfig.getRemark();
             }
             Map<String, Object> extra = new HashMap<>();
-            extra.put("bundle", packageName);
+            extra.put("bundle", bundle);
+            extra.put("remark", remark);
             EventImpl.get().reportAdImp(mContext, getAdPlaceName(), getSdkName(), null, getAdType(), getPid(), null, getCpm(), extra);
         } catch (Exception e) {
         }
@@ -349,12 +367,15 @@ public class SpLoader extends AbstractSdkLoader {
 
     private void reportAdSpreadClk(SpreadConfig spreadConfig) {
         try {
-            String packageName = null;
+            String bundle = null;
+            String remark = null;
             if (spreadConfig != null) {
-                packageName = spreadConfig.getBundle();
+                bundle = spreadConfig.getBundle();
+                remark = spreadConfig.getRemark();
             }
             Map<String, Object> extra = new HashMap<>();
-            extra.put("bundle", packageName);
+            extra.put("bundle", bundle);
+            extra.put("remark", remark);
             EventImpl.get().reportAdClick(mContext, getAdPlaceName(), getSdkName(), null, getAdType(), getPid(), null, getCpm(), extra, null);
         } catch (Exception e) {
         }

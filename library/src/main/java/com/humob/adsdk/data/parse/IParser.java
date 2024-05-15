@@ -133,6 +133,7 @@ public interface IParser {
     String LOADING_TIME = "loading_time";
     String STORE = "store";
     String ORGANIC = "organic";
+    String REMARK = "remark";
 
     PlaceConfig parseAdConfig(String data);
 

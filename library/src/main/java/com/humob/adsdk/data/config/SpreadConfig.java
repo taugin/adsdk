@@ -22,6 +22,7 @@ public class SpreadConfig {
     private long loadingTime;
     private String store;
     private boolean organic = false;
+    private String remark;
 
     public String getBanner() {
         return banner;
@@ -117,6 +118,14 @@ public class SpreadConfig {
 
     public void setOrganic(boolean organic) {
         this.organic = organic;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Override
