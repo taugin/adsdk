@@ -121,7 +121,7 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
     }
 
     @Override
-    public void onBackground() {
+    public void onBackground(WeakReference<Activity> activityWeakReference) {
         Log.iv(Log.TAG, "App went background.");
         if (isInvalidDurationCheckEnable()) {
             if (mAdClick) {
