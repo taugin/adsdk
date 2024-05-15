@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -46,6 +47,40 @@ public class SpreadManager {
     }
 
     private Context mContext;
+
+    public Intent generateIntent(Context context, SpreadConfig spreadConfig, String campaign) {
+        try {
+            if (spreadConfig != null) {
+                String url = spreadConfig.getLinkUrl();
+                String packageName = spreadConfig.getBundle();
+                boolean organic = spreadConfig.isOrganic();
+                String store = spreadConfig.getStore();
+                String referrer = null;
+                try {
+                    referrer = generateReferrer(context, campaign);
+                } catch (Exception e) {
+                    Log.iv(Log.TAG, "error : " + e);
+                }
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                if (TextUtils.isEmpty(url)) {
+                    url = "market://details?id=" + packageName;
+                    if (!organic && !TextUtils.isEmpty(referrer)) {
+                        url = url + "&" + referrer;
+                    }
+                }
+                if (!TextUtils.isEmpty(store) && Utils.isInstalled(context, store)) {
+                    intent.setPackage(store);
+                }
+                Log.iv(Log.TAG, "spread url : " + url);
+                intent.setData(Uri.parse(url));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                return intent;
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return null;
+    }
 
     public void insertOrUpdateClick(String bundle, long clickTime) {
         DBManager.get(mContext).insertOrUpdateClick(bundle, clickTime);

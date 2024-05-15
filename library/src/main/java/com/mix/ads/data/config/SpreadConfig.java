@@ -20,8 +20,10 @@ public class SpreadConfig {
     private boolean disable;
     private Map<String, String> ctaLocale;
     private long loadingTime;
-    private boolean play = true;
     private double score;
+    private String store;
+    private boolean organic = false;
+    private String remark;
 
     public String getBanner() {
         return banner;
@@ -103,20 +105,36 @@ public class SpreadConfig {
         this.loadingTime = loadingTime;
     }
 
-    public boolean isPlay() {
-        return play;
-    }
-
-    public void setPlay(boolean play) {
-        this.play = play;
-    }
-
     public double getScore() {
         return score;
     }
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    public String getStore() {
+        return store;
+    }
+
+    public void setStore(String store) {
+        this.store = store;
+    }
+
+    public boolean isOrganic() {
+        return organic;
+    }
+
+    public void setOrganic(boolean organic) {
+        this.organic = organic;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Override
