@@ -34,6 +34,8 @@ public class PidConfig {
 
     private String bannerSize;
 
+    private String collapse;
+
     private List<String> clickView;
 
     private int cnt;
@@ -152,6 +154,14 @@ public class PidConfig {
 
     public void setBannerSize(String bannerSize) {
         this.bannerSize = bannerSize;
+    }
+
+    public String getCollapse() {
+        return collapse;
+    }
+
+    public void setCollapse(String collapse) {
+        this.collapse = collapse;
     }
 
     public List<String> getClickView() {

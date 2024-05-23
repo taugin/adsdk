@@ -2,6 +2,7 @@ package com.mix.ads.adloader.admob;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -54,6 +56,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -238,7 +241,11 @@ public class AdmobLoader extends AbstractSdkLoader {
             size = AdSize.BANNER;
         }
         Log.iv(Log.TAG, formatLog("banner size : " + size));
-        loadingView = new AdView(mContext);
+        Context context = getActivity();
+        if (context == null) {
+            context = mContext;
+        }
+        loadingView = new AdView(context);
         loadingView.setAdUnitId(mPidConfig.getPid());
         loadingView.setAdSize(size);
         admobBannerListener = new AdmobBannerListener();
@@ -247,7 +254,29 @@ public class AdmobLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        loadingView.loadAd(new AdRequest.Builder().build());
+        AdRequest.Builder builder = new AdRequest.Builder();
+        Bundle extras = generateBundle();
+        if (extras != null) {
+            builder.addNetworkExtrasBundle(AdMobAdapter.class, extras);
+        }
+        loadingView.loadAd(builder.build());
+    }
+
+    private Bundle generateBundle() {
+        Bundle bundle = null;
+        if (mPidConfig != null) {
+            String collapse = mPidConfig.getCollapse();
+            if (TextUtils.equals(collapse, "bottom")) {
+                bundle = new Bundle();
+                bundle.putString("collapsible", "bottom");
+                bundle.putString("collapsible_request_id", UUID.randomUUID().toString());
+            } else if (TextUtils.equals(collapse, "top")) {
+                bundle = new Bundle();
+                bundle.putString("collapsible", "top");
+                bundle.putString("collapsible_request_id", UUID.randomUUID().toString());
+            }
+        }
+        return bundle;
     }
 
     private class AdmobBannerListener extends AbstractAdListener {
