@@ -76,6 +76,8 @@ public interface IParser {
     String CPM = "cpm";
     // bannersize
     String BANNER_SIZE = "size";
+    // 是否可折叠banner
+    String COLLAPSE = "collapse";
     // 可点击原生视图
     String CLICK_VIEW = "cv";
     // 可点击原生视图
