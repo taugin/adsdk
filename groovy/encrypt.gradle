@@ -437,7 +437,7 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
     println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] bundleToolPath : [" + bundleToolPath + "] exist : " + new File(bundleToolPath).exists()
     if (!new File(bundleToolPath).exists() || !new File(bundleToolPathCompleteFile).exists()) {
         println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] Downloading : [" + bundleFileName + "]"
-        def bundleToolUrl = "https://taugin.gitee.io/adsdk/libs/" + bundleFileName
+        def bundleToolUrl = "https://taugin.github.io/adsdk/groovy/libs/" + bundleFileName
         try {
             downloadFile(bundleToolUrl, bundleToolPath, "> Task :${project.name}:transformAab2Apk [" + flavorName + "] " + bundleFileName)
             new File(bundleToolPathCompleteFile).createNewFile()
