@@ -429,7 +429,7 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] signConfig is not completion"
         return
     }
-    def bundleFileName = "bundletool-1.16.0.jar"
+    def bundleFileName = "bundletool-all-1.16.0.jar"
     def bundleToolDir = new File(gradle.gradleUserHomeDir, "bundletool")
     bundleToolDir.mkdirs()
     def bundleToolPath = new File(bundleToolDir, bundleFileName).getAbsolutePath()
