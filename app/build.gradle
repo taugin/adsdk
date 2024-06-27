@@ -10,10 +10,10 @@ ext {
 def useProject = true;
 
 android {
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
         applicationId "com.hauyu.adsdk.demo"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"

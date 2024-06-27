@@ -20,9 +20,9 @@ def isSnapshot = true
 def baseVersion = '1.2.4'
 
 android {
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 33
         versionName baseVersion + (isSnapshot ? "-SNAPSHOT" : "")
         buildConfigField "String", "SDK_VERSION_NAME", "\"${versionName}\""
