@@ -352,9 +352,12 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void showBanner(ViewGroup viewGroup) {
+    public void showBanner(ViewGroup viewGroup, String bannerScene) {
         printInterfaceLog(ACTION_SHOW);
         try {
+            if (admobBannerListener != null) {
+                admobBannerListener.sceneName = bannerScene;
+            }
             clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
             ViewParent viewParent = bannerView.getParent();
@@ -886,7 +889,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
         if (params != null && admobNativeListener != null) {
-            admobNativeListener.sceneName = params.getSceneName();
+            admobNativeListener.sceneName = params.getNativeScene();
         }
         if (isLoadMultipleNative()) {
             try {

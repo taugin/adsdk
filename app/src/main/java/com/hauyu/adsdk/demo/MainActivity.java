@@ -407,7 +407,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             if (!TextUtils.isEmpty(maxPlaceName)) {
                 ViewGroup frameLayout = new LinearLayout(this);
                 AdParams adParams = getNativeParams();
-                adParams.setSceneName("scene_show_max_native");
+                adParams.setNativeScene("scene_show_max_native");
                 AdSdk.get(mContext).showAdView(maxPlaceName, adParams, frameLayout);
                 showNativeAds(frameLayout);
             } else {
@@ -530,7 +530,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         String bannerPlace = String.format(Locale.ENGLISH, BANNER_PREFIX, sdk.toLowerCase(Locale.ENGLISH));
         if (AdSdk.get(mContext).isAdViewLoaded(bannerPlace)) {
             FrameLayout frameLayout = new FrameLayout(this);
-            AdSdk.get(mContext).showAdView(bannerPlace, frameLayout);
+            AdSdk.get(mContext).showAdView(bannerPlace, new AdParams.Builder().setBannerScene("scene_show_banner").build(), frameLayout);
             CustomDrawable.setBackground(frameLayout);
             showNativeAds(frameLayout);
         } else {
@@ -595,7 +595,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
         if (AdSdk.get(mContext).isAdViewLoaded(nativePlace)) {
             FrameLayout frameLayout = new FrameLayout(this);
-            adParams.setSceneName("scene_show_native");
+            adParams.setNativeScene("scene_show_native");
             AdSdk.get(mContext).showAdView(nativePlace, adParams, frameLayout);
             CustomDrawable.setBackground(frameLayout);
             showNativeAds(frameLayout);

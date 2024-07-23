@@ -26,9 +26,14 @@ public class AdParams {
             Params params = mAdParams.get(sdk);
             if (!TextUtils.equals(sdk, AdExtra.AD_SDK_COMMON)) {
                 Params commonParams = mAdParams.get(AdExtra.AD_SDK_COMMON);
-                if (commonParams != null && !TextUtils.isEmpty(commonParams.getSceneName())) {
+                if (commonParams != null && !TextUtils.isEmpty(commonParams.getNativeScene())) {
                     if (params != null) {
-                        params.setSceneName(commonParams.getSceneName());
+                        params.setNativeScene(commonParams.getNativeScene());
+                    }
+                }
+                if (commonParams != null && !TextUtils.isEmpty(commonParams.getBannerScene())) {
+                    if (params != null) {
+                        params.setBannerScene(commonParams.getBannerScene());
                     }
                 }
             }
@@ -37,9 +42,16 @@ public class AdParams {
         return null;
     }
 
-    public void setSceneName(String sceneName) {
+    public void setNativeScene(String sceneName) {
         try {
-            getParams(AdExtra.AD_SDK_COMMON).setSceneName(sceneName);
+            getParams(AdExtra.AD_SDK_COMMON).setNativeScene(sceneName);
+        } catch (Exception e) {
+        }
+    }
+
+    public void setBannerScene(String sceneName) {
+        try {
+            getParams(AdExtra.AD_SDK_COMMON).setBannerScene(sceneName);
         } catch (Exception e) {
         }
     }
@@ -93,7 +105,8 @@ public class AdParams {
         sdkParams.setAdChoices(commonParams.getAdChoices());
         sdkParams.setAdMediaView(commonParams.getAdMediaView());
         sdkParams.setAdSponsored(commonParams.getAdSponsored());
-        sdkParams.setSceneName(commonParams.getSceneName());
+        sdkParams.setNativeScene(commonParams.getNativeScene());
+        sdkParams.setBannerScene(commonParams.getBannerScene());
     }
 
     public static class Builder {
@@ -182,12 +195,17 @@ public class AdParams {
         }
 
         public Builder setSceneName(String sceneName) {
-            getParams(AdExtra.AD_SDK_COMMON).setSceneName(sceneName);
+            getParams(AdExtra.AD_SDK_COMMON).setNativeScene(sceneName);
             return this;
         }
 
         public Builder setAdCardStyle(String cardStyle) {
             getParams(AdExtra.AD_SDK_COMMON).setAdCardStyle(cardStyle);
+            return this;
+        }
+
+        public Builder setBannerScene(String sceneName) {
+            getParams(AdExtra.AD_SDK_COMMON).setBannerScene(sceneName);
             return this;
         }
 

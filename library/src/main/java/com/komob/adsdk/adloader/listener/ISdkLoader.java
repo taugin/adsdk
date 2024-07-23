@@ -42,7 +42,7 @@ public interface ISdkLoader {
 
     void loadBanner(int adSize);
 
-    void showBanner(ViewGroup viewGroup);
+    void showBanner(ViewGroup viewGroup, String bannerScene);
 
     void loadRewardedVideo();
 

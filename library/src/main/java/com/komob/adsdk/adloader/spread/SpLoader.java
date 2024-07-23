@@ -128,7 +128,7 @@ public class SpLoader extends AbstractSdkLoader {
         String sceneName = null;
         if (params != null) {
             mParams = params;
-            sceneName = params.getSceneName();
+            sceneName = params.getNativeScene();
         }
         if (mSpread != null) {
             notifyAdShow();

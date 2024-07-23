@@ -1294,7 +1294,12 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         for (ISdkLoader loader : list) {
             if (loader != null && viewGroup != null) {
                 if (loader.isBannerType() && loader.isBannerLoaded()) {
-                    loader.showBanner(viewGroup);
+                    String bannerScene = null;
+                    try {
+                        bannerScene = getParams(loader, mAdShowParams).getBannerScene();
+                    } catch (Exception e) {
+                    }
+                    loader.showBanner(viewGroup, bannerScene);
                     if (needCounting) {
                         AdPolicy.get(mContext).reportAdPlaceShow(getPlaceName(), mAdPlace);
                     }
@@ -1649,7 +1654,7 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
             } catch (Exception e) {
             }
             if (params != null) {
-                params.setSceneName(sceneName);
+                params.setNativeScene(sceneName);
             }
             showNativeInterstitialAds(iSdkLoader, params);
         } catch (Exception e) {

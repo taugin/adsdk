@@ -216,7 +216,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void showBanner(ViewGroup viewGroup) {
+    public void showBanner(ViewGroup viewGroup, String bannerScene) {
         printInterfaceLog(ACTION_SHOW);
         try {
             reportAdShow();
@@ -228,7 +228,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 ((ViewGroup) viewParent).removeView(mTPBanner);
             }
             viewGroup.addView(mTPBanner);
-            mTPBanner.showAd(getSceneId());
+            mTPBanner.showAd(getSceneId(bannerScene));
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
@@ -646,7 +646,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                     viewGroup.removeAllViews();
                 }
                 mTradPlusBindView.bindNativeView(mContext, mPidConfig, params, customNativeAd);
-                customNativeAd.showAd(viewGroup, mTradPlusBindView.getCustomTPNativeAdRender(), getSceneId(params != null ? params.getSceneName() : null));
+                customNativeAd.showAd(viewGroup, mTradPlusBindView.getCustomTPNativeAdRender(), getSceneId(params != null ? params.getNativeScene() : null));
                 if (viewGroup != null && viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }

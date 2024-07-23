@@ -414,7 +414,7 @@ public class BigoLoader extends AbstractSdkLoader {
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
         if (params != null && bigoNativeListener != null) {
-            bigoNativeListener.sceneName = params.getSceneName();
+            bigoNativeListener.sceneName = params.getNativeScene();
         }
         if (mNativeAd != null) {
             reportAdShow();

@@ -22,7 +22,8 @@ public class Params {
     private int adChoices;
     private int adSponsored;
     private int adSocial;
-    private String sceneName;
+    private String nativeScene;
+    private String bannerScene;
 
     public Params() {
     }
@@ -131,11 +132,19 @@ public class Params {
         this.adSocial = adSocial;
     }
 
-    public void setSceneName(String sceneName) {
-        this.sceneName = sceneName;
+    public void setNativeScene(String nativeScene) {
+        this.nativeScene = nativeScene;
     }
 
-    public String getSceneName() {
-        return sceneName;
+    public String getNativeScene() {
+        return nativeScene;
+    }
+
+    public String getBannerScene() {
+        return bannerScene;
+    }
+
+    public void setBannerScene(String bannerScene) {
+        this.bannerScene = bannerScene;
     }
 }

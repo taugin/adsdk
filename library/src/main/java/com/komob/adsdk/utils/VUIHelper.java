@@ -58,7 +58,12 @@ public class VUIHelper {
     private boolean showAdViewInternal(ViewGroup adRootLayout, ISdkLoader iSdkLoader, Params params) {
         if (adRootLayout != null && iSdkLoader != null) {
             if (iSdkLoader.isBannerType() && iSdkLoader.isBannerLoaded()) {
-                iSdkLoader.showBanner(adRootLayout);
+                String bannerScene = null;
+                try {
+                    bannerScene = params.getBannerScene();
+                } catch (Exception e) {
+                }
+                iSdkLoader.showBanner(adRootLayout, bannerScene);
                 return true;
             }
             if (iSdkLoader.isNativeType() && iSdkLoader.isNativeLoaded()) {

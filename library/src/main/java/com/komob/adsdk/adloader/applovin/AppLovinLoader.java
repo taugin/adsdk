@@ -64,6 +64,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private MaxAd mMaxAd;
     private ApplovinBindView mApplovinBindView = new ApplovinBindView();
     private MaxAppOpenAd mMaxAppOpenAd;
+    private MaxBannerListener maxBannerListener;
     private MaxNativeListener maxNativeListener;
     private MaxSplashListener maxSplashListener;
     private MaxInterstitialListener maxInterstitialListener;
@@ -306,8 +307,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     @Override
-    public void showBanner(ViewGroup viewGroup) {
-        showBannerForMax(viewGroup);
+    public void showBanner(ViewGroup viewGroup, String bannerScene) {
+        showBannerForMax(viewGroup, bannerScene);
     }
 
     @Override
@@ -494,7 +495,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             int height = Utils.dp2px(mContext, 250);
             loadingMaxAdView.setLayoutParams(new ViewGroup.LayoutParams(width, height));
         }
-        MaxBannerListener maxBannerListener = new MaxBannerListener();
+        maxBannerListener = new MaxBannerListener();
         loadingMaxAdView.setListener(maxBannerListener.maxAdViewAdListener);
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
@@ -591,9 +592,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
         };
     }
 
-    private void showBannerForMax(ViewGroup viewGroup) {
+    private void showBannerForMax(ViewGroup viewGroup, String bannerScene) {
         printInterfaceLog(ACTION_SHOW);
         try {
+            if (maxBannerListener != null) {
+                maxBannerListener.sceneName = bannerScene;
+            }
             reportAdShow();
             notifyAdShow();
             clearCachedAdTime(maxAdView);
@@ -978,7 +982,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         if (params != null && maxNativeListener != null) {
-            maxNativeListener.sceneName = params.getSceneName();
+            maxNativeListener.sceneName = params.getNativeScene();
         }
         printInterfaceLog(ACTION_SHOW);
         try {

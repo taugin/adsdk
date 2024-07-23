@@ -193,7 +193,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     }
 
     @Override
-    public void showBanner(ViewGroup viewGroup) {
+    public void showBanner(ViewGroup viewGroup, String bannerScene) {
     }
 
     @Override
