@@ -194,8 +194,8 @@ public class AdParams {
             return this;
         }
 
-        public Builder setSceneName(String sceneName) {
-            getParams(AdExtra.AD_SDK_COMMON).setNativeScene(sceneName);
+        public Builder setNativeScene(String nativeScene) {
+            getParams(AdExtra.AD_SDK_COMMON).setNativeScene(nativeScene);
             return this;
         }
 
@@ -204,8 +204,8 @@ public class AdParams {
             return this;
         }
 
-        public Builder setBannerScene(String sceneName) {
-            getParams(AdExtra.AD_SDK_COMMON).setBannerScene(sceneName);
+        public Builder setBannerScene(String bannerScene) {
+            getParams(AdExtra.AD_SDK_COMMON).setBannerScene(bannerScene);
             return this;
         }
 
