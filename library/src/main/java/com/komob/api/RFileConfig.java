@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,7 +12,6 @@ import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.framework.ActivityMonitor;
 import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.log.Log;
-import com.komob.adsdk.utils.VUIHelper;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -100,7 +98,9 @@ public class RFileConfig {
         @Override
         public void startActivity(Intent intent) {
             try {
-                configIntent(application, intent);
+                if (intent != null) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
                 application.startActivity(intent);
             } catch (Exception | Error e) {
                 Log.iv(Log.TAG, "error : " + e);
@@ -124,7 +124,7 @@ public class RFileConfig {
             } catch (Exception | Error e) {
                 Log.iv(Log.TAG, "error : " + e);
             }
-            return VUIHelper.class.getName();
+            return FActivity.class.getName();
         }
 
         @Override
@@ -193,36 +193,5 @@ public class RFileConfig {
             Log.iv(Log.TAG, "error : " + e);
         }
         return activity;
-    }
-
-    public static Context createAContext(final Context context) {
-        AppContext appContext = new AppContext(context);
-        return appContext;
-    }
-
-    private static class AppContext extends Application {
-
-        public AppContext(Context base) {
-            super();
-            attachBaseContext(base);
-        }
-
-        @Override
-        public void startActivity(Intent intent) {
-            configIntent(getBaseContext(), intent);
-            super.startActivity(intent);
-        }
-
-        @Override
-        public void startActivity(Intent intent, Bundle options) {
-            configIntent(getBaseContext(), intent);
-            super.startActivity(intent, options);
-        }
-    }
-
-    private static void configIntent(Context context, Intent intent) {
-        if (intent != null) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
     }
 }

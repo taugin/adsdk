@@ -49,7 +49,6 @@ public class AdSdk {
     private static AdSdk sAdSdk;
 
     private Context mContext;
-    private Context mOriginContext;
     private Map<String, AdPlaceLoader> mAdLoaders = new HashMap<String, AdPlaceLoader>();
     private WeakReference<Activity> mActivity;
     // 激励视频自动加载回调
@@ -63,8 +62,7 @@ public class AdSdk {
     private AtomicBoolean mInitialized = new AtomicBoolean(false);
 
     private AdSdk(Context context) {
-        mOriginContext = context.getApplicationContext();
-        mContext = RFileConfig.createAContext(mOriginContext);
+        mContext = context.getApplicationContext();
     }
 
     public static AdSdk get(Context context) {
@@ -108,7 +106,7 @@ public class AdSdk {
     public void init() {
         Log.iv(Log.TAG, "sdk version : " + getSdkVersion());
         DataManager.get(mContext).init();
-        ActivityMonitor.get(mOriginContext).init();
+        ActivityMonitor.get(mContext).init();
         EventImpl.get().init(mContext);
         ReplaceManager.get(mContext).init();
         if (mInitialized != null) {
