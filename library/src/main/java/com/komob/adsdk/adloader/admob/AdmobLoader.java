@@ -337,7 +337,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 }
                 reportAdImp();
                 notifyAdImp();
-                reportAdmobImpressionData(adValue, network, impressionId, null);
+                reportAdmobImpressionData(adValue, network, impressionId, sceneName);
             }
         };
     }
