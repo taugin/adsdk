@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.SpUtils;
 import com.komob.adsdk.utils.Utils;
 
 import org.json.JSONObject;
@@ -179,7 +180,7 @@ public class ReplaceManager {
             long displayTimes = replaceConfig.getDisplayTimes();
             if (displayTimes > 0) {
                 String prefKey = String.format(Locale.ENGLISH, PREF_PLACE_NAME_IMP_TIMES, placeName);
-                long totalImpTimes = Utils.getLong(mContext, prefKey, 0);
+                long totalImpTimes = SpUtils.getLong(mContext, prefKey, 0);
                 Log.iv(Log.TAG, "total imp times : " + totalImpTimes + " , display times : " + displayTimes);
                 return totalImpTimes >= displayTimes;
             }
@@ -195,8 +196,8 @@ public class ReplaceManager {
     public void reportAdImp(String placeName) {
         try {
             String prefKey = String.format(Locale.ENGLISH, PREF_PLACE_NAME_IMP_TIMES, placeName);
-            long lastImpTimes = Utils.getLong(mContext, prefKey, 0);
-            Utils.putLong(mContext, prefKey, lastImpTimes + 1);
+            long lastImpTimes = SpUtils.getLong(mContext, prefKey, 0);
+            SpUtils.putLong(mContext, prefKey, lastImpTimes + 1);
         } catch (Exception e) {
         }
     }

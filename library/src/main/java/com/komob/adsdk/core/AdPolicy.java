@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.komob.adsdk.data.config.AdPlace;
 import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.SpUtils;
 import com.komob.adsdk.utils.Utils;
 
 import java.util.HashSet;
@@ -63,13 +64,13 @@ public class AdPolicy {
             Log.iv(Log.TAG_SDK, "placeName == null");
             return;
         }
-        long loadCount = Utils.getLong(mContext, getShowCountKey(placeName), 0);
-        Utils.putLong(mContext, getShowCountKey(placeName), loadCount + 1);
+        long loadCount = SpUtils.getLong(mContext, getShowCountKey(placeName), 0);
+        SpUtils.putLong(mContext, getShowCountKey(placeName), loadCount + 1);
         Log.iv(Log.TAG_SDK, "[" + placeName + "]" + " show count : " + (loadCount + 1));
     }
 
     public boolean reachMaxShowCount(String placeName, int maxCount) {
-        long loadCount = Utils.getLong(mContext, getShowCountKey(placeName), 0);
+        long loadCount = SpUtils.getLong(mContext, getShowCountKey(placeName), 0);
         return loadCount > maxCount;
     }
 
@@ -112,12 +113,12 @@ public class AdPolicy {
     }
 
     private void resetShowCountEveryDay(String placeName) {
-        long resetTime = Utils.getLong(mContext, getResetTimeKey(placeName), 0);
+        long resetTime = SpUtils.getLong(mContext, getResetTimeKey(placeName), 0);
         long curTime = System.currentTimeMillis();
         if (curTime - resetTime > ONE_DAY) {
             Log.iv(Log.TAG_SDK, "reset load count : " + placeName);
-            Utils.putLong(mContext, getShowCountKey(placeName), 0);
-            Utils.putLong(mContext, getResetTimeKey(placeName), curTime);
+            SpUtils.putLong(mContext, getShowCountKey(placeName), 0);
+            SpUtils.putLong(mContext, getResetTimeKey(placeName), curTime);
         }
     }
 
@@ -127,7 +128,7 @@ public class AdPolicy {
         if (maxReqTimes > 0) {
             resetPlatformEventCountIfNeed(mContext);
             String prefKeys = String.format(Locale.ENGLISH, PREF_RECORD_PLACE_REQ_TIMES, placeName, sdk);
-            long times = Utils.getLong(mContext, prefKeys, 0);
+            long times = SpUtils.getLong(mContext, prefKeys, 0);
             Log.iv(Log.TAG_SDK, placeName + " - " + sdk + " req times : [" + times + "/" + maxReqTimes + "]");
             return times >= maxReqTimes;
         }
@@ -143,16 +144,16 @@ public class AdPolicy {
     public void recordRequestTimes(String placeName, String sdk, int maxReqTimes) {
         if (maxReqTimes > 0) {
             String prefKeys = String.format(Locale.ENGLISH, PREF_RECORD_PLACE_REQ_TIMES, placeName, sdk);
-            long times = Utils.getLong(mContext, prefKeys, 0);
+            long times = SpUtils.getLong(mContext, prefKeys, 0);
             times += 1;
-            Utils.putLong(mContext, prefKeys, times);
+            SpUtils.putLong(mContext, prefKeys, times);
             recordMaxReqTimeKeySet(mContext, prefKeys);
         }
     }
 
     public long getReqTimes(String placeName, String sdk) {
         String prefKeys = String.format(Locale.ENGLISH, PREF_RECORD_PLACE_REQ_TIMES, placeName, sdk);
-        return Utils.getLong(mContext, prefKeys, 0);
+        return SpUtils.getLong(mContext, prefKeys, 0);
     }
 
     /**
@@ -162,7 +163,7 @@ public class AdPolicy {
      * @param prefKeys
      */
     private void recordMaxReqTimeKeySet(Context context, String prefKeys) {
-        Set<String> sets = Utils.getStringSet(context, PREF_RECORD_MAX_REQ_TIME_KEY_SET);
+        Set<String> sets = SpUtils.getStringSet(context, PREF_RECORD_MAX_REQ_TIME_KEY_SET);
         Set<String> newSets;
         if (sets != null && !sets.isEmpty()) {
             newSets = new HashSet<>(sets);
@@ -171,20 +172,20 @@ public class AdPolicy {
         }
         newSets.add(prefKeys);
         Log.iv(Log.TAG_SDK, "record max req time pref key set : " + newSets);
-        Utils.putStringSet(context, PREF_RECORD_MAX_REQ_TIME_KEY_SET, newSets);
+        SpUtils.putStringSet(context, PREF_RECORD_MAX_REQ_TIME_KEY_SET, newSets);
     }
 
     private static void resetPlatformEventCountIfNeed(Context context) {
         long nowDate = Utils.getTodayTime();
-        long lastDate = Utils.getLong(context, PREF_RESET_MAX_REQ_TIME_DATETIME, 0);
+        long lastDate = SpUtils.getLong(context, PREF_RESET_MAX_REQ_TIME_DATETIME, 0);
         if (nowDate != lastDate) {
-            Set<String> sets = Utils.getStringSet(context, PREF_RECORD_MAX_REQ_TIME_KEY_SET);
+            Set<String> sets = SpUtils.getStringSet(context, PREF_RECORD_MAX_REQ_TIME_KEY_SET);
             if (sets != null && !sets.isEmpty()) {
                 for (String s : sets) {
-                    Utils.putLong(context, s, 0);
+                    SpUtils.putLong(context, s, 0);
                 }
             }
-            Utils.putLong(context, PREF_RESET_MAX_REQ_TIME_DATETIME, nowDate);
+            SpUtils.putLong(context, PREF_RESET_MAX_REQ_TIME_DATETIME, nowDate);
         }
     }
 }

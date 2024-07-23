@@ -13,6 +13,7 @@ import com.komob.adsdk.data.parse.AdParser;
 import com.komob.adsdk.data.parse.IParser;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.utils.AesUtils;
+import com.komob.adsdk.utils.SpUtils;
 import com.komob.adsdk.utils.Utils;
 
 import org.json.JSONArray;
@@ -291,7 +292,7 @@ public class DataManager {
                     boolean isLimited = info.isLimitAdTrackingEnabled();
                     String gaidmd5 = Utils.string2MD5(gaid);
                     Log.iv(Log.TAG, "google advertising id (gaid) : " + gaid + " , is limit ad tracking : " + isLimited + " , gaid2 : " + gaidmd5);
-                    Utils.putString(mContext, Constant.PREF_GAID, gaid);
+                    SpUtils.putString(mContext, Constant.PREF_GAID, gaid);
                 } catch (Exception | Error e) {
                     Log.iv(Log.TAG, "error : " + e);
                 }
@@ -333,32 +334,32 @@ public class DataManager {
 
     private void recordFistActiveTime() {
         try {
-            long time = Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
+            long time = SpUtils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
             if (time <= 0) {
-                Utils.putLong(mContext, Constant.PREF_USER_ACTIVE_TIME, System.currentTimeMillis());
+                SpUtils.putLong(mContext, Constant.PREF_USER_ACTIVE_TIME, System.currentTimeMillis());
             }
         } catch (Exception e) {
         }
     }
 
     public long getFirstActiveTime() {
-        return Utils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
+        return SpUtils.getLong(mContext, Constant.PREF_USER_ACTIVE_TIME, 0);
     }
 
     public long getElapsedTimeMillis() {
         long elapsedTime = SystemClock.elapsedRealtime();
         long currentTime = System.currentTimeMillis();
-        long lastElapsedTime = Utils.getLong(mContext, Constant.PREF_LAST_ELAPSED_TIME, 0);
-        long lastCurrentTime = Utils.getLong(mContext, Constant.PREF_LAST_CURRENT_TIME, 0);
+        long lastElapsedTime = SpUtils.getLong(mContext, Constant.PREF_LAST_ELAPSED_TIME, 0);
+        long lastCurrentTime = SpUtils.getLong(mContext, Constant.PREF_LAST_CURRENT_TIME, 0);
         if (lastElapsedTime <= 0) {
             // 首次获取时间
-            Utils.putLong(mContext, Constant.PREF_LAST_ELAPSED_TIME, elapsedTime);
-            Utils.putLong(mContext, Constant.PREF_LAST_CURRENT_TIME, currentTime);
+            SpUtils.putLong(mContext, Constant.PREF_LAST_ELAPSED_TIME, elapsedTime);
+            SpUtils.putLong(mContext, Constant.PREF_LAST_CURRENT_TIME, currentTime);
             return currentTime;
         }
         if (elapsedTime < lastElapsedTime) {
             // 重启手机后，首次获取时间
-            Utils.putLong(mContext, Constant.PREF_LAST_ELAPSED_TIME, elapsedTime);
+            SpUtils.putLong(mContext, Constant.PREF_LAST_ELAPSED_TIME, elapsedTime);
             return lastCurrentTime;
         }
         long finalTime;
@@ -370,8 +371,8 @@ public class DataManager {
         } else {
             finalTime = lastCurrentTime + elapsedDiff;
         }
-        Utils.putLong(mContext, Constant.PREF_LAST_ELAPSED_TIME, elapsedTime);
-        Utils.putLong(mContext, Constant.PREF_LAST_CURRENT_TIME, finalTime);
+        SpUtils.putLong(mContext, Constant.PREF_LAST_ELAPSED_TIME, elapsedTime);
+        SpUtils.putLong(mContext, Constant.PREF_LAST_CURRENT_TIME, finalTime);
         // Log.iv(Log.TAG, "elapsed diff : " + elapsedDiff + " , current diff : " + currentDiff + " , deviation : " + deviation + " , final time : " + Constant.SDF_WHOLE_TIME.format(finalTime));
         return finalTime;
     }

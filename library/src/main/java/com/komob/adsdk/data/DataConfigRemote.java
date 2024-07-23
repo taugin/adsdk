@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.SpUtils;
 import com.komob.adsdk.utils.Utils;
 
 import java.lang.reflect.Method;
@@ -96,7 +97,7 @@ public class DataConfigRemote {
     private String getRemoteSuffix() {
         String suffix = "";
         try {
-            suffix = Utils.getString(mContext, Constant.PREF_REMOTE_CONFIG_SUFFIX);
+            suffix = SpUtils.getString(mContext, Constant.PREF_REMOTE_CONFIG_SUFFIX);
             if (TextUtils.isEmpty(suffix)) {
                 suffix = "";
             }

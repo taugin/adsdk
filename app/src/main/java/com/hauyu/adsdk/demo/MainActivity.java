@@ -47,6 +47,7 @@ import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.db.DBManager;
 import com.komob.adsdk.core.framework.ActivityMonitor;
 import com.komob.adsdk.ump.UmpConsentHelper;
+import com.komob.adsdk.utils.SpUtils;
 import com.komob.adsdk.utils.Utils;
 
 import java.math.BigDecimal;
@@ -298,15 +299,15 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         String tag = null;
 
         tag = (String) mAdSdkSpinner.getTag();
-        position = (int) Utils.getLong(this, tag);
+        position = (int) SpUtils.getLong(this, tag);
         mAdSdkSpinner.setSelection(position);
 
         tag = (String) mAdLayoutSpinner.getTag();
-        position = (int) Utils.getLong(this, tag);
+        position = (int) SpUtils.getLong(this, tag);
         mAdLayoutSpinner.setSelection(position);
 
         tag = (String) mAdBannerSizeSpinner.getTag();
-        position = (int) Utils.getLong(this, tag);
+        position = (int) SpUtils.getLong(this, tag);
         mAdBannerSizeSpinner.setSelection(position);
         String debugValue = "[c:" + Utils.isUsbConnected(this) + "|d:" + Utils.isDebugEnabled(this) + "]";
         setTitle(getTitle() + " - " + debugValue);
@@ -699,7 +700,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
         try {
             String prefKey = (String) parent.getTag();
-            Utils.putLong(this, prefKey, position);
+            SpUtils.putLong(this, prefKey, position);
         } catch (Exception e) {
         }
     }

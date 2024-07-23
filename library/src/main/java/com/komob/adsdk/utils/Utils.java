@@ -8,7 +8,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -22,7 +21,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -43,7 +41,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * Created by Administrator on 2017/12/27.
@@ -129,159 +126,6 @@ public class Utils {
             }
         }
         return null;
-    }
-
-    public static void clearPrefs(Context context, String key) {
-        try {
-            key = encryptSpKey(context, key);
-            PreferenceManager.getDefaultSharedPreferences(context).edit().remove(key).apply();
-        } catch (Exception | Error e) {
-        }
-    }
-
-    public static void putString(Context context, String key, String value) {
-        putString(context, key, value, false);
-    }
-
-    public static void putString(Context context, String key, String value, boolean sync) {
-        try {
-            key = encryptSpKey(context, key);
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, value);
-            if (sync) {
-                editor.commit();
-            } else {
-                editor.apply();
-            }
-        } catch (Exception | Error e) {
-        }
-    }
-
-    public static String getString(Context context, String key) {
-        return getString(context, key, null);
-    }
-
-    public static String getString(Context context, String key, String defValue) {
-        key = encryptSpKey(context, key);
-        return PreferenceManager.getDefaultSharedPreferences(context).getString(key, defValue);
-    }
-
-    public static void putBoolean(Context context, String key, boolean value) {
-        putBoolean(context, key, value, false);
-    }
-
-    public static void putBoolean(Context context, String key, boolean value, boolean sync) {
-        try {
-            key = encryptSpKey(context, key);
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(key, value);
-            if (sync) {
-                editor.commit();
-            } else {
-                editor.apply();
-            }
-        } catch (Exception | Error e) {
-        }
-    }
-
-    public static boolean getBoolean(Context context, String key) {
-        return getBoolean(context, key, false);
-    }
-
-    public static boolean getBoolean(Context context, String key, boolean defValue) {
-        key = encryptSpKey(context, key);
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, defValue);
-    }
-
-    public static void putLong(Context context, String key, long value) {
-        putLong(context, key, value, false);
-    }
-
-    public static void putLong(Context context, String key, long value, boolean sync) {
-        try {
-            key = encryptSpKey(context, key);
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(key, value);
-            if (sync) {
-                editor.commit();
-            } else {
-                editor.apply();
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    public static long getLong(Context context, String key) {
-        return getLong(context, key, 0);
-    }
-
-    public static long getLong(Context context, String key, long defValue) {
-        key = encryptSpKey(context, key);
-        return PreferenceManager.getDefaultSharedPreferences(context).getLong(key, defValue);
-    }
-
-    public static void putFloat(Context context, String key, float value) {
-        putFloat(context, key, value, false);
-    }
-
-    public static void putFloat(Context context, String key, float value, boolean sync) {
-        try {
-            key = encryptSpKey(context, key);
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit().putFloat(key, value);
-            if (sync) {
-                editor.commit();
-            } else {
-                editor.apply();
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    public static float getFloat(Context context, String key) {
-        return getFloat(context, key, 0);
-    }
-
-    public static float getFloat(Context context, String key, float defValue) {
-        key = encryptSpKey(context, key);
-        return PreferenceManager.getDefaultSharedPreferences(context).getFloat(key, defValue);
-    }
-
-    public static void putStringSet(Context context, String key, Set<String> value) {
-        putStringSet(context, key, value, false);
-    }
-
-    public static void putStringSet(Context context, String key, Set<String> value, boolean sync) {
-        try {
-            key = encryptSpKey(context, key);
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(key, value);
-            if (sync) {
-                editor.commit();
-            } else {
-                editor.apply();
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    public static Set<String> getStringSet(Context context, String key) {
-        return getStringSet(context, key, null);
-    }
-
-    public static Set<String> getStringSet(Context context, String key, Set<String> sets) {
-        key = encryptSpKey(context, key);
-        return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(key, sets);
-    }
-
-    private static String encryptSpKey(Context context, String key) {
-        if (isContainKey(context, key)) {
-            return key;
-        }
-        return "pref_" + Utils.string2MD5(key);
-    }
-
-    private static boolean isContainKey(Context context, String key) {
-        try {
-            return PreferenceManager.getDefaultSharedPreferences(context).contains(key);
-        } catch (Exception e) {
-        }
-        return false;
     }
 
     public static void copyAssets(Context context, String fileName, String dstPath) {

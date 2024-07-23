@@ -10,7 +10,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.log.Log;
-import com.komob.adsdk.utils.Utils;
+import com.komob.adsdk.utils.SpUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -116,7 +116,7 @@ public class VRemoteConfig implements Handler.Callback {
 
     private boolean isNeedRequest() {
         long now = System.currentTimeMillis();
-        long last = Utils.getLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME);
+        long last = SpUtils.getLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME);
         boolean needRequest = now - last > getRefreshInterval();
         long leftTime = getRefreshInterval() - (now - last);
         if (leftTime > 0) {
@@ -140,13 +140,13 @@ public class VRemoteConfig implements Handler.Callback {
                         if (mInstance != null) {
                             mInstance.fetchAndActivate();
                         }
-                        Utils.putLong(mContext, Constant.PREF_REMOTE_CONFIG_UPDATE_TIME, System.currentTimeMillis());
+                        SpUtils.putLong(mContext, Constant.PREF_REMOTE_CONFIG_UPDATE_TIME, System.currentTimeMillis());
                     } else {
                         Log.iv(Log.TAG, "error : " + task.getException());
                     }
                 }
             });
-            Utils.putLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
+            SpUtils.putLong(mContext, PREF_REMOTE_CONFIG_REQUEST_TIME, System.currentTimeMillis());
             updateRefreshInterval();
         } catch (Exception | Error e) {
             Log.iv(Log.TAG, "error : " + e);
@@ -161,11 +161,11 @@ public class VRemoteConfig implements Handler.Callback {
         } catch (Exception | Error e) {
             interval = REFRESH_INTERVAL;
         }
-        Utils.putLong(mContext, PREF_REFRESH_INTERVAL, interval);
+        SpUtils.putLong(mContext, PREF_REFRESH_INTERVAL, interval);
     }
 
     private long getRefreshInterval() {
-        long interval = Utils.getLong(mContext, PREF_REFRESH_INTERVAL, REFRESH_INTERVAL);
+        long interval = SpUtils.getLong(mContext, PREF_REFRESH_INTERVAL, REFRESH_INTERVAL);
         return interval;
     }
 

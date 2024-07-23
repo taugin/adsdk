@@ -5,7 +5,7 @@ import android.content.Context;
 import com.komob.adsdk.AdImpData;
 import com.komob.adsdk.core.db.DBManager;
 import com.komob.adsdk.log.Log;
-import com.komob.adsdk.utils.Utils;
+import com.komob.adsdk.utils.SpUtils;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -61,25 +61,25 @@ public class AdStatManager {
     }
 
     private void recordAllImpCount() {
-        long impCount = Utils.getLong(mContext, PREF_ALL_IMP_COUNT, 0);
+        long impCount = SpUtils.getLong(mContext, PREF_ALL_IMP_COUNT, 0);
         long allImpCount = impCount + 1;
-        Utils.putLong(mContext, PREF_ALL_IMP_COUNT, allImpCount);
+        SpUtils.putLong(mContext, PREF_ALL_IMP_COUNT, allImpCount);
         Log.iv(Log.TAG_SDK, "all imp count : " + allImpCount);
     }
 
     private void recordAllClkCount() {
-        long clkCount = Utils.getLong(mContext, PREF_ALL_CLK_COUNT, 0);
+        long clkCount = SpUtils.getLong(mContext, PREF_ALL_CLK_COUNT, 0);
         long allClkCount = clkCount + 1;
-        Utils.putLong(mContext, PREF_ALL_CLK_COUNT, allClkCount);
+        SpUtils.putLong(mContext, PREF_ALL_CLK_COUNT, allClkCount);
         Log.iv(Log.TAG_SDK, "all clk count : " + allClkCount);
     }
 
     public long getAllImpCount() {
-        return Utils.getLong(mContext, PREF_ALL_IMP_COUNT, 0);
+        return SpUtils.getLong(mContext, PREF_ALL_IMP_COUNT, 0);
     }
 
     public long getAllClkCount() {
-        return Utils.getLong(mContext, PREF_ALL_CLK_COUNT, 0);
+        return SpUtils.getLong(mContext, PREF_ALL_CLK_COUNT, 0);
     }
 
     public void recordAdImpression(final AdImpData adImpData) {

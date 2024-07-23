@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.komob.adsdk.http.Http;
 import com.komob.adsdk.http.OnStringCallback;
+import com.komob.adsdk.utils.SpUtils;
 import com.komob.adsdk.utils.Utils;
 
 import org.json.JSONObject;
@@ -63,7 +64,7 @@ public class IpChecker {
     }
 
     public String getIpAddress() {
-        return Utils.getString(mContext, PREF_CURRENT_IPADDR);
+        return SpUtils.getString(mContext, PREF_CURRENT_IPADDR);
     }
 
     public void check() {
@@ -123,7 +124,7 @@ public class IpChecker {
             String ipAddr = ipParser.parse(content);
             Log.iv(Log.TAG, "ipaddr : " + ipAddr);
             if (!TextUtils.isEmpty(ipAddr)) {
-                Utils.putString(mContext, PREF_CURRENT_IPADDR, ipAddr);
+                SpUtils.putString(mContext, PREF_CURRENT_IPADDR, ipAddr);
                 return true;
             }
         }

@@ -37,6 +37,7 @@ import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.log.Log;
+import com.komob.adsdk.utils.SpUtils;
 import com.komob.adsdk.utils.Utils;
 import com.komob.api.RFileConfig;
 
@@ -101,7 +102,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 if (appLovinSdk != null) {
                     appLovinSdk.setMediationProvider("max");
                     if (isDebugDevice(mContext)) {
-                        String gaid = Utils.getString(mContext, Constant.PREF_GAID);
+                        String gaid = SpUtils.getString(mContext, Constant.PREF_GAID);
                         Log.iv(Log.TAG, "applovin debug mode gaid : " + gaid);
                         if (!TextUtils.isEmpty(gaid)) {
                             appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList(new String[]{gaid}));

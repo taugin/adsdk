@@ -11,6 +11,7 @@ import com.komob.adsdk.InternalStat;
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.stat.EventImpl;
+import com.komob.adsdk.utils.SpUtils;
 import com.komob.adsdk.utils.Utils;
 
 import org.json.JSONArray;
@@ -188,10 +189,10 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
                     long msclkDuration = msClkCfg.getMsClkDuration();
                     if (adClickDuration <= msclkDuration) {
                         String prefKey = String.format(Locale.ENGLISH, PREF_MISTAKE_TIME, pidMd5);
-                        Utils.putLong(mContext, prefKey, System.currentTimeMillis());
+                        SpUtils.putLong(mContext, prefKey, System.currentTimeMillis());
                         prefKey = String.format(Locale.ENGLISH, PREF_MISTAKE_COUNT, pidMd5);
-                        long triggerCount = Utils.getLong(mContext, prefKey, 0) + +1;
-                        Utils.putLong(mContext, prefKey, triggerCount);
+                        long triggerCount = SpUtils.getLong(mContext, prefKey, 0) + +1;
+                        SpUtils.putLong(mContext, prefKey, triggerCount);
                         Log.iv(Log.TAG, "pid : " + pid + " mistake click");
                         String msClkAdsInfo = String.format(Locale.ENGLISH, "%s|%s", pid, msclkDuration);
                         InternalStat.reportEvent(mContext, "msclk_ads_info", msClkAdsInfo);
@@ -212,9 +213,9 @@ public class BounceRateManager implements ActivityMonitor.OnAppMonitorCallback {
                 int triggerCount = msClkCfg.getMsClkTriggerCount();
                 long mistakeDelayTime = msClkCfg.getMsClkDelayTime();
                 String prefKey = String.format(Locale.ENGLISH, PREF_MISTAKE_TIME, pidMd5);
-                long mistakeTime = Utils.getLong(mContext, prefKey, 0);
+                long mistakeTime = SpUtils.getLong(mContext, prefKey, 0);
                 prefKey = String.format(Locale.ENGLISH, PREF_MISTAKE_COUNT, pidMd5);
-                long mistakeCount = Utils.getLong(mContext, prefKey, 0);
+                long mistakeCount = SpUtils.getLong(mContext, prefKey, 0);
                 boolean blockPid = isBlock && mistakeCount >= triggerCount && System.currentTimeMillis() < mistakeTime + mistakeDelayTime;
                 return blockPid;
             }

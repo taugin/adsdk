@@ -40,6 +40,7 @@ import com.komob.adsdk.data.parse.IParser;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.stat.IEvent;
+import com.komob.adsdk.utils.SpUtils;
 import com.komob.adsdk.utils.Utils;
 import com.komob.api.RFileConfig;
 
@@ -596,7 +597,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     protected void updateLastNoFillTime() {
         try {
             String pref = getSdkName() + "_" + mPidConfig.getPid();
-            Utils.putLong(mContext, pref, System.currentTimeMillis());
+            SpUtils.putLong(mContext, pref, System.currentTimeMillis());
             Log.iv(Log.TAG, pref + " : " + System.currentTimeMillis());
         } catch (Exception e) {
         }
@@ -610,7 +611,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     protected long getLastNoFillTime() {
         try {
             String pref = getSdkName() + "_" + mPidConfig.getPid();
-            return Utils.getLong(mContext, pref, 0);
+            return SpUtils.getLong(mContext, pref, 0);
         } catch (Exception e) {
         }
         return 0;
@@ -1416,18 +1417,18 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
      */
     private void reportTaichiEvent(Context context, float revenue) {
         String prefRevenue = "pref_total_taichi_revenue";
-        float lastTotalRevenue = Utils.getFloat(context, prefRevenue);
+        float lastTotalRevenue = SpUtils.getFloat(context, prefRevenue);
         float curTotalRevenue = lastTotalRevenue + revenue;
         Log.iv(Log.TAG, "last total revenue : " + lastTotalRevenue + " , current total revenue : " + curTotalRevenue + " , revenue : " + revenue);
         if (curTotalRevenue >= 0.01f) {
-            Utils.putFloat(context, prefRevenue, 0f);
+            SpUtils.putFloat(context, prefRevenue, 0f);
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("currency", "USD");
             map.put("value", curTotalRevenue);
             map.put("micro_value", Double.valueOf(curTotalRevenue * 1000000).intValue());
             InternalStat.reportEvent(context, Constant.AD_TOTAL_ADS_REVENUE_001, map);
         } else {
-            Utils.putFloat(context, prefRevenue, curTotalRevenue);
+            SpUtils.putFloat(context, prefRevenue, curTotalRevenue);
         }
     }
 
