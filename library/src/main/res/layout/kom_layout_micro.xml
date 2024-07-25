@@ -8,42 +8,69 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp">
 
-        <ImageView
-            android:id="@+id/kom_native_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_centerVertical="true"
-            android:contentDescription="@null" />
+        <RelativeLayout
+            android:id="@+id/kom_native_cover_info"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/kom_black_bg">
+
+            <ImageView
+                android:id="@+id/kom_native_image_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter" />
+
+            <FrameLayout
+                android:id="@+id/kom_native_media_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:contentDescription="@null"
+                android:gravity="center" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginHorizontal="4dp"
             android:layout_toStartOf="@+id/rab_native_action_btn_layout"
-            android:layout_toEndOf="@+id/kom_native_icon"
+            android:layout_toEndOf="@+id/kom_native_cover_info"
             android:layout_weight="1"
             android:minHeight="56dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/kom_native_title"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/common_sponsored_label"
-                android:ellipsize="end"
-                android:gravity="start|top"
-                android:maxLines="2"
-                android:minHeight="24dp"
-                android:text="Charge Master"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/kom_native_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:id="@+id/kom_native_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/common_sponsored_label"
+                    android:ellipsize="end"
+                    android:gravity="start|top"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:minHeight="24dp"
+                    android:text="Charge Master"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/kom_native_social"
@@ -61,6 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="1dp"
+                android:layout_weight="1"
                 android:ellipsize="end"
                 android:gravity="start|center_vertical"
                 android:lines="2"
@@ -68,13 +96,13 @@
                 android:minHeight="24dp"
                 android:text="Charge Master"
                 android:textColor="@color/komTextSecondaryColor"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rab_native_action_btn_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true">
 

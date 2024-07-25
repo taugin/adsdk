@@ -41,6 +41,7 @@ import com.komob.adsdk.AdParams;
 import com.komob.adsdk.AdReward;
 import com.komob.adsdk.AdSdk;
 import com.komob.adsdk.AdError;
+import com.komob.adsdk.OnAdEventListener;
 import com.komob.adsdk.OnAdFilterListener;
 import com.komob.adsdk.SimpleAdSdkListener;
 import com.komob.adsdk.constant.Constant;
@@ -318,6 +319,25 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 return false;
             }
         });
+        AdSdk.get(this).setOnAdEventListener(new OnAdEventListener() {
+            @Override
+            public void onImpression(String placeName, String sdkName, String adType, String pid, String sceneName) {
+                updateAllAdStatus(adType);
+                if (TextUtils.equals(adType, AdSdk.AD_TYPE_NATIVE)) {
+                    AdSdk.get(getApplicationContext()).loadAdView(placeName);
+                }
+            }
+
+            @Override
+            public void onLoaded(String placeName, String sdkName, String adType, String pid) {
+                updateAllAdStatus(adType);
+            }
+
+            @Override
+            public void onDismiss(String placeName, String sdkName, String adType, String pid) {
+                updateAllAdStatus(adType);
+            }
+        });
         String ram = getResources().getString(R.string.format_string, "76G");
         Log.v(Log.TAG, "ram : " + ram);
         String debug = mDebugView.getText().toString();
@@ -341,6 +361,26 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         ProxyUtils.hookClick(findViewById(R.id.mediation_debugger));
         ProxyUtils.hookClick(findViewById(R.id.change_language));
         timer();
+    }
+
+    private void updateAllAdStatus(String adType) {
+        if (TextUtils.equals(adType, AdSdk.AD_TYPE_NATIVE)) {
+            String maxPlace = AdSdk.get(mContext).getMaxPlaceName(adType);
+            TextView textView = findViewById(R.id.load_all_native);
+            textView.setTextColor(!TextUtils.isEmpty(maxPlace) ? Color.RED : Color.BLACK);
+        } else if (TextUtils.equals(adType, AdSdk.AD_TYPE_SPLASH)) {
+            String maxPlace = AdSdk.get(mContext).getMaxPlaceName(adType);
+            TextView textView = findViewById(R.id.load_all_splash);
+            textView.setTextColor(!TextUtils.isEmpty(maxPlace) ? Color.RED : Color.BLACK);
+        } else if (TextUtils.equals(adType, AdSdk.AD_TYPE_INTERSTITIAL)) {
+            String maxPlace = AdSdk.get(mContext).getMaxPlaceName(adType);
+            TextView textView = findViewById(R.id.load_all_interstitial);
+            textView.setTextColor(!TextUtils.isEmpty(maxPlace) ? Color.RED : Color.BLACK);
+        } else if (TextUtils.equals(adType, AdSdk.AD_TYPE_REWARD)) {
+            String maxPlace = AdSdk.get(mContext).getMaxPlaceName(adType);
+            TextView textView = findViewById(R.id.load_all_reward);
+            textView.setTextColor(!TextUtils.isEmpty(maxPlace) ? Color.RED : Color.BLACK);
+        }
     }
 
     private void timer() {
