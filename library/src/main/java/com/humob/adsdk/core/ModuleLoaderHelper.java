@@ -29,15 +29,29 @@ public class ModuleLoaderHelper {
     private static Map<String, Class<?>> sSdkLoaderMap = new HashMap<>();
 
     static {
-        sSdkLoaderMap.put(Constant.AD_SDK_ADMOB, AdmobLoader.class);
-        sSdkLoaderMap.put(Constant.AD_SDK_APPLOVIN, AppLovinLoader.class);
-        sSdkLoaderMap.put(Constant.AD_SDK_TRADPLUS, TradPlusLoader.class);
-        sSdkLoaderMap.put(Constant.AD_SDK_SPREAD, SpLoader.class);
-        sSdkLoaderMap.put(Constant.AD_NETWORK_BIGO, BigoLoader.class);
+        try {
+            sSdkLoaderMap.put(Constant.AD_SDK_ADMOB, AdmobLoader.class);
+        } catch (Exception e) {
+        }
+        try {
+            sSdkLoaderMap.put(Constant.AD_SDK_APPLOVIN, AppLovinLoader.class);
+        } catch (Exception e) {
+        }
+        try {
+            sSdkLoaderMap.put(Constant.AD_SDK_TRADPLUS, TradPlusLoader.class);
+        } catch (Exception e) {
+        }
+        try {
+            sSdkLoaderMap.put(Constant.AD_SDK_SPREAD, SpLoader.class);
+        } catch (Exception e) {
+        }
+        try {
+            sSdkLoaderMap.put(Constant.AD_NETWORK_BIGO, BigoLoader.class);
+        } catch (Exception e) {
+        }
     }
 
     public static boolean isModuleLoaded(String sdk) {
-
         if (TextUtils.equals(Constant.AD_SDK_ADMOB, sdk)) {
             return hasAdmobModule();
         }
@@ -77,8 +91,7 @@ public class ModuleLoaderHelper {
 
     private static boolean hasAdmobModule() {
         try {
-            MobileAds.class.getName();
-            return true;
+            return !TextUtils.isEmpty(MobileAds.class.getName());
         } catch (Exception | Error e) {
             Log.iv(Log.TAG, "error : " + e);
         }
@@ -87,8 +100,7 @@ public class ModuleLoaderHelper {
 
     private static boolean hasApplovinModule() {
         try {
-            AppLovinSdk.class.getName();
-            return true;
+            return !TextUtils.isEmpty(AppLovinSdk.class.getName());
         } catch (Exception | Error e) {
             Log.iv(Log.TAG, "error : " + e);
         }
@@ -97,8 +109,7 @@ public class ModuleLoaderHelper {
 
     private static boolean hasTradPlusModule() {
         try {
-            TradPlus.class.getName();
-            return true;
+            return !TextUtils.isEmpty(TradPlus.class.getName());
         } catch (Exception | Error e) {
             Log.iv(Log.TAG, "error : " + e);
         }
@@ -107,8 +118,7 @@ public class ModuleLoaderHelper {
 
     private static boolean hasBigoModule() {
         try {
-            BigoAdSdk.class.getName();
-            return true;
+            return !TextUtils.isEmpty(BigoAdSdk.class.getName());
         } catch (Exception | Error e) {
             Log.iv(Log.TAG, "error : " + e);
         }
