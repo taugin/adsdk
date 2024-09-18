@@ -752,18 +752,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private class MaxRewardListener extends AbstractAdListener {
         MaxRewardedAdListener maxRewardedAdListener = new MaxRewardedAdListener() {
             @Override
-            public void onRewardedVideoStarted(MaxAd ad) {
-                Log.iv(Log.TAG, "");
-                notifyRewardAdsStarted();
-            }
-
-            @Override
-            public void onRewardedVideoCompleted(MaxAd ad) {
-                Log.iv(Log.TAG, "");
-                notifyRewardAdsCompleted();
-            }
-
-            @Override
             public void onUserRewarded(MaxAd ad, MaxReward reward) {
                 Log.iv(Log.TAG, "");
                 AdReward item = null;
