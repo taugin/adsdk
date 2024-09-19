@@ -158,26 +158,31 @@ public class TradPlusBindView extends BaseBindNativeView {
                     // facebook会需要一个adchoice的容器来填充adchoice
                     ViewGroup adChoiceViewLayout = viewGroup.findViewById(mParams.getAdChoices());
                     if (adChoiceViewLayout != null) {
-                        if (!renderAdChoice(adChoiceViewLayout, mTPCustomNativeAd)) {
-                            Drawable adChoiceDrawable = tpNativeAdView.getAdChoiceImage();
-                            String adChoiceUrl = tpNativeAdView.getAdChoiceUrl();
-                            Log.iv(Log.TAG, "adChoiceDrawable : " + adChoiceDrawable);
-                            Log.iv(Log.TAG, "adChoiceUrl : " + adChoiceUrl);
-                            if (adChoiceDrawable != null) {
-                                ImageView imageView = new ImageView(mContext);
-                                imageView.setImageDrawable(adChoiceDrawable);
-                                adChoiceViewLayout.addView(imageView);
-                            } else if (adChoiceUrl != null) {
-                                ImageView imageView = new ImageView(mContext);
-                                TPImageLoader.getInstance().loadImage(imageView, adChoiceUrl);
-                                adChoiceViewLayout.addView(imageView);
-                                putValue(AD_CHOICES, adChoiceUrl);
-                            } else {
-                                FrameLayout frameLayout = new FrameLayout(mContext);
-                                int size = Utils.dp2px(mContext, 20);
-                                adChoiceViewLayout.addView(frameLayout, -2, size);
-                                setAdChoicesContainer(frameLayout, false);
+                        Object adChoiceView = tpNativeAdView.getAdChoiceView();
+                        Drawable adChoiceDrawable = tpNativeAdView.getAdChoiceImage();
+                        String adChoiceUrl = tpNativeAdView.getAdChoiceUrl();
+                        Log.iv(Log.TAG, "adChoiceView : " + adChoiceView);
+                        Log.iv(Log.TAG, "adChoiceDrawable : " + adChoiceDrawable);
+                        Log.iv(Log.TAG, "adChoiceUrl : " + adChoiceUrl);
+                        if (adChoiceView instanceof View) {
+                            try {
+                                adChoiceViewLayout.addView((View) adChoiceView);
+                            } catch (Exception e) {
                             }
+                        } else if (adChoiceDrawable != null) {
+                            ImageView imageView = new ImageView(mContext);
+                            imageView.setImageDrawable(adChoiceDrawable);
+                            adChoiceViewLayout.addView(imageView);
+                        } else if (adChoiceUrl != null) {
+                            ImageView imageView = new ImageView(mContext);
+                            TPImageLoader.getInstance().loadImage(imageView, adChoiceUrl);
+                            adChoiceViewLayout.addView(imageView);
+                            putValue(AD_CHOICES, adChoiceUrl);
+                        } else {
+                            FrameLayout frameLayout = new FrameLayout(mContext);
+                            int size = Utils.dp2px(mContext, 20);
+                            adChoiceViewLayout.addView(frameLayout, -2, size);
+                            setAdChoicesContainer(frameLayout, false);
                         }
                     }
 
@@ -195,22 +200,5 @@ public class TradPlusBindView extends BaseBindNativeView {
             }
             return null;
         }
-    }
-
-    private boolean renderAdChoice(ViewGroup viewGroup, TPCustomNativeAd customNativeAd) {
-        try {
-            Object obj = customNativeAd.getCustomNetworkObj();
-            if (obj instanceof com.mbridge.msdk.out.Campaign) {
-                // 设置mintegral的ad choice
-                com.mbridge.msdk.out.Campaign campaign = (com.mbridge.msdk.out.Campaign) obj;
-                com.mbridge.msdk.widget.MBAdChoice mbAdChoice = new com.mbridge.msdk.widget.MBAdChoice(viewGroup.getContext());
-                mbAdChoice.setCampaign(campaign);
-                viewGroup.addView(mbAdChoice);
-                return true;
-            }
-        } catch (Exception | Error e) {
-            Log.iv(Log.TAG, "show native ad choice view error : " + e);
-        }
-        return false;
     }
 }
