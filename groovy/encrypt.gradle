@@ -60,7 +60,6 @@ try {
             r.credentials.username = "5ef3647994513bd170c627be"
             r.credentials.password = "xcgJSde4Zuo4"
         }
-        repo.maven { r -> r.url = "https://taugin.gitee.io/werepo" }
     }
 } catch (Exception e) {
 }

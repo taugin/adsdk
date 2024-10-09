@@ -141,7 +141,4 @@ def isBuildAabFile() {
 if (isBuildAabFile()) {
     println "apply from aab.gradle"
     apply from: '../groovy/resguard_aab.gradle'
-} else {
-    println "apply from apk.gradle"
-    apply from: '../groovy/resguard_apk.gradle'
 }
