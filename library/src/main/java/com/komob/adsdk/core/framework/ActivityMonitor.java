@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.komob.adsdk.adloader.applovin.AppLovinLoader;
 import com.komob.adsdk.log.Log;
 
 import java.lang.ref.WeakReference;
@@ -99,6 +100,10 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityDestroyed(Activity activity) {
+        try {
+            AppLovinLoader.destroyNativeLoader(activity.getClass().getName());
+        } catch (Exception e) {
+        }
     }
 
     public boolean appOnTop() {

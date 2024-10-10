@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -41,8 +42,10 @@ import com.komob.adsdk.utils.SpUtils;
 import com.komob.adsdk.utils.Utils;
 import com.komob.api.RFileConfig;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -69,6 +72,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private MaxSplashListener maxSplashListener;
     private MaxInterstitialListener maxInterstitialListener;
     private MaxRewardListener maxRewardListener;
+    private static Map<Pair<MaxNativeAdLoader, MaxAd>, String> sLoaderMap = new HashMap<>();
 
     @Override
     protected BaseBindNativeView getBaseBindNativeView() {
@@ -998,6 +1002,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 if (!isTemplateRendering()) {
                     mApplovinBindView.updateApplovinNative(getContext(), maxNativeAdView, mPidConfig);
                 }
+                recordNativeLoader(viewGroup, mMaxNativeAdLoader, mMaxAd);
             } else {
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "MaxNativeAdView is null");
             }
@@ -1353,5 +1358,42 @@ public class AppLovinLoader extends AbstractSdkLoader {
             return maxAd.getNetworkPlacement();
         }
         return null;
+    }
+
+    private static void recordNativeLoader(View view, MaxNativeAdLoader loader, MaxAd maxAd) {
+        try {
+            String activityName = RFileConfig.findActivity(view.getContext()).getClass().getName();
+            sLoaderMap.put(new Pair<>(loader, maxAd), activityName);
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    public static void destroyNativeLoader(String className) {
+        try {
+            if (sLoaderMap != null && !sLoaderMap.isEmpty()) {
+                List<Pair<MaxNativeAdLoader, MaxAd>> deletedList = new ArrayList<>();
+                for (Map.Entry<Pair<MaxNativeAdLoader, MaxAd>, String> entry : sLoaderMap.entrySet()) {
+                    Pair<MaxNativeAdLoader, MaxAd> pair = entry.getKey();
+                    String activityName = entry.getValue();
+                    if (TextUtils.equals(activityName, className)) {
+                        if (pair != null) {
+                            if (pair.first != null) {
+                                pair.first.destroy(pair.second);
+                                deletedList.add(pair);
+                            }
+                        }
+                    }
+                }
+                if (!deletedList.isEmpty()) {
+                    for (Pair<MaxNativeAdLoader, MaxAd> pair : deletedList) {
+                        sLoaderMap.remove(pair);
+                    }
+                }
+                deletedList.clear();
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
     }
 }

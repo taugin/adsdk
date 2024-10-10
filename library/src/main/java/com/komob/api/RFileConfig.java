@@ -3,6 +3,7 @@ package com.komob.api;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.view.View;
 import android.view.Window;
@@ -82,6 +83,21 @@ public class RFileConfig {
     public static int kom_action_view_multiple = R.id.kom_action_view_multiple;
     public static int kom_arrow_back = R.id.kom_arrow_back;
 
+    public static Activity findActivity(Context context) {
+        try {
+            do {
+                if (context instanceof Activity) {
+                    return (Activity) context;
+                } else if (context instanceof ContextWrapper) {
+                    context = ((ContextWrapper) context).getBaseContext();
+                } else {
+                    return null;
+                }
+            } while (context != null);
+        } catch (Exception e) {
+        }
+        return null;
+    }
 
     static class FActivity extends Activity {
         private Application application;
