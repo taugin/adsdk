@@ -210,7 +210,7 @@ dependencies {
         implementation 'com.bigossp:bigo-ads:4.9.1'
         if (isContains(include_platform_list, APPLOVIN)) {
             // applovin Bigo mediation
-            implementation 'com.bigossp:max-mediation:4.9.1.0'
+            implementation 'com.applovin.mediation:bigoads-adapter:4.9.1.0'
         }
         if (isContains(include_platform_list, TRADPLUS)) {
             // tradplus Bigo mediation
