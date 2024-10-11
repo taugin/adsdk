@@ -101,7 +101,7 @@ public class ActivityMonitor implements Application.ActivityLifecycleCallbacks {
     @Override
     public void onActivityDestroyed(Activity activity) {
         try {
-            AppLovinLoader.destroyNativeLoader(activity.getClass().getName());
+            AppLovinLoader.destroyAdsOnActivityFinished(activity.getClass().getName() + "@" + Integer.toHexString(activity.hashCode()));
         } catch (Exception e) {
         }
     }
