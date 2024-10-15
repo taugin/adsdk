@@ -377,10 +377,9 @@ def transformAab2ApkFlavor() {
     println "> Task :${project.name}:transformAab2Apk"
     if (project.android.productFlavors.size() > 0) {// 如果有产品风味
         project.android.productFlavors.each { flavor ->
-            def productFlavor = toUpperCaseFirstOne(flavor.name)
             def baseName = getArchivesBaseName()
             def aabOutputAabFileName = baseName + "-" + flavor.name + "-release.aab"
-            transformAab2ApkLocked(productFlavor, aabOutputAabFileName)
+            transformAab2ApkLocked(flavor.name, aabOutputAabFileName)
         }
     } else {
         def baseName = getArchivesBaseName()
@@ -389,7 +388,8 @@ def transformAab2ApkFlavor() {
     }
 }
 
-def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
+def transformAab2ApkLocked(productFlavor, aabOutputAabFileName) {
+    def flavorName = toUpperCaseFirstOne(productFlavor)
     if (aabOutputAabFileName != null) {
         aabOutputAabFileName = aabOutputAabFileName.replace(".apk", ".aab")
     }
@@ -419,7 +419,7 @@ def transformAab2ApkLocked(flavorName, aabOutputAabFileName) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] finalBundleFile is not exist"
         return
     }
-    def signConfig = getSignConfig(flavorName)
+    def signConfig = getSignConfig(productFlavor)
     if (signConfig == null) {
         System.err.println "> Task :${project.name}:transformAab2Apk [" + flavorName + "] signConfig is Null"
         return
