@@ -38,7 +38,6 @@ import com.komob.adsdk.data.config.AdPlace;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.data.parse.IParser;
 import com.komob.adsdk.log.Log;
-import com.komob.adsdk.stat.AdImpReport;
 import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.stat.IEvent;
 import com.komob.adsdk.utils.SpUtils;
@@ -524,11 +523,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     }
 
     protected boolean isCachedAdExpired(Object object) {
-        // 如果忽略过期时间，则返回false，标识对象没有过期
-        if (ignoreAdExpired()) {
-            Log.iv(Log.TAG, formatLog("ignore ad expire"));
-            return false;
-        }
         try {
             Long timeObj = mCachedTime.get(object);
             if (timeObj == null) {
@@ -550,28 +544,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             mCachedTime.remove(object);
         } catch (Exception | Error e) {
         }
-    }
-
-    /**
-     * max、tradplus平台是聚合平台，
-     * 平台本身就具有判断广告过期的条件，
-     * 因此对于这些平台降忽略对插屏和激励视频过期时间的判断
-     *
-     * @return
-     */
-    private boolean ignoreAdExpired() {
-        // applovin interstitial reward
-        if (TextUtils.equals(Constant.AD_SDK_APPLOVIN, getSdkName())
-                && (TextUtils.equals(Constant.TYPE_INTERSTITIAL, getAdType())
-                || TextUtils.equals(Constant.TYPE_REWARD, getAdType())
-                || TextUtils.equals(Constant.TYPE_SPLASH, getAdType()))) {
-            return true;
-        }
-        // tradplus interstitial reward
-        if (TextUtils.equals(Constant.AD_SDK_TRADPLUS, getSdkName())) {
-            return true;
-        }
-        return false;
     }
 
     @Override
