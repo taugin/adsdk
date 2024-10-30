@@ -38,6 +38,7 @@ import com.komob.adsdk.data.config.AdPlace;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.data.parse.IParser;
 import com.komob.adsdk.log.Log;
+import com.komob.adsdk.stat.AdImpReport;
 import com.komob.adsdk.stat.EventImpl;
 import com.komob.adsdk.stat.IEvent;
 import com.komob.adsdk.utils.SpUtils;
@@ -1247,8 +1248,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             l.onAdImpData(adImpData);
         }
         AdStatManager.get(mContext).recordAdImpression(adImpData);
-        reportAdImpression(adImpData);
-        reportTaichiEvent(adImpData);
         try {
             notifyBidResultInternal(adImpData);
         } catch (Exception e) {
@@ -1331,142 +1330,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         return false;
     }
 
-    /**
-     * 上报ad_impression事件，firebase通过此事件计算收入
-     *
-     * @param adImpData
-     */
-    private void reportAdImpression(AdImpData adImpData) {
-        try {
-            if (adImpData != null && isEnableReportAdImpression()) {
-                String networkName = adImpData.getNetwork();
-                boolean isReportFirebase = true;
-                if (isForbidReportAdImpressionAdmob()) {
-                    if (networkName != null) {
-                        String temp = networkName.toLowerCase(Locale.ENGLISH);
-                        if (temp != null && temp.contains("admob")) {
-                            isReportFirebase = false;
-                        }
-                    }
-                }
-                String platform = adImpData.getPlatform();
-                String unitName = adImpData.getUnitName();
-                String placement = adImpData.getPlacement();
-                String adType = adImpData.getAdType();
-                String networkPid = adImpData.getNetworkPid();
-                String unitId = adImpData.getUnitId();
-                String adPrecision = adImpData.getPrecision();
-                boolean adBidding = adImpData.isBidding();
-                Map<String, Object> params = new HashMap<String, Object>();
-                params.put("ad_platform", platform);
-                params.put("ad_source", networkName);
-                params.put("ad_format", adImpData.getAdFormat());
-                params.put("ad_type", adType);
-                params.put("ad_unit_name", unitName);
-                params.put("ad_placement", placement);
-                params.put("ad_network_pid", networkPid);
-                params.put("ad_unit_id", unitId);
-                params.put("ad_precision", adPrecision);
-                params.put("ad_bidding", adBidding);
-                params.put("value", adImpData.getValue());
-                params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
-                params.put("currency", "USD"); // All Applovin revenue is sent in USD
-                if (isReportFirebase) {
-                    InternalStat.sendFirebaseAnalytics(mContext, Constant.AD_IMPRESSION, null, params);
-                }
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    private void reportTaichiEvent(AdImpData adImpData) {
-        try {
-            if (adImpData != null && isEnableReportTaichi30()) {
-                Double revenue = adImpData.getValue();
-                if (revenue != null && revenue.doubleValue() > 0) {
-                    reportTaichiEvent(mContext, revenue.floatValue());
-                }
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    /**
-     * 是否禁止上报admob广告展示价值，默认不禁止，只有当admob与firebase关联时，才需要禁止
-     *
-     * @return
-     */
-    private boolean isForbidReportAdImpressionAdmob() {
-        boolean result = false;
-        try {
-            String str = DataManager.get(mContext).getString("ad_forbid_report_admob");
-            if (!TextUtils.isEmpty(str)) {
-                result = Boolean.parseBoolean(str);
-            }
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-        return result;
-    }
-
-    /**
-     * 上报taichi事件
-     *
-     * @param context
-     * @param revenue
-     */
-    private void reportTaichiEvent(Context context, float revenue) {
-        String prefRevenue = "pref_total_taichi_revenue";
-        float lastTotalRevenue = SpUtils.getFloat(context, prefRevenue);
-        float curTotalRevenue = lastTotalRevenue + revenue;
-        Log.iv(Log.TAG, "last total revenue : " + lastTotalRevenue + " , current total revenue : " + curTotalRevenue + " , revenue : " + revenue);
-        if (curTotalRevenue >= 0.01f) {
-            SpUtils.putFloat(context, prefRevenue, 0f);
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("currency", "USD");
-            map.put("value", curTotalRevenue);
-            map.put("micro_value", Double.valueOf(curTotalRevenue * 1000000).intValue());
-            InternalStat.reportEvent(context, Constant.AD_TOTAL_ADS_REVENUE_001, map);
-        } else {
-            SpUtils.putFloat(context, prefRevenue, curTotalRevenue);
-        }
-    }
-
-    /**
-     * 是否允许上报ad_impression事件
-     *
-     * @return
-     */
-    private boolean isEnableReportAdImpression() {
-        boolean result = true;
-        try {
-            String str = DataManager.get(mContext).getString("ad_enable_report_ad_impression");
-            if (!TextUtils.isEmpty(str)) {
-                result = Boolean.parseBoolean(str);
-            }
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-        return result;
-    }
-
-    /**
-     * 是否允许上报taichi30事件
-     *
-     * @return
-     */
-    private boolean isEnableReportTaichi30() {
-        boolean result = true;
-        try {
-            String str = DataManager.get(mContext).getString("ad_enable_report_taichi30");
-            if (!TextUtils.isEmpty(str)) {
-                result = Boolean.parseBoolean(str);
-            }
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-        return result;
-    }
 
     public class AbstractAdListener {
         public String impressionId = null;

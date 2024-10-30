@@ -702,11 +702,15 @@ public class Utils {
             return Constant.AD_NETWORK_EMPTY;
         }
         network = network.toLowerCase(Locale.ENGLISH);
+        network = network.replaceAll("\\s+", "").replaceAll("_", "").trim();
         if (network.contains("applovin")) {
             return Constant.AD_NETWORK_APPLOVIN;
         }
         if (network.contains("admob")) {
             return Constant.AD_NETWORK_ADMOB;
+        }
+        if (network.contains("google ad manager")) {
+            return "gam";
         }
         if (network.contains("facebook") || network.contains("meta audience network") || network.contains("audience-network")) {
             return Constant.AD_NETWORK_FACEBOOK;
@@ -735,7 +739,28 @@ public class Utils {
         if (network.contains("bigo")) {
             return Constant.AD_NETWORK_BIGO;
         }
-        return Constant.AD_NETWORK_UNKNOWN;
+        if (network.contains("yandex")) {
+            return "yandex";
+        }
+        if (network.contains("mytarget")) {
+            return "mytarget";
+        }
+        if (network.contains("bidmachine")) {
+            return "bidmachine";
+        }
+        if (network.contains("pangle")) {
+            return "pangle";
+        }
+        if (network.contains("fyber")) {
+            return "fyber";
+        }
+        if (network.contains("chartboost")) {
+            return "chartboost";
+        }
+        if (network.contains("applovin_exchange")) {
+            return "applovinexchange";
+        }
+        return network;
     }
 
     public static void runOnUIThread(Runnable runnable) {

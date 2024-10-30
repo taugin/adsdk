@@ -205,6 +205,40 @@ public class DBManager {
         return list;
     }
 
+    @SuppressLint("Range")
+    public AdImpData queryImpData(String impressionId) {
+        String sql = String.format(Locale.ENGLISH, "select * from %s where %s='%s'", DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_IMPRESSION_ID, impressionId);
+        Cursor cursor = null;
+        Map<String, Object> impDataMap = null;
+        try {
+            SQLiteDatabase db = mDBHelper.getReadableDatabase();
+            cursor = db.rawQuery(sql, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                impDataMap = new HashMap<>();
+                impDataMap.put(Constant.AD_PLATFORM, cursor.getString(cursor.getColumnIndex(DBHelper.AD_PLATFORM)));
+                impDataMap.put(Constant.AD_NETWORK, cursor.getString(cursor.getColumnIndex(DBHelper.AD_NETWORK)));
+                impDataMap.put(Constant.AD_FORMAT, cursor.getString(cursor.getColumnIndex(DBHelper.AD_UNIT_FORMAT)));
+                impDataMap.put(Constant.AD_UNIT_NAME, cursor.getString(cursor.getColumnIndex(DBHelper.AD_UNIT_NAME)));
+                impDataMap.put(Constant.AD_TYPE, cursor.getString(cursor.getColumnIndex(DBHelper.AD_TYPE)));
+                impDataMap.put(Constant.AD_PLACEMENT, cursor.getString(cursor.getColumnIndex(DBHelper.AD_PLACEMENT)));
+                impDataMap.put(Constant.AD_NETWORK_PID, cursor.getString(cursor.getColumnIndex(DBHelper.AD_NETWORK_PID)));
+                impDataMap.put(Constant.AD_PRECISION, cursor.getString(cursor.getColumnIndex(DBHelper.AD_PRECISION)));
+                impDataMap.put(Constant.AD_CURRENCY, cursor.getString(cursor.getColumnIndex(DBHelper.AD_CURRENCY)));
+                impDataMap.put(Constant.AD_VALUE, cursor.getDouble(cursor.getColumnIndex(DBHelper.AD_REVENUE)));
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        if (impDataMap != null) {
+            return AdImpData.createAdImpData(impDataMap);
+        }
+        return null;
+    }
+
     public double queryAverageRevenue(String pid, int minCount) {
         String sql = String.format(Locale.ENGLISH, "select avg(%s) as revenue_avg, count(%s) as imp_count from %s where %s='%s'", DBHelper.AD_REVENUE, DBHelper.AD_UNIT_ID, DBHelper.TABLE_AD_IMPRESSION, DBHelper.AD_UNIT_ID, pid);
         Cursor cursor = null;

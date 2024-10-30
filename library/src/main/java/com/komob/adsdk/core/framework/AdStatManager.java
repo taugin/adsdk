@@ -5,6 +5,7 @@ import android.content.Context;
 import com.komob.adsdk.AdImpData;
 import com.komob.adsdk.core.db.DBManager;
 import com.komob.adsdk.log.Log;
+import com.komob.adsdk.stat.AdImpReport;
 import com.komob.adsdk.utils.SpUtils;
 
 import java.util.Map;
@@ -91,6 +92,8 @@ public class AdStatManager {
                 }
             }
         });
+        AdImpReport.reportAdImpression(mContext, adImpData);
+        AdImpReport.reportTaichiEvent(mContext, adImpData);
     }
 
     public void recordAdClick(final String impressionId) {
@@ -98,6 +101,12 @@ public class AdStatManager {
             @Override
             public void run() {
                 DBManager.get(mContext).updateClickTimes(impressionId);
+                try {
+                    AdImpData adImpData = DBManager.get(mContext).queryImpData(impressionId);
+                    AdImpReport.reportAdClick(mContext, adImpData);
+                } catch (Exception e) {
+                    Log.iv(Log.TAG, "error : " + e);
+                }
             }
         });
     }
