@@ -94,6 +94,7 @@ public class AdStatManager {
         });
         AdImpReport.reportAdImpression(mContext, adImpData);
         AdImpReport.reportTaichiEvent(mContext, adImpData);
+        AdImpReport.reportAdImpressionAll(mContext, adImpData);
     }
 
     public void recordAdClick(final String impressionId) {
@@ -103,7 +104,7 @@ public class AdStatManager {
                 DBManager.get(mContext).updateClickTimes(impressionId);
                 try {
                     AdImpData adImpData = DBManager.get(mContext).queryImpData(impressionId);
-                    AdImpReport.reportAdClick(mContext, adImpData);
+                    AdImpReport.reportAdClickAll(mContext, adImpData);
                 } catch (Exception e) {
                     Log.iv(Log.TAG, "error : " + e);
                 }
