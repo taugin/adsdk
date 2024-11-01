@@ -54,26 +54,26 @@ dependencies {
 
     if (isContains(include_platform_list, APPLOVIN)) {
         // applovin
-        implementation 'com.applovin:applovin-sdk:13.0.0'
+        implementation 'com.applovin:applovin-sdk:13.0.1'
         if (isContains(include_platform_list, TRADPLUS)) {
             // tradplus applovin mediation
             implementation 'com.tradplusad:tradplus-applovin:9.12.5.0.1'
         }
         if (isContains(include_platform_list, ADMOB)) {
             // google applovin mediation
-            implementation 'com.google.ads.mediation:applovin:12.6.1.0'
+            implementation 'com.google.ads.mediation:applovin:13.0.0.1@aar'
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////
 
     if (isContains(include_platform_list, ADMOB)) {
         // admob
-        implementation 'com.google.android.gms:play-services-ads:23.3.0'
+        implementation 'com.google.android.gms:play-services-ads:23.4.0'
         if (isContains(include_platform_list, APPLOVIN)) {
             // admob applovin mediation
-            implementation 'com.applovin.mediation:google-adapter:23.3.0.1@aar'
+            implementation 'com.applovin.mediation:google-adapter:23.4.0.0@aar'
             // admanager applovin mediation
-            implementation 'com.applovin.mediation:google-ad-manager-adapter:23.3.0.1@aar'
+            implementation 'com.applovin.mediation:google-ad-manager-adapter:23.4.0.0@aar'
         }
         if (isContains(include_platform_list, TRADPLUS)) {
             // tradplus mediation
