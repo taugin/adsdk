@@ -8,9 +8,7 @@ import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.log.Log;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,44 +23,9 @@ public class InternalStat {
     private static final String SDK_NAME_APPSFLYER = "appsflyer";
     private static final String SDK_NAME_TALKING_DATA = "talkingdata";
     private static final String SDK_NAME_FACEBOOK = "facebook";
-    private static final List<String> sUmengWhiteList;
-
-    private static final List<String> sFirebaseWhiteList;
-
     private static final Map<String, Boolean> sSdkIntegrated;
 
     static {
-        sUmengWhiteList = Arrays.asList(
-                Constant.AD_IMPRESSION_REVENUE,
-                "imp_splash_admob",
-                "imp_interstitial_admob",
-                "imp_native_admob",
-                "imp_banner_admob",
-                "imp_reward_admob",
-                "click_splash_admob",
-                "click_interstitial_admob",
-                "click_native_admob",
-                "click_banner_admob",
-                "click_reward_admob",
-                "click_splash_admob_distinct",
-                "click_interstitial_admob_distinct",
-                "click_native_admob_distinct",
-                "click_banner_admob_distinct",
-                "click_reward_admob_distinct",
-                "ad_sponsored_click",
-                "ad_spread_installed"
-        );
-
-        sFirebaseWhiteList = Arrays.asList(
-                Constant.AD_IMPRESSION,
-                Constant.AD_IMPRESSION_REVENUE,
-                "app_first_open_ano",
-                "app_first_open_ao",
-                "ad_spread_installed",
-                "Total_Ads_Revenue_*",
-                "gav_*"
-        );
-
         sSdkIntegrated = new HashMap<>();
         boolean sdkIntegrated;
         try {
@@ -521,31 +484,17 @@ public class InternalStat {
     }
 
     public static boolean isInUmengWhiteList(String key) {
-        try {
-            return sUmengWhiteList.contains(key);
-        } catch (Exception e) {
+        if (TextUtils.isEmpty(key)) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     public static boolean isInFirebaseWhiteList(String key) {
         if (TextUtils.isEmpty(key)) {
             return false;
         }
-        try {
-            if (sFirebaseWhiteList != null && !sFirebaseWhiteList.isEmpty()) {
-                if (sFirebaseWhiteList.contains(key)) {
-                    return true;
-                }
-                for (String item : sFirebaseWhiteList) {
-                    if (item != null && item.contains("*") && key.startsWith(item.replace("*", ""))) {
-                        return true;
-                    }
-                }
-            }
-        } catch (Exception e) {
-        }
-        return false;
+        return true;
     }
 
     private static boolean isReportPlatform(Context context, String eventId, String platform, boolean allowReport) {

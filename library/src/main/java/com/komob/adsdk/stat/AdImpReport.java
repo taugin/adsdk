@@ -59,9 +59,6 @@ public class AdImpReport {
                 params.put("currency", "USD"); // All Applovin revenue is sent in USD
                 if (isReportFirebase) {
                     InternalStat.sendFirebaseAnalytics(context, "ad_impression", null, params);
-                    if (EventImpl.get().getActiveDays() == 0) {
-                        InternalStat.sendFirebaseAnalytics(context, "ad_impression_ado", null, params);
-                    }
                 }
             }
         } catch (Exception e) {
@@ -81,6 +78,9 @@ public class AdImpReport {
                 String adPrecision = adImpData.getPrecision();
                 boolean adBidding = adImpData.isBidding();
                 String formatNetwork = Utils.formatNetwork(networkName);
+                if (TextUtils.isEmpty(networkPid)) {
+                    networkPid = unitId;
+                }
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("ad_platform", platform);
                 params.put("ad_source", networkName);
@@ -118,6 +118,9 @@ public class AdImpReport {
                 String adPrecision = adImpData.getPrecision();
                 boolean adBidding = adImpData.isBidding();
                 String formatNetwork = Utils.formatNetwork(networkName);
+                if (TextUtils.isEmpty(networkPid)) {
+                    networkPid = unitId;
+                }
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("ad_platform", platform);
                 params.put("ad_source", networkName);

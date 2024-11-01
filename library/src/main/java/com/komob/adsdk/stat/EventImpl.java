@@ -10,7 +10,6 @@ import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.db.DBManager;
 import com.komob.adsdk.core.framework.AdStatManager;
 import com.komob.adsdk.core.framework.BounceRateManager;
-import com.komob.adsdk.core.framework.FBStatManager;
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.utils.Utils;
@@ -222,11 +221,6 @@ public class EventImpl implements IEvent {
             AdStatManager.get(mContext).recordAdImp(sdk, placeName, network);
         } catch (Exception e) {
         }
-        if (!TextUtils.equals(sdk, Constant.AD_SDK_ADMOB) && network != null && network.toLowerCase(Locale.ENGLISH).contains(Constant.AD_SDK_ADMOB)) {
-            eventId = generateEventId(context, "imp", Constant.AD_SDK_ADMOB, type);
-            Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-            reportEvent(context, eventId, placeName, extra);
-        }
     }
 
     @Override
@@ -243,35 +237,8 @@ public class EventImpl implements IEvent {
         Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra + " , impression id : " + impressionId);
         reportEvent(context, "e_ad_click", placeName, extra);
         reportEvent(context, eventId, placeName, extra);
-        reportAdClickDistinct(context, placeName, sdk, network, type, pid, networkPid, ecpm, extra, isAdClicked);
         try {
             AdStatManager.get(mContext).recordAdClick(sdk, placeName, pid, network, extra, impressionId);
-        } catch (Exception e) {
-        }
-        if (!TextUtils.equals(sdk, Constant.AD_SDK_ADMOB) && network != null && network.toLowerCase(Locale.ENGLISH).contains(Constant.AD_SDK_ADMOB)) {
-            eventId = generateEventId(context, "click", Constant.AD_SDK_ADMOB, type);
-            Log.iv(Log.TAG, "Report Event upload key : " + eventId + " , value : " + placeName + " , extra : " + extra);
-            reportEvent(context, eventId, placeName, extra);
-            reportAdClickDistinct(context, placeName, Constant.AD_SDK_ADMOB, network, type, pid, networkPid, ecpm, extra, isAdClicked);
-        }
-        String placement = null;
-        if (extra != null) {
-            try {
-                placement = (String) extra.get("placement");
-            } catch (Exception e) {
-            }
-        }
-        FBStatManager.get(context).reportFirebaseClick(type, network, placement);
-    }
-
-    private void reportAdClickDistinct(Context context, String placeName, String sdk, String network, String type, String pid, String networkPid, double ecpm, Map<String, Object> extra, boolean isAdClicked) {
-        try {
-            if (!isAdClicked) {
-                String eventIdDistinct = generateEventId(context, "click", sdk + "_distinct", type);
-                Log.iv(Log.TAG, "event id distinct : " + eventIdDistinct);
-                extra = addExtra(extra, placeName, sdk, type, pid, ecpm, network, networkPid);
-                reportEvent(context, eventIdDistinct, placeName, extra);
-            }
         } catch (Exception e) {
         }
     }

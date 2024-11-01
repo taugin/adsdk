@@ -219,6 +219,7 @@ public class DBManager {
                 impDataMap.put(Constant.AD_NETWORK, cursor.getString(cursor.getColumnIndex(DBHelper.AD_NETWORK)));
                 impDataMap.put(Constant.AD_FORMAT, cursor.getString(cursor.getColumnIndex(DBHelper.AD_UNIT_FORMAT)));
                 impDataMap.put(Constant.AD_UNIT_NAME, cursor.getString(cursor.getColumnIndex(DBHelper.AD_UNIT_NAME)));
+                impDataMap.put(Constant.AD_UNIT_ID, cursor.getString(cursor.getColumnIndex(DBHelper.AD_UNIT_ID)));
                 impDataMap.put(Constant.AD_TYPE, cursor.getString(cursor.getColumnIndex(DBHelper.AD_TYPE)));
                 impDataMap.put(Constant.AD_PLACEMENT, cursor.getString(cursor.getColumnIndex(DBHelper.AD_PLACEMENT)));
                 impDataMap.put(Constant.AD_NETWORK_PID, cursor.getString(cursor.getColumnIndex(DBHelper.AD_NETWORK_PID)));

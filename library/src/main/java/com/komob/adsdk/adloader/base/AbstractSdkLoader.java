@@ -31,7 +31,6 @@ import com.komob.adsdk.core.db.DBManager;
 import com.komob.adsdk.core.framework.AdLoadManager;
 import com.komob.adsdk.core.framework.AdStatManager;
 import com.komob.adsdk.core.framework.BounceRateManager;
-import com.komob.adsdk.core.framework.FBStatManager;
 import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.DataManager;
 import com.komob.adsdk.data.config.AdPlace;
@@ -1208,7 +1207,6 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
             }
         }
         InternalStat.reportEvent(getContext(), Constant.AD_IMPRESSION_REVENUE, adImpMap);
-        FBStatManager.get(mContext).reportFirebaseImpression(adImpMap);
         if (adImpMap != null) {
             adImpMap.put(Constant.AD_IMPRESSION_ID, impressionId);
             adImpMap.put(Constant.AD_IMP_TIME, System.currentTimeMillis());
