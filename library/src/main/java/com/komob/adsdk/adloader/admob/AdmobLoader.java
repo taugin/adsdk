@@ -32,6 +32,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
+import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
@@ -371,6 +372,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 viewGroup.setVisibility(View.VISIBLE);
             }
             lastUseBannerView = bannerView;
+            recordBannerView(viewGroup, bannerView, AdmobLoader.class.getName());
             bannerView = null;
         } catch (Exception e) {
             Log.iv(Log.TAG, formatShowErrorLog(String.valueOf(e)));
@@ -900,9 +902,10 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (mNativeAd != null) {
             reportAdShow();
             notifyAdShow();
-            admobBindNativeView.bindNative(params, viewGroup, mNativeAd, mPidConfig);
+            NativeAdView nativeAdView = admobBindNativeView.bindNative(params, viewGroup, mNativeAd, mPidConfig);
             lastUseNativeAd = mNativeAd;
             clearCachedAdTime(mNativeAd);
+            recordNativeLoader(viewGroup, mNativeAd, nativeAdView, AdmobLoader.class.getName());
             mNativeAd = null;
         } else {
             Log.iv(Log.TAG, formatShowErrorLog("NativeAd is null"));
@@ -1265,5 +1268,40 @@ public class AdmobLoader extends AbstractSdkLoader {
 
     private void setRevenueAverage(String network) {
         setAdNetworkAndRevenue(network, 0f);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    public static void destroyNativeView(ViewItem viewItem) {
+        if (viewItem == null) {
+            return;
+        }
+        try {
+            if (viewItem.adObject1 instanceof NativeAd) {
+                NativeAd nativeAd = (NativeAd) viewItem.adObject1;
+                nativeAd.destroy();
+                Log.iv(Log.TAG, "destroy admob native ads");
+            }
+            if (viewItem.adObject2 instanceof NativeAdView) {
+                NativeAdView nativeAdView = (NativeAdView) viewItem.adObject2;
+                nativeAdView.destroy();
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    public static void destroyBannerView(ViewItem viewItem) {
+        if (viewItem == null) {
+            return;
+        }
+        try {
+            if (viewItem.adObject1 instanceof AdView) {
+                AdView adView = (AdView) viewItem.adObject1;
+                adView.destroy();
+                Log.iv(Log.TAG, "destroy admob banner ads");
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
     }
 }

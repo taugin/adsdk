@@ -22,9 +22,13 @@ import com.komob.adsdk.AdReward;
 import com.komob.adsdk.InternalStat;
 import com.komob.adsdk.OnAdEventListener;
 import com.komob.adsdk.OnAdFilterListener;
+import com.komob.adsdk.adloader.admob.AdmobLoader;
+import com.komob.adsdk.adloader.applovin.AppLovinLoader;
+import com.komob.adsdk.adloader.bigo.BigoLoader;
 import com.komob.adsdk.adloader.listener.IManagerListener;
 import com.komob.adsdk.adloader.listener.ISdkLoader;
 import com.komob.adsdk.adloader.listener.OnAdBaseListener;
+import com.komob.adsdk.adloader.tradplus.TradPlusLoader;
 import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.core.AdPolicy;
 import com.komob.adsdk.core.db.DBManager;
@@ -48,6 +52,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -1417,6 +1422,242 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
                     }
                 }
             });
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    private static Map<ViewItem, String> sNativeLoaderMap = new LinkedHashMap<>();
+    private static Map<ViewItem, String> sBannerViewMap = new LinkedHashMap<>();
+    private static Handler sHandler = new Handler(Looper.getMainLooper());
+
+    private static void runOnThread(Runnable runnable) {
+        if (sHandler != null) {
+            sHandler.post(runnable);
+        }
+    }
+
+    public static void recordNativeLoader(View view, Object adObject1, Object adObject2, String loaderName) {
+        runOnThread(new Runnable() {
+            @Override
+            public void run() {
+                recordNativeLoaderInternal(view, adObject1, adObject2, loaderName);
+            }
+        });
+    }
+
+    private static void recordNativeLoaderInternal(View view, Object adObject1, Object adObject2, String loaderName) {
+        try {
+            Object activityObject = RFileConfig.findActivity(view.getContext());
+            String activityName = activityObject.getClass().getName() + "@" + Integer.toHexString(activityObject.hashCode());
+            String viewName = view.getClass().getName() + "@" + Integer.toHexString(view.hashCode());
+            destroyNativeReUseContainer(viewName);
+            sNativeLoaderMap.put(new ViewItem(adObject1, adObject2, viewName, loaderName), activityName);
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    /**
+     * 同一个ViewGroup添加广告的时候，销毁前一个
+     *
+     * @param viewName
+     */
+    private static void destroyNativeReUseContainer(String viewName) {
+        try {
+            if (sNativeLoaderMap != null && !sNativeLoaderMap.isEmpty()) {
+                List<ViewItem> deletedList = new ArrayList<>();
+                for (Map.Entry<ViewItem, String> entry : sNativeLoaderMap.entrySet()) {
+                    ViewItem viewItem = entry.getKey();
+                    if (viewItem != null) {
+                        String storedViewName = viewItem.viewClassName;
+                        if (TextUtils.equals(storedViewName, viewName)) {
+                            String loaderName = viewItem.loaderName;
+                            if (TextUtils.equals(loaderName, AppLovinLoader.class.getName())) {
+                                AppLovinLoader.destroyNativeView(viewItem);
+                                deletedList.add(viewItem);
+                            } else if (TextUtils.equals(loaderName, AdmobLoader.class.getName())) {
+                                AdmobLoader.destroyNativeView(viewItem);
+                                deletedList.add(viewItem);
+                            } else if (TextUtils.equals(loaderName, TradPlusLoader.class.getName())) {
+                                TradPlusLoader.destroyNativeView(viewItem);
+                                deletedList.add(viewItem);
+                            } else if (TextUtils.equals(loaderName, BigoLoader.class.getName())) {
+                                BigoLoader.destroyNativeView(viewItem);
+                                deletedList.add(viewItem);
+                            }
+                        }
+                    }
+                }
+                if (!deletedList.isEmpty()) {
+                    for (ViewItem viewItem : deletedList) {
+                        sNativeLoaderMap.remove(viewItem);
+                    }
+                    Log.iv(Log.TAG, "destroy useless native ads");
+                    deletedList.clear();
+                }
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    public static void recordBannerView(View view, Object adObject1, String loaderName) {
+        runOnThread(new Runnable() {
+            @Override
+            public void run() {
+                recordBannerViewInternal(view, adObject1, loaderName);
+            }
+        });
+    }
+
+    private static void recordBannerViewInternal(View view, Object adObject1, String loaderName) {
+        try {
+            Object activityObject = RFileConfig.findActivity(view.getContext());
+            String activityName = activityObject.getClass().getName() + "@" + Integer.toHexString(activityObject.hashCode());
+            String viewName = view.getClass().getName() + "@" + Integer.toHexString(view.hashCode());
+            destroyBannerReUseContainer(viewName);
+            sBannerViewMap.put(new ViewItem(adObject1, null, viewName, loaderName), activityName);
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    /**
+     * 同一个ViewGroup添加广告的时候，销毁前一个
+     *
+     * @param viewName
+     */
+    private static void destroyBannerReUseContainer(String viewName) {
+        try {
+            if (sBannerViewMap != null && !sBannerViewMap.isEmpty()) {
+                List<ViewItem> deleteList = new ArrayList<>();
+                for (Map.Entry<ViewItem, String> entry : sBannerViewMap.entrySet()) {
+                    ViewItem viewItem = entry.getKey();
+                    if (viewItem != null) {
+                        if (TextUtils.equals(viewItem.viewClassName, viewName)) {
+                            String loaderName = viewItem.loaderName;
+                            if (TextUtils.equals(loaderName, AppLovinLoader.class.getName())) {
+                                AppLovinLoader.destroyBannerView(viewItem);
+                                deleteList.add(viewItem);
+                            } else if (TextUtils.equals(loaderName, AdmobLoader.class.getName())) {
+                                AdmobLoader.destroyBannerView(viewItem);
+                                deleteList.add(viewItem);
+                            } else if (TextUtils.equals(loaderName, TradPlusLoader.class.getName())) {
+                                TradPlusLoader.destroyBannerView(viewItem);
+                                deleteList.add(viewItem);
+                            }
+                        }
+                    }
+                }
+                if (!deleteList.isEmpty()) {
+                    for (ViewItem viewItem : deleteList) {
+                        sBannerViewMap.remove(viewItem);
+                    }
+                    Log.iv(Log.TAG, "destroy useless banner ads");
+                    deleteList.clear();
+                }
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    public static void destroyAdsOnActivityFinished(String activityClassName) {
+        runOnThread(new Runnable() {
+            @Override
+            public void run() {
+                destroyNativeLoader(activityClassName);
+                destroyBannerView(activityClassName);
+            }
+        });
+    }
+
+    private static void destroyNativeLoader(String activityClassName) {
+        try {
+            if (sNativeLoaderMap != null && !sNativeLoaderMap.isEmpty()) {
+                List<ViewItem> deletedList = new ArrayList<>();
+                for (Map.Entry<ViewItem, String> entry : sNativeLoaderMap.entrySet()) {
+                    ViewItem viewItem = entry.getKey();
+                    String storedActivityName = entry.getValue();
+                    if (TextUtils.equals(storedActivityName, activityClassName)) {
+                        if (viewItem != null) {
+                            String loaderName = viewItem.loaderName;
+                            if (TextUtils.equals(loaderName, AppLovinLoader.class.getName())) {
+                                AppLovinLoader.destroyNativeView(viewItem);
+                                deletedList.add(viewItem);
+                            } else if (TextUtils.equals(loaderName, AdmobLoader.class.getName())) {
+                                AdmobLoader.destroyNativeView(viewItem);
+                                deletedList.add(viewItem);
+                            } else if (TextUtils.equals(loaderName, TradPlusLoader.class.getName())) {
+                                TradPlusLoader.destroyNativeView(viewItem);
+                                deletedList.add(viewItem);
+                            } else if (TextUtils.equals(loaderName, BigoLoader.class.getName())) {
+                                BigoLoader.destroyNativeView(viewItem);
+                                deletedList.add(viewItem);
+                            }
+                        }
+                    }
+                }
+                if (!deletedList.isEmpty()) {
+                    for (ViewItem viewItem : deletedList) {
+                        sNativeLoaderMap.remove(viewItem);
+                    }
+                    Log.iv(Log.TAG, "destroy useless native on destroy : " + deletedList.size());
+                    deletedList.clear();
+                }
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    private static void destroyBannerView(String activityClassName) {
+        try {
+            if (sBannerViewMap != null && !sBannerViewMap.isEmpty()) {
+                List<ViewItem> deleteList = new ArrayList<>();
+                for (Map.Entry<ViewItem, String> entry : sBannerViewMap.entrySet()) {
+                    ViewItem viewItem = entry.getKey();
+                    String storedActivityName = entry.getValue();
+                    if (TextUtils.equals(storedActivityName, activityClassName)) {
+                        if (viewItem != null) {
+                            String loaderName = viewItem.loaderName;
+                            if (TextUtils.equals(loaderName, AppLovinLoader.class.getName())) {
+                                AppLovinLoader.destroyBannerView(viewItem);
+                                deleteList.add(viewItem);
+                            } else if (TextUtils.equals(loaderName, AdmobLoader.class.getName())) {
+                                AdmobLoader.destroyBannerView(viewItem);
+                                deleteList.add(viewItem);
+                            } else if (TextUtils.equals(loaderName, TradPlusLoader.class.getName())) {
+                                TradPlusLoader.destroyBannerView(viewItem);
+                                deleteList.add(viewItem);
+                            }
+                        }
+                    }
+                }
+                if (!deleteList.isEmpty()) {
+                    for (ViewItem viewItem : deleteList) {
+                        sBannerViewMap.remove(viewItem);
+                    }
+                    Log.iv(Log.TAG, "destroy useless banner on destroy : " + deleteList.size());
+                    deleteList.clear();
+                }
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    public static class ViewItem {
+        public Object adObject1;
+        public Object adObject2;
+        public String viewClassName;
+        public String loaderName;
+
+        public ViewItem(Object adObject1, Object adObject2, String viewClassName, String loaderName) {
+            this.adObject1 = adObject1;
+            this.adObject2 = adObject2;
+            this.viewClassName = viewClassName;
+            this.loaderName = loaderName;
         }
     }
 }

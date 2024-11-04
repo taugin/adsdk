@@ -73,9 +73,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private MaxSplashListener maxSplashListener;
     private MaxInterstitialListener maxInterstitialListener;
     private MaxRewardListener maxRewardListener;
-    private static Map<Triple, String> sNativeLoaderMap = new LinkedHashMap<>();
-    private static Map<Pair<MaxAdView, String>, String> sMaxViewMap = new LinkedHashMap<>();
-    private static Handler sHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected BaseBindNativeView getBaseBindNativeView() {
@@ -621,6 +618,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (loadingMaxAdView != null) {
                 loadingMaxAdView.startAutoRefresh();
             }
+            recordBannerView(viewGroup, maxAdView, AppLovinLoader.class.getName());
             maxAdView = null;
         } catch (Exception e) {
             Log.iv(Log.TAG, formatShowErrorLog(String.valueOf(e)));
@@ -1005,7 +1003,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                 if (!isTemplateRendering()) {
                     mApplovinBindView.updateApplovinNative(getContext(), maxNativeAdView, mPidConfig);
                 }
-                recordNativeLoader(viewGroup, mMaxNativeAdLoader, mMaxAd);
+                recordNativeLoader(viewGroup, mMaxNativeAdLoader, mMaxAd, AppLovinLoader.class.getName());
             } else {
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "MaxNativeAdView is null");
             }
@@ -1364,192 +1362,34 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    private static void runOnThread(Runnable runnable) {
-        if (sHandler != null) {
-            sHandler.post(runnable);
+    public static void destroyNativeView(ViewItem viewItem) {
+        if (viewItem == null) {
+            return;
         }
-    }
-
-    private static void recordNativeLoader(View view, MaxNativeAdLoader loader, MaxAd maxAd) {
-        runOnThread(new Runnable() {
-            @Override
-            public void run() {
-                recordNativeLoaderInternal(view, loader, maxAd);
-            }
-        });
-    }
-
-    private static void recordNativeLoaderInternal(View view, MaxNativeAdLoader loader, MaxAd maxAd) {
         try {
-            Object activityObject = RFileConfig.findActivity(view.getContext());
-            String activityName = activityObject.getClass().getName() + "@" + Integer.toHexString(activityObject.hashCode());
-            String viewName = view.getClass().getName() + "@" + Integer.toHexString(view.hashCode());
-            destroyNativeLoaderInSameView(viewName);
-            sNativeLoaderMap.put(new Triple(loader, maxAd, viewName), activityName);
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-    }
-
-    /**
-     * 同一个ViewGroup添加广告的时候，销毁前一个
-     *
-     * @param viewName
-     */
-    private static void destroyNativeLoaderInSameView(String viewName) {
-        try {
-            if (sNativeLoaderMap != null && !sNativeLoaderMap.isEmpty()) {
-                List<Triple> deletedList = new ArrayList<>();
-                for (Map.Entry<Triple, String> entry : sNativeLoaderMap.entrySet()) {
-                    Triple triple = entry.getKey();
-                    if (triple != null) {
-                        String storedViewName = triple.viewClassName;
-                        if (TextUtils.equals(storedViewName, viewName)) {
-                            if (triple.maxNativeAdLoader != null && triple.maxAd != null) {
-                                triple.maxNativeAdLoader.destroy(triple.maxAd);
-                                deletedList.add(triple);
-                            }
-                        }
-                    }
-                }
-                if (!deletedList.isEmpty()) {
-                    for (Triple triple : deletedList) {
-                        sNativeLoaderMap.remove(triple);
-                    }
-                    deletedList.clear();
-                }
+            if (viewItem.adObject1 instanceof MaxNativeAdLoader && viewItem.adObject2 instanceof MaxAd) {
+                MaxNativeAdLoader loader = (MaxNativeAdLoader) viewItem.adObject1;
+                MaxAd maxAd = (MaxAd) viewItem.adObject2;
+                loader.destroy(maxAd);
+                Log.iv(Log.TAG, "destroy max native ads");
             }
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }
     }
 
-    private static void recordMaxView(View view, MaxAdView maxAdView) {
-        runOnThread(new Runnable() {
-            @Override
-            public void run() {
-                recordMaxViewInternal(view, maxAdView);
-            }
-        });
-    }
-
-    private static void recordMaxViewInternal(View view, MaxAdView maxAdView) {
-        try {
-            Object activityObject = RFileConfig.findActivity(view.getContext());
-            String activityName = activityObject.getClass().getName() + "@" + Integer.toHexString(activityObject.hashCode());
-            String viewName = view.getClass().getName() + "@" + Integer.toHexString(view.hashCode());
-            destroyMaxViewInSameView(viewName);
-            sMaxViewMap.put(new Pair<>(maxAdView, viewName), activityName);
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
+    public static void destroyBannerView(ViewItem viewItem) {
+        if (viewItem == null) {
+            return;
         }
-    }
-
-    /**
-     * 同一个ViewGroup添加广告的时候，销毁前一个
-     *
-     * @param viewName
-     */
-    private static void destroyMaxViewInSameView(String viewName) {
         try {
-            if (sMaxViewMap != null && !sMaxViewMap.isEmpty()) {
-                List<Pair<MaxAdView, String>> deleteList = new ArrayList<>();
-                for (Map.Entry<Pair<MaxAdView, String>, String> entry : sMaxViewMap.entrySet()) {
-                    Pair<MaxAdView, String> pair = entry.getKey();
-                    if (pair != null) {
-                        if (TextUtils.equals(pair.second, viewName)) {
-                            if (pair.first != null) {
-                                pair.first.destroy();
-                                deleteList.add(pair);
-                            }
-                        }
-                    }
-                }
-                if (!deleteList.isEmpty()) {
-                    for (Pair<MaxAdView, String> pair : deleteList) {
-                        sMaxViewMap.remove(pair);
-                    }
-                }
-                deleteList.clear();
+            if (viewItem.adObject1 instanceof MaxAdView) {
+                MaxAdView maxAdView = (MaxAdView) viewItem.adObject1;
+                maxAdView.destroy();
+                Log.iv(Log.TAG, "destroy max banner ads");
             }
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
-        }
-    }
-
-    public static void destroyAdsOnActivityFinished(String activityClassName) {
-        runOnThread(new Runnable() {
-            @Override
-            public void run() {
-                destroyNativeLoader(activityClassName);
-                destroyMaxView(activityClassName);
-            }
-        });
-    }
-
-    private static void destroyNativeLoader(String activityClassName) {
-        try {
-            if (sNativeLoaderMap != null && !sNativeLoaderMap.isEmpty()) {
-                List<Triple> deletedList = new ArrayList<>();
-                for (Map.Entry<Triple, String> entry : sNativeLoaderMap.entrySet()) {
-                    Triple triple = entry.getKey();
-                    String storedActivityName = entry.getValue();
-                    if (TextUtils.equals(storedActivityName, activityClassName)) {
-                        if (triple != null) {
-                            if (triple.maxNativeAdLoader != null && triple.maxAd != null) {
-                                triple.maxNativeAdLoader.destroy(triple.maxAd);
-                                deletedList.add(triple);
-                            }
-                        }
-                    }
-                }
-                if (!deletedList.isEmpty()) {
-                    for (Triple triple : deletedList) {
-                        sNativeLoaderMap.remove(triple);
-                    }
-                }
-                deletedList.clear();
-            }
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-    }
-
-    private static void destroyMaxView(String activityClassName) {
-        try {
-            if (sMaxViewMap != null && !sMaxViewMap.isEmpty()) {
-                List<Pair<MaxAdView, String>> deleteList = new ArrayList<>();
-                for (Map.Entry<Pair<MaxAdView, String>, String> entry : sMaxViewMap.entrySet()) {
-                    Pair<MaxAdView, String> pair = entry.getKey();
-                    String storedActivityName = entry.getValue();
-                    if (TextUtils.equals(storedActivityName, activityClassName)) {
-                        if (pair != null && pair.first != null) {
-                            pair.first.destroy();
-                            deleteList.add(pair);
-                        }
-                    }
-                }
-                if (!deleteList.isEmpty()) {
-                    for (Pair<MaxAdView, String> pair : deleteList) {
-                        sMaxViewMap.remove(pair);
-                    }
-                }
-                deleteList.clear();
-            }
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-    }
-
-    static class Triple {
-        MaxNativeAdLoader maxNativeAdLoader;
-        MaxAd maxAd;
-        String viewClassName;
-
-        public Triple(MaxNativeAdLoader maxNativeAdLoader, MaxAd maxAd, String viewClassName) {
-            this.maxNativeAdLoader = maxNativeAdLoader;
-            this.maxAd = maxAd;
-            this.viewClassName = viewClassName;
         }
     }
 }

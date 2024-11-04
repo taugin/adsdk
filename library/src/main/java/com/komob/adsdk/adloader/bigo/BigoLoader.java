@@ -422,6 +422,7 @@ public class BigoLoader extends AbstractSdkLoader {
             bigoBindNativeView.bindNative(params, viewGroup, mNativeAd, mPidConfig);
             lastUseNativeAd = mNativeAd;
             clearCachedAdTime(mNativeAd);
+            recordNativeLoader(viewGroup, mNativeAd, null, BigoLoader.class.getName());
             mNativeAd = null;
         } else {
             Log.iv(Log.TAG, formatShowErrorLog("NativeAd is null"));
@@ -578,6 +579,22 @@ public class BigoLoader extends AbstractSdkLoader {
                     Log.iv(Log.TAG, getSdkName() + " bid loss platform : " + firstPlatform + ", type : " + adType + " , first : " + firstNetwork + "|" + firstPrice + " , second : " + secondNetwork + "|" + secondPrice);
                 }
             }
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    public static void destroyNativeView(ViewItem viewItem) {
+        if (viewItem == null) {
+            return;
+        }
+        try {
+            if (viewItem.adObject1 instanceof NativeAd) {
+                NativeAd nativeAd = (NativeAd) viewItem.adObject1;
+                nativeAd.destroy();
+                Log.iv(Log.TAG, "destroy bigo native ads");
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 }

@@ -30,34 +30,36 @@ import java.util.List;
 public class AdmobBindNativeView extends BaseBindNativeView {
     private Params mParams;
 
-    public void bindNative(Params params, ViewGroup adContainer, NativeAd nativeAd, PidConfig pidConfig) {
+    public NativeAdView bindNative(Params params, ViewGroup adContainer, NativeAd nativeAd, PidConfig pidConfig) {
         mParams = params;
         if (mParams == null) {
             Log.iv(Log.TAG, "bindNative mParams == null###");
-            return;
+            return null;
         }
         if (adContainer == null) {
             Log.iv(Log.TAG, "bindNative adContainer == null###");
-            return;
+            return null;
         }
+        NativeAdView nativeAdView = null;
         int rootLayout = getBestNativeLayout(adContainer.getContext(), pidConfig, mParams, Constant.AD_SDK_ADMOB);
         if (rootLayout > 0) {
-            bindNativeViewWithRootView(adContainer, rootLayout, nativeAd, pidConfig);
+            nativeAdView = bindNativeViewWithRootView(adContainer, rootLayout, nativeAd, pidConfig);
             updateCtaButtonBackground(adContainer, pidConfig, mParams);
             updateAdViewStatus(adContainer, mParams, true);
         } else {
             Log.iv(Log.TAG, "Can not find " + pidConfig.getSdk() + " native layout###");
         }
+        return nativeAdView;
     }
 
-    private void bindNativeViewWithRootView(ViewGroup adContainer, int rootLayout, NativeAd nativeAd, PidConfig pidConfig) {
+    private NativeAdView bindNativeViewWithRootView(ViewGroup adContainer, int rootLayout, NativeAd nativeAd, PidConfig pidConfig) {
         if (adContainer == null) {
             throw new AndroidRuntimeException("adContainer is null");
         }
         if (rootLayout <= 0) {
             throw new AndroidRuntimeException("rootLayout is 0x0");
         }
-        View view = null;
+        NativeAdView view = null;
         try {
             View rootView = LayoutInflater.from(adContainer.getContext()).inflate(rootLayout, null);
             view = showUnifiedAdView(rootView, nativeAd, pidConfig);
@@ -74,9 +76,10 @@ public class AdmobBindNativeView extends BaseBindNativeView {
         } catch (Exception e) {
             Log.iv(Log.TAG, "error : " + e);
         }
+        return view;
     }
 
-    private View showUnifiedAdView(View rootView, NativeAd nativeAd, PidConfig pidConfig) throws Exception {
+    private NativeAdView showUnifiedAdView(View rootView, NativeAd nativeAd, PidConfig pidConfig) throws Exception {
         NativeAdView nativeAdView = new NativeAdView(rootView.getContext());
         try {
             if (rootView.getParent() != null) {

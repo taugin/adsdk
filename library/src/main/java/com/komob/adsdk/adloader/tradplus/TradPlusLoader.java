@@ -232,6 +232,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);
             }
+            recordBannerView(viewGroup, mTPBanner, TradPlusLoader.class.getName());
             mTPBanner = null;
         } catch (Exception e) {
             Log.iv(Log.TAG, formatShowErrorLog(String.valueOf(e)));
@@ -655,6 +656,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 notifyAdShowFailed(Constant.AD_ERROR_SHOW, "TPCustomNativeAd is null");
             }
             clearCachedAdTime(mTPNative);
+            recordNativeLoader(viewGroup, mTPNative, null, TradPlusLoader.class.getName());
             mTPNative = null;
         } else {
             Log.iv(Log.TAG, formatShowErrorLog("TPNative is ready"));
@@ -1011,5 +1013,37 @@ public class TradPlusLoader extends AbstractSdkLoader {
             return "[" + adError.getErrorCode() + "] " + adError.getErrorMsg();
         }
         return null;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static void destroyNativeView(ViewItem viewItem) {
+        if (viewItem == null) {
+            return;
+        }
+        try {
+            if (viewItem.adObject1 instanceof TPNative) {
+                TPNative tpNative = (TPNative) viewItem.adObject1;
+                tpNative.onDestroy();
+                Log.iv(Log.TAG, "destroy tradplus native ads");
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+    }
+
+    public static void destroyBannerView(ViewItem viewItem) {
+        if (viewItem == null) {
+            return;
+        }
+        try {
+            if (viewItem.adObject1 instanceof TPBanner) {
+                TPBanner tpBanner = (TPBanner) viewItem.adObject1;
+                tpBanner.onDestroy();
+                Log.iv(Log.TAG, "destroy tradplus banner ads");
+            }
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
     }
 }
