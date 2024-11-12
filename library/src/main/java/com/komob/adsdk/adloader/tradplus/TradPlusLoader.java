@@ -221,6 +221,9 @@ public class TradPlusLoader extends AbstractSdkLoader {
         try {
             reportAdShow();
             notifyAdShow();
+            if (!TextUtils.isEmpty(bannerScene)) {
+                putSceneNameToMap(getPid(), bannerScene);
+            }
             clearCachedAdTime(mTPBanner);
             viewGroup.removeAllViews();
             ViewParent viewParent = mTPBanner.getParent();
@@ -370,6 +373,9 @@ public class TradPlusLoader extends AbstractSdkLoader {
         if (mTPInterstitial != null && mTPInterstitial.isReady()) {
             reportAdShow();
             notifyAdShow();
+            if (!TextUtils.isEmpty(sceneName)) {
+                putSceneNameToMap(getPid(), sceneName);
+            }
             refreshContext();
             Activity activity = getActivity();
             mTPInterstitial.showAd(activity, getSceneId(sceneName));
@@ -522,6 +528,9 @@ public class TradPlusLoader extends AbstractSdkLoader {
         if (mTPReward != null && mTPReward.isReady()) {
             reportAdShow();
             notifyAdShow();
+            if (!TextUtils.isEmpty(sceneName)) {
+                putSceneNameToMap(getPid(), sceneName);
+            }
             refreshContext();
             Activity activity = getActivity();
             mTPReward.showAd(activity, getSceneId(sceneName));
@@ -641,13 +650,20 @@ public class TradPlusLoader extends AbstractSdkLoader {
         if (mTPNative != null && mTPNative.isReady()) {
             final TPCustomNativeAd customNativeAd = mTPNative.getNativeAd();
             if (customNativeAd != null) {
+                String sceneName = null;
+                if (params != null) {
+                    sceneName = params.getNativeScene();
+                }
                 reportAdShow();
                 notifyAdShow();
+                if (!TextUtils.isEmpty(sceneName)) {
+                    putSceneNameToMap(getPid(), sceneName);
+                }
                 if (viewGroup != null) {
                     viewGroup.removeAllViews();
                 }
                 mTradPlusBindView.bindNativeView(mContext, mPidConfig, params, customNativeAd);
-                customNativeAd.showAd(viewGroup, mTradPlusBindView.getCustomTPNativeAdRender(), getSceneId(params != null ? params.getNativeScene() : null));
+                customNativeAd.showAd(viewGroup, mTradPlusBindView.getCustomTPNativeAdRender(), getSceneId(sceneName));
                 if (viewGroup != null && viewGroup.getVisibility() != View.VISIBLE) {
                     viewGroup.setVisibility(View.VISIBLE);
                 }
@@ -784,6 +800,9 @@ public class TradPlusLoader extends AbstractSdkLoader {
         if (mTPSplash != null && mTPSplash.isReady()) {
             reportAdShow();
             notifyAdShow();
+            if (!TextUtils.isEmpty(sceneName)) {
+                putSceneNameToMap(getPid(), sceneName);
+            }
             refreshContext();
             mTPSplash.showAd(viewGroup);
             updateLastShowTime();
@@ -854,6 +873,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
     private void reportTradPlusImpressionData(TPAdInfo tpAdInfo, String impressionId) {
         try {
+            String impSceneName = getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : tpAdInfo.sceneId);
+            if (TextUtils.isEmpty(impSceneName)) {
+                impSceneName = getSceneNameFromMap(getPid());
+            }
             Map<String, Object> map = new HashMap<>();
             double revenue = getTradPlusAdRevenue(tpAdInfo);
             map.put(Constant.AD_VALUE, revenue);
@@ -864,7 +887,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             map.put(Constant.AD_UNIT_ID, getPid());
             map.put(Constant.AD_FORMAT, getAdType());
             map.put(Constant.AD_UNIT_NAME, getAdPlaceName());
-            map.put(Constant.AD_PLACEMENT, getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : tpAdInfo.sceneId));
+            map.put(Constant.AD_PLACEMENT, impSceneName);
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_BIDDING, tpAdInfo.isBiddingNetwork);
             map.put(Constant.AD_PRECISION, tpAdInfo.ecpmPrecision);

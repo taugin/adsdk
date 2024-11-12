@@ -602,6 +602,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (maxBannerListener != null) {
                 maxBannerListener.sceneName = bannerScene;
             }
+            if (!TextUtils.isEmpty(bannerScene)) {
+                putSceneNameToMap(getPid(), bannerScene);
+            }
             reportAdShow();
             notifyAdShow();
             clearCachedAdTime(maxAdView);
@@ -720,6 +723,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
     private boolean showInterstitialForMax(String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         if (interstitialAd != null && interstitialAd.isReady()) {
+            if (!TextUtils.isEmpty(sceneName)) {
+                putSceneNameToMap(getPid(), sceneName);
+            }
             Log.iv(Log.TAG, "");
             reportAdShow();
             notifyAdShow();
@@ -845,6 +851,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
         if (rewardedAd != null && rewardedAd.isReady()) {
             reportAdShow();
             notifyAdShow();
+            if (!TextUtils.isEmpty(sceneName)) {
+                putSceneNameToMap(getPid(), sceneName);
+            }
             rewardedAd.showAd(getSceneId(sceneName));
             updateLastShowTime();
             return true;
@@ -974,8 +983,12 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
-        if (params != null && maxNativeListener != null) {
-            maxNativeListener.sceneName = params.getNativeScene();
+        String sceneName = null;
+        if (params != null) {
+            sceneName = params.getNativeScene();
+            if (maxNativeListener != null) {
+                maxNativeListener.sceneName = sceneName;
+            }
         }
         printInterfaceLog(ACTION_SHOW);
         try {
@@ -991,6 +1004,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (maxNativeAdView != null) {
                 reportAdShow();
                 notifyAdShow();
+                if (!TextUtils.isEmpty(sceneName)) {
+                    putSceneNameToMap(getPid(), sceneName);
+                }
                 viewGroup.removeAllViews();
                 ViewParent viewParent = maxNativeAdView.getParent();
                 if (viewParent instanceof ViewGroup) {
@@ -1182,6 +1198,9 @@ public class AppLovinLoader extends AbstractSdkLoader {
             Log.iv(Log.TAG, "");
             reportAdShow();
             notifyAdShow();
+            if (!TextUtils.isEmpty(sceneName)) {
+                putSceneNameToMap(getPid(), sceneName);
+            }
             mMaxAppOpenAd.showAd(getSceneId(sceneName));
             updateLastShowTime();
             return true;
@@ -1284,6 +1303,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
             String adUnitId = maxAd.getAdUnitId(); // The MAX Ad Unit ID
             MaxAdFormat adFormat = maxAd.getFormat(); // The ad format of the ad (e.g. BANNER, MREC, INTERSTITIAL, REWARDED)
             String placement = getFinalSceneName(maxAd, sceneName); // The placement this ad's postbacks are tied to
+            String impSceneName = placement;
+            if (TextUtils.isEmpty(impSceneName)) {
+                impSceneName = getSceneNameFromMap(getPid());
+            }
             String placementId = maxAd.getNetworkPlacement();
             String precision = maxAd.getRevenuePrecision();
             Map<String, Object> map = new HashMap<>();
@@ -1295,7 +1318,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             map.put(Constant.AD_UNIT_ID, adUnitId);
             map.put(Constant.AD_FORMAT, adFormat.getLabel());
             map.put(Constant.AD_UNIT_NAME, placeName);
-            map.put(Constant.AD_PLACEMENT, placement);
+            map.put(Constant.AD_PLACEMENT, impSceneName);
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_PRECISION, precision);
             map.put(Constant.AD_COUNTRY_CODE, countryCode);

@@ -359,6 +359,9 @@ public class AdmobLoader extends AbstractSdkLoader {
             if (admobBannerListener != null) {
                 admobBannerListener.sceneName = bannerScene;
             }
+            if (!TextUtils.isEmpty(bannerScene)) {
+                putSceneNameToMap(getPid(), bannerScene);
+            }
             clearCachedAdTime(bannerView);
             viewGroup.removeAllViews();
             ViewParent viewParent = bannerView.getParent();
@@ -524,6 +527,9 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (admobInterstitialListener != null) {
             admobInterstitialListener.sceneName = sceneName;
         }
+        if (!TextUtils.isEmpty(sceneName)) {
+            putSceneNameToMap(getPid(), sceneName);
+        }
         if (mInterstitialAd != null) {
             reportAdShow();
             notifyAdShow();
@@ -682,6 +688,9 @@ public class AdmobLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_SHOW);
         if (admobRewardListener != null) {
             admobRewardListener.sceneName = sceneName;
+        }
+        if (!TextUtils.isEmpty(sceneName)) {
+            putSceneNameToMap(getPid(), sceneName);
         }
         if (mRewardedAd != null) {
             reportAdShow();
@@ -890,8 +899,15 @@ public class AdmobLoader extends AbstractSdkLoader {
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
-        if (params != null && admobNativeListener != null) {
-            admobNativeListener.sceneName = params.getNativeScene();
+        String sceneName = null;
+        if (params != null) {
+            sceneName = params.getNativeScene();
+            if (admobNativeListener != null) {
+                admobNativeListener.sceneName = sceneName;
+            }
+        }
+        if (!TextUtils.isEmpty(sceneName)) {
+            putSceneNameToMap(getPid(), sceneName);
         }
         if (isLoadMultipleNative()) {
             try {
@@ -1060,6 +1076,9 @@ public class AdmobLoader extends AbstractSdkLoader {
         if (admobSplashListener != null) {
             admobSplashListener.sceneName = sceneName;
         }
+        if (!TextUtils.isEmpty(sceneName)) {
+            putSceneNameToMap(getPid(), sceneName);
+        }
         if (mAppOpenAd != null) {
             Activity activity = getActivity();
             reportAdShow();
@@ -1137,6 +1156,10 @@ public class AdmobLoader extends AbstractSdkLoader {
                 revenue = (double) new Random().nextInt(50) / 1000;
                 map.put(Constant.AD_PRECISION, "random");
             }
+            String impSceneName = getSceneId(sceneName);
+            if (TextUtils.isEmpty(impSceneName)) {
+                impSceneName = getSceneNameFromMap(getPid());
+            }
             String networkName = network;
             String adUnitId = getPid();
             String adFormat = getAdType();
@@ -1148,7 +1171,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             map.put(Constant.AD_UNIT_ID, adUnitId);
             map.put(Constant.AD_FORMAT, adFormat);
             map.put(Constant.AD_UNIT_NAME, adUnitName);
-            map.put(Constant.AD_PLACEMENT, getSceneId(sceneName));
+            map.put(Constant.AD_PLACEMENT, impSceneName);
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_SDK_VERSION, getSdkVersion());
             map.put(Constant.AD_APP_VERSION, getAppVersion());

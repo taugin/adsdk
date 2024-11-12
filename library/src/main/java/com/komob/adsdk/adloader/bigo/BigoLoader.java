@@ -259,6 +259,9 @@ public class BigoLoader extends AbstractSdkLoader {
         if (mInterstitialAd != null) {
             reportAdShow();
             notifyAdShow();
+            if (!TextUtils.isEmpty(sceneName)) {
+                putSceneNameToMap(getPid(), sceneName);
+            }
             mInterstitialAd.show(getActivity());
             updateLastShowTime();
             return true;
@@ -413,12 +416,19 @@ public class BigoLoader extends AbstractSdkLoader {
     @Override
     public void showNative(ViewGroup viewGroup, Params params) {
         printInterfaceLog(ACTION_SHOW);
-        if (params != null && bigoNativeListener != null) {
-            bigoNativeListener.sceneName = params.getNativeScene();
+        String sceneName = null;
+        if (params != null) {
+            sceneName = params.getNativeScene();
+            if (bigoNativeListener != null) {
+                bigoNativeListener.sceneName = sceneName;
+            }
         }
         if (mNativeAd != null) {
             reportAdShow();
             notifyAdShow();
+            if (!TextUtils.isEmpty(sceneName)) {
+                putSceneNameToMap(getPid(), sceneName);
+            }
             bigoBindNativeView.bindNative(params, viewGroup, mNativeAd, mPidConfig);
             lastUseNativeAd = mNativeAd;
             clearCachedAdTime(mNativeAd);
@@ -467,6 +477,10 @@ public class BigoLoader extends AbstractSdkLoader {
                 revenue = (double) new Random().nextInt(50) / 1000;
                 map.put(Constant.AD_PRECISION, "random");
             }
+            String impSceneName = getSceneId(sceneName);
+            if (TextUtils.isEmpty(impSceneName)) {
+                impSceneName = getSceneNameFromMap(getPid());
+            }
             String networkName = network;
             String adUnitId = getPid();
             String adFormat = getAdType();
@@ -478,7 +492,7 @@ public class BigoLoader extends AbstractSdkLoader {
             map.put(Constant.AD_UNIT_ID, adUnitId);
             map.put(Constant.AD_FORMAT, adFormat);
             map.put(Constant.AD_UNIT_NAME, adUnitName);
-            map.put(Constant.AD_PLACEMENT, getSceneId(sceneName));
+            map.put(Constant.AD_PLACEMENT, impSceneName);
             map.put(Constant.AD_PLATFORM, getSdkName());
             map.put(Constant.AD_SDK_VERSION, getSdkVersion());
             map.put(Constant.AD_APP_VERSION, getAppVersion());

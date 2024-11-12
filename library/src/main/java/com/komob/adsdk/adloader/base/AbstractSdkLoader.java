@@ -1425,6 +1425,28 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         }
     }
 
+    private static final Map<String, String> sScenePidMap = new HashMap<>();
+    protected static void putSceneNameToMap(String pid, String sceneName) {
+        try {
+            if (sScenePidMap != null && !TextUtils.isEmpty(sceneName)) {
+                String key = "adsdk_" + pid;
+                sScenePidMap.put(key, sceneName);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    protected static String getSceneNameFromMap(String pid) {
+        String key = "adsdk_" + pid;
+        try {
+            if (sScenePidMap != null && sScenePidMap.containsKey(key)) {
+                return sScenePidMap.get(key);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////
     private static Map<ViewItem, String> sNativeLoaderMap = new LinkedHashMap<>();
     private static Map<ViewItem, String> sBannerViewMap = new LinkedHashMap<>();
