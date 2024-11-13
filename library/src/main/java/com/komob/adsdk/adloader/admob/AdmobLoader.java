@@ -280,6 +280,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     private class AdmobBannerListener extends AbstractAdListener {
+        AdView showingBannerView;
         AdListener adListener = new AdListener() {
             @Override
             public void onAdClosed() {
@@ -332,13 +333,20 @@ public class AdmobLoader extends AbstractSdkLoader {
                 impressionId = generateImpressionId();
                 String network = null;
                 try {
-                    network = loadingView.getResponseInfo().getMediationAdapterClassName();
+                    network = showingBannerView.getResponseInfo().getMediationAdapterClassName();
                     network = adapterClassToNetwork(network);
                 } catch (Exception e) {
                 }
                 reportAdImp();
                 notifyAdImp();
-                reportAdmobImpressionData(adValue, network, impressionId, sceneName);
+                String finalSceneName = sceneName;
+                if (TextUtils.isEmpty(finalSceneName)) {
+                    try {
+                        finalSceneName = (String) showingBannerView.getTag(RFileConfig.getLayoutLittle());
+                    } catch (Exception e) {
+                    }
+                }
+                reportAdmobImpressionData(adValue, network, impressionId, finalSceneName);
             }
         };
     }
@@ -358,6 +366,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         try {
             if (admobBannerListener != null) {
                 admobBannerListener.sceneName = bannerScene;
+                admobBannerListener.showingBannerView = bannerView;
             }
             if (!TextUtils.isEmpty(bannerScene)) {
                 putSceneNameToMap(getPid(), bannerScene);
@@ -370,6 +379,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             }
             reportAdShow();
             notifyAdShow();
+            bannerView.setTag(RFileConfig.getLayoutLittle(), bannerScene);
             viewGroup.addView(bannerView);
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);

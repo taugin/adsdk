@@ -510,6 +510,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     private class MaxBannerListener extends AbstractAdListener {
+        private MaxAdView showingBannerView;
         MaxAdViewAdListener maxAdViewAdListener = new MaxAdViewAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -589,8 +590,15 @@ public class AppLovinLoader extends AbstractSdkLoader {
             public void onAdRevenuePaid(MaxAd ad) {
                 if (viewInScreen(lastUseMaxAdView)) {
                     impressionId = generateImpressionId();
+                    String finalSceneName = sceneName;
+                    if (TextUtils.isEmpty(finalSceneName)) {
+                        try {
+                            finalSceneName = (String) showingBannerView.getTag();
+                        } catch (Exception e) {
+                        }
+                    }
                     Log.iv(Log.TAG, formatLog("ad revenue paid" + getLoadedInfo(ad)));
-                    reportMaxAdImpData(ad, getAdPlaceName(), impressionId, sceneName);
+                    reportMaxAdImpData(ad, getAdPlaceName(), impressionId, finalSceneName);
                 }
             }
         };
@@ -601,6 +609,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         try {
             if (maxBannerListener != null) {
                 maxBannerListener.sceneName = bannerScene;
+                maxBannerListener.showingBannerView = maxAdView;
             }
             if (!TextUtils.isEmpty(bannerScene)) {
                 putSceneNameToMap(getPid(), bannerScene);
@@ -613,6 +622,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
             if (viewParent instanceof ViewGroup) {
                 ((ViewGroup) viewParent).removeView(maxAdView);
             }
+            maxAdView.setTag(RFileConfig.getLayoutLittle(), bannerScene);
             viewGroup.addView(maxAdView);
             if (viewGroup.getVisibility() != View.VISIBLE) {
                 viewGroup.setVisibility(View.VISIBLE);

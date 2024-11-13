@@ -53,7 +53,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
     private TPNative mTPNative;
     private TPSplash mTPSplash;
     private TradPlusBindView mTradPlusBindView = new TradPlusBindView();
-    private String mSceneName = null;
     private static Set<String> sNonAutoLoadList = new HashSet<>();
 
     @Override
@@ -160,7 +159,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network, getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : (tpAdInfo != null ? tpAdInfo.sceneId : "")));
+                notifyAdImp(network, getSceneId(tpAdInfo != null ? tpAdInfo.sceneId : ""));
                 reportTradPlusImpressionData(tpAdInfo, impressionId);
             }
 
@@ -195,6 +194,10 @@ public class TradPlusLoader extends AbstractSdkLoader {
         reportAdRequest();
         notifyAdRequest();
         tpBanner.loadAd(getPid(), getSceneId());
+    }
+
+    private class TradplusBannerListener extends AbstractAdListener {
+
     }
 
     @Override
@@ -310,7 +313,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network, getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : (tpAdInfo != null ? tpAdInfo.sceneId : "")));
+                notifyAdImp(network, getSceneId(tpAdInfo != null ? tpAdInfo.sceneId : ""));
                 reportTradPlusImpressionData(tpAdInfo, impressionId);
             }
 
@@ -455,7 +458,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network, getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : (tpAdInfo != null ? tpAdInfo.sceneId : "")));
+                notifyAdImp(network, getSceneId(tpAdInfo != null ? tpAdInfo.sceneId : ""));
                 reportTradPlusImpressionData(tpAdInfo, impressionId);
             }
 
@@ -603,7 +606,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network, getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : (tpAdInfo != null ? tpAdInfo.sceneId : "")));
+                notifyAdImp(network, getSceneId(tpAdInfo != null ? tpAdInfo.sceneId : ""));
                 reportTradPlusImpressionData(tpAdInfo, impressionId);
             }
 
@@ -754,7 +757,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network + " , network pid : " + networkPid));
                 reportAdImp(network, networkPid);
-                notifyAdImp(network, getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : (tpAdInfo != null ? tpAdInfo.sceneId : "")));
+                notifyAdImp(network, getSceneId(tpAdInfo != null ? tpAdInfo.sceneId : ""));
                 reportTradPlusImpressionData(tpAdInfo, impressionId);
             }
 
@@ -796,7 +799,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
     public boolean showSplash(ViewGroup viewGroup, String sceneName) {
         printInterfaceLog(ACTION_SHOW);
         Log.iv(Log.TAG, getAdPlaceName() + " - " + getSdkName() + " show splash");
-        mSceneName = sceneName;
         if (mTPSplash != null && mTPSplash.isReady()) {
             reportAdShow();
             notifyAdShow();
@@ -804,7 +806,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 putSceneNameToMap(getPid(), sceneName);
             }
             refreshContext();
-            mTPSplash.showAd(viewGroup);
+            mTPSplash.showAd(viewGroup, sceneName);
             updateLastShowTime();
             return true;
         } else {
@@ -873,7 +875,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
 
     private void reportTradPlusImpressionData(TPAdInfo tpAdInfo, String impressionId) {
         try {
-            String impSceneName = getSceneId(!TextUtils.isEmpty(mSceneName) ? mSceneName : tpAdInfo.sceneId);
+            String impSceneName = getSceneId(tpAdInfo != null ? tpAdInfo.sceneId : "");
             if (TextUtils.isEmpty(impSceneName)) {
                 impSceneName = getSceneNameFromMap(getPid());
             }
