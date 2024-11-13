@@ -593,7 +593,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     String finalSceneName = sceneName;
                     if (TextUtils.isEmpty(finalSceneName)) {
                         try {
-                            finalSceneName = (String) showingBannerView.getTag();
+                            finalSceneName = (String) showingBannerView.getTag(RFileConfig.getLayoutLittle());
                         } catch (Exception e) {
                         }
                     }

@@ -17,6 +17,7 @@ import com.komob.adsdk.core.framework.Params;
 import com.komob.adsdk.data.config.PidConfig;
 import com.komob.adsdk.log.Log;
 import com.komob.adsdk.utils.Utils;
+import com.komob.api.RFileConfig;
 import com.tradplus.ads.base.GlobalTradPlus;
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
@@ -158,9 +159,16 @@ public class TradPlusLoader extends AbstractSdkLoader {
                 String network = getNetwork(tpAdInfo);
                 String networkPid = getNetworkPid(tpAdInfo);
                 Log.iv(Log.TAG, formatLog("ad impression network : " + network));
+                String finalSceneName = tpAdInfo != null ? tpAdInfo.sceneId : null;
+                if (TextUtils.isEmpty(finalSceneName)) {
+                    try {
+                        finalSceneName = (String) tpBanner.getTag(RFileConfig.getLayoutLittle());
+                    } catch (Exception e) {
+                    }
+                }
                 reportAdImp(network, networkPid);
-                notifyAdImp(network, getSceneId(tpAdInfo != null ? tpAdInfo.sceneId : ""));
-                reportTradPlusImpressionData(tpAdInfo, impressionId);
+                notifyAdImp(network, finalSceneName);
+                reportTradPlusImpressionData(tpAdInfo, impressionId, finalSceneName);
             }
 
             @Override
@@ -196,10 +204,6 @@ public class TradPlusLoader extends AbstractSdkLoader {
         tpBanner.loadAd(getPid(), getSceneId());
     }
 
-    private class TradplusBannerListener extends AbstractAdListener {
-
-    }
-
     @Override
     public boolean isBannerLoaded() {
         boolean loaded = mTPBanner != null && mTPBanner.isReady() && !isCachedAdExpired(mTPBanner);
@@ -233,6 +237,7 @@ public class TradPlusLoader extends AbstractSdkLoader {
             if (viewParent instanceof ViewGroup) {
                 ((ViewGroup) viewParent).removeView(mTPBanner);
             }
+            mTPBanner.setTag(RFileConfig.getLayoutLittle(), bannerScene);
             viewGroup.addView(mTPBanner);
             mTPBanner.showAd(getSceneId(bannerScene));
             if (viewGroup.getVisibility() != View.VISIBLE) {
@@ -874,8 +879,12 @@ public class TradPlusLoader extends AbstractSdkLoader {
     }
 
     private void reportTradPlusImpressionData(TPAdInfo tpAdInfo, String impressionId) {
+        reportTradPlusImpressionData(tpAdInfo, impressionId, null);
+    }
+
+    private void reportTradPlusImpressionData(TPAdInfo tpAdInfo, String impressionId, String sceneName) {
         try {
-            String impSceneName = getSceneId(tpAdInfo != null ? tpAdInfo.sceneId : "");
+            String impSceneName = getSceneId(tpAdInfo != null ? tpAdInfo.sceneId : sceneName);
             if (TextUtils.isEmpty(impSceneName)) {
                 impSceneName = getSceneNameFromMap(getPid());
             }
