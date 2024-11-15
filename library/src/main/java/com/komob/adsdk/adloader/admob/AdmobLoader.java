@@ -48,6 +48,7 @@ import com.komob.adsdk.log.Log;
 import com.komob.adsdk.utils.Utils;
 import com.komob.api.RFileConfig;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -280,7 +281,7 @@ public class AdmobLoader extends AbstractSdkLoader {
     }
 
     private class AdmobBannerListener extends AbstractAdListener {
-        AdView showingBannerView;
+        WeakReference<AdView> showingBannerView;
         AdListener adListener = new AdListener() {
             @Override
             public void onAdClosed() {
@@ -333,7 +334,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 impressionId = generateImpressionId();
                 String network = null;
                 try {
-                    network = showingBannerView.getResponseInfo().getMediationAdapterClassName();
+                    network = showingBannerView.get().getResponseInfo().getMediationAdapterClassName();
                     network = adapterClassToNetwork(network);
                 } catch (Exception e) {
                 }
@@ -342,7 +343,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 String finalSceneName = sceneName;
                 if (TextUtils.isEmpty(finalSceneName)) {
                     try {
-                        finalSceneName = (String) showingBannerView.getTag(RFileConfig.getLayoutLittle());
+                        finalSceneName = (String) showingBannerView.get().getTag(RFileConfig.getLayoutLittle());
                     } catch (Exception e) {
                     }
                 }
@@ -366,7 +367,7 @@ public class AdmobLoader extends AbstractSdkLoader {
         try {
             if (admobBannerListener != null) {
                 admobBannerListener.sceneName = bannerScene;
-                admobBannerListener.showingBannerView = bannerView;
+                admobBannerListener.showingBannerView = new WeakReference<>(bannerView);
             }
             if (!TextUtils.isEmpty(bannerScene)) {
                 putSceneNameToMap(getPid(), bannerScene);

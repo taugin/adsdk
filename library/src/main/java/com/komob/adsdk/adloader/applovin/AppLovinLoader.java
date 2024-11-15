@@ -42,6 +42,7 @@ import com.komob.adsdk.utils.SpUtils;
 import com.komob.adsdk.utils.Utils;
 import com.komob.api.RFileConfig;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -510,7 +511,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
     }
 
     private class MaxBannerListener extends AbstractAdListener {
-        private MaxAdView showingBannerView;
+        private WeakReference<MaxAdView> showingBannerView;
         MaxAdViewAdListener maxAdViewAdListener = new MaxAdViewAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -593,7 +594,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
                     String finalSceneName = sceneName;
                     if (TextUtils.isEmpty(finalSceneName)) {
                         try {
-                            finalSceneName = (String) showingBannerView.getTag(RFileConfig.getLayoutLittle());
+                            finalSceneName = (String) showingBannerView.get().getTag(RFileConfig.getLayoutLittle());
                         } catch (Exception e) {
                         }
                     }
@@ -609,7 +610,7 @@ public class AppLovinLoader extends AbstractSdkLoader {
         try {
             if (maxBannerListener != null) {
                 maxBannerListener.sceneName = bannerScene;
-                maxBannerListener.showingBannerView = maxAdView;
+                maxBannerListener.showingBannerView = new WeakReference<>(maxAdView);
             }
             if (!TextUtils.isEmpty(bannerScene)) {
                 putSceneNameToMap(getPid(), bannerScene);
