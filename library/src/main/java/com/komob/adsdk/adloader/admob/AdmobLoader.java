@@ -301,7 +301,11 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdOpened() {
                 Log.iv(Log.TAG, formatLog("ad opened"));
-                String network = getBannerNetwork();
+                String network = null;
+                try {
+                    network = getBannerNetwork(showingBannerView.get());
+                } catch (Exception e) {
+                }
                 reportAdClick(network, null, impressionId);
                 notifyAdClick(network, impressionId);
             }
@@ -312,8 +316,9 @@ public class AdmobLoader extends AbstractSdkLoader {
                 bannerView = loadingView;
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(loadingView);
-                setRevenueAverage(getBannerNetwork());
-                reportAdLoaded(getBannerNetwork());
+                String network = getBannerNetwork(bannerView);
+                setRevenueAverage(network);
+                reportAdLoaded(network);
                 notifySdkLoaderLoaded(false);
             }
 
@@ -458,8 +463,9 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(interstitialAd);
                 setInterstitialListener(interstitialAd);
-                setRevenueAverage(getInterstitialNetwork());
-                reportAdLoaded(getInterstitialNetwork());
+                String network = getInterstitialNetwork(interstitialAd);
+                setRevenueAverage(network);
+                reportAdLoaded(network);
                 notifySdkLoaderLoaded(false);
             }
 
@@ -500,7 +506,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
-                    String network = getInterstitialNetwork();
+                    String network = getInterstitialNetwork(interstitialAd);
                     reportAdClick(network, null, impressionId);
                     notifyAdClick(network, impressionId);
                 }
@@ -508,7 +514,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdImpression() {
                     Log.iv(Log.TAG, formatLog("ad impression"));
-                    String network = getInterstitialNetwork();
+                    String network = getInterstitialNetwork(interstitialAd);
                     reportAdImp(network, null);
                     notifyAdImp(network, sceneName);
                 }
@@ -610,8 +616,9 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mRewardedAd);
                 setRewardListener(rewardedAd);
-                setRevenueAverage(getRewardNetwork());
-                reportAdLoaded(getRewardNetwork());
+                String network = getRewardNetwork(rewardedAd);
+                setRevenueAverage(network);
+                reportAdLoaded(network);
                 notifySdkLoaderLoaded(false);
             }
 
@@ -653,7 +660,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
-                    String network = getRewardNetwork();
+                    String network = getRewardNetwork(rewardedAd);
                     reportAdClick(network, null, impressionId);
                     notifyAdClick(network, impressionId);
                 }
@@ -661,7 +668,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdImpression() {
                     Log.iv(Log.TAG, formatLog("ad impression"));
-                    String network = getRewardNetwork();
+                    String network = getRewardNetwork(rewardedAd);
                     reportAdImp(network, null);
                     notifyAdImp(network, sceneName);
                 }
@@ -830,7 +837,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdClicked() {
                 Log.iv(Log.TAG, formatLog("ad click"));
-                String network = getNativeNetwork();
+                String network = getNativeNetwork(mNativeAd);
                 reportAdClick(network, null, impressionId);
                 notifyAdClick(network, impressionId);
             }
@@ -843,7 +850,7 @@ public class AdmobLoader extends AbstractSdkLoader {
             @Override
             public void onAdImpression() {
                 Log.iv(Log.TAG, formatLog("ad impression"));
-                String network = getNativeNetwork();
+                String network = getNativeNetwork(mNativeAd);
                 reportAdImp(network, null);
                 notifyAdImp(network, sceneName);
             }
@@ -881,8 +888,9 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(nativeAd);
                 setNativeListener(nativeAd);
-                setRevenueAverage(getNativeNetwork());
-                reportAdLoaded(getNativeNetwork());
+                String network = getNativeNetwork(nativeAd);
+                setRevenueAverage(network);
+                reportAdLoaded(network);
                 notifySdkLoaderLoaded(false);
             }
         };
@@ -1011,8 +1019,9 @@ public class AdmobLoader extends AbstractSdkLoader {
                 setLoading(false, STATE_SUCCESS);
                 putCachedAdTime(mAppOpenAd);
                 setSplashListener(appOpenAd);
-                setRevenueAverage(getSplashNetwork());
-                reportAdLoaded(getSplashNetwork());
+                String network = getSplashNetwork(appOpenAd);
+                setRevenueAverage(network);
+                reportAdLoaded(network);
                 notifySdkLoaderLoaded(false);
             }
 
@@ -1039,7 +1048,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdClicked() {
                     Log.iv(Log.TAG, formatLog("ad click"));
-                    String network = getSplashNetwork();
+                    String network = getSplashNetwork(appOpenAd);
                     reportAdClick(network, null, impressionId);
                     notifyAdClick(network, impressionId);
                 }
@@ -1047,7 +1056,7 @@ public class AdmobLoader extends AbstractSdkLoader {
                 @Override
                 public void onAdShowedFullScreenContent() {
                     Log.iv(Log.TAG, formatLog("ad showed full screen content"));
-                    String network = getSplashNetwork();
+                    String network = getSplashNetwork(appOpenAd);
                     reportAdImp(network, null);
                     notifyAdImp(network, sceneName);
                 }
@@ -1172,6 +1181,9 @@ public class AdmobLoader extends AbstractSdkLoader {
                 impSceneName = getSceneNameFromMap(getPid());
             }
             String networkName = network;
+            if (TextUtils.isEmpty(networkName)) {
+                networkName = Constant.AD_NETWORK_ADMOB;
+            }
             String adUnitId = getPid();
             String adFormat = getAdType();
             String adUnitName = getAdPlaceName();
@@ -1239,34 +1251,34 @@ public class AdmobLoader extends AbstractSdkLoader {
         return null;
     }
 
-    private String getInterstitialNetwork() {
+    private String getInterstitialNetwork(InterstitialAd interstitialAd) {
         try {
-            String adapterClass = mInterstitialAd.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
+            String adapterClass = interstitialAd.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
             return adapterClassToNetwork(adapterClass);
         } catch (Exception e) {
         }
         return null;
     }
 
-    private String getSplashNetwork() {
+    private String getSplashNetwork(AppOpenAd appOpenAd) {
         try {
-            String adapterClass = mAppOpenAd.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
+            String adapterClass = appOpenAd.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
             return adapterClassToNetwork(adapterClass);
         } catch (Exception e) {
         }
         return null;
     }
 
-    private String getNativeNetwork() {
+    private String getNativeNetwork(NativeAd nativeAd) {
         try {
-            String adapterClass = mNativeAd.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
+            String adapterClass = nativeAd.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
             return adapterClassToNetwork(adapterClass);
         } catch (Exception e) {
         }
         return null;
     }
 
-    private String getBannerNetwork() {
+    private String getBannerNetwork(AdView bannerView) {
         try {
             String adapterClass = bannerView.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
             return adapterClassToNetwork(adapterClass);
@@ -1275,9 +1287,9 @@ public class AdmobLoader extends AbstractSdkLoader {
         return null;
     }
 
-    private String getRewardNetwork() {
+    private String getRewardNetwork(RewardedAd rewardedAd) {
         try {
-            String adapterClass = mRewardedAd.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
+            String adapterClass = rewardedAd.getResponseInfo().getLoadedAdapterResponseInfo().getAdapterClassName();
             return adapterClassToNetwork(adapterClass);
         } catch (Exception e) {
         }
