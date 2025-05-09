@@ -101,14 +101,6 @@ public class EventImpl implements IEvent {
         return activeDays;
     }
 
-    public String getActiveDayString() {
-        int activeDays = getActiveDays();
-        if (activeDays > 720) {
-            return "maxd";
-        }
-        return String.format(Locale.ENGLISH, "%03dd", activeDays);
-    }
-
     public String getActiveDate() {
         String activeDate;
         try {
@@ -307,20 +299,8 @@ public class EventImpl implements IEvent {
         return result;
     }
 
-    private boolean isReportUmeng(Context context) {
-        String value = DataManager.get(context).getString("ad_report_bool_umeng");
-        boolean result = parseReport(value, true);
-        return result;
-    }
-
     private boolean isReportFirebase(Context context) {
         String value = DataManager.get(context).getString("ad_report_bool_firebase");
-        boolean result = parseReport(value, true);
-        return result;
-    }
-
-    private boolean isReportTalkingData(Context context) {
-        String value = DataManager.get(context).getString("ad_report_bool_td");
         boolean result = parseReport(value, true);
         return result;
     }
@@ -366,12 +346,6 @@ public class EventImpl implements IEvent {
         if (isReportFirebase(context)) {
             InternalStat.sendFirebaseAnalytics(context, eventId, value, maps, InternalStat.isInFirebaseWhiteList(eventId));
         }
-        if (isReportUmeng(context)) {
-            InternalStat.sendUmeng(context, eventId, value, maps, InternalStat.isInUmengWhiteList(eventId));
-        }
-        if (isReportTalkingData(context)) {
-            InternalStat.sendTalkingData(context, eventId, value, maps);
-        }
     }
 
     private Map<String, Object> addExtra(Map<String, Object> extra, String name, String sdk, String type, String pid, double ecpm, String network, String networkPid) {
@@ -385,9 +359,6 @@ public class EventImpl implements IEvent {
         extra.put("network_pid", networkPid);
         extra.put("pid", pid);
         extra.put("ecpm", ecpm);
-        extra.put("active_days", getActiveDayString());
-        extra.put("active_date", getActiveDate());
-        extra.put("active_year", getActiveYear());
         extra.put("country", Utils.getCountryFromLocale(mContext));
         return extra;
     }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.applovin.impl.sdk.AppLovinSdkInitializationConfigurationImpl;
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
 import com.applovin.mediation.MaxAdListener;
@@ -28,7 +29,9 @@ import com.applovin.mediation.nativeAds.MaxNativeAdListener;
 import com.applovin.mediation.nativeAds.MaxNativeAdLoader;
 import com.applovin.mediation.nativeAds.MaxNativeAdView;
 import com.applovin.sdk.AppLovinErrorCodes;
+import com.applovin.sdk.AppLovinMediationProvider;
 import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.AppLovinSdkInitializationConfiguration;
 import com.applovin.sdk.AppLovinSdkSettings;
 import com.komob.adsdk.AdReward;
 import com.komob.adsdk.adloader.base.AbstractSdkLoader;
@@ -106,12 +109,21 @@ public class AppLovinLoader extends AbstractSdkLoader {
             try {
                 AppLovinSdk appLovinSdk = getInstance(mContext);
                 if (appLovinSdk != null) {
-                    appLovinSdk.setMediationProvider("max");
+                    String sdkKey = getSdkKey(mContext);
+                    Log.iv(Log.TAG, "applovin sdk key : " + sdkKey);
+                    if (TextUtils.isEmpty(sdkKey)) {
+                        if (sdkInitializeListener != null) {
+                            sdkInitializeListener.onInitializeFailure("empty applovin.sdk.key");
+                        }
+                        return;
+                    }
+                    AppLovinSdkInitializationConfiguration.Builder builder = new AppLovinSdkInitializationConfigurationImpl.BuilderImpl(sdkKey);
+                    builder.setMediationProvider(AppLovinMediationProvider.MAX);
                     if (isDebugDevice(mContext)) {
                         String gaid = SpUtils.getString(mContext, Constant.PREF_GAID);
                         Log.iv(Log.TAG, "applovin debug mode gaid : " + gaid);
                         if (!TextUtils.isEmpty(gaid)) {
-                            appLovinSdk.getSettings().setTestDeviceAdvertisingIds(Arrays.asList(new String[]{gaid}));
+                            builder.setTestDeviceAdvertisingIds(Arrays.asList(new String[]{gaid}));
                         }
                     }
                     try {
@@ -128,7 +140,8 @@ public class AppLovinLoader extends AbstractSdkLoader {
                         }
                     }, 15000);
                     final long startInit = SystemClock.elapsedRealtime();
-                    appLovinSdk.initializeSdk(config -> {
+                    AppLovinSdkInitializationConfiguration initConfig = builder.build();
+                    appLovinSdk.initialize(initConfig, config -> {
                         Log.iv(Log.TAG, getSdkName() + " sdk init successfully cost time : " + (SystemClock.elapsedRealtime() - startInit));
                         mHandler.removeCallbacksAndMessages(null);
                         if (sdkInitializeListener != null) {
@@ -215,9 +228,6 @@ public class AppLovinLoader extends AbstractSdkLoader {
         Map<String, Map<String, String>> config = DataManager.get(context).getMediationConfig();
         if (config != null) {
             Map<String, String> applovinConfig = config.get("applovin.sdk.config");
-            if (applovinConfig == null) {
-                applovinConfig = config.get("com.mopub.mobileads.AppLovinAdapterConfiguration");
-            }
             if (applovinConfig != null) {
                 applovinSdkKey = applovinConfig.get("sdk_key");
             }
@@ -230,13 +240,10 @@ public class AppLovinLoader extends AbstractSdkLoader {
 
     private static AppLovinSdk getInstance(Context context) {
         String sdkKey = getSdkKey(context);
-        if (TextUtils.isEmpty(sdkKey)) {
-            sdkKey = "L7OrRia7Fum7esJFM51m6xd799x4HmN4iNA6H9I7PhlFH_NqVTDDu87T7R58p4gAR3xJNedZzM-0HBT1XwUEv7";
+        if (!TextUtils.isEmpty(sdkKey)) {
+            return AppLovinSdk.getInstance(context);
         }
-        if (sAppLovinSdkSettings == null) {
-            sAppLovinSdkSettings = new AppLovinSdkSettings(context);
-        }
-        return AppLovinSdk.getInstance(sdkKey, sAppLovinSdkSettings, context);
+        return null;
     }
 
     @Override

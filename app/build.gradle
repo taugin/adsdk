@@ -9,8 +9,10 @@ ext {
 }
 def useProject = true;
 
+android.buildFeatures.buildConfig true
 android {
     compileSdk 34
+    namespace "com.hauyu.adsdk.demo"
     defaultConfig {
         applicationId "com.hauyu.adsdk.demo"
         minSdkVersion 24

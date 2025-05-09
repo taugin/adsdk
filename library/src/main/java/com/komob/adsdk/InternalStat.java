@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.komob.adsdk.constant.Constant;
 import com.komob.adsdk.log.Log;
 
 import java.lang.reflect.Method;
@@ -18,25 +17,14 @@ import java.util.Map;
 public class InternalStat {
 
     private static Object mFacebookObject = null;
-    private static final String SDK_NAME_UMENG = "umeng";
     private static final String SDK_NAME_FIREBASE = "firebase";
     private static final String SDK_NAME_APPSFLYER = "appsflyer";
-    private static final String SDK_NAME_TALKING_DATA = "talkingdata";
     private static final String SDK_NAME_FACEBOOK = "facebook";
     private static final Map<String, Boolean> sSdkIntegrated;
 
     static {
         sSdkIntegrated = new HashMap<>();
         boolean sdkIntegrated;
-        try {
-            Class.forName("com.umeng.analytics.MobclickAgent");
-            sdkIntegrated = true;
-        } catch (Exception | Error e) {
-            Log.iv(Log.TAG_SDK, SDK_NAME_UMENG + " init error : " + e);
-            sdkIntegrated = false;
-        }
-        sSdkIntegrated.put(SDK_NAME_UMENG, sdkIntegrated);
-
         try {
             Class.forName("com.google.firebase.analytics.FirebaseAnalytics");
             sdkIntegrated = true;
@@ -54,15 +42,6 @@ public class InternalStat {
             sdkIntegrated = false;
         }
         sSdkIntegrated.put(SDK_NAME_APPSFLYER, sdkIntegrated);
-
-        try {
-            Class.forName("com.tendcloud.tenddata.TalkingDataSDK");
-            sdkIntegrated = true;
-        } catch (Exception | Error e) {
-            Log.iv(Log.TAG_SDK, SDK_NAME_TALKING_DATA + " init error : " + e);
-            sdkIntegrated = false;
-        }
-        sSdkIntegrated.put(SDK_NAME_TALKING_DATA, sdkIntegrated);
 
         try {
             Class.forName("com.facebook.appevents.AppEventsLogger");
@@ -149,13 +128,6 @@ public class InternalStat {
             bundle.putString("entry_point", value);
         }
         mapToBundle(extra, bundle);
-        if (bundle != null && bundle.size() > 25) {
-            try {
-                bundle.remove(Constant.AD_PLACEMENT_NEW);
-                bundle.remove(Constant.AD_ROUND_CPM_NEW);
-            } catch (Exception e) {
-            }
-        }
         Log.iv(Log.TAG_SDK, "[" + platform + "] event id : " + eventId + " , value : " + bundle);
         String error = null;
         try {
@@ -231,143 +203,6 @@ public class InternalStat {
         }
     }
 
-    private static void checkUmengDataType(Map<String, Object> map, Map<String, Object> extra) {
-        try {
-            if (extra != null && !extra.isEmpty() && map != null) {
-                for (Map.Entry<String, Object> entry : extra.entrySet()) {
-                    if (entry != null) {
-                        String key = entry.getKey();
-                        Object value = entry.getValue();
-                        if ((value instanceof String)
-                                || (value instanceof Integer)
-                                || (value instanceof Long)
-                                || (value instanceof Short)
-                                || (value instanceof Float)
-                                || (value instanceof Double)
-                                || (value.getClass().isArray())) {
-                            map.put(key, value);
-                        } else {
-                            map.put(key, String.valueOf(value));
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    /**
-     * 发送友盟计数事件
-     *
-     * @param context
-     * @param eventId
-     * @param extra
-     */
-    public static void sendUmeng(Context context, String eventId, Map<String, Object> extra) {
-        sendUmeng(context, eventId, null, extra);
-    }
-
-    public static void sendUmeng(Context context, String eventId, String value, Map<String, Object> extra) {
-        sendUmeng(context, eventId, value, extra, true);
-    }
-
-    public static void sendUmeng(Context context, String eventId, String value, Map<String, Object> extra, boolean allowReport) {
-        String platform = SDK_NAME_UMENG;
-        if (!isReportPlatform(context, eventId, platform, allowReport)) {
-            return;
-        }
-        Map<String, Object> map = new HashMap<>();
-        map.put("event_id", eventId);
-        if (!TextUtils.isEmpty(value)) {
-            map.put("entry_point", value);
-        }
-        checkUmengDataType(map, extra);
-        Log.iv(Log.TAG_SDK, "[" + platform + "] event id : " + eventId + " , value : " + map);
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
-            Method method = clazz.getDeclaredMethod("onEventObject", Context.class, String.class, Map.class);
-            method.invoke(null, context, eventId, map);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
-        }
-    }
-
-    /**
-     * 发送友盟计算事件
-     *
-     * @param context
-     * @param eventId
-     * @param extra
-     * @param value
-     */
-    public static void sendUmengValue(Context context, String eventId, Map<String, Object> extra, int value) {
-        sendUmengValue(context, eventId, extra, value, true);
-    }
-
-    public static void sendUmengValue(Context context, String eventId, Map<String, Object> extra, int value, boolean allowReport) {
-        String platform = SDK_NAME_UMENG;
-        if (!isReportPlatform(context, eventId, platform, allowReport)) {
-            return;
-        }
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("event_id", eventId);
-        if (extra != null && !extra.isEmpty()) {
-            for (Map.Entry<String, Object> entry : extra.entrySet()) {
-                if (entry != null) {
-                    String key = entry.getKey();
-                    Object valueObj = entry.getValue();
-                    if (!TextUtils.isEmpty(key) && valueObj != null) {
-                        if (valueObj instanceof String) {
-                            map.put(entry.getKey(), valueObj.toString());
-                        } else {
-                            map.put(entry.getKey(), String.valueOf(valueObj));
-                        }
-                    }
-                }
-            }
-        }
-        Log.iv(Log.TAG_SDK, "[" + platform + "] event id : " + eventId + " , value : " + map);
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
-            Method method = clazz.getDeclaredMethod("onEventValue", Context.class, String.class, Map.class, int.class);
-            method.invoke(null, context, eventId, map, value);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
-        }
-    }
-
-    private static void sendUmengError(Context context, Throwable throwable, boolean allowReport) {
-        String platform = SDK_NAME_UMENG;
-        if (!isReportPlatform(context, "umeng_error", platform, allowReport)) {
-            return;
-        }
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.umeng.analytics.MobclickAgent");
-            Method method = clazz.getDeclaredMethod("reportError", Context.class, Throwable.class);
-            method.invoke(null, context, throwable);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
-        }
-    }
-
     /**
      * 发送appsflyer统计事件
      *
@@ -419,46 +254,6 @@ public class InternalStat {
         }
     }
 
-    /**
-     * 发送talking data统计事件
-     *
-     * @param context
-     * @param eventId
-     * @param value
-     * @param extra
-     */
-    public static void sendTalkingData(Context context, String eventId, String value, Map<String, Object> extra) {
-        sendTalkingData(context, eventId, value, extra, true);
-    }
-
-    public static void sendTalkingData(Context context, String eventId, String value, Map<String, Object> extra, boolean allowReport) {
-        String platform = SDK_NAME_TALKING_DATA;
-        if (!isReportPlatform(context, eventId, platform, allowReport)) {
-            return;
-        }
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        if (extra != null && !extra.isEmpty()) {
-            map.putAll(extra);
-        }
-        if (!TextUtils.isEmpty(value)) {
-            map.put("entry_point", value);
-        }
-        Log.iv(Log.TAG_SDK, "[" + platform + "] event id : " + eventId + " , value : " + map);
-        String error = null;
-        try {
-            Class<?> clazz = Class.forName("com.tendcloud.tenddata.TalkingDataSDK");
-            Method method = clazz.getDeclaredMethod("onEvent", Context.class, String.class, Map.class);
-            method.invoke(null, context, eventId, map);
-        } catch (Exception e) {
-            error = String.valueOf(e);
-        } catch (Error e) {
-            error = String.valueOf(e);
-        }
-        if (!TextUtils.isEmpty(error)) {
-            Log.iv(Log.TAG_SDK, "send " + platform + " error : " + error);
-        }
-    }
-
     public static void reportEvent(Context context, String key) {
         reportEvent(context, key, null, null);
     }
@@ -473,21 +268,8 @@ public class InternalStat {
 
     public static void reportEvent(Context context, String key, String value, Map<String, Object> map) {
         Log.iv(Log.TAG, "event id : " + key + " , value : " + value + " , extra : " + map);
-        sendUmeng(context, key, value, map, isInUmengWhiteList(key));
         sendAppsflyer(context, key, value, map, false);
         sendFirebaseAnalytics(context, key, value, map, isInFirebaseWhiteList(key));
-        sendTalkingData(context, key, value, map);
-    }
-
-    public static void reportError(Context context, Throwable e) {
-        sendUmengError(context, e, true);
-    }
-
-    public static boolean isInUmengWhiteList(String key) {
-        if (TextUtils.isEmpty(key)) {
-            return false;
-        }
-        return true;
     }
 
     public static boolean isInFirebaseWhiteList(String key) {

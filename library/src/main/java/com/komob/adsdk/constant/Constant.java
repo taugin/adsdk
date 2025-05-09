@@ -148,8 +148,6 @@ public class Constant {
     public static final String AD_TOTAL_ADS_REVENUE_001 = "Total_Ads_Revenue_001";
     public static final String AD_VALUE = "value";
     public static final String AD_MICRO_VALUE = "micro_value";
-    public static final String AD_ROUND_CPM = "round_cpm";
-    public static final String AD_ROUND_CPM_NEW = "round_cpm_new";
     public static final String AD_CURRENCY = "currency";
     public static final String AD_NETWORK = "ad_network";
     public static final String AD_NETWORK_PID = "ad_network_pid";
@@ -158,7 +156,6 @@ public class Constant {
     public static final String AD_FORMAT = "ad_format";
     public static final String AD_UNIT_NAME = "ad_unit_name";
     public static final String AD_PLACEMENT = "ad_placement";
-    public static final String AD_PLACEMENT_NEW = "ad_placement_new";
     public static final String AD_PLATFORM = "ad_platform";
     public static final String AD_PRECISION = "ad_precision";
     public static final String AD_COUNTRY_CODE = "ad_country_code";

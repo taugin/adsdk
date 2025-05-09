@@ -55,8 +55,6 @@ public class PidConfig {
 
     private Map<String, String> subNativeLayout;
 
-    private int splashOrientation = 1;
-
     private Map<String, String> extra;
 
     // 是否为模板广告
@@ -260,14 +258,6 @@ public class PidConfig {
 
     public void setSubNativeLayout(Map<String, String> subNativeLayout) {
         this.subNativeLayout = subNativeLayout;
-    }
-
-    public int getSplashOrientation() {
-        return splashOrientation;
-    }
-
-    public void setSplashOrientation(int splashOrientation) {
-        this.splashOrientation = splashOrientation;
     }
 
     public Map<String, String> getExtra() {

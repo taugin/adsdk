@@ -1003,9 +1003,8 @@ public class AdmobLoader extends AbstractSdkLoader {
         printInterfaceLog(ACTION_LOAD);
         reportAdRequest();
         notifyAdRequest();
-        int splashOrientation = mPidConfig.getSplashOrientation();
         admobSplashListener = new AdmobSplashListener();
-        AppOpenAd.load(mContext, getPid(), new AdRequest.Builder().build(), splashOrientation, admobSplashListener.appOpenAdLoadCallback);
+        AppOpenAd.load(mContext, getPid(), new AdRequest.Builder().build(), admobSplashListener.appOpenAdLoadCallback);
     }
 
     private class AdmobSplashListener extends AbstractAdListener {

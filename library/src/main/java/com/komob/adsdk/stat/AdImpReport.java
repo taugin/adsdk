@@ -17,6 +17,38 @@ import java.util.Map;
 
 public class AdImpReport {
 
+    private static Map<String, Object> bundleImpData(AdImpData adImpData) {
+        String networkName = adImpData.getNetwork();
+        String platform = adImpData.getPlatform();
+        String unitName = adImpData.getUnitName();
+        String placement = adImpData.getPlacement();
+        String adType = adImpData.getAdType();
+        String networkPid = adImpData.getNetworkPid();
+        String unitId = adImpData.getUnitId();
+        String adPrecision = adImpData.getPrecision();
+        boolean adBidding = adImpData.isBidding();
+        String formatNetwork = Utils.formatNetwork(networkName);
+        if (TextUtils.isEmpty(networkPid)) {
+            networkPid = unitId;
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("ad_platform", platform);
+        params.put("ad_source", networkName);
+        params.put("ad_format", adImpData.getAdFormat());
+        params.put("ad_type", adType);
+        params.put("ad_unit_name", unitName);
+        params.put("ad_placement", placement);
+        params.put("ad_network_pid", networkPid + "[" + formatNetwork + "_" + adType + "]");
+        params.put("ad_unit_id", unitId);
+        params.put("ad_precision", adPrecision);
+        params.put("ad_bidding", adBidding);
+        params.put("ad_network_and_type", formatNetwork + "_" + adType);
+        params.put("value", adImpData.getValue());
+        params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
+        params.put("currency", "USD"); // All Applovin revenue is sent in USD
+        return params;
+    }
+
     /**
      * 上报ad_impression事件，firebase通过此事件计算收入
      *
@@ -35,30 +67,9 @@ public class AdImpReport {
                         }
                     }
                 }
-                String platform = adImpData.getPlatform();
-                String unitName = adImpData.getUnitName();
-                String placement = adImpData.getPlacement();
-                String adType = adImpData.getAdType();
-                String networkPid = adImpData.getNetworkPid();
-                String unitId = adImpData.getUnitId();
-                String adPrecision = adImpData.getPrecision();
-                boolean adBidding = adImpData.isBidding();
-                Map<String, Object> params = new HashMap<String, Object>();
-                params.put("ad_platform", platform);
-                params.put("ad_source", networkName);
-                params.put("ad_format", adImpData.getAdFormat());
-                params.put("ad_type", adType);
-                params.put("ad_unit_name", unitName);
-                params.put("ad_placement", placement);
-                params.put("ad_network_pid", networkPid);
-                params.put("ad_unit_id", unitId);
-                params.put("ad_precision", adPrecision);
-                params.put("ad_bidding", adBidding);
-                params.put("value", adImpData.getValue());
-                params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
-                params.put("currency", "USD"); // All Applovin revenue is sent in USD
+                Map<String, Object> params = bundleImpData(adImpData);
                 if (isReportFirebase) {
-                    InternalStat.sendFirebaseAnalytics(context, "ad_impression", null, params);
+                    InternalStat.sendFirebaseAnalytics(context, Constant.AD_IMPRESSION, null, params);
                 }
             }
         } catch (Exception e) {
@@ -68,34 +79,7 @@ public class AdImpReport {
     public static void reportAdImpressionAll(Context context, AdImpData adImpData) {
         try {
             if (adImpData != null && isEnableReportAdImpression(context)) {
-                String networkName = adImpData.getNetwork();
-                String platform = adImpData.getPlatform();
-                String unitName = adImpData.getUnitName();
-                String placement = adImpData.getPlacement();
-                String adType = adImpData.getAdType();
-                String networkPid = adImpData.getNetworkPid();
-                String unitId = adImpData.getUnitId();
-                String adPrecision = adImpData.getPrecision();
-                boolean adBidding = adImpData.isBidding();
-                String formatNetwork = Utils.formatNetwork(networkName);
-                if (TextUtils.isEmpty(networkPid)) {
-                    networkPid = unitId;
-                }
-                Map<String, Object> params = new HashMap<String, Object>();
-                params.put("ad_platform", platform);
-                params.put("ad_source", networkName);
-                params.put("ad_format", adImpData.getAdFormat());
-                params.put("ad_type", adType);
-                params.put("ad_unit_name", unitName);
-                params.put("ad_placement", placement);
-                params.put("ad_network_pid", networkPid + "[" + formatNetwork + "_" + adType + "]");
-                params.put("ad_unit_id", unitId);
-                params.put("ad_precision", adPrecision);
-                params.put("ad_bidding", adBidding);
-                params.put("ad_network_and_type", formatNetwork + "_" + adType);
-                params.put("value", adImpData.getValue());
-                params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
-                params.put("currency", "USD"); // All Applovin revenue is sent in USD
+                Map<String, Object> params = bundleImpData(adImpData);
                 InternalStat.sendFirebaseAnalytics(context, "ad_impression_all", null, params);
                 if (EventImpl.get().getActiveDays() == 0) {
                     InternalStat.sendFirebaseAnalytics(context, "ad_impression_ado", null, params);
@@ -108,34 +92,7 @@ public class AdImpReport {
     public static void reportAdClickAll(Context context, AdImpData adImpData) {
         try {
             if (adImpData != null) {
-                String networkName = adImpData.getNetwork();
-                String platform = adImpData.getPlatform();
-                String unitName = adImpData.getUnitName();
-                String placement = adImpData.getPlacement();
-                String adType = adImpData.getAdType();
-                String networkPid = adImpData.getNetworkPid();
-                String unitId = adImpData.getUnitId();
-                String adPrecision = adImpData.getPrecision();
-                boolean adBidding = adImpData.isBidding();
-                String formatNetwork = Utils.formatNetwork(networkName);
-                if (TextUtils.isEmpty(networkPid)) {
-                    networkPid = unitId;
-                }
-                Map<String, Object> params = new HashMap<String, Object>();
-                params.put("ad_platform", platform);
-                params.put("ad_source", networkName);
-                params.put("ad_format", adImpData.getAdFormat());
-                params.put("ad_type", adType);
-                params.put("ad_unit_name", unitName);
-                params.put("ad_placement", placement);
-                params.put("ad_network_pid", networkPid + "[" + formatNetwork + "_" + adType + "]");
-                params.put("ad_unit_id", unitId);
-                params.put("ad_precision", adPrecision);
-                params.put("ad_bidding", adBidding);
-                params.put("ad_network_and_type", formatNetwork + "_" + adType);
-                params.put("value", adImpData.getValue());
-                params.put("micro_value", Double.valueOf(adImpData.getValue() * 1000000).intValue());
-                params.put("currency", "USD"); // All Applovin revenue is sent in USD
+                Map<String, Object> params = bundleImpData(adImpData);
                 InternalStat.sendFirebaseAnalytics(context, "ad_click_all", null, params);
                 if (EventImpl.get().getActiveDays() == 0) {
                     InternalStat.sendFirebaseAnalytics(context, "ad_click_ado", null, params);
