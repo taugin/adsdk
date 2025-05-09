@@ -55,6 +55,8 @@ public interface IAdLoader {
 
     String getLoadedSdk();
 
+    String getLoadedNetwork();
+
     void loadComplexAds(AdParams adParams);
 
     boolean showComplexAds(String sceneName);

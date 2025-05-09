@@ -23,6 +23,8 @@ import com.komob.adsdk.utils.Utils;
 import com.komob.api.RFileConfig;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -556,47 +558,76 @@ public class AdSdk {
     private String getMaxPlaceNameInternal(String adType, List<String> whiteList, boolean containSlave) {
         String maxPlaceName = null;
         double maxRevenue = -1f;
+        List<AdPlaceLoader> list = null;
         if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
             for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
                 String placeName = entry.getKey();
                 AdPlaceLoader adPlaceLoader = getAdLoader(placeName);
                 if (!TextUtils.isEmpty(placeName) && adPlaceLoader != null
-                        && (whiteList == null || whiteList.isEmpty() || whiteList.contains(placeName))) {
-                    double tmpRevenue = -1f;
-                    if (TextUtils.equals(adType, Constant.TYPE_SPLASH)) {
-                        if (adPlaceLoader.isSplashLoaded()) {
-                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
-                        }
-                    } else if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
-                        if (adPlaceLoader.isInterstitialLoaded()) {
-                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
-                        }
-                    } else if (TextUtils.equals(adType, Constant.TYPE_REWARD)) {
-                        if (adPlaceLoader.isRewardedVideoLoaded()) {
-                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
-                        }
-                    } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
-                        if (adPlaceLoader.isAdViewLoaded(adType)) {
-                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
-                        }
-                    } else if (TextUtils.equals(adType, Constant.TYPE_BANNER)) {
-                        if (adPlaceLoader.isAdViewLoaded(adType)) {
-                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
-                        }
-                    } else {
-                        if (adPlaceLoader.isComplexAdsLoaded()) {
-                            tmpRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
-                        }
+                        && (whiteList == null || whiteList.isEmpty() || whiteList.contains(placeName))
+                        && TextUtils.equals(adPlaceLoader.getLoadedType(), adType)
+                        && adPlaceLoader.isComplexAdsLoaded()) {
+                    if (list == null) {
+                        list = new ArrayList<>();
                     }
-                    if (tmpRevenue > maxRevenue) {
-                        maxRevenue = tmpRevenue;
-                        maxPlaceName = placeName;
+                    if (list != null) {
+                        list.add(adPlaceLoader);
                     }
                 }
             }
         }
+        if (list != null && !list.isEmpty()) {
+            Collections.sort(list, (o1, o2) -> {
+                try {
+                    return Double.compare(o2.getMaxRevenue(adType, containSlave), o1.getMaxRevenue(adType, containSlave));
+                } catch (Exception e) {
+                }
+                return 0;
+            });
+        }
+        AdPlaceLoader adPlaceLoader = null;
+        if (list != null && !list.isEmpty()) {
+            adPlaceLoader = list.get(0);
+        }
+        if (adPlaceLoader != null) {
+            maxPlaceName = adPlaceLoader.getPlaceName();
+            maxRevenue = adPlaceLoader.getMaxRevenue(adType, containSlave);
+        }
+        try {
+            String logText = "\n";
+            for (AdPlaceLoader placeLoader : list) {
+                if (placeLoader != null) {
+                    logText += "---> [max place]" + placeLoader.getLoadedType() + "|" + placeLoader.getPlaceName() + "|" + placeLoader.getLoadedSdk() + "|" + placeLoader.getLoadedNetwork() + "|" + placeLoader.getMaxRevenue(adType, containSlave) + "\n";
+                }
+            }
+            Log.iv(Log.TAG, logText);
+        } catch (Exception e) {
+        }
         Log.iv(Log.TAG, "max place name : " + maxPlaceName + " , ad type : " + adType + " , revenue : " + maxRevenue);
         return maxPlaceName;
+    }
+
+    public boolean isAdTypeLoaded(String adType) {
+        return isAdTypeLoaded(adType, null);
+    }
+
+    public boolean isAdTypeLoaded(String adType, List<String> includes) {
+        try {
+            if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
+                for (Map.Entry<String, AdPlaceLoader> entry : mAdLoaders.entrySet()) {
+                    String placeName = entry.getKey();
+                    AdPlaceLoader coreLoader = getAdLoader(placeName);
+                    if (coreLoader != null
+                            && (includes == null || includes.isEmpty() || includes.contains(placeName))
+                            && (TextUtils.equals(adType, coreLoader.getLoadedType()) || TextUtils.isEmpty(adType))
+                            && coreLoader.isComplexAdsLoaded()) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     /**

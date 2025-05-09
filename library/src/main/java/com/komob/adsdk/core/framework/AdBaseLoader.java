@@ -107,6 +107,11 @@ public class AdBaseLoader implements IAdLoader {
     }
 
     @Override
+    public String getLoadedNetwork() {
+        return null;
+    }
+
+    @Override
     public void loadComplexAds(AdParams adParams) {
     }
 

@@ -1371,6 +1371,21 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
         return null;
     }
 
+    @Override
+    public String getLoadedNetwork() {
+        if (mAdLoaders != null) {
+            for (ISdkLoader loader : mAdLoaders) {
+                if (loader != null) {
+                    boolean loaded = isAnyLoaderLoaded(loader);
+                    if (loaded) {
+                        return loader.getNetwork();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * 加载混合广告
      *
@@ -1730,43 +1745,42 @@ public class AdPlaceLoader extends AdBaseLoader implements IManagerListener, Run
 
     @Override
     public double getMaxRevenue(String adType, boolean containSlave) {
-        double maxValue = -1f;
-        if (mAdLoaders != null && !mAdLoaders.isEmpty())
+        double maxValue = 0;
+        String maxNetwork = null;
+        List<ISdkLoader> list = null;
+        if (mAdLoaders != null && !mAdLoaders.isEmpty()) {
             for (ISdkLoader loader : mAdLoaders) {
-                if (loader != null) {
-                    if (containSlave || !loader.isSlaveAds()) {
-                        double tmpValue = -1f;
-                        if (TextUtils.equals(adType, Constant.TYPE_BANNER)) {
-                            if (loader.isBannerLoaded()) {
-                                tmpValue = loader.getRevenue();
-                            }
-                        } else if (TextUtils.equals(adType, Constant.TYPE_NATIVE)) {
-                            if (loader.isNativeLoaded()) {
-                                tmpValue = loader.getRevenue();
-                            }
-                        } else if (TextUtils.equals(adType, Constant.TYPE_INTERSTITIAL)) {
-                            if (loader.isInterstitialLoaded()) {
-                                tmpValue = loader.getRevenue();
-                            }
-                        } else if (TextUtils.equals(adType, Constant.TYPE_REWARD)) {
-                            if (loader.isRewardedVideoLoaded()) {
-                                tmpValue = loader.getRevenue();
-                            }
-                        } else if (TextUtils.equals(adType, Constant.TYPE_SPLASH)) {
-                            if (loader.isSplashLoaded()) {
-                                tmpValue = loader.getRevenue();
-                            }
-                        } else {
-                            if (isAnyLoaderLoaded(loader)) {
-                                tmpValue = loader.getRevenue();
-                            }
-                        }
-                        if (tmpValue > maxValue) {
-                            maxValue = tmpValue;
-                        }
+                if ((containSlave || !loader.isSlaveAds())
+                        && loader != null && loader.isLoaded()
+                        && TextUtils.equals(loader.getAdType(), adType)) {
+                    if (list == null) {
+                        list = new ArrayList<>();
+                    }
+                    if (list != null) {
+                        list.add(loader);
                     }
                 }
             }
+
+            if (list != null && !list.isEmpty()) {
+                Collections.sort(list, (o1, o2) -> {
+                    try {
+                        return Double.compare(o2.getRevenue(), o1.getRevenue());
+                    } catch (Exception e) {
+                    }
+                    return 0;
+                });
+            }
+            ISdkLoader coreLoader = null;
+            if (list != null && !list.isEmpty()) {
+                coreLoader = list.get(0);
+            }
+            if (coreLoader != null) {
+                maxValue = coreLoader.getRevenue();
+                maxNetwork = coreLoader.getNetwork();
+            }
+        }
+        Log.iv(Log.TAG, "max network : " + maxNetwork + ", max value : " + maxValue);
         return maxValue;
     }
 

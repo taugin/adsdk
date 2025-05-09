@@ -103,4 +103,6 @@ public interface ISdkLoader {
     void setCached(boolean cached);
 
     boolean isCached();
+
+    boolean isLoaded();
 }

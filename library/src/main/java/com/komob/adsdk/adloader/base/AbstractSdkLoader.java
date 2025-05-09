@@ -868,6 +868,11 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
         mCached = cached;
     }
 
+    @Override
+    public boolean isLoaded() {
+        return isBannerLoaded() || isInterstitialLoaded() || isSplashLoaded() || isNativeLoaded() || isRewardedVideoLoaded();
+    }
+
     protected String generateImpressionId() {
         return UUID.randomUUID().toString();
     }
@@ -1405,6 +1410,7 @@ public abstract class AbstractSdkLoader implements ISdkLoader {
     }
 
     private static final Map<String, String> sScenePidMap = new HashMap<>();
+
     protected static void putSceneNameToMap(String pid, String sceneName) {
         try {
             if (sScenePidMap != null && !TextUtils.isEmpty(sceneName)) {

@@ -365,21 +365,21 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     private void updateAllAdStatus(String adType) {
         if (TextUtils.equals(adType, AdSdk.AD_TYPE_NATIVE)) {
-            String maxPlace = AdSdk.get(mContext).getMaxPlaceName(adType);
+            boolean adTypeLoaded = AdSdk.get(mContext).isAdTypeLoaded(adType);
             TextView textView = findViewById(R.id.load_all_native);
-            textView.setTextColor(!TextUtils.isEmpty(maxPlace) ? Color.RED : Color.BLACK);
+            textView.setTextColor(adTypeLoaded ? Color.RED : Color.BLACK);
         } else if (TextUtils.equals(adType, AdSdk.AD_TYPE_SPLASH)) {
-            String maxPlace = AdSdk.get(mContext).getMaxPlaceName(adType);
+            boolean adTypeLoaded = AdSdk.get(mContext).isAdTypeLoaded(adType);
             TextView textView = findViewById(R.id.load_all_splash);
-            textView.setTextColor(!TextUtils.isEmpty(maxPlace) ? Color.RED : Color.BLACK);
+            textView.setTextColor(adTypeLoaded ? Color.RED : Color.BLACK);
         } else if (TextUtils.equals(adType, AdSdk.AD_TYPE_INTERSTITIAL)) {
-            String maxPlace = AdSdk.get(mContext).getMaxPlaceName(adType);
+            boolean adTypeLoaded = AdSdk.get(mContext).isAdTypeLoaded(adType);
             TextView textView = findViewById(R.id.load_all_interstitial);
-            textView.setTextColor(!TextUtils.isEmpty(maxPlace) ? Color.RED : Color.BLACK);
+            textView.setTextColor(adTypeLoaded ? Color.RED : Color.BLACK);
         } else if (TextUtils.equals(adType, AdSdk.AD_TYPE_REWARD)) {
-            String maxPlace = AdSdk.get(mContext).getMaxPlaceName(adType);
+            boolean adTypeLoaded = AdSdk.get(mContext).isAdTypeLoaded(adType);
             TextView textView = findViewById(R.id.load_all_reward);
-            textView.setTextColor(!TextUtils.isEmpty(maxPlace) ? Color.RED : Color.BLACK);
+            textView.setTextColor(adTypeLoaded ? Color.RED : Color.BLACK);
         }
     }
 
