@@ -1,21 +1,5 @@
 apply plugin: 'com.android.library'
 
-apply plugin: 'stringfog'
-
-import com.github.megatronking.stringfog.plugin.StringFogMode
-import com.github.megatronking.stringfog.plugin.kg.HardCodeKeyGenerator
-stringfog {
-    // 这是加解密 key，可以自由定义。
-    kg new HardCodeKeyGenerator("kom-ads-sdk")
-    // 开关
-    enable true
-    // 加解密库的实现类路径，需和上面配置的加解密算法库一致。
-    implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
-    // 指定需加密的代码包路径，可配置多个，未指定将默认全部加密。
-    // fogPackages = ['com.xxx.xxx']
-    mode StringFogMode.bytes
-}
-
 def isSnapshot = true
 def baseVersion = '1.3.8'
 
@@ -50,7 +34,7 @@ android {
 
 // 广告依赖文件
 // ext['network'] = ['admob', 'applovin', 'tradplus', 'bigo', 'mintegral']
-apply from: '../groovy/ads.gradle'
+apply from: 'ads.gradle'
 
 dependencies {
     // samsung

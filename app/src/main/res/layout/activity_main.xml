@@ -153,6 +153,7 @@
 
                 <Button
                     android:id="@+id/interstitial"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="2dp"
@@ -163,6 +164,7 @@
 
                 <Button
                     android:id="@+id/splash"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="2dp"
@@ -173,6 +175,7 @@
 
                 <Button
                     android:id="@+id/banner"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="2dp"
@@ -183,6 +186,7 @@
 
                 <Button
                     android:id="@+id/reward_video"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="2dp"
@@ -199,6 +203,7 @@
 
                 <Button
                     android:id="@+id/change_language"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -207,6 +212,7 @@
 
                 <Button
                     android:id="@+id/mediation_debugger"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -215,6 +221,7 @@
 
                 <Button
                     android:id="@+id/native_common"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -230,6 +237,7 @@
 
                 <Button
                     android:id="@+id/load_all_splash"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="2dp"
@@ -239,6 +247,7 @@
 
                 <Button
                     android:id="@+id/load_all_interstitial"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="2dp"
@@ -248,6 +257,7 @@
 
                 <Button
                     android:id="@+id/load_all_reward"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="2dp"
@@ -257,6 +267,7 @@
 
                 <Button
                     android:id="@+id/load_all_native"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="2dp"
@@ -272,6 +283,7 @@
 
                 <Button
                     android:id="@+id/show_max_splash"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="2dp"
@@ -281,6 +293,7 @@
 
                 <Button
                     android:id="@+id/show_max_interstitial"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="2dp"
@@ -290,6 +303,7 @@
 
                 <Button
                     android:id="@+id/show_max_reward"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="2dp"
@@ -299,6 +313,7 @@
 
                 <Button
                     android:id="@+id/show_max_native"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="2dp"
@@ -309,6 +324,7 @@
 
             <Button
                 android:id="@+id/show_complex_ads"
+                style="@style/ButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_48"
                 android:onClick="onClick"
@@ -316,6 +332,7 @@
 
             <Button
                 android:id="@+id/native_interstitial"
+                style="@style/ButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_48"
                 android:onClick="onClick"
@@ -323,6 +340,7 @@
 
             <Button
                 android:id="@+id/show_spread_list"
+                style="@style/ButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_48"
                 android:onClick="onClick"

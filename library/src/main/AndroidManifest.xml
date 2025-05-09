@@ -12,13 +12,6 @@
             android:required="false" />
 
         <activity
-            android:name=".RFileConfig"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:exported="false"
-            android:label=""
-            android:theme="@android:style/Theme.Translucent" />
-
-        <activity
             android:name=".PermUI"
             android:excludeFromRecents="true"
             android:exported="false"
